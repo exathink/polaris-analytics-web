@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-export BUILDER_IMAGE=${REGISTRY_POLARIS_BUILD_PATH}polaris-python-build-base:latest
-export RELEASE_IMAGE=${REGISTRY_POLARIS_BUILD_PATH}polaris-python-build-base:latest
+export PACKAGE_TYPE=yarn
+export BUILDER_IMAGE=polaris-yarn-builder:latest
+export RELEASE_IMAGE=polaris-yarn-builder:latest

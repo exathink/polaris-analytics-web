@@ -1,5 +1,20 @@
 version: '3.1'
 
+services:
+  dev-app:
+    image: ${PACKAGE_BASE_IMAGE}
+    volumes:
+      - ./src:/project/src
+      - ./public:/project/public
+    ports:
+      - 3000:3000
+    command:
+      - yarn
+      - start
 
+  app:
+    image: ${PACKAGE_IMAGE}
+    ports:
+      - 5000:5000
 
 

@@ -93,8 +93,6 @@ MBAIR/
 .idea/workspace.xml
 
 
-#Data files
-*.json
 
 #network drawing files
 *.cys
@@ -102,3 +100,5 @@ MBAIR/
 *.gxml
 
 docker/**/install.sh
+
+node_modules
