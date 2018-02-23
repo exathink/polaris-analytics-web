@@ -26,9 +26,9 @@ render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <div>
-        <Route exact path="/" component={App} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/repos" component={Authenticated(Repos)} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Authenticated(App)} />
+          <Route exact path="/repos" component={Authenticated(Repos)} />
       </div>
     </ConnectedRouter>
   </Provider>,
