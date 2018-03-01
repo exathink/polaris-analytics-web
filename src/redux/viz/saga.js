@@ -10,9 +10,9 @@ export const fetchUserData = async (key) => {
         headers: { 'X-XSRF-TOKEN': key }
     });
     const data = await response.json();
-    console.log('Fetched: ' + data);
+    console.log('Fetched: ', data);
     // Call me redundant-man
-    return data.data;
+    return data;
 };
 
 export function* fetchData() {
@@ -27,7 +27,7 @@ export function* fetchData() {
     }
   });
 }
-export default function* chartSaga() {
+export default function* visSagas() {
   yield all([
     fork(fetchData),
   ]);
