@@ -6,6 +6,7 @@ export const getCookie = (cookie_name) => {
 const COOKIE_NAME = 'session_key';
 const COOKIE_EXP_NAME = 'session_expiration';
 
+export const getSessionKey = () => getCookie(COOKIE_NAME);
 export const checkAuth = () => {
     const cookie = getCookie(COOKIE_NAME);
     const expiry = getCookie(COOKIE_EXP_NAME);

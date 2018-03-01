@@ -6,6 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import reducers from '../redux/reducers';
 import rootSaga from '../redux/sagas';
 
+
 const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
 const routeMiddleware = routerMiddleware(history);
@@ -19,7 +20,6 @@ const store = createStore(
   }),
   composeEnhancers(applyMiddleware(...middlewares))
 );
-
 sagaMiddleware.run(rootSaga);
 
 export { store, history };
