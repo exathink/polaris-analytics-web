@@ -64,5 +64,3 @@ export default ({ history}) => (
     </Switch>
   </ConnectedRouter>
 );
-
-
