@@ -1,8 +1,9 @@
 import App from './app/reducer';
-import {user_info, auth_state} from './auth/reducer';
+import auth from './auth/reducer';
+import user from './user/reducer';
 
 export default {
-    user_info,
-    auth_state,
-    App,
+  auth,
+  user,
+  App,
 };
