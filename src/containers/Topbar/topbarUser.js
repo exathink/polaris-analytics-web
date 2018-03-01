@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import Popover from '../../components/uielements/popover';
 import IntlMessages from '../../components/utility/intlMessages';
 import userpic from '../../image/user1.png';
-import authAction from '../../redux/auth/actions';
 import TopbarDropdownWrapper from './topbarDropdown.style';
-
-const { logout } = authAction;
+import authActions from '../../redux/auth/actions';
 
 class TopbarUser extends Component {
   constructor(props) {
@@ -25,6 +23,8 @@ class TopbarUser extends Component {
   }
 
   render() {
+    const userName = this.props.user && this.props.user.first_name;
+
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
         <a className="isoDropdownLink">
@@ -37,7 +37,7 @@ class TopbarUser extends Component {
           <IntlMessages id="topbar.help" />
         </a>
         <a className="isoDropdownLink" onClick={this.props.logout}>
-            <p><IntlMessages id="topbar.logout" /> {this.props.user.first_name}</p>
+            <p><IntlMessages id="topbar.logout" /> {userName}</p>
         </a>
       </TopbarDropdownWrapper>
     );
@@ -59,4 +59,10 @@ class TopbarUser extends Component {
     );
   }
 }
-export default connect((state) => ({...state.user_info}), { logout })(TopbarUser);
+
+const { logout } = authActions;
+const mapStateToProps = state => ({
+  user: state.user.get('user')
+});
+
+export default connect(mapStateToProps, { logout })(TopbarUser);

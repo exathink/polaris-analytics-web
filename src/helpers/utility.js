@@ -66,3 +66,12 @@ export function timeDifference(givenTime) {
   };
   return getTime();
 }
+
+export function getCookie(n) {
+  const c = `; ${document.cookie}`.match(`;\\s*${n}=([^;]+)`);
+  return c ? c[1] : null;
+}
+
+export function timestamp(t = new Date().getTime()){
+  return Math.round(t / 1000);
+}

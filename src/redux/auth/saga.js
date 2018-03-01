@@ -1,58 +1,39 @@
-import { all, takeEvery, put, fork } from 'redux-saga/effects';
+import { all, call, takeEvery, put, fork } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { getToken, clearToken } from '../../helpers/utility';
 import actions from './actions';
+import { getSessionKey } from '../../auth/helpers';
+import { fetchUserData } from '../../auth/api';
 
-const fakeApiCall = true; // auth0 or express JWT
-
-export function* loginRequest() {
-  yield takeEvery('LOGIN_REQUEST', function*() {
-    if (fakeApiCall) {
+export function* userDataRequest() {
+  try {
+    yield takeEvery(actions.USER_DATA_REQUEST, function*() {
+      const user = yield call(fetchUserData, getSessionKey());
       yield put({
-        type: actions.LOGIN_SUCCESS,
-        token: 'secret token',
-        profile: 'Profile'
+        type: actions.AUTH_SUCCESS,
+        user
       });
-    } else {
-      yield put({ type: actions.LOGIN_ERROR });
-    }
-  });
+    });
+  } catch (error) {
+    yield put({ type: actions.AUTH_FAIL });
+  }
 }
 
-export function* loginSuccess() {
-  yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
-    yield localStorage.setItem('id_token', payload.token);
+export function* authError() {
+  yield takeEvery(actions.AUTH_FAIL, function*() {
+    yield put(push('/logout'));
   });
-}
-
-export function* loginError() {
-  yield takeEvery(actions.LOGIN_ERROR, function*() {});
 }
 
 export function* logout() {
   yield takeEvery(actions.LOGOUT, function*() {
-    clearToken();
-    yield put(push('/'));
+    yield put(push('/logout'));
   });
 }
-export function* checkAuthorization() {
-  yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
-    const token = getToken().get('idToken');
-    if (token) {
-      yield put({
-        type: actions.LOGIN_SUCCESS,
-        token,
-        profile: 'Profile'
-      });
-    }
-  });
-}
+
 export default function* rootSaga() {
   yield all([
-    fork(checkAuthorization),
-    fork(loginRequest),
-    fork(loginSuccess),
-    fork(loginError),
+    fork(userDataRequest),
+    fork(authError),
     fork(logout)
   ]);
 }
