@@ -4,39 +4,41 @@ import { ConnectedRouter } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 import authActions from './redux/auth/actions';
-import { store } from './redux/store';
+
 
 import App from './containers/App/App';
 import Login from './components/auth/Login'; 
 import Logout from './components/auth/Logout';
 
-import { checkAuth } from './auth/helpers';
+import { isAuthenticated } from './auth/helpers';
 
-const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest  }) => (
+const {requestUserData} = authActions;
+
+const RestrictedRoute_ = ({ component: Component, isAuthorized, requestUserData, ...rest  }) => (
   <Route
     {...rest}
 
     render={
       props => {
-        {/* Yeah, I know the bellow if's are a little weird and I hope I can improve it, lol */}
-
-        if (isLoggedIn) {
-          return <Component {...props} />;
+        if (isAuthenticated()) {
+            if(!isAuthorized) {
+                requestUserData();
+            }
+            return <Component {...props} />;
         }
-
-        if (checkAuth()) {
-          store.dispatch(authActions.requestUserData());
-          return <Component {...props} />;
-        }
-
-        return <Redirect to={{ pathname: '/login', from: props.location.pathname }}/>
+        return <Redirect to={{pathname: '/login', from: props.location.pathname}}/>
       }
     }
-
   />
 );
 
-export const PublicRoutes = ({ history, isLoggedIn }) => (
+export const RestrictedRoute =  connect(state => ({
+    isAuthorized: state.auth.authorized
+}), {requestUserData})(RestrictedRoute_);
+
+
+
+export default ({ history}) => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route
@@ -63,6 +65,4 @@ export const PublicRoutes = ({ history, isLoggedIn }) => (
   </ConnectedRouter>
 );
 
-export default connect(state => ({
-  isLoggedIn: state.auth.authorized
-}))(PublicRoutes)
+
