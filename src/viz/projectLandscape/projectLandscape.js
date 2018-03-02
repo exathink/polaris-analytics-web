@@ -8,9 +8,18 @@ import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} fro
 const { fetchData } = vizActions;
 
 class ProjectLandscape extends React.Component {
-  componentDidMount() {
-    if (!this.props.viz_data) {
-      this.props.fetchData(null)
+
+
+  viz_domain() {
+    return `project-summary/${this.props.account.company}`;
+  }
+
+  componentWillMount() {
+    let viz_domain = this.viz_domain();
+    if (!this.props.viz_data.get(viz_domain)) {
+      if(this.props.account) {
+        this.props.fetchData({viz_domain: viz_domain})
+      }
     }
   }
 
@@ -25,12 +34,16 @@ class ProjectLandscape extends React.Component {
   }
 
   render() {
+
+    let viz_domain = this.viz_domain();
+    let viz_data = this.props.viz_data.get(viz_domain);
+
     return (
       <ReactPlaceholder
         showLoadingAnimation
         type="text"
         rows={7}
-        ready={this.props.viz_data != null}
+        ready={viz_data != null}
       >
         <ScatterChart
           width={730}
@@ -46,7 +59,7 @@ class ProjectLandscape extends React.Component {
           <Legend />
           <Scatter
             name="Exathink"
-            data={ProjectLandscape.mapData(this.props.viz_data)}
+            data={ProjectLandscape.mapData(viz_data)}
             fill="#8884d8"
           />
         </ScatterChart>
@@ -56,7 +69,9 @@ class ProjectLandscape extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  viz_data: state.viz.get('viz_data')
+  user: state.user.get('user'),
+  account: state.user.get('account'),
+  viz_data: state.viz
 });
 
 export default connect(

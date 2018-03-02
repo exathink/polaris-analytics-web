@@ -1,28 +1,30 @@
-import {all, call, fork, put, takeEvery} from "redux-saga/effects";
+import {all, call, fork, put, takeLatest} from "redux-saga/effects";
 import actions from "./actions";
 import { getSessionKey } from "../../utils";
 
 const GET_CHART = "http://polaris-services.exathink.localdev:8200/charts";
 
-export const fetchVizData = async (key) => {
-  const response = await fetch(`${GET_CHART}/project-summary/Exathink/`, {
+export const fetchVizData = async (key, viz_domain_id) => {
+  console.log(`fetching data for viz_domain: ${viz_domain_id} `);
+  const response = await fetch(`${GET_CHART}/${viz_domain_id}/`, {
       headers: { 'X-XSRF-TOKEN': key }
   });
-  const data = await response.json();
-
-  return data;
+  return await response.json();
 };
 
 export function* fetchData() {
-  yield takeEvery(actions.FETCH_DATA, function*() {
+  yield takeLatest(actions.FETCH_DATA, function*(action) {
     const sessionKey = getSessionKey();
 
     if (sessionKey) {
-      const data = yield call(fetchVizData, sessionKey)
+      const data = yield call(fetchVizData, sessionKey, action.payload.viz_domain);
 
       yield put({
         type: actions.FETCH_DATA_SUCCESS,
-        payload: data,
+        payload: {
+          viz_domain: action.payload.viz_domain,
+          data: data
+        }
       });
     }
   });
