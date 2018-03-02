@@ -21,19 +21,22 @@ const RestrictedRoute_ = ({ component: Component, isAuthorized, requestUserData,
     render={
       props => {
         if (isAuthenticated()) {
-            if(!isAuthorized) {
+            if(isAuthorized) {
+                return <Component {...props} />;
+            } else {
                 requestUserData();
+                return null;
             }
-            return <Component {...props} />;
+        } else {
+            return <Redirect to={{pathname: '/login', from: props.location.pathname}}/>
         }
-        return <Redirect to={{pathname: '/login', from: props.location.pathname}}/>
       }
     }
   />
 );
 
 export const RestrictedRoute =  connect(state => ({
-    isAuthorized: state.auth.authorized
+    isAuthorized: state.auth.get('authorized')
 }), {requestUserData})(RestrictedRoute_);
 
 
