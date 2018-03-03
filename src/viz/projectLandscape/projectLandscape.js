@@ -1,26 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import ReactPlaceholder from 'react-placeholder';
-import "react-placeholder/lib/reactPlaceholder.css";
-import vizActions from '../../redux/viz/actions';
+
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-const { fetchData } = vizActions;
+export default class ProjectLandscape extends React.Component {
 
-class ProjectLandscape extends React.Component {
-
-
-  viz_domain() {
-    return `project-summary/${this.props.account.company}`;
-  }
-
-  componentWillMount() {
-    let viz_domain = this.viz_domain();
-    if (!this.props.viz_data.get(viz_domain)) {
-      if(this.props.account) {
-        this.props.fetchData({viz_domain: viz_domain})
-      }
-    }
+  static viz_domain(props){
+    return `project-summary/${props.account.company}`;
   }
 
   static mapData(viz_data) {
@@ -35,16 +20,10 @@ class ProjectLandscape extends React.Component {
 
   render() {
 
-    let viz_domain = this.viz_domain();
+    let viz_domain = ProjectLandscape.viz_domain(this.props);
     let viz_data = this.props.viz_data.get(viz_domain);
 
     return (
-      <ReactPlaceholder
-        showLoadingAnimation
-        type="text"
-        rows={7}
-        ready={viz_data != null}
-      >
         <ScatterChart
           width={730}
           height={250}
@@ -63,18 +42,7 @@ class ProjectLandscape extends React.Component {
             fill="#8884d8"
           />
         </ScatterChart>
-      </ReactPlaceholder>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user.get('user'),
-  account: state.user.get('account'),
-  viz_data: state.viz
-});
-
-export default connect(
-  mapStateToProps,
-  { fetchData }
-)(ProjectLandscape);
