@@ -4,8 +4,10 @@ import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} fro
 
 export default class ProjectLandscape extends React.Component {
 
-  static viz_domain(props){
-    return `project-summary/${props.account.company}`;
+  static viz_domains(props){
+    return [
+      `project-summary/${props.account.company}`
+    ];
   }
 
   static mapData(viz_data) {
@@ -20,7 +22,7 @@ export default class ProjectLandscape extends React.Component {
 
   render() {
 
-    let viz_domain = ProjectLandscape.viz_domain(this.props);
+    let viz_domain = ProjectLandscape.viz_domains(this.props)[0];
     let viz_data = this.props.viz_data.get(viz_domain);
 
     return (
