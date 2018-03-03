@@ -3,10 +3,16 @@ import {connect} from "react-redux";
 import ReactPlaceholder from 'react-placeholder';
 import "react-placeholder/lib/reactPlaceholder.css";
 import vizActions from '../redux/viz/actions';
+import PropTypes from 'prop-types';
 
 const { fetchData } = vizActions;
 
 class Viz extends React.Component {
+  static propTypes = {
+    viz_data: PropTypes.object,
+    user: PropTypes.object,
+    account: PropTypes.object
+  };
 
   componentWillMount() {
     let viz_domains = this.props.component.viz_domains(this.props);
