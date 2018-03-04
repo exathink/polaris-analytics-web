@@ -27,7 +27,7 @@ export default class ProjectLandscape extends React.Component {
     let viz_data = this.props.viz_data.get(viz_domain);
     let chart_data = this.mapData(viz_data);
     return (
-        <ResponsiveContainer width="100%" height="100%" >
+        <ResponsiveContainer width="100%" height="30%" >
           <ScatterChart
             margin={{
               top: 20, right: 20, bottom: 10, left: 10
