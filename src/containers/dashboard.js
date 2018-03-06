@@ -7,6 +7,7 @@ import PlotViz from '../viz/plotly-viz';
 import Viz from '../viz/viz';
 import { Card } from 'antd';
 
+import ContentHolder from '../components/utility/contentHolder';
 
 import { Flex, Box } from 'reflexbox';
 
@@ -18,12 +19,14 @@ export default class extends Component {
             <div style={{ height: '50%' }}>
               <Flex style={{ height: '100%' }}>
                 <Box w={0.5}>
-                  <Card style={{ height: '100%' }}>
+                  <Card style={{ height: '100%', margin: '5px' }}>
                     <PlotViz component={ProjectLandscapePlotly} />
                   </Card>
                 </Box>
                 <Box w={0.5}>
+                  <ContentHolder>
                     <Viz component={ProjectLandscape}/>
+                  </ContentHolder>
                 </Box>
               </Flex>
             </div>
