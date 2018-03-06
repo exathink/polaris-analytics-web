@@ -37,6 +37,7 @@
     "styled-theme": "^0.3.3"
   },
   "devDependencies": {
+    "flow-bin": "^0.66.0",
     "react-app-rewired": "^1.4.0"
   },
   "scripts": {
