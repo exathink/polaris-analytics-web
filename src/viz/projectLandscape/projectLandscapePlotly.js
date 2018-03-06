@@ -25,6 +25,7 @@ class ProjectLandscapePlotly {
         }],
         layout: {
           title: `${props.account.company} Project Landscape`,
+          height: props.containerHeight,
           width: props.containerWidth,
           autosize: true,
           plotBackground: '#cbdbe8',
