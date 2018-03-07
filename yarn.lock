@@ -6195,9 +6195,9 @@ react-placeholder@^2.0.0:
   dependencies:
     prop-types "^15.6.0"
 
-react-plotly.js@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-1.6.0.tgz#cf92a46b02f33bb93601ac0125a10c9b15b9a89f"
+react-plotly.js@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-1.7.0.tgz#a830abf4fdab799d3f74277c0f0a691a75360723"
   dependencies:
     fast-isnumeric "^1.1.1"
     object-assign "^4.1.1"

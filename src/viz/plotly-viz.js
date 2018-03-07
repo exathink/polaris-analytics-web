@@ -4,7 +4,6 @@ import ReactPlaceholder from 'react-placeholder';
 import "react-placeholder/lib/reactPlaceholder.css";
 import vizActions from '../redux/viz/actions';
 import PropTypes from 'prop-types';
-import Dimensions from 'react-dimensions';
 
 import {Plot} from '../helpers/plotly'
 
@@ -38,17 +37,19 @@ class Viz extends React.Component {
 
 
   render() {
+    {
+
+      //<ReactPlaceholder
+        //showLoadingAnimation
+        //type="text"
+        //rows={7}
+        //ready={this.ready()}
+      //>
+        //<Plot {...this.props.component.plotAttributes(this.props)}/>
+      //</ReactPlaceholder>
+    }
     return (
-      <ReactPlaceholder
-        showLoadingAnimation
-        type="text"
-        rows={7}
-        ready={this.ready()}
-      >
-
-        <Plot {...this.props.component.plotAttributes(this.props)}/>
-
-      </ReactPlaceholder>
+      <Plot {...this.props.component.plotAttributes(this.props)}/>
     )
   }
 
@@ -63,4 +64,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { fetchData }
-)(Dimensions()(Viz));
+)(Viz);

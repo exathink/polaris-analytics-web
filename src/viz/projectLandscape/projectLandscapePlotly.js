@@ -25,11 +25,14 @@ class ProjectLandscapePlotly {
         }],
         layout: {
           title: `${props.account.company} Project Landscape`,
-          height: props.containerHeight,
-          width: props.containerWidth,
           autosize: true,
-          plotBackground: '#cbdbe8',
-        }
+        },
+        style: {
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,.6)',
+        },
+        useResizeHandler: true
       }
     }
   }

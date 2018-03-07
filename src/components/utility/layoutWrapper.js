@@ -10,7 +10,6 @@ export default props => (
     }
     {...props}
   >
-    {console.log('props:', props)}
     {props.children}
   </LayoutContentWrapper>
 );

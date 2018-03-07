@@ -1,48 +1,26 @@
-import React, { Component } from 'react';
-import LayoutContentWrapper from '../components/utility/layoutWrapper';
-import LayoutContent from '../components/utility/layoutContent';
-import ProjectLandscape from '../viz/projectLandscape/projectLandscape';
-import ProjectLandscapePlotly from '../viz/projectLandscape/projectLandscapePlotly';
+import React from 'react';
 import PlotViz from '../viz/plotly-viz';
-import Viz from '../viz/viz';
-import { Card } from 'antd';
+import ProjectLandscapePlotly from '../viz/projectLandscape/projectLandscapePlotly';
+import { Dashboard, DashboardRow, DashboardItem } from '../containers/Dashboard';
 
-import ContentHolder from '../components/utility/contentHolder';
+export default (props) => (
+  <Dashboard>
+    <DashboardRow h='50%'>
+      <DashboardItem w={1/2}>
+        <PlotViz component={ProjectLandscapePlotly} />
+      </DashboardItem>
+      <DashboardItem w={1/2}>
+        <PlotViz component={ProjectLandscapePlotly} />
+      </DashboardItem>
+    </DashboardRow>
 
-import { Flex, Box } from 'reflexbox';
-
-export default class extends Component {
-  render() {
-    return (
-      <LayoutContentWrapper style={{ height: '100vh' }}>
-        <LayoutContent>
-            <div style={{ height: '50%' }}>
-              <Flex style={{ height: '100%' }}>
-                <Box w={0.5}>
-                  <Card style={{ height: '100%', margin: '5px' }}>
-                    <PlotViz component={ProjectLandscapePlotly} />
-                  </Card>
-                </Box>
-                <Box w={0.5}>
-                  <ContentHolder>
-                    <Viz component={ProjectLandscape}/>
-                  </ContentHolder>
-                </Box>
-              </Flex>
-            </div>
-            <div style={{ height: '50%' }}>
-              <Flex style={{ height: '100%' }}>
-                <Box w={0.5}>
-                  <Viz component={ProjectLandscape} />
-                </Box>
-                <Box w={0.5}>
-                  <PlotViz component={ProjectLandscapePlotly}/>
-                </Box>
-              </Flex>
-            </div>
-        </LayoutContent>
-      </LayoutContentWrapper>
-    );
-  }
-}
-
+    <DashboardRow h='50%'>
+      <DashboardItem w={1/2}>
+        <PlotViz component={ProjectLandscapePlotly} />
+      </DashboardItem>
+      <DashboardItem w={1/2}>
+        <PlotViz component={ProjectLandscapePlotly} />
+      </DashboardItem>
+    </DashboardRow>
+  </Dashboard>
+);
