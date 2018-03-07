@@ -1,23 +1,40 @@
 import React from 'react';
 import { Flex, Box } from 'reflexbox';
-import ContentHolder from '../../../components/utility/contentHolder';
+import LayoutWrapper from '../../components/utility/layoutWrapper';
 
-// This should be atomic from the outside, but may be the most cluttered
-// of all the components here... (since we'll define things like holders, cards, etc)
-export const DashboardItem = ({ w, children }) => {
-  <Box w={x}>
-    <ContentHolder>
-      { children }
-    </ContentHolder>
-  </Box>
+const wrapperStyle = {
+  width: '100%',
+  height: '100%'
 };
 
-// just a flex wrapper ??
-export const DashboardRow = ({ height, children }) => (
-  <Flex style={{ height: '100%' }}>
+const rowStyle = {
+  width: '100%'
+};
+
+const itemStyle = {
+  // for debugging-purposes
+  // border: '5px dotted #666',
+  height: '100%',
+  background: 'skyblue'
+};
+
+export const DashboardItem = ({ w=1, children }) => (
+  <Box w={w} m={2} style={itemStyle}>
+    { children }
+  </Box>
+);
+
+export const DashboardRow = ({ h, children }) => (
+  <Flex auto align='center' justify='space-between' style={{
+    ...rowStyle,
+    height: h
+  }}>
     { children }
   </Flex>
 );
 
-// so, here...
-export const Dashboard = () => ();
+export const Dashboard = ({ children }) => (
+  <LayoutWrapper style={wrapperStyle}>
+    { children }
+  </LayoutWrapper>
+);
