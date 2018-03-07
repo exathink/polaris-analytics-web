@@ -46,10 +46,10 @@ export class App extends Component {
                 <Content
                   className="isomorphicContent"
                   style={{
-                    padding: '0px 0 0 0',
+                    padding: '10% 0 0 0',
                     flexShrink: '0',
                     background: '#f1f3f6',
-                    height: '75vh'
+                    height: '94vh'
                   }}
                 >
                   <AppRouter url={url} />
