@@ -9,6 +9,7 @@ import Dimensions from 'react-dimensions';
 import {Plot} from '../helpers/plotly'
 
 
+
 const { fetchData } = vizActions;
 
 class Viz extends React.Component {

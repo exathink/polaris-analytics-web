@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+import moment from 'moment';
 
 export function clearToken() {
   localStorage.removeItem('id_token');
@@ -74,4 +75,12 @@ export function getCookie(n) {
 
 export function timestamp(t = new Date().getTime()){
   return Math.round(t / 1000);
+}
+
+export function polarisTimestamp(timestamp) {
+  return moment(timestamp, "DD-MM-YYYY HH:mm.ss")
+}
+
+export function polarisTimestampWithTZ(timestamp) {
+  return moment(timestamp, "DD-MM-YYYY HH:mm.ss Z")
 }
