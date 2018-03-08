@@ -9,6 +9,7 @@
     "classnames": "^2.2.5",
     "clone": "^2.1.1",
     "history": "^4.6.3",
+    "moment": "^2.21.0",
     "nprogress": "^0.2.0",
     "postcss-inline-rtl": "^0.9.8",
     "react": "^16.2.0",
