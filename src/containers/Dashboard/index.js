@@ -2,24 +2,12 @@ import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 
-const wrapperStyle = {
-  width: '100%',
-  height: '100%'
-};
-
-const rowStyle = {
-  width: '100%'
-};
-
-const itemStyle = {
-  // for debugging-purposes
-  // border: '5px dotted #666',
-  height: '100%',
-  background: 'skyblue'
-};
+const wrapperStyle =  {width: '100%', height: '100%' };
+const rowStyle = { width: '100%' };
+const itemStyle = { height: '100%' };
 
 export const DashboardItem = ({ w=1, children }) => (
-  <Box w={w} m={2} style={itemStyle}>
+  <Box w={w} style={itemStyle}>
     { children }
   </Box>
 );
