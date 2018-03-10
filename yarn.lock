@@ -2930,6 +2930,10 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
+flow-bin@^0.66.0:
+  version "0.66.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.66.0.tgz#a96dde7015dc3343fd552a7b4963c02be705ca26"
+
 follow-redirects@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.4.1.tgz#d8120f4518190f55aac65bb6fc7b85fcd666d6aa"
@@ -4724,6 +4728,10 @@ moment@2.x, moment@^2.19.3:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
+moment@^2.21.0:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6195,9 +6203,9 @@ react-placeholder@^2.0.0:
   dependencies:
     prop-types "^15.6.0"
 
-react-plotly.js@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-1.6.0.tgz#cf92a46b02f33bb93601ac0125a10c9b15b9a89f"
+react-plotly.js@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-1.7.0.tgz#a830abf4fdab799d3f74277c0f0a691a75360723"
   dependencies:
     fast-isnumeric "^1.1.1"
     object-assign "^4.1.1"
@@ -6534,6 +6542,12 @@ redux@^3.6.0:
     lodash-es "^4.2.1"
     loose-envify "^1.1.0"
     symbol-observable "^1.0.3"
+
+reflexbox@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/reflexbox/-/reflexbox-3.0.1.tgz#8c4876520c508d2ae743c71d4f9fb92d6ad38993"
+  dependencies:
+    prop-types "^15.5.10"
 
 regenerate@^1.2.1:
   version "1.3.3"
