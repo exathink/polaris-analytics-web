@@ -43,11 +43,14 @@ class ActivitySummary extends React.Component<Props> {
           })],
         layout: {
           title: `${viz_domain.subject} ${viz_domain.level} Landscape`,
-          height: this.props.containerHeight,
-          width: this.props.containerWidth,
           autosize: true,
-          plotBackground: '#cbdbe8',
-        }
+        },
+        style: {
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,.6)',
+        },
+        useResizeHandler: true
       }
     }
   }

@@ -18,7 +18,7 @@
     "react-dom": "^16.2.0",
     "react-intl": "^2.3.0",
     "react-placeholder": "^2.0.0",
-    "react-plotly.js": "^1.6.0",
+    "react-plotly.js": "^1.7.0",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.0",
@@ -34,6 +34,7 @@
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
+    "reflexbox": "^3.0.1",
     "styled-components": "^2.2.1",
     "styled-theme": "^0.3.3"
   },
