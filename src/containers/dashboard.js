@@ -1,24 +1,24 @@
 import React from 'react';
-import ProjectLandscape from '../viz/projectLandscape/projectLandscapePlotly';
+import {ProjectActivitySummary} from '../components/viz/activitySummary';
 import {Dashboard, DashboardItem, DashboardRow} from "./Dashboard/index";
 
 export default (props) => (
   <Dashboard>
     <DashboardRow h='50%'>
       <DashboardItem w={1/2}>
-        <ProjectLandscape />
+        <ProjectActivitySummary/>
       </DashboardItem>
       <DashboardItem w={1/2}>
-        <ProjectLandscape/>
+        <ProjectActivitySummary/>
       </DashboardItem>
     </DashboardRow>
 
     <DashboardRow h='50%'>
       <DashboardItem w={1/2}>
-        <ProjectLandscape/>
+        <ProjectActivitySummary/>
       </DashboardItem>
       <DashboardItem w={1/2}>
-        <ProjectLandscape/>
+        <ProjectActivitySummary/>
       </DashboardItem>
     </DashboardRow>
   </Dashboard>
