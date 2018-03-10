@@ -5,7 +5,7 @@ import {Plot} from '../../helpers/plotly';
 import {scatterChart} from '../../charts/scatterChart';
 import {DataSources} from "../dataSources";
 
-import {withDomainMap} from "../vizDomain";
+import {withDomainMap} from "../withDomainMap";
 import {polarisTimestamp} from "../../helpers/utility";
 
 type VizDomain = {
