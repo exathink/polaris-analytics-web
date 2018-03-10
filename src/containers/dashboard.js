@@ -1,24 +1,24 @@
 import React from 'react';
-import {ProjectActivitySummary} from '../components/viz/activitySummary';
+import {ProjectActivitySummaryRecharts} from '../components/viz/activitySummary';
 import {Dashboard, DashboardItem, DashboardRow} from "./Dashboard/index";
 
 export default (props) => (
   <Dashboard>
     <DashboardRow h='50%'>
       <DashboardItem w={1/2}>
-        <ProjectActivitySummary/>
+        <ProjectActivitySummaryRecharts/>
       </DashboardItem>
       <DashboardItem w={1/2}>
-        <ProjectActivitySummary/>
+        <ProjectActivitySummaryRecharts/>
       </DashboardItem>
     </DashboardRow>
 
     <DashboardRow h='50%'>
       <DashboardItem w={1/2}>
-        <ProjectActivitySummary/>
+        <ProjectActivitySummaryRecharts/>
       </DashboardItem>
       <DashboardItem w={1/2}>
-        <ProjectActivitySummary/>
+        <ProjectActivitySummaryRecharts/>
       </DashboardItem>
     </DashboardRow>
   </Dashboard>

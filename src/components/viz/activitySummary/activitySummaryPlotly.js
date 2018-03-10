@@ -22,7 +22,7 @@ type Props = {
   containerWidth: number
 }
 
-export class ActivitySummary extends React.Component<Props> {
+export class ActivitySummaryPlotly extends React.Component<Props> {
 
   plotAttributes() {
     if (this.props.viz_domain) {
