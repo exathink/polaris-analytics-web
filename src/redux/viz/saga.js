@@ -1,9 +1,9 @@
 import {all, call, fork, put, takeLatest} from "redux-saga/effects";
 import actions from "./actions";
 import { getSessionKey } from "../../utils";
-import {PolarisServiceConnection} from "../../viz/dataConnection";
+import {polarisChartsService} from "../../viz/api";
 
-const polarisService = new PolarisServiceConnection("http://polaris-services.exathink.localdev:8200");
+
 
 export function* fetchData() {
   yield takeLatest(actions.FETCH_DATA, function*(action) {
@@ -11,7 +11,7 @@ export function* fetchData() {
 
     if (sessionKey) {
       const data = yield call(()=>{
-        return polarisService.fetchData(action.payload.dataSource, action.payload.params)
+        return polarisChartsService.fetchData(action.payload.dataSource, action.payload.params)
       });
 
       yield put({

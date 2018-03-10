@@ -2,7 +2,7 @@ export const DataSources = {
   project_summary: {
     name: 'project-summary',
     polaris_service_connection: {
-      path: 'charts/project-summary',
+      path: 'project-summary',
       params: [
         {
           name: 'organization',

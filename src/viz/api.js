@@ -1,6 +1,6 @@
 import {getSessionKey} from "../utils";
 
-export class PolarisServiceConnection {
+class PolarisServiceConnection {
   constructor(endpoint) {
     this.endpoint = endpoint;
   }
@@ -47,3 +47,4 @@ export class PolarisServiceConnection {
     }
   }
 }
+export const polarisChartsService = new PolarisServiceConnection("http://polaris-services.exathink.localdev:8200/charts");
