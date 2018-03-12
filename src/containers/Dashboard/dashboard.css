@@ -7,7 +7,7 @@
 .dashboard-item {
   position: relative;
   height: 100%;
-  padding: 10%;
+  padding: 5%;
   background: GhostWhite;
   border: 2px solid SlateGrey;
 }
@@ -24,10 +24,4 @@
 
 .dashboard-item:hover .dashboard-item-menu {
   opacity: 1;
-}
-
-.dashboard-footer {
-  width: 100%;
-  background: red;
-  text-align: right;
 }
