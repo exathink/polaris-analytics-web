@@ -1,0 +1,33 @@
+.dashboard-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.dashboard-item {
+  position: relative;
+  height: 100%;
+  padding: 10%;
+  background: GhostWhite;
+  border: 2px solid SlateGrey;
+}
+
+.dashboard-item-menu {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: .3s ease-in-out;
+}
+
+.dashboard-item:hover .dashboard-item-menu {
+  opacity: 1;
+}
+
+.dashboard-footer {
+  width: 100%;
+  background: red;
+  text-align: right;
+}

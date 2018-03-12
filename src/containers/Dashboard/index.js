@@ -1,27 +1,24 @@
 import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
+import './dashboard.css';
 
-const wrapperStyle =  { width: '100%', height: '100%', padding: 0 };
+const ItemMenu = props => (
+  <nav className="dashboard-item-menu">
+    <i className="ion ion-arrow-expand" title="Expand" onClick={props.onExpand || null}></i>
+  </nav>
+);
 
-const rowStyle = { width: '100%' };
-
-const itemStyle = {
-  height: '100%',
-  padding: '10%',
-  border: '2px solid slategrey',
-  background: 'ghostwhite'
-};
-
-export const DashboardItem = ({ w=1, children }) => (
-  <Box w={w} style={itemStyle}>
+export const DashboardItem = ({ w=1, menuProps, children }) => (
+  <Box w={w} className="dashboard-item">
+    <ItemMenu {...menuProps} />
     { children }
   </Box>
 );
 
 export const DashboardRow = ({ h, children }) => (
   <Flex auto align='center' justify='space-between' style={{
-    ...rowStyle,
+    width: '100%',
     height: h
   }}>
     { children }
@@ -29,7 +26,7 @@ export const DashboardRow = ({ h, children }) => (
 );
 
 export const Dashboard = ({ children }) => (
-  <LayoutWrapper style={wrapperStyle}>
+  <LayoutWrapper className="dashboard-wrapper">
     { children }
   </LayoutWrapper>
 );
