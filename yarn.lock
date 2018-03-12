@@ -3299,6 +3299,10 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
+highcharts@^6.0.7:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.0.7.tgz#fd5c4f24fdc61a04ae155a5b70830a96c8f70919"
+
 history@^4.6.3, history@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
@@ -3491,6 +3495,10 @@ ieee754@^1.1.4:
 ignore@^3.3.3:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
+
+immutable-is@^3.7.6:
+  version "3.7.6"
+  resolved "https://registry.yarnpkg.com/immutable-is/-/immutable-is-3.7.6.tgz#efad8bcf21443392402e10fa08b7aa91b65f6c30"
 
 immutable@^3.7.4:
   version "3.8.2"
@@ -3724,6 +3732,10 @@ is-glob@^3.1.0:
   resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-3.1.0.tgz#7ba5ae24217804ac70707b96922567486cc3e84a"
   dependencies:
     is-extglob "^2.1.0"
+
+is-immutable@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-immutable/-/is-immutable-1.0.1.tgz#0b72499d2134c0344fd3b4e24f3f0a0125b70148"
 
 is-installed-globally@^0.1.0:
   version "0.1.0"
@@ -6187,6 +6199,14 @@ react-json-tree@^0.11.0:
     babel-runtime "^6.6.1"
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
+
+react-jsx-highcharts@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-jsx-highcharts/-/react-jsx-highcharts-2.2.1.tgz#b03f72f06b471c9fe6b890d6e859e75c2bfce881"
+  dependencies:
+    immutable-is "^3.7.6"
+    is-immutable "^1.0.1"
+    lodash "^4.17.4"
 
 react-lazy-load@^3.0.12:
   version "3.0.13"
