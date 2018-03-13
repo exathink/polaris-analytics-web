@@ -1,7 +1,8 @@
+import './dashboard.css';
 import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
-import './dashboard.css';
+import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 
 const ItemMenu = props => (
   <nav className="dashboard-item-menu">
@@ -17,18 +18,24 @@ export const DashboardItem = ({ w=1, menuProps, children }) => (
 );
 
 export const DashboardRow = ({ h, children }) => (
-  <Flex auto align='center' justify='space-between' style={{
-    width: '100%',
-    marginBottom: '1%',
-    marginTop: '1%',
+  <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
     height: h
   }}>
     { children }
   </Flex>
 );
 
+const DashboardMenu = () => (
+  <nav className="dashboard-footer">
+    <FullscreenBtn componentId="dashboard" />
+  </nav>
+);
+
 export const Dashboard = ({ children }) => (
-  <LayoutWrapper className="dashboard-wrapper">
-    { children }
+  <LayoutWrapper id="dashboard" className="dashboard-wrapper">
+    <div className="dashboard-vizzes">
+      { children }
+    </div>
+    <DashboardMenu />
   </LayoutWrapper>
 );
