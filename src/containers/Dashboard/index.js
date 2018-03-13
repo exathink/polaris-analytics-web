@@ -10,7 +10,7 @@ const ItemMenu = props => (
 );
 
 export const DashboardItem = ({ w=1, menuProps, children }) => (
-  <Box w={w} className="dashboard-item">
+  <Box w={w} m={1} className="dashboard-item">
     <ItemMenu {...menuProps} />
     { children }
   </Box>
@@ -19,6 +19,8 @@ export const DashboardItem = ({ w=1, menuProps, children }) => (
 export const DashboardRow = ({ h, children }) => (
   <Flex auto align='center' justify='space-between' style={{
     width: '100%',
+    marginBottom: '1%',
+    marginTop: '1%',
     height: h
   }}>
     { children }
