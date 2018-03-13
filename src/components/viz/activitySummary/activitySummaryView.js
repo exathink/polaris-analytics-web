@@ -101,4 +101,4 @@ class ActivitySummaryView extends React.Component<Props> {
   }
 
 }
-export const ActivitySummaryHighcharts = withHighcharts(Dimensions()(ActivitySummaryView), Highcharts);
+export const ActivitySummaryViz = withHighcharts(Dimensions()(ActivitySummaryView), Highcharts);
