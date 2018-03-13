@@ -35,6 +35,7 @@
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
     "reflexbox": "^3.0.1",
+    "screenfull": "^3.3.2",
     "styled-components": "^2.2.1",
     "styled-theme": "^0.3.3"
   },
