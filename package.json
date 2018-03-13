@@ -20,7 +20,6 @@
     "react-intl": "^2.3.0",
     "react-jsx-highcharts": "^2.2.1",
     "react-placeholder": "^2.0.0",
-    "react-plotly.js": "^1.7.0",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.0",

@@ -2772,10 +2772,6 @@ fast-deep-equal@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
 
-fast-isnumeric@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/fast-isnumeric/-/fast-isnumeric-1.1.1.tgz#57b81c07a3c09cb9ec3bef9c161818992d893643"
-
 fast-json-stable-stringify@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
@@ -6222,14 +6218,6 @@ react-placeholder@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-placeholder/-/react-placeholder-2.0.0.tgz#5117b4758927dc5ae5fcbf62552ab98209f6666c"
   dependencies:
     prop-types "^15.6.0"
-
-react-plotly.js@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-1.7.0.tgz#a830abf4fdab799d3f74277c0f0a691a75360723"
-  dependencies:
-    fast-isnumeric "^1.1.1"
-    object-assign "^4.1.1"
-    prop-types "^15.5.10"
 
 react-pure-render@^1.0.2:
   version "1.0.2"
