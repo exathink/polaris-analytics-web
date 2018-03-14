@@ -16,8 +16,6 @@
 
 .dashboard-item {
   height: 100%;
-  padding: .5%;
-  background: GhostWhite;
   position: relative;
 }
 
@@ -29,6 +27,7 @@
   font-size: 1.5rem;
   opacity: 0;
   transition: .3s ease-in-out;
+  z-index: 99;
 }
 
 .dashboard-item:hover .dashboard-item-menu {
