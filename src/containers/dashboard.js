@@ -1,6 +1,8 @@
 import React from 'react';
 import {ProjectActivitySummaryRecharts} from '../components/viz/activitySummary';
-import {Dashboard, DashboardItem, DashboardRow} from "./Dashboard/index";
+import Dashboard from './Dashboard';
+import DashboardRow from './Dashboard/row';
+import DashboardItem from './Dashboard/item';
 
 export default (props) => (
   <Dashboard>
