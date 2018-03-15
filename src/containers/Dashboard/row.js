@@ -8,7 +8,6 @@ export class DashboardRow extends React.Component {
   }
 
   onItemStateChange(item,  maximized) {
-    console.log("Row item maximized");
     this.setState({maximizedItem: maximized ? item: null});
     if (this.props.onItemStateChange) {
       this.props.onItemStateChange(this, item, maximized);

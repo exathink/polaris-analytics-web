@@ -10,7 +10,6 @@ export class ItemMenu extends React.Component {
         className={this.props.isMaximized?  "ion ion-arrow-shrink" : "ion ion-more"}
         title={this.props.isMaximized? "Hide Details" : "Show Details"}
         onClick={this.props.onClick}/>
-      <div>{this.props.index}</div>
     </nav>
   }
 }
@@ -23,7 +22,6 @@ export class DashboardItem extends React.Component {
   }
 
   toggleState() {
-    console.log("maximized..");
     const newState = (this.state.maximized ?
       {maximized: !this.state.maximized, minimizing: true} :
       {maximized: !this.state.maximized, minimizing: false}

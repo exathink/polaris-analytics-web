@@ -11,7 +11,6 @@ export class Dashboard extends React.Component {
   }
 
   onItemStateChange(row, item, maximized) {
-    console.log("Dashboard item maximized");
     this.setState({maximizedRow: maximized? row: null, maximizedItem: maximized? item: null})
   }
 

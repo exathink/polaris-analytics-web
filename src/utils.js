@@ -13,6 +13,5 @@ export const checkAuth = () => {
     const now = Math.round((new Date()).getTime() / 1000);
 
     const authenticated = cookie && (now < expiry);
-    console.log("Check Auth: " + authenticated);
     return authenticated;
 };

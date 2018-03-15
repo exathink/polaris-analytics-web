@@ -53,7 +53,6 @@ class ActivitySummaryView extends React.Component<Props> {
 
 
   render() {
-    console.log("rendering viz...");
     const viz_domain = this.props.viz_domain;
     const bubbles = viz_domain.data.map((activitySummary) => (
       <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
