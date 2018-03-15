@@ -25,6 +25,7 @@ type VizDomain = {
 }
 type Props = {
   viz_domain: VizDomain,
+  isMaximized: boolean,
   containerHeight: number,
   containerWidth: number
 }
@@ -45,15 +46,14 @@ class ActivitySummaryView extends React.Component<Props> {
   }
 
 
-  handleResize = () => {
-    this.chart.reflow();
-  };
-
   setChart = chart => {
     this.chart = chart;
   };
 
+
+
   render() {
+    console.log("rendering viz...");
     const viz_domain = this.props.viz_domain;
     const bubbles = viz_domain.data.map((activitySummary) => (
       <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
@@ -67,9 +67,9 @@ class ActivitySummaryView extends React.Component<Props> {
           <HighchartsChart plotOptions={plotOptions} callback={this.setChart}>
             <Chart width={this.props.containerWidth} height={this.props.containerHeight}/>
 
-            <Title>{`${viz_domain.level} Landscape`}</Title>
+            <Title align={'left'}>{`${viz_domain.level} Landscape`}</Title>
 
-            <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
+            <Subtitle align={'left'}>{`Company: ${viz_domain.subject}`}</Subtitle>
             <Legend
               align={'right'}
               layout={'vertical'}
@@ -101,4 +101,4 @@ class ActivitySummaryView extends React.Component<Props> {
   }
 
 }
-export const ActivitySummaryViz = withHighcharts(Dimensions()(ActivitySummaryView), Highcharts);
+export const ActivitySummaryViz = withHighcharts(Dimensions({elementResize: true})(ActivitySummaryView), Highcharts);

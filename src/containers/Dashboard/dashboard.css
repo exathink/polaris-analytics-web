@@ -21,6 +21,12 @@
   position: relative;
 }
 
+.dashboard-item-minimizing {
+  height: 100%;
+  padding: .5%;
+  background: white;
+  position: relative;
+}
 .dashboard-item-menu {
   position: absolute;
   top: 1%;
@@ -29,6 +35,7 @@
   font-size: 1.5rem;
   opacity: 0;
   transition: .3s ease-in-out;
+  z-index: 100;
 }
 
 .dashboard-item:hover .dashboard-item-menu {
