@@ -44,7 +44,7 @@ export class DashboardItem extends React.Component {
       return null;
     } else if (this.state.minimizing) {
       window.setTimeout(()=>{this.minimize()}, 1);
-      return <Box w={this.props.width} m={1} className="dashboard-item-minimizing">
+      return <Box w={this.props.width} m={1} className="dashboard-item">
       </Box>
     } else {
       const width = (this.state.maximized ? 1 : this.props.w);
