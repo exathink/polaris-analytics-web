@@ -3,9 +3,9 @@ export default {
 };
 
 const siteConfig = {
-  siteName: 'ISOMORPHIC',
-  siteIcon: 'ion-flash',
-  footerText: 'Isomorphic ©2017 Created by RedQ, Inc',
+  siteName: 'URJUNA',
+  siteIcon: 'ion-arrow-graph-upright',
+  footerText: 'Exathink, LLC ©2018',
 };
 const themeConfig = {
   topbar: 'themedefault',
