@@ -52,7 +52,7 @@ export class App extends Component {
                     height: '94vh'
                   }}
                 >
-                  <AppRouter url={url} />
+                  <AppRouter url={url} {...this.props} />
                 </Content>
                 <Footer
                   style={{
