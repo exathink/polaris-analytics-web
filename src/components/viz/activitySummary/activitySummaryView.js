@@ -37,23 +37,9 @@ const plotOptions = {
   }
 };
 
-class ActivitySummaryView extends React.Component<Props> {
-  chart: any;
+const ActivitySummaryView = (props: Props) => {
 
-  constructor(props) {
-    super(props);
-    this.chart = null;
-  }
-
-
-  setChart = chart => {
-    this.chart = chart;
-  };
-
-
-
-  render() {
-    const viz_domain = this.props.viz_domain;
+    const viz_domain = props.viz_domain;
     const bubbles = viz_domain.data.map((activitySummary) => (
       <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
                     name={activitySummary.entity_name} data={[{
@@ -63,8 +49,8 @@ class ActivitySummaryView extends React.Component<Props> {
         z: activitySummary.contributor_count,
       }]}/>));
     return (
-          <HighchartsChart plotOptions={plotOptions} callback={this.setChart}>
-            <Chart width={this.props.containerWidth} height={this.props.containerHeight}/>
+          <HighchartsChart plotOptions={plotOptions}>
+            <Chart width={props.containerWidth} height={props.containerHeight}/>
 
             <Title align={'left'}>{`${viz_domain.level} Landscape`}</Title>
 
@@ -97,7 +83,7 @@ class ActivitySummaryView extends React.Component<Props> {
             <Debug/>
           </HighchartsChart>
     );
-  }
 
-}
+};
+
 export const ActivitySummaryViz = withHighcharts(Dimensions({elementResize: true})(ActivitySummaryView), Highcharts);
