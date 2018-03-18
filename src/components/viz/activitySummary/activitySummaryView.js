@@ -25,9 +25,8 @@ type Props = {
 
 class ActivitySummaryView extends React.Component<Props> {
 
-  getSeries(viz_domain: VizDomain) {
-
-    return viz_domain.data.map((activitySummary) => (
+  getSeries() {
+    return this.props.viz_domain.data.map((activitySummary) => (
       <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
                     name={activitySummary.entity_name} data={[{
         name: activitySummary.entity_name,
@@ -65,7 +64,7 @@ class ActivitySummaryView extends React.Component<Props> {
           <YAxis.Title>Number of commits</YAxis.Title>
         </YAxis>
 
-        {this.getSeries(viz_domain)}
+        {this.getSeries()}
 
       </HighchartsChart>
     );
