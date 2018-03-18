@@ -1,11 +1,7 @@
 // @flow
 import React from 'react';
-import Highcharts from 'highcharts';
-import { withHighcharts, Debug, HighchartsChart, Chart, Title, Tooltip, Subtitle, Legend, XAxis, YAxis,  BubbleSeries  } from 'react-jsx-highcharts';
-import Dimensions from 'react-dimensions';
 
-
-require ('highcharts/highcharts-more')(Highcharts);
+import {HighchartsChart, Chart, BubbleSeries, Title, HtmlTooltip, Subtitle, LegendRight, XAxis, YAxis} from '../../charts';
 
 
 type ActivitySummary = {
@@ -24,23 +20,14 @@ type VizDomain = {
 
 }
 type Props = {
-  viz_domain: VizDomain,
-  isMaximized: boolean,
-  containerHeight: number,
-  containerWidth: number
+  viz_domain: VizDomain
 }
 
+class ActivitySummaryView extends React.Component<Props> {
 
-const plotOptions = {
-  series: {
-    pointStart: 2010
-  }
-};
+  getSeries(viz_domain: VizDomain) {
 
-const ActivitySummaryView = (props: Props) => {
-
-    const viz_domain = props.viz_domain;
-    const bubbles = viz_domain.data.map((activitySummary) => (
+    return viz_domain.data.map((activitySummary) => (
       <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
                     name={activitySummary.entity_name} data={[{
         name: activitySummary.entity_name,
@@ -48,42 +35,42 @@ const ActivitySummaryView = (props: Props) => {
         y: activitySummary.commit_count,
         z: activitySummary.contributor_count,
       }]}/>));
+  }
+
+
+  render() {
+    const viz_domain = this.props.viz_domain;
     return (
-          <HighchartsChart plotOptions={plotOptions}>
-            <Chart width={props.containerWidth} height={props.containerHeight}/>
+      <HighchartsChart>
+        <Chart/>
+        <Title>{`${viz_domain.level} Landscape`}</Title>
 
-            <Title align={'left'}>{`${viz_domain.level} Landscape`}</Title>
+        <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
+        <LegendRight/>
+        <HtmlTooltip
+          shared={true}
+          header={`${viz_domain.level}: {point.key}`}
+          body={[
+            ['Commits: ', '{point.y}'],
+            ['Timespan:', `{point.x} (${viz_domain.span_uom})`],
+            ['Contributors:', '{point.z}']
+          ]}
+        />
 
-            <Subtitle align={'left'}>{`Company: ${viz_domain.subject}`}</Subtitle>
-            <Legend
-              align={'right'}
-              layout={'vertical'}
-              verticalAlign={'middle'}
-            />
-            <Tooltip shared={true}
-                     useHTML={true}
-                     headerFormat='<small>{point.key}</small><table>'
-                     pointFormat={
-                       '<tr><td>commits: </td><td style="text-align: right"><b>{point.x}</b></td></tr>' +
-                       `<tr><td>${viz_domain.span_uom}</td><td style="text-align: right"><b>{point.y}</b></td></tr>` +
-                       '<tr><td>contributors</td><td style="text-align: right"><b>{point.z}</b></td></tr>'
-                     }
-                     footerFormat={'</table>'}
-                     valueDecimals={2}
-            />
+        <XAxis>
+          <XAxis.Title>{`Timespan (${viz_domain.span_uom})`}</XAxis.Title>
+        </XAxis>
 
-            <XAxis>
-              <XAxis.Title>{`Timespan (${viz_domain.span_uom})`}</XAxis.Title>
-            </XAxis>
+        <YAxis id="commits">
+          <YAxis.Title>Number of commits</YAxis.Title>
+        </YAxis>
 
-            <YAxis id="number">
-              <YAxis.Title>Number of commits</YAxis.Title>
-            </YAxis>
-            {bubbles}
-            <Debug/>
-          </HighchartsChart>
+        {this.getSeries(viz_domain)}
+
+      </HighchartsChart>
     );
+  }
 
-};
+}
 
-export const ActivitySummaryViz = withHighcharts(Dimensions({elementResize: true})(ActivitySummaryView), Highcharts);
+export const ActivitySummaryViz = ActivitySummaryView
