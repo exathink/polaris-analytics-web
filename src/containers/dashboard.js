@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dashboard, DashboardRow, DashboardItem} from './Dashboard/routeDashboard';
+import { Dashboard, DashboardRow, DashboardItem} from './Dashboard/index';
 import {ProjectActivitySummaryViz} from '../components/viz/activitySummary';
 
 

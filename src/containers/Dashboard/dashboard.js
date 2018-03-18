@@ -2,14 +2,19 @@ import './dashboard.css';
 import React from 'react';
 import {withRouterConnection} from "../../routes/router";
 
-
-import Menu from './menu';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 
 import {Route, Switch} from 'react-router-dom';
+import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 
 import {Box, Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findByProps} from "../../helpers/reactHelpers";
+
+const DashboardMenu = () => (
+  <nav className="dashboard-footer">
+    <FullscreenBtn componentId="dashboard" />
+  </nav>
+);
 
 
 const DashboardContainer = (props) => (
@@ -17,7 +22,7 @@ const DashboardContainer = (props) => (
     <div className="dashboard-vizzes">
       {props.children}
     </div>
-    <Menu/>
+    <DashboardMenu/>
   </LayoutWrapper>
 );
 
@@ -78,7 +83,7 @@ export const DashboardItem = ({children, name, w, itemSelected, url,  navigate, 
   </Box>
 );
 
-export const withDetailRoutes = (WrappedDashboard) => {
+const withDetailRoutes = (WrappedDashboard) => {
   return ({url, ...rest}) => (
     <Switch>
       <Route
