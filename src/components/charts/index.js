@@ -6,5 +6,7 @@ export {LegendRight} from './legends';
 
 export {BubbleSeries} from './bubbleSeries';
 
+export {TimelineSeries} from './timelineSeries';
+
 
 export {Debug, Title, Tooltip, Subtitle, Legend, XAxis, YAxis} from 'react-jsx-highcharts';

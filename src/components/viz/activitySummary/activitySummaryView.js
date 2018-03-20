@@ -4,12 +4,15 @@ import {
   HighchartsChart,
   Chart,
   BubbleSeries,
+  TimelineSeries,
   Title,
+  Tooltip,
   HtmlTooltip,
   Subtitle,
   LegendRight,
   XAxis,
-  YAxis
+  YAxis,
+  Debug
 } from '../../charts';
 import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
 import {withMaxMinViews} from "../helpers/viewSelectors";
@@ -79,8 +82,68 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       </HighchartsChart>
     );
   }
-
 }
+
+class ActivitySummaryTimelinePlot extends React.Component<Props> {
+
+  getSeries() {
+    const seriesData = this.props.viz_domain.data.map((activitySummary, index) => ({
+      x: activitySummary.earliest_commit.valueOf(),
+      x2: activitySummary.latest_commit.valueOf(),
+      y: index
+    }));
+    return [
+      <TimelineSeries
+        key="activitytimeline"
+        id="activitytimeline"
+        name={this.props.viz_domain.level}
+        data={seriesData}
+        maxPointWidth={10}
+      />
+    ];
+  }
+
+
+  render() {
+    const viz_domain = this.props.viz_domain;
+    const entities = viz_domain.data.map((activitySummary) => activitySummary.entity_name);
+
+    return (
+      <HighchartsChart>
+        <Chart/>
+        <Title>{`${viz_domain.level} Timelines`}</Title>
+
+        <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
+
+        <Tooltip
+          useHTML={true}
+          xDateFormat={'%m-%d-%Y'}
+          headerFormat={"<span>{series.name}: {point.yCategory}</span><br/><br/><table>" +
+          "<tr><td style=\"text-align: left\">Earliest Commit: </td><td style=\"text-align: left\">{point.x}</td>" +
+          "<tr><td style=\"text-align: left\">Latest Commit: </td><td style=\"text-align: left\">{point.x2}</td>"
+          }
+          pointFormat={""}
+          footerFormat={"</table>"}
+        />
+
+        <XAxis type={'datetime'}>
+          <XAxis.Title>{`Timeline`}</XAxis.Title>
+        </XAxis>
+
+        <YAxis
+          id="projects"
+          categories={entities}
+        >
+          <YAxis.Title>{viz_domain.level}</YAxis.Title>
+        </YAxis>
+
+        {this.getSeries()}
+        <Debug/>
+      </HighchartsChart>
+    );
+  }
+}
+
 
 class ActivitySummaryMaxView extends React.Component<Props> {
   render() {
@@ -91,7 +154,7 @@ class ActivitySummaryMaxView extends React.Component<Props> {
             <ActivitySummaryScatterPlot {...this.props}/>
           </DashboardItem>
           <DashboardItem w={1 / 2}>
-            <ActivitySummaryScatterPlot {...this.props}/>
+            <ActivitySummaryTimelinePlot {...this.props}/>
           </DashboardItem>
         </DashboardRow>
         <DashboardRow h={"50%"}>
