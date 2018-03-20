@@ -1,6 +1,6 @@
 {
-  "name": "isomorphic",
-  "version": "2.5.0",
+  "name": "arjuna",
+  "version": "0.0.5",
   "private": true,
   "dependencies": {
     "antd": "^3.0.3",

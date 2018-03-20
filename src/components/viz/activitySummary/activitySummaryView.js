@@ -1,8 +1,18 @@
 // @flow
-import React from 'react';
-
-import {HighchartsChart, Chart, BubbleSeries, Title, HtmlTooltip, Subtitle, LegendRight, XAxis, YAxis} from '../../charts';
-
+import React, {Fragment} from 'react';
+import {
+  HighchartsChart,
+  Chart,
+  BubbleSeries,
+  Title,
+  HtmlTooltip,
+  Subtitle,
+  LegendRight,
+  XAxis,
+  YAxis
+} from '../../charts';
+import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
+import {withMaxMinViews} from "../helpers/viewSelectors";
 
 type ActivitySummary = {
   entity_name: string,
@@ -23,7 +33,7 @@ type Props = {
   viz_domain: VizDomain
 }
 
-class ActivitySummaryView extends React.Component<Props> {
+class ActivitySummaryScatterPlot extends React.Component<Props> {
 
   getSeries() {
     return this.props.viz_domain.data.map((activitySummary) => (
@@ -72,4 +82,32 @@ class ActivitySummaryView extends React.Component<Props> {
 
 }
 
-export const ActivitySummaryViz = ActivitySummaryView
+class ActivitySummaryMaxView extends React.Component<Props> {
+  render() {
+    return (
+      <Fragment>
+        <DashboardRow h={"50%"}>
+          <DashboardItem w={1 / 2}>
+            <ActivitySummaryScatterPlot {...this.props}/>
+          </DashboardItem>
+          <DashboardItem w={1 / 2}>
+            <ActivitySummaryScatterPlot {...this.props}/>
+          </DashboardItem>
+        </DashboardRow>
+        <DashboardRow h={"50%"}>
+          <DashboardItem w={1 / 2}>
+            <ActivitySummaryScatterPlot {...this.props}/>
+          </DashboardItem>
+          <DashboardItem w={1 / 2}>
+            <ActivitySummaryScatterPlot {...this.props}/>
+          </DashboardItem>
+        </DashboardRow>
+      </Fragment>
+    );
+  }
+}
+
+export const ActivitySummaryViz = withMaxMinViews({
+  minimized: ActivitySummaryScatterPlot,
+  maximized: ActivitySummaryMaxView
+});
