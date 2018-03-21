@@ -4,8 +4,10 @@ import {
   HighchartsChart,
   Chart,
   BubbleSeries,
+  TimelineSeries,
   Title,
-  HtmlTooltip,
+  Tooltip,
+  tooltipHtml,
   Subtitle,
   LegendRight,
   XAxis,
@@ -13,6 +15,7 @@ import {
 } from '../../charts';
 import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
 import {withMaxMinViews} from "../helpers/viewSelectors";
+import {formatDate} from "../../../helpers/utility";
 
 type ActivitySummary = {
   entity_name: string,
@@ -46,6 +49,16 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       }]}/>));
   }
 
+  formatTooltip(point) {
+    const viz_domain = this.props.viz_domain;
+    return tooltipHtml({
+      header:  `${viz_domain.level}: ${point.key}`,
+      body:[
+        ['Commits: ', `${point.y}`],
+        ['Timespan:', `${point.x} (${viz_domain.span_uom})`],
+        ['Contributors:', `${point.point.z}`]
+      ]});
+  }
 
   render() {
     const viz_domain = this.props.viz_domain;
@@ -56,14 +69,10 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
         <LegendRight/>
-        <HtmlTooltip
+        <Tooltip
           shared={true}
-          header={`${viz_domain.level}: {point.key}`}
-          body={[
-            ['Commits: ', '{point.y}'],
-            ['Timespan:', `{point.x} (${viz_domain.span_uom})`],
-            ['Contributors:', '{point.z}']
-          ]}
+          useHTML={true}
+          formatter={this.formatTooltip.bind(this)}
         />
 
         <XAxis>
@@ -79,8 +88,72 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       </HighchartsChart>
     );
   }
-
 }
+
+
+class ActivitySummaryTimelinePlot extends React.Component<Props> {
+
+  getSeries() {
+    const seriesData = this.props.viz_domain.data.map((activitySummary, index) => ({
+      x: activitySummary.earliest_commit.valueOf(),
+      x2: activitySummary.latest_commit.valueOf(),
+      y: index
+    }));
+    return [
+      <TimelineSeries
+        key="activitytimeline"
+        id="activitytimeline"
+        name={this.props.viz_domain.level}
+        data={seriesData}
+        maxPointWidth={10}
+      />
+    ];
+  }
+
+  formatTooltip(point) {
+    const viz_domain = this.props.viz_domain;
+    return tooltipHtml({
+      header:  `${viz_domain.level}: ${point.point.yCategory}`,
+      body:[
+          ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
+          ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
+    ]});
+  }
+
+  render() {
+    const viz_domain = this.props.viz_domain;
+    const entities = viz_domain.data.map((activitySummary) => activitySummary.entity_name);
+
+
+    return (
+      <HighchartsChart>
+        <Chart/>
+        <Title>{`${viz_domain.level} Timelines`}</Title>
+
+        <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
+
+        <Tooltip
+          useHTML={true}
+          formatter={this.formatTooltip.bind(this)}
+        />
+
+        <XAxis type={'datetime'}>
+          <XAxis.Title>{`Timeline`}</XAxis.Title>
+        </XAxis>
+
+        <YAxis
+          id="projects"
+          categories={entities}
+        >
+          <YAxis.Title>{viz_domain.level}</YAxis.Title>
+        </YAxis>
+
+        {this.getSeries()}
+      </HighchartsChart>
+    );
+  }
+}
+
 
 class ActivitySummaryMaxView extends React.Component<Props> {
   render() {
@@ -91,7 +164,7 @@ class ActivitySummaryMaxView extends React.Component<Props> {
             <ActivitySummaryScatterPlot {...this.props}/>
           </DashboardItem>
           <DashboardItem w={1 / 2}>
-            <ActivitySummaryScatterPlot {...this.props}/>
+            <ActivitySummaryTimelinePlot {...this.props}/>
           </DashboardItem>
         </DashboardRow>
         <DashboardRow h={"50%"}>
