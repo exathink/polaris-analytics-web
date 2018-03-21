@@ -2,16 +2,18 @@ import {withDomainMap} from "../../../viz/withDomainMap";
 import {DataSources} from "../../../viz/dataSources";
 import {polarisTimestamp} from "../../../helpers/utility";
 import {ActivitySummaryViz} from "./activitySummaryView";
+import './serviceMocks'
 
 
-export const ProjectActivitySummaryViz =  withDomainMap({
+const projectActivitySummaryDomainMapper = {
   mapStateToProps: state => ({
     account: state.user.get('account'),
   }),
   getDataSpec: props => ([{
     dataSource: DataSources.project_summary,
     params: {
-      organization: props.account.company
+      organization: props.account.company,
+      mock: true
     }
   }]),
   mapDomain: (source_data) => {
@@ -32,4 +34,6 @@ export const ProjectActivitySummaryViz =  withDomainMap({
       span_uom: 'days'
     }
   }
-})(ActivitySummaryViz);
+};
+export const ProjectActivitySummaryViz =  withDomainMap(projectActivitySummaryDomainMapper)(ActivitySummaryViz);
+

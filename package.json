@@ -40,6 +40,7 @@
     "styled-theme": "^0.3.3"
   },
   "devDependencies": {
+    "chance": "^1.0.13",
     "flow-bin": "^0.66.0",
     "react-app-rewired": "^1.4.0"
   },

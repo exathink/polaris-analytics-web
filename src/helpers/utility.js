@@ -77,6 +77,9 @@ export function timestamp(t = new Date().getTime()){
   return Math.round(t / 1000);
 }
 
+export function formatPolarisTimestamp(moment) {
+  return moment.format("DD-MM-YYYY HH:mm.ss")
+}
 export function polarisTimestamp(timestamp) {
   return moment(timestamp, "DD-MM-YYYY HH:mm.ss")
 }
