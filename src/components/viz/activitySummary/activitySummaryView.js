@@ -11,7 +11,8 @@ import {
   Subtitle,
   LegendRight,
   XAxis,
-  YAxis
+  YAxis,
+  Debug
 } from '../../charts';
 import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
 import {withMaxMinViews} from "../helpers/viewSelectors";
@@ -47,6 +48,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     }));
     return [
       <BubbleSeries
+        boostThreshold={300}
         key={this.props.viz_domain.subject}
         id={this.props.viz_domain.subject}
         name={this.props.viz_domain.subject}
@@ -68,6 +70,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
+    const axesType = this.props.viz_domain.data.length > 20 ? 'logarithmic' : 'linear';
     return (
       <HighchartsChart>
         <Chart/>
@@ -81,16 +84,19 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
           formatter={this.formatTooltip.bind(this)}
         />
 
-        <XAxis>
+        <XAxis type={'axesType'}>
           <XAxis.Title>{`Timespan (${viz_domain.span_uom})`}</XAxis.Title>
         </XAxis>
 
-        <YAxis id="commits">
+        <YAxis
+          id="commits"
+          type={axesType}
+        >
           <YAxis.Title>Number of commits</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}
-
+      <Debug varName={"activityBubble"}/>
       </HighchartsChart>
     );
   }
@@ -99,14 +105,20 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
 class ActivitySummaryTimelinePlot extends React.Component<Props> {
 
+  constructor(props) {
+    super(props);
+    this.sortedDomainData = null;
+  }
+
   getSeries() {
-    const seriesData = this.props.viz_domain.data.map((activitySummary, index) => ({
+    const seriesData = this.sortedDomainData.map((activitySummary, index) => ({
       x: activitySummary.earliest_commit.valueOf(),
       x2: activitySummary.latest_commit.valueOf(),
       y: index
     }));
     return [
       <TimelineSeries
+        boostThreshold={10}
         key="activitytimeline"
         id="activitytimeline"
         name={this.props.viz_domain.level}
@@ -128,7 +140,8 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
-    const entities = viz_domain.data.map((activitySummary) => activitySummary.entity_name);
+    this.sortedDomainData = viz_domain.data.sort((a,b)=>a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
+    const entities = this.sortedDomainData.map((activitySummary) => activitySummary.entity_name);
 
 
     return (
@@ -150,38 +163,49 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
         <YAxis
           id="projects"
           categories={entities}
+          reversed={true}
+          visible={viz_domain.data.length <= 10}
         >
           <YAxis.Title>{viz_domain.level}</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}
+        <Debug varName={"activityTimeline"}/>
       </HighchartsChart>
     );
   }
 }
 
+const MaxViewScatterOnly = (props) => (
+  <Fragment>
+    <DashboardRow h={"100%"}>
+      <DashboardItem w={1}>
+        <ActivitySummaryScatterPlot {...props}/>
+      </DashboardItem>
+    </DashboardRow>
+  </Fragment>
+);
+
+const MaxViewFull = (props) => (
+  <Fragment>
+    <DashboardRow h={"50%"}>
+      <DashboardItem w={1/2}>
+        <ActivitySummaryScatterPlot {...props}/>
+      </DashboardItem>
+      <DashboardItem w={1/2}>
+        <ActivitySummaryTimelinePlot {...props}/>
+      </DashboardItem>
+    </DashboardRow>
+  </Fragment>
+);
 
 class ActivitySummaryMaxView extends React.Component<Props> {
   render() {
     return (
-      <Fragment>
-        <DashboardRow h={"50%"}>
-          <DashboardItem w={1 / 2}>
-            <ActivitySummaryScatterPlot {...this.props}/>
-          </DashboardItem>
-          <DashboardItem w={1 / 2}>
-            <ActivitySummaryTimelinePlot {...this.props}/>
-          </DashboardItem>
-        </DashboardRow>
-        <DashboardRow h={"50%"}>
-          <DashboardItem w={1 / 2}>
-            <ActivitySummaryScatterPlot {...this.props}/>
-          </DashboardItem>
-          <DashboardItem w={1 / 2}>
-            <ActivitySummaryScatterPlot {...this.props}/>
-          </DashboardItem>
-        </DashboardRow>
-      </Fragment>
+      this.props.viz_domain.data.length > 20 ?
+        <MaxViewScatterOnly {...this.props} />
+        :
+        <MaxViewFull {...this.props}/>
     );
   }
 }

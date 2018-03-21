@@ -10,3 +10,6 @@ export {TimelineSeries} from './timelineSeries';
 
 
 export {Debug, Title, Subtitle, Legend, XAxis, YAxis} from 'react-jsx-highcharts';
+
+export {default as Boost} from './boost';
+
