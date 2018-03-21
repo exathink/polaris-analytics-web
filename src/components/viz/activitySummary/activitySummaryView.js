@@ -38,6 +38,7 @@ type Props = {
 }
 
 class ActivitySummaryScatterPlot extends React.Component<Props> {
+  static BOOST_THRESHOLD = 30;
 
   getSeries() {
     const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
@@ -48,7 +49,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     }));
     return [
       <BubbleSeries
-        boostThreshold={300}
+        boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
         key={this.props.viz_domain.subject}
         id={this.props.viz_domain.subject}
         name={this.props.viz_domain.subject}
@@ -70,7 +71,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
-    const axesType = this.props.viz_domain.data.length > 20 ? 'logarithmic' : 'linear';
+    const axesType = this.props.viz_domain.data.length > ActivitySummaryScatterPlot.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     return (
       <HighchartsChart>
         <Chart/>
@@ -118,7 +119,6 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
     }));
     return [
       <TimelineSeries
-        boostThreshold={10}
         key="activitytimeline"
         id="activitytimeline"
         name={this.props.viz_domain.level}
@@ -200,9 +200,10 @@ const MaxViewFull = (props) => (
 );
 
 class ActivitySummaryMaxView extends React.Component<Props> {
+  static FULL_VIEW_MAX_THRESHOLD = 20;
   render() {
     return (
-      this.props.viz_domain.data.length > 20 ?
+      this.props.viz_domain.data.length > ActivitySummaryMaxView.FULL_VIEW_MAX_THRESHOLD ?
         <MaxViewScatterOnly {...this.props} />
         :
         <MaxViewFull {...this.props}/>

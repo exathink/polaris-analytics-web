@@ -12,8 +12,7 @@ const projectActivitySummaryDomainMapper = {
   getDataSpec: props => ([{
     dataSource: DataSources.project_summary,
     params: {
-      organization: props.account.company,
-      mock: true
+      organization: props.account.company
     }
   }]),
   mapDomain: (source_data) => {
