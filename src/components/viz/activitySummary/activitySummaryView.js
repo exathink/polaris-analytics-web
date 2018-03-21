@@ -39,14 +39,20 @@ type Props = {
 class ActivitySummaryScatterPlot extends React.Component<Props> {
 
   getSeries() {
-    return this.props.viz_domain.data.map((activitySummary) => (
-      <BubbleSeries key={activitySummary.entity_name} id={activitySummary.entity_name}
-                    name={activitySummary.entity_name} data={[{
-        name: activitySummary.entity_name,
-        x: activitySummary.span,
-        y: activitySummary.commit_count,
-        z: activitySummary.contributor_count,
-      }]}/>));
+    const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
+      name: activitySummary.entity_name,
+      x: activitySummary.span,
+      y: activitySummary.commit_count,
+      z: activitySummary.contributor_count
+    }));
+    return [
+      <BubbleSeries
+        key={this.props.viz_domain.subject}
+        id={this.props.viz_domain.subject}
+        name={this.props.viz_domain.subject}
+        data={seriesData}
+      />
+    ];
   }
 
   formatTooltip(point) {

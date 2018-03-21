@@ -1,4 +1,5 @@
 import {getSessionKey} from "../utils";
+import {ApiMock} from "./apiMock";
 
 class PolarisServiceConnection {
   constructor(endpoint) {
@@ -46,5 +47,17 @@ class PolarisServiceConnection {
       throw new Error('Cannot connect to service: No session key');
     }
   }
+
+
 }
-export const polarisChartsService = new PolarisServiceConnection("http://polaris-services.exathink.localdev:8200/charts");
+const polarisChartsServiceConnection = new PolarisServiceConnection("http://polaris-services.exathink.localdev:8200/charts");
+
+
+
+
+export const polarisChartsService = (
+  process.env.NODE_ENV === 'development'
+    ? new ApiMock(polarisChartsServiceConnection)
+    : polarisChartsServiceConnection
+);
+
