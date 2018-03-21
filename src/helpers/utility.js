@@ -84,3 +84,7 @@ export function polarisTimestamp(timestamp) {
 export function polarisTimestampWithTZ(timestamp) {
   return moment(timestamp, "DD-MM-YYYY HH:mm.ss Z")
 }
+
+export function formatDate(epoch, format) {
+  return moment(epoch).format(format)
+}
