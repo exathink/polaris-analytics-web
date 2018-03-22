@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
     fetchData: (dataSource, params) => {
       console.log("fetching stub data..");
       const data = [];
-      const items = params.items || 7;
+      const items = params.items || 40;
 
       for (let i = 0; i < items; i++) {
         const earliest_commit = moment(chance.date({year: 2017}));

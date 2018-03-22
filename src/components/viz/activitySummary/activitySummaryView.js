@@ -50,6 +50,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     return [
       <BubbleSeries
         boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
+        allowPointSelect={true}
         key={this.props.viz_domain.subject}
         id={this.props.viz_domain.subject}
         name={this.props.viz_domain.subject}
@@ -65,7 +66,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       body:[
         ['Commits: ', `${point.y}`],
         ['Timespan:', `${point.x} (${viz_domain.span_uom})`],
-        ['Contributors:', `${point.point.z}`]
+        ['Contributors:', `${point.point? point.point.z: ''}`]
       ]});
   }
 
@@ -74,7 +75,11 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     const axesType = this.props.viz_domain.data.length > ActivitySummaryScatterPlot.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     return (
       <HighchartsChart>
-        <Chart/>
+        <Chart
+          zoomType={'xy'}
+          panning={true}
+          panKey={'shift'}
+        />
         <Title>{`${viz_domain.level} Landscape`}</Title>
 
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
@@ -82,6 +87,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         <Tooltip
           shared={true}
           useHTML={true}
+          followPointer={false}
           formatter={this.formatTooltip.bind(this)}
         />
 
