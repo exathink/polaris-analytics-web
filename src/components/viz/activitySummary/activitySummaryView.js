@@ -111,10 +111,11 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
 
 class ActivitySummaryTimelinePlot extends React.Component<Props> {
+  sortedDomainData: Array<ActivitySummary>;
 
   constructor(props) {
     super(props);
-    this.sortedDomainData = null;
+    this.sortedDomainData = [];
   }
 
   getSeries() {
