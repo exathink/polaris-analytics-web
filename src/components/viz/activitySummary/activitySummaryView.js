@@ -46,9 +46,11 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
   static BOOST_THRESHOLD = 30;
 
   chart: any;
+  selecting: string | null;
 
   setChart = chart => {
     this.chart = chart;
+    this.selecting = null
   };
 
 
@@ -77,6 +79,37 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     this.props.onActivitiesSelected(activitySummaries)
   }
 
+  pointClicked = e => {
+    console.log("Point clicked");
+    const selected = this.chart.getSelectedPoints();
+    if (!selected.find(point => e.point === point)) {
+      this.selecting = 'select';
+      this.onPointsSelected([e.point, ...selected]);
+    } else {
+      this.selecting = 'deselect';
+      this.chart.redraw();
+      this.onPointsSelected([]);
+    }
+    console.log(`${selected.length} points selected`);
+  };
+
+
+  shouldComponentUpdate() {
+    if(this.selecting != null) {
+      if (this.selecting === 'select') {
+        return false;
+      } else {
+        this.selecting = null;
+        this.chart.redraw();
+        return false;
+      }
+
+    } else {
+      return true;
+    }
+  }
+
+
   getSeries() {
     const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
       name: activitySummary.entity_name,
@@ -88,6 +121,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       <BubbleSeries
         boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
         allowPointSelect={true}
+        onClick={this.pointClicked}
         key={this.props.viz_domain.subject}
         id={this.props.viz_domain.subject}
         name={this.props.viz_domain.subject}
