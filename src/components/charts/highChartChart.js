@@ -27,7 +27,7 @@ class HighchartsChartContainer extends React.Component {
     const {containerWidth, containerHeight, children, ...rest} = this.props;
     return (
       <HighchartsChart {...rest}>
-        {cloneChildrenWithProps(children, {containerWidth: containerWidth, containerHeight: containerHeight})}
+        {cloneChildrenWithProps(children, {containerWidth: containerWidth, containerHeight: containerHeight, ...rest})}
       </HighchartsChart>
     )
   }
