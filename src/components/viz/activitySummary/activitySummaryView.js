@@ -16,7 +16,10 @@ import {
 } from '../../charts';
 import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
 import {withMaxMinViews} from "../helpers/viewSelectors";
-import {formatDate} from "../../../helpers/utility";
+import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
+
 
 type ActivitySummary = {
   entity_name: string,
@@ -183,11 +186,46 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
   }
 }
 
-const MaxViewScatterOnly = (props) => (
+const ActivitySummaryTable = (props: Props) => (
+  <ReactTable data={props.viz_domain.data} columns={[{
+    Header: `${props.viz_domain.level}`,
+    accessor: 'entity_name',
+  }, {
+    Header: `Commits`,
+    accessor: 'commit_count',
+  }, {
+    Header: `Contributors`,
+    accessor: 'contributor_count',
+  }, {
+    id: 'earliest-commit-col',
+    Header: `Earliest Commit`,
+    accessor: activitySummary => formatPolarisTimestamp(activitySummary.earliest_commit),
+  }, {
+    id: 'latest-commit-col',
+    Header: `Latest Commit`,
+    accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
+  }, {
+    Header: `Timespan (${props.viz_domain.span_uom}`,
+    accessor: 'span',
+  }]}
+  defaultPageSize={10}
+  className="-striped -highlight"
+  style={{
+    height: "110%" // This will force the table body to overflow and scroll, since there is not enough room
+  }}
+  />
+);
+
+const MaxViewManyPoints = (props) => (
   <Fragment>
-    <DashboardRow h={"100%"}>
+    <DashboardRow h={"50%"}>
       <DashboardItem w={1}>
         <ActivitySummaryScatterPlot {...props}/>
+      </DashboardItem>
+    </DashboardRow>
+    <DashboardRow h={"50%"}>
+      <DashboardItem w={1}>
+        <ActivitySummaryTable {...props}/>
       </DashboardItem>
     </DashboardRow>
   </Fragment>
@@ -203,6 +241,11 @@ const MaxViewFull = (props) => (
         <ActivitySummaryTimelinePlot {...props}/>
       </DashboardItem>
     </DashboardRow>
+    <DashboardRow h={"50%"}>
+      <DashboardItem w={1}>
+        <ActivitySummaryTable {...props}/>
+      </DashboardItem>
+    </DashboardRow>
   </Fragment>
 );
 
@@ -211,7 +254,7 @@ class ActivitySummaryMaxView extends React.Component<Props> {
   render() {
     return (
       this.props.viz_domain.data.length > ActivitySummaryMaxView.FULL_VIEW_MAX_THRESHOLD ?
-        <MaxViewScatterOnly {...this.props} />
+        <MaxViewManyPoints {...this.props} />
         :
         <MaxViewFull {...this.props}/>
     );
