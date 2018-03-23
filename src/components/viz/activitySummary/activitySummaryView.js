@@ -56,7 +56,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
   selectedPoints = e => {
     if (e.resetSelection) {
-      console.log("Selection reset");
       this.onPointsSelected([])
     }
     else {
@@ -64,7 +63,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         point.x >= e.xAxis[0].min && point.x <= e.xAxis[0].max &&
         point.y >= e.yAxis[0].min && point.y <= e.yAxis[0].max
       ));
-      console.log(`${selected ? selected.length : 'empty'} points selected`);
+
 
       this.onPointsSelected(selected);
     }
@@ -80,23 +79,26 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
   }
 
   pointClicked = e => {
-    console.log("Point clicked");
     const selected = this.chart.getSelectedPoints();
     if (!selected.find(point => e.point === point)) {
       this.selecting = 'select';
-      this.onPointsSelected([e.point, ...selected]);
+      if (e.shiftKey) {
+        this.onPointsSelected([e.point, ...selected]);
+      } else {
+        this.onPointsSelected([e.point])
+      }
     } else {
       this.selecting = 'deselect';
-      this.chart.redraw();
       this.onPointsSelected([]);
     }
-    console.log(`${selected.length} points selected`);
+
   };
 
 
   shouldComponentUpdate() {
     if(this.selecting != null) {
       if (this.selecting === 'select') {
+        this.chart.redraw();
         return false;
       } else {
         this.selecting = null;
