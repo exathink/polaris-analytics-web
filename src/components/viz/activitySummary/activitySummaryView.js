@@ -20,6 +20,8 @@ import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 type ActivitySummary = {
   entity_name: string,
@@ -289,7 +291,7 @@ const ActivitySummaryTable = (props: Props) => {
       Header: `Timespan (${props.viz_domain.span_uom}`,
       accessor: 'span',
     }]}
-                      defaultPageSize={8}
+                      defaultPageSize={5}
                       className="-striped -highlight"
                       style={{
                         height: "110%" // This will force the table body to overflow and scroll, since there is not enough room
@@ -297,6 +299,23 @@ const ActivitySummaryTable = (props: Props) => {
     />
   )
 };
+
+
+const DetailTabs = (props) => (
+  <Tabs style={{height: props.containerHeight, width: props.containerWidth}}>
+    <TabList>
+      <Tab>Timelines</Tab>
+      <Tab>Timelines</Tab>
+    </TabList>
+
+    <TabPanel style={{height: "100%", width: "100%"}}>
+      <ActivitySummaryTimelinePlot {...props}/>
+    </TabPanel>
+    <TabPanel>
+      <ActivitySummaryTimelinePlot {...props}/>
+    </TabPanel>
+  </Tabs>
+);
 
 const MaxViewManyPoints = (props) => (
   <Fragment>
@@ -320,7 +339,7 @@ const MaxViewFull = (props) => (
         <ActivitySummaryScatterPlot {...props}/>
       </DashboardItem>
       <DashboardItem w={1 / 2}>
-        <ActivitySummaryTimelinePlot {...props}/>
+        <DetailTabs {...props}/>
       </DashboardItem>
     </DashboardRow>
     <DashboardRow h={"40%"}>
