@@ -17,11 +17,10 @@ import {
 import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
 import {withMaxMinViews} from "../helpers/viewSelectors";
 import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
-import ReactTable from 'react-table';
-import "react-table/react-table.css";
+import {Table} from '../containers/table';
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import {Tab, Tabs, TabList, CustomTabPanel} from '../containers/tab';
+
 
 type ActivitySummary = {
   entity_name: string,
@@ -100,7 +99,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
 
   shouldComponentUpdate() {
-    if(this.selecting != null) {
+    if (this.selecting != null) {
       if (this.selecting === 'select') {
         this.chart.redraw();
         return false;
@@ -268,52 +267,52 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
 
 const ActivitySummaryTable = (props: Props) => {
   const tableData = (props.selectedActivities && props.selectedActivities.length > 0) ?
-        props.selectedActivities : props.viz_domain.data;
+    props.selectedActivities : props.viz_domain.data;
 
-  return (<ReactTable data={tableData} columns={[{
-      Header: `${props.viz_domain.level}`,
-      accessor: 'entity_name',
-    }, {
-      Header: `Commits`,
-      accessor: 'commit_count',
-    }, {
-      Header: `Contributors`,
-      accessor: 'contributor_count',
-    }, {
-      id: 'earliest-commit-col',
-      Header: `Earliest Commit`,
-      accessor: activitySummary => formatPolarisTimestamp(activitySummary.earliest_commit),
-    }, {
-      id: 'latest-commit-col',
-      Header: `Latest Commit`,
-      accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
-    }, {
-      Header: `Timespan (${props.viz_domain.span_uom}`,
-      accessor: 'span',
-    }]}
-                      defaultPageSize={5}
-                      className="-striped -highlight"
-                      style={{
-                        height: "110%" // This will force the table body to overflow and scroll, since there is not enough room
-                      }}
+  return (
+    <Table
+      data={tableData}
+      columns={[{
+        Header: `${props.viz_domain.level}`,
+        accessor: 'entity_name',
+      }, {
+        Header: `Commits`,
+        accessor: 'commit_count',
+      }, {
+        Header: `Contributors`,
+        accessor: 'contributor_count',
+      }, {
+        id: 'earliest-commit-col',
+        Header: `Earliest Commit`,
+        accessor: activitySummary => formatPolarisTimestamp(activitySummary.earliest_commit),
+      }, {
+        id: 'latest-commit-col',
+        Header: `Latest Commit`,
+        accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
+      }, {
+        Header: `Timespan (${props.viz_domain.span_uom}`,
+        accessor: 'span',
+      }]}
+      defaultPageSize={5}
+      className="-striped -highlight"
     />
   )
 };
 
 
 const DetailTabs = (props) => (
-  <Tabs style={{height: props.containerHeight, width: props.containerWidth}}>
+  <Tabs>
     <TabList>
       <Tab>Timelines</Tab>
       <Tab>Timelines</Tab>
     </TabList>
 
-    <TabPanel style={{height: "100%", width: "100%"}}>
+    <CustomTabPanel>
       <ActivitySummaryTimelinePlot {...props}/>
-    </TabPanel>
-    <TabPanel>
+    </CustomTabPanel>
+    <CustomTabPanel>
       <ActivitySummaryTimelinePlot {...props}/>
-    </TabPanel>
+    </CustomTabPanel>
   </Tabs>
 );
 
