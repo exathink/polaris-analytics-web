@@ -289,7 +289,7 @@ const ActivitySummaryTable = (props: Props) => {
       Header: `Timespan (${props.viz_domain.span_uom}`,
       accessor: 'span',
     }]}
-                      defaultPageSize={10}
+                      defaultPageSize={8}
                       className="-striped -highlight"
                       style={{
                         height: "110%" // This will force the table body to overflow and scroll, since there is not enough room
@@ -315,7 +315,7 @@ const MaxViewManyPoints = (props) => (
 
 const MaxViewFull = (props) => (
   <Fragment>
-    <DashboardRow h={"50%"}>
+    <DashboardRow h={"60%"}>
       <DashboardItem w={1 / 2}>
         <ActivitySummaryScatterPlot {...props}/>
       </DashboardItem>
@@ -323,7 +323,7 @@ const MaxViewFull = (props) => (
         <ActivitySummaryTimelinePlot {...props}/>
       </DashboardItem>
     </DashboardRow>
-    <DashboardRow h={"50%"}>
+    <DashboardRow h={"40%"}>
       <DashboardItem w={1}>
         <ActivitySummaryTable {...props}/>
       </DashboardItem>
