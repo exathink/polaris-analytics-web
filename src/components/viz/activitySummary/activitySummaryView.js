@@ -70,12 +70,14 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
   };
 
   onPointsSelected(selected) {
-    const activitySummaries = selected.map(point => this.props.viz_domain.data.find(
-      activitySummary =>
-        activitySummary.span === point.x &&
-        activitySummary.commit_count === point.y
-    ));
-    this.props.onActivitiesSelected(activitySummaries)
+    if (this.props.onActivitiesSelected) {
+      const activitySummaries = selected.map(point => this.props.viz_domain.data.find(
+        activitySummary =>
+          activitySummary.span === point.x &&
+          activitySummary.commit_count === point.y
+      ));
+      this.props.onActivitiesSelected(activitySummaries)
+    }
   }
 
   pointClicked = e => {
@@ -122,7 +124,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     return [
       <BubbleSeries
         boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
-        allowPointSelect={true}
+        allowPointSelect={this.props.onActivitiesSelected != null}
         onClick={this.pointClicked}
         key={this.props.viz_domain.subject}
         id={this.props.viz_domain.subject}
