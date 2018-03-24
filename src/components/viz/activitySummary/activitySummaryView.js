@@ -14,7 +14,7 @@ import {
   YAxis,
   Debug
 } from '../../charts';
-import {DashboardItem, DashboardRow} from "../../../containers/Dashboard/index";
+import {VizItem, VizRow} from "../containers/layout";
 import {withMaxMinViews} from "../helpers/viewSelectors";
 import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
 import {Table} from '../containers/table';
@@ -318,34 +318,34 @@ const DetailTabs = (props) => (
 
 const MaxViewManyPoints = (props) => (
   <Fragment>
-    <DashboardRow h={"50%"}>
-      <DashboardItem w={1}>
+    <VizRow h={"50%"}>
+      <VizItem w={1}>
         <ActivitySummaryScatterPlot {...props}/>
-      </DashboardItem>
-    </DashboardRow>
-    <DashboardRow h={"50%"}>
-      <DashboardItem w={1}>
+      </VizItem>
+    </VizRow>
+    <VizRow h={"50%"}>
+      <VizItem w={1}>
         <ActivitySummaryTable {...props}/>
-      </DashboardItem>
-    </DashboardRow>
+      </VizItem>
+    </VizRow>
   </Fragment>
 );
 
 const MaxViewFull = (props) => (
   <Fragment>
-    <DashboardRow h={"60%"}>
-      <DashboardItem w={1 / 2}>
+    <VizRow h={"60%"}>
+      <VizItem w={1 / 2}>
         <ActivitySummaryScatterPlot {...props}/>
-      </DashboardItem>
-      <DashboardItem w={1 / 2}>
+      </VizItem>
+      <VizItem w={1 / 2}>
         <DetailTabs {...props}/>
-      </DashboardItem>
-    </DashboardRow>
-    <DashboardRow h={"40%"}>
-      <DashboardItem w={1}>
+      </VizItem>
+    </VizRow>
+    <VizRow h={"40%"}>
+      <VizItem w={1}>
         <ActivitySummaryTable {...props}/>
-      </DashboardItem>
-    </DashboardRow>
+      </VizItem>
+    </VizRow>
   </Fragment>
 );
 
