@@ -28,7 +28,8 @@ type ActivitySummary = {
   contributor_count: number,
   earliest_commit: Date,
   latest_commit: Date,
-  span: number
+  span: number,
+  active: boolean
 }
 type VizDomain = {
   data: Array<ActivitySummary>,
@@ -116,22 +117,34 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
 
   getSeries() {
+
     const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
       name: activitySummary.entity_name,
       x: activitySummary.span,
       y: activitySummary.commit_count,
-      z: activitySummary.contributor_count
+      z: activitySummary.contributor_count,
+      active: activitySummary.active
     }));
     return [
       <BubbleSeries
         boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
         allowPointSelect={this.props.onActivitiesSelected != null}
         onClick={this.pointClicked}
-        key={this.props.viz_domain.subject}
-        id={this.props.viz_domain.subject}
-        name={this.props.viz_domain.subject}
-        data={seriesData}
+        key={'active'}
+        id={'active'}
+        name={'active'}
+        data={seriesData.filter(point => point.active)}
+      />,
+      <BubbleSeries
+        boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
+        allowPointSelect={this.props.onActivitiesSelected != null}
+        onClick={this.pointClicked}
+        key={'inactive'}
+        id={'inactive'}
+        name={'inactive'}
+        data={seriesData.filter(point => !point.active)}
       />
+
     ];
   }
 

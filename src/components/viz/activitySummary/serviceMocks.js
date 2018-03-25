@@ -13,15 +13,37 @@ if (process.env.NODE_ENV === 'development') {
     fetchData: (dataSource, params) => {
       console.log("fetching stub data..");
       const data = [];
-      const items = params.items || 15;
-
-      for (let i = 0; i < items; i++) {
-        const earliest_commit = moment(chance.date({year: 2017}));
-        const latest_commit = moment(earliest_commit).add(chance.integer({min:1, max:500}), 'days');
+      const items = params.items || 30;
+      const now = moment();
+      for (let i = 0; i < 0.7*items; i++) {
+        const latest_commit = moment(now).subtract(chance.integer({min:0, max:120}), 'days');
+        const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:30}), 'days');
         data.push({
           project: chance.animal() + `(${i})`,
-          commit_count: chance.integer({min: 20, max:2000}),
-          contributor_count: chance.integer({min:1, max: 300}),
+          commit_count: chance.integer({min: 2, max:50}),
+          contributor_count: chance.integer({min:1, max: 20}),
+          earliest_commit: formatPolarisTimestamp(earliest_commit),
+          latest_commit: formatPolarisTimestamp(latest_commit)
+        })
+      }
+      for (let i = 0; i < 0.20*items; i++) {
+        const latest_commit = moment(now).subtract(chance.integer({min:0, max:120}), 'days');
+        const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:120}), 'days');
+        data.push({
+          project: chance.animal() + `(${i})`,
+          commit_count: chance.integer({min: 100, max:2000}),
+          contributor_count: chance.integer({min:20, max: 50}),
+          earliest_commit: formatPolarisTimestamp(earliest_commit),
+          latest_commit: formatPolarisTimestamp(latest_commit)
+        })
+      }
+      for (let i = 0; i < 0.1*items; i++) {
+        const latest_commit = moment(now).subtract(chance.integer({min:0, max:120}), 'days');
+        const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:120}), 'days');
+        data.push({
+          project: chance.animal() + `(${i})`,
+          commit_count: chance.integer({min: 2000, max:5000}),
+          contributor_count: chance.integer({min:50, max: 300}),
           earliest_commit: formatPolarisTimestamp(earliest_commit),
           latest_commit: formatPolarisTimestamp(latest_commit)
         })
