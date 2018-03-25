@@ -5,17 +5,19 @@ import { getSessionKey } from '../../auth/helpers';
 import { fetchUserData } from '../../auth/api';
 
 export function* userDataRequest() {
-  try {
     yield takeEvery(actions.USER_DATA_REQUEST, function*() {
-      const user = yield call(fetchUserData, getSessionKey());
-      yield put({
-        type: actions.AUTH_SUCCESS,
-        user
-      });
-    });
-  } catch (error) {
-    yield put({ type: actions.AUTH_FAIL });
-  }
+      try {
+        const user = yield call(fetchUserData, getSessionKey());
+        yield put({
+          type: actions.AUTH_SUCCESS,
+          user
+        });
+      } catch (error) {
+        yield put({
+          type: actions.AUTH_FAIL
+        })
+      }
+    })
 }
 
 export function* authError() {
