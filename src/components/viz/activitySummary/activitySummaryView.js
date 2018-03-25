@@ -12,12 +12,12 @@ import {
   LegendRight,
   XAxis,
   YAxis,
-  Debug
 } from '../../charts';
 import {VizItem, VizRow} from "../containers/layout";
 import {withMaxMinViews} from "../helpers/viewSelectors";
 import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
 import {Table} from '../containers/table';
+import {Colors} from "../config";
 
 import {Tab, Tabs, TabList, CustomTabPanel} from '../containers/tab';
 
@@ -28,7 +28,8 @@ type ActivitySummary = {
   contributor_count: number,
   earliest_commit: Date,
   latest_commit: Date,
-  span: number
+  span: number,
+  days_since_latest_commit: number
 }
 type VizDomain = {
   data: Array<ActivitySummary>,
@@ -43,15 +44,29 @@ type Props = {
   selectedActivities: Array<ActivitySummary>
 }
 
+type ScatterPoint = {
+  name: string,
+  x: number,
+  y: number,
+  z: number,
+  days_since_latest_commit: number
+}
 class ActivitySummaryScatterPlot extends React.Component<Props> {
   static BOOST_THRESHOLD = 30;
 
   chart: any;
   selecting: string | null;
+  seriesData: Array<ScatterPoint>;
+
+  constructor(props) {
+    super(props);
+    this.chart = null;
+    this.selecting = null;
+    this.seriesData = [];
+  }
 
   setChart = chart => {
     this.chart = chart;
-    this.selecting = null
   };
 
 
@@ -60,7 +75,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       this.onPointsSelected([])
     }
     else {
-      const selected = this.chart.series[0].points.filter((point) => (
+      const selected = this.seriesData.filter((point) => (
         point.x >= e.xAxis[0].min && point.x <= e.xAxis[0].max &&
         point.y >= e.yAxis[0].min && point.y <= e.yAxis[0].max
       ));
@@ -116,21 +131,55 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
 
 
   getSeries() {
-    const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
+
+      const seriesData = this.seriesData = this.props.viz_domain.data.map((activitySummary) => ({
       name: activitySummary.entity_name,
       x: activitySummary.span,
       y: activitySummary.commit_count,
-      z: activitySummary.contributor_count
+      z: activitySummary.contributor_count,
+      days_since_latest_commit: activitySummary.days_since_latest_commit
     }));
     return [
       <BubbleSeries
         boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
         allowPointSelect={this.props.onActivitiesSelected != null}
         onClick={this.pointClicked}
-        key={this.props.viz_domain.subject}
-        id={this.props.viz_domain.subject}
-        name={this.props.viz_domain.subject}
-        data={seriesData}
+        key={'0'}
+        id={'0'}
+        color={Colors.ActivityBucket.INACTIVE}
+        name={'Inactive'}
+        data={seriesData.filter(point => point.days_since_latest_commit > 180)}
+      />,
+      <BubbleSeries
+        boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
+        allowPointSelect={this.props.onActivitiesSelected != null}
+        onClick={this.pointClicked}
+        key={'1'}
+        id={'1'}
+        color={Colors.ActivityBucket.DORMANT}
+        name={'Last 6 Months'}
+
+        data={seriesData.filter(point => (90 < point.days_since_latest_commit) && (point.days_since_latest_commit <= 180))}
+      />,
+      <BubbleSeries
+        boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
+        allowPointSelect={this.props.onActivitiesSelected != null}
+        onClick={this.pointClicked}
+        key={'2'}
+        id={'2'}
+        color={Colors.ActivityBucket.RECENT}
+        name={'Last 90 Days'}
+        data={seriesData.filter(point => (30 < point.days_since_latest_commit) && (point.days_since_latest_commit <= 90))}
+      />,
+      <BubbleSeries
+        boostThreshold={ActivitySummaryScatterPlot.BOOST_THRESHOLD}
+        allowPointSelect={this.props.onActivitiesSelected != null}
+        onClick={this.pointClicked}
+        key={'3'}
+        id={'3'}
+        color={Colors.ActivityBucket.ACTIVE}
+        name={'Active'}
+        data={seriesData.filter(point => point.days_since_latest_commit <= 30)}
       />
     ];
   }
@@ -152,17 +201,28 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     const viz_domain = this.props.viz_domain;
     const axesType = this.props.viz_domain.data.length > ActivitySummaryScatterPlot.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     return (
-      <HighchartsChart callback={this.setChart}>
+      <HighchartsChart
+        plotOptions={
+          {
+            series: {
+              dataLabels: {
+                enabled: true,
+                format: `{point.name}`
+              }
+            }
+          }
+        }
+        callback={this.setChart}>
         <Chart
           zoomType={'xy'}
           panning={true}
           panKey={'shift'}
-          onSelection={this.selectedPoints}
+          onSelection={this.selectedPoints.bind(this)}
         />
         <Title>{`${viz_domain.level} Landscape`}</Title>
 
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
-        <LegendRight/>
+        <LegendRight reversed={true}/>
         <Tooltip
           shared={true}
           useHTML={true}
@@ -182,7 +242,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         </YAxis>
 
         {this.getSeries()}
-        <Debug varName={"activityBubble"}/>
       </HighchartsChart>
     );
   }
@@ -253,13 +312,11 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
           id="projects"
           categories={entities}
           reversed={true}
-          visible={domain_data.length <= 10}
         >
           <YAxis.Title>{viz_domain.level}</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}
-        <Debug varName={"activityTimeline"}/>
       </HighchartsChart>
     );
   }
