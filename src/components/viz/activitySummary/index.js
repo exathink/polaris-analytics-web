@@ -29,7 +29,7 @@ const projectActivitySummaryDomainMapper = {
           earliest_commit: (polarisTimestamp(project_summary.earliest_commit)),
           latest_commit: (polarisTimestamp(project_summary.latest_commit)),
           span: (polarisTimestamp(project_summary.latest_commit).diff(polarisTimestamp(project_summary.earliest_commit), 'days')),
-          active: moment().diff(polarisTimestamp(project_summary.latest_commit), 'days') <= 30
+          days_since_latest_commit: moment().diff(polarisTimestamp(project_summary.latest_commit), 'days')
         }
       }),
       level: 'Project',

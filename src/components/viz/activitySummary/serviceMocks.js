@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
     fetchData: (dataSource, params) => {
       console.log("fetching stub data..");
       const data = [];
-      const items = params.items || 30;
+      const items = params.items || 15;
       const now = moment();
       for (let i = 0; i < 0.7*items; i++) {
         const latest_commit = moment(now).subtract(chance.integer({min:0, max:120}), 'days');
