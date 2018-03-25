@@ -12,7 +12,6 @@ import {
   LegendRight,
   XAxis,
   YAxis,
-  Debug
 } from '../../charts';
 import {VizItem, VizRow} from "../containers/layout";
 import {withMaxMinViews} from "../helpers/viewSelectors";
@@ -202,7 +201,18 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     const viz_domain = this.props.viz_domain;
     const axesType = this.props.viz_domain.data.length > ActivitySummaryScatterPlot.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     return (
-      <HighchartsChart callback={this.setChart}>
+      <HighchartsChart
+        plotOptions={
+          {
+            series: {
+              dataLabels: {
+                enabled: true,
+                format: `{point.name}`
+              }
+            }
+          }
+        }
+        callback={this.setChart}>
         <Chart
           zoomType={'xy'}
           panning={true}
@@ -232,7 +242,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         </YAxis>
 
         {this.getSeries()}
-        <Debug varName={"activityBubble"}/>
       </HighchartsChart>
     );
   }
@@ -303,13 +312,11 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
           id="projects"
           categories={entities}
           reversed={true}
-          visible={domain_data.length <= 10}
         >
           <YAxis.Title>{viz_domain.level}</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}
-        <Debug varName={"activityTimeline"}/>
       </HighchartsChart>
     );
   }
