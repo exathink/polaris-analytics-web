@@ -46,14 +46,46 @@ type Props = {
   selectedActivities: Array<ActivitySummary> | null
 }
 
-type ScatterPoint = {
-  name: string,
-  x: number,
-  y: number,
-  z: number,
-  days_since_latest_commit: number
+
+type ActivityLevel = {
+  display_name: string,
+  color: string,
+  isMember: (activitySummary: ActivitySummary) => boolean
 }
 
+const activity_levels: Array<ActivityLevel> = [
+  {
+    display_name: 'Inactive',
+    color: Colors.ActivityBucket.INACTIVE,
+    isMember: activitySummary => activitySummary.days_since_latest_commit > 180
+  },
+  {
+    display_name: 'Last 6 Months',
+    color: Colors.ActivityBucket.DORMANT,
+    isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180)
+  },
+  {
+    display_name: 'Last 90 Days',
+    color: Colors.ActivityBucket.RECENT,
+    isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90)
+  },
+  {
+    display_name: 'Active',
+    color: Colors.ActivityBucket.ACTIVE,
+    isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30)
+  },
+];
+
+const ACTIVITY_LEVEL_UNKNOWN = {
+  display_name: 'Unknown',
+  color: Colors.ActivityBucket.UNKNOWN,
+  isMember: () => false
+};
+
+function getActivityLevel(activitySummary: ActivitySummary) : ActivityLevel   {
+  const level = activity_levels.find(level => level.isMember(activitySummary));
+  return level || ACTIVITY_LEVEL_UNKNOWN
+}
 
 class ActivitySummaryScatterPlot extends React.Component<Props> {
   static BOOST_THRESHOLD = 30;
@@ -62,7 +94,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
   chart: any;
   selecting: string | null;
   selections: any;
-  seriesData: Array<ScatterPoint>;
   series: Array<Series>;
   plotOptions: any;
 
@@ -70,7 +101,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     super(props);
     this.chart = null;
     this.selecting = null;
-    this.seriesData = [];
     this.series = [];
     this.plotOptions = {};
     this.selections = {};
@@ -188,35 +218,14 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       }
     };
 
-    this.seriesData = this.props.viz_domain.data.map((activitySummary) => ({
+    const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
       name: activitySummary.entity_name,
       x: activitySummary.span,
       y: activitySummary.commit_count,
       z: activitySummary.contributor_count,
       days_since_latest_commit: activitySummary.days_since_latest_commit
     }));
-    const activity_levels = [
-      {
-        display_name: 'Inactive',
-        color: Colors.ActivityBucket.INACTIVE,
-        series_filter: point => point.days_since_latest_commit > 180
-      },
-      {
-        display_name: 'Last 6 Months',
-        color: Colors.ActivityBucket.DORMANT,
-        series_filter: point => (90 < point.days_since_latest_commit) && (point.days_since_latest_commit <= 180)
-      },
-      {
-        display_name: 'Last 90 Days',
-        color: Colors.ActivityBucket.RECENT,
-        series_filter: point => (30 < point.days_since_latest_commit) && (point.days_since_latest_commit <= 90)
-      },
-      {
-        display_name: 'Active',
-        color: Colors.ActivityBucket.ACTIVE,
-        series_filter: point => (point.days_since_latest_commit <= 30)
-      },
-    ];
+    
 
 
     this.series = activity_levels.map((activity_level, index) => (
@@ -228,7 +237,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         id={index}
         color={activity_level.color}
         name={activity_level.display_name}
-        data={this.seriesData.filter(activity_level.series_filter)}
+        data={seriesData.filter(activity_level.isMember)}
       />
     ))
   }
@@ -320,7 +329,8 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
     const seriesData = this.sortedDomainData.map((activitySummary, index) => ({
       x: activitySummary.earliest_commit.valueOf(),
       x2: activitySummary.latest_commit.valueOf(),
-      y: index
+      y: index, 
+      color: getActivityLevel(activitySummary).color
     }));
     return [
       <TimelineSeries
@@ -382,16 +392,31 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
 }
 
 const ActivitySummaryTable = (props: Props) => {
-  const tableData = (props.selectedActivities && props.selectedActivities.length > 0) ?
-    props.selectedActivities : props.viz_domain.data;
+  const tableData = props.selectedActivities || props.viz_domain.data;
 
   return (
     <Table
-      data={tableData}
+      data={tableData.sort((a, b) => b.earliest_commit.valueOf() - a.earliest_commit.valueOf())}
       columns={[{
+        id: 'col-activity-level',
+        Header: 'Activity Level',
+        headerStyle:{width:'50px'},
+        accessor: activitySummary => getActivityLevel(activitySummary).color,
+
+        Cell: row => (
+          <div style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: row.value,
+            borderRadius: '2px'
+          }}>
+          </div>
+        )
+      },{
+        id: 'col-entity-name',
         Header: `${props.viz_domain.level}`,
         accessor: 'entity_name',
-      }, {
+      },{
         Header: `Commits`,
         accessor: 'commit_count',
       }, {
@@ -409,7 +434,7 @@ const ActivitySummaryTable = (props: Props) => {
         Header: `Timespan (${props.viz_domain.span_uom}`,
         accessor: 'span',
       }]}
-      defaultPageSize={5}
+      defaultPageSize={10}
       className="-striped -highlight"
     />
   )
@@ -430,21 +455,6 @@ const DetailTabs = (props) => (
       <ActivitySummaryTimelinePlot {...props}/>
     </CustomTabPanel>
   </Tabs>
-);
-
-const MaxViewManyPoints = (props) => (
-  <Fragment>
-    <VizRow h={"50%"}>
-      <VizItem w={1}>
-        <ActivitySummaryScatterPlot {...props}/>
-      </VizItem>
-    </VizRow>
-    <VizRow h={"50%"}>
-      <VizItem w={1}>
-        <ActivitySummaryTable {...props}/>
-      </VizItem>
-    </VizRow>
-  </Fragment>
 );
 
 const MaxViewFull = (props) => (
@@ -471,7 +481,6 @@ type MaxViewState = {
 }
 
 class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
-  static FULL_VIEW_MAX_THRESHOLD = 20;
 
   constructor(props) {
     super(props);
@@ -489,12 +498,6 @@ class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
 
   render() {
     return (
-      this.props.viz_domain.data.length > ActivitySummaryMaxView.FULL_VIEW_MAX_THRESHOLD ?
-        <MaxViewManyPoints
-          onActivitiesSelected={this.onActivitiesSelected.bind(this)}
-          selectedActivities={this.state.selected}
-          {...this.props} />
-        :
         <MaxViewFull
           onActivitiesSelected={this.onActivitiesSelected.bind(this)}
           selectedActivities={this.state.selected}

@@ -1,9 +1,10 @@
 export const Colors = {
   ActivityBucket: {
-    ACTIVE: '#31840e',
-    RECENT: '#9ed0d9',
-    DORMANT: '#bdcfff',
-    INACTIVE: '#cfced0'
+    ACTIVE: '#2e7a0e',
+    RECENT: '#7493b5',
+    DORMANT: '#81b4eb',
+    INACTIVE: '#c6c3b8',
+    UNKNOWN: '#d02e0d'
   }
 
 };
