@@ -172,7 +172,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
       const selected = [];
       const zoom = this.selections['zoom'];
       for (let i = 0; i < visible.length; i++) {
-        let points = visible[i].points;
+        let points = visible[i].options.data;
         if (zoom != null) {
           for (let j = 0; j < points.length; j++) {
             let point = points[j];
@@ -298,7 +298,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
           followPointer={false}
           formatter={this.formatTooltip.bind(this)}
         />
-
         <XAxis type={'axesType'}>
           <XAxis.Title>{`Timespan (${viz_domain.span_uom})`}</XAxis.Title>
         </XAxis>
@@ -339,6 +338,7 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
         name={this.props.viz_domain.level}
         data={seriesData}
         maxPointWidth={10}
+        turboThreshold={0}
       />
     ];
   }
