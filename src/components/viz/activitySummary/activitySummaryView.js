@@ -89,7 +89,7 @@ function getActivityLevel(activitySummary: ActivitySummary) : ActivityLevel   {
 }
 
 class ActivitySummaryScatterPlot extends React.Component<Props> {
-  static BOOST_THRESHOLD = 30;
+  static BOOST_THRESHOLD = 100;
 
 
   chart: any;
@@ -281,7 +281,9 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     const axesType = this.props.viz_domain.data.length > ActivitySummaryScatterPlot.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     return (
       <HighchartsChart
-        plotOptions={this.plotOptions} callback={this.setChart}>
+        plotOptions={this.plotOptions}
+        callback={this.setChart}
+      >
         <Chart
           zoomType={'xy'}
           panning={true}
