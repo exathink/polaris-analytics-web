@@ -25,6 +25,7 @@ import {Tab, Tabs, TabList, CustomTabPanel} from '../containers/tab';
 
 
 type ActivitySummary = {
+  id: string;
   entity_name: string,
   commit_count: number,
   contributor_count: number,
@@ -158,9 +159,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
   pointsToActivities(points) {
     return points.map(point => this.props.viz_domain.data.find(
       activitySummary =>
-        activitySummary.span === point.x &&
-        activitySummary.commit_count === point.y &&
-        activitySummary.contributor_count === point.z
+        activitySummary.id === point.domain_id
     ));
   }
 
@@ -219,6 +218,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     };
 
     const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
+      domain_id: activitySummary.id,
       name: activitySummary.entity_name,
       x: activitySummary.span,
       y: activitySummary.commit_count,
@@ -293,7 +293,6 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
         <LegendRight reversed={true}/>
         <Tooltip
-          shared={true}
           useHTML={true}
           followPointer={false}
           formatter={this.formatTooltip.bind(this)}

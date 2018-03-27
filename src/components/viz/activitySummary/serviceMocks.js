@@ -4,8 +4,6 @@ import {formatPolarisTimestamp} from "../../../helpers/utility";
 import moment from 'moment';
 
 
-
-
 if (process.env.NODE_ENV === 'development') {
   import ('chance');
   let chance = require('chance').Chance();
@@ -19,6 +17,7 @@ if (process.env.NODE_ENV === 'development') {
         const latest_commit = moment(now).subtract(chance.integer({min:0, max:365}), 'days');
         const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:30}), 'days');
         data.push({
+          id: `${chance.integer() + i}`,
           project: chance.animal() + `(${i})`,
           commit_count: chance.integer({min: 2, max:50}),
           contributor_count: chance.integer({min:1, max: 20}),
@@ -30,6 +29,7 @@ if (process.env.NODE_ENV === 'development') {
         const latest_commit = moment(now).subtract(chance.integer({min:0, max:365}), 'days');
         const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:120}), 'days');
         data.push({
+          id: `${chance.integer() + i}`,
           project: chance.animal() + `(${i})`,
           commit_count: chance.integer({min: 100, max:2000}),
           contributor_count: chance.integer({min:20, max: 50}),
@@ -41,6 +41,7 @@ if (process.env.NODE_ENV === 'development') {
         const latest_commit = moment(now).subtract(chance.integer({min:0, max:365}), 'days');
         const earliest_commit = moment(latest_commit).subtract(chance.integer({min:1, max:120}), 'days');
         data.push({
+          id: `${chance.integer() + i}`,
           project: chance.animal() + `(${i})`,
           commit_count: chance.integer({min: 2000, max:5000}),
           contributor_count: chance.integer({min:50, max: 300}),
