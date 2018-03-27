@@ -1,92 +1,31 @@
 // @flow
 import React, {Fragment} from 'react';
 import {
-  HighchartsChart,
-  Chart,
   BubbleSeries,
+  Chart,
+  HighchartsChart,
+  LegendRight,
+  Series,
+  Subtitle,
   TimelineSeries,
   Title,
   Tooltip,
   tooltipHtml,
-  Subtitle,
-  LegendRight,
   XAxis,
-  YAxis,
-  Series
+  YAxis
 } from '../../charts';
 
 import {VizItem, VizRow} from "../containers/layout";
 import {withMaxMinViews} from "../helpers/viewSelectors";
 import {formatDate, formatPolarisTimestamp} from "../../../helpers/utility";
 import {Table} from '../containers/table';
-import {Colors} from "../config";
 
-import {Tab, Tabs, TabList, CustomTabPanel} from '../containers/tab';
-
-
-type ActivitySummary = {
-  id: string;
-  entity_name: string,
-  commit_count: number,
-  contributor_count: number,
-  earliest_commit: Date,
-  latest_commit: Date,
-  span: number,
-  days_since_latest_commit: number
-}
-type VizDomain = {
-  data: Array<ActivitySummary>,
-  level: string,
-  subject: string,
-  span_uom: string
-
-}
-type Props = {
-  viz_domain: VizDomain,
-  onActivitiesSelected: (any) => void,
-  selectedActivities: Array<ActivitySummary> | null
-}
+import {CustomTabPanel, Tab, TabList, Tabs} from '../containers/tab';
 
 
-type ActivityLevel = {
-  display_name: string,
-  color: string,
-  isMember: (activitySummary: ActivitySummary) => boolean
-}
+import type {ActivitySummary, Props} from './types'
+import {activity_levels, getActivityLevel} from "./activityLevel";
 
-const activity_levels: Array<ActivityLevel> = [
-  {
-    display_name: 'Inactive',
-    color: Colors.ActivityBucket.INACTIVE,
-    isMember: activitySummary => activitySummary.days_since_latest_commit > 180
-  },
-  {
-    display_name: 'Last 6 Months',
-    color: Colors.ActivityBucket.DORMANT,
-    isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180)
-  },
-  {
-    display_name: 'Last 90 Days',
-    color: Colors.ActivityBucket.RECENT,
-    isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90)
-  },
-  {
-    display_name: 'Active',
-    color: Colors.ActivityBucket.ACTIVE,
-    isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30)
-  },
-];
-
-const ACTIVITY_LEVEL_UNKNOWN = {
-  display_name: 'Unknown',
-  color: Colors.ActivityBucket.UNKNOWN,
-  isMember: () => false
-};
-
-function getActivityLevel(activitySummary: ActivitySummary) : ActivityLevel   {
-  const level = activity_levels.find(level => level.isMember(activitySummary));
-  return level || ACTIVITY_LEVEL_UNKNOWN
-}
 
 class ActivitySummaryScatterPlot extends React.Component<Props> {
   static BOOST_THRESHOLD = 100;
@@ -238,6 +177,7 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
         color={activity_level.color}
         name={activity_level.display_name}
         data={seriesData.filter(activity_level.isMember)}
+        visible={activity_level.visible}
       />
     ))
   }
@@ -357,7 +297,7 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
-    const domain_data = this.props.selectedActivities || viz_domain.data;
+    const domain_data = this.props.selectedActivities || viz_domain.data.filter(activitySummary => activitySummary.activity_level.visible);
     this.sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
     const entities = this.sortedDomainData.map((activitySummary) => activitySummary.entity_name);
 
@@ -393,11 +333,11 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
 }
 
 const ActivitySummaryTable = (props: Props) => {
-  const tableData = props.selectedActivities || props.viz_domain.data;
+  const tableData = props.selectedActivities || props.viz_domain.data.filter(activitySummary => activitySummary.activity_level.visible);
 
   return (
     <Table
-      data={tableData.sort((a, b) => b.earliest_commit.valueOf() - a.earliest_commit.valueOf())}
+      data={tableData.sort((a, b) => b.activity_level.priority - a.activity_level.priority)}
       columns={[{
         id: 'col-activity-level',
         Header: 'Activity Level',

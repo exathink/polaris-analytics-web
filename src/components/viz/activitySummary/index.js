@@ -3,6 +3,7 @@ import {DataSources} from "../../../viz/dataSources";
 import {polarisTimestamp} from "../../../helpers/utility";
 import {ActivitySummaryViz} from "./activitySummaryView";
 import moment from 'moment';
+import {getActivityLevel} from "./activityLevel";
 
 import './serviceMocks'
 
@@ -30,9 +31,10 @@ const projectActivitySummaryDomainMapper = {
           earliest_commit: (polarisTimestamp(project_summary.earliest_commit)),
           latest_commit: (polarisTimestamp(project_summary.latest_commit)),
           span: (polarisTimestamp(project_summary.latest_commit).diff(polarisTimestamp(project_summary.earliest_commit), 'days')),
-          days_since_latest_commit: moment().diff(polarisTimestamp(project_summary.latest_commit), 'days')
+          days_since_latest_commit: moment().diff(polarisTimestamp(project_summary.latest_commit), 'days'),
+
         }
-      }),
+      }).map(activitySummary => ({...activitySummary, activity_level: getActivityLevel(activitySummary)})),
       level: 'Project',
       subject: source_data[0].params.organization,
       span_uom: 'days'
