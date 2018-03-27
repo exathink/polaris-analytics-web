@@ -4,7 +4,8 @@ import {Tooltip} from 'react-jsx-highcharts';
 const tooltipContent = (content) => {
   return content.reduce(
     (tooltip, entry) => tooltip +
-      `<tr><td>${entry[0]} </td><td style="text-align: right"><b>${entry[1]}</b></td></tr>`,
+      `<tr><td>${entry[0]} </td>` +
+      (entry[1] ? `<td style="text-align: right"><b>${entry[1]}</b></td></tr>`: ''),
     ''
   )
 };

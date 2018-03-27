@@ -7,7 +7,7 @@ export {TimelineSeries} from './timelineSeries';
 
 export * from './types';
 
-export {Debug, Title, Subtitle, Legend, XAxis, YAxis, Series} from 'react-jsx-highcharts';
+export {Debug, Title, Subtitle, Legend, XAxis, YAxis, Series, BarSeries, ColumnSeries} from 'react-jsx-highcharts';
 
 // This must be the last item imported for some Highcharts magic to work right.
 export {default as Boost} from './boost';

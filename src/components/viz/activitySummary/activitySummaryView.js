@@ -2,6 +2,7 @@
 import React, {Fragment} from 'react';
 import {
   BubbleSeries,
+  ColumnSeries,
   Chart,
   HighchartsChart,
   LegendRight,
@@ -12,7 +13,8 @@ import {
   Tooltip,
   tooltipHtml,
   XAxis,
-  YAxis
+  YAxis,
+
 } from '../../charts';
 
 import {VizItem, VizRow} from "../containers/layout";
@@ -141,7 +143,10 @@ class ActivitySummaryScatterPlot extends React.Component<Props> {
     this.plotOptions['series'] = {
       dataLabels: {
         enabled: true,
-        format: `{point.name}`
+        format: `{point.name}`,
+        inside: false,
+        verticalAlign: 'bottom'
+
       },
       events: {
         hide: function () {
@@ -305,9 +310,6 @@ class ActivitySummaryTimelinePlot extends React.Component<Props> {
     return (
       <HighchartsChart>
         <Chart/>
-        <Title>{`${viz_domain.level} Timelines`}</Title>
-
-        <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
 
         <Tooltip
           useHTML={true}
@@ -381,19 +383,85 @@ const ActivitySummaryTable = (props: Props) => {
   )
 };
 
+const TotalsChart = (props: Props) => {
+  const totalsByActivityLevel = props.viz_domain.data.reduce(
+    (totals, activitySummary) => {
+      let level = activitySummary.activity_level.display_name;
+      totals[level] = (totals[level] || 0) + 1;
+      return totals
+  },
+    {});
+  const series = [...activity_levels].reverse().map(activityLevel => (
+    <ColumnSeries
+      name={activityLevel.display_name}
+      data={[totalsByActivityLevel[activityLevel.display_name]]}
+      color={activityLevel.color}
+    />
+  ));
+
+  const formatTooltip = (point) => {
+    return tooltipHtml({
+      header: `${point.series.name}`,
+      body: [
+        [`${point.percentage.toFixed(0)}%`]
+      ]
+    });
+  };
+
+  return (
+    <HighchartsChart plotOptions={{
+      series: {
+        stacking: 'normal',
+        dataLabels: {
+          enabled: true,
+          format:`{point.y}`,
+          rotation: 270
+        }
+      }
+    }}>
+      <Chart
+        type={'column'}
+      />
+      <Title>Totals</Title>
+
+      <Tooltip
+        useHTML={true}
+        formatter={formatTooltip}
+        valueDecimals={0}
+      />
+
+      <XAxis
+        categories={['']}
+        visible={false}
+        allowDecimals={false}
+      />
+
+
+      <YAxis
+        id="totals"
+        visible={true}
+        allowDecimals={false}
+        gridLineWidth={0}
+      >
+      </YAxis>
+      {series}
+    </HighchartsChart>
+  )
+};
+
 
 const DetailTabs = (props) => (
   <Tabs>
     <TabList>
       <Tab>Timelines</Tab>
-      <Tab>Timelines</Tab>
+      <Tab>Totals</Tab>
     </TabList>
 
     <CustomTabPanel>
       <ActivitySummaryTimelinePlot {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <ActivitySummaryTimelinePlot {...props}/>
+      <TotalsChart {...props}/>
     </CustomTabPanel>
   </Tabs>
 );
@@ -401,10 +469,13 @@ const DetailTabs = (props) => (
 const MaxViewFull = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
-      <VizItem w={1 / 2}>
+      <VizItem w={0.07}>
+        <TotalsChart {...props}/>
+      </VizItem>
+      <VizItem w={0.5}>
         <ActivitySummaryScatterPlot {...props}/>
       </VizItem>
-      <VizItem w={1 / 2}>
+      <VizItem w={0.43}>
         <DetailTabs {...props}/>
       </VizItem>
     </VizRow>

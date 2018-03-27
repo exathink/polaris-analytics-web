@@ -10,21 +10,21 @@ export const activity_levels: Array<ActivityLevel> = [
     priority: 0
   },
   {
-    display_name: 'Last 6 Months',
+    display_name: '6 Months',
     color: Colors.ActivityBucket.DORMANT,
     isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180),
     visible: false,
     priority: 1
   },
   {
-    display_name: 'Last 90 Days',
+    display_name: '3 Months',
     color: Colors.ActivityBucket.RECENT,
     isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90),
     visible: false,
     priority: 2
   },
   {
-    display_name: 'Active',
+    display_name: '1 Month',
     color: Colors.ActivityBucket.ACTIVE,
     isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30),
     visible: true,
