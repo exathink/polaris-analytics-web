@@ -28,7 +28,7 @@ export const TotalsBarChart = (props: Props) => {
       header: `${point.series.name}`,
       body: [
         [`${point.percentage.toFixed(0)}%`],
-        (props.minimized? [`${point.x}`] : [``])
+        (props.minimized? [`${point.y}`] : [``])
       ]
     });
   };

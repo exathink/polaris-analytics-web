@@ -131,7 +131,11 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         enabled: true,
         format: `{point.name}`,
         inside: false,
-        verticalAlign: 'bottom'
+        verticalAlign: 'bottom',
+        style: {
+          color: 'black',
+          textOutline: 'none'
+        }
 
       },
       events: {
@@ -237,7 +241,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         <LegendRight reversed={true}/>
         <Tooltip
           useHTML={true}
-          followPointer={false}
+          followPointer={true}
           formatter={this.formatTooltip.bind(this)}
         />
         <XAxis type={'axesType'}>
