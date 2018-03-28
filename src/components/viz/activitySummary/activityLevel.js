@@ -42,3 +42,10 @@ export function getActivityLevel(activitySummary: ActivitySummary): ActivityLeve
   const level = activity_levels.find(level => level.isMember(activitySummary));
   return level || ACTIVITY_LEVEL_UNKNOWN
 }
+
+export function withActivityLevel(activitySummary) {
+  return {
+    ...activitySummary,
+    activity_level: getActivityLevel(activitySummary)
+  }
+}
