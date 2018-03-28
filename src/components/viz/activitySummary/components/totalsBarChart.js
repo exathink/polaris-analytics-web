@@ -1,7 +1,7 @@
 import React from 'react';
 import type {Props} from "../types";
-import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis} from "../../../charts";
-import {ACTIVITY_LEVELS} from "../activityLevel";
+import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../charts";
+import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 export const TotalsBarChart = (props: Props) => {
   const totalsByActivityLevel = props.viz_domain.data.reduce(
@@ -12,7 +12,8 @@ export const TotalsBarChart = (props: Props) => {
     },
     {});
 
-  const series = [...ACTIVITY_LEVELS].reverse().map(activityLevel => (
+
+  const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => (
     <ColumnSeries
       name={activityLevel.display_name}
       id={activityLevel.display_name}
@@ -26,17 +27,20 @@ export const TotalsBarChart = (props: Props) => {
     return tooltipHtml({
       header: `${point.series.name}`,
       body: [
-        [`${point.percentage.toFixed(0)}%`]
+        [`${point.percentage.toFixed(0)}%`],
+        (props.minimized? [`${point.x}`] : [``])
       ]
     });
   };
+
+  const title = `${props.viz_domain.level}s`;
 
   return (
     <HighchartsChart plotOptions={{
       series: {
         stacking: 'normal',
         dataLabels: {
-          enabled: true,
+          enabled: !props.minimized,
           format:`{point.y}`,
           rotation: 270
         }
@@ -45,12 +49,13 @@ export const TotalsBarChart = (props: Props) => {
       <Chart
         type={'column'}
       />
-      <Title>Totals</Title>
+      <Title>{title}</Title>
 
       <Tooltip
         useHTML={true}
         formatter={formatTooltip}
         valueDecimals={0}
+        followPointer={true}
       />
 
       <XAxis
@@ -65,9 +70,21 @@ export const TotalsBarChart = (props: Props) => {
         visible={true}
         allowDecimals={false}
         gridLineWidth={0}
+        plotLines={[{
+          value: props.viz_domain.data.length,
+          width: 2,
+          color: 'grey',
+          dashStyle: 'ShortDot',
+          label: {
+            text: `${props.viz_domain.data.length}`,
+            align: 'center',
+            textAlign: 'right',
+          }
+        }]}
       >
       </YAxis>
       {series}
+      <Debug varName={'totalsBar'}/>
     </HighchartsChart>
   )
 };

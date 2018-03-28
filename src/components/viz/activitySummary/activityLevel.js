@@ -1,5 +1,6 @@
 import {Colors} from "../config";
 import type {ActivityLevel, ActivitySummary} from "./types";
+import {flatten} from "../../../helpers/collections";
 
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
@@ -53,21 +54,25 @@ export function withActivityLevel(activitySummary) {
   }
 }
 
-export function partitionByActivityLevel(domain_data: Array<ActivitySummary>) {
+export function partitionByActivityLevel(domain_data: Array<ActivitySummary>, showLevels=2) {
   let seriesByActivityLevel = [];
-  let isFirstLevelWithData = true;
+  let levels=0;
   for (let i = 0; i < ACTIVITY_LEVELS_REVERSED.length; i++) {
     const level = ACTIVITY_LEVELS_REVERSED[i];
     let level_data = domain_data.filter(level.isMember);
     seriesByActivityLevel[level.index] = {
       data: level_data,
-      visible: level_data.length > 0 && isFirstLevelWithData
-    };
-    isFirstLevelWithData = (level_data.length === 0);
+      visible: level_data.length > 0 && levels < showLevels
+    }
+    levels = levels + 1
   }
   return seriesByActivityLevel;
 }
 
-export function findFirstVisibleLevel(domain_data: Array<ActivitySummary>){
-  return (domain_data.length > 0 ? partitionByActivityLevel(domain_data).find(level => level.visible).data : [])
+export function findVisibleLevels(domain_data: Array<ActivitySummary>, showLevels=2){
+  if ((domain_data.length) >  0) {
+    return flatten(partitionByActivityLevel(domain_data, showLevels).map(level => (level.visible? level.data : [])))
+  } else {
+    return [];
+  }
 }

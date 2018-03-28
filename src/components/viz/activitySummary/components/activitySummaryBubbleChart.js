@@ -215,9 +215,11 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   }
 
 
+
   render() {
     const viz_domain = this.props.viz_domain;
     const axesType = this.props.viz_domain.data.length > ActivitySummaryBubbleChart.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
+    const title = `Activity Summary`;
     return (
       <HighchartsChart
         plotOptions={this.plotOptions}
@@ -229,7 +231,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
           panKey={'shift'}
           onSelection={this.zoom.bind(this)}
         />
-        <Title>{`${viz_domain.level} Activity`}</Title>
+        <Title>{title}</Title>
 
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
         <LegendRight reversed={true}/>

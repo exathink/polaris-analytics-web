@@ -1,6 +1,6 @@
 import React from "react";
 import type {ActivitySummary, Props} from "../types";
-import {findFirstVisibleLevel, getActivityLevel} from "../activityLevel";
+import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../charts";
 import {formatDate} from "../../../../helpers/utility";
 
@@ -44,7 +44,7 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
-    const domain_data = this.props.selectedActivities || findFirstVisibleLevel(viz_domain.data);
+    const domain_data = this.props.selectedActivities || findVisibleLevels(viz_domain.data);
     this.sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
     const entities = this.sortedDomainData.map((activitySummary) => activitySummary.entity_name);
 

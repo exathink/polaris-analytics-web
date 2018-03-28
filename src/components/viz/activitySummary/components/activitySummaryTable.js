@@ -2,10 +2,10 @@ import type {Props} from "../types";
 import React from 'react';
 import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import {Table} from "../../containers/table";
-import {findFirstVisibleLevel} from "../activityLevel";
+import {findVisibleLevels} from "../activityLevel";
 
 export const ActivitySummaryTable = (props: Props) => {
-  const tableData = props.selectedActivities || findFirstVisibleLevel(props.viz_domain.data);
+  const tableData = props.selectedActivities || findVisibleLevels(props.viz_domain.data);
 
   return (
     <Table
