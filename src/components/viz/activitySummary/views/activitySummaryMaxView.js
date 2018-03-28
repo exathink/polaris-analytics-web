@@ -1,17 +1,16 @@
 // @flow
-import type {ActivitySummary, Props} from './types'
+import type {ActivitySummary, Props} from '../types'
 import React, {Fragment} from 'react';
-import {VizItem, VizRow} from "../containers/layout";
-import {withMaxMinViews} from "../helpers/viewSelectors";
+import {VizItem, VizRow} from "../../containers/layout/index";
 
-import {CustomTabPanel, Tab, TabList, Tabs} from '../containers/tab';
+import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
 
 import {
   ActivitySummaryBubbleChart,
-  ActivitySummaryTimelineChart,
   ActivitySummaryTable,
+  ActivitySummaryTimelineChart,
   TotalsBarChart,
-} from './components';
+} from '../components/index';
 
 
 const DetailTabs = (props) => (
@@ -30,7 +29,7 @@ const DetailTabs = (props) => (
   </Tabs>
 );
 
-const MaxViewFull = (props) => (
+const MaxView = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
       <VizItem w={0.07}>
@@ -56,16 +55,16 @@ type MaxViewState = {
   selected: Array<ActivitySummary> | null
 }
 
-class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
+export class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selected: null
     }
   }
 
-  onActivitiesSelected(activities) {
+  onActivitiesSelected(activities: Array<ActivitySummary>) {
     this.setState({
       selected: activities
     })
@@ -74,7 +73,7 @@ class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
 
   render() {
     return (
-        <MaxViewFull
+        <MaxView
           onActivitiesSelected={this.onActivitiesSelected.bind(this)}
           selectedActivities={this.state.selected}
           {...this.props}
@@ -83,7 +82,4 @@ class ActivitySummaryMaxView extends React.Component<Props, MaxViewState> {
   }
 }
 
-export const ActivitySummaryViz = withMaxMinViews({
-  minimized: ActivitySummaryBubbleChart,
-  maximized: ActivitySummaryMaxView
-});
+
