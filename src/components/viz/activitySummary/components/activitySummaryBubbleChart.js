@@ -1,19 +1,21 @@
 import React from "react";
 import type {Props} from "../types";
-import {activity_levels} from "../activityLevel";
+import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {
-    BubbleSeries,
-    Chart,
-    HighchartsChart,
-    Series,
-    Subtitle,
-    Title,
-    LegendRight,
-    Tooltip,
-    tooltipHtml,
-    XAxis,
-    YAxis,
+  BubbleSeries,
+  Chart,
+  HighchartsChart,
+  LegendRight,
+  Series,
+  Subtitle,
+  Title,
+  Tooltip,
+  tooltipHtml,
+  XAxis,
+  YAxis,
 } from '../../../charts';
+
+
 
 export class ActivitySummaryBubbleChart extends React.Component<Props> {
   static BOOST_THRESHOLD = 100;
@@ -145,29 +147,38 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
       }
     };
 
-    const seriesData = this.props.viz_domain.data.map((activitySummary) => ({
-      domain_id: activitySummary.id,
-      name: activitySummary.entity_name,
-      x: activitySummary.span,
-      y: activitySummary.commit_count,
-      z: activitySummary.contributor_count,
-      days_since_latest_commit: activitySummary.days_since_latest_commit
-    }));
 
+    // Partition the data set by activity level and set the
+    // initial visibility of the level. Initially we only set as visible
+    // the most recent activity bucket for which there is any data
+    // to show.
 
-    this.series = activity_levels.map((activity_level, index) => (
-      <BubbleSeries
-        boostThreshold={ActivitySummaryBubbleChart.BOOST_THRESHOLD}
-        allowPointSelect={this.props.onActivitiesSelected != null}
-        onClick={this.pointClicked}
-        key={index}
-        id={index}
-        color={activity_level.color}
-        name={activity_level.display_name}
-        data={seriesData.filter(activity_level.isMember)}
-        visible={activity_level.visible}
-      />
-    ))
+    let domainPartition = partitionByActivityLevel(this.props.viz_domain.data);
+
+    this.series = ACTIVITY_LEVELS.map((activity_level, index) => {
+      const level_partition = domainPartition[activity_level.index];
+      const seriesData = level_partition.data.map((activitySummary) => ({
+        domain_id: activitySummary.id,
+        name: activitySummary.entity_name,
+        x: activitySummary.span,
+        y: activitySummary.commit_count,
+        z: activitySummary.contributor_count,
+        days_since_latest_commit: activitySummary.days_since_latest_commit
+      }));
+      return(
+        <BubbleSeries
+          boostThreshold={ActivitySummaryBubbleChart.BOOST_THRESHOLD}
+          allowPointSelect={this.props.onActivitiesSelected != null}
+          onClick={this.pointClicked}
+          key={index}
+          id={index}
+          color={activity_level.color}
+          name={activity_level.display_name}
+          data={seriesData}
+          visible={level_partition.visible}
+        />
+      )
+    });
   }
 
   componentWillMount() {
@@ -218,7 +229,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
           panKey={'shift'}
           onSelection={this.zoom.bind(this)}
         />
-        <Title>{`${viz_domain.level} Landscape`}</Title>
+        <Title>{`${viz_domain.level} Activity`}</Title>
 
         <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
         <LegendRight reversed={true}/>

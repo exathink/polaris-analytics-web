@@ -28,5 +28,5 @@ export type ActivityLevel = {
   color: string,
   isMember: (activitySummary: ActivitySummary) => boolean,
   visible: boolean,
-  priority: number
+  index: number
 }

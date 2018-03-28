@@ -2,13 +2,14 @@ import type {Props} from "../types";
 import React from 'react';
 import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import {Table} from "../../containers/table";
+import {findFirstVisibleLevel} from "../activityLevel";
 
 export const ActivitySummaryTable = (props: Props) => {
-  const tableData = props.selectedActivities || props.viz_domain.data.filter(activitySummary => activitySummary.activity_level.visible);
+  const tableData = props.selectedActivities || findFirstVisibleLevel(props.viz_domain.data);
 
   return (
     <Table
-      data={tableData.sort((a, b) => b.activity_level.priority - a.activity_level.priority)}
+      data={tableData.sort((a, b) => b.activity_level.index - a.activity_level.index)}
       columns={[{
         id: 'col-activity-level',
         Header: 'Activity Level',

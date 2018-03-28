@@ -1,7 +1,7 @@
 import React from 'react';
 import type {Props} from "../types";
 import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis} from "../../../charts";
-import {activity_levels} from "../activityLevel";
+import {ACTIVITY_LEVELS} from "../activityLevel";
 
 export const TotalsBarChart = (props: Props) => {
   const totalsByActivityLevel = props.viz_domain.data.reduce(
@@ -12,9 +12,11 @@ export const TotalsBarChart = (props: Props) => {
     },
     {});
 
-  const series = [...activity_levels].reverse().map(activityLevel => (
+  const series = [...ACTIVITY_LEVELS].reverse().map(activityLevel => (
     <ColumnSeries
       name={activityLevel.display_name}
+      id={activityLevel.display_name}
+      key={activityLevel.display_name}
       data={[totalsByActivityLevel[activityLevel.display_name]]}
       color={activityLevel.color}
     />
