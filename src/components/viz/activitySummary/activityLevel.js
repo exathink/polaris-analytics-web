@@ -56,15 +56,16 @@ export function withActivityLevel(activitySummary) {
 
 export function partitionByActivityLevel(domain_data: Array<ActivitySummary>, showLevels=2) {
   let seriesByActivityLevel = [];
-  let levels=0;
+  let visible_levels=0;
   for (let i = 0; i < ACTIVITY_LEVELS_REVERSED.length; i++) {
     const level = ACTIVITY_LEVELS_REVERSED[i];
     let level_data = domain_data.filter(level.isMember);
+    let level_visible = level_data.length > 0 && visible_levels < showLevels;
     seriesByActivityLevel[level.index] = {
       data: level_data,
-      visible: level_data.length > 0 && levels < showLevels
-    }
-    levels = levels + 1
+      visible: level_visible
+    };
+    if (level_visible) { visible_levels = visible_levels + 1 }
   }
   return seriesByActivityLevel;
 }

@@ -16,7 +16,7 @@ const projectActivitySummaryDomainMapper = {
     dataSource: DataSources.project_summary,
     params: {
       organization: props.account.company,
-      mock: true
+      mock: false
     }
   }]),
   mapDomain: (source_data) => {
