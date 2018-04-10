@@ -1,2 +1,2 @@
-export const LOGIN_URL = "http://polaris-services.exathink.localdev:8000/?sso";
-export const LOGOUT_URL = "http://polaris-services.exathink.localdev:8000/?slo";
+export const LOGIN_URL = `${process.env.REACT_APP_AUTH_SERVICE_URL}/?sso`;
+export const LOGOUT_URL = `${process.env.REACT_APP_AUTH_SERVICE_URL}/?slo`;

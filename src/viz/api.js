@@ -50,7 +50,7 @@ class PolarisServiceConnection {
 
 
 }
-const polarisChartsServiceConnection = new PolarisServiceConnection("http://polaris-services.exathink.localdev:8200/charts");
+const polarisChartsServiceConnection = new PolarisServiceConnection(`${process.env.REACT_APP_ANALYTICS_SERVICE_URL}/charts`);
 
 
 
