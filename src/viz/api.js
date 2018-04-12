@@ -40,7 +40,8 @@ class PolarisServiceConnection {
     const session_key = getSessionKey();
     if (session_key) {
       const response = await fetch(this.buildUrl(dataSource, params), {
-        headers: {'X-XSRF-TOKEN': session_key}
+        credentials: 'include',
+        headers: {'X-XSRF-TOKEN': session_key, 'X-Requested-With': 'XMLHttpRequest'}
       });
       return await response.json();
     } else {

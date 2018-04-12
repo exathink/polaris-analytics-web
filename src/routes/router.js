@@ -51,7 +51,7 @@ export default ({history}) => (
         component={Logout}
       />
       <RestrictedRoute
-        path="/app"
+        path="/"
         component={App}
       />
     </Switch>

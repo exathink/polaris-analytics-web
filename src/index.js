@@ -16,4 +16,4 @@ if (module.hot) {
     ReactDOM.render(<NextApp />, document.getElementById('root'));
   });
 }
-//registerServiceWorker();
+registerServiceWorker();
