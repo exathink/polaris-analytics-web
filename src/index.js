@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DashApp from './dashApp';
-import registerServiceWorker from './registerServiceWorker';
 import 'antd/dist/antd.css';
 
 
@@ -16,4 +15,4 @@ if (module.hot) {
     ReactDOM.render(<NextApp />, document.getElementById('root'));
   });
 }
-registerServiceWorker();
+
