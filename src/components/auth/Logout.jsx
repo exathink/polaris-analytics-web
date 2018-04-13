@@ -9,7 +9,7 @@ class Logout extends PureComponent {
   render() {
     return (
       <form id="logout-form" action={LOGOUT_URL} method="post">
-        <input type="hidden" name="resource" value={window.location.origin + '/app'} />
+        <input type="hidden" name="resource" value={window.location.origin + '/'} />
       </form>
     );
   }

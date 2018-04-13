@@ -39,6 +39,13 @@ export const withRouterConnection = (Component) => {
   return connect(mapStateToProps, mapDispatchToProps)(Component)
 };
 
+class AppRedirector extends React.Component {
+  render() {
+    return (<Redirect to='/app'/>);
+  }
+
+}
+
 export default ({history}) => (
   <ConnectedRouter history={history}>
     <Switch>
@@ -54,8 +61,8 @@ export default ({history}) => (
         path="/app"
         component={App}
       />
-      <Route
-        exact path="/" render={() => (<Redirect to="/app"/>)}
+      <RestrictedRoute
+        exact path="/" component={AppRedirector}
       />
     </Switch>
   </ConnectedRouter>
