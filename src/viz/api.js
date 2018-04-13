@@ -51,7 +51,7 @@ class PolarisServiceConnection {
 
 
 }
-const polarisChartsServiceConnection = new PolarisServiceConnection(`${process.env.REACT_APP_ANALYTICS_SERVICE_URL}/charts`);
+const polarisChartsServiceConnection = new PolarisServiceConnection(`${process.env.REACT_APP_ANALYTICS_SERVICE_URL}/data`);
 
 
 
