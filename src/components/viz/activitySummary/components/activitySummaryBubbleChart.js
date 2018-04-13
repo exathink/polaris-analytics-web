@@ -209,7 +209,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   formatTooltip(point) {
     const viz_domain = this.props.viz_domain;
     return tooltipHtml({
-      header: `${viz_domain.level}: ${point.key}`,
+      header: `${viz_domain.subject_label_long}: ${point.key}`,
       body: [
         ['Commits: ', `${point.y}`],
         ['Timespan:', `${point.x} (${viz_domain.span_uom})`],
@@ -223,7 +223,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   render() {
     const viz_domain = this.props.viz_domain;
     const axesType = this.props.viz_domain.data.length > ActivitySummaryBubbleChart.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
-    const title = `Activity Summary`;
+    const title = `${viz_domain.subject_label_long} Activity Summary`;
     return (
       <HighchartsChart
         plotOptions={this.plotOptions}
@@ -237,7 +237,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         />
         <Title>{title}</Title>
 
-        <Subtitle>{`Company: ${viz_domain.subject}`}</Subtitle>
+        <Subtitle>{`${viz_domain.level_label}: ${viz_domain.level}`}</Subtitle>
         <LegendRight reversed={true}/>
         <Tooltip
           useHTML={true}

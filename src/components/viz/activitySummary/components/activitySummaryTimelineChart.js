@@ -67,7 +67,7 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
           categories={entities}
           reversed={true}
         >
-          <YAxis.Title>{viz_domain.level}</YAxis.Title>
+          <YAxis.Title>{viz_domain.subject_label}</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}

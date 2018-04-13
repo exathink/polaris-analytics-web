@@ -23,7 +23,7 @@ class PolarisServiceConnection {
     const config = dataSource.polaris_service_connection;
     if (config) {
       let url = `${this.endpoint}/${config.path}/`;
-      if (config.params != null) {
+      if (config.params != null && config.params.length > 0) {
         const path_extension = this.buildPathExtension(dataSource.name, config, params);
         if (path_extension != null) {
           url = `${url}${path_extension}/`;

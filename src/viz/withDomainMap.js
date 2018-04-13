@@ -42,7 +42,7 @@ export function withDomainMap(domainMapper) {
               params,
               data: this.props.viz_data.getData(dataSource, params)
             }));
-            return domainMapper.mapDomain(source_data);
+            return domainMapper.mapDomain(source_data, this.props);
           }
         }
 

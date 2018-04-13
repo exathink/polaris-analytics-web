@@ -13,7 +13,7 @@ const projectActivitySummaryDomainMapper = {
     account: state.user.get('account'),
   }),
   getDataSpec: props => ([{
-    dataSource: DataSources.project_summary,
+    dataSource: DataSources.organization_projects_activity_summary,
     params: {
       organization: props.account.company,
       mock: false
@@ -34,8 +34,10 @@ const projectActivitySummaryDomainMapper = {
           days_since_latest_commit: moment().diff(polarisTimestamp(project_summary.latest_commit), 'days'),
         })
       }),
-      level: 'Project',
-      subject: source_data[0].params.organization,
+      level_label: 'Org',
+      level: 'Org',
+      subject_label: 'Project',
+      subject_label_long: 'Project',
       span_uom: 'days'
     }
   }

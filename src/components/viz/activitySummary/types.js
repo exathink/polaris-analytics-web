@@ -11,8 +11,10 @@ export type ActivitySummary = {
 }
 export type VizDomain = {
   data: Array<ActivitySummary>,
+  level_label: string,
   level: string,
-  subject: string,
+  subject_label_long: string,
+  subject_label: string,
   span_uom: string
 
 }

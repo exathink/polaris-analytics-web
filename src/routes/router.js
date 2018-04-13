@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import {ConnectedRouter, getLocation, push, replace, go, goBack, goForward} from 'react-router-redux';
 import {connect} from 'react-redux';
 
@@ -51,8 +51,11 @@ export default ({history}) => (
         component={Logout}
       />
       <RestrictedRoute
-        path="/"
+        path="/app"
         component={App}
+      />
+      <Route
+        exact path="/" render={() => (<Redirect to="/app"/>)}
       />
     </Switch>
   </ConnectedRouter>

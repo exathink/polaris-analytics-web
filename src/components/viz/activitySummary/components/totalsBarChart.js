@@ -33,7 +33,7 @@ export const TotalsBarChart = (props: Props) => {
     });
   };
 
-  const title = `${props.viz_domain.level}s`;
+  const title = `${props.viz_domain.subject_label}s`;
 
   return (
     <HighchartsChart plotOptions={{
