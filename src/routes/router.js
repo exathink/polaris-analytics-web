@@ -9,6 +9,7 @@ import Login from '../components/auth/Login';
 import Logout from '../components/auth/Logout';
 
 import RestrictedRoute from './RestrictedRoute';
+import FourZeroFour from "../containers/Page/404";
 
 export const withRouterConnection = (Component) => {
   const mapStateToProps = (state, ownProps) => ({
@@ -63,6 +64,9 @@ export default ({history}) => (
       />
       <RestrictedRoute
         exact path="/" component={AppRedirector}
+      />
+      <RestrictedRoute
+        component={FourZeroFour}
       />
     </Switch>
   </ConnectedRouter>
