@@ -3,32 +3,37 @@ import React from 'react';
 import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import {Table} from "../../containers/table";
 import {findVisibleLevels} from "../activityLevel";
+import Button from "../../../uielements/button";
+
+function drillDown() {
+  console.log("Button Clicked")
+}
 
 export const ActivitySummaryTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.viz_domain.data);
+
 
   return (
     <Table
       data={tableData.sort((a, b) => b.activity_level.index - a.activity_level.index)}
       columns={[{
         id: 'col-activity-level',
-        Header: 'Activity Level',
+        Header: `${props.viz_domain.subject_label_long}`,
         headerStyle: {width: '50px'},
-        accessor: activitySummary => activitySummary.activity_level.color,
-
+        accessor: activitySummary => ({
+          color: activitySummary.activity_level.color,
+          text: activitySummary.entity_name
+        }),
         Cell: row => (
-          <div style={{
+          <Button style={{
             width: "100%",
             height: "100%",
-            backgroundColor: row.value,
+            backgroundColor: row.value.color,
             borderRadius: '2px'
           }}>
-          </div>
+            {row.value.text}
+          </Button>
         )
-      }, {
-        id: 'col-entity-name',
-        Header: `${props.viz_domain.level}`,
-        accessor: 'entity_name',
       }, {
         Header: `Commits`,
         accessor: 'commit_count',
@@ -46,7 +51,8 @@ export const ActivitySummaryTable = (props: Props) => {
       }, {
         Header: `Timespan (${props.viz_domain.span_uom}`,
         accessor: 'span',
-      }]}
+      }
+      ]}
       defaultPageSize={10}
       className="-striped -highlight"
     />

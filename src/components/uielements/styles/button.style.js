@@ -30,7 +30,7 @@ const Buttons = ComponentName => styled(ComponentName)`
 
     &:hover {
       border-color: ${palette('primary', 0)};
-      color: ${palette('primary', 0)};
+      color: ${palette('secondary', 6)};
     }
 
     > .anticon + span,

@@ -34,7 +34,7 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
   formatTooltip(point) {
     const viz_domain = this.props.viz_domain;
     return tooltipHtml({
-      header: `${viz_domain.level}: ${point.point.yCategory}`,
+      header: `${viz_domain.subject_label_long}: ${point.point.yCategory}`,
       body: [
         ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
         ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
