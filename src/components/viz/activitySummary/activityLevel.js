@@ -4,28 +4,28 @@ import {flatten} from "../../../helpers/collections";
 
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
-    display_name: 'Older',
+    display_name: 'Inactive',
     color: Colors.ActivityBucket.INACTIVE,
     isMember: activitySummary => activitySummary.days_since_latest_commit > 180,
     visible: false,
     index: 0
   },
   {
-    display_name: '6 Months',
+    display_name: 'Dormant',
     color: Colors.ActivityBucket.DORMANT,
     isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180),
     visible: false,
     index: 1
   },
   {
-    display_name: '3 Months',
+    display_name: 'Quiescent',
     color: Colors.ActivityBucket.RECENT,
     isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90),
     visible: false,
     index: 2
   },
   {
-    display_name: '1 Month',
+    display_name: 'Active',
     color: Colors.ActivityBucket.ACTIVE,
     isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30),
     visible: true,
