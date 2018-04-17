@@ -1,5 +1,5 @@
 import actions from './actions';
-import {DataSourceCache} from "../../viz/dataSourceCache";
+import {DataSourceCache} from "../../dataSources/dataSourceCache";
 
 
 export default function vizDataReducer(state=new DataSourceCache(), action) {
