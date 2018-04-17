@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 import DashApp from './dashApp';
 import 'antd/dist/antd.css';
 
-
-console.log("Starting REACT DOM render");
 ReactDOM.render(<DashApp />, document.getElementById('root'));
-console.log("React DOM Render completed");
 
 // Hot Module Replacement API
 if (module.hot) {

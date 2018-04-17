@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dashboard, DashboardRow, DashboardItem} from '../Dashboard/index';
-import {ProjectActivitySummaryViz} from '../../viz/organizations/projectActivitySummaryViz';
+import { Dashboard, DashboardRow, DashboardItem} from '../containers/Dashboard/index';
+import {ProjectActivitySummaryViz} from '../viz/organizations/projectActivitySummaryViz';
 export const dashboard = ({match, ...rest}) => (
   <Dashboard {...rest}>
     <DashboardRow h='40%'>

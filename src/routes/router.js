@@ -4,7 +4,7 @@ import {ConnectedRouter, getLocation, push, replace, go, goBack, goForward} from
 import {connect} from 'react-redux';
 
 
-import App from '../containers/App/App';
+import App from '../app/App';
 import Login from '../components/auth/Login';
 import Logout from '../components/auth/Logout';
 
