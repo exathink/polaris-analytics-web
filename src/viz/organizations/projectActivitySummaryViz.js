@@ -25,7 +25,7 @@ const projectActivitySummaryDomainMapper = {
     return {
       data: project_summaries.map((project_summary) => {
         return withActivityLevel({
-          id: project_summary.id,
+          id: project_summary.project_id,
           entity_name: project_summary.project,
           commit_count: project_summary.commit_count,
           contributor_count: project_summary.contributor_count,
