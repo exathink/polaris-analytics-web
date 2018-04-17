@@ -6,7 +6,7 @@ import vizActions from '../redux/viz/actions';
 
 const {fetchData} = vizActions;
 
-export function withDomainMap(domainMapper) {
+export function withVizDomainMapper(domainMapper) {
   return (Viz) => {
     const mapStateToProps = (state,ownProps) => {
       return {

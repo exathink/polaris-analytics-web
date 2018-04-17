@@ -1,7 +1,7 @@
 import {all, call, fork, put, takeLatest} from "redux-saga/effects";
 import actions from "./actions";
 import { getSessionKey } from "../../utils";
-import {polarisChartsService} from "../../dataSources/api";
+import {polarisChartsService} from "../../vizData/api";
 
 
 

@@ -1,5 +1,5 @@
-import {withDomainMap} from "../../../dataSources/withDomainMap";
-import {DataSources} from "../../../dataSources/dataSources";
+import {withVizDomainMapper} from "../../../vizData";
+import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../helpers/utility";
 import {ActivitySummaryViz} from "../../../components/viz/activitySummary/index";
 import moment from 'moment';
@@ -43,5 +43,5 @@ const projectActivitySummaryDomainMapper = {
     }
   }
 };
-export const ProjectActivitySummaryViz =  withDomainMap(projectActivitySummaryDomainMapper)(ActivitySummaryViz);
+export const ProjectActivitySummaryViz =  withVizDomainMapper(projectActivitySummaryDomainMapper)(ActivitySummaryViz);
 
