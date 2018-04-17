@@ -8,10 +8,11 @@ const {fetchData} = vizActions;
 
 export function withDomainMap(domainMapper) {
   return (Viz) => {
-    const mapStateToProps = state => {
+    const mapStateToProps = (state,ownProps) => {
       return {
+        ...ownProps,
         ...{viz_data: state.vizData},
-        ...(domainMapper.mapStateToProps ? domainMapper.mapStateToProps(state) : {})
+        ...(domainMapper.mapStateToProps ? domainMapper.mapStateToProps(state, ownProps) : {})
       }
     };
 

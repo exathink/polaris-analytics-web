@@ -9,17 +9,18 @@ import './mocks/serviceMocks'
 
 
 const projectActivitySummaryDomainMapper = {
-  mapStateToProps: state => ({
+  mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
+    organization: ownProps.match.params.organization
   }),
   getDataSpec: props => ([{
     dataSource: DataSources.organization_projects_activity_summary,
     params: {
-      organization: props.account.company,
+      organization: props.organization,
       mock: false
     }
   }]),
-  mapDomain: (source_data) => {
+  mapDomain: (source_data, props) => {
     const project_summaries = source_data[0].data;
     return {
       data: project_summaries.map((project_summary) => {
@@ -35,7 +36,7 @@ const projectActivitySummaryDomainMapper = {
         })
       }),
       level_label: 'Org',
-      level: 'Org',
+      level: props.organization,
       subject_label: 'Project',
       subject_label_long: 'Project',
       span_uom: 'days'

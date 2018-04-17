@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect, withRouter} from 'react-router-dom';
 import {ConnectedRouter, getLocation, push, replace, go, goBack, goForward} from 'react-router-redux';
 import {connect} from 'react-redux';
 
@@ -37,7 +37,7 @@ export const withRouterConnection = (Component) => {
           }
         }
     });
-  return connect(mapStateToProps, mapDispatchToProps)(Component)
+  return withRouter(connect(mapStateToProps, mapDispatchToProps)(Component))
 };
 
 class AppRedirector extends React.Component {

@@ -15,7 +15,8 @@ export type VizDomain = {
   level: string,
   subject_label_long: string,
   subject_label: string,
-  span_uom: string
+  span_uom: string,
+  onDrillDown?: () => void
 
 }
 export type Props = {

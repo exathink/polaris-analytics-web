@@ -5,13 +5,13 @@ import {Table} from "../../containers/table";
 import {findVisibleLevels} from "../activityLevel";
 import Button from "../../../uielements/button";
 
-function drillDown() {
-  console.log("Button Clicked")
-}
-
 export const ActivitySummaryTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.viz_domain.data);
-
+  const drillDown = (event) => {
+    if (props.viz_domain.onDrillDown) {
+      props.viz_domain.onDrillDown(event)
+    }
+  };
 
   return (
     <Table
@@ -22,10 +22,15 @@ export const ActivitySummaryTable = (props: Props) => {
         headerStyle: {width: '50px'},
         accessor: activitySummary => ({
           color: activitySummary.activity_level.color,
-          text: activitySummary.entity_name
+          text: activitySummary.entity_name,
+          key: activitySummary.id
         }),
         Cell: row => (
-          <Button style={{
+          <Button onClick={() => drillDown({
+            subject_label: `${props.viz_domain.subject_label}` ,
+            entity_name: row.value.text,
+            id: row.value.key
+          })} style={{
             width: "100%",
             height: "100%",
             backgroundColor: row.value.color,
@@ -34,6 +39,7 @@ export const ActivitySummaryTable = (props: Props) => {
             {row.value.text}
           </Button>
         )
+
       }, {
         Header: `Commits`,
         accessor: 'commit_count',

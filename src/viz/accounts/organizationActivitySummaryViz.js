@@ -37,7 +37,11 @@ const organizationActivitySummaryDomainMapper = {
       level: props.account.company,
       subject_label: 'Org',
       subject_label_long: 'Organization',
-      span_uom: 'days'
+      span_uom: 'days',
+      onDrillDown: (event) => {
+        console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`)
+        props.navigate.push(`/app/organizations/${event.entity_name}`)
+      }
     }
   }
 };

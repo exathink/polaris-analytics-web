@@ -8,8 +8,12 @@ class AppRouter extends React.Component {
     return (
       <Switch>
         <Route
-          path={`${url}/`}
-          component={asyncComponent(() => import('./landing_dashboard'), this.props)}
+          path={`${url}/organizations/:organization`}
+          component={asyncComponent(() => import('./organizations_dashboard'))}
+        />
+        <Route
+          path={`${url}`}
+          component={asyncComponent(() => import('./landing_dashboard'))}
         />
       </Switch>
     );

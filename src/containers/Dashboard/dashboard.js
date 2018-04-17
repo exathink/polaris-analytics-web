@@ -34,14 +34,14 @@ export const DashboardView = ({children, itemSelected, match,  ...rest}) => {
     return (
       <DashboardContainer>
           <DashboardRow h={"100%"}>
-            {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, ...rest})}
+            {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
           </DashboardRow>
       </DashboardContainer>
     )
   } else {
     return (
       <DashboardContainer>
-        {cloneChildrenWithProps(children, {itemSelected, ...rest})}
+        {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
       </DashboardContainer>
     );
   }
@@ -59,7 +59,7 @@ export const DashboardRow = ({children, h,  ...rest}) => (
 
 
 const ItemMenu = (props) => (
-  props.itemSelected != null && props.url != null ?
+  props.itemSelected != null?
     <nav className="dashboard-item-menu">
       <i
         className={props.itemSelected ? "ion ion-arrow-shrink" : "ion ion-arrow-expand"}
@@ -70,28 +70,27 @@ const ItemMenu = (props) => (
     null
 );
 
-export const DashboardItem = ({children, name, w, itemSelected, url,  navigate, ...rest}) => (
+export const DashboardItem = ({children, name, w, itemSelected, dashboardUrl, match,  navigate, ...rest}) => (
   <Box w={w} m={1} className="dashboard-item">
     <ItemMenu
       itemSelected={itemSelected}
-      url={url}
       onClick={() => (
-        itemSelected ? navigate.push(`${url}`) : navigate.push(`${url}/show/${name}`)
+        itemSelected ? navigate.replace(dashboardUrl) : navigate.replace(`${match.url}/show/${name}`)
       )}
     />
-    {cloneChildrenWithProps(children, {navigate, itemSelected, ...rest})}
+    {cloneChildrenWithProps(children, {navigate, itemSelected, match, ...rest})}
   </Box>
 );
 
 const withDetailRoutes = (WrappedDashboard) => {
-  return ({url, ...rest}) => (
+  return ({match, ...rest}) => (
     <Switch>
       <Route
-        path={`${url}/show/:selected`}
-        component={(props) => (<WrappedDashboard itemSelected={true} {...{url, ...rest, ...props}}/>)}
+        path={`${match.path}/show/:selected`}
+        component={(props) => (<WrappedDashboard itemSelected={true} dashboardUrl={match.url} {...{...rest, ...props}}/>)}
       />
       <Route
-        component={(props) => (<WrappedDashboard itemSelected={false} {...{url, ...rest, ...props}}/>)}
+        component={(props) => (<WrappedDashboard itemSelected={false} dashboardUrl={match.url} {...{...rest, ...props}}/>)}
       />
     </Switch>
   );
