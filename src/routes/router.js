@@ -42,7 +42,7 @@ export const withRouterConnection = (Component) => {
 
 class AppRedirector extends React.Component {
   render() {
-    return (<Redirect to='/app'/>);
+    return (<Redirect to='/dashboard'/>);
   }
 
 }
@@ -59,7 +59,7 @@ export default ({history}) => (
         component={Logout}
       />
       <RestrictedRoute
-        path="/app"
+        path="/dashboard"
         component={App}
       />
       <RestrictedRoute

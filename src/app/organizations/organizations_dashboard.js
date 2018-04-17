@@ -4,7 +4,7 @@ import {ProjectActivitySummaryViz} from './viz/projectActivitySummaryViz';
 export const dashboard = ({match, ...rest}) => (
   <Dashboard {...rest}>
     <DashboardRow h='40%'>
-      <DashboardItem name="organization-projects-activity-summary" w={1}>
+      <DashboardItem name="projects-activity" w={1}>
         <ProjectActivitySummaryViz/>
       </DashboardItem>
     </DashboardRow>

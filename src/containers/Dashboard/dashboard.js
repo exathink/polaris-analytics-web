@@ -75,7 +75,7 @@ export const DashboardItem = ({children, name, w, itemSelected, dashboardUrl, ma
     <ItemMenu
       itemSelected={itemSelected}
       onClick={() => (
-        itemSelected ? navigate.replace(dashboardUrl) : navigate.replace(`${match.url}/show/${name}`)
+        itemSelected ? navigate.replace(dashboardUrl) : navigate.replace(`${match.url}/${name}`)
       )}
     />
     {cloneChildrenWithProps(children, {navigate, itemSelected, match, ...rest})}
@@ -86,7 +86,7 @@ const withDetailRoutes = (WrappedDashboard) => {
   return ({match, ...rest}) => (
     <Switch>
       <Route
-        path={`${match.path}/show/:selected`}
+        path={`${match.path}/:selected`}
         component={(props) => (<WrappedDashboard itemSelected={true} dashboardUrl={match.url} {...{...rest, ...props}}/>)}
       />
       <Route

@@ -1,19 +1,23 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect} from 'react-router-dom';
 import asyncComponent from '../helpers/AsyncFunc';
+import FourZeroFour from "../containers/Page/404";
 
 class AppRouter extends React.Component {
   render() {
-    const { url } = this.props;
+    const { match } = this.props;
     return (
       <Switch>
         <Route
-          path={`${url}/organizations/:organization`}
+          path={`${match.path}/organizations/:organization`}
           component={asyncComponent(() => import('./organizations/organizations_dashboard'))}
         />
         <Route
-          path={`${url}`}
+          path={`${match.path}/account`}
           component={asyncComponent(() => import('./accounts/account_dashboard'))}
+        />
+        <Redirect
+          to={`${match.path}/account`}
         />
       </Switch>
     );
