@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dashboard, DashboardRow, DashboardItem} from '../containers/Dashboard/index';
-import {OrganizationActivitySummaryViz} from "./accounts/organizationActivitySummaryViz";
+import { Dashboard, DashboardRow, DashboardItem} from '../../containers/Dashboard/index';
+import {OrganizationActivitySummaryViz} from "./viz/organizationActivitySummaryViz";
 
 export const dashboard = (props) => (
   <Dashboard {...props}>
