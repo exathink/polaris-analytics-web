@@ -1,5 +1,5 @@
-import {polarisChartsService} from "../../api";
-import {DataSources} from "../../dataSources";
+import {polarisChartsService} from "../../../dataSources/api";
+import {DataSources} from "../../../dataSources/dataSources";
 import {formatPolarisTimestamp} from "../../../helpers/utility";
 import moment from 'moment';
 
