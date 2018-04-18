@@ -91,3 +91,7 @@ export function polarisTimestampWithTZ(timestamp) {
 export function formatDate(epoch, format) {
   return moment(epoch).format(format)
 }
+
+export function span(date_a, date_b) {
+  return polarisTimestamp(date_a).diff(polarisTimestamp(date_b))
+}

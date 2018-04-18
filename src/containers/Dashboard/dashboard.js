@@ -62,7 +62,7 @@ const ItemMenu = (props) => (
   props.itemSelected != null?
     <nav className="dashboard-item-menu">
       <i
-        className={props.itemSelected ? "ion ion-arrow-shrink" : "ion ion-arrow-expand"}
+        className={props.itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
         title={props.itemSelected ? "Hide Details" : "Show Details"}
         onClick={props.onClick}
       />
@@ -70,8 +70,16 @@ const ItemMenu = (props) => (
     null
 );
 
-export const DashboardItem = ({children, name, w, itemSelected, dashboardUrl, match,  navigate, ...rest}) => (
+export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, ...rest}) => (
   <Box w={w} m={1} className="dashboard-item">
+    {
+      !itemSelected ?
+        <h3 className="dashboard-item-title">
+          {title}
+        </h3> :
+        null
+
+    }
     <ItemMenu
       itemSelected={itemSelected}
       onClick={() => (

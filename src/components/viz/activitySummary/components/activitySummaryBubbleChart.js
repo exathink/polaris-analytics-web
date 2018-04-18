@@ -212,7 +212,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
       header: `${viz_domain.subject_label_long}: ${point.key}`,
       body: [
         ['Commits: ', `${point.y}`],
-        ['Timespan:', `${point.x} (${viz_domain.span_uom})`],
+        ['Timespan:', `${point.x.toLocaleString()} ${viz_domain.span_uom}`],
         ['Contributors:', `${point.point ? point.point.z : ''}`]
       ]
     });
