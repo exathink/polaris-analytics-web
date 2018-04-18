@@ -127,7 +127,7 @@ class Sidebar extends Component {
               <Menu.Item key="dashboard">
                 <Link to={`${url}/dashboard`}>
                   <span className="isoMenuHolder" style={submenuColor}>
-                    <i className="ion-document" />
+                    <i className="ion-stats-bars" />
                     <span className="nav-text">
                       <IntlMessages id="sidebar.dashboard" />
                     </span>
