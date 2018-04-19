@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect} from 'react-router-dom';
 import asyncComponent from '../helpers/AsyncFunc';
-import FourZeroFour from "../containers/Page/404";
 
 class AppRouter extends React.Component {
   render() {

@@ -1,6 +1,6 @@
 import {withVizDomainMapper} from "../../../vizData";
 import {DataSources} from "../dataSources";
-import {polarisTimestamp, span} from "../../../helpers/utility";
+import {polarisTimestamp} from "../../../helpers/utility";
 import {ActivitySummaryViz} from "../../../components/viz/activitySummary/index";
 import moment from 'moment';
 import {withActivityLevel} from "../../../components/viz/activitySummary/index";

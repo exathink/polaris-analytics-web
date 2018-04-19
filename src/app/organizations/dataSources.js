@@ -1,8 +1,8 @@
 export const DataSources = {
   organization_projects_activity_summary: {
-    name: 'organization-projects-activity-summary',
+    name: 'organizations/activity-summary-by-project',
     polaris_service_connection: {
-      path: 'organization-projects-activity-summary',
+      path: 'organizations/activity-summary-by-project',
       params: [
         {
           name: 'organization',

@@ -1,8 +1,8 @@
 export const DataSources = {
   account_organizations_activity_summary: {
-    name: 'account-organizations-activity-summary',
+    name: 'accounts/activity-summary-by-organization',
     polaris_service_connection: {
-      path: 'account-organizations-activity-summary',
+      path: 'accounts/activity-summary-by-organization',
       params: [
       ]
     },
