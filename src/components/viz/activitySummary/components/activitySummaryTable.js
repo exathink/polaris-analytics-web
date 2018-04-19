@@ -55,8 +55,9 @@ export const ActivitySummaryTable = (props: Props) => {
         Header: `Latest Commit`,
         accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
       }, {
-        Header: `Timespan (${props.viz_domain.span_uom}`,
-        accessor: 'span',
+        id: 'timespan-col',
+        Header: `Timespan (${props.viz_domain.span_uom})`,
+        accessor: activitySummary => activitySummary.span.toLocaleString(),
       }
       ]}
       defaultPageSize={10}
