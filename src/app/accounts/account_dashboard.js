@@ -5,7 +5,7 @@ import {OrganizationActivitySummaryViz} from "./viz/organizationActivitySummaryV
 export const dashboard = (props) => (
   <Dashboard {...props}>
     <DashboardRow h='20%'>
-      <DashboardItem name="organization-activity" title={"Account Overview"} w={1}>
+      <DashboardItem name="organizations-activity" title={"Account Overview"} w={1}>
         <OrganizationActivitySummaryViz/>
       </DashboardItem>
     </DashboardRow>
