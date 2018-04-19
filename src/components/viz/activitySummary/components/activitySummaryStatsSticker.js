@@ -11,8 +11,8 @@ const human_span = (moment_a, moment_b) => {
   const d_years = `${years > 0 ? years + (years > 1 ? ' Years' : ' Year'): ''}`;
 
   const months = span.months();
-  const d_months = `${months > 0 ? months + (months > 1 ? ' Months': ' Month'): ''}`
-  return `${d_years}${(years > 0 ? ', ' : '')}${d_months}`;
+  const d_months = `${months > 0 ? months + (months > 1 ? ' Months': ' Month'): ''}`;
+  return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
 export const ActivitySummaryStatsStickers = (props: Props) => {
@@ -31,8 +31,8 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
   }, {
     commits: 0,
     contributors: 0,
-    earliest_commit: domain_data[0].earliest_commit,
-    latest_commit: domain_data[0].latest_commit
+    earliest_commit: domain_data.length > 0 ? domain_data[0].earliest_commit : moment(),
+    latest_commit: domain_data.length > 0 ? domain_data[0].latest_commit : moment()
   });
 
   return (
