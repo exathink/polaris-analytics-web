@@ -6,6 +6,14 @@ export const DataSources = {
       params: [
       ]
     },
+  },
+  account_activity_summary: {
+    name: 'accounts/activity-summary',
+    polaris_service_connection: {
+      path: 'accounts/activity-summary',
+      params: [
+      ]
+    },
 
   }
 };

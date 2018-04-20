@@ -4,7 +4,7 @@ import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
 import StickerWidget from '../../../../containers/Widgets/sticker/sticker-widget';
 import {VizRow, VizItem} from "../../containers/layout";
 import moment from 'moment';
-import {rollupActivitySummaries} from "../helpers";
+
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -18,7 +18,7 @@ const human_span = (moment_a, moment_b) => {
 
 export const ActivitySummaryStatsStickers = (props: Props) => {
 
-  const data = props.viz_domain.summary_data || rollupActivitySummaries(props.viz_domain.data)
+  const data = props.viz_domain.summary_data;
 
   return (
     <React.Fragment>
