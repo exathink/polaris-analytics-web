@@ -222,7 +222,6 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
   render() {
     const viz_domain = this.props.viz_domain;
-    const axesType = this.props.viz_domain.data.length > ActivitySummaryBubbleChart.BOOST_THRESHOLD ? 'logarithmic' : 'linear';
     const title = `${viz_domain.subject_label_long} Activity Summary`;
     return (
       <HighchartsChart
@@ -250,7 +249,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
         <YAxis
           id="commits"
-          type={axesType}
+          type={'logarithmic'}
         >
           <YAxis.Title>Number of commits</YAxis.Title>
         </YAxis>

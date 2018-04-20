@@ -8,6 +8,10 @@ class AppRouter extends React.Component {
     return (
       <Switch>
         <Route
+          path={`${match.path}/projects/:organization/:project`}
+          component={asyncComponent(() => import('./projects/projects_dashboard'))}
+        />
+        <Route
           path={`${match.path}/organizations/:organization`}
           component={asyncComponent(() => import('./organizations/organizations_dashboard'))}
         />

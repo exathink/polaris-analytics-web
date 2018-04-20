@@ -5,42 +5,45 @@ import {ActivitySummaryViz} from "../../../components/viz/activitySummary/index"
 import moment from 'moment';
 import {withActivityLevel} from "../../../components/viz/activitySummary/index";
 
-import './mocks/serviceMocks'
 
 
-const projectActivitySummaryDomainMapper = {
+
+const repositoryActivitySummaryDomainMapper = {
   mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
-    organization: ownProps.match.params.organization
+    organization: ownProps.match.params.organization,
+    project: ownProps.match.params.project
   }),
   getDataSpec: props => ([
     {
-      dataSource: DataSources.organization_projects_activity_summary,
+      dataSource: DataSources.project_repositories_activity_summary,
       params: {
         organization: props.organization,
+        project: props.project,
         mock: false
       }
     },
     {
-      dataSource: DataSources.organization_activity_summary,
+      dataSource: DataSources.project_activity_summary,
       params: {
         organization: props.organization,
+        project: props.project,
         mock: false
       }
     }
   ]),
   mapDomain: (source_data, props) => {
-    const project_summaries = source_data[0].data;
-    const org_summary = source_data[1].data;
+    const repo_summaries = source_data[0].data;
+    const project_summary = source_data[1].data;
 
     return {
-      data: project_summaries.map((project_summary) => {
+      data: repo_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
         const latest_commit = polarisTimestamp(project_summary.latest_commit);
 
         return withActivityLevel({
-          id: project_summary.project_id,
-          entity_name: project_summary.project,
+          id: project_summary.repository_id,
+          entity_name: project_summary.repository,
           commit_count: project_summary.commit_count,
           contributor_count: project_summary.contributor_count,
           earliest_commit: earliest_commit,
@@ -49,27 +52,22 @@ const projectActivitySummaryDomainMapper = {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      summary_data: org_summary.map((org_summary) => ({
+      summary_data: project_summary.map((org_summary) => ({
         commits: org_summary.commit_count,
         contributors: org_summary.contributor_count,
         earliest_commit: polarisTimestamp(org_summary.earliest_commit),
         latest_commit: polarisTimestamp(org_summary.latest_commit)
       }))[0],
-      level_label: 'Org',
-      level: props.organization,
-      subject_label: 'Project',
-      subject_label_long: 'Project',
-      subject_label_plural: 'Projects',
-      subject_icon: 'ion-clipboard',
-      subject_color: '#42A5F6',
-      span_uom: 'Years',
-      onDrillDown: (event) => {
-        console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/dashboard/projects/${props.organization}/${event.entity_name}`)
-      }
-
+      level_label: 'Project',
+      level: props.project,
+      subject_label: 'Repo',
+      subject_label_long: 'Repository',
+      subject_label_plural: 'Repositories',
+      subject_icon: 'ion-soup-can',
+      subject_color: '#e8ab2a',
+      span_uom: 'Years'
     }
   }
 };
-export const ProjectActivitySummaryViz = withVizDomainMapper(projectActivitySummaryDomainMapper)(ActivitySummaryViz);
+export const RepositoryActivitySummaryViz = withVizDomainMapper(repositoryActivitySummaryDomainMapper)(ActivitySummaryViz);
 

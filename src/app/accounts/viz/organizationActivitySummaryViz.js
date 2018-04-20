@@ -55,6 +55,7 @@ const organizationActivitySummaryDomainMapper = {
       level: props.account.company,
       subject_label: 'Org',
       subject_label_long: 'Organization',
+      subject_label_plural: 'Organizations',
       subject_icon: "ion-ios-albums",
       subject_color: '#7266BA',
       span_uom: 'Years',

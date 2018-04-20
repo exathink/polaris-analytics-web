@@ -23,6 +23,7 @@ export type VizDomain = {
   level: string,
   subject_label_long: string,
   subject_label: string,
+  subject_label_plural: string,
   subject_icon: string,
   subject_color: string,
   span_uom: string,

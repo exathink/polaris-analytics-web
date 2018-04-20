@@ -28,7 +28,7 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
             {/* Sticker Widget */}
             <StickerWidget
               number={props.viz_domain.data.length}
-              text={`${props.viz_domain.subject_label_long}${props.viz_domain.data.length > 1 ? 's' : ''}`}
+              text={`${props.viz_domain.data.length > 1 ? props.viz_domain.subject_label_plural : props.viz_domain.subject_label_long}`}
               icon={props.viz_domain.subject_icon}
               fontColor="#ffffff"
               bgColor={props.viz_domain.subject_color}
