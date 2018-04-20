@@ -11,6 +11,19 @@ export const DataSources = {
       ]
     },
 
+  },
+  organization_activity_summary: {
+    name: 'organizations/activity-summary',
+    polaris_service_connection: {
+      path: 'organizations/activity-summary',
+      params: [
+        {
+          name: 'organization',
+          url_part: 'path'
+        }
+      ]
+    },
+
   }
 };
 

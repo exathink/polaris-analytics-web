@@ -4,6 +4,7 @@ import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
 import StickerWidget from '../../../../containers/Widgets/sticker/sticker-widget';
 import {VizRow, VizItem} from "../../containers/layout";
 import moment from 'moment';
+import {rollupActivitySummaries} from "../helpers";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -16,24 +17,8 @@ const human_span = (moment_a, moment_b) => {
 };
 
 export const ActivitySummaryStatsStickers = (props: Props) => {
-  const domain_data = props.viz_domain.data;
 
-  const data = domain_data.reduce((totals, activitySummary) => {
-   totals.commits = totals.commits + activitySummary.commit_count;
-   totals.contributors = totals.contributors + activitySummary.contributor_count;
-   if (activitySummary.earliest_commit.isBefore(totals.earliest_commit)) {
-     totals.earliest_commit = activitySummary.earliest_commit;
-   }
-   if (activitySummary.latest_commit.isAfter(totals.latest_commit)) {
-     totals.latest_commit = activitySummary.latest_commit
-   }
-   return totals;
-  }, {
-    commits: 0,
-    contributors: 0,
-    earliest_commit: domain_data.length > 0 ? domain_data[0].earliest_commit : moment(),
-    latest_commit: domain_data.length > 0 ? domain_data[0].latest_commit : moment()
-  });
+  const data = props.viz_domain.summary_data || rollupActivitySummaries(props.viz_domain.data)
 
   return (
     <React.Fragment>

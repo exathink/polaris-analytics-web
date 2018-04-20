@@ -1,4 +1,4 @@
-import {all, call, fork, put, takeLatest} from "redux-saga/effects";
+import {all, call, fork, put, takeEvery} from "redux-saga/effects";
 import actions from "./actions";
 import { getSessionKey } from "../../utils";
 import {polarisChartsService} from "../../vizData/api";
@@ -6,7 +6,7 @@ import {polarisChartsService} from "../../vizData/api";
 
 
 export function* fetchData() {
-  yield takeLatest(actions.FETCH_DATA, function*(action) {
+  yield takeEvery(actions.FETCH_DATA, function*(action) {
     const sessionKey = getSessionKey();
 
     if (sessionKey) {
