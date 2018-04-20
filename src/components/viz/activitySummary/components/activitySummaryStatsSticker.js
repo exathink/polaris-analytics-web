@@ -28,7 +28,7 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
             {/* Sticker Widget */}
             <StickerWidget
               number={props.viz_domain.data.length}
-              text={`${props.viz_domain.subject_label_long}s`}
+              text={`${props.viz_domain.subject_label_long}${props.viz_domain.data.length > 1 ? 's' : ''}`}
               icon={props.viz_domain.subject_icon}
               fontColor="#ffffff"
               bgColor={props.viz_domain.subject_color}
@@ -40,7 +40,7 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
             {/* Sticker Widget */}
             <StickerWidget
               number={data.contributors.toLocaleString()}
-              text={"Contributors"}
+              text={`Contributor${data.contributors > 1 ? 's' : ''}`}
               icon="ion-ios-people"
               fontColor="#ffffff"
               bgColor={props.viz_domain.subject_color}
