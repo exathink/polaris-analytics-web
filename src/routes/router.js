@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 
 
 import App from '../app/App';
-import Login from '../components/auth/Login';
-import Logout from '../components/auth/Logout';
+import Login from '../app/components/auth/Login';
+import Logout from '../app/components/auth/Logout';
 
 import RestrictedRoute from './RestrictedRoute';
 import FourZeroFour from "../containers/Page/404";
@@ -42,7 +42,7 @@ export const withRouterConnection = (Component) => {
 
 class AppRedirector extends React.Component {
   render() {
-    return (<Redirect to='/dashboard'/>);
+    return (<Redirect to='/app'/>);
   }
 
 }
@@ -59,7 +59,7 @@ export default ({history}) => (
         component={Logout}
       />
       <RestrictedRoute
-        path="/dashboard"
+        path="/app"
         component={App}
       />
       <RestrictedRoute

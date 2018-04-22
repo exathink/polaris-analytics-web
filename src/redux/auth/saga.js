@@ -1,8 +1,8 @@
 import { all, call, takeEvery, put, fork } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import actions from './actions';
-import { getSessionKey } from '../../auth/helpers';
-import { fetchUserData } from '../../auth/api';
+import { getSessionKey } from '../../app/services/auth/helpers';
+import { fetchUserData } from '../../app/services/auth/api';
 
 export function* userDataRequest() {
     yield takeEvery(actions.USER_DATA_REQUEST, function*() {

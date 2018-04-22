@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { authenticated } from '../auth/helpers';
+import { authenticated } from '../app/services/auth/helpers';
 import authActions from '../redux/auth/actions';
 import { Route, Redirect } from 'react-router-dom';
 

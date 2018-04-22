@@ -7,7 +7,7 @@ const actions = {
   push: context => ({
     type: actions.PUSH, payload: context
   }),
-  fetchDataSuccess: () => ({
+  pop: () => ({
     type: actions.POP
   }),
 };

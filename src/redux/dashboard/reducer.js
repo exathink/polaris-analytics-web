@@ -1,4 +1,4 @@
-// @flow
+
 import actions from './actions';
 import {Stack} from 'immutable';
 

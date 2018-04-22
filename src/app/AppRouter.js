@@ -1,30 +1,21 @@
 import React from 'react';
 import { Switch, Route, Redirect} from 'react-router-dom';
-import asyncComponent from '../helpers/AsyncFunc';
+import {DashboardContainer} from "./dashboards/dashboardRouter";
 
-class AppRouter extends React.Component {
-  render() {
-    const { match } = this.props;
-    return (
-      <Switch>
-        <Route
-          path={`${match.path}/projects/:organization/:project`}
-          component={asyncComponent(() => import('./projects/projects_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/organizations/:organization`}
-          component={asyncComponent(() => import('./organizations/organizations_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/account`}
-          component={asyncComponent(() => import('./accounts/account_dashboard'))}
-        />
-        <Redirect
-          to={`${match.path}/account`}
-        />
-      </Switch>
-    );
-  }
-}
 
+
+const AppRouter = (props) => {
+  const {match} = props;
+  return (
+    <Switch>
+      <Route
+        path={`${match.path}/dashboard`}
+        component={DashboardContainer}
+      />
+      <Redirect
+        to={`${match.path}/dashboard`}
+      />
+    </Switch>
+  )
+};
 export default AppRouter;
