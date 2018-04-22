@@ -2,7 +2,7 @@ import React from 'react';
 import ReactPlaceholder from 'react-placeholder';
 import {connect} from 'react-redux';
 
-import vizActions from '../../../redux/viz/actions';
+import vizActions from '../../redux/viz/actions';
 
 const {fetchData} = vizActions;
 
