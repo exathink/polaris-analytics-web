@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import clone from 'clone';
-import { Link } from 'react-router-dom';
+import { Route, Link, NavLink } from 'react-router-dom';
 import { Layout } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Menu from '../../components/uielements/menu';
@@ -115,32 +115,58 @@ class Sidebar extends Component {
             renderView={this.renderView}
             style={{ height: scrollheight - 70 }}
           >
-            <Menu
-              onClick={this.handleClick}
-              theme="dark"
-              mode={mode}
-              openKeys={collapsed ? [] : app.openKeys}
-              selectedKeys={app.current}
-              onOpenChange={this.onOpenChange}
-              className="isoDashboardMenu"
-            >
-              <Menu.Item key="dashboard">
-                <Link to={`${url}/dashboard`}>
-                  <span className="isoMenuHolder" style={submenuColor}>
-                    <i className="ion-stats-bars" />
-                    <span className="nav-text">
-                      <IntlMessages id="sidebar.dashboard" />
+              <Route path="/app/dashboard/:aspect/(.*)" render={(props) => (
+                <Menu
+                  onClick={this.handleClick}
+                  theme="dark"
+                  mode={mode}
+                  openKeys={collapsed ? [] : app.openKeys}
+                  selectedKeys={app.current.length === 0 ? ['activity'] : app.current}
+                  onOpenChange={this.onOpenChange}
+                  className="isoDashboardMenu"
+                >
+                  <Menu.Item  selectedKeys={app.current} className='ant-menu-item' key="activity">
+                    <Link to={`/app/dashboard/activity/${props.match.params[0]}`}>
+                      <span className="isoMenuHolder" style={submenuColor}>
+                        <i className="ion-stats-bars" />
+                        <span className="nav-text">
+                          Activity
+                        </span>
+                      </span>
+                    </Link>
+                </Menu.Item>
+                </Menu>
+                )}/>
+
+              <Route path="/app/dashboard/:aspect/(.*)" render={(props) => (
+                <Menu
+                  onClick={this.handleClick}
+                  theme="dark"
+                  mode={mode}
+                  openKeys={collapsed ? [] : app.openKeys}
+                  selectedKeys={app.current}
+                  onOpenChange={this.onOpenChange}
+                  className="isoDashboardMenu"
+                >
+                <Menu.Item  selectedKeys={app.current} className='ant-menu-item' key="contributors">
+                  <Link to={`/app/dashboard/contributors/${props.match.params[0]}`}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className="ion-stats-bars" />
+                      <span className="nav-text">
+                        "Contributors"
+                      </span>
                     </span>
-                  </span>
-                </Link>
-              </Menu.Item>
-            </Menu>
+                  </Link>
+                </Menu.Item>
+                </Menu>
+              )}/>
           </Scrollbars>
         </Sider>
       </SidebarWrapper>
     );
   }
 }
+
 
 export default connect(
   state => ({

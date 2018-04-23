@@ -105,7 +105,7 @@ const SidebarWrapper = styled.div`
         font-size: 14px;
         color: inherit;
         font-weight: 400;
-        ${transition()};
+        ${transition(0.05)};
       }
 
       .ant-menu-item-selected {
