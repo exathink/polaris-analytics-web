@@ -6,7 +6,7 @@ import WindowResizeListener from 'react-window-size-listener';
 import { ThemeProvider } from 'styled-components';
 import authAction from '../redux/auth/actions';
 import appActions from '../redux/app/actions';
-import Sidebar from '../containers/Sidebar/Sidebar';
+import Sidebar from './containers/Sidebar/Sidebar';
 import Topbar from '../containers/Topbar/Topbar';
 import AppRouter from './AppRouter';
 import { siteConfig } from '../config.js';
