@@ -1,11 +1,11 @@
-import './dashboard.css';
+import '../dashboard.css';
 import React from "react";
-import asyncComponent from "../../helpers/AsyncFunc";
+import asyncComponent from "../../../helpers/AsyncFunc";
 import { Switch, Route, Redirect} from 'react-router-dom';
 
-import LayoutWrapper from '../../components/utility/layoutWrapper';
-import FullscreenBtn from '../../components/buttons/FullscreenBtn';
-import FourZeroFour from "../../containers/Page/404";
+import LayoutWrapper from '../../../components/utility/layoutWrapper';
+import FullscreenBtn from '../../../components/buttons/FullscreenBtn';
+import FourZeroFour from "../../../containers/Page/404";
 class DashboardRouter extends React.Component {
   render() {
     const {match} = this.props;

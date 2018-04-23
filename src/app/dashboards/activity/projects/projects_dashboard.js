@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dashboard, DashboardRow, DashboardItem} from '../index';
+import { Dashboard, DashboardRow, DashboardItem} from '../../index';
 import {RepositoryActivitySummaryViz} from './viz/repositoryActivitySummaryViz';
 export const dashboard = ({match, ...rest}) => (
   <Dashboard dashboard={'projects-dashboard'} {...rest}>

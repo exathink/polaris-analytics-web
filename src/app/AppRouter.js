@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect} from 'react-router-dom';
-import {DashboardContainer} from "./dashboards/dashboardRouter";
+import {DashboardContainer} from "./dashboards/activity/dashboardRouter";
 
 
 
