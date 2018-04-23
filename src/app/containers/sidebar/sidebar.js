@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import clone from 'clone';
-import {Route, Link, NavLink} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import {Layout} from 'antd';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Menu from '../../../components/uielements/menu';
@@ -9,7 +9,7 @@ import IntlMessages from '../../../components/utility/intlMessages';
 import SidebarWrapper from './sidebar.style';
 
 import appActions from '../../../redux/app/actions';
-import Logo from '../../../components/utility/logo';
+import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../../containers/ThemeSwitcher/config';
 import {themeConfig} from '../../../config';
@@ -129,13 +129,13 @@ class Sidebar extends Component {
             renderView={this.renderView}
             style={{height: scrollheight - 70}}
           >
-            <Route path="/app/dashboard/(.*)/(.*)" render={(props) => (
+            <Route path={`${url}/dashboard/(.*)/(.*)`} render={(props) => (
               <React.Fragment>
                 <Menu
                   {...menuProps}
                 >
                   <Menu.Item key="activity">
-                    <Link to={`/app/dashboard/activity/${props.match.params[1]}`}>
+                    <Link to={`${url}/dashboard/activity/${props.match.params[1]}`}>
                       <span className="isoMenuHolder" style={submenuColor}>
                         <i className="ion-ios-pulse-strong"/>
                         <span className="nav-text">
@@ -149,7 +149,7 @@ class Sidebar extends Component {
                   {...menuProps}
                 >
                   <Menu.Item key="contributors">
-                    <Link to={`/app/dashboard/contributors/${props.match.params[1]}`}>
+                    <Link to={`${url}/dashboard/contributors/${props.match.params[1]}`}>
                     <span className="isoMenuHolder" style={submenuColor}>
                       <i className="ion-ios-people"/>
                       <span className="nav-text">
