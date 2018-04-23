@@ -61,7 +61,7 @@ const organizationActivitySummaryDomainMapper = {
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/organizations/${event.entity_name}`)
+        props.navigate.push(`/app/dashboard/activity/organizations/${event.entity_name}`)
       }
     }
   }

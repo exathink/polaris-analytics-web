@@ -2,11 +2,9 @@ import '../dashboard.css';
 import React from "react";
 import asyncComponent from "../../../helpers/AsyncFunc";
 import { Switch, Route, Redirect} from 'react-router-dom';
-
-import LayoutWrapper from '../../../components/utility/layoutWrapper';
-import FullscreenBtn from '../../../components/buttons/FullscreenBtn';
 import FourZeroFour from "../../../containers/Page/404";
-class DashboardRouter extends React.Component {
+
+export class ActivityDashboardsRouter extends React.Component {
   render() {
     const {match} = this.props;
     return (
@@ -36,26 +34,6 @@ class DashboardRouter extends React.Component {
 }
 
 
-const DashboardMenu = () => (
-  <nav className="dashboard-footer">
-    <FullscreenBtn componentId="dashboard" />
-  </nav>
-);
 
-
-export const DashboardWrapper = (props) => (
-  <LayoutWrapper id="dashboard" className="dashboard-wrapper">
-    <div className="dashboard-vizzes">
-      {props.children}
-    </div>
-    <DashboardMenu/>
-  </LayoutWrapper>
-);
-
-export const DashboardContainer =  (props) => (
-  <DashboardWrapper>
-    <DashboardRouter {...props} />
-  </DashboardWrapper>
-);
 
 
