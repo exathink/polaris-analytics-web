@@ -129,7 +129,7 @@ class Sidebar extends Component {
             renderView={this.renderView}
             style={{height: scrollheight - 70}}
           >
-            <Route path={`${url}/dashboard/(.*)/(.*)`} render={(props) => (
+            <Route path={`${url}/dashboard/:aspect/(.*)`} render={(props) => (
               <React.Fragment>
                 <Menu
                   {...menuProps}

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Link} from 'react-router-dom';
+import {withRouter} from 'react-router';
+
 import { Layout } from 'antd';
-import appActions from '../../redux/app/actions';
-import TopbarUser from './topbarUser';
+import appActions from '../../../redux/app/actions';
+import TopbarUser from '../../../containers/Topbar/topbarUser';
 import TopbarWrapper from './topbar.style';
-import themes from '../../config/themes';
-import { themeConfig } from '../../config';
+import themes from '../../../config/themes';
+import { themeConfig } from '../../../config';
+import TopbarContext from './topbarContext';
 
 const { Header } = Layout;
 const { toggleCollapsed } = appActions;
@@ -39,9 +41,8 @@ class Topbar extends Component {
               onClick={toggleCollapsed}
             />
           </div>
-          <div className="isoLeft">
 
-          </div>
+          <TopbarContext/>
 
           <ul className="isoRight">
             <li
@@ -57,9 +58,9 @@ class Topbar extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     ...state.App.toJS()
   }),
   { toggleCollapsed }
-)(Topbar);
+)(Topbar));

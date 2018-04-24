@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import authAction from '../redux/auth/actions';
 import appActions from '../redux/app/actions';
 import Sidebar from './containers/sidebar/sidebar';
-import Topbar from '../containers/Topbar/Topbar';
+import Topbar from './containers/topbar/topbar';
 import AppRouter from './AppRouter';
 import { siteConfig } from '../config.js';
 import themes from '../config/themes/index';
