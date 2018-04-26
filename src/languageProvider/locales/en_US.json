@@ -523,6 +523,10 @@
   "page500.subTitle": "Internal Server Error",
   "page500.description": "Something went wrong. Please try again later.",
   "page500.backButton": "BACK HOME",
+  "pageWip.title": "Work in Progress",
+  "pageWip.subTitle": "Looks like you got here a bit too early",
+  "pageWip.description": "The page you're looking for is still under development",
+  "pageWip.backButton": "BACK HOME",
   "page.forgetPassTitle": "Isomorphic",
   "page.forgetPassSubTitle": "Forgot Password?",
   "page.forgetPassDescription":

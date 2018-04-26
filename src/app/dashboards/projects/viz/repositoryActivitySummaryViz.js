@@ -1,9 +1,9 @@
-import {withVizDomainMapper} from "../../../../services/vizData/index";
+import {withVizDomainMapper} from "../../../services/vizData/index";
 import {DataSources} from "../dataSources";
-import {polarisTimestamp} from "../../../../helpers/utility";
-import {ActivitySummaryViz} from "../../../../components/viz/activitySummary/index";
+import {polarisTimestamp} from "../../../helpers/utility";
+import {ActivitySummaryViz} from "../../../components/viz/activitySummary/index";
 import moment from 'moment';
-import {withActivityLevel} from "../../../../components/viz/activitySummary/index";
+import {withActivityLevel} from "../../../components/viz/activitySummary/index";
 
 
 

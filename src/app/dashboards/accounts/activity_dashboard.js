@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dashboard, DashboardRow, DashboardItem} from '../../index';
+import { Dashboard, DashboardRow, DashboardItem} from '../index';
 import {OrganizationActivitySummaryViz} from "./viz/organizationActivitySummaryViz";
 
 export const dashboard = (props) => (

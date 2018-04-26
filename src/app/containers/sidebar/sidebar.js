@@ -13,6 +13,7 @@ import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../../containers/ThemeSwitcher/config';
 import {themeConfig} from '../../../config';
+import Icons from '../../helpers/icons';
 
 const {Sider} = Layout;
 const {
@@ -111,7 +112,6 @@ class Sidebar extends Component {
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
-
     return (
       <SidebarWrapper>
         <Sider
@@ -129,38 +129,24 @@ class Sidebar extends Component {
             renderView={this.renderView}
             style={{height: scrollheight - 70}}
           >
-            <Route path={`${url}/dashboard/:aspect/(.*)`} render={(props) => (
-              <React.Fragment>
-                <Menu
-                  {...menuProps}
-                >
-                  <Menu.Item key="activity">
-                    <Link to={`${url}/dashboard/activity/${props.match.params[1]}`}>
+            {
+              this.props.sidebar.get('topics').map(
+                topic => (
+                  <Menu {...menuProps} >
+                    <Menu.Item key={`${topic.name}`}>
+                      <Link to={`${topic.link}`}>
                       <span className="isoMenuHolder" style={submenuColor}>
-                        <i className="ion-ios-pulse-strong"/>
+                        <i className={`${Icons.topics[topic.name]}`}/>
                         <span className="nav-text">
-                          <IntlMessages id={'sidebar.activity'}/>
+                          <IntlMessages id={`sidebar.${topic.name}`}/>
                         </span>
                       </span>
-                    </Link>
-                  </Menu.Item>
-                </Menu>
-                <Menu
-                  {...menuProps}
-                >
-                  <Menu.Item key="contributors">
-                    <Link to={`${url}/dashboard/contributors/${props.match.params[1]}`}>
-                    <span className="isoMenuHolder" style={submenuColor}>
-                      <i className="ion-ios-people"/>
-                      <span className="nav-text">
-                        <IntlMessages id={'sidebar.contributors'}/>
-                      </span>
-                    </span>
-                    </Link>
-                  </Menu.Item>
-                </Menu>
-              </React.Fragment>
-              )}/>
+                      </Link>
+                    </Menu.Item>
+                  </Menu>
+                )
+              )
+            }
           </Scrollbars>
         </Sider>
       </SidebarWrapper>
@@ -169,9 +155,11 @@ class Sidebar extends Component {
 }
 
 
+
 export default connect(
   state => ({
-    app: state.App.toJS()
+    app: state.App.toJS(),
+    sidebar: state.sidebar
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
 )(Sidebar);

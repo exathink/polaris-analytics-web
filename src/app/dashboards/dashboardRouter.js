@@ -1,25 +1,32 @@
 import './dashboard.css';
-import {ActivityDashboardsRouter} from './activity/activityDashboardsRouter';
-
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import FourZeroFour from "../../containers/Page/404";
 import React from "react";
 import { Switch, Route, Redirect} from 'react-router-dom';
+import asyncComponent from "../../helpers/AsyncFunc";
 
 
-class DashboardsRouter extends React.Component {
+export class DashboardsRouter extends React.Component {
   render() {
     const {match} = this.props;
     return (
       <Switch>
         <Route
-          path={`${match.path}/activity`}
-          component={ActivityDashboardsRouter}
+          path={`${match.path}/activity/projects/:organization/:project`}
+          component={asyncComponent(() => import('./projects/project_activity_dashboard'))}
+        />
+        <Route
+          path={`${match.path}/activity/organizations/:organization`}
+          component={asyncComponent(() => import('./organizations/organization_activity_dashboard'))}
+        />
+        <Route
+          path={`${match.path}/account`}
+          component={asyncComponent(() => import('./accounts/account'))}
         />
         <Route
           exact path={`${match.path}`}
-          render={() => <Redirect to={`${match.path}/activity`} />}
+          render={() => <Redirect to={`${match.path}/account`} />}
         />
         <Route
           component={FourZeroFour}
@@ -28,6 +35,8 @@ class DashboardsRouter extends React.Component {
     );
   }
 }
+
+
 
 const DashboardMenu = () => (
   <nav className="dashboard-footer">
