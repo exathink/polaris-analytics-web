@@ -1,14 +1,14 @@
 const actions = {
   // types
-  SET_TOPICS: 'SET_TOPICS',
-  CLEAR_TOPICS: 'CLEAR_TOPICS',
+  PUSH_TOPICS: 'PUSH_TOPICS',
+  POP_TOPICS: 'POP_TOPICS',
 
   // events
-  setTopics: payload => ({
-    type: actions.SET_TOPICS, payload: payload
+  pushTopics: payload => ({
+    type: actions.PUSH_TOPICS, payload: payload
   }),
-  clearTopics: () => ({
-    type: actions.CLEAR_TOPICS
+  popTopics: () => ({
+    type: actions.POP_TOPICS
   }),
 };
 export default actions;

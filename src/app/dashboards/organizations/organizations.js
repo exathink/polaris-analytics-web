@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/projects";
-const {setTopics, clearTopics} = sidebarActions;
+const {pushTopics, popTopics} = sidebarActions;
 
 class Organizations extends React.Component {
 
@@ -82,6 +82,6 @@ class Organization_ extends React.Component {
   }
 }
 
-const Organization = connect(null, {setTopics, clearTopics} )(Organization_);
+const Organization = connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Organization_);
 
-export default connect(null, {setTopics, clearTopics} )(Organizations);
+export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Organizations);

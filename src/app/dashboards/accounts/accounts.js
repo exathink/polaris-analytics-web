@@ -6,7 +6,7 @@ import Organizations from '../organizations/organizations';
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
-const {setTopics, clearTopics} = sidebarActions;
+const {pushTopics, popTopics} = sidebarActions;
 
 
 
@@ -57,4 +57,4 @@ class Accounts extends React.Component {
 }
 
 
-export default connect(null, {setTopics, clearTopics} )(Accounts);
+export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Accounts);

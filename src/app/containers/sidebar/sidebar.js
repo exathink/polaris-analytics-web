@@ -14,6 +14,7 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../../containers/ThemeSwitcher/config';
 import {themeConfig} from '../../../config';
 import Icons from '../../helpers/icons';
+import {getCurrentTopics} from "../redux/sidebar/reducer";
 
 const {Sider} = Layout;
 const {
@@ -112,6 +113,7 @@ class Sidebar extends Component {
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
+    const { topics } = this.props;
     return (
       <SidebarWrapper>
         <Sider
@@ -130,7 +132,7 @@ class Sidebar extends Component {
             style={{height: scrollheight - 70}}
           >
             {
-              this.props.sidebar.get('topics').map(
+              topics.map(
                 topic => (
                   <Menu key={`${topic.name}`} {...menuProps} >
                     <Menu.Item key={`${topic.name}`}>
@@ -159,7 +161,7 @@ class Sidebar extends Component {
 export default connect(
   state => ({
     app: state.App.toJS(),
-    sidebar: state.sidebar
+    topics: getCurrentTopics(state.sidebar)
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
 )(Sidebar);

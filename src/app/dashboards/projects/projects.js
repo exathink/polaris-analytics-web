@@ -6,7 +6,7 @@ import Wip from "../../../containers/Page/wip";
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
-const {setTopics, clearTopics} = sidebarActions;
+const {pushTopics, popTopics} = sidebarActions;
 
 class Project_ extends React.Component {
 
@@ -73,5 +73,5 @@ class Projects extends React.Component {
 
 
 
-const Project = connect(null, {setTopics, clearTopics} )(Project_);
+const Project = connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Project_);
 export default Projects;
