@@ -2,14 +2,17 @@ import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import {Route, Switch, Redirect} from 'react-router-dom';
 import Wip from "../../../containers/Page/wip";
+import Organizations from '../organizations/organizations';
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 const {setTopics, clearTopics} = sidebarActions;
 
-class Account extends React.Component {
 
-  componentDidMount() {
+
+class Accounts extends React.Component {
+
+  componentWillMount() {
       const {match, setTopics} = this.props;
       setTopics([
         {
@@ -33,6 +36,10 @@ class Account extends React.Component {
     return(
       <Switch>
         <Route
+          path={`${match.path}/organizations`}
+          component={Organizations}
+        />
+        <Route
           path={`${match.path}/activity`}
           component={asyncComponent(() => import('./activity_dashboard'))}
         />
@@ -50,4 +57,4 @@ class Account extends React.Component {
 }
 
 
-export default connect(null, {setTopics, clearTopics} )(Account);
+export default connect(null, {setTopics, clearTopics} )(Accounts);

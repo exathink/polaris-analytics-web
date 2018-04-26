@@ -51,17 +51,17 @@ const organizationActivitySummaryDomainMapper = {
         earliest_commit: polarisTimestamp(account_summary.earliest_commit),
         latest_commit: polarisTimestamp(account_summary.latest_commit)
       }))[0],
-      level_label: 'Account',
+      level_label: 'Accounts',
       level: props.account.company,
       subject_label: 'Org',
       subject_label_long: 'Organization',
-      subject_label_plural: 'Organizations',
+      subject_label_plural: 'Projects',
       subject_icon: "ion-ios-albums",
       subject_color: '#7266BA',
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/activity/organizations/${event.entity_name}`)
+        props.navigate.push(`/app/dashboard/account/organizations/${event.entity_name}/activity`)
       }
     }
   }

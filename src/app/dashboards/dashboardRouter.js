@@ -4,8 +4,8 @@ import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import FourZeroFour from "../../containers/Page/404";
 import React from "react";
 import { Switch, Route, Redirect} from 'react-router-dom';
-import asyncComponent from "../../helpers/AsyncFunc";
 
+import AccountRouter from './accounts/accounts';
 
 export class DashboardsRouter extends React.Component {
   render() {
@@ -13,16 +13,8 @@ export class DashboardsRouter extends React.Component {
     return (
       <Switch>
         <Route
-          path={`${match.path}/activity/projects/:organization/:project`}
-          component={asyncComponent(() => import('./projects/project_activity_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/activity/organizations/:organization`}
-          component={asyncComponent(() => import('./organizations/organization_activity_dashboard'))}
-        />
-        <Route
           path={`${match.path}/account`}
-          component={asyncComponent(() => import('./accounts/account'))}
+          component={AccountRouter}
         />
         <Route
           exact path={`${match.path}`}
