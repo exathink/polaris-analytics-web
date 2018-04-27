@@ -7,6 +7,8 @@ import { Switch, Route, Redirect} from 'react-router-dom';
 
 import AccountRouter from './accounts/accounts';
 
+import {routes} from './routes';
+
 export class DashboardsRouter extends React.Component {
   render() {
     const {match} = this.props;
