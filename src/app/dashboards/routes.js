@@ -13,7 +13,7 @@ const routeTable =  {
     },
     {
       name: 'contributors',
-      component: <Wip/>
+      component: Wip
     }
   ],
   children: [
@@ -39,7 +39,7 @@ const routeTable =  {
                 },
                 {
                   name: 'contributors',
-                  component: <Wip/>
+                  component: Wip
                 }
               ]
             }
@@ -69,15 +69,10 @@ const buildRoutes = (route) => (
       )
     ) : [];
     return(
-      <Switch>
-        {topicRoutes}
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
+      React.createElement(Switch, {}, ...topicRoutes)
     )
   }
 );
 
-export const routes = buildRoutes(routeTable);
-console.log(routes);
+export default buildRoutes(routeTable);
+

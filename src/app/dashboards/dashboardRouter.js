@@ -7,7 +7,7 @@ import { Switch, Route, Redirect} from 'react-router-dom';
 
 import AccountRouter from './accounts/accounts';
 
-import {routes} from './routes';
+import Routes from './routes';
 
 export class DashboardsRouter extends React.Component {
   render() {
@@ -16,7 +16,7 @@ export class DashboardsRouter extends React.Component {
       <Switch>
         <Route
           path={`${match.path}/account`}
-          component={AccountRouter}
+          render={Routes}
         />
         <Route
           exact path={`${match.path}`}
