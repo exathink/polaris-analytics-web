@@ -16,7 +16,7 @@ export class DashboardsRouter extends React.Component {
       <Switch>
         <Route
           path={`${match.path}/account`}
-          render={Routes}
+          component={AccountRouter}
         />
         <Route
           exact path={`${match.path}`}
@@ -50,6 +50,6 @@ export const DashboardWrapper = (props) => (
 
 export const DashboardContainer =  (props) => (
   <DashboardWrapper>
-    <DashboardsRouter {...props} />
+    <Routes {...props} />
   </DashboardWrapper>
 );

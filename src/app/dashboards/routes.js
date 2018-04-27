@@ -1,78 +1,107 @@
 import React from 'react';
 import Wip from "../../containers/Page/wip";
 import asyncComponent from "../../helpers/AsyncFunc";
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import FourZeroFour from "../../containers/Page/404";
 
-const routeTable =  {
-  level: 'accounts',
-  topics: [
+
+const routeTable = {
+  rules: [
     {
-      name: 'activity',
-      component: asyncComponent(() => import('./accounts/activity_dashboard'))
-    },
-    {
-      name: 'contributors',
-      component: Wip
-    }
-  ],
-  children: [
-    {
-      level: 'organizations',
-      instance: {
-        level: 'organizations',
-        topics: [
+      match: 'account',
+      table: {
+        rules: [
           {
-            name: 'activity',
-            component: asyncComponent(() => import('./organizations/activity_dashboard'))
-          }
-        ],
-        children: [
+            match: 'activity',
+            component: asyncComponent(() => import('./accounts/activity_dashboard'))
+          },
           {
-            level: 'projects',
-            instance: {
-              level: 'organizations',
-              topics: [
+            match: 'contributors',
+            component: Wip
+          },
+          {
+            match: 'organizations/:organization',
+            table: {
+              rules: [
                 {
-                  name: 'activity',
+                  match: 'activity',
                   component: asyncComponent(() => import('./organizations/activity_dashboard'))
                 },
                 {
-                  name: 'contributors',
-                  component: Wip
+                  match: 'contributors',
+                  render: () => <Wip/>
+                },
+                {
+                  match: 'projects/:project',
+                  table: {
+                    rules: [
+                      {
+                        match: 'activity',
+                        component: asyncComponent(() => import('./projects/activity_dashboard'))
+                      },
+                      {
+                        match: 'contributors',
+                        render: () => null
+                      }
+                    ],
+                    default: 'activity'
+                  }
                 }
-              ]
+              ],
+              default: 'activity'
             }
           }
-        ]
+        ],
+        default: 'activity',
       }
     }
-  ]
+  ],
+  default: 'accounts',
 };
 
-const buildRoutes = (route) => (
-  props => {
-    const { match } = props;
-    const topicLinks = route.topics ?  route.topics.map(
-      topic => ({
-        name: topic.name,
-        link: `${match.url}/${topic.name}`
-      })
-    ) : [];
 
-    const topicRoutes = route.topics ? route.topics.map(
-      topic => (
-        <Route
-          path={`${match.path}/${topic.name}`}
-          component={topic.component}
-        />
-      )
+const buildRoutes = (route, path = '') => (
+  props => {
+    console.log(`Building routes from ${path}`);
+    const {match} = props;
+    const routes = route.rules ? route.rules.map(
+      rule => {
+        const target =
+          rule.component ? {component: rule.component} :
+            rule.render ? {render: rule.render} :
+              rule.table ? {render: buildRoutes(rule.table, `${path}/${rule.match}`)} :
+                null;
+
+        if (target == null) {
+          throw new Error(`Rule: ${rule.match} should specify one of the attributes [component, render, table]`)
+        }
+        return (
+          <Route
+            key={rule.match}
+            path={`${match.path}/${rule.match}`}
+            {...target}
+          />
+        )
+
+      }
     ) : [];
-    return(
-      React.createElement(Switch, {}, ...topicRoutes)
-    )
+    const defaultRoute = route.default ?
+      <Route
+        key={'default'}
+        exact path={`${match.path}`}
+        render={() => <Redirect to={`${match.url}/${route.default}`}/>}
+      /> : null;
+    if (defaultRoute != null) {
+      routes.push(defaultRoute)
+    }
+
+    return React.createElement(Switch, {}, ...routes);
   }
 );
 
-export default buildRoutes(routeTable);
+const foo = buildRoutes(routeTable);
+export default foo;
+
+console.log(foo);
+
 
