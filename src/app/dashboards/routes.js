@@ -2,15 +2,17 @@ import React from 'react';
 import Wip from "../../containers/Page/wip";
 import asyncComponent from "../../helpers/AsyncFunc";
 import {Route, Switch, Redirect} from 'react-router-dom';
+import {flatMap} from 'lodash';
+
 import FourZeroFour from "../../containers/Page/404";
 
 
-const routeTable = {
-  rules: [
+const routeTree = {
+  routes: [
     {
       match: 'account',
-      table: {
-        rules: [
+      routes: {
+        routes: [
           {
             match: 'activity',
             component: asyncComponent(() => import('./accounts/activity_dashboard'))
@@ -21,8 +23,8 @@ const routeTable = {
           },
           {
             match: 'organizations/:organization',
-            table: {
-              rules: [
+            routes: {
+              routes: [
                 {
                   match: 'activity',
                   component: asyncComponent(() => import('./organizations/activity_dashboard'))
@@ -33,8 +35,8 @@ const routeTable = {
                 },
                 {
                   match: 'projects/:project',
-                  table: {
-                    rules: [
+                  routes: {
+                    routes: [
                       {
                         match: 'activity',
                         component: asyncComponent(() => import('./projects/activity_dashboard'))
@@ -66,58 +68,66 @@ const routeTable = {
     },
     {
       match: '',
-      redirect: 'accounts'
+      redirect: 'account'
     }
   ]
 };
 
 
-const buildRoutes = (routeTable, path = '') => (
+const buildRoutes = (routeTree, path = '') => (
   props => {
     const {match} = props;
 
-    if (routeTable.rules != null) {
+    if (routeTree.routes != null) {
       return React.createElement(
         Switch,
         {},
-        ...routeTable.rules.map(
-          rule => {
+        ...flatMap(routeTree.routes,
+          routes => {
             const pattern =
-              rule.match != null ?
-                (rule.match.length > 0 ? `${match.path}/${rule.match}` : `${match.path}`) :
+              routes.match != null ?
+                (routes.match.length > 0 ? `${match.path}/${routes.match}` : `${match.path}`) :
                 null;
             if (pattern === null) {
-              throw new Error(`Rule did not specify a match property`)
+              throw new Error(`Route did not specify a match property`)
             }
             const target =
-              rule.component ? {component: rule.component} :
-                rule.render ? {render: rule.render} :
-                  rule.redirect ? {render: () => <Redirect to={`${match.url}/${rule.redirect}`}/>} :
-                    rule.table ? {render: buildRoutes(rule.table, `${path}/${rule.match}`)} :
-                      null;
+              routes.component ? {component: routes.component} :
+                routes.render ? {render: routes.render} :
+                  routes.redirect ? {render: () => <Redirect to={`${match.url}/${routes.redirect}`}/>} :
+                    null;
 
-            if (target === null) {
-              throw new Error(`Rule: ${rule.match} does not specify any of the attributes [component, render, table, redirect]`)
-            }
-            return (
-              <Route
-                key={rule.match}
-                path={pattern}
-                {...target}
-              />
-            )
+            // This is the child component displayed at this path. May be null.
+            const targetRoute = target != null ?
+              [
+                <Route
+                  key={`${routes.match}.target`}
+                  path={pattern}
+                  {...target}
+                />
+              ]
+              : [];
+
+            // This recursively builds the route for the routes that are rooted at this path. May be null
+            const childRouter = routes.routes ?
+              [
+                <Route
+                  key={`${routes.match}.childRouter`}
+                  path={pattern}
+                  render={buildRoutes(routes.routes, `${path}/${routes.match}`)}
+                />
+              ]
+              : [];
+
+            return [...targetRoute, ...childRouter]
           }
         )
       )
-    } else {
-      throw new Error(`Route table for ${path} does not contain an attribute named 'rules'`);
     }
   }
 );
 
-const foo = buildRoutes(routeTable);
-export default foo;
+export default buildRoutes(routeTree);
 
-console.log(foo);
 
 
