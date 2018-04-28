@@ -42,60 +42,76 @@ const routeTable = {
                       {
                         match: 'contributors',
                         render: () => null
+                      },
+                      {
+                        match: '',
+                        redirect: 'activity'
                       }
-                    ],
-                    default: 'activity'
+                    ]
                   }
+                },
+                {
+                  match: '',
+                  redirect: 'activity'
                 }
-              ],
-              default: 'activity'
+              ]
             }
+          },
+          {
+            match: '',
+            redirect: 'activity'
           }
-        ],
-        default: 'activity',
+        ]
       }
+    },
+    {
+      match: '',
+      redirect: 'accounts'
     }
-  ],
-  default: 'accounts',
+  ]
 };
 
 
-const buildRoutes = (route, path = '') => (
+const buildRoutes = (routeTable, path = '') => (
   props => {
-    console.log(`Building routes from ${path}`);
     const {match} = props;
-    const routes = route.rules ? route.rules.map(
-      rule => {
-        const target =
-          rule.component ? {component: rule.component} :
-            rule.render ? {render: rule.render} :
-              rule.table ? {render: buildRoutes(rule.table, `${path}/${rule.match}`)} :
+
+    if (routeTable.rules != null) {
+      return React.createElement(
+        Switch,
+        {},
+        ...routeTable.rules.map(
+          rule => {
+            const pattern =
+              rule.match != null ?
+                (rule.match.length > 0 ? `${match.path}/${rule.match}` : `${match.path}`) :
                 null;
+            if (pattern === null) {
+              throw new Error(`Rule did not specify a match property`)
+            }
+            const target =
+              rule.component ? {component: rule.component} :
+                rule.render ? {render: rule.render} :
+                  rule.redirect ? {render: () => <Redirect to={`${match.url}/${rule.redirect}`}/>} :
+                    rule.table ? {render: buildRoutes(rule.table, `${path}/${rule.match}`)} :
+                      null;
 
-        if (target == null) {
-          throw new Error(`Rule: ${rule.match} should specify one of the attributes [component, render, table]`)
-        }
-        return (
-          <Route
-            key={rule.match}
-            path={`${match.path}/${rule.match}`}
-            {...target}
-          />
+            if (target === null) {
+              throw new Error(`Rule: ${rule.match} does not specify any of the attributes [component, render, table, redirect]`)
+            }
+            return (
+              <Route
+                key={rule.match}
+                path={pattern}
+                {...target}
+              />
+            )
+          }
         )
-
-      }
-    ) : [];
-    const defaultRoute = route.default ?
-      <Route
-        key={'default'}
-        exact path={`${match.path}`}
-        render={() => <Redirect to={`${match.url}/${route.default}`}/>}
-      /> : null;
-    if (defaultRoute != null) {
-      routes.push(defaultRoute)
+      )
+    } else {
+      throw new Error(`Route table for ${path} does not contain an attribute named 'rules'`);
     }
-
-    return React.createElement(Switch, {}, ...routes);
   }
 );
 
