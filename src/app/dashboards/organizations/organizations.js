@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/projects";
-import {buildRoutes} from "../routes";
+import {buildRouter} from "../routes";
 
 const {pushTopics, popTopics} = sidebarActions;
 
@@ -44,7 +44,7 @@ const routeTree = {
   ]
 };
 
-const OrganizationsRouter = buildRoutes(routeTree);
+const OrganizationsRouter = buildRouter(routeTree);
 
 
 

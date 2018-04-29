@@ -3,7 +3,7 @@ import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
 import Accounts from './accounts/accounts';
-import {buildRoutes} from "./routes";
+import {buildRouter} from "./routes";
 
 const routeTree = {
   routes: [
@@ -18,7 +18,7 @@ const routeTree = {
   ]
 };
 
-const DashboardRouter = buildRoutes(routeTree);
+const DashboardRouter = buildRouter(routeTree);
 
 
 const DashboardMenu = () => (

@@ -5,7 +5,7 @@ import asyncComponent from "../../../helpers/AsyncFunc";
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
-import {buildRoutes} from "../routes";
+import {buildRouter} from "../routes";
 
 const {pushTopics, popTopics} = sidebarActions;
 
@@ -38,7 +38,7 @@ const routeTree = {
   ]
 };
 
-const ProjectsRouter = buildRoutes(routeTree);
+const ProjectsRouter = buildRouter(routeTree);
 
 class Projects extends React.Component {
 

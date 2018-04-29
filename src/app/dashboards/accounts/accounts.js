@@ -5,7 +5,7 @@ import Organizations from '../organizations/organizations';
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
-import {buildRoutes} from "../routes";
+import {buildRouter} from "../routes";
 
 const {pushTopics, popTopics} = sidebarActions;
 
@@ -31,7 +31,7 @@ const routeTree = {
   ]
 };
 
-const AccountsRouter = buildRoutes(routeTree);
+const AccountsRouter = buildRouter(routeTree);
 
 class Accounts extends React.Component {
 
