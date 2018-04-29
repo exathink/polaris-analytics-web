@@ -1,35 +1,24 @@
 import './dashboard.css';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
-import FourZeroFour from "../../containers/Page/404";
 import React from "react";
-import { Switch, Route, Redirect} from 'react-router-dom';
+import Accounts from './accounts/accounts';
+import {buildRoutes} from "./routes";
 
-import AccountRouter from './accounts/accounts';
+const routeTree = {
+  routes: [
+    {
+      match: 'account',
+      component: Accounts,
+    },
+    {
+      match: '',
+      redirect: 'account'
+    }
+  ]
+};
 
-import Routes from './routes';
-
-export class DashboardsRouter extends React.Component {
-  render() {
-    const {match} = this.props;
-    return (
-      <Switch>
-        <Route
-          path={`${match.path}/account`}
-          component={AccountRouter}
-        />
-        <Route
-          exact path={`${match.path}`}
-          render={() => <Redirect to={`${match.path}/account`} />}
-        />
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
-    );
-  }
-}
-
+const DashboardRouter = buildRoutes(routeTree);
 
 
 const DashboardMenu = () => (
@@ -50,6 +39,6 @@ export const DashboardWrapper = (props) => (
 
 export const DashboardContainer =  (props) => (
   <DashboardWrapper>
-    <Routes {...props} />
+    <DashboardRouter {...props} />
   </DashboardWrapper>
 );

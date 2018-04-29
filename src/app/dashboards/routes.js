@@ -1,76 +1,5 @@
 import React from 'react';
-import Wip from "../../containers/Page/wip";
-import asyncComponent from "../../helpers/AsyncFunc";
-import {Route, Switch, Redirect} from 'react-router-dom';
-
-
-
-const routeTree = {
-  routes: [
-    {
-      match: 'account',
-      routes: {
-        routes: [
-          {
-            match: 'activity',
-            component: asyncComponent(() => import('./accounts/activity_dashboard'))
-          },
-          {
-            match: 'contributors',
-            component: Wip
-          },
-          {
-            match: 'organizations/:organization',
-            routes: {
-              routes: [
-                {
-                  match: 'activity',
-                  component: asyncComponent(() => import('./organizations/activity_dashboard'))
-                },
-                {
-                  match: 'contributors',
-                  render: () => <Wip/>
-                },
-                {
-                  match: 'projects/:project',
-                  routes: {
-                    routes: [
-                      {
-                        match: 'activity',
-                        component: asyncComponent(() => import('./projects/activity_dashboard'))
-                      },
-                      {
-                        match: 'contributors',
-                        render: () => null
-                      },
-                      {
-                        match: '',
-                        redirect: 'activity'
-                      }
-                    ]
-                  }
-                },
-                {
-                  match: '',
-                  redirect: 'activity'
-                }
-              ]
-            }
-          },
-          {
-            match: '',
-            redirect: 'activity'
-          }
-        ]
-      }
-    },
-    {
-      match: '',
-      redirect: 'account'
-    }
-  ]
-};
-
+import {Redirect, Route, Switch} from 'react-router-dom';
 
 
 export const buildRoutes = (routeTree, path = '') => (
@@ -134,7 +63,7 @@ export const buildRoutes = (routeTree, path = '') => (
   }
 );
 
-export default buildRoutes(routeTree);
+
 
 
 

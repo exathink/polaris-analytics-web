@@ -1,14 +1,46 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
-import {Route, Switch, Redirect} from 'react-router-dom';
-import Wip from "../../../containers/Page/wip";
+
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
+import {buildRoutes} from "../routes";
+
 const {pushTopics, popTopics} = sidebarActions;
 
-class Project_ extends React.Component {
+
+const routeTree = {
+  routes: [
+    {
+      match: ':project',
+      routes: {
+        routes: [
+          {
+            match: 'activity',
+            component: asyncComponent(() => import('./activity_dashboard'))
+          },
+          {
+            match: 'contributors',
+            render: () => null
+          },
+          {
+            match: '',
+            redirect: 'activity'
+          }
+        ]
+      }
+    },
+    {
+      match: '',
+      component: FourZeroFour
+    }
+  ]
+};
+
+const ProjectsRouter = buildRoutes(routeTree);
+
+class Projects extends React.Component {
 
   componentWillMount() {
     const {match, setTopics} = this.props;
@@ -30,48 +62,13 @@ class Project_ extends React.Component {
   }
 
   render() {
-    const {match} = this.props;
     return(
-      <Switch>
-        <Route
-          path={`${match.path}/activity`}
-          component={asyncComponent(() => import('./activity_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/contributors`}
-          component={Wip}
-        />
-        <Route
-          exact path={`${match.path}`}
-          component={() => <Redirect to={`${match.url}/activity`}/>}
-        />
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
-    );
-  }
-}
-
-class Projects extends React.Component {
-
-  render() {
-    const {match} = this.props;
-    return(
-      <Switch>
-        <Route
-          path={`${match.path}/:project`}
-          component={Project}
-        />
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
+      <ProjectsRouter {...this.props}/>
     );
   }
 }
 
 
 
-const Project = connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Project_);
-export default Projects;
+export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Projects);
+

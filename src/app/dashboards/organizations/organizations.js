@@ -1,38 +1,59 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
-import {Route, Switch, Redirect} from 'react-router-dom';
 import Wip from "../../../containers/Page/wip";
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/projects";
+import {buildRoutes} from "../routes";
+
 const {pushTopics, popTopics} = sidebarActions;
 
+
+const routeTree = {
+  routes: [
+    {
+      match: ':organization',
+      routes: {
+        routes: [
+          {
+            match: 'projects',
+            component: Projects
+          },
+          {
+            match: 'activity',
+            component: asyncComponent(() => import('./activity_dashboard'))
+          },
+          {
+            match: 'contributors',
+            component: Wip
+          },
+
+          {
+            match: '',
+            redirect: 'activity'
+          }
+        ]
+      }
+    },
+    {
+      match: '',
+      component: FourZeroFour
+    }
+  ]
+};
+
+const OrganizationsRouter = buildRoutes(routeTree);
+
+
+
+
 class Organizations extends React.Component {
-
-  render() {
-    const {match} = this.props;
-    return(
-      <Switch>
-        <Route
-          path={`${match.path}/:organization`}
-          component={Organization}
-        />
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
-    );
-  }
-}
-
-class Organization_ extends React.Component {
 
   componentWillMount() {
     this.updateTopics();
   }
-
 
 
   updateTopics() {
@@ -55,33 +76,10 @@ class Organization_ extends React.Component {
   }
 
   render() {
-    const {match} = this.props;
-    return(
-      <Switch>
-        <Route
-          path={`${match.path}/projects`}
-          component={Projects}
-        />
-        <Route
-          path={`${match.path}/activity`}
-          component={asyncComponent(() => import('./activity_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/contributors`}
-          component={Wip}
-        />
-        <Route
-          exact path={`${match.path}`}
-          component={() => <Redirect to={`${match.url}/activity`}/>}
-        />
-        <Route
-          component={FourZeroFour}
-        />
-      </Switch>
+    return (
+      <OrganizationsRouter {...this.props}/>
     );
   }
 }
 
-const Organization = connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Organization_);
-
-export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Organizations);
+export default connect(null, {setTopics: pushTopics, clearTopics: popTopics})(Organizations);

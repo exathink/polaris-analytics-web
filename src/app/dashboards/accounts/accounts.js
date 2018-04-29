@@ -1,14 +1,37 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
-import {Route, Switch, Redirect} from 'react-router-dom';
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
 
 import {connect} from 'react-redux';
 import sidebarActions from "../../containers/redux/sidebar/actions";
+import {buildRoutes} from "../routes";
+
 const {pushTopics, popTopics} = sidebarActions;
 
 
+const routeTree = {
+  routes: [
+    {
+      match: 'organizations',
+      component: Organizations
+    },
+    {
+      match: 'activity',
+      component: asyncComponent(() => import('./activity_dashboard'))
+    },
+    {
+      match: 'contributors',
+      component: Wip
+    },
+    {
+      match:'',
+      redirect:'activity'
+    }
+  ]
+};
+
+const AccountsRouter = buildRoutes(routeTree);
 
 class Accounts extends React.Component {
 
@@ -32,26 +55,8 @@ class Accounts extends React.Component {
   }
 
   render() {
-    const {match} = this.props;
     return(
-      <Switch>
-        <Route
-          path={`${match.path}/organizations`}
-          component={Organizations}
-        />
-        <Route
-          path={`${match.path}/activity`}
-          component={asyncComponent(() => import('./activity_dashboard'))}
-        />
-        <Route
-          path={`${match.path}/contributors`}
-          component={Wip}
-        />
-        <Route
-          exact path={`${match.path}`}
-          component={() => <Redirect to={`${match.path}/activity`}/>}
-        />
-      </Switch>
+      <AccountsRouter {...this.props}/>
     );
   }
 }
