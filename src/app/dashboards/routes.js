@@ -2,9 +2,7 @@ import React from 'react';
 import Wip from "../../containers/Page/wip";
 import asyncComponent from "../../helpers/AsyncFunc";
 import {Route, Switch, Redirect} from 'react-router-dom';
-import {flatMap} from 'lodash';
 
-import FourZeroFour from "../../containers/Page/404";
 
 
 const routeTree = {
@@ -74,7 +72,8 @@ const routeTree = {
 };
 
 
-const buildRoutes = (routeTree, path = '') => (
+
+export const buildRoutes = (routeTree, path = '') => (
   props => {
     const {match} = props;
 
@@ -82,44 +81,52 @@ const buildRoutes = (routeTree, path = '') => (
       return React.createElement(
         Switch,
         {},
-        ...flatMap(routeTree.routes,
-          routes => {
-            const pattern =
-              routes.match != null ?
-                (routes.match.length > 0 ? `${match.path}/${routes.match}` : `${match.path}`) :
-                null;
-            if (pattern === null) {
+        ...routeTree.routes.map(
+          route => {
+            if (route.match === null) {
               throw new Error(`Route did not specify a match property`)
             }
             const target =
-              routes.component ? {component: routes.component} :
-                routes.render ? {render: routes.render} :
-                  routes.redirect ? {render: () => <Redirect to={`${match.url}/${routes.redirect}`}/>} :
+              route.component ? {component: route.component} :
+                route.render ? {render: route.render} :
+                  route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                     null;
 
             // This is the child component displayed at this path. May be null.
-            const targetRoute = target != null ?
-              [
-                <Route
-                  key={`${routes.match}.target`}
-                  path={pattern}
-                  {...target}
-                />
-              ]
-              : [];
+            const targetRoute =
+              target != null ?
+                route.match.length > 1 ?
+                  <Route
+                    key={`${route.match}.target`}
+                    path={`${match.path}/${route.match}`}
+                    {...target}
+                  /> :
+                  // Empty string match pattern: use exact match to base match path
+                  <Route
+                    key={`${route.match}.target`}
+                    exact path={`${match.path}`}
+                    {...target}
+                  /> :
+                null;
 
             // This recursively builds the route for the routes that are rooted at this path. May be null
-            const childRouter = routes.routes ?
-              [
+            const childRouter =
+              route.routes ?
                 <Route
-                  key={`${routes.match}.childRouter`}
-                  path={pattern}
-                  render={buildRoutes(routes.routes, `${path}/${routes.match}`)}
-                />
-              ]
-              : [];
+                  key={`${route.match}.childRouter`}
+                  path={`${match.path}/${route.match}`}
+                  render={buildRoutes(route.routes, `${path}/${route.match}`)}
+                /> :
+                null;
 
-            return [...targetRoute, ...childRouter]
+            if (targetRoute || childRouter) {
+              if (targetRoute && childRouter) {
+                //throw new Error(`Route must specify exactly one of target component or child routes`);
+              }
+              return targetRoute || childRouter
+            } else {
+              throw new Error(`Route must specify either a target or child routes`);
+            }
           }
         )
       )
