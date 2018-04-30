@@ -1,7 +1,7 @@
 import actions from "./actions";
 import {Stack} from 'immutable';
 
-export const getCurrentRoute = state => !state.isEmpty() ? state.peek().routes : [];
+
 
 
 

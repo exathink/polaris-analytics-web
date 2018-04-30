@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import clone from 'clone';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Layout} from 'antd';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Menu from '../../../components/uielements/menu';
@@ -113,7 +113,7 @@ class Sidebar extends Component {
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
-    const { topics } = this.props;
+    const { navigation } = this.props;
     return (
       <SidebarWrapper>
         <Sider
@@ -132,15 +132,15 @@ class Sidebar extends Component {
             style={{height: scrollheight - 70}}
           >
             {
-              topics.map(
+              navigation.map(
                 topic => (
-                  <Menu key={`${topic.name}`} {...menuProps} >
-                    <Menu.Item key={`${topic.name}`}>
+                  <Menu key={`${topic.routeTree.context}`} {...menuProps} >
+                    <Menu.Item key={`${topic.routeTree.context}`}>
                       <Link to={`${topic.link}`}>
                       <span className="isoMenuHolder" style={submenuColor}>
                         <i className={`${Icons.topics[topic.name]}`}/>
                         <span className="nav-text">
-                          <IntlMessages id={`sidebar.${topic.name}`}/>
+                          {topic.routeTree.context}
                         </span>
                       </span>
                       </Link>
@@ -158,10 +158,10 @@ class Sidebar extends Component {
 
 
 
-export default connect(
+export default withRouter(connect(
   state => ({
     app: state.App.toJS(),
-    topics: getCurrentTopics(state.sidebar)
+    navigation: state.navigation.toJS()
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
-)(Sidebar);
+)(Sidebar));
