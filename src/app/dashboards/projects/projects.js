@@ -1,17 +1,13 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
-
-
-import {connect} from 'react-redux';
-import sidebarActions from "../../containers/redux/sidebar/actions";
 import FourZeroFour from "../../../containers/Page/404";
 import {buildRouter} from "../routes";
 
-const {pushTopics, popTopics} = sidebarActions;
 
 
 const routeTree = {
   context: 'Projects',
+  hidden: true,
   routes: [
     {
       match: ':project',
@@ -44,25 +40,6 @@ const ProjectsRouter = buildRouter(routeTree);
 
 class Projects extends React.Component {
 
-  componentWillMount() {
-    const {match, setTopics} = this.props;
-    setTopics([
-      {
-        name: 'activity',
-        link: `${match.url}/activity`
-      },
-      {
-        name: 'contributors',
-        link: `${match.url}/contributors`
-      }
-    ])
-  }
-
-  componentWillUnmount() {
-    const {clearTopics} = this.props;
-    clearTopics();
-  }
-
   render() {
     return(
       <ProjectsRouter {...this.props}/>
@@ -72,5 +49,5 @@ class Projects extends React.Component {
 
 
 
-export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Projects);
+export default Projects;
 

@@ -2,12 +2,7 @@ import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
-
-import {connect} from 'react-redux';
-import sidebarActions from "../../containers/redux/sidebar/actions";
 import {buildRouter} from "../routes";
-
-const {pushTopics, popTopics} = sidebarActions;
 
 
 const routeTree = {
@@ -36,25 +31,6 @@ const AccountsRouter = buildRouter(routeTree);
 
 class Accounts extends React.Component {
 
-  componentWillMount() {
-      const {match, setTopics} = this.props;
-      setTopics([
-        {
-          name: 'activity',
-          link: `${match.url}/activity`
-        },
-        {
-          name: 'contributors',
-          link: `${match.url}/contributors`
-        }
-      ])
-  }
-
-  componentWillUnmount() {
-    const {clearTopics} = this.props;
-    clearTopics();
-  }
-
   render() {
     return(
       <AccountsRouter {...this.props}/>
@@ -63,4 +39,4 @@ class Accounts extends React.Component {
 }
 
 
-export default connect(null, {setTopics: pushTopics, clearTopics: popTopics} )(Accounts);
+export default Accounts;

@@ -113,7 +113,7 @@ class Sidebar extends Component {
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
-    const { navigation } = this.props;
+    const navigation  = this.props.navigation.filter(item => !item.routeTree.hidden);
     return (
       <SidebarWrapper>
         <Sider
