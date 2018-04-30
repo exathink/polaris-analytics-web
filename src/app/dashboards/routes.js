@@ -1,9 +1,11 @@
 import React from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import routeActions from '../redux/navigation/actions';
 
 
 export const buildRouter = (routeTree, path = '') => {
-  return class RouterNode extends React.Component {
+  return class extends React.Component {
 
     buildRoutes() {
       const {match} = this.props;
@@ -13,8 +15,8 @@ export const buildRouter = (routeTree, path = '') => {
             throw new Error(`Route did not specify a match property`)
           }
           const terminal =
-            route.component ? {component: route.component} :
-              route.render ? {render: route.render} :
+            route.component ? {component: withNavigationUpdates(route)(route.component)} :
+              route.render ? {component: withNavigationUpdates(route)(route.render)} :
                 route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                   null;
 
@@ -41,7 +43,7 @@ export const buildRouter = (routeTree, path = '') => {
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={buildRouter(route.routes, `${path}/${route.match}`)}
+                component={withNavigationUpdates(route)(buildRouter(route.routes, `${path}/${route.match}`))}
               /> :
               null;
 
@@ -69,6 +71,33 @@ export const buildRouter = (routeTree, path = '') => {
     }
   }
 };
+
+const {pushRoute, popRoute} = routeActions;
+
+export const withNavigationUpdates = (route) => {
+  return (Router) => {
+    return withRouter(
+      connect(null, {pushRoute, popRoute})(
+        class extends React.Component {
+          componentWillMount() {
+            this.props.pushRoute(route);
+          }
+          componentWillUnmount() {
+            this.props.popRoute(route);
+          }
+          render() {
+            return <Router {...this.props}/>
+          }
+        }
+      )
+    )
+  }
+};
+
+
+
+
+
 
 
 
