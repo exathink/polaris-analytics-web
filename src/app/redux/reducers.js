@@ -1,11 +1,11 @@
 import vizData from './viz/reducer';
-import routes from './navigation/reducer';
+import navigation from './navigation/reducer';
 
 import dashboardReducers from '../dashboards/redux/reducers';
 import containerReducers from '../containers/redux/reducers';
 export default {
   vizData,
-  routes,
+  navigation,
   ...dashboardReducers,
   ...containerReducers
 }

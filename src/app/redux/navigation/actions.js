@@ -7,8 +7,8 @@ const actions = {
   pushRoute: payload => ({
     type: actions.PUSH_ROUTE, payload: payload
   }),
-  popRoute: () => ({
-    type: actions.POP_ROUTE
+  popRoute: payload => ({
+    type: actions.POP_ROUTE, payload: payload
   }),
 };
 export default actions;

@@ -3,13 +3,26 @@ import {Stack} from 'immutable';
 
 export const getCurrentRoute = state => !state.isEmpty() ? state.peek().routes : [];
 
+
+
+const eq = (payload, current) =>
+  current && payload &&
+  current.routeTree &&
+  payload.routeTree.context === current.routeTree.context &&
+  payload.index === current.index;
+
+const includes = (state, payload) => state.find(current => eq(payload, current));
+
 const initState = new Stack();
 export default (state=initState, action) => {
   switch(action.type) {
-    case actions.PUSH_ROUTE:
-      return state.push({'routes': action.payload});
+    case actions.PUSH_ROUTE: {
+
+      return state.push(action.payload);
+    }
     case actions.POP_ROUTE:
-      return state.pop();
+      return state.butLast();
+
     default:
       return state;
   }

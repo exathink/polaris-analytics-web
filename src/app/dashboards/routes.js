@@ -10,13 +10,13 @@ export const buildRouter = (routeTree, path = '') => {
     buildRoutes() {
       const {match} = this.props;
       return routeTree.routes.map(
-        route => {
+        (route, index) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
           const terminal =
-            route.component ? {component: withNavigationUpdates(route)(route.component)} :
-              route.render ? {component: withNavigationUpdates(route)(route.render)} :
+            route.component ? {component: withNavigationUpdates(routeTree, index)(route.component)} :
+              route.render ? {component: withNavigationUpdates(routeTree, index)(route.render)} :
                 route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                   null;
 
@@ -43,7 +43,7 @@ export const buildRouter = (routeTree, path = '') => {
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={withNavigationUpdates(route)(buildRouter(route.routes, `${path}/${route.match}`))}
+                component={withNavigationUpdates(routeTree, index)(buildRouter(route.routes, `${path}/${route.match}`))}
               /> :
               null;
 
@@ -74,16 +74,29 @@ export const buildRouter = (routeTree, path = '') => {
 
 const {pushRoute, popRoute} = routeActions;
 
-export const withNavigationUpdates = (route) => {
+export const withNavigationUpdates = (routeTree, index) => {
   return (Router) => {
-    return withRouter(
+    return (
       connect(null, {pushRoute, popRoute})(
         class extends React.Component {
+          constructor(props) {
+            super(props);
+            this.mounts = 0;
+            this.unmounts = 0;
+          }
           componentWillMount() {
-            this.props.pushRoute(route);
+            this.props.pushRoute({
+              routeTree: routeTree,
+              index: index
+            });
+            this.mounts = this.mounts + 1;
           }
           componentWillUnmount() {
-            this.props.popRoute(route);
+            this.props.popRoute({
+                routeTree: routeTree,
+                index: index
+            });
+            this.unmounts = this.unmounts + 1;
           }
           render() {
             return <Router {...this.props}/>

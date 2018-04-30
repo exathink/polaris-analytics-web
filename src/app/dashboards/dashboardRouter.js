@@ -6,6 +6,7 @@ import Accounts from './accounts/accounts';
 import {buildRouter} from "./routes";
 
 const routeTree = {
+  context: 'dashboard',
   routes: [
     {
       match: 'account',

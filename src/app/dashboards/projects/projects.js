@@ -11,10 +11,12 @@ const {pushTopics, popTopics} = sidebarActions;
 
 
 const routeTree = {
+  context: 'Projects',
   routes: [
     {
       match: ':project',
       routes: {
+        context: 'Project',
         routes: [
           {
             match: 'activity',
