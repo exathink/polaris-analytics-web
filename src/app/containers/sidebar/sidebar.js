@@ -17,6 +17,7 @@ import Icons from '../../helpers/icons';
 import {getCurrentTopics} from "../redux/sidebar/reducer";
 
 const {Sider} = Layout;
+
 const {
   toggleOpenDrawer,
   changeOpenKeys,
@@ -86,13 +87,13 @@ class Sidebar extends Component {
     const mode = collapsed === true ? 'vertical' : 'inline';
     const onMouseEnter = event => {
       if (openDrawer === false) {
-        toggleOpenDrawer();
+        //toggleOpenDrawer();
       }
       return;
     };
     const onMouseLeave = () => {
       if (openDrawer === true) {
-        toggleOpenDrawer();
+        //toggleOpenDrawer();
       }
       return;
     };
@@ -100,20 +101,36 @@ class Sidebar extends Component {
     const styling = {
       backgroundColor: customizedTheme.backgroundColor,
     };
+    const submenuStyle = {
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      color: customizedTheme.textColor
+    };
     const submenuColor = {
-      color: customizedTheme.textColor,
+      color: customizedTheme.textColor
     };
 
+    const navigation  = this.props.navigation.filter(item => !item.routeTree.hidden);
+    const parentContext =
+      navigation.length > 1 ?
+        navigation[1] :
+        null;
+
+    const currentContext =
+      navigation.length > 0 ?
+        navigation[0] :
+        null;
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
-      openKeys: collapsed ? [] : app.openKeys,
-      selectedKeys: app.current.length === 0 ? ['activity'] : app.current,
+      openKeys: collapsed ? [] : [... app.openKeys, 'current-context'],
+      selectedKeys: app.current.length === 0 ? ['current-context'] : app.current,
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
-    const navigation  = this.props.navigation.filter(item => !item.routeTree.hidden);
+
+    const url = '';
+
     return (
       <SidebarWrapper>
         <Sider
@@ -131,24 +148,50 @@ class Sidebar extends Component {
             renderView={this.renderView}
             style={{height: scrollheight - 70}}
           >
-            {
-              navigation.map(
-                topic => (
-                  <Menu key={`${topic.routeTree.context}`} {...menuProps} >
-                    <Menu.Item key={`${topic.routeTree.context}`}>
-                      <Link to={`${topic.link}`}>
-                      <span className="isoMenuHolder" style={submenuColor}>
-                        <i className={`${Icons.topics[topic.name]}`}/>
-                        <span className="nav-text">
-                          {topic.routeTree.context}
-                        </span>
+            <Menu key={`top`} {...menuProps} >
+              {
+                parentContext ?
+                  <Menu.Item key="parent-context">
+                    <Link to={`${parentContext.match.url}`}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={`${Icons.contexts[parentContext.routeTree.context]}`}/>
+                      <span className="nav-text">
+                        <IntlMessages id={`context.${parentContext.routeTree.context}`}/>
                       </span>
-                      </Link>
-                    </Menu.Item>
-                  </Menu>
-                )
-              )
-            }
+                    </span>
+                    </Link>
+                  </Menu.Item>
+                  : null
+              }
+              {
+                currentContext ?
+                  <Menu.SubMenu
+                    key="current-context"
+                    title={
+                      <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={`${Icons.contexts[currentContext.routeTree.context]}`}/>
+                      <span className="nav-text">
+                        <IntlMessages id={`context.${currentContext.routeTree.context}`}/>
+                      </span>
+                    </span>
+                    }
+                  >
+                    {
+                      currentContext.routeTree.routes.filter(route=> route.topic).map(
+                        route => (
+                          <Menu.Item style={submenuStyle} key={`${route.match}`}>
+                            <Link style={submenuColor} to={`${currentContext.match.url}/${route.match}`}>
+                              <IntlMessages id={`topic.${route.match}`}/>
+                            </Link>
+                          </Menu.Item>
+                        )
+                      )
+                    }
+                  </Menu.SubMenu>
+                  : null
+              }
+
+            </Menu>
           </Scrollbars>
         </Sider>
       </SidebarWrapper>

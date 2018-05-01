@@ -9,23 +9,25 @@ import {buildRouter} from "../routes";
 
 
 const routeTree = {
-  context: 'Organizations',
+  context: 'organizations',
   hidden: true,
   routes: [
     {
       match: ':organization',
       routes: {
-        context: 'Organization',
+        context: 'organization',
         routes: [
           {
             match: 'projects',
             component: Projects
           },
           {
+            topic: true,
             match: 'activity',
             component: asyncComponent(() => import('./activity_dashboard'))
           },
           {
+            topic: true,
             match: 'contributors',
             component: Wip
           },

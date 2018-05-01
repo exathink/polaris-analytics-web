@@ -3,20 +3,22 @@ import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
 import {buildRouter} from "../routes";
-
+import Icons from '../../helpers/icons';
 
 const routeTree = {
-  context: 'Account',
+  context: 'account',
   routes: [
     {
       match: 'organizations',
       component: Organizations
     },
     {
+      topic: true,
       match: 'activity',
       component: asyncComponent(() => import('./activity_dashboard'))
     },
     {
+      topic: true,
       match: 'contributors',
       component: Wip
     },

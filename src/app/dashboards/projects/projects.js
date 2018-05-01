@@ -12,13 +12,15 @@ const routeTree = {
     {
       match: ':project',
       routes: {
-        context: 'Project',
+        context: 'project',
         routes: [
           {
+            topic: true,
             match: 'activity',
             component: asyncComponent(() => import('./activity_dashboard'))
           },
           {
+            topic: true,
             match: 'contributors',
             render: () => null
           },
