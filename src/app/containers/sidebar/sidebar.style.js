@@ -120,7 +120,7 @@ const SidebarWrapper = styled.div`
         }
 
         .nav-text {
-          color: #fff;
+          color: #ffca28;
         }
       }
 
@@ -140,12 +140,42 @@ const SidebarWrapper = styled.div`
 
     .ant-menu-submenu-inline,
     .ant-menu-submenu-vertical {
+      .ant-menu-item-selected {
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        .anticon {
+          color: #fff;
+        }
+
+        i {
+          color: #fff;
+        }
+
+        span {
+          color: #fff;
+        }
+      }
+      
       > .ant-menu-submenu-title {
         width: 100%;
         display: flex;
         align-items: center;
         padding: 0 24px;
+        
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        .anticon {
+          color: #fff;
+        }
 
+        i {
+          color: #fff;
+        }
+
+        .nav-text {
+          color: #fff;
+        }
+       
+        
+        
         > span {
           display: flex;
           align-items: center;

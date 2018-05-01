@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import clone from 'clone';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, NavLink, withRouter} from 'react-router-dom';
 import {Layout} from 'antd';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Menu from '../../../components/uielements/menu';
@@ -124,9 +124,14 @@ class Sidebar extends Component {
       theme: 'dark',
       mode: mode,
       openKeys: collapsed ? [] : [... app.openKeys, 'current-context'],
-      selectedKeys: app.current.length === 0 ? ['current-context'] : app.current,
+      selectedKeys: currentContext ? [`${currentContext.routeTree.routes[currentContext.index].match}`] : [''],
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
+    };
+
+    const currentContextColor = {
+      backgroundColor: '#ff8480',
+
     };
 
     const url = '';
@@ -149,20 +154,6 @@ class Sidebar extends Component {
             style={{height: scrollheight - 70}}
           >
             <Menu key={`top`} {...menuProps} >
-              {
-                parentContext ?
-                  <Menu.Item key="parent-context">
-                    <Link to={`${parentContext.match.url}`}>
-                    <span className="isoMenuHolder" style={submenuColor}>
-                      <i className={`${Icons.contexts[parentContext.routeTree.context]}`}/>
-                      <span className="nav-text">
-                        <IntlMessages id={`context.${parentContext.routeTree.context}`}/>
-                      </span>
-                    </span>
-                    </Link>
-                  </Menu.Item>
-                  : null
-              }
               {
                 currentContext ?
                   <Menu.SubMenu
@@ -188,6 +179,20 @@ class Sidebar extends Component {
                       )
                     }
                   </Menu.SubMenu>
+                  : null
+              }
+              {
+                parentContext ?
+                  <Menu.Item key="parent-context">
+                    <Link to={`${parentContext.match.url}`}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={`${Icons.contexts[parentContext.routeTree.context]}`}/>
+                      <span className="nav-text">
+                        <IntlMessages id={`context.${parentContext.routeTree.context}`}/>
+                      </span>
+                    </span>
+                    </Link>
+                  </Menu.Item>
                   : null
               }
 
