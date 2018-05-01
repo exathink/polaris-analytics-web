@@ -79,6 +79,7 @@ const SidebarWrapper = styled.div`
         align-items: center;
         padding: 0 24px;
         margin: 0;
+        
       }
 
       .isoMenuHolder {
