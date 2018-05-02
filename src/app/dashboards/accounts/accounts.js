@@ -1,11 +1,15 @@
+// @flow
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
 import {buildRouter} from "../../navigation/contextRouter";
-import Icons from '../../helpers/icons';
 
-const context = {
+
+import type {Context} from '../../navigation/context';
+
+
+const context : Context = {
   name: 'account',
   routes: [
     {
@@ -31,7 +35,7 @@ const context = {
 
 const AccountsRouter = buildRouter(context);
 
-class Accounts extends React.Component {
+class Accounts extends React.Component<any> {
 
   render() {
     return(

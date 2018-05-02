@@ -11,7 +11,7 @@ const context = {
   routes: [
     {
       match: ':project',
-      routes: {
+      context: {
         name: 'project',
         routes: [
           {

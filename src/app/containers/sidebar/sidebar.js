@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import clone from 'clone';
-import {Link, NavLink, withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Layout} from 'antd';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Menu from '../../../components/uielements/menu';
@@ -14,8 +14,6 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import Icons from '../../helpers/icons';
-
-
 const {Sider} = Layout;
 
 const {
@@ -80,23 +78,11 @@ class Sidebar extends Component {
   }
 
   render() {
-    const {app, toggleOpenDrawer} = this.props;
+    const {app} = this.props;
     const customizedTheme = getCurrentTheme('sidebarTheme', themeConfig.theme);
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
-    const {openDrawer} = app;
     const mode = collapsed === true ? 'vertical' : 'inline';
-    const onMouseEnter = event => {
-      if (openDrawer === false) {
-        //toggleOpenDrawer();
-      }
-      return;
-    };
-    const onMouseLeave = () => {
-      if (openDrawer === true) {
-        //toggleOpenDrawer();
-      }
-      return;
-    };
+
     const scrollheight = app.height;
     const styling = {
       backgroundColor: customizedTheme.backgroundColor,
@@ -136,15 +122,11 @@ class Sidebar extends Component {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
-      openKeys: collapsed ? [] : [... app.openKeys, 'current-context'],
+      openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
       selectedKeys: currentContext ? [`${currentContext.context.routes[currentContext.index].match}`] : [''],
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
-
-
-
-    const url = '';
 
     return (
       <SidebarWrapper>
@@ -154,8 +136,6 @@ class Sidebar extends Component {
           collapsed={collapsed}
           width="240"
           className="isomorphicSidebar"
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
           style={styling}
         >
           <Logo collapsed={collapsed}/>
@@ -196,7 +176,7 @@ class Sidebar extends Component {
                 parentContext ?
                   navigation.slice(1).map(
                     parentContext =>
-                      <Menu.Item  style={contextStack} key="parent-context">
+                      <Menu.Item  style={contextStack} key={`${parentContext.context.name}`}>
                         <Link to={`${parentContext.match.url}`}>
                         <span className="isoMenuHolder" style={submenuColor}>
                           <i className={`${Icons.contexts[parentContext.context.name]}`}/>

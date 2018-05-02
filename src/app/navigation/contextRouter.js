@@ -1,5 +1,5 @@
-import React from 'react';
-import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import * as React from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import routeActions from '../redux/navigation/actions';
 
@@ -37,23 +37,23 @@ export const buildRouter = (context, path = '') => {
                 /> :
               null;
 
-          // This recursively builds the route for the routes that are rooted at this path. May be null
+          // This recursively builds the route for a child context that is rooted at this path. May be null
           const childRouter =
-            route.routes ?
+            route.context ?
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={withNavigationUpdates(context, index, match)(buildRouter(route.routes, `${path}/${route.match}`))}
+                component={withNavigationUpdates(context, index, match)(buildRouter(route.context, `${path}/${route.match}`))}
               /> :
               null;
 
           if (terminalRoute || childRouter) {
             if (terminalRoute && childRouter) {
-              throw new Error(`Route must specify at most one of the attributes [component, render, redirect, routes]`);
+              throw new Error(`Route must specify at most one of the attributes [component, render, redirect, context]`);
             }
             return terminalRoute || childRouter
           } else {
-            throw new Error(`Route must specify at least one of the attributes [component, render, redirect, routes]`);
+            throw new Error(`Route must specify at least one of the attributes [component, render, redirect, context]`);
           }
         }
       );
