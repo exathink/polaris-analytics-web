@@ -1,17 +1,21 @@
+// @flow
 import './dashboard.css';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
-import Accounts from './accounts/accounts';
+import Accounts from './accounts/context';
 import {contextRouterFor} from "../navigation/contextRouter";
 
-const routeTree = {
+//types
+import type {Context} from '../navigation/context';
+
+const context : Context = {
   name: 'dashboard',
   hidden: true,
   routes: [
     {
       match: 'account',
-      component: Accounts,
+      context: Accounts,
     },
     {
       match: '',
@@ -20,7 +24,7 @@ const routeTree = {
   ]
 };
 
-const DashboardRouter = contextRouterFor(routeTree);
+const DashboardRouter = contextRouterFor(context);
 
 
 const DashboardMenu = () => (
@@ -30,7 +34,7 @@ const DashboardMenu = () => (
 );
 
 
-export const DashboardWrapper = (props) => (
+export const DashboardWrapper = (props: any) => (
   <LayoutWrapper id="dashboard" className="dashboard-wrapper">
     <div className="dashboard-vizzes">
       {props.children}
@@ -39,7 +43,7 @@ export const DashboardWrapper = (props) => (
   </LayoutWrapper>
 );
 
-export const DashboardContainer =  (props) => (
+export const DashboardContainer =  (props: any) => (
   <DashboardWrapper>
     <DashboardRouter {...props} />
   </DashboardWrapper>

@@ -1,12 +1,7 @@
-import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
-import Projects from "../projects/projects";
-import {contextRouterFor} from "../../navigation/contextRouter";
-
-
-
+import Projects from "../projects/context";
 
 const context = {
   name: 'organizations',
@@ -19,7 +14,7 @@ const context = {
         routes: [
           {
             match: 'projects',
-            component: Projects
+            context: Projects
           },
           {
             topic: true,
@@ -46,15 +41,5 @@ const context = {
   ]
 };
 
-const OrganizationsRouter = contextRouterFor(context);
 
-class Organizations extends React.Component {
-
-  render() {
-    return (
-      <OrganizationsRouter {...this.props}/>
-    );
-  }
-}
-
-export default Organizations;
+export default context;

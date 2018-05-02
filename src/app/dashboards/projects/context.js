@@ -1,11 +1,10 @@
-import React from 'react';
+// @flow
 import asyncComponent from "../../../helpers/AsyncFunc";
 import FourZeroFour from "../../../containers/Page/404";
-import {contextRouterFor} from "../../navigation/contextRouter";
+import type {Context} from '../../navigation/context';
 
 
-
-const context = {
+const context : Context = {
   name: 'Projects',
   hidden: true,
   routes: [
@@ -38,18 +37,5 @@ const context = {
   ]
 };
 
-const ProjectsRouter = contextRouterFor(context);
-
-class Projects extends React.Component {
-
-  render() {
-    return(
-      <ProjectsRouter {...this.props}/>
-    );
-  }
-}
-
-
-
-export default Projects;
+export default context;
 

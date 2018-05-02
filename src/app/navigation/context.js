@@ -27,7 +27,7 @@ export type RouteType =
   {
     match: string,
     context: Context
-  }
+  };
 
 
 

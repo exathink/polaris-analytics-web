@@ -1,20 +1,17 @@
 // @flow
-import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
-import Organizations from '../organizations/organizations';
-import {contextRouterFor} from "../../navigation/contextRouter";
-
+import Organizations from '../organizations/context';
 
 import type {Context} from '../../navigation/context';
 
 
-const context : Context = {
+const context: Context = {
   name: 'account',
   routes: [
     {
       match: 'organizations',
-      component: Organizations
+      context: Organizations
     },
     {
       topic: true,
@@ -33,16 +30,9 @@ const context : Context = {
   ]
 };
 
-const AccountsRouter = contextRouterFor(context);
-
-class Accounts extends React.Component<any> {
-
-  render() {
-    return(
-      <AccountsRouter {...this.props}/>
-    );
-  }
-}
+export default context;
 
 
-export default Accounts;
+
+
+
