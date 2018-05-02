@@ -122,7 +122,7 @@ class Sidebar extends Component {
     };
 
 
-    const navigation  = this.props.navigation.filter(item => !item.routeTree.hidden);
+    const navigation  = this.props.navigation.filter(item => !item.context.hidden);
     const parentContext =
       navigation.length > 1 ?
         navigation[1] :
@@ -137,7 +137,7 @@ class Sidebar extends Component {
       theme: 'dark',
       mode: mode,
       openKeys: collapsed ? [] : [... app.openKeys, 'current-context'],
-      selectedKeys: currentContext ? [`${currentContext.routeTree.routes[currentContext.index].match}`] : [''],
+      selectedKeys: currentContext ? [`${currentContext.context.routes[currentContext.index].match}`] : [''],
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
@@ -171,15 +171,15 @@ class Sidebar extends Component {
                     key="current-context"
                     title={
                       <span className="isoMenuHolder" style={submenuColor}>
-                      <i className={`${Icons.contexts[currentContext.routeTree.context]}`}/>
+                      <i className={`${Icons.contexts[currentContext.context.name]}`}/>
                       <span className="nav-text">
-                        <IntlMessages id={`context.${currentContext.routeTree.context}`}/>
+                        <IntlMessages id={`context.${currentContext.context.name}`}/>
                       </span>
                     </span>
                     }
                   >
                     {
-                      currentContext.routeTree.routes.filter(route=> route.topic).map(
+                      currentContext.context.routes.filter(route=> route.topic).map(
                         route => (
                           <Menu.Item style={submenuStyle} key={`${route.match}`}>
                             <Link style={submenuColor} to={`${currentContext.match.url}/${route.match}`}>
@@ -199,9 +199,9 @@ class Sidebar extends Component {
                       <Menu.Item  style={contextStack} key="parent-context">
                         <Link to={`${parentContext.match.url}`}>
                         <span className="isoMenuHolder" style={submenuColor}>
-                          <i className={`${Icons.contexts[parentContext.routeTree.context]}`}/>
+                          <i className={`${Icons.contexts[parentContext.context.name]}`}/>
                           <span className="nav-text">
-                            <IntlMessages id={`context.${parentContext.routeTree.context}`}/>
+                            <IntlMessages id={`context.${parentContext.context.name}`}/>
                           </span>
                         </span>
                         </Link>

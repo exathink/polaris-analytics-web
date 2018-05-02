@@ -2,11 +2,11 @@ import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
-import {buildRouter} from "../routes";
+import {buildRouter} from "../../navigation/contextRouter";
 import Icons from '../../helpers/icons';
 
-const routeTree = {
-  context: 'account',
+const context = {
+  name: 'account',
   routes: [
     {
       match: 'organizations',
@@ -29,7 +29,7 @@ const routeTree = {
   ]
 };
 
-const AccountsRouter = buildRouter(routeTree);
+const AccountsRouter = buildRouter(context);
 
 class Accounts extends React.Component {
 

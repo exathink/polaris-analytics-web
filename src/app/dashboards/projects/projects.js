@@ -1,18 +1,18 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import FourZeroFour from "../../../containers/Page/404";
-import {buildRouter} from "../routes";
+import {buildRouter} from "../../navigation/contextRouter";
 
 
 
-const routeTree = {
-  context: 'Projects',
+const context = {
+  name: 'Projects',
   hidden: true,
   routes: [
     {
       match: ':project',
       routes: {
-        context: 'project',
+        name: 'project',
         routes: [
           {
             topic: true,
@@ -38,7 +38,7 @@ const routeTree = {
   ]
 };
 
-const ProjectsRouter = buildRouter(routeTree);
+const ProjectsRouter = buildRouter(context);
 
 class Projects extends React.Component {
 

@@ -3,10 +3,10 @@ import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
 import Accounts from './accounts/accounts';
-import {buildRouter} from "./routes";
+import {buildRouter} from "../navigation/contextRouter";
 
 const routeTree = {
-  context: 'dashboard',
+  name: 'dashboard',
   hidden: true,
   routes: [
     {

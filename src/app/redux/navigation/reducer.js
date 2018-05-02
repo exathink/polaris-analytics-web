@@ -1,18 +1,6 @@
 import actions from "./actions";
 import {Stack} from 'immutable';
 
-
-
-
-
-const eq = (payload, current) =>
-  current && payload &&
-  current.routeTree &&
-  payload.routeTree.context === current.routeTree.context &&
-  payload.index === current.index;
-
-const includes = (state, payload) => state.find(current => eq(payload, current));
-
 const initState = new Stack();
 export default (state=initState, action) => {
   switch(action.type) {

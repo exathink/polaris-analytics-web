@@ -4,19 +4,19 @@ import {connect} from 'react-redux';
 import routeActions from '../redux/navigation/actions';
 
 
-export const buildRouter = (routeTree, path = '') => {
+export const buildRouter = (context, path = '') => {
   return class extends React.Component {
 
     buildRoutes() {
       const {match} = this.props;
-      return routeTree.routes.map(
+      return context.routes.map(
         (route, index) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
           const terminal =
-            route.component ? {component: withNavigationUpdates(routeTree, index, match)(route.component)} :
-              route.render ? {component: withNavigationUpdates(routeTree, index, match)(route.render)} :
+            route.component ? {component: withNavigationUpdates(context, index, match)(route.component)} :
+              route.render ? {component: withNavigationUpdates(context, index, match)(route.render)} :
                 route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                   null;
 
@@ -43,7 +43,7 @@ export const buildRouter = (routeTree, path = '') => {
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={withNavigationUpdates(routeTree, index, match)(buildRouter(route.routes, `${path}/${route.match}`))}
+                component={withNavigationUpdates(context, index, match)(buildRouter(route.routes, `${path}/${route.match}`))}
               /> :
               null;
 
@@ -60,7 +60,7 @@ export const buildRouter = (routeTree, path = '') => {
     }
 
     render() {
-      if (routeTree.routes != null) {
+      if (context.routes != null) {
         const {match} = this.props;
         return (
           <Switch key={`RouterNode: ${match.path}`}>
@@ -74,7 +74,7 @@ export const buildRouter = (routeTree, path = '') => {
 
 const {pushRoute, popRoute} = routeActions;
 
-export const withNavigationUpdates = (routeTree, index,match) => {
+export const withNavigationUpdates = (context, index,match) => {
   return (Router) => {
     return (
       connect(null, {pushRoute, popRoute})(
@@ -82,16 +82,13 @@ export const withNavigationUpdates = (routeTree, index,match) => {
 
           componentWillMount() {
             this.props.pushRoute({
-              routeTree: routeTree,
-              index: index,
-              match: match
+              context,
+              index,
+              match
             });
           }
           componentWillUnmount() {
-            this.props.popRoute({
-                routeTree: routeTree,
-                index: index
-            });
+            this.props.popRoute();
           }
           render() {
             return <Router {...this.props}/>

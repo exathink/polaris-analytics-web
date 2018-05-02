@@ -3,19 +3,19 @@ import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/projects";
-import {buildRouter} from "../routes";
+import {buildRouter} from "../../navigation/contextRouter";
 
 
 
 
-const routeTree = {
-  context: 'organizations',
+const context = {
+  name: 'organizations',
   hidden: true,
   routes: [
     {
       match: ':organization',
       routes: {
-        context: 'organization',
+        name: 'organization',
         routes: [
           {
             match: 'projects',
@@ -46,7 +46,7 @@ const routeTree = {
   ]
 };
 
-const OrganizationsRouter = buildRouter(routeTree);
+const OrganizationsRouter = buildRouter(context);
 
 class Organizations extends React.Component {
 
