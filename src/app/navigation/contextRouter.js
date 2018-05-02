@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import routeActions from '../redux/navigation/actions';
 
 import type {Context, RouteType} from './context';
+import {ActiveContext} from "./context";
 
 
 export const contextRouterFor = (context: Context, path: string = '') : React.ComponentType<any>  => {
@@ -84,11 +85,9 @@ export const withNavigationUpdates = (context: Context, index: number, match: an
         class extends React.Component<any> {
 
           componentWillMount() {
-            this.props.pushRoute({
-              context,
-              index,
-              match
-            });
+            this.props.pushRoute(
+              new ActiveContext(context, index, match)
+            );
           }
           componentWillUnmount() {
             this.props.popRoute();
