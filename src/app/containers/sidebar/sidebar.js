@@ -11,11 +11,10 @@ import SidebarWrapper from './sidebar.style';
 import appActions from '../../../redux/app/actions';
 import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
-import {getCurrentTheme} from '../../../containers/ThemeSwitcher/config';
+import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
-import { palette } from 'styled-theme';
 import Icons from '../../helpers/icons';
-import {getCurrentTopics} from "../redux/sidebar/reducer";
+
 
 const {Sider} = Layout;
 
@@ -113,8 +112,15 @@ class Sidebar extends Component {
     const contextStack = {
       borderStyle: 'solid' ,
       borderWidth: '1px',
-      borderColor: palette('grayscale', 6)
+      borderColor: customizedTheme.contextStack.contextColor
     };
+
+    const currentContextStack = {
+      borderStyle: 'solid' ,
+      borderWidth: '1px',
+      borderColor: customizedTheme.contextStack.currentContextColor
+    };
+
 
     const navigation  = this.props.navigation.filter(item => !item.routeTree.hidden);
     const parentContext =
@@ -136,10 +142,7 @@ class Sidebar extends Component {
       className: "isoDashboardMenu"
     };
 
-    const currentContextColor = {
-      backgroundColor: '#ff8480',
 
-    };
 
     const url = '';
 
@@ -164,7 +167,7 @@ class Sidebar extends Component {
               {
                 currentContext ?
                   <Menu.SubMenu
-                    style={{borderStyle: 'solid' , borderWidth: '1px',  borderColor: '#ffffff'}}
+                    style={currentContextStack}
                     key="current-context"
                     title={
                       <span className="isoMenuHolder" style={submenuColor}>

@@ -82,7 +82,7 @@ theme.palette = {
     '#e9e9e9', // 0: Border
     '#d8d8d8', // 1: BorderDark
     '#ebebeb', // 2: BorderLight
-    '#d3d3d3', // 3:
+    '#c1c8c5', // 3:
     'rgba(228, 228, 228, 0.65)', // 4:
   ],
 

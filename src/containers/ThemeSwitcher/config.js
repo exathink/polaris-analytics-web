@@ -79,49 +79,81 @@ const sidebarTheme = {
       themeName: 'themedefault',
       buttonColor: '#323332',
       backgroundColor: undefined,
-      textColor: '#788195'
+      textColor: '#788195',
+      contextStack: {
+        currentContextColor: '#9ca8bd',
+        contextColor: '#788195'
+      }
     },
     {
       themeName: 'theme1',
       buttonColor: '#e0364c',
       backgroundColor: '#e0364c',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme2',
       buttonColor: '#6534ff',
       backgroundColor: '#6534ff',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme3',
       buttonColor: '#4482FF',
       backgroundColor: '#4482FF',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme4',
       buttonColor: '#422e62',
       backgroundColor: '#422e62',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme5',
       buttonColor: '#22144c',
       backgroundColor: '#22144c',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme6',
       buttonColor: '#4670a2',
       backgroundColor: '#4670a2',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     },
     {
       themeName: 'theme7',
       buttonColor: '#494982',
       backgroundColor: '#494982',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
+      contextStack: {
+        currentContextColor: '#fff',
+        contextColor: '#fff'
+      }
     }
   ]
 };
