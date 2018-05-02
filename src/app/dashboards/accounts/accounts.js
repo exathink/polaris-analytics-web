@@ -3,7 +3,7 @@ import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/organizations';
-import {buildRouter} from "../../navigation/contextRouter";
+import {contextRouterFor} from "../../navigation/contextRouter";
 
 
 import type {Context} from '../../navigation/context';
@@ -33,7 +33,7 @@ const context : Context = {
   ]
 };
 
-const AccountsRouter = buildRouter(context);
+const AccountsRouter = contextRouterFor(context);
 
 class Accounts extends React.Component<any> {
 

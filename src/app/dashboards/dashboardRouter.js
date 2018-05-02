@@ -3,7 +3,7 @@ import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
 import Accounts from './accounts/accounts';
-import {buildRouter} from "../navigation/contextRouter";
+import {contextRouterFor} from "../navigation/contextRouter";
 
 const routeTree = {
   name: 'dashboard',
@@ -20,7 +20,7 @@ const routeTree = {
   ]
 };
 
-const DashboardRouter = buildRouter(routeTree);
+const DashboardRouter = contextRouterFor(routeTree);
 
 
 const DashboardMenu = () => (

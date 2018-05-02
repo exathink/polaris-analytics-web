@@ -1,7 +1,7 @@
 import React from 'react';
 import asyncComponent from "../../../helpers/AsyncFunc";
 import FourZeroFour from "../../../containers/Page/404";
-import {buildRouter} from "../../navigation/contextRouter";
+import {contextRouterFor} from "../../navigation/contextRouter";
 
 
 
@@ -38,7 +38,7 @@ const context = {
   ]
 };
 
-const ProjectsRouter = buildRouter(context);
+const ProjectsRouter = contextRouterFor(context);
 
 class Projects extends React.Component {
 

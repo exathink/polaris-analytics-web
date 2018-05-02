@@ -1,16 +1,19 @@
+// @flow
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import routeActions from '../redux/navigation/actions';
 
+import type {Context, RouteType} from './context';
 
-export const buildRouter = (context, path = '') => {
-  return class extends React.Component {
+
+export const contextRouterFor = (context: Context, path: string = '') : React.ComponentType<any>  => {
+  return class extends React.Component<any> {
 
     buildRoutes() {
       const {match} = this.props;
       return context.routes.map(
-        (route, index) => {
+        (route: RouteType, index: number) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
@@ -43,7 +46,7 @@ export const buildRouter = (context, path = '') => {
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={withNavigationUpdates(context, index, match)(buildRouter(route.context, `${path}/${route.match}`))}
+                component={withNavigationUpdates(context, index, match)(contextRouterFor(route.context, `${path}/${route.match}`))}
               /> :
               null;
 
@@ -74,11 +77,11 @@ export const buildRouter = (context, path = '') => {
 
 const {pushRoute, popRoute} = routeActions;
 
-export const withNavigationUpdates = (context, index,match) => {
-  return (Router) => {
+export const withNavigationUpdates = (context: Context, index: number, match: any) => {
+  return (Router: React.ComponentType<any>) => {
     return (
       connect(null, {pushRoute, popRoute})(
-        class extends React.Component {
+        class extends React.Component<any> {
 
           componentWillMount() {
             this.props.pushRoute({

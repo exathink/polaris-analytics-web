@@ -3,7 +3,7 @@ import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/projects";
-import {buildRouter} from "../../navigation/contextRouter";
+import {contextRouterFor} from "../../navigation/contextRouter";
 
 
 
@@ -46,7 +46,7 @@ const context = {
   ]
 };
 
-const OrganizationsRouter = buildRouter(context);
+const OrganizationsRouter = contextRouterFor(context);
 
 class Organizations extends React.Component {
 
