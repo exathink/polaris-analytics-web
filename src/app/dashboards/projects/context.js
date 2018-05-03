@@ -12,6 +12,7 @@ const context : Context = {
       match: ':project',
       context: {
         name: 'project',
+        display: (match) => `Project: ${match.params['project']}`,
         routes: [
           {
             topic: true,

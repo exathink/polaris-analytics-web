@@ -1,5 +1,5 @@
 import React from 'react';
-import IntlMessages from '../../../components/utility/intlMessages';
+
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
@@ -10,7 +10,7 @@ const topBar = (props) => {
       return (
         <h3>
           <span className="nav-text">
-            <IntlMessages id={`context.${currentContext.name()}`}/>
+            {currentContext.display()}
           </span>
         </h3>
       );

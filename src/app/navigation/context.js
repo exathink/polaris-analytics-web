@@ -2,9 +2,16 @@
 
 import * as React from 'react';
 
+export type MatchType = {
+  path: string,
+  url: string,
+  params: any
+};
+
 export type Context = {
   name: string,
   hidden?: boolean,
+  display?: (match: MatchType) => string,
   routes: Array<{
       match: string,
       render: React.ComponentType<any>
@@ -53,11 +60,7 @@ export type RouteType =
     context: Context
   };
 
-export type MatchType = {
-  path: string,
-  url: string,
-  params: any
-};
+
 
 export type ActiveContextType = {
   context: Context,
@@ -80,6 +83,13 @@ export class ActiveContext {
   name() {
     return this.context.name;
   }
+
+  display() {
+    return this.context.display ?
+      this.context.display.bind(this.context)(this.matchInfo)
+      : this.name();
+  }
+
 
   routes() {
     return this.context.routes;

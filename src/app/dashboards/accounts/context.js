@@ -8,6 +8,7 @@ import type {Context} from '../../navigation/context';
 
 const context: Context = {
   name: 'account',
+  display: () => `Account`,
   routes: [
     {
       match: 'organizations',
