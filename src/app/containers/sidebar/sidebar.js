@@ -146,50 +146,22 @@ class Sidebar extends Component {
             <Menu key={`top`} {...menuProps} >
               {
                 currentContext ?
-                  <Menu.SubMenu
-                    style={currentContextStack}
-                    key="current-context"
-                    title={
-                      <span className="isoMenuHolder" style={submenuColor}>
-                      <i className={`${Icons.contexts[currentContext.name()]}`}/>
-                      <span className="nav-text">
-                        <IntlMessages id={`context.${currentContext.name()}`}/>
-                      </span>
-                    </span>
-                    }
-                  >
-                    {
-                      currentContext.routes().filter(route=> route.topic).map(
-                        route => (
-                          <Menu.Item style={submenuStyle} key={`${route.match}`}>
-                            <Link style={submenuColor} to={`${currentContext.urlFor(route)}`}>
-                              <IntlMessages id={`topic.${route.match}`}/>
-                            </Link>
-                          </Menu.Item>
-                        )
+                    currentContext.routes().filter(route=> route.topic).map(
+                      route => (
+                        <Menu.Item  className='ant-menu-item' key={`${route.match}`}>
+                          <Link to={`${currentContext.urlFor(route)}`}>
+                            <span className="isoMenuHolder" style={submenuColor}>
+                              <i className={Icons.topics[route.match]} />
+                              <span className="nav-text">
+                                <IntlMessages id={`topic.${route.match}`}/>
+                              </span>
+                            </span>
+                          </Link>
+                        </Menu.Item>
                       )
-                    }
-                  </Menu.SubMenu>
+                    )
                   : null
               }
-              {
-                parentContext ?
-                  navigation.slice(1).map(
-                    parentContext =>
-                      <Menu.Item  style={contextStack} key={`${parentContext.name()}`}>
-                        <Link to={`${parentContext.matchUrl()}`}>
-                        <span className="isoMenuHolder" style={submenuColor}>
-                          <i className={`${Icons.contexts[parentContext.name()]}`}/>
-                          <span className="nav-text">
-                            <IntlMessages id={`context.${parentContext.name()}`}/>
-                          </span>
-                        </span>
-                        </Link>
-                      </Menu.Item>
-                  )
-                  : null
-              }
-
             </Menu>
           </Scrollbars>
         </Sider>

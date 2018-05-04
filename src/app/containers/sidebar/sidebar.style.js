@@ -62,8 +62,8 @@ const SidebarWrapper = styled.div`
     }
 
     .isoDashboardMenu {
-      padding-top: 35px;
-      padding-bottom: 35px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       background: transparent;
 
       a {
@@ -121,7 +121,7 @@ const SidebarWrapper = styled.div`
         }
 
         .nav-text {
-          color: #ffca28;
+          color: #fff;
         }
       }
 
