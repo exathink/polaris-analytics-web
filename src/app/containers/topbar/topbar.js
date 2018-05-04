@@ -42,7 +42,9 @@ class Topbar extends Component {
             />
           </div>
 
-          <TopbarContext/>
+          <div className={"isoLeft"}>
+            <TopbarContext/>
+          </div>
 
           <ul className="isoRight">
             <li

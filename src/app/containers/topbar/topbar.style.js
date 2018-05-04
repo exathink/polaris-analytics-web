@@ -64,8 +64,38 @@ const TopbarWrapper = styled.div`
           position: absolute;
         }
       }
+      
+      .topBarContext {
+          display: -webkit-inline-flex;
+          display: -ms-inline-flex;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background-color: transparent;
+          border: 0;
+          outline: 0;
+          position: relative;
+          cursor: pointer;
+          
+          i {
+            font-size: 28px;
+            color: ${palette('text', 3)};
+            line-height: 1;
+          }
+          
+          span {
+            font-size: 23px;
+            margin-left: 10px;
+            padding-top: 6px;
+            line-height: 1;
+            color: ${palette('text', 3)};
+            text-transform: capitalize;
+          }
+          
+          
+      }
     }
-
+    
     .isoRight {
       display: flex;
       align-items: center;
