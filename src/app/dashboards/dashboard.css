@@ -44,15 +44,20 @@
   opacity: 1;
 }
 
-.dashboard-footer {
+.dashboard-controls {
   width: 100%;
-  height: 4%;
+  height: 3%;
   text-align: right;
-  background: GhostWhite;
-  padding: 0px 1%;
+  background: #2d3446;
+  padding: 0px 0.5%;
   font-size: 1.5rem;
 }
 
-.dashboard-footer .menu-item {
+.dashboard-controls .menu-item {
   cursor: pointer;
+  font-size: 18px;
+  vertical-align: text-top;
+  color: #fff
 }
+
+

@@ -61,9 +61,9 @@ const contextsTheme = {
   options: [
     {
       themeName: 'themedefault',
-      account: '#7266BA',
-      organization: '#42A5F6',
-      project:'#a1afe8'
+      account: '#6b5fb2',
+      organization: '#356eb2',
+      project:'#8188b2'
     }
   ]
 };

@@ -61,7 +61,7 @@ const projectActivitySummaryDomainMapper = {
       subject_label_long: 'Project',
       subject_label_plural: 'Projects',
       subject_icon: 'ion-clipboard',
-      subject_color: '#42A5F6',
+      subject_color: '#356eb2',
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);

@@ -80,16 +80,17 @@ const TopbarWrapper = styled.div`
           i {
             font-size: 28px;
             color: ${palette('text', 3)};
-            line-height: 1;
+            
+            
           }
           
           span {
             font-size: 23px;
             margin-left: 10px;
-            padding-top: 6px;
-            line-height: 1;
+            
             color: ${palette('text', 3)};
             text-transform: capitalize;
+           
           }
           
           

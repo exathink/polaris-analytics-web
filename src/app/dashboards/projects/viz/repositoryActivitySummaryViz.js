@@ -64,7 +64,7 @@ const repositoryActivitySummaryDomainMapper = {
       subject_label_long: 'Repository',
       subject_label_plural: 'Repositories',
       subject_icon: 'ion-soup-can',
-      subject_color: '#a1afe8',
+      subject_color: '#6f759c',
       span_uom: 'Years'
     }
   }

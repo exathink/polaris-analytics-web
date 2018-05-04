@@ -62,7 +62,7 @@ const SidebarWrapper = styled.div`
     }
 
     .isoDashboardMenu {
-      padding-top: 10px;
+      padding-top: 21px;
       padding-bottom: 10px;
       background: transparent;
 

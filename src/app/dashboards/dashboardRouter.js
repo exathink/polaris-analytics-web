@@ -28,7 +28,7 @@ const DashboardRouter = contextRouterFor(context);
 
 
 const DashboardMenu = () => (
-  <nav className="dashboard-footer">
+  <nav className="dashboard-controls">
     <FullscreenBtn componentId="dashboard" />
   </nav>
 );
@@ -36,10 +36,10 @@ const DashboardMenu = () => (
 
 export const DashboardWrapper = (props: any) => (
   <LayoutWrapper id="dashboard" className="dashboard-wrapper">
+    <DashboardMenu/>
     <div className="dashboard-vizzes">
       {props.children}
     </div>
-    <DashboardMenu/>
   </LayoutWrapper>
 );
 
