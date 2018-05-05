@@ -28,9 +28,18 @@ const DashboardRouter = contextRouterFor(context);
 
 
 const DashboardMenu = () => (
-  <nav className="dashboard-controls">
-    <FullscreenBtn componentId="dashboard" />
-  </nav>
+  <div className="dashboard-controls">
+    <nav className='menu' style={{width:'33%'}}>
+      <i title="Back" className="menu-item ion ion-arrow-left-a"/>
+      <i title="Drill Back" className="menu-item ion ion-arrow-up-a"/>
+      <i title="Forward" className="menu-item ion ion-arrow-right-a"/>
+    </nav>
+    <nav className='menu menu-center' style={{width:'33%'}}>
+    </nav>
+    <nav className='menu menu-right' style={{width: '33%'}}>
+      <FullscreenBtn componentId="dashboard"/>
+    </nav>
+  </div>
 );
 
 
