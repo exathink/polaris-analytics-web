@@ -1,6 +1,6 @@
 import './dashboard.css';
 import React from 'react';
-import {withRouterConnection} from "../../routes/router";
+import {withNavigation} from "../navigation/withNavigation";
 
 
 
@@ -103,4 +103,4 @@ const withDetailRoutes = (WrappedDashboard) => {
 };
 
 
-export const Dashboard = withRouterConnection(withDetailRoutes(DashboardView));
+export const Dashboard = withNavigation(withDetailRoutes(DashboardView));

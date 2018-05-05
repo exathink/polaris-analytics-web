@@ -1,7 +1,6 @@
 import React from 'react';
-import {Route, Switch, Redirect, withRouter} from 'react-router-dom';
-import {ConnectedRouter, getLocation, push, replace, go, goBack, goForward} from 'react-router-redux';
-import {connect} from 'react-redux';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {ConnectedRouter} from 'react-router-redux';
 
 
 import App from '../app/App';
@@ -10,35 +9,6 @@ import Logout from '../app/components/auth/Logout';
 
 import RestrictedRoute from './RestrictedRoute';
 import FourZeroFour from "../containers/Page/404";
-
-export const withRouterConnection = (Component) => {
-  const mapStateToProps = (state, ownProps) => ({
-      ...ownProps,
-    location: getLocation(state),
-  });
-  const mapDispatchToProps = (dispatch) => (
-    {
-      navigate:
-        {
-          push: (args) => {
-            dispatch(push(args))
-          },
-          replace: (args) => {
-            dispatch(replace(args))
-          },
-          go: (args) => {
-            dispatch(go(args))
-          },
-          goBack: (args) => {
-            dispatch(goBack(args))
-          },
-          goForward: (args) => {
-            dispatch(goForward(args))
-          }
-        }
-    });
-  return withRouter(connect(mapStateToProps, mapDispatchToProps)(Component))
-};
 
 class AppRedirector extends React.Component {
   render() {
