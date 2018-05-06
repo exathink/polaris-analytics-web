@@ -10,6 +10,8 @@ import {contextRouterFor} from "../navigation/contextRouter";
 import type {Context} from '../navigation/context';
 import {connect} from 'react-redux';
 import {withNavigation} from "../navigation/withNavigation";
+import {withRouter} from 'react-router';
+
 
 const context: Context = {
   name: 'dashboard',
@@ -65,10 +67,19 @@ export const DashboardWrapper = (props: any) => (
   </LayoutWrapper>
 );
 
-const DashboardContainer = (props: any) => (
-  <DashboardWrapper>
-    <DashboardRouter {...props} />
-  </DashboardWrapper>
-);
+class DashboardContainer extends React.Component<any> {
 
-export default DashboardContainer;
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.location !== nextProps.location;
+  }
+
+  render() {
+    return (
+      <DashboardWrapper>
+        <DashboardRouter {...this.props} />
+      </DashboardWrapper>
+    );
+  }
+};
+
+export default withRouter(DashboardContainer);
