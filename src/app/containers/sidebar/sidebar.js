@@ -108,15 +108,15 @@ class Sidebar extends Component {
     };
 
 
-    const navigation  = this.props.navigation.filter(item => !item.context.hidden);
-    const parentContext =
-      navigation.length > 1 ?
-        navigation[1] :
-        null;
+    const navigation  =
+      this.props.navigation.length > 0 ?
+        this.props.navigation[0].filter(item => !item.context.hidden)
+        : [];
+
 
     const currentContext =
       navigation.length > 0 ?
-        navigation[0] :
+        navigation[0]:
         null;
     const menuProps = {
       onClick: this.handleClick,

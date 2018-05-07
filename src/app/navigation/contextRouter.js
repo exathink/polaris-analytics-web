@@ -85,12 +85,10 @@ export const withNavigationUpdates = (context: Context, index: number, match: an
         class extends React.Component<any> {
 
           UNSAFE_componentWillMount() {
-            this.props.pushContext(
-              new ActiveContext(context, index, match)
-            );
+
           }
           componentWillUnmount() {
-            this.props.popContext();
+
           }
           render() {
             return <Router {...this.props}/>

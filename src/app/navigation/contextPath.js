@@ -1,7 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-import {matchPath} from 'react-router';
+import {matchPath, withRouter} from 'react-router';
 import {ActiveContext} from "./context";
+import contextStackActions from '../redux/navigation/contextStack/actions';
+
 
 const findMatch = (context, path, match) => {
   for( let index=0; index < context.routes.length; index++ ) {
@@ -21,14 +24,14 @@ export const buildContextPath = (context, path, match={}) => {
   const  routeMatch = findMatch(context, path, match);
   if(routeMatch) {
     const [route, index, matchInfo] = routeMatch;
-
-    if(matchInfo.isExact) {
-      return [new ActiveContext(context, index, matchInfo)]
-    } else if (route.context) {
+    const activeContext = new ActiveContext(context, index, match);
+    if (route.context) {
       const rest = buildContextPath(route.context, path, matchInfo);
       if (rest) {
-        return [...rest, context]
+        return [...rest, activeContext]
       }
+    } else {
+      return [activeContext]
     }
   }
 
@@ -56,8 +59,9 @@ export class ContextManager extends React.Component {
 
   sendNotifications() {
     // Send notifications here.
+    const {pushContext} = this.props;
     const contextPath = buildContextPath(this.props.rootContext, this.state.location.pathname, this.props.match);
-    console.log("Send notifications");
+    pushContext(contextPath);
   }
 
   componentDidMount() {
@@ -72,3 +76,8 @@ export class ContextManager extends React.Component {
     return null;
   }
 }
+
+const {pushContext} = contextStackActions;
+
+export default withRouter(connect(null, {pushContext})(ContextManager));
+

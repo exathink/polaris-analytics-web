@@ -10,5 +10,6 @@ const actions = {
   popContext: () => ({
     type: actions.POP_CONTEXT
   }),
+
 };
 export default actions;

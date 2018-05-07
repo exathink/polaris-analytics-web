@@ -8,7 +8,7 @@ import {contextRouterFor} from "../navigation/contextRouter";
 //types
 import type {Context} from '../navigation/context';
 import {withNavigation} from "../navigation/withNavigation";
-import {buildContextPath, ContextManager} from "../navigation/contextPath";
+import ContextManager from "../navigation/contextPath";
 
 
 const context: Context = {
