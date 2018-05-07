@@ -1,4 +1,4 @@
-// @flow
+
 import './dashboard.css';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
@@ -8,6 +8,7 @@ import {contextRouterFor} from "../navigation/contextRouter";
 //types
 import type {Context} from '../navigation/context';
 import {withNavigation} from "../navigation/withNavigation";
+import {buildContextPath, ContextManager} from "../navigation/contextPath";
 
 
 const context: Context = {
@@ -29,6 +30,10 @@ const DashboardRouter = contextRouterFor(context);
 
 
 class DashboardControlBar extends React.Component<any> {
+
+  constructor(props) {
+    super(props);
+  }
 
 
   drillBack() {
@@ -61,6 +66,7 @@ const DashboardControls = withNavigation(DashboardControlBar);
 
 const DashboardContainer = (props:any) => (
   <LayoutWrapper id="dashboard" className="dashboard-wrapper">
+    <ContextManager rootContext={context} {...props}/>
     <DashboardControls/>
     <div className="dashboard-vizzes">
       <DashboardRouter {...props} />
