@@ -1,4 +1,4 @@
-// @flow
+/// @flow
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -14,7 +14,7 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
     buildRoutes() {
       const {match} = this.props;
       return context.routes.map(
-        (route: RouteType, index: number) => {
+        (route: any, index: number) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
