@@ -5,7 +5,7 @@ import {withNavigation} from "../../navigation/withNavigation";
 const topBar = (props) => {
   const {navigation} = props;
   if (navigation.length > 0) {
-    const currentContext = navigation[0][0];
+    const currentContext = navigation[0];
     const display = currentContext.display();
     const contextStyle = {color: currentContext.color()};
 

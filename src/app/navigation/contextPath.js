@@ -37,6 +37,22 @@ export const buildContextPath = (context, path, match={}) => {
 
 };
 
+export const findActiveContext = (context, path, match={}) => {
+  const  routeMatch = findMatch(context, path, match);
+  if(routeMatch) {
+    const [route, index, matchInfo] = routeMatch;
+    if (route.context) {
+      const childContext = findActiveContext(route.context, path, matchInfo);
+      if (childContext) {
+        return childContext
+      }
+    } else {
+      return new ActiveContext(context, index, match);
+    }
+  }
+
+};
+
 export class ContextManager extends React.Component {
   constructor(props) {
     super(props);
@@ -61,7 +77,9 @@ export class ContextManager extends React.Component {
     // Send notifications here.
     const {pushContext} = this.props;
     const contextPath = buildContextPath(this.props.rootContext, this.state.location.pathname, this.props.match);
-    pushContext(contextPath);
+    const activeContext = findActiveContext(this.props.rootContext, this.state.location.pathname, this.props.match);
+
+    pushContext(activeContext);
   }
 
   componentDidMount() {
