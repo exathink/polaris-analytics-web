@@ -35,7 +35,7 @@ const DashboardControlBar = (props) => {
   const {navigation, navigate} = props;
 
   const drillBack = () => {
-    if(navigation.length > 1) {
+    if (navigation.length > 1) {
       navigate.go(navigation[1].targetUrl())
     }
   };
@@ -57,29 +57,23 @@ const DashboardControlBar = (props) => {
 
 const DashboardMenu = withNavigation(DashboardControlBar);
 
-
-export const DashboardWrapper = (props: any) => (
-  <LayoutWrapper id="dashboard" className="dashboard-wrapper">
-    <DashboardMenu/>
-    <div className="dashboard-vizzes">
-      {props.children}
-    </div>
-  </LayoutWrapper>
-);
-
 class DashboardContainer extends React.Component<any> {
 
   shouldComponentUpdate(nextProps, nextState) {
+    // suppress a full tree re-render unless the nav location has changed.
     return this.props.location !== nextProps.location;
   }
 
   render() {
     return (
-      <DashboardWrapper>
-        <DashboardRouter {...this.props} />
-      </DashboardWrapper>
+      <LayoutWrapper id="dashboard" className="dashboard-wrapper">
+        <DashboardMenu/>
+        <div className="dashboard-vizzes">
+          <DashboardRouter {...this.props} />
+        </div>
+      </LayoutWrapper>
     );
-  }
-};
+  };
+}
 
 export default withRouter(DashboardContainer);
