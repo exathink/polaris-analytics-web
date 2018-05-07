@@ -84,7 +84,7 @@ export const withNavigationUpdates = (context: Context, index: number, match: an
       connect(null, {pushRoute, popRoute})(
         class extends React.Component<any> {
 
-          componentWillMount() {
+          UNSAFE_componentWillMount() {
             this.props.pushRoute(
               new ActiveContext(context, index, match)
             );
