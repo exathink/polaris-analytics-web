@@ -6,7 +6,7 @@ export const withNavigation = (Component) => {
   const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
     location: getLocation(state),
-    navigation: state.navigation.toJS()
+    navigation: state.contexts.toJS()
   });
 
   const mapDispatchToProps = (dispatch) => (

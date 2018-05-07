@@ -175,7 +175,7 @@ class Sidebar extends Component {
 export default withRouter(connect(
   state => ({
     app: state.App.toJS(),
-    navigation: state.navigation.toJS()
+    navigation: state.contexts.toJS()
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
 )(Sidebar));

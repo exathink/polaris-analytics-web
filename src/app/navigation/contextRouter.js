@@ -2,9 +2,9 @@
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
-import routeActions from '../redux/navigation/actions';
+import routeActions from '../redux/navigation/contextStack/actions';
 
-import type {Context, RouteType} from './context';
+import type {Context} from './context';
 import {ActiveContext} from "./context";
 
 
@@ -76,21 +76,21 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
   }
 };
 
-const {pushRoute, popRoute} = routeActions;
+const {pushContext, popContext} = routeActions;
 
 export const withNavigationUpdates = (context: Context, index: number, match: any) => {
   return (Router: React.ComponentType<any>) => {
     return (
-      connect(null, {pushRoute, popRoute})(
+      connect(null, {pushContext, popContext})(
         class extends React.Component<any> {
 
           UNSAFE_componentWillMount() {
-            this.props.pushRoute(
+            this.props.pushContext(
               new ActiveContext(context, index, match)
             );
           }
           componentWillUnmount() {
-            this.props.popRoute();
+            this.props.popContext();
           }
           render() {
             return <Router {...this.props}/>

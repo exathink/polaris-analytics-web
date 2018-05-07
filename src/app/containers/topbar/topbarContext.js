@@ -1,8 +1,6 @@
 import React from 'react';
-
-import {withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
 import Icons from "../../helpers/icons";
+import {withNavigation} from "../../navigation/withNavigation";
 
 const topBar = (props) => {
   const {navigation} = props;
@@ -24,11 +22,7 @@ const topBar = (props) => {
   }
 };
 
-export default withRouter(connect(
-  state => ({
-    navigation: state.navigation.toJS()
-  })
-)(topBar));
+export default withNavigation(topBar);
 
 
 
