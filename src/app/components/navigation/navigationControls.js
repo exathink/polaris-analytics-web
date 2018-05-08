@@ -38,12 +38,6 @@ const DrillBackButton = (props) => {
 };
 
 class NavigationControls extends React.Component {
-  drillBack() {
-    const {navigation, navigate} = this.props;
-    if (navigation.length > 1) {
-      navigate.go(navigation[1].targetUrl())
-    }
-  };
 
   render() {
     return (

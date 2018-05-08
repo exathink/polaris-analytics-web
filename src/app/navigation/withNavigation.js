@@ -1,11 +1,9 @@
-import {getLocation, go, goBack, goForward, push, replace} from "react-router-redux";
-import {withRouter} from "react-router-dom";
+import {go, goBack, goForward, push, replace} from "react-router-redux";
 import {connect} from "react-redux";
 
 export const withNavigation = (Component) => {
   const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
-    location: getLocation(state),
     navigation: state.contexts
   });
 
@@ -30,5 +28,5 @@ export const withNavigation = (Component) => {
           }
         }
     });
-  return withRouter(connect(mapStateToProps, mapDispatchToProps)(Component))
+  return connect(mapStateToProps, mapDispatchToProps)(Component)
 };
