@@ -108,16 +108,10 @@ class Sidebar extends Component {
     };
 
 
-    const navigation  =
-      this.props.navigation.length > 0 ?
-        this.props.navigation
-        : [];
 
 
-    const currentContext =
-      navigation.length > 0 ?
-        navigation[0]:
-        null;
+    const currentContext = this.props.navigation.current();
+
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
@@ -175,7 +169,7 @@ class Sidebar extends Component {
 export default withRouter(connect(
   state => ({
     app: state.App.toJS(),
-    navigation: state.contexts.toJS()
+    navigation: state.contexts
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
 )(Sidebar));
