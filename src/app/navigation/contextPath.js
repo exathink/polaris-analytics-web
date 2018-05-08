@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {matchPath, withRouter} from 'react-router';
 import {ActiveContext} from "./context";
 import contextStackActions from '../redux/navigation/contextStack/actions';
+import {ContextManager} from "../components/navigation/contextManager";
 
 
 const findMatch = (context, path, match) => {
@@ -53,48 +54,5 @@ export const findActiveContext = (context, path, match={}) => {
 
 };
 
-export class ContextManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: props.location
-    }
-  }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.location !== nextProps.location) {
-      return {location: nextProps.location}
-    } else {
-      return null;
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.location !== nextState.location
-  }
-
-  sendNotifications() {
-    // Send notifications here.
-    const {pushContext} = this.props;
-    const activeContext = findActiveContext(this.props.rootContext, this.state.location.pathname, this.props.match);
-
-    pushContext(activeContext);
-  }
-
-  componentDidMount() {
-    this.sendNotifications();
-  }
-
-  componentDidUpdate() {
-    this.sendNotifications();
-  }
-
-  render() {
-    return null;
-  }
-}
-
-const {pushContext} = contextStackActions;
-
-export default withRouter(connect(null, {pushContext})(ContextManager));
 
