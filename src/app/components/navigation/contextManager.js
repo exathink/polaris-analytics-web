@@ -2,7 +2,7 @@ import React from "react";
 import {findActiveContext} from "../../navigation/contextPath";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import contextStackActions from "../../redux/navigation/contextStack/actions";
+import contextStackActions from "../../redux/navigation/actions";
 
 export class ContextManager extends React.Component {
   constructor(props) {

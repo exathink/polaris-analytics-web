@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {matchPath, withRouter} from 'react-router';
 import {ActiveContext} from "./context";
-import contextStackActions from '../redux/navigation/contextStack/actions';
+import contextStackActions from '../redux/navigation/actions';
 import {ContextManager} from "../components/navigation/contextManager";
 
 

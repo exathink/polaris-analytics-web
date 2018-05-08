@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
-import routeActions from '../redux/navigation/contextStack/actions';
+import routeActions from '../redux/navigation/actions';
 
 import type {Context} from './context';
 import {ActiveContext} from "./context";

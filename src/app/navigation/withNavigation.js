@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 export const withNavigation = (Component) => {
   const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
-    navigation: state.contexts
+    navigation: state.navigation
   });
 
   const mapDispatchToProps = (dispatch) => (

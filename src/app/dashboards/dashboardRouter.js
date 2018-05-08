@@ -6,7 +6,6 @@ import Accounts from './accounts/context';
 import {contextRouterFor} from "../navigation/contextRouter";
 //types
 import type {Context} from '../navigation/context';
-import {withNavigation} from "../navigation/withNavigation";
 import ContextManager from "../components/navigation/contextManager";
 import NavigationControls from "../components/navigation/navigationControls";
 
