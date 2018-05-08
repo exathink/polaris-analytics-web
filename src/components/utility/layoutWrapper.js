@@ -5,7 +5,7 @@ export default props => (
   <LayoutContentWrapper
     className={
       props.className != null
-        ? `${props.className} isoLayoutContentWrapper`
+        ? `isoLayoutContentWrapper ${props.className} `
         : 'isoLayoutContentWrapper'
     }
     {...props}
