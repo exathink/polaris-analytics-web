@@ -15,15 +15,15 @@ export class ContextStack {
       : null;
   }
 
-  prev() {
+  next() {
     return this.index > 0 ?
-      this.stack[this.index - 1]
+      this.stack.get(this.index - 1)
       : null;
   }
 
-  next() {
+  prev() {
     return this.index + 1 < this.stack.size ?
-      this.stack[this.index + 1]
+      this.stack.get(this.index + 1)
       : null;
   }
 

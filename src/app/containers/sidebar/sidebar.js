@@ -117,7 +117,7 @@ class Sidebar extends Component {
       theme: 'dark',
       mode: mode,
       openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
-      selectedKeys: currentContext ? [`${currentContext.target()}`] : [''],
+      selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
       onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };

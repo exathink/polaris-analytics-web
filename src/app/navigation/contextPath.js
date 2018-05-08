@@ -25,7 +25,7 @@ export const buildContextPath = (context, path, match={}) => {
   const  routeMatch = findMatch(context, path, match);
   if(routeMatch) {
     const [route, index, matchInfo] = routeMatch;
-    const activeContext = new ActiveContext(context, index, match);
+    const activeContext = new ActiveContext(context, index, match,path);
     if (route.context) {
       const rest = buildContextPath(route.context, path, matchInfo);
       if (rest) {
@@ -48,7 +48,7 @@ export const findActiveContext = (context, path, match={}) => {
         return childContext
       }
     } else {
-      return new ActiveContext(context, index, match);
+      return new ActiveContext(context, index, match, path);
     }
   }
 

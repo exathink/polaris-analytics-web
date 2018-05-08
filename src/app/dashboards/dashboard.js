@@ -81,7 +81,7 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
     <ItemMenu
       itemSelected={itemSelected}
       onClick={() => (
-        itemSelected ? navigate.replace(dashboardUrl) : navigate.replace(`${match.url}/${name}`)
+        itemSelected ? navigate.push(dashboardUrl) : navigate.push(`${match.url}/${name}`)
       )}
     />
     {cloneChildrenWithProps(children, {navigate, itemSelected, match, ...rest})}

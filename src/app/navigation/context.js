@@ -69,13 +69,15 @@ export class ActiveContext {
   context: Context;
   selectedRoute: RouteType;
   matchInfo: MatchType;
+  targetUrl: string;
   theme: {};
 
-  constructor(context: Context, index: number, match: MatchType) {
+  constructor(context: Context, index: number, match: MatchType, targetUrl: string) {
     this.context = context;
     this.selectedRoute = context.routes[index];
     this.matchInfo = match;
-    this.theme = getCurrentTheme('contextsTheme', themeConfig.theme)
+    this.theme = getCurrentTheme('contextsTheme', themeConfig.theme);
+    this.targetUrl = targetUrl;
   }
 
   name() {
@@ -94,17 +96,14 @@ export class ActiveContext {
     return this.context.routes;
   }
 
-  target() {
+  match() {
     return `${this.selectedRoute.match}`
   }
 
   matchUrl() {
-    return this.matchInfo.url;
+    return `${this.matchInfo.url}/${this.match()}`
   }
 
-  targetUrl() {
-    return `${this.matchUrl()}/${this.target()}`
-  }
 
   urlFor(route: RouteType) {
     return `${this.matchInfo.url}/${route.match}`;

@@ -71,11 +71,20 @@
 
 
 .dashboard-controls .menu-item {
-  cursor: pointer;
   font-size: 18px;
   vertical-align: text-top;
   margin: 10px;
+  cursor: pointer;
   color: #fff
 }
+
+.dashboard-controls .menu-item.disabled {
+  font-size: 18px;
+  vertical-align: text-top;
+  margin: 10px;
+  color: #979797;
+  cursor: default;
+}
+
 
 
