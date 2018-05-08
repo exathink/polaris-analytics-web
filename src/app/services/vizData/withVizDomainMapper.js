@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactPlaceholder from 'react-placeholder';
+import 'react-placeholder/lib/reactPlaceholder.css';
+
 import {connect} from 'react-redux';
 
 import vizActions from '../../redux/viz/actions';
@@ -19,7 +21,7 @@ export function withVizDomainMapper(domainMapper) {
     return connect(mapStateToProps, {fetchData})(
       class extends React.Component {
 
-        componentWillMount() {
+        componentDidMount() {
           const dataSpec = domainMapper.getDataSpec(this.props);
           dataSpec.forEach(({dataSource, params}) => {
             if (!this.props.viz_data.getData(dataSource, params)) {
@@ -56,7 +58,7 @@ export function withVizDomainMapper(domainMapper) {
               rows={7}
               ready={this.ready()}
             >
-              <Viz {...{...this.props, ...{viz_domain: this.mapDomain()}}}/>
+              <Viz {...this.props} viz_domain={this.mapDomain()}/>
 
             </ReactPlaceholder>
           )
