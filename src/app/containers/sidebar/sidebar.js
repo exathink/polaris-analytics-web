@@ -14,6 +14,7 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import Icons from '../../helpers/icons';
+
 const {Sider} = Layout;
 
 const {
@@ -87,28 +88,10 @@ class Sidebar extends Component {
     const styling = {
       backgroundColor: customizedTheme.backgroundColor,
     };
-    const submenuStyle = {
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      color: customizedTheme.textColor
-    };
+
     const submenuColor = {
       color: customizedTheme.textColor
     };
-
-    const contextStack = {
-      borderStyle: 'solid' ,
-      borderWidth: '1px',
-      borderColor: customizedTheme.contextStack.contextColor
-    };
-
-    const currentContextStack = {
-      borderStyle: 'solid' ,
-      borderWidth: '1px',
-      borderColor: customizedTheme.contextStack.currentContextColor
-    };
-
-
-
 
     const currentContext = this.props.navigation.current();
 

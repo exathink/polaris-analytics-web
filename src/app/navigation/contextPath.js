@@ -1,10 +1,5 @@
-import React from 'react';
-import {connect} from 'react-redux';
-
-import {matchPath, withRouter} from 'react-router';
+import {matchPath} from 'react-router';
 import {ActiveContext} from "./context";
-import contextStackActions from '../redux/navigation/actions';
-import {ContextManager} from "../components/navigation/contextManager";
 
 
 const findMatch = (context, path, match) => {

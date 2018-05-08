@@ -40,6 +40,7 @@ export class ContextStack {
   }
 
   prevContext() {
+    // eslint-disable-next-line
     const [_, activeContext] = this.prevContextEntry();
     return activeContext;
   }

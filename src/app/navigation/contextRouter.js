@@ -1,11 +1,8 @@
 /// @flow
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
-import routeActions from '../redux/navigation/actions';
 
 import type {Context} from './context';
-import {ActiveContext} from "./context";
 
 
 export const contextRouterFor = (context: Context, path: string = '') : React.ComponentType<any>  => {
@@ -19,8 +16,8 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
             throw new Error(`Route did not specify a match property`)
           }
           const terminal =
-            route.component ? {component: withNavigationUpdates(context, index, match)(route.component)} :
-              route.render ? {component: withNavigationUpdates(context, index, match)(route.render)} :
+            route.component ? {component: route.component} :
+              route.render ? {render: route.render} :
                 route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                   null;
 
@@ -47,7 +44,7 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={withNavigationUpdates(context, index, match)(contextRouterFor(route.context, `${path}/${route.match}`))}
+                component={contextRouterFor(route.context, `${path}/${route.match}`)}
               /> :
               null;
 
@@ -76,28 +73,7 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
   }
 };
 
-const {pushContext, popContext} = routeActions;
 
-export const withNavigationUpdates = (context: Context, index: number, match: any) => {
-  return (Router: React.ComponentType<any>) => {
-    return (
-      connect(null, {pushContext, popContext})(
-        class extends React.Component<any> {
-
-          UNSAFE_componentWillMount() {
-
-          }
-          componentWillUnmount() {
-
-          }
-          render() {
-            return <Router {...this.props}/>
-          }
-        }
-      )
-    )
-  }
-};
 
 
 
