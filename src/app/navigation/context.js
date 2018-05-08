@@ -109,6 +109,9 @@ export class ActiveContext {
     return `${this.matchInfo.url}/${route.match}`;
   }
 
+  equals(other: ActiveContext) {
+    return other && this.targetUrl === other.targetUrl && this.context === other.context
+  }
 
 
 

@@ -25,6 +25,18 @@ const ForwardButton = (props) => {
   );
 };
 
+const DrillBackButton = (props) => {
+  const {navigation, navigate, itemClass} = props;
+  const prev = navigation.prevContext();
+  const buttonClass = !prev  ? 'disabled' : '';
+  return(
+    <i title="Drill Back"
+       className={`${itemClass} ${buttonClass} ion ion-arrow-up-a`}
+       onClick={() => prev ? navigate.push(prev.targetUrl) : null}
+    />
+  );
+};
+
 class NavigationControls extends React.Component {
   drillBack() {
     const {navigation, navigate} = this.props;
@@ -34,11 +46,10 @@ class NavigationControls extends React.Component {
   };
 
   render() {
-    const {itemClass} = this.props;
     return (
       <React.Fragment>
         <BackButton {...this.props}/>
-        <i title="Drill Back" className={`${itemClass} disabled ion ion-arrow-up-a`} onClick={() => this.drillBack()}/>
+        <DrillBackButton {...this.props}/>
         <ForwardButton {...this.props}/>
       </React.Fragment>
     )
