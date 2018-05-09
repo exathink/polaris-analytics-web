@@ -35,6 +35,11 @@ export type Context = {
       match: string,
       context: Context
     }
+    |
+    {
+      match: string,
+      topic: Context
+    }
     >
 }
 // This duplicate def is a bit ugly, but it seems like
@@ -62,6 +67,11 @@ export type RouteType =
   {
     match: string,
     context: Context
+  }
+  |
+  {
+    match: string,
+    topic: Context
   };
 
 

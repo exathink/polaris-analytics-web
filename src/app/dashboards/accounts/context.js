@@ -15,14 +15,30 @@ const context: Context = {
       context: Organizations
     },
     {
-      topic: true,
       match: 'activity',
-      component: asyncComponent(() => import('./activity_dashboard'))
+      topic: {
+        name: 'activity',
+        routes: [
+          {
+            match: '',
+            component: asyncComponent(() => import('./activity_dashboard'))
+          }
+        ]
+      }
+
     },
     {
-      topic: true,
+
       match: 'contributors',
-      component: Wip
+      topic: {
+        name: 'contributors',
+        routes: [
+          {
+            match: '',
+            component: Wip
+          }
+        ]
+      }
     },
     {
       match:'',

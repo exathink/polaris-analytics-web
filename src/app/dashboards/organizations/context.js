@@ -19,16 +19,31 @@ const context = {
             context: Projects
           },
           {
-            topic: true,
             match: 'activity',
-            component: asyncComponent(() => import('./activity_dashboard'))
+            topic: {
+              name: 'activity',
+              routes: [
+                {
+                  match: '',
+                  exact: false,
+                  component: asyncComponent(() => import('./activity_dashboard'))
+                }
+              ]
+            }
           },
           {
-            topic: true,
-            match: 'contributors',
-            component: Wip
-          },
 
+            match: 'contributors',
+            topic: {
+              name: 'contributors',
+              routes: [
+                {
+                  match: '',
+                  component: Wip
+                }
+              ]
+            }
+          },
           {
             match: '',
             redirect: 'activity'

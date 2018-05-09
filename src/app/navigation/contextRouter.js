@@ -30,21 +30,23 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
                   path={`${match.path}/${route.match}`}
                   {...terminal}
                 /> :
-                // Empty string match pattern: use exact match to base match path
+                // Empty string match pattern
                 <Route
                   key={`${route.match} (terminal)`}
-                  exact path={`${match.path}`}
+                  path={`${match.path}`}
                   {...terminal}
                 /> :
               null;
 
-          // This recursively builds the route for a child context that is rooted at this path. May be null
+          // This recursively builds the route for a child context or topic that is rooted at this path. May be null
+          const childContext = route.context || route.topic;
+
           const childRouter =
-            route.context ?
+            childContext ?
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={contextRouterFor(route.context, `${path}/${route.match}`)}
+                component={contextRouterFor(childContext, `${path}/${route.match}`)}
               /> :
               null;
 

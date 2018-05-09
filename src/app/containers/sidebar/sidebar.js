@@ -128,9 +128,9 @@ class Sidebar extends Component {
                         <Menu.Item  className='ant-menu-item' key={`${route.match}`}>
                           <Link to={`${currentContext.urlFor(route)}`}>
                             <span className="isoMenuHolder" style={submenuColor}>
-                              <i className={Icons.topics[route.match]} />
+                              <i className={Icons.topics[route.topic.name]} />
                               <span className="nav-text">
-                                <IntlMessages id={`topic.${route.match}`}/>
+                                <IntlMessages id={`topic.${route.topic.name}`}/>
                               </span>
                             </span>
                           </Link>

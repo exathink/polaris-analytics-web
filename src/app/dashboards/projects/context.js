@@ -15,14 +15,28 @@ const context : Context = {
         display: (match) => `Project: ${match.params['project']}`,
         routes: [
           {
-            topic: true,
             match: 'activity',
-            component: asyncComponent(() => import('./activity_dashboard'))
+            topic: {
+              name: 'activity',
+              routes: [
+                {
+                  match: '',
+                  component: asyncComponent(() => import('./activity_dashboard'))
+                }
+              ]
+            }
           },
           {
-            topic: true,
             match: 'contributors',
-            render: () => null
+            topic: {
+              name: 'contributors',
+              routes: [
+                {
+                  match: '',
+                  render: () => null
+                }
+              ]
+            }
           },
           {
             match: '',

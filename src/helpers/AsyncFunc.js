@@ -4,7 +4,7 @@ import ReactPlaceholder from 'react-placeholder';
 import 'nprogress/nprogress.css';
 import 'react-placeholder/lib/reactPlaceholder.css';
 
-export default function asyncComponent(importComponent) {
+export default function asyncComponent(importComponent, staticProps={}) {
   class AsyncFunc extends Component {
     constructor(props) {
       super(props);
@@ -38,5 +38,5 @@ export default function asyncComponent(importComponent) {
       );
     }
   }
-  return (props) => (<AsyncFunc {...props}/>);
+  return (props) => (<AsyncFunc {...props} {...staticProps}/>);
 }
