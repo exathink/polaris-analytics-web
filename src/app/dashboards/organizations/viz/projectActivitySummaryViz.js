@@ -1,9 +1,9 @@
 import {withVizDomainMapper} from "../../../services/vizData/index";
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../helpers/utility";
-import {ActivitySummaryViz} from "../../../components/viz/activity/viewCommitContributorTimespanDetail/index";
+import ActivitySummaryViz from "../../../components/viz/activity/viewCommitContributorTimespanDetail/index";
 import moment from 'moment';
-import {withActivityLevel} from "../../../components/viz/activity/viewCommitContributorTimespanDetail/index";
+import {withActivityLevel} from "../../../components/viz/activity/viewCommitContributorTimespanDetail/activityLevel";
 
 import './mocks/serviceMocks'
 

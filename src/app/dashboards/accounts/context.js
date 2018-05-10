@@ -1,5 +1,4 @@
 // @flow
-import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/context';
 import Activity from './activity/topic';

@@ -1,5 +1,5 @@
 import React from 'react';
-import type {Props} from "../types";
+import type {Props} from "../domain";
 import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../../charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 

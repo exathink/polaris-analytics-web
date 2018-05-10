@@ -1,5 +1,5 @@
 import React from "react";
-import type {Props} from "../types";
+import type {Props} from "../domain";
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {
   BubbleSeries,

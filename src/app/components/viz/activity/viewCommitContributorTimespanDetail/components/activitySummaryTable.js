@@ -1,4 +1,4 @@
-import type {Props} from "../types";
+import type {Props} from "../domain";
 import React from 'react';
 import {formatPolarisTimestamp} from "../../../../../helpers/utility";
 import {Table} from "../../../containers/table/index";

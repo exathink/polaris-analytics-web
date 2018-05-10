@@ -1,5 +1,5 @@
 import React from "react";
-import type {ActivitySummary, Props} from "../types";
+import type {ActivitySummary, Props} from "../domain";
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../../charts/index";
 import {formatDate} from "../../../../../helpers/utility";
