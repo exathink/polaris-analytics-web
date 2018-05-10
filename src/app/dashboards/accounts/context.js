@@ -2,6 +2,7 @@
 import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/context';
+import Activity from './activity/topic';
 
 import type {Context} from '../../navigation/context';
 
@@ -16,16 +17,7 @@ const context: Context = {
     },
     {
       match: 'activity',
-      topic: {
-        name: 'activity',
-        routes: [
-          {
-            match: '',
-            component: asyncComponent(() => import('./activity_dashboard'))
-          }
-        ]
-      }
-
+      topic: Activity
     },
     {
 

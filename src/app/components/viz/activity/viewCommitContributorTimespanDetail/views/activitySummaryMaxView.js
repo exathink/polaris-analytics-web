@@ -1,9 +1,9 @@
 // @flow
 import type {ActivitySummary, Props} from '../types'
 import React, {Fragment} from 'react';
-import {VizItem, VizRow} from "../../containers/layout/index";
+import {VizItem, VizRow} from "../../../containers/layout/index";
 
-import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
+import {CustomTabPanel, Tab, TabList, Tabs} from '../../../containers/tab/index';
 
 import {
   ActivitySummaryBubbleChart,

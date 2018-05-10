@@ -56,19 +56,22 @@ export const DashboardRow = ({children, h,  ...rest}) => (
 );
 
 
-const ItemMenu = (props) => (
-  props.itemSelected != null?
+const ItemMenu = ({itemSelected, detail, onClick}) => (
+  detail ?
     <nav className="dashboard-item-menu">
       <i
-        className={props.itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
-        title={props.itemSelected ? "Hide Details" : "Show Details"}
-        onClick={props.onClick}
+        className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
+        title={itemSelected ? "Hide Details" : "Show Details"}
+        onClick={onClick}
       />
     </nav> :
     null
 );
 
-export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, ...rest}) => (
+export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail,...rest}) => {
+
+
+  return (
   <Box w={w} m={1} className="dashboard-item">
     {
       !itemSelected ?
@@ -79,14 +82,19 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
 
     }
     <ItemMenu
-      itemSelected={itemSelected}
+      {...{itemSelected, detail}}
       onClick={() => (
         itemSelected ? navigate.push(dashboardUrl) : navigate.push(`${match.url}/${name}`)
       )}
     />
-    {cloneChildrenWithProps(children, {navigate, itemSelected, match, ...rest})}
+    {
+      itemSelected && detail ?
+        React.createElement(detail, {navigate, itemSelected, match, ...rest})
+        : React.createElement(primary, {navigate, itemSelected, match, ...rest})
+    }
   </Box>
-);
+  )
+};
 
 const withDetailRoutes = (WrappedDashboard) => {
   return ({match, ...rest}) => (

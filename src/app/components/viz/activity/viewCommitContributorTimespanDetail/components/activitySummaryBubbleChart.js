@@ -13,7 +13,7 @@ import {
   tooltipHtml,
   XAxis,
   YAxis,
-} from '../../../charts';
+} from '../../../../charts/index';
 
 
 

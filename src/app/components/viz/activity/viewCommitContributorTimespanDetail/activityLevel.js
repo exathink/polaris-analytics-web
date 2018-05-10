@@ -1,6 +1,6 @@
-import {Colors} from "../config";
+import {Colors} from "../../config";
 import type {ActivityLevel, ActivitySummary} from "./types";
-import {flatten} from "../../../helpers/collections";
+import {flatten} from "../../../../helpers/collections";
 
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {

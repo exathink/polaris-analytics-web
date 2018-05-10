@@ -1,10 +1,10 @@
 import React from 'react';
-import type {Props} from '../types';
 import IsoWidgetsWrapper from '../../../../../containers/Widgets/widgets-wrapper';
 import StickerWidget from '../../../../../containers/Widgets/sticker/sticker-widget';
-import {VizRow, VizItem} from "../../containers/layout";
+import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 
+import type {VizDomain} from "./domain";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -16,26 +16,14 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummaryStatsStickers = (props: Props) => {
+export const ViewCommitContributorTimespanTotals = (props: {viz_domain: VizDomain}) => {
 
-  const data = props.viz_domain.summary_data;
+  const data = props.viz_domain.data;
 
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
-        <VizItem w={0.25}>
-          <IsoWidgetsWrapper>
-            {/* Sticker Widget */}
-            <StickerWidget
-              number={props.viz_domain.data.length}
-              text={`${props.viz_domain.data.length > 1 ? props.viz_domain.subject_label_plural : props.viz_domain.subject_label_long}`}
-              icon={props.viz_domain.subject_icon}
-              fontColor="#ffffff"
-              bgColor={props.viz_domain.subject_color}
-            />
-          </IsoWidgetsWrapper>
-        </VizItem>
-        <VizItem w={0.25}>
+        <VizItem w={1/3}>
           <IsoWidgetsWrapper>
             {/* Sticker Widget */}
             <StickerWidget
@@ -47,7 +35,7 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
             />
           </IsoWidgetsWrapper>
         </VizItem>
-        <VizItem w={0.25}>
+        <VizItem w={1/3}>
           <IsoWidgetsWrapper>
             {/* Sticker Widget */}
             <StickerWidget
@@ -59,7 +47,7 @@ export const ActivitySummaryStatsStickers = (props: Props) => {
             />
           </IsoWidgetsWrapper>
         </VizItem>
-        <VizItem w={0.25}>
+        <VizItem w={1/3}>
           <IsoWidgetsWrapper>
             {/* Sticker Widget */}
             <StickerWidget

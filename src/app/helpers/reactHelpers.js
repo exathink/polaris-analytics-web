@@ -10,9 +10,9 @@ export const findByProps = (children, propName, value) => {
 
 
 };
-export const cloneChildrenWithProps = (children, props) => {
+export const cloneChildrenWithProps = (children, props, filter=child=>child) => {
   return React.Children.map(children, child => (
-      React.cloneElement(child, props)
+      filter(child) ? React.cloneElement(child, props) : () => null
     )
   )
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import type {ActivitySummary, Props} from "../types";
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
-import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../charts";
-import {formatDate} from "../../../../helpers/utility";
+import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../../charts/index";
+import {formatDate} from "../../../../../helpers/utility";
 
 export class ActivitySummaryTimelineChart extends React.Component<Props> {
   sortedDomainData: Array<ActivitySummary>;

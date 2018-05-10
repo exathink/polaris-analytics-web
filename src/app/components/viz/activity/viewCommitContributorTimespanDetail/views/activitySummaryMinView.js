@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivitySummaryStatsStickers} from "../components";
+import {ActivitySummaryStatsStickers} from "../components/index";
 
 
 export const ActivitySummaryMinView = (props) => (
