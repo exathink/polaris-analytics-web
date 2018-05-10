@@ -1,5 +1,5 @@
 import {withVizDomainMapper} from "../../../../services/vizData";
-import {ViewCommitContributorTimespanTotals} from "../../../../components/viz/activity/viewActivitySummary";
+import {ActivitySummary} from "../../../../components/viz/activity/viewActivitySummary";
 import Model from './model';
 
-export default withVizDomainMapper(Model)(ViewCommitContributorTimespanTotals);
+export default withVizDomainMapper(Model)(ActivitySummary);

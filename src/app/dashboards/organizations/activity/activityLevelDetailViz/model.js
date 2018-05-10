@@ -1,14 +1,9 @@
-import {withVizDomainMapper} from "../../../services/vizData/index";
-import {DataSources} from "../dataSources";
-import {polarisTimestamp} from "../../../helpers/utility";
-import ActivitySummaryViz from "../../../components/viz/activity/viewActivityLevelDetail/index";
-import moment from 'moment';
-import {withActivityLevel} from "../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import {DataSources} from "../../dataSources";
+import {polarisTimestamp} from "../../../../helpers/utility";
+import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import moment from "moment/moment";
 
-import './mocks/serviceMocks'
-
-
-const projectActivitySummaryDomainMapper = {
+export default  {
   mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
     organization: ownProps.match.params.organization
@@ -20,19 +15,10 @@ const projectActivitySummaryDomainMapper = {
         organization: props.organization,
         mock: false
       }
-    },
-    {
-      dataSource: DataSources.organization_activity_summary,
-      params: {
-        organization: props.organization,
-        mock: false
-      }
     }
   ]),
   mapDomain: (source_data, props) => {
     const project_summaries = source_data[0].data;
-    const org_summary = source_data[1].data;
-
     return {
       data: project_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
@@ -49,12 +35,6 @@ const projectActivitySummaryDomainMapper = {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      summary_data: org_summary.map((org_summary) => ({
-        commits: org_summary.commit_count,
-        contributors: org_summary.contributor_count,
-        earliest_commit: polarisTimestamp(org_summary.earliest_commit),
-        latest_commit: polarisTimestamp(org_summary.latest_commit)
-      }))[0],
       level_label: 'Org',
       level: props.organization,
       subject_label: 'Project',
@@ -71,5 +51,3 @@ const projectActivitySummaryDomainMapper = {
     }
   }
 };
-export const ProjectActivitySummaryViz = withVizDomainMapper(projectActivitySummaryDomainMapper)(ActivitySummaryViz);
-

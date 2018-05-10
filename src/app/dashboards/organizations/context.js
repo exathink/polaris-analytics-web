@@ -1,7 +1,7 @@
-import asyncComponent from "../../../helpers/AsyncFunc";
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/context";
+import Activity from './activity/topic';
 
 
 const context = {
@@ -20,16 +20,7 @@ const context = {
           },
           {
             match: 'activity',
-            topic: {
-              name: 'activity',
-              routes: [
-                {
-                  match: '',
-                  exact: false,
-                  component: asyncComponent(() => import('./activity_dashboard'))
-                }
-              ]
-            }
+            topic: Activity
           },
           {
 

@@ -16,7 +16,7 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ViewCommitContributorTimespanTotals = (props: {viz_domain: VizDomain}) => {
+export const ActivitySummary = (props: {viz_domain: VizDomain}) => {
 
   const data = props.viz_domain.data;
 
