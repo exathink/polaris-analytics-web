@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
-import CommitContributorTimespanTotals from './CommitsContributorTimespanTotals';
-import {OrganizationActivitySummaryViz} from "../viz/organizationActivitySummaryViz";
+import ActivitySummaryViz from './activitySummaryViz';
+import ActivityLevelDetailViz from "./activityLevelDetailViz";
 
 export const dashboard = (props) => (
   <Dashboard dashboard={'account-dashboard'} {...props}>
@@ -10,8 +10,8 @@ export const dashboard = (props) => (
         w={1}
         name="organizations-activity"
         title={"Account Overview"}
-        primary={CommitContributorTimespanTotals}
-        detail={OrganizationActivitySummaryViz}
+        primary={ActivitySummaryViz}
+        detail={ActivityLevelDetailViz}
       />
     </DashboardRow>
   </Dashboard>

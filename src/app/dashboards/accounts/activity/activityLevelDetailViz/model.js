@@ -1,14 +1,9 @@
-import {withVizDomainMapper} from "../../../services/vizData/index";
 import {DataSources} from "../dataSources";
-import {polarisTimestamp} from "../../../helpers/utility";
-import ActivitySummaryViz from "../../../components/viz/activity/viewCommitContributorTimespanDetail/index";
-import moment from 'moment';
-import {withActivityLevel} from "../../../components/viz/activity/viewCommitContributorTimespanDetail/activityLevel";
+import moment from "moment/moment";
+import {polarisTimestamp} from "../../../../helpers/utility";
+import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
 
-import '../../organizations/viz/mocks/serviceMocks'
-
-
-const organizationActivitySummaryDomainMapper = {
+export default {
   mapStateToProps: state => ({
     account: state.user.get('account'),
   }),
@@ -66,5 +61,3 @@ const organizationActivitySummaryDomainMapper = {
     }
   }
 };
-export const OrganizationActivitySummaryViz =  withVizDomainMapper(organizationActivitySummaryDomainMapper)(ActivitySummaryViz);
-
