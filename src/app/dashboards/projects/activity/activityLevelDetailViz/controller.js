@@ -1,6 +1,6 @@
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
-import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 import moment from "moment/moment";
 
 export const Controller = {

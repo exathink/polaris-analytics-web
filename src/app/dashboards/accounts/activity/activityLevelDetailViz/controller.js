@@ -1,7 +1,7 @@
 import {DataSources} from "../dataSources";
 import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
-import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 
 import type {VizController} from "../../../../viz/vizController";
 

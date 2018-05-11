@@ -5,28 +5,28 @@ import {flatten} from "../../../../helpers/collections";
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
     display_name: 'Inactive',
-    color: Colors.ActivityBucket.INACTIVE,
+    color: Colors.ActivityLevel.INACTIVE,
     isMember: activitySummary => activitySummary.days_since_latest_commit > 180,
     visible: false,
     index: 0
   },
   {
     display_name: 'Dormant',
-    color: Colors.ActivityBucket.DORMANT,
+    color: Colors.ActivityLevel.DORMANT,
     isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180),
     visible: false,
     index: 1
   },
   {
     display_name: 'Quiescent',
-    color: Colors.ActivityBucket.RECENT,
+    color: Colors.ActivityLevel.RECENT,
     isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90),
     visible: false,
     index: 2
   },
   {
     display_name: 'Active',
-    color: Colors.ActivityBucket.ACTIVE,
+    color: Colors.ActivityLevel.ACTIVE,
     isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30),
     visible: true,
     index: 3
@@ -34,7 +34,7 @@ export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
 ];
 export const ACTIVITY_LEVEL_UNKNOWN = {
   display_name: 'Unknown',
-  color: Colors.ActivityBucket.UNKNOWN,
+  color: Colors.ActivityLevel.UNKNOWN,
   isMember: () => false,
   visible: false
 };
