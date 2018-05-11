@@ -3,9 +3,9 @@ import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 import moment from "moment/moment";
 
-import type {VizController} from "../../../../viz/vizController";
+import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
-export const Controller: VizController = {
+export const Controller: ControllerDelegate = {
   mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
     organization: ownProps.match.params.organization

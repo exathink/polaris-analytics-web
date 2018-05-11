@@ -3,9 +3,9 @@ import {polarisTimestamp} from "../../../../helpers/utility";
 
 import '../../../organizations/viz/mocks/serviceMocks'
 
-import type {VizController} from "../../../../viz/vizController";
+import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
-export const Controller: VizController = {
+export const Controller: ControllerDelegate = {
   mapStateToProps: state => ({
     account: state.user.get('account'),
   }),
