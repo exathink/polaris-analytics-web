@@ -1,3 +1,4 @@
+// @flow
 
 export type ActivityTotals = {
   commits: number,
@@ -7,7 +8,7 @@ export type ActivityTotals = {
 }
 
 export type Model = {
-  data: ActivityTotals
+  data: ActivityTotals,
   level_label: string,
   level: string,
   subject_label_long: string,

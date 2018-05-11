@@ -1,3 +1,5 @@
+// @flow
+
 export type ActivitySummary = {
   id: string;
   entity_name: string,
