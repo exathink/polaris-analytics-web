@@ -17,7 +17,7 @@ export const Controller : ControllerDelegate = {
       }
     }
   ]),
-  initModel: (source_data, props) => {
+  initModel: (source_data) => {
     const org_summary = source_data[0].data;
 
     return {
@@ -27,14 +27,9 @@ export const Controller : ControllerDelegate = {
         earliest_commit: polarisTimestamp(org_summary.earliest_commit),
         latest_commit: polarisTimestamp(org_summary.latest_commit)
       }))[0],
-      level_label: 'Org',
-      level: props.organization,
-      subject_label: 'Project',
-      subject_label_long: 'Project',
-      subject_label_plural: 'Projects',
-      subject_icon: 'ion-clipboard',
-      subject_color: '#356eb2',
-      span_uom: 'Years'
+      displayProps: {
+        bgColor: '#356eb2'
+      }
     }
   }
 };

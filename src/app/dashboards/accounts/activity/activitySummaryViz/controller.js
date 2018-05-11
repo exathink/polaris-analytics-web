@@ -18,7 +18,7 @@ export const Controller: ControllerDelegate = {
       }
     }
   ]),
-  initModel: (source_data, props) => {
+  initModel: (source_data) => {
     const account_summary = source_data[0].data;
     return {
       data: account_summary.map((account_summary) => ({
@@ -27,14 +27,9 @@ export const Controller: ControllerDelegate = {
         earliest_commit: polarisTimestamp(account_summary.earliest_commit),
         latest_commit: polarisTimestamp(account_summary.latest_commit)
       }))[0],
-      level_label: 'Accounts',
-      level: props.account.company,
-      subject_label: 'Org',
-      subject_label_long: 'Organization',
-      subject_label_plural: 'Organizations',
-      subject_icon: "ion-ios-albums",
-      subject_color: '#7266BA',
-      span_uom: 'Years'
+      displayProps: {
+        bgColor: '#7266BA'
+      }
     }
   }
 };
