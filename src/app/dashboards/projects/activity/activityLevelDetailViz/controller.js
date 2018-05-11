@@ -1,14 +1,9 @@
-import {withVizController} from "../../../services/vizData/index";
 import {DataSources} from "../dataSources";
-import {polarisTimestamp} from "../../../helpers/utility";
-import ActivitySummaryViz from "../../../components/viz/activity/viewActivityLevelDetail/index";
-import moment from 'moment';
-import {withActivityLevel} from "../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import {polarisTimestamp} from "../../../../helpers/utility";
+import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
+import moment from "moment/moment";
 
-
-
-
-const repositoryActivitySummaryDomainMapper = {
+export const Controller = {
   mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
     organization: ownProps.match.params.organization,
@@ -22,20 +17,10 @@ const repositoryActivitySummaryDomainMapper = {
         project: props.project,
         mock: false
       }
-    },
-    {
-      dataSource: DataSources.project_activity_summary,
-      params: {
-        organization: props.organization,
-        project: props.project,
-        mock: false
-      }
     }
   ]),
   mapDomain: (source_data, props) => {
     const repo_summaries = source_data[0].data;
-    const project_summary = source_data[1].data;
-
     return {
       data: repo_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
@@ -52,12 +37,6 @@ const repositoryActivitySummaryDomainMapper = {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      summary_data: project_summary.map((org_summary) => ({
-        commits: org_summary.commit_count,
-        contributors: org_summary.contributor_count,
-        earliest_commit: polarisTimestamp(org_summary.earliest_commit),
-        latest_commit: polarisTimestamp(org_summary.latest_commit)
-      }))[0],
       level_label: 'Project',
       level: props.project,
       subject_label: 'Repo',
@@ -69,5 +48,3 @@ const repositoryActivitySummaryDomainMapper = {
     }
   }
 };
-export const RepositoryActivitySummaryViz = withVizController(repositoryActivitySummaryDomainMapper)(ActivitySummaryViz);
-

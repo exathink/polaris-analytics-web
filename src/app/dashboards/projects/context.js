@@ -3,6 +3,7 @@ import asyncComponent from "../../../helpers/AsyncFunc";
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../navigation/context';
 
+import Activity from './activity/topic';
 
 const context : Context = {
   name: 'Projects',
@@ -16,15 +17,7 @@ const context : Context = {
         routes: [
           {
             match: 'activity',
-            topic: {
-              name: 'activity',
-              routes: [
-                {
-                  match: '',
-                  component: asyncComponent(() => import('./activity_dashboard'))
-                }
-              ]
-            }
+            topic: Activity
           },
           {
             match: 'contributors',

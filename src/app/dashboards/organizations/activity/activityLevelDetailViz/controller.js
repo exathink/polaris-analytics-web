@@ -1,4 +1,4 @@
-import {DataSources} from "../../dataSources";
+import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
 import moment from "moment/moment";
