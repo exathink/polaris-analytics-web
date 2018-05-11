@@ -16,7 +16,7 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummary = (props: {model: Model}) => {
+export const ActivitySummaryView = (props: {model: Model}) => {
 
   const data = props.model.data;
 

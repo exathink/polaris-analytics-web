@@ -55,7 +55,7 @@ type MaxViewState = {
   selected: Array<ActivitySummary> | null
 }
 
-export default class extends React.Component<Props, MaxViewState> {
+export class ActivityLevelDetailView extends React.Component<Props, MaxViewState> {
 
   constructor(props: Props) {
     super(props);
