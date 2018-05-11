@@ -59,7 +59,7 @@ export function withVizController(delegate: ControllerDelegate) {
               rows={7}
               ready={this.ready()}
             >
-              <View {...this.props} model={this.getModel()}/>
+              <View model={this.getModel()}/>
 
             </ReactPlaceholder>
           )
