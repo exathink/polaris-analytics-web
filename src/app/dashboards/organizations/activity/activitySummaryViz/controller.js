@@ -17,7 +17,7 @@ export const Controller : ControllerDelegate = {
       }
     }
   ]),
-  mapDomain: (source_data, props) => {
+  initModel: (source_data, props) => {
     const org_summary = source_data[0].data;
 
     return {

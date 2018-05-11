@@ -1,3 +1,4 @@
+// @flow
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 
@@ -17,7 +18,7 @@ export const Controller: ControllerDelegate = {
       }
     }
   ]),
-  mapDomain: (source_data, props) => {
+  initModel: (source_data, props) => {
     const account_summary = source_data[0].data;
     return {
       data: account_summary.map((account_summary) => ({

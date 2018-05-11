@@ -37,7 +37,7 @@ export function withVizController(delegate: ControllerDelegate) {
           })
         }
 
-        mapDomain() {
+        getModel() {
           if (this.ready()) {
 
             const dataSpec = delegate.getDataSpec(this.props);
@@ -46,7 +46,7 @@ export function withVizController(delegate: ControllerDelegate) {
               params,
               data: this.props.viz_data.getData(dataSource, params)
             }));
-            return delegate.mapDomain(source_data, this.props);
+            return delegate.initModel(source_data, this.props);
           }
         }
 
@@ -59,7 +59,7 @@ export function withVizController(delegate: ControllerDelegate) {
               rows={7}
               ready={this.ready()}
             >
-              <View {...this.props} model={this.mapDomain()}/>
+              <View {...this.props} model={this.getModel()}/>
 
             </ReactPlaceholder>
           )

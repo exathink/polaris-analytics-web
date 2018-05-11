@@ -1,3 +1,4 @@
+// @flow
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
@@ -19,7 +20,7 @@ export const Controller = {
       }
     }
   ]),
-  mapDomain: (source_data, props) => {
+  initModel: (source_data, props) => {
     const repo_summaries = source_data[0].data;
     return {
       data: repo_summaries.map((project_summary) => {
