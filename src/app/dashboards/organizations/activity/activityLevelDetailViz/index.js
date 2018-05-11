@@ -1,8 +1,8 @@
-import {withVizDomainMapper} from "../../../../services/vizData/index";
+import {withVizController} from "../../../../services/vizData/index";
 import ActivitySummaryViz from "../../../../components/viz/activity/viewActivityLevelDetail/index";
+import {Controller} from "./controller";
 
 import '../../viz/mocks/serviceMocks'
-import Model from "./model";
 
-export const ActivityLevelDetailViz = withVizDomainMapper(Model)(ActivitySummaryViz);
+export const ActivityLevelDetailViz = withVizController(Controller)(ActivitySummaryViz);
 

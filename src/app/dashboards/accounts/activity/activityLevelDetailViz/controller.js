@@ -3,7 +3,9 @@ import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/viz/activity/viewActivityLevelDetail/activityLevel";
 
-export default {
+import type {VizController} from "../../../../viz/vizController";
+
+export const Controller: VizController =  {
   mapStateToProps: state => ({
     account: state.user.get('account'),
   }),
@@ -61,3 +63,4 @@ export default {
     }
   }
 };
+

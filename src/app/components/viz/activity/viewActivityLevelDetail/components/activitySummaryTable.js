@@ -1,4 +1,4 @@
-import type {Props} from "../domain";
+import type {Props} from "../model";
 import React from 'react';
 import {formatPolarisTimestamp} from "../../../../../helpers/utility";
 import {Table} from "../../../containers/table/index";
@@ -6,10 +6,10 @@ import {findVisibleLevels} from "../activityLevel";
 import Button from "../../../../../../components/uielements/button";
 
 export const ActivitySummaryTable = (props: Props) => {
-  const tableData = props.selectedActivities || findVisibleLevels(props.viz_domain.data);
+  const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
   const drillDown = (event) => {
-    if (props.viz_domain.onDrillDown) {
-      props.viz_domain.onDrillDown(event)
+    if (props.model.onDrillDown) {
+      props.model.onDrillDown(event)
     }
   };
 
@@ -18,7 +18,7 @@ export const ActivitySummaryTable = (props: Props) => {
       data={tableData.sort((a, b) => b.activity_level.index - a.activity_level.index)}
       columns={[{
         id: 'col-activity-level',
-        Header: `${props.viz_domain.subject_label_long}`,
+        Header: `${props.model.subject_label_long}`,
         headerStyle: {width: '50px'},
         accessor: activitySummary => ({
           color: activitySummary.activity_level.color,
@@ -27,7 +27,7 @@ export const ActivitySummaryTable = (props: Props) => {
         }),
         Cell: row => (
           <Button onClick={() => drillDown({
-            subject_label: `${props.viz_domain.subject_label}` ,
+            subject_label: `${props.model.subject_label}` ,
             entity_name: row.value.text,
             id: row.value.key
           })} style={{
@@ -56,7 +56,7 @@ export const ActivitySummaryTable = (props: Props) => {
         accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
       }, {
         id: 'timespan-col',
-        Header: `Timespan (${props.viz_domain.span_uom})`,
+        Header: `Timespan (${props.model.span_uom})`,
         accessor: activitySummary => activitySummary.span.toLocaleString(),
       }
       ]}

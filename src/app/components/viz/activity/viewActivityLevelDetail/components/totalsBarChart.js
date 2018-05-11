@@ -1,10 +1,10 @@
 import React from 'react';
-import type {Props} from "../domain";
+import type {Props} from "../model";
 import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../../charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 export const TotalsBarChart = (props: Props) => {
-  const totalsByActivityLevel = props.viz_domain.data.reduce(
+  const totalsByActivityLevel = props.model.data.reduce(
     (totals, activitySummary) => {
       let level = activitySummary.activity_level.display_name;
       totals[level] = (totals[level] || 0) + 1;
@@ -33,7 +33,7 @@ export const TotalsBarChart = (props: Props) => {
     });
   };
 
-  const title = `${props.viz_domain.subject_label}s`;
+  const title = `${props.model.subject_label}s`;
 
   return (
     <HighchartsChart plotOptions={{
@@ -71,12 +71,12 @@ export const TotalsBarChart = (props: Props) => {
         allowDecimals={false}
         gridLineWidth={0}
         plotLines={[{
-          value: props.viz_domain.data.length,
+          value: props.model.data.length,
           width: 2,
           color: 'grey',
           dashStyle: 'ShortDot',
           label: {
-            text: `${props.viz_domain.data.length}`,
+            text: `${props.model.data.length}`,
             align: 'center',
             textAlign: 'right',
           }

@@ -1,1 +1,1 @@
-export {withVizDomainMapper} from './withVizDomainMapper'
+export {withVizController} from '../../viz/withVizController'

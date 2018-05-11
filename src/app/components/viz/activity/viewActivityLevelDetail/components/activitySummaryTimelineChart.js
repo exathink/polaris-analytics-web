@@ -1,5 +1,5 @@
 import React from "react";
-import type {ActivitySummary, Props} from "../domain";
+import type {ActivitySummary, Props} from "../model";
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../../charts/index";
 import {formatDate} from "../../../../../helpers/utility";
@@ -23,7 +23,7 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
       <TimelineSeries
         key="activitytimeline"
         id="activitytimeline"
-        name={this.props.viz_domain.level}
+        name={this.props.model.level}
         data={seriesData}
         maxPointWidth={10}
         turboThreshold={0}
@@ -32,9 +32,9 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
   }
 
   formatTooltip(point) {
-    const viz_domain = this.props.viz_domain;
+    const model = this.props.model;
     return tooltipHtml({
-      header: `${viz_domain.subject_label_long}: ${point.point.yCategory}`,
+      header: `${model.subject_label_long}: ${point.point.yCategory}`,
       body: [
         ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
         ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
@@ -43,8 +43,8 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
   }
 
   render() {
-    const viz_domain = this.props.viz_domain;
-    const domain_data = this.props.selectedActivities || findVisibleLevels(viz_domain.data);
+    const model = this.props.model;
+    const domain_data = this.props.selectedActivities || findVisibleLevels(model.data);
     this.sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
     const entities = this.sortedDomainData.map((activitySummary) => activitySummary.entity_name);
 
@@ -67,7 +67,7 @@ export class ActivitySummaryTimelineChart extends React.Component<Props> {
           categories={entities}
           reversed={true}
         >
-          <YAxis.Title>{viz_domain.subject_label}</YAxis.Title>
+          <YAxis.Title>{model.subject_label}</YAxis.Title>
         </YAxis>
 
         {this.getSeries()}

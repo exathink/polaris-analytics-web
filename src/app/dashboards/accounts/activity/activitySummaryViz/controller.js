@@ -3,8 +3,9 @@ import {polarisTimestamp} from "../../../../helpers/utility";
 
 import '../../../organizations/viz/mocks/serviceMocks'
 
+import type {VizController} from "../../../../viz/vizController";
 
-export default {
+export const Controller: VizController = {
   mapStateToProps: state => ({
     account: state.user.get('account'),
   }),
@@ -36,5 +37,7 @@ export default {
     }
   }
 };
+
+
 
 

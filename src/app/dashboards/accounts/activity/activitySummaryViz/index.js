@@ -1,5 +1,5 @@
-import {withVizDomainMapper} from "../../../../services/vizData";
+import {withVizController} from "../../../../services/vizData";
 import {ActivitySummary} from "../../../../components/viz/activity/viewActivitySummary";
-import Model from './model';
+import {Controller} from './controller';
 
-export default withVizDomainMapper(Model)(ActivitySummary);
+export default withVizController(Controller)(ActivitySummary);

@@ -1,4 +1,4 @@
-import {withVizDomainMapper} from "../../../services/vizData/index";
+import {withVizController} from "../../../services/vizData/index";
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../helpers/utility";
 import ActivitySummaryViz from "../../../components/viz/activity/viewActivityLevelDetail/index";
@@ -69,5 +69,5 @@ const repositoryActivitySummaryDomainMapper = {
     }
   }
 };
-export const RepositoryActivitySummaryViz = withVizDomainMapper(repositoryActivitySummaryDomainMapper)(ActivitySummaryViz);
+export const RepositoryActivitySummaryViz = withVizController(repositoryActivitySummaryDomainMapper)(ActivitySummaryViz);
 

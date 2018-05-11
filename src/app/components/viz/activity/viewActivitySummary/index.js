@@ -4,7 +4,7 @@ import StickerWidget from '../../../../../containers/Widgets/sticker/sticker-wid
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 
-import type {VizDomain} from "./domain";
+import type {Model} from "./model";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -16,9 +16,9 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummary = (props: {viz_domain: VizDomain}) => {
+export const ActivitySummary = (props: {model: Model}) => {
 
-  const data = props.viz_domain.data;
+  const data = props.model.data;
 
   return (
     <React.Fragment>
@@ -31,7 +31,7 @@ export const ActivitySummary = (props: {viz_domain: VizDomain}) => {
               text={`Contributor${data.contributors > 1 ? 's' : ''}`}
               icon="ion-ios-people"
               fontColor="#ffffff"
-              bgColor={props.viz_domain.subject_color}
+              bgColor={props.model.subject_color}
             />
           </IsoWidgetsWrapper>
         </VizItem>
@@ -43,7 +43,7 @@ export const ActivitySummary = (props: {viz_domain: VizDomain}) => {
               text={"Commits"}
               icon="ion-code"
               fontColor="#ffffff"
-              bgColor={props.viz_domain.subject_color}
+              bgColor={props.model.subject_color}
             />
           </IsoWidgetsWrapper>
         </VizItem>
@@ -55,7 +55,7 @@ export const ActivitySummary = (props: {viz_domain: VizDomain}) => {
               text={'Timespan'}
               icon="ion-clock"
               fontColor="#ffffff"
-              bgColor={props.viz_domain.subject_color}
+              bgColor={props.model.subject_color}
             />
           </IsoWidgetsWrapper>
         </VizItem>

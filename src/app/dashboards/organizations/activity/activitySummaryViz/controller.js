@@ -1,9 +1,9 @@
 import {DataSources} from "../../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
+import {VizController} from "../../../../viz/vizController";
 
 
-
-export default {
+export const Controller : VizController = {
   mapStateToProps: (state, ownProps) => ({
     account: state.user.get('account'),
     organization: ownProps.match.params.organization

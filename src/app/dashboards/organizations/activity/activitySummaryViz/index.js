@@ -1,6 +1,6 @@
-import {withVizDomainMapper} from "../../../../services/vizData";
-import Model from './model';
+import {withVizController} from "../../../../services/vizData";
+import {Controller} from './controller';
 
 import {ActivitySummary} from "../../../../components/viz/activity/viewActivitySummary";
 
-export const ActivitySummaryViz = withVizDomainMapper(Model)(ActivitySummary);
+export const ActivitySummaryViz = withVizController(Controller)(ActivitySummary);

@@ -1,5 +1,5 @@
 // @flow
-import type {ActivitySummary, Props} from './domain'
+import type {ActivitySummary, Props} from './model'
 import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
 

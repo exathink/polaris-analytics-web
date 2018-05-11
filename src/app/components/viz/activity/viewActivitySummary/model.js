@@ -6,7 +6,7 @@ export type ActivityTotals = {
   latest_commit: Date
 }
 
-export type VizDomain = {
+export type Model = {
   data: ActivityTotals
   level_label: string,
   level: string,

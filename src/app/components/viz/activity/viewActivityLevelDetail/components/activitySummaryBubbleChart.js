@@ -1,5 +1,5 @@
 import React from "react";
-import type {Props} from "../domain";
+import type {Props} from "../model";
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {
   BubbleSeries,
@@ -86,7 +86,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   }
 
   pointsToActivities(points) {
-    return points.map(point => this.props.viz_domain.data.find(
+    return points.map(point => this.props.model.data.find(
       activitySummary =>
         activitySummary.id === point.domain_id
     ));
@@ -157,7 +157,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
     // the most recent activity bucket for which there is any data
     // to show.
 
-    let domainPartition = partitionByActivityLevel(this.props.viz_domain.data);
+    let domainPartition = partitionByActivityLevel(this.props.model.data);
 
     this.series = ACTIVITY_LEVELS.map((activity_level, index) => {
       const level_partition = domainPartition[activity_level.index];
@@ -207,12 +207,12 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
 
   formatTooltip(point) {
-    const viz_domain = this.props.viz_domain;
+    const model = this.props.model;
     return tooltipHtml({
-      header: `${viz_domain.subject_label_long}: ${point.key}`,
+      header: `${model.subject_label_long}: ${point.key}`,
       body: [
         ['Commits: ', `${point.y}`],
-        ['Timespan:', `${point.x.toLocaleString()} ${viz_domain.span_uom}`],
+        ['Timespan:', `${point.x.toLocaleString()} ${model.span_uom}`],
         ['Contributors:', `${point.point ? point.point.z : ''}`]
       ]
     });
@@ -221,8 +221,8 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
 
   render() {
-    const viz_domain = this.props.viz_domain;
-    const title = `${viz_domain.subject_label_long} Activity Summary`;
+    const model = this.props.model;
+    const title = `${model.subject_label_long} Activity Summary`;
     return (
       <HighchartsChart
         plotOptions={this.plotOptions}
@@ -236,7 +236,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         />
         <Title>{title}</Title>
 
-        <Subtitle>{`${viz_domain.level_label}: ${viz_domain.level}`}</Subtitle>
+        <Subtitle>{`${model.level_label}: ${model.level}`}</Subtitle>
         <LegendRight reversed={true}/>
         <Tooltip
           useHTML={true}
@@ -244,7 +244,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
           formatter={this.formatTooltip.bind(this)}
         />
         <XAxis type={'axesType'}>
-          <XAxis.Title>{`Timespan (${viz_domain.span_uom})`}</XAxis.Title>
+          <XAxis.Title>{`Timespan (${model.span_uom})`}</XAxis.Title>
         </XAxis>
 
         <YAxis

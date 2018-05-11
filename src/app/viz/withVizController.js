@@ -4,17 +4,17 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 
 import {connect} from 'react-redux';
 
-import vizActions from '../../redux/viz/actions';
+import vizActions from '../redux/viz/actions';
 
 const {fetchData} = vizActions;
 
-export function withVizDomainMapper(domainMapper) {
-  return (Viz) => {
+export function withVizController(controller) {
+  return (View) => {
     const mapStateToProps = (state,ownProps) => {
       return {
         ...ownProps,
         ...{viz_data: state.vizData},
-        ...(domainMapper.mapStateToProps ? domainMapper.mapStateToProps(state, ownProps) : {})
+        ...(controller.mapStateToProps ? controller.mapStateToProps(state, ownProps) : {})
       }
     };
 
@@ -22,7 +22,7 @@ export function withVizDomainMapper(domainMapper) {
       class extends React.Component {
 
         componentDidMount() {
-          const dataSpec = domainMapper.getDataSpec(this.props);
+          const dataSpec = controller.getDataSpec(this.props);
           dataSpec.forEach(({dataSource, params}) => {
             if (!this.props.viz_data.getData(dataSource, params)) {
               this.props.fetchData({dataSource: dataSource, params: params})
@@ -31,7 +31,7 @@ export function withVizDomainMapper(domainMapper) {
         }
 
         ready() {
-          const dataSpec = domainMapper.getDataSpec(this.props);
+          const dataSpec = controller.getDataSpec(this.props);
           return dataSpec.every(({dataSource, params}) => {
             return this.props.viz_data.getData(dataSource, params) != null;
           })
@@ -39,13 +39,14 @@ export function withVizDomainMapper(domainMapper) {
 
         mapDomain() {
           if (this.ready()) {
-            const dataSpec = domainMapper.getDataSpec(this.props);
+
+            const dataSpec = controller.getDataSpec(this.props);
             const source_data = dataSpec.map(({dataSource, params}) => ({
               dataSource,
               params,
               data: this.props.viz_data.getData(dataSource, params)
             }));
-            return domainMapper.mapDomain(source_data, this.props);
+            return controller.mapDomain(source_data, this.props);
           }
         }
 
@@ -58,7 +59,7 @@ export function withVizDomainMapper(domainMapper) {
               rows={7}
               ready={this.ready()}
             >
-              <Viz {...this.props} viz_domain={this.mapDomain()}/>
+              <View {...this.props} model={this.mapDomain()}/>
 
             </ReactPlaceholder>
           )

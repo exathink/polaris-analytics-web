@@ -10,7 +10,7 @@ export type ActivitySummary = {
   activity_level: ActivityLevel
 }
 
-export type VizDomain = {
+export type Model = {
   data: Array<ActivitySummary>,
   level_label: string,
   level: string,
@@ -24,7 +24,7 @@ export type VizDomain = {
 
 }
 export type Props = {
-  viz_domain: VizDomain,
+  model: Model,
   onActivitiesSelected: (any) => void,
   selectedActivities: Array<ActivitySummary> | null
 }
