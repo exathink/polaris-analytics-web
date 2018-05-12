@@ -89,8 +89,8 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
     />
     {
       itemSelected && detail ?
-        React.createElement(detail, {navigate, itemSelected, match, ...rest})
-        : React.createElement(primary, {navigate, itemSelected, match, ...rest})
+        React.createElement(detail, {})
+        : React.createElement(primary, {})
     }
   </Box>
   )

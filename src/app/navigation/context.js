@@ -114,6 +114,10 @@ export class ActiveContext {
     return `${this.matchInfo.url}/${this.match()}`
   }
 
+  matchParams() {
+    return this.matchInfo.params;
+  }
+
 
   urlFor(route: RouteType) {
     return `${this.matchInfo.url}/${route.match}`;

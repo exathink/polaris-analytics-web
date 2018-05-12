@@ -3,6 +3,7 @@ import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import {connect} from 'react-redux';
 import vizActions from '../redux/viz/actions';
+import {withNavigation} from "../navigation/withNavigation";
 
 import type {ControllerDelegate} from "./controllerDelegate";
 
@@ -10,19 +11,19 @@ import type {ControllerDelegate} from "./controllerDelegate";
 const {fetchData} = vizActions;
 export function withVizController(delegate: ControllerDelegate) {
   return (View) => {
-    const mapStateToProps = (state,ownProps) => {
+    const mapStateToProps = (state) => {
       return {
-        ...ownProps,
-        ...{viz_data: state.vizData},
-        ...(delegate.mapStateToProps ? delegate.mapStateToProps(state, ownProps) : {})
+        user: state.user,
+        viz_data: state.vizData
       }
     };
 
-    return connect(mapStateToProps, {fetchData})(
+    return withNavigation(connect(mapStateToProps, {fetchData})(
       class VizController extends React.Component {
 
         componentDidMount() {
-          const dataSpec = delegate.getDataSpec(this.props);
+          const context = this.props.navigation.current();
+          const dataSpec = delegate.getDataSpec(context);
           dataSpec.forEach(({dataSource, params}) => {
             if (!this.props.viz_data.getData(dataSource, params)) {
               this.props.fetchData({dataSource: dataSource, params: params})
@@ -31,7 +32,8 @@ export function withVizController(delegate: ControllerDelegate) {
         }
 
         ready() {
-          const dataSpec = delegate.getDataSpec(this.props);
+          const context = this.props.navigation.current();
+          const dataSpec = delegate.getDataSpec(context);
           return dataSpec.every(({dataSource, params}) => {
             return this.props.viz_data.getData(dataSource, params) != null;
           })
@@ -64,7 +66,7 @@ export function withVizController(delegate: ControllerDelegate) {
             </ReactPlaceholder>
           )
         }
-      });
+      }));
   }
 
 

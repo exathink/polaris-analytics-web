@@ -6,15 +6,11 @@ import moment from "moment/moment";
 import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
 export const Controller: ControllerDelegate = {
-  mapStateToProps: (state, ownProps) => ({
-    account: state.user.get('account'),
-    organization: ownProps.match.params.organization
-  }),
-  getDataSpec: props => ([
+  getDataSpec: context => ([
     {
       dataSource: DataSources.organization_projects_activity_summary,
       params: {
-        organization: props.organization,
+        organization: context.matchParams().organization,
         mock: false
       }
     }

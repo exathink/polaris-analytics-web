@@ -1,4 +1,4 @@
-// @flow
+
 import {DataSources} from "../dataSources";
 import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
@@ -7,9 +7,7 @@ import {withActivityLevel} from "../../../../components/views/activity/ActivityL
 import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
 export const Controller: ControllerDelegate =  {
-  mapStateToProps: state => ({
-    account: state.user.get('account'),
-  }),
+
   getDataSpec: () => ([
     {
       dataSource: DataSources.account_organizations_activity_summary,
@@ -26,7 +24,6 @@ export const Controller: ControllerDelegate =  {
   ]),
   initModel: (source_data, props) => {
     const organization_summaries = source_data[0].data;
-    const account_summary = source_data[1].data;
     return {
       data: organization_summaries.map((organization_summary) => {
         const earliest_commit = polarisTimestamp(organization_summary.earliest_commit);
@@ -43,14 +40,8 @@ export const Controller: ControllerDelegate =  {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      summary_data: account_summary.map((account_summary) => ({
-        commits: account_summary.commit_count,
-        contributors: account_summary.contributor_count,
-        earliest_commit: polarisTimestamp(account_summary.earliest_commit),
-        latest_commit: polarisTimestamp(account_summary.latest_commit)
-      }))[0],
-      level_label: 'Accounts',
-      level: props.account.company,
+      level_label: 'Account',
+      level: '',
       subject_label: 'Org',
       subject_label_long: 'Organization',
       subject_label_plural: 'Organizations',
