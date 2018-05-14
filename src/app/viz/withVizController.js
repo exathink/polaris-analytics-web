@@ -21,6 +21,10 @@ export function withVizController(delegate: ControllerDelegate) {
     return withNavigation(connect(mapStateToProps, {fetchData})(
       class VizController extends React.Component {
 
+        constructor(props) {
+          super(props);
+        }
+
         componentDidMount() {
           const context = this.props.navigation.current();
           const dataSpec = delegate.getDataSpec(context);
@@ -41,8 +45,8 @@ export function withVizController(delegate: ControllerDelegate) {
 
         getModel() {
           if (this.ready()) {
-
-            const dataSpec = delegate.getDataSpec(this.props);
+            const context = this.props.navigation.current();
+            const dataSpec = delegate.getDataSpec(context);
             const source_data = dataSpec.map(({dataSource, params}) => ({
               dataSource,
               params,
@@ -61,7 +65,7 @@ export function withVizController(delegate: ControllerDelegate) {
               rows={7}
               ready={this.ready()}
             >
-              <View model={this.getModel()}/>
+              <View model={this.getModel()} context={this.props.navigation.current()}/>
 
             </ReactPlaceholder>
           )

@@ -5,6 +5,7 @@ import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 
 import type {Model} from "./model";
+import type {ActiveContext} from "../../../../navigation/context";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -16,11 +17,12 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummaryView = (props: {model: Model}) => {
+export const ActivitySummaryView = (props: {model: Model, context: ActiveContext}) => {
 
-  const {model: {data, displayProps}}  = props;
-  const bgColor = displayProps.bgColor;
-  const fontColor = displayProps.fontColor || "#ffffff";
+  const {model, context}  = props;
+  const data = model.data;
+  const bgColor = context.color();
+  const fontColor = "#ffffff";
   return (
     <React.Fragment>
       <VizRow h={"100%"}>

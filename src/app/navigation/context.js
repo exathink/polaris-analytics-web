@@ -114,7 +114,7 @@ export class ActiveContext {
     return `${this.matchInfo.url}/${this.match()}`
   }
 
-  matchParams() {
+  params() {
     return this.matchInfo.params;
   }
 

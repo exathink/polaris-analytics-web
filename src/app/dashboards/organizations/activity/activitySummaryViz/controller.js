@@ -4,15 +4,11 @@ import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
 
 export const Controller : ControllerDelegate = {
-  mapStateToProps: (state, ownProps) => ({
-    account: state.user.get('account'),
-    organization: ownProps.match.params.organization
-  }),
-  getDataSpec: props => ([
+  getDataSpec: context => ([
     {
       dataSource: DataSources.organization_activity_summary,
       params: {
-        organization: props.organization,
+        organization: context.params().organization,
         mock: false
       }
     }

@@ -1,27 +1,22 @@
-// @flow
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 import moment from "moment/moment";
 
 export const Controller = {
-  mapStateToProps: (state, ownProps) => ({
-    account: state.user.get('account'),
-    organization: ownProps.match.params.organization,
-    project: ownProps.match.params.project
-  }),
-  getDataSpec: props => ([
+  getDataSpec: context => ([
     {
       dataSource: DataSources.project_repositories_activity_summary,
       params: {
-        organization: props.organization,
-        project: props.project,
+        organization: context.params().organization,
+        project: context.params().project,
         mock: false
       }
     }
   ]),
   initModel: (source_data, props) => {
     const repo_summaries = source_data[0].data;
+    const project = props.navigation.current().params().project;
     return {
       data: repo_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
@@ -39,7 +34,7 @@ export const Controller = {
         })
       }),
       level_label: 'Project',
-      level: props.project,
+      level: project,
       subject_label: 'Repo',
       subject_label_long: 'Repository',
       subject_label_plural: 'Repositories',

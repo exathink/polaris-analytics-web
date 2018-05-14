@@ -4,17 +4,12 @@ import {polarisTimestamp} from "../../../../helpers/utility";
 import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
 
 export const Controller: ControllerDelegate = {
-  mapStateToProps: (state, ownProps) => ({
-    account: state.user.get('account'),
-    organization: ownProps.match.params.organization,
-    project: ownProps.match.params.project
-  }),
-  getDataSpec: props => ([
+  getDataSpec: context => ([
     {
       dataSource: DataSources.project_activity_summary,
       params: {
-        organization: props.organization,
-        project: props.project,
+        organization: context.params().organization,
+        project: context.params().project,
         mock: false
       }
     }

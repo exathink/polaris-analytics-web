@@ -10,13 +10,14 @@ export const Controller: ControllerDelegate = {
     {
       dataSource: DataSources.organization_projects_activity_summary,
       params: {
-        organization: context.matchParams().organization,
+        organization: context.params().organization,
         mock: false
       }
     }
   ]),
   initModel: (source_data, props) => {
     const project_summaries = source_data[0].data;
+    const organization = props.navigation.current().params().organization;
     return {
       data: project_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
@@ -34,7 +35,7 @@ export const Controller: ControllerDelegate = {
         })
       }),
       level_label: 'Org',
-      level: props.organization,
+      level: organization,
       subject_label: 'Project',
       subject_label_long: 'Project',
       subject_label_plural: 'Projects',
@@ -43,7 +44,7 @@ export const Controller: ControllerDelegate = {
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/account/organizations/${props.organization}/projects/${event.entity_name}`)
+        props.navigate.push(`/app/dashboard/account/organizations/${organization}/projects/${event.entity_name}`)
       }
 
     }
