@@ -1,8 +1,8 @@
 import {ActivitySummaryView} from './view';
 import {withModel} from "../../../../viz/withModel";
-import Model from './model';
+import {ActivitySummaryModel} from './model';
 
-export {Model};
-export const ActivitySummaryViz = withModel(Model)(ActivitySummaryView);
+export {ActivitySummaryModel};
+export const ActivitySummaryViz = withModel(ActivitySummaryModel)(ActivitySummaryView);
 
 export {ActivitySummaryView};

@@ -4,7 +4,7 @@ import StickerWidget from '../../../../../containers/Widgets/sticker/sticker-wid
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 
-import {CommitsTimespanTotals} from "./model";
+import {ActivitySummaryModel} from "./model";
 import type {ActiveContext} from "../../../../navigation/context";
 
 const human_span = (moment_a, moment_b) => {
@@ -17,7 +17,7 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummaryView = (props: {model: CommitsTimespanTotals, context: ActiveContext}) => {
+export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context: ActiveContext}) => {
 
   const {model, context}  = props;
   const data = model.data;

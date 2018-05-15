@@ -10,4 +10,4 @@ export type ActivityTotals = {
 }
 
 
-export default class extends Model<ActivityTotals> {};
+export class ActivitySummaryModel extends Model<ActivityTotals> {};

@@ -9,10 +9,11 @@ import {Map} from 'immutable';
 
 import {ActiveContext} from "../navigation/context";
 import type {ModelFactory} from "./modelFactory";
+import {ModelBindings} from "./modelBindings";
 
 type Props<T> = {
   modelClass: Class<Model<T>>,
-  modelFactory: Map<Class<Model<T>>, ModelFactory>,
+  modelBindings: ModelBindings,
   children: React.Node,
   context? : ActiveContext,
 
@@ -65,7 +66,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
 
   static fetchData(props) {
-    const modelBinding = props.modelFactory.getModelFactory(props.modelClass);
+    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
     if(modelBinding) {
       const dataBinding = modelBinding.getDataBinding(props.context);
       dataBinding.forEach(({dataSource, params}) => {
@@ -78,18 +79,18 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
     }
   }
   static getModel(props) {
-    const modelBinding = props.modelFactory.getModelFactory(props.modelClass);
+    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
     const dataBinding = modelBinding.getDataBinding(props.context);
     const source_data = dataBinding.map(({dataSource, params}) => ({
       dataSource,
       params,
       data: props.viz_data.getData(dataSource, params)
     }));
-    return modelBinding.initModel(source_data, props.context);
+    return modelBinding.initModel(source_data, props);
   }
 
   static dataReady(props) {
-    const modelBinding = props.modelFactory.getModelFactory(props.modelClass);
+    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
     const dataBinding = modelBinding.getDataBinding(props.context);
     return dataBinding.every(({dataSource, params}) => {
       return props.viz_data.getData(dataSource, params) != null;

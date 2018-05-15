@@ -1,7 +1,7 @@
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 
-import {Model} from "../../../../components/views/activity/ActivitySummary";
+import {ActivitySummaryModel} from "../../../../components/views/activity/ActivitySummary";
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
 const modelFactory : ModelFactory = {
@@ -29,4 +29,4 @@ const modelFactory : ModelFactory = {
   }
 };
 
-export const ActivitySummary = [Model, modelFactory];
+export const ActivitySummaryModelBinding = [ActivitySummaryModel, modelFactory];

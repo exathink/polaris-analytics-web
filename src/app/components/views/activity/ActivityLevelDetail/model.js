@@ -23,7 +23,7 @@ export type ActivitySummary = {
 
 
 
-export default class extends Model<Array<ActivitySummary>> {
+export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   level_label: string;
   level: string;
   subject_label_long: string;

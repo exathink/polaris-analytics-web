@@ -4,7 +4,7 @@ import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 
-import {Model} from '../../../../components/views/activity/ActivityLevelDetail';
+import {ActivityLevelDetailModel} from '../../../../components/views/activity/ActivityLevelDetail';
 
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
@@ -52,4 +52,4 @@ export const modelFactory: ModelFactory =  {
   }
 };
 
-export const ActivityLevelDetail = [Model, modelFactory];
+export const ActivityLevelDetailModelBinding = [ActivityLevelDetailModel, modelFactory];

@@ -2,9 +2,10 @@ import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
+import {ActivitySummaryModel} from "../../../../components/views/activity/ActivitySummary";
 
-export const Controller : ModelFactory = {
-  getDataSpec: context => ([
+export const modelFactory : ModelFactory = {
+  getDataBinding: context => ([
     {
       dataSource: DataSources.organization_activity_summary,
       params: {
@@ -30,4 +31,5 @@ export const Controller : ModelFactory = {
   }
 };
 
+export const ActivitySummaryModelBinding  = [ActivitySummaryModel, modelFactory];
 

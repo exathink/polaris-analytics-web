@@ -1,5 +1,5 @@
-import Model from './model';
+import {ActivityLevelDetailModel} from './model';
 
-export {Model};
+export {ActivityLevelDetailModel};
 export {ActivityLevelDetailView} from "./view";
 

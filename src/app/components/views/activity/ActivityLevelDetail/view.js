@@ -12,20 +12,20 @@ import {
   TotalsBarChart,
 } from './components/index';
 
-import Model from "./model";
+import {ActivityLevelDetailModel} from "./model";
 import {withModel} from "../../../../viz/withModel";
 
 
 export type Props = {
-  model: Model,
+  model: ActivityLevelDetailModel,
   onActivitiesSelected: (any) => void,
   selectedActivities: Array<ActivitySummary> | null
 }
 
-const ActivitySummaryBubbleChartViz = withModel(Model)(ActivitySummaryBubbleChart);
-const ActivitySummaryTableViz = withModel(Model)(ActivitySummaryTable);
-const ActivitySummaryTimelineChartViz = withModel(Model)(ActivitySummaryTimelineChart);
-const TotalsBarChartViz = withModel(Model)(TotalsBarChart);
+const ActivitySummaryBubbleChartViz = withModel(ActivityLevelDetailModel)(ActivitySummaryBubbleChart);
+const ActivitySummaryTableViz = withModel(ActivityLevelDetailModel)(ActivitySummaryTable);
+const ActivitySummaryTimelineChartViz = withModel(ActivityLevelDetailModel)(ActivitySummaryTimelineChart);
+const TotalsBarChartViz = withModel(ActivityLevelDetailModel)(TotalsBarChart);
 
 
 const DetailTabs = (props) => (

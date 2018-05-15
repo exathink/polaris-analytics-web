@@ -68,7 +68,7 @@ const ItemMenu = ({itemSelected, detail, onClick}) => (
     null
 );
 
-export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, modelFactory, ...rest}) => {
+export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, modelBindings, ...rest}) => {
 
 
   return (
@@ -89,8 +89,8 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
     />
     {
       itemSelected && detail ?
-        React.createElement(detail, {modelFactory})
-        : React.createElement(primary, {modelFactory})
+        React.createElement(detail, {modelBindings})
+        : React.createElement(primary, {modelBindings})
     }
   </Box>
   )
