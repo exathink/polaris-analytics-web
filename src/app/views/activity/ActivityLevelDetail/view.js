@@ -13,7 +13,7 @@ import {
 } from './components/index';
 
 import {ActivityLevelDetailModel} from "./model";
-import {withModel} from "../../../../viz/withModel";
+import {withModel} from "../../../viz/withModel";
 
 
 export type Props = {

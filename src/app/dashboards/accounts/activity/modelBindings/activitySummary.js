@@ -1,7 +1,7 @@
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 
-import {ActivitySummaryModel} from "../../../../components/views/activity/ActivitySummary";
+import {ActivitySummaryModel} from "../../../../views/activity/ActivitySummary";
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
 const modelFactory : ModelFactory = {

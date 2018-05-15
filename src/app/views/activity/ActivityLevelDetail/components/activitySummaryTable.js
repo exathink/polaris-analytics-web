@@ -1,9 +1,9 @@
 import type {Props} from "../model";
 import React from 'react';
-import {formatPolarisTimestamp} from "../../../../../helpers/utility";
+import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import {Table} from "../../../containers/table/index";
 import {findVisibleLevels} from "../activityLevel";
-import Button from "../../../../../../components/uielements/button";
+import Button from "../../../../../components/uielements/button";
 
 export const ActivitySummaryTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.model.data);

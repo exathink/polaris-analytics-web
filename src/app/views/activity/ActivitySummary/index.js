@@ -1,5 +1,5 @@
 import {ActivitySummaryView} from './view';
-import {withModel} from "../../../../viz/withModel";
+import {withModel} from "../../../viz/withModel";
 import {ActivitySummaryModel} from './model';
 
 export {ActivitySummaryModel};

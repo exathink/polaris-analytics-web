@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
-import {ActivitySummaryViz} from "../../../components/views/activity/ActivitySummary";
-import {ActivityLevelDetailView} from '../../../components/views/activity/ActivityLevelDetail';
+import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
+import {ActivityLevelDetailView} from '../../../views/activity/ActivityLevelDetail';
 
 import ModelBindings from './modelBindings';
 

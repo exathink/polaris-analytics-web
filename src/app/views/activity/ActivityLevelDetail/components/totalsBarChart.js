@@ -1,6 +1,6 @@
 import React from 'react';
 import type {Props} from "../model";
-import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../../charts/index";
+import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../../components/charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 export const TotalsBarChart = (props: Props) => {

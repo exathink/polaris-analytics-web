@@ -1,11 +1,11 @@
 import React from 'react';
-import IsoWidgetsWrapper from '../../../../../containers/Widgets/widgets-wrapper';
-import StickerWidget from '../../../../../containers/Widgets/sticker/sticker-widget';
+import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
+import StickerWidget from '../../../../containers/Widgets/sticker/sticker-widget';
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 
 import {ActivitySummaryModel} from "./model";
-import type {ActiveContext} from "../../../../navigation/context";
+import type {ActiveContext} from "../../../navigation/context";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));

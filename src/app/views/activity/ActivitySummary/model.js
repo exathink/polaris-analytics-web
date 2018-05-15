@@ -1,6 +1,6 @@
 // @flow
 
-import  {Model} from "../../../../viz/model";
+import  {Model} from "../../../viz/model";
 
 export type ActivityTotals = {
   commits: number,

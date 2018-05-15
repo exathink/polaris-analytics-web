@@ -2,7 +2,7 @@ import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
-import {ActivitySummaryModel} from "../../../../components/views/activity/ActivitySummary";
+import {ActivitySummaryModel} from "../../../../views/activity/ActivitySummary";
 
 export const modelFactory : ModelFactory = {
   getDataBinding: context => ([
