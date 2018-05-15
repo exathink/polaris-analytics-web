@@ -1,5 +1,5 @@
 // @flow
-import type {ActivitySummary, Props} from './model'
+import type {ActivitySummary} from './model'
 import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
 
@@ -12,6 +12,21 @@ import {
   TotalsBarChart,
 } from './components/index';
 
+import Model from "./model";
+import {withModel} from "../../../../viz/withModel";
+
+
+export type Props = {
+  model: Model,
+  onActivitiesSelected: (any) => void,
+  selectedActivities: Array<ActivitySummary> | null
+}
+
+const ActivitySummaryBubbleChartViz = withModel(Model)(ActivitySummaryBubbleChart);
+const ActivitySummaryTableViz = withModel(Model)(ActivitySummaryTable);
+const ActivitySummaryTimelineChartViz = withModel(Model)(ActivitySummaryTimelineChart);
+const TotalsBarChartViz = withModel(Model)(TotalsBarChart);
+
 
 const DetailTabs = (props) => (
   <Tabs>
@@ -21,10 +36,10 @@ const DetailTabs = (props) => (
     </TabList>
 
     <CustomTabPanel>
-      <ActivitySummaryTimelineChart {...props}/>
+      <ActivitySummaryTimelineChartViz {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <TotalsBarChart {...props}/>
+      <TotalsBarChartViz {...props}/>
     </CustomTabPanel>
   </Tabs>
 );
@@ -33,10 +48,10 @@ const MaxView = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
       <VizItem w={0.07}>
-        <TotalsBarChart {...props}/>
+        <TotalsBarChartViz {...props}/>
       </VizItem>
       <VizItem w={0.5}>
-        <ActivitySummaryBubbleChart {...props}/>
+        <ActivitySummaryBubbleChartViz {...props}/>
       </VizItem>
       <VizItem w={0.43}>
         <DetailTabs {...props}/>
@@ -44,7 +59,7 @@ const MaxView = (props) => (
     </VizRow>
     <VizRow h={"40%"}>
       <VizItem w={1}>
-        <ActivitySummaryTable {...props}/>
+        <ActivitySummaryTableViz {...props}/>
       </VizItem>
     </VizRow>
   </Fragment>

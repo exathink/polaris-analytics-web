@@ -1,16 +1,11 @@
-// @flow
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
 
-import '../../../organizations/viz/mocks/serviceMocks'
+import {Model} from "../../../../components/views/activity/ActivitySummary";
+import type {ModelFactory} from "../../../../viz/modelFactory";
 
-import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
-
-export const Controller: ControllerDelegate = {
-  mapStateToProps: state => ({
-    account: state.user.get('account'),
-  }),
-  getDataSpec: () => ([
+const modelFactory : ModelFactory = {
+  getDataBinding: () => ([
     {
       dataSource: DataSources.account_activity_summary,
       params: {
@@ -34,6 +29,4 @@ export const Controller: ControllerDelegate = {
   }
 };
 
-
-
-
+export const ActivitySummary = [Model, modelFactory];

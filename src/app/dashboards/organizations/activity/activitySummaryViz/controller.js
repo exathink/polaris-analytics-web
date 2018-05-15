@@ -1,9 +1,9 @@
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
-import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
+import type {ModelFactory} from "../../../../viz/modelFactory";
 
 
-export const Controller : ControllerDelegate = {
+export const Controller : ModelFactory = {
   getDataSpec: context => ([
     {
       dataSource: DataSources.organization_activity_summary,

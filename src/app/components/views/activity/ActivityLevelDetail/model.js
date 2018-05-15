@@ -1,4 +1,13 @@
 // @flow
+import {Model} from "../../../../viz/model";
+
+export type ActivityLevel = {
+  display_name: string,
+  color: string,
+  isMember: (activitySummary: ActivitySummary) => boolean,
+  visible: boolean,
+  index: number
+}
 
 export type ActivitySummary = {
   id: string;
@@ -12,30 +21,16 @@ export type ActivitySummary = {
   activity_level: ActivityLevel
 }
 
-export type Model = {
-  data: Array<ActivitySummary>,
-  level_label: string,
-  level: string,
-  subject_label_long: string,
-  subject_label: string,
-  subject_label_plural: string,
-  subject_icon: string,
-  subject_color: string,
-  span_uom: string,
-  onDrillDown?: () => void
 
-}
-export type Props = {
-  model: Model,
-  onActivitiesSelected: (any) => void,
-  selectedActivities: Array<ActivitySummary> | null
+
+export default class extends Model<Array<ActivitySummary>> {
+  level_label: string;
+  level: string;
+  subject_label_long: string;
+  subject_label: string;
+  span_uom: string;
+  onDrillDown: () => void;
 }
 
 
-export type ActivityLevel = {
-  display_name: string,
-  color: string,
-  isMember: (activitySummary: ActivitySummary) => boolean,
-  visible: boolean,
-  index: number
-}
+

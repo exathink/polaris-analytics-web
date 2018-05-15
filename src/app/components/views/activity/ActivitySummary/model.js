@@ -1,5 +1,7 @@
 // @flow
 
+import  {Model} from "../../../../viz/model";
+
 export type ActivityTotals = {
   commits: number,
   contributors: number,
@@ -7,11 +9,5 @@ export type ActivityTotals = {
   latest_commit: Date
 }
 
-export type Model = {
-  data: ActivityTotals,
-  displayProps: {
-    bgColor: string,
-    fontColor: string
-  }
 
-}
+export default class extends Model<ActivityTotals> {};

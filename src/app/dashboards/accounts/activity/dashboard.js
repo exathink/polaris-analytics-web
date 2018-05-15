@@ -1,17 +1,19 @@
 import React from 'react';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
-import ActivitySummaryViz from './activitySummaryViz';
-import ActivityLevelDetailViz from "./activityLevelDetailViz";
+import {ActivitySummaryViz} from "../../../components/views/activity/ActivitySummary";
+import {ActivityLevelDetailView} from "../../../components/views/activity/ActivityLevelDetail";
+
+import ModelFactory from "./modelBindings";
 
 export const dashboard = (props) => (
-  <Dashboard dashboard={'account-dashboard'} {...props}>
+  <Dashboard dashboard={'account-dashboard'} modelFactory={ModelFactory} {...props}>
     <DashboardRow h='20%'>
       <DashboardItem
         w={1}
         name="organizations-activity"
         title={"Account Overview"}
         primary={ActivitySummaryViz}
-        detail={ActivityLevelDetailViz}
+        detail={ActivityLevelDetailView}
       />
     </DashboardRow>
   </Dashboard>

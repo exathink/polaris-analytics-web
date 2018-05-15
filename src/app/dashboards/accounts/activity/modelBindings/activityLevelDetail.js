@@ -4,19 +4,15 @@ import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 
-import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
+import {Model} from '../../../../components/views/activity/ActivityLevelDetail';
 
-export const Controller: ControllerDelegate =  {
+import type {ModelFactory} from "../../../../viz/modelFactory";
 
-  getDataSpec: () => ([
+export const modelFactory: ModelFactory =  {
+
+  getDataBinding: () => ([
     {
       dataSource: DataSources.account_organizations_activity_summary,
-      params: {
-        mock: false
-      }
-    },
-    {
-      dataSource: DataSources.account_activity_summary,
       params: {
         mock: false
       }
@@ -56,3 +52,4 @@ export const Controller: ControllerDelegate =  {
   }
 };
 
+export const ActivityLevelDetail = [Model, modelFactory];

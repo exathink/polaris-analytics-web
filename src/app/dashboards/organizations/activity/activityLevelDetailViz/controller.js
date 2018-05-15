@@ -3,9 +3,9 @@ import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../components/views/activity/ActivityLevelDetail/activityLevel";
 import moment from "moment/moment";
 
-import type {ControllerDelegate} from "../../../../viz/controllerDelegate";
+import type {ModelFactory} from "../../../../viz/modelFactory";
 
-export const Controller: ControllerDelegate = {
+export const Controller: ModelFactory = {
   getDataSpec: context => ([
     {
       dataSource: DataSources.organization_projects_activity_summary,
