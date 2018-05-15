@@ -4,6 +4,7 @@ import {Model} from "../../../../viz/model";
 export type ActivityLevel = {
   display_name: string,
   color: string,
+// eslint-disable-next-line
   isMember: (activitySummary: ActivitySummary) => boolean,
   visible: boolean,
   index: number

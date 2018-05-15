@@ -1,5 +1,4 @@
 // @flow
-import asyncComponent from "../../../helpers/AsyncFunc";
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../navigation/context';
 

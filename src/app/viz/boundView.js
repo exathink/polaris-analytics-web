@@ -1,14 +1,10 @@
-
-
 import * as React from 'react';
 import {Model} from "./model";
 import {cloneChildrenWithProps} from "../helpers/reactHelpers";
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
-import {Map} from 'immutable';
 
 import {ActiveContext} from "../navigation/context";
-import type {ModelFactory} from "./modelFactory";
 import {ModelBindings} from "./modelBindings";
 
 type Props<T> = {
