@@ -4,6 +4,7 @@ import {BoundView} from "./boundView";
 import {withNavigation} from "../navigation/withNavigation";
 import {connect} from "react-redux";
 import vizActions from '../redux/viz/actions';
+import {ModelCacheContext} from "./modelCache";
 
 const {fetchData} = vizActions;
 
@@ -18,9 +19,13 @@ export function withModel(modelClass: Class<Model<T>>) {
     return withNavigation(
       connect(mapStateToProps, {fetchData})(
         props => (
-          <BoundView modelClass={modelClass} context={props.navigation.current()} {...props}>
-            <View/>
-          </BoundView>
+          <ModelCacheContext.Consumer>
+            { modelCache =>
+              <BoundView modelClass={modelClass} modelCache={modelCache} context={props.navigation.current()} {...props}>
+                <View/>
+              </BoundView>
+            }
+          </ModelCacheContext.Consumer>
         )
       )
     );

@@ -7,13 +7,16 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 import {ActiveContext} from "../navigation/context";
 import {ModelBindings} from "./modelBindings";
 
+import {ModelCache} from "./modelCache";
+
+
 type Props<T> = {
   modelClass: Class<Model<T>>,
+  modelCache: ModelCache,
   modelBindings: ModelBindings,
   children: React.Node,
   context? : ActiveContext,
 
-  fetchModel: (modelClass: Class<Model<T>>) => void,
   modelState?: ModelState<T>,
   navigation: any,
   viz_data: any
@@ -22,10 +25,7 @@ type Props<T> = {
 
 
 
-type ModelState<T> = {
-  model: Model<T> | null,
-  status: 'initial' | 'fetching' | 'initialized'
-}
+
 
 export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
@@ -33,10 +33,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   constructor(props: Props<T>) {
     super(props);
-    this.state = {
-      model: null,
-      status: 'initial'
-    }
+    this.state = props.modelCache.getModel(props.modelClass)
   }
 
   static getDerivedStateFromProps(nextProps: Props<T>, prevState: ModelState<T>) {
@@ -45,18 +42,19 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
     if (!BoundView.dataReady(nextProps)) {
       if (prevState.status === 'initial') {
         BoundView.fetchData(nextProps);
-        return {
-          model: null,
-          status: 'fetching'
-        }
+        const nextState = {model: null, status: 'fetching'};
+        nextProps.modelCache.putModel(nextProps.modelClass,nextState);
+        return nextState;
       } else {
         return null;
       }
     } else {
-      return {
+      const nextState = {
         model: BoundView.getModel(nextProps),
         status: 'initialized'
-      }
+      };
+      nextProps.modelCache.putModel(nextProps.modelClass,nextState);
+      return nextState
     }
   }
 

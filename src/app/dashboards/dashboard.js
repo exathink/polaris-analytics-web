@@ -11,6 +11,7 @@ import {Box, Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findByProps} from "../helpers/reactHelpers";
 
 
+import {ModelCache, ModelCacheContext} from "../viz/modelCache";
 
 
 export class DashboardView extends React.Component {
@@ -28,17 +29,18 @@ export class DashboardView extends React.Component {
     if (itemSelected != null && itemSelected) {
       const selectedChildren = findByProps(children, 'name', match.params.selected);
       return (
-
-          <DashboardRow h={"100%"}>
-            {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
-          </DashboardRow>
+          <ModelCacheContext.Provider value={new ModelCache()}>
+            <DashboardRow h={"100%"}>
+              {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
+            </DashboardRow>
+          </ModelCacheContext.Provider>
 
       )
     } else {
       return (
-        <React.Fragment>
+        <ModelCacheContext.Provider value={new ModelCache()}>
           {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
-          </React.Fragment>
+        </ModelCacheContext.Provider>
       );
     }
   }
