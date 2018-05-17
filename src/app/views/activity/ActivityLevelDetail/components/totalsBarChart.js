@@ -5,29 +5,8 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {ChartWrapper} from "../../../../components/charts";
 
-import {fromJS} from 'immutable';
-import Dimensions from "react-dimensions";
 
-
-export class TotalsBarChart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = chartConfig(props);
-    this.chart = null;
-  }
-
-  setChart(chart) {
-    this.chart = chart;
-  }
-
-  render() {
-    return (<ChartWrapper config={this.state} afterRender={this.setChart} />)
-  }
-}
-
-
-
-const chartConfig = (props: Props) => {
+const  getConfig = (props) => {
   const totalsByActivityLevel = props.model.data.reduce(
     (totals, activitySummary) => {
       let level = activitySummary.activity_level.display_name;
@@ -37,21 +16,21 @@ const chartConfig = (props: Props) => {
     {});
 
 
-  const series = ACTIVITY_LEVELS_REVERSED.map( activityLevel => ({
-      type: 'column',
-      name: activityLevel.display_name,
-      id: activityLevel.display_name,
-      key: activityLevel.display_name,
-      data: [totalsByActivityLevel[activityLevel.display_name]],
-      color: activityLevel.color
-    }));
+  const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
+    type: 'column',
+    name: activityLevel.display_name,
+    id: activityLevel.display_name,
+    key: activityLevel.display_name,
+    data: [totalsByActivityLevel[activityLevel.display_name]],
+    color: activityLevel.color
+  }));
 
   const formatTooltip = (point) => {
     return tooltipHtml({
       header: `${point.series.name}`,
       body: [
         [`${point.percentage.toFixed(0)}%`],
-        (props.minimized? [`${point.y}`] : [``])
+        (props.minimized ? [`${point.y}`] : [``])
       ]
     });
   };
@@ -59,17 +38,13 @@ const chartConfig = (props: Props) => {
   const title = `${props.model.subject_label}s`;
 
 
-
   return {
-    credits: {
-      enabled: false
-    },
     plotOptions: {
       series: {
         stacking: 'normal',
         dataLabels: {
           enabled: !props.minimized,
-          format:`{point.y}`,
+          format: `{point.y}`,
           rotation: 270
         }
       }
@@ -97,6 +72,9 @@ const chartConfig = (props: Props) => {
     yAxis: {
       id: 'totals',
       visible: true,
+      title: {
+        text: null
+      },
       allowDecimals: false,
       gridLineWidth: 0,
       plotLines: [{
@@ -116,6 +94,12 @@ const chartConfig = (props: Props) => {
       enabled: false
     }
   };
+};
+
+
+
+export const TotalsBarChart = (props: Props) => {
+  return (<ChartWrapper model={props.model} getConfig={getConfig}/>);
 };
 
 
