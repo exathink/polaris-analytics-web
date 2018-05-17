@@ -5,6 +5,8 @@ export {LegendRight} from './legends';
 export {BubbleSeries} from './bubbleSeries';
 export {TimelineSeries} from './timelineSeries';
 export {default as ChartWrapper} from './chartWrapper';
+export {BasicChart} from './basicChart';
+
 
 export * from './types';
 

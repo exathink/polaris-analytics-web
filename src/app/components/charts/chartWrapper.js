@@ -9,9 +9,8 @@ class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: props.model,
-      config: Chart.getConfig(props)
-    }
+      config: Chart.setDefaults(props.config, props)
+    };
   }
 
   static setDefaults(config, props) {
@@ -23,15 +22,10 @@ class Chart extends React.Component {
     return config
   }
 
-  static getConfig(props) {
-    return Chart.setDefaults(props.getConfig(props), props)
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.model !== prevState.model) {
+    if(nextProps.config !== prevState.config) {
       return {
-        model: nextProps.model,
-        config: Chart.getConfig(nextProps.model)
+        config: nextProps.config
       }
     }
   }
