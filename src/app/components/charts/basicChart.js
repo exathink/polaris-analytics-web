@@ -1,25 +1,29 @@
 import React from "react";
 
 import {ChartWrapper} from "./index";
+import type {ChartConfigProvider} from "./chartConfigProvider";
 
-export const BasicChart = (configProvider) => {
-  return class extends React.Component {
+export const BasicChart = (configProvider: ChartConfigProvider) => {
+  return class Chart extends React.Component {
 
     constructor(props) {
       super(props);
-      this.state = {
-        model: props.model,
-        config: configProvider(props)
+      this.state = Chart.computeState(props);
+    }
+
+    static computeState(props) {
+      return  {
+        ...configProvider.mapPropsToState(props),
+        config: configProvider.getConfig(props)
       }
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      if (nextProps.model !== prevState.model) {
-        return {
-          model: nextProps.model,
-          config: configProvider(nextProps)
-        }
+      const providerProps = configProvider.mapPropsToState(nextProps);
+      if (Object.keys(providerProps).some(prop => providerProps[prop] !== prevState[prop])) {
+        return Chart.computeState(nextProps)
       }
+      return null;
     }
 
     render() {
