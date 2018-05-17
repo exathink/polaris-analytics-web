@@ -2,6 +2,9 @@ import React from "react";
 import ReactHighcharts from 'react-highcharts';
 import Dimensions from 'react-dimensions';
 
+
+require('highcharts/modules/xrange.js')(ReactHighcharts.Highcharts);
+
 class Chart extends React.Component {
   constructor(props) {
     super(props);

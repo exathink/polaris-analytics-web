@@ -1,79 +1,70 @@
 import React from "react";
-import type {ActivitySummary, Props} from "../model";
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
-import {tooltipHtml, TimelineSeries, HighchartsChart, Chart, Tooltip, XAxis, YAxis} from "../../../../components/charts/index";
+import {tooltipHtml} from "../../../../components/charts/index";
 import {formatDate} from "../../../../helpers/utility";
-
-export class ActivitySummaryTimelineChart extends React.Component<Props> {
-  sortedDomainData: Array<ActivitySummary>;
-
-  constructor(props) {
-    super(props);
-    this.sortedDomainData = [];
-  }
-
-  getSeries() {
-    const seriesData = this.sortedDomainData.map((activitySummary, index) => ({
-      x: activitySummary.earliest_commit.valueOf(),
-      x2: activitySummary.latest_commit.valueOf(),
-      y: index,
-      color: getActivityLevel(activitySummary).color
-    }));
-    return [
-      <TimelineSeries
-        key="activitytimeline"
-        id="activitytimeline"
-        name={this.props.model.level}
-        data={seriesData}
-        maxPointWidth={10}
-        turboThreshold={0}
-      />
-    ];
-  }
-
-  formatTooltip(point) {
-    const model = this.props.model;
-    return tooltipHtml({
-      header: `${model.subject_label_long}: ${point.point.yCategory}`,
-      body: [
-        ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
-        ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
-      ]
-    });
-  }
-
-  render() {
-    const model = this.props.model;
-    const domain_data = this.props.selectedActivities || findVisibleLevels(model.data);
-    this.sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
-    const entities = this.sortedDomainData.map((activitySummary) => activitySummary.entity_name);
+import {ChartWrapper} from "../../../../components/charts/index";
 
 
-    return (
-      <HighchartsChart>
-        <Chart/>
-
-        <Tooltip
-          useHTML={true}
-          formatter={this.formatTooltip.bind(this)}
-        />
-
-        <XAxis type={'datetime'}>
-          <XAxis.Title>{`Timeline`}</XAxis.Title>
-        </XAxis>
-
-        <YAxis
-          id="projects"
-          categories={entities}
-          reversed={true}
-        >
-          <YAxis.Title>{model.subject_label}</YAxis.Title>
-        </YAxis>
-
-        {this.getSeries()}
-      </HighchartsChart>
-    );
-  }
 
 
-}
+
+const getConfig = (props) => {
+  const model = props.model;
+  const domain_data = props.selectedActivities || findVisibleLevels(model.data);
+  const sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
+
+
+  return {
+    chart: {
+      type: 'xrange',
+    },
+    title: {
+      text: null
+    },
+    xAxis: {
+      type: 'datetime',
+      title: {
+        text: 'Timeline'
+      }
+    },
+    yAxis: {
+      id: 'y-items',
+      title: {text: model.subject_label},
+      categories: sortedDomainData.map(activitySummary => activitySummary.entity_name),
+      reversed: true
+    },
+    toolTip: {
+      useHTML: true,
+      formatter: (point) => {
+        return tooltipHtml({
+          header: `${model.subject_label_long}: ${point.point.yCategory}`,
+          body: [
+            ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
+            ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
+          ]
+        });
+      }
+    },
+    series: [
+      {
+        key: 'timeline',
+        id: 'timeline',
+        name: model.level,
+        maxPointWidth: 10,
+        data: sortedDomainData.map((activitySummary, index) => ({
+          x: activitySummary.earliest_commit.valueOf(),
+          x2: activitySummary.latest_commit.valueOf(),
+          y: index,
+          color: getActivityLevel(activitySummary).color
+        }))
+      }
+    ],
+    legend: {
+      enabled: false
+    }
+  };
+};
+
+export const ActivitySummaryTimelineChart = (props) => (
+  <ChartWrapper {...props} getConfig={getConfig}/>
+);

@@ -38,24 +38,25 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   static getDerivedStateFromProps(nextProps: Props<T>, prevState: ModelState<T>) {
 
-
-    if (!BoundView.dataReady(nextProps)) {
-      if (prevState.status === 'initial') {
-        BoundView.fetchData(nextProps);
-        const nextState = {model: null, status: 'fetching'};
-        nextProps.modelCache.putModel(nextProps.modelClass,nextState);
-        return nextState;
+    if (prevState.status !== 'initialized') {
+      if (!BoundView.dataReady(nextProps)) {
+        if (prevState.status === 'initial') {
+          BoundView.fetchData(nextProps);
+          const nextState = {model: null, status: 'fetching'};
+          nextProps.modelCache.putModel(nextProps.modelClass, nextState);
+          return nextState;
+        }
       } else {
-        return null;
+        const nextState = {
+          model: BoundView.getModel(nextProps),
+          status: 'initialized'
+        };
+        nextProps.modelCache.putModel(nextProps.modelClass, nextState);
+        return nextState
       }
-    } else {
-      const nextState = {
-        model: BoundView.getModel(nextProps),
-        status: 'initialized'
-      };
-      nextProps.modelCache.putModel(nextProps.modelClass,nextState);
-      return nextState
     }
+    //todo: handle case when data can change during the component lifecycle after model has been first initialized.
+    return null;
   }
 
 

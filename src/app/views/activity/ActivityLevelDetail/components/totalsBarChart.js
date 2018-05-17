@@ -39,6 +39,9 @@ const  getConfig = (props) => {
 
 
   return {
+    chart: {
+      type: 'column',
+    },
     plotOptions: {
       series: {
         stacking: 'normal',
@@ -48,11 +51,6 @@ const  getConfig = (props) => {
           rotation: 270
         }
       }
-    },
-    chart: {
-      type: 'column',
-      height: props.containerHeight,
-      width: props.containerWidth
     },
     title: {
       text: title
