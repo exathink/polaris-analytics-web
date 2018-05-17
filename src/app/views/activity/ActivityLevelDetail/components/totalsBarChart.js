@@ -12,7 +12,7 @@ import Dimensions from "react-dimensions";
 export class TotalsBarChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = fromJS(chartConfig(props))
+    this.state = chartConfig(props);
     this.chart = null;
   }
 
@@ -21,7 +21,7 @@ export class TotalsBarChart extends React.Component {
   }
 
   render() {
-    return (<ChartWrapper configMap={this.state} afterRender={this.setChart} />)
+    return (<ChartWrapper config={this.state} afterRender={this.setChart} />)
   }
 }
 
