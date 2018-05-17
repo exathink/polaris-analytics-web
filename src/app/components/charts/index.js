@@ -4,6 +4,7 @@ export {tooltipHtml, TooltipWrapper as Tooltip} from './tooltip';
 export {LegendRight} from './legends';
 export {BubbleSeries} from './bubbleSeries';
 export {TimelineSeries} from './timelineSeries';
+export {default as ChartWrapper} from './chartWrapper';
 
 export * from './types';
 

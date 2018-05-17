@@ -1,9 +1,33 @@
 import React from 'react';
 import type {Props} from "../model";
-import {tooltipHtml, ColumnSeries, Chart, HighchartsChart, Title, Tooltip, XAxis, YAxis, Debug} from "../../../../components/charts/index";
+import {tooltipHtml} from "../../../../components/charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
-export const TotalsBarChart = (props: Props) => {
+import {ChartWrapper} from "../../../../components/charts";
+
+import {fromJS} from 'immutable';
+import Dimensions from "react-dimensions";
+
+
+export class TotalsBarChart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = fromJS(chartConfig(props))
+    this.chart = null;
+  }
+
+  setChart(chart) {
+    this.chart = chart;
+  }
+
+  render() {
+    return (<ChartWrapper configMap={this.state} afterRender={this.setChart} />)
+  }
+}
+
+
+
+const chartConfig = (props: Props) => {
   const totalsByActivityLevel = props.model.data.reduce(
     (totals, activitySummary) => {
       let level = activitySummary.activity_level.display_name;
@@ -13,15 +37,14 @@ export const TotalsBarChart = (props: Props) => {
     {});
 
 
-  const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => (
-    <ColumnSeries
-      name={activityLevel.display_name}
-      id={activityLevel.display_name}
-      key={activityLevel.display_name}
-      data={[totalsByActivityLevel[activityLevel.display_name]]}
-      color={activityLevel.color}
-    />
-  ));
+  const series = ACTIVITY_LEVELS_REVERSED.map( activityLevel => ({
+      type: 'column',
+      name: activityLevel.display_name,
+      id: activityLevel.display_name,
+      key: activityLevel.display_name,
+      data: [totalsByActivityLevel[activityLevel.display_name]],
+      color: activityLevel.color
+    }));
 
   const formatTooltip = (point) => {
     return tooltipHtml({
@@ -35,8 +58,13 @@ export const TotalsBarChart = (props: Props) => {
 
   const title = `${props.model.subject_label}s`;
 
-  return (
-    <HighchartsChart plotOptions={{
+
+
+  return {
+    credits: {
+      enabled: false
+    },
+    plotOptions: {
       series: {
         stacking: 'normal',
         dataLabels: {
@@ -45,46 +73,49 @@ export const TotalsBarChart = (props: Props) => {
           rotation: 270
         }
       }
-    }}>
-      <Chart
-        type={'column'}
-      />
-      <Title>{title}</Title>
+    },
+    chart: {
+      type: 'column',
+      height: props.containerHeight,
+      width: props.containerWidth
+    },
+    title: {
+      text: title
+    },
+    toolTip: {
+      useHTML: true,
+      formatter: formatTooltip,
+      valueDecimals: 0,
+      followPointer: true
+    },
+    xAxis: {
+      categories: [''],
+      visible: false,
+      allowDecimals: false
+    },
 
-      <Tooltip
-        useHTML={true}
-        formatter={formatTooltip}
-        valueDecimals={0}
-        followPointer={true}
-      />
-
-      <XAxis
-        categories={['']}
-        visible={false}
-        allowDecimals={false}
-      />
-
-
-      <YAxis
-        id="totals"
-        visible={true}
-        allowDecimals={false}
-        gridLineWidth={0}
-        plotLines={[{
-          value: props.model.data.length,
-          width: 2,
-          color: 'grey',
-          dashStyle: 'ShortDot',
-          label: {
-            text: `${props.model.data.length}`,
-            align: 'center',
-            textAlign: 'right',
-          }
-        }]}
-      >
-      </YAxis>
-      {series}
-      <Debug varName={'totalsBar'}/>
-    </HighchartsChart>
-  )
+    yAxis: {
+      id: 'totals',
+      visible: true,
+      allowDecimals: false,
+      gridLineWidth: 0,
+      plotLines: [{
+        value: props.model.data.length,
+        width: 2,
+        color: 'grey',
+        dashStyle: 'ShortDot',
+        label: {
+          text: `${props.model.data.length}`,
+          align: 'center',
+          textAlign: 'right',
+        }
+      }]
+    },
+    series: series,
+    legend: {
+      enabled: false
+    }
+  };
 };
+
+
