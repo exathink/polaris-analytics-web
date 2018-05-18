@@ -20,10 +20,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      model: props.model,
-      config: ActivitySummaryBubbleChart.getConfig(props)
-    }
+    this.state = {}
 
     this.chart = null;
     this.selecting = null;
@@ -39,15 +36,15 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
     if(nextProps.model !== prevState.model) {
       return {
         model: nextProps.model,
-        config: ActivitySummaryBubbleChart.getConfig(nextProps)
+        config: null
       }
     }
     return null;
   }
 
-  attachEventHandlers(){
+  attachEventHandlers(config){
     const self = this;
-    const config = this.state.config;
+
     config.plotOptions.series.events = {
       hide: function () {
         // `this` is bound to the series when this callback is invoked
@@ -59,16 +56,32 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         self.onSeriesShow()
       },
     };
-    config.chart.onClick = this.pointClicked.bind(this);
+    config.chart.events = {
+      click: this.pointClicked.bind(this),
+      selection: this.zoom.bind(this)
+    };
 
+    return config;
   }
 
   componentDidUpdate() {
-    this.attachEventHandlers();
+    if(!this.state.config) {
+      const config = this.attachEventHandlers(ActivitySummaryBubbleChart.getConfig(this.props))
+      this.setState((prevState) => ({
+        model: prevState.model,
+        config: config
+      }));
+    }
   }
 
   componentDidMount() {
-    //this.attachEventHandlers();
+    if(!this.state.config) {
+      const config = this.attachEventHandlers(ActivitySummaryBubbleChart.getConfig(this.props))
+      this.setState((prevState) => ({
+        model: prevState.model,
+        config: config
+      }));
+    }
   }
 
   static initSeries(props) {
@@ -148,10 +161,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         type: 'bubble',
         panning: true,
         panKey: 'shift',
-        zoomType: 'xy',
-        events: {
-          selection: ActivitySummaryBubbleChart.zoom
-        }
+        zoomType: 'xy'
       },
       title: {
         text: `${model.subject_label_long} Activity Summary`
@@ -208,7 +218,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
   render() {
     return (
-      <ChartWrapper config={this.state.config} afterRender={this.setChart} />
+        this.state.config? <ChartWrapper config={this.state.config} afterRender={this.setChart}/> : null
     )
   }
 

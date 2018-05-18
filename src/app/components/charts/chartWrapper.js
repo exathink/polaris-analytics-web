@@ -1,10 +1,11 @@
 import React from "react";
+
 import ReactHighcharts from 'react-highcharts';
 import Dimensions from 'react-dimensions';
 
+require('highcharts/highcharts-more.src.js')(ReactHighcharts.Highcharts);
+require('highcharts/modules/xrange.src.js')(ReactHighcharts.Highcharts);
 
-require('highcharts/modules/xrange.js')(ReactHighcharts.Highcharts);
-require('highcharts/highcharts-more')(ReactHighcharts.Highcharts);
 
 
 class Chart extends React.Component {
@@ -30,6 +31,7 @@ class Chart extends React.Component {
         config: nextProps.config
       }
     }
+    return null;
   }
 
   getChart() {
