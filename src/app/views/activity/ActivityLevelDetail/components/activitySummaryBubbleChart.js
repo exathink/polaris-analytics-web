@@ -2,17 +2,8 @@ import React from "react";
 import type {Props} from "../model";
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {
-  BubbleSeries,
-  Chart,
-  HighchartsChart,
-  LegendRight,
-  Series,
-  Subtitle,
-  Title,
-  Tooltip,
   tooltipHtml,
-  XAxis,
-  YAxis,
+  ChartWrapper
 } from '../../../../components/charts/index';
 
 
@@ -29,9 +20,13 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
 
   constructor(props) {
     super(props);
+    this.state = {
+      model: props.model,
+      config: ActivitySummaryBubbleChart.getConfig(props)
+    }
+
     this.chart = null;
     this.selecting = null;
-    this.series = [];
     this.plotOptions = {};
     this.selections = {};
   }
@@ -40,6 +35,75 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
     this.chart = chart;
   };
 
+  static getDerivedPropsFromState(nextProps, prevState){
+    if(nextProps.model !== prevState.model) {
+      return {
+        model: nextProps.model,
+        config: ActivitySummaryBubbleChart.getConfig(nextProps)
+      }
+    }
+    return null;
+  }
+
+  attachEventHandlers(){
+    const self = this;
+    const config = this.state.config;
+    config.plotOptions.series.events = {
+      hide: function () {
+        // `this` is bound to the series when this callback is invoked
+        // so we need to redispatch this to the actual plot instance using
+        // a new name self that is looked up from the closure of this callback.
+        self.onSeriesHide()
+      },
+      show: function () {
+        self.onSeriesShow()
+      },
+    };
+    config.chart.onClick = this.pointClicked.bind(this);
+
+  }
+
+  componentDidUpdate() {
+    this.attachEventHandlers();
+  }
+
+  componentDidMount() {
+    //this.attachEventHandlers();
+  }
+
+  static initSeries(props) {
+    // Partition the data set by activity level and set the
+    // initial visibility of the level. Initially we only set as visible
+    // the most recent activity bucket for which there is any data
+    // to show.
+
+    let domainPartition = partitionByActivityLevel(props.model.data);
+
+    return ACTIVITY_LEVELS.map((activity_level, index) => {
+      const level_partition = domainPartition[activity_level.index];
+      const seriesData = level_partition.data.map((activitySummary) => ({
+        domain_id: activitySummary.id,
+        name: activitySummary.entity_name,
+        x: activitySummary.span,
+        y: activitySummary.commit_count,
+        z: activitySummary.contributor_count,
+        days_since_latest_commit: activitySummary.days_since_latest_commit
+      }));
+      return(
+        {
+          type: 'bubble',
+          boostThreshold: ActivitySummaryBubbleChart.BOOST_THRESHOLD,
+          allowPointSelect: props.onActivitiesSelected != null,
+          key: index,
+          id: index,
+          color: activity_level.color,
+          name: activity_level.display_name,
+          data: seriesData,
+          visible: level_partition.visible
+        }
+      )
+    });
+  }
 
   zoom = e => {
     if (e.resetSelection) {
@@ -75,6 +139,86 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
     }
 
   };
+
+
+  static getConfig(props) {
+    const model = props.model;
+    return {
+      chart: {
+        type: 'bubble',
+        panning: true,
+        panKey: 'shift',
+        zoomType: 'xy',
+        events: {
+          selection: ActivitySummaryBubbleChart.zoom
+        }
+      },
+      title: {
+        text: `${model.subject_label_long} Activity Summary`
+      },
+      subTitle: {
+        text: `${model.level_label}: ${model.level}`
+      },
+      xAxis: {
+        type: 'linear',
+        title: {
+          text: `Timespan (${model.span_uom})`
+        }
+      },
+      yAxis: {
+        type: 'logarithmic',
+        id: 'commits',
+        title: {
+          text: `Number of commits`
+        }
+      },
+      series: ActivitySummaryBubbleChart.initSeries(props),
+      toolTip: {
+        useHTML: true,
+        followPointer: true,
+        formatter: point => (
+          tooltipHtml({
+            header: `${model.subject_label_long}: ${point.key}`,
+            body: [
+              ['Commits: ', `${point.y}`],
+              ['Timespan:', `${point.x.toLocaleString()} ${model.span_uom}`],
+              ['Contributors:', `${point.point ? point.point.z : ''}`]
+            ]
+          })
+        )
+      },
+      plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true,
+            format: `{point.name}`,
+            inside: false,
+            verticalAlign: 'bottom',
+            style: {
+              color: 'black',
+              textOutline: 'none'
+            }
+
+          }
+        },
+
+      }
+    }
+  }
+
+  render() {
+    return (
+      <ChartWrapper config={this.state.config} afterRender={this.setChart} />
+    )
+  }
+
+
+
+
+
+
+
+
 
   onSeriesShow() {
     this.onSelectionChange()
@@ -124,70 +268,7 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   }
 
 
-  initSeries() {
-    const self = this;
-    this.plotOptions['series'] = {
-      dataLabels: {
-        enabled: true,
-        format: `{point.name}`,
-        inside: false,
-        verticalAlign: 'bottom',
-        style: {
-          color: 'black',
-          textOutline: 'none'
-        }
 
-      },
-      events: {
-        hide: function () {
-          // `this` is bound to the series when this callback is invoked
-          // so we need to redispatch this to the actual plot instance using
-          // a new name self that is looked up from the closure of this callback.
-          self.onSeriesHide()
-        },
-        show: function () {
-          self.onSeriesShow()
-        },
-      }
-    };
-
-
-    // Partition the data set by activity level and set the
-    // initial visibility of the level. Initially we only set as visible
-    // the most recent activity bucket for which there is any data
-    // to show.
-
-    let domainPartition = partitionByActivityLevel(this.props.model.data);
-
-    this.series = ACTIVITY_LEVELS.map((activity_level, index) => {
-      const level_partition = domainPartition[activity_level.index];
-      const seriesData = level_partition.data.map((activitySummary) => ({
-        domain_id: activitySummary.id,
-        name: activitySummary.entity_name,
-        x: activitySummary.span,
-        y: activitySummary.commit_count,
-        z: activitySummary.contributor_count,
-        days_since_latest_commit: activitySummary.days_since_latest_commit
-      }));
-      return(
-        <BubbleSeries
-          boostThreshold={ActivitySummaryBubbleChart.BOOST_THRESHOLD}
-          allowPointSelect={this.props.onActivitiesSelected != null}
-          onClick={this.pointClicked}
-          key={index}
-          id={index}
-          color={activity_level.color}
-          name={activity_level.display_name}
-          data={seriesData}
-          visible={level_partition.visible}
-        />
-      )
-    });
-  }
-
-  componentWillMount() {
-    this.initSeries();
-  }
 
   shouldComponentUpdate() {
     if (this.selecting != null) {
@@ -206,56 +287,10 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   }
 
 
-  formatTooltip(point) {
-    const model = this.props.model;
-    return tooltipHtml({
-      header: `${model.subject_label_long}: ${point.key}`,
-      body: [
-        ['Commits: ', `${point.y}`],
-        ['Timespan:', `${point.x.toLocaleString()} ${model.span_uom}`],
-        ['Contributors:', `${point.point ? point.point.z : ''}`]
-      ]
-    });
-  }
 
 
 
-  render() {
-    const model = this.props.model;
-    const title = `${model.subject_label_long} Activity Summary`;
-    return (
-      <HighchartsChart
-        plotOptions={this.plotOptions}
-        callback={this.setChart}
-      >
-        <Chart
-          zoomType={'xy'}
-          panning={true}
-          panKey={'shift'}
-          onSelection={this.zoom.bind(this)}
-        />
-        <Title>{title}</Title>
 
-        <Subtitle>{`${model.level_label}: ${model.level}`}</Subtitle>
-        <LegendRight reversed={true}/>
-        <Tooltip
-          useHTML={true}
-          followPointer={true}
-          formatter={this.formatTooltip.bind(this)}
-        />
-        <XAxis type={'axesType'}>
-          <XAxis.Title>{`Timespan (${model.span_uom})`}</XAxis.Title>
-        </XAxis>
 
-        <YAxis
-          id="commits"
-          type={'logarithmic'}
-        >
-          <YAxis.Title>Number of commits</YAxis.Title>
-        </YAxis>
 
-        {this.series}
-      </HighchartsChart>
-    );
-  }
 }

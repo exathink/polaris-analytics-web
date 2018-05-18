@@ -4,6 +4,8 @@ import Dimensions from 'react-dimensions';
 
 
 require('highcharts/modules/xrange.js')(ReactHighcharts.Highcharts);
+require('highcharts/highcharts-more')(ReactHighcharts.Highcharts);
+
 
 class Chart extends React.Component {
   constructor(props) {
