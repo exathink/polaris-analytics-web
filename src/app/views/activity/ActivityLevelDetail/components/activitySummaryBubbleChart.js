@@ -32,59 +32,37 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
     this.chart = chart;
   };
 
-  static getDerivedPropsFromState(nextProps, prevState){
+  static getDerivedStateFromProps(nextProps, prevState){
     if(nextProps.model !== prevState.model) {
       return {
         model: nextProps.model,
-        config: null
+        config: prevState.config,
+        modelUpdated: true
       }
     }
     return null;
   }
 
-  attachEventHandlers(config){
-    const self = this;
 
-    config.plotOptions.series.events = {
-      hide: function () {
-        // `this` is bound to the series when this callback is invoked
-        // so we need to redispatch this to the actual plot instance using
-        // a new name self that is looked up from the closure of this callback.
-        self.onSeriesHide()
-      },
-      show: function () {
-        self.onSeriesShow()
-      },
-    };
-    config.chart.events = {
-      click: this.pointClicked.bind(this),
-      selection: this.zoom.bind(this)
-    };
-
-    return config;
+  updateConfig() {
+    if(this.state.modelUpdated) {
+      this.setState((prevState) => ({
+        model: prevState.model,
+        config: this.getConfig(this.props),
+        modelUpdated: false
+      }))
+    }
   }
 
   componentDidUpdate() {
-    if(!this.state.config) {
-      const config = this.attachEventHandlers(ActivitySummaryBubbleChart.getConfig(this.props))
-      this.setState((prevState) => ({
-        model: prevState.model,
-        config: config
-      }));
-    }
+    this.updateConfig();
   }
 
   componentDidMount() {
-    if(!this.state.config) {
-      const config = this.attachEventHandlers(ActivitySummaryBubbleChart.getConfig(this.props))
-      this.setState((prevState) => ({
-        model: prevState.model,
-        config: config
-      }));
-    }
+    this.updateConfig();
   }
 
-  static initSeries(props) {
+  initSeries(props) {
     // Partition the data set by activity level and set the
     // initial visibility of the level. Initially we only set as visible
     // the most recent activity bucket for which there is any data
@@ -107,6 +85,9 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
           type: 'bubble',
           boostThreshold: ActivitySummaryBubbleChart.BOOST_THRESHOLD,
           allowPointSelect: props.onActivitiesSelected != null,
+          events: {
+            click: this.pointClicked.bind(this)
+          },
           key: index,
           id: index,
           color: activity_level.color,
@@ -154,14 +135,18 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
   };
 
 
-  static getConfig(props) {
+  getConfig(props) {
     const model = props.model;
+    const self = this;
     return {
       chart: {
         type: 'bubble',
         panning: true,
         panKey: 'shift',
-        zoomType: 'xy'
+        zoomType: 'xy',
+        events: {
+          selection: this.zoom.bind(this)
+        }
       },
       title: {
         text: `${model.subject_label_long} Activity Summary`
@@ -182,10 +167,11 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
           text: `Number of commits`
         }
       },
-      series: ActivitySummaryBubbleChart.initSeries(props),
+      series: this.initSeries(props),
       toolTip: {
         useHTML: true,
-        followPointer: true,
+        followPointer: false,
+        hideDelay: 50,
         formatter: point => (
           tooltipHtml({
             header: `${model.subject_label_long}: ${point.key}`,
@@ -207,10 +193,21 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
             style: {
               color: 'black',
               textOutline: 'none'
+            },
+            events: {
+              hide: function () {
+                // `this` is bound to the series when this callback is invoked
+                // so we need to redispatch this to the actual plot instance using
+                // a new name self that is looked up from the closure of this callback.
+                self.onSeriesHide()
+              },
+              show: function () {
+                self.onSeriesShow()
+              }
             }
 
           }
-        },
+        }
 
       }
     }
