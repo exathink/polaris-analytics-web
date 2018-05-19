@@ -37,14 +37,14 @@ export const ActivitySummaryTimelineChart = BasicChart({
             categories: sortedDomainData.map(activitySummary => activitySummary.entity_name),
             reversed: true
           },
-          toolTip: {
+          tooltip: {
             useHTML: true,
-            formatter: (point) => {
+            formatter: function(){
               return tooltipHtml({
-                header: `${model.subject_label_long}: ${point.point.yCategory}`,
+                header: `${model.subject_label_long}: ${this.point.yCategory}`,
                 body: [
-                  ['Earliest Commit: ', `${formatDate(point.point.x, 'MM-DD-YYYY')}`],
-                  ['Latest Commit: ', `${formatDate(point.point.x2, 'MM-DD-YYYY')}`],
+                  ['Earliest Commit: ', `${formatDate(this.point.x, 'MM-DD-YYYY')}`],
+                  ['Latest Commit: ', `${formatDate(this.point.x2, 'MM-DD-YYYY')}`],
                 ]
               });
             }

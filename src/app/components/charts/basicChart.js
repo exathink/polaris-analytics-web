@@ -11,6 +11,7 @@ export const BasicChart = (configProvider: ChartConfigProvider) => {
       this.state = Chart.computeState(props);
     }
 
+
     static computeState(props) {
       return  {
         ...configProvider.mapPropsToState(props),

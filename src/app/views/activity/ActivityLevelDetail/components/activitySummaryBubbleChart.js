@@ -154,6 +154,12 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
       subTitle: {
         text: `${model.level_label}: ${model.level}`
       },
+      legend: {
+        align: 'right',
+        layout: 'vertical',
+        verticalAlign: 'middle',
+        reversed: true
+      },
       xAxis: {
         type: 'linear',
         title: {
@@ -168,20 +174,21 @@ export class ActivitySummaryBubbleChart extends React.Component<Props> {
         }
       },
       series: this.initSeries(props),
-      toolTip: {
+      tooltip: {
         useHTML: true,
         followPointer: false,
         hideDelay: 50,
-        formatter: point => (
-          tooltipHtml({
-            header: `${model.subject_label_long}: ${point.key}`,
+        formatter: function(){
+          return tooltipHtml({
+            header: `${model.subject_label_long}: ${this.key}`,
             body: [
-              ['Commits: ', `${point.y}`],
-              ['Timespan:', `${point.x.toLocaleString()} ${model.span_uom}`],
-              ['Contributors:', `${point.point ? point.point.z : ''}`]
+              ['Commits: ', `${this.y}`],
+              ['Timespan:', `${this.x.toLocaleString()} ${model.span_uom}`],
+              ['Contributors:', `${this.point ? this.point.z : ''}`]
             ]
           })
-        )
+        }
+
       },
       plotOptions: {
         series: {

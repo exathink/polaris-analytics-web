@@ -30,15 +30,6 @@ export const TotalsBarChart = BasicChart(
           color: activityLevel.color
         }));
 
-        const formatTooltip = (point) => {
-          return tooltipHtml({
-            header: `${point.series.name}`,
-            body: [
-              [`${point.percentage.toFixed(0)}%`],
-              (props.minimized ? [`${point.y}`] : [``])
-            ]
-          });
-        };
 
         const title = `${props.model.subject_label}s`;
 
@@ -60,9 +51,17 @@ export const TotalsBarChart = BasicChart(
           title: {
             text: title
           },
-          toolTip: {
+          tooltip: {
             useHTML: true,
-            formatter: formatTooltip,
+            formatter: function(){
+              return tooltipHtml({
+                header: `${this.series.name}`,
+                body: [
+                  [`${this.percentage.toFixed(0)}%`],
+                  (props.minimized ? [`${this.y}`] : [``])
+                ]
+              });
+            },
             valueDecimals: 0,
             followPointer: true
           },
