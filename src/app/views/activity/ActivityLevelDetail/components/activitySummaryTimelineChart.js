@@ -1,4 +1,3 @@
-import React from "react";
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml} from "../../../../components/charts/index";
 import {formatDate} from "../../../../helpers/utility";

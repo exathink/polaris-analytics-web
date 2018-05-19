@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 const tooltipContent = (content) => {
   return content.reduce(
     (tooltip, entry) => tooltip +

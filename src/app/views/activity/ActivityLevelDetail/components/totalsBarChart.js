@@ -1,5 +1,3 @@
-import React from 'react';
-import type {Props} from "../model";
 import {tooltipHtml} from "../../../../components/charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
