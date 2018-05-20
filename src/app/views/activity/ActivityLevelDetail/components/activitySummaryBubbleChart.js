@@ -8,6 +8,9 @@ import {
 
 
 
+
+
+
 export class ActivitySummaryBubbleChart extends React.Component<Props> {
   static BOOST_THRESHOLD = 100;
 

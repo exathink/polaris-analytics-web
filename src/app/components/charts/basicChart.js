@@ -8,27 +8,49 @@ export const BasicChart = (configProvider: ChartConfigProvider) => {
 
     constructor(props) {
       super(props);
-      this.state = Chart.computeState(props);
+      this.state = {};
+      this.chart = null;
     }
 
-
-    static computeState(props) {
-      return  {
-        ...configProvider.mapPropsToState(props),
-        config: configProvider.getConfig(props)
-      }
+    setChart(chart) {
+      this.chart = chart;
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
       const providerProps = configProvider.mapPropsToState(nextProps);
       if (Object.keys(providerProps).some(prop => providerProps[prop] !== prevState[prop])) {
-        return Chart.computeState(nextProps)
+        return {
+          ...{providerProps},
+          config: prevState.config,
+          providerPropsUpdated: true,
+        }
       }
       return null;
     }
 
+    updateConfig() {
+      if(this.state.providerPropsUpdated) {
+        this.setState( prevState => {
+          return {
+            ...{prevState},
+            config: configProvider.getConfig(this.props),
+            providerPropsUpdated: false
+          }
+        })
+      }
+    }
+
+    componentDidMount(){
+      this.updateConfig();
+    }
+
+    componentDidUpdate() {
+      this.updateConfig();
+    }
+
+
     render() {
-      return (<ChartWrapper config={this.state.config}/>);
+      return (this.state.config ? <ChartWrapper config={this.state.config} afterRender={this.setChart}/> : null);
     }
   }
 };
