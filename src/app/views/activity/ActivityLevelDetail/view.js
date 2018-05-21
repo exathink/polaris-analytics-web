@@ -89,7 +89,7 @@ export class ActivityLevelDetailView extends React.Component<Props, MaxViewState
   render() {
     return (
       <MaxView
-        onActivitiesSelected={this.onActivitiesSelected.bind(this)}
+        onSelectionChange={this.onActivitiesSelected.bind(this)}
         selectedActivities={this.state.selected}
         {...this.props}
       />
