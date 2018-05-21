@@ -1,10 +1,10 @@
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml} from "../../../../components/charts/index";
 import {formatDate} from "../../../../helpers/utility";
-import {BasicChart} from "../../../../components/charts/index";
+import {Chart} from "../../../../components/charts/index";
 
 
-export const ActivitySummaryTimelineChart = BasicChart({
+export const ActivitySummaryTimelineChart = Chart({
     mapPropsToState:
       (props) => ({
         model: props.model,

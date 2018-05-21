@@ -1,9 +1,9 @@
 import {tooltipHtml} from "../../../../components/charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
-import {BasicChart} from "../../../../components/charts";
+import {Chart} from "../../../../components/charts";
 
-export const TotalsBarChart = BasicChart(
+export const TotalsBarChart = Chart(
   {
     mapPropsToState: (props) => ({
       model: props.model
