@@ -1,18 +1,19 @@
 import React from "react";
-
-import ReactHighcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
 import Dimensions from 'react-dimensions';
 
-require('highcharts/highcharts-more.src.js')(ReactHighcharts.Highcharts);
-require('highcharts/modules/xrange.src.js')(ReactHighcharts.Highcharts);
+import {HighchartsChart} from "./highchartsReact";
+
+require('highcharts/highcharts-more.src.js')(Highcharts);
+require('highcharts/modules/xrange.src.js')(Highcharts);
 
 
 
-class Chart extends React.Component {
+class ChartWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      config: Chart.setDefaults(props.config, props)
+      config: ChartWrapper.setDefaults(props.config, props)
     };
   }
 
@@ -25,10 +26,17 @@ class Chart extends React.Component {
     return config
   }
 
+  static willResize(nextProps, prevState) {
+    return (
+      nextProps.containerHeight !== prevState.config.chart.height ||
+      nextProps.containerWidth !== prevState.config.chart.width
+    );
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.config !== prevState.config) {
+    if(nextProps.config !== prevState.config || ChartWrapper.willResize(nextProps, prevState)) {
       return {
-        config: Chart.setDefaults(nextProps.config, nextProps)
+        config: ChartWrapper.setDefaults(nextProps.config, nextProps)
       }
     }
     return null;
@@ -38,16 +46,19 @@ class Chart extends React.Component {
     return this.refs.chart.getChart()
   }
 
+
+  shouldComponentUpdate(nextProps, nextState){
+    return this.state !== nextState;
+  }
+
   componentDidUpdate() {
     const chart = this.getChart();
-    if (this.props.containerHeight !== chart.chartHeight || this.props.containerWidth !== chart.chartWidth) {
-      chart.setSize(this.props.containerWidth, this.props.containerHeight, false)
-    }
+    chart.update(this.state.config)
   }
 
   render() {
-    return (<ReactHighcharts config={this.state.config} isPureConfig={true} callback={this.props.afterRender} ref="chart"/>);
+    return (<HighchartsChart highcharts={Highcharts} config={this.state.config} callback={this.props.afterRender} ref="chart"/>);
   }
 }
 
-export default Dimensions({elementResize: true})(Chart);
+export default Dimensions({elementResize: true})(ChartWrapper);
