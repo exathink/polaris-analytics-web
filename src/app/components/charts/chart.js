@@ -11,7 +11,6 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       this.state = {};
       this.chart = null;
       this.eventHandler = null;
-      this.dispatching = false;
     }
 
     setChart(chart) {
@@ -20,11 +19,12 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
     static getDerivedStateFromProps(nextProps, prevState) {
       const providerProps = configProvider.mapPropsToState(nextProps);
-      if (Object.keys(providerProps).some(prop => providerProps[prop] !== prevState[prop])) {
+      const propChange = Object.keys(providerProps).find(prop => providerProps[prop] !== prevState[prop]);
+      if (propChange) {
         return {
-          ...{providerProps},
+          ...providerProps,
           config: prevState.config,
-          providerPropsUpdated: true,
+          providerPropsUpdated: true
         }
       }
       return null;
@@ -50,6 +50,8 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       }
     }
 
+
+
     componentDidMount(){
       this.updateConfig();
     }
@@ -58,22 +60,10 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       this.updateConfig();
     }
 
-    shouldComponentUpdate() {
-      if(this.dispatching) {
-        // this seems to be required in order to allow
-        // the highcharts charts interaction on the current thread to complete
-        // and show the user feedback to selections etc.. Not entirely sure
-        // why but this might potentially cause problems if a dispatch does
-        // cause React to call this method. So keep this in mind.
-        this.dispatching = false;
-        return false;
-      }
-      return true;
-    }
+
 
     onSelectionChange(selected){
       if(this.props.onActivitiesSelected && configProvider.mapPoints) {
-        this.dispatching = true;
         this.props.onActivitiesSelected(configProvider.mapPoints(selected, this.props));
       }
     }

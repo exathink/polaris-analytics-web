@@ -28,7 +28,7 @@ class Chart extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if(nextProps.config !== prevState.config) {
       return {
-        config: nextProps.config
+        config: Chart.setDefaults(nextProps.config, nextProps)
       }
     }
     return null;
