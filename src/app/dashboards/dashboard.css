@@ -17,7 +17,7 @@
 .dashboard-item {
   width: 100%;
   height: 100%;
-  padding: .5%;
+  padding: .2%;
   background: GhostWhite;
   position: relative;
 }
@@ -31,8 +31,8 @@
 
 .dashboard-item-menu {
   position: absolute;
-  top: 1%;
-  right: 1%;
+  top: 2%;
+  right: 3%;
   cursor: pointer;
   font-size: 18px;
   opacity: 0;

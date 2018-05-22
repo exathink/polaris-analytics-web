@@ -76,7 +76,7 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
   return (
   <Box w={w} m={1} className="dashboard-item">
     {
-      !itemSelected ?
+       title ?
         <h3 className="dashboard-item-title">
           {title}
         </h3> :

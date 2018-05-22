@@ -3,7 +3,7 @@ import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
 import StickerWidget from '../../../../containers/Widgets/sticker/sticker-widget';
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
-
+import {VizStickerWidget} from "../../../containers/widgets/vizSticker/vizStickerWidget";
 import {ActivitySummaryModel} from "./model";
 import type {ActiveContext} from "../../../navigation/context";
 
@@ -27,7 +27,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context
     <React.Fragment>
       <VizRow h={"100%"}>
         <VizItem w={1/3}>
-          <IsoWidgetsWrapper>
+
             {/* Sticker Widget */}
             <StickerWidget
               number={data.commits.toLocaleString()}
@@ -36,10 +36,10 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context
               fontColor={fontColor}
               bgColor={bgColor}
             />
-          </IsoWidgetsWrapper>
+
         </VizItem>
         <VizItem w={1/3}>
-          <IsoWidgetsWrapper>
+
             {/* Sticker Widget */}
             <StickerWidget
               number={human_span(data.latest_commit, data.earliest_commit)}
@@ -48,10 +48,10 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context
               fontColor={fontColor}
               bgColor={bgColor}
             />
-          </IsoWidgetsWrapper>
+
         </VizItem>
         <VizItem w={1/3}>
-          <IsoWidgetsWrapper>
+
             {/* Sticker Widget */}
             <StickerWidget
               number={data.contributors.toLocaleString()}
@@ -60,7 +60,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context
               fontColor={fontColor}
               bgColor={bgColor}
             />
-          </IsoWidgetsWrapper>
+
         </VizItem>
       </VizRow>
     </React.Fragment>

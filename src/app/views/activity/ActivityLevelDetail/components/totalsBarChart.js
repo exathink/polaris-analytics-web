@@ -20,34 +20,37 @@ export const TotalsBarChart = Chart(
 
 
         const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
-          type: 'column',
           name: activityLevel.display_name,
           id: activityLevel.display_name,
           key: activityLevel.display_name,
           data: [totalsByActivityLevel[activityLevel.display_name]],
-          color: activityLevel.color
+          color: activityLevel.color,
+          pointWidth: 1000
         }));
 
 
-        const title = `${props.model.subject_label}s`;
+        const title = `${props.orientation === 'vertical' ? props.model.subject_label : 'Activity Levels'} `;
 
 
         return {
           chart: {
-            type: 'column',
+            type: props.orientation === 'vertical' ? 'column' : 'bar',
+            backgroundColor: props.chartBackgroundColor,
+            spacing: [5,5,0,5]
           },
           plotOptions: {
             series: {
               stacking: 'normal',
               dataLabels: {
                 enabled: !props.minimized,
-                format: `{point.y}`,
-                rotation: 270
+                format: `{series.name} {percentage}%`,
+                rotation: props.orientation === 'vertical' ? 270 : 0
               }
             }
           },
           title: {
-            text: title
+            text: title,
+            align: props.orientation === 'vertical' ? 'center' : 'left'
           },
           tooltip: {
             useHTML: true,
@@ -75,9 +78,10 @@ export const TotalsBarChart = Chart(
             title: {
               text: null
             },
+            max: props.model.data.length,
             allowDecimals: false,
             gridLineWidth: 0,
-            plotLines: [{
+            plotLines: props.orientation === 'vertical' ? [{
               value: props.model.data.length,
               width: 2,
               color: 'grey',
@@ -87,7 +91,7 @@ export const TotalsBarChart = Chart(
                 align: 'center',
                 textAlign: 'right',
               }
-            }]
+            }]:[],
           },
           series: series,
           legend: {

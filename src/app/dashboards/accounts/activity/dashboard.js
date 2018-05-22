@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
+import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/activity/ActivityLevelDetail";
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
-import {ActivityLevelDetailView} from "../../../views/activity/ActivityLevelDetail";
 
 import ModelBindings from "./modelBindings";
 
@@ -10,9 +10,15 @@ export const dashboard = (props) => (
     <DashboardRow h='20%'>
       <DashboardItem
         w={1}
-        name="organizations-activity"
-        title={"Account Overview"}
+        name="activity-summary"
         primary={ActivitySummaryViz}
+      />
+    </DashboardRow>
+    <DashboardRow h='20%'>
+      <DashboardItem
+        w={1}
+        name="org-activity-levels"
+        primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
       />
     </DashboardRow>
