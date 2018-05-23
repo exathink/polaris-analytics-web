@@ -30,14 +30,14 @@ const StickerWidgetWrapper = styled.div`
     flex-direction: column;
 
     .isoStatNumber {
-      font-size: 20px;
+      font-size: 2.1vh;
       font-weight: 500;
       line-height: 1.1;
       margin: 0 0 5px;
     }
 
     .isoLabel {
-      font-size: 18px;
+      font-size: 2vh;
       font-weight: 400;
       margin: 0;
       line-height: 1.2;

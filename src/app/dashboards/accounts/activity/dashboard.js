@@ -7,7 +7,7 @@ import ModelBindings from "./modelBindings";
 
 export const dashboard = (props) => (
   <Dashboard dashboard={'account-dashboard'} modelBindings={ModelBindings} {...props}>
-    <DashboardRow h='20%'>
+    <DashboardRow h='15%'>
       <DashboardItem
         w={1}
         name="activity-summary"
@@ -15,17 +15,46 @@ export const dashboard = (props) => (
         primary={ActivitySummaryViz}
       />
     </DashboardRow>
-    <DashboardRow h='30%'>
+    <DashboardRow h='22%' title="Organizations">
       <DashboardItem
         w={1/2}
         name="org-activity-levels"
-        title="Organizations"
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
       />
       <DashboardItem
         w={1/2}
         name="org-activity-levels-2"
+
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+      />
+    </DashboardRow>
+    <DashboardRow h='22%' title="Organizations">
+      <DashboardItem
+        w={1/2}
+        name="org-activity-levels-3"
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+      />
+      <DashboardItem
+        w={1/2}
+        name="org-activity-levels-4"
+
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+      />
+    </DashboardRow>
+    <DashboardRow h='22%' title="Organizations">
+      <DashboardItem
+        w={1/2}
+        name="org-activity-levels-5"
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+      />
+      <DashboardItem
+        w={1/2}
+        name="org-activity-levels-6"
 
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}

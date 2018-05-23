@@ -49,12 +49,22 @@ export class DashboardView extends React.Component {
 
 //export const Dashboard = DashboardView;
 
-export const DashboardRow = ({children, h,  ...rest}) => (
-  <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
-    height: h
-  }}>
-    {cloneChildrenWithProps(children, {...rest})}
-  </Flex>
+export const DashboardRow = ({children, h, title,  ...rest}) => (
+  <React.Fragment>
+    {
+      title ?
+        <h3 className="dashboard-row-title">
+          {title}
+        </h3> :
+        null
+
+    }
+    <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
+      height: h
+    }}>
+      {cloneChildrenWithProps(children, {...rest})}
+    </Flex>
+  </React.Fragment>
 );
 
 
