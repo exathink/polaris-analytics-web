@@ -74,7 +74,7 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
 
 
   return (
-  <Box w={w} m={1} className="dashboard-item">
+  <Flex column w={w} m={1} className="dashboard-item">
     {
        title ?
         <h3 className="dashboard-item-title">
@@ -89,12 +89,14 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
         itemSelected ? navigate.push(dashboardUrl) : navigate.push(`${match.url}/${name}`)
       )}
     />
-    {
-      itemSelected && detail ?
-        React.createElement(detail, {modelBindings})
-        : React.createElement(primary, {modelBindings})
-    }
-  </Box>
+
+      {
+        itemSelected && detail ?
+          React.createElement(detail,  {modelBindings})
+          : React.createElement(primary,  {modelBindings})
+      }
+
+  </Flex>
   )
 };
 

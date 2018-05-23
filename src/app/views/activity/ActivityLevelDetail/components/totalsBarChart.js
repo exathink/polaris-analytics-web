@@ -3,6 +3,19 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {Chart} from "../../../../components/charts";
 
+Math.easeOutBounce = function (pos) {
+  if ((pos) < (1 / 2.75)) {
+    return (7.5625 * pos * pos);
+  }
+  if (pos < (2 / 2.75)) {
+    return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+  }
+  if (pos < (2.5 / 2.75)) {
+    return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+  }
+  return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+};
+
 export const TotalsBarChart = Chart(
   {
     mapPropsToState: (props) => ({
@@ -41,10 +54,19 @@ export const TotalsBarChart = Chart(
           plotOptions: {
             series: {
               stacking: 'normal',
+              animation: {
+                duration: 300
+              },
               dataLabels: {
-                enabled: !props.minimized,
-                format: `{series.name} {percentage}%`,
-                rotation: props.orientation === 'vertical' ? 270 : 0
+                enabled: true,
+                align: 'center',
+                format: `<b>{series.name}</b><br>{percentage:.1f} %`,
+                rotation: props.orientation === 'vertical' ? 270 : 0,
+                filter: {
+                  property: 'percentage',
+                  operator: '>',
+                  value: 10
+                }
               }
             }
           },

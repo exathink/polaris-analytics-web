@@ -28,7 +28,7 @@ const initSeries = props => {
     return(
       {
         type: 'bubble',
-        allowPointSelect: props.onActivitiesSelected != null,
+        allowPointSelect: props.onSelectionChange != null,
         key: index,
         id: index,
         color: activity_level.color,
