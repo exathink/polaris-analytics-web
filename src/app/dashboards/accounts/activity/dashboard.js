@@ -22,43 +22,12 @@ export const dashboard = (props) => (
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
       />
-      <DashboardItem
-        w={1/2}
-        name="org-activity-levels-2"
-
-        primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
-      />
     </DashboardRow>
-    <DashboardRow h='22%' title="Organizations">
-      <DashboardItem
-        w={1/2}
-        name="org-activity-levels-3"
-        primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
-      />
-      <DashboardItem
-        w={1/2}
-        name="org-activity-levels-4"
+    <DashboardRow h='22%' title="Projects">
 
-        primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
-      />
     </DashboardRow>
-    <DashboardRow h='22%' title="Organizations">
-      <DashboardItem
-        w={1/2}
-        name="org-activity-levels-5"
-        primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
-      />
-      <DashboardItem
-        w={1/2}
-        name="org-activity-levels-6"
+    <DashboardRow h='22%' title="Repositories">
 
-        primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
-      />
     </DashboardRow>
   </Dashboard>
 
