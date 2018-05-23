@@ -20,6 +20,9 @@ class ChartWrapper extends React.Component {
   static setDefaults(config, props) {
     config.chart.height = props.containerHeight;
     config.chart.width = props.containerWidth;
+    config.chart.style = {
+      fontFamily: 'Roboto, sans-serif'
+    },
     config.credits = {
       enabled: false
     };

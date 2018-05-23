@@ -98,7 +98,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
       <ReactPlaceholder
         showLoadingAnimation
         type="text"
-        rows={7}
+        rows={6}
         ready={this.state.model != null}
       >
         {cloneChildrenWithProps(this.props.children, {model: this.state.model, ...this.props})}

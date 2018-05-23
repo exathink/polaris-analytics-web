@@ -23,12 +23,13 @@ export default class StickerWidget extends Component {
         </div>
 
         <div className="isoContentWrapper">
-          <h3 className="isoStatNumber" style={textColor}>
-            {number}
-          </h3>
           <span className="isoLabel" style={textColor}>
             {text}
           </span>
+          <h3 className="isoStatNumber" style={textColor}>
+            {number}
+          </h3>
+
         </div>
       </StickerWidgetWrapper>
     );

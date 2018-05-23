@@ -3,6 +3,19 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {Chart} from "../../../../components/charts";
 
+Math.easeOutBounce = function (pos) {
+  if ((pos) < (1 / 2.75)) {
+    return (7.5625 * pos * pos);
+  }
+  if (pos < (2 / 2.75)) {
+    return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+  }
+  if (pos < (2.5 / 2.75)) {
+    return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+  }
+  return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+};
+
 export const TotalsBarChart = Chart(
   {
     mapPropsToState: (props) => ({
@@ -20,34 +33,46 @@ export const TotalsBarChart = Chart(
 
 
         const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
-          type: 'column',
           name: activityLevel.display_name,
           id: activityLevel.display_name,
           key: activityLevel.display_name,
           data: [totalsByActivityLevel[activityLevel.display_name]],
-          color: activityLevel.color
+          color: activityLevel.color,
+          pointWidth: 1000
         }));
 
 
-        const title = `${props.model.subject_label}s`;
+        const title = `${props.orientation === 'vertical' ? props.model.subject_label : 'Activity Levels'} `;
 
 
         return {
           chart: {
-            type: 'column',
+            type: props.orientation === 'vertical' ? 'column' : 'bar',
+            backgroundColor: props.chartBackgroundColor,
+            spacing: [5,5,0,5]
           },
           plotOptions: {
             series: {
               stacking: 'normal',
+              animation: {
+                duration: 300
+              },
               dataLabels: {
-                enabled: !props.minimized,
-                format: `{point.y}`,
-                rotation: 270
+                enabled: true,
+                align: 'center',
+                format: `<b>{series.name}</b><br>{percentage:.1f} %`,
+                rotation: props.orientation === 'vertical' ? 270 : 0,
+                filter: {
+                  property: 'percentage',
+                  operator: '>',
+                  value: 10
+                }
               }
             }
           },
           title: {
-            text: title
+            text: title,
+            align: props.orientation === 'vertical' ? 'center' : 'left'
           },
           tooltip: {
             useHTML: true,
@@ -75,9 +100,10 @@ export const TotalsBarChart = Chart(
             title: {
               text: null
             },
+            max: props.model.data.length,
             allowDecimals: false,
             gridLineWidth: 0,
-            plotLines: [{
+            plotLines: props.orientation === 'vertical' ? [{
               value: props.model.data.length,
               width: 2,
               color: 'grey',
@@ -87,7 +113,7 @@ export const TotalsBarChart = Chart(
                 align: 'center',
                 textAlign: 'right',
               }
-            }]
+            }]:[],
           },
           series: series,
           legend: {

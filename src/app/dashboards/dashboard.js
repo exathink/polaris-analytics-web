@@ -49,12 +49,22 @@ export class DashboardView extends React.Component {
 
 //export const Dashboard = DashboardView;
 
-export const DashboardRow = ({children, h,  ...rest}) => (
-  <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
-    height: h
-  }}>
-    {cloneChildrenWithProps(children, {...rest})}
-  </Flex>
+export const DashboardRow = ({children, h, title,  ...rest}) => (
+  <React.Fragment>
+    {
+      title ?
+        <h3 className="dashboard-row-title">
+          {title}
+        </h3> :
+        null
+
+    }
+    <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
+      height: h
+    }}>
+      {cloneChildrenWithProps(children, {...rest})}
+    </Flex>
+  </React.Fragment>
 );
 
 
@@ -74,9 +84,9 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
 
 
   return (
-  <Box w={w} m={1} className="dashboard-item">
+  <Flex column w={w} m={1} className="dashboard-item">
     {
-      !itemSelected ?
+       title ?
         <h3 className="dashboard-item-title">
           {title}
         </h3> :
@@ -89,12 +99,14 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
         itemSelected ? navigate.push(dashboardUrl) : navigate.push(`${match.url}/${name}`)
       )}
     />
-    {
-      itemSelected && detail ?
-        React.createElement(detail, {modelBindings})
-        : React.createElement(primary, {modelBindings})
-    }
-  </Box>
+
+      {
+        itemSelected && detail ?
+          React.createElement(detail,  {modelBindings})
+          : React.createElement(primary,  {modelBindings})
+      }
+
+  </Flex>
   )
 };
 

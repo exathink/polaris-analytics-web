@@ -2,8 +2,9 @@
 import type {ActivitySummary} from './model'
 import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
-
+import {VizStickerWidget} from "../../../containers/widgets/vizSticker/vizStickerWidget";
 import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
+import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
 
 import {
   ActivitySummaryBubbleChart,
@@ -39,7 +40,7 @@ const DetailTabs = (props) => (
       <ActivitySummaryTimelineChartViz {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <TotalsBarChartViz {...props}/>
+      <TotalsBarChartViz orientation={'horizontal'} {...props}/>
     </CustomTabPanel>
   </Tabs>
 );
@@ -48,7 +49,7 @@ const MaxView = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
       <VizItem w={0.07}>
-        <TotalsBarChartViz {...props}/>
+        <TotalsBarChartViz orientation={'vertical'} {...props}/>
       </VizItem>
       <VizItem w={0.5}>
         <ActivitySummaryBubbleChartViz {...props}/>
@@ -97,4 +98,28 @@ export class ActivityLevelDetailView extends React.Component<Props, MaxViewState
   }
 }
 
+
+export const ActivityLevelSummaryView =  (props) => {
+
+  return (
+  <React.Fragment>
+    <VizRow h={"100%"}>
+      <VizItem w={1}>
+
+          {/* Sticker Widget */}
+          <VizStickerWidget
+            icon="ion-ios-pulse-strong"
+            fontColor="#ffffff"
+            bgColor="#6b5fb2"
+          >
+            <TotalsBarChartViz orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
+          </VizStickerWidget>
+
+      </VizItem>
+
+
+    </VizRow>
+  </React.Fragment>
+);
+};
 
