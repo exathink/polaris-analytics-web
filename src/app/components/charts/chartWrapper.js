@@ -56,7 +56,15 @@ class ChartWrapper extends React.Component {
 
   componentDidUpdate() {
     const chart = this.getChart();
-    chart.update(this.state.config)
+    const type = this.state.config.chart.type;
+
+    window.performance.mark(`before-chart-${type}-update`);
+    console.time(`${type}-update`);
+    chart.update(this.state.config);
+    console.timeEnd(`${type}-update`);
+    window.performance.mark(`after-chart-${type}-update`);
+    window.performance.measure(`${type}-chart-update`, `before-chart-${type}-update`, `after-chart-${type}-update`);
+
   }
 
   render() {

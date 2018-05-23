@@ -7,6 +7,7 @@ export class HighchartsChart extends React.Component {
     super(props);
     this.container = React.createRef();
     this.chart = null;
+    this.state = {}
   }
 
   getChart() {
@@ -14,8 +15,14 @@ export class HighchartsChart extends React.Component {
   }
 
   componentDidMount() {
+
     const {highcharts, constructorType, config, callback} = this.props;
+    console.time(`${config.chart.type}`);
+    window.performance.mark(`before-chart-render-${config.chart.type}`);
     this.chart = highcharts[constructorType || 'chart'](this.container.current, config);
+    window.performance.mark(`after-chart-render-${config.chart.type}`);
+    window.performance.measure(`${config.chart.type}-render-time`, `before-chart-render-${config.chart.type}`, `after-chart-render-${config.chart.type}`);
+    console.timeEnd(`${config.chart.type}`);
     if(callback) {
       callback(this.chart);
     }
