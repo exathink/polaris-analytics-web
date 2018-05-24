@@ -1,9 +1,7 @@
 import React from 'react';
-import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
-import StickerWidget from '../../../../containers/Widgets/sticker/sticker-widget';
+import StickerWidget from '../../../containers/widgets/simpleSticker/sticker-widget';
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
-import {VizStickerWidget} from "../../../containers/widgets/vizSticker/vizStickerWidget";
 import {ActivitySummaryModel} from "./model";
 import type {ActiveContext} from "../../../navigation/context";
 
