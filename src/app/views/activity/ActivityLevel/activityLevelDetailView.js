@@ -5,10 +5,14 @@ import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
 import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
 
-import {ActivitySummaryTimelineChartViz} from "./viz";
-import {ActivitySummaryBubbleChartViz} from "./viz";
-import {ActivitySummaryTableViz} from "./viz";
-import {TotalsBarChartViz} from "./viz";
+import {withModel} from "../../../viz/withModel";
+
+import {
+  ActivitySummaryBubbleChart,
+  ActivitySummaryTimelineChart,
+  ActivitySummaryTable,
+  TotalsBarChart
+} from "./components";
 
 export type Props = {
   model: ActivityLevelDetailModel,
@@ -30,10 +34,10 @@ const DetailTabs = (props) => (
     </TabList>
 
     <CustomTabPanel>
-      <ActivitySummaryTimelineChartViz {...props}/>
+      <ActivitySummaryTimelineChart {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <TotalsBarChartViz orientation={'horizontal'} {...props}/>
+      <TotalsBarChart orientation={'horizontal'} {...props}/>
     </CustomTabPanel>
   </Tabs>
 );
@@ -42,10 +46,10 @@ const MaxView = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
       <VizItem w={0.07}>
-        <TotalsBarChartViz orientation={'vertical'} {...props}/>
+        <TotalsBarChart orientation={'vertical'} {...props}/>
       </VizItem>
       <VizItem w={0.5}>
-        <ActivitySummaryBubbleChartViz {...props}/>
+        <ActivitySummaryBubbleChart {...props}/>
       </VizItem>
       <VizItem w={0.43}>
         <DetailTabs {...props}/>
@@ -53,7 +57,7 @@ const MaxView = (props) => (
     </VizRow>
     <VizRow h={"40%"}>
       <VizItem w={1}>
-        <ActivitySummaryTableViz {...props}/>
+        <ActivitySummaryTable {...props}/>
       </VizItem>
     </VizRow>
   </Fragment>
@@ -64,7 +68,7 @@ type MaxViewState = {
   selected: Array<ActivitySummary> | null
 }
 
-export class ActivityLevelDetailView extends React.Component<Props, MaxViewState> {
+export class ViewContainer extends React.Component<Props, MaxViewState> {
 
   constructor(props: Props) {
     super(props);
@@ -92,5 +96,6 @@ export class ActivityLevelDetailView extends React.Component<Props, MaxViewState
 }
 
 
+export const ActivityLevelDetailView = withModel(ActivityLevelDetailModel)(ViewContainer);
 
 
