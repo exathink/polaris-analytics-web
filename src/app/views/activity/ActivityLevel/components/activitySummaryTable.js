@@ -56,7 +56,7 @@ export const ActivitySummaryTable = (props: Props) => {
         accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
       }, {
         id: 'timespan-col',
-        Header: `Timespan (${props.model.span_uom})`,
+        Header: `History (${props.model.span_uom})`,
         accessor: activitySummary => activitySummary.span.toLocaleString(),
       }
       ]}

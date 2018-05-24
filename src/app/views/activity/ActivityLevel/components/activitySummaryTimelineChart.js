@@ -5,7 +5,7 @@ import {Chart} from "../../../../components/charts/index";
 
 
 export const ActivitySummaryTimelineChart = Chart({
-    mapPropsToState:
+    chartUpdateProps:
       (props) => ({
         model: props.model,
         selectedActivities: props.selectedActivities

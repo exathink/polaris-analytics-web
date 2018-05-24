@@ -3,7 +3,7 @@ import {Chart, tooltipHtml} from '../../../../components/charts/index';
 import {PointSelectionEventHandler} from "../../../../components/charts/eventHandlers/pointSelectionHandler";
 
 
-const mapPropsToState =props => ({
+const chartUpdateProps = props => ({
   model: props.model
 });
 
@@ -125,7 +125,7 @@ const getConfig =  props => {
   }
 };
 
-export const ActivitySummaryBubbleChart = Chart({mapPropsToState, getConfig, eventHandler, mapPoints});
+export const ActivitySummaryBubbleChart = Chart({chartUpdateProps: chartUpdateProps, getConfig, eventHandler, mapPoints});
 
 
 

@@ -19,7 +19,7 @@ Math.easeOutBounce = function (pos) {
 
 export const TotalsBarChart = Chart(
   {
-    mapPropsToState: (props) => ({
+    chartUpdateProps: (props) => ({
       model: props.model
     }),
     getConfig:

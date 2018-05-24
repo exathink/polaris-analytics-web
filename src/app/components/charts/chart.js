@@ -18,11 +18,11 @@ export const Chart = (configProvider: ChartConfigProvider) => {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      const providerProps = configProvider.mapPropsToState(nextProps);
-      const propChange = Object.keys(providerProps).find(prop => providerProps[prop] !== prevState[prop]);
+      const chartUpdateProps = configProvider.chartUpdateProps(nextProps);
+      const propChange = Object.keys(chartUpdateProps).find(prop => chartUpdateProps[prop] !== prevState[prop]);
       if (propChange) {
         return {
-          ...providerProps,
+          ...chartUpdateProps,
           config: prevState.config,
           providerPropsUpdated: true
         }
