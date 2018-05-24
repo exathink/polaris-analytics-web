@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
-import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/activity/ActivityLevelDetail";
+import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/activity/ActivityLevel";
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
 
 import ModelBindings from "./modelBindings";

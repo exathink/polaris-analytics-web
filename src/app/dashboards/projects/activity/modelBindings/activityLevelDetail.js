@@ -1,9 +1,9 @@
 import {DataSources} from "../dataSources";
 import {polarisTimestamp} from "../../../../helpers/utility";
-import {withActivityLevel} from "../../../../views/activity/ActivityLevelDetail/activityLevel";
+import {withActivityLevel} from "../../../../views/activity/ActivityLevel/activityLevel";
 import moment from "moment/moment";
 
-import {ActivityLevelDetailModel} from "../../../../views/activity/ActivityLevelDetail";
+import {ActivityLevelDetailModel} from "../../../../views/activity/ActivityLevel";
 import {ModelFactory} from "../../../../viz/modelFactory";
 
 export const modelFactory: ModelFactory = {

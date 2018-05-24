@@ -1,21 +1,14 @@
 // @flow
 import type {ActivitySummary} from './model'
+import {ActivityLevelDetailModel} from "./model";
 import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
-import {VizStickerWidget} from "../../../containers/widgets/vizSticker/vizStickerWidget";
 import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
-import IsoWidgetsWrapper from '../../../../containers/Widgets/widgets-wrapper';
 
-import {
-  ActivitySummaryBubbleChart,
-  ActivitySummaryTable,
-  ActivitySummaryTimelineChart,
-  TotalsBarChart,
-} from './components/index';
-
-import {ActivityLevelDetailModel} from "./model";
-import {withModel} from "../../../viz/withModel";
-
+import {ActivitySummaryTimelineChartViz} from "./viz";
+import {ActivitySummaryBubbleChartViz} from "./viz";
+import {ActivitySummaryTableViz} from "./viz";
+import {TotalsBarChartViz} from "./viz";
 
 export type Props = {
   model: ActivityLevelDetailModel,
@@ -23,16 +16,16 @@ export type Props = {
   selectedActivities: Array<ActivitySummary> | null
 }
 
-const ActivitySummaryBubbleChartViz = withModel(ActivityLevelDetailModel)(ActivitySummaryBubbleChart);
-const ActivitySummaryTableViz = withModel(ActivityLevelDetailModel)(ActivitySummaryTable);
-const ActivitySummaryTimelineChartViz = withModel(ActivityLevelDetailModel)(ActivitySummaryTimelineChart);
-const TotalsBarChartViz = withModel(ActivityLevelDetailModel)(TotalsBarChart);
+
+
+
+
 
 
 const DetailTabs = (props) => (
   <Tabs>
     <TabList>
-      <Tab>Timelines</Tab>
+      <Tab>History</Tab>
       <Tab>Totals</Tab>
     </TabList>
 
@@ -99,27 +92,5 @@ export class ActivityLevelDetailView extends React.Component<Props, MaxViewState
 }
 
 
-export const ActivityLevelSummaryView =  (props) => {
 
-  return (
-  <React.Fragment>
-    <VizRow h={"100%"}>
-      <VizItem w={1}>
-
-          {/* Sticker Widget */}
-          <VizStickerWidget
-            icon="ion-ios-pulse-strong"
-            fontColor="#ffffff"
-            bgColor="#6b5fb2"
-          >
-            <TotalsBarChartViz orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
-          </VizStickerWidget>
-
-      </VizItem>
-
-
-    </VizRow>
-  </React.Fragment>
-);
-};
 

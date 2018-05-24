@@ -3,6 +3,7 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {Chart} from "../../../../components/charts";
 
+
 Math.easeOutBounce = function (pos) {
   if ((pos) < (1 / 2.75)) {
     return (7.5625 * pos * pos);
@@ -42,7 +43,7 @@ export const TotalsBarChart = Chart(
         }));
 
 
-        const title = `${props.orientation === 'vertical' ? props.model.subject_label : 'Activity Levels'} `;
+        const title = `${props.orientation === 'vertical' ? props.model.subject_label : 'Activity Profile'} `;
 
 
         return {

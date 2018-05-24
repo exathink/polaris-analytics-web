@@ -29,16 +29,24 @@ const StickerWidgetWrapper = styled.div`
     align-items: flex-start;
     flex-direction: row;
 
+    .stickerHeader {
+      height: 100%;
+      padding-left: 5px;
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+   }
     
     .isoStatNumber {
-      font-size: 20px;
+      font-size: 2.5vh;
       font-weight: 500;
       line-height: 1.1;
       margin: 0 0 5px;
     }
 
     .isoLabel {
-      font-size: 16px;
+      font-size: 2vh;
       font-weight: 400;
       margin: 0;
       line-height: 1.2;

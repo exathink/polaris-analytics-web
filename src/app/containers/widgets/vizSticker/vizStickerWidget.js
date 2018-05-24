@@ -23,6 +23,22 @@ export class VizStickerWidget extends Component {
           </div>
 
           <div className="isoContentWrapper">
+            <div className={"stickerHeader"}>
+              {
+                this.props.number?
+                    <h3 className="isoStatNumber" style={textColor}>
+                      {this.props.number}
+                    </h3>
+                  :null
+              }
+              {
+                this.props.text ?
+                  <span className="isoLabel" style={textColor}>
+                  {this.props.text}
+                  </span>
+                  : null
+              }
+            </div>
             {this.props.children}
           </div>
       </StickerWidgetWrapper>

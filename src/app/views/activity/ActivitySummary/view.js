@@ -43,7 +43,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context
             {/* Sticker Widget */}
             <StickerWidget
               number={human_span(data.latest_commit, data.earliest_commit)}
-              text={'Timespan'}
+              text={'History'}
               icon="ion-clock"
               fontColor={fontColor}
               bgColor={bgColor}

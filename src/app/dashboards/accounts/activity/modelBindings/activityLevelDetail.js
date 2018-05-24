@@ -2,9 +2,9 @@
 import {DataSources} from "../dataSources";
 import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
-import {withActivityLevel} from "../../../../views/activity/ActivityLevelDetail/activityLevel";
+import {withActivityLevel} from "../../../../views/activity/ActivityLevel/activityLevel";
 
-import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevelDetail';
+import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevel';
 
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
@@ -14,7 +14,7 @@ export const modelFactory: ModelFactory =  {
     {
       dataSource: DataSources.account_organizations_activity_summary,
       params: {
-        mock: true
+        mock: false
       }
     }
   ]),
