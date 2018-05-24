@@ -8,22 +8,7 @@ const mapPropsToState =props => ({
 });
 
 
-const getDataRanges = (props) => {
-  return props.model.data.reduce(
-    (ranges, activity_summary) => ({
-      x: {
-        min: Math.min(activity_summary.span, ranges.x.min),
-        max: Math.max(activity_summary.span, ranges.x.max)
-      },
-      y: {
-        min: Math.min(activity_summary.commit_count, ranges.y.min),
-        max: Math.max(activity_summary.commit_count, ranges.y.max)
-      }
-    }), {
-      x: {min: 0, max: 0},
-      y: {min: 1, max: 0}
-    });
-}
+
 
 const initSeries = props => {
   // Partition the data set by activity level and set the
@@ -58,7 +43,7 @@ const initSeries = props => {
       }
     )
   });
-}
+};
 
 
 const mapPoints = (points, props) => {
@@ -68,11 +53,10 @@ const mapPoints = (points, props) => {
   ));
 }
 
-const eventHandler = PointSelectionEventHandler
+const eventHandler = PointSelectionEventHandler;
 
 const getConfig =  props => {
   const model = props.model;
-  const dataRanges = getDataRanges(props);
   return {
     chart: {
       type: 'bubble',
@@ -94,8 +78,6 @@ const getConfig =  props => {
     },
     xAxis: {
       type: 'linear',
-      min: dataRanges.x.min,
-      max: dataRanges.x.max,
       title: {
         text: `Timespan (${model.span_uom})`
       }
@@ -103,8 +85,6 @@ const getConfig =  props => {
     yAxis: {
       type: 'logarithmic',
       id: 'commits',
-      min: dataRanges.y.min,
-      max: dataRanges.y.max,
       title: {
         text: `Number of commits`
       }
@@ -119,7 +99,7 @@ const getConfig =  props => {
           header: `${model.subject_label_long}: ${this.key}`,
           body: [
             ['Commits: ', `${this.y}`],
-            ['Timespan:', `${this.x.toLocaleString()} ${model.span_uom}`],
+            ['History:', `${this.x.toLocaleString()} ${model.span_uom}`],
             ['Contributors:', `${this.point ? this.point.z : ''}`]
           ]
         })
@@ -129,7 +109,7 @@ const getConfig =  props => {
     plotOptions: {
       series: {
         dataLabels: {
-          enabled: true,
+          enabled: props.showDataLabels || true,
           format: `{point.name}`,
           inside: false,
           verticalAlign: 'bottom',
