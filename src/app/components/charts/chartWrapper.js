@@ -22,7 +22,7 @@ class ChartWrapper extends React.Component {
     config.chart.width = props.containerWidth;
     config.chart.style = {
       fontFamily: 'Roboto, sans-serif'
-    },
+    };
     config.credits = {
       enabled: false
     };
