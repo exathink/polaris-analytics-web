@@ -50,7 +50,7 @@ export const TotalsBarChart = Chart(
           chart: {
             type: props.orientation === 'vertical' ? 'column' : 'bar',
             backgroundColor: props.chartBackgroundColor,
-            spacing: [5,5,0,5]
+            spacing: [5,5,5,5]
           },
           plotOptions: {
             series: {
