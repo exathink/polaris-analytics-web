@@ -1,6 +1,4 @@
 // @flow
-import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../navigation/context';
 

@@ -7,7 +7,7 @@ import {withRouter} from 'react-router';
 import {Route, Switch} from 'react-router-dom';
 
 
-import {Box, Flex} from 'reflexbox';
+import {Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findByProps} from "../helpers/reactHelpers";
 
 

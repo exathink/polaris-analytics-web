@@ -1,5 +1,3 @@
-import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/context";

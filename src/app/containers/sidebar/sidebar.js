@@ -5,10 +5,8 @@ import {Link, withRouter} from 'react-router-dom';
 import {Layout} from 'antd';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Menu from '../../../components/uielements/menu';
-import IntlMessages from '../../../components/utility/intlMessages';
 import SidebarWrapper from './sidebar.style';
 
-import {FormattedMessage} from 'react-intl';
 
 import appActions from '../../../redux/app/actions';
 import Logo from './logo';
