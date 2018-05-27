@@ -132,7 +132,7 @@ class Sidebar extends Component {
                             <span className="isoMenuHolder" style={submenuColor}>
                               <i className={Icons.topics[route.topic.name]} />
                               <span className="nav-text">
-                                {route.topic.display? route.topic.display() : `${route.topic.name}_`}
+                                {route.topic? route.topic.displays.default() : `${route.topic.name}_`}
                               </span>
                             </span>
                           </Link>

@@ -15,12 +15,7 @@ const context = {
       match: ':organization',
       context: {
         name: 'organization',
-        display: (match) => (
-          <FormattedMessage
-            id="contexts.organization.instance"
-            defaultMessage="Organization {organization}"
-            values={{organization: match? match.params.organization: ''}}
-          />),
+        display: match => Contexts.organization.displays.instance(match.params.organization),
         routes: [
           {
             match: 'projects',

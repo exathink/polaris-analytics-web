@@ -95,7 +95,7 @@ export class ActiveContext {
   }
 
   display() {
-    return this.matchInfo.params[this.context.name]
+    return this.context.display? this.context.display(this.matchInfo) : '';
   }
 
   color() {
