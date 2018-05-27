@@ -2,7 +2,7 @@
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/context';
 import Activity from './activity/topic';
-
+import {Topics} from "../../meta/topics";
 import type {Context} from '../../navigation/context';
 
 
@@ -22,7 +22,7 @@ const context: Context = {
 
       match: 'contributors',
       topic: {
-        name: 'contributors',
+        ...Topics.contributors,
         routes: [
           {
             match: '',

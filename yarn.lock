@@ -636,6 +636,14 @@ babel-plugin-jest-hoist@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-20.0.3.tgz#afedc853bd3f8dc3548ea671fbe69d03cc2c1767"
 
+babel-plugin-react-intl@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl/-/babel-plugin-react-intl-2.4.0.tgz#292fca8030603a9e0476973290836aa0c7da17e2"
+  dependencies:
+    babel-runtime "^6.2.0"
+    intl-messageformat-parser "^1.2.0"
+    mkdirp "^0.5.1"
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -3630,7 +3638,7 @@ intl-format-cache@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.1.0.tgz#04a369fecbfad6da6005bae1f14333332dcf9316"
 
-intl-messageformat-parser@1.4.0:
+intl-messageformat-parser@1.4.0, intl-messageformat-parser@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.4.0.tgz#b43d45a97468cadbe44331d74bb1e8dea44fc075"
 
@@ -6129,6 +6137,10 @@ react-app-rewire-bundle-analyzer@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-app-rewire-bundle-analyzer/-/react-app-rewire-bundle-analyzer-1.0.1.tgz#fe553f09b65e88684d24ebaf4b0c0526e82063df"
   dependencies:
     webpack-bundle-analyzer "^2.10.0"
+
+react-app-rewire-react-intl@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-app-rewire-react-intl/-/react-app-rewire-react-intl-2.4.0.tgz#b8a7bc57f657556ca46e4f02d762b651ffee8aa0"
 
 react-app-rewired@^1.4.0:
   version "1.4.1"

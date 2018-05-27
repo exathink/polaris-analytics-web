@@ -8,6 +8,8 @@ import Menu from '../../../components/uielements/menu';
 import IntlMessages from '../../../components/utility/intlMessages';
 import SidebarWrapper from './sidebar.style';
 
+import {FormattedMessage} from 'react-intl';
+
 import appActions from '../../../redux/app/actions';
 import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
@@ -130,7 +132,7 @@ class Sidebar extends Component {
                             <span className="isoMenuHolder" style={submenuColor}>
                               <i className={Icons.topics[route.topic.name]} />
                               <span className="nav-text">
-                                <IntlMessages id={`topic.${route.topic.name}`}/>
+                                {route.topic.display? route.topic.display() : `${route.topic.name}_`}
                               </span>
                             </span>
                           </Link>

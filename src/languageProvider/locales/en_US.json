@@ -1,13 +1,4 @@
 {
-  "context.account": "Account",
-  "context.organization": "Organization",
-  "context.organizations": "Organizations",
-  "context.project": "Project",
-  "context.projects": "Projects",
-  "context.repository": "Repository",
-  "context.repositories": "Repositories",
-  "topic.activity": "Activity",
-  "topic.contributors": "Contributors",
   "sidebar.email": "Email",
   "sidebar.ecommerce": "Ecommerce",
   "sidebar.shop": "Shop",

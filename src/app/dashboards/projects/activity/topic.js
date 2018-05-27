@@ -1,7 +1,8 @@
 import asyncComponent from "../../../../helpers/AsyncFunc";
+import {Topics} from "../../../meta/topics";
 
 const topic = {
-  name: 'activity',
+  ...Topics.activity,
   routes: [
     {
       match: '',

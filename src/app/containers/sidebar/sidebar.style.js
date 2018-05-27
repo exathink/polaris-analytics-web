@@ -107,6 +107,7 @@ const SidebarWrapper = styled.div`
         font-size: 14px;
         color: inherit;
         font-weight: 400;
+        text-transform: capitalize;
         ${transition()};
       }
 
