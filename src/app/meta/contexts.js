@@ -1,18 +1,55 @@
 import React from 'react';
-import {FormattedPlural, FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 export const Contexts = {
-  organization: {
+  accounts: {
+    name: 'account',
+    display: function () {return this.displays.default()},
+    displays: {
+      default:
+        (quantity = 0) => (
+          <FormattedMessage
+            id='contexts.account'
+            defaultMessage="
+            {
+              quantity, plural,
+              one {Account}
+              other {Accounts}
+            }"
+            values={{quantity: quantity}}
+          />
+        ),
+      instance:
+        instanceName => (
+          <FormattedMessage
+            id="contexts.accounts.instance"
+            defaultMessage="Account: {instance}"
+            values={{instance: instanceName}}
+          />
+        ),
+      overview: () => (
+        <FormattedMessage
+          id="contexts.accounts.overview"
+          defaultMessage="Account Overview"
+        />
+      )
+    }
+  },
+  organizations: {
     name: 'organization',
     display: function () {return this.displays.default()},
     displays: {
       default:
-        (quantity = 1) => (
-          <FormattedPlural
+        (quantity = 0) => (
+          <FormattedMessage
             id='contexts.organization'
-            one="Organization"
-            other="Organizations"
-            value={quantity}
+            defaultMessage="
+            {
+              quantity, plural,
+              one {Organization}
+              other {Organizations}
+            }"
+            values={{quantity: quantity}}
           />
         ),
       instance:
@@ -22,20 +59,30 @@ export const Contexts = {
             defaultMessage="Organization: {instance}"
             values={{instance: instanceName}}
           />
-        )
+        ),
+      overview: () => (
+        <FormattedMessage
+          id="contexts.organizations.overview"
+          defaultMessage="Organization Overview"
+        />
+      )
     }
   },
-  project: {
+  projects: {
     name: 'project',
     display: function () {return this.displays.default()},
     displays: {
       default:
-        (quantity = 1) => (
-          <FormattedPlural
+        (quantity = 0) => (
+          <FormattedMessage
             id='contexts.project'
-            one="Project"
-            other="Projects"
-            value={quantity}
+            defaultMessage="
+            {
+              quantity, plural,
+              one {Project}
+              other {Projects}
+            }"
+            values={{quantity: quantity}}
           />
         ),
       instance:
@@ -45,20 +92,30 @@ export const Contexts = {
             defaultMessage="Project: {instance}"
             values={{instance: instanceName}}
           />
-        )
+        ),
+      overview: () => (
+        <FormattedMessage
+          id="contexts.projects.overview"
+          defaultMessage="Project Overview"
+        />
+      )
     }
   },
-  repository: {
+  repositories: {
     name: 'repository',
     display: function () {return this.displays.default()},
     displays: {
       default:
-        (quantity = 1) => (
-          <FormattedPlural
+        (quantity = 0) => (
+          <FormattedMessage
             id='contexts.repository'
-            one="Repository"
-            other="Repositories"
-            value={quantity}
+            defaultMessage="
+            {
+              quantity, plural,
+              one {Repository}
+              other {Repositories}
+            }"
+            values={{quantity: quantity}}
           />
         ),
       instance:
@@ -68,7 +125,13 @@ export const Contexts = {
             defaultMessage="Repository: {instance}"
             values={{instance: instanceName}}
           />
-        )
+        ),
+      overview: () => (
+        <FormattedMessage
+          id="contexts.repositories.overview"
+          defaultMessage="Repository Overview"
+        />
+      )
     }
   }
 };

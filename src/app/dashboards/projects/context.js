@@ -7,14 +7,14 @@ import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
 
 const context : Context = {
-  ...Contexts.project,
+  ...Contexts.projects,
   hidden: true,
   routes: [
     {
       match: ':project',
       context: {
         name: 'project',
-        display: match => Contexts.project.displays.instance(match.params.project),
+        display: match => Contexts.projects.displays.instance(match.params.project),
         routes: [
           {
             match: 'activity',

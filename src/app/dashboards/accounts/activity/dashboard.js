@@ -4,6 +4,7 @@ import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
 
 import ModelBindings from "./modelBindings";
+import {Contexts} from "../../../meta/contexts";
 
 export const dashboard = (props) => (
   <Dashboard dashboard={'account-dashboard'} modelBindings={ModelBindings} {...props}>
@@ -11,11 +12,11 @@ export const dashboard = (props) => (
       <DashboardItem
         w={1}
         name="activity-summary"
-        title="Account Overview"
+        title={Contexts.accounts.displays.overview()}
         primary={ActivitySummaryViz}
       />
     </DashboardRow>
-    <DashboardRow h='22%' title="Organizations">
+    <DashboardRow h='22%' title={Contexts.organizations.display()}>
       <DashboardItem
         w={1/2}
         name="org-activity-levels"
@@ -23,10 +24,10 @@ export const dashboard = (props) => (
         detail={ActivityLevelDetailView}
       />
     </DashboardRow>
-    <DashboardRow h='22%' title="Projects">
+    <DashboardRow h='22%' title={Contexts.projects.display()}>
 
     </DashboardRow>
-    <DashboardRow h='22%' title="Repositories">
+    <DashboardRow h='22%' title={Contexts.repositories.display()}>
 
     </DashboardRow>
   </Dashboard>
