@@ -1,10 +1,23 @@
 // @flow
+import React from 'react';
+import {FormattedMessage} from 'react-intl';
+
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../navigation/context';
 
 import Activity from './activity/topic';
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
+
+
+const messages = {
+  instanceDisplay: (instanceName) => (
+    <FormattedMessage
+      id="contexts.projects.instance"
+      defaultMessage="Project: {instance}"
+      values={{instance: instanceName}}/>
+  )
+};
 
 const context : Context = {
   ...Contexts.projects,
@@ -13,8 +26,8 @@ const context : Context = {
     {
       match: ':project',
       context: {
-        name: 'project',
-        display: match => Contexts.projects.displays.instance(match.params.project),
+        ...Contexts.projects,
+        display: match => messages.instanceDisplay(match.params.project),
         routes: [
           {
             match: 'activity',

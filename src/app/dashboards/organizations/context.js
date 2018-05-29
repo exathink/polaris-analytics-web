@@ -1,9 +1,21 @@
+import React from 'react';
+import {FormattedMessage} from 'react-intl';
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Projects from "../projects/context";
 import Activity from './activity/topic';
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
+
+
+const messages = {
+  instanceDisplay: (instanceName) => (
+    <FormattedMessage
+      id="contexts.organizations.instance"
+      defaultMessage="Organization: {instance}"
+      values={{instance: instanceName}}/>
+  )
+};
 
 const context = {
   ...Contexts.organizations,
@@ -12,8 +24,8 @@ const context = {
     {
       match: ':organization',
       context: {
-        name: 'organization',
-        display: match => Contexts.organizations.displays.instance(match.params.organization),
+        ...Contexts.organizations,
+        display: match => messages.instanceDisplay(match.params.organization),
         routes: [
           {
             match: 'projects',

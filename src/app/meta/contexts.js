@@ -18,14 +18,6 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        ),
-      instance:
-        instanceName => (
-          <FormattedMessage
-            id="contexts.accounts.instance"
-            defaultMessage="Account: {instance}"
-            values={{instance: instanceName}}
-          />
         )
     }
   },
@@ -44,14 +36,6 @@ export const Contexts = {
               other {Organizations}
             }"
             values={{quantity: quantity}}
-          />
-        ),
-      instance:
-        instanceName => (
-          <FormattedMessage
-            id="contexts.organizations.instance"
-            defaultMessage="Organization: {instance}"
-            values={{instance: instanceName}}
           />
         )
     }
@@ -72,14 +56,6 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        ),
-      instance:
-        instanceName => (
-          <FormattedMessage
-            id="contexts.projects.instance"
-            defaultMessage="Project: {instance}"
-            values={{instance: instanceName}}
-          />
         )
     }
   },
@@ -98,14 +74,6 @@ export const Contexts = {
               other {Repositories}
             }"
             values={{quantity: quantity}}
-          />
-        ),
-      instance:
-        instanceName => (
-          <FormattedMessage
-            id="contexts.repositories.instance"
-            defaultMessage="Repository: {instance}"
-            values={{instance: instanceName}}
           />
         )
     }
