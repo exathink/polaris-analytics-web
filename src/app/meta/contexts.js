@@ -26,13 +26,7 @@ export const Contexts = {
             defaultMessage="Account: {instance}"
             values={{instance: instanceName}}
           />
-        ),
-      overview: () => (
-        <FormattedMessage
-          id="contexts.accounts.overview"
-          defaultMessage="Account Overview"
-        />
-      )
+        )
     }
   },
   organizations: {
@@ -59,13 +53,7 @@ export const Contexts = {
             defaultMessage="Organization: {instance}"
             values={{instance: instanceName}}
           />
-        ),
-      overview: () => (
-        <FormattedMessage
-          id="contexts.organizations.overview"
-          defaultMessage="Organization Overview"
-        />
-      )
+        )
     }
   },
   projects: {
@@ -92,13 +80,7 @@ export const Contexts = {
             defaultMessage="Project: {instance}"
             values={{instance: instanceName}}
           />
-        ),
-      overview: () => (
-        <FormattedMessage
-          id="contexts.projects.overview"
-          defaultMessage="Project Overview"
-        />
-      )
+        )
     }
   },
   repositories: {
@@ -125,13 +107,7 @@ export const Contexts = {
             defaultMessage="Repository: {instance}"
             values={{instance: instanceName}}
           />
-        ),
-      overview: () => (
-        <FormattedMessage
-          id="contexts.repositories.overview"
-          defaultMessage="Repository Overview"
-        />
-      )
+        )
     }
   }
 };

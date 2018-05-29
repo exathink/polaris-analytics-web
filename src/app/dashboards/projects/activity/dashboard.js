@@ -1,4 +1,5 @@
 import React from 'react';
+import {FormattedMessage} from 'react-intl';
 import { Dashboard, DashboardRow, DashboardItem} from '../../index';
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
 import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/activity/ActivityLevel";
@@ -6,13 +7,19 @@ import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/
 import ModelBindings from "./modelBindings";
 import {Contexts} from "../../../meta/contexts";
 
+const dashboard_id = 'dashboards.activity.projects.instance';
+const messages = {
+  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Project Overview'/>
+};
+
+
 export const dashboard = ({match, ...rest}) => (
-  <Dashboard dashboard={'projects-dashboard'} modelBindings={ModelBindings} {...rest}>
+  <Dashboard dashboard={`${dashboard_id}`} modelBindings={ModelBindings} {...rest}>
     <DashboardRow h='15%'>
       <DashboardItem
         w={1}
         name="activity-summary"
-        title={Contexts.projects.displays.overview()}
+        title={messages.topRowTitle}
         primary={ActivitySummaryViz}
       />
     </DashboardRow>
