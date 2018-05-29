@@ -4,10 +4,8 @@ import {FormattedMessage} from 'react-intl';
 export const Contexts = {
   accounts: {
     name: 'account',
-    display: function () {return this.displays.default()},
-    displays: {
-      default:
-        (quantity = 0) => (
+    display:
+      (quantity = 0) => (
           <FormattedMessage
             id='contexts.account'
             defaultMessage="
@@ -19,13 +17,11 @@ export const Contexts = {
             values={{quantity: quantity}}
           />
         )
-    }
+
   },
   organizations: {
     name: 'organization',
-    display: function () {return this.displays.default()},
-    displays: {
-      default:
+    display:
         (quantity = 0) => (
           <FormattedMessage
             id='contexts.organization'
@@ -38,13 +34,10 @@ export const Contexts = {
             values={{quantity: quantity}}
           />
         )
-    }
   },
   projects: {
     name: 'project',
-    display: function () {return this.displays.default()},
-    displays: {
-      default:
+    display:
         (quantity = 0) => (
           <FormattedMessage
             id='contexts.project'
@@ -57,13 +50,11 @@ export const Contexts = {
             values={{quantity: quantity}}
           />
         )
-    }
+
   },
   repositories: {
     name: 'repository',
-    display: function () {return this.displays.default()},
-    displays: {
-      default:
+    display:
         (quantity = 0) => (
           <FormattedMessage
             id='contexts.repository'
@@ -76,6 +67,6 @@ export const Contexts = {
             values={{quantity: quantity}}
           />
         )
-    }
+
   }
 };
