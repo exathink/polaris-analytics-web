@@ -1,0 +1,16 @@
+{
+  "contexts.account": "{quantity, plural, one {Account} other {Accounts}}",
+  "contexts.accounts.instance": "Account: {instance}",
+  "contexts.accounts.overview": "Account Overview",
+  "contexts.organization": "{quantity, plural, one {Organization} other {Organizations}}",
+  "contexts.organizations.instance": "Organization: {instance}",
+  "contexts.organizations.overview": "Organization Overview",
+  "contexts.project": "{quantity, plural, one {Project} other {Projects}}",
+  "contexts.projects.instance": "Project: {instance}",
+  "contexts.projects.overview": "Project Overview",
+  "contexts.repository": "{quantity, plural, one {Repository} other {Repositories}}",
+  "contexts.repositories.instance": "Repository: {instance}",
+  "contexts.repositories.overview": "Repository Overview",
+  "topics.activity": "Activity",
+  "topics.contributors": "Contributors"
+}

@@ -102,3 +102,4 @@ MBAIR/
 docker/**/install.sh
 
 node_modules
+scripts/bin

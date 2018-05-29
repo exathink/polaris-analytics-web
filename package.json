@@ -41,6 +41,7 @@
     "styled-theme": "^0.3.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-plugin-react-intl": "^2.4.0",
     "chance": "^1.0.13",
     "flow-bin": "^0.66.0",
@@ -53,6 +54,7 @@
     "build": "sh -ac '. .env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:messages": "./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js"
   }
 }
