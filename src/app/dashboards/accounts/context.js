@@ -5,9 +5,10 @@ import Activity from './activity/topic';
 import {Topics} from "../../meta/topics";
 import type {Context} from '../../navigation/context';
 
+import {Contexts} from "../../meta/contexts";
 
 const context: Context = {
-  name: 'account',
+  ...Contexts.accounts,
   display: () => `Account`,
   routes: [
     {

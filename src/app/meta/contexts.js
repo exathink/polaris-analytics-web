@@ -16,7 +16,10 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        )
+        ),
+    icon: 'ion-ios-home',
+    color: '#6b5fb2',
+
 
   },
   organizations: {
@@ -33,7 +36,10 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        )
+        ),
+    icon: 'ion-ios-albums',
+    color: '#356eb2',
+
   },
   projects: {
     name: 'project',
@@ -49,7 +55,10 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        )
+        ),
+    icon: 'ion-folder',
+    color: '#8188b2'
+
 
   },
   repositories: {
@@ -66,7 +75,8 @@ export const Contexts = {
             }"
             values={{quantity: quantity}}
           />
-        )
+        ),
+    icon: 'ion-soup-can',
 
   }
 };

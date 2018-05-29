@@ -11,7 +11,7 @@ const topBar = (props) => {
 
     return (
         <div className="topBarContext">
-          <i className={Icons.contexts[currentContext.name()]} style={contextStyle} />
+          <i className={currentContext.icon()} style={contextStyle} />
           {
             display ? <span style={contextStyle}>{display}</span> : null
           }

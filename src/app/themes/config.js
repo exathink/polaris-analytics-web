@@ -54,26 +54,13 @@ const layoutTheme = {
   ]
 };
 
-const contextsTheme = {
-  id: 'contextTheme',
-  label: 'themeSwitcher.Contexts',
-  defaultTheme: 'themedefault',
-  options: [
-    {
-      themeName: 'themedefault',
-      account: '#6b5fb2',
-      organization: '#356eb2',
-      project:'#8188b2'
-    }
-  ]
-};
+
 
 const customizedThemes = {
   changeThemes,
   topbarTheme,
   sidebarTheme,
   layoutTheme,
-  contextsTheme
 };
 export function getCurrentTheme(attribute, themeName) {
   let selectedTheme = {};

@@ -1,8 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {getCurrentTheme} from '../themes/config';
-import {themeConfig} from '../../config';
+
 
 
 export type MatchType = {
@@ -15,7 +14,9 @@ export type MatchType = {
 export type Context = {
   name: string,
   hidden?: boolean,
-  display?: (match: MatchType) => string,
+  display?: (match?: MatchType) => string,
+  icon?: string,
+  color?: string,
   routes: Array<{
       match: string,
       render: React.ComponentType<any>
@@ -80,13 +81,11 @@ export class ActiveContext {
   selectedRoute: RouteType;
   matchInfo: MatchType;
   targetUrl: string;
-  theme: {};
 
   constructor(context: Context, index: number, match: MatchType, targetUrl: string) {
     this.context = context;
     this.selectedRoute = context.routes[index];
     this.matchInfo = match;
-    this.theme = getCurrentTheme('contextsTheme', themeConfig.theme);
     this.targetUrl = targetUrl;
   }
 
@@ -99,7 +98,11 @@ export class ActiveContext {
   }
 
   color() {
-    return this.theme[this.name()];
+    return this.context.color;
+  }
+
+  icon() {
+    return this.context.icon;
   }
 
   routes() {
