@@ -2,7 +2,7 @@ export const DataSources = {
   organization_projects_activity_summary: {
     name: 'organizations/activity-summary-by-project',
     polaris_service_connection: {
-      path: 'organizations/activity-summary-by-project',
+      path: 'activity-level/organization/project',
       params: [
         {
           name: 'organization',
@@ -15,7 +15,7 @@ export const DataSources = {
   organization_activity_summary: {
     name: 'organizations/activity-summary',
     polaris_service_connection: {
-      path: 'organizations/activity-summary',
+      path: 'activity-summary/organization',
       params: [
         {
           name: 'organization',

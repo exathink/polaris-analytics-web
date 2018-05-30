@@ -29,8 +29,8 @@ export const modelFactory: ModelFactory = {
         const latest_commit = polarisTimestamp(project_summary.latest_commit);
 
         return withActivityLevel({
-          id: project_summary.project_id,
-          entity_name: project_summary.project,
+          id: project_summary.detail_instance_id,
+          entity_name: project_summary.detail_instance_name,
           commit_count: project_summary.commit_count,
           contributor_count: project_summary.contributor_count,
           earliest_commit: earliest_commit,
