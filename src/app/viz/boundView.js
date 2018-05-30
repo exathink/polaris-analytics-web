@@ -63,7 +63,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
   static fetchData(props) {
     const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
     if(modelBinding) {
-      const dataBinding = modelBinding.getDataBinding(props.context);
+      const dataBinding = modelBinding.getDataBinding(props);
       dataBinding.forEach(({dataSource, params}) => {
         if (!props.viz_data.getData(dataSource, params)) {
           props.fetchData({dataSource: dataSource, params: params});
@@ -75,7 +75,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
   }
   static getModel(props) {
     const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
-    const dataBinding = modelBinding.getDataBinding(props.context);
+    const dataBinding = modelBinding.getDataBinding(props);
     const source_data = dataBinding.map(({dataSource, params}) => ({
       dataSource,
       params,
@@ -86,7 +86,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   static dataReady(props) {
     const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
-    const dataBinding = modelBinding.getDataBinding(props.context);
+    const dataBinding = modelBinding.getDataBinding(props);
     return dataBinding.every(({dataSource, params}) => {
       return props.viz_data.getData(dataSource, params) != null;
     })

@@ -1,4 +1,4 @@
-
+import {Map} from 'immutable';
 import {DataSources} from "../dataSources";
 import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
@@ -8,13 +8,16 @@ import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevel
 
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
+const dataBindings = new Map([
+  [Contexts.organizations, DataSources.account_organizations_activity_summary]
+]);
 
 
 export const modelFactory: ModelFactory =  {
 
-  getDataBinding: () => ([
+  getDataBinding: (props) => ([
     {
-      dataSource: DataSources.account_organizations_activity_summary,
+      dataSource: dataBindings.get(props.childContext),
       params: {
         mock: false
       }
@@ -39,14 +42,7 @@ export const modelFactory: ModelFactory =  {
         })
       }),
       context: props.context,
-      childContext: Contexts.organizations,
-      level_label: 'Account',
-      level: '',
-      subject_label: 'Org',
-      subject_label_long: 'Organization',
-      subject_label_plural: 'Organizations',
-      subject_icon: "ion-ios-albums",
-      subject_color: '#7266BA',
+      childContext: props.childContext,
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);

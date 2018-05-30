@@ -27,6 +27,7 @@ export const dashboard = (props) => (
       <DashboardItem
         w={1/2}
         name="org-activity-levels"
+        childContext={Contexts.organizations}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
       />

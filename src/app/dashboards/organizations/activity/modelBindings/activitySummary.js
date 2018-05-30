@@ -5,11 +5,11 @@ import type {ModelFactory} from "../../../../viz/modelFactory";
 import {ActivitySummaryModel} from "../../../../views/activity/ActivitySummary";
 
 export const modelFactory : ModelFactory = {
-  getDataBinding: context => ([
+  getDataBinding: props => ([
     {
       dataSource: DataSources.organization_activity_summary,
       params: {
-        organization: context.params().organization,
+        organization: props.context.params().organization,
         mock: false
       }
     }

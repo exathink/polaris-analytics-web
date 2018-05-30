@@ -81,7 +81,7 @@ const ItemMenu = ({itemSelected, detail, onClick}) => (
     null
 );
 
-export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, modelBindings, intl, ...rest}) => {
+export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, ...rest}) => {
 
 
   return (
@@ -103,8 +103,8 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
 
       {
         itemSelected && detail ?
-          React.createElement(detail,  {modelBindings, intl})
-          : React.createElement(primary,  {modelBindings, intl})
+          React.createElement(detail,  rest)
+          : React.createElement(primary,  rest)
       }
 
   </Flex>

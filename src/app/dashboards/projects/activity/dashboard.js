@@ -27,6 +27,7 @@ export const dashboard = ({match, ...rest}) => (
       <DashboardItem
         w={1/2}
         name="repository-activity-levels"
+        childContext={Contexts.repositories}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
       />

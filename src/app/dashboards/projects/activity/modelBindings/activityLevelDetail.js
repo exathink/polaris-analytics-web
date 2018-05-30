@@ -8,12 +8,12 @@ import {ModelFactory} from "../../../../viz/modelFactory";
 import {Contexts} from "../../../../meta/contexts";
 
 export const modelFactory: ModelFactory = {
-  getDataBinding: context => ([
+  getDataBinding: props => ([
     {
       dataSource: DataSources.project_repositories_activity_summary,
       params: {
-        organization: context.params().organization,
-        project: context.params().project,
+        organization: props.context.params().organization,
+        project: props.context.params().project,
         mock: false
       }
     }
@@ -38,11 +38,7 @@ export const modelFactory: ModelFactory = {
         })
       }),
       context: props.context,
-      childContext: Contexts.repositories,
-      level_label: 'Project',
-      level: project,
-      subject_label: 'Repo',
-      subject_label_long: 'Repository',
+      childContext: props.childContext,
       span_uom: 'Years'
     }
   }

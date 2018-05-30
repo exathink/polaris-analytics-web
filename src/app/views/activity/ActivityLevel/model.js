@@ -28,10 +28,6 @@ export type ActivitySummary = {
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   context: Context;
   childContext: Context;
-  level_label: string;
-  level: string;
-  subject_label_long: string;
-  subject_label: string;
   span_uom: string;
   onDrillDown: () => void;
 }
