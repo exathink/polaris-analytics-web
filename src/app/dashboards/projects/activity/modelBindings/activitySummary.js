@@ -15,7 +15,7 @@ export const modelFactory: ModelFactory = {
       }
     }
   ]),
-  initModel: (source_data) => {
+  initModel: (source_data, props) => {
     const project_summary = source_data[0].data;
 
     return {
@@ -25,9 +25,7 @@ export const modelFactory: ModelFactory = {
         earliest_commit: polarisTimestamp(org_summary.earliest_commit),
         latest_commit: polarisTimestamp(org_summary.latest_commit)
       }))[0],
-      displayProps: {
-        bgColor: '#6f759c'
-      }
+      context: props.context
     }
   }
 };

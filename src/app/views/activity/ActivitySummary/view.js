@@ -15,11 +15,11 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummaryView = (props: {model: ActivitySummaryModel, context: ActiveContext}) => {
+export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
 
-  const {model, context}  = props;
+  const {model}  = props;
   const data = model.data;
-  const bgColor = context.color();
+  const bgColor = model.context.color();
   const fontColor = "#ffffff";
   return (
     <React.Fragment>

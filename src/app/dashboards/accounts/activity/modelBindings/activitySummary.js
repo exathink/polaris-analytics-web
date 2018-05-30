@@ -13,7 +13,7 @@ const modelFactory : ModelFactory = {
       }
     }
   ]),
-  initModel: (source_data) => {
+  initModel: (source_data, props) => {
     const account_summary = source_data[0].data;
     return {
       data: account_summary.map((account_summary) => ({
@@ -22,9 +22,7 @@ const modelFactory : ModelFactory = {
         earliest_commit: polarisTimestamp(account_summary.earliest_commit),
         latest_commit: polarisTimestamp(account_summary.latest_commit)
       }))[0],
-      displayProps: {
-        bgColor: '#7266BA'
-      }
+      context: props.context
     }
   }
 };

@@ -1,6 +1,7 @@
 // @flow
 
 import  {Model} from "../../../viz/model";
+import {ActiveContext} from "../../../navigation/context";
 
 export type ActivityTotals = {
   commits: number,
@@ -10,4 +11,6 @@ export type ActivityTotals = {
 }
 
 
-export class ActivitySummaryModel extends Model<ActivityTotals> {};
+export class ActivitySummaryModel extends Model<ActivityTotals> {
+  context: ActiveContext
+}
