@@ -3,7 +3,7 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {Chart} from "../../../../components/charts";
 
-import {displaySingular, i18n} from "../../../../meta";
+import {i18n} from "../../../../i18n";
 
 Math.easeOutBounce = function (pos) {
   if ((pos) < (1 / 2.75)) {

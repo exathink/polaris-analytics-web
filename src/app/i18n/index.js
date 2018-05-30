@@ -9,3 +9,5 @@ const AppLocale = {
 addLocaleData(AppLocale.en.data);
 addLocaleData(AppLocale.es.data);
 export default AppLocale;
+
+export * from './utils';

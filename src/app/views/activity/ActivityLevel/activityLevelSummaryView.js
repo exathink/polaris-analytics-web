@@ -5,7 +5,6 @@ import {TotalsBarChart} from "./components";
 import {VizRow, VizItem} from "../../containers/layout";
 import {VizStickerWidget} from "../../../containers/widgets/vizSticker/vizStickerWidget";
 
-import Icons from "../../../helpers/icons";
 
 export const ActivityLevelSummaryView = withModel(ActivityLevelDetailModel)(
   props => {

@@ -3,7 +3,7 @@ import {defineMessages} from 'react-intl';
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {Chart, tooltipHtml} from '../../../../components/charts/index';
 import {PointSelectionEventHandler} from "../../../../components/charts/eventHandlers/pointSelectionHandler";
-import {displaySingular, i18n} from "../../../../meta";
+import {displaySingular, i18n} from "../../../../i18n";
 
 
 const componentId = 'activitySummaryBubbleChart';

@@ -1,5 +1,4 @@
 import React from 'react';
-import Icons from "../../helpers/icons";
 import {withNavigation} from "../../navigation/withNavigation";
 
 const topBar = (props) => {

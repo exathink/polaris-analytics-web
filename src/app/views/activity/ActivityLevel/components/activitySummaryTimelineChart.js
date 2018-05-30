@@ -1,8 +1,7 @@
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml} from "../../../../components/charts/index";
-import {formatDate} from "../../../../helpers/utility";
 import {Chart} from "../../../../components/charts/index";
-import {displaySingular, i18n, formatDateTime} from "../../../../meta";
+import {displaySingular, i18n} from "../../../../i18n";
 
 
 export const ActivitySummaryTimelineChart = Chart({
