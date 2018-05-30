@@ -13,7 +13,7 @@ import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
-import Icons from '../../helpers/icons';
+
 
 const {Sider} = Layout;
 
@@ -128,9 +128,9 @@ class Sidebar extends Component {
                         <Menu.Item  className='ant-menu-item' key={`${route.match}`}>
                           <Link to={`${currentContext.urlFor(route)}`}>
                             <span className="isoMenuHolder" style={submenuColor}>
-                              <i className={Icons.topics[route.topic.name]} />
+                              <i className={route.topic.icon} />
                               <span className="nav-text">
-                                {route.topic? route.topic.displays.default() : `${route.topic.name}_`}
+                                {route.topic? route.topic.display() : `${route.topic.name}_`}
                               </span>
                             </span>
                           </Link>

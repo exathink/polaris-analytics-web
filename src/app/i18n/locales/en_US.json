@@ -22,5 +22,9 @@
   "t.Activity Profile": "Activity Profile",
   "topics.activity": "Activity",
   "topics.contributors": "Contributors",
-  "activitySummaryBubbleChart.title": "{subject} Activity Summary"
+  "activitySummaryBubbleChart.title": "{subject} Activity Summary",
+  "pageWip.title": "Work in progress",
+  "pageWip.subTitle": "Seems like you got here a bit early..",
+  "pageWip.description": "Check back later..",
+  "pageWip.backButton": "Back"
 }
