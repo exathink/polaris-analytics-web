@@ -1,7 +1,19 @@
+import {defineMessages} from 'react-intl';
+
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {Chart, tooltipHtml} from '../../../../components/charts/index';
 import {PointSelectionEventHandler} from "../../../../components/charts/eventHandlers/pointSelectionHandler";
+import {displaySingular, i18n} from "../../../../meta";
 
+
+const componentId = 'activitySummaryBubbleChart';
+
+const messages = defineMessages({
+  title:  {
+    id: `${componentId}.title`,
+    defaultMessage: '{subject} Activity Summary'
+  }
+});
 
 const chartUpdateProps = props => ({
   model: props.model
@@ -51,12 +63,15 @@ const mapPoints = (points, props) => {
     activitySummary =>
       activitySummary.id === point.domain_id
   ));
-}
+};
 
 const eventHandler = PointSelectionEventHandler;
 
 const getConfig =  props => {
   const model = props.model;
+  const intl = props.intl;
+  const childContextName = displaySingular(intl, model.childContext);
+
   return {
     chart: {
       type: 'bubble',
@@ -65,10 +80,7 @@ const getConfig =  props => {
       zoomType: 'xy'
     },
     title: {
-      text: `${model.subject_label_long} Activity Summary`
-    },
-    subTitle: {
-      text: `${model.level_label}: ${model.level}`
+      text: intl.formatMessage(messages.title, {subject: childContextName})
     },
     legend: {
       align: 'right',
@@ -79,14 +91,14 @@ const getConfig =  props => {
     xAxis: {
       type: 'linear',
       title: {
-        text: `Timespan (${model.span_uom})`
+        text: `${i18n(intl, 'History')} (${model.span_uom})`
       }
     },
     yAxis: {
-      type: 'logarithmic',
+      type: model.data.length > 1 ? 'logarithmic' : 'linear',
       id: 'commits',
       title: {
-        text: `Number of commits`
+        text: `${i18n(intl, 'Number of commits')}`
       }
     },
     series: initSeries(props),
@@ -96,11 +108,11 @@ const getConfig =  props => {
       hideDelay: 50,
       formatter: function(){
         return tooltipHtml({
-          header: `${model.subject_label_long}: ${this.key}`,
+          header: `${childContextName}: ${this.key}`,
           body: [
-            ['Commits: ', `${this.y}`],
-            ['History:', `${this.x.toLocaleString()} ${model.span_uom}`],
-            ['Contributors:', `${this.point ? this.point.z : ''}`]
+            [`${i18n(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`],
+            [`${i18n(intl, 'History')}:`, `${intl.formatNumber(this.x, {maximumFractionDigits:0})} ${model.span_uom}`],
+            [`${i18n(intl, 'Contributors')}:`, `${this.point ? intl.formatNumber(this.point.z) : ''}`]
           ]
         })
       }

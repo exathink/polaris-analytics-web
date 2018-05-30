@@ -1,5 +1,4 @@
 import React from "react";
-
 import {ChartWrapper} from "./index";
 import type {ChartConfigProvider} from "./chartConfigProvider";
 

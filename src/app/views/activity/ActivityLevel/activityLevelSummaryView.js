@@ -9,6 +9,7 @@ import Icons from "../../../helpers/icons";
 
 export const ActivityLevelSummaryView = withModel(ActivityLevelDetailModel)(
   props => {
+    const {data, childContext} = props.model;
     return (
       <React.Fragment>
         <VizRow h={"100%"}>
@@ -16,11 +17,11 @@ export const ActivityLevelSummaryView = withModel(ActivityLevelDetailModel)(
 
             {/* Sticker Widget */}
             <VizStickerWidget
-              icon={Icons.contexts[props.model.level_label.toLowerCase()]}
+              icon={props.model.childContext.icon}
               fontColor="#ffffff"
               bgColor={props.context.color()}
-              text={props.model ? `${props.model.subject_label_long}s` : null}
-              number={props.model ? props.model.data.length : null}
+              text={childContext && data ? props.model.childContext.display(data.length) : null}
+              number={props.model ? data.length : null}
             >
               <TotalsBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
             </VizStickerWidget>

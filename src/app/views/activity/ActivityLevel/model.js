@@ -1,5 +1,6 @@
 // @flow
 import {Model} from "../../../viz/model";
+import type {Context} from "../../../navigation/context";
 
 export type ActivityLevel = {
   display_name: string,
@@ -25,6 +26,8 @@ export type ActivitySummary = {
 
 
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
+  context: Context;
+  childContext: Context;
   level_label: string;
   level: string;
   subject_label_long: string;

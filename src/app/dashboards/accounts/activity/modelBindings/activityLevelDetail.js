@@ -3,10 +3,12 @@ import {DataSources} from "../dataSources";
 import moment from "moment/moment";
 import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "../../../../views/activity/ActivityLevel/activityLevel";
-
+import {Contexts} from "../../../../meta/contexts";
 import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevel';
 
 import type {ModelFactory} from "../../../../viz/modelFactory";
+
+
 
 export const modelFactory: ModelFactory =  {
 
@@ -36,6 +38,8 @@ export const modelFactory: ModelFactory =  {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
+      context: props.context,
+      childContext: Contexts.organizations,
       level_label: 'Account',
       level: '',
       subject_label: 'Org',

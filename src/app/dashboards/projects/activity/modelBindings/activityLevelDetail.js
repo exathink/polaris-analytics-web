@@ -5,6 +5,7 @@ import moment from "moment/moment";
 
 import {ActivityLevelDetailModel} from "../../../../views/activity/ActivityLevel";
 import {ModelFactory} from "../../../../viz/modelFactory";
+import {Contexts} from "../../../../meta/contexts";
 
 export const modelFactory: ModelFactory = {
   getDataBinding: context => ([
@@ -36,6 +37,8 @@ export const modelFactory: ModelFactory = {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
+      context: props.context,
+      childContext: Contexts.repositories,
       level_label: 'Project',
       level: project,
       subject_label: 'Repo',

@@ -1,22 +1,42 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  accounts: {
+    id: 'contexts.accounts.display',
+    defaultMessage: "{quantity, plural, one {Account} other {Accounts}}"
+  },
+  organizations: {
+    id: 'contexts.organizations.display',
+    defaultMessage: "{quantity, plural, one {Organization} other {Organizations}}"
+  },
+  projects: {
+    id: 'contexts.projects.display',
+    defaultMessage: "{quantity, plural, one {Project} other {Projects}}"
+  },
+  repositories: {
+    id: 'contexts.repositories.display',
+    defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
+  }
+
+});
+
+
+
+
+
 
 export const Contexts = {
   accounts: {
     name: 'account',
+    message: messages.accounts,
     display:
-      (quantity = 0) => (
-          <FormattedMessage
-            id='contexts.account'
-            defaultMessage="
-            {
-              quantity, plural,
-              one {Account}
-              other {Accounts}
-            }"
-            values={{quantity: quantity}}
-          />
-        ),
+      (quantity = 0) => {
+        return <FormattedMessage
+          {...messages.accounts}
+          values={{quantity: quantity}}
+        />
+      },
     icon: 'ion-ios-home',
     color: '#6b5fb2',
 
@@ -24,38 +44,28 @@ export const Contexts = {
   },
   organizations: {
     name: 'organization',
+    message: messages.organizations,
     display:
-        (quantity = 0) => (
-          <FormattedMessage
-            id='contexts.organization'
-            defaultMessage="
-            {
-              quantity, plural,
-              one {Organization}
-              other {Organizations}
-            }"
+        (quantity = 0) => {
+          return <FormattedMessage
+            {...messages.organizations}
             values={{quantity: quantity}}
           />
-        ),
+        },
     icon: 'ion-ios-albums',
     color: '#356eb2',
 
   },
   projects: {
     name: 'project',
+    message: messages.projects,
     display:
-        (quantity = 0) => (
-          <FormattedMessage
-            id='contexts.project'
-            defaultMessage="
-            {
-              quantity, plural,
-              one {Project}
-              other {Projects}
-            }"
+        (quantity = 0) => {
+          return <FormattedMessage
+            {...messages.projects}
             values={{quantity: quantity}}
-          />
-        ),
+        />
+        },
     icon: 'ion-folder',
     color: '#8188b2'
 
@@ -63,19 +73,14 @@ export const Contexts = {
   },
   repositories: {
     name: 'repository',
+    message: messages.repositories,
     display:
-        (quantity = 0) => (
-          <FormattedMessage
-            id='contexts.repository'
-            defaultMessage="
-            {
-              quantity, plural,
-              one {Repository}
-              other {Repositories}
-            }"
+        function (quantity = 0) {
+          return <FormattedMessage
+            {...messages.repositories}
             values={{quantity: quantity}}
           />
-        ),
+        },
     icon: 'ion-soup-can',
 
   }

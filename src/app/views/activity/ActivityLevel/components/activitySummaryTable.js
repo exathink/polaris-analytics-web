@@ -4,6 +4,7 @@ import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import {Table} from "../../../containers/table/index";
 import {findVisibleLevels} from "../activityLevel";
 import Button from "../../../../../components/uielements/button";
+import {displaySingular, i18n, formatDateTime} from "../../../../meta";
 
 export const ActivitySummaryTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
@@ -12,13 +13,15 @@ export const ActivitySummaryTable = (props: Props) => {
       props.model.onDrillDown(event)
     }
   };
+  const {intl, model} = props;
+  const childContextName = displaySingular(intl, model.childContext);
 
   return (
     <Table
       data={tableData.sort((a, b) => b.activity_level.index - a.activity_level.index)}
       columns={[{
         id: 'col-activity-level',
-        Header: `${props.model.subject_label_long}`,
+        Header: `${childContextName}`,
         headerStyle: {width: '50px'},
         accessor: activitySummary => ({
           color: activitySummary.activity_level.color,
@@ -27,7 +30,7 @@ export const ActivitySummaryTable = (props: Props) => {
         }),
         Cell: row => (
           <Button onClick={() => drillDown({
-            subject_label: `${props.model.subject_label}` ,
+            subject_label: `${childContextName}` ,
             entity_name: row.value.text,
             id: row.value.key
           })} style={{
@@ -41,23 +44,23 @@ export const ActivitySummaryTable = (props: Props) => {
         )
 
       }, {
-        Header: `Commits`,
+        Header: `${i18n(intl, 'Commits')}`,
         accessor: 'commit_count',
       }, {
-        Header: `Contributors`,
+        Header: `${i18n(intl, 'Contributors')}`,
         accessor: 'contributor_count',
       }, {
         id: 'earliest-commit-col',
-        Header: `Earliest Commit`,
-        accessor: activitySummary => formatPolarisTimestamp(activitySummary.earliest_commit),
+        Header: `${i18n(intl, 'Earliest Commit')}`,
+        accessor: activitySummary => formatDateTime(intl,activitySummary.earliest_commit),
       }, {
         id: 'latest-commit-col',
-        Header: `Latest Commit`,
-        accessor: activitySummary => formatPolarisTimestamp(activitySummary.latest_commit),
+        Header: `${i18n(intl, 'Latest Commit')}`,
+        accessor: activitySummary => formatDateTime(intl, activitySummary.latest_commit),
       }, {
         id: 'timespan-col',
-        Header: `History (${props.model.span_uom})`,
-        accessor: activitySummary => activitySummary.span.toLocaleString(),
+        Header: `${i18n(intl, 'History')} (${props.model.span_uom})`,
+        accessor: activitySummary => intl.formatNumber(activitySummary.span),
       }
       ]}
       defaultPageSize={10}

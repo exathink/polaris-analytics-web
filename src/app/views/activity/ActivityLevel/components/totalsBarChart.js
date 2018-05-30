@@ -3,6 +3,7 @@ import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 
 import {Chart} from "../../../../components/charts";
 
+import {displaySingular, i18n} from "../../../../meta";
 
 Math.easeOutBounce = function (pos) {
   if ((pos) < (1 / 2.75)) {
@@ -32,9 +33,11 @@ export const TotalsBarChart = Chart(
           },
           {});
 
+        const intl = props.intl;
+
 
         const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
-          name: activityLevel.display_name,
+          name: i18n(intl, activityLevel.display_name),
           id: activityLevel.display_name,
           key: activityLevel.display_name,
           data: [totalsByActivityLevel[activityLevel.display_name]],
@@ -43,7 +46,7 @@ export const TotalsBarChart = Chart(
         }));
 
 
-        const title = `${props.orientation === 'vertical' ? props.model.subject_label : 'Activity Profile'} `;
+        const title = `${props.orientation === 'vertical' ? i18n(intl, 'Profile') : i18n(intl, 'Activity Profile')} `;
 
 
         return {

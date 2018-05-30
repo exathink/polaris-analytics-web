@@ -2,6 +2,7 @@ import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml} from "../../../../components/charts/index";
 import {formatDate} from "../../../../helpers/utility";
 import {Chart} from "../../../../components/charts/index";
+import {displaySingular, i18n, formatDateTime} from "../../../../meta";
 
 
 export const ActivitySummaryTimelineChart = Chart({
@@ -15,7 +16,8 @@ export const ActivitySummaryTimelineChart = Chart({
         const model = props.model;
         const domain_data = props.selectedActivities || findVisibleLevels(model.data);
         const sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
-
+        const intl = props.intl;
+        const childContextName = displaySingular(intl, model.childContext);
 
         return {
           chart: {
@@ -32,7 +34,7 @@ export const ActivitySummaryTimelineChart = Chart({
           },
           yAxis: {
             id: 'y-items',
-            title: {text: model.subject_label},
+            title: {text: childContextName},
             categories: sortedDomainData.map(activitySummary => activitySummary.entity_name),
             reversed: true
           },
@@ -40,10 +42,10 @@ export const ActivitySummaryTimelineChart = Chart({
             useHTML: true,
             formatter: function(){
               return tooltipHtml({
-                header: `${model.subject_label_long}: ${this.point.yCategory}`,
+                header: `${childContextName}: ${this.point.yCategory}`,
                 body: [
-                  ['Earliest Commit: ', `${formatDate(this.point.x, 'MM-DD-YYYY')}`],
-                  ['Latest Commit: ', `${formatDate(this.point.x2, 'MM-DD-YYYY')}`],
+                  [`${i18n(intl, 'Earliest Commit')}: `, `${intl.formatDate(this.point.x)}`],
+                  [`${i18n(intl, 'Latest Commit')}: `, `${intl.formatDate(this.point.x2)}`],
                 ]
               });
             }

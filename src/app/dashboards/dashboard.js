@@ -1,5 +1,6 @@
 import './dashboard.css';
 import React from 'react';
+import {injectIntl} from 'react-intl';
 import {withNavigation} from "../navigation/withNavigation";
 import {withRouter} from 'react-router';
 
@@ -80,7 +81,7 @@ const ItemMenu = ({itemSelected, detail, onClick}) => (
     null
 );
 
-export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, modelBindings, ...rest}) => {
+export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, modelBindings, intl, ...rest}) => {
 
 
   return (
@@ -102,8 +103,8 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
 
       {
         itemSelected && detail ?
-          React.createElement(detail,  {modelBindings})
-          : React.createElement(primary,  {modelBindings})
+          React.createElement(detail,  {modelBindings, intl})
+          : React.createElement(primary,  {modelBindings, intl})
       }
 
   </Flex>
@@ -125,4 +126,4 @@ const withDetailRoutes = (WrappedDashboard) => {
 };
 
 
-export const Dashboard = withRouter(withNavigation(withDetailRoutes(DashboardView)));
+export const Dashboard = withRouter(withNavigation(withDetailRoutes(injectIntl(DashboardView))));
