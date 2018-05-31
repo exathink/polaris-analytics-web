@@ -47,7 +47,7 @@ export const modelFactory: ModelFactory =  {
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/account/organizations/${event.entity_name}/activity`)
+        props.navigate.push(`/app/dashboard/account/${props.childContext.name}/${event.entity_name}/activity`)
       }
     }
   }

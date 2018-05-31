@@ -1,6 +1,7 @@
 // @flow
 import Wip from "../../../containers/Page/wip";
 import Organizations from '../organizations/context';
+import Projects from '../projects/context';
 import Activity from './activity/topic';
 import {Topics} from "../../meta/topics";
 import type {Context} from '../../navigation/context';
@@ -14,6 +15,10 @@ const context: Context = {
     {
       match: 'organizations',
       context: Organizations
+    },
+    {
+      match: 'projects',
+      context: Projects
     },
     {
       match: 'activity',

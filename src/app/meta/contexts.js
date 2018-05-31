@@ -43,7 +43,7 @@ export const Contexts = {
 
   },
   organizations: {
-    name: 'organization',
+    name: 'organizations',
     message: messages.organizations,
     display:
         (quantity = 0) => {
@@ -57,7 +57,7 @@ export const Contexts = {
 
   },
   projects: {
-    name: 'project',
+    name: 'projects',
     message: messages.projects,
     display:
         (quantity = 0) => {
@@ -72,7 +72,7 @@ export const Contexts = {
 
   },
   repositories: {
-    name: 'repository',
+    name: 'repositories',
     message: messages.repositories,
     display:
         function (quantity = 0) {
