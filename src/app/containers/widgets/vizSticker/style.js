@@ -25,7 +25,7 @@ const StickerWidgetWrapper = styled.div`
   .isoContentWrapper {
     width: 100%;
     display: flex;
-    padding: 1px;
+    padding: 1px 8px 1px 1px;
     align-items: flex-start;
     flex-direction: row;
 
