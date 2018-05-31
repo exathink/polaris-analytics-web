@@ -7,7 +7,7 @@ import moment from 'moment';
 if (process.env.NODE_ENV === 'development') {
   import ('chance');
   let chance = require('chance').Chance();
-  polarisChartsService.registerMockDataSource(DataSources.account_organizations_activity_summary, {
+  polarisChartsService.registerMockDataSource(DataSources.activity_level_for_account_by_organization, {
     fetchData: (dataSource, params) => {
       console.log("fetching stub data..");
       const data = [];

@@ -21,6 +21,7 @@ export const ActivityLevelSummaryView = withModel(ActivityLevelDetailModel)(
               bgColor={props.context.color()}
               text={childContext && data ? props.model.childContext.display(data.length) : null}
               number={props.model ? data.length : null}
+              {...(props.headerWidth? {width:props.headerWidth} : {})}
             >
               <TotalsBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
             </VizStickerWidget>

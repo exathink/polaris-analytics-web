@@ -10,8 +10,10 @@ export class VizStickerWidget extends Component {
     };
     const widgetStyle = {
       backgroundColor: bgColor,
-      width: width,
     };
+    const headerStyle = {
+      width: width
+    }
     const iconStyle = {
       color: fontColor,
     };
@@ -23,7 +25,7 @@ export class VizStickerWidget extends Component {
           </div>
 
           <div className="isoContentWrapper">
-            <div className={"stickerHeader"}>
+            <div className={"stickerHeader"} style={headerStyle}>
               {
                 this.props.number?
                     <h3 className="isoStatNumber" style={textColor}>

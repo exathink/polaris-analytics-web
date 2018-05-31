@@ -33,7 +33,13 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
-
+      <DashboardItem
+        w={1/2}
+        name="prj-activity-levels"
+        childContext={Contexts.projects}
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+      />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
 

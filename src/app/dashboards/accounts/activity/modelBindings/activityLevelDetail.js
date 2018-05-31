@@ -9,7 +9,8 @@ import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevel
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
 const dataBindings = new Map([
-  [Contexts.organizations, DataSources.account_organizations_activity_summary]
+  [Contexts.organizations, DataSources.activity_level_for_account_by_organization],
+  [Contexts.projects, DataSources.activity_level_for_account_by_project],
 ]);
 
 

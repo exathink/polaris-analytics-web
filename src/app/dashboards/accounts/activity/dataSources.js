@@ -1,20 +1,26 @@
 export const DataSources = {
-  account_organizations_activity_summary: {
-    name: 'accounts/activity-summary-by-organization',
+  activity_level_for_account_by_organization: {
+    name: 'activity_level_for_account_by_organization',
     polaris_service_connection: {
       path: 'activity-level/account/organization',
       params: [
       ]
     },
   },
-  account_activity_summary: {
-    name: 'accounts/activity-summary',
+  activity_level_for_account_by_project: {
+    name: 'activity_level_for_account_by_project',
     polaris_service_connection: {
-      path: 'activity-summary/account',
+      path: 'activity-level/account/project',
       params: [
       ]
     },
-
+  },
+  activity_summary_for_account: {
+    name: 'activity_summary_for_account',
+    polaris_service_connection: {
+      path: 'activity-summary/account',
+      params: []
+    },
   }
 };
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Model} from "./model";
+import {DatasourceBinding} from "./modelFactory";
 import {cloneChildrenWithProps} from "../helpers/reactHelpers";
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
@@ -23,10 +24,6 @@ type Props<T> = {
 
 }
 
-
-
-
-
 export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   state: ModelState<T>;
@@ -37,22 +34,26 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
   }
 
   static getDerivedStateFromProps(nextProps: Props<T>, prevState: ModelState<T>) {
+    if(nextProps.modelBindings) {
+      const modelBinding = nextProps.modelBindings.getModelFactory(nextProps.modelClass);
+      const dataBinding = modelBinding.getDataBinding(nextProps);
 
-    if (prevState.status !== 'initialized') {
-      if (!BoundView.dataReady(nextProps)) {
-        if (prevState.status === 'initial') {
-          BoundView.fetchData(nextProps);
-          const nextState = {model: null, status: 'fetching'};
-          nextProps.modelCache.putModel(nextProps.modelClass, nextState);
-          return nextState;
+      if (prevState.status !== 'initialized') {
+        if (!BoundView.dataReady(nextProps)) {
+          if (prevState.status === 'initial') {
+            BoundView.fetchData(nextProps);
+            const nextState = {model: null, status: 'fetching'};
+            nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
+            return nextState;
+          }
+        } else {
+          const nextState = {
+            model: BoundView.getModel(nextProps),
+            status: 'initialized'
+          };
+          nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
+          return nextState
         }
-      } else {
-        const nextState = {
-          model: BoundView.getModel(nextProps),
-          status: 'initialized'
-        };
-        nextProps.modelCache.putModel(nextProps.modelClass, nextState);
-        return nextState
       }
     }
     //todo: handle case when data can change during the component lifecycle after model has been first initialized.
@@ -95,15 +96,17 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   render() {
     return (
-      <ReactPlaceholder
-        showLoadingAnimation
-        type="text"
-        rows={6}
-        ready={this.state.model != null}
-      >
-        {cloneChildrenWithProps(this.props.children, {model: this.state.model, ...this.props})}
+      this.props.modelBindings?
+        <ReactPlaceholder
+          showLoadingAnimation
+          type="text"
+          rows={6}
+          ready={this.state.model != null}
+        >
+          {cloneChildrenWithProps(this.props.children, {model: this.state.model, ...this.props})}
 
-      </ReactPlaceholder>
+        </ReactPlaceholder>
+        : null
     )
   }
 }

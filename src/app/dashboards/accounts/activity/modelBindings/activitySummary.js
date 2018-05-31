@@ -7,7 +7,7 @@ import type {ModelFactory} from "../../../../viz/modelFactory";
 const modelFactory : ModelFactory = {
   getDataBinding: () => ([
     {
-      dataSource: DataSources.account_activity_summary,
+      dataSource: DataSources.activity_summary_for_account,
       params: {
         mock: false
       }
