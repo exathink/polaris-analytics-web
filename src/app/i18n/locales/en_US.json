@@ -26,5 +26,6 @@
   "pageWip.title": "Work in progress",
   "pageWip.subTitle": "Seems like you got here a bit early..",
   "pageWip.description": "Check back later..",
-  "pageWip.backButton": "Back"
+  "pageWip.backButton": "Back",
+  "topbar.logout": "Logout"
 }
