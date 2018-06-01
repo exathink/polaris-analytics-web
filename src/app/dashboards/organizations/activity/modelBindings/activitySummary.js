@@ -9,7 +9,7 @@ export const modelFactory : ModelFactory = {
     {
       dataSource: DataSources.organization_activity_summary,
       params: {
-        organization: props.context.params().organization,
+        organization: props.context.searchParams().resource,
         mock: false
       }
     }

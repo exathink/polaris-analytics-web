@@ -5,10 +5,6 @@ export const DataSources = {
       path: 'activity-level/project/repository',
       params: [
         {
-          name: 'organization',
-          url_part: 'path'
-        },
-        {
           name: 'project',
           url_part: 'path'
         }
@@ -21,10 +17,6 @@ export const DataSources = {
     polaris_service_connection: {
       path: 'activity-summary/project',
       params: [
-        {
-          name: 'organization',
-          url_part: 'path'
-        },
         {
           name: 'project',
           url_part: 'path'

@@ -27,7 +27,7 @@ export class ContextManager extends React.Component {
   sendNotifications() {
     // Send notifications here.
     const {pushContext} = this.props;
-    const activeContext = findActiveContext(this.props.rootContext, this.state.location.pathname, this.props.match);
+    const activeContext = findActiveContext(this.props.rootContext, this.state.location, this.props.match);
 
     pushContext(activeContext);
   }

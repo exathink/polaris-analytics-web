@@ -81,12 +81,14 @@ export class ActiveContext {
   selectedRoute: RouteType;
   matchInfo: MatchType;
   targetUrl: string;
+  search: string;
 
-  constructor(context: Context, index: number, match: MatchType, targetUrl: string) {
+  constructor(context: Context, index: number, match: MatchType, location: {pathname: string, search:string}) {
     this.context = context;
     this.selectedRoute = context.routes[index];
     this.matchInfo = match;
-    this.targetUrl = targetUrl;
+    this.targetUrl = location.pathname;
+    this.search = location.search;
   }
 
   name() {
@@ -128,6 +130,18 @@ export class ActiveContext {
 
   equals(other: ActiveContext) {
     return other && this.targetUrl === other.targetUrl && this.context === other.context
+  }
+
+  searchParams() {
+    if(this.search) {
+      const query = this.search.substr(1);
+      const result = {};
+      query.split("&").forEach(function(part) {
+        const item = part.split("=");
+        result[item[0]] = decodeURIComponent(item[1]);
+      });
+      return result;
+    }
   }
 
 

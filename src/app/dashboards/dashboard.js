@@ -83,6 +83,7 @@ const ItemMenu = ({itemSelected, detail, onClick}) => (
 
 export const DashboardItem = ({children, name, w, title, itemSelected, dashboardUrl, match,  navigate, primary, detail, ...rest}) => {
 
+  const context = rest.navigation.current();
 
   return (
   <Flex column w={w} m={1} className="dashboard-item">
@@ -97,7 +98,7 @@ export const DashboardItem = ({children, name, w, title, itemSelected, dashboard
     <ItemMenu
       {...{itemSelected, detail}}
       onClick={() => (
-        itemSelected ? navigate.push(dashboardUrl) : navigate.push(`${match.url}/${name}`)
+        itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
       )}
     />
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Model} from "./model";
-import {DatasourceBinding} from "./modelFactory";
 import {cloneChildrenWithProps} from "../helpers/reactHelpers";
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
@@ -100,6 +99,7 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
         <ReactPlaceholder
           showLoadingAnimation
           type="media"
+          rows={1}
           ready={this.state.model != null}
         >
           {cloneChildrenWithProps(this.props.children, {model: this.state.model, ...this.props})}
