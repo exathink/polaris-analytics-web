@@ -1,12 +1,11 @@
 import {go, goBack, goForward, push, replace} from "react-router-redux";
 import {connect} from "react-redux";
 
-export const withNavigation = (Component) => {
-  const mapStateToProps = (state) => ({
+export const navigationState = (state) => ({
     navigation: state.navigation
   });
 
-  const mapDispatchToProps = (dispatch) => (
+export const navigationDispatch = (dispatch) => (
     {
       navigate:
         {
@@ -27,5 +26,10 @@ export const withNavigation = (Component) => {
           }
         }
     });
-  return connect(mapStateToProps, mapDispatchToProps)(Component)
+
+export const withNavigation = (Component) => {
+
+
+
+  return connect(navigationState, navigationDispatch)(Component)
 };

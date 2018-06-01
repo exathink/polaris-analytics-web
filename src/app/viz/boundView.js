@@ -4,7 +4,7 @@ import {cloneChildrenWithProps} from "../helpers/reactHelpers";
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
 
-import {ActiveContext} from "../navigation/context";
+import {ActiveContext} from "../navigation/activeContext";
 import {ModelBindings} from "./modelBindings";
 
 import {ModelCache} from "./modelCache";

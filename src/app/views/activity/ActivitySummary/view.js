@@ -3,7 +3,7 @@ import StickerWidget from '../../../containers/widgets/simpleSticker/sticker-wid
 import {VizRow, VizItem} from "../../containers/layout/index";
 import moment from 'moment';
 import {ActivitySummaryModel} from "./model";
-import type {ActiveContext} from "../../../navigation/context";
+import type {ActiveContext} from "../../../navigation/activeContext";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));

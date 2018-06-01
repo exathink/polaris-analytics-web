@@ -12,7 +12,7 @@ export const modelFactory: ModelFactory = {
     {
       dataSource: DataSources.project_repositories_activity_summary,
       params: {
-        project: props.context.searchParams().resource,
+        project: props.context.getInstanceKey('project'),
         mock: false
       }
     }

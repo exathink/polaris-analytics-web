@@ -8,6 +8,7 @@ import type {Context} from '../../navigation/context';
 import Activity from './activity/topic';
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
+import {instanceMatchPattern} from "../../navigation/helpers";
 
 
 const messages = {
@@ -24,7 +25,7 @@ const context : Context = {
   hidden: true,
   routes: [
     {
-      match: ':project',
+      match: `${instanceMatchPattern('project')}`,
       context: {
         ...Contexts.projects,
         display: match => messages.instanceDisplay(match.params.project),

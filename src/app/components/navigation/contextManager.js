@@ -2,6 +2,8 @@ import React from "react";
 import {findActiveContext} from "../../navigation/contextPath";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
+import {navigationDispatch} from "../../navigation/withNavigation";
+
 import contextStackActions from "../../redux/navigation/actions";
 
 export class ContextManager extends React.Component {
@@ -26,8 +28,10 @@ export class ContextManager extends React.Component {
 
   sendNotifications() {
     // Send notifications here.
-    const {pushContext} = this.props;
+    const {pushContext, navigate} = this.props;
     const activeContext = findActiveContext(this.props.rootContext, this.state.location, this.props.match);
+    activeContext.rootUrl = this.props.match.url;
+    activeContext.navigator = navigate;
 
     pushContext(activeContext);
   }
@@ -47,4 +51,4 @@ export class ContextManager extends React.Component {
 
 const {pushContext} = contextStackActions;
 
-export default withRouter(connect(null, {pushContext})(ContextManager));
+export default withRouter(connect(null, navigationDispatch)(connect(null, {pushContext})(ContextManager)));

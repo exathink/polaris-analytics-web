@@ -8,6 +8,8 @@ import {ActivityLevelDetailModel} from '../../../../views/activity/ActivityLevel
 
 import type {ModelFactory} from "../../../../viz/modelFactory";
 
+import {encodeInstance} from "../../../../navigation/helpers";
+
 const dataBindings = new Map([
   [Contexts.organizations, DataSources.activity_level_for_account_by_organization],
   [Contexts.projects, DataSources.activity_level_for_account_by_project],
@@ -26,6 +28,7 @@ export const modelFactory: ModelFactory =  {
   ]),
   initModel: (source_data, props) => {
     const organization_summaries = source_data[0].data;
+    const currentContext = props.context;
     return {
       data: organization_summaries.map((organization_summary) => {
         const earliest_commit = polarisTimestamp(organization_summary.earliest_commit);
@@ -42,12 +45,11 @@ export const modelFactory: ModelFactory =  {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      context: props.context,
+      context: currentContext,
       childContext: props.childContext,
       span_uom: 'Years',
       onDrillDown: (event) => {
-        console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/${props.childContext.name}/${event.entity_name}/activity?resource=${event.id}`)
+        currentContext.drillDown(props.childContext, event.entity_name, event.id);
       }
     }
   }

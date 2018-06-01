@@ -1,7 +1,7 @@
 // @flow
 
 import  {Model} from "../../../viz/model";
-import {ActiveContext} from "../../../navigation/context";
+import {ActiveContext} from "../../../navigation/activeContext";
 
 export type ActivityTotals = {
   commits: number,

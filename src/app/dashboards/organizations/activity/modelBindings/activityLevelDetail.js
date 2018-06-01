@@ -7,7 +7,7 @@ import {ActivityLevelDetailModel} from "../../../../views/activity/ActivityLevel
 import type {ModelFactory} from "../../../../viz/modelFactory";
 import {Contexts} from "../../../../meta/contexts";
 
-
+import {uuidDecode} from "../../../../helpers/uuid";
 
 
 export const modelFactory: ModelFactory = {
@@ -15,14 +15,14 @@ export const modelFactory: ModelFactory = {
     {
       dataSource: DataSources.organization_projects_activity_summary,
       params: {
-        organization: props.context.searchParams().resource,
+        organization: props.context.getInstanceKey('organization'),
         mock: false
       }
     }
   ]),
   initModel: (source_data, props) => {
     const project_summaries = source_data[0].data;
-    const organization = props.navigation.current().params().organization;
+    const currentContext = props.context;
     return {
       data: project_summaries.map((project_summary) => {
         const earliest_commit = polarisTimestamp(project_summary.earliest_commit);
@@ -39,12 +39,12 @@ export const modelFactory: ModelFactory = {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       }),
-      context: props.context,
+      context: currentContext,
       childContext: props.childContext,
       span_uom: 'Years',
       onDrillDown: (event) => {
         console.log(`Drill down to ${event.subject_label} ${event.entity_name} ${event.id}`);
-        props.navigate.push(`/app/dashboard/${props.childContext.name}/${event.entity_name}/activity?resource=${event.id}`)
+        currentContext.drillDown(props.childContext, event.name, event.id)
       }
 
     }

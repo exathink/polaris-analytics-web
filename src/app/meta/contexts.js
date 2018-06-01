@@ -1,6 +1,8 @@
 import React from 'react';
 import {FormattedMessage, defineMessages} from 'react-intl';
 
+import {uuidEncode, uuidDecode} from "../helpers/uuid";
+
 const messages = defineMessages({
   accounts: {
     id: 'contexts.accounts.display',
@@ -46,15 +48,14 @@ export const Contexts = {
     name: 'organizations',
     message: messages.organizations,
     display:
-        (quantity = 0) => {
-          return <FormattedMessage
-            {...messages.organizations}
-            values={{quantity: quantity}}
-          />
-        },
+      (quantity = 0) => {
+        return <FormattedMessage
+          {...messages.organizations}
+          values={{quantity: quantity}}
+        />
+      },
     icon: 'ion-ios-albums',
-    color: '#356eb2',
-
+    color: '#356eb2'
   },
   projects: {
     name: 'projects',
@@ -68,8 +69,6 @@ export const Contexts = {
         },
     icon: 'ion-folder',
     color: '#8188b2'
-
-
   },
   repositories: {
     name: 'repositories',

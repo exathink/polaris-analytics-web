@@ -1,5 +1,5 @@
 import {matchPath} from 'react-router';
-import {ActiveContext} from "./context";
+import {ActiveContext} from "./activeContext";
 
 
 const findMatch = (context, path, match) => {
