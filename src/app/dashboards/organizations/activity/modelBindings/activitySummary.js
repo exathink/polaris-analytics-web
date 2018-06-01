@@ -14,20 +14,7 @@ export const modelFactory : ModelFactory = {
         mock: false
       }
     }
-  ]),
-  initModel: (source_data, props) => {
-    const org_summary = source_data[0].data;
-
-    return {
-      data: org_summary.map((org_summary) => ({
-        commits: org_summary.commit_count,
-        contributors: org_summary.contributor_count,
-        earliest_commit: polarisTimestamp(org_summary.earliest_commit),
-        latest_commit: polarisTimestamp(org_summary.latest_commit)
-      }))[0],
-      context: props.context
-    }
-  }
+  ])
 };
 
 export const ActivitySummaryModelBinding  = [ActivitySummaryModel, modelFactory];

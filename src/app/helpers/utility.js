@@ -95,3 +95,7 @@ export function formatDate(epoch, format) {
 export function span(date_a, date_b) {
   return polarisTimestamp(date_a).diff(polarisTimestamp(date_b))
 }
+
+export function fail(message) {
+  throw Error(message);
+}

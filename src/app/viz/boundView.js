@@ -8,7 +8,7 @@ import {ActiveContext} from "../navigation/activeContext";
 import {ModelBindings} from "./modelBindings";
 
 import {ModelCache} from "./modelCache";
-
+import {fail} from '../helpers/utility';
 
 type Props<T> = {
   modelClass: Class<Model<T>>,
@@ -81,7 +81,15 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
       params,
       data: props.viz_data.getData(dataSource, params)
     }));
-    return modelBinding.initModel(source_data, props);
+    const model = modelBinding.initModel ?
+      modelBinding.initModel(source_data, props)
+      //default init model assumes only a single data source so we can extract the data output for the first
+      // result and send this along
+      : source_data.length === 1 && props.modelClass.defaultInitModel ?
+        props.modelClass.defaultInitModel(source_data[0].data, props)
+        : null;
+    return model || fail('Could not init model');
+
   }
 
   static dataReady(props) {

@@ -25,34 +25,7 @@ export const modelFactory: ModelFactory =  {
         mock: false
       }
     }
-  ]),
-  initModel: (source_data, props) => {
-    const organization_summaries = source_data[0].data;
-    const currentContext = props.context;
-    return {
-      data: organization_summaries.map((organization_summary) => {
-        const earliest_commit = polarisTimestamp(organization_summary.earliest_commit);
-        const latest_commit = polarisTimestamp(organization_summary.latest_commit);
-
-        return withActivityLevel({
-          id: organization_summary.detail_instance_id,
-          entity_name: organization_summary.detail_instance_name,
-          commit_count: organization_summary.commit_count,
-          contributor_count: organization_summary.contributor_count,
-          earliest_commit: earliest_commit,
-          latest_commit: latest_commit,
-          span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
-          days_since_latest_commit: moment().diff(latest_commit, 'days'),
-        })
-      }),
-      context: currentContext,
-      childContext: props.childContext,
-      span_uom: 'Years',
-      onDrillDown: (event) => {
-        currentContext.drillDown(props.childContext, event.entity_name, event.id);
-      }
-    }
-  }
+  ])
 };
 
 export const ActivityLevelDetailModelBinding = [ActivityLevelDetailModel, modelFactory];
