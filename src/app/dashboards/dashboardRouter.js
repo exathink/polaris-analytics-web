@@ -3,6 +3,9 @@ import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
 import Accounts from './accounts/context';
+import Organizations from './organizations/context';
+import Projects from './projects/context';
+
 import {contextRouterFor} from "../navigation/contextRouter";
 //types
 import type {Context} from '../navigation/context';
@@ -14,6 +17,14 @@ const context: Context = {
   name: 'dashboard',
   hidden: true,
   routes: [
+    {
+      match: 'organizations',
+      context: Organizations,
+    },
+    {
+      match: 'projects',
+      context: Projects,
+    },
     {
       match: 'account',
       context: Accounts,

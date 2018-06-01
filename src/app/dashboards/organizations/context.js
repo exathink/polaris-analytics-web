@@ -28,10 +28,6 @@ const context = {
         display: match => messages.instanceDisplay(match.params.organization),
         routes: [
           {
-            match: 'projects',
-            context: Projects
-          },
-          {
             match: 'activity',
             topic: Activity
           },
