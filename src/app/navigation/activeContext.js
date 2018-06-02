@@ -1,5 +1,6 @@
 import type {Context, MatchType, RouteType} from "./context";
 import {getInstanceKey, encodeInstance} from "./helpers";
+import {findActiveContext} from "./contextPath";
 
 export class ActiveContext {
   context: Context;
@@ -8,6 +9,7 @@ export class ActiveContext {
   targetUrl: string;
   search: string;
   rootUrl: string;
+  rootContext: Context;
   navigator: {};
 
 
@@ -17,6 +19,9 @@ export class ActiveContext {
     this.matchInfo = match;
     this.targetUrl = location.pathname;
     this.search = location.search;
+    this.rootUrl = null;
+    this.rootContext = null;
+    this.navigator = null;
   }
 
   name() {
@@ -78,7 +83,8 @@ export class ActiveContext {
 
   navigate(context, instanceName, instanceKey, topic) {
     if(this.navigator) {
-      this.navigator.push(`${this.rootUrl}/${context.name}/${encodeInstance(instanceName, instanceKey)}/${topic}`);
+      const targetPath = `${this.rootUrl}/${context.name}/${encodeInstance(instanceName, instanceKey)}/${topic}`;
+      this.navigator.push(targetPath);
     }
   }
 

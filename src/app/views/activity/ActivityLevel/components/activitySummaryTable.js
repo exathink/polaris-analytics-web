@@ -9,8 +9,8 @@ import {displaySingular, i18n} from "../../../../i18n";
 export const ActivitySummaryTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
   const drillDown = (event) => {
-    if (props.model.onDrillDown) {
-      props.model.onDrillDown(event)
+    if (props.onDrillDown) {
+      props.onDrillDown(event)
     }
   };
   const {intl, model} = props;

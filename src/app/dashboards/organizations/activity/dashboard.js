@@ -31,6 +31,7 @@ export const dashboard = ({match, ...rest}) => (
         childContext={Contexts.projects}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
+        enableDrillDown={true}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>

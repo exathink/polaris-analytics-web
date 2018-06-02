@@ -30,6 +30,7 @@ export class ContextManager extends React.Component {
     // Send notifications here.
     const {pushContext, navigate} = this.props;
     const activeContext = findActiveContext(this.props.rootContext, this.state.location, this.props.match);
+    activeContext.rootContext = this.props.rootContext;
     activeContext.rootUrl = this.props.match.url;
     activeContext.navigator = navigate;
 

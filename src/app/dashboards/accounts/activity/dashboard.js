@@ -30,6 +30,7 @@ export const dashboard = (props) => (
         childContext={Contexts.organizations}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
+        enableDrillDown={true}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
@@ -39,6 +40,7 @@ export const dashboard = (props) => (
         childContext={Contexts.projects}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
+        enableDrillDown={true}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>

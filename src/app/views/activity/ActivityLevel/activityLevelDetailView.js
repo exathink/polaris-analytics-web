@@ -16,8 +16,10 @@ import {
 
 export type Props = {
   model: ActivityLevelDetailModel,
+  enableDrillDown: boolean,
   onActivitiesSelected: (any) => void,
-  selectedActivities: Array<ActivitySummary> | null
+  selectedActivities: Array<ActivitySummary> | null,
+  onDrillDown? : (event:any) => void
 }
 
 
@@ -89,6 +91,7 @@ export class ViewContainer extends React.Component<Props, MaxViewState> {
       <MaxView
         onSelectionChange={this.onActivitiesSelected.bind(this)}
         selectedActivities={this.state.selected}
+        onDrillDown={this.props.enableDrillDown? this.props.onDrillDown || this.props.model.onDrillDown.bind(this.props.model) : null}
         {...this.props}
       />
     );
