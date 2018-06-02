@@ -56,7 +56,18 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
-
+      <DashboardItem
+        w={1/2}
+        name="repo-activity-levels"
+        childContext={Contexts.repositories}
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+        dataBinding={() => ({
+          dataSource: DataSources.activity_level_for_account_by_repository,
+          params: {}
+        })}
+        enableDrillDown={true}
+      />
     </DashboardRow>
   </Dashboard>
 
