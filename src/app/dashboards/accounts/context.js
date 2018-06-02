@@ -2,7 +2,7 @@
 import Wip from "../../../containers/Page/wip";
 import Activity from './activity/topic';
 import {Topics} from "../../meta/topics";
-import type {Context} from '../../navigation/context';
+import type {Context} from '../../framework/navigation/context/context';
 
 import {Contexts} from "../../meta/contexts";
 

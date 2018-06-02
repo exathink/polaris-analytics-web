@@ -1,5 +1,5 @@
 import React from 'react';
-import {withNavigation} from "../../navigation/withNavigation";
+import {withNavigation} from "../../framework/navigation/context/withNavigation";
 
 const topBar = (props) => {
   const {navigation} = props;

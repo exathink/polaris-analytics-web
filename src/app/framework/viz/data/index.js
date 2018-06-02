@@ -1,0 +1,1 @@
+export {withVizController} from '../../framework/viz/model/withVizController'

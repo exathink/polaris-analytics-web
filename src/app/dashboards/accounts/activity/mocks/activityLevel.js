@@ -1,4 +1,4 @@
-import {polarisChartsService} from "../../../../services/vizData/api";
+import {polarisChartsService} from "../../../../framework/viz/data/service";
 import {DataSources} from "../../activity/dataSources";
 import {formatPolarisTimestamp} from "../../../../helpers/utility";
 import moment from 'moment';

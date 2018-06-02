@@ -3,12 +3,12 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 import FourZeroFour from "../../../containers/Page/404";
-import type {Context} from '../../navigation/context';
+import type {Context} from '../../framework/navigation/context/context';
 
 import Activity from './activity/topic';
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
-import {instanceMatchPattern} from "../../navigation/helpers";
+import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
 
 const messages = {

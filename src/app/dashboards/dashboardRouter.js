@@ -1,4 +1,4 @@
-import './dashboard.css';
+import '../framework/viz/dashboard/dashboard.css';
 import LayoutWrapper from '../../components/utility/layoutWrapper';
 import FullscreenBtn from '../../components/buttons/FullscreenBtn';
 import React from "react";
@@ -6,11 +6,11 @@ import Accounts from './accounts/context';
 import Organizations from './organizations/context';
 import Projects from './projects/context';
 
-import {contextRouterFor} from "../navigation/contextRouter";
+import {contextRouterFor} from "../framework/navigation/context/contextRouter";
 //types
-import type {Context} from '../navigation/context';
-import ContextManager from "../components/navigation/contextManager";
-import NavigationControls from "../components/navigation/navigationControls";
+import type {Context} from '../framework/navigation/context/context';
+import ContextManager from "../framework/navigation/components/contextManager";
+import NavigationControls from "../framework/navigation/components/navigationControls";
 
 
 const context: Context = {
