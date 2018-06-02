@@ -2,8 +2,8 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 import { Dashboard, DashboardRow, DashboardItem} from '../../../framework/viz/dashboard/index';
-import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
-import {ActivityLevelDetailView, ActivityLevelSummaryView} from '../../../views/activity/ActivityLevel';
+import {ActivitySummaryViz} from "../../views/activity/ActivitySummary";
+import {ActivityLevelDetailView, ActivityLevelSummaryView} from '../../views/activity/ActivityLevel';
 
 import {Contexts} from "../../../meta/contexts";
 import {DataSources} from "./dataSources";
