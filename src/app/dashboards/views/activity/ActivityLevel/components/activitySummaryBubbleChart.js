@@ -121,7 +121,7 @@ const getConfig =  props => {
     plotOptions: {
       series: {
         dataLabels: {
-          enabled: props.showDataLabels || true,
+          enabled: props.suppressDataLabelsAt ? model.data.length < props.suppressDataLabelsAt : true,
           format: `{point.name}`,
           inside: false,
           verticalAlign: 'bottom',

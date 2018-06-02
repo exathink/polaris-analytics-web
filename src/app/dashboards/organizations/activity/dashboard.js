@@ -41,7 +41,7 @@ export const dashboard = ({match, ...rest}) => (
         detail={ActivityLevelDetailView}
         dataBinding={ props => (
           {
-            dataSource: DataSources.organization_projects_activity_summary,
+            dataSource: DataSources.activity_level_for_organization_by_project,
             params: {
               organization: props.context.getInstanceKey('organization')
             }
@@ -51,7 +51,22 @@ export const dashboard = ({match, ...rest}) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
-
+      <DashboardItem
+        w={1/2}
+        name="repository-activity-levels"
+        childContext={Contexts.repositories}
+        primary={ActivityLevelSummaryView}
+        detail={ActivityLevelDetailView}
+        dataBinding={ props => (
+          {
+            dataSource: DataSources.activity_level_for_organization_by_repository,
+            params: {
+              organization: props.context.getInstanceKey('organization')
+            }
+          }
+        )}
+        enableDrillDown={false}
+      />
     </DashboardRow>
     <DashboardRow h='22%' title="Something Else">
 

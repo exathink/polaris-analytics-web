@@ -61,7 +61,7 @@ export const dashboard = (props) => (
         name="repo-activity-levels"
         childContext={Contexts.repositories}
         primary={ActivityLevelSummaryView}
-        detail={ActivityLevelDetailView}
+        detail={props => <ActivityLevelDetailView suppressDataLabelsAt={500} {...props} />}
         dataBinding={() => ({
           dataSource: DataSources.activity_level_for_account_by_repository,
           params: {}
