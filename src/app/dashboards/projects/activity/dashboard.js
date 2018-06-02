@@ -4,8 +4,8 @@ import { Dashboard, DashboardRow, DashboardItem} from '../../index';
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
 import {ActivityLevelDetailView, ActivityLevelSummaryView} from "../../../views/activity/ActivityLevel";
 
-import ModelBindings from "./modelBindings";
 import {Contexts} from "../../../meta/contexts";
+import {DataSources} from "./dataSources";
 
 const dashboard_id = 'dashboards.activity.projects.instance';
 const messages = {
@@ -14,13 +14,21 @@ const messages = {
 
 
 export const dashboard = ({match, ...rest}) => (
-  <Dashboard dashboard={`${dashboard_id}`} modelBindings={ModelBindings} {...rest}>
+  <Dashboard dashboard={`${dashboard_id}`} {...rest}>
     <DashboardRow h='15%'>
       <DashboardItem
         w={1}
         name="activity-summary"
         title={messages.topRowTitle}
         primary={ActivitySummaryViz}
+        dataBinding={ props => (
+          {
+            dataSource: DataSources.project_activity_summary,
+            params: {
+              project: props.context.getInstanceKey('project')
+            }
+          }
+        )}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
@@ -30,6 +38,14 @@ export const dashboard = ({match, ...rest}) => (
         childContext={Contexts.repositories}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
+        dataBinding={ props => (
+          {
+            dataSource: DataSources.project_repositories_activity_summary,
+            params: {
+              project: props.context.getInstanceKey('project')
+            }
+          }
+        )}
       />
     </DashboardRow>
     <DashboardRow h='22%' title="Something Else">

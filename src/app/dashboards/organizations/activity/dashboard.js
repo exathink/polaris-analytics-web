@@ -5,8 +5,8 @@ import { Dashboard, DashboardRow, DashboardItem} from '../../index';
 import {ActivitySummaryViz} from "../../../views/activity/ActivitySummary";
 import {ActivityLevelDetailView, ActivityLevelSummaryView} from '../../../views/activity/ActivityLevel';
 
-import ModelBindings from './modelBindings';
 import {Contexts} from "../../../meta/contexts";
+import {DataSources} from "./dataSources";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -15,13 +15,21 @@ const messages = {
 };
 
 export const dashboard = ({match, ...rest}) => (
-  <Dashboard dashboard={`${dashboard_id}`} modelBindings={ModelBindings} {...rest}>
+  <Dashboard dashboard={`${dashboard_id}`}  {...rest}>
     <DashboardRow h='15%'>
       <DashboardItem
         w={1}
         name="activity-summary"
         title={messages.topRowTitle}
         primary={ActivitySummaryViz}
+        dataBinding={ props => (
+          {
+            dataSource: DataSources.organization_activity_summary,
+            params: {
+              organization: props.context.getInstanceKey('organization')
+            }
+          }
+        )}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
@@ -31,6 +39,14 @@ export const dashboard = ({match, ...rest}) => (
         childContext={Contexts.projects}
         primary={ActivityLevelSummaryView}
         detail={ActivityLevelDetailView}
+        dataBinding={ props => (
+          {
+            dataSource: DataSources.organization_projects_activity_summary,
+            params: {
+              organization: props.context.getInstanceKey('organization')
+            }
+          }
+        )}
         enableDrillDown={true}
       />
     </DashboardRow>

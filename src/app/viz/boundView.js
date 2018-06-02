@@ -6,6 +6,7 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 
 import {ActiveContext} from "../navigation/activeContext";
 import {ModelBindings} from "./modelBindings";
+import {DatasourceBinding} from "./modelFactory";
 
 import {ModelCache} from "./modelCache";
 import {fail} from '../helpers/utility';
@@ -13,7 +14,8 @@ import {fail} from '../helpers/utility';
 type Props<T> = {
   modelClass: Class<Model<T>>,
   modelCache: ModelCache,
-  modelBindings: ModelBindings,
+  dataBinding: DatasourceBinding,
+  modelBindings?: ModelBindings,
   children: React.Node,
   context? : ActiveContext,
 
@@ -32,56 +34,18 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
     this.state = props.modelCache.getModel(props.modelClass)
   }
 
-  static getDerivedStateFromProps(nextProps: Props<T>, prevState: ModelState<T>) {
-    if(nextProps.modelBindings) {
-      const modelBinding = nextProps.modelBindings.getModelFactory(nextProps.modelClass);
-      const dataBinding = modelBinding.getDataBinding(nextProps);
-
-      if (prevState.status !== 'initialized') {
-        if (!BoundView.dataReady(nextProps)) {
-          if (prevState.status === 'initial') {
-            BoundView.fetchData(nextProps);
-            const nextState = {model: null, status: 'fetching'};
-            nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
-            return nextState;
-          }
-        } else {
-          const nextState = {
-            model: BoundView.getModel(nextProps),
-            status: 'initialized'
-          };
-          nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
-          return nextState
-        }
-      }
-    }
-    //todo: handle case when data can change during the component lifecycle after model has been first initialized.
-    return null;
+  static getDataBinding(props) {
+    if(props.dataBinding) {
+      return [props.dataBinding(props)];
+    } else if (props.modelBindings) {
+        const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
+        return modelBinding.getDataBinding(props);
+    } else fail('No databindings were provided');
   }
 
-
-  static fetchData(props) {
-    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
-    if(modelBinding) {
-      const dataBinding = modelBinding.getDataBinding(props);
-      dataBinding.forEach(({dataSource, params}) => {
-        if (!props.viz_data.getData(dataSource, params)) {
-          props.fetchData({dataSource: dataSource, params: params});
-        }
-      })
-    } else {
-      throw Error("Could not find model binding...");
-    }
-  }
-  static getModel(props) {
-    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
-    const dataBinding = modelBinding.getDataBinding(props);
-    const source_data = dataBinding.map(({dataSource, params}) => ({
-      dataSource,
-      params,
-      data: props.viz_data.getData(dataSource, params)
-    }));
-    const model = modelBinding.initModel ?
+  static initModel(source_data, props) {
+    const modelBinding = props.modelBindings && props.modelBindings.getModelFactory(props.modelClass);
+    const model = modelBinding && modelBinding.initModel ?
       modelBinding.initModel(source_data, props)
       //default init model assumes only a single data source so we can extract the data output for the first
       // result and send this along
@@ -89,12 +53,54 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
         props.modelClass.defaultInitModel(source_data[0].data, props)
         : null;
     return model || fail('Could not init model');
+  }
 
+
+  static getDerivedStateFromProps(nextProps: Props<T>, prevState: ModelState<T>) {
+    const dataBinding = BoundView.getDataBinding(nextProps);
+    if (prevState.status !== 'initialized') {
+      if (!BoundView.dataReady(nextProps)) {
+        if (prevState.status === 'initial') {
+          BoundView.fetchData(nextProps);
+          const nextState = {model: null, status: 'fetching'};
+          nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
+          return nextState;
+        }
+      } else {
+        const nextState = {
+          model: BoundView.getModel(nextProps),
+          status: 'initialized'
+        };
+        nextProps.modelCache.putModel(nextProps.modelClass, dataBinding, nextState);
+        return nextState
+      }
+    }
+
+    //todo: handle case when data can change during the component lifecycle after model has been first initialized.
+    return null;
+  }
+
+
+  static fetchData(props) {
+    const dataBinding = BoundView.getDataBinding(props);
+    dataBinding.forEach(({dataSource, params}) => {
+      if (!props.viz_data.getData(dataSource, params)) {
+        props.fetchData({dataSource: dataSource, params: params});
+      }
+    })
+  }
+  static getModel(props) {
+    const dataBinding = BoundView.getDataBinding(props);
+    const source_data = dataBinding.map(({dataSource, params}) => ({
+      dataSource,
+      params,
+      data: props.viz_data.getData(dataSource, params)
+    }));
+    return BoundView.initModel(source_data, props)
   }
 
   static dataReady(props) {
-    const modelBinding = props.modelBindings.getModelFactory(props.modelClass);
-    const dataBinding = modelBinding.getDataBinding(props);
+    const dataBinding = BoundView.getDataBinding(props);
     return dataBinding.every(({dataSource, params}) => {
       return props.viz_data.getData(dataSource, params) != null;
     })
@@ -103,7 +109,6 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
 
   render() {
     return (
-      this.props.modelBindings?
         <ReactPlaceholder
           showLoadingAnimation
           type="media"
@@ -113,7 +118,6 @@ export class BoundView<T> extends React.Component<Props<T>, ModelState<T>> {
           {cloneChildrenWithProps(this.props.children, {model: this.state.model, ...this.props})}
 
         </ReactPlaceholder>
-        : null
     )
   }
 }
