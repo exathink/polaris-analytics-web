@@ -1,2 +1,2 @@
 export {ActivitySummaryModel} from './model';
-export {ActivitySummary} from './widget';
+export {ActivitySummaryWidget} from './widget';

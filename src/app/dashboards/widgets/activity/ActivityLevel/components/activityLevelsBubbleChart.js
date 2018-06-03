@@ -137,7 +137,7 @@ const getConfig =  props => {
   }
 };
 
-export const ActivitySummaryBubbleChart = Chart({chartUpdateProps: chartUpdateProps, getConfig, eventHandler, mapPoints});
+export const ActivityLevelsBubbleChart = Chart({chartUpdateProps: chartUpdateProps, getConfig, eventHandler, mapPoints});
 
 
 

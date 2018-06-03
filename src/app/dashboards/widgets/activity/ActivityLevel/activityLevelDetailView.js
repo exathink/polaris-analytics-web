@@ -8,10 +8,10 @@ import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
 import {withModel} from "../../../../framework/viz/model/withModel";
 
 import {
-  ActivitySummaryBubbleChart,
-  ActivitySummaryTimelineChart,
-  ActivitySummaryTable,
-  TotalsBarChart
+  ActivityLevelsBubbleChart,
+  ActivityLevelsTimelineChart,
+  ActivityLevelsTable,
+  ActivityProfileBarChart
 } from "./components/index";
 
 export type Props = {
@@ -36,10 +36,10 @@ const DetailTabs = (props) => (
     </TabList>
 
     <CustomTabPanel>
-      <ActivitySummaryTimelineChart {...props}/>
+      <ActivityLevelsTimelineChart {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <TotalsBarChart orientation={'horizontal'} {...props}/>
+      <ActivityProfileBarChart orientation={'horizontal'} {...props}/>
     </CustomTabPanel>
   </Tabs>
 );
@@ -48,10 +48,10 @@ const MaxView = (props) => (
   <Fragment>
     <VizRow h={"60%"}>
       <VizItem w={0.07}>
-        <TotalsBarChart orientation={'vertical'} {...props}/>
+        <ActivityProfileBarChart orientation={'vertical'} {...props}/>
       </VizItem>
       <VizItem w={0.5}>
-        <ActivitySummaryBubbleChart {...props}/>
+        <ActivityLevelsBubbleChart {...props}/>
       </VizItem>
       <VizItem w={0.43}>
         <DetailTabs {...props}/>
@@ -59,7 +59,7 @@ const MaxView = (props) => (
     </VizRow>
     <VizRow h={"40%"}>
       <VizItem w={1}>
-        <ActivitySummaryTable {...props}/>
+        <ActivityLevelsTable {...props}/>
       </VizItem>
     </VizRow>
   </Fragment>

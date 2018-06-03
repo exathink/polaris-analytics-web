@@ -6,7 +6,7 @@ import {ActivityLevelDetailModel} from "./model";
 import {ActivityLevelDetailView} from "./activityLevelDetailView";
 import {ActivityLevelSummaryView} from "./activityLevelSummaryView";
 
-export const ActivityProfile = withModel(ActivityLevelDetailModel)(
+export const ActivityProfileWidget = withModel(ActivityLevelDetailModel)(
   props => (
     <DashboardWidget
           primary={ActivityLevelSummaryView}

@@ -3,8 +3,8 @@ import {FormattedMessage} from 'react-intl';
 
 import { Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
 
-import {ActivitySummary} from "../../widgets/activity/ActivitySummary";
-import {ActivityProfile} from '../../widgets/activity/ActivityLevel';
+import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
+import {ActivityProfileWidget} from '../../widgets/activity/ActivityLevel';
 import {Contexts} from "../../../meta/contexts";
 import {DataSources} from "./dataSources";
 
@@ -18,7 +18,7 @@ const messages = {
 export const dashboard = ({match, ...rest}) => (
   <Dashboard dashboard={`${dashboard_id}`}  {...rest}>
     <DashboardRow h='15%'>
-      <ActivitySummary
+      <ActivitySummaryWidget
         w={1}
         name="activity-summary"
         title={messages.topRowTitle}
@@ -33,7 +33,7 @@ export const dashboard = ({match, ...rest}) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
-      <ActivityProfile
+      <ActivityProfileWidget
         w={1/2}
         name="project-activity-levels"
         childContext={Contexts.projects}
@@ -49,7 +49,7 @@ export const dashboard = ({match, ...rest}) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
-      <ActivityProfile
+      <ActivityProfileWidget
         w={1/2}
         name="repository-activity-levels"
         childContext={Contexts.repositories}

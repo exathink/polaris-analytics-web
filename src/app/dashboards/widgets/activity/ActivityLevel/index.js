@@ -1,3 +1,3 @@
 export {ActivityLevelDetailModel} from './model';
-export {ActivityProfile} from './widget';
+export {ActivityProfileWidget} from './widget';
 

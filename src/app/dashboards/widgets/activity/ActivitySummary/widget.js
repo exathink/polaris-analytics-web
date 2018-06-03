@@ -6,7 +6,7 @@ import {DashboardWidget} from "../../../../framework/viz/dashboard";
 
 const ActivitySummaryViz = withModel(ActivitySummaryModel)(ActivitySummaryView);
 
-export const ActivitySummary = props => (
+export const ActivitySummaryWidget = props => (
   <DashboardWidget
     name="activity-summary"
     primary={ActivitySummaryViz}

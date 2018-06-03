@@ -1,7 +1,7 @@
 import React from 'react';
 import {withModel} from "../../../../framework/viz/model/withModel";
 import {ActivityLevelDetailModel} from "./model";
-import {TotalsBarChart} from "./components/index";
+import {ActivityProfileBarChart} from "./components/index";
 import {VizRow, VizItem} from "../../containers/layout/index";
 import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWidget";
 
@@ -23,7 +23,7 @@ export const ActivityLevelSummaryView = (
               number={props.model ? data.length : null}
               {...(props.headerWidth? {width:props.headerWidth} : {})}
             >
-              <TotalsBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
+              <ActivityProfileBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
             </VizStickerWidget>
 
           </VizItem>

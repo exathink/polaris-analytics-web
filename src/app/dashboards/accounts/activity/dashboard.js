@@ -1,8 +1,8 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import { Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
-import {ActivityProfile} from "../../widgets/activity/ActivityLevel";
-import {ActivitySummary} from "../../widgets/activity/ActivitySummary";
+import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
+import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {Contexts} from "../../../meta/contexts";
 import {DataSources} from "./dataSources";
 
@@ -14,7 +14,7 @@ const messages = {
 export const dashboard = (props) => (
   <Dashboard dashboard={`${dashboard_id}`}  {...props}>
     <DashboardRow h='15%'>
-      <ActivitySummary
+      <ActivitySummaryWidget
         w={1}
         title={messages.topRowTitle}
         dataBinding={() => ({
@@ -24,7 +24,7 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.organizations.display()}>
-      <ActivityProfile
+      <ActivityProfileWidget
         w={1/2}
         name="organization-activity-profile"
         childContext={Contexts.organizations}
@@ -36,7 +36,7 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
-      <ActivityProfile
+      <ActivityProfileWidget
         w={1/2}
         name="project-activity-profile"
         childContext={Contexts.projects}
@@ -48,7 +48,7 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
-      <ActivityProfile
+      <ActivityProfileWidget
         w={1/2}
         name="repository-activity-profile"
         childContext={Contexts.repositories}

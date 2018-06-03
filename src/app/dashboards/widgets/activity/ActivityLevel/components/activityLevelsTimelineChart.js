@@ -4,7 +4,7 @@ import {Chart} from "../../../../../framework/viz/charts/index";
 import {displaySingular, i18n} from "../../../../../i18n/index";
 
 
-export const ActivitySummaryTimelineChart = Chart({
+export const ActivityLevelsTimelineChart = Chart({
     chartUpdateProps:
       (props) => ({
         model: props.model,

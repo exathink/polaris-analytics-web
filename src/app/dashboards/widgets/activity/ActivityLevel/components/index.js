@@ -1,6 +1,6 @@
-export {ActivitySummaryBubbleChart} from './activitySummaryBubbleChart';
-export {ActivitySummaryTable} from './activitySummaryTable';
-export {ActivitySummaryTimelineChart} from './activitySummaryTimelineChart';
-export {TotalsBarChart} from './totalsBarChart';
+export {ActivityLevelsBubbleChart} from './activityLevelsBubbleChart';
+export {ActivityLevelsTable} from './activityLevelsTable';
+export {ActivityLevelsTimelineChart} from './activityLevelsTimelineChart';
+export {ActivityProfileBarChart} from './activityProfileBarChart';
 
 

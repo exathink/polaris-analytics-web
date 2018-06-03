@@ -6,7 +6,7 @@ import Button from "../../../../../../components/uielements/button";
 import {formatDateTime} from "../../../../../i18n/utils";
 import {displaySingular, i18n} from "../../../../../i18n/index";
 
-export const ActivitySummaryTable = (props: Props) => {
+export const ActivityLevelsTable = (props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
   const drillDown = (event) => {
     if (props.onDrillDown) {
