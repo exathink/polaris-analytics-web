@@ -70,7 +70,7 @@ type MaxViewState = {
   selected: Array<ActivitySummary> | null
 }
 
-export class ViewContainer extends React.Component<Props, MaxViewState> {
+export class ActivityLevelDetailView extends React.Component<Props, MaxViewState> {
 
   constructor(props: Props) {
     super(props);
@@ -99,6 +99,5 @@ export class ViewContainer extends React.Component<Props, MaxViewState> {
 }
 
 
-export const ActivityLevelDetailView = withModel(ActivityLevelDetailModel)(ViewContainer);
 
 

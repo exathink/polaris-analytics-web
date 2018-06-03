@@ -6,7 +6,7 @@ import {VizRow, VizItem} from "../../containers/layout/index";
 import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWidget";
 
 
-export const ActivityLevelSummaryView = withModel(ActivityLevelDetailModel)(
+export const ActivityLevelSummaryView = (
   props => {
     const {data, childContext} = props.model;
     return (
