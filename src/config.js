@@ -4,7 +4,7 @@ export default {
 
 const siteConfig = {
   siteName: 'URJUNA',
-  siteIcon: 'ion-arrow-graph-upright',
+  siteIcon: 'ion ion-arrow-graph-up-right',
   homePath: '/app',
   footerText: 'Exathink, LLC ©2018',
 };
