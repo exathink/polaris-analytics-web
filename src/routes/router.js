@@ -9,13 +9,17 @@ import Logout from '../app/components/auth/Logout';
 
 import RestrictedRoute from './RestrictedRoute';
 import FourZeroFour from "../containers/Page/404";
+import {connect} from "react-redux";
 
-class AppRedirector extends React.Component {
-  render() {
+
+
+const AppRedirector = connect(state => ({
+    account: state.user.get('account')
+  }))((props) => {
     return (<Redirect to='/app'/>);
-  }
+});
 
-}
+
 
 export default ({history}) => (
   <ConnectedRouter history={history}>

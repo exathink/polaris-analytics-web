@@ -19,6 +19,9 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
 
   const {model}  = props;
   const data = model.data;
+  const commits = data.commits? data.commits.toLocaleString() : '0';
+  const contributors = (data.contributors? data.contributors.toLocaleString() : '0');
+  const span = (data.latest_commit && data.earliest_commit ? human_span(data.latest_commit, data.earliest_commit) : 'N/A');
   const bgColor = model.context.color();
   const fontColor = "#ffffff";
   return (
@@ -28,7 +31,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
 
             {/* Sticker Widget */}
             <StickerWidget
-              number={data.commits.toLocaleString()}
+              number={commits}
               text={"Commits"}
               icon="ion-code"
               fontColor={fontColor}
@@ -40,7 +43,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
 
             {/* Sticker Widget */}
             <StickerWidget
-              number={human_span(data.latest_commit, data.earliest_commit)}
+              number={span}
               text={'History'}
               icon="ion-clock"
               fontColor={fontColor}
@@ -52,8 +55,8 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
 
             {/* Sticker Widget */}
             <StickerWidget
-              number={data.contributors.toLocaleString()}
-              text={`Contributor${data.contributors > 1 ? 's' : ''}`}
+              number={contributors}
+              text={`Contributor${data.contributors == 1 ? '' : 's'}`}
               icon="ion-ios-people"
               fontColor={fontColor}
               bgColor={bgColor}
