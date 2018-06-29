@@ -10,10 +10,7 @@ import Logout from '../app/components/auth/Logout';
 import RestrictedRoute from './RestrictedRoute';
 import FourZeroFour from "../containers/Page/404";
 import {connect} from "react-redux";
-import {POST_REGISTER_URL} from "../config/url";
 import Register from "../app/components/auth/Registration";
-
-
 
 
 const AppRedirector = connect(state => ({

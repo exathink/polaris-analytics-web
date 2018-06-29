@@ -5,12 +5,10 @@ import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
 import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
 
-import {withModel} from "../../../../framework/viz/model/withModel";
-
 import {
   ActivityLevelsBubbleChart,
-  ActivityLevelsTimelineChart,
   ActivityLevelsTable,
+  ActivityLevelsTimelineChart,
   ActivityProfileBarChart
 } from "./components/index";
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import StickerWidget from '../../containers/widgets/simpleSticker/sticker-widget';
-import {VizRow, VizItem} from "../../containers/layout/index";
+import {VizItem, VizRow} from "../../containers/layout/index";
 import moment from 'moment';
 import {ActivitySummaryModel} from "./model";
-import type {ActiveContext} from "../../../../framework/navigation/context/activeContext";
 
 const human_span = (moment_a, moment_b) => {
   const span = moment.duration(moment_a.diff(moment_b));
@@ -56,7 +55,7 @@ export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
             {/* Sticker Widget */}
             <StickerWidget
               number={contributors}
-              text={`Contributor${data.contributors == 1 ? '' : 's'}`}
+              text={`Contributor${data.contributors === 1 ? '' : 's'}`}
               icon="ion-ios-people"
               fontColor={fontColor}
               bgColor={bgColor}

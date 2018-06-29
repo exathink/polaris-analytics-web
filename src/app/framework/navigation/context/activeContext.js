@@ -1,6 +1,5 @@
 import type {Context, MatchType, RouteType} from "./context";
-import {getInstanceKey, encodeInstance} from "./helpers";
-import {findActiveContext} from "./contextPath";
+import {encodeInstance, getInstanceKey} from "./helpers";
 
 export class ActiveContext {
   context: Context;

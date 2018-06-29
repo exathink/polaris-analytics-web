@@ -1,5 +1,4 @@
-import React from 'react';
 
-export const Setup = props => {
-  return "Setup";
+export const Setup = () => {
+  return "Setup too";
 };

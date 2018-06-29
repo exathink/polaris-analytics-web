@@ -1,7 +1,5 @@
 import React from 'react';
-import {FormattedMessage, defineMessages} from 'react-intl';
-
-import {uuidEncode, uuidDecode} from "../helpers/uuid";
+import {defineMessages, FormattedMessage} from 'react-intl';
 
 const messages = defineMessages({
   accounts: {

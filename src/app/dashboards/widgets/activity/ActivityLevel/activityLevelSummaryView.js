@@ -1,8 +1,6 @@
 import React from 'react';
-import {withModel} from "../../../../framework/viz/model/withModel";
-import {ActivityLevelDetailModel} from "./model";
 import {ActivityProfileBarChart} from "./components/index";
-import {VizRow, VizItem} from "../../containers/layout/index";
+import {VizItem, VizRow} from "../../containers/layout/index";
 import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWidget";
 
 

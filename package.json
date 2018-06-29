@@ -1,4 +1,4 @@
-{
+ {
   "name": "urjuna",
   "version": "0.0.5",
   "private": true,
@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "sh -ac '. .env.${REACT_APP_ENV}; react-app-rewired build'",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
