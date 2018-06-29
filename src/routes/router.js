@@ -10,13 +10,25 @@ import Logout from '../app/components/auth/Logout';
 import RestrictedRoute from './RestrictedRoute';
 import FourZeroFour from "../containers/Page/404";
 import {connect} from "react-redux";
+import {POST_REGISTER_URL} from "../config/url";
+import Register from "../app/components/auth/Registration";
+
 
 
 
 const AppRedirector = connect(state => ({
     account: state.user.get('account')
   }))((props) => {
-    return (<Redirect to='/app'/>);
+    const account = props.account;
+    if (account.initialized) {
+      if (account.repo_count > 0) {
+        return (<Redirect to='/app'/>);
+      } else {
+        return (<Redirect to='/app/setup'/>)
+      }
+    } else {
+      return (<Redirect to='/register'/>)
+    }
 });
 
 
@@ -31,6 +43,10 @@ export default ({history}) => (
       <Route
         path="/logout"
         component={Logout}
+      />
+      <RestrictedRoute
+        path="/register"
+        component={Register}
       />
       <RestrictedRoute
         path="/app"

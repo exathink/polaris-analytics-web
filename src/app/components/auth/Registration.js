@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import { LOGIN_URL } from '../../../config/url';
+import { POST_REGISTER_URL } from '../../../config/url';
 
-class Login extends PureComponent {
+class Register extends PureComponent {
   componentDidMount() {
     document.getElementById('login-form').submit();
   }
 
   render() {
     return (
-      <form id="login-form" action={LOGIN_URL} method="post">
+      <form id="login-form" action={POST_REGISTER_URL} method="post">
         <input type="hidden" name="resource" value=
           {
             window.location.origin + (this.props.location.from || '/')
@@ -20,4 +20,4 @@ class Login extends PureComponent {
 
 }
 
-export default Login;
+export default Register;

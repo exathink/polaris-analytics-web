@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { LOGOUT_URL } from '../../../config/auth';
+import { LOGOUT_URL } from '../../../config/url';
 
 class Logout extends PureComponent {
   componentDidMount() {
