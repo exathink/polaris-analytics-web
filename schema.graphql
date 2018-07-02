@@ -1,0 +1,111 @@
+# source: http://polaris-services.exathink.localdev:8100/graphql
+# timestamp: Mon Jul 02 2018 11:41:40 GMT-0500 (CDT)
+
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+type CreateOrganization {
+  organization: Organization
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""JSON String"""
+scalar JSONString
+
+type Mutations {
+  createOrganization(accountKey: String, name: String): CreateOrganization
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
+type Organization implements Node {
+  """The ID of the object."""
+  id: ID!
+  organizationKey: String!
+  name: String
+  public: Boolean
+  repositories(before: String, after: String, first: Int, last: Int): RepositoryConnection
+  repoCount: Int
+}
+
+type OrganizationConnection {
+  pageInfo: PageInfo!
+  edges: [OrganizationEdge]!
+}
+
+type OrganizationEdge {
+  """The item at the end of the edge"""
+  node: Organization
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  """The ID of the object"""
+  node(id: ID!): Node
+  organizations(orgName: String, orgList: [String], allPublic: Boolean, before: String, after: String, first: Int, last: Int): OrganizationConnection
+}
+
+type Repository implements Node {
+  """The ID of the object."""
+  id: ID!
+  key: String!
+  organizationId: Int
+  organizationKey: String!
+  name: String!
+  url: String
+  public: Boolean
+  vendor: String
+  properties: JSONString
+  createdAt: DateTime
+  updatedAt: DateTime
+  lastImported: DateTime
+  lastChecked: DateTime
+  importState: Int!
+  importReadyState: Int!
+  updateReadyState: Int!
+  earliestCommit: DateTime
+  latestCommit: DateTime
+  commitCount: Float
+  organization: Organization
+}
+
+type RepositoryConnection {
+  pageInfo: PageInfo!
+  edges: [RepositoryEdge]!
+}
+
+type RepositoryEdge {
+  """The item at the end of the edge"""
+  node: Repository
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}

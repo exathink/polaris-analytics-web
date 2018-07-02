@@ -1,0 +1,6 @@
+projects:
+  urjuna:
+    schemaPath: schema.graphql
+    extensions:
+      endpoints:
+        dev: 'http://polaris-services.exathink.localdev:8100/graphql'

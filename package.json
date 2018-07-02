@@ -37,6 +37,8 @@
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
     "reflexbox": "^3.0.1",
+    "relay-runtime": "^1.6.0",
+    "react-relay": "^1.6.0",
     "screenfull": "^3.3.2",
     "styled-components": "^2.2.1",
     "styled-theme": "^0.3.3"
@@ -44,16 +46,21 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-react-intl": "^2.4.0",
+    "babel-plugin-relay": "^1.6.0",
     "chance": "^1.0.13",
     "flow-bin": "^0.66.0",
+    "graphql": "^0.13.2",
     "react-app-rewire-bundle-analyzer": "^1.0.1",
     "react-app-rewire-react-intl": "^2.4.0",
-    "react-app-rewired": "^1.4.0"
+    "react-app-rewired": "^1.4.0",
+    "relay-compiler": "^1.6.0",
+    "fb-watchman": "^2.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
+    "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "build:messages": "./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js"
