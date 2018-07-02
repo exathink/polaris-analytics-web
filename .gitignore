@@ -103,3 +103,5 @@ docker/**/install.sh
 
 node_modules
 scripts/bin
+
+**/__generated__
