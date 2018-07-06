@@ -13,9 +13,20 @@ import config, {
 import { themeConfig } from './config';
 import DashAppHolder from './dashAppStyle';
 
+// GraphQL Client Setup
+import ApolloClient from 'apollo-boost';
+import {ApolloProvider} from 'react-apollo';
+import {GRAPHQL_ADMIN_URL} from "./config/url";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
+
+
+const client = new ApolloClient({
+  uri: GRAPHQL_ADMIN_URL,
+  credentials: 'include'
+});
+
 
 const DashApp = () => (
   <LocaleProvider locale={currentAppLocale.antd}>
@@ -25,9 +36,11 @@ const DashApp = () => (
     >
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <DashAppHolder>
-          <Provider store={store}>
-            <PublicRoutes history={history} />
-          </Provider>
+          <ApolloProvider client={client}>
+            <Provider store={store}>
+              <PublicRoutes history={history} />
+            </Provider>
+          </ApolloProvider>
         </DashAppHolder>
       </ThemeProvider>
     </IntlProvider>
