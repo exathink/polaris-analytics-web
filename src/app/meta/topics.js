@@ -12,9 +12,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.contributors' defaultMessage="Contributors"/>),
     icon: 'ion-ios-people'
   },
-  publicProjects: {
-    name: 'public-projects',
-    display: () => (<FormattedMessage id='topics.public-projects' defaultMessage="Public Projects"/>),
+  projects: {
+    name: 'projects',
+    display: () => (<FormattedMessage id='topics.public-projects' defaultMessage="Projects"/>),
     icon: 'ion-folder'
   }
 

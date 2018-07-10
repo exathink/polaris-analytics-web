@@ -17,6 +17,7 @@ export type Context = {
   icon?: string,
   color?: string,
   url_for? : string,
+  url_for_instance? : (name: string, key: string) => string,
   routes: Array<{
       match: string,
       render: React.ComponentType<any>

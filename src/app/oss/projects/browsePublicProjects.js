@@ -2,7 +2,9 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Link} from 'react-router-dom';
-import {encodeInstance} from "../../framework/navigation/context/helpers";
+import {url_for_instance} from "../../framework/navigation/context/helpers";
+import Projects from "../../dashboards/projects/context";
+import Organizations from "../../dashboards/organizations/context";
 
 export class BrowsePublicProjects extends React.Component {
 
@@ -39,11 +41,11 @@ export class BrowsePublicProjects extends React.Component {
                   data.projects.edges.map(
                     edge => (
                       <li key={edge.node.id}>
-                        <Link to={`/app/dashboard/projects/${encodeInstance(edge.node.name, edge.node.projectKey)}`} >
+                        <Link to={`${url_for_instance(Projects, edge.node.name, edge.node.projectKey)}`} >
                         {edge.node.name}
                         </Link>
                         <span>{edge.node.repoCount}</span>
-                        <Link to={`/app/dashboard/organizations/${encodeInstance(edge.node.organization.name, edge.node.organization.organizationKey)}`}>
+                        <Link to={`${url_for_instance(Organizations, edge.node.organization.name, edge.node.organization.organizationKey)}`}>
                           {edge.node.organization.name}
                         </Link>
                       </li>

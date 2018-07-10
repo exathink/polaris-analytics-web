@@ -1,9 +1,8 @@
-import type {Context} from "../../framework/navigation/context/context";
 import asyncComponent from "../../../helpers/AsyncFunc";
 import {Topics} from "../../meta";
 
 const topic = {
-  ...Topics.publicProjects,
+  ...Topics.projects,
   routes: [
     {
       match: '',

@@ -20,8 +20,8 @@ const messages = defineMessages({
     defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
   },
   browse: {
-    id: 'contexts.browse',
-    defaultMessage: "Browse"
+    id: 'contexts.oss',
+    defaultMessage: "Open Source"
   }
 
 });
