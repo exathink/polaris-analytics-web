@@ -61,12 +61,10 @@ export class App extends Component {
                     height: '94vh'
                   }}
                 >
-                  <LayoutWrapper id="dashboard" className="app-content-wrapper">
+                  <LayoutWrapper id="app-content-area" className="app-content-wrapper">
                     <ContextManager rootContext={AppContext} url={url} {...this.props}/>
                     <DashboardControlBar/>
-                    <div className="app-content">
-                      <AppRouter url={url} {...this.props} />
-                    </div>
+                    <AppRouter url={url} {...this.props} />
                   </LayoutWrapper>
                 </Content>
                 <Footer
