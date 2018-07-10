@@ -3,11 +3,11 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {ConnectedRouter} from 'react-router-redux';
 
 
-import App from '../app/App';
+import App from '../app/app';
 import Login from '../app/components/auth/Login';
 import Logout from '../app/components/auth/Logout';
 
-import RestrictedRoute from './RestrictedRoute';
+import RestrictedRoute from './restrictedRoute';
 import FourZeroFour from "../containers/Page/404";
 import {connect} from "react-redux";
 import Register from "../app/components/auth/Registration";

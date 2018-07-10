@@ -1,4 +1,4 @@
-import AppRouter from './AppRouter';
+import AppRouter from './appRouter';
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
