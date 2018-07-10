@@ -1,30 +1,36 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Layout } from 'antd';
-import { Debounce } from 'react-throttle';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Layout} from 'antd';
+import {Debounce} from 'react-throttle';
 import WindowResizeListener from 'react-window-size-listener';
-import { ThemeProvider } from 'styled-components';
+import {ThemeProvider} from 'styled-components';
 import authAction from '../redux/auth/actions';
 import appActions from '../redux/app/actions';
 import Sidebar from './containers/sidebar/sidebar';
 import Topbar from './containers/topbar/topbar';
 import AppRouter from './AppRouter';
-import { siteConfig } from '../config.js';
+import {siteConfig} from '../config.js';
 import themes from '../config/themes/index';
-import { themeConfig } from '../config';
+import {themeConfig} from '../config';
 import AppHolder from './commonStyle';
 import './global.css';
+import './framework/viz/dashboard/dashboard.css';
+import ContextManager from "./framework/navigation/components/contextManager";
+import {DashboardControlBar} from "./containers/controlbar/controlbar";
+import LayoutWrapper from '../components/utility/layoutWrapper';
+import AppContext from './context';
 
-const { Content, Footer } = Layout;
-const { logout } = authAction;
-const { toggleAll } = appActions;
+const {Content, Footer} = Layout;
+const {logout} = authAction;
+const {toggleAll} = appActions;
+
 export class App extends Component {
   render() {
-    const { url } = this.props.match;
+    const {url} = this.props.match;
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <AppHolder>
-          <Layout style={{ height: '100vh' }}>
+          <Layout style={{height: '100vh'}}>
             <Debounce time="1000" handler="onResize">
               <WindowResizeListener
                 onResize={windowSize =>
@@ -34,9 +40,9 @@ export class App extends Component {
                   )}
               />
             </Debounce>
-            <Topbar url={url} />
-            <Layout style={{ flexDirection: 'row', overflowX: 'hidden' }}>
-              <Sidebar url={url} />
+            <Topbar url={url}/>
+            <Layout style={{flexDirection: 'row', overflowX: 'hidden'}}>
+              <Sidebar url={url}/>
               <Layout
                 className="isoContentMainLayout"
                 style={{
@@ -52,7 +58,13 @@ export class App extends Component {
                     height: '94vh'
                   }}
                 >
-                  <AppRouter url={url} {...this.props} />
+                  <LayoutWrapper id="dashboard" className="dashboard-wrapper">
+                    <ContextManager rootContext={AppContext} url={url} {...this.props}/>
+                    <DashboardControlBar/>
+                    <div className="dashboard-vizzes">
+                      <AppRouter url={url} {...this.props} />
+                    </div>
+                  </LayoutWrapper>
                 </Content>
                 <Footer
                   style={{
@@ -75,5 +87,5 @@ export default connect(
   state => ({
     auth: state.Auth
   }),
-  { logout, toggleAll }
+  {logout, toggleAll}
 )(App);

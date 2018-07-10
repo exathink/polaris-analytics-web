@@ -6,7 +6,7 @@ import {navigationDispatch} from "../context/withNavigation";
 
 import contextStackActions from "../../redux/navigation/actions";
 
-export class ContextManager extends React.Component {
+class ContextManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
