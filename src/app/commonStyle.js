@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { palette } from 'styled-theme';
+import {palette} from 'styled-theme';
 
 const AppHolder = styled.div`
   .trigger {
@@ -71,6 +71,18 @@ const AppHolder = styled.div`
 
   button {
     border-radius: 0;
+  }
+  
+  .app-content-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background: #f1f3f6;
+  }
+
+  .app-content {
+    width: 100%;
+    height: 96%;
   }
 `;
 

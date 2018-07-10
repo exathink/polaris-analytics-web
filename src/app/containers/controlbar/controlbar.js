@@ -1,10 +1,10 @@
 import React from 'react';
 import NavigationControls from '../../framework/navigation/components/navigationControls';
 import FullscreenBtn from '../../../components/buttons/FullscreenBtn';
-import {ControlbarWrapper} from "./controlbar.style";
+import './controlbar.css';
 
 export const DashboardControlBar = () => (
-    <div className="dashboard-controls">
+    <div className='controlbar'>
       <nav className='menu' style={{width: '33%'}}>
         <NavigationControls itemClass={"menu-item"}/>
       </nav>
@@ -14,4 +14,5 @@ export const DashboardControlBar = () => (
         <FullscreenBtn componentId="dashboard"/>
       </nav>
     </div>
+
 );
