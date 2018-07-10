@@ -19,6 +19,7 @@ import ContextManager from "./framework/navigation/components/contextManager";
 import {DashboardControlBar} from "./containers/controlbar/controlbar";
 import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
+import {build_context_url_tree} from "./framework/navigation/context/helpers";
 
 const {Content, Footer} = Layout;
 const {logout} = authAction;
@@ -27,6 +28,8 @@ const {toggleAll} = appActions;
 export class App extends Component {
   render() {
     const {url} = this.props.match;
+    build_context_url_tree(AppContext, url);
+
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <AppHolder>

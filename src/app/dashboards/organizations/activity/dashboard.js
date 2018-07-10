@@ -6,6 +6,8 @@ import { Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
 import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {ActivityProfileWidget} from '../../widgets/activity/ActivityLevel';
 import {Contexts} from "../../../meta/contexts";
+import Projects from "../../projects/context";
+
 import {DataSources} from "./dataSources";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
@@ -36,7 +38,7 @@ export const dashboard = ({match, ...rest}) => (
       <ActivityProfileWidget
         w={1/2}
         name="project-activity-levels"
-        childContext={Contexts.projects}
+        childContext={Projects}
         enableDrillDown={true}
         dataBinding={ props => (
           {

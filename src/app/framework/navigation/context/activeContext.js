@@ -82,7 +82,7 @@ export class ActiveContext {
 
   navigate(context, instanceName, instanceKey, topic) {
     if(this.navigator) {
-      const targetPath = `${this.rootUrl}/${context.name}/${encodeInstance(instanceName, instanceKey)}/${topic}`;
+      const targetPath = `${context.url_for}/${encodeInstance(instanceName, instanceKey)}/${topic}`;
       this.navigator.push(targetPath);
     }
   }

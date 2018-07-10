@@ -1,5 +1,11 @@
 import React from 'react';
-import App from './context';
+import AppContext from './context';
 import {contextRouterFor} from "./framework/navigation/context/contextRouter";
 
-export default contextRouterFor(App);
+
+const appRouter =  contextRouterFor(AppContext);
+
+
+
+
+export default appRouter;
