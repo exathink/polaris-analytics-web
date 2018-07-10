@@ -11,7 +11,7 @@ export const DashboardControlBar = () => (
       <nav className='menu menu-center' style={{width: '33%'}}>
       </nav>
       <nav className='menu menu-right' style={{width: '33%'}}>
-        <FullscreenBtn componentId="dashboard"/>
+        <FullscreenBtn componentId="app-content-area"/>
       </nav>
     </div>
 
