@@ -1,6 +1,7 @@
 import React from 'react';
 import {defineMessages, FormattedMessage} from 'react-intl';
 
+
 const messages = defineMessages({
   accounts: {
     id: 'contexts.accounts.display',
@@ -17,6 +18,10 @@ const messages = defineMessages({
   repositories: {
     id: 'contexts.repositories.display',
     defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
+  },
+  browse: {
+    id: 'contexts.browse',
+    defaultMessage: "Browse"
   }
 
 });
@@ -80,5 +85,17 @@ export const Contexts = {
         },
     icon: 'ion-soup-can',
 
-  }
+  },
+  browse: {
+    name: 'browse',
+    message: messages.browse,
+    display:
+        function () {
+          return <FormattedMessage
+            {...messages.browse}
+          />
+        },
+    icon: 'ion-ios-list',
+    color: '#6b5fb2',
+  },
 };

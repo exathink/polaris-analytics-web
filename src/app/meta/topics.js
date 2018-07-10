@@ -11,5 +11,11 @@ export const Topics = {
     name: 'contributors',
     display: () => (<FormattedMessage id='topics.contributors' defaultMessage="Contributors"/>),
     icon: 'ion-ios-people'
+  },
+  publicProjects: {
+    name: 'public-projects',
+    display: () => (<FormattedMessage id='topics.public-projects' defaultMessage="Public Projects"/>),
+    icon: 'ion-folder'
   }
+
 };

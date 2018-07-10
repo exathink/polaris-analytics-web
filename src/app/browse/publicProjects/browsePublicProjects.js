@@ -59,3 +59,4 @@ export class BrowsePublicProjects extends React.Component {
   }
 }
 
+export default BrowsePublicProjects;

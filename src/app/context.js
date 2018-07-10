@@ -1,5 +1,6 @@
 import type {Context} from "./framework/navigation/context/context";
 import Dashboard from "./dashboards/context";
+import Browse from "./browse/context";
 
 const context: Context = {
   name: 'app',
@@ -8,6 +9,10 @@ const context: Context = {
     {
       match: 'dashboard',
       context: Dashboard,
+    },
+    {
+      match: 'browse',
+      context: Browse,
     },
     {
       match: '',
