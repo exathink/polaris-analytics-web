@@ -4,7 +4,7 @@ import {withRouter} from 'react-router';
 
 import { Layout } from 'antd';
 import appActions from '../../../redux/app/actions';
-import TopbarUser from '../../../containers/Topbar/topbarUser';
+import TopbarUser from './topbarUser';
 import TopbarWrapper from './topbar.style';
 import themes from '../../../config/themes';
 import { themeConfig } from '../../../config';
