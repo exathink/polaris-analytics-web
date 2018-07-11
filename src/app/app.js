@@ -64,7 +64,9 @@ export class App extends Component {
                   <LayoutWrapper id="app-content-area" className="app-content-wrapper">
                     <ContextManager rootContext={AppContext} url={url} {...this.props}/>
                     <DashboardControlBar/>
-                    <AppRouter url={url} {...this.props} />
+                    <div className={"app-content"}>
+                      <AppRouter url={url} {...this.props} />
+                    </div>
                   </LayoutWrapper>
                 </Content>
                 <Footer

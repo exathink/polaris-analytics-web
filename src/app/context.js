@@ -1,6 +1,8 @@
 import type {Context} from "./framework/navigation/context/context";
 import Dashboard from "./dashboards/context";
 import OpenSource from "./oss/context";
+import {Landing} from "./landing";
+import asyncComponent from "../helpers/AsyncFunc";
 
 const context: Context = {
   name: 'app',
@@ -16,7 +18,7 @@ const context: Context = {
     },
     {
       match: '',
-      redirect: 'dashboard'
+      component: asyncComponent(() => import('../containers/Shuffle'))
     }
   ]
 };

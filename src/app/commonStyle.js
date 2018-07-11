@@ -80,7 +80,10 @@ const AppHolder = styled.div`
     background: #f1f3f6;
   }
 
-  
+  .app-content {
+    width: 100%;
+    height: 97%;
+  }
 `;
 
 export default AppHolder;
