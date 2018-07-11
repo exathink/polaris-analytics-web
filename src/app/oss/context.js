@@ -3,7 +3,7 @@ import PublicProjects from "./projects/topic";
 import {Contexts} from "../meta";
 
 const context: Context = {
-  ...Contexts.browse,
+  ...Contexts.oss,
   routes: [
     {
       match: 'projects',

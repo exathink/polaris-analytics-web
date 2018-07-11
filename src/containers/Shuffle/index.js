@@ -11,7 +11,7 @@ import { SingleCardWrapper, SortableCardWrapper } from './shuffle.style';
 
 class ListItem extends Component {
   render() {
-    const listClass = `isoSingleCard card ${this.props.view}`;
+    const listClass = `${this.props.view}`;
     const style = { zIndex: 100 - this.props.index };
 
     return (

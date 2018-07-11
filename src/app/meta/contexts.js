@@ -19,7 +19,7 @@ const messages = defineMessages({
     id: 'contexts.repositories.display',
     defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
   },
-  browse: {
+  oss: {
     id: 'contexts.oss',
     defaultMessage: "Open Source"
   }
@@ -86,13 +86,13 @@ export const Contexts = {
     icon: 'ion-soup-can',
 
   },
-  browse: {
-    name: 'browse',
-    message: messages.browse,
+  oss: {
+    name: 'oss',
+    message: messages.oss,
     display:
         function () {
           return <FormattedMessage
-            {...messages.browse}
+            {...messages.oss}
           />
         },
     icon: 'ion-ios-list',

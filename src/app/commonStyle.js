@@ -83,6 +83,7 @@ const AppHolder = styled.div`
   .app-content {
     width: 100%;
     height: 97%;
+    overflow-y: auto;
   }
 `;
 

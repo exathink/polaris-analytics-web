@@ -1,7 +1,7 @@
 import type {Context} from "./framework/navigation/context/context";
 import Dashboard from "./dashboards/context";
 import OpenSource from "./oss/context";
-import {Landing} from "./landing";
+import {Landing} from "./pages/landing/landing";
 import asyncComponent from "../helpers/AsyncFunc";
 
 const context: Context = {
@@ -18,7 +18,7 @@ const context: Context = {
     },
     {
       match: '',
-      component: asyncComponent(() => import('../containers/Shuffle'))
+      component: asyncComponent(() => import('./pages/landing'))
     }
   ]
 };
