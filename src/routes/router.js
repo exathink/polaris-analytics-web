@@ -18,11 +18,7 @@ const AppRedirector = connect(state => ({
   }))((props) => {
     const account = props.account;
     if (account.initialized) {
-      if (account.repo_count > 0) {
         return (<Redirect to='/app'/>);
-      } else {
-        return (<Redirect to='/app/setup'/>)
-      }
     } else {
       return (<Redirect to='/register'/>)
     }
