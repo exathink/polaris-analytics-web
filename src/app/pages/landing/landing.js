@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 
 const messages = {
   yourDashboards: <FormattedMessage id='landing.yourDashboards' defaultMessage='Your Dashboards'/>,
-  importRepositories: <FormattedMessage id='landing.importRepositories' defaultMessage='Import your code'/>,
+  importRepositories: <FormattedMessage id='landing.importRepositories' defaultMessage='Analyze your code'/>,
   ossDashboards: <FormattedMessage id='landing.ossDashboards' defaultMessage='Browse open source dashboards'/>
 };
 
