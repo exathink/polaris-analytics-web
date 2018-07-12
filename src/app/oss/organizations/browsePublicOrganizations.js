@@ -13,7 +13,7 @@ export class BrowsePublicOrganizations extends React.Component {
       <Query
         query={gql`
        {
-         organizations {
+         organizations(allPublic: true) {
           edges {
             node {
               id
@@ -21,6 +21,7 @@ export class BrowsePublicOrganizations extends React.Component {
               public
               organizationKey
               repoCount
+              projectCount
             }
           }
         }
