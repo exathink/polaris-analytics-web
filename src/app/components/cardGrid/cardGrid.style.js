@@ -36,12 +36,21 @@ const WDSingleCardWrapper = styled.li`
       font-weight: 500;
       color: ${palette('text', 0)};
       margin: 0 0 3px;
+      text-transform: capitalize;
     }
 
     .isoCardDate {
       font-size: 12px;
       font-weight: 400;
       color: ${palette('grayscale', 0)};
+    }
+    
+    a {
+      color: ${palette('text', 0)};
+      
+      &:hover {
+      color: ${palette('primary', 0)};
+      }
     }
   }
 

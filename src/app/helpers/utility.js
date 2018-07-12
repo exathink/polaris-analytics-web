@@ -99,3 +99,7 @@ export function span(date_a, date_b) {
 export function fail(message) {
   throw Error(message);
 }
+
+export function replicate(array, n) {
+  return Array(n).fill(0).reduce((result) => ([...result, ...array]), [])
+}

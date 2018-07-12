@@ -1,8 +1,8 @@
 import React from 'react';
-import {NavGridWrapper} from "./navGrid.style";
+import {NavGridWrapper} from "./cardGrid.style";
 
 
-export const NavGrid = (props) => (
+export const CardGrid = (props) => (
   <NavGridWrapper className={`grid ${props.className}`}>
     <div className="navItemsContainer">
       <ul>

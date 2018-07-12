@@ -1,8 +1,8 @@
 import React from 'react';
-import {SingleCardWrapper} from "./navGrid.style";
+import {SingleCardWrapper} from "../cardGrid/cardGrid.style";
 import {Link} from 'react-router-dom';
 
-export const NavGridItem = props => (
+export const NavCard = props => (
   <SingleCardWrapper id={'1'} className={'grid'}>
     <Link to={props.link}>
       <div className="isoCardImage">
