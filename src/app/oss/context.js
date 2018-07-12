@@ -12,10 +12,6 @@ const context: Context = {
       topic: PublicProjects
     },
     {
-      match: 'organizations',
-      topic: PublicOrganizations
-    },
-    {
       match: '',
       redirect: 'projects'
     }
