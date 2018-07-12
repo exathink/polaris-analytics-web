@@ -1,4 +1,5 @@
 {
+  "topbaruser.logout": "Logout",
   "dashboards.activity.account.topRowTitle": "Account Overview",
   "dashboards.activity.organization.instance.topRowTitle": "Organization Overview",
   "contexts.organizations.instance": "Organization: {instance}",
@@ -24,7 +25,8 @@
   "contexts.oss": "Open Source",
   "topics.activity": "Activity",
   "topics.contributors": "Contributors",
-  "topics.public-projects": "Projects",
+  "topics.projects": "Projects",
+  "topics.organizations": "Organizations",
   "landing.yourDashboards": "Your Dashboards",
   "landing.importRepositories": "Analyze your code",
   "landing.ossDashboards": "Browse open source dashboards"

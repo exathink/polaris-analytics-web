@@ -14,7 +14,12 @@ export const Topics = {
   },
   projects: {
     name: 'projects',
-    display: () => (<FormattedMessage id='topics.public-projects' defaultMessage="Projects"/>),
+    display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
+    icon: 'ion-folder'
+  },
+  organizations: {
+    name: 'organizations',
+    display: () => (<FormattedMessage id='topics.organizations' defaultMessage="Organizations"/>),
     icon: 'ion-folder'
   }
 

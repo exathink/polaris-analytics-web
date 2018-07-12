@@ -1,5 +1,7 @@
 import type {Context} from "../framework/navigation/context/context";
 import PublicProjects from "./projects/topic";
+import PublicOrganizations from "./organizations/topic";
+
 import {Contexts} from "../meta";
 
 const context: Context = {
@@ -8,6 +10,10 @@ const context: Context = {
     {
       match: 'projects',
       topic: PublicProjects
+    },
+    {
+      match: 'organizations',
+      topic: PublicOrganizations
     },
     {
       match: '',
