@@ -21,7 +21,9 @@ export const ProjectCard = ({id, name, projectKey, repoCount, organization}) => 
       </Link>
       <CardContent style={{alignItems: 'flex-start'}}>
         <h3 className={"isoCardTitle"}>{name}</h3>
-        <span>Repositories: {repoCount}</span>
+        <Link to={`${url_for_instance(Projects, name, projectKey)}/activity/repository-activity-levels`}>
+          <span>Repositories: {repoCount}</span>
+        </Link>
         <Link
           to={`${url_for_instance(Organizations, organization.name, organization.organizationKey)}`}
           title={'Show organization dashboard'}
@@ -29,6 +31,7 @@ export const ProjectCard = ({id, name, projectKey, repoCount, organization}) => 
           {<span>Organization: {organization.name}</span>}
         </Link>
       </CardContent>
+
     </Card>
   )
 }
