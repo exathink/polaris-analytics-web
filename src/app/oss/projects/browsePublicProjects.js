@@ -13,17 +13,14 @@ export class BrowsePublicProjects extends React.Component {
       <Query
         query={gql`
        {
-         projects(allPublic: true) {
+         projectSummariesConnection(filter: all_public) {
           edges {
             node {
               id
               name
-              public
               projectKey
-              organization {
-                name
-                organizationKey
-              }
+              organizationName
+              organizationKey
               repoCount
             }
           }
@@ -38,7 +35,7 @@ export class BrowsePublicProjects extends React.Component {
             return (
               <CardGrid>
                 {
-                  data.projects.edges.map(
+                  data.projectSummariesConnection.edges.map(
                     edge => (
                       <ProjectCard {...edge.node}/>
                     )

@@ -5,7 +5,7 @@ import {url_for_instance} from "../../framework/navigation/context/helpers";
 import {Link} from 'react-router-dom';
 import {Card, CardImage, CardContent} from "../cardGrid";
 
-export const ProjectCard = ({id, name, projectKey, repoCount, organization}) => {
+export const ProjectCard = ({id, name, projectKey, repoCount, organizationName, organizationKey}) => {
   return (
     <Card key={id}>
       <Link
@@ -25,10 +25,10 @@ export const ProjectCard = ({id, name, projectKey, repoCount, organization}) => 
           <span>Repositories: {repoCount}</span>
         </Link>
         <Link
-          to={`${url_for_instance(Organizations, organization.name, organization.organizationKey)}`}
+          to={`${url_for_instance(Organizations, organizationName, organizationKey)}`}
           title={'Show organization dashboard'}
         >
-          {<span>Organization: {organization.name}</span>}
+          {<span>Organization: {organizationName}</span>}
         </Link>
       </CardContent>
 
