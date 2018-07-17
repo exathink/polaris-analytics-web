@@ -8,16 +8,16 @@ const context: Context = {
   ...Contexts.oss,
   routes: [
     {
-      match: 'projects',
-      topic: PublicProjects
-    },
-    {
       match: 'organizations',
       topic: PublicOrganizations
     },
     {
+      match: 'projects',
+      topic: PublicProjects
+    },
+    {
       match: '',
-      redirect: 'projects'
+      redirect: 'organizations'
     }
   ]
 };

@@ -20,9 +20,13 @@ export const OrganizationCard = ({id, name, organizationKey, repoCount, projectC
       </Link>
       <CardContent style={{alignItems: 'flex-start'}}>
         <h3 className={"isoCardTitle"}>{name}</h3>
-        <Link to={`${url_for_instance(Organizations, name, organizationKey)}/activity/project-activity-levels`}>
-          <span>Projects: {projectCount}</span>
-        </Link>
+        {
+          projectCount > 0 ?
+            <Link to={`${url_for_instance(Organizations, name, organizationKey)}/activity/project-activity-levels`}>
+              <span>Projects: {projectCount}</span>
+            </Link> :
+            <span>Projects: {projectCount}</span>
+        }
         <Link to={`${url_for_instance(Organizations, name, organizationKey)}/activity/repository-activity-levels`}>
           <span>Repositories: {repoCount}</span>
         </Link>
