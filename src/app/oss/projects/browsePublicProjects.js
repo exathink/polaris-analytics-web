@@ -1,7 +1,7 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-
+import {admin_service} from "../../services/graphql";
 import {CardGrid, Card, CardImage, CardContent} from "../../components/cardGrid";
 import {ProjectCard} from "../../components/cards/projectCard";
 
@@ -11,6 +11,7 @@ export class BrowsePublicProjects extends React.Component {
   render() {
     return (
       <Query
+        client={admin_service}
         query={gql`
        {
          projectSummariesConnection(filter: all_public) {
