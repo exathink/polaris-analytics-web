@@ -5,6 +5,8 @@ import {withRouter} from "react-router";
 import {navigationDispatch} from "../context/withNavigation";
 
 import contextStackActions from "../../redux/navigation/actions";
+import {ContextStack} from '../../redux/navigation/reducer';
+
 
 class ContextManager extends React.Component {
   constructor(props) {

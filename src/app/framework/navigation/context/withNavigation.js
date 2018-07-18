@@ -30,3 +30,8 @@ export const navigationDispatch = (dispatch) => (
 export const withNavigation = (Component) => {
   return connect(navigationState, navigationDispatch)(Component)
 };
+
+export const withNavigationDispatch = (Component) => {
+  return connect(null, navigationDispatch)(Component)
+}
+

@@ -45,6 +45,24 @@ export class ContextStack {
     return activeContext;
   }
 
+  static initContext() {
+    return new ContextStack(new List(), -1);
+  }
+
+  static pushContext(contextStack, context) {
+    if (context.equals(contextStack.prev())) {
+        return new ContextStack(contextStack.stack, contextStack.index + 1)
+      } else if (context.equals(contextStack.next())) {
+        return new ContextStack(contextStack.stack, contextStack.index - 1)
+      } else {
+        const [index, prevContext] = contextStack.prevContextEntry();
+        if(context.equals(prevContext)) {
+          return new ContextStack(contextStack.stack.slice(index), 0)
+        }
+      }
+      return new ContextStack(contextStack.stack.unshift(context), 0);
+  }
+
 }
 
 

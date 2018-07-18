@@ -34,7 +34,7 @@ export class App extends Component {
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <AppHolder>
-          <NavigationContext.Provider>
+          <NavigationContext.Provider rootContext={AppContext}>
             <Layout style={{height: '100vh'}}>
               <Debounce time="1000" handler="onResize">
                 <WindowResizeListener
