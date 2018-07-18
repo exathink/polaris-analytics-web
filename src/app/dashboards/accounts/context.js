@@ -5,6 +5,7 @@ import {Topics} from "../../meta/topics";
 import type {Context} from '../../framework/navigation/context/context';
 
 import {Contexts} from "../../meta/contexts";
+import {SummaryChart} from "./activity/SummaryChart";
 
 const context: Context = {
   ...Contexts.accounts,
@@ -22,7 +23,7 @@ const context: Context = {
         routes: [
           {
             match: '',
-            component: Wip
+            component: SummaryChart
           }
         ]
       }
