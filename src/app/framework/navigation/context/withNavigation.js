@@ -25,5 +25,5 @@ export const navigationDispatch = (dispatch) => (
 
 export const withNavigationDispatch = (Component) => {
   return connect(null, navigationDispatch)(Component)
-}
+};
 

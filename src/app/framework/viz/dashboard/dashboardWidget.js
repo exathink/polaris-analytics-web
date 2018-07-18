@@ -31,6 +31,7 @@ export const DashboardWidget = ({children, name, w, title, itemSelected, dashboa
           {
             navigationContext => {
               const context = navigationContext.current;
+              const navigate = navigationContext.navigate;
               return (
                 <WidgetMenu
                   {...{itemSelected, detail}}
