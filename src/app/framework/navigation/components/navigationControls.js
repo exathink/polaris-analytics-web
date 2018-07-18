@@ -1,5 +1,5 @@
 import React from 'react';
-import {withNavigation} from "../context/withNavigation";
+import {NavigationContext} from "../context/navigationContext";
 
 const BackButton = (props) => {
   const {navigation, navigate, itemClass} = props;
@@ -37,18 +37,25 @@ const DrillBackButton = (props) => {
   );
 };
 
-class NavigationControls extends React.Component {
-
+export default class NavigationControls extends React.Component {
   render() {
     return (
-      <React.Fragment>
-        <BackButton {...this.props}/>
-        <DrillBackButton {...this.props}/>
-        <ForwardButton {...this.props}/>
-      </React.Fragment>
+      <NavigationContext.Consumer>
+        {
+          navigationContext => {
+            const childProps = {...this.props, ...navigationContext};
+            return (
+              <React.Fragment>
+                <BackButton {...childProps}/>
+                <DrillBackButton {...childProps}/>
+                <ForwardButton {...childProps}/>
+              </React.Fragment>
+            )
+          }
+        }
+      </NavigationContext.Consumer>
     )
   }
 }
 
-export default withNavigation(NavigationControls);
 
