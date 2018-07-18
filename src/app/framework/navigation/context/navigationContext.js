@@ -1,5 +1,4 @@
 import React from 'react';
-import {withNavigation} from "./withNavigation";
 import {findActiveContext} from "../context/contextPath";
 
 import {withRouter} from "react-router";

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Model} from "./model";
 import {BoundView} from "./boundView";
-import {withNavigation} from "../../navigation/context/withNavigation";
 import {connect} from "react-redux";
 import vizActions from '../../redux/vizData/actions';
 import {ModelCacheContext} from "./modelCache";
