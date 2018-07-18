@@ -2,10 +2,10 @@ import React from 'react';
 import {findActiveContext} from "../context/contextPath";
 
 import {withRouter} from "react-router";
-import {withNavigationDispatch} from "../context/withNavigation";
 import {ContextStack} from '../../redux/navigation/reducer';
 
 const {Provider, Consumer} = React.createContext({});
+
 
 
 class NavigationContextProvider extends React.Component {
@@ -22,7 +22,7 @@ class NavigationContextProvider extends React.Component {
       const activeContext = findActiveContext(nextProps.rootContext, nextProps.location, nextProps.match);
       activeContext.rootContext = nextProps.rootContext;
       activeContext.rootUrl = nextProps.match.url;
-      activeContext.navigator = nextProps.navigate;
+      activeContext.navigator = nextProps.history;
       return {
         location: nextProps.location,
         contextStack: ContextStack.pushContext(prevState.contextStack, activeContext)
@@ -41,7 +41,7 @@ class NavigationContextProvider extends React.Component {
       <Provider value={{
         navigation: this.state.contextStack,
         current: this.state.contextStack.current(),
-        navigate: this.props.navigate
+        navigate: this.props.history
       }
     }>
         {this.props.children}
@@ -50,8 +50,10 @@ class NavigationContextProvider extends React.Component {
   }
 }
 
+
+
 export const NavigationContext = {
-  Provider: withRouter(withNavigationDispatch(NavigationContextProvider)),
+  Provider: withRouter(NavigationContextProvider),
   Consumer: Consumer
 };
 
