@@ -27,7 +27,7 @@ const AppRedirector = connect(state => ({
 
 
 export default ({history}) => (
-  <BrowserRouter history={history}>
+  <ConnectedRouter history={history}>
     <Switch>
       <Route
         path="/login"
@@ -52,5 +52,5 @@ export default ({history}) => (
         component={FourZeroFour}
       />
     </Switch>
-  </BrowserRouter>
+  </ConnectedRouter>
 );
