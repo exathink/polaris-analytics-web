@@ -1,5 +1,6 @@
 import React from "react";
 import {Flex} from 'reflexbox'
+import {NavigationContext} from "../../navigation/context/navigationContext";
 
 const WidgetMenu = ({itemSelected, detail, onClick}) => (
   detail ?
@@ -12,10 +13,9 @@ const WidgetMenu = ({itemSelected, detail, onClick}) => (
     </nav> :
     null
 );
+
+
 export const DashboardWidget = ({children, name, w, title, itemSelected, dashboardUrl, match, navigate, primary, detail, ...rest}) => {
-
-  const context = rest.navigation.current();
-
   return (
     <Flex column w={w} m={1} className="dashboard-item">
       {
@@ -26,13 +26,23 @@ export const DashboardWidget = ({children, name, w, title, itemSelected, dashboa
           null
 
       }
-      <WidgetMenu
-        {...{itemSelected, detail}}
-        onClick={() => (
-          itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
-        )}
-      />
-
+      {
+        <NavigationContext.Consumer>
+          {
+            navigationContext => {
+              const context = navigationContext.current;
+              return (
+                <WidgetMenu
+                  {...{itemSelected, detail}}
+                  onClick={() => (
+                    itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
+                  )}
+                />
+              );
+            }
+          }
+        </NavigationContext.Consumer>
+      }
       {
         itemSelected && detail ?
           React.createElement(detail, rest)
