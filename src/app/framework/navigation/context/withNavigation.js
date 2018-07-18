@@ -1,10 +1,6 @@
 import {go, goBack, goForward, push, replace} from "react-router-redux";
 import {connect} from "react-redux";
 
-export const navigationState = (state) => ({
-    navigation: state.navigation
-  });
-
 export const navigationDispatch = (dispatch) => (
     {
       navigate:
