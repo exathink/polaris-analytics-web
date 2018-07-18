@@ -15,7 +15,6 @@ import {themeConfig} from '../config';
 import AppHolder from './commonStyle';
 import './global.css';
 import './framework/viz/dashboard/dashboard.css';
-import ContextManager from "./framework/navigation/components/contextManager";
 import {DashboardControlBar} from "./containers/controlbar/controlbar";
 import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
