@@ -8,6 +8,9 @@ import {Contexts} from "../../../meta";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import moment from 'moment';
 
+import {NavigationContext} from "../../../framework/navigation/context/navigationContext";
+
+
 export const SummaryChart = props => {
   return (
     <Query
@@ -34,23 +37,30 @@ export const SummaryChart = props => {
           return (
             <Dashboard {...props}>
               <DashboardRow>
+
                 <DashboardWidget
                   name={'Summary Chart'}
                   primary ={
                     props => {
-                      let context = props.navigation.current();
                       let source = data.account.commitSummary[0];
 
-                      return (<ActivitySummaryView model={new ActivitySummaryModel(
-                        {
-                          commits: source.commitCount,
-                          contributors: source.contributorCount,
-                          earliest_commit: moment(source.earliestCommit),
-                          latest_commit: moment(source.latestCommit),
-                        },
-                        1,
-                        context)
-                      }/>)
+                      return (
+                        <NavigationContext.Consumer>
+                          {
+                          navigationContext => (
+                            <ActivitySummaryView model={new ActivitySummaryModel(
+                            {
+                              commits: source.commitCount,
+                              contributors: source.contributorCount,
+                              earliest_commit: moment(source.earliestCommit),
+                              latest_commit: moment(source.latestCommit),
+                            },
+                            1,
+                            navigationContext.current)
+                          }/>
+                          )
+                          }
+                        </NavigationContext.Consumer>)
                       }
                     }
                   />

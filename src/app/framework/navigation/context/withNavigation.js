@@ -28,8 +28,5 @@ export const navigationDispatch = (dispatch) => (
     });
 
 export const withNavigation = (Component) => {
-
-
-
   return connect(navigationState, navigationDispatch)(Component)
 };

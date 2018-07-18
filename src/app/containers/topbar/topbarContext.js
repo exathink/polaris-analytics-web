@@ -1,27 +1,32 @@
 import React from 'react';
-import {withNavigation} from "../../framework/navigation/context/withNavigation";
+import {NavigationContext} from "../../framework/navigation/context/navigationContext";
 
-const topBar = (props) => {
-  const {navigation} = props;
-  const currentContext = navigation.current();
-  if (currentContext) {
-    const display = currentContext.display();
-    const contextStyle = {color: currentContext.color()};
+export default () => (
+  <NavigationContext.Consumer>
+    {
+      navigationContext => {
+        const currentContext = navigationContext.current;
+        if(currentContext) {
+          const display = currentContext.display();
+          const contextStyle = {color: currentContext.color()};
 
-    return (
-        <div className="topBarContext">
-          <i className={currentContext.icon()} style={contextStyle} />
-          {
-            display ? <span style={contextStyle}>{display}</span> : null
-          }
-        </div>
-    );
-  } else {
-    return null;
-  }
-};
+          return (
+            <div className="topBarContext">
+              <i className={currentContext.icon()} style={contextStyle}/>
+              {
+                display ? <span style={contextStyle}>{display}</span> : null
+              }
+            </div>
+          )
+        } else {
+          return null;
+        }
+      }
+    }
+  </NavigationContext.Consumer>
+);
 
-export default withNavigation(topBar);
+
 
 
 

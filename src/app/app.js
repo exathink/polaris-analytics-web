@@ -20,6 +20,7 @@ import {DashboardControlBar} from "./containers/controlbar/controlbar";
 import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
 import {build_context_url_tree} from "./framework/navigation/context/helpers";
+import {NavigationContext} from "./framework/navigation/context/navigationContext";
 
 const {Content, Footer} = Layout;
 const {logout} = authAction;
@@ -33,53 +34,55 @@ export class App extends Component {
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <AppHolder>
-          <Layout style={{height: '100vh'}}>
-            <Debounce time="1000" handler="onResize">
-              <WindowResizeListener
-                onResize={windowSize =>
-                  this.props.toggleAll(
-                    windowSize.windowWidth,
-                    windowSize.windowHeight
-                  )}
-              />
-            </Debounce>
-            <Topbar url={url}/>
-            <Layout style={{flexDirection: 'row', overflowX: 'hidden'}}>
-              <Sidebar url={url}/>
-              <Layout
-                className="isoContentMainLayout"
-                style={{
-                  height: '100vh'
-                }}
-              >
-                <Content
-                  className="isomorphicContent"
+          <NavigationContext.Provider>
+            <Layout style={{height: '100vh'}}>
+              <Debounce time="1000" handler="onResize">
+                <WindowResizeListener
+                  onResize={windowSize =>
+                    this.props.toggleAll(
+                      windowSize.windowWidth,
+                      windowSize.windowHeight
+                    )}
+                />
+              </Debounce>
+              <Topbar url={url}/>
+              <Layout style={{flexDirection: 'row', overflowX: 'hidden'}}>
+                <Sidebar url={url}/>
+                <Layout
+                  className="isoContentMainLayout"
                   style={{
-                    padding: '70px 0 0 0',
-                    flexShrink: '0',
-                    background: '#f1f3f6',
-                    height: '94vh'
+                    height: '100vh'
                   }}
                 >
-                  <LayoutWrapper id="app-content-area" className="app-content-wrapper">
-                    <ContextManager rootContext={AppContext} url={url} {...this.props}/>
-                    <DashboardControlBar/>
-                    <div className={"app-content"}>
-                      <AppRouter url={url} {...this.props} />
-                    </div>
-                  </LayoutWrapper>
-                </Content>
-                <Footer
-                  style={{
-                    textAlign: 'center',
-                    height: '5vh',
-                  }}
-                >
-                  {siteConfig.footerText}
-                </Footer>
+                  <Content
+                    className="isomorphicContent"
+                    style={{
+                      padding: '70px 0 0 0',
+                      flexShrink: '0',
+                      background: '#f1f3f6',
+                      height: '94vh'
+                    }}
+                  >
+                    <LayoutWrapper id="app-content-area" className="app-content-wrapper">
+                      <ContextManager rootContext={AppContext} url={url} {...this.props}/>
+                      <DashboardControlBar/>
+                      <div className={"app-content"}>
+                        <AppRouter url={url} {...this.props} />
+                      </div>
+                    </LayoutWrapper>
+                  </Content>
+                  <Footer
+                    style={{
+                      textAlign: 'center',
+                      height: '5vh',
+                    }}
+                  >
+                    {siteConfig.footerText}
+                  </Footer>
+                </Layout>
               </Layout>
             </Layout>
-          </Layout>
+          </NavigationContext.Provider>
         </AppHolder>
       </ThemeProvider>
     );
