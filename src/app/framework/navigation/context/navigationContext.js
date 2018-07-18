@@ -8,22 +8,6 @@ import {ContextStack} from '../../redux/navigation/reducer';
 
 const {Provider, Consumer} = React.createContext({});
 
-const NavigationContextProvider_ = withNavigation(props => (
-  React.createElement(
-    Provider,
-    {
-      value: {
-        navigation: props.navigation,
-        current: props.navigation.current(),
-        navigate: props.navigate
-      }
-    },
-    props.children
-  )
-));
-
-
-
 
 class NavigationContextProvider extends React.Component {
   constructor(props) {
