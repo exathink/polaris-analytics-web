@@ -2,7 +2,7 @@ import React from 'react';
 import {findActiveContext} from "../context/contextPath";
 
 import {withRouter} from "react-router";
-import {ContextStack} from '../../redux/navigation/reducer';
+import {ContextStack} from './contextStack';
 
 const {Provider, Consumer} = React.createContext({});
 
