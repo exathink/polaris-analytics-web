@@ -63,6 +63,7 @@
     "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js"
+    "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
+    "build:fragment-types": "node ./scripts/fragmentTypes.js http://polaris-services.exathink.localdev:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://polaris-services.exathink.localdev:8100 ./src/config/graphql/adminFragmentTypes.json"
   }
 }

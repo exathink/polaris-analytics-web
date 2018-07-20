@@ -2,9 +2,11 @@ import React from 'react';
 import StickerWidget from '../../containers/widgets/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../containers/layout/index";
 import moment from 'moment';
-import {ActivitySummaryModel} from "./model";
 
-const human_span = (moment_a, moment_b) => {
+
+const human_span = (date_a, date_b) => {
+  const moment_a = moment(date_a);
+  const moment_b = moment(date_b);
   const span = moment.duration(moment_a.diff(moment_b));
   const years = span.years();
   const d_years = `${years > 0 ? years + (years > 1 ? ' Years' : ' Year'): ''}`;
@@ -14,7 +16,13 @@ const human_span = (moment_a, moment_b) => {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 };
 
-export const ActivitySummary = ({commitCount, span, contributorCount, fontColor, bgColor}) => {
+export const ActivitySummary = ({data, context}) => {
+  const commitCount = data.commitCount? data.commitCount.toLocaleString() : '0';
+  const contributorCount = data.contributorCount? data.contributorCount.toLocaleString() : '0';
+  const span = data.latestCommit && data.earliestCommit ? human_span(data.latestCommit, data.earliestCommit) : 'N/A';
+  const bgColor = context.color();
+  const fontColor = "#ffffff";
+
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
@@ -59,16 +67,19 @@ export const ActivitySummary = ({commitCount, span, contributorCount, fontColor,
   )
 };
 
-export const ActivitySummaryView = (props: {model: ActivitySummaryModel}) => {
-  const data = props.model.data;
+export const ActivitySummaryView = ({model}) => {
+  const data = {
+    commitCount: model.data.commits,
+    contributorCount: model.data.contributors,
+    earliestCommit: model.data.earliest_commit,
+    latestCommit: model.data.latest_commit
+  };
+
+  const context = model.context;
 
   return (
     <ActivitySummary
-        commitCount = {data.commits? data.commits.toLocaleString() : '0'}
-        contributorCount = {data.contributors? data.contributors.toLocaleString() : '0'}
-        span = {data.latest_commit && data.earliest_commit ? human_span(data.latest_commit, data.earliest_commit) : 'N/A'}
-        bgColor = {props.model.context.color()}
-        fontColor = "#ffffff"
+      {...{data, context}}
     />
   )
 };

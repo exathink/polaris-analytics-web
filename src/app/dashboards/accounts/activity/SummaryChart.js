@@ -2,8 +2,8 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {analytics_service} from '../../../services/graphql'
-import {ActivitySummaryView} from "../../widgets/activity/ActivitySummary/view";
-import {ActivitySummaryModel} from "../../widgets/activity/ActivitySummary";
+import {ActivitySummary} from "../../widgets/activity/ActivitySummary/view";
+
 import {Contexts} from "../../../meta";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import moment from 'moment';
@@ -11,23 +11,36 @@ import moment from 'moment';
 import {NavigationContext} from "../../../framework/navigation/context/navigationContext";
 
 
+class CommitSummaryView extends React.Component {
+  static fragment = gql`
+      fragment CommitSummaryView on CommitSummary {
+          earliestCommit
+          latestCommit
+          commitCount
+          contributorCount
+      }
+  `
+
+}
+
+
 export const SummaryChart = props => {
   return (
     <Query
-      client={analytics_service}
       query={gql`
         {
             account {
-                commitSummary(groupBy: account) {
-                    ... on CommitSummary {
-                        earliestCommit
-                        latestCommit
-                        commitCount
-                        contributorCount
+                commitSummary {
+                    forAccount {
+                        ... CommitSummaryView
+                    }
+                    byOrganization {
+                        ... CommitSummaryView
                     }
                 }
             }
         }
+        ${CommitSummaryView.fragment}
       `}
     >
       {
@@ -40,30 +53,35 @@ export const SummaryChart = props => {
 
                 <DashboardWidget
                   name={'Summary Chart'}
-                  primary ={
+                  primary={
                     props => {
-                      let source = data.account.commitSummary[0];
+                      const commitSummary = data.account.commitSummary.forAccount;
 
                       return (
                         <NavigationContext.Consumer>
                           {
-                          navigationContext => (
-                            <ActivitySummaryView model={new ActivitySummaryModel(
-                            {
-                              commits: source.commitCount,
-                              contributors: source.contributorCount,
-                              earliest_commit: moment(source.earliestCommit),
-                              latest_commit: moment(source.latestCommit),
-                            },
-                            1,
-                            navigationContext.current)
-                          }/>
-                          )
+                            navigationContext =>
+                              <React.Fragment>
+                                <ActivitySummary
+                                  data={commitSummary}
+                                  context={navigationContext.current}
+                                />
+                                <h3>Organizations</h3>
+                                {
+                                  data.account.commitSummary.byOrganization.map(commitSummary => (
+                                    <ActivitySummary
+                                      data={commitSummary}
+                                      context={navigationContext.current}
+                                    />
+                                  ))
+                                }
+                              </React.Fragment>
                           }
-                        </NavigationContext.Consumer>)
-                      }
+                        </NavigationContext.Consumer>
+                      )
                     }
-                  />
+                  }
+                />
               </DashboardRow>
             </Dashboard>
           )
