@@ -1,8 +1,9 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import { Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
+import { Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
+import {AccountCommitSummaryWidget} from "./widgets/accountCommitSummaryWidget";
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
@@ -17,13 +18,10 @@ const messages = {
 export const dashboard = (props) => (
   <Dashboard dashboard={`${dashboard_id}`}  {...props}>
     <DashboardRow h='15%'>
-      <ActivitySummaryWidget
+      <DashboardWidget
         w={1}
         title={messages.topRowTitle}
-        dataBinding={() => ({
-            dataSource: DataSources.activity_summary_for_account,
-            params: {}
-        })}
+        primary={AccountCommitSummaryWidget}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.organizations.display()}>

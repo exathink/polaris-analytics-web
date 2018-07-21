@@ -4,7 +4,7 @@ import Image from '../../image/rob.png';
 import IntlMessages from '../../components/utility/intlMessages';
 import FiveZeroZeroStyleWrapper from './500.style';
 
-class FiveHundred extends React.Component {
+export class FiveHundred extends React.Component {
   render() {
     return (
       <FiveZeroZeroStyleWrapper className="iso500Page">
