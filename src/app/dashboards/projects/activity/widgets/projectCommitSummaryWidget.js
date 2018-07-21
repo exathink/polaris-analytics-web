@@ -14,11 +14,7 @@ export const ProjectCommitSummaryWidget = ({projectKey}) => (
       gql`
            query projectCommitSummary($projectKey: String!) {
             project(projectKey: $projectKey ) {
-                commitSummary {
-                    forProject {
-                        ... CommitSummary
-                    }
-                }
+                ... CommitSummary
             }
            }
           ${CommitSummaryPanel.interface}
@@ -32,7 +28,7 @@ export const ProjectCommitSummaryWidget = ({projectKey}) => (
         if (error) return null;
         return (
           <CommitSummaryPanel
-            commitSummary={data.project.commitSummary.forProject}
+            commitSummary={data.project}
           />
         );
 

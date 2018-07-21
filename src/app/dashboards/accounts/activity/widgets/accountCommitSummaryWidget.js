@@ -14,11 +14,7 @@ export const AccountCommitSummaryWidget = () => (
       gql`
        {
         account {
-            commitSummary {
-                forAccount {
-                    ... CommitSummary
-                }
-            }
+            ... CommitSummary
         }
        }
        ${CommitSummaryPanel.interface}
@@ -29,7 +25,7 @@ export const AccountCommitSummaryWidget = () => (
         if (loading) return <Loading/>;
         if (error) return null;
         return (
-          <CommitSummaryPanel commitSummary={data.account.commitSummary.forAccount}/>
+          <CommitSummaryPanel commitSummary={data.account}/>
         )
       }
     }

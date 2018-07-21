@@ -9,5 +9,9 @@ export const Loading = () => (
       type="media"
       rows={1}
       ready={false}
-    />
+    >
+       <div>
+        {() => null}
+       </div>
+   </ReactPlaceholder>
 );

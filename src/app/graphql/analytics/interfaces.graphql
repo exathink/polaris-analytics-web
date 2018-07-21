@@ -1,4 +1,5 @@
 fragment CommitSummary on CommitSummary {
+    id
     earliestCommit
     latestCommit
     commitCount

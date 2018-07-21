@@ -58,7 +58,7 @@
     "react-app-rewired": "^1.4.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "rm -rf ./node_modules/.cache/babel-loader && yarn build:fragment-types && yarn build:messages && react-app-rewired start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
     "test": "react-app-rewired test --env=jsdom",

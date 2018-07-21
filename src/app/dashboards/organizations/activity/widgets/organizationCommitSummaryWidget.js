@@ -14,11 +14,7 @@ export const OrganizationCommitSummaryWidget = ({organizationKey}) => (
       gql`
            query organizationCommitSummary($organizationKey: String!) {
             organization(organizationKey: $organizationKey ) {
-                commitSummary {
-                    forOrganization {
-                        ... CommitSummary
-                    }
-                }
+                ... CommitSummary
             }
            }
           ${CommitSummaryPanel.interface}
@@ -32,7 +28,7 @@ export const OrganizationCommitSummaryWidget = ({organizationKey}) => (
         if (error) return null;
         return (
           <CommitSummaryPanel
-            commitSummary={data.organization.commitSummary.forOrganization}
+            commitSummary={data.organization}
           />
         );
 
