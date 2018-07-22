@@ -9,13 +9,16 @@ import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
 
 import {DataSources} from "./dataSources";
+import {AccountOrganizationsActivitySummaryWidget} from "./widgets/accountOrganizationsActivitySummaryWidget";
+import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import {AccountOrganizationsActivityDetailWidget} from "./widgets/accountOrganizationsActivityDetailWidget";
 
 const dashboard_id = 'dashboards.activity.account';
 const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Account Overview'/>
 };
 
-export const dashboard = (props) => (
+export const dashboard = withNavigationContext((props) => (
   <Dashboard dashboard={`${dashboard_id}`}  {...props}>
     <DashboardRow h='15%'>
       <DashboardWidget
@@ -25,15 +28,14 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.organizations.display()}>
-      <ActivityProfileWidget
+      <DashboardWidget
         w={1/2}
         name="organization-activity-profile"
+        context={props.context}
         childContext={Organizations}
         enableDrillDown={true}
-        dataBinding={() => ({
-          dataSource: DataSources.activity_level_for_account_by_organization,
-          params: {}
-        })}
+        primary={AccountOrganizationsActivitySummaryWidget}
+        detail={AccountOrganizationsActivityDetailWidget}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
@@ -62,5 +64,5 @@ export const dashboard = (props) => (
       />
     </DashboardRow>
   </Dashboard>
-);
+));
 export default dashboard;

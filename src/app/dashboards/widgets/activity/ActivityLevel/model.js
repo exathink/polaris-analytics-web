@@ -1,4 +1,4 @@
-// @flow
+
 import {Model} from "../../../../framework/viz/model/model";
 import type {Context} from "../../../../framework/navigation/context/context";
 import {ActiveContext} from "../../../../framework/navigation/context/activeContext";
@@ -73,9 +73,30 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
         })
       });
       return new ActivityLevelDetailModel(data, version, props.context, props.childContext, props.span_uom || 'Years');
-    }
-
   }
+
+  static initModelFromCommitSummaries(commitSummaries, props) {
+    const data = commitSummaries.map(
+      commitSummary => {
+        const earliest_commit = moment(commitSummary.earliestCommit);
+        const latest_commit = moment(commitSummary.latestCommit);
+        return withActivityLevel({
+          id: commitSummary.key,
+          entity_name: commitSummary.name,
+          commit_count: commitSummary.commitCount,
+          contributor_count: commitSummary.contributorCount,
+          earliest_commit: earliest_commit,
+          latest_commit: latest_commit,
+          span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
+          days_since_latest_commit: moment().diff(latest_commit, 'days'),
+        })
+      });
+    return new ActivityLevelDetailModel(data, 0, props.context, props.childContext, props.span_uom || 'Years');
+  }
+
+}
+
+
 
 
 

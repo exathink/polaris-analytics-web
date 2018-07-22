@@ -6,7 +6,7 @@ import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWi
 
 export const ActivityLevelSummaryView = (
   props => {
-    const {data, childContext} = props.model;
+    const {data, context, childContext} = props.model;
     return (
       <React.Fragment>
         <VizRow h={"100%"}>
@@ -16,7 +16,7 @@ export const ActivityLevelSummaryView = (
             <VizStickerWidget
               icon={props.model.childContext.icon}
               fontColor="#ffffff"
-              bgColor={props.context.color()}
+              bgColor={context.color()}
               text={childContext && data ? props.model.childContext.display(data.length) : null}
               number={props.model ? data.length : null}
               {...(props.headerWidth? {width:props.headerWidth} : {})}
