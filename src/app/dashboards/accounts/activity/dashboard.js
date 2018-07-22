@@ -1,17 +1,15 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import { Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
-import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {AccountCommitSummaryWidget} from "./widgets/accountCommitSummaryWidget";
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
 
 import {DataSources} from "./dataSources";
-import {AccountOrganizationsActivitySummaryWidget} from "./widgets/accountOrganizationsActivitySummaryWidget";
+import {AccountOrganizationsActivityWidget} from "./widgets/accountOrganizationsActivityWidget";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {AccountOrganizationsActivityDetailWidget} from "./widgets/accountOrganizationsActivityDetailWidget";
 
 const dashboard_id = 'dashboards.activity.account';
 const messages = {
@@ -34,8 +32,8 @@ export const dashboard = withNavigationContext((props) => (
         context={props.context}
         childContext={Organizations}
         enableDrillDown={true}
-        primary={AccountOrganizationsActivitySummaryWidget}
-        detail={AccountOrganizationsActivityDetailWidget}
+        primary={(props) => <AccountOrganizationsActivityWidget view={'summary'} {...props}/>}
+        detail={(props) => <AccountOrganizationsActivityWidget view={'detail'} {...props} />}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
