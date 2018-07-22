@@ -10,6 +10,8 @@ import Projects from "../../projects/context";
 import {DataSources} from "./dataSources";
 import {AccountOrganizationsActivityWidget} from "./widgets/accountOrganizationsActivityWidget";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import {AccountProjectsActivityWidget} from "./widgets/accountProjectsActivityWidget";
+import {AccountRepositoriesActivityWidget} from "./widgets/accountRepositoriesActivityWidget";
 
 const dashboard_id = 'dashboards.activity.account';
 const messages = {
@@ -37,28 +39,26 @@ export const dashboard = withNavigationContext((props) => (
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.projects.display()}>
-      <ActivityProfileWidget
+      <DashboardWidget
         w={1/2}
         name="project-activity-profile"
+        context={props.context}
         childContext={Projects}
         enableDrillDown={true}
-        dataBinding={() => ({
-          dataSource: DataSources.activity_level_for_account_by_project,
-          params: {}
-        })}
+        primary={(props) => <AccountProjectsActivityWidget view={'summary'} {...props}/>}
+        detail={(props) => <AccountProjectsActivityWidget view={'detail'} {...props} />}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.repositories.display()}>
-      <ActivityProfileWidget
+      <DashboardWidget
         w={1/2}
         name="repository-activity-profile"
         childContext={Contexts.repositories}
+        context={props.context}
         enableDrillDown={false}
         suppressDataLabelsAt={500}
-        dataBinding={() => ({
-          dataSource: DataSources.activity_level_for_account_by_repository,
-          params: {}
-        })}
+        primary={(props) => <AccountRepositoriesActivityWidget view={'summary'} {...props}/>}
+        detail={(props) => <AccountRepositoriesActivityWidget view={'detail'} {...props} />}
       />
     </DashboardRow>
   </Dashboard>
