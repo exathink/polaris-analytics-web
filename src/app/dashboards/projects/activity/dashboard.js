@@ -8,6 +8,7 @@ import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 import {Contexts} from "../../../meta/contexts";
 import {DataSources} from "./dataSources";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import {ProjectRepositoriesActivityWidget} from "./widgets/projectRepositoriesActivityWidget";
 
 const dashboard_id = 'dashboards.activity.projects.instance';
 const messages = {
@@ -15,32 +16,28 @@ const messages = {
 };
 
 
-export const dashboard = withNavigationContext(({match, ...rest}) => (
+export const dashboard = withNavigationContext(({match, context, ...rest}) => (
     <Dashboard dashboard={`${dashboard_id}`} {...rest}>
       <DashboardRow h='15%'>
         <DashboardWidget
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          primary={
-            props =>
-              <ProjectCommitSummaryWidget projectKey={props.context.getInstanceKey('project')}/>
-          }
+          projectKey={context.getInstanceKey('project')}
+          primary={ProjectCommitSummaryWidget}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
-        <ActivityProfileWidget
+        <DashboardWidget
           w={1 / 2}
           name="repository-activity-levels"
+          context={context}
           childContext={Contexts.repositories}
-          dataBinding={props => (
-            {
-              dataSource: DataSources.project_repositories_activity_summary,
-              params: {
-                project: props.context.getInstanceKey('project')
-              }
-            }
-          )}
+          enableDrillDown={false}
+          suppressDataLabelsAt={500}
+          projectKey={context.getInstanceKey('project')}
+          primary={(props) => <ProjectRepositoriesActivityWidget view={'summary'}  {...props}/>}
+          detail={(props) => <ProjectRepositoriesActivityWidget view={'detail'} {...props} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">
