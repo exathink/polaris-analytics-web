@@ -10,6 +10,7 @@ import Projects from "../../projects/context";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {DataSources} from "./dataSources";
 import {OrganizationCommitSummaryWidget} from "./widgets/organizationCommitSummaryWidget";
+import {OrganizationProjectsActivityWidget} from "./widgets/organizationProjectsActivityWidget";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -25,45 +26,33 @@ export const dashboard = withNavigationContext(
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          primary={
-            () =>
-              <OrganizationCommitSummaryWidget
-                organizationKey={context.getInstanceKey('organization')}
-              />
-          }
+          organizationKey={context.getInstanceKey('organization')}
+          primary={OrganizationCommitSummaryWidget}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.projects.display()}>
-        <ActivityProfileWidget
+        <DashboardWidget
           w={1 / 2}
           name="project-activity-levels"
           childContext={Projects}
+          context = {context}
           enableDrillDown={true}
-          dataBinding={props => (
-            {
-              dataSource: DataSources.activity_level_for_organization_by_project,
-              params: {
-                organization: props.context.getInstanceKey('organization')
-              }
-            }
-          )}
+          organizationKey={context.getInstanceKey('organization')}
+          primary={(props) => <OrganizationProjectsActivityWidget view={'summary'}  {...props}/>}
+          detail={(props) => <OrganizationProjectsActivityWidget view={'detail'} {...props} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
-        <ActivityProfileWidget
+        <DashboardWidget
           w={1 / 2}
           name="repository-activity-levels"
+          context={context}
           childContext={Contexts.repositories}
           enableDrillDown={false}
           suppressDataLabelsAt={500}
-          dataBinding={props => (
-            {
-              dataSource: DataSources.activity_level_for_organization_by_repository,
-              params: {
-                organization: props.context.getInstanceKey('organization')
-              }
-            }
-          )}
+          organizationKey={context.getInstanceKey('organization')}
+          primary={(props) => <OrganizationProjectsActivityWidget view={'summary'}  {...props}/>}
+          detail={(props) => <OrganizationProjectsActivityWidget view={'detail'} {...props} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">
