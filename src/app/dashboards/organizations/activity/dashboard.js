@@ -11,6 +11,7 @@ import {withNavigationContext} from "../../../framework/navigation/components/wi
 import {DataSources} from "./dataSources";
 import {OrganizationCommitSummaryWidget} from "./widgets/organizationCommitSummaryWidget";
 import {OrganizationProjectsActivityWidget} from "./widgets/organizationProjectsActivityWidget";
+import {OrganizationRepositoriesActivityWidget} from "./widgets/organizationRepositoriesActivityWidget";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -51,8 +52,8 @@ export const dashboard = withNavigationContext(
           enableDrillDown={false}
           suppressDataLabelsAt={500}
           organizationKey={context.getInstanceKey('organization')}
-          primary={(props) => <OrganizationProjectsActivityWidget view={'summary'}  {...props}/>}
-          detail={(props) => <OrganizationProjectsActivityWidget view={'detail'} {...props} />}
+          primary={(props) => <OrganizationRepositoriesActivityWidget view={'summary'}  {...props}/>}
+          detail={(props) => <OrganizationRepositoriesActivityWidget view={'detail'} {...props} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">
