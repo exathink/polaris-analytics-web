@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {Contexts} from "../../../meta/contexts";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {ProjectRepositoriesActivityWidget} from "./widgets/projectRepositoriesActivityWidget";
+import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 
 const dashboard_id = 'dashboards.activity.projects.instance';
 const messages = {
@@ -19,20 +19,33 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          primary={() => <CommitSummaryWidget dimension={'project'} instanceKey={context.getInstanceKey('project')}/>}
+          render={
+            () =>
+              <CommitSummaryWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+              />
+          }
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
         <DashboardWidget
           w={1 / 2}
           name="repository-activity-levels"
-          context={context}
-          childContext={Contexts.repositories}
-          enableDrillDown={false}
-          suppressDataLabelsAt={500}
-          projectKey={context.getInstanceKey('project')}
-          primary={(props) => <ProjectRepositoriesActivityWidget view={'summary'}  {...props}/>}
-          detail={(props) => <ProjectRepositoriesActivityWidget view={'detail'} {...props} />}
+          render={
+            ({view}) =>
+              <ChildDimensionActivityProfileWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+                childDimension={'repositories'}
+                context={context}
+                childContext={Contexts.repositories}
+                enableDrillDown={false}
+                suppressDataLabelsAt={500}
+                view={view}
+              />
+          }
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">

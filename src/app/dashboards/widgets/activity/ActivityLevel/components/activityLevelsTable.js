@@ -5,8 +5,9 @@ import {findVisibleLevels} from "../activityLevel";
 import Button from "../../../../../../components/uielements/button";
 import {formatDateTime} from "../../../../../i18n/utils";
 import {displaySingular, i18n} from "../../../../../i18n/index";
+import {injectIntl} from 'react-intl';
 
-export const ActivityLevelsTable = (props: Props) => {
+export const ActivityLevelsTable = injectIntl((props: Props) => {
   const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
   const drillDown = (event) => {
     if (props.onDrillDown) {
@@ -67,4 +68,4 @@ export const ActivityLevelsTable = (props: Props) => {
       className="-striped -highlight"
     />
   )
-};
+});

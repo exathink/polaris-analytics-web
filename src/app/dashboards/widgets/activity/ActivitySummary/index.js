@@ -1,3 +1,2 @@
 export {ActivitySummaryModel} from './model';
-export {ActivitySummaryWidget} from './widget';
-export {CommitSummaryWidget} from './gqlWidget';
+export {CommitSummaryWidget} from './widget';

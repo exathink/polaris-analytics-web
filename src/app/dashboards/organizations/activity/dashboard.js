@@ -3,11 +3,11 @@ import {FormattedMessage} from 'react-intl';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
-import Projects from "../../projects/context";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
-import {OrganizationProjectsActivityWidget} from "./widgets/organizationProjectsActivityWidget";
-import {OrganizationRepositoriesActivityWidget} from "./widgets/organizationRepositoriesActivityWidget";
+import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
+
+import Projects from "../../projects/context"
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -23,32 +23,46 @@ export const dashboard = withNavigationContext(
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          primary={() => <CommitSummaryWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
+          render={() => <CommitSummaryWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.projects.display()}>
         <DashboardWidget
           w={1 / 2}
           name="project-activity-levels"
-          childContext={Projects}
-          context = {context}
-          enableDrillDown={true}
-          organizationKey={context.getInstanceKey('organization')}
-          primary={(props) => <OrganizationProjectsActivityWidget view={'summary'}  {...props}/>}
-          detail={(props) => <OrganizationProjectsActivityWidget view={'detail'} {...props} />}
+          render={
+            ({view}) =>
+              <ChildDimensionActivityProfileWidget
+                dimension={'organization'}
+                instanceKey={context.getInstanceKey('organization')}
+                childDimension={'projects'}
+                context={context}
+                childContext={Projects}
+                enableDrillDown={true}
+                view={view}
+              />
+          }
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
         <DashboardWidget
           w={1 / 2}
           name="repository-activity-levels"
-          context={context}
-          childContext={Contexts.repositories}
-          enableDrillDown={false}
-          suppressDataLabelsAt={500}
-          organizationKey={context.getInstanceKey('organization')}
-          primary={(props) => <OrganizationRepositoriesActivityWidget view={'summary'}  {...props}/>}
-          detail={(props) => <OrganizationRepositoriesActivityWidget view={'detail'} {...props} />}
+          render={
+            ({view}) =>
+              <ChildDimensionActivityProfileWidget
+                dimension={'organization'}
+                instanceKey={context.getInstanceKey('organization')}
+                childDimension={'repositories'}
+                context={context}
+                childContext={Contexts.repositories}
+                enableDrillDown={false}
+                suppressDataLabelsAt={500}
+                view={view}
+              />
+          }
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">

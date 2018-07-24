@@ -1,17 +1,57 @@
 import React from 'react';
-import {DashboardWidget} from "../../../../framework/viz/dashboard";
-import {withModel} from "../../../../framework/viz/model/withModel";
-import {ActivityLevelDetailModel} from "./model";
+import {Query} from 'react-apollo';
+import gql from 'graphql-tag';
+import  {Loading} from "../../../../components/graphql/loading";
 
-import {ActivityLevelDetailView} from "./activityLevelDetailView";
-import {ActivityLevelSummaryView} from "./activityLevelSummaryView";
+import {analytics_service} from '../../../../services/graphql'
+import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
+import {ActivityLevelDetailModel} from "../../../widgets/activity/ActivityLevel";
+import {ActivityLevelSummaryView} from "../../../widgets/activity/ActivityLevel/activityLevelSummaryView";
+import {ActivityLevelDetailView} from "../../../widgets/activity/ActivityLevel/activityLevelDetailView";
 
-export const ActivityProfileWidget = withModel(ActivityLevelDetailModel)(
-  props => (
-    <DashboardWidget
-          primary={ActivityLevelSummaryView}
-          detail={ActivityLevelDetailView}
-          {...props}
-        />
-  )
+
+export const ChildDimensionActivityProfileWidget = ({dimension, instanceKey, childDimension, view, ...rest}) => (
+  <Query
+    client={analytics_service}
+    query={
+      gql`
+       query ${dimension}${childDimension}CommitSummaries($key: String!){
+          ${dimension}(key: $key){
+              id
+              ${childDimension} {
+                  commitSummaries {
+                      name
+                      key
+                      ... CommitSummary
+                  }
+
+              }
+          }
+       }
+       ${CommitSummaryPanel.interface}
+    `}
+     variables={{key: instanceKey}}
+  >
+    {
+      ({loading, error, data}) => {
+        if (loading) return <Loading/>;
+        if (error) return null;
+        const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
+                  data[dimension][childDimension].commitSummaries,
+                  rest
+                );
+        return (
+          view && view === 'detail'?
+            <ActivityLevelDetailView
+              model={model}
+              {...rest}
+            /> :
+            <ActivityLevelSummaryView
+              model={model}
+              {...rest}
+            />
+        )
+      }
+    }
+  </Query>
 );
