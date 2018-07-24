@@ -4,7 +4,7 @@ import Image from '../../image/idea-execute.png';
 import IntlMessages from '../../components/utility/intlMessages';
 import WipStyleWrapper from './wip.style';
 
-class Wip extends React.Component {
+export class Wip extends React.Component {
   render() {
     return (
       <WipStyleWrapper className="iso404Page">

@@ -3,10 +3,7 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {ProjectCommitSummaryWidget} from "./widgets/projectCommitSummaryWidget";
-import {ActivitySummaryWidget} from "../../widgets/activity/ActivitySummary";
-import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 import {Contexts} from "../../../meta/contexts";
-import {DataSources} from "./dataSources";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ProjectRepositoriesActivityWidget} from "./widgets/projectRepositoriesActivityWidget";
 

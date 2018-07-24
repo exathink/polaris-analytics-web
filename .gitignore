@@ -102,6 +102,7 @@ MBAIR/
 docker/**/install.sh
 
 node_modules
+_node_modules
 scripts/bin
 
 **/__generated__

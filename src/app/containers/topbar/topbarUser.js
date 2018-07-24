@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Popover from '../../../components/uielements/popover';
-import IntlMessages from '../../../components/utility/intlMessages';
 import TopbarDropdownWrapper from './topbarDropdown.style';
 import authActions from '../../../redux/auth/actions';
 import {gravatar_url} from "../../helpers/gravatar";

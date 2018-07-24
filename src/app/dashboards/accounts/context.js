@@ -1,11 +1,10 @@
 // @flow
-import Wip from "../../../containers/Page/wip";
 import Activity from './activity/topic';
 import {Topics} from "../../meta/topics";
 import type {Context} from '../../framework/navigation/context/context';
 
 import {Contexts} from "../../meta/contexts";
-import {SummaryChart} from "./activity/SummaryChart";
+import {Wip} from "../../../containers/Page/wip";
 
 const context: Context = {
   ...Contexts.accounts,
@@ -23,7 +22,7 @@ const context: Context = {
         routes: [
           {
             match: '',
-            component: SummaryChart
+            component: Wip
           }
         ]
       }

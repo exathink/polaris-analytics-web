@@ -3,11 +3,6 @@ import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {analytics_service} from '../../../services/graphql'
 import {CommitSummaryPanel} from "../../widgets/activity/ActivitySummary/view";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {NavigationContext} from "../../../framework/navigation/context/navigationContext";
-
-
-
 
 
 export const SummaryChart = props => {

@@ -1,13 +1,10 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {ActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 import {AccountCommitSummaryWidget} from "./widgets/accountCommitSummaryWidget";
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
-
-import {DataSources} from "./dataSources";
 import {AccountOrganizationsActivityWidget} from "./widgets/accountOrganizationsActivityWidget";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {AccountProjectsActivityWidget} from "./widgets/accountProjectsActivityWidget";

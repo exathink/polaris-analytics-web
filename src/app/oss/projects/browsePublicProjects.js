@@ -2,7 +2,7 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {admin_service} from "../../services/graphql";
-import {CardGrid, Card, CardImage, CardContent} from "../../components/cardGrid";
+import {CardGrid} from "../../components/cardGrid";
 import {ProjectCard} from "../../components/cards/projectCard";
 
 
