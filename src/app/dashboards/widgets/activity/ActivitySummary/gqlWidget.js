@@ -7,19 +7,19 @@ import {analytics_service} from '../../../../services/graphql'
 import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
 
 
-export const ProjectCommitSummaryWidget = ({projectKey}) => (
+export const CommitSummaryWidget = ({dimension, instanceKey}) => (
   <Query
     client={analytics_service}
     query={
       gql`
-           query projectCommitSummary($projectKey: String!) {
-            project(projectKey: $projectKey ) {
+           query ${dimension}CommitSummary($key: String!) {
+            ${dimension}(key: $key ) {
                 ... CommitSummary
             }
            }
           ${CommitSummaryPanel.interface}
       `}
-    variables={{projectKey}}
+    variables={{key: instanceKey}}
     errorPolicy={'all'}
   >
     {
@@ -28,7 +28,7 @@ export const ProjectCommitSummaryWidget = ({projectKey}) => (
         if (error) return null;
         return (
           <CommitSummaryPanel
-            commitSummary={data.project}
+            commitSummary={data[dimension]}
           />
         );
 

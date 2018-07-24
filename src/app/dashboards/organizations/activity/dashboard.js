@@ -5,7 +5,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {Contexts} from "../../../meta/contexts";
 import Projects from "../../projects/context";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {OrganizationCommitSummaryWidget} from "./widgets/organizationCommitSummaryWidget";
+import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {OrganizationProjectsActivityWidget} from "./widgets/organizationProjectsActivityWidget";
 import {OrganizationRepositoriesActivityWidget} from "./widgets/organizationRepositoriesActivityWidget";
 
@@ -23,8 +23,7 @@ export const dashboard = withNavigationContext(
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          organizationKey={context.getInstanceKey('organization')}
-          primary={OrganizationCommitSummaryWidget}
+          primary={() => <CommitSummaryWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.projects.display()}>

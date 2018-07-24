@@ -1,7 +1,7 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {AccountCommitSummaryWidget} from "./widgets/accountCommitSummaryWidget";
+import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
@@ -21,7 +21,7 @@ export const dashboard = withNavigationContext((props) => (
       <DashboardWidget
         w={1}
         title={messages.topRowTitle}
-        primary={AccountCommitSummaryWidget}
+        primary={() => <CommitSummaryWidget dimension={'account'} instanceKey={""}/>}
       />
     </DashboardRow>
     <DashboardRow h='22%' title={Contexts.organizations.display()}>
