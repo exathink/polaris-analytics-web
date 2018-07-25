@@ -12,6 +12,10 @@ import {GRAPHQL_ADMIN_URL, GRAPHQL_ANALYTICS_URL} from "../../../config/url";
 
 import {ApolloProvider} from 'react-apollo';
 
+export const defaultPollInterval = service => {
+  return 30000;
+};
+
 export const analytics_service = new ApolloClient({
   cache: new InMemoryCache({
     fragmentMatcher: new IntrospectionFragmentMatcher({
@@ -23,6 +27,8 @@ export const analytics_service = new ApolloClient({
     credentials: 'include',
   })
 });
+analytics_service.defaultPollInterval = () => defaultPollInterval(analytics_service);
+
 
 export const admin_service = new ApolloClient({
   cache: new InMemoryCache({
@@ -35,6 +41,9 @@ export const admin_service = new ApolloClient({
     credentials: 'include',
   })
 });
+admin_service.defaultPollInterval = () => defaultPollInterval(admin_service);
+
+
 
 
 export const DefaultApolloProvider = props => (

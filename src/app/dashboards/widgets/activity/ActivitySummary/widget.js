@@ -7,7 +7,12 @@ import {analytics_service} from '../../../../services/graphql'
 import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
 
 
-export const CommitSummaryWidget = ({dimension, instanceKey}) => (
+export const CommitSummaryWidget = (
+  {
+    dimension,
+    instanceKey,
+    pollInterval
+  }) => (
   <Query
     client={analytics_service}
     query={
@@ -21,6 +26,7 @@ export const CommitSummaryWidget = ({dimension, instanceKey}) => (
       `}
     variables={{key: instanceKey}}
     errorPolicy={'all'}
+    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
       ({loading, error, data}) => {

@@ -10,7 +10,15 @@ import {ActivityLevelSummaryView} from "../../../widgets/activity/ActivityLevel/
 import {ActivityLevelDetailView} from "../../../widgets/activity/ActivityLevel/activityLevelDetailView";
 
 
-export const ChildDimensionActivityProfileWidget = ({dimension, instanceKey, childDimension, view, ...rest}) => (
+export const ChildDimensionActivityProfileWidget = (
+  {
+    dimension,
+    instanceKey,
+    childDimension,
+    view,
+    pollInterval,
+    ...rest
+  }) => (
   <Query
     client={analytics_service}
     query={
@@ -31,6 +39,7 @@ export const ChildDimensionActivityProfileWidget = ({dimension, instanceKey, chi
        ${CommitSummaryPanel.interface}
     `}
      variables={{key: instanceKey}}
+     pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
       ({loading, error, data}) => {
