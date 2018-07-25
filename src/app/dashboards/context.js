@@ -2,6 +2,7 @@ import Organizations from "./organizations/context";
 import type {Context} from "../framework/navigation/context/context";
 import Projects from "./projects/context";
 import Accounts from "./accounts/context";
+import Repositories from "./repositories/context";
 
 const context: Context = {
   name: 'dashboard',
@@ -14,6 +15,10 @@ const context: Context = {
     {
       match: 'projects',
       context: Projects,
+    },
+    {
+      match: 'repositories',
+      context: Repositories,
     },
     {
       match: 'account',

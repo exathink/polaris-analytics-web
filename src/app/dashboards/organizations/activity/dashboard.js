@@ -8,6 +8,7 @@ import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 
 import Projects from "../../projects/context"
+import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -56,8 +57,8 @@ export const dashboard = withNavigationContext(
                 instanceKey={context.getInstanceKey('organization')}
                 childDimension={'repositories'}
                 context={context}
-                childContext={Contexts.repositories}
-                enableDrillDown={false}
+                childContext={Repositories}
+                enableDrillDown={true}
                 suppressDataLabelsAt={500}
                 view={view}
               />

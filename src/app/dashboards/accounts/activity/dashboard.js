@@ -7,6 +7,8 @@ import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/Activi
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
 import Projects from "../../projects/context";
+import Repositories from "../../repositories/context";
+
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
 const dashboard_id = 'dashboards.activity.account';
@@ -70,9 +72,9 @@ export const dashboard = withNavigationContext((props) => (
               dimension={'account'}
               childDimension={'repositories'}
               instanceKey={""}
-              childContext={Contexts.repositories}
+              childContext={Repositories}
               context={props.context}
-              enableDrillDown={false}
+              enableDrillDown={true}
               suppressDataLabelsAt={500}
               view={view}
             />

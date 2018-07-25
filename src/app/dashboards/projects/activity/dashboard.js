@@ -3,6 +3,8 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
 import {Contexts} from "../../../meta/contexts";
+import Repositories from "../../repositories/context";
+
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
 
@@ -39,8 +41,8 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 instanceKey={context.getInstanceKey('project')}
                 childDimension={'repositories'}
                 context={context}
-                childContext={Contexts.repositories}
-                enableDrillDown={false}
+                childContext={Repositories}
+                enableDrillDown={true}
                 suppressDataLabelsAt={500}
                 view={view}
               />

@@ -84,6 +84,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-soup-can',
+    color: '#27b2b0',
 
   },
   oss: {
