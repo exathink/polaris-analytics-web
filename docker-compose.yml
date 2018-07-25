@@ -6,6 +6,7 @@ services:
     volumes:
       - ./src:/project/src
       - ./public:/project/public
+      - ./build:/project/build
 
 
     ports:
