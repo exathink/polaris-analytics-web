@@ -27,6 +27,7 @@ export const ChildDimensionActivityProfileWidget = (
           ${dimension}(key: $key){
               id
               ${childDimension} {
+                  count
                   commitSummaries {
                       name
                       key
@@ -47,6 +48,7 @@ export const ChildDimensionActivityProfileWidget = (
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
                   data[dimension][childDimension].commitSummaries,
+                  data[dimension][childDimension].count,
                   rest
                 );
         return (

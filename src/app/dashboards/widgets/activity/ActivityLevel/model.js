@@ -40,13 +40,14 @@ type Props = {context: ActiveContext, childContext: Context, span_uom? : string}
 
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   context: ActiveContext;
+  childCount: number;
   childContext: Context;
   span_uom: string;
-  onDrillDown: () => void;
 
 
-  constructor(data: Array<ActivitySummary>, version: number, context: ActiveContext, childContext: Context, span_uom: string) {
+  constructor(data: Array<ActivitySummary>, version: number, childCount, context: ActiveContext, childContext: Context, span_uom: string) {
     super(data, version);
+    this.childCount = childCount,
     this.context = context;
     this.childContext = childContext;
     this.span_uom = span_uom;
@@ -75,7 +76,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
       return new ActivityLevelDetailModel(data, version, props.context, props.childContext, props.span_uom || 'Years');
   }
 
-  static initModelFromCommitSummaries(commitSummaries, props) {
+  static initModelFromCommitSummaries(commitSummaries, childCount, props) {
     const data = commitSummaries.map(
       commitSummary => {
         const earliest_commit = moment(commitSummary.earliestCommit);
@@ -91,7 +92,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
         })
       });
-    return new ActivityLevelDetailModel(data, 0, props.context, props.childContext, props.span_uom || 'Years');
+    return new ActivityLevelDetailModel(data, 0,  childCount, props.context, props.childContext, props.span_uom || 'Years');
   }
 
 }

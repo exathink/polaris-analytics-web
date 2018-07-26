@@ -6,7 +6,7 @@ import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWi
 
 export const ActivityLevelSummaryView = (
   props => {
-    const {data, context, childContext} = props.model;
+    const {data, context, childContext, childCount} = props.model;
     return (
       <React.Fragment>
         <VizRow h={"100%"}>
@@ -17,8 +17,8 @@ export const ActivityLevelSummaryView = (
               icon={props.model.childContext.icon}
               fontColor="#ffffff"
               bgColor={context.color()}
-              text={childContext && data ? props.model.childContext.display(data.length) : null}
-              number={props.model ? data.length : null}
+              text={childContext && data ? props.model.childContext.display(childCount) : null}
+              number={props.model ? childCount : null}
               {...(props.headerWidth? {width:props.headerWidth} : {})}
             >
               <ActivityProfileBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
