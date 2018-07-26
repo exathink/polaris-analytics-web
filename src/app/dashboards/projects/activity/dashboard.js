@@ -14,8 +14,9 @@ const messages = {
 };
 
 
-export const dashboard = withNavigationContext(({match, context, ...rest}) => (
-    <Dashboard dashboard={`${dashboard_id}`} {...rest}>
+export const dashboard = withNavigationContext(
+  ({context}) => (
+    <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h='15%'>
         <DashboardWidget
           w={1}

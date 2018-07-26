@@ -17,11 +17,12 @@ const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Account Overview'/>
 };
 
-export const dashboard = withUserContext(withNavigationContext((props) => {
-  const accountKey = props.account.account_key;
+export const dashboard = withUserContext(withNavigationContext(
+  ({account, context}) => {
+  const accountKey = account.account_key;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}  {...props}>
+    <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h='15%'>
         <DashboardWidget
           w={1}
@@ -39,7 +40,7 @@ export const dashboard = withUserContext(withNavigationContext((props) => {
                 dimension={'account'}
                 childDimension={'organizations'}
                 instanceKey={accountKey}
-                context={props.context}
+                context={context}
                 childContext={Organizations}
                 enableDrillDown={true}
                 view={view}
@@ -57,7 +58,7 @@ export const dashboard = withUserContext(withNavigationContext((props) => {
                 dimension={'account'}
                 childDimension={'projects'}
                 instanceKey={accountKey}
-                context={props.context}
+                context={context}
                 childContext={Projects}
                 enableDrillDown={true}
                 view={view}
@@ -77,7 +78,7 @@ export const dashboard = withUserContext(withNavigationContext((props) => {
                 childDimension={'repositories'}
                 instanceKey={accountKey}
                 childContext={Repositories}
-                context={props.context}
+                context={context}
                 enableDrillDown={true}
                 suppressDataLabelsAt={500}
                 view={view}
