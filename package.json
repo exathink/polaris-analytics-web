@@ -55,7 +55,10 @@
     "flow-bin": "^0.66.0",
     "react-app-rewire-bundle-analyzer": "^1.0.1",
     "react-app-rewire-react-intl": "^2.4.0",
-    "react-app-rewired": "^1.4.0"
+    "react-app-rewired": "^1.4.0",
+    "react-test-renderer": "^16.4.1",
+    "react-testing-library": "^4.1.5",
+    "jest-dom": "^1.11.0"
   },
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader && yarn build:fragment-types && yarn build:messages && react-app-rewired start",

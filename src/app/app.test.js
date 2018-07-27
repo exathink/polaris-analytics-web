@@ -1,19 +1,17 @@
-import AppRouter from './appRouter';
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import { shallowToJson } from 'enzyme-to-json';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import Adapter from 'enzyme-adapter-react-16';
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+import { render } from 'react-testing-library';
+// react-testing-library renders your components to document.body,
+// this will ensure they're removed after each test.
+import 'react-testing-library/cleanup-after-each';
 
-Enzyme.configure({ adapter: new Adapter() });
+// this adds jest-dom's custom assertions
+import 'jest-dom/extend-expect';
 
-describe('<AppRouter />', () => {
-  it('renders with default props', () => {
-    const store = mockStore();
-    const wrapper = shallow(<AppRouter store={store} />);
-    expect(shallowToJson(wrapper)).toMatchSnapshot();
-  });
+const App = () => (
+  <div>Welcome to React</div>
+);
+
+it('renders welcome message', () => {
+  const { getByText } = render(<App />);
+  expect(getByText('Welcome to React')).toBeInTheDocument();
 });
