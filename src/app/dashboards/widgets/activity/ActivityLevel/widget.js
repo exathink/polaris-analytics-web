@@ -1,7 +1,7 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import  {Loading} from "../../../../components/graphql/loading";
+import {Loading} from "../../../../components/graphql/loading";
 
 import {analytics_service} from '../../../../services/graphql'
 import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
@@ -23,36 +23,46 @@ export const ChildDimensionActivityProfileWidget = (
     client={analytics_service}
     query={
       gql`
-       query ${dimension}${childDimension}CommitSummaries($key: String!){
+       query ${dimension}${childDimension}ActivitySummaries($key: String!){
           ${dimension}(key: $key){
               id
-              ${childDimension} {
-                  count
-                  commitSummaries {
-                      name
-                      key
-                      ... CommitSummary
-                  }
-
+              ${childDimension}(interfaces: [CommitSummary, ContributorSummary]) {
+                count
+                edges{
+                    node {
+                      id
+                      ... on NamedNode{
+                        name
+                        key
+                      }
+                      ... on CommitSummary{
+                          earliestCommit
+                          latestCommit
+                          commitCount
+                      }
+                      ... on ContributorSummary {
+                        contributorCount
+                      }
+                    }
+                }
               }
           }
        }
-       ${CommitSummaryPanel.interface}
     `}
-     variables={{key: instanceKey}}
-     pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    variables={{key: instanceKey}}
+    //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
       ({loading, error, data}) => {
         if (loading) return <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
-                  data[dimension][childDimension].commitSummaries,
-                  data[dimension][childDimension].count,
-                  rest
-                );
+          data[dimension][childDimension].edges.map(edge => edge.node),
+          data[dimension][childDimension].count,
+          rest
+        );
         return (
-          view && view === 'detail'?
+          view && view === 'detail' ?
             <ActivityLevelDetailView
               model={model}
               {...rest}

@@ -1,7 +1,13 @@
-fragment CommitSummary on CommitSummary {
-    id
+fragment CommitSummary on CommitSummary{
     earliestCommit
     latestCommit
     commitCount
-    contributorCount
 }
+fragment ContributorSummary on ContributorSummary {
+    contributorCount
+    unassignedAliasCount
+    uniqueContributorCount
+}
+
+
+

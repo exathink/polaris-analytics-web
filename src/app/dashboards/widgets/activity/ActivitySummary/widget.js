@@ -18,15 +18,22 @@ export const CommitSummaryWidget = (
     query={
       gql`
            query ${dimension}CommitSummary($key: String!) {
-            ${dimension}(key: $key ) {
-                ... CommitSummary
+            ${dimension}(key: $key, interfaces: [CommitSummary, ContributorSummary]) {
+                id
+                ... on CommitSummary {
+                    earliestCommit
+                    latestCommit
+                    commitCount
+                }
+                ... on ContributorSummary {
+                    contributorCount
+                }
             }
            }
-          ${CommitSummaryPanel.interface}
       `}
     variables={{key: instanceKey}}
     errorPolicy={'all'}
-    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
       ({loading, error, data}) => {
