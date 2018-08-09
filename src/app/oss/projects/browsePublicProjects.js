@@ -1,7 +1,7 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {admin_service} from "../../services/graphql";
+import {analytics_service} from "../../services/graphql";
 import {CardGrid} from "../../components/cardGrid";
 import {ProjectCard} from "../../components/cards/projectCard";
 
@@ -11,22 +11,24 @@ export class BrowsePublicProjects extends React.Component {
   render() {
     return (
       <Query
-        client={admin_service}
+        client={analytics_service}
         query={gql`
-       {
-         projectSummariesConnection(filter: all_public) {
-          edges {
-            node {
-              id
-              name
-              projectKey
-              organizationName
-              organizationKey
-              repoCount
-            }
-          }
-        }
-       }
+           query allPublicProjects {
+                    public {
+                        projects(interfaces: [NamedNode, RepositoryCount, OrganizationRef]) {
+                            edges {
+                                node {
+                                  id
+                                  name
+                                  key
+                                  repositoryCount
+                                  organizationKey
+                                  organizationName
+                                }
+                            }
+                        }
+                    }
+               }
      `}
       >
         {
@@ -36,9 +38,9 @@ export class BrowsePublicProjects extends React.Component {
             return (
               <CardGrid>
                 {
-                  data.projectSummariesConnection.edges.map(
+                  data.public.projects.edges.map(
                     edge => (
-                      <ProjectCard {...edge.node}/>
+                      <ProjectCard projectKey={edge.node.key} {...edge.node}/>
                     )
                   )
                 }

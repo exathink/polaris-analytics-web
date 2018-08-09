@@ -4,7 +4,7 @@ import {url_for_instance} from "../../framework/navigation/context/helpers";
 import {Link} from 'react-router-dom';
 import {Card, CardImage, CardContent} from "../cardGrid";
 
-export const OrganizationCard = ({id, name, organizationKey, repoCount, projectCount}) => {
+export const OrganizationCard = ({id, name, organizationKey, repositoryCount, projectCount}) => {
   return (
     <Card key={id}>
       <Link
@@ -28,7 +28,7 @@ export const OrganizationCard = ({id, name, organizationKey, repoCount, projectC
             <span>Projects: {projectCount}</span>
         }
         <Link to={`${url_for_instance(Organizations, name, organizationKey)}/activity/repository-activity-levels`}>
-          <span>Repositories: {repoCount}</span>
+          <span>Repositories: {repositoryCount}</span>
         </Link>
 
       </CardContent>
