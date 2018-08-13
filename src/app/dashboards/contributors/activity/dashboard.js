@@ -1,12 +1,13 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
 
-const dashboard_id = 'dashboards.activity.repositories.instance';
+const dashboard_id = 'dashboards.activity.contributors.instance';
 const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Repository Overview'/>
+  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Contributor Overview'/>
 };
 
 
@@ -19,9 +20,8 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           title={messages.topRowTitle}
           render={
             () =>
-              <DimensionActivitySummaryPanelWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
+              <ContributorActivitySummaryWidget
+                instanceKey={context.getInstanceKey('contributor')}
               />
           }
         />

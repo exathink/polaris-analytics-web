@@ -19,7 +19,7 @@ export type ActivitySummary = {
   id: string;
   entity_name: string,
   commit_count: number,
-  contributor_count: number,
+  secondary_measure: number,
   earliest_commit: Date,
   latest_commit: Date,
   span: number,
@@ -41,13 +41,15 @@ type Props = {context: ActiveContext, childContext: Context, span_uom? : string}
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   context: ActiveContext;
   childCount: number;
+  secondaryMeasureContext: Context;
   childContext: Context;
   span_uom: string;
 
 
-  constructor(data: Array<ActivitySummary>, version: number, childCount, context: ActiveContext, childContext: Context, span_uom: string) {
+  constructor(data: Array<ActivitySummary>, version: number, childCount, secondaryMeasureContext: Context, context: ActiveContext, childContext: Context, span_uom: string) {
     super(data, version);
-    this.childCount = childCount,
+    this.childCount = childCount;
+    this.secondaryMeasureContext = secondaryMeasureContext;
     this.context = context;
     this.childContext = childContext;
     this.span_uom = span_uom;
@@ -57,26 +59,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
     this.context.drillDown(this.childContext, event.entity_name, event.id);
   }
 
-  static defaultInitModel(source_data: Array<SourceData>, props: Props, version: number =0) {
-    const data = source_data.map((source_data_item) => {
-        const earliest_commit = polarisTimestamp(source_data_item.earliest_commit);
-        const latest_commit = polarisTimestamp(source_data_item.latest_commit);
-
-        return withActivityLevel({
-          id: source_data_item.detail_instance_id,
-          entity_name: source_data_item.detail_instance_name,
-          commit_count: source_data_item.commit_count,
-          contributor_count: source_data_item.contributor_count,
-          earliest_commit: earliest_commit,
-          latest_commit: latest_commit,
-          span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
-          days_since_latest_commit: moment().diff(latest_commit, 'days'),
-        })
-      });
-      return new ActivityLevelDetailModel(data, version, props.context, props.childContext, props.span_uom || 'Years');
-  }
-
-  static initModelFromCommitSummaries(commitSummaries, childCount, props) {
+  static initModelFromCommitSummaries(commitSummaries, childCount, secondaryMeasure, secondaryMeasureContext, props) {
     const data = commitSummaries.map(
       commitSummary => {
         const earliest_commit = moment(commitSummary.earliestCommit);
@@ -85,14 +68,14 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           id: commitSummary.key,
           entity_name: commitSummary.name,
           commit_count: commitSummary.commitCount,
-          contributor_count: commitSummary.contributorCount,
           earliest_commit: earliest_commit,
           latest_commit: latest_commit,
           span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
+          secondary_measure: commitSummary[secondaryMeasure]
         })
       });
-    return new ActivityLevelDetailModel(data, 0,  childCount, props.context, props.childContext, props.span_uom || 'Years');
+    return new ActivityLevelDetailModel(data, 0,  childCount, secondaryMeasureContext,  props.context, props.childContext, props.span_uom || 'Years');
   }
 
 }

@@ -8,7 +8,7 @@ export function displayPlural(intl, context) {
   return intl.formatMessage(context.message, {quantity: 0})
 }
 
-export function i18n(intl, message, values = {}) {
+export function formatTerm(intl, message, values = {}) {
   const md = Terms[message];
   if (md) {
     return intl.formatMessage(md, values)
@@ -17,6 +17,8 @@ export function i18n(intl, message, values = {}) {
     return `<${message}>`
   }
 }
+
+
 
 export function formatDateTime(intl, datetime) {
   return intl.formatDate(datetime, {

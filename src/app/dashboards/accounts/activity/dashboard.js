@@ -1,8 +1,8 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
-import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
+import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
 import {Contexts} from "../../../meta/contexts";
 import Organizations from "../../organizations/context";
@@ -27,7 +27,7 @@ export const dashboard = withUserContext(withNavigationContext(
         <DashboardWidget
           w={1}
           title={messages.topRowTitle}
-          render={() => <CommitSummaryWidget dimension={'account'} instanceKey={accountKey}/>}
+          render={() => <DimensionActivitySummaryPanelWidget dimension={'account'} instanceKey={accountKey}/>}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.organizations.display()}>

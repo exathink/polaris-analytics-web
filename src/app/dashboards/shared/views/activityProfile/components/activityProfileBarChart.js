@@ -1,7 +1,7 @@
 import {tooltipHtml} from "../../../../../framework/viz/charts/index";
 import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
 import {Chart} from "../../../../../framework/viz/charts/index";
-import {i18n} from "../../../../../i18n/index";
+import {formatTerm} from "../../../../../i18n/index";
 
 
 
@@ -21,7 +21,7 @@ export const ActivityProfileBarChart = Chart(
           {});
 
         const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
-          name: i18n(intl, activityLevel.display_name),
+          name: formatTerm(intl, activityLevel.display_name),
           id: activityLevel.display_name,
           key: activityLevel.display_name,
           data: [totalsByActivityLevel[activityLevel.display_name]],
@@ -30,7 +30,7 @@ export const ActivityProfileBarChart = Chart(
         }));
 
 
-        const title = `${orientation === 'vertical' ? i18n(intl, 'Profile') : i18n(intl, 'Activity Profile')} `;
+        const title = `${orientation === 'vertical' ? formatTerm(intl, 'Profile') : formatTerm(intl, 'Activity Profile')} `;
 
 
         return {

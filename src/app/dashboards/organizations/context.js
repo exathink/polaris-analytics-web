@@ -3,6 +3,8 @@ import {FormattedMessage} from 'react-intl';
 import Wip from "../../../containers/Page/wip";
 import FourZeroFour from "../../../containers/Page/404";
 import Activity from './activity/topic';
+import Contributors from './contributors/topic';
+
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
@@ -33,15 +35,7 @@ const context = {
           {
 
             match: 'contributors',
-            topic: {
-              ...Topics.contributors,
-              routes: [
-                {
-                  match: '',
-                  component: Wip
-                }
-              ]
-            }
+            topic: Contributors
           },
           {
             match: '',

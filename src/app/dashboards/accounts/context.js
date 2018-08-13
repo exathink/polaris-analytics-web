@@ -1,5 +1,7 @@
 // @flow
 import Activity from './activity/topic';
+import Contributors from './contributors/topic';
+
 import {Topics} from "../../meta/topics";
 import type {Context} from '../../framework/navigation/context/context';
 
@@ -15,17 +17,8 @@ const context: Context = {
       topic: Activity
     },
     {
-
       match: 'contributors',
-      topic: {
-        ...Topics.contributors,
-        routes: [
-          {
-            match: '',
-            component: Wip
-          }
-        ]
-      }
+      topic: Contributors
     },
     {
       match:'',

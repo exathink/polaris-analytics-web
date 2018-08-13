@@ -2,12 +2,13 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
+import {analytics_service} from '../../../../services/graphql/index';
+import {ContributorSummary} from '../../../../graphql/analytics/interfaces.graphql';
+import {ActivitySummaryPanel} from "../../views/activitySummary";
+import {Contexts} from "../../../../meta/index";
 
-import {analytics_service} from '../../../../services/graphql'
-import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
 
-
-export const CommitSummaryWidget = (
+export const DimensionActivitySummaryPanelWidget = (
   {
     dimension,
     instanceKey,
@@ -33,17 +34,24 @@ export const CommitSummaryWidget = (
       `}
     variables={{key: instanceKey}}
     errorPolicy={'all'}
-    //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
       ({loading, error, data}) => {
         if (loading) return <Loading/>;
         if (error) return null;
-        return (
-          <CommitSummaryPanel
-            commitSummary={data[dimension]}
-          />
-        );
+        const {contributorCount, ...commitSummary} = data[dimension];
+            return(
+                <ActivitySummaryPanel
+                  model={
+                    {
+                      ...commitSummary,
+                      secondaryMeasure: contributorCount
+                    }
+                  }
+                  secondaryMeasureContext={Contexts.contributors}
+                />
+            )
 
       }
     }

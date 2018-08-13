@@ -4,7 +4,7 @@ import {Table} from "../../../containers/table/index";
 import {findVisibleLevels} from "../activityLevel";
 import Button from "../../../../../../components/uielements/button";
 import {formatDateTime} from "../../../../../i18n/utils";
-import {displaySingular, i18n} from "../../../../../i18n/index";
+import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";
 import {injectIntl} from 'react-intl';
 
 export const ActivityLevelsTable = injectIntl((props: Props) => {
@@ -45,22 +45,22 @@ export const ActivityLevelsTable = injectIntl((props: Props) => {
         )
 
       }, {
-        Header: `${i18n(intl, 'Commits')}`,
+        Header: `${formatTerm(intl, 'Commits')}`,
         accessor: 'commit_count',
       }, {
-        Header: `${i18n(intl, 'Contributors')}`,
-        accessor: 'contributor_count',
+        Header: `${displayPlural(intl, model.secondaryMeasureContext)}`,
+        accessor: 'secondary_measure',
       }, {
         id: 'earliest-commit-col',
-        Header: `${i18n(intl, 'Earliest Commit')}`,
+        Header: `${formatTerm(intl, 'Earliest Commit')}`,
         accessor: activitySummary => formatDateTime(intl,activitySummary.earliest_commit),
       }, {
         id: 'latest-commit-col',
-        Header: `${i18n(intl, 'Latest Commit')}`,
+        Header: `${formatTerm(intl, 'Latest Commit')}`,
         accessor: activitySummary => formatDateTime(intl, activitySummary.latest_commit),
       }, {
         id: 'timespan-col',
-        Header: `${i18n(intl, 'History')} (${props.model.span_uom})`,
+        Header: `${formatTerm(intl, 'History')} (${props.model.span_uom})`,
         accessor: activitySummary => intl.formatNumber(activitySummary.span),
       }
       ]}

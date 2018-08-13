@@ -4,8 +4,8 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
-import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
+import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
 import Projects from "../../projects/context"
 import Repositories from "../../repositories/context";
@@ -24,7 +24,7 @@ export const dashboard = withNavigationContext(
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          render={() => <CommitSummaryWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
+          render={() => <DimensionActivitySummaryPanelWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.projects.display()}>

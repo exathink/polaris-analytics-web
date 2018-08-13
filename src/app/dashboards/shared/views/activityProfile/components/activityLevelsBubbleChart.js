@@ -3,7 +3,7 @@ import {defineMessages} from 'react-intl';
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {Chart, tooltipHtml} from '../../../../../framework/viz/charts/index';
 import {PointSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/pointSelectionHandler";
-import {displaySingular, i18n} from "../../../../../i18n/index";
+import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";
 
 
 const componentId = 'activitySummaryBubbleChart';
@@ -37,7 +37,7 @@ const initSeries = props => {
       name: activitySummary.entity_name,
       x: activitySummary.span,
       y: activitySummary.commit_count,
-      z: activitySummary.contributor_count,
+      z: activitySummary.secondary_measure,
       days_since_latest_commit: activitySummary.days_since_latest_commit
     }));
 
@@ -91,14 +91,14 @@ const getConfig =  props => {
     xAxis: {
       type: 'linear',
       title: {
-        text: `${i18n(intl, 'History')} (${model.span_uom})`
+        text: `${formatTerm(intl, 'History')} (${model.span_uom})`
       }
     },
     yAxis: {
       type: model.data.length > 1 ? 'logarithmic' : 'linear',
       id: 'commits',
       title: {
-        text: `${i18n(intl, 'Number of commits')}`
+        text: `${formatTerm(intl, 'Number of commits')}`
       }
     },
     series: initSeries(props),
@@ -110,9 +110,9 @@ const getConfig =  props => {
         return tooltipHtml({
           header: `${childContextName}: ${this.key}`,
           body: [
-            [`${i18n(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`],
-            [`${i18n(intl, 'History')}:`, `${intl.formatNumber(this.x, {maximumFractionDigits:0})} ${model.span_uom}`],
-            [`${i18n(intl, 'Contributors')}:`, `${this.point ? intl.formatNumber(this.point.z) : ''}`]
+            [`${formatTerm(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`],
+            [`${formatTerm(intl, 'History')}:`, `${intl.formatNumber(this.x, {maximumFractionDigits:0})} ${model.span_uom}`],
+            [`${displayPlural(intl, model.secondaryMeasureContext)}:`, `${this.point ? intl.formatNumber(this.point.z) : ''}`]
           ]
         })
       }

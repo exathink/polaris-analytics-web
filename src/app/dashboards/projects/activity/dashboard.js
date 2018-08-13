@@ -1,12 +1,12 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {CommitSummaryWidget} from "../../widgets/activity/ActivitySummary";
+import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
 import Repositories from "../../repositories/context";
 
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {ChildDimensionActivityProfileWidget} from "../../widgets/activity/ActivityLevel";
+import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
 const dashboard_id = 'dashboards.activity.projects.instance';
 const messages = {
@@ -24,7 +24,7 @@ export const dashboard = withNavigationContext(
           title={messages.topRowTitle}
           render={
             () =>
-              <CommitSummaryWidget
+              <DimensionActivitySummaryPanelWidget
                 dimension={'project'}
                 instanceKey={context.getInstanceKey('project')}
               />

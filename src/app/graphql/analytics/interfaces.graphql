@@ -3,11 +3,13 @@ fragment CommitSummary on CommitSummary{
     latestCommit
     commitCount
 }
+
 fragment ContributorSummary on ContributorSummary {
     contributorCount
-    unassignedAliasCount
-    uniqueContributorCount
 }
 
 
+fragment RepositoryCount on RepositoryCount {
+    repositoryCount
+}
 

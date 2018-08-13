@@ -19,6 +19,14 @@ const messages = defineMessages({
     id: 'contexts.repositories.display',
     defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
   },
+  contributors: {
+    id: 'contexts.contributors.display',
+    defaultMessage: "{quantity, plural, one {Contributor} other {Contributors}}"
+  },
+  commits: {
+    id: 'contexts.commits.display',
+    defaultMessage: "{quantity, plural, one {Commit} other {Commits}}"
+  },
   oss: {
     id: 'contexts.oss',
     defaultMessage: "Open Source"
@@ -73,6 +81,20 @@ export const Contexts = {
     icon: 'ion-folder',
     color: '#8188b2'
   },
+  contributors: {
+    name: 'contributors',
+    message: messages.contributors,
+    display:
+        function (quantity = 0) {
+          return <FormattedMessage
+            {...messages.contributors}
+            values={{quantity: quantity}}
+          />
+        },
+    icon: 'ion-ios-people',
+    color: '#a9b294',
+
+  },
   repositories: {
     name: 'repositories',
     message: messages.repositories,
@@ -85,6 +107,20 @@ export const Contexts = {
         },
     icon: 'ion-soup-can',
     color: '#27b2b0',
+
+  },
+  commits: {
+    name: 'commits',
+    message: messages.commits,
+    display:
+        function (quantity = 0) {
+          return <FormattedMessage
+            {...messages.commits}
+            values={{quantity: quantity}}
+          />
+        },
+    icon: 'ion-code',
+    color: '#000000',
 
   },
   oss: {

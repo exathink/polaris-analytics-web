@@ -13,7 +13,7 @@ import {GRAPHQL_ADMIN_URL, GRAPHQL_ANALYTICS_URL} from "../../../config/url";
 import {ApolloProvider} from 'react-apollo';
 
 export const defaultPollInterval = service => {
-  return 30000;
+  return 0;
 };
 
 export const analytics_service = new ApolloClient({

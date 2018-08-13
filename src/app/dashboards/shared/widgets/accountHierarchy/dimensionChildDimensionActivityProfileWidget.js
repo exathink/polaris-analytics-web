@@ -2,13 +2,9 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
-
-import {analytics_service} from '../../../../services/graphql'
-import {CommitSummaryPanel} from "../../../widgets/activity/ActivitySummary/view";
-import {ActivityLevelDetailModel} from "../../../widgets/activity/ActivityLevel";
-import {ActivityLevelSummaryView} from "../../../widgets/activity/ActivityLevel/activityLevelSummaryView";
-import {ActivityLevelDetailView} from "../../../widgets/activity/ActivityLevel/activityLevelDetailView";
-
+import {Contexts} from "../../../../meta";
+import {analytics_service} from '../../../../services/graphql/index'
+import {ActivityLevelDetailModel, ActivityLevelDetailView, ActivityLevelSummaryView} from "../../views/activityProfile";
 
 export const ChildDimensionActivityProfileWidget = (
   {
@@ -59,6 +55,8 @@ export const ChildDimensionActivityProfileWidget = (
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
           data[dimension][childDimension].edges.map(edge => edge.node),
           data[dimension][childDimension].count,
+          'contributorCount',
+          Contexts.contributors,
           rest
         );
         return (

@@ -103,3 +103,16 @@ export function fail(message) {
 export function replicate(array, n) {
   return Array(n).fill(0).reduce((result) => ([...result, ...array]), [])
 }
+
+export function human_span(date_a, date_b) {
+  const moment_a = moment(date_a);
+  const moment_b = moment(date_b);
+  const span = moment.duration(moment_a.diff(moment_b));
+  const years = span.years();
+  const d_years = `${years > 0 ? years + (years > 1 ? ' Years' : ' Year'): ''}`;
+
+  const months = span.months();
+  const d_months = `${months > 0 ? months + (months > 1 ? ' Months': ' Month'): ''}`;
+  return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
+}
+

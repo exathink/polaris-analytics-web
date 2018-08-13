@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityProfileBarChart} from "./components/index";
 import {VizItem, VizRow} from "../../containers/layout/index";
-import {VizStickerWidget} from "../../containers/widgets/vizSticker/vizStickerWidget";
+import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
 export const ActivityLevelSummaryView = (

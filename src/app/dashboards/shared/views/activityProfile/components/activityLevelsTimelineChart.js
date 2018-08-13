@@ -1,7 +1,7 @@
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
 import {tooltipHtml} from "../../../../../framework/viz/charts/index";
 import {Chart} from "../../../../../framework/viz/charts/index";
-import {displaySingular, i18n} from "../../../../../i18n/index";
+import {displaySingular, formatTerm} from "../../../../../i18n/index";
 
 
 export const ActivityLevelsTimelineChart = Chart({
@@ -43,8 +43,8 @@ export const ActivityLevelsTimelineChart = Chart({
               return tooltipHtml({
                 header: `${childContextName}: ${this.point.yCategory}`,
                 body: [
-                  [`${i18n(intl, 'Earliest Commit')}: `, `${intl.formatDate(this.point.x)}`],
-                  [`${i18n(intl, 'Latest Commit')}: `, `${intl.formatDate(this.point.x2)}`],
+                  [`${formatTerm(intl, 'Earliest Commit')}: `, `${intl.formatDate(this.point.x)}`],
+                  [`${formatTerm(intl, 'Latest Commit')}: `, `${intl.formatDate(this.point.x2)}`],
                 ]
               });
             }

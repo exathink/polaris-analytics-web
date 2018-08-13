@@ -5,6 +5,8 @@ import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
 import Activity from './activity/topic';
+import Contributor from './contributors/topic';
+
 import {Contexts} from "../../meta/contexts";
 import {Topics} from "../../meta/topics";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
@@ -35,15 +37,7 @@ const context : Context = {
           },
           {
             match: 'contributors',
-            topic: {
-              ...Topics.contributors,
-              routes: [
-                {
-                  match: '',
-                  render: () => null
-                }
-              ]
-            }
+            topic: Contributor
           },
           {
             match: '',
