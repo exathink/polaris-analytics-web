@@ -22,7 +22,7 @@ export const ChildDimensionActivityProfileWidget = (
        query ${dimension}${childDimension}ActivitySummaries($key: String!){
           ${dimension}(key: $key){
               id
-              ${childDimension}(interfaces: [CommitSummary, ContributorSummary]) {
+              ${childDimension}(interfaces: [CommitSummary, ContributorCount]) {
                 count
                 edges{
                     node {
@@ -36,7 +36,7 @@ export const ChildDimensionActivityProfileWidget = (
                           latestCommit
                           commitCount
                       }
-                      ... on ContributorSummary {
+                      ... on ContributorCount {
                         contributorCount
                       }
                     }

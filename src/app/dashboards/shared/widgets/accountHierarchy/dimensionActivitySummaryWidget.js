@@ -19,14 +19,14 @@ export const DimensionActivitySummaryPanelWidget = (
     query={
       gql`
            query ${dimension}CommitSummary($key: String!) {
-            ${dimension}(key: $key, interfaces: [CommitSummary, ContributorSummary]) {
+            ${dimension}(key: $key, interfaces: [CommitSummary, ContributorCount]) {
                 id
                 ... on CommitSummary {
                     earliestCommit
                     latestCommit
                     commitCount
                 }
-                ... on ContributorSummary {
+                ... on ContributorCount {
                     contributorCount
                 }
             }
