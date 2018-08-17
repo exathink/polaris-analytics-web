@@ -29,7 +29,6 @@ export const DimensionContributorActivityProfileWidget = (
                 count
                 edges{
                     node {
-                      id
                       ... on NamedNode{
                         name
                         key
