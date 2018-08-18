@@ -35,6 +35,7 @@ export const dashboard = withUserContext(withNavigationContext(
                 context={context}
                 childContext={Contributors}
                 enableDrillDown={true}
+                suppressDataLabelsAt={500}
                 view={view}
               />}
           showDetail={true}

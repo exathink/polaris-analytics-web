@@ -21,6 +21,23 @@ const chartUpdateProps = props => ({
 
 
 
+const bucket = measure => {
+  if (measure === 1) {
+    return 1;
+  } else if (measure > 1 && measure <= 5) {
+    return 10;
+  } else if (measure < 10) {
+    return 20;
+  } else if (measure < 20) {
+    return 40;
+  } else if (measure < 100) {
+    return 50;
+  } else if (measure < 1000) {
+    return 60;
+  } else {
+    return 100;
+  }
+};
 
 const initSeries = props => {
   // Partition the data set by activity level and set the
@@ -38,6 +55,7 @@ const initSeries = props => {
       x: activitySummary.span,
       y: activitySummary.commit_count,
       z: activitySummary.secondary_measure,
+      labelrank: activitySummary.secondary_measure,
       days_since_latest_commit: activitySummary.days_since_latest_commit
     }));
 
@@ -51,7 +69,9 @@ const initSeries = props => {
         color: activity_level.color,
         name: activity_level.display_name,
         data: seriesData,
-        visible: level_partition.visible
+        visible: level_partition.visible,
+        zMin: 1
+
       }
     )
   });
@@ -123,8 +143,8 @@ const getConfig =  props => {
         dataLabels: {
           enabled: props.suppressDataLabelsAt ? model.data.length < props.suppressDataLabelsAt : true,
           format: `{point.name}`,
-          inside: false,
-          verticalAlign: 'bottom',
+          inside: true,
+          verticalAlign: 'center',
           style: {
             color: 'black',
             textOutline: 'none'
