@@ -1,6 +1,7 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
+
 import {Loading} from "../../../../components/graphql/loading";
 import {Contexts} from "../../../../meta";
 import {analytics_service} from '../../../../services/graphql/index'
@@ -9,7 +10,7 @@ import {ActivityLevelSummaryView} from "../../views/activityProfile/activityLeve
 import {ActivityLevelDetailView} from "../../views/activityProfile/activityLevelDetailView";
 
 
-export const DimensionContributorActivityProfileWidget = (
+export const AccountContributorActivityProfileWidget = (
   {
     dimension,
     instanceKey,
@@ -22,13 +23,16 @@ export const DimensionContributorActivityProfileWidget = (
     client={analytics_service}
     query={
       gql`
-       query ${dimension}${childDimension}ActivitySummaries($key: String!){
-          ${dimension}(key: $key){
+       query accountContributorsActivitySummaries($key: String!, $cursor: String){
+          account(key: $key){
               id
-              contributors(interfaces: [CommitSummary, RepositoryCount]) {
+              contributors(interfaces: [CommitSummary, RepositoryCount], first: 5, after: $cursor) @connection(key: "contributors") {
                 count
+
                 edges{
+                    cursor
                     node {
+
                       ... on NamedNode{
                         name
                         key
@@ -43,15 +47,23 @@ export const DimensionContributorActivityProfileWidget = (
                       }
                     }
                 }
+                pageInfo {
+                    hasNextPage
+                    startCursor
+                    endCursor
+                }
               }
           }
        }
     `}
-    variables={{key: instanceKey}}
+    variables={{
+      key: instanceKey,
+      cursor: null
+    }}
     //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {
-      ({loading, error, data}) => {
+      ({loading, error, data, fetchMore}) => {
         if (loading) return <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
@@ -61,10 +73,34 @@ export const DimensionContributorActivityProfileWidget = (
           Contexts.repositories,
           rest
         );
+        const onLoadMore = () => console.log('reload') || data.account.contributors.pageInfo.hasNextPage ? fetchMore({
+          variables: {
+            cursor: data.account.contributors.pageInfo.endCursor
+          },
+          updateQuery: (previousResult, {fetchMoreResult}) => {
+            const newEdges = fetchMoreResult.account.contributors.edges;
+            const pageInfo = fetchMoreResult.account.contributors.pageInfo;
+            return newEdges.length
+              ? {
+                  account: {
+                    __typename: previousResult.account.__typename,
+                    id: previousResult.account.id,
+                    contributors: {
+                      __typename: previousResult.account.__typename,
+                      count: previousResult.account.contributors.count,
+                      edges: [...previousResult.account.contributors.edges, ...newEdges],
+                      pageInfo
+                    }
+                  }
+                }
+              : previousResult;
+          }
+        }) : null;
         return (
           view && view === 'detail' ?
             <ActivityLevelDetailView
               model={model}
+              onLoadMore={onLoadMore}
               {...rest}
             /> :
             <ActivityLevelSummaryView

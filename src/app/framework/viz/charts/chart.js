@@ -39,7 +39,7 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       updateConfig() {
         if (this.state.providerPropsUpdated) {
-          const config = this.attachEvents(configProvider.getConfig(this.props));
+          const config = this.attachEvents(configProvider.getConfig(this.props, this.state.config));
           this.setState(prevState => {
             return {
               ...{prevState},

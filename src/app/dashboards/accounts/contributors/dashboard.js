@@ -2,7 +2,7 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
-import {DimensionContributorActivityProfileWidget} from "../../shared/views/activityProfile";
+import {AccountContributorActivityProfileWidget} from "../../shared/widgets/accountHierarchy";
 
 import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
@@ -28,7 +28,7 @@ export const dashboard = withUserContext(withNavigationContext(
           name="contributors-activity-profile"
           render={
             ({view}) =>
-              <DimensionContributorActivityProfileWidget
+              <AccountContributorActivityProfileWidget
                 dimension={'account'}
                 childDimension={'contributors'}
                 instanceKey={accountKey}

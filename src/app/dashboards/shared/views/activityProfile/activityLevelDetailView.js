@@ -1,4 +1,4 @@
-// @flow
+
 import type {ActivitySummary} from './model'
 import {ActivityLevelDetailModel} from "./model";
 import React, {Fragment} from 'react';
@@ -77,11 +77,24 @@ export class ActivityLevelDetailView extends React.Component<Props, MaxViewState
     }
   }
 
+  componentDidMount() {
+    if(this.props.onLoadMore) {
+      this.props.onLoadMore()
+    }
+  }
+
+  componentDidUpdate() {
+    if(this.props.onLoadMore) {
+      this.props.onLoadMore()
+    }
+  }
+
   onActivitiesSelected(activities: Array<ActivitySummary>) {
     this.setState({
       selected: activities
     })
   }
+
 
 
   render() {
