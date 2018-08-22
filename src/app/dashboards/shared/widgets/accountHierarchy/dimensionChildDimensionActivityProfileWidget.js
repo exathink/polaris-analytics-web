@@ -12,6 +12,7 @@ export const ChildDimensionActivityProfileWidget = (
     instanceKey,
     childDimension,
     view,
+    pageSize,
     pollInterval,
     ...rest
   }) => (
@@ -19,10 +20,10 @@ export const ChildDimensionActivityProfileWidget = (
     client={analytics_service}
     query={
       gql`
-       query ${dimension}${childDimension}ActivitySummaries($key: String!){
+       query ${dimension}${childDimension}ActivitySummaries($key: String!, $pageSize: Int){
           ${dimension}(key: $key){
               id
-              ${childDimension}(first: 50, summaries: [ActivityLevelSummary] interfaces: [CommitSummary, ContributorCount]) {
+              ${childDimension}(first: $pageSize, summaries: [ActivityLevelSummary] interfaces: [CommitSummary, ContributorCount]) {
                 count
                 activityLevelSummary {
                     activeCount
@@ -51,7 +52,7 @@ export const ChildDimensionActivityProfileWidget = (
           }
        }
     `}
-    variables={{key: instanceKey}}
+    variables={{key: instanceKey, ...{pageSize}}}
     //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
     {

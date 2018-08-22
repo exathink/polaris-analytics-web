@@ -41,6 +41,7 @@ export const dashboard = withNavigationContext(
                 childContext={Projects}
                 enableDrillDown={true}
                 view={view}
+                pageSize={50}
               />
           }
           showDetail={true}
@@ -61,6 +62,7 @@ export const dashboard = withNavigationContext(
                 enableDrillDown={true}
                 suppressDataLabelsAt={500}
                 view={view}
+                pageSize={50}
               />
           }
           showDetail={true}
