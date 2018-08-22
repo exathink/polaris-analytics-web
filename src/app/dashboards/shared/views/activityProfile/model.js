@@ -35,31 +35,40 @@ type SourceData = {
   earliest_commit: string,
   latest_commit: string
 }
+type ActivityLevelSummary = {
+  activeCount: number,
+  quiescentCount: number,
+  dormantCount: number,
+  inactiveCount: number
+}
 
 type Props = {context: ActiveContext, childContext: Context, span_uom? : string}
 
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   context: ActiveContext;
   childCount: number;
+  activityLevelSummary: ActivityLevelSummary;
   secondaryMeasureContext: Context;
   childContext: Context;
   span_uom: string;
 
 
-  constructor(data: Array<ActivitySummary>, version: number, childCount, secondaryMeasureContext: Context, context: ActiveContext, childContext: Context, span_uom: string) {
+  constructor(data: Array<ActivitySummary>, version: number, childCount, activityLevelSummary, secondaryMeasureContext: Context, context: ActiveContext, childContext: Context, span_uom: string) {
     super(data, version);
     this.childCount = childCount;
+    this.activityLevelSummary = activityLevelSummary;
     this.secondaryMeasureContext = secondaryMeasureContext;
     this.context = context;
     this.childContext = childContext;
     this.span_uom = span_uom;
   }
 
+
   onDrillDown(event: {entity_name: string, id: string}) {
     this.context.drillDown(this.childContext, event.entity_name, event.id);
   }
 
-  static initModelFromCommitSummaries(commitSummaries, childCount, secondaryMeasure, secondaryMeasureContext, props) {
+  static initModelFromCommitSummaries(commitSummaries, childCount, activityLevelSummary, secondaryMeasure, secondaryMeasureContext, props) {
     const data = commitSummaries.map(
       commitSummary => {
         const earliest_commit = moment(commitSummary.earliestCommit);
@@ -75,7 +84,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           secondary_measure: commitSummary[secondaryMeasure]
         })
       });
-    return new ActivityLevelDetailModel(data, 0,  childCount, secondaryMeasureContext,  props.context, props.childContext, props.span_uom || 'Years');
+    return new ActivityLevelDetailModel(data, 0,  childCount, activityLevelSummary, secondaryMeasureContext,  props.context, props.childContext, props.span_uom || 'Years');
   }
 
 }

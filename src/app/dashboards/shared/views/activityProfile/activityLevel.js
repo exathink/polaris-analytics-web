@@ -5,6 +5,7 @@ import {flatten} from "../../../../helpers/collections";
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
     display_name: 'Inactive',
+    activity_level_summary_property: 'inactiveCount',
     color: Colors.ActivityLevel.INACTIVE,
     isMember: activitySummary => activitySummary.days_since_latest_commit > 180,
     visible: false,
@@ -12,6 +13,7 @@ export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   },
   {
     display_name: 'Dormant',
+    activity_level_summary_property: 'dormantCount',
     color: Colors.ActivityLevel.DORMANT,
     isMember: activitySummary => (90 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 180),
     visible: false,
@@ -19,6 +21,7 @@ export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   },
   {
     display_name: 'Quiescent',
+    activity_level_summary_property: 'quiescentCount',
     color: Colors.ActivityLevel.RECENT,
     isMember: activitySummary => (30 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 90),
     visible: false,
@@ -26,12 +29,15 @@ export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   },
   {
     display_name: 'Active',
+    activity_level_summary_property: 'activeCount',
     color: Colors.ActivityLevel.ACTIVE,
     isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30),
     visible: true,
     index: 3
   },
 ];
+
+
 export const ACTIVITY_LEVEL_UNKNOWN = {
   display_name: 'Unknown',
   color: Colors.ActivityLevel.UNKNOWN,

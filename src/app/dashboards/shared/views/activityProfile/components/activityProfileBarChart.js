@@ -12,13 +12,29 @@ export const ActivityProfileBarChart = Chart(
     }),
     getConfig:
       ({model,  orientation, minimized, chartBackgroundColor,  intl}) => {
-        const totalsByActivityLevel = model.data.reduce(
-          (totals, activitySummary) => {
-            let level = activitySummary.activity_level.display_name;
-            totals[level] = (totals[level] || 0) + 1;
-            return totals
-          },
-          {});
+        let totalsByActivityLevel = null;
+        if (model.activityLevelSummary != null){
+          // use the precomputed summary values from server. Constant size regardless of data size.
+          totalsByActivityLevel = ACTIVITY_LEVELS_REVERSED.reduce(
+            (totals, level) => {
+              const levelTotal = model.activityLevelSummary[level.activity_level_summary_property]
+              totals[level.display_name] = levelTotal;
+              totals.total = totals.total + levelTotal;
+              return totals;
+            },
+            {total: 0}
+          )
+        } else {
+          // compute the summary value on the client from the underlying row data
+          // will be slow for large data sizes
+          totalsByActivityLevel = model.data.reduce(
+            (totals, activitySummary) => {
+              let level = activitySummary.activity_level.display_name;
+              totals[level] = (totals[level] || 0) + 1;
+              return totals
+            },
+            {total: model.data.length});
+        }
 
         const series = ACTIVITY_LEVELS_REVERSED.map(activityLevel => ({
           name: formatTerm(intl, activityLevel.display_name),
@@ -88,7 +104,7 @@ export const ActivityProfileBarChart = Chart(
             title: {
               text: null
             },
-            max: model.data.length,
+            max: totalsByActivityLevel.total,
             allowDecimals: false,
             gridLineWidth: 0,
             plotLines: orientation === 'vertical' ? [{

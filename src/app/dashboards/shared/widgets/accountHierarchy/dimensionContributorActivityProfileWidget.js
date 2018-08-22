@@ -25,8 +25,14 @@ export const DimensionContributorActivityProfileWidget = (
        query ${dimension}${childDimension}ActivitySummaries($key: String!){
           ${dimension}(key: $key){
               id
-              contributors(interfaces: [CommitSummary, RepositoryCount]) {
+              contributors(first:50, summaries:[ActivityLevelSummary], interfaces: [CommitSummary, RepositoryCount]) {
                 count
+                activityLevelSummary {
+                    activeCount
+                    quiescentCount
+                    dormantCount
+                    inactiveCount
+                }
                 edges{
                     node {
                       ... on NamedNode{
@@ -55,8 +61,9 @@ export const DimensionContributorActivityProfileWidget = (
         if (loading) return <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
-          data[dimension][childDimension].edges.map(edge => edge.node),
-          data[dimension][childDimension].count,
+          data[dimension].contributors.edges.map(edge => edge.node),
+          data[dimension].contributors.count,
+          data[dimension].contributors.activityLevelSummary,
           'repositoryCount',
           Contexts.repositories,
           rest
