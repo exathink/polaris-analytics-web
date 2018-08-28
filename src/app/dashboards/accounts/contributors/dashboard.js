@@ -3,7 +3,7 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {DimensionContributorActivityProfileWidget} from "../../shared/views/activityProfile";
-
+import {DimensionConnectionInceptionsWidget} from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
 
@@ -40,6 +40,20 @@ export const dashboard = withUserContext(withNavigationContext(
                 view={view}
               />}
           showDetail={true}
+        />
+      </DashboardRow>
+      <DashboardRow h='22%' title={Contexts.contributors.display()}>
+        <DashboardWidget
+          w={1 / 2}
+          name="contributors-inceptions-summary"
+          render={
+            (view) =>
+              <DimensionConnectionInceptionsWidget
+                dimension={'account'}
+                connection={'contributors'}
+                instanceKey={accountKey}
+              />
+          }
         />
       </DashboardRow>
     </Dashboard>
