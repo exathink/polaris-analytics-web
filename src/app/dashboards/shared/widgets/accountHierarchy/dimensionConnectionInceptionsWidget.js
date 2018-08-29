@@ -2,7 +2,7 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
-
+import {InceptionsBarChart} from "../../views/inceptions";
 import {analytics_service} from '../../../../services/graphql/index'
 
 export const DimensionConnectionInceptionsWidget = (
@@ -40,9 +40,7 @@ export const DimensionConnectionInceptionsWidget = (
           if (error) return null;
           const {inceptionsSummary, count} = data[dimension][connection];
           return (
-            <div>
-              <span>{count} Inceptions: First One: {inceptionsSummary[0].year}</span>
-            </div>
+            <InceptionsBarChart inceptionsSummary={inceptionsSummary} count={count}/>
           )
         }
       }

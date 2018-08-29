@@ -5,6 +5,8 @@ import React, {Fragment} from 'react';
 import {VizItem, VizRow} from "../../containers/layout/index";
 import {CustomTabPanel, Tab, TabList, Tabs} from '../../containers/tab/index';
 
+import {DimensionConnectionInceptionsWidget} from "../../widgets/accountHierarchy";
+
 import {
   ActivityLevelsBubbleChart,
   ActivityLevelsTable,
@@ -30,14 +32,18 @@ const DetailTabs = (props) => (
   <Tabs>
     <TabList>
       <Tab>History</Tab>
-      <Tab>Totals</Tab>
+      <Tab>Inceptions</Tab>
     </TabList>
 
     <CustomTabPanel>
       <ActivityLevelsTimelineChart {...props}/>
     </CustomTabPanel>
     <CustomTabPanel>
-      <ActivityProfileBarChart orientation={'horizontal'} {...props}/>
+      <DimensionConnectionInceptionsWidget
+        instanceKey={props.model.instanceKey}
+        dimension={props.model.dimension}
+        connection={props.model.childDimension}
+      />
     </CustomTabPanel>
   </Tabs>
 );

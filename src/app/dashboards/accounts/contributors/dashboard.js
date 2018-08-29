@@ -42,20 +42,6 @@ export const dashboard = withUserContext(withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='22%' title={Contexts.contributors.display()}>
-        <DashboardWidget
-          w={1 / 2}
-          name="contributors-inceptions-summary"
-          render={
-            (view) =>
-              <DimensionConnectionInceptionsWidget
-                dimension={'account'}
-                connection={'contributors'}
-                instanceKey={accountKey}
-              />
-          }
-        />
-      </DashboardRow>
     </Dashboard>
   )
 }));

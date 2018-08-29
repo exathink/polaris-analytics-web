@@ -45,22 +45,41 @@ type ActivityLevelSummary = {
 type Props = {context: ActiveContext, childContext: Context, span_uom? : string}
 
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
+  instanceKey: string;
   context: ActiveContext;
   childCount: number;
   activityLevelSummary: ActivityLevelSummary;
   secondaryMeasureContext: Context;
   childContext: Context;
   span_uom: string;
+  dimension: string;
+  childDimension: string;
 
 
-  constructor(data: Array<ActivitySummary>, version: number, childCount, activityLevelSummary, secondaryMeasureContext: Context, context: ActiveContext, childContext: Context, span_uom: string) {
+
+  constructor(
+    instanceKey: string,
+    data: Array<ActivitySummary>,
+    version: number,
+    childCount,
+    activityLevelSummary,
+    secondaryMeasureContext: Context,
+    dimension: string,
+    childDimension: string,
+    context: ActiveContext,
+    childContext: Context,
+    span_uom: string
+  ) {
     super(data, version);
+    this.instanceKey = instanceKey,
     this.childCount = childCount;
     this.activityLevelSummary = activityLevelSummary;
     this.secondaryMeasureContext = secondaryMeasureContext;
     this.context = context;
     this.childContext = childContext;
     this.span_uom = span_uom;
+    this.dimension = dimension;
+    this.childDimension = childDimension;
   }
 
 
@@ -68,7 +87,17 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
     this.context.drillDown(this.childContext, event.entity_name, event.id);
   }
 
-  static initModelFromCommitSummaries(commitSummaries, childCount, activityLevelSummary, secondaryMeasure, secondaryMeasureContext, props) {
+  static initModelFromCommitSummaries(
+    instanceKey,
+    commitSummaries,
+    childCount,
+    activityLevelSummary,
+    secondaryMeasure,
+    secondaryMeasureContext,
+    dimension,
+    childDimension,
+    props
+  ) {
     const data = commitSummaries.map(
       commitSummary => {
         const earliest_commit = moment(commitSummary.earliestCommit);
@@ -84,9 +113,20 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           secondary_measure: commitSummary[secondaryMeasure]
         })
       });
-    return new ActivityLevelDetailModel(data, 0,  childCount, activityLevelSummary, secondaryMeasureContext,  props.context, props.childContext, props.span_uom || 'Years');
+    return new ActivityLevelDetailModel(
+      instanceKey,
+      data,
+      0,
+      childCount,
+      activityLevelSummary,
+      secondaryMeasureContext,
+      dimension,
+      childDimension,
+      props.context,
+      props.childContext,
+      props.span_uom || 'Years'
+    );
   }
-
 }
 
 

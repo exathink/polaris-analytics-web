@@ -62,11 +62,14 @@ export const DimensionContributorActivityProfileWidget = (
         if (loading) return <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
+          instanceKey,
           data[dimension].contributors.edges.map(edge => edge.node),
           data[dimension].contributors.count,
           data[dimension].contributors.activityLevelSummary,
           'repositoryCount',
           Contexts.repositories,
+          dimension,
+          'contributors',
           rest
         );
         return (

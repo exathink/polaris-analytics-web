@@ -60,11 +60,14 @@ export const ChildDimensionActivityProfileWidget = (
         if (loading) return <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
+          instanceKey,
           data[dimension][childDimension].edges.map(edge => edge.node),
           data[dimension][childDimension].count,
           data[dimension][childDimension].activityLevelSummary,
           'contributorCount',
           Contexts.contributors,
+          dimension,
+          childDimension,
           rest
         );
         return (
