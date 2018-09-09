@@ -54,6 +54,8 @@ export const DimensionMostActiveRepositoriesWidget = (
               childContext={childContext}
               activeChildren={repositories}
               view={view}
+              top={top}
+              days={days}
             />
           )
         }

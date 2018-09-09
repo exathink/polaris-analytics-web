@@ -1,5 +1,6 @@
-import {Chart} from "../../../../framework/viz/charts";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
+import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
 
 function initSeries(activeChildren) {
   return activeChildren.map(child => ({
@@ -16,17 +17,29 @@ export const MostActiveChildrenBarChart = Chart({
       childContext: props.childContext,
     }),
   getConfig:
-    ({activeChildren, view, childContext}) => {
+    ({activeChildren, view, top, days, childContext, intl}) => {
       const series_data = initSeries(activeChildren);
-
+      const childContextName = displaySingular(intl, childContext);
       return {
         chart: {
           type: 'column',
-          backgroundColor: "#f2f3f6"
+          backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: 'Recent Activity',
+          text: `Most Active (Top ${top}, last ${days} days)`,
           align: 'left'
+        },
+        tooltip: {
+          useHTML: true,
+          hideDelay: 50,
+          formatter: function () {
+            return tooltipHtml({
+              header: `${childContextName}: ${this.point.name}`,
+              body: [
+                [`${formatTerm(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`]
+              ]
+            })
+          }
         },
         xAxis: {
           type: 'category',
@@ -39,7 +52,8 @@ export const MostActiveChildrenBarChart = Chart({
           type: 'linear',
           title: {
             text: 'Commits'
-          }
+          },
+          allowDecimals: false
         },
         series: [{
           key: 'Recent commits',
@@ -48,7 +62,19 @@ export const MostActiveChildrenBarChart = Chart({
           data: series_data
         }],
         legend: {
-            enabled: false
+          enabled: false
+        },
+        plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: view === 'primary',
+                align: 'center',
+                format: `<b>{point.name}</b>`,
+                style: {
+                  color: 'black'
+                }
+              }
+            }
         }
       }
     }

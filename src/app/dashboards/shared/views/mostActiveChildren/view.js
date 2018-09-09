@@ -4,20 +4,16 @@ import {VizItem, VizRow} from "../../containers/layout";
 import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
-export const MostActiveChildrenSummaryView = ({
-  context,
-  childContext,
-  ...rest
-}) => (
+export const MostActiveChildrenSummaryView = (props) => (
   <React.Fragment>
     <VizRow h={"100%"}>
       <VizItem w={1}>
         <VizStickerWidget
-          bgColor={context.color()}
+          bgColor={props.context.color()}
           showHeader={false}
         >
 
-          < MostActiveChildrenBarChart {...rest} />
+          < MostActiveChildrenBarChart {...props} />
         </VizStickerWidget>
       </VizItem>
     </VizRow>
