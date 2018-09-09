@@ -19,6 +19,7 @@ export const ActivityLevelSummaryView = (
               bgColor={context.color()}
               text={childContext && data ? props.model.childContext.display(childCount) : null}
               number={props.model ? childCount : null}
+              showHeader={true}
               {...(props.headerWidth? {width:props.headerWidth} : {})}
             >
               <ActivityProfileBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
