@@ -2,4 +2,4 @@ export {DimensionActivitySummaryPanelWidget} from './dimensionActivitySummaryWid
 export {ChildDimensionActivityProfileWidget} from './dimensionChildDimensionActivityProfileWidget';
 export {DimensionContributorActivityProfileWidget} from './dimensionContributorActivityProfileWidget';
 export {DimensionConnectionInceptionsWidget} from './dimensionConnectionInceptionsWidget';
-export {DimensionMostActiveRepositoriesWidget} from './dimensionMostActiveRepositoriesWidget';
+export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWidget';

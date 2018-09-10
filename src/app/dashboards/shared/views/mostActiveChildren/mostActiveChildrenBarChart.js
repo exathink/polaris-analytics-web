@@ -26,7 +26,7 @@ export const MostActiveChildrenBarChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: `Most Active (Top ${top}, last ${days} days)`,
+          text: `Most Active`,
           align: 'left'
         },
         tooltip: {
