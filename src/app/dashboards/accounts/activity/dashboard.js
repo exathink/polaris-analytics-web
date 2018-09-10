@@ -47,6 +47,24 @@ export const dashboard = withUserContext(withNavigationContext(
               />}
           showDetail={true}
         />
+        <DashboardWidget
+          w={1 / 2}
+          name="most-active-organizations"
+          render={
+            ({view}) =>
+              <DimensionMostActiveChildrenWidget
+                dimension={'account'}
+                instanceKey={accountKey}
+                childConnection={'recentlyActiveOrganizations'}
+                context={context}
+                childContext={Organizations}
+                top={5}
+                days={7}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.projects.display()}>
         <DashboardWidget
