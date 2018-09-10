@@ -26,7 +26,7 @@ export const MostActiveChildrenBarChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: `Most Active`,
+          text: `Most Active ${displayPlural(intl, childContext)}`,
           align: 'left'
         },
         tooltip: {
@@ -36,7 +36,7 @@ export const MostActiveChildrenBarChart = Chart({
             return tooltipHtml({
               header: `${childContextName}: ${this.point.name}`,
               body: [
-                [`${formatTerm(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`]
+                [`${formatTerm(intl, 'Commits')} (Last ${days} days):`, `${intl.formatNumber(this.y)}`]
               ]
             })
           }

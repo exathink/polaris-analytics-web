@@ -4,7 +4,10 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionActivitySummaryPanelWidget,
+  DimensionMostActiveChildrenWidget
+} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
 import Projects from "../../projects/context"
@@ -46,6 +49,24 @@ export const dashboard = withNavigationContext(
           }
           showDetail={true}
         />
+        <DashboardWidget
+          w={1 / 2}
+          name="most-active-projects"
+          render={
+            ({view}) =>
+              <DimensionMostActiveChildrenWidget
+                dimension={'organization'}
+                instanceKey={context.getInstanceKey('organization')}
+                childConnection={'recentlyActiveProjects'}
+                context={context}
+                childContext={Projects}
+                top={5}
+                days={7}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
         <DashboardWidget
@@ -63,6 +84,24 @@ export const dashboard = withNavigationContext(
                 suppressDataLabelsAt={500}
                 view={view}
                 pageSize={50}
+              />
+          }
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 2}
+          name="most-active-repositories"
+          render={
+            ({view}) =>
+              <DimensionMostActiveChildrenWidget
+                dimension={'organization'}
+                instanceKey={context.getInstanceKey('organization')}
+                childConnection={'recentlyActiveRepositories'}
+                context={context}
+                childContext={Repositories}
+                top={5}
+                days={7}
+                view={view}
               />
           }
           showDetail={true}

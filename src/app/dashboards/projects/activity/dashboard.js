@@ -1,7 +1,10 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionActivitySummaryPanelWidget,
+  DimensionMostActiveChildrenWidget
+} from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
 import Repositories from "../../repositories/context";
 
@@ -47,6 +50,24 @@ export const dashboard = withNavigationContext(
                 suppressDataLabelsAt={500}
                 view={view}
                 pageSize={50}
+              />
+          }
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 2}
+          name="most-active-repositories"
+          render={
+            ({view}) =>
+              <DimensionMostActiveChildrenWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+                childConnection={'recentlyActiveRepositories'}
+                context={context}
+                childContext={Repositories}
+                top={5}
+                days={7}
+                view={view}
               />
           }
           showDetail={true}
