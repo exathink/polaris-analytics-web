@@ -17,6 +17,7 @@
   "t.History": "History",
   "t.Number of commits": "Number of commits",
   "t.Commits": "Commits",
+  "t.TotalCommits": "Total Commits",
   "t.Contributors": "Contributors",
   "t.Earliest Commit": "Earliest Commit",
   "t.Latest Commit": "Latest Commit",

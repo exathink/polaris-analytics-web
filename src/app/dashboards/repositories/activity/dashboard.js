@@ -26,9 +26,9 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           }
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Something">
+      <DashboardRow h='44%' title="Commit History">
         <DashboardWidget
-          w={1}
+          w={1/2}
           name="cumulative-commit-count"
           render={
             (view) =>
@@ -39,11 +39,8 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 view={view}
               />
           }
-          showDetail={false}
+          showDetail={true}
         />
-      </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
-
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">
 
