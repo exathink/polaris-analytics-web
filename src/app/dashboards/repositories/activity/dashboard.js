@@ -1,7 +1,7 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget} from "../../shared/widgets/accountHierarchy";
+import {DimensionActivitySummaryPanelWidget, DimensionCumulativeCommitCountWidget} from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
 const dashboard_id = 'dashboards.activity.repositories.instance';
@@ -27,7 +27,20 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
         />
       </DashboardRow>
       <DashboardRow h='22%' title="Something">
-
+        <DashboardWidget
+          w={1}
+          name="cumulative-commit-count"
+          render={
+            (view) =>
+              <DimensionCumulativeCommitCountWidget
+                dimension={'repository'}
+                instanceKey={context.getInstanceKey('repository')}
+                context={context}
+                view={view}
+              />
+          }
+          showDetail={false}
+        />
       </DashboardRow>
       <DashboardRow h='22%' title="Something Else">
 
