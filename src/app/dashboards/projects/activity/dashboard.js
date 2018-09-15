@@ -2,7 +2,7 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionActivitySummaryPanelWidget,
+  DimensionActivitySummaryPanelWidget, DimensionCumulativeCommitCountWidget,
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
@@ -32,6 +32,22 @@ export const dashboard = withNavigationContext(
                 instanceKey={context.getInstanceKey('project')}
               />
           }
+        />
+      </DashboardRow>
+      <DashboardRow h='44%' title="Commit History">
+        <DashboardWidget
+          w={1/2}
+          name="cumulative-commit-count"
+          render={
+            (view) =>
+              <DimensionCumulativeCommitCountWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+                context={context}
+                view={view}
+              />
+          }
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
@@ -72,12 +88,6 @@ export const dashboard = withNavigationContext(
           }
           showDetail={true}
         />
-      </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
-
-      </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
-
       </DashboardRow>
     </Dashboard>
   )
