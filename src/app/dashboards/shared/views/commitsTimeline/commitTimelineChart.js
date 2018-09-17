@@ -22,7 +22,7 @@ export const CommitsTimelineChart = Chart({
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
-          const offset = moment(commit_date).add(2, 'days');
+          const offset = moment(commit_date).add(6, 'hours');
           return (
             {
               x: commit_date.valueOf(),
@@ -45,7 +45,8 @@ export const CommitsTimelineChart = Chart({
             type: 'datetime',
             title: {
               text: 'Timeline'
-            }
+            },
+            max: moment().valueOf()
           },
           yAxis: {
             id: 'y-items',

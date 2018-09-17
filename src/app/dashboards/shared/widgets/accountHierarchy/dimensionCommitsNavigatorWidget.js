@@ -13,6 +13,7 @@ export const DimensionCommitsNavigatorWidget = (
     dimension,
     instanceKey,
     context,
+    days,
     view
 
   }) => (
@@ -20,10 +21,10 @@ export const DimensionCommitsNavigatorWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_commits($key: String!) {
+            query ${dimension}_commits($key: String!, $days: Int) {
                 ${dimension}(key: $key){
                     id
-                    commits {
+                    commits(days: $days) {
                         edges {
                             node {
                                 id
@@ -41,7 +42,8 @@ export const DimensionCommitsNavigatorWidget = (
         `
       }
       variables={{
-        key: instanceKey
+        key: instanceKey,
+        days: days || 0
       }}
     >
       {
