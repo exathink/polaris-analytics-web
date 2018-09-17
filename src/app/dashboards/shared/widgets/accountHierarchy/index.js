@@ -4,3 +4,4 @@ export {DimensionContributorActivityProfileWidget} from './dimensionContributorA
 export {DimensionConnectionInceptionsWidget} from './dimensionConnectionInceptionsWidget';
 export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWidget';
 export {DimensionCumulativeCommitCountWidget} from './dimensionCumulativeCommitCounts';
+export {DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';

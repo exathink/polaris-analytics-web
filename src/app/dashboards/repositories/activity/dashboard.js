@@ -1,7 +1,11 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget, DimensionCumulativeCommitCountWidget} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionActivitySummaryPanelWidget,
+  DimensionCommitsNavigatorWidget,
+  DimensionCumulativeCommitCountWidget
+} from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
 const dashboard_id = 'dashboards.activity.repositories.instance';
@@ -26,6 +30,22 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           }
         />
       </DashboardRow>
+      <DashboardRow h='22%' title="Commits">
+        <DashboardWidget
+          w={1}
+          name="commits"
+          render={
+            ({view}) =>
+              <DimensionCommitsNavigatorWidget
+                dimension={'repository'}
+                instanceKey={context.getInstanceKey('repository')}
+                context={context}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
+      </DashboardRow>
       <DashboardRow h='44%' title="Commit History">
         <DashboardWidget
           w={1/2}
@@ -42,9 +62,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
 
-      </DashboardRow>
     </Dashboard>
   )
 );

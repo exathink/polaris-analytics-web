@@ -1,0 +1,1 @@
+export {CommitsTimelineChart} from './commitTimelineChart';
