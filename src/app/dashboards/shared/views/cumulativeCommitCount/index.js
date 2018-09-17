@@ -29,6 +29,11 @@ export const CumulativeCommitCountChart = Chart({
   getConfig:
     ({cumulativeCommitCounts, context, view, intl}) => {
       const series_data = initSeries(cumulativeCommitCounts);
+      if (series_data.length > 0) {
+        // we add a last item pegging todays date to the the last commit count
+        // This normalizes all commit histories to today.
+        series_data.push([moment().valueOf(), series_data[series_data.length-1][1]]);
+      }
 
       return {
         chart: {
