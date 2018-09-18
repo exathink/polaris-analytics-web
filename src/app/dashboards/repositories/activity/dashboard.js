@@ -30,7 +30,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           }
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Commits (Last 90 days)">
+      <DashboardRow h='22%' title="Commits (Last 30 days)">
         <DashboardWidget
           w={1}
           name="commits"
@@ -41,7 +41,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 instanceKey={context.getInstanceKey('repository')}
                 context={context}
                 view={view}
-                days={90}
+                days={30}
               />
           }
           showDetail={true}
