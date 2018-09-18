@@ -41,7 +41,8 @@ export const CumulativeCommitCountChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: view === 'detail' ? 'Commit History': undefined
+          text: 'Commit History',
+          align: view === 'detail' ? 'center': 'left'
         },
         xAxis: {
           type: 'datetime',

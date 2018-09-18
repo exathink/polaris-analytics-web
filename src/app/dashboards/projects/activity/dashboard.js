@@ -2,7 +2,7 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionActivitySummaryPanelWidget, DimensionCumulativeCommitCountWidget,
+  DimensionActivitySummaryPanelWidget, DimensionCommitsNavigatorWidget, DimensionCumulativeCommitCountWidget,
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
@@ -32,22 +32,6 @@ export const dashboard = withNavigationContext(
                 instanceKey={context.getInstanceKey('project')}
               />
           }
-        />
-      </DashboardRow>
-      <DashboardRow h='44%' title="Commit History">
-        <DashboardWidget
-          w={1/2}
-          name="cumulative-commit-count"
-          render={
-            (view) =>
-              <DimensionCumulativeCommitCountWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                context={context}
-                view={view}
-              />
-          }
-          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='22%' title={Contexts.repositories.display()}>
@@ -81,14 +65,47 @@ export const dashboard = withNavigationContext(
                 childConnection={'recentlyActiveRepositories'}
                 context={context}
                 childContext={Repositories}
-                top={5}
-                days={7}
+                top={20}
+                days={30}
                 view={view}
               />
           }
           showDetail={true}
         />
       </DashboardRow>
+      <DashboardRow h='44%'>
+        <DashboardWidget
+          w={1/2}
+          name="cumulative-commit-count"
+          render={
+            (view) =>
+              <DimensionCumulativeCommitCountWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+                context={context}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1}
+          name="commits"
+          render={
+            ({view}) =>
+              <DimensionCommitsNavigatorWidget
+                dimension={'project'}
+                instanceKey={context.getInstanceKey('project')}
+                context={context}
+                view={view}
+                days={30}
+                groupBy={'repository'}
+              />
+          }
+          showDetail={true}
+        />
+      </DashboardRow>
+
     </Dashboard>
   )
 );

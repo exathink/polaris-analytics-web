@@ -30,7 +30,21 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           }
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Commits (Last 30 days)">
+      <DashboardRow h='44%'>
+        <DashboardWidget
+          w={1/2}
+          name="cumulative-commit-count"
+          render={
+            (view) =>
+              <DimensionCumulativeCommitCountWidget
+                dimension={'repository'}
+                instanceKey={context.getInstanceKey('repository')}
+                context={context}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
         <DashboardWidget
           w={1}
           name="commits"
@@ -47,21 +61,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='44%' title="Commit History">
-        <DashboardWidget
-          w={1/2}
-          name="cumulative-commit-count"
-          render={
-            (view) =>
-              <DimensionCumulativeCommitCountWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
-                context={context}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
+      <DashboardRow h='22%' title="Something Else">
       </DashboardRow>
 
     </Dashboard>

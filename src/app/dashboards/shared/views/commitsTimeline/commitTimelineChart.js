@@ -10,10 +10,11 @@ export const CommitsTimelineChart = Chart({
         commits: props.commits
       }),
     getConfig:
-      ({commits, context, intl, view}) => {
+      ({commits, context, intl, view, groupBy, days}) => {
+        const category = groupBy || 'author';
         const categories_index = commits.reduce(
           (index, commit) => {
-            index[commit.author] = commit.author;
+            index[commit[category]] = commit[category];
             return index
           },
           {}
@@ -22,12 +23,12 @@ export const CommitsTimelineChart = Chart({
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
-          const offset = moment(commit_date).add(2, 'hours');
+          const offset = moment(commit_date).add(3, 'hours');
           return (
             {
               x: commit_date.valueOf(),
               x2: offset.valueOf(),
-              y: categories.indexOf(commit.author),
+              y: categories.indexOf(commit[category]),
               commit: commit
             }
           )
@@ -39,7 +40,8 @@ export const CommitsTimelineChart = Chart({
             backgroundColor: Colors.Chart.backgroundColor
           },
           title: {
-            text: null
+            text: `Commits: Last ${days} Days`,
+            align: view === 'detail' ? 'center' : 'left'
           },
           xAxis: {
             type: 'datetime',
@@ -52,8 +54,7 @@ export const CommitsTimelineChart = Chart({
             id: 'y-items',
             title: 'y-axis-thingy',
             categories: categories,
-            reversed: true,
-            visible: view === 'detail'
+            reversed: true
           },
           tooltip: {
             useHTML: true,

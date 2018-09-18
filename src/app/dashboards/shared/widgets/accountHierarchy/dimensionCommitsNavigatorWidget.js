@@ -14,7 +14,8 @@ export const DimensionCommitsNavigatorWidget = (
     instanceKey,
     context,
     days,
-    view
+    view,
+    groupBy
 
   }) => (
     <Query
@@ -34,6 +35,8 @@ export const DimensionCommitsNavigatorWidget = (
                                 committer
                                 commitDate
                                 commitMessage
+                                repository
+                                repositoryKey
                             }
                         }
                     }
@@ -56,6 +59,8 @@ export const DimensionCommitsNavigatorWidget = (
               commits={commits}
               context={context}
               view={view}
+              groupBy={groupBy}
+              days={days}
             />
           )
         }

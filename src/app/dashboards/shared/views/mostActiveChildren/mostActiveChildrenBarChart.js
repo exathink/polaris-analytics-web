@@ -26,7 +26,7 @@ export const MostActiveChildrenBarChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: `Recent Activity`,
+          text: `Most Active ${displayPlural(intl, childContext)} `,
           align: 'left'
         },
         tooltip: {
