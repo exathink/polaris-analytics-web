@@ -60,8 +60,8 @@ export const dashboard = withNavigationContext(
                 childConnection={'recentlyActiveProjects'}
                 context={context}
                 childContext={Projects}
-                top={20}
-                days={30}
+                top={5}
+                days={7}
                 view={view}
               />
           }
