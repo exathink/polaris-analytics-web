@@ -58,8 +58,8 @@ export const dashboard = withUserContext(withNavigationContext(
                 childConnection={'recentlyActiveOrganizations'}
                 context={context}
                 childContext={Organizations}
-                top={20}
-                days={30}
+                top={5}
+                days={7}
                 view={view}
               />
           }
@@ -96,8 +96,8 @@ export const dashboard = withUserContext(withNavigationContext(
                 childConnection={'recentlyActiveProjects'}
                 context={context}
                 childContext={Projects}
-                top={20}
-                days={30}
+                top={5}
+                days={7}
                 view={view}
               />
           }
@@ -135,8 +135,8 @@ export const dashboard = withUserContext(withNavigationContext(
                 childConnection={'recentlyActiveRepositories'}
                 context={context}
                 childContext={Repositories}
-                top={20}
-                days={30}
+                top={5}
+                days={7}
                 view={view}
               />
           }
