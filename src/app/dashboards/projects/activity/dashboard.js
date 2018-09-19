@@ -73,7 +73,7 @@ export const dashboard = withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='44%'>
+      <DashboardRow h='63%'>
         <DashboardWidget
           w={1/2}
           name="cumulative-commit-count"

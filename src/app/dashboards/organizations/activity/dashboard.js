@@ -30,7 +30,7 @@ export const dashboard = withNavigationContext(
           render={() => <DimensionActivitySummaryPanelWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
         />
       </DashboardRow>
-      <DashboardRow h='22%' title={Contexts.projects.display()}>
+      <DashboardRow h='33%' title={Contexts.projects.display()}>
         <DashboardWidget
           w={1 / 2}
           name="project-activity-levels"
@@ -68,7 +68,7 @@ export const dashboard = withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='22%' title={Contexts.repositories.display()}>
+      <DashboardRow h='33%' title={Contexts.repositories.display()}>
         <DashboardWidget
           w={1 / 2}
           name="repository-activity-levels"
@@ -107,9 +107,7 @@ export const dashboard = withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
 
-      </DashboardRow>
     </Dashboard>
   )
 );

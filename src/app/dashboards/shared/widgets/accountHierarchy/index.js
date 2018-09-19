@@ -5,3 +5,4 @@ export {DimensionConnectionInceptionsWidget} from './dimensionConnectionInceptio
 export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWidget';
 export {DimensionCumulativeCommitCountWidget} from './dimensionCumulativeCommitCounts';
 export {DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';
+export {DimensionWeeklyContributorCountWidget} from './dimensionWeeklyContributorCounts';

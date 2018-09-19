@@ -3,6 +3,7 @@ import {defineMessages} from 'react-intl';
 export const Terms = defineMessages({
   'History': {id: 't.History', defaultMessage: 'History'},
   'Number of commits': {id: 't.Number of commits', defaultMessage: 'Number of commits'},
+  'Number of contributors': {id: 't.Number of contributors', defaultMessage: 'Number of contributors'},
   'Commits': {id: 't.Commits', defaultMessage: 'Commits'},
   'Total Commits': {id: 't.TotalCommits', defaultMessage: 'Total Commits'},
   'Contributors': {id: 't.Contributors', defaultMessage: 'Contributors'},
