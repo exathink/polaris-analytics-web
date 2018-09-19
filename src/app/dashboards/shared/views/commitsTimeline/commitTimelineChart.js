@@ -40,7 +40,11 @@ export const CommitsTimelineChart = Chart({
             backgroundColor: Colors.Chart.backgroundColor
           },
           title: {
-            text: `Commits: Last ${days} Days`,
+            text: `Recent Commits`,
+            align: view === 'detail' ? 'center' : 'left'
+          },
+          subtitle: {
+            text: `Last ${days} Days`,
             align: view === 'detail' ? 'center' : 'left'
           },
           xAxis: {

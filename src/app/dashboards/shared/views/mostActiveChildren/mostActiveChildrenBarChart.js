@@ -29,6 +29,10 @@ export const MostActiveChildrenBarChart = Chart({
           text: `Most Active ${displayPlural(intl, childContext)} `,
           align: 'left'
         },
+        subtitle: {
+          text: `Last ${days} days`,
+          align: 'left'
+        },
         tooltip: {
           useHTML: true,
           hideDelay: 50,
