@@ -1,9 +1,10 @@
 import React from "react";
-import Highcharts from 'highcharts';
+
 import Dimensions from 'react-dimensions';
 
 import {HighchartsChart} from "./highchartsReact";
 
+const Highcharts = require('highcharts/highstock');
 require('highcharts/highcharts-more.src.js')(Highcharts);
 require('highcharts/modules/xrange.src.js')(Highcharts);
 

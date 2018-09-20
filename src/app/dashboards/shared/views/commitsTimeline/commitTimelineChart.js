@@ -37,7 +37,8 @@ export const CommitsTimelineChart = Chart({
         return {
           chart: {
             type: 'xrange',
-            backgroundColor: Colors.Chart.backgroundColor
+            backgroundColor: Colors.Chart.backgroundColor,
+            zoomType: view === 'detail'?  'y' : undefined
           },
           title: {
             text: `Recent Commits`,
@@ -58,7 +59,11 @@ export const CommitsTimelineChart = Chart({
             id: 'y-items',
             title: 'y-axis-thingy',
             categories: categories,
-            reversed: true
+            reversed: true,
+            scrollbar: {
+              enabled: view === 'detail',
+              showFull: false
+            }
           },
           tooltip: {
             useHTML: true,
