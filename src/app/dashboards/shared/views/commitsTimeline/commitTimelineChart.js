@@ -24,7 +24,7 @@ export const CommitsTimelineChart = Chart({
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
-          const offset = moment(commit_date).add(1, 'hours');
+          const offset = moment(commit_date).add(3, 'hours');
           return (
             {
               x: commit_date.valueOf(),
@@ -54,7 +54,7 @@ export const CommitsTimelineChart = Chart({
             title: {
               text: 'Timeline'
             },
-            max: moment().add(1, 'days').valueOf()
+            max: moment().valueOf()
           },
           yAxis: {
             id: 'y-items',
@@ -73,7 +73,7 @@ export const CommitsTimelineChart = Chart({
               return tooltipHtml({
                 header: `Author: ${this.point.commit.author}`,
                 body: [
-                  [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
+                  [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
                   [`Branch: `, `${this.point.commit.branch || ''}`],
                   ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
                   [`Committer: `, `${this.point.commit.committer}`]
@@ -94,6 +94,13 @@ export const CommitsTimelineChart = Chart({
           ],
           legend: {
             enabled: false
+          },
+          time: {
+            // Since we are already passing in UTC times we
+            // dont need the chart to translate the time to UTC
+            // This makes sure the tooltips text matches the timeline
+            // on the axis.
+            useUTC: false
           }
         };
       }
