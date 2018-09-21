@@ -116,3 +116,6 @@ export function human_span(date_a, date_b) {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
 }
 
+export function elide(str, length) {
+  return str.length < length ? str : `${str.substring(0, length)} ...`
+}

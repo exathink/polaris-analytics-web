@@ -3,6 +3,7 @@ import {Chart} from "../../../../framework/viz/charts/index";
 import {displaySingular, formatTerm} from "../../../../i18n/index";
 import moment from 'moment';
 import {Colors} from "../../config";
+import {elide} from "../../../../helpers/utility";
 
 export const CommitsTimelineChart = Chart({
     chartUpdateProps:
@@ -72,8 +73,9 @@ export const CommitsTimelineChart = Chart({
               return tooltipHtml({
                 header: `Author: ${this.point.commit.author}`,
                 body: [
-                  [`Commit Date:`, `${this.point.commit.commitDate}`],
-                  ['Commit Message: ', `${this.point.commit.commitMessage}`]
+                  [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
+                  [`Branch: `, `${this.point.commit.branch || ''}`],
+                  ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`]
                 ]
               })
             }

@@ -35,8 +35,10 @@ export const DimensionCommitsNavigatorWidget = (
                                 committer
                                 commitDate
                                 commitMessage
+                                branch
                                 repository
                                 repositoryKey
+
                             }
                         }
                     }
