@@ -24,7 +24,7 @@ export const CommitsTimelineChart = Chart({
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
-          const offset = moment(commit_date).add(3, 'hours');
+          const offset = moment(commit_date).add(1, 'hours');
           return (
             {
               x: commit_date.valueOf(),
@@ -39,7 +39,7 @@ export const CommitsTimelineChart = Chart({
           chart: {
             type: 'xrange',
             backgroundColor: Colors.Chart.backgroundColor,
-            zoomType: view === 'detail'?  'y' : undefined
+            zoomType: view === 'detail'?  'xy' : undefined
           },
           title: {
             text: `Recent Commits`,
@@ -54,7 +54,7 @@ export const CommitsTimelineChart = Chart({
             title: {
               text: 'Timeline'
             },
-            max: moment().valueOf()
+            max: moment().add(1, 'days').valueOf()
           },
           yAxis: {
             id: 'y-items',
@@ -75,7 +75,9 @@ export const CommitsTimelineChart = Chart({
                 body: [
                   [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
                   [`Branch: `, `${this.point.commit.branch || ''}`],
-                  ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`]
+                  ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
+                  [`Committer: `, `${this.point.commit.committer}`]
+
                 ]
               })
             }
