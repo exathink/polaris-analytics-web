@@ -41,7 +41,9 @@ export const CommitsTimelineChart = Chart({
           chart: {
             type: 'xrange',
             backgroundColor: Colors.Chart.backgroundColor,
-            zoomType: view === 'detail'?  'xy' : undefined
+            zoomType: view === 'detail'?  'xy' : undefined,
+            panning: true,
+            panKey: 'shift',
           },
           title: {
             text: `Recent Commits`,
@@ -76,7 +78,9 @@ export const CommitsTimelineChart = Chart({
                 header: `Author: ${this.point.commit.author}`,
                 body: [
                   [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
+                  [`Repository: `, `${this.point.commit.repository}`],
                   [`Branch: `, `${this.point.commit.branch || ''}`],
+                  [`------`, ``],
                   ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
                   [`Committer: `, `${this.point.commit.committer}`]
 
