@@ -15,12 +15,14 @@ export const CommitsTimelineChart = Chart({
         const category = groupBy || 'author';
         const categories_index = commits.reduce(
           (index, commit) => {
-            index[commit[category]] = commit[category];
+            index[commit[category]] = index[commit[category]] === undefined ? 1 : index[commit[category]] + 1;
             return index
           },
           {}
         );
-        const categories = Object.keys(categories_index);
+
+        // sort in descending order of activity
+        const categories = Object.keys(categories_index).sort((a,b) => categories_index[b] - categories_index[a]);
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
@@ -59,12 +61,12 @@ export const CommitsTimelineChart = Chart({
           yAxis: {
             id: 'y-items',
             title: 'y-axis-thingy',
-            categories: categories,
-            reversed: true,
+            categories: categories.map(category => `${category}: ${categories_index[category]}`),
             scrollbar: {
               enabled: view === 'detail',
               showFull: false
-            }
+            },
+            reversed: true
           },
           tooltip: {
             useHTML: true,
