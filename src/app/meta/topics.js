@@ -21,6 +21,11 @@ export const Topics = {
     name: 'organizations',
     display: () => (<FormattedMessage id='topics.organizations' defaultMessage="Organizations"/>),
     icon: 'ion-folder'
-  }
+  },
+  commit: {
+    name: 'commit',
+    display: () => (<FormattedMessage id='topics.commit' defaultMessage="Commit"/>),
+    icon: 'ion-code'
+  },
 
 };

@@ -2,6 +2,8 @@
   "topbaruser.logout": "Logout",
   "dashboards.activity.account.topRowTitle": "Account Overview",
   "dashboards.contributors.account.topRowTitle": "Contributors Overview",
+  "dashboards.commit.commits.instance.topRowTitle": "Commit Overview",
+  "contexts.commits.instance": "Commit: {instance}",
   "dashboards.activity.contributors.instance.topRowTitle": "Contributor Overview",
   "contexts.contributors.instance": "Contributor: {instance}",
   "dashboards.activity.organization.instance.topRowTitle": "Organization Overview",
@@ -39,6 +41,7 @@
   "topics.contributors": "Contributors",
   "topics.projects": "Projects",
   "topics.organizations": "Organizations",
+  "topics.commit": "Commit",
   "landing.yourDashboards": "Your Dashboards",
   "landing.importRepositories": "Analyze your code",
   "landing.ossDashboards": "Browse open source dashboards"

@@ -4,12 +4,18 @@ import {displaySingular, formatTerm} from "../../../../i18n/index";
 import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
+import {PointSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/pointSelectionHandler";
+
 
 export const CommitsTimelineChart = Chart({
     chartUpdateProps:
       (props) => ({
         commits: props.commits
       }),
+
+    eventHandler: PointSelectionEventHandler,
+    mapPoints: (points, _) => points.map(point=>point.commit),
+
     getConfig:
       ({commits, context, intl, view, groupBy, days}) => {
         const category = groupBy || 'author';
@@ -22,7 +28,7 @@ export const CommitsTimelineChart = Chart({
         );
 
         // sort in descending order of activity
-        const categories = Object.keys(categories_index).sort((a,b) => categories_index[b] - categories_index[a]);
+        const categories = Object.keys(categories_index).sort((a, b) => categories_index[b] - categories_index[a]);
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
@@ -41,7 +47,7 @@ export const CommitsTimelineChart = Chart({
           chart: {
             type: 'xrange',
             backgroundColor: Colors.Chart.backgroundColor,
-            zoomType: view === 'detail'?  'xy' : undefined,
+            zoomType: view === 'detail' ? 'xy' : undefined,
             panning: true,
             panKey: 'shift',
           },
@@ -95,7 +101,8 @@ export const CommitsTimelineChart = Chart({
               name: 'timeline',
               pointWidth: 20,
               data: series_data,
-              turboThreshold: 0
+              turboThreshold: 0,
+              allowPointSelect: true
             }
           ],
           legend: {
@@ -110,8 +117,6 @@ export const CommitsTimelineChart = Chart({
           }
         };
       }
-
-
   }
 );
 
