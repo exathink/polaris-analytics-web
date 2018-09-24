@@ -17,6 +17,7 @@ export const WithCommit = ({context, render}) => (
                 commit(key: $key){
                     id
                     name
+                    commitHash
                     repository
                     repositoryKey
                     repositoryUrl

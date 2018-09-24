@@ -9,6 +9,7 @@ import {CommitDate} from "./commitDate";
 import {CommitBranch} from "./commitBranch";
 import {CommitParents} from "./commitParents";
 import {CommitRepository} from "./commitRepository";
+import {CommitRemoteLink} from "./commitRemoteLink";
 
 export const CommitHeader = ({commit}) => (
   <Flex column style={{height:"100%"}}>
@@ -31,8 +32,8 @@ export const CommitHeader = ({commit}) => (
         <CommitBranch commit={commit}/>
       </Flex>
 
-      <Flex w={1 / 4} align={'center'} justify={'center'}>
-        <CommitParents commit={commit}/>
+      <Flex w={1 / 4} align={'center'} justify={'flex-end'}>
+        <CommitRemoteLink commit={commit}/>
       </Flex>
     </Flex>
   </Flex>
