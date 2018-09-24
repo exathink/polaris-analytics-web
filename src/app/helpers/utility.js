@@ -119,3 +119,7 @@ export function human_span(date_a, date_b) {
 export function elide(str, length) {
   return str.length < length ? str : `${str.substring(0, length)} ...`
 }
+
+export function capitalizeFirstLetter(string) {
+    return string && string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}

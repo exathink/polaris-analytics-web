@@ -1,9 +1,12 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {WithCommit} from "../withCommit";
+import {CommitHeader} from "../views/commitHeader";
+
+import {Flex, Box} from 'reflexbox';
 
 const dashboard_id = 'dashboards.commit.commits.instance';
 const messages = {
@@ -17,7 +20,19 @@ export const dashboard = withNavigationContext(
       context={context}
       render={
         ({commit}) => (
-              <div>Hello {commit.name} from {commit.repositoryUrl}</div>
+          <Dashboard>
+            <DashboardRow align={'flex-start'} h={"30%"}>
+              <DashboardWidget
+                w={1}
+                name={'commit-summary'}
+                render={
+                  ({view}) => (
+                    <CommitHeader commit={commit}/>
+                  )
+                }
+              />
+            </DashboardRow>
+          </Dashboard>
         )
       }
     />

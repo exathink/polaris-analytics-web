@@ -26,6 +26,7 @@ export const WithCommit = ({context, render}) => (
                     committerKey
                     commitDate
                     commitMessage
+                    branch
                 }
             }
         `

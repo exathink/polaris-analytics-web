@@ -39,7 +39,7 @@ export class DashboardLayout extends React.Component {
 
 }
 
-export const DashboardRow = ({children, h, title,  ...rest}) => (
+export const DashboardRow = ({children, h, title, align, ...rest}) => (
   <React.Fragment>
     {
       title ?
@@ -49,7 +49,7 @@ export const DashboardRow = ({children, h, title,  ...rest}) => (
         null
 
     }
-    <Flex auto align='center' justify='space-between' className="dashboard-row" style={{
+    <Flex auto align={align || 'center'} justify='space-between' className="dashboard-row" style={{
       height: h
     }}>
       {cloneChildrenWithProps(children, {...rest})}
