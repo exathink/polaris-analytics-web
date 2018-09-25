@@ -4,14 +4,14 @@ import moment from 'moment';
 
 import {elide, capitalizeFirstLetter} from "../../../helpers/utility";
 import {Colors} from "../../shared/config";
-import {CommitAuthor} from "./commitAuthor";
+import {CommitCommitter} from "./commitCommitter";
 import {CommitDate} from "./commitDate";
 import {CommitBranch} from "./commitBranch";
 import {CommitParents} from "./commitParents";
 import {CommitRepository} from "./commitRepository";
 import {CommitRemoteLink} from "./commitRemoteLink";
 
-export const CommitHeader = ({commit}) => (
+export const CommitDetails = ({commit}) => (
   <Flex column style={{height:"100%"}}>
     <Flex p={'10px'} style={{
       height: "85%",
@@ -22,17 +22,17 @@ export const CommitHeader = ({commit}) => (
       {capitalizeFirstLetter(commit.commitMessage)}
     </Flex>
     <Flex p={'10px'} style={{height: "15%", 'font-size': '12pt'}}>
-      <Flex w={1/2} align={'center'} justify={'space-between'}>
+      <Flex w={"60%"} align={'center'} justify={'space-between'}>
         <CommitRepository commit={commit}/>
-        <CommitAuthor commit={commit}/>
+        <CommitCommitter commit={commit}/>
         <CommitDate commit={commit}/>
       </Flex>
 
-      <Flex w={1 / 4} align={'center'} justify={'center'}>
+      <Flex w={"20%"} align={'center'} justify={'center'}>
         <CommitBranch commit={commit}/>
       </Flex>
 
-      <Flex w={1 / 4} align={'center'} justify={'flex-end'}>
+      <Flex w={"20%"} align={'center'} justify={'flex-end'}>
         <CommitRemoteLink commit={commit}/>
       </Flex>
     </Flex>

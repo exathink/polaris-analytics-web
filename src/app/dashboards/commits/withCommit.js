@@ -28,6 +28,12 @@ export const WithCommit = ({context, render}) => (
                     commitDate
                     commitMessage
                     branch
+                    stats {
+                        files
+                        lines
+                        insertions
+                        deletions
+                    }
                 }
             }
         `

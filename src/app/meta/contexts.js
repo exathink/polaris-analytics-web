@@ -120,7 +120,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-code',
-    color: '#000000',
+    color: '#5d69b2',
 
   },
   oss: {
