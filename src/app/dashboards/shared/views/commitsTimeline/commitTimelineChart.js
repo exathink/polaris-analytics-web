@@ -51,7 +51,7 @@ export const CommitsTimelineChart = Chart({
             panKey: 'shift',
           },
           title: {
-            text: `Recent Commits`,
+            text: `${commits.length} Commits`,
             align: view === 'detail' ? 'center' : 'left'
           },
           subtitle: {
@@ -73,7 +73,9 @@ export const CommitsTimelineChart = Chart({
               enabled: view === 'detail',
               showFull: false
             },
-            reversed: true
+            reversed: true,
+            min: 0,
+            max: categories.length-1
           },
           tooltip: {
             useHTML: true,
