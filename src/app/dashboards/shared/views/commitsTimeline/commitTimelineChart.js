@@ -32,12 +32,11 @@ export const CommitsTimelineChart = Chart({
 
         const series_data = commits.map((commit, index) => {
           const commit_date = moment(commit.commitDate);
-          const offset = moment(commit_date).add(3, 'hours');
           return (
             {
               x: commit_date.valueOf(),
-              x2: offset.valueOf(),
               y: categories.indexOf(commit[category]),
+              z: commit.stats.lines,
               commit: commit
             }
           )
@@ -45,7 +44,7 @@ export const CommitsTimelineChart = Chart({
 
         return {
           chart: {
-            type: 'xrange',
+            type: 'bubble',
             backgroundColor: Colors.Chart.backgroundColor,
             zoomType: view === 'detail' ? 'xy' : undefined,
             panning: true,
