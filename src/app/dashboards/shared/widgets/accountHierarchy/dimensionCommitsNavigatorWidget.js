@@ -7,6 +7,8 @@ import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from '../../../../services/graphql/index'
 import {CommitsTimelineChart} from "../../views/commitsTimeline";
 import Commits from "../../../commits/context";
+import Contributors from "../../../contributors/context";
+import Repositories from "../../../repositories/context";
 
 function onCommitsSelected(context, commits) {
   if(commits.length == 1) {
@@ -39,6 +41,7 @@ export const DimensionCommitsNavigatorWidget = (
                                 name
                                 key
                                 author
+                                authorKey
                                 committer
                                 commitDate
                                 commitMessage
@@ -76,6 +79,12 @@ export const DimensionCommitsNavigatorWidget = (
               days={days}
               onSelectionChange={
                 (commits) => onCommitsSelected(context, commits)
+              }
+              onAuthorSelected={
+                (authorName, authorKey) => context.navigate(Contributors, authorName, authorKey)
+              }
+              onRepositorySelected={
+                (repositoryName, repositoryKey) => context.navigate(Repositories, repositoryName, repositoryKey)
               }
             />
           )
