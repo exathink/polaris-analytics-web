@@ -88,8 +88,10 @@ export const CommitsTimelineChart = Chart({
                   [`Branch: `, `${this.point.commit.branch || ''}`],
                   [`------`, ``],
                   ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
-                  [`Committer: `, `${this.point.commit.committer}`]
-
+                  [`Committer: `, `${this.point.commit.committer}`],
+                  [`------`, ``],
+                  [`Files: `, `${this.point.commit.stats.files}`],
+                  [`Lines: `, `${this.point.commit.stats.lines}`]
                 ]
               })
             }

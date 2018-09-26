@@ -45,6 +45,10 @@ export const DimensionCommitsNavigatorWidget = (
                                 branch
                                 repository
                                 repositoryKey
+                                stats {
+                                    files
+                                    lines
+                                }
 
                             }
                         }
