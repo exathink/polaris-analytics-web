@@ -11,13 +11,14 @@ export const CommitsTimelineChart = Chart({
     chartUpdateProps:
       (props) => ({
         commits: props.commits
+
       }),
 
     eventHandler: PointSelectionEventHandler,
-    mapPoints: (points, _) => points.map(point=>point.commit),
+    mapPoints: (points, _) => points.map(point => point.commit),
 
     getConfig:
-      ({commits, context, intl, view, groupBy, days}) => {
+      ({commits, context, intl, view, groupBy, days, onAuthorSelected, onRepositorySelected}) => {
         const category = groupBy || 'author';
         const categories_index = commits.reduce(
           (index, commit) => {
@@ -75,27 +76,47 @@ export const CommitsTimelineChart = Chart({
             },
             reversed: true,
             min: 0,
-            max: categories.length-1
+            max: categories.length - 1,
+            labels: {
+              events: {
+                click: function () {
+                  const cat_index = this.axis.categories.indexOf(this.value);
+                  if (cat_index !== -1) {
+                    if ((onAuthorSelected && category ==='author') || (onRepositorySelected && category === 'repository')) {
+                      const category_name = categories[cat_index];
+                      const commit = commits.find(commit => commit[category] === category_name);
+                      if (commit) {
+                         if (category === 'author') {
+                            onAuthorSelected(commit.author, commit.authorKey)
+                         } else {
+                           onRepositorySelected(commit.repository, commit.repositoryKey)
+                         }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           tooltip: {
-            useHTML: true,
-            hideDelay: 50,
-            formatter: function () {
-              return tooltipHtml({
-                header: `Author: ${this.point.commit.author}`,
-                body: [
-                  [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
-                  [`Repository: `, `${this.point.commit.repository}`],
-                  [`Branch: `, `${this.point.commit.branch || ''}`],
-                  [`------`, ``],
-                  ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
-                  [`Committer: `, `${this.point.commit.committer}`],
-                  [`------`, ``],
-                  [`Files: `, `${this.point.commit.stats.files}`],
-                  [`Lines: `, `${this.point.commit.stats.lines}`]
-                ]
-              })
-            }
+              useHTML: true,
+              hideDelay: 50,
+              formatter: function () {
+                return tooltipHtml({
+                  header: `Author: ${this.point.commit.author}`,
+                  body: [
+                    [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
+                    [`Repository: `, `${this.point.commit.repository}`],
+                    [`Branch: `, `${this.point.commit.branch || ''}`],
+                    [`------`, ``],
+                    ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
+                    [`Committer: `, `${this.point.commit.committer}`],
+                    [`------`, ``],
+                    [`Files: `, `${this.point.commit.stats.files}`],
+                    [`Lines: `, `${this.point.commit.stats.lines}`]
+                  ]
+                })
+              }
           },
           series: [
             {
@@ -118,8 +139,9 @@ export const CommitsTimelineChart = Chart({
             // on the axis.
             useUTC: false
           }
-        };
-      }
-  }
-);
+
+        }
+    }
+});
+
 

@@ -11,7 +11,7 @@ import Repositories from "../../repositories/context";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
-const dashboard_id = 'dashboards.activity.projects.instance';
+const dashboard_id = 'dashboards.history.projects.instance';
 const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Project Overview'/>
 };

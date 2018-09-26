@@ -8,9 +8,9 @@ import {
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
-const dashboard_id = 'dashboards.activity.repositories.instance';
+const dashboard_id = 'dashboards.history.repositories.instance';
 const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Repository Overview'/>
+  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Repository History'/>
 };
 
 
