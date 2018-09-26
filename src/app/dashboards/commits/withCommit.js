@@ -34,6 +34,10 @@ export const WithCommit = ({context, render}) => (
                         insertions
                         deletions
                     }
+                    fileTypesSummary {
+                        fileType
+                        count
+                    }
                 }
             }
         `
