@@ -6,9 +6,9 @@ import type {Context} from '../../framework/navigation/context/context';
 
 import Activity from './activity/topic';
 import Contributor from './contributors/topic';
+import History from './history/topic';
 
 import {Contexts} from "../../meta/contexts";
-import {Topics} from "../../meta/topics";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
 
@@ -38,6 +38,10 @@ const context : Context = {
           {
             match: 'contributors',
             topic: Contributor
+          },
+          {
+            match: 'history',
+            topic: History
           },
           {
             match: '',

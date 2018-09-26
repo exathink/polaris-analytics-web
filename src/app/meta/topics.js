@@ -27,5 +27,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.commit' defaultMessage="Commit"/>),
     icon: 'ion-code'
   },
-
+  history: {
+    name: 'history',
+    display: () => (<FormattedMessage id='topics.history' defaultMessage="History"/>),
+    icon: 'ion-clock'
+  },
 };

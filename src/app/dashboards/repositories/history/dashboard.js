@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget,
-  DimensionCumulativeCommitCountWidget
+  DimensionCumulativeCommitCountWidget, DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
@@ -16,32 +16,31 @@ const messages = {
 
 export const dashboard = withNavigationContext(({match, context, ...rest}) => (
     <Dashboard dashboard={`${dashboard_id}`} {...rest}>
-      <DashboardRow h='15%'>
+      <DashboardRow h={"100%"}>
         <DashboardWidget
-          w={1}
-          name="activity-summary"
-          title={messages.topRowTitle}
+          w={1/2}
+          name="cumulative-commit-count"
           render={
-            () =>
-              <DimensionActivitySummaryPanelWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
-              />
-          }
-        />
-      </DashboardRow>
-      <DashboardRow h={"85%"}>
-        <DashboardWidget
-          w={1}
-          name="commits"
-          render={
-            ({view}) =>
-              <DimensionCommitsNavigatorWidget
+            (view) =>
+              <DimensionCumulativeCommitCountWidget
                 dimension={'repository'}
                 instanceKey={context.getInstanceKey('repository')}
                 context={context}
                 view={view}
-                days={30}
+              />
+          }
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1/2}
+          name="weekly-contributor-count"
+          render={
+            (view) =>
+              <DimensionWeeklyContributorCountWidget
+                dimension={'repository'}
+                instanceKey={context.getInstanceKey('repository')}
+                context={context}
+                view={view}
               />
           }
           showDetail={true}

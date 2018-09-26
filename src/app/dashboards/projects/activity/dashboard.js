@@ -75,20 +75,6 @@ export const dashboard = withNavigationContext(
       </DashboardRow>
       <DashboardRow h='63%'>
         <DashboardWidget
-          w={1/2}
-          name="cumulative-commit-count"
-          render={
-            (view) =>
-              <DimensionCumulativeCommitCountWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                context={context}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-        <DashboardWidget
           w={1}
           name="commits"
           render={

@@ -68,20 +68,6 @@ export const dashboard = withUserContext(withNavigationContext(
       <DashboardRow>
         <DashboardWidget
           w={1}
-          name="weekly-contributor-count"
-          render={
-            (view) =>
-              <DimensionWeeklyContributorCountWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                context={context}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1}
           name="commits"
           render={
             ({view}) =>
