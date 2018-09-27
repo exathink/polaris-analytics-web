@@ -57,9 +57,21 @@ export const DimensionMostActiveChildrenWidget = (
               view={view}
               top={top}
               days={days}
+              onSelectionChange={
+                (children) => {
+                  onChildrenSelected(context, childContext, children)
+                }
+              }
             />
           )
         }
       }
     </Query>
 );
+
+function onChildrenSelected(context, childContext, children) {
+  if(children.length == 1) {
+    const child = children[0];
+    context.navigate(childContext, child.name, child.key)
+  }
+}

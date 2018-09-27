@@ -1,12 +1,14 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
+import {PointSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/pointSelectionHandler";
 
 function initSeries(activeChildren) {
   return activeChildren.map(child => ({
     name: child.name,
     y: child.commitCount,
-    color: Colors.ActivityLevel.ACTIVE
+    color: Colors.ActivityLevel.ACTIVE,
+    child: child
   }));
 }
 
@@ -16,6 +18,8 @@ export const MostActiveChildrenBarChart = Chart({
       activeChildren: props.activeChildren,
       childContext: props.childContext,
     }),
+  eventHandler: PointSelectionEventHandler,
+  mapPoints: (points, _) => points.map(point=>point.child),
   getConfig:
     ({activeChildren, view, top, days, childContext, intl}) => {
       const series_data = initSeries(activeChildren);
@@ -63,7 +67,8 @@ export const MostActiveChildrenBarChart = Chart({
           key: 'Recent commits',
           id: 'Recent commits',
           name: 'Commits',
-          data: series_data
+          data: series_data,
+          allowPointSelect: true
         }],
         legend: {
           enabled: false
