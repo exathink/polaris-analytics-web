@@ -6,8 +6,8 @@ import {HighchartsChart} from "./highchartsReact";
 
 const Highcharts = require('highcharts/highstock');
 
-require('highcharts/highcharts-more.src.js')(Highcharts);
-require('highcharts/modules/xrange.src.js')(Highcharts);
+require('highcharts/highcharts-more')(Highcharts);
+require('highcharts/modules/xrange')(Highcharts);
 require('highcharts-custom-events')(Highcharts);
 
 

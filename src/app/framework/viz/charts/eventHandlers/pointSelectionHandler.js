@@ -18,9 +18,13 @@ export class PointSelectionEventHandler {
 
    if(config.series) {
      const series = config.series;
+     const self = this;
      for(let i = 0; i < series.length; i++) {
        if(series[i].allowPointSelect) {
-         set(series[i], 'events.click', (e) => this.pointClicked(e));
+         set(series[i], 'events.click', function (e) {
+           const x = 42;
+           self.pointClicked(e)
+         });
        }
      }
    }

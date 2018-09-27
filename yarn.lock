@@ -3531,9 +3531,15 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-highcharts@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.1.0.tgz#115a6ee10ad36a53d9913f1030c6d46da16c7cb5"
+highcharts-custom-events@^2.1.9:
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/highcharts-custom-events/-/highcharts-custom-events-2.1.9.tgz#19ac29555b7ee7bdf340d7493ec0469576358ec9"
+  dependencies:
+    highcharts ">=5.0.9"
+
+highcharts@>=5.0.9, highcharts@^6.1.0:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.1.4.tgz#753b6d4b99a279ade28276e1b4dc5a53346c7601"
 
 history@^4.6.3, history@^4.7.2:
   version "4.7.2"

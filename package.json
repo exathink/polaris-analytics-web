@@ -13,6 +13,7 @@
     "graphql": "0.13.0",
     "graphql-tag": "^2.9.2",
     "highcharts": "^6.1.0",
+    "highcharts-custom-events": "^2.1.9",
     "history": "^4.6.3",
     "moment": "^2.21.0",
     "nprogress": "^0.2.0",
@@ -53,12 +54,12 @@
     "chance": "^1.0.13",
     "fb-watchman": "^2.0.0",
     "flow-bin": "^0.66.0",
+    "jest-dom": "^1.11.0",
     "react-app-rewire-bundle-analyzer": "^1.0.1",
     "react-app-rewire-react-intl": "^2.4.0",
     "react-app-rewired": "^1.4.0",
     "react-test-renderer": "^16.4.1",
-    "react-testing-library": "^4.1.5",
-    "jest-dom": "^1.11.0"
+    "react-testing-library": "^4.1.5"
   },
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader && yarn build:fragment-types && yarn build:messages && react-app-rewired start",
@@ -67,6 +68,7 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
-    "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/adminFragmentTypes.json"
+    "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/adminFragmentTypes.json",
+    "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start"
   }
 }
