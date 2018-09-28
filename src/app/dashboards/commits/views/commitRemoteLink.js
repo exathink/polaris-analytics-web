@@ -30,7 +30,7 @@ export const CommitRemoteLink = ({commit}) => {
 
    return  (
      commitBrowseUrl ?
-      <a href={commitBrowseUrl} target={"_blank"} style={{color: 'black'}}>
+      <a href={commitBrowseUrl} target={"_blank"} title={`View commit on ${source}`}>
         <RowNoOverflow align={'center'}>
           <i className={"ion ion-link"} style={{margin: '5px'}}/>
           <span>{source}</span>

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { StickerWidgetWrapper } from './style';
+import { Link } from 'react-router-dom';
+
 
 export default class StickerWidget extends Component {
   render() {
-    const { fontColor, bgColor, width, icon, number, text } = this.props;
+    const { fontColor, bgColor, width, icon, number, text, link } = this.props;
 
     const textColor = {
       color: fontColor,
@@ -23,14 +25,27 @@ export default class StickerWidget extends Component {
         </div>
 
         <div className="isoContentWrapper">
-          <h3 className="isoStatNumber" style={textColor}>
-            {number}
-          </h3>
-          <span className="isoLabel" style={textColor}>
-            {text}
-          </span>
+          {
+            link ?
+              <Link to={link}>
+                <StickerBody {...{number, text, textColor}}/>
+              </Link>
+              : <StickerBody {...{number, text, textColor}}/>
+          }
         </div>
       </StickerWidgetWrapper>
     );
   }
 }
+
+const StickerBody = ({number, text, textColor}) => (
+  <React.Fragment>
+      <h3 className="isoStatNumber" style={textColor}>
+        {number}
+      </h3>
+      <span className="isoLabel" style={textColor}>
+        {text}
+      </span>
+  </React.Fragment>
+
+)

@@ -85,6 +85,14 @@ const AppHolder = styled.div`
     height: 97%;
     overflow-y: auto;
   }
+  
+  a {
+      color: ${palette('text', 0)};
+      
+      &:hover {
+      color: ${palette('primary', 0)};
+      }
+    }
 `;
 
 export default AppHolder;

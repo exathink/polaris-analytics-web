@@ -5,7 +5,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {WithCommit} from "../withCommit";
 import {CommitDetails} from "../views/commitDetails";
-import {CommitStats} from "../views/commitStats";
+import {CommitHeader} from "../views/commitHeader";
 import {Flex, Box} from 'reflexbox';
 import {CommitFileSummary} from "../views/commitFileSummary";
 import {CommitLineSummary} from "../views/commitLineSummary";
@@ -29,7 +29,7 @@ export const dashboard = withNavigationContext(
                 name={'commit-stats'}
                 render={
                   ({view}) => (
-                    <CommitStats
+                    <CommitHeader
                       commit={commit}
                       view={view}
                     />
