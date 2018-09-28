@@ -3,6 +3,7 @@ import {tooltipHtml} from "../../../../../framework/viz/charts/index";
 import {Chart} from "../../../../../framework/viz/charts/index";
 import {displaySingular, formatTerm} from "../../../../../i18n/index";
 
+import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 
 export const ActivityLevelsTimelineChart = Chart({
     chartUpdateProps:
@@ -34,8 +35,18 @@ export const ActivityLevelsTimelineChart = Chart({
           yAxis: {
             id: 'y-items',
             title: {text: childContextName},
-            categories: sortedDomainData.map(activitySummary => activitySummary.entity_name),
-            reversed: true
+            categories: sortedDomainData.map(activitySummary => `<a>${activitySummary.entity_name}</a>`),
+            reversed: true,
+            labels: {
+              useHTML: true,
+              events: {
+                click: function () {
+                  const cat_index = this.axis.categories.indexOf(this.value);
+                  const activity_summary = sortedDomainData[cat_index];
+                  model.context.navigate(model.childContext, activity_summary.entity_name, activity_summary.id)
+                }
+              }
+            }
           },
           tooltip: {
             useHTML: true,
