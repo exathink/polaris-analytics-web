@@ -21,7 +21,7 @@ export class PointSelectionEventHandler {
      const self = this;
      for(let i = 0; i < series.length; i++) {
        if(series[i].allowPointSelect) {
-         set(series[i], 'events.click', function (e) {
+         set(series[i], 'point.events.click', function (e) {
            const x = 42;
            self.pointClicked(e)
          });
