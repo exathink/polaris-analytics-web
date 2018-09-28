@@ -69,7 +69,7 @@ export const CommitsTimelineChart = Chart({
           yAxis: {
             id: 'y-items',
             title: 'y-axis-thingy',
-            categories: categories.map(category => `${category}: ${categories_index[category]}`),
+            categories: categories.map(cat => `<a>${cat}: ${categories_index[cat]}</a>`),
             scrollbar: {
               enabled: view === 'detail',
               showFull: false
@@ -78,6 +78,7 @@ export const CommitsTimelineChart = Chart({
             min: 0,
             max: categories.length - 1,
             labels: {
+              useHTML: true,
               events: {
                 click: function () {
                   const cat_index = this.axis.categories.indexOf(this.value);
