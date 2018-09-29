@@ -4,11 +4,12 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
-import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionCommitsNavigatorWidget
+} from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";
-import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {ContributorRepositoriesActivityProfileWidget} from "../widgets/contributorRepositoriesActivityProfileWidget";
-
+import {ContributorMostActiveRepositoriesWidget} from "../widgets/contributorMostActiveRepositoriesWidget";
 import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.contributors.instance';
@@ -46,6 +47,24 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 childContext={Repositories}
                 enableDrillDown={true}
                 suppressDataLabelsAt={500}
+                view={view}
+              />
+          }
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 2}
+          name="most-active-repositories"
+          render={
+            ({view}) =>
+              <ContributorMostActiveRepositoriesWidget
+                dimension={'contributor'}
+                instanceKey={context.getInstanceKey('contributor')}
+                childConnection={'recentlyActiveRepositories'}
+                context={context}
+                childContext={Repositories}
+                top={5}
+                days={30}
                 view={view}
               />
           }
