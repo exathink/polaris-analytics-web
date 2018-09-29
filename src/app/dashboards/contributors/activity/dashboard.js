@@ -5,6 +5,11 @@ import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySu
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import {Contexts} from "../../../meta/contexts";
+import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
+import {ContributorRepositoriesActivityProfileWidget} from "../widgets/contributorRepositoriesActivityProfileWidget";
+
+import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.contributors.instance';
 const messages = {
@@ -25,6 +30,26 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 instanceKey={context.getInstanceKey('contributor')}
               />
           }
+        />
+      </DashboardRow>
+      <DashboardRow h='22%' title={Contexts.repositories.display()}>
+        <DashboardWidget
+          w={1 / 2}
+          name="repository-activity-levels"
+          render={
+            ({view}) =>
+              <ContributorRepositoriesActivityProfileWidget
+                dimension={'contributors'}
+                instanceKey={context.getInstanceKey('contributor')}
+                childDimension={'repositories'}
+                context={context}
+                childContext={Repositories}
+                enableDrillDown={true}
+                suppressDataLabelsAt={500}
+                view={view}
+              />
+          }
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h='63%'>

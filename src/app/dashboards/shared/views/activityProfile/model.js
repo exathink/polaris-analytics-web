@@ -110,7 +110,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           latest_commit: latest_commit,
           span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
           days_since_latest_commit: moment().diff(latest_commit, 'days'),
-          secondary_measure: commitSummary[secondaryMeasure]
+          secondary_measure: secondaryMeasure? commitSummary[secondaryMeasure] : 1
         })
       });
     return new ActivityLevelDetailModel(

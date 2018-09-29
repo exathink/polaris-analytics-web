@@ -62,7 +62,6 @@ const initSeries = props => {
 
     return(
       {
-        type: 'bubble',
         allowPointSelect: props.onSelectionChange != null,
         key: index,
         id: index,
@@ -71,7 +70,6 @@ const initSeries = props => {
         data: seriesData,
         visible: level_partition.visible,
         zMin: 1
-
       }
     )
   });
@@ -132,7 +130,9 @@ const getConfig =  props => {
           body: [
             [`${formatTerm(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`],
             [`${formatTerm(intl, 'History')}:`, `${intl.formatNumber(this.x, {maximumFractionDigits:0})} ${model.span_uom}`],
-            [`${displayPlural(intl, model.secondaryMeasureContext)}:`, `${this.point ? intl.formatNumber(this.point.z) : ''}`]
+            model.secondaryMeasureContext?
+              [`${displayPlural(intl, model.secondaryMeasureContext)}:`, `${this.point ? intl.formatNumber(this.point.z) : ''}`]
+            : ['', '']
           ]
         })
       }

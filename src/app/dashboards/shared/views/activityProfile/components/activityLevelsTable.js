@@ -48,8 +48,10 @@ export const ActivityLevelsTable = injectIntl((props: Props) => {
         Header: `${formatTerm(intl, 'Commits')}`,
         accessor: 'commit_count',
       }, {
-        Header: `${displayPlural(intl, model.secondaryMeasureContext)}`,
+        Header: model.secondaryMeasureContext ? `${displayPlural(intl, model.secondaryMeasureContext)}` : '',
         accessor: 'secondary_measure',
+        show: model.secondaryMeasureContext != null
+
       }, {
         id: 'earliest-commit-col',
         Header: `${formatTerm(intl, 'Earliest Commit')}`,

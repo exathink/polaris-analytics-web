@@ -92,7 +92,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-ios-people',
-    color: '#a9b294',
+    color: '#53a1b2',
 
   },
   repositories: {
