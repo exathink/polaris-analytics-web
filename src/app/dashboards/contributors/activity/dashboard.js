@@ -4,6 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.activity.contributors.instance';
 const messages = {
@@ -26,14 +27,23 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           }
         />
       </DashboardRow>
-      <DashboardRow h='22%' title="Something">
-
-      </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
-
-      </DashboardRow>
-      <DashboardRow h='22%' title="Something Else">
-
+      <DashboardRow h='63%'>
+        <DashboardWidget
+          w={1}
+          name="commits"
+          render={
+            ({view}) =>
+              <DimensionCommitsNavigatorWidget
+                dimension={'contributor'}
+                instanceKey={context.getInstanceKey('contributor')}
+                context={context}
+                view={view}
+                days={30}
+                groupBy={'repository'}
+              />
+          }
+          showDetail={true}
+        />
       </DashboardRow>
     </Dashboard>
   )
