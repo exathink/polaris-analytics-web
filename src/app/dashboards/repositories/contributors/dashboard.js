@@ -66,7 +66,7 @@ export const dashboard = withUserContext(withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow>
+      <DashboardRow h={"80%"}>
         <DashboardWidget
           w={1}
           name="commits"
