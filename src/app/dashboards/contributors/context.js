@@ -5,8 +5,9 @@ import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
 import Activity from './activity/topic';
+import History from './history/topic';
+
 import {Contexts} from "../../meta/contexts";
-import {Topics} from "../../meta/topics";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
 
@@ -32,6 +33,10 @@ const context : Context = {
           {
             match: 'activity',
             topic: Activity
+          },
+          {
+            match: 'history',
+            topic: History
           },
           {
             match: '',
