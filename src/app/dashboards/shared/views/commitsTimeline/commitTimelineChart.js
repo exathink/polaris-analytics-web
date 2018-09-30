@@ -69,7 +69,7 @@ export const CommitsTimelineChart = Chart({
           yAxis: {
             id: 'y-items',
             title: 'y-axis-thingy',
-            categories: categories.map(cat => `<a>${cat}: ${categories_index[cat]}</a>`),
+            categories: categories.map(cat => `${cat}: ${categories_index[cat]}`),
             scrollbar: {
               enabled: view === 'detail',
               showFull: false
@@ -80,6 +80,10 @@ export const CommitsTimelineChart = Chart({
             labels: {
               useHTML: true,
               events: {
+                /* This code relies on the custom events module which is breaks core highcharts code in many places
+                *  so we have turned it off for now and this click event will have no effect. Revisit when we
+                *  can use the module more reliably.
+                * */
                 click: function () {
                   const cat_index = this.axis.categories.indexOf(this.value);
                   if (cat_index !== -1) {

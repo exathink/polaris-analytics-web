@@ -35,11 +35,15 @@ export const ActivityLevelsTimelineChart = Chart({
           yAxis: {
             id: 'y-items',
             title: {text: childContextName},
-            categories: sortedDomainData.map(activitySummary => `<a>${activitySummary.entity_name}</a>`),
+            categories: sortedDomainData.map(activitySummary => `${activitySummary.entity_name}`),
             reversed: true,
             labels: {
               useHTML: true,
               events: {
+                /* This code relies on the custom events module which is breaks core highcharts code in many places
+                *  so we have turned it off for now and this click event will have no effect. Revisit when we
+                *  can use the module more reliably.
+                * */
                 click: function () {
                   const cat_index = this.axis.categories.indexOf(this.value);
                   const activity_summary = sortedDomainData[cat_index];
