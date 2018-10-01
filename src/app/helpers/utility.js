@@ -123,3 +123,12 @@ export function elide(str, length) {
 export function capitalizeFirstLetter(string) {
     return string && string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+
+export function week_to_date(year, week) {
+  // week 53 (leap week) is not handled properly by moment. Coerce it back to week 52.
+    // this calc is not accurate strictly speaking, but it is good enough for
+    // most cases and wont matter much in the overall display of the chart.
+    // Can revisit if we need to.
+    const adjusted_week = `${Math.min(week, 52)}`.padStart(2, '0');
+    return moment(`${year}W${adjusted_week}`);
+}

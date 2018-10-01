@@ -18,7 +18,7 @@ export const CommitsTimelineChart = Chart({
     mapPoints: (points, _) => points.map(point => point.commit),
 
     getConfig:
-      ({commits, context, intl, view, groupBy, days, onAuthorSelected, onRepositorySelected}) => {
+      ({commits, context, intl, view, groupBy, days, before, onAuthorSelected, onRepositorySelected}) => {
         const category = groupBy || 'author';
         const categories_index = commits.reduce(
           (index, commit) => {
@@ -42,6 +42,10 @@ export const CommitsTimelineChart = Chart({
             }
           )
         });
+        let startWindow = null;
+        if (before) {
+          startWindow = moment(before).subtract(days, 'days');
+        }
 
         return {
           chart: {
@@ -56,7 +60,7 @@ export const CommitsTimelineChart = Chart({
             align: view === 'detail' ? 'center' : 'left'
           },
           subtitle: {
-            text: `Last ${days} Days`,
+            text: startWindow ? `${startWindow.format('YYYY/MM/DD')} - ${before.format('YYYY/MM/DD')}` : `Last ${days} Days`,
             align: view === 'detail' ? 'center' : 'left'
           },
           xAxis: {
@@ -64,7 +68,7 @@ export const CommitsTimelineChart = Chart({
             title: {
               text: 'Timeline'
             },
-            max: moment().valueOf()
+            max: before? before.valueOf() : moment().valueOf()
           },
           yAxis: {
             id: 'y-items',

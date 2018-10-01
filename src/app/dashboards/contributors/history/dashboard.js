@@ -19,12 +19,13 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           w={1}
           name="cumulative-commit-count"
           render={
-            (view) =>
+            ({view}) =>
               <DimensionCumulativeCommitCountWidget
                 dimension={'contributor'}
                 instanceKey={context.getInstanceKey('contributor')}
                 context={context}
                 view={view}
+                detailViewCommitsGroupBy={'repository'}
               />
           }
           showDetail={true}

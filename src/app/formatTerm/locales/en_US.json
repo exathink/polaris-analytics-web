@@ -6,6 +6,7 @@
   "contexts.commits.instance": "Commit: {instance}",
   "dashboards.activity.contributors.instance.topRowTitle": "Contributor Overview",
   "contexts.contributors.instance": "Contributor: {instance}",
+  "dashboards.history.contributors.instance.topRowTitle": "Repository History",
   "dashboards.activity.organization.instance.topRowTitle": "Organization Overview",
   "contexts.organizations.instance": "Organization: {instance}",
   "dashboards.contributors.organization.topRowTitle": "Contributors Overview",

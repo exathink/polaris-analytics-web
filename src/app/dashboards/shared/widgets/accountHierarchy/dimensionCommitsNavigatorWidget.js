@@ -23,6 +23,7 @@ export const DimensionCommitsNavigatorWidget = (
     instanceKey,
     context,
     days,
+    before,
     view,
     groupBy
 
@@ -31,10 +32,10 @@ export const DimensionCommitsNavigatorWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_commits($key: String!, $days: Int) {
+            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime) {
                 ${dimension}(key: $key){
                     id
-                    commits(days: $days) {
+                    commits(days: $days, before: $before) {
                         edges {
                             node {
                                 id
@@ -62,7 +63,8 @@ export const DimensionCommitsNavigatorWidget = (
       }
       variables={{
         key: instanceKey,
-        days: days || 0
+        days: days || 0,
+        before: before
       }}
     >
       {
@@ -77,6 +79,7 @@ export const DimensionCommitsNavigatorWidget = (
               view={view}
               groupBy={groupBy}
               days={days}
+              before={before}
               onSelectionChange={
                 (commits) => onCommitsSelected(context, commits)
               }

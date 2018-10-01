@@ -21,7 +21,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           w={1/2}
           name="cumulative-commit-count"
           render={
-            (view) =>
+            ({view}) =>
               <DimensionCumulativeCommitCountWidget
                 dimension={'repository'}
                 instanceKey={context.getInstanceKey('repository')}
@@ -35,7 +35,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           w={1/2}
           name="weekly-contributor-count"
           render={
-            (view) =>
+            ({view}) =>
               <DimensionWeeklyContributorCountWidget
                 dimension={'repository'}
                 instanceKey={context.getInstanceKey('repository')}

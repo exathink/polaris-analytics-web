@@ -104,8 +104,6 @@ export class PointSelectionEventHandler {
               selected.push(point);
             }
           }
-        } else {
-          selected.push(...points);
         }
       }
       return selected

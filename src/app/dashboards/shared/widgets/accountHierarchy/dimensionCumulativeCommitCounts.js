@@ -3,7 +3,7 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
-import {CumulativeCommitCountChart} from "../../views/cumulativeCommitCount";
+import {CumulativeCommitCountChart, CumulativeCommitCountDetailView} from "../../views/cumulativeCommitCount";
 import {analytics_service} from '../../../../services/graphql/index'
 
 
@@ -12,7 +12,8 @@ export const DimensionCumulativeCommitCountWidget = (
     dimension,
     instanceKey,
     context,
-    view
+    view,
+    detailViewCommitsGroupBy
 
   }) => (
     <Query
@@ -41,10 +42,22 @@ export const DimensionCumulativeCommitCountWidget = (
           if (error) return null;
           const cumulativeCommitCounts = data[dimension].cumulativeCommitCount;
           return (
-            <CumulativeCommitCountChart
-              cumulativeCommitCounts={cumulativeCommitCounts}
-              context={context}
-            />
+            view == 'detail' ?
+              <CumulativeCommitCountDetailView
+                cumulativeCommitCounts={cumulativeCommitCounts}
+                context={context}
+                dimension={dimension}
+                instanceKey={instanceKey}
+                view={view}
+                detailViewCommitsGroupBy={detailViewCommitsGroupBy}
+              />
+              :
+              <CumulativeCommitCountChart
+                cumulativeCommitCounts={cumulativeCommitCounts}
+                context={context}
+                view={view}
+              />
+
           )
         }
       }
