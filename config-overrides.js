@@ -21,6 +21,8 @@ module.exports = function override(config, env) {
     config
   );
 
+  // uncomment this to launch bundle analyzer after build.
+  //config = rewireBundleAnalyzer(config, env);
 
   return config;
 };
