@@ -71,7 +71,7 @@ class ChartWrapper extends React.Component {
   }
 
   render() {
-    return (<HighchartsChart highcharts={Highcharts} config={this.state.config} callback={this.props.afterRender} ref="chart"/>);
+    return (<HighchartsChart highcharts={Highcharts} constructorType={this.props.constructorType} config={this.state.config} callback={this.props.afterRender} ref="chart"/>);
   }
 }
 

@@ -68,7 +68,7 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       render() {
         return (this.state.config ?
-          <ChartWrapper config={this.state.config} afterRender={this.setChart.bind(this)}/> : null);
+          <ChartWrapper config={this.state.config} constructorType={configProvider.constructorType} afterRender={this.setChart.bind(this)}/> : null);
       }
     }
   )

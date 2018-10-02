@@ -89,12 +89,11 @@ export class PointSelectionEventHandler {
 
 
   showSelected() {
-    if (this.selections['selected'] != null) {
-      return this.selections['selected'];
-    } else {
+    const zoom = this.selections['zoom'];
+    let selected = [];
+    if (zoom) {
       const visible = this.getRawChart().series.filter((series) => series.visible);
-      const selected = [];
-      const zoom = this.selections['zoom'];
+
       for (let i = 0; i < visible.length; i++) {
         let points = visible[i].options.data;
         if (zoom != null) {
@@ -106,8 +105,11 @@ export class PointSelectionEventHandler {
           }
         }
       }
-      return selected
+        return selected
+    } else if (this.selections['selected']) {
+        selected = this.selections['selected'];
     }
+    return selected
   }
 
   onSelectionChange() {
