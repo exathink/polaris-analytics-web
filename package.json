@@ -7,6 +7,7 @@
     "antd-local-icon": "^0.1.3",
     "apollo-boost": "^0.1.10",
     "axios": "^0.18.0",
+    "babel-plugin-import": "1.7.0",
     "classnames": "^2.2.5",
     "clone": "^2.1.1",
     "d64": "^1.0.0",
@@ -59,7 +60,8 @@
     "react-app-rewire-react-intl": "^2.4.0",
     "react-app-rewired": "^1.4.0",
     "react-test-renderer": "^16.4.1",
-    "react-testing-library": "^4.1.5"
+    "react-testing-library": "^4.1.5",
+    "source-map-explorer": "^1.6.0"
   },
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader && yarn build:fragment-types && yarn build:messages && react-app-rewired start",
@@ -69,6 +71,7 @@
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
     "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/adminFragmentTypes.json",
-    "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start"
+    "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start",
+    "analyze": "source-map-explorer ./build/static/js/main.*"
   }
 }
