@@ -18,7 +18,6 @@ function initSeries(cumulativeCommitCounts) {
 }
 
 export const CumulativeCommitCountChart = Chart({
-  constructorType: 'stockChart',
   chartUpdateProps:
     (props) => ({
       cumulativeCommitCounts: props.cumulativeCommitCounts
@@ -47,7 +46,7 @@ export const CumulativeCommitCountChart = Chart({
         },
         title: {
           text: 'Commit History',
-          align: view === 'detail' ? 'center': 'left'
+          align: view === 'detail' ? 'center' : 'left'
         },
         xAxis: {
           type: 'datetime',
@@ -56,9 +55,9 @@ export const CumulativeCommitCountChart = Chart({
           },
           events: {
             setExtremes: function (e) {
-            	if (e.trigger === 'navigator' && (e.DOMEvent.type === 'mouseup' || e.DOMEvent.type === 'touchend')) {
-                	console.log('dropped', this.getExtremes());
-                }
+              if (e.trigger === 'navigator' && (e.DOMEvent.type === 'mouseup' || e.DOMEvent.type === 'touchend')) {
+                console.log('dropped', this.getExtremes());
+              }
             }
           }
         },
@@ -82,7 +81,7 @@ export const CumulativeCommitCountChart = Chart({
           }
         },
         series: [{
-          allowPointSelect: view ==='detail',
+          allowPointSelect: view === 'detail',
           key: 'cumulative commits',
           id: 'cumulative commits',
           name: 'Cumulative Commits',
@@ -91,19 +90,7 @@ export const CumulativeCommitCountChart = Chart({
         }],
         legend: {
           enabled: false
-        },
-        navigator: {
-          maskFill: "#f8f8ff4d",
-        },
-        rangeSelector: {
-          buttonPosition: {
-            align: 'left'
-          },
-          inputPosition: {
-            align: 'left'
-          }
         }
-
       }
     }
 });
