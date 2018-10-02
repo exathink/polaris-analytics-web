@@ -18,6 +18,7 @@ function initSeries(cumulativeCommitCounts) {
 }
 
 export const CumulativeCommitCountChart = Chart({
+  constructorType: 'stockChart',
   chartUpdateProps:
     (props) => ({
       cumulativeCommitCounts: props.cumulativeCommitCounts
@@ -52,13 +53,21 @@ export const CumulativeCommitCountChart = Chart({
           type: 'datetime',
           title: {
             text: 'Week Of'
+          },
+          events: {
+            setExtremes: function (e) {
+            	if (e.trigger === 'navigator' && (e.DOMEvent.type === 'mouseup' || e.DOMEvent.type === 'touchend')) {
+                	console.log('dropped', this.getExtremes());
+                }
+            }
           }
         },
         yAxis: {
           type: 'linear',
           title: {
             text: 'Total Commits'
-          }
+          },
+          opposite: false
         },
         tooltip: {
           useHTML: true,
@@ -83,6 +92,17 @@ export const CumulativeCommitCountChart = Chart({
         legend: {
           enabled: false
         },
+        navigator: {
+          maskFill: "#f8f8ff4d",
+        },
+        rangeSelector: {
+          buttonPosition: {
+            align: 'left'
+          },
+          inputPosition: {
+            align: 'left'
+          }
+        }
 
       }
     }
