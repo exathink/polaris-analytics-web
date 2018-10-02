@@ -114,6 +114,7 @@ export const CommitsTimelineChart = Chart({
                 return tooltipHtml({
                   header: `Author: ${this.point.commit.author}`,
                   body: [
+                    ['Commit: ', `${this.point.commit.name}`],
                     [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
                     [`Repository: `, `${this.point.commit.repository}`],
                     [`Branch: `, `${this.point.commit.branch || ''}`],
