@@ -135,7 +135,7 @@ export class ClickZoomSelectionEventHandler {
   }
 
   getZoomedPoints() {
-    const selected = []
+    const selected = [];
     const zoom = this.zoom;
     const visible = this.getRawChart().series.filter((series) => series.visible);
     for (let i = 0; i < visible.length; i++) {
@@ -148,7 +148,7 @@ export class ClickZoomSelectionEventHandler {
           }
         }
       } else {
-        selected.concat(...points);
+        selected.push(...points);
       }
     }
     return selected
