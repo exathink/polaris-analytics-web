@@ -3,19 +3,16 @@ import {set} from 'lodash';
 /***
  * Behavior Summary:
  *
- * A selection handler that treats click events and zoom events as selections.
- * Either of these actions will trigger an onSelectionChange event and the selected
+ * A selection handler that treats selection events, zoom ad series visibility events as selections.
+ * These actions will trigger an onSelectionChange event and the selected
  * set of points will include any points selected by clicks or all points from visible series
  * within the zoom window.
- *
- * The points in the zoom window take precedence over selected points, so if there are selected points
- * outside the zoom window they are not considered selected after the zoom.
  *
  * All selected points are deselected when any selected point is clicked or the chart background area is clicked.
  *
  *
  */
-export class ClickZoomSelectionEventHandler {
+export class DefaultSelectionEventHandler {
   constructor(config, chart, props) {
     this.config = config;
     this.attachEvents(config);

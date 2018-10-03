@@ -4,7 +4,7 @@ import {displaySingular, formatTerm} from "../../../../i18n/index";
 import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
-import {ClickZoomSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/clickZoomSelectionHandler";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 
 export const CommitsTimelineChart = Chart({
@@ -14,7 +14,7 @@ export const CommitsTimelineChart = Chart({
 
       }),
 
-    eventHandler: ClickZoomSelectionEventHandler,
+    eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points.map(point => point.commit),
 
     getConfig:

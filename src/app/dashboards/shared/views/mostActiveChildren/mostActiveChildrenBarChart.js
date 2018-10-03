@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
-import {ClickZoomSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/clickZoomSelectionHandler";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 function initSeries(activeChildren) {
   return activeChildren.map(child => ({
@@ -18,7 +18,7 @@ export const MostActiveChildrenBarChart = Chart({
       activeChildren: props.activeChildren,
       childContext: props.childContext,
     }),
-  eventHandler: ClickZoomSelectionEventHandler,
+  eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point=>point.child),
   getConfig:
     ({activeChildren, view, top, days, childContext, intl}) => {
