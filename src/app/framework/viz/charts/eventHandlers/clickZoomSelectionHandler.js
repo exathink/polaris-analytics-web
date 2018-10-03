@@ -59,7 +59,7 @@ export class ClickZoomSelectionEventHandler {
       this.onSelectionChange()
     }
     else {
-      this.clearSelections();
+      this.deselect();
       this.zoom = {
         x_min: e.xAxis[0].min,
         x_max: e.xAxis[0].max,
@@ -71,17 +71,36 @@ export class ClickZoomSelectionEventHandler {
     }
   };
 
-  pointClicked(e) {
-    if (!this.selected || !this.selected.find(point => e.point === point)) {
-      this.selecting = 'select';
-      if (e.shiftKey || e.metaKey || e.ctrlKey) {
-        this.selected = [e.point, ...this.selected];
+  getSelectedPoints(e) {
+    /* This rigmarole is there to work around the "designed" behavior
+     of getSelectedPoints(). Inside the selection handler the points returned are the ones
+     *before* the selection is made rather than after. See https://github.com/highcharts/highcharts/issues/9099
+     * for a discussion.
+     *
+     * Thus in effect we have to implement the logic that makes this.selected behave as though the current point
+     * were selected or deselected by this action based on the previous state of the selections.
+     *
+     * The goal is to make this.selected match the visual state of the point selections *after* this handler returns.
+     * Ideally this should have been as simple as calling this.getSelectedPoints() but alas it is not to be so we have to
+     * shim it to make it behave that way inside the handler.
+     *
+     *
+    * */
+    const selected = this.getRawChart().getSelectedPoints();
+    if (selected.find(point => point === e.point)) {
+      if (e.shiftKey || e.metaKey || e.ctrlKey ) {
+        return selected.filter(point => point !== e.point);
       } else {
-        this.selected = [e.point]
+        return [];
       }
+    } else if (e.shiftKey || e.metaKey || e.ctrlKey ){
+      return [e.point, ...selected];
     } else {
-      this.clearSelections()
+      return [e.point];
     }
+  }
+  pointClicked(e) {
+    this.selected = this.getSelectedPoints(e);
     this.onSelectionChange();
   };
 
@@ -107,6 +126,13 @@ export class ClickZoomSelectionEventHandler {
     this.onSelectionChange()
   }
 
+  pointInZoom(point) {
+    if(this.zoom) {
+      return point.x >= this.zoom.x_min && point.x <= this.zoom.x_max && point.y >= this.zoom.y_min && point.y <= this.zoom.y_max
+    } else {
+      return true
+    }
+  }
 
   getZoomedPoints() {
     const selected = []
@@ -117,7 +143,7 @@ export class ClickZoomSelectionEventHandler {
       if (zoom != null) {
         for (let j = 0; j < points.length; j++) {
           let point = points[j];
-          if (point.x >= zoom.x_min && point.x <= zoom.x_max && point.y >= zoom.y_min && point.y <= zoom.y_max) {
+          if (this.pointInZoom(point)) {
             selected.push(point);
           }
         }
@@ -128,12 +154,17 @@ export class ClickZoomSelectionEventHandler {
     return selected
   }
 
-  showSelected(point) {
-    return this.selected || this.getZoomedPoints()
+  showSelected() {
+    if (this.selected && this.selected.length > 0) {
+      return this.selected
+    } else {
+      return this.getZoomedPoints()
+    }
   }
 
-  onSelectionChange(point) {
-    this.chart.onSelectionChange(this.showSelected(point))
+
+  onSelectionChange() {
+    this.chart.onSelectionChange(this.showSelected())
   }
 
 }
