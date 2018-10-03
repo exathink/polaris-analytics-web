@@ -134,7 +134,7 @@ export class ClickZoomSelectionEventHandler {
     }
   }
 
-  getZoomedPoints() {
+  getVisibleZoomedPoints() {
     const selected = [];
     const zoom = this.zoom;
     const visible = this.getRawChart().series.filter((series) => series.visible);
@@ -154,11 +154,18 @@ export class ClickZoomSelectionEventHandler {
     return selected
   }
 
+  getVisibleSelections() {
+    if(this.selected && this.selected.length > 0){
+      return this.selected.filter(point => point.series.visible)
+    }
+  }
+
   showSelected() {
-    if (this.selected && this.selected.length > 0) {
-      return this.selected
+    const visibleSelections = this.getVisibleSelections();
+    if (visibleSelections && visibleSelections.length > 0) {
+      return visibleSelections
     } else {
-      return this.getZoomedPoints()
+      return this.getVisibleZoomedPoints()
     }
   }
 
