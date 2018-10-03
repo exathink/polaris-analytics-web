@@ -32,7 +32,7 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       attachEvents(config) {
         if (configProvider.eventHandler) {
-          this.eventHandler = new configProvider.eventHandler(config, this);
+          this.eventHandler = new configProvider.eventHandler(config, this, this.props);
         }
         return config
       }

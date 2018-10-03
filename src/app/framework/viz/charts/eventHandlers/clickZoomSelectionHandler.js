@@ -16,13 +16,18 @@ import {set} from 'lodash';
  *
  */
 export class ClickZoomSelectionEventHandler {
-  constructor(config, chart) {
+  constructor(config, chart, props) {
     this.config = config;
     this.attachEvents(config);
     this.selecting = null;
     this.zoom = null;
     this.selected = null;
-    this.chart = chart
+    this.chart = chart;
+    this.selectionTriggers = {
+      zoom: props.zoomTriggersSelection != null  ? props.zoomTriggersSelection : true,
+      series: props.seriesTriggersSelection != null? props.seriesTriggersSelection: true,
+    };
+    this.zoomClearsSelections = props.zoomClearsSelections != null ? props.zoomClearsSelections : true;
   }
 
 
@@ -54,20 +59,28 @@ export class ClickZoomSelectionEventHandler {
 
 
   setZoom (e) {
-    if (e.resetSelection) {
-      this.zoom = null;
-      this.onSelectionChange()
-    }
-    else {
-      this.deselect();
-      this.zoom = {
-        x_min: e.xAxis[0].min,
-        x_max: e.xAxis[0].max,
-        y_min: e.yAxis[0].min,
-        y_max: e.yAxis[0].max
-      };
+    if(this.selectionTriggers.zoom) {
+      if (e.resetSelection) {
+        this.zoom = null;
+        this.onSelectionChange()
+      }
+      else {
+        if(this.zoomClearsSelections) {
+          this.deselect();
+        }
+        this.zoom = {
+          x_min: e.xAxis[0].min,
+          x_max: e.xAxis[0].max,
+          y_min: e.yAxis[0].min,
+          y_max: e.yAxis[0].max
+        };
 
-      this.onSelectionChange();
+        this.onSelectionChange();
+      }
+    } else {
+      if(this.zoomClearsSelections) {
+        this.deselect();
+      }
     }
   };
 
@@ -118,12 +131,17 @@ export class ClickZoomSelectionEventHandler {
   }
 
   onSeriesShow() {
-    this.onSelectionChange()
+    if(this.selectionTriggers.series) {
+      this.onSelectionChange()
+    }
+
 
   }
 
   onSeriesHide() {
-    this.onSelectionChange()
+    if(this.selectionTriggers.series) {
+      this.onSelectionChange()
+    }
   }
 
   pointInZoom(point) {
