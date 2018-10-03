@@ -21,7 +21,7 @@ export class PointSelectionEventHandler {
      const self = this;
      for(let i = 0; i < series.length; i++) {
        if(series[i].allowPointSelect) {
-         set(series[i], 'point.events.click', function (e) {
+         set(series[i], 'events.click', function (e) {
            const x = 42;
            self.pointClicked(e)
          });
@@ -89,11 +89,12 @@ export class PointSelectionEventHandler {
 
 
   showSelected() {
-    const zoom = this.selections['zoom'];
-    let selected = [];
-    if (zoom) {
+    if (this.selections['selected'] != null) {
+      return this.selections['selected'];
+    } else {
       const visible = this.getRawChart().series.filter((series) => series.visible);
-
+      const selected = [];
+      const zoom = this.selections['zoom'];
       for (let i = 0; i < visible.length; i++) {
         let points = visible[i].options.data;
         if (zoom != null) {
@@ -103,13 +104,12 @@ export class PointSelectionEventHandler {
               selected.push(point);
             }
           }
+        } else {
+          selected.push(...points);
         }
       }
-        return selected
-    } else if (this.selections['selected']) {
-        selected = this.selections['selected'];
+      return selected
     }
-    return selected
   }
 
   onSelectionChange() {
