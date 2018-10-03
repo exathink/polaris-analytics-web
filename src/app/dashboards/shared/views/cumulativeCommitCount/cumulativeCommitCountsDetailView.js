@@ -4,6 +4,7 @@ import {CumulativeCommitCountChart} from "./index";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
 import {VizRow, VizItem} from "../../containers/layout";
 import {week_to_date} from "../../../../helpers/utility";
+import moment from 'moment';
 
 const CumulativeCommitCountDetailPanels = (
   {
@@ -18,11 +19,6 @@ const CumulativeCommitCountDetailPanels = (
     onAreaChartSelectionChange
   }
 ) => {
-  const last = cumulativeCommitCounts.length > 0 ?
-    cumulativeCommitCounts[cumulativeCommitCounts.length - 1]
-    : null;
-
-
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
@@ -32,8 +28,10 @@ const CumulativeCommitCountDetailPanels = (
             context={context}
             view={view}
             onSelectionChange={onAreaChartSelectionChange}
+            zoomTriggersSelection={false}
           />
         </VizItem>
+
         <VizItem w={"60%"}>
           <DimensionCommitsNavigatorWidget
             dimension={dimension}
@@ -41,7 +39,7 @@ const CumulativeCommitCountDetailPanels = (
             context={context}
             view={view}
             days={days}
-            before={before? before.add(1, 'week') : (last ? week_to_date(last.year, last.week + 1) : null)}
+            before={before}
             groupBy={detailViewCommitsGroupBy}
 
           />
@@ -69,10 +67,10 @@ export class CumulativeCommitCountDetailView extends React.Component {
 
   getSelectionDateRange(selections) {
     return selections.reduce(
-      (range, point) =>(
+      (range, point) => (
         {
           start: range.start.isAfter(point.weekDate) ? point.weekDate : range.start,
-          end: range.end.isBefore(point.weekDate) ? point.weekDate: range.end
+          end: range.end.isBefore(point.weekDate) ? point.weekDate : range.end
         }
       ), {
         start: selections[0].weekDate,
@@ -86,11 +84,11 @@ export class CumulativeCommitCountDetailView extends React.Component {
     const selections = this.state.areaChartSelections
     if (selections && selections.length > 0) {
       if (selections.length === 1) {
-        before = selections[0].weekDate
+        before = selections[0].weekDate.add(7, 'days');
       } else {
-        const {start, end } = this.getSelectionDateRange(selections);
-        before = end;
-        days = end.diff(start, 'days');
+        const {start, end} = this.getSelectionDateRange(selections);
+        before = moment(end).add(7, 'days');
+        days = before.diff(start, 'days');
       }
 
     }

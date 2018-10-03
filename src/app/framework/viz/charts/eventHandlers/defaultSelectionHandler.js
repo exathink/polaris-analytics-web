@@ -179,7 +179,7 @@ export class DefaultSelectionEventHandler {
     const visibleSelections = this.getVisibleSelections();
     if (visibleSelections && visibleSelections.length > 0) {
       return visibleSelections
-    } else {
+    } else if(this.selectionTriggers.zoom) {
       return this.getVisibleZoomedPoints()
     }
   }
