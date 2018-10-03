@@ -55,7 +55,7 @@ const MaxView = (props) => (
         <ActivityProfileBarChart orientation={'vertical'} {...props}/>
       </VizItem>
       <VizItem w={0.5}>
-        <ActivityLevelsBubbleChart {...props}/>
+        <ActivityLevelsBubbleChart zoomClearsSelections={false} {...props}/>
       </VizItem>
       <VizItem w={0.43}>
         <DetailTabs {...props}/>

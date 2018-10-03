@@ -8,10 +8,7 @@ import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/in
 import {injectIntl} from 'react-intl';
 
 export const ActivityLevelsTable = injectIntl((props: Props) => {
-  const tableData = (
-    (props.selectedActivities && props.selectedActivities.length > 0 ? props.selectedActivities : null)
-      || findVisibleLevels(props.model.data)
-  );
+  const tableData = props.selectedActivities || findVisibleLevels(props.model.data);
   const drillDown = (event) => {
     if (props.onDrillDown) {
       props.onDrillDown(event)

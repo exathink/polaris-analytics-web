@@ -14,11 +14,7 @@ export const ActivityLevelsTimelineChart = Chart({
     getConfig:
       (props) => {
         const model = props.model;
-        const domain_data = (
-          (props.selectedActivities && props.selectedActivities.length > 0 ? props.selectedActivities : null)
-            || findVisibleLevels(model.data)
-        );
-
+        const domain_data = props.selectedActivities || findVisibleLevels(model.data);
         const sortedDomainData = domain_data.sort((a, b) => a.earliest_commit.valueOf() - b.earliest_commit.valueOf());
         const intl = props.intl;
         const childContextName = displaySingular(intl, model.childContext);
