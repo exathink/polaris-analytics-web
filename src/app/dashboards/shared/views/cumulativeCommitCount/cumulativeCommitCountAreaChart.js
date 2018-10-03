@@ -3,7 +3,7 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {formatTerm} from "../../../../i18n";
 import {week_to_date} from "../../../../helpers/utility";
-import {PointSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/pointSelectionHandler";
+import {ClickZoomSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/clickZoomSelectionHandler";
 
 function initSeries(cumulativeCommitCounts) {
   return cumulativeCommitCounts.map(cumulativeCommitCount => {
@@ -22,7 +22,7 @@ export const CumulativeCommitCountChart = Chart({
     (props) => ({
       cumulativeCommitCounts: props.cumulativeCommitCounts
     }),
-  eventHandler: PointSelectionEventHandler,
+  eventHandler: ClickZoomSelectionEventHandler,
   mapPoints: points => points.map(
     point => ({
       weekDate: moment(point.x),

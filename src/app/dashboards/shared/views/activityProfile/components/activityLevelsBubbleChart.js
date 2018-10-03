@@ -2,7 +2,7 @@ import {defineMessages} from 'react-intl';
 
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
 import {Chart, tooltipHtml} from '../../../../../framework/viz/charts/index';
-import {PointSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/pointSelectionHandler";
+import {ClickZoomSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/clickZoomSelectionHandler";
 import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";
 
 
@@ -83,7 +83,7 @@ const mapPoints = (points, props) => {
   ));
 };
 
-const eventHandler = PointSelectionEventHandler;
+const eventHandler = ClickZoomSelectionEventHandler;
 
 const getConfig =  props => {
   const model = props.model;
