@@ -41,7 +41,7 @@ const CumulativeCommitCountDetailPanels = (
             days={days}
             before={before}
             groupBy={detailViewCommitsGroupBy}
-
+            key={`commits-${instanceKey}-${before}-${days}`}
           />
         </VizItem>
       </VizRow>
