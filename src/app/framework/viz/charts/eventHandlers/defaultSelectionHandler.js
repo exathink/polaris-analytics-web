@@ -20,14 +20,30 @@ export class DefaultSelectionEventHandler {
     this.zoom = null;
     this.selected = null;
     this.chart = chart;
+    this.chartId  = props.chartId;
+    this.cacheViewState = props.cacheViewState;
+    this.context = props.context;
     this.selectionTriggers = {
       zoom: props.zoomTriggersSelection != null  ? props.zoomTriggersSelection : true,
       series: props.seriesTriggersSelection != null? props.seriesTriggersSelection: true,
     };
     this.zoomClearsSelections = props.zoomClearsSelections != null ? props.zoomClearsSelections : true;
+    console.log(`EventHandler: ${this.chartId}: ctor`);
   }
 
+  setInitialViewState(viewState) {
+    const {zoom} = viewState.events;
+    if(zoom) {
+      this.zoom = zoom;
+      this.getRawChart().xAxis[0].setExtremes(zoom.x_min, zoom.x_max, false);
+      this.getRawChart().yAxis[0].setExtremes(zoom.y_min, zoom.y_max, false);
+      this.getRawChart().showResetZoom();
+      return true;
+    } else {
+      this.getRawChart().zoomOut();
+    }
 
+  }
 
   attachEvents(config){
     set(config, 'chart.events.click', e => this.deselect());
@@ -54,8 +70,18 @@ export class DefaultSelectionEventHandler {
   }
 
 
+  cacheZoomState(zoom) {
+    if(this.context && this.chartId && this.cacheViewState){
+          this.context.cacheViewState(this.chartId, {
+            events: {
+              zoom: zoom
+            }
+          })
+        }
+  }
 
   setZoom (e) {
+
     if(this.selectionTriggers.zoom) {
       if (e.resetSelection) {
         this.zoom = null;
@@ -79,6 +105,7 @@ export class DefaultSelectionEventHandler {
         this.deselect();
       }
     }
+    this.cacheZoomState(this.zoom);
   };
 
   getSelectedPoints(e) {

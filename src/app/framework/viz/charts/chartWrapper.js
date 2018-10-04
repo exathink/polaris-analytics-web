@@ -16,6 +16,7 @@ class ChartWrapper extends React.Component {
     this.state = {
       config: ChartWrapper.setDefaults(props.config, props)
     };
+    
   }
 
   static setDefaults(config, props) {
@@ -56,6 +57,7 @@ class ChartWrapper extends React.Component {
   }
 
   componentDidUpdate() {
+    
     const chart = this.getChart();
     const type = this.state.config.chart.type;
 
@@ -71,6 +73,7 @@ class ChartWrapper extends React.Component {
   }
 
   render() {
+    
     return (<HighchartsChart highcharts={Highcharts} constructorType={this.props.constructorType} config={this.state.config} callback={this.props.afterRender} ref="chart"/>);
   }
 }

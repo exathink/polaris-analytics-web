@@ -29,6 +29,8 @@ const CumulativeCommitCountDetailPanels = (
             view={view}
             onSelectionChange={onAreaChartSelectionChange}
             zoomTriggersSelection={false}
+            chartId={'history'}
+            cacheViewState={true}
           />
         </VizItem>
 
@@ -41,7 +43,8 @@ const CumulativeCommitCountDetailPanels = (
             days={days}
             before={before}
             groupBy={detailViewCommitsGroupBy}
-
+            chartId={`${instanceKey}${before}${days}`}
+            cacheViewState={true}
           />
         </VizItem>
       </VizRow>

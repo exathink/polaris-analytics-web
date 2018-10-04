@@ -1,5 +1,7 @@
 import type {Context, MatchType, RouteType} from "./context";
 import {encodeInstance, getInstanceKey} from "./helpers";
+import {Map} from 'immutable';
+
 
 export class ActiveContext {
   context: Context;
@@ -10,6 +12,7 @@ export class ActiveContext {
   rootUrl: string;
   rootContext: Context;
   navigator: {};
+  viewState: Map<{}, {}>;
 
 
   constructor(context: Context, index: number, match: MatchType, location: { pathname: string, search: string }) {
@@ -21,6 +24,7 @@ export class ActiveContext {
     this.rootUrl = null;
     this.rootContext = null;
     this.navigator = null;
+    this.viewState = {};
   }
 
   name() {
@@ -92,7 +96,19 @@ export class ActiveContext {
     this.navigate(context, instanceName, instanceKey, selectedTopic? selectedTopic.name : '');
   }
 
+  cacheViewState(viewKey, state) {
+    if(state.events) {
+      console.log(`Cache view state: ${viewKey} ${state.events.zoom}`);
+    }
+    this.viewState[viewKey] = state;
+  }
 
-
+  getViewState(viewKey) {
+    const state = this.viewState[viewKey];
+    if(state && state.events) {
+      console.log(`Get view state: ${viewKey} ${state.events.zoom}`);
+    }
+    return state
+  }
 
 }

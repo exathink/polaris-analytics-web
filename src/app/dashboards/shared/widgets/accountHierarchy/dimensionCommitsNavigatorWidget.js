@@ -25,7 +25,8 @@ export const DimensionCommitsNavigatorWidget = (
     days,
     before,
     view,
-    groupBy
+    groupBy,
+    ...rest
 
   }) => (
     <Query
@@ -89,6 +90,7 @@ export const DimensionCommitsNavigatorWidget = (
               onRepositorySelected={
                 (repositoryName, repositoryKey) => context.navigate(Repositories, repositoryName, repositoryKey)
               }
+              {...rest}
             />
           )
         }

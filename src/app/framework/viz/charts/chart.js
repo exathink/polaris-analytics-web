@@ -11,10 +11,28 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         this.state = {};
         this.chart = null;
         this.eventHandler = null;
+        
       }
 
       setChart(chart) {
+        
         this.chart = chart;
+      }
+
+      getInitialViewState() {
+        const {context, cacheViewState, chartId} = this.props;
+        if (context && cacheViewState && chartId) {
+          return context.getViewState(chartId)
+        }
+      }
+
+      updateViewState(viewState) {
+        
+        if(this.chart && viewState && this.eventHandler) {
+          if(this.eventHandler.setInitialViewState(viewState)) {
+              this.chart.redraw();
+          }
+        }
       }
 
       static getDerivedStateFromProps(nextProps, prevState) {
@@ -37,7 +55,7 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         return config
       }
 
-      updateConfig() {
+      doUpdate() {
         if (this.state.providerPropsUpdated) {
           const config = this.attachEvents(configProvider.getConfig(this.props));
           this.setState(prevState => {
@@ -47,22 +65,29 @@ export const Chart = (configProvider: ChartConfigProvider) => {
               providerPropsUpdated: false
             }
           })
+        } else if (this.chart) {
+            const initialViewState = this.getInitialViewState();
+            if(initialViewState) {
+              this.updateViewState(initialViewState)
+            }
         }
       }
 
 
       componentDidMount() {
-        this.updateConfig();
+        
+        this.doUpdate();
       }
 
       componentDidUpdate() {
-        this.updateConfig();
+        
+        this.doUpdate();
       }
 
 
       onSelectionChange(selected) {
         if (this.props.onSelectionChange && configProvider.mapPoints) {
-          if(selected) {
+          if (selected) {
             this.props.onSelectionChange(configProvider.mapPoints(selected, this.props));
           } else {
             this.props.onSelectionChange(selected)
@@ -71,8 +96,10 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       }
 
       render() {
+        
         return (this.state.config ?
-          <ChartWrapper config={this.state.config} constructorType={configProvider.constructorType} afterRender={this.setChart.bind(this)}/> : null);
+          <ChartWrapper config={this.state.config} constructorType={configProvider.constructorType}
+                        afterRender={this.setChart.bind(this)}/> : null);
       }
     }
   )
