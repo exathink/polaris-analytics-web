@@ -5,6 +5,7 @@ import {Contexts} from "../../../meta";
 import moment from "moment";
 import {Chart} from "../../../framework/viz/charts";
 import {VizStickerWidget} from "../../shared/containers/stickers/vizSticker/vizStickerWidget";
+import {Colors} from "../../shared/config";
 
 
 export const CommitLineSummary = ({commit, view}) => (
@@ -20,27 +21,27 @@ export const CommitLineSummary = ({commit, view}) => (
             bgColor={Contexts.commits.color}
             showHeader={true}
           >
-            <CommitLinesChart commit={commit}/>
+            <CommitLinesChart  commit={commit}/>
           </VizStickerWidget>
         </VizItem>
       </VizRow>
     </React.Fragment>
 );
 
-const CommitLinesChart = Chart({
+export const CommitLinesChart = Chart({
   chartUpdateProps:
     (props) => ({
       commit: props.commit
     }),
   getConfig:
-    ({commit, view}) => {
+    ({commit, showY, showLabels, maxPointWidth, view}) => {
       const series = [
         {
           id: '++',
           key: 'adds',
           name: 'Lines added',
           data: [commit.stats.insertions],
-          color: "#28ff17"
+          color: "#28ff17",
         },
         {
           id: '--',
@@ -54,21 +55,28 @@ const CommitLinesChart = Chart({
 
       return {
         chart: {
-          type: 'bar'
+          type: 'bar',
+          backgroundColor: Colors.Chart.backgroundColor
         },
         plotOptions:{
+          bar: {
+            pointPadding: 0.01,
+            groupPadding: 0.01
+          },
           series: {
             stacking: 'normal',
             dataLabels: {
-                enabled: true,
+                enabled: (showLabels != null ? showLabels : true),
                 align: 'center',
+                verticalAlign: 'middle',
                 formatter: function() {
                   const x = 3;
                   return `<b>${this.series.userOptions.id}</b>`
                 },
               color: "#000000"
-              }
-          }
+              },
+            maxPointWidth: maxPointWidth
+          },
         },
         title: {
           text: null
@@ -82,7 +90,24 @@ const CommitLinesChart = Chart({
           title: {
             text: null
           },
-          visible: true
+          visible: (showY != null ? showY : true),
+          gridLineWidth: 0,
+          plotLines: [{
+              value: commit.stats.lines,
+              width: 2,
+              color: Colors.Chart.backgroundColor,
+              dashStyle: 'ShortDot',
+              label: {
+                text: `      ${commit.stats.lines}`,
+                align: 'center',
+                textAlign: 'center',
+                verticalAlign: 'center',
+                rotation: 0,
+                x: 10,
+              },
+              zIndex: 100
+
+            }]
         },
         series: series,
         legend: {

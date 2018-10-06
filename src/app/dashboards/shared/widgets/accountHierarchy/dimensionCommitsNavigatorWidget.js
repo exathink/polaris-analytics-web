@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 
 import {analytics_service} from '../../../../services/graphql/index'
-import {CommitsTimelineChart} from "../../views/commitsTimeline";
+import {CommitsTimelineChart, CommitsTimelineTable} from "../../views/commitsTimeline";
 import Commits from "../../../commits/context";
 import Contributors from "../../../contributors/context";
 import Repositories from "../../../repositories/context";
@@ -25,7 +25,8 @@ export const DimensionCommitsNavigatorWidget = (
     days,
     before,
     view,
-    groupBy
+    groupBy,
+    display
 
   }) => (
     <Query
@@ -52,6 +53,8 @@ export const DimensionCommitsNavigatorWidget = (
                                 stats {
                                     files
                                     lines
+                                    insertions
+                                    deletions
                                 }
 
                             }
@@ -73,23 +76,26 @@ export const DimensionCommitsNavigatorWidget = (
           if (error) return null;
           const commits = data[dimension].commits.edges.map(edge => edge.node);
           return (
-            <CommitsTimelineChart
-              commits={commits}
-              context={context}
-              view={view}
-              groupBy={groupBy}
-              days={days}
-              before={before}
-              onSelectionChange={
-                (commits) => onCommitsSelected(context, commits)
-              }
-              onAuthorSelected={
-                (authorName, authorKey) => context.navigate(Contributors, authorName, authorKey)
-              }
-              onRepositorySelected={
-                (repositoryName, repositoryKey) => context.navigate(Repositories, repositoryName, repositoryKey)
-              }
-            />
+            display === 'table' ?
+                <CommitsTimelineTable commits={commits}/>
+                :
+                <CommitsTimelineChart
+                  commits={commits}
+                  context={context}
+                  view={view}
+                  groupBy={groupBy}
+                  days={days}
+                  before={before}
+                  onSelectionChange={
+                    (commits) => onCommitsSelected(context, commits)
+                  }
+                  onAuthorSelected={
+                    (authorName, authorKey) => context.navigate(Contributors, authorName, authorKey)
+                  }
+                  onRepositorySelected={
+                    (repositoryName, repositoryKey) => context.navigate(Repositories, repositoryName, repositoryKey)
+                  }
+                />
           )
         }
       }

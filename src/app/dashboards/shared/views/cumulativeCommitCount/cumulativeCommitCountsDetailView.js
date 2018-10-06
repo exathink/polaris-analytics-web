@@ -21,7 +21,7 @@ const CumulativeCommitCountDetailPanels = (
 ) => {
   return (
     <React.Fragment>
-      <VizRow h={"100%"}>
+      <VizRow h={"70%"}>
         <VizItem w={"40%"}>
           <CumulativeCommitCountChart
             cumulativeCommitCounts={cumulativeCommitCounts}
@@ -41,7 +41,22 @@ const CumulativeCommitCountDetailPanels = (
             days={days}
             before={before}
             groupBy={detailViewCommitsGroupBy}
-            key={`commits-${instanceKey}-${before}-${days}`}
+            key={`commits-timeline-${instanceKey}-${before}-${days}`}
+          />
+        </VizItem>
+      </VizRow>
+      <VizRow h={"30%"}>
+        <VizItem w={"100%"}>
+          <DimensionCommitsNavigatorWidget
+            dimension={dimension}
+            instanceKey={instanceKey}
+            context={context}
+            view={view}
+            days={days}
+            before={before}
+            groupBy={detailViewCommitsGroupBy}
+            display={'table'}
+            key={`commits-table-${instanceKey}-${before}-${days}`}
           />
         </VizItem>
       </VizRow>

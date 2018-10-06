@@ -1,4 +1,5 @@
 import {Chart} from "../../../../framework/viz/charts";
+import {Colors} from "../../config";
 
 export const FileTypesSummaryChart = Chart({
   chartUpdateProps:
@@ -15,7 +16,8 @@ export const FileTypesSummaryChart = Chart({
 
       return {
         chart: {
-          type: 'bar'
+          type: 'bar',
+          backgroundColor: Colors.Chart.backgroundColor
         },
         plotOptions:{
           series: {
