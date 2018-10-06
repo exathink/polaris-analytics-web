@@ -72,7 +72,18 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       render() {
         return (this.state.config ?
-          <ChartWrapper config={this.state.config} constructorType={configProvider.constructorType} afterRender={this.setChart.bind(this)}/> : null);
+          <ChartWrapper
+            config={this.state.config}
+            constructorType={configProvider.constructorType}
+            afterRender={this.setChart.bind(this)}
+            height={this.props.height}
+            width={this.props.width}
+            minHeight={this.props.minHeight}
+            minWidth={this.props.minWidth}
+          /> : null
+
+
+        );
       }
     }
   )

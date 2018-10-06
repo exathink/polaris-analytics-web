@@ -19,8 +19,9 @@ class ChartWrapper extends React.Component {
   }
 
   static setDefaults(config, props) {
-    config.chart.height = props.containerHeight;
-    config.chart.width = props.containerWidth;
+    const {height, width, minHeight, minWidth, containerHeight, containerWidth} = props;
+    config.chart.height = height || minHeight ? Math.max(containerHeight, minHeight) : containerHeight;
+    config.chart.width = width || minWidth ? Math.max(containerWidth, minWidth) : containerWidth;
     config.chart.style = {
       fontFamily: 'Roboto, sans-serif'
     };
