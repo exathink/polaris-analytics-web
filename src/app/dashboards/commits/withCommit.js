@@ -8,7 +8,7 @@ import {Loading} from "../../components/graphql/loading";
 import {Query} from "react-apollo";
 
 
-export const WithCommit = ({context, render}) => (
+export const WithCommit = ({commitKey, render}) => (
     <Query
       client={analytics_service}
       query={
@@ -43,7 +43,7 @@ export const WithCommit = ({context, render}) => (
         `
       }
       variables={{
-        key: context.getInstanceKey('commit'),
+        key: commitKey,
       }}
     >
       {

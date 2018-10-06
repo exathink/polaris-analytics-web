@@ -7,7 +7,7 @@ export const FileTypesSummaryChart = Chart({
       fileTypesSummary: props.fileTypesSummary
     }),
   getConfig:
-    ({fileTypesSummary, view}) => {
+    ({fileTypesSummary, fileCount, view}) => {
       const series = fileTypesSummary.map(
         fileType => ({
           name: fileType.fileType || "None",
@@ -43,6 +43,25 @@ export const FileTypesSummaryChart = Chart({
           title: {
             text: null
           },
+          plotLines: fileCount ?
+            [{
+              value: fileCount,
+              width: 2,
+              color: Colors.Chart.backgroundColor,
+              dashStyle: 'ShortDot',
+              label: {
+                text: `      ${fileCount}`,
+                align: 'center',
+                textAlign: 'center',
+                verticalAlign: 'center',
+                rotation: 0,
+                x: 10,
+              },
+              zIndex: 100
+
+            }]
+            : [],
+          allowDecimals:false,
           visible: true
         },
         series: series,

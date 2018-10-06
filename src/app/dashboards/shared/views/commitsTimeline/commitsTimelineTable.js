@@ -3,15 +3,14 @@ import {Table} from "../../containers/table/index";
 import {injectIntl} from 'react-intl';
 import moment from 'moment';
 import {FileTypesSummaryChart} from "../fileTypesSummary/fileTypesSummaryChart";
-import {CommitLinesChart} from "../../../commits/views/commitLineSummary";
-import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import {CommitLinesSummaryChart} from "../../../commits/views/commitLinesSummaryChart";
 import {Flex} from "reflexbox";
-import {replace_url_with_links} from "../../../commits/views/commitDetails";
 import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 import Commits from "../../../commits/context";
 import Contributors from "../../../contributors/context";
 
 import {Link} from "react-router-dom";
+import {WithCommit} from "../../../commits/withCommit";
 
 export const CommitsTimelineTable = injectIntl((props: Props) => {
   const tableData = props.commits;
@@ -45,11 +44,21 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         accessor: commit => `${moment(commit.commitDate).format('MM/DD/YYYY hh:mm')}`,
         maxWidth: 200,
       }, {
+        id: 'file-change-chart',
         Header: 'Files',
-        id: 'file-count',
         filterable: false,
-        accessor: commit => commit.stats.files,
-        maxWidth: 75
+        accessor: commit => commit.key,
+        Cell: row => {
+          return (
+            <WithCommit
+              commitKey={row.value}
+              render = {
+                ({commit}) => <FileTypesSummaryChart fileCount={commit.stats.files} fileTypesSummary={commit.fileTypesSummary}/>
+              }
+            />
+          )
+        },
+        maxWidth: 150
       }, {
         id: 'line-change-chart',
         Header: 'Lines',
@@ -57,7 +66,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         accessor: commit => commit,
         Cell: row => {
           return (
-            <CommitLinesChart minHeight={30}  key={row.value.name} commit={row.value}/>
+            <CommitLinesSummaryChart minHeight={30} showTotal key={row.value.name} commit={row.value}/>
           )
         },
         maxWidth: 150

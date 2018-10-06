@@ -19,7 +19,7 @@ const messages = {
 export const dashboard = withNavigationContext(
   ({context}) => (
     <WithCommit
-      context={context}
+      commitKey={context.getInstanceKey('commit')}
       render={
         ({commit}) => (
           <Dashboard>
