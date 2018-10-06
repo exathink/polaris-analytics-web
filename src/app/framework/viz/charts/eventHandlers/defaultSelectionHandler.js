@@ -152,18 +152,21 @@ export class DefaultSelectionEventHandler {
   getVisibleZoomedPoints() {
     const selected = [];
     const zoom = this.zoom;
-    const visible = this.getRawChart().series.filter((series) => series.visible);
-    for (let i = 0; i < visible.length; i++) {
-      let points = visible[i].options.data;
-      if (zoom != null) {
-        for (let j = 0; j < points.length; j++) {
-          let point = points[j];
-          if (this.pointInZoom(point)) {
-            selected.push(point);
+    const series = this.getRawChart().series;
+    if(series) {
+      const visible = series.filter((series) => series.visible);
+      for (let i = 0; i < visible.length; i++) {
+        let points = visible[i].options.data;
+        if (zoom != null) {
+          for (let j = 0; j < points.length; j++) {
+            let point = points[j];
+            if (this.pointInZoom(point)) {
+              selected.push(point);
+            }
           }
+        } else {
+          selected.push(...points);
         }
-      } else {
-        selected.push(...points);
       }
     }
     return selected

@@ -1,10 +1,12 @@
 import React from 'react';
 import {DashboardRow} from "../../../../framework/viz/dashboard";
 import {CumulativeCommitCountChart} from "./index";
+import {CommitsTimelineTable} from "../commitsTimeline";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
 import {VizRow, VizItem} from "../../containers/layout";
 import {week_to_date} from "../../../../helpers/utility";
 import moment from 'moment';
+
 
 const CumulativeCommitCountDetailPanels = (
   {
@@ -15,8 +17,10 @@ const CumulativeCommitCountDetailPanels = (
     detailViewCommitsGroupBy,
     days,
     before,
+    selectedCommits,
     view,
-    onAreaChartSelectionChange
+    onAreaChartSelectionChange,
+    onCommitTimelineSelectionChange
   }
 ) => {
   return (
@@ -42,23 +46,30 @@ const CumulativeCommitCountDetailPanels = (
             before={before}
             groupBy={detailViewCommitsGroupBy}
             key={`commits-timeline-${instanceKey}-${before}-${days}`}
+            onSelectionChange={onCommitTimelineSelectionChange}
           />
         </VizItem>
       </VizRow>
       <VizRow h={"30%"}>
         <VizItem w={"100%"}>
-          <DimensionCommitsNavigatorWidget
-            dimension={dimension}
-            instanceKey={instanceKey}
-            context={context}
-            view={view}
-            days={days}
-            before={before}
-            groupBy={detailViewCommitsGroupBy}
-            display={'table'}
-            key={`commits-table-${instanceKey}-${before}-${days}`}
-          />
+          {
+            selectedCommits ?
+              <CommitsTimelineTable commits={selectedCommits}/>
+              :
+              <DimensionCommitsNavigatorWidget
+                dimension={dimension}
+                instanceKey={instanceKey}
+                context={context}
+                view={view}
+                days={days}
+                before={before}
+                groupBy={detailViewCommitsGroupBy}
+                display={'table'}
+                key={`commits-table-${instanceKey}-${before}-${days}`}
+              />
+          }
         </VizItem>
+
       </VizRow>
     </React.Fragment>
   )
@@ -68,16 +79,29 @@ export class CumulativeCommitCountDetailView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      areaChartSelections: null
+      areaChartSelections: null,
+      commitTimelineSelections: null,
     }
   }
 
   onAreaChartSelectionChange(selections) {
     this.setState((state, props) => (
       {
-        areaChartSelections: selections
+        areaChartSelections: selections,
+        commitTimelineSelections: null,
       }
-    ))
+    ));
+  }
+
+
+
+  onCommitTimelineSelectionChange(selections) {
+    this.setState((state, props) => (
+      {
+        areaChartSelections: state.areaChartSelections,
+        commitTimelineSelections: selections
+      }
+    ));
   }
 
   getSelectionDateRange(selections) {
@@ -111,8 +135,10 @@ export class CumulativeCommitCountDetailView extends React.Component {
       <CumulativeCommitCountDetailPanels
         days={days}
         before={before}
+        selectedCommits={this.state.commitTimelineSelections}
         {...this.props}
         onAreaChartSelectionChange={this.onAreaChartSelectionChange.bind(this)}
+        onCommitTimelineSelectionChange={this.onCommitTimelineSelectionChange.bind(this)}
       />
     )
   }

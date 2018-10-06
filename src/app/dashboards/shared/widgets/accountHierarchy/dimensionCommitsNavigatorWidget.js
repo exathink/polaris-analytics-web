@@ -26,7 +26,8 @@ export const DimensionCommitsNavigatorWidget = (
     before,
     view,
     groupBy,
-    display
+    display,
+    onSelectionChange
 
   }) => (
     <Query
@@ -87,7 +88,7 @@ export const DimensionCommitsNavigatorWidget = (
                   days={days}
                   before={before}
                   onSelectionChange={
-                    (commits) => onCommitsSelected(context, commits)
+                    onSelectionChange || (commits => onCommitsSelected(context, commits))
                   }
                   onAuthorSelected={
                     (authorName, authorKey) => context.navigate(Contributors, authorName, authorKey)
