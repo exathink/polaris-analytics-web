@@ -86,6 +86,11 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
       showPageSizeOptions={false}
       showPageJump={false}
       defaultPageSize={1}
+      getPaginationProps={
+        () => ({
+          pageText: 'Commit'
+        })
+      }
       className="-striped -highlight"
     />
   )

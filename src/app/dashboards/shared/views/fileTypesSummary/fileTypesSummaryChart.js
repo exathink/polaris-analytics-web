@@ -20,6 +20,10 @@ export const FileTypesSummaryChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         plotOptions:{
+          bar: {
+            pointPadding: 0.01,
+            groupPadding: 0.01
+          },
           series: {
             stacking: 'normal',
             dataLabels: {
