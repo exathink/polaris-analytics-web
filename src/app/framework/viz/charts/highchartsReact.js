@@ -19,12 +19,12 @@ export class HighchartsChart extends React.Component {
    async componentDidMount() {
 
     const {highcharts, constructorType, config, callback} = this.props;
-    console.time(`${config.chart.type}`);
-    window.performance.mark(`before-chart-render-${config.chart.type}`);
+    //console.time(`${config.chart.type}`);
+    //window.performance.mark(`before-chart-render-${config.chart.type}`);
     this.chart = await highcharts[constructorType || 'chart'](this.container.current, config);
-    window.performance.mark(`after-chart-render-${config.chart.type}`);
-    window.performance.measure(`${config.chart.type}-render-time`, `before-chart-render-${config.chart.type}`, `after-chart-render-${config.chart.type}`);
-    console.timeEnd(`${config.chart.type}`);
+    //window.performance.mark(`after-chart-render-${config.chart.type}`);
+    //window.performance.measure(`${config.chart.type}-render-time`, `before-chart-render-${config.chart.type}`, `after-chart-render-${config.chart.type}`);
+    //console.timeEnd(`${config.chart.type}`);
     if(callback) {
       callback(this.chart);
     }
