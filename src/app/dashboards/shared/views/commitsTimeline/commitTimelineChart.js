@@ -10,8 +10,10 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 export const CommitsTimelineChart = Chart({
     chartUpdateProps:
       (props) => ({
-        commits: props.commits
-
+        commits: props.commits,
+        before: props.before,
+        days: props.days,
+        groupBy: props.groupBy,
       }),
 
     eventHandler: DefaultSelectionEventHandler,
@@ -43,8 +45,9 @@ export const CommitsTimelineChart = Chart({
           )
         });
         let startWindow = null;
-        if (before) {
-          startWindow = moment(before).subtract(days, 'days');
+        let endWindow = before && moment(before)
+        if (endWindow) {
+          startWindow = moment(endWindow).subtract(days, 'days');
         }
 
         return {
@@ -60,7 +63,7 @@ export const CommitsTimelineChart = Chart({
             align: view === 'detail' ? 'center' : 'left'
           },
           subtitle: {
-            text: startWindow ? `${startWindow.format('YYYY/MM/DD')} - ${before.format('YYYY/MM/DD')}` : `Last ${days} Days`,
+            text: startWindow ? `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}` : `Last ${days} Days`,
             align: view === 'detail' ? 'center' : 'left'
           },
           xAxis: {

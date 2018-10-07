@@ -45,7 +45,6 @@ const CumulativeCommitCountDetailPanels = (
             days={days}
             before={before}
             groupBy={detailViewCommitsGroupBy}
-            key={`commits-timeline-${instanceKey}-${before}-${days}`}
             onSelectionChange={onCommitTimelineSelectionChange}
           />
         </VizItem>
@@ -65,7 +64,6 @@ const CumulativeCommitCountDetailPanels = (
                 before={before}
                 groupBy={detailViewCommitsGroupBy}
                 display={'table'}
-                key={`commits-table-${instanceKey}-${before}-${days}`}
               />
           }
         </VizItem>
@@ -123,10 +121,10 @@ export class CumulativeCommitCountDetailView extends React.Component {
     const selections = this.state.areaChartSelections
     if (selections && selections.length > 0) {
       if (selections.length === 1) {
-        before = selections[0].weekDate.add(7, 'days');
+        before = moment(selections[0].weekDate).add(7, 'days').valueOf();
       } else {
         const {start, end} = this.getSelectionDateRange(selections);
-        before = moment(end).add(7, 'days');
+        before = moment(end).add(7, 'days').valueOf();
         days = before.diff(start, 'days');
       }
 
@@ -136,9 +134,9 @@ export class CumulativeCommitCountDetailView extends React.Component {
         days={days}
         before={before}
         selectedCommits={this.state.commitTimelineSelections}
-        {...this.props}
         onAreaChartSelectionChange={this.onAreaChartSelectionChange.bind(this)}
         onCommitTimelineSelectionChange={this.onCommitTimelineSelectionChange.bind(this)}
+        {...this.props}
       />
     )
   }

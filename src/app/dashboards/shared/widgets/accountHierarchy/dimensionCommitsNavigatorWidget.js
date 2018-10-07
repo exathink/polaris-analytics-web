@@ -9,6 +9,7 @@ import {CommitsTimelineChart, CommitsTimelineTable} from "../../views/commitsTim
 import Commits from "../../../commits/context";
 import Contributors from "../../../contributors/context";
 import Repositories from "../../../repositories/context";
+import moment from 'moment';
 
 function onCommitsSelected(context, commits) {
   if(commits.length == 1) {
@@ -68,13 +69,14 @@ export const DimensionCommitsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before
+        before: before != null ? moment(before) : before
       }}
     >
       {
         ({loading, error, data}) => {
           if (loading) return <Loading/>;
           if (error) return null;
+
           const commits = data[dimension].commits.edges.map(edge => edge.node);
           return (
             display === 'table' ?
