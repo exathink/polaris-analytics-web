@@ -73,7 +73,7 @@ const CumulativeCommitCountDetailPanels = (
   )
 };
 
-export class CumulativeCommitCountDetailView extends React.Component {
+export class CommitHistoryDetailView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
