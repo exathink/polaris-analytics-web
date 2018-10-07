@@ -86,7 +86,21 @@ export const CumulativeCommitCountChart = Chart({
           id: 'cumulative commits',
           name: 'Cumulative Commits',
           data: series_data,
-          color: context.color()
+          color: context.color(),
+          marker: {
+            enabled: view === 'detail',
+            radius: 2,
+            states: {
+              hover: {
+                radiusPlus: 4
+              },
+              select: {
+                radiusPlus: 4,
+                fillColor: context.color(),
+              }
+            },
+
+          }
         }],
         legend: {
           enabled: false

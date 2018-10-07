@@ -123,7 +123,7 @@ export class CommitHistoryDetailView extends React.Component {
       } else {
         const {start, end} = this.getSelectionDateRange(selections);
         before = moment(end).add(7, 'days').valueOf();
-        days = before.diff(start, 'days');
+        days = moment(before).diff(start, 'days');
       }
 
     }
