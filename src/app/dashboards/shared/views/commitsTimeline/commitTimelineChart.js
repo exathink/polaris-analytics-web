@@ -8,7 +8,11 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 export const CommitsTimelineChart = Chart({
     chartUpdateProps:
       (props) => ({
-        commits: props.commits,
+        // Note that we are not passing the commits array as a chart update prop
+        // The assumption is that the commits for a given instanceKey, before and params is the
+        // the same set, and this allows us to avoid a re-render when this component is
+        // rendered within a graphql query.
+        instanceKey: props.instanceKey,
         before: props.before,
         days: props.days,
         groupBy: props.groupBy,

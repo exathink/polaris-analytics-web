@@ -85,6 +85,7 @@ export const DimensionCommitsNavigatorWidget = (
                 <CommitsTimelineChart
                   commits={commits}
                   context={context}
+                  instanceKey={instanceKey}
                   view={view}
                   groupBy={groupBy}
                   days={days}
