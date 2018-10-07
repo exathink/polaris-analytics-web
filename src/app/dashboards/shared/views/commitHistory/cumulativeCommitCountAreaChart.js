@@ -92,7 +92,7 @@ export const CumulativeCommitCountChart = Chart({
             radius: 2,
             states: {
               hover: {
-                radiusPlus: 4
+                radiusPlus: 2
               },
               select: {
                 radiusPlus: 4,
