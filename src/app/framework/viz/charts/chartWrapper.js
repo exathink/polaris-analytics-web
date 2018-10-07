@@ -1,6 +1,6 @@
 import React from "react";
 
-import Dimensions from 'react-dimensions';
+import {withSize} from 'react-sizeme';
 
 import {HighchartsChart} from "./highchartsReact";
 
@@ -19,9 +19,9 @@ class ChartWrapper extends React.Component {
   }
 
   static setDefaults(config, props) {
-    const {height, width, minHeight, minWidth, containerHeight, containerWidth} = props;
-    config.chart.height = height || minHeight ? Math.max(containerHeight, minHeight) : containerHeight;
-    config.chart.width = width || minWidth ? Math.max(containerWidth, minWidth) : containerWidth;
+    const {height, width, minHeight, minWidth, size} = props;
+    config.chart.height = height || minHeight ? Math.max(size.height, minHeight) : size.height;
+    config.chart.width = width || minWidth ? Math.max(size.width, minWidth) : size.width;
     config.chart.style = {
       fontFamily: 'Roboto, sans-serif'
     };
@@ -33,8 +33,8 @@ class ChartWrapper extends React.Component {
 
   static willResize(nextProps, prevState) {
     return (
-      nextProps.containerHeight !== prevState.config.chart.height ||
-      nextProps.containerWidth !== prevState.config.chart.width
+      nextProps.size.height !== prevState.config.chart.height ||
+      nextProps.size.width !== prevState.config.chart.width
     );
   }
 
@@ -58,22 +58,32 @@ class ChartWrapper extends React.Component {
 
   componentDidUpdate() {
     const chart = this.getChart();
-    const type = this.state.config.chart.type;
+    //const type = this.state.config.chart.type;
 
-    window.performance.mark(`before-chart-${type}-update`);
-    console.time(`${type}-update`);
+    //window.performance.mark(`before-chart-${type}-update`);
+    //console.time(`${type}-update`);
     if (chart) {
       chart.update(this.state.config);
     }
-    console.timeEnd(`${type}-update`);
-    window.performance.mark(`after-chart-${type}-update`);
-    window.performance.measure(`${type}-chart-update`, `before-chart-${type}-update`, `after-chart-${type}-update`);
+    //console.timeEnd(`${type}-update`);
+    //window.performance.mark(`after-chart-${type}-update`);
+    //window.performance.measure(`${type}-chart-update`, `before-chart-${type}-update`, `after-chart-${type}-update`);
 
   }
 
   render() {
-    return (<HighchartsChart highcharts={Highcharts} constructorType={this.props.constructorType} config={this.state.config} callback={this.props.afterRender} ref="chart"/>);
+    return (
+      <div style={{height: "100%", width: "100%"}}>
+        <HighchartsChart
+          highcharts={Highcharts}
+          constructorType={this.props.constructorType}
+          config={this.state.config}
+          callback={this.props.afterRender}
+          ref="chart"
+        />
+      </div>
+    );
   }
 }
 
-export default Dimensions({elementResize: true})(ChartWrapper);
+export default withSize({monitorWidth:true, monitorHeight: true})(ChartWrapper);

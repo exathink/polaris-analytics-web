@@ -34,6 +34,7 @@
     "react-router-redux": "^5.0.0-alpha.5",
     "react-scripts": "1.0.17",
     "react-sidebar": "^2.3.2",
+    "react-sizeme": "^2.5.2",
     "react-table": "^6.8.0",
     "react-tabs": "^2.2.1",
     "react-throttle": "^0.3.0",
