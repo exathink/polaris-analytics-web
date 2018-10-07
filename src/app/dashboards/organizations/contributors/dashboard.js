@@ -1,7 +1,5 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {DimensionContributorActivityProfileWidget} from "../../shared/views/activityProfile";
 
 import {Contexts} from "../../../meta/contexts";
@@ -15,9 +13,6 @@ import {
 } from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.contributors.organization';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Contributors Overview'/>
-};
 
 export const dashboard = withUserContext(withNavigationContext(
   ({account, context}) => {

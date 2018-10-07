@@ -1,20 +1,13 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionActivitySummaryPanelWidget, DimensionCommitsNavigatorWidget, DimensionCommitHistoryWidget,
-  DimensionMostActiveChildrenWidget, DimensionWeeklyContributorCountWidget
+  DimensionCommitHistoryWidget,
+  DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
-import {Contexts} from "../../../meta/contexts";
-import Repositories from "../../repositories/context";
 
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 
 const dashboard_id = 'dashboards.history.projects.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Project Overview'/>
-};
 
 
 export const dashboard = withNavigationContext(

@@ -21,7 +21,7 @@ export const MostActiveChildrenSummaryView = (props) => (
 )
 
 export const MostActiveChildrenView = props => (
-  props.view == 'detail'?
+  props.view === 'detail'?
     <MostActiveChildrenBarChart {...props} />
     : <MostActiveChildrenSummaryView {...props} />
 )

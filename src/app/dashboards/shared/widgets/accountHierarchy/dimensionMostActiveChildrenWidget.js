@@ -70,7 +70,7 @@ export const DimensionMostActiveChildrenWidget = (
 );
 
 function onChildrenSelected(context, childContext, children) {
-  if(children.length == 1) {
+  if(children.length === 1) {
     const child = children[0];
     context.navigate(childContext, child.name, child.key)
   }

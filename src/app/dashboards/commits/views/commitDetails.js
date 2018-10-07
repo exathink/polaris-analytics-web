@@ -1,13 +1,11 @@
 import React from 'react';
-import {Flex, Box} from 'reflexbox';
-import moment from 'moment';
+import {Flex} from 'reflexbox';
 
-import {elide, capitalizeFirstLetter} from "../../../helpers/utility";
-import {Colors} from "../../shared/config";
+
+import {capitalizeFirstLetter} from "../../../helpers/utility";
 import {CommitCommitter} from "./commitCommitter";
 import {CommitDate} from "./commitDate";
 import {CommitBranch} from "./commitBranch";
-import {CommitParents} from "./commitParents";
 import {CommitRepository} from "./commitRepository";
 import {CommitRemoteLink} from "./commitRemoteLink";
 
@@ -40,7 +38,7 @@ export const CommitDetails = ({commit}) => (
 );
 
 export function replace_url_with_links(text) {
-  const url_regex = /(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/g;
+  const url_regex = /(http|https|ftp|ftps):\/\/[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,3}(\/\S*)?/g;
   const segments = [];
   let scan_index = 0;
   let match = url_regex.exec(text);

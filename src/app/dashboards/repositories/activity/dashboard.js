@@ -3,8 +3,7 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget,
-  DimensionCommitHistoryWidget
+  DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 

@@ -1,7 +1,5 @@
 import React from 'react';
 import moment from "moment";
-
-import {Flex} from 'reflexbox';
 import {RowNoOverflow} from "../../shared/containers/flex/rowNoOverflow";
 
 export const CommitDate = ({commit}) => (

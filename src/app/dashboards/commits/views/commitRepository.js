@@ -1,6 +1,5 @@
 import React from 'react';
 import {Contexts} from "../../../meta";
-import {Flex} from 'reflexbox';
 import {RowNoOverflow} from "../../shared/containers/flex/rowNoOverflow";
 import {Link} from 'react-router-dom';
 import Repositories from '../../repositories/context';

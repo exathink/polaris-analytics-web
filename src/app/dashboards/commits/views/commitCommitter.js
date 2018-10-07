@@ -1,5 +1,4 @@
 import React from 'react';
-import {Flex} from 'reflexbox';
 import {RowNoOverflow} from "../../shared/containers/flex/rowNoOverflow";
 import {url_for_instance} from "../../../framework/navigation/context/helpers";
 import Contributors from "../../contributors/context";

@@ -1,6 +1,4 @@
-import {tooltipHtml} from "../../../../framework/viz/charts/index";
-import {Chart} from "../../../../framework/viz/charts/index";
-import {displaySingular, formatTerm} from "../../../../i18n/index";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";

@@ -20,25 +20,6 @@ const chartUpdateProps = props => ({
 });
 
 
-
-const bucket = measure => {
-  if (measure === 1) {
-    return 1;
-  } else if (measure > 1 && measure <= 5) {
-    return 10;
-  } else if (measure < 10) {
-    return 20;
-  } else if (measure < 20) {
-    return 40;
-  } else if (measure < 100) {
-    return 50;
-  } else if (measure < 1000) {
-    return 60;
-  } else {
-    return 100;
-  }
-};
-
 const initSeries = props => {
   // Partition the data set by activity level and set the
   // initial visibility of the level. Initially we only set as visible

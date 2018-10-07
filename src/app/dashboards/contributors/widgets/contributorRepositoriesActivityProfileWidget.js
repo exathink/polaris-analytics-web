@@ -4,8 +4,6 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../components/graphql/loading";
 
 import {analytics_service} from '../../../services/graphql'
-import {ActivitySummaryPanel} from "../../shared/views/activitySummary";
-import {Contexts} from "../../../meta";
 import {
   ActivityLevelDetailModel,
   ActivityLevelDetailView,

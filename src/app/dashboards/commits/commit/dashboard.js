@@ -1,19 +1,14 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {WithCommit} from "../withCommit";
 import {CommitDetails} from "../views/commitDetails";
 import {CommitHeader} from "../views/commitHeader";
-import {Flex, Box} from 'reflexbox';
 import {CommitFileSummary} from "../views/commitFileSummary";
 import {CommitLineSummary} from "../views/commitLineSummary";
 
 const dashboard_id = 'dashboards.commit.commits.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Commit Overview'/>
-};
 
 
 export const dashboard = withNavigationContext(
@@ -22,7 +17,7 @@ export const dashboard = withNavigationContext(
       commitKey={context.getInstanceKey('commit')}
       render={
         ({commit}) => (
-          <Dashboard>
+          <Dashboard dashboard={`${dashboard_id}`}>
             <DashboardRow h={"15%"}>
               <DashboardWidget
                 w={"40%"}

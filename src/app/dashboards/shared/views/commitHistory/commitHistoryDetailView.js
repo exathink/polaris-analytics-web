@@ -1,10 +1,8 @@
 import React from 'react';
-import {DashboardRow} from "../../../../framework/viz/dashboard";
 import {CumulativeCommitCountChart} from "./index";
 import {CommitsTimelineTable} from "../commitsTimeline";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
-import {VizRow, VizItem} from "../../containers/layout";
-import {week_to_date} from "../../../../helpers/utility";
+import {VizItem, VizRow} from "../../containers/layout";
 import moment from 'moment';
 
 

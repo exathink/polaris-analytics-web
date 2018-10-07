@@ -1,7 +1,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {DimensionActivitySummaryPanelWidget} from "../../shared/views/activitySummary";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
 import {

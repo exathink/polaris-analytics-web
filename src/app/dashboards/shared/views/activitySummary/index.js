@@ -1,4 +1,3 @@
-import {CommitSummary} from "../../../../graphql/analytics/interfaces.graphql"
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import React from 'react';
 import StickerWidget from '../../containers/stickers/simpleSticker/sticker-widget';

@@ -1,9 +1,7 @@
-
 import {Model} from "../../../../framework/viz/model/model";
 import type {Context} from "../../../../framework/navigation/context/context";
 import {ActiveContext} from "../../../../framework/navigation/context/activeContext";
 import moment from "moment/moment";
-import {polarisTimestamp} from "../../../../helpers/utility";
 import {withActivityLevel} from "./activityLevel";
 
 export type ActivityLevel = {
@@ -27,14 +25,7 @@ export type ActivitySummary = {
   activity_level: ActivityLevel
 }
 
-type SourceData = {
-  detail_instance_id: string,
-  detail_instance_name: string,
-  commit_count: number,
-  contributor_count: number,
-  earliest_commit: string,
-  latest_commit: string
-}
+
 type ActivityLevelSummary = {
   activeCount: number,
   quiescentCount: number,
@@ -42,7 +33,6 @@ type ActivityLevelSummary = {
   inactiveCount: number
 }
 
-type Props = {context: ActiveContext, childContext: Context, span_uom? : string}
 
 export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   instanceKey: string;
@@ -71,7 +61,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
     span_uom: string
   ) {
     super(data, version);
-    this.instanceKey = instanceKey,
+    this.instanceKey = instanceKey;
     this.childCount = childCount;
     this.activityLevelSummary = activityLevelSummary;
     this.secondaryMeasureContext = secondaryMeasureContext;

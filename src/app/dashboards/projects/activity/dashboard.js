@@ -2,7 +2,8 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionActivitySummaryPanelWidget, DimensionCommitsNavigatorWidget, DimensionCommitHistoryWidget,
+  DimensionActivitySummaryPanelWidget,
+  DimensionCommitsNavigatorWidget,
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {Contexts} from "../../../meta/contexts";

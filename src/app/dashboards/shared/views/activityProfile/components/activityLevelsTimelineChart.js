@@ -1,9 +1,6 @@
 import {findVisibleLevels, getActivityLevel} from "../activityLevel";
-import {tooltipHtml} from "../../../../../framework/viz/charts/index";
-import {Chart} from "../../../../../framework/viz/charts/index";
+import {Chart, tooltipHtml} from "../../../../../framework/viz/charts/index";
 import {displaySingular, formatTerm} from "../../../../../i18n/index";
-
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 
 export const ActivityLevelsTimelineChart = Chart({
     chartUpdateProps:

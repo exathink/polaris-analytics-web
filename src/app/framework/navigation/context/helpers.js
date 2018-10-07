@@ -1,5 +1,3 @@
-import {uuidEncode, uuidDecode} from "../../../helpers/uuid";
-
 export const instanceMatchPattern = (contextName) => `:${contextName}/:${contextName}_key`;
 export const encodeInstance =  (name, key) => `${name}/${key}`;
 export const getInstanceKey  = (contextName, params) =>  params[`${contextName}_key`];

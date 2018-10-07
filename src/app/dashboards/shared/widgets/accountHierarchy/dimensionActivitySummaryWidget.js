@@ -3,7 +3,6 @@ import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from '../../../../services/graphql/index';
-import {ContributorSummary} from '../../../../graphql/analytics/interfaces.graphql';
 import {ActivitySummaryPanel} from "../../views/activitySummary";
 import {Contexts} from "../../../../meta/index";
 

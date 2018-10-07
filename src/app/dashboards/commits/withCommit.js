@@ -1,7 +1,4 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
-
-import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
 import {Loading} from "../../components/graphql/loading";

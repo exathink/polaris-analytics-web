@@ -42,7 +42,7 @@ export const DimensionCommitHistoryWidget = (
           if (error) return null;
           const cumulativeCommitCounts = data[dimension].cumulativeCommitCount;
           return (
-            view == 'detail' ?
+            view === 'detail' ?
               <CommitHistoryDetailView
                 cumulativeCommitCounts={cumulativeCommitCounts}
                 context={context}

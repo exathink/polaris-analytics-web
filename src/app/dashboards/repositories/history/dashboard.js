@@ -1,17 +1,12 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget,
-  DimensionCommitHistoryWidget, DimensionWeeklyContributorCountWidget
+  DimensionCommitHistoryWidget,
+  DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
 const dashboard_id = 'dashboards.history.repositories.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Repository History'/>
-};
 
 
 export const dashboard = withNavigationContext(({match, context, ...rest}) => (

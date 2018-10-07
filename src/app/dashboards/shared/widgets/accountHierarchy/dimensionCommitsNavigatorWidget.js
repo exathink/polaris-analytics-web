@@ -12,7 +12,7 @@ import Repositories from "../../../repositories/context";
 import moment from 'moment';
 
 function onCommitsSelected(context, commits) {
-  if(commits.length == 1) {
+  if(commits.length === 1) {
     const commit = commits[0];
     context.navigate(Commits, commit.name, commit.key)
   }

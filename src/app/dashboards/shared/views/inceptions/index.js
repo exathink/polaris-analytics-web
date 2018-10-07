@@ -10,7 +10,7 @@ function initSeries(inceptionsSummary, groupBy = 'year') {
   );
   return Object.keys(inceptions).map(
     inceptionKey => ({
-      x: parseInt(inceptionKey),
+      x: parseInt(inceptionKey,10),
       y: inceptions[inceptionKey]
     })
   )

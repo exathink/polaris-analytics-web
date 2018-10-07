@@ -43,7 +43,6 @@ export const CommitLinesSummaryChart = Chart({
               align: 'center',
               verticalAlign: 'middle',
               formatter: function () {
-                const x = 3;
                 return `<b>${this.series.userOptions.id}</b>`
               },
               color: "#000000"
