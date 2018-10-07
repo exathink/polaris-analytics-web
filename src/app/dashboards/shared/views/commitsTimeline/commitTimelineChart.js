@@ -22,7 +22,7 @@ export const CommitsTimelineChart = Chart({
     mapPoints: (points, _) => points.map(point => point.commit),
 
     getConfig:
-      ({commits, context, intl, view, groupBy, days, before, onAuthorSelected, onRepositorySelected}) => {
+      ({commits, context, intl, view, groupBy, days, before, shortTooltip, onAuthorSelected, onRepositorySelected}) => {
         const category = groupBy || 'author';
         const categories_index = commits.reduce(
           (index, commit) => {
@@ -116,7 +116,16 @@ export const CommitsTimelineChart = Chart({
               useHTML: true,
               hideDelay: 50,
               formatter: function () {
-                return tooltipHtml({
+                return tooltipHtml(shortTooltip ? {
+                  header: `Author: ${this.point.commit.author}`,
+                  body: [
+                    ['Commit: ', `${this.point.commit.name}`],
+                    [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY HH:mm a")}`],
+                    [`Repository: `, `${this.point.commit.repository}`],
+                    [`Branch: `, `${this.point.commit.branch || ''}`],
+                    ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`]
+                  ]
+                } : {
                   header: `Author: ${this.point.commit.author}`,
                   body: [
                     ['Commit: ', `${this.point.commit.name}`],

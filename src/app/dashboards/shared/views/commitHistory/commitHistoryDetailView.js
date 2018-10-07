@@ -42,6 +42,7 @@ const CumulativeCommitCountDetailPanels = (
             view={view}
             days={days}
             before={before}
+            shortTooltip={true}
             groupBy={detailViewCommitsGroupBy}
             onSelectionChange={onCommitTimelineSelectionChange}
           />

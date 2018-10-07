@@ -28,6 +28,7 @@ export const DimensionCommitsNavigatorWidget = (
     view,
     groupBy,
     display,
+    shortTooltip,
     onSelectionChange
 
   }) => (
@@ -90,6 +91,7 @@ export const DimensionCommitsNavigatorWidget = (
                   groupBy={groupBy}
                   days={days}
                   before={before}
+                  shortTooltip={shortTooltip}
                   onSelectionChange={
                     onSelectionChange || (commits => onCommitsSelected(context, commits))
                   }
