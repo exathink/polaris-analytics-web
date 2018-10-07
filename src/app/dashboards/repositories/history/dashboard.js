@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget,
-  DimensionCumulativeCommitCountWidget, DimensionWeeklyContributorCountWidget
+  DimensionCommitHistoryWidget, DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
@@ -22,7 +22,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           name="cumulative-commit-count"
           render={
             ({view}) =>
-              <DimensionCumulativeCommitCountWidget
+              <DimensionCommitHistoryWidget
                 dimension={'repository'}
                 instanceKey={context.getInstanceKey('repository')}
                 context={context}

@@ -7,7 +7,7 @@ import {CumulativeCommitCountChart, CumulativeCommitCountDetailView} from "../..
 import {analytics_service} from '../../../../services/graphql/index'
 
 
-export const DimensionCumulativeCommitCountWidget = (
+export const DimensionCommitHistoryWidget = (
   {
     dimension,
     instanceKey,

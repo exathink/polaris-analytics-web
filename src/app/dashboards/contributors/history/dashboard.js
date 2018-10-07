@@ -2,7 +2,7 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
-  DimensionCumulativeCommitCountWidget
+  DimensionCommitHistoryWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
@@ -20,7 +20,7 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
           name="cumulative-commit-count"
           render={
             ({view}) =>
-              <DimensionCumulativeCommitCountWidget
+              <DimensionCommitHistoryWidget
                 dimension={'contributor'}
                 instanceKey={context.getInstanceKey('contributor')}
                 context={context}

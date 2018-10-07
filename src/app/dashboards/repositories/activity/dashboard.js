@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget,
-  DimensionCumulativeCommitCountWidget
+  DimensionCommitHistoryWidget
 } from "../../shared/widgets/accountHierarchy";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 

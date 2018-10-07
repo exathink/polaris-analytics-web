@@ -3,6 +3,6 @@ export {ChildDimensionActivityProfileWidget} from './dimensionChildDimensionActi
 export {DimensionContributorActivityProfileWidget} from './dimensionContributorActivityProfileWidget';
 export {DimensionConnectionInceptionsWidget} from './dimensionConnectionInceptionsWidget';
 export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWidget';
-export {DimensionCumulativeCommitCountWidget} from './dimensionCumulativeCommitCounts';
+export {DimensionCommitHistoryWidget} from './dimensionCommitHistoryWidget';
 export {DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';
 export {DimensionWeeklyContributorCountWidget} from './dimensionWeeklyContributorCounts';

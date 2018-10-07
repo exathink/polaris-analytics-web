@@ -11,7 +11,7 @@ import {withNavigationContext} from "../../../framework/navigation/components/wi
 import {withUserContext} from "../../../framework/user/userContext";
 import {
   DimensionCommitsNavigatorWidget,
-  DimensionCumulativeCommitCountWidget,
+  DimensionCommitHistoryWidget,
   DimensionMostActiveChildrenWidget, DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
 
