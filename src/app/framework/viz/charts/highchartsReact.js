@@ -53,9 +53,7 @@ export class HighchartsChart extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps){
-    return this.props.config !== nextProps.config
-  }
+
 
   render() {
     return (<div  ref={this.container}/>);

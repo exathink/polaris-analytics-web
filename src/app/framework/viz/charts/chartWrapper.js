@@ -39,7 +39,12 @@ class ChartWrapper extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.config !== prevState.config || ChartWrapper.willResize(nextProps, prevState)) {
+    const isResize = ChartWrapper.willResize(nextProps, prevState);
+    if(isResize) {
+      console.log(`Resize detected: prev = { ${prevState.config.chart.height}, ${prevState.config.chart.width} next: ${nextProps.size.height}, ${nextProps.size.width}`);
+    }
+    const isNewConfig = nextProps.config !== prevState.config;
+    if( isNewConfig || isResize ) {
       return {
         config: ChartWrapper.setDefaults(nextProps.config, nextProps)
       }
@@ -49,11 +54,6 @@ class ChartWrapper extends React.Component {
 
   getChart() {
     return this.refs.chart.getChart()
-  }
-
-
-  shouldComponentUpdate(nextProps, nextState){
-    return this.state !== nextState;
   }
 
   render() {
@@ -71,4 +71,4 @@ class ChartWrapper extends React.Component {
   }
 }
 
-export default withSize({monitorWidth:true, monitorHeight: true})(ChartWrapper);
+export default withSize({monitorWidth:true, monitorHeight: true, refreshMode: 'debounce'})(ChartWrapper);
