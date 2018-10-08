@@ -64,6 +64,7 @@ class ChartWrapper extends React.Component {
     //console.time(`${type}-update`);
     if (chart) {
       chart.update(this.state.config);
+      chart.zoomOut();
     }
     //console.timeEnd(`${type}-update`);
     //window.performance.mark(`after-chart-${type}-update`);
