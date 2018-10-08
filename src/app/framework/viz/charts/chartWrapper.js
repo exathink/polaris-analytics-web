@@ -56,22 +56,6 @@ class ChartWrapper extends React.Component {
     return this.state !== nextState;
   }
 
-  componentDidUpdate() {
-    const chart = this.getChart();
-    //const type = this.state.config.chart.type;
-
-    //window.performance.mark(`before-chart-${type}-update`);
-    //console.time(`${type}-update`);
-    if (chart) {
-      chart.update(this.state.config);
-      chart.zoomOut();
-    }
-    //console.timeEnd(`${type}-update`);
-    //window.performance.mark(`after-chart-${type}-update`);
-    //window.performance.measure(`${type}-chart-update`, `before-chart-${type}-update`, `after-chart-${type}-update`);
-
-  }
-
   render() {
     return (
       <div style={{height: "100%", width: "100%"}}>

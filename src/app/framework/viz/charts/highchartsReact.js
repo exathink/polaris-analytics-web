@@ -17,7 +17,15 @@ export class HighchartsChart extends React.Component {
   // by making this async, we can kick off rendering of multiple charts in parallel while the react component
   // tree builds.
    async componentDidMount() {
+     await this.initChart();
+   }
 
+   async componentDidUpdate() {
+     this.teardownChart();
+     await this.initChart()
+   }
+
+  async initChart() {
     const {highcharts, constructorType, config, callback} = this.props;
     //console.time(`${config.chart.type}`);
     //window.performance.mark(`before-chart-render-${config.chart.type}`);
@@ -25,23 +33,28 @@ export class HighchartsChart extends React.Component {
     //window.performance.mark(`after-chart-render-${config.chart.type}`);
     //window.performance.measure(`${config.chart.type}-render-time`, `before-chart-render-${config.chart.type}`, `after-chart-render-${config.chart.type}`);
     //console.timeEnd(`${config.chart.type}`);
-    if(callback) {
+    if (callback) {
       callback(this.chart);
     }
   }
 
   componentWillUnmount() {
-    if(this.chart) {
+    this.teardownChart();
+  }
+
+  teardownChart() {
+    const {callback} = this.props;
+    if (this.chart) {
       this.chart.destroy();
+      this.chart = null;
+      if (callback) {
+        callback(this.chart)
+      }
     }
   }
 
-  shouldComponentUpdate(){
-    return false;
-  }
-
-  static getDerivedStateFromProps(){
-    return null;
+  shouldComponentUpdate(nextProps){
+    return this.props.config !== nextProps.config
   }
 
   render() {
