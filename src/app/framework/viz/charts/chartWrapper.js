@@ -14,7 +14,9 @@ class ChartWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      config: ChartWrapper.setDefaults(props.config, props)
+      config: ChartWrapper.setDefaults(props.config, props),
+      isResize: false,
+      isNewConfig: false
     };
   }
 
@@ -46,7 +48,9 @@ class ChartWrapper extends React.Component {
     const isNewConfig = nextProps.config !== prevState.config;
     if( isNewConfig || isResize ) {
       return {
-        config: ChartWrapper.setDefaults(nextProps.config, nextProps)
+        config: ChartWrapper.setDefaults(nextProps.config, nextProps),
+        isResize: isResize,
+        isNewConfig: isNewConfig
       }
     }
     return null;
@@ -64,6 +68,9 @@ class ChartWrapper extends React.Component {
           constructorType={this.props.constructorType}
           config={this.state.config}
           callback={this.props.afterRender}
+          isResize={this.state.isResize}
+          isNewConfig={this.state.isNewConfig}
+          size={this.props.size}
           ref="chart"
         />
       </div>

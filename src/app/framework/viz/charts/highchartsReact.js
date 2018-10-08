@@ -1,9 +1,8 @@
-
 import React from 'react';
 
 export class HighchartsChart extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.container = React.createRef();
     this.chart = null;
@@ -16,14 +15,20 @@ export class HighchartsChart extends React.Component {
 
   // by making this async, we can kick off rendering of multiple charts in parallel while the react component
   // tree builds.
-   async componentDidMount() {
-     await this.initChart();
-   }
+  async componentDidMount() {
+    await this.initChart();
+  }
 
-   async componentDidUpdate() {
-     this.teardownChart();
-     await this.initChart()
-   }
+  async componentDidUpdate() {
+    if (this.props.isNewConfig) {
+      this.teardownChart();
+      await this.initChart()
+    } else if (this.props.isResize) {
+        const chart = this.getChart();
+        const {size} = this.props;
+        chart.setSize(size.width, size.height)
+    }
+  }
 
   async initChart() {
     const {highcharts, constructorType, config, callback} = this.props;
@@ -54,8 +59,7 @@ export class HighchartsChart extends React.Component {
   }
 
 
-
   render() {
-    return (<div  ref={this.container}/>);
+    return (<div ref={this.container}/>);
   }
 }
