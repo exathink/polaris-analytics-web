@@ -96,7 +96,7 @@ export class App extends Component {
 export default connect(
   state => ({
     auth: state.Auth,
-    userContext: state.user.toJS()
+    userContext: state.user,
   }),
   {logout, toggleAll}
 )(App);

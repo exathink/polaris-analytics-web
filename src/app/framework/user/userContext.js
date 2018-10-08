@@ -7,7 +7,10 @@ export const withUserContext = Component => (
     <UserContext.Consumer>
       {
         userContext =>
-          <Component {...userContext} {...props}/>
+          <Component
+            account={userContext.get('account')}
+            user={userContext.get('user')}
+            {...props}/>
       }
     </UserContext.Consumer>
 );
