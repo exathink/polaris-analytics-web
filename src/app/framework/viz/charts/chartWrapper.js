@@ -42,9 +42,6 @@ class ChartWrapper extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const isResize = ChartWrapper.willResize(nextProps, prevState);
-    if(isResize) {
-      console.log(`Resize detected: prev = { ${prevState.config.chart.height}, ${prevState.config.chart.width} next: ${nextProps.size.height}, ${nextProps.size.width}`);
-    }
     const isNewConfig = nextProps.config !== prevState.config;
     if( isNewConfig || isResize ) {
       return {
