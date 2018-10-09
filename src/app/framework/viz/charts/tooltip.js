@@ -9,3 +9,16 @@ const tooltipContent = (content) => {
 
 export const tooltipHtml = ({header, body}) => (`<b>${header}</b><br/><br/><table>` + tooltipContent(body) + '</table>');
 
+/** Functions to extract previous and next points from within a formatter callback */
+
+export function previousPoint(formatterThis) {
+  const points = formatterThis.series.points;
+  const index = points.indexOf(formatterThis.point);
+  return index > 0 ? points[index-1] : null;
+}
+
+export function nextPoint(formatterThis) {
+  const points = formatterThis.series.points;
+  const index = points.indexOf(formatterThis.point);
+  return index < points.length - 1 ? points[index+1] : null;
+}

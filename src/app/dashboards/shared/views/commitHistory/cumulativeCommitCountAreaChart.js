@@ -5,6 +5,8 @@ import {formatTerm} from "../../../../i18n";
 import {week_to_date} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
+import {previousPoint} from "../../../../framework/viz/charts/tooltip";
+
 function initSeries(cumulativeCommitCounts) {
   return cumulativeCommitCounts.map(cumulativeCommitCount => {
     const weekDate = week_to_date(cumulativeCommitCount.year, cumulativeCommitCount.week)
@@ -72,10 +74,12 @@ export const CumulativeCommitCountChart = Chart({
           useHTML: true,
           hideDelay: 50,
           formatter: function () {
+            const previous = previousPoint(this);
             return tooltipHtml({
               header: `Week of: ${moment(this.x).format("MMM Do, YYYY")}`,
               body: [
-                [`${formatTerm(intl, 'Total Commits')}:`, `${intl.formatNumber(this.y)}`]
+                [`${formatTerm(intl, 'Commits this week')}:`, `${intl.formatNumber(previous? this.y - previous.y : this.y)}`],
+                [`${formatTerm(intl, 'Commits to date')}:`, `${intl.formatNumber(this.y)}`],
               ]
             })
           }
