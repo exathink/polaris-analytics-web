@@ -6,8 +6,8 @@ export class HighchartsChart extends React.Component {
     super(props);
     this.container = React.createRef();
     this.chart = null;
-    this.state = {}
   }
+
 
   getChart() {
     return this.chart;
@@ -23,7 +23,8 @@ export class HighchartsChart extends React.Component {
     if (this.props.isNewConfig) {
       this.teardownChart();
       await this.initChart()
-    } else if (this.props.isResize) {
+    }
+    if (this.props.isResize) {
         const chart = this.getChart();
         const {size} = this.props;
         chart.setSize(size.width, size.height)
@@ -45,6 +46,10 @@ export class HighchartsChart extends React.Component {
 
   componentWillUnmount() {
     this.teardownChart();
+  }
+
+  shouldComponentUpdate(){
+    return this.props.isNewConfig || this.props.isResize
   }
 
   teardownChart() {
