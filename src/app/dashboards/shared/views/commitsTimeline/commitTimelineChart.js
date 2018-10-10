@@ -3,12 +3,13 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {toMoment} from "../../../../helpers/utility";
 
 function getSubtitleText(startWindow, endWindow, days) {
   return startWindow ?
-            `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
-              : days > 1 ? `Last ${days} Days`
-                : days > 0 ?`Last 24 hours` : ``;
+    `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
+    : days > 1 ? `Last ${days} Days`
+      : days > 0 ? `Last 24 hours` : ``;
 }
 
 export const CommitsTimelineChart = Chart({
@@ -47,9 +48,8 @@ export const CommitsTimelineChart = Chart({
 
       // sort in descending order of activity
       const categories = Object.keys(categories_index).sort((a, b) => categories_index[b] - categories_index[a]);
-
       const series_data = commits.map((commit, index) => {
-        const commit_date = moment(`${commit.commitDate}Z`);
+        const commit_date = toMoment(commit.commitDate);
         return (
           {
             x: commit_date.valueOf(),
@@ -59,6 +59,15 @@ export const CommitsTimelineChart = Chart({
           }
         )
       });
+
+      const latest_point = series_data.length > 0 && series_data.reduce(
+        (latest, point) => latest.x < point.x ? point : latest,
+        series_data[0]
+      );
+      if (latest_point) {
+        latest_point.color = Colors.ActivityLevel.ACTIVE
+      }
+
       let startWindow = null;
       let endWindow = before && moment(before)
       if (endWindow) {
