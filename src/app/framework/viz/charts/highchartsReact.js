@@ -48,8 +48,8 @@ export class HighchartsChart extends React.Component {
     this.teardownChart();
   }
 
-  shouldComponentUpdate(){
-    return this.props.isNewConfig || this.props.isResize
+  shouldComponentUpdate(nextProps){
+    return nextProps.isNewConfig || nextProps.isResize
   }
 
   teardownChart() {
