@@ -29,7 +29,8 @@ export const DimensionCommitsNavigatorWidget = (
     groupBy,
     display,
     shortTooltip,
-    onSelectionChange
+    onSelectionChange,
+    pollInterval,
 
   }) => (
     <Query
@@ -46,6 +47,7 @@ export const DimensionCommitsNavigatorWidget = (
                                 name
                                 key
                                 author
+                                authorDate
                                 authorKey
                                 committer
                                 commitDate
@@ -72,6 +74,7 @@ export const DimensionCommitsNavigatorWidget = (
         days: days || 0,
         before: before != null ? moment(before) : before
       }}
+      pollInterval={pollInterval || analytics_service.defaultPollInterval()}
     >
       {
         ({loading, error, data}) => {
@@ -92,6 +95,7 @@ export const DimensionCommitsNavigatorWidget = (
                   days={days}
                   before={before}
                   shortTooltip={shortTooltip}
+                  polling={pollInterval}
                   onSelectionChange={
                     onSelectionChange || (commits => onCommitsSelected(context, commits))
                   }

@@ -19,6 +19,7 @@ export const WithCommit = ({commitKey, render}) => (
                     repositoryKey
                     repositoryUrl
                     author
+                    authorDate
                     authorKey
                     committer
                     committerKey

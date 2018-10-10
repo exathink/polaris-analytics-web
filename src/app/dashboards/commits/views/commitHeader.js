@@ -27,7 +27,7 @@ export const CommitHeader = ({commit, context, view}) => (
           {/* Sticker Widget */}
           <StickerWidget
             number={'Committed'}
-            text={moment(commit.commitDate).fromNow()}
+            text={moment.duration(moment(`${commit.authorDate}Z`).diff(moment.utc())).humanize(true)}
             icon={'ion-clock'}
             fontColor={"#ffffff"}
             bgColor={Contexts.commits.color}

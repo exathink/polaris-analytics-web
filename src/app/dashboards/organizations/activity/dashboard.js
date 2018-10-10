@@ -6,12 +6,8 @@ import {Contexts} from "../../../meta/contexts";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionMostActiveChildrenWidget
+  DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
-import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
-
-import Projects from "../../projects/context"
-import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -27,81 +23,29 @@ export const dashboard = withNavigationContext(
           w={1}
           name="activity-summary"
           title={messages.topRowTitle}
-          render={() => <DimensionActivitySummaryPanelWidget dimension={'organization'} instanceKey={context.getInstanceKey('organization')} />}
+          render={
+            () =>
+              <DimensionActivitySummaryPanelWidget
+                dimension={'organization'}
+                instanceKey={context.getInstanceKey('organization')}
+                pollInterval={60*1000}
+              />}
         />
       </DashboardRow>
-      <DashboardRow h='33%' title={Contexts.projects.display()}>
+      <DashboardRow h='90%'>
         <DashboardWidget
-          w={1 / 2}
-          name="project-activity-levels"
+          w={1}
+          name="commits"
           render={
             ({view}) =>
-              <ChildDimensionActivityProfileWidget
+              <DimensionCommitsNavigatorWidget
                 dimension={'organization'}
                 instanceKey={context.getInstanceKey('organization')}
-                childDimension={'projects'}
                 context={context}
-                childContext={Projects}
-                enableDrillDown={true}
                 view={view}
-                pageSize={50}
-              />
-          }
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 2}
-          name="most-active-projects"
-          render={
-            ({view}) =>
-              <DimensionMostActiveChildrenWidget
-                dimension={'organization'}
-                instanceKey={context.getInstanceKey('organization')}
-                childConnection={'recentlyActiveProjects'}
-                context={context}
-                childContext={Projects}
-                top={5}
-                days={7}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-      <DashboardRow h='33%' title={Contexts.repositories.display()}>
-        <DashboardWidget
-          w={1 / 2}
-          name="repository-activity-levels"
-          render={
-            ({view}) =>
-              <ChildDimensionActivityProfileWidget
-                dimension={'organization'}
-                instanceKey={context.getInstanceKey('organization')}
-                childDimension={'repositories'}
-                context={context}
-                childContext={Repositories}
-                enableDrillDown={true}
-                suppressDataLabelsAt={500}
-                view={view}
-                pageSize={50}
-              />
-          }
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 2}
-          name="most-active-repositories"
-          render={
-            ({view}) =>
-              <DimensionMostActiveChildrenWidget
-                dimension={'organization'}
-                instanceKey={context.getInstanceKey('organization')}
-                childConnection={'recentlyActiveRepositories'}
-                context={context}
-                childContext={Repositories}
-                top={5}
-                days={7}
-                view={view}
+                days={1}
+                groupBy={'repository'}
+                pollInterval={60*1000}
               />
           }
           showDetail={true}
