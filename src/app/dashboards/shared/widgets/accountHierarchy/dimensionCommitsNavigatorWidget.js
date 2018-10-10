@@ -5,18 +5,9 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 
 import {analytics_service} from '../../../../services/graphql/index'
-import {CommitsTimelineChart, CommitsTimelineTable} from "../../views/commitsTimeline";
-import Commits from "../../../commits/context";
-import Contributors from "../../../contributors/context";
-import Repositories from "../../../repositories/context";
+import {CommitsTimelineChartView, CommitsTimelineTable} from "../../views/commitsTimeline";
 import moment from 'moment';
 
-function onCommitsSelected(context, commits) {
-  if(commits.length === 1) {
-    const commit = commits[0];
-    context.navigate(Commits, commit.name, commit.key)
-  }
-}
 
 export const DimensionCommitsNavigatorWidget = (
   {
@@ -30,9 +21,9 @@ export const DimensionCommitsNavigatorWidget = (
     display,
     shortTooltip,
     markLatest,
+    showHeader,
     onSelectionChange,
     pollInterval,
-
   }) => (
     <Query
       client={analytics_service}
@@ -87,7 +78,7 @@ export const DimensionCommitsNavigatorWidget = (
             display === 'table' ?
                 <CommitsTimelineTable commits={commits}/>
                 :
-                <CommitsTimelineChart
+                <CommitsTimelineChartView
                   commits={commits}
                   context={context}
                   instanceKey={instanceKey}
@@ -96,17 +87,10 @@ export const DimensionCommitsNavigatorWidget = (
                   days={days}
                   before={before}
                   shortTooltip={shortTooltip}
+                  showHeader={showHeader}
                   polling={pollInterval}
                   markLatest={markLatest}
-                  onSelectionChange={
-                    onSelectionChange || (commits => onCommitsSelected(context, commits))
-                  }
-                  onAuthorSelected={
-                    (authorName, authorKey) => context.navigate(Contributors, authorName, authorKey)
-                  }
-                  onRepositorySelected={
-                    (repositoryName, repositoryKey) => context.navigate(Repositories, repositoryName, repositoryKey)
-                  }
+                  onSelectionChange={onSelectionChange}
                 />
           )
         }

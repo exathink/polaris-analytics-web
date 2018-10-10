@@ -4,6 +4,7 @@ import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {toMoment} from "../../../../helpers/utility";
+import {getCategoriesIndex} from "./utils";
 
 function getSubtitleText(startWindow, endWindow, days) {
   return startWindow ?
@@ -11,6 +12,8 @@ function getSubtitleText(startWindow, endWindow, days) {
     : days > 1 ? `Last ${days} Days`
       : days > 0 ? `Last 24 hours` : ``;
 }
+
+
 
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
@@ -36,15 +39,8 @@ export const CommitsTimelineChart = Chart({
   mapPoints: (points, _) => points.map(point => point.commit),
 
   getConfig:
-    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, onAuthorSelected, onRepositorySelected}) => {
-      const category = groupBy || 'author';
-      const categories_index = commits.reduce(
-        (index, commit) => {
-          index[commit[category]] = index[commit[category]] === undefined ? 1 : index[commit[category]] + 1;
-          return index
-        },
-        {}
-      );
+    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, categoryIndex, onAuthorSelected, onRepositorySelected}) => {
+      const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       // sort in descending order of activity
       const categories = Object.keys(categories_index).sort((a, b) => categories_index[b] - categories_index[a]);
