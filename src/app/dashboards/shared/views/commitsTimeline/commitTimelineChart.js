@@ -87,7 +87,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: 'Timeline'
           },
-          max: before ? before.valueOf() : moment().valueOf()
+          max: before ? before.valueOf() : moment().add(1, 'h').valueOf()
         },
         yAxis: {
           id: 'y-items',
