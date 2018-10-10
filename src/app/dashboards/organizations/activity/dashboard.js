@@ -2,7 +2,6 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {Contexts} from "../../../meta/contexts";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {
   DimensionActivitySummaryPanelWidget,

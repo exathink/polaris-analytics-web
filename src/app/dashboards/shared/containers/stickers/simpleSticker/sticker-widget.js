@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default class StickerWidget extends Component {
   render() {
-    const { fontColor, bgColor, width, icon, number, text, link } = this.props;
+    const { fontColor, bgColor, width, icon, number, hoverText, text, link } = this.props;
 
     const textColor = {
       color: fontColor,
@@ -19,8 +19,8 @@ export default class StickerWidget extends Component {
     };
 
     return (
-      <StickerWidgetWrapper className="isoStickerWidget" style={widgetStyle}>
-        <div className="isoIconWrapper">
+      <StickerWidgetWrapper className="isoStickerWidget" style={widgetStyle} title={hoverText}>
+        <div className="isoIconWrapper" >
           <i className={icon} style={iconStyle} />
         </div>
 
@@ -38,7 +38,7 @@ export default class StickerWidget extends Component {
   }
 }
 
-const StickerBody = ({number, text, textColor}) => (
+const StickerBody = ({number, numberHover, text, textColor}) => (
   <React.Fragment>
       <h3 className="isoStatNumber" style={textColor}>
         {number}

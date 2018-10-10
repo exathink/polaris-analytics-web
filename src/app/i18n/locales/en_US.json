@@ -23,6 +23,8 @@
   "t.Number of commits": "Number of commits",
   "t.Number of contributors": "Number of contributors",
   "t.Commits": "Commits",
+  "t.CommitsToDate": "Commits to date",
+  "t.CommitsThisWeek": "Commits this week",
   "t.TotalCommits": "Total Commits",
   "t.Contributors": "Contributors",
   "t.Earliest Commit": "Earliest Commit",

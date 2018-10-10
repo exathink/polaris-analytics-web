@@ -132,3 +132,15 @@ export function week_to_date(year, week) {
     const adjusted_week = `${Math.min(week, 52)}`.padStart(2, '0');
     return moment(`${year}W${adjusted_week}`);
 }
+
+export function toMoment(serverCommitDate) {
+  return moment(`${serverCommitDate}Z`);
+}
+
+export function formatCommitDate(serverCommitDate) {
+  return toMoment(serverCommitDate).format("dddd MM/DD/YYYY hh:mm a")
+}
+
+export function fromNow(serverCommitDate) {
+  return moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true)
+}

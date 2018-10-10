@@ -2,10 +2,9 @@ import React from 'react';
 import {VizItem, VizRow} from "../../shared/containers/layout";
 import StickerWidget from "../../shared/containers/stickers/simpleSticker/sticker-widget";
 import {Contexts} from "../../../meta";
-import moment from "moment";
 import {url_for_instance} from "../../../framework/navigation/context/helpers";
-
 import Contributors from "../../contributors/context";
+import {formatCommitDate, fromNow} from "../../../helpers/utility";
 
 export const CommitHeader = ({commit, context, view}) => (
     <React.Fragment>
@@ -26,8 +25,9 @@ export const CommitHeader = ({commit, context, view}) => (
 
           {/* Sticker Widget */}
           <StickerWidget
-            number={'Committed'}
-            text={moment.duration(moment(`${commit.authorDate}Z`).diff(moment.utc())).humanize(true)}
+            number={'Authored'}
+            hoverText={formatCommitDate(commit.authorDate)}
+            text={fromNow(commit.authorDate)}
             icon={'ion-clock'}
             fontColor={"#ffffff"}
             bgColor={Contexts.commits.color}
