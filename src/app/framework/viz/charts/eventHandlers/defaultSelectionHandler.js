@@ -13,13 +13,13 @@ import {set} from 'lodash';
  *
  */
 export class DefaultSelectionEventHandler {
-  constructor(config, chart, props) {
+  constructor(config, props) {
     this.config = config;
     this.attachEvents(config);
     this.selecting = null;
     this.zoom = null;
     this.selected = null;
-    this.chart = chart;
+    this.chart = null;
     this.selectionTriggers = {
       zoom: props.zoomTriggersSelection != null  ? props.zoomTriggersSelection : true,
       series: props.seriesTriggersSelection != null? props.seriesTriggersSelection: true,
@@ -27,7 +27,9 @@ export class DefaultSelectionEventHandler {
     this.zoomClearsSelections = props.zoomClearsSelections != null ? props.zoomClearsSelections : true;
   }
 
-
+  setChart(chart) {
+    this.chart = chart
+  }
 
   attachEvents(config){
     set(config, 'chart.events.click', e => this.deselect());

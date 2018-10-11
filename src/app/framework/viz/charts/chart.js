@@ -8,13 +8,30 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       constructor(props) {
         super(props);
-        this.state = {};
-        this.chart = null;
-        this.eventHandler = null;
+        this.state = {}
+
       }
+
+      static attachEvents(config, props) {
+        if (configProvider.eventHandler) {
+          return new configProvider.eventHandler(config, props);
+        }
+      }
+
+      static initConfig(props) {
+        const config = configProvider.getConfig(props);
+        return {
+          config: config,
+          eventHandler: _.attachEvents(config, props)
+        }
+      }
+
 
       setChart(chart) {
         this.chart = chart;
+        if(this.state.eventHandler) {
+          this.state.eventHandler.setChart(this)
+        }
       }
 
       static getDerivedStateFromProps(nextProps, prevState) {
@@ -23,42 +40,11 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         if (propChange) {
           return {
             ...chartUpdateProps,
-            config: prevState.config,
-            providerPropsUpdated: true
+            ..._.initConfig(nextProps)
           }
         }
         return null;
       }
-
-      attachEvents(config) {
-        if (configProvider.eventHandler) {
-          this.eventHandler = new configProvider.eventHandler(config, this, this.props);
-        }
-        return config
-      }
-
-      updateConfig() {
-        if (this.state.providerPropsUpdated) {
-          const config = this.attachEvents(configProvider.getConfig(this.props));
-          this.setState(prevState => {
-            return {
-              ...{prevState},
-              config: config,
-              providerPropsUpdated: false
-            }
-          })
-        }
-      }
-
-
-      componentDidMount() {
-        this.updateConfig();
-      }
-
-      componentDidUpdate() {
-        this.updateConfig();
-      }
-
 
       onSelectionChange(selected) {
         if (this.props.onSelectionChange && configProvider.mapPoints) {
