@@ -17,15 +17,24 @@ function onCommitsSelected(context, commits) {
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedCategories: null
-    }
+    this.state = {}
   }
 
   onCategoriesSelected(selected) {
     this.setState({
       selectedCategories: selected
     });
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let state = null;
+    if(!prevState.selectedCategories) {
+      state = {
+        commits: nextProps.commits,
+        selectedCategories: null
+      }
+    }
+    return state;
   }
 
 
@@ -46,7 +55,6 @@ export class CommitsTimelineChartView extends React.Component {
 
   render() {
     const {
-      commits,
       instanceKey,
       context,
       days,
@@ -55,12 +63,13 @@ export class CommitsTimelineChartView extends React.Component {
       groupBy,
       shortTooltip,
       showHeader,
+      markLatest,
       onSelectionChange,
       polling,
 
     } = this.props;
-    const categoriesIndex = getCategoriesIndex(commits,groupBy, this.state.selectedCategories);
-    const timelineCommits = this.getTimelineCommits(commits, categoriesIndex.category);
+    const categoriesIndex = getCategoriesIndex(this.state.commits,groupBy, this.state.selectedCategories);
+    const timelineCommits = this.getTimelineCommits(this.state.commits, categoriesIndex.category);
     return (
       <Flex column style={{height:"100%"}}>
         <Flex style={{height: showHeader ? "88%" : "100%"}} w={"100%"}>
@@ -73,6 +82,7 @@ export class CommitsTimelineChartView extends React.Component {
               days={days}
               before={before}
               shortTooltip={shortTooltip}
+              markLatest={markLatest}
               polling={polling}
               categoryIndex={categoriesIndex}
               onSelectionChange={
@@ -90,7 +100,7 @@ export class CommitsTimelineChartView extends React.Component {
           showHeader ?
             <Flex style={{height:"12%"}} w={"100%"}>
               <CommitsTimelineRollupHeaderChart
-                commits={commits}
+                commits={this.state.commits}
                 groupBy={categoriesIndex.category}
                 onSelectionChange={this.onCategoriesSelected.bind(this)}
               />

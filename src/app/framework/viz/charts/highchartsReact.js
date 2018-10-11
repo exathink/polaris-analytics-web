@@ -21,12 +21,10 @@ export class HighchartsChart extends React.Component {
 
   async componentDidUpdate() {
     if (this.props.isNewConfig) {
-      console.log(`${this.props.config.chart.type} chart has new config`);
       this.teardownChart();
       await this.initChart()
     }
     if (this.props.isResize) {
-        console.log(`${this.props.config.chart.type} chart will resize`);
         const chart = this.getChart();
         const {size} = this.props;
         chart.setSize(size.width, size.height)
@@ -48,10 +46,6 @@ export class HighchartsChart extends React.Component {
 
   componentWillUnmount() {
     this.teardownChart();
-  }
-
-  shouldComponentUpdate(nextProps){
-    return nextProps.isNewConfig || nextProps.isResize
   }
 
   teardownChart() {

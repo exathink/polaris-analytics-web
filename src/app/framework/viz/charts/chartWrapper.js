@@ -43,18 +43,11 @@ class ChartWrapper extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const isResize = ChartWrapper.willResize(nextProps, prevState);
     const isNewConfig = nextProps.config !== prevState.config;
-    if( isNewConfig || isResize ) {
-      return {
-        config: ChartWrapper.setDefaults(nextProps.config, nextProps),
-        isResize: isResize,
-        isNewConfig: isNewConfig
-      }
+    return {
+      config: isNewConfig? ChartWrapper.setDefaults(nextProps.config, nextProps) :prevState.config,
+      isResize: isResize,
+      isNewConfig: isNewConfig
     }
-    return null;
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.isNewConfig || nextState.isResize
   }
 
   getChart() {
