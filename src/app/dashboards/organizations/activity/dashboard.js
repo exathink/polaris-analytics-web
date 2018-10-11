@@ -44,6 +44,7 @@ export const dashboard = withNavigationContext(
                 view={view}
                 days={1}
                 groupBy={'repository'}
+                markLatest
                 pollInterval={60*1000}
               />
           }

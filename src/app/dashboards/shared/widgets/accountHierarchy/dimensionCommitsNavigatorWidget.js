@@ -29,6 +29,7 @@ export const DimensionCommitsNavigatorWidget = (
     groupBy,
     display,
     shortTooltip,
+    markLatest,
     onSelectionChange,
     pollInterval,
 
@@ -96,6 +97,7 @@ export const DimensionCommitsNavigatorWidget = (
                   before={before}
                   shortTooltip={shortTooltip}
                   polling={pollInterval}
+                  markLatest={markLatest}
                   onSelectionChange={
                     onSelectionChange || (commits => onCommitsSelected(context, commits))
                   }

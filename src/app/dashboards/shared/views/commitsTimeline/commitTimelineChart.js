@@ -36,7 +36,7 @@ export const CommitsTimelineChart = Chart({
   mapPoints: (points, _) => points.map(point => point.commit),
 
   getConfig:
-    ({commits, context, intl, view, groupBy, days, before, shortTooltip, onAuthorSelected, onRepositorySelected}) => {
+    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, onAuthorSelected, onRepositorySelected}) => {
       const category = groupBy || 'author';
       const categories_index = commits.reduce(
         (index, commit) => {
@@ -60,7 +60,8 @@ export const CommitsTimelineChart = Chart({
         )
       });
 
-      const latest_point = series_data.length > 0 && series_data.reduce(
+
+      const latest_point = markLatest && series_data.length > 0 && series_data.reduce(
         (latest, point) => latest.x < point.x ? point : latest,
         series_data[0]
       );
