@@ -47,6 +47,7 @@ export const dashboard = withNavigationContext(
                 markLatest
                 pollInterval={60*1000}
                 showHeader
+                showTable
               />
           }
           showDetail={true}

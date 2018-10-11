@@ -22,6 +22,7 @@ export const DimensionCommitsNavigatorWidget = (
     shortTooltip,
     markLatest,
     showHeader,
+    showTable,
     onSelectionChange,
     pollInterval,
   }) => (
@@ -90,6 +91,7 @@ export const DimensionCommitsNavigatorWidget = (
                   showHeader={showHeader}
                   polling={pollInterval}
                   markLatest={markLatest}
+                  showTable={showTable}
                   onSelectionChange={onSelectionChange}
                 />
           )

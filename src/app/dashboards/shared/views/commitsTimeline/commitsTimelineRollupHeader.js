@@ -2,6 +2,7 @@ import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {getCategoriesIndex} from "./utils";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 export const CommitsTimelineRollupHeaderChart = Chart({
   chartUpdateProps:
@@ -24,10 +25,10 @@ export const CommitsTimelineRollupHeaderChart = Chart({
           }],
           allowPointSelect: true,
         })
-      ).sort((series_a, series_b) => series_a.data[0].y - series_b.data[0].y);
+      ).sort((series_a, series_b) => series_b.data[0].y - series_a.data[0].y);
       return {
         chart: {
-          type: 'bar',
+          type: 'column',
           backgroundColor: Colors.Chart.backgroundColor,
         },
         plotOptions:{
@@ -38,9 +39,10 @@ export const CommitsTimelineRollupHeaderChart = Chart({
           series: {
             stacking: 'normal',
             dataLabels: {
-                enabled: true,
-                align: 'center',
-                verticalAlign: 'top',
+                enabled: series.length <= 10,
+                rotation: 90,
+                align: 'left',
+                verticalAlign: 'middle',
                 formatter: function() {
                   return `<b>${this.series.name}</b>`
                 },
@@ -51,8 +53,8 @@ export const CommitsTimelineRollupHeaderChart = Chart({
           text: null
         },
         xAxis: {
-          categories: [''],
-          visible: false,
+          categories: [capitalizeFirstLetter(category)],
+          visible: true,
           allowDecimals: false
         },
         yAxis: {
@@ -60,6 +62,7 @@ export const CommitsTimelineRollupHeaderChart = Chart({
             text: null
           },
           allowDecimals:false,
+          opposite: true,
           visible: true
         },
         series: series,
