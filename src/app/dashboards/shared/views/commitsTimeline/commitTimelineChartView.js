@@ -139,7 +139,7 @@ export class CommitsTimelineChartView extends React.Component {
   }
 
   showHeader() {
-    return this.props.showHeader && this.state.categoriesIndex.categories_index.length > 1;
+    return this.props.showHeader && Object.keys(this.state.categoriesIndex.categories_index).length > 1;
   }
 
 
