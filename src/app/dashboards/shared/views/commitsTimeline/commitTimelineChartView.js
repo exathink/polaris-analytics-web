@@ -138,21 +138,23 @@ export class CommitsTimelineChartView extends React.Component {
     )
   }
 
+  showHeader() {
+    return this.props.showHeader && this.state.categoriesIndex.categories_index.length > 1;
+  }
+
 
   getPrimaryLayout(height, categoriesIndex, timelineCommits) {
-    const {
-      showHeader
-    } = this.props;
+
 
     return (
       <Flex style={{height: height, width: "100%"}}>
-        <Box w={showHeader ? "90%" : "100%"}>
+        <Box w={this.showHeader() ? "90%" : "100%"}>
           {
             this.getCommitTimelineChart(timelineCommits, categoriesIndex)
           }
         </Box>
         {
-          showHeader ?
+          this.showHeader() ?
             <Box w={"10%"}>
               {
                 this.getTimelineRollupHeader(categoriesIndex.category)
