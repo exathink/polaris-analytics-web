@@ -8,13 +8,40 @@ import {CommitsTimelineRollupHeaderChart} from './commitsTimelineRollupHeader'
 import {getCategoriesIndex} from "./utils";
 
 function onCommitsSelected(context, commits) {
-  if(commits.length === 1) {
+  if(commits && commits.length === 1) {
     const commit = commits[0];
     context.navigate(Commits, commit.name, commit.key)
   }
 }
 
 export class CommitsTimelineChartView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCategories: null
+    }
+  }
+
+  onCategoriesSelected(selected) {
+    this.setState({
+      selectedCategories: selected
+    });
+  }
+
+
+
+  getTimelineCommits(commits, category) {
+    if(this.state.selectedCategories) {
+      return commits.filter(
+        commit => this.state.selectedCategories.find(
+          cat =>
+            cat === commit[category]
+        )
+      )
+    } else {
+      return commits
+    }
+  }
 
 
   render() {
@@ -32,13 +59,13 @@ export class CommitsTimelineChartView extends React.Component {
       polling,
 
     } = this.props;
-    const categoriesIndex = getCategoriesIndex(commits,groupBy);
-
+    const categoriesIndex = getCategoriesIndex(commits,groupBy, this.state.selectedCategories);
+    const timelineCommits = this.getTimelineCommits(commits, categoriesIndex.category);
     return (
       <Flex column style={{height:"100%"}}>
         <Flex style={{height: showHeader ? "88%" : "100%"}} w={"100%"}>
           <CommitsTimelineChart
-              commits={commits}
+              commits={timelineCommits}
               context={context}
               instanceKey={instanceKey}
               view={view}
@@ -65,7 +92,7 @@ export class CommitsTimelineChartView extends React.Component {
               <CommitsTimelineRollupHeaderChart
                 commits={commits}
                 groupBy={categoriesIndex.category}
-                categoriesIndex={categoriesIndex}
+                onSelectionChange={this.onCategoriesSelected.bind(this)}
               />
             </Flex>
             : null

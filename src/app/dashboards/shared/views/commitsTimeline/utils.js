@@ -1,7 +1,9 @@
-function reduceCategories(commits, category) {
+function reduceCategories(commits, category, filterCategories) {
   const catIndex = commits.reduce(
     (index, commit) => {
-      index[commit[category]] = index[commit[category]] === undefined ? 1 : index[commit[category]] + 1;
+      if(!filterCategories || filterCategories.indexOf(commit[category]) >= 0) {
+        index[commit[category]] = index[commit[category]] === undefined ? 1 : index[commit[category]] + 1;
+      }
       return index
     },
     {}
@@ -13,12 +15,12 @@ function reduceCategories(commits, category) {
 }
 
 
-export function getCategoriesIndex(commits, groupBy) {
+export function getCategoriesIndex(commits, groupBy, filterCategories) {
   const category = groupBy || 'author';
-  const catIndex = reduceCategories(commits, category);
+  const catIndex = reduceCategories(commits, category, filterCategories);
   return (
-    category !== 'author' && Object.keys(catIndex.categories_index).length <= 1 ?
-      reduceCategories(commits, 'author')
+    !filterCategories && category !== 'author' && Object.keys(catIndex.categories_index).length <= 1 ?
+      reduceCategories(commits, 'author', filterCategories)
       : catIndex
   )
 }

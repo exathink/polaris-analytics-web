@@ -1,13 +1,15 @@
 import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {getCategoriesIndex} from "./utils";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 export const CommitsTimelineRollupHeaderChart = Chart({
   chartUpdateProps:
     (props) => ({
-      commits: props.commits,
-      groupBy: props.groupBy
+      commits: props.commits
     }),
+  eventHandler: DefaultSelectionEventHandler,
+  mapPoints: points => points.map( point => point.name),
   getConfig:
     ({commits, groupBy, categoryIndex}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
@@ -16,13 +18,17 @@ export const CommitsTimelineRollupHeaderChart = Chart({
         category => ({
           id: category,
           name: category,
-          data: [categories_index[category]]
+          data: [{
+            name: category,
+            y: categories_index[category]
+          }],
+          allowPointSelect: true,
         })
-      ).sort((series_a, series_b) => series_a.data[0] - series_b.data[0]);
+      ).sort((series_a, series_b) => series_a.data[0].y - series_b.data[0].y);
       return {
         chart: {
           type: 'bar',
-          backgroundColor: Colors.Chart.backgroundColor
+          backgroundColor: Colors.Chart.backgroundColor,
         },
         plotOptions:{
           bar: {

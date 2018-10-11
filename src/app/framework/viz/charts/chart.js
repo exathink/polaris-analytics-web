@@ -38,6 +38,9 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         const chartUpdateProps = configProvider.chartUpdateProps(nextProps);
         const propChange = Object.keys(chartUpdateProps).find(prop => chartUpdateProps[prop] !== prevState[prop]);
         if (propChange) {
+          if(prevState.config) {
+            console.log(`Prop '${propChange}' changed for ${prevState.config.chart.type} chart`);
+          }
           return {
             ...chartUpdateProps,
             ..._.initConfig(nextProps)

@@ -17,6 +17,7 @@ export class DefaultSelectionEventHandler {
     this.config = config;
     this.attachEvents(config);
     this.selecting = null;
+    this.zoomEnabled = config.chart.zoomType;
     this.zoom = null;
     this.selected = null;
     this.chart = null;
@@ -184,9 +185,10 @@ export class DefaultSelectionEventHandler {
     const visibleSelections = this.getVisibleSelections();
     if (visibleSelections && visibleSelections.length > 0) {
       return visibleSelections
-    } else if(this.selectionTriggers.zoom) {
+    } else if(this.zoomEnabled && this.selectionTriggers.zoom) {
       return this.getVisibleZoomedPoints()
     }
+    return null;
   }
 
 

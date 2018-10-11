@@ -53,6 +53,10 @@ class ChartWrapper extends React.Component {
     return null;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.isNewConfig || nextState.isResize
+  }
+
   getChart() {
     return this.refs.chart.getChart()
   }

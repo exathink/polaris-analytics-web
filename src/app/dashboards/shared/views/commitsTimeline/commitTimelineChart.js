@@ -39,6 +39,7 @@ export const CommitsTimelineChart = Chart({
   mapPoints: (points, _) => points.map(point => point.commit),
 
   getConfig:
+
     ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, categoryIndex, onAuthorSelected, onRepositorySelected}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
