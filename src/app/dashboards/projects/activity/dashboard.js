@@ -35,46 +35,7 @@ export const dashboard = withNavigationContext(
           }
         />
       </DashboardRow>
-      <DashboardRow h='22%' title={Contexts.repositories.display()}>
-        <DashboardWidget
-          w={1 / 2}
-          name="repository-activity-levels"
-          render={
-            ({view}) =>
-              <ChildDimensionActivityProfileWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                childDimension={'repositories'}
-                context={context}
-                childContext={Repositories}
-                enableDrillDown={true}
-                suppressDataLabelsAt={500}
-                view={view}
-                pageSize={50}
-              />
-          }
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 2}
-          name="most-active-repositories"
-          render={
-            ({view}) =>
-              <DimensionMostActiveChildrenWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                childConnection={'recentlyActiveRepositories'}
-                context={context}
-                childContext={Repositories}
-                top={10}
-                days={30}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-      <DashboardRow h='63%'>
+      <DashboardRow h='90%'>
         <DashboardWidget
           w={1}
           name="commits"
@@ -85,8 +46,9 @@ export const dashboard = withNavigationContext(
                 instanceKey={context.getInstanceKey('project')}
                 context={context}
                 view={view}
-                days={30}
+                days={1}
                 groupBy={'repository'}
+                pollInterval={60*1000}
                 showHeader
                 showTable
               />

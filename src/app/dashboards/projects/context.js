@@ -6,6 +6,7 @@ import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
 import Activity from './activity/topic';
+import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
 
@@ -36,6 +37,10 @@ const context : Context = {
           {
             match: 'activity',
             topic: Activity
+          },
+          {
+            match: 'repositories',
+            topic: Repositories
           },
           {
             match: 'contributors',

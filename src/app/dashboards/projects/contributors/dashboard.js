@@ -72,6 +72,8 @@ export const dashboard = withUserContext(withNavigationContext(
                 view={view}
                 days={30}
                 groupBy={'author'}
+                showHeader
+                showTable
               />
           }
           showDetail={true}

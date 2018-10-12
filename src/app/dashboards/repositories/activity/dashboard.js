@@ -40,7 +40,8 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 instanceKey={context.getInstanceKey('repository')}
                 context={context}
                 view={view}
-                days={30}
+                days={1}
+                pollInterval={60*1000}
                 showHeader
                 showTable
               />

@@ -3,6 +3,8 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import Activity from './activity/topic';
 import Contributors from './contributors/topic';
+import Project from './projects/topic';
+import Repositories from './repositories/topic';
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
@@ -29,6 +31,14 @@ const context = {
           {
             match: 'activity',
             topic: Activity
+          },
+          {
+            match: 'projects',
+            topic: Project
+          },
+          {
+            match: 'repositories',
+            topic: Repositories
           },
           {
 

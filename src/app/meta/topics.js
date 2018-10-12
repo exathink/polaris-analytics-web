@@ -17,6 +17,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     icon: 'ion-folder'
   },
+  repositories: {
+    name: 'repositories',
+    display: () => (<FormattedMessage id='topics.repositories' defaultMessage="Repositories"/>),
+    icon: 'ion-soup-can'
+  },
   organizations: {
     name: 'organizations',
     display: () => (<FormattedMessage id='topics.organizations' defaultMessage="Organizations"/>),
