@@ -1,17 +1,6 @@
 import React from 'react';
-import ReactPlaceholder from 'react-placeholder';
-import 'react-placeholder/lib/reactPlaceholder.css';
-
+import {Spin} from 'antd';
 
 export const Loading = () => (
-   <ReactPlaceholder
-      showLoadingAnimation
-      type="media"
-      rows={1}
-      ready={false}
-    >
-       <div>
-        {() => null}
-       </div>
-   </ReactPlaceholder>
+   <Spin size={'large'} delay={500}/>
 );
