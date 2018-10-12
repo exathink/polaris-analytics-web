@@ -11,6 +11,7 @@ export const Terms = defineMessages({
   'Contributors': {id: 't.Contributors', defaultMessage: 'Contributors'},
   'Earliest Commit': {id: 't.Earliest Commit', defaultMessage: 'Earliest Commit'},
   'Latest Commit': {id: 't.Latest Commit', defaultMessage: 'Latest Commit'},
+  'Today': {id: 't.Today', defaultMessage: 'Today'},
   'Active': {id: 't.Active', defaultMessage: 'Active'},
   'Quiescent': {id: 't.Quiescent', defaultMessage: 'Quiescent'},
   'Dormant': {id: 't.Dormant', defaultMessage: 'Dormant'},

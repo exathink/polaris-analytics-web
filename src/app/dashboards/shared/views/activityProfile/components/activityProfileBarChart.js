@@ -84,8 +84,7 @@ export const ActivityProfileBarChart = Chart(
               return tooltipHtml({
                 header: `${this.series.name}`,
                 body: [
-                  [`${this.percentage.toFixed(0)}%`],
-                  (minimized ? [`${this.y}`] : [``])
+                  [`${this.y} ${orientation !== 'vertical' ? ` (${this.percentage.toFixed(0)}%)` :``}`]
                 ]
               });
             },
