@@ -17,6 +17,7 @@ const CumulativeCommitCountDetailPanels = (
     before,
     selectedCommits,
     view,
+    showHeader,
     onAreaChartSelectionChange,
     onCommitTimelineSelectionChange
   }
@@ -24,7 +25,7 @@ const CumulativeCommitCountDetailPanels = (
   return (
     <React.Fragment>
       <VizRow h={"70%"}>
-        <VizItem w={"40%"}>
+        <VizItem w={"30%"}>
           <CumulativeCommitCountChart
             cumulativeCommitCounts={cumulativeCommitCounts}
             context={context}
@@ -34,7 +35,7 @@ const CumulativeCommitCountDetailPanels = (
           />
         </VizItem>
 
-        <VizItem w={"60%"}>
+        <VizItem w={"70%"}>
           <DimensionCommitsNavigatorWidget
             dimension={dimension}
             instanceKey={instanceKey}
@@ -45,6 +46,8 @@ const CumulativeCommitCountDetailPanels = (
             shortTooltip={true}
             groupBy={detailViewCommitsGroupBy}
             onSelectionChange={onCommitTimelineSelectionChange}
+            showHeader
+            suppressHeaderDataLabels={3}
           />
         </VizItem>
       </VizRow>

@@ -18,21 +18,9 @@ function getSubtitleText(startWindow, endWindow, days) {
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
-      props.polling ?
-        {
-          commits: props.commits
-        }
-        :
-        {
-          // Note that we are not passing the commits array as a chart update prop
-          // The assumption is that the commits for a given instanceKey, before and params is the
-          // the same set, and this allows us to avoid a re-render when this component is
-          // rendered within a graphql query.
-          instanceKey: props.instanceKey,
-          before: props.before,
-          days: props.days,
-          groupBy: props.groupBy,
-        }
+      {
+        commits: props.commits
+      }
     ),
 
   eventHandler: DefaultSelectionEventHandler,
@@ -40,7 +28,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, categoryIndex, onAuthorSelected, onRepositorySelected}) => {
+    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       // sort in descending order of activity
@@ -101,7 +89,7 @@ export const CommitsTimelineChart = Chart({
           title: 'y-axis-thingy',
           categories: categories.map(cat => `${cat}: ${categories_index[cat]}`),
           scrollbar: {
-            enabled: view === 'detail',
+            enabled: view === 'detail' && showScrollbar,
             showFull: false
           },
           reversed: true,

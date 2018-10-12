@@ -1,8 +1,11 @@
-import {Chart} from "../../../../framework/viz/charts";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {getCategoriesIndex} from "./utils";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import {previousPoint} from "../../../../framework/viz/charts/tooltip";
+import moment from "moment";
+import {formatTerm} from "../../../../i18n";
 
 export const CommitsTimelineRollupHeaderChart = Chart({
   chartUpdateProps:
@@ -12,7 +15,7 @@ export const CommitsTimelineRollupHeaderChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: points => points.map( point => point.name),
   getConfig:
-    ({commits, groupBy, categoryIndex}) => {
+    ({commits, groupBy, categoryIndex, suppressDataLabelsThreshold}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       const series = Object.keys(categories_index).map(
@@ -39,7 +42,7 @@ export const CommitsTimelineRollupHeaderChart = Chart({
           series: {
             stacking: 'normal',
             dataLabels: {
-                enabled: series.length <= 10,
+                enabled: suppressDataLabelsThreshold && series.length <= suppressDataLabelsThreshold,
                 rotation: 90,
                 align: 'left',
                 verticalAlign: 'middle',
@@ -68,7 +71,13 @@ export const CommitsTimelineRollupHeaderChart = Chart({
         series: series,
         legend: {
           enabled: false
-        }
+        },
+        tooltip: {
+          hideDelay: 50,
+          formatter: function() {
+            return this.series.name
+          }
+        },
       }
     }
 });

@@ -46,15 +46,18 @@ export class CommitsTimelineChartView extends React.Component {
     const {
       context,
       view,
-      showTable
+      showTable,
+      onSelectionChange,
     } = this.props;
 
-    if (view === 'detail' && showTable) {
-      this.setState({
-        ...this.state,
-        selectedCommits: commits,
-      })
 
+    this.setState({
+      ...this.state,
+      selectedCommits: commits,
+    });
+
+    if(onSelectionChange) {
+        onSelectionChange(commits)
     } else if (commits && commits.length === 1) {
       const commit = commits[0];
       context.navigate(Commits, commit.name, commit.key)
@@ -94,7 +97,7 @@ export class CommitsTimelineChartView extends React.Component {
       view,
       shortTooltip,
       markLatest,
-      onSelectionChange,
+      showHeader,
       polling,
 
     } = this.props;
@@ -112,9 +115,8 @@ export class CommitsTimelineChartView extends React.Component {
         markLatest={markLatest}
         polling={polling}
         categoryIndex={categoriesIndex}
-        onSelectionChange={
-          onSelectionChange || this.onCommitsSelected.bind(this)
-        }
+        onSelectionChange={this.onCommitsSelected.bind(this)}
+        showScrollbar={!showHeader}
       />
     )
   }
@@ -139,7 +141,19 @@ export class CommitsTimelineChartView extends React.Component {
   }
 
   showHeader() {
-    return this.props.showHeader && Object.keys(this.state.categoriesIndex.categories_index).length > 1;
+    const {
+      showHeader
+    } = this.props;
+
+    return (
+      this.state.selectedCategories ?
+        showHeader
+        :
+        (
+          showHeader &&
+          Object.keys(this.state.categoriesIndex.categories_index).length > 1
+        )
+    );
   }
 
 

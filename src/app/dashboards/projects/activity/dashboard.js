@@ -87,6 +87,8 @@ export const dashboard = withNavigationContext(
                 view={view}
                 days={30}
                 groupBy={'repository'}
+                showHeader
+                showTable
               />
           }
           showDetail={true}

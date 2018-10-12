@@ -22,6 +22,7 @@ export const DimensionCommitsNavigatorWidget = (
     shortTooltip,
     markLatest,
     showHeader,
+    suppressHeaderDataLabels,
     showTable,
     onSelectionChange,
     pollInterval,

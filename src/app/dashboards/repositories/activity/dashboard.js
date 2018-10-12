@@ -41,6 +41,8 @@ export const dashboard = withNavigationContext(({match, context, ...rest}) => (
                 context={context}
                 view={view}
                 days={30}
+                showHeader
+                showTable
               />
           }
           showDetail={true}
