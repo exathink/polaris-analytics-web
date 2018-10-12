@@ -42,13 +42,28 @@ export class CommitsTimelineChartView extends React.Component {
     });
   }
 
+  navigateToCommit(commits) {
+    const {
+      context
+    } = this.props;
+
+    if ( commits && commits.length === 1) {
+      const commit = commits[0];
+      context.navigate(Commits, commit.name, commit.key)
+    }
+  }
+
   onCommitsSelected(commits) {
     const {
       context,
       onSelectionChange,
       showTable,
+      view,
     } = this.props;
 
+    // we set this state to suppress further
+    // updates to props.commits until selections are done.
+    // The selections also feed the commits table if its being shown.
     this.setState({
       ...this.state,
       selectedCommits: commits,
@@ -56,9 +71,8 @@ export class CommitsTimelineChartView extends React.Component {
 
     if(onSelectionChange) {
         onSelectionChange(commits)
-    } else if (!showTable && commits && commits.length === 1) {
-      const commit = commits[0];
-      context.navigate(Commits, commit.name, commit.key)
+    } else if(view !== 'detail' || !showTable) {
+      this.navigateToCommit(commits)
     }
   }
 
