@@ -81,6 +81,9 @@ const getConfig =  props => {
     title: {
       text: intl.formatMessage(messages.title, {subject: childContextName})
     },
+    subtitle: {
+      text: model.childCount > model.data.length ? `Top ${model.data.length} of ${model.childCount}` : null
+    },
     legend: {
       align: 'right',
       layout: 'vertical',
