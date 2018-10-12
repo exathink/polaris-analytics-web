@@ -31,18 +31,10 @@ export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
     display_name: 'Active',
     activity_level_summary_property: 'activeCount',
     color: Colors.ActivityLevel.ACTIVE,
-    isMember: activitySummary => (1 < activitySummary.days_since_latest_commit) && (activitySummary.days_since_latest_commit <= 30),
+    isMember: activitySummary => (activitySummary.days_since_latest_commit <= 30),
     visible: true,
     index: 3
-  },
-  {
-    display_name: 'Today',
-    activity_level_summary_property: 'activeCount',
-    color: Colors.ActivityLevel.TODAY,
-    isMember: activitySummary => (activitySummary.days_since_latest_commit <= 1),
-    visible: true,
-    index: 4
-  },
+  }
 ];
 
 
