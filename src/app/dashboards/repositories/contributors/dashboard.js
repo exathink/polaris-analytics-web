@@ -52,27 +52,8 @@ export const dashboard = withUserContext(withNavigationContext(
                 context={context}
                 childContext={Contributors}
                 top={10}
-                days={30}
+                days={1}
                 view={view}
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-      <DashboardRow h={"80%"}>
-        <DashboardWidget
-          w={1}
-          name="commits"
-          render={
-            ({view}) =>
-              <DimensionCommitsNavigatorWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
-                context={context}
-                view={view}
-                days={30}
-                showHeader
-                showTable
               />
           }
           showDetail={true}

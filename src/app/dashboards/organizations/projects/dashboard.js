@@ -18,7 +18,7 @@ const messages = {
 export const dashboard = withNavigationContext(
   ({context}) => (
     <Dashboard dashboard={`${dashboard_id}`}>
-      <DashboardRow h='33%' title={Contexts.projects.display()}>
+      <DashboardRow h='22%' title={Contexts.projects.display()}>
         <DashboardWidget
           w={1 / 2}
           name="project-activity-levels"
@@ -48,8 +48,8 @@ export const dashboard = withNavigationContext(
                 childConnection={'recentlyActiveProjects'}
                 context={context}
                 childContext={Projects}
-                top={5}
-                days={7}
+                top={10}
+                days={1}
                 view={view}
               />
           }

@@ -59,26 +59,6 @@ export const dashboard = withUserContext(withNavigationContext(
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow>
-        <DashboardWidget
-          w={1}
-          name="commits"
-          render={
-            ({view}) =>
-              <DimensionCommitsNavigatorWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                context={context}
-                view={view}
-                days={30}
-                groupBy={'author'}
-                showHeader
-                showTable
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
     </Dashboard>
   )
 }));

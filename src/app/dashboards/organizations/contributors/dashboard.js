@@ -8,6 +8,7 @@ import Contributors from "../../contributors/context";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {withUserContext} from "../../../framework/user/userContext";
 import {
+  DimensionCommitsNavigatorWidget,
   DimensionMostActiveChildrenWidget,
   DimensionWeeklyContributorCountWidget
 } from "../../shared/widgets/accountHierarchy";
@@ -52,23 +53,7 @@ export const dashboard = withUserContext(withNavigationContext(
                 context={context}
                 childContext={Contributors}
                 top={10}
-                days={7}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-      <DashboardRow>
-        <DashboardWidget
-          w={1}
-          name="weekly-contributor-count"
-          render={
-            (view) =>
-              <DimensionWeeklyContributorCountWidget
-                dimension={'organization'}
-                instanceKey={context.getInstanceKey('organization')}
-                context={context}
+                days={1}
                 view={view}
               />
           }

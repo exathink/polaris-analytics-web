@@ -18,6 +18,7 @@ export const DimensionCommitsNavigatorWidget = (
     before,
     view,
     groupBy,
+    smartGrouping,
     display,
     shortTooltip,
     markLatest,
@@ -86,6 +87,7 @@ export const DimensionCommitsNavigatorWidget = (
                   instanceKey={instanceKey}
                   view={view}
                   groupBy={groupBy}
+                  smartGrouping={smartGrouping}
                   days={days}
                   before={before}
                   shortTooltip={shortTooltip}

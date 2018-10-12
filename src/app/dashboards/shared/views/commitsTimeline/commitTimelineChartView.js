@@ -30,9 +30,10 @@ export class CommitsTimelineChartView extends React.Component {
 
   onCategoriesSelected(selected) {
     const {
-      groupBy
+      groupBy,
+      smartGrouping,
     } = this.props;
-    const categoriesIndex = getCategoriesIndex(this.state.commits, groupBy,selected);
+    const categoriesIndex = getCategoriesIndex(this.state.commits, groupBy, smartGrouping, selected);
     const timelineCommits = getTimelineCommits(this.state.commits, categoriesIndex.category, selected);
     this.setState({
       ...this.state,
@@ -80,13 +81,14 @@ export class CommitsTimelineChartView extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       commits,
-      groupBy
+      groupBy,
+      smartGrouping
     } = nextProps;
 
     let state = null;
     if (!prevState.selectedCategories && !prevState.selectedCommits) {
       if (prevState.commits !== nextProps.commits) {
-        const categoriesIndex = getCategoriesIndex(commits, groupBy);
+        const categoriesIndex = getCategoriesIndex(commits, groupBy, smartGrouping);
         const timelineCommits = getTimelineCommits(commits, categoriesIndex.category);
         state = {
           commits,

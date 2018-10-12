@@ -3,6 +3,10 @@ import {Colors} from "../../config";
 import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
+function formatDays(days) {
+  return days > 1 ? `${days} days` : `24 Hours`
+}
+
 function initSeries(activeChildren) {
   return activeChildren.map(child => ({
     name: child.name,
@@ -34,7 +38,7 @@ export const MostActiveChildrenBarChart = Chart({
           align: 'left'
         },
         subtitle: {
-          text: `Last ${days} days`,
+          text: `Last ${formatDays(days)}`,
           align: 'left'
         },
         tooltip: {
@@ -44,7 +48,7 @@ export const MostActiveChildrenBarChart = Chart({
             return tooltipHtml({
               header: `${childContextName}: ${this.point.name}`,
               body: [
-                [`${formatTerm(intl, 'Commits')} (Last ${days} days):`, `${intl.formatNumber(this.y)}`]
+                [`${formatTerm(intl, 'Commits')}:`, `${intl.formatNumber(this.y)}`]
               ]
             })
           }

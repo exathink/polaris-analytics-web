@@ -15,11 +15,11 @@ function reduceCategories(commits, category, filterCategories) {
 }
 
 
-export function getCategoriesIndex(commits, groupBy, filterCategories) {
+export function getCategoriesIndex(commits, groupBy, smartGrouping, filterCategories) {
   const category = groupBy || 'author';
   const catIndex = reduceCategories(commits, category, filterCategories);
   return (
-    !filterCategories && category !== 'author' && Object.keys(catIndex.categories_index).length <= 1 ?
+    smartGrouping && !filterCategories && category !== 'author' && Object.keys(catIndex.categories_index).length <= 1 ?
       reduceCategories(commits, 'author', filterCategories)
       : catIndex
   )
