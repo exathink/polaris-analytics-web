@@ -45,11 +45,9 @@ export class CommitsTimelineChartView extends React.Component {
   onCommitsSelected(commits) {
     const {
       context,
-      view,
-      showTable,
       onSelectionChange,
+      showTable,
     } = this.props;
-
 
     this.setState({
       ...this.state,
@@ -58,7 +56,7 @@ export class CommitsTimelineChartView extends React.Component {
 
     if(onSelectionChange) {
         onSelectionChange(commits)
-    } else if (commits && commits.length === 1) {
+    } else if (!showTable && commits && commits.length === 1) {
       const commit = commits[0];
       context.navigate(Commits, commit.name, commit.key)
     }
