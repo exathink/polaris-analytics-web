@@ -10,13 +10,6 @@ import {ModelCache, ModelCacheContext} from "../model/modelCache";
 
 
 export class DashboardLayout extends React.Component {
-
-  componentDidMount() {
-    if(this.props.onDashboardMounted) {
-      this.props.onDashboardMounted()
-    }
-  }
-
   render() {
     const {children, itemSelected, match, ...rest} = this.props;
     if (itemSelected != null && itemSelected) {

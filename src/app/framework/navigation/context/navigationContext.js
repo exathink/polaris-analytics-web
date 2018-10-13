@@ -38,7 +38,6 @@ class NavigationContextProvider extends React.Component {
   }
 
   filterTopics(filteredTopics) {
-    filteredTopics.forEach(topic => console.log(`Topic ${topic} filtered`));
     this.setState({
       ...this.state,
       filteredTopics: filteredTopics

@@ -33,17 +33,17 @@ const context = {
             topic: Activity
           },
           {
+
+            match: 'contributors',
+            topic: Contributors
+          },
+          {
             match: 'projects',
             topic: Project
           },
           {
             match: 'repositories',
             topic: Repositories
-          },
-          {
-
-            match: 'contributors',
-            topic: Contributors
           },
           {
             match: '',

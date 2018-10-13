@@ -15,10 +15,9 @@ const dashboard_id = 'dashboards.activity.organization.instance';
 export default () => (
   <OrganizationDashboard
     render={
-      ({organization, context, onDashboardMounted}) => (
+      ({organization, context}) => (
         <Dashboard
           dashboard={`${dashboard_id}`}
-          onDashboardMounted={onDashboardMounted}
         >
           <DashboardRow h='22%' title={Contexts.projects.display()}>
             <DashboardWidget

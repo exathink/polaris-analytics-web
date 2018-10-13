@@ -20,10 +20,9 @@ const messages = {
 export const dashboard = () => (
     <OrganizationDashboard
       render={
-        ({organization, context, onDashboardMounted}) =>
+        ({organization, context}) =>
           <Dashboard
             dashboard={`${dashboard_id}`}
-            onDashboardMounted={onDashboardMounted}
           >
             <DashboardRow h='15%'>
               <DashboardWidget
