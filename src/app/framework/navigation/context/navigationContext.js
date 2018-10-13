@@ -13,7 +13,10 @@ class NavigationContextProvider extends React.Component {
     super(props);
     this.state = {
       location: null,
-      contextStack: ContextStack.initContext()
+      contextStack: ContextStack.initContext(),
+      filteredTopics: null,
+      navigate: props.history,
+      filterTopics: this.filterTopics.bind(this),
     }
   }
 
@@ -24,26 +27,28 @@ class NavigationContextProvider extends React.Component {
       activeContext.rootUrl = nextProps.match.url;
       activeContext.navigator = nextProps.history;
       return {
+        ...prevState,
         location: nextProps.location,
-        contextStack: ContextStack.pushContext(prevState.contextStack, activeContext)
+        contextStack: ContextStack.pushContext(prevState.contextStack, activeContext),
+        filteredTopics: null
       }
     } else {
       return null;
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.location !== nextState.location
+  filterTopics(filteredTopics) {
+    filteredTopics.forEach(topic => console.log(`Topic ${topic} filtered`));
+    this.setState({
+      ...this.state,
+      filteredTopics: filteredTopics
+    })
   }
+
 
   render() {
     return (
-      <Provider value={{
-        navigation: this.state.contextStack,
-        current: this.state.contextStack.current(),
-        navigate: this.props.history
-      }
-    }>
+      <Provider value={this.state}>
         {this.props.children}
       </Provider>
     )

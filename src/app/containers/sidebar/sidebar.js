@@ -13,7 +13,7 @@ import Logo from './logo';
 import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
-import {NavigationContext} from "../../framework/navigation/context/navigationContext";
+import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 
 const {Sider} = Layout;
 
@@ -93,71 +93,63 @@ class Sidebar extends Component {
       color: customizedTheme.textColor
     };
 
-
+    const currentContext = this.props.context;
+    const filteredTopics = this.props.filteredTopics || [];
+    const menuProps = {
+      onClick: this.handleClick,
+      theme: 'dark',
+      mode: mode,
+      openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
+      selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
+      onOpenChange: this.onOpenChange,
+      className: "isoDashboardMenu"
+    };
     return (
-      <NavigationContext.Consumer>
-        {
-          navigationContext => {
-            const currentContext = navigationContext.current;
-            const menuProps = {
-              onClick: this.handleClick,
-              theme: 'dark',
-              mode: mode,
-              openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
-              selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
-              onOpenChange: this.onOpenChange,
-              className: "isoDashboardMenu"
-            };
-            return (
-              <SidebarWrapper>
-                <Sider
-                  trigger={null}
-                  collapsible={true}
-                  collapsed={collapsed}
-                  width="240"
-                  className="isomorphicSidebar"
-                  style={styling}
-                >
-                  <Logo collapsed={collapsed}/>
-                  <Scrollbars
-                    renderView={this.renderView}
-                    style={{height: scrollheight - 70}}
-                  >
-                    <Menu key={`top`} {...menuProps} >
-                      {
-                        currentContext ?
-                          currentContext.routes().filter(route => route.topic).map(
-                            route => (
-                              <Menu.Item className='ant-menu-item' key={`${route.match}`}>
-                                <Link to={`${currentContext.urlFor(route)}`}>
+      <SidebarWrapper>
+        <Sider
+          trigger={null}
+          collapsible={true}
+          collapsed={collapsed}
+          width="240"
+          className="isomorphicSidebar"
+          style={styling}
+        >
+          <Logo collapsed={collapsed}/>
+          <Scrollbars
+            renderView={this.renderView}
+            style={{height: scrollheight - 70}}
+          >
+            <Menu key={`top`} {...menuProps} >
+              {
+                currentContext ?
+                  currentContext.routes().filter(route => route.topic && !filteredTopics.find(topic => route.topic.name === topic)).map(
+                    route => (
+                      <Menu.Item className='ant-menu-item' key={`${route.match}`}>
+                        <Link to={`${currentContext.urlFor(route)}`}>
                                 <span className="isoMenuHolder" style={submenuColor}>
                                   <i className={route.topic.icon}/>
                                   <span className="nav-text">
                                     {route.topic ? route.topic.display() : `${route.topic.name}_`}
                                   </span>
                                 </span>
-                                </Link>
-                              </Menu.Item>
-                            )
-                          )
-                          : null
-                      }
-                    </Menu>
-                  </Scrollbars>
-                </Sider>
-              </SidebarWrapper>
-            );
-          }
-        }
-      </NavigationContext.Consumer>
-    );
+                        </Link>
+                      </Menu.Item>
+                    )
+                  )
+                  : null
+              }
+            </Menu>
+          </Scrollbars>
+        </Sider>
+      </SidebarWrapper>
+    )
   }
 }
 
 
-export default withRouter(connect(
+export default withRouter(withNavigationContext(connect(
   state => ({
     app: state.App.toJS(),
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
-)(Sidebar));
+)(Sidebar)));

@@ -3,19 +3,17 @@ import {NavigationContext} from "../context/navigationContext";
 
 export const withNavigationContext = Component => (
   props =>
-    !props.context ? (
-      <NavigationContext.Consumer>
-        {
-          navigationContext =>
-            <Component
-              context = {navigationContext.current}
-              navigation = {navigationContext.navigation}
-              navigate = {navigationContext.navigate}
-              {...props}
-            />
-        }
-      </NavigationContext.Consumer>
-      ) : (
-       <Component {...props}/>
-    )
+    <NavigationContext.Consumer>
+      {
+        navigationContext =>
+          <Component
+            context = {navigationContext.contextStack.current()}
+            navigation = {navigationContext.contextStack}
+            navigate = {navigationContext.navigate}
+            filterTopics = {navigationContext.filterTopics}
+            filteredTopics = {navigationContext.filteredTopics}
+            {...props}
+          />
+      }
+    </NavigationContext.Consumer>
   );
