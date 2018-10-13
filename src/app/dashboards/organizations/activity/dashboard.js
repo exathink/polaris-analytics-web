@@ -7,7 +7,7 @@ import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
-import {WithOrganization} from '../withOrganization';
+import {OrganizationDashboard} from '../organizationDashboard';
 
 import ProjectsTopic from "../projects/topic";
 
@@ -17,17 +17,13 @@ const messages = {
 };
 
 
-export const dashboard = withNavigationContext(
-  ({context, filterTopics}) => (
-    <WithOrganization
-      organizationKey={context.getInstanceKey('organization')}
+export const dashboard = () => (
+    <OrganizationDashboard
       render={
-        ({organization}) =>
+        ({organization, context, onDashboardMounted}) =>
           <Dashboard
             dashboard={`${dashboard_id}`}
-            onDashboardMounted={
-              () => organization.projects.count === 0 ? filterTopics([ProjectsTopic.name]) : null
-            }
+            onDashboardMounted={onDashboardMounted}
           >
             <DashboardRow h='15%'>
               <DashboardWidget
@@ -38,12 +34,12 @@ export const dashboard = withNavigationContext(
                   () =>
                     <DimensionActivitySummaryPanelWidget
                       dimension={'organization'}
-                      instanceKey={context.getInstanceKey('organization')}
+                      instanceKey={organization.key}
                       //pollInterval={60*1000}
                     />}
               />
             </DashboardRow>
-            <DashboardRow h='85%'>
+            <DashboardRow h='90%'>
               <DashboardWidget
                 w={1}
                 name="commits"
@@ -51,7 +47,7 @@ export const dashboard = withNavigationContext(
                   ({view}) =>
                     <DimensionCommitsNavigatorWidget
                       dimension={'organization'}
-                      instanceKey={context.getInstanceKey('organization')}
+                      instanceKey={organization.key}
                       context={context}
                       view={view}
                       days={1}
@@ -65,9 +61,8 @@ export const dashboard = withNavigationContext(
                 showDetail={true}
               />
             </DashboardRow>
-
           </Dashboard>
-      }/>
-  )
+        }
+      />
 );
 export default dashboard;
