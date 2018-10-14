@@ -94,7 +94,13 @@ class Sidebar extends Component {
     };
 
     const currentContext = this.props.context;
-    const filteredTopics = this.props.filteredTopics || [];
+    const optionalTopics = this.props.optionalTopics || [];
+    const topicRoutes = currentContext.routes().filter(route => route.topic);
+    const activeTopicRoutes = [
+      ...topicRoutes.filter(route => !route.topic.optional),
+      ...topicRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
+    ];
+
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
@@ -122,14 +128,14 @@ class Sidebar extends Component {
             <Menu key={`top`} {...menuProps} >
               {
                 currentContext ?
-                  currentContext.routes().filter(route => route.topic && !filteredTopics.find(topic => route.topic.name === topic)).map(
+                  activeTopicRoutes.map(
                     route => (
                       <Menu.Item className='ant-menu-item' key={`${route.match}`}>
                         <Link to={`${currentContext.urlFor(route)}`}>
                                 <span className="isoMenuHolder" style={submenuColor}>
                                   <i className={route.topic.icon}/>
                                   <span className="nav-text">
-                                    {route.topic ? route.topic.display() : `${route.topic.name}_`}
+                                    {route.topic.display()}
                                   </span>
                                 </span>
                         </Link>

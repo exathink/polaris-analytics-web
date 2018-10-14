@@ -16,22 +16,25 @@ class WithOrganization extends React.Component {
 
   }
 
+
+
+
   shouldComponentUpdate(nextProps) {
     // We need this because the render prop will be different every time the component updates
     // and we dont want to get into an infinite loop when we fire off the filterTopics event.
     // This terminates the event cycle.
-    return this.props.organizationKey !== nextProps.organizationKey || !this.state.organization
+    return this.props.organizationKey !== nextProps.organizationKey || !this.state.organization;
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const {
-      filterTopics
+      showOptionalTopics
     } = this.props;
 
     // We dont show projects navigation for orgs where no projects have been set up.
 
-    if(this.state.organization && this.state.organization.projects.count < 3  ) {
-      filterTopics([ProjectsTopic.name])
+    if(this.state.organization && this.state.organization.projects.count > 0) {
+      showOptionalTopics([ProjectsTopic.name])
     }
   }
 
@@ -75,14 +78,12 @@ class WithOrganization extends React.Component {
             if (loading) return <Loading/>;
             if (error) return null;
             const organization = data.organization;
-            this.setState({
-              organization: organization
-            });
+            this.setState({organization});
             return React.createElement(
               render,
               {
+                context,
                 organization,
-                context
               }
             )
           }

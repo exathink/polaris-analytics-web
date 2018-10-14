@@ -17,6 +17,7 @@ class NavigationContextProvider extends React.Component {
       filteredTopics: null,
       navigate: props.history,
       filterTopics: this.filterTopics.bind(this),
+      showOptionalTopics: this.showOptionalTopics.bind(this)
     }
   }
 
@@ -30,7 +31,8 @@ class NavigationContextProvider extends React.Component {
         ...prevState,
         location: nextProps.location,
         contextStack: ContextStack.pushContext(prevState.contextStack, activeContext),
-        filteredTopics: null
+        filteredTopics: null,
+        optionalTopics: null
       }
     } else {
       return null;
@@ -41,6 +43,13 @@ class NavigationContextProvider extends React.Component {
     this.setState({
       ...this.state,
       filteredTopics: filteredTopics
+    })
+  }
+
+  showOptionalTopics(optionalTopics) {
+    this.setState({
+      ...this.state,
+      optionalTopics: optionalTopics
     })
   }
 
