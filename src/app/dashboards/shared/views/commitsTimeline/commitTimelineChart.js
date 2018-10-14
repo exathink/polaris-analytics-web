@@ -13,7 +13,11 @@ function getSubtitleText(startWindow, endWindow, days){
       : days > 0 ? `Last 24 hours` : ``;
 }
 
-
+function getTitleText(latest, commits) {
+  return latest && latest === commits.length ?
+    `Latest ${latest} Commits`
+    : `${commits.length} Commits`
+}
 
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
@@ -70,7 +74,7 @@ export const CommitsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: `${latest ? 'Last ': ''}${commits.length} Commits`,
+          text: getTitleText(latest, commits),
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
