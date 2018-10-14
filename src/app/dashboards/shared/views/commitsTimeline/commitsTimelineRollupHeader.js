@@ -1,11 +1,8 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {getCategoriesIndex} from "./utils";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
-import {previousPoint} from "../../../../framework/viz/charts/tooltip";
-import moment from "moment";
-import {formatTerm} from "../../../../i18n";
 
 export const CommitsTimelineRollupHeaderChart = Chart({
   chartUpdateProps:

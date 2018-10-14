@@ -7,10 +7,7 @@ import Contributors from "../../contributors/context";
 
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {withUserContext} from "../../../framework/user/userContext";
-import {
-  DimensionCommitsNavigatorWidget,
-  DimensionMostActiveChildrenWidget
-} from "../../shared/widgets/accountHierarchy";
+import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.contributors.repository';
 

@@ -1,11 +1,8 @@
 import React from 'react';
-import Contributors from "../../../contributors/context";
-import Repositories from "../../../repositories/context";
-import {CommitsTimelineChart} from "./index";
+import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
-import {Flex, Box} from 'reflexbox';
+import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupHeaderChart} from './commitsTimelineRollupHeader'
-import {CommitsTimelineTable} from "./index";
 import {getCategoriesIndex} from "./utils";
 
 
@@ -56,7 +53,6 @@ export class CommitsTimelineChartView extends React.Component {
 
   onCommitsSelected(commits) {
     const {
-      context,
       onSelectionChange,
       showTable,
       view,
@@ -216,7 +212,6 @@ export class CommitsTimelineChartView extends React.Component {
   render() {
     const {
       view,
-      groupBy,
       showHeader,
       showTable,
     } = this.props;

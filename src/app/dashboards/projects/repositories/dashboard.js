@@ -1,5 +1,4 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
@@ -9,9 +8,6 @@ import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityPr
 import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Organization Overview'/>
-};
 
 
 export const dashboard = withNavigationContext(

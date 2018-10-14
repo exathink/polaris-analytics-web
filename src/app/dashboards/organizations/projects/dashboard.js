@@ -2,7 +2,6 @@ import React from 'react';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {OrganizationDashboard} from "../organizationDashboard";

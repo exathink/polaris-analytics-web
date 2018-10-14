@@ -2,14 +2,11 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
-
-import ProjectsTopic from "../projects/topic";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
