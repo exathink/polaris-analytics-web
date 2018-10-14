@@ -104,6 +104,7 @@ export class CommitsTimelineChartView extends React.Component {
       context,
       days,
       before,
+      latest,
       view,
       shortTooltip,
       markLatest,
@@ -121,6 +122,7 @@ export class CommitsTimelineChartView extends React.Component {
         groupBy={categoriesIndex.category}
         days={days}
         before={before}
+        latest={latest}
         shortTooltip={shortTooltip}
         markLatest={markLatest}
         polling={polling}

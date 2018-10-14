@@ -6,7 +6,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {toMoment} from "../../../../helpers/utility";
 import {getCategoriesIndex} from "./utils";
 
-function getSubtitleText(startWindow, endWindow, days) {
+function getSubtitleText(startWindow, endWindow, days){
   return startWindow ?
     `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
     : days > 1 ? `Last ${days} Days`
@@ -28,7 +28,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({commits, context, intl, view, groupBy, days, before, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({commits, context, intl, view, groupBy, days, before, latest, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       // sort in descending order of activity
@@ -70,7 +70,7 @@ export const CommitsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: `${commits.length} Commits`,
+          text: `${latest ? 'Last ': ''}${commits.length} Commits`,
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
@@ -82,7 +82,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: 'Timeline'
           },
-          max: before ? before.valueOf() : moment().add(1, 'h').valueOf()
+          max: endWindow ? endWindow.valueOf() : moment().add(1, 'h').valueOf()
         },
         yAxis: {
           id: 'y-items',

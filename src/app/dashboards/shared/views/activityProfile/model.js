@@ -3,6 +3,7 @@ import type {Context} from "../../../../framework/navigation/context/context";
 import {ActiveContext} from "../../../../framework/navigation/context/activeContext";
 import moment from "moment/moment";
 import {withActivityLevel} from "./activityLevel";
+import {toMoment} from "../../../../helpers/utility";
 
 export type ActivityLevel = {
   display_name: string,
@@ -90,8 +91,8 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
   ) {
     const data = commitSummaries.map(
       commitSummary => {
-        const earliest_commit = moment(commitSummary.earliestCommit);
-        const latest_commit = moment(commitSummary.latestCommit);
+        const earliest_commit = toMoment(commitSummary.earliestCommit);
+        const latest_commit = toMoment(commitSummary.latestCommit);
         return withActivityLevel({
           id: commitSummary.key,
           entity_name: commitSummary.name,
@@ -99,7 +100,7 @@ export class ActivityLevelDetailModel extends Model<Array<ActivitySummary>> {
           earliest_commit: earliest_commit,
           latest_commit: latest_commit,
           span: moment.duration(latest_commit.diff(earliest_commit)).asYears(),
-          days_since_latest_commit: moment().diff(latest_commit, 'days'),
+          days_since_latest_commit: moment().utc().diff(latest_commit, 'days'),
           secondary_measure: secondaryMeasure? commitSummary[secondaryMeasure] : 1
         })
       });

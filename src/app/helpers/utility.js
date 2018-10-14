@@ -144,3 +144,11 @@ export function formatCommitDate(serverCommitDate) {
 export function fromNow(serverCommitDate) {
   return moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true)
 }
+
+export function isToday(serverCommitDate) {
+  return moment.duration(toMoment(serverCommitDate).diff(moment.utc())).asDays() === 0;
+}
+
+export function getCommitTimelineEndWindow(latestCommit) {
+  return isToday(latestCommit) ? null : latestCommit
+}

@@ -16,6 +16,7 @@ export const DimensionCommitsNavigatorWidget = (
     context,
     days,
     before,
+    latest,
     view,
     groupBy,
     smartGrouping,
@@ -32,10 +33,10 @@ export const DimensionCommitsNavigatorWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime) {
+            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int) {
                 ${dimension}(key: $key){
                     id
-                    commits(days: $days, before: $before) {
+                    commits(days: $days, before: $before, first: $latest) {
                         edges {
                             node {
                                 id
@@ -67,7 +68,8 @@ export const DimensionCommitsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before != null ? moment(before) : before
+        before: before != null ? moment(before) : before,
+        latest: latest
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
     >
@@ -90,6 +92,7 @@ export const DimensionCommitsNavigatorWidget = (
                   smartGrouping={smartGrouping}
                   days={days}
                   before={before}
+                  latest={latest}
                   shortTooltip={shortTooltip}
                   showHeader={showHeader}
                   polling={pollInterval}

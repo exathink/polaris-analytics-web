@@ -8,10 +8,16 @@ import {
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
 
+
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Organization Overview'/>
 };
+
+
+
+
+
 
 
 export const dashboard = () => (
@@ -46,7 +52,7 @@ export const dashboard = () => (
                       instanceKey={organization.key}
                       context={context}
                       view={view}
-                      days={1}
+                      latest={20}
                       groupBy={'repository'}
                       markLatest
                       //pollInterval={60*1000}
