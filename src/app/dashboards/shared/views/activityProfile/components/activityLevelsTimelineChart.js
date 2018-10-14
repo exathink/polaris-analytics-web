@@ -1,4 +1,4 @@
-import {findVisibleLevels, getActivityLevel} from "../activityLevel";
+import {findVisibleLevels, getActivityLevel} from "../../../helpers/activityLevel";
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts/index";
 import {displaySingular, formatTerm} from "../../../../../i18n/index";
 

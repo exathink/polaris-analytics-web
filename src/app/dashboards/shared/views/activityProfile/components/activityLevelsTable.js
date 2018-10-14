@@ -1,7 +1,7 @@
 import type {Props} from "../model";
 import React from 'react';
 import {Table} from "../../../containers/table/index";
-import {findVisibleLevels} from "../activityLevel";
+import {findVisibleLevels} from "../../../helpers/activityLevel";
 import Button from "../../../../../../components/uielements/button";
 import {formatDateTime} from "../../../../../i18n/utils";
 import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";

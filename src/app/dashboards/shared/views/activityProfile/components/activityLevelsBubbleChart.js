@@ -1,6 +1,6 @@
 import {defineMessages} from 'react-intl';
 
-import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../activityLevel";
+import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../../../helpers/activityLevel";
 import {Chart, tooltipHtml} from '../../../../../framework/viz/charts/index';
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";

@@ -1,5 +1,5 @@
 import {tooltipHtml} from "../../../../../framework/viz/charts/index";
-import {ACTIVITY_LEVELS_REVERSED} from "../activityLevel";
+import {ACTIVITY_LEVELS_REVERSED} from "../../../helpers/activityLevel";
 import {Chart} from "../../../../../framework/viz/charts/index";
 import {formatTerm} from "../../../../../i18n/index";
 

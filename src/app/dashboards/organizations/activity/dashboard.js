@@ -7,7 +7,7 @@ import {
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
-
+import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -37,7 +37,7 @@ export const dashboard = () => (
                     <DimensionActivitySummaryPanelWidget
                       dimension={'organization'}
                       instanceKey={organization.key}
-                      //pollInterval={60*1000}
+                      pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     />}
               />
             </DashboardRow>
@@ -55,7 +55,7 @@ export const dashboard = () => (
                       latest={20}
                       groupBy={'repository'}
                       markLatest
-                      //pollInterval={60*1000}
+                      pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                       showHeader
                       showTable
                     />

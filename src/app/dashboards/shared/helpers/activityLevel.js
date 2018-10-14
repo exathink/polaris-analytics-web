@@ -1,6 +1,6 @@
-import {Colors} from "../../config";
-import type {ActivityLevel, ActivitySummary} from "./model";
-import {flatten} from "../../../../helpers/collections";
+import {Colors} from "../config";
+import type {ActivityLevel, ActivitySummary} from "../views/activityProfile/model";
+import {flatten} from "../../../helpers/collections";
 
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
@@ -44,6 +44,13 @@ export const ACTIVITY_LEVEL_UNKNOWN = {
   isMember: () => false,
   visible: false
 };
+
+// map names to activity level
+export const ACTIVITY_LEVEL = ACTIVITY_LEVELS.reduce((levelMap, level) => {
+  levelMap[level.display_name] = level;
+  return levelMap
+}, {});
+
 
 export const ACTIVITY_LEVELS_REVERSED = [...ACTIVITY_LEVELS].reverse();
 

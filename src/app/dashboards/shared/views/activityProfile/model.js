@@ -2,7 +2,7 @@ import {Model} from "../../../../framework/viz/model/model";
 import type {Context} from "../../../../framework/navigation/context/context";
 import {ActiveContext} from "../../../../framework/navigation/context/activeContext";
 import moment from "moment/moment";
-import {withActivityLevel} from "./activityLevel";
+import {withActivityLevel} from "../../helpers/activityLevel";
 import {toMoment} from "../../../../helpers/utility";
 
 export type ActivityLevel = {
