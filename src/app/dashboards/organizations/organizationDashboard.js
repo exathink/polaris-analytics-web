@@ -6,34 +6,18 @@ import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
 import ProjectsTopic from "./projects/topic";
+import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
 
 class WithOrganization extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {}
-
-  }
-
-
-
-
-  shouldComponentUpdate(nextProps) {
-    // We need this because the render prop will be different every time the component updates
-    // and we dont want to get into an infinite loop when we fire off the filterTopics event.
-    // This terminates the event cycle.
-    return this.props.organizationKey !== nextProps.organizationKey || !this.state.organization;
-  }
-
-  componentDidUpdate() {
+  onDashboardMounted(organization) {
     const {
       showOptionalTopics
     } = this.props;
 
     // We dont show projects navigation for orgs where no projects have been set up.
-
-    if(this.state.organization && this.state.organization.projects.count > 0) {
+    if(organization && organization.projects.count > 0) {
       showOptionalTopics([ProjectsTopic.name])
     }
   }
@@ -78,13 +62,16 @@ class WithOrganization extends React.Component {
             if (loading) return <Loading/>;
             if (error) return null;
             const organization = data.organization;
-            this.setState({organization});
-            return React.createElement(
-              render,
-              {
-                context,
-                organization,
-              }
+
+            return (
+              <DashboardLifecycleManager
+                render={render}
+                context={context}
+                organization={organization}
+                onMount={
+                  () => this.onDashboardMounted(organization)
+                }
+              />
             )
           }
         }
