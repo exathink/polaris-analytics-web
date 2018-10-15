@@ -4,14 +4,18 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget
+  DimensionCommitsNavigatorWidget, DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
 import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
+import Projects from "../../projects/context";
+import Repositories from "../../repositories/context";
+import Contributors from "../../contributors/context";
+import {toMoment} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Organization Overview'/>
+  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
 };
 
 
@@ -41,7 +45,63 @@ export const dashboard = () => (
                     />}
               />
             </DashboardRow>
-            <DashboardRow h='90%'>
+            <DashboardRow h={"22%"}>
+              <DashboardWidget
+              w={1 / 3}
+              name="most-active-projects"
+              render={
+                ({view}) =>
+                  <DimensionMostActiveChildrenWidget
+                    dimension={'organization'}
+                    instanceKey={organization.key}
+                    childConnection={'recentlyActiveProjects'}
+                    context={context}
+                    childContext={Projects}
+                    top={10}
+                    days={1}
+                    view={view}
+                  />
+              }
+              showDetail={true}
+            />
+            <DashboardWidget
+            w={1 / 3}
+            name="most-active-repositories"
+            render={
+              ({view}) =>
+                <DimensionMostActiveChildrenWidget
+                  dimension={'organization'}
+                  instanceKey={organization.key}
+                  childConnection={'recentlyActiveRepositories'}
+                  context={context}
+                  childContext={Repositories}
+                  top={10}
+                  days={1}
+                  view={view}
+                />
+            }
+            showDetail={true}
+            />
+              <DashboardWidget
+            w={1 / 3}
+            name="most-active-contributors"
+            render={
+              ({view}) =>
+                <DimensionMostActiveChildrenWidget
+                  dimension={'organization'}
+                  instanceKey={organization.key}
+                  childConnection={'recentlyActiveContributors'}
+                  context={context}
+                  childContext={Contributors}
+                  top={10}
+                  days={1}
+                  view={view}
+                />
+            }
+            showDetail={true}
+          />
+            </DashboardRow>
+            <DashboardRow h={"67%"}>
               <DashboardWidget
                 w={1}
                 name="commits"
@@ -52,7 +112,10 @@ export const dashboard = () => (
                       instanceKey={organization.key}
                       context={context}
                       view={view}
-                      latest={50}
+                      days={1}
+                      before={toMoment(organization.latestCommit)}
+                      latest={100}
+                      markLatest
                       groupBy={'repository'}
                       pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                       showHeader
