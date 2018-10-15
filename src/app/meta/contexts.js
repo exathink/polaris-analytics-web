@@ -51,7 +51,7 @@ export const Contexts = {
         />
       },
     icon: 'ion-ios-home',
-    color: '#6b5fb2',
+    color: '#356eb2',
 
 
   },
@@ -79,7 +79,7 @@ export const Contexts = {
         />
         },
     icon: 'ion-folder',
-    color: '#8188b2'
+    color: '#356eb2'
   },
   contributors: {
     name: 'contributors',
@@ -92,7 +92,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-ios-people',
-    color: '#53a1b2',
+    color: '#356eb2',
 
   },
   repositories: {
@@ -106,7 +106,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-soup-can',
-    color: '#27b2b0',
+    color: '#356eb2',
 
   },
   commits: {
@@ -120,7 +120,7 @@ export const Contexts = {
           />
         },
     icon: 'ion-code',
-    color: '#5d69b2',
+    color: '#356eb2',
 
   },
   oss: {

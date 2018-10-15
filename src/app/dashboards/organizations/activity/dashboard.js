@@ -52,9 +52,8 @@ export const dashboard = () => (
                       instanceKey={organization.key}
                       context={context}
                       view={view}
-                      latest={20}
+                      latest={50}
                       groupBy={'repository'}
-                      markLatest
                       pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                       showHeader
                       showTable
