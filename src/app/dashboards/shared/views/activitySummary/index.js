@@ -8,6 +8,8 @@ import {Topics} from "../../../../meta";
 import {fromNow} from "../../../../helpers/utility";
 import {findActivityLevel} from "../../helpers/commitUtils";
 
+import {LatestCommitView} from "./latestCommitView";
+
 const ActivitySummaryPanelView = (
   {
     model: {
@@ -27,7 +29,7 @@ const ActivitySummaryPanelView = (
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
-        <VizItem w={1 / 5}>
+        <VizItem w={1 / 4}>
           <StickerWidget
             number={"Status"}
             text={activityLevel.display_name}
@@ -36,19 +38,12 @@ const ActivitySummaryPanelView = (
             bgColor={activityLevel.color}
           />
         </VizItem>
-        <VizItem w={1 / 5}>
-
-          {/* Sticker Widget */}
-          <StickerWidget
-            number={"Latest Commit"}
-            text={fromNow(latestCommit)}
-            icon="ion-clock"
-            fontColor={fontColor}
-            bgColor={bgColor}
+        <VizItem w={1 / 4}>
+          <LatestCommitView
+            {...{latestCommit, fontColor, bgColor}}
           />
-
         </VizItem>
-        <VizItem w={1 / 5}>
+        <VizItem w={1 / 4}>
 
           {/* Sticker Widget */}
           <StickerWidget
@@ -61,7 +56,7 @@ const ActivitySummaryPanelView = (
 
         </VizItem>
 
-        <VizItem w={1 / 5}>
+        <VizItem w={1 / 4}>
           {/* Sticker Widget */}
           <StickerWidget
             number={secondaryMeasure ? secondaryMeasure.toLocaleString() : '0'}
@@ -71,16 +66,6 @@ const ActivitySummaryPanelView = (
             bgColor={bgColor}
           />
 
-        </VizItem>
-        <VizItem w={1 / 5}>
-          {/* Sticker Widget */}
-          <StickerWidget
-            number={'History'}
-            text={earliestCommit && latestCommit ? human_span(latestCommit, earliestCommit) : 'N/A'}
-            icon="ion-clock"
-            fontColor={fontColor}
-            bgColor={bgColor}
-          />
         </VizItem>
       </VizRow>
     </React.Fragment>
