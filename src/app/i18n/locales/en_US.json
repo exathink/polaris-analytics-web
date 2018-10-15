@@ -4,7 +4,7 @@
   "contexts.commits.instance": "Commit: {instance}",
   "dashboards.activity.contributors.instance.topRowTitle": "Contributor Overview",
   "contexts.contributors.instance": "Contributor: {instance}",
-  "dashboards.activity.organization.instance.topRowTitle": "Organization Overview",
+  "dashboards.activity.organization.instance.topRowTitle": "Activity Overview",
   "contexts.organizations.instance": "Organization: {instance}",
   "dashboards.activity.projects.instance.topRowTitle": "Project Overview",
   "contexts.projects.instance": "Project: {instance}",
