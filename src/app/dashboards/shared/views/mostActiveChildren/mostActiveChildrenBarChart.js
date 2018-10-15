@@ -7,11 +7,11 @@ function formatDays(days) {
   return days > 1 ? `${days} days` : `24 Hours`
 }
 
-function initSeries(activeChildren) {
+function initSeries(activeChildren, context) {
   return activeChildren.map(child => ({
     name: child.name,
     y: child.commitCount,
-    color: Colors.ActivityLevel.ACTIVE,
+    color: context.color(),
     child: child
   }));
 }
@@ -25,8 +25,8 @@ export const MostActiveChildrenBarChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point=>point.child),
   getConfig:
-    ({activeChildren, view, top, days, childContext, intl}) => {
-      const series_data = initSeries(activeChildren);
+    ({activeChildren, view, top, days, childContext, context, intl}) => {
+      const series_data = initSeries(activeChildren,context);
       const childContextName = displaySingular(intl, childContext);
       return {
         chart: {
