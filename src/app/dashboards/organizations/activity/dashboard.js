@@ -113,7 +113,7 @@ export const dashboard = () => (
                       context={context}
                       view={view}
                       days={1}
-                      before={toMoment(organization.latestCommit)}
+                      before={toMoment(organization.latestCommit).valueOf()}
                       latest={100}
                       markLatest
                       groupBy={'repository'}

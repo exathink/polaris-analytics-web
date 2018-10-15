@@ -124,6 +124,10 @@ export function capitalizeFirstLetter(string) {
     return string && string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
+export function daysFromNow(aMoment, useUTC=true){
+  return moment.duration((useUTC ? moment.utc() : moment()).diff(aMoment)).asDays()
+}
+
 export function week_to_date(year, week) {
   // week 53 (leap week) is not handled properly by moment. Coerce it back to week 52.
     // this calc is not accurate strictly speaking, but it is good enough for

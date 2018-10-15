@@ -3,19 +3,28 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {toMoment} from "../../../../helpers/utility";
+import {toMoment, daysFromNow} from "../../../../helpers/utility";
 import {getCategoriesIndex} from "./utils";
 
-function getSubtitleText(startWindow, endWindow, days){
-  return startWindow ?
-    `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
-    : days > 1 ? `Last ${days} Days`
+function getDaysSubtitle(days) {
+  return days > 1 ? `Last ${days} Days`
       : days > 0 ? `Last 24 hours` : ``;
 }
 
-function getTitleText(latest, commits) {
+function getSubtitleText(before, startWindow, endWindow, days){
+  const endWindowDays = endWindow && daysFromNow(endWindow)
+  if(!before || (endWindowDays <= 1)) {
+    return getDaysSubtitle(days)
+  } else {
+    return startWindow ?
+      `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
+      : ``
+  }
+}
+
+function getTitleText(latest, commits, totalCommits) {
   return latest && latest === commits.length ?
-    `Latest ${latest} Commits`
+    `Last ${latest} Commits ${latest < totalCommits ? `of ${totalCommits}`: ``}`
     : `${commits.length} Commits`
 }
 
@@ -32,7 +41,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({commits, context, intl, view, groupBy, days, before, latest, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({commits, context, intl, view, groupBy, days, before, latest, totalCommits, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       // sort in descending order of activity
@@ -74,11 +83,11 @@ export const CommitsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: getTitleText(latest, commits),
+          text: getTitleText(latest, commits,totalCommits),
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
-          text: getSubtitleText(startWindow, endWindow, days),
+          text: getSubtitleText(before, startWindow, endWindow, days),
           align: view === 'detail' ? 'center' : 'left'
         },
         xAxis: {

@@ -38,6 +38,7 @@ export const DimensionCommitsNavigatorWidget = (
                 ${dimension}(key: $key){
                     id
                     commits(days: $days, before: $before, first: $latest) {
+                        count
                         edges {
                             node {
                                 id
@@ -80,6 +81,7 @@ export const DimensionCommitsNavigatorWidget = (
           if (error) return null;
 
           const commits = data[dimension].commits.edges.map(edge => edge.node);
+          const totalCommits = data[dimension].commits.count;
           return (
             display === 'table' ?
                 <CommitsTimelineTable commits={commits}/>
@@ -94,6 +96,7 @@ export const DimensionCommitsNavigatorWidget = (
                   days={days}
                   before={before}
                   latest={latest}
+                  totalCommits={totalCommits}
                   shortTooltip={shortTooltip}
                   showHeader={showHeader}
                   polling={pollInterval}
