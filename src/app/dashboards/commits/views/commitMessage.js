@@ -42,8 +42,8 @@ export function commit_message_text_to_tree(text) {
     </React.Fragment>
   )
 }
-export const CommitMessage = ({message, ...rest}) => (
-  <Flex  column {...rest}>
+export const CommitMessage = ({message, style, ...rest}) => (
+  <Flex  column style={{...style, ...{'overflow-y': 'scroll'}}}{...rest}>
     {commit_message_text_to_tree(message)}
   </Flex>
 );

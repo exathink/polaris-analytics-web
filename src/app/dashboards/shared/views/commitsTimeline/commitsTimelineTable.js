@@ -43,12 +43,12 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
           </Link>
         )
       }, {
-        id: 'Date',
+        id: 'commit-date',
         Header: `Commit Date`,
         accessor: commit => `${toMoment(commit.commitDate).format('MM/DD/YYYY HH:mm')}`,
         maxWidth: 150,
       }, {
-        id: 'authorDate',
+        id: 'author-date',
         Header: `Author Date`,
         accessor: commit => `${toMoment(commit.authorDate).format('MM/DD/YYYY HH:mm')}`,
         maxWidth: 150,
@@ -76,7 +76,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         accessor: commit => commit,
         Cell: row => {
           return (
-              <CommitLinesSummaryChart showTotal key={row.value.name} commit={row.value}/>
+              <CommitLinesSummaryChart showTotal minHeight={30} key={row.value.name} commit={row.value}/>
           )
         },
         maxWidth: 150
@@ -93,8 +93,8 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
       showPageSizeOptions={false}
       showPageJump={false}
       defaultPageSize={1}
-      previousText={"Next"}
-      nextText={"Previous"}
+      previousText={">"}
+      nextText={"<"}
       getPaginationProps={
         () => ({
           pageText: 'Commit'
@@ -102,12 +102,12 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
       }
       defaultSorted={[
         {
-          id: 'CommitDate',
-          desc: false
+          id: 'commit-date',
+          desc: true
         },
         {
-          id: 'AuthorDate',
-          desc: false
+          id: 'author-date',
+          desc: true
         }
       ]}
       className="-striped -highlight"
