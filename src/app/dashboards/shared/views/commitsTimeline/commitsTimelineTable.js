@@ -4,13 +4,17 @@ import {injectIntl} from 'react-intl';
 import moment from 'moment';
 import {FileTypesSummaryChart} from "../fileTypesSummary/fileTypesSummaryChart";
 import {CommitLinesSummaryChart} from "../../../commits/views/commitLinesSummaryChart";
-import {Flex} from "reflexbox";
+import {Flex, Box} from "reflexbox";
 import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 import Commits from "../../../commits/context";
 import Contributors from "../../../contributors/context";
 
 import {Link} from "react-router-dom";
 import {WithCommit} from "../../../commits/withCommit";
+
+import {capitalizeFirstLetter, toMoment} from "../../../../helpers/utility";
+import {replace_url_with_links} from "../../../commits/views/commitDetails";
+import {CommitMessage} from "../../../commits/views/commitMessage";
 
 export const CommitsTimelineTable = injectIntl((props: Props) => {
   const tableData = props.commits;
@@ -32,17 +36,22 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         id: 'author',
         Header: `Author`,
         accessor: commit => commit,
-        maxWidth: 100,
+        maxWidth: 150,
         Cell: row => (
           <Link to={url_for_instance(Contributors, row.value.author, row.value.authorKey)} title={"Go to author"}>
             {row.value.author}
           </Link>
         )
       }, {
-        id: 'commitDate',
+        id: 'Date',
         Header: `Commit Date`,
-        accessor: commit => `${moment(commit.commitDate).format('MM/DD/YYYY hh:mm')}`,
-        maxWidth: 200,
+        accessor: commit => `${toMoment(commit.commitDate).format('MM/DD/YYYY HH:mm')}`,
+        maxWidth: 150,
+      }, {
+        id: 'authorDate',
+        Header: `Author Date`,
+        accessor: commit => `${toMoment(commit.authorDate).format('MM/DD/YYYY HH:mm')}`,
+        maxWidth: 150,
       }, {
         id: 'file-change-chart',
         Header: 'Files',
@@ -52,8 +61,9 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
           return (
             <WithCommit
               commitKey={row.value}
-              render = {
-                ({commit}) => <FileTypesSummaryChart fileCount={commit.stats.files} fileTypesSummary={commit.fileTypesSummary}/>
+              render={
+                ({commit}) => <FileTypesSummaryChart fileCount={commit.stats.files}
+                                                     fileTypesSummary={commit.fileTypesSummary}/>
               }
             />
           )
@@ -66,7 +76,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         accessor: commit => commit,
         Cell: row => {
           return (
-            <CommitLinesSummaryChart minHeight={30} showTotal key={row.value.name} commit={row.value}/>
+              <CommitLinesSummaryChart showTotal key={row.value.name} commit={row.value}/>
           )
         },
         maxWidth: 150
@@ -77,20 +87,29 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         filterMethod: (filter, row) =>
           row[filter.id].includes(filter.value),
         Cell: row => (
-          <Flex style={{overflowY: 'auto'}}>
-              {row.value}
-          </Flex>
+            <CommitMessage message={row.value}/>
         )
-
       }]}
       showPageSizeOptions={false}
       showPageJump={false}
       defaultPageSize={1}
+      previousText={"Next"}
+      nextText={"Previous"}
       getPaginationProps={
         () => ({
           pageText: 'Commit'
         })
       }
+      defaultSorted={[
+        {
+          id: 'CommitDate',
+          desc: false
+        },
+        {
+          id: 'AuthorDate',
+          desc: false
+        }
+      ]}
       className="-striped -highlight"
     />
   )
