@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 import {MostActiveChildrenView} from "../../views/mostActiveChildren";
 import {analytics_service} from '../../../../services/graphql/index'
+import moment from 'moment';
+import {toMoment} from "../../../../helpers/utility";
 
 export const DimensionMostActiveChildrenWidget = (
   {
@@ -13,6 +15,8 @@ export const DimensionMostActiveChildrenWidget = (
     context,
     childContext,
     top,
+    before,
+    latestCommit,
     days,
     view
 
@@ -21,10 +25,10 @@ export const DimensionMostActiveChildrenWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_${childConnection}($key: String!, $top: Int, $days: Int) {
+            query ${dimension}_${childConnection}($key: String!, $top: Int, $before: DateTime, $days: Int) {
                 ${dimension}(key: $key){
                     id
-                    ${childConnection}(first: $top, days: $days){
+                    ${childConnection}(first: $top, before: $before, days: $days){
                         edges {
                             node {
                                 key
@@ -41,7 +45,8 @@ export const DimensionMostActiveChildrenWidget = (
       variables={{
         key: instanceKey,
         top: top || 20,
-        days: days || 7
+        days: days || 7,
+        before: before ? moment(before) : latestCommit ? toMoment(latestCommit) : null,
       }}
     >
       {
@@ -56,6 +61,8 @@ export const DimensionMostActiveChildrenWidget = (
               activeChildren={activeChildren}
               view={view}
               top={top}
+              before={before}
+              latestCommit={latestCommit}
               days={days}
               onSelectionChange={
                 (children) => {

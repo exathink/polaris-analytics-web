@@ -6,9 +6,9 @@ export function getDaysSinceCommit(serverCommitDate) {
   return moment().utc().diff(toMoment(serverCommitDate), 'days')
 }
 export function findActivityLevel(serverLatestCommitDate) {
-  return getActivityLevel({
+  return serverLatestCommitDate ?  getActivityLevel({
     days_since_latest_commit: getDaysSinceCommit(serverLatestCommitDate)
-  })
+  }) : null;
 }
 
 export function getTimelineRefreshInterval(serverLatestCommitDate) {

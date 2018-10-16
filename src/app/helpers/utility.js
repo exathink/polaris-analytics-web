@@ -150,7 +150,7 @@ export function fromNow(serverCommitDate) {
 }
 
 export function isToday(serverCommitDate) {
-  return moment.duration(toMoment(serverCommitDate).diff(moment.utc())).asDays() === 0;
+  return moment.duration(moment.utc().diff(toMoment(serverCommitDate))).asDays() < 1;
 }
 
 export function getCommitTimelineEndWindow(latestCommit) {

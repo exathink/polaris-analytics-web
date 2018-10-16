@@ -2,16 +2,30 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import moment from 'moment';
+import {findActivityLevel} from "../../helpers/commitUtils";
+import {toMoment, isToday} from "../../../../helpers/utility";
 
 function formatDays(days) {
   return days > 1 ? `${days} days` : `24 Hours`
 }
 
-function initSeries(activeChildren, context) {
+function formatSubtitle(before, latestCommit,  days) {
+  if(before) {
+    return `${formatDays(days)} ending ${moment(before).format('MM/DD/YYYY')}`
+  } else
+    if (latestCommit) {
+      return isToday(latestCommit) ? `Last ${formatDays(days)}` : `${formatDays(days)} ending ${toMoment(latestCommit).format('MM/DD/YYYY')}`
+    } else {
+      return `Last ${formatDays(days)}`
+  }
+}
+
+function initSeries(activeChildren, context, activityLevel) {
   return activeChildren.map(child => ({
     name: child.name,
     y: child.commitCount,
-    color: context.color(),
+    color: activityLevel ? activityLevel.color : context.color(),
     child: child
   }));
 }
@@ -25,8 +39,8 @@ export const MostActiveChildrenBarChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point=>point.child),
   getConfig:
-    ({activeChildren, view, top, days, childContext, context, intl}) => {
-      const series_data = initSeries(activeChildren,context);
+    ({activeChildren, view, top, before, latestCommit, days, childContext, context, intl}) => {
+      const series_data = initSeries(activeChildren,context, findActivityLevel(latestCommit));
       const childContextName = displaySingular(intl, childContext);
       return {
         chart: {
@@ -38,7 +52,7 @@ export const MostActiveChildrenBarChart = Chart({
           align: 'left'
         },
         subtitle: {
-          text: `Last ${formatDays(days)}`,
+          text: formatSubtitle(before, latestCommit, days),
           align: 'left'
         },
         tooltip: {

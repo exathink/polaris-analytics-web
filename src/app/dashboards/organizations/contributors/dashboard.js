@@ -6,6 +6,7 @@ import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
+import {toMoment} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.contributors.organization';
 
@@ -47,6 +48,7 @@ export default () => (
                   context={context}
                   childContext={Contributors}
                   top={10}
+                  latestCommit={organization.latestCommit}
                   days={1}
                   view={view}
                 />

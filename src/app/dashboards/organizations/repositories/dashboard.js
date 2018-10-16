@@ -5,6 +5,7 @@ import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHie
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {OrganizationDashboard} from "../organizationDashboard";
 import Repositories from "../../repositories/context";
+import {toMoment} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -46,6 +47,7 @@ export default () => (
                   context={context}
                   childContext={Repositories}
                   top={10}
+                  latestCommit={organization.latestCommit}
                   days={1}
                   view={view}
                 />

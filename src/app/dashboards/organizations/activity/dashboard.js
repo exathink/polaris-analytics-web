@@ -37,7 +37,8 @@ export const dashboard = () => (
                     dimension={'organization'}
                     instanceKey={organization.key}
                     pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
-                  />}
+                  />
+              }
             />
           </DashboardRow>
           <DashboardRow h={"22%"}>
@@ -55,10 +56,11 @@ export const dashboard = () => (
                         context={context}
                         childContext={Projects}
                         top={10}
+                        latestCommit={organization.latestCommit}
                         days={1}
                         view={view}
                       />
-                  }
+                  }e
                   showDetail={true}
                 />
                 :
@@ -76,6 +78,7 @@ export const dashboard = () => (
                     context={context}
                     childContext={Repositories}
                     top={10}
+                    latestCommit={organization.latestCommit}
                     days={1}
                     view={view}
                   />
@@ -94,6 +97,7 @@ export const dashboard = () => (
                     context={context}
                     childContext={Contributors}
                     top={10}
+                    latestCommit={organization.latestCommit}
                     days={1}
                     view={view}
                   />
