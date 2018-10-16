@@ -57,6 +57,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         Header: 'Files',
         filterable: false,
         accessor: commit => commit.key,
+
         Cell: row => {
           return (
             <WithCommit
@@ -66,7 +67,15 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
                                                      fileTypesSummary={commit.fileTypesSummary}/>
               }
             />
+
           )
+        },
+        getProps: (state, rowInfo, column) => {
+          return {
+            style: {
+              height: "80px"
+            }
+          };
         },
         maxWidth: 150
       }, {
@@ -76,8 +85,16 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         accessor: commit => commit,
         Cell: row => {
           return (
-              <CommitLinesSummaryChart showTotal minHeight={30} key={row.value.name} commit={row.value}/>
+
+            <CommitLinesSummaryChart showTotal minHeight={30} key={row.value.name} commit={row.value}/>
           )
+        },
+        getProps: (state, rowInfo, column) => {
+          return {
+            style: {
+              height: "80px"
+            }
+          };
         },
         maxWidth: 150
       }, {
@@ -87,8 +104,17 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         filterMethod: (filter, row) =>
           row[filter.id].includes(filter.value),
         Cell: row => (
-            <CommitMessage message={row.value}/>
-        )
+          <CommitMessage
+            message={row.value}
+          />
+        ),
+        getProps: (state, rowInfo, column) => {
+          return {
+            style: {
+              overflow: "auto"
+            }
+          };
+        },
       }]}
       showPageSizeOptions={false}
       showPageJump={false}
@@ -110,6 +136,14 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
           desc: true
         }
       ]}
+      getTrProps={(state, rowInfo, column) => {
+        return {
+          style: {
+            height: "100px",
+            overflow: "hidden"
+          }
+        };
+      }}
       className="-striped -highlight"
     />
   )
