@@ -1,15 +1,11 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {elide} from "../../../../helpers/utility";
+import {daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {toMoment, daysFromNow, isToday} from "../../../../helpers/utility";
 import {getCategoriesIndex} from "./utils";
+import {queueTime} from "../../helpers/commitUtils";
 
-
-function queueTime(commit) {
-  return moment.duration(toMoment(commit.commitDate).diff(toMoment(commit.authorDate))).humanize();
-}
 
 function getDaysSubtitle(days, prefix='Last') {
   return days > 1 ? `${prefix} ${days} Days`

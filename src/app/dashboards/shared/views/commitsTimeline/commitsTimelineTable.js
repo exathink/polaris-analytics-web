@@ -15,6 +15,7 @@ import {WithCommit} from "../../../commits/withCommit";
 import {capitalizeFirstLetter, toMoment} from "../../../../helpers/utility";
 import {replace_url_with_links} from "../../../commits/views/commitDetails";
 import {CommitMessage} from "../../../commits/views/commitMessage";
+import {queueTime} from "../../helpers/commitUtils";
 
 export const CommitsTimelineTable = injectIntl((props: Props) => {
   const tableData = props.commits;
@@ -36,7 +37,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         id: 'author',
         Header: `Author`,
         accessor: commit => commit,
-        maxWidth: 150,
+        maxWidth: 100,
         Cell: row => (
           <Link to={url_for_instance(Contributors, row.value.author, row.value.authorKey)} title={"Go to author"}>
             {row.value.author}
@@ -46,12 +47,18 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         id: 'commit-date',
         Header: `Commit Date`,
         accessor: commit => `${toMoment(commit.commitDate).format('MM/DD/YYYY HH:mm')}`,
-        maxWidth: 150,
+        maxWidth: 140,
       }, {
         id: 'author-date',
         Header: `Author Date`,
+        maxWidth: 140,
         accessor: commit => `${toMoment(commit.authorDate).format('MM/DD/YYYY HH:mm')}`,
-        maxWidth: 150,
+      },{
+        id: 'queue-time',
+        Header: `Queue Time`,
+        filterable:false,
+        accessor: commit => `${queueTime(commit)}`,
+        maxWidth: 100,
       }, {
         id: 'file-change-chart',
         Header: 'Files',
@@ -140,7 +147,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         return {
           style: {
             height: "100px",
-            overflow: "hidden"
+            overflow: "auto"
           }
         };
       }}

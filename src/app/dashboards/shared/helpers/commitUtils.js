@@ -1,4 +1,4 @@
-import  {getActivityLevel} from "./activityLevel";
+import {getActivityLevel} from "./activityLevel";
 import {toMoment} from "../../../helpers/utility";
 import moment from "moment";
 
@@ -19,4 +19,8 @@ export function getTimelineRefreshInterval(serverLatestCommitDate) {
         10*60*1000
     )
   )
+}
+
+export function queueTime(commit) {
+  return moment.duration(toMoment(commit.commitDate).diff(toMoment(commit.authorDate))).humanize();
 }
