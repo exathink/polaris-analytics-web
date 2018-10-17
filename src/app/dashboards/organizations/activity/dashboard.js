@@ -120,7 +120,7 @@ export const dashboard = () => (
                     context={context}
                     view={view}
                     days={1}
-                    before={toMoment(organization.latestCommit).valueOf()}
+                    latestCommit={organization.latestCommit}
                     markLatest
                     groupBy={'repository'}
                     pollInterval={getTimelineRefreshInterval(organization.latestCommit)}

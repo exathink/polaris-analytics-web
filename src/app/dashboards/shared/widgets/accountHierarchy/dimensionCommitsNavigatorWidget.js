@@ -17,6 +17,7 @@ export const DimensionCommitsNavigatorWidget = (
     context,
     days,
     before,
+    latestCommit,
     latest,
     view,
     groupBy,
@@ -70,7 +71,7 @@ export const DimensionCommitsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before != null ? moment(before) : before,
+        before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
         latest: latest
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
@@ -95,6 +96,7 @@ export const DimensionCommitsNavigatorWidget = (
                   smartGrouping={smartGrouping}
                   days={days}
                   before={before}
+                  latestCommit={latestCommit}
                   latest={latest}
                   totalCommits={totalCommits}
                   shortTooltip={shortTooltip}

@@ -3,21 +3,23 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {toMoment, daysFromNow} from "../../../../helpers/utility";
+import {toMoment, daysFromNow, isToday} from "../../../../helpers/utility";
 import {getCategoriesIndex} from "./utils";
 
-function getDaysSubtitle(days) {
-  return days > 1 ? `Last ${days} Days`
-      : days > 0 ? `Last 24 hours` : ``;
+function getDaysSubtitle(days, prefix='Last') {
+  return days > 1 ? `${prefix} ${days} Days`
+      : days > 0 ? `${prefix} 24 hours` : ``;
 }
 
-function getSubtitleText(before, startWindow, endWindow, days){
+function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
   const endWindowDays = endWindow && daysFromNow(endWindow)
-  if(!before || (endWindowDays <= 1)) {
+  if(latestCommit) {
+    return isToday(latestCommit) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
+  } else if(!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
     return startWindow ?
-      `${startWindow.format('YYYY/MM/DD')} - ${endWindow.format('YYYY/MM/DD')}`
+      `${startWindow.format('MM/DD/YYYY')} - ${endWindow.format('MM/DD/YYYY')}`
       : ``
   }
 }
@@ -41,7 +43,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({commits, context, intl, view, groupBy, days, before, latest, totalCommits, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({commits, context, intl, view, groupBy, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
 
       // sort in descending order of activity
@@ -87,7 +89,7 @@ export const CommitsTimelineChart = Chart({
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
-          text: getSubtitleText(before, startWindow, endWindow, days),
+          text: getSubtitleText(before, startWindow, endWindow, latestCommit, days),
           align: view === 'detail' ? 'center' : 'left'
         },
         xAxis: {
@@ -95,7 +97,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: 'Timeline'
           },
-          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : moment().add(1, 'h').valueOf()
+          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
         },
         yAxis: {
           id: 'y-items',
