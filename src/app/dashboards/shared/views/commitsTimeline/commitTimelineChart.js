@@ -6,6 +6,11 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {toMoment, daysFromNow, isToday} from "../../../../helpers/utility";
 import {getCategoriesIndex} from "./utils";
 
+
+function queueTime(commit) {
+  return moment.duration(toMoment(commit.commitDate).diff(toMoment(commit.authorDate))).humanize();
+}
+
 function getDaysSubtitle(days, prefix='Last') {
   return days > 1 ? `${prefix} ${days} Days`
       : days > 0 ? `${prefix} 24 hours` : ``;
@@ -147,7 +152,8 @@ export const CommitsTimelineChart = Chart({
                 [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
-                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`]
+                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
+                [`Queue Time: `, `${queueTime(this.point.commit)}`],
               ]
             } : {
               header: `Author: ${this.point.commit.author}`,
@@ -156,6 +162,7 @@ export const CommitsTimelineChart = Chart({
                 [`Committed: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
+                [`Queue Time: `, `${queueTime(this.point.commit)}`],
                 [`------`, ``],
                 ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
                 [`Committer: `, `${this.point.commit.committer}`],
