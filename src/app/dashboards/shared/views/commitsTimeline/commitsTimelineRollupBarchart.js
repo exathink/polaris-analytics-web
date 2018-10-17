@@ -4,7 +4,7 @@ import {getCategoriesIndex} from "./utils";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
-export const CommitsTimelineRollupHeaderChart = Chart({
+export const CommitsTimelineRollupBarChart = Chart({
   chartUpdateProps:
     (props) => ({
       commits: props.commits

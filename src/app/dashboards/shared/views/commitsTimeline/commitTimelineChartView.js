@@ -2,7 +2,7 @@ import React from 'react';
 import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
-import {CommitsTimelineRollupHeaderChart} from './commitsTimelineRollupHeader'
+import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {getCategoriesIndex} from "./utils";
 
 
@@ -139,7 +139,7 @@ export class CommitsTimelineChartView extends React.Component {
 
   getTimelineRollupHeader(category) {
     return (
-      <CommitsTimelineRollupHeaderChart
+      <CommitsTimelineRollupBarChart
         commits={this.state.commits}
         groupBy={category}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
