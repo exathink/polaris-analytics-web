@@ -2,7 +2,7 @@ import React from "react";
 
 export const findByProps = (children, propName, value) => {
   return React.Children.map(children, dashRow => {
-    return React.Children.map(dashRow.props.children, dashItem => {
+    return dashRow && React.Children.map(dashRow.props.children, dashItem => {
       return (dashItem && dashItem.props[propName] === value ? dashItem : null)
     })
   });
