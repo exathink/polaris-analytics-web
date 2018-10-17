@@ -33,6 +33,10 @@ const context = {
             topic: Activity
           },
           {
+            match: 'repositories',
+            topic: Repositories
+          },
+          {
 
             match: 'contributors',
             topic: Contributors
@@ -40,10 +44,6 @@ const context = {
           {
             match: 'projects',
             topic: Project
-          },
-          {
-            match: 'repositories',
-            topic: Repositories
           },
           {
             match: '',

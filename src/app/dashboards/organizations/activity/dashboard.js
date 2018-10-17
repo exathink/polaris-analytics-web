@@ -42,31 +42,6 @@ export const dashboard = () => (
             />
           </DashboardRow>
           <DashboardRow h={"22%"}>
-            {
-              organization.projects.count > 0 ?
-                <DashboardWidget
-                  w={1 / 3}
-                  name="most-active-projects"
-                  render={
-                    ({view}) =>
-                      <DimensionMostActiveChildrenWidget
-                        dimension={'organization'}
-                        instanceKey={organization.key}
-                        childConnection={'recentlyActiveProjects'}
-                        context={context}
-                        childContext={Projects}
-                        top={10}
-                        latestCommit={organization.latestCommit}
-                        pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
-                        days={1}
-                        view={view}
-                      />
-                  }e
-                  showDetail={true}
-                />
-                :
-                null
-            }
             <DashboardWidget
               w={organization.projects.count > 0 ? 1 / 3 : 1/2}
               name="most-active-repositories"
@@ -107,6 +82,31 @@ export const dashboard = () => (
               }
               showDetail={true}
             />
+            {
+              organization.projects.count > 0 ?
+                <DashboardWidget
+                  w={1 / 3}
+                  name="most-active-projects"
+                  render={
+                    ({view}) =>
+                      <DimensionMostActiveChildrenWidget
+                        dimension={'organization'}
+                        instanceKey={organization.key}
+                        childConnection={'recentlyActiveProjects'}
+                        context={context}
+                        childContext={Projects}
+                        top={10}
+                        latestCommit={organization.latestCommit}
+                        pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
+                        days={1}
+                        view={view}
+                      />
+                  }e
+                  showDetail={true}
+                />
+                :
+                null
+            }
           </DashboardRow>
           <DashboardRow h={"67%"}>
             <DashboardWidget
