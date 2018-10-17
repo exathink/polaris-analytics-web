@@ -57,6 +57,7 @@ export const dashboard = () => (
                         childContext={Projects}
                         top={10}
                         latestCommit={organization.latestCommit}
+                        pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                         days={1}
                         view={view}
                       />
@@ -79,6 +80,7 @@ export const dashboard = () => (
                     childContext={Repositories}
                     top={10}
                     latestCommit={organization.latestCommit}
+                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     days={1}
                     view={view}
                   />
@@ -98,6 +100,7 @@ export const dashboard = () => (
                     childContext={Contributors}
                     top={10}
                     latestCommit={organization.latestCommit}
+                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     days={1}
                     view={view}
                   />
@@ -118,7 +121,6 @@ export const dashboard = () => (
                     view={view}
                     days={1}
                     before={toMoment(organization.latestCommit).valueOf()}
-                    latest={100}
                     markLatest
                     groupBy={'repository'}
                     pollInterval={getTimelineRefreshInterval(organization.latestCommit)}

@@ -18,7 +18,8 @@ export const DimensionMostActiveChildrenWidget = (
     before,
     latestCommit,
     days,
-    view
+    view,
+    pollInterval
 
   }) => (
     <Query
@@ -48,6 +49,7 @@ export const DimensionMostActiveChildrenWidget = (
         days: days || 7,
         before: before ? moment(before) : latestCommit ? toMoment(latestCommit) : null,
       }}
+      pollInterval={pollInterval || analytics_service.defaultPollInterval()}
     >
       {
         ({loading, error, data}) => {

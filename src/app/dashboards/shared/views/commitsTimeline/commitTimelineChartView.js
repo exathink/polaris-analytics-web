@@ -130,7 +130,7 @@ export class CommitsTimelineChartView extends React.Component {
         polling={polling}
         categoryIndex={categoriesIndex}
         onSelectionChange={this.onCommitsSelected.bind(this)}
-        showScrollbar={!showHeader}
+        showScrollbar={true}
       />
     )
   }
