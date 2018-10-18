@@ -4,59 +4,61 @@ import {DimensionContributorActivityProfileWidget} from "../../shared/views/acti
 
 import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
-
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {withUserContext} from "../../../framework/user/userContext";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
+import {ProjectDashboard} from "../projectDashboard";
 
 const dashboard_id = 'dashboards.contributors.project';
 
-export const dashboard = withUserContext(withNavigationContext(
-  ({account, context}) => {
+export const dashboard = () => (
+  <ProjectDashboard
+  render ={
+    ({project, context}) => {
+      return (
+        <Dashboard dashboard={`${dashboard_id}`}>
 
-
-  return (
-    <Dashboard dashboard={`${dashboard_id}`}>
-
-      <DashboardRow h='22%' title={Contexts.contributors.display()}>
-        <DashboardWidget
-          w={1 / 2}
-          name="contributors-activity-profile"
-          render={
-            ({view}) =>
-              <DimensionContributorActivityProfileWidget
-                dimension={'project'}
-                childDimension={'contributors'}
-                instanceKey={context.getInstanceKey('project')}
-                context={context}
-                childContext={Contributors}
-                enableDrillDown={true}
-                suppressDataLabelsAt={500}
-                view={view}
-                pageSize={50}
-              />}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 2}
-          name="most-active-contributors"
-          render={
-            ({view}) =>
-              <DimensionMostActiveChildrenWidget
-                dimension={'project'}
-                instanceKey={context.getInstanceKey('project')}
-                childConnection={'recentlyActiveContributors'}
-                context={context}
-                childContext={Contributors}
-                top={10}
-                days={30}
-                view={view}
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-    </Dashboard>
-  )
-}));
+          <DashboardRow h='22%' title={Contexts.contributors.display()}>
+            <DashboardWidget
+              w={1 / 2}
+              name="contributors-activity-profile"
+              render={
+                ({view}) =>
+                  <DimensionContributorActivityProfileWidget
+                    dimension={'project'}
+                    childDimension={'contributors'}
+                    instanceKey={project.key}
+                    context={context}
+                    childContext={Contributors}
+                    enableDrillDown={true}
+                    suppressDataLabelsAt={500}
+                    view={view}
+                    pageSize={50}
+                  />}
+              showDetail={true}
+            />
+            <DashboardWidget
+              w={1 / 2}
+              name="most-active-contributors"
+              render={
+                ({view}) =>
+                  <DimensionMostActiveChildrenWidget
+                    dimension={'project'}
+                    instanceKey={project.key}
+                    childConnection={'recentlyActiveContributors'}
+                    context={context}
+                    childContext={Contributors}
+                    top={10}
+                    latestCommit={project.latestCommit}
+                    days={30}
+                    view={view}
+                  />
+              }
+              showDetail={true}
+            />
+          </DashboardRow>
+        </Dashboard>
+      )
+    }
+  }
+  />
+);
 export default dashboard;

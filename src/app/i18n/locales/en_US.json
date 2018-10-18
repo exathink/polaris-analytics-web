@@ -6,7 +6,7 @@
   "contexts.contributors.instance": "Contributor: {instance}",
   "dashboards.activity.organization.instance.topRowTitle": "Activity Overview",
   "contexts.organizations.instance": "Organization: {instance}",
-  "dashboards.activity.projects.instance.topRowTitle": "Project Overview",
+  "dashboards.activity.projects.instance.topRowTitle": "Activity Overview",
   "contexts.projects.instance": "Project: {instance}",
   "dashboards.activity.repositories.instance.topRowTitle": "Repository Overview",
   "contexts.repositories.instance": "Repository: {instance}",

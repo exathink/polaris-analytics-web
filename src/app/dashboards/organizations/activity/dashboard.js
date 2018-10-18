@@ -4,14 +4,14 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget, DimensionMostActiveChildrenWidget
+  DimensionCommitsNavigatorWidget,
+  DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
 import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 import Projects from "../../projects/context";
 import Repositories from "../../repositories/context";
 import Contributors from "../../contributors/context";
-import {toMoment} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {

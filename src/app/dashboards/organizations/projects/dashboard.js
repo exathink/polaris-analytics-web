@@ -7,7 +7,6 @@ import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityPr
 import {OrganizationDashboard} from "../organizationDashboard";
 
 import Projects from "../../projects/context"
-import {toMoment} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
