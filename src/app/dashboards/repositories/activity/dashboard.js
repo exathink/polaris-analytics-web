@@ -5,52 +5,59 @@ import {
   DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import {RepositoryDashboard} from "../repositoryDashboard";
+import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 
 const dashboard_id = 'dashboards.activity.repositories.instance';
 const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Repository Overview'/>
+  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
 };
 
 
-export const dashboard = withNavigationContext(({match, context, ...rest}) => (
-    <Dashboard dashboard={`${dashboard_id}`} {...rest}>
-      <DashboardRow h='15%'>
-        <DashboardWidget
-          w={1}
-          name="activity-summary"
-          title={messages.topRowTitle}
-          render={
-            () =>
-              <DimensionActivitySummaryPanelWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
-              />
-          }
-        />
-      </DashboardRow>
-      <DashboardRow h={"85%"}>
-        <DashboardWidget
-          w={1}
-          name="commits"
-          render={
-            ({view}) =>
-              <DimensionCommitsNavigatorWidget
-                dimension={'repository'}
-                instanceKey={context.getInstanceKey('repository')}
-                context={context}
-                view={view}
-                days={1}
-                pollInterval={60*1000}
-                showHeader
-                showTable
-              />
-          }
-          showDetail={true}
-        />
-      </DashboardRow>
-    </Dashboard>
-  )
+export const dashboard = () => (
+  <RepositoryDashboard
+    render={
+      ({repository, context}) => (
+        <Dashboard dashboard={`${dashboard_id}`}>
+          <DashboardRow h='15%'>
+            <DashboardWidget
+              w={1}
+              name="activity-summary"
+              title={messages.topRowTitle}
+              render={
+                () =>
+                  <DimensionActivitySummaryPanelWidget
+                    dimension={'repository'}
+                    instanceKey={repository.key}
+                  />
+              }
+            />
+          </DashboardRow>
+          <DashboardRow h={"85%"}>
+            <DashboardWidget
+              w={1}
+              name="commits"
+              render={
+                ({view}) =>
+                  <DimensionCommitsNavigatorWidget
+                    dimension={'repository'}
+                    instanceKey={repository.key}
+                    context={context}
+                    view={view}
+                    days={1}
+                    latestCommit={repository.latestCommit}
+                    pollInterval={getTimelineRefreshInterval(repository.latestCommit)}
+                    showHeader
+                    showTable
+                  />
+              }
+              showDetail={true}
+            />
+          </DashboardRow>
+        </Dashboard>
+      )
+    }
+  />
 );
 export default dashboard;
 
