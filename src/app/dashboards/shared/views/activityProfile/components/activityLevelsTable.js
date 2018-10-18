@@ -51,7 +51,8 @@ export const ActivityLevelsTable = injectIntl((props: Props) => {
       },{
         id: 'timespan-col',
         Header: `${formatTerm(intl, 'History')} (${props.model.span_uom})`,
-        accessor: activitySummary => intl.formatNumber(activitySummary.span),
+        accessor: activitySummary => activitySummary.span,
+        Cell: row => intl.formatNumber(row.value)
       }, {
         id: 'earliest-commit-col',
         Header: `${formatTerm(intl, 'Earliest Commit')}`,
