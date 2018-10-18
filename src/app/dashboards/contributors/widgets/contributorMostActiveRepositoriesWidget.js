@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../components/graphql/loading";
 import {MostActiveChildrenView} from "../../shared/views/mostActiveChildren";
 import {analytics_service} from '../../../services/graphql/index'
+import {toMoment} from "../../../helpers/utility";
 
 export const ContributorMostActiveRepositoriesWidget = (
   {
@@ -14,6 +15,7 @@ export const ContributorMostActiveRepositoriesWidget = (
     childContext,
     top,
     days,
+    latestCommit,
     view
 
   }) => (
@@ -21,10 +23,10 @@ export const ContributorMostActiveRepositoriesWidget = (
       client={analytics_service}
       query={
         gql`
-            query ContributorMostActiveRepositories($key: String!, $top: Int, $days: Int) {
+            query ContributorMostActiveRepositories($key: String!, $top: Int, $before: DateTime, $days: Int) {
                 contributor(key: $key){
                     id
-                    recentlyActiveRepositories(top: $top, days: $days){
+                    recentlyActiveRepositories(top: $top, before: $before, days: $days){
                         key
                         name
                         commitCount
@@ -36,7 +38,8 @@ export const ContributorMostActiveRepositoriesWidget = (
       variables={{
         key: instanceKey,
         top: top || 20,
-        days: days || 7
+        days: days || 7,
+        before: latestCommit ? toMoment(latestCommit) : null
       }}
     >
       {
@@ -52,6 +55,7 @@ export const ContributorMostActiveRepositoriesWidget = (
               view={view}
               top={top}
               days={days}
+              latestCommit={latestCommit}
               onSelectionChange={
                 (children) => {
                   onChildrenSelected(context, childContext, children)
