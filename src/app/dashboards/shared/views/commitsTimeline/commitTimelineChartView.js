@@ -29,6 +29,7 @@ export class CommitsTimelineChartView extends React.Component {
     const {
       groupBy,
       smartGrouping,
+      onSelectionChange,
     } = this.props;
     const categoriesIndex = getCategoriesIndex(this.state.commits, groupBy, smartGrouping, selected);
     const timelineCommits = getTimelineCommits(this.state.commits, categoriesIndex.category, selected);
@@ -38,6 +39,9 @@ export class CommitsTimelineChartView extends React.Component {
       timelineCommits,
       selectedCategories: selected,
     });
+    if(onSelectionChange) {
+        onSelectionChange(timelineCommits)
+    }
   }
 
   navigateToCommit(commits) {
