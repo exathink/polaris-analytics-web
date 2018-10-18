@@ -45,28 +45,43 @@ export const ActivityLevelsTable = injectIntl((props: Props) => {
         )
 
       }, {
+        id: 'commit-count',
         Header: `${formatTerm(intl, 'Commits')}`,
         accessor: 'commit_count',
+      },{
+        id: 'timespan-col',
+        Header: `${formatTerm(intl, 'History')} (${props.model.span_uom})`,
+        accessor: activitySummary => intl.formatNumber(activitySummary.span),
       }, {
+        id: 'earliest-commit-col',
+        Header: `${formatTerm(intl, 'Earliest Commit')}`,
+        accessor: activitySummary => activitySummary.earliest_commit,
+        Cell: row => formatDateTime(intl,row.value)
+      },{
+        id: 'latest-commit-col',
+        Header: `${formatTerm(intl, 'Latest Commit')}`,
+        accessor: activitySummary => activitySummary.latest_commit,
+        Cell: row => formatDateTime(intl,row.value)
+      },{
         Header: model.secondaryMeasureContext ? `${displayPlural(intl, model.secondaryMeasureContext)}` : '',
         accessor: 'secondary_measure',
         show: model.secondaryMeasureContext != null
 
-      }, {
-        id: 'earliest-commit-col',
-        Header: `${formatTerm(intl, 'Earliest Commit')}`,
-        accessor: activitySummary => formatDateTime(intl,activitySummary.earliest_commit),
-      }, {
-        id: 'latest-commit-col',
-        Header: `${formatTerm(intl, 'Latest Commit')}`,
-        accessor: activitySummary => formatDateTime(intl, activitySummary.latest_commit),
-      }, {
-        id: 'timespan-col',
-        Header: `${formatTerm(intl, 'History')} (${props.model.span_uom})`,
-        accessor: activitySummary => intl.formatNumber(activitySummary.span),
-      }
+      },
       ]}
-      defaultPageSize={10}
+      defaultPageSize={4}
+      showPageSizeOptions={false}
+      defaultSorted={[
+        {
+          id: 'commit-count',
+          desc: true
+        },
+        {
+          id: 'timespan-col',
+          desc: true
+        }
+      ]}
+
       className="-striped -highlight"
     />
   )
