@@ -5,7 +5,7 @@ import {daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getCategoriesIndex} from "./utils";
 import {queueTime} from "../../helpers/commitUtils";
-
+import {formatDateTime} from "../../../../i18n";
 
 function getDaysSubtitle(days, prefix='Last') {
   return days > 1 ? `${prefix} ${days} Days`
@@ -145,7 +145,7 @@ export const CommitsTimelineChart = Chart({
               header: `Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
-                [`Commit Date: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
+                [`Committed: `, `${formatDateTime(intl, this.point.commit.commitDate)}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
                 ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
@@ -155,7 +155,7 @@ export const CommitsTimelineChart = Chart({
               header: `Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
-                [`Committed: `, `${moment(this.x).format("MM/DD/YYYY hh:mm a")}`],
+                [`Committed: `, `${formatDateTime(intl, this.point.commit.commitDate)}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
                 [`Queue Time: `, `${queueTime(this.point.commit)}`],

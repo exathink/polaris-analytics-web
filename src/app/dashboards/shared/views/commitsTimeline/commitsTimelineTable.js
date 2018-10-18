@@ -14,12 +14,18 @@ import {toMoment} from "../../../../helpers/utility";
 import {CommitMessage} from "../../../commits/views/commitMessage";
 import {queueTime} from "../../helpers/commitUtils";
 
+import {formatDateTime} from "../../../../i18n";
+
 export const CommitsTimelineTable = injectIntl((props: Props) => {
-  const tableData = props.commits;
+  const {
+    commits,
+    intl
+  } = props;
+
   return (
     <Table
       filterable
-      data={tableData}
+      data={commits}
       columns={[{
         id: 'SHA',
         Header: `SHA`,
@@ -43,13 +49,15 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
       }, {
         id: 'commit-date',
         Header: `Commit Date`,
-        accessor: commit => `${toMoment(commit.commitDate).format('MM/DD/YYYY HH:mm')}`,
+        accessor: commit => commit.commitDate,
+        Cell: row => formatDateTime(intl, toMoment(row.value)),
         maxWidth: 140,
       }, {
         id: 'author-date',
         Header: `Author Date`,
         maxWidth: 140,
-        accessor: commit => `${toMoment(commit.authorDate).format('MM/DD/YYYY HH:mm')}`,
+        accessor: commit => commit.authorDate,
+        Cell: row => formatDateTime(intl, toMoment(row.value)),
       },{
         id: 'queue-time',
         Header: `Queue Time`,

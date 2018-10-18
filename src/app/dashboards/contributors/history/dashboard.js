@@ -1,7 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {DimensionCommitHistoryWidget} from "../../shared/widgets/accountHierarchy";
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {ContributorDashboard} from "../contributorDashboard";
 
 const dashboard_id = 'dashboards.history.contributors.instance';
