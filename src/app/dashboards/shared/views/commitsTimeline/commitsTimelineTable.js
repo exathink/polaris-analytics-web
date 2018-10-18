@@ -1,10 +1,8 @@
 import React from 'react';
 import {Table} from "../../containers/table/index";
 import {injectIntl} from 'react-intl';
-import moment from 'moment';
 import {FileTypesSummaryChart} from "../fileTypesSummary/fileTypesSummaryChart";
 import {CommitLinesSummaryChart} from "../../../commits/views/commitLinesSummaryChart";
-import {Flex, Box} from "reflexbox";
 import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 import Commits from "../../../commits/context";
 import Contributors from "../../../contributors/context";
@@ -12,8 +10,7 @@ import Contributors from "../../../contributors/context";
 import {Link} from "react-router-dom";
 import {WithCommit} from "../../../commits/withCommit";
 
-import {capitalizeFirstLetter, toMoment} from "../../../../helpers/utility";
-import {replace_url_with_links} from "../../../commits/views/commitDetails";
+import {toMoment} from "../../../../helpers/utility";
 import {CommitMessage} from "../../../commits/views/commitMessage";
 import {queueTime} from "../../helpers/commitUtils";
 

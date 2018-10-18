@@ -110,7 +110,6 @@ export class CommitsTimelineChartView extends React.Component {
       view,
       shortTooltip,
       markLatest,
-      showHeader,
       polling,
 
     } = this.props;

@@ -1,7 +1,6 @@
 import React from 'react';
 import StickerWidget from "../../containers/stickers/simpleSticker/sticker-widget";
 import {fromNow} from "../../../../helpers/utility";
-import {VizItem} from "../../containers/layout";
 
 export class LatestCommitView extends React.Component {
 

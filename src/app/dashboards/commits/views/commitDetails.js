@@ -1,8 +1,5 @@
 import React from 'react';
 import {Flex} from 'reflexbox';
-
-
-import {capitalizeFirstLetter} from "../../../helpers/utility";
 import {CommitCommitter} from "./commitCommitter";
 import {CommitDate} from "./commitDate";
 import {CommitBranch} from "./commitBranch";

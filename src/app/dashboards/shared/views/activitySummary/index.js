@@ -2,10 +2,7 @@ import {withNavigationContext} from "../../../../framework/navigation/components
 import React from 'react';
 import StickerWidget from '../../containers/stickers/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../containers/layout/index";
-import {human_span} from "../../../../helpers/utility";
-import {Contexts} from "../../../../meta";
-import {Topics} from "../../../../meta";
-import {fromNow} from "../../../../helpers/utility";
+import {Contexts, Topics} from "../../../../meta";
 import {findActivityLevel} from "../../helpers/commitUtils";
 
 import {LatestCommitView} from "./latestCommitView";
