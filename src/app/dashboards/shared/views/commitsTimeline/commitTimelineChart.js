@@ -145,7 +145,7 @@ export const CommitsTimelineChart = Chart({
               header: `Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
-                [`Committed: `, `${formatDateTime(intl, this.point.commit.commitDate)}`],
+                [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
                 ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
@@ -155,7 +155,7 @@ export const CommitsTimelineChart = Chart({
               header: `Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
-                [`Committed: `, `${formatDateTime(intl, this.point.commit.commitDate)}`],
+                [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
                 [`Queue Time: `, `${queueTime(this.point.commit)}`],
