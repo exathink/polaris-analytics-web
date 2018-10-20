@@ -9,6 +9,7 @@ export class LatestCommitView extends React.Component {
     this.state = {
       text: fromNow(this.props.latestCommit)
     }
+    this.timer=null;
   }
 
   resetText() {
@@ -18,11 +19,12 @@ export class LatestCommitView extends React.Component {
   }
 
   componentDidMount() {
-    window.setTimeout(() => this.resetText(), 60*1000);
+    this.timer = window.setInterval(this.resetText.bind(this), 60*1000);
   }
 
-  componentDidUpdate() {
-    window.setTimeout(() => this.resetText(), 60*1000);
+  componentWillUnmount() {
+    window.clearInterval(this.timer);
+    this.timer = null;
   }
 
 
