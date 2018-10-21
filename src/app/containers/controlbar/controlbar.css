@@ -39,3 +39,11 @@
   color: #979797;
   cursor: default;
 }
+
+.controlbar .menu-item.toggleOff {
+  font-size: 18px;
+  vertical-align: text-top;
+  margin: 10px;
+  color: #979797;
+  cursor: pointer;
+}

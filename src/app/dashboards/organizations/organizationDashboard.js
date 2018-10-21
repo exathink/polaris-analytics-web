@@ -27,6 +27,7 @@ class WithOrganization extends React.Component {
       render,
       pollInterval,
       context,
+      polling,
     } = this.props;
 
     return (
@@ -55,7 +56,7 @@ class WithOrganization extends React.Component {
         variables={{
           key: context.getInstanceKey('organization')
         }}
-        pollInterval={pollInterval}
+        pollInterval={polling ? pollInterval : 0}
       >
         {
           ({loading, error, data}) => {

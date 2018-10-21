@@ -14,6 +14,8 @@ export const withNavigationContext = Component => (
             filteredTopics = {navigationContext.filteredTopics}
             showOptionalTopics = {navigationContext.showOptionalTopics}
             optionalTopics = {navigationContext.optionalTopics}
+            setPolling = {navigationContext.setPolling}
+            polling = {navigationContext.polling}
             {...props}
           />
       }
