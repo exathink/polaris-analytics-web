@@ -8,7 +8,6 @@ import {
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
-import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 import Projects from "../../projects/context";
 import Repositories from "../../repositories/context";
 import Contributors from "../../contributors/context";
@@ -21,6 +20,7 @@ const messages = {
 
 export const dashboard = () => (
   <OrganizationDashboard
+    pollInterval={60*1000}
     render={
       ({organization, context}) =>
         <Dashboard
@@ -36,8 +36,7 @@ export const dashboard = () => (
                   <DimensionActivitySummaryPanelWidget
                     dimension={'organization'}
                     instanceKey={organization.key}
-                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
-                  />
+                    />
               }
             />
           </DashboardRow>
@@ -55,7 +54,6 @@ export const dashboard = () => (
                     childContext={Repositories}
                     top={10}
                     latestCommit={organization.latestCommit}
-                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     days={1}
                     view={view}
                   />
@@ -75,7 +73,6 @@ export const dashboard = () => (
                     childContext={Contributors}
                     top={10}
                     latestCommit={organization.latestCommit}
-                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     days={1}
                     view={view}
                   />
@@ -97,7 +94,6 @@ export const dashboard = () => (
                         childContext={Projects}
                         top={10}
                         latestCommit={organization.latestCommit}
-                        pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                         days={1}
                         view={view}
                       />
@@ -123,7 +119,6 @@ export const dashboard = () => (
                     latestCommit={organization.latestCommit}
                     markLatest
                     groupBy={'repository'}
-                    pollInterval={getTimelineRefreshInterval(organization.latestCommit)}
                     showHeader
                     showTable
                   />
