@@ -10,26 +10,31 @@ import moment from 'moment';
 import {toMoment} from "../../../../helpers/utility";
 
 
+function getViewCacheKey(instanceKey, display) {
+  return `DimensionCommitsNavigator:${instanceKey}:${display}`
+}
+
 export const DimensionCommitsNavigatorWidget = (
   {
-    dimension,
-    instanceKey,
-    context,
-    days,
-    before,
-    latestCommit,
-    latest,
-    view,
-    groupBy,
-    smartGrouping,
-    display,
-    shortTooltip,
-    markLatest,
-    showHeader,
-    suppressHeaderDataLabels,
-    showTable,
-    onSelectionChange,
-    pollInterval,
+      dimension,
+      instanceKey,
+      context,
+      days,
+      before,
+      latestCommit,
+      latest,
+      view,
+      groupBy,
+      smartGrouping,
+      display,
+      shortTooltip,
+      markLatest,
+      showHeader,
+      suppressHeaderDataLabels,
+      showTable,
+      onSelectionChange,
+      pollInterval,
+
   }) => (
     <Query
       client={analytics_service}
@@ -78,12 +83,12 @@ export const DimensionCommitsNavigatorWidget = (
     >
       {
         ({loading, error, data}) => {
-          if (loading) return <Loading/>;
+          if (loading) return context.getCachedView(getViewCacheKey(instanceKey, display)) || <Loading/>;
           if (error) return null;
 
           const commits = data[dimension].commits.edges.map(edge => edge.node);
           const totalCommits = data[dimension].commits.count;
-          return (
+          context.cacheView(getViewCacheKey(instanceKey, display), (
             display === 'table' ?
                 <CommitsTimelineTable commits={commits}/>
                 :
@@ -106,7 +111,8 @@ export const DimensionCommitsNavigatorWidget = (
                   showTable={showTable}
                   onSelectionChange={onSelectionChange}
                 />
-          )
+          ));
+          return context.getCachedView(getViewCacheKey(instanceKey, display));
         }
       }
     </Query>

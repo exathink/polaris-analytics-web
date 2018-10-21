@@ -21,6 +21,7 @@ export class ActiveContext {
     this.rootUrl = null;
     this.rootContext = null;
     this.navigator = null;
+    this.viewCache = {};
   }
 
   name() {
@@ -92,7 +93,13 @@ export class ActiveContext {
     this.navigate(context, instanceName, instanceKey, selectedTopic? selectedTopic.name : '');
   }
 
+  cacheView(key, view) {
+    this.viewCache[key] = view;
+  }
 
+  getCachedView(key) {
+    return this.viewCache[key];
+  }
 
 
 }

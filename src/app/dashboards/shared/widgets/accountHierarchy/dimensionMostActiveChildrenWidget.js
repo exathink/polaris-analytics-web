@@ -7,6 +7,10 @@ import {analytics_service} from '../../../../services/graphql/index'
 import moment from 'moment';
 import {toMoment} from "../../../../helpers/utility";
 
+function getViewCacheKey(instanceKey, childConnection) {
+  return `DimensionMostActiveChildren:${instanceKey}:${childConnection}`
+}
+
 export const DimensionMostActiveChildrenWidget = (
   {
     dimension,
@@ -53,10 +57,11 @@ export const DimensionMostActiveChildrenWidget = (
     >
       {
         ({loading, error, data}) => {
-          if (loading) return <Loading/>;
+          const viewCacheKey = getViewCacheKey(instanceKey, childConnection);
+          if (loading) return context.getCachedView(viewCacheKey) || <Loading/>;
           if (error) return null;
           const activeChildren = data[dimension][childConnection].edges.map(edge => edge.node);
-          return (
+          context.cacheView(viewCacheKey, (
             <MostActiveChildrenView
               context={context}
               childContext={childContext}
@@ -73,6 +78,8 @@ export const DimensionMostActiveChildrenWidget = (
               }
             />
           )
+          );
+          return context.getCachedView(viewCacheKey);
         }
       }
     </Query>
