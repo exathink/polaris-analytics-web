@@ -8,7 +8,7 @@ import moment from 'moment';
 import {toMoment} from "../../../../helpers/utility";
 
 function getViewCacheKey(instanceKey, childConnection) {
-  return `DimensionMostActiveChildren:${instanceKey}:${childConnection}`
+  return `MostActiveChildren:${instanceKey}:${childConnection}`
 }
 
 export const DimensionMostActiveChildrenWidget = (

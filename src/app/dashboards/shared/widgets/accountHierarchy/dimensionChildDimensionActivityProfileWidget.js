@@ -6,6 +6,10 @@ import {Contexts} from "../../../../meta";
 import {analytics_service} from '../../../../services/graphql/index'
 import {ActivityLevelDetailModel, ActivityLevelDetailView, ActivityLevelSummaryView} from "../../views/activityProfile";
 
+function getViewCacheKey(dimension, childDimension, instanceKey) {
+  return `ActivityProfileWidget:${dimension}:${childDimension}:${instanceKey}`
+}
+
 export const ChildDimensionActivityProfileWidget = (
   {
     dimension,
@@ -14,16 +18,17 @@ export const ChildDimensionActivityProfileWidget = (
     view,
     pageSize,
     pollInterval,
+    referenceDate,
     ...rest
   }) => (
   <Query
     client={analytics_service}
     query={
       gql`
-       query ${dimension}${childDimension}ActivitySummaries($key: String!, $pageSize: Int){
+       query ${dimension}${childDimension}ActivitySummaries($key: String!, $pageSize: Int, $referenceDate: DateTime){
           ${dimension}(key: $key){
               id
-              ${childDimension}(first: $pageSize, summaries: [ActivityLevelSummary] interfaces: [CommitSummary, ContributorCount]) {
+              ${childDimension}(referenceDate: $referenceDate, first: $pageSize, summaries: [ActivityLevelSummary] interfaces: [CommitSummary, ContributorCount]) {
                 count
                 activityLevelSummary {
                     activeCount
@@ -52,12 +57,14 @@ export const ChildDimensionActivityProfileWidget = (
           }
        }
     `}
-    variables={{key: instanceKey, ...{pageSize}}}
-    //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    variables={{key: instanceKey, ...{pageSize, referenceDate}}}
   >
     {
       ({loading, error, data}) => {
-        if (loading) return <Loading/>;
+        const {context} = rest;
+        const viewCacheKey = getViewCacheKey(dimension, childDimension, instanceKey);
+
+        if (loading) return context.getCachedView(viewCacheKey) || <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
           instanceKey,
@@ -70,17 +77,19 @@ export const ChildDimensionActivityProfileWidget = (
           childDimension,
           rest
         );
-        return (
-          view && view === 'detail' ?
-            <ActivityLevelDetailView
-              model={model}
-              {...rest}
-            /> :
-            <ActivityLevelSummaryView
-              model={model}
-              {...rest}
-            />
-        )
+        context.cacheView(viewCacheKey, (
+            view && view === 'detail' ?
+              <ActivityLevelDetailView
+                model={model}
+                {...rest}
+              /> :
+              <ActivityLevelSummaryView
+                model={model}
+                {...rest}
+              />
+          )
+        );
+        return context.getCachedView(viewCacheKey);
       }
     }
   </Query>
