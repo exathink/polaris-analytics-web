@@ -19,6 +19,7 @@ class WithProject extends React.Component {
       render,
       pollInterval,
       context,
+      polling,
     } = this.props;
 
     return (
@@ -41,7 +42,7 @@ class WithProject extends React.Component {
         variables={{
           key: context.getInstanceKey('project')
         }}
-        pollInterval={pollInterval}
+        pollInterval={polling ? pollInterval : 0}
       >
         {
           ({loading, error, data}) => {

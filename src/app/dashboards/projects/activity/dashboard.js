@@ -17,6 +17,7 @@ const messages = {
 
 export const dashboard = () => (
   <ProjectDashboard
+    pollInterval={1000*60}
     render={
       ({project, context}) => (
         <Dashboard dashboard={`${dashboard_id}`}>
@@ -48,7 +49,6 @@ export const dashboard = () => (
                     days={1}
                     latestCommit={project.latestCommit}
                     groupBy={'repository'}
-                    pollInterval={getTimelineRefreshInterval(project.latestCommit)}
                     showHeader
                     showTable
                   />

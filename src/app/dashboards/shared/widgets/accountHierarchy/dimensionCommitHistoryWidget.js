@@ -6,6 +6,9 @@ import {Loading} from "../../../../components/graphql/loading";
 import {CumulativeCommitCountChart, CommitHistoryDetailView} from "../../views/commitHistory";
 import {analytics_service} from '../../../../services/graphql/index'
 
+function getViewCacheKey(instanceKey, dimension) {
+  return `CommitHistoryWidget:${instanceKey}:${dimension}`;
+}
 
 export const DimensionCommitHistoryWidget = (
   {
@@ -13,15 +16,16 @@ export const DimensionCommitHistoryWidget = (
     instanceKey,
     context,
     view,
-    detailViewCommitsGroupBy
+    detailViewCommitsGroupBy,
+    referenceDate,
 
   }) => (
-    <Query
-      client={analytics_service}
-      query={
-        gql`
-            query ${dimension}_cumulative_commit_count($key: String!) {
-                ${dimension}(key: $key){
+  <Query
+    client={analytics_service}
+    query={
+      gql`
+            query ${dimension}_cumulative_commit_count($key: String!, $referenceDate: DateTime) {
+                ${dimension}(key: $key, referenceDate: $referenceDate){
                     id
                     cumulativeCommitCount{
                         year
@@ -31,17 +35,20 @@ export const DimensionCommitHistoryWidget = (
                 }
             }
         `
-      }
-      variables={{
-        key: instanceKey
-      }}
-    >
-      {
-        ({loading, error, data}) => {
-          if (loading) return <Loading/>;
-          if (error) return null;
-          const cumulativeCommitCounts = data[dimension].cumulativeCommitCount;
-          return (
+    }
+    variables={{
+      key: instanceKey,
+      referenceDate: referenceDate
+    }}
+  >
+    {
+      ({loading, error, data}) => {
+        const viewCacheKey = getViewCacheKey(instanceKey, dimension);
+
+        if (loading) return context.getCachedView(viewCacheKey) || <Loading/>;
+        if (error) return null;
+        const cumulativeCommitCounts = data[dimension].cumulativeCommitCount;
+        context.cacheView(viewCacheKey, (
             view === 'detail' ?
               <CommitHistoryDetailView
                 cumulativeCommitCounts={cumulativeCommitCounts}
@@ -50,6 +57,7 @@ export const DimensionCommitHistoryWidget = (
                 instanceKey={instanceKey}
                 view={view}
                 detailViewCommitsGroupBy={detailViewCommitsGroupBy}
+                referenceDate={referenceDate}
               />
               :
               <CumulativeCommitCountChart
@@ -59,7 +67,9 @@ export const DimensionCommitHistoryWidget = (
               />
 
           )
-        }
+        )
+        return context.getCachedView(viewCacheKey)
       }
-    </Query>
+    }
+  </Query>
 );

@@ -19,7 +19,8 @@ const CumulativeCommitCountDetailPanels = (
     view,
     showHeader,
     onAreaChartSelectionChange,
-    onCommitTimelineSelectionChange
+    onCommitTimelineSelectionChange,
+    referenceDate,
   }
 ) => {
   return (
@@ -48,6 +49,7 @@ const CumulativeCommitCountDetailPanels = (
             onSelectionChange={onCommitTimelineSelectionChange}
             showHeader
             suppressHeaderDataLabels={3}
+            referenceDate={referenceDate}
           />
         </VizItem>
       </VizRow>
@@ -66,6 +68,7 @@ const CumulativeCommitCountDetailPanels = (
                 before={before}
                 groupBy={detailViewCommitsGroupBy}
                 display={'table'}
+                referenceDate={referenceDate}
               />
           }
         </VizItem>

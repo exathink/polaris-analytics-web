@@ -34,16 +34,17 @@ export const DimensionCommitsNavigatorWidget = (
       showTable,
       onSelectionChange,
       pollInterval,
+      referenceDate,
 
   }) => (
     <Query
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int) {
-                ${dimension}(key: $key){
+            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime) {
+                ${dimension}(key: $key, referenceDate: $referenceDate){
                     id
-                    commits(days: $days, before: $before, first: $latest) {
+                    commits(days: $days, before: $before, first: $latest, referenceDate: $referenceDate) {
                         count
                         edges {
                             node {
@@ -77,7 +78,8 @@ export const DimensionCommitsNavigatorWidget = (
         key: instanceKey,
         days: days || 0,
         before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
-        latest: latest
+        latest: latest,
+        referenceDate: referenceDate
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
     >
