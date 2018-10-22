@@ -13,6 +13,7 @@ const dashboard_id = 'dashboards.activity.organization.instance';
 
 export default () => (
   <OrganizationDashboard
+    pollInterval={60*1000}
     render={
       ({organization, context}) => (
         <Dashboard
@@ -33,6 +34,7 @@ export default () => (
                     enableDrillDown={true}
                     view={view}
                     pageSize={50}
+                    referenceDate={organization.latestCommit}
                   />
               }
               showDetail={true}

@@ -8,25 +8,28 @@ import {ActivityLevelDetailModel} from "../../views/activityProfile/index";
 import {ActivityLevelSummaryView} from "../../views/activityProfile/activityLevelSummaryView";
 import {ActivityLevelDetailView} from "../../views/activityProfile/activityLevelDetailView";
 
+function getViewCacheKey(instanceKey) {
+  return `ContributorActivityProfile:${instanceKey}`;
+}
 
 export const DimensionContributorActivityProfileWidget = (
   {
     dimension,
     instanceKey,
-    childDimension,
     view,
     pollInterval,
     pageSize,
+    referenceDate,
     ...rest
   }) => (
   <Query
     client={analytics_service}
     query={
       gql`
-       query ${dimension}${childDimension}ActivitySummaries($key: String!, $pageSize: Int){
+       query ${dimension}ContributorActivitySummaries($key: String!, $pageSize: Int, $referenceDate: DateTime){
           ${dimension}(key: $key){
               id
-              contributors(first:$pageSize, summaries:[ActivityLevelSummary], interfaces: [CommitSummary, RepositoryCount]) {
+              contributors(first:$pageSize, referenceDate: $referenceDate, summaries:[ActivityLevelSummary], interfaces: [CommitSummary, RepositoryCount]) {
                 count
                 activityLevelSummary {
                     activeCount
@@ -54,12 +57,14 @@ export const DimensionContributorActivityProfileWidget = (
           }
        }
     `}
-    variables={{key: instanceKey, ...{pageSize}}}
-    //pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    variables={{key: instanceKey, ...{pageSize, referenceDate}}}
   >
     {
       ({loading, error, data}) => {
-        if (loading) return <Loading/>;
+        const {context} = rest;
+        const viewCacheKey = getViewCacheKey(instanceKey);
+
+        if (loading) return context.getCachedView(viewCacheKey) || <Loading/>;
         if (error) return null;
         const model = ActivityLevelDetailModel.initModelFromCommitSummaries(
           instanceKey,
@@ -72,17 +77,19 @@ export const DimensionContributorActivityProfileWidget = (
           'contributors',
           rest
         );
-        return (
-          view && view === 'detail' ?
-            <ActivityLevelDetailView
-              model={model}
-              {...rest}
-            /> :
-            <ActivityLevelSummaryView
-              model={model}
-              {...rest}
-            />
+        context.cacheView(viewCacheKey, (
+            view && view === 'detail' ?
+              <ActivityLevelDetailView
+                model={model}
+                {...rest}
+              /> :
+              <ActivityLevelSummaryView
+                model={model}
+                {...rest}
+              />
+          )
         )
+        return context.getCachedView(viewCacheKey)
       }
     }
   </Query>
