@@ -8,6 +8,7 @@ const dashboard_id = 'dashboards.history.contributors.instance';
 
 export const dashboard = ()=> (
   <ContributorDashboard
+    pollInterval={60*1000}
     render={
       ({contributor, context}) => (
         <Dashboard dashboard={`${dashboard_id}`}>
@@ -23,6 +24,7 @@ export const dashboard = ()=> (
                     context={context}
                     view={view}
                     detailViewCommitsGroupBy={'repository'}
+                    referenceDate={contributor.latestCommit}
                   />
               }
               showDetail={true}

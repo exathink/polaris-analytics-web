@@ -18,6 +18,7 @@ class WithContributor extends React.Component {
     const {
       render,
       pollInterval,
+      polling,
       context,
     } = this.props;
 
@@ -41,7 +42,7 @@ class WithContributor extends React.Component {
         variables={{
           key: context.getInstanceKey('contributor')
         }}
-        pollInterval={pollInterval}
+        pollInterval={polling ? pollInterval : 0}
       >
         {
           ({loading, error, data}) => {

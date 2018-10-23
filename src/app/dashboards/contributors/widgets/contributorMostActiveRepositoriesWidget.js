@@ -16,15 +16,16 @@ export const ContributorMostActiveRepositoriesWidget = (
     top,
     days,
     latestCommit,
-    view
+    view,
+    referenceDate,
 
   }) => (
     <Query
       client={analytics_service}
       query={
         gql`
-            query ContributorMostActiveRepositories($key: String!, $top: Int, $before: DateTime, $days: Int) {
-                contributor(key: $key){
+            query ContributorMostActiveRepositories($key: String!, $top: Int, $before: DateTime, $days: Int, $referenceDate: DateTime) {
+                contributor(key: $key, referenceDate: $referenceDate){
                     id
                     recentlyActiveRepositories(top: $top, before: $before, days: $days){
                         key
@@ -39,7 +40,8 @@ export const ContributorMostActiveRepositoriesWidget = (
         key: instanceKey,
         top: top || 20,
         days: days || 7,
-        before: latestCommit ? toMoment(latestCommit) : null
+        before: latestCommit ? toMoment(latestCommit) : null,
+        referenceDate: referenceDate
       }}
     >
       {

@@ -17,6 +17,7 @@ const messages = {
 
 export const dashboard = () => (
   <ContributorDashboard
+    pollInterval={60*1000}
     render={
       ({contributor, context}) => (
         <Dashboard dashboard={`${dashboard_id}`}>
@@ -48,6 +49,7 @@ export const dashboard = () => (
                     enableDrillDown={true}
                     suppressDataLabelsAt={500}
                     view={view}
+                    referenceDate={contributor.latestCommit}
                   />
               }
               showDetail={true}

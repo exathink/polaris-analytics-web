@@ -16,14 +16,15 @@ export const ContributorRepositoriesActivityProfileWidget = (
     dimension,
     childDimension,
     view,
+    referenceDate,
     ...rest,
   }) => {
   return <Query
     client={analytics_service}
     query={
       gql`
-               query ContributorRepositoriesActivityProfile($key: String!) {
-                contributor(key: $key) {
+               query ContributorRepositoriesActivityProfile($key: String!, $referenceDate: DateTime) {
+                contributor(key: $key, referenceDate: $referenceDate) {
                     id
                     repositoriesActivitySummary {
                         id
@@ -36,7 +37,7 @@ export const ContributorRepositoriesActivityProfileWidget = (
                 }
                }
           `}
-    variables={{key: instanceKey}}
+    variables={{key: instanceKey, ...{referenceDate}}}
     errorPolicy={'all'}
   >
     {
