@@ -10,6 +10,7 @@ const dashboard_id = 'dashboards.history.repositories.instance';
 
 export const dashboard = () => (
   <RepositoryDashboard
+    pollInterval={60*1000}
     render={
       ({repository, context}) => (
         <Dashboard dashboard={`${dashboard_id}`}>
@@ -24,6 +25,7 @@ export const dashboard = () => (
                     instanceKey={repository.key}
                     context={context}
                     view={view}
+                    referenceDate={repository.latestCommit}
                   />
               }
               showDetail={true}
@@ -38,6 +40,7 @@ export const dashboard = () => (
                     instanceKey={repository.key}
                     context={context}
                     view={view}
+                    referenceDate={repository.latestCommit}
                   />
               }
               showDetail={true}

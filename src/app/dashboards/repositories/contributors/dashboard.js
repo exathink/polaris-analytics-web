@@ -11,6 +11,7 @@ const dashboard_id = 'dashboards.contributors.repository';
 
 export const dashboard = () => (
   <RepositoryDashboard
+    pollInterval={60*1000}
     render={
       ({repository, context}) => (
           <Dashboard dashboard={`${dashboard_id}`}>
@@ -30,6 +31,7 @@ export const dashboard = () => (
                       suppressDataLabelsAt={500}
                       view={view}
                       pageSize={50}
+                      referenceDate={repository.latestCommit}
                     />}
                 showDetail={true}
               />
