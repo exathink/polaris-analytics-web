@@ -66,6 +66,12 @@ export const DimensionCommitsNavigatorWidget = (
                                     insertions
                                     deletions
                                 }
+                                workItemsSummaries {
+                                    name
+                                    key
+                                    displayId
+                                    url
+                                }
 
                             }
                         }

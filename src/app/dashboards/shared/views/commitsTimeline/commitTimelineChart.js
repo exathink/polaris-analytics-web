@@ -31,6 +31,19 @@ function getTitleText(latest, commits, totalCommits) {
     : `${commits.length} Commits`
 }
 
+function getWorkItemSummaryText(commit) {
+  let workItemsSummaries = ""
+  if (commit.workItemsSummaries.length  == 0) {
+    workItemsSummaries = "None"
+  } else if (commit.workItemsSummaries.length  == 1) {
+    const item = commit.workItemsSummaries[0]
+    workItemsSummaries = `${item.name} (#${item.displayId})`
+  } else {
+    workItemsSummaries = "*"
+  }
+  return workItemsSummaries
+}
+
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
@@ -152,7 +165,7 @@ export const CommitsTimelineChart = Chart({
                 [`Queue Time: `, `${queueTime(this.point.commit)}`],
               ]
             } : {
-              header: `Author: ${this.point.commit.author}`,
+              header: `WorkItem: ${getWorkItemSummaryText(this.point.commit)} <br/> Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
@@ -164,7 +177,8 @@ export const CommitsTimelineChart = Chart({
                 [`Committer: `, `${this.point.commit.committer}`],
                 [`------`, ``],
                 [`Files: `, `${this.point.commit.stats.files}`],
-                [`Lines: `, `${this.point.commit.stats.lines}`]
+                [`Lines: `, `${this.point.commit.stats.lines}`],
+
               ]
             })
           }
