@@ -3,21 +3,8 @@ import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
-import {getCategoriesIndex} from "./utils";
+import {CommitTimelineChartModel} from "./commitTimelineChartModel";
 
-
-function getTimelineCommits(commits, category, selectedCategories) {
-  let timelineCommits = commits;
-  if (selectedCategories) {
-    timelineCommits = commits.filter(
-      commit => selectedCategories.find(
-        cat =>
-          cat === commit[category]
-      )
-    )
-  }
-  return timelineCommits
-}
 
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
@@ -27,20 +14,19 @@ export class CommitsTimelineChartView extends React.Component {
 
   onCategoriesSelected(selected) {
     const {
+      commits,
       groupBy,
-      smartGrouping,
       onSelectionChange,
     } = this.props;
-    const categoriesIndex = getCategoriesIndex(this.state.commits, groupBy, smartGrouping, selected);
-    const timelineCommits = getTimelineCommits(this.state.commits, categoriesIndex.category, selected);
+
+    const model = new CommitTimelineChartModel(commits, groupBy, selected)
     this.setState({
       ...this.state,
-      categoriesIndex,
-      timelineCommits,
-      selectedCategories: selected,
+      model: model,
+      selectedCategories: selected
     });
     if(onSelectionChange) {
-        onSelectionChange(timelineCommits)
+        onSelectionChange(model.commits)
     }
   }
 
@@ -81,19 +67,14 @@ export class CommitsTimelineChartView extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       commits,
-      groupBy,
-      smartGrouping
+      groupBy
     } = nextProps;
 
     let state = null;
     if (!prevState.selectedCategories && !prevState.selectedCommits) {
       if (prevState.commits !== nextProps.commits) {
-        const categoriesIndex = getCategoriesIndex(commits, groupBy, smartGrouping);
-        const timelineCommits = getTimelineCommits(commits, categoriesIndex.category);
         state = {
-          commits,
-          categoriesIndex,
-          timelineCommits,
+          model: new CommitTimelineChartModel(commits, groupBy),
           selectedCategories: null,
           selectedCommits: null
         }
@@ -102,7 +83,7 @@ export class CommitsTimelineChartView extends React.Component {
     return state;
   }
 
-  getCommitTimelineChart(timelineCommits, categoriesIndex) {
+  getCommitTimelineChart(model) {
     const {
       instanceKey,
       context,
@@ -120,11 +101,10 @@ export class CommitsTimelineChartView extends React.Component {
 
     return (
       <CommitsTimelineChart
-        commits={timelineCommits}
+        model={model}
         context={context}
         instanceKey={instanceKey}
         view={view}
-        groupBy={categoriesIndex.category}
         days={days}
         before={before}
         latestCommit={latestCommit}
@@ -133,18 +113,17 @@ export class CommitsTimelineChartView extends React.Component {
         shortTooltip={shortTooltip}
         markLatest={markLatest}
         polling={polling}
-        categoryIndex={categoriesIndex}
         onSelectionChange={this.onCommitsSelected.bind(this)}
         showScrollbar={true}
       />
     )
   }
 
-  getTimelineRollupHeader(category) {
+  getTimelineRollupHeader() {
+    const {commits, groupBy} = this.props;
     return (
       <CommitsTimelineRollupBarChart
-        commits={this.state.commits}
-        groupBy={category}
+        model={new CommitTimelineChartModel(commits, groupBy)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -170,27 +149,27 @@ export class CommitsTimelineChartView extends React.Component {
         :
         (
           showHeader &&
-          Object.keys(this.state.categoriesIndex.categories_index).length > 1
+          Object.keys(this.state.model.categoriesIndex).length > 1
         )
     );
   }
 
 
-  getPrimaryLayout(height, categoriesIndex, timelineCommits) {
+  getPrimaryLayout(height, model) {
 
 
     return (
       <Flex style={{height: height, width: "100%"}}>
         <Box w={this.showHeader() ? "90%" : "100%"}>
           {
-            this.getCommitTimelineChart(timelineCommits, categoriesIndex)
+            this.getCommitTimelineChart(model)
           }
         </Box>
         {
           this.showHeader() ?
             <Box w={"10%"}>
               {
-                this.getTimelineRollupHeader(categoriesIndex.category)
+                this.getTimelineRollupHeader()
               }
             </Box>
             : null
@@ -199,17 +178,17 @@ export class CommitsTimelineChartView extends React.Component {
     )
   }
 
-  getDetailLayout(categoriesIndex, timelineCommits, showHeader, showTable) {
+  getDetailLayout(model, showHeader, showTable) {
     return (
       <Flex column style={{height: "100%", width: "100%"}}>
         {
-          this.getPrimaryLayout(showTable ? "72%" : "100%", categoriesIndex, timelineCommits, showHeader)
+          this.getPrimaryLayout(showTable ? "72%" : "100%", model)
         }
         {
           showTable ?
             <Flex style={{height: "28%", width: "100%"}}>
               {
-                this.getTimelineTable(timelineCommits)
+                this.getTimelineTable(model.commits)
               }
             </Flex>
             : null
@@ -227,8 +206,8 @@ export class CommitsTimelineChartView extends React.Component {
 
     return (
       view === 'detail' ?
-        this.getDetailLayout(this.state.categoriesIndex, this.state.timelineCommits, showHeader, showTable)
-        : this.getPrimaryLayout('95%', this.state.categoriesIndex, this.state.timelineCommits, showHeader)
+        this.getDetailLayout(this.state.model, showHeader, showTable)
+        : this.getPrimaryLayout('95%', this.state.model, showHeader)
     )
 
   }

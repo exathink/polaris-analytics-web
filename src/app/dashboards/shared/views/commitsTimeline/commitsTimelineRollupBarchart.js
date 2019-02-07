@@ -1,27 +1,27 @@
 import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
-import {getCategoriesIndex} from "./utils";
+import {getCategoriesIndex} from "./commitTimelineChartModel";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 export const CommitsTimelineRollupBarChart = Chart({
   chartUpdateProps:
     (props) => ({
-      commits: props.commits
+      commits: props.model.commits
     }),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: points => points.map( point => point.name),
   getConfig:
-    ({commits, groupBy, categoryIndex, suppressDataLabelsThreshold}) => {
-      const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
+    ({model, suppressDataLabelsThreshold}) => {
+      const {commits, categoriesIndex, groupBy} = model
 
-      const series = Object.keys(categories_index).map(
+      const series = Object.keys(categoriesIndex).map(
         category => ({
           id: category,
           name: category,
           data: [{
             name: category,
-            y: categories_index[category]
+            y: categoriesIndex[category]
           }],
           allowPointSelect: true,
         })
@@ -53,7 +53,7 @@ export const CommitsTimelineRollupBarChart = Chart({
           text: null
         },
         xAxis: {
-          categories: [capitalizeFirstLetter(category)],
+          categories: [capitalizeFirstLetter(groupBy)],
           visible: true,
           allowDecimals: false
         },

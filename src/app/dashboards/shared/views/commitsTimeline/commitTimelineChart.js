@@ -3,7 +3,6 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {getCategoriesIndex} from "./utils";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
 
@@ -33,9 +32,9 @@ function getTitleText(latest, commits, totalCommits) {
 
 function getWorkItemSummaryText(commit) {
   let workItemsSummaries = ""
-  if (commit.workItemsSummaries.length  == 0) {
+  if (commit.workItemsSummaries.length  === 0) {
     workItemsSummaries = "None"
-  } else if (commit.workItemsSummaries.length  == 1) {
+  } else if (commit.workItemsSummaries.length  === 1) {
     const item = commit.workItemsSummaries[0]
     workItemsSummaries = `${elide(item.name, 50)} (#${item.displayId})`
   } else {
@@ -48,7 +47,7 @@ export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
       {
-        commits: props.commits
+        commits: props.model.commits
       }
     ),
 
@@ -57,17 +56,19 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({commits, context, intl, view, groupBy, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, categoryIndex, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
-      const {category, categories_index} = categoryIndex || getCategoriesIndex(commits, groupBy);
+    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+      const commits = model.commits;
+      const categoryIndex = model.categoriesIndex;
+      const category = model.groupBy
 
       // sort in descending order of activity
-      const categories = Object.keys(categories_index).sort((a, b) => categories_index[b] - categories_index[a]);
+      const categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
       const series_data = commits.map((commit, index) => {
         const commit_date = toMoment(commit.commitDate);
         return (
           {
             x: commit_date.valueOf(),
-            y: categories.indexOf(commit[category]),
+            y: categories.indexOf(model.getCategory(commit)),
             z: commit.stats.lines,
             commit: commit
           }
@@ -116,7 +117,7 @@ export const CommitsTimelineChart = Chart({
         yAxis: {
           id: 'y-items',
           title: 'y-axis-thingy',
-          categories: categories.map(cat => `${cat}: ${categories_index[cat]}`),
+          categories: categories.map(cat => `${cat}: ${categoryIndex[cat]}`),
           scrollbar: {
             enabled: view === 'detail' && showScrollbar,
             showFull: false
