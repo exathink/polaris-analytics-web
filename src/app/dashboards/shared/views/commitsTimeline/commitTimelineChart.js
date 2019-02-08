@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -116,7 +116,9 @@ export const CommitsTimelineChart = Chart({
         },
         yAxis: {
           id: 'y-items',
-          title: 'y-axis-thingy',
+          title: {
+            text: capitalizeFirstLetter(category)
+          },
           categories: categories.map(cat => `${cat}: ${categoryIndex[cat]}`),
           scrollbar: {
             enabled: view === 'detail' && showScrollbar,
