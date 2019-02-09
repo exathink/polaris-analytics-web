@@ -4,22 +4,35 @@ import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {CommitTimelineChartModel} from "./commitTimelineChartModel";
+import {CommitTimelineRollupSelector} from "./commitTimelineGroupSelector";
+import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      selectedGrouping: props.groupBy
+    }
   }
+
+  onGroupingChanged(groupBy) {
+    this.setState({
+      model: new CommitTimelineChartModel(this.props.commits, groupBy),
+      selectedGrouping: groupBy,
+      selectedCategories: null,
+      selectedCommits: null
+    })
+  }
+
 
   onCategoriesSelected(selected) {
     const {
       commits,
-      groupBy,
       onSelectionChange,
     } = this.props;
 
-    const model = new CommitTimelineChartModel(commits, groupBy, selected)
+    const model = new CommitTimelineChartModel(commits, this.state.selectedGrouping, selected)
     this.setState({
       ...this.state,
       model: model,
@@ -72,13 +85,12 @@ export class CommitsTimelineChartView extends React.Component {
 
     let state = null;
     if (!prevState.selectedCategories && !prevState.selectedCommits) {
-      if (prevState.commits !== nextProps.commits) {
         state = {
+          ...prevState,
           model: new CommitTimelineChartModel(commits, groupBy),
           selectedCategories: null,
           selectedCommits: null
         }
-      }
     }
     return state;
   }
@@ -120,10 +132,10 @@ export class CommitsTimelineChartView extends React.Component {
   }
 
   getTimelineRollupHeader() {
-    const {commits, groupBy} = this.props;
+    const {commits} = this.props;
     return (
       <CommitsTimelineRollupBarChart
-        model={new CommitTimelineChartModel(commits, groupBy)}
+        model={new CommitTimelineChartModel(commits, this.state.selectedGrouping)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -159,22 +171,31 @@ export class CommitsTimelineChartView extends React.Component {
 
 
     return (
-      <Flex style={{height: height, width: "100%"}}>
-        <Box w={this.showHeader() ? "90%" : "100%"}>
-          {
-            this.getCommitTimelineChart(model)
-          }
-        </Box>
-        {
-          this.showHeader() ?
-            <Box w={"10%"}>
+
+        <Flex column style={{height: height, width: "100%"}}>
+          <Flex column align='center' style={{height: "5%"}}>
+            <CommitTimelineRollupSelector groupings={this.props.groupings} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+          </Flex>
+          <Flex style={{height:"95%"}}>
+            <Box w={this.showHeader() ? "90%" : "100%"}>
+
+
               {
-                this.getTimelineRollupHeader()
+                this.getCommitTimelineChart(model)
               }
+
             </Box>
-            : null
-        }
-      </Flex>
+            {
+              this.showHeader() ?
+                <Box w={"10%"}>
+                  {
+                    this.getTimelineRollupHeader()
+                  }
+                </Box>
+                : null
+            }
+          </Flex>
+        </Flex>
     )
   }
 

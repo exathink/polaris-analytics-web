@@ -7,7 +7,8 @@ import {capitalizeFirstLetter} from "../../../../helpers/utility";
 export const CommitsTimelineRollupBarChart = Chart({
   chartUpdateProps:
     (props) => ({
-      commits: props.model.commits
+      commits: props.model.commits,
+      groupBy: props.model.groupBy
     }),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: points => points.map( point => point.name),

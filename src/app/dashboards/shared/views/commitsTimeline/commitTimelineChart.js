@@ -47,7 +47,7 @@ export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
       {
-        commits: props.model.commits
+        model: props.model
       }
     ),
 
