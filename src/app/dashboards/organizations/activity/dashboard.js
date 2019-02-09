@@ -97,17 +97,18 @@ export const dashboard = () => (
                         days={1}
                         view={view}
                       />
-                  }e
+                  }
                   showDetail={true}
                 />
                 :
                 null
             }
           </DashboardRow>
-          <DashboardRow h={"67%"}>
+          <DashboardRow h={"63%"}>
             <DashboardWidget
               w={1}
               name="commits"
+              title={"Contributions"}
               render={
                 ({view}) =>
                   <DimensionCommitsNavigatorWidget
@@ -119,6 +120,7 @@ export const dashboard = () => (
                     latestCommit={organization.latestCommit}
                     markLatest
                     groupBy={'repository'}
+                    groupings={['repository', 'author', 'workItem']}
                     showHeader
                     showTable
                   />

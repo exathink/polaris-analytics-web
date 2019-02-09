@@ -21,7 +21,7 @@ export const dashboard = () => (
     render={
       ({contributor, context}) => (
         <Dashboard dashboard={`${dashboard_id}`}>
-          <DashboardRow h='15%'>
+          <DashboardRow h='14%'>
             <DashboardWidget
               w={1}
               name="activity-summary"
@@ -74,10 +74,11 @@ export const dashboard = () => (
               showDetail={true}
             />
           </DashboardRow>
-          <DashboardRow h='63%'>
+          <DashboardRow h='60%'>
             <DashboardWidget
               w={1}
               name="commits"
+              title={"Contributions"}
               render={
                 ({view}) =>
                   <DimensionCommitsNavigatorWidget
@@ -88,6 +89,7 @@ export const dashboard = () => (
                     days={30}
                     latestCommit={contributor.latestCommit}
                     groupBy={'repository'}
+                    groupings={['repository', 'workItem']}
                     smartGrouping={false}
                     showHeader
                     showTable

@@ -38,6 +38,7 @@ export const dashboard = () => (
             <DashboardWidget
               w={1}
               name="commits"
+              title={"Contributions"}
               render={
                 ({view}) =>
                   <DimensionCommitsNavigatorWidget
@@ -46,6 +47,7 @@ export const dashboard = () => (
                     context={context}
                     view={view}
                     days={1}
+                    groupings={['author', 'workItem']}
                     latestCommit={repository.latestCommit}
                     showHeader
                     showTable
