@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment, snakeToUpperCamel} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -36,7 +36,7 @@ function getWorkItemSummaryText(commit) {
     workItemsSummaries = "None"
   } else if (commit.workItemsSummaries.length  === 1) {
     const item = commit.workItemsSummaries[0]
-    workItemsSummaries = `${elide(item.name, 50)} (#${item.displayId})`
+    workItemsSummaries = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (#${item.displayId})`
   } else {
     workItemsSummaries = "*"
   }
@@ -157,8 +157,10 @@ export const CommitsTimelineChart = Chart({
           useHTML: true,
           hideDelay: 50,
           formatter: function () {
+            const workItemHeader = this.point.commit.workItemsSummaries.length > 0 ? `${getWorkItemSummaryText(this.point.commit)} <br/>` : '';
+
             return tooltipHtml(shortTooltip ? {
-              header: `Author: ${this.point.commit.author}`,
+              header: `${workItemHeader} Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
@@ -168,7 +170,7 @@ export const CommitsTimelineChart = Chart({
                 [`Queue Time: `, `${queueTime(this.point.commit)}`],
               ]
             } : {
-              header: `WorkItem: ${getWorkItemSummaryText(this.point.commit)} <br/> Author: ${this.point.commit.author}`,
+              header: `${workItemHeader} Author: ${this.point.commit.author}`,
               body: [
                 ['Commit: ', `${this.point.commit.name}`],
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],

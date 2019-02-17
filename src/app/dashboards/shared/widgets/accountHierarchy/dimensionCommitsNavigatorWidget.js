@@ -68,6 +68,7 @@ export const DimensionCommitsNavigatorWidget = (
                                     deletions
                                 }
                                 workItemsSummaries {
+                                    workItemType
                                     name
                                     key
                                     displayId

@@ -156,3 +156,7 @@ export function isToday(serverCommitDate) {
 export function getCommitTimelineEndWindow(latestCommit) {
   return isToday(latestCommit) ? null : latestCommit
 }
+
+export function snakeToUpperCamel(s) {
+  return s.split('_').reduce((res, word, i) => `${res}${word.charAt(0).toUpperCase()}${word.substr(1).toLowerCase()}`, '');
+}
