@@ -37,4 +37,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.history' defaultMessage="History"/>),
     icon: 'ion-clock'
   },
+  work: {
+    name: 'work',
+    display: () => (<FormattedMessage id='topics.work' defaultMessage="Work"/>),
+    icon: 'ion-clipboard'
+  },
 };
