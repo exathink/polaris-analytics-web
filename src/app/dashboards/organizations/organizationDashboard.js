@@ -6,6 +6,8 @@ import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
 import ProjectsTopic from "./projects/topic";
+import WorkTopic from "./work/topic";
+
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
 
@@ -16,9 +18,16 @@ class WithOrganization extends React.Component {
       showOptionalTopics
     } = this.props;
 
+    var optionalTopics = [];
     // We dont show projects navigation for orgs where no projects have been set up.
-    if(organization && organization.projects.count > 0) {
-      showOptionalTopics([ProjectsTopic.name])
+    if(organization && organization.projectCount > 0) {
+      optionalTopics.push(ProjectsTopic.name)
+    }
+    if(organization && organization.workItemsSourceCount > 0) {
+      optionalTopics.push(WorkTopic.name)
+    }
+    if (optionalTopics.length > 0) {
+      showOptionalTopics(optionalTopics)
     }
   }
 
@@ -36,19 +45,16 @@ class WithOrganization extends React.Component {
         query={
           gql`
             query with_organization_instance($key: String!) {
-                organization(key: $key, interfaces:[CommitSummary]){
+                organization(key: $key, interfaces:[CommitSummary, ProjectCount, RepositoryCount, WorkItemsSourceCount]){
                     id
                     name
                     key
                     earliestCommit
                     latestCommit
                     commitCount
-                    projects(summariesOnly: true){
-                        count
-                    }
-                    repositories(summariesOnly: true){
-                        count
-                    }
+                    projectCount
+                    repositoryCount
+                    workItemsSourceCount
                 }
             }
         `

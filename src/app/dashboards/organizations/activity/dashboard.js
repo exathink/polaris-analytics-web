@@ -42,7 +42,7 @@ export const dashboard = () => (
           </DashboardRow>
           <DashboardRow h={"22%"}>
             <DashboardWidget
-              w={organization.projects.count > 0 ? 1 / 3 : 1/2}
+              w={organization.projectCount > 0 ? 1 / 3 : 1/2}
               name="most-active-repositories"
               render={
                 ({view}) =>
@@ -61,7 +61,7 @@ export const dashboard = () => (
               showDetail={true}
             />
             <DashboardWidget
-              w={organization.projects.count > 0 ? 1 / 3 : 1/2}
+              w={organization.projectCount > 0 ? 1 / 3 : 1/2}
               name="most-active-contributors"
               render={
                 ({view}) =>
@@ -80,7 +80,7 @@ export const dashboard = () => (
               showDetail={true}
             />
             {
-              organization.projects.count > 0 ?
+              organization.projectCount > 0 ?
                 <DashboardWidget
                   w={1 / 3}
                   name="most-active-projects"

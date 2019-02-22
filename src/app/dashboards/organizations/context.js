@@ -5,6 +5,8 @@ import Activity from './activity/topic';
 import Contributors from './contributors/topic';
 import Project from './projects/topic';
 import Repositories from './repositories/topic';
+import Work from './work/topic';
+
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
@@ -44,6 +46,10 @@ const context = {
           {
             match: 'projects',
             topic: Project
+          },
+          {
+            match: 'work',
+            topic: Work
           },
           {
             match: '',
