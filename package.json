@@ -64,7 +64,7 @@
     "source-map-explorer": "^1.6.0"
   },
   "scripts": {
-    "start": "rm -rf ./node_modules/.cache/babel-loader && rm -rf build/messages && yarn build:fragment-types && yarn build:messages && react-app-rewired start",
+    "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-app-rewired start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
     "test": "react-app-rewired test --env=jsdom",

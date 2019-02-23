@@ -3,9 +3,9 @@ import {Flex, Box} from 'reflexbox'
 import {RadioGroup, RadioButton} from "../../../../../components/uielements/radio";
 
 const buttons = {
-  'repository': <RadioButton value={'repository'}>Repository</RadioButton>,
-  'author': <RadioButton value={'author'}>Author</RadioButton>,
-  'workItem': <RadioButton value={'workItem'}>WorkItems</RadioButton>
+  'repository': <RadioButton key='repository' value={'repository'}>Repository</RadioButton>,
+  'author': <RadioButton key='author' value={'author'}>Author</RadioButton>,
+  'workItem': <RadioButton key='workItem' value={'workItem'}>WorkItems</RadioButton>
 }
 
 export class CommitTimelineRollupSelector extends React.Component {

@@ -12,7 +12,7 @@ import Projects from "../../projects/context";
 import Repositories from "../../repositories/context";
 import Contributors from "../../contributors/context";
 
-const dashboard_id = 'dashboards.activity.organization.instance';
+const dashboard_id = 'dashboards.work.organization.instance';
 const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
 };
