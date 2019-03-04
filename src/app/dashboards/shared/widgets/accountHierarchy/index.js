@@ -6,3 +6,4 @@ export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWi
 export {DimensionCommitHistoryWidget} from './dimensionCommitHistoryWidget';
 export {DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';
 export {DimensionWeeklyContributorCountWidget} from './dimensionWeeklyContributorCounts';
+export {DimensionWorkItemEventsNavigatorWidget} from './dimensionWorkItemEventsNavigatorWidget';

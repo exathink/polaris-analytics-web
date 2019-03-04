@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget,
+  DimensionWorkItemEventsNavigatorWidget,
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
@@ -107,22 +107,21 @@ export const dashboard = () => (
           <DashboardRow h={"63%"}>
             <DashboardWidget
               w={1}
-              name="commits"
-              title={"Contributions"}
+              name="workItemEvents"
               render={
                 ({view}) =>
-                  <DimensionCommitsNavigatorWidget
+                  <DimensionWorkItemEventsNavigatorWidget
                     dimension={'organization'}
                     instanceKey={organization.key}
                     context={context}
                     view={view}
-                    days={1}
+                    days={30}
                     latestCommit={organization.latestCommit}
                     markLatest
-                    groupBy={'repository'}
-                    groupings={['repository', 'author', 'workItem']}
-                    showHeader
-                    showTable
+                    groupBy={'workItem'}
+                    groupings={['workItem', 'status', 'source']}
+
+
                   />
               }
               showDetail={true}
