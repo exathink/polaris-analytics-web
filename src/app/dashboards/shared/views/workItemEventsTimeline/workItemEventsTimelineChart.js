@@ -6,6 +6,16 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
 
+function getStateType(workItemState) {
+  if (['open', 'unscheduled', 'unstarted'].includes(workItemState)) {
+    return 'initial'
+  } else if (['closed', 'accepted'].includes(workItemState)) {
+    return 'terminal'
+  } else {
+    return 'in-progress'
+  }
+}
+
 function getDaysSubtitle(days, prefix='Last') {
   return days > 1 ? `${prefix} ${days} Days`
       : days > 0 ? `${prefix} 24 hours` : ``;
@@ -147,16 +157,45 @@ export const WorkItemEventsTimelineChart = Chart({
         },
         series: [
           {
-            key: 'timeline',
-            id: 'timeline',
-            name: 'timeline',
+            key: 'initial_states',
+            id: 'initial_states',
+            name: 'initial',
             pointWidth: 20,
-            data: series_data,
+            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'initial'),
             turboThreshold: 0,
             allowPointSelect: true,
+            color: '#1c98cb',
             marker: {
               symbol: 'triangle',
-              radius: 8
+              radius: 6
+            }
+          },
+          {
+            key: 'terminal_states',
+            id: 'terminal_states',
+            name: 'terminal',
+            pointWidth: 20,
+            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'terminal'),
+            turboThreshold: 0,
+            allowPointSelect: true,
+            color:  '#8f9a8e',
+            marker: {
+              symbol: 'triangle-down',
+              radius: 6
+            }
+          },
+          {
+            key: 'wip_states',
+            id: 'wip_states',
+            name: 'wip',
+            pointWidth: 20,
+            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'in-progress'),
+            turboThreshold: 0,
+            allowPointSelect: true,
+            color: '#199a4a',
+            marker: {
+              symbol: 'diamond',
+              radius: 6
             }
           }
         ],
