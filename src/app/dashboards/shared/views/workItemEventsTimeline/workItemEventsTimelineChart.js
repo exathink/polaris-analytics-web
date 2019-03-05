@@ -159,7 +159,7 @@ export const WorkItemEventsTimelineChart = Chart({
           {
             key: 'initial_states',
             id: 'initial_states',
-            name: 'initial',
+            name: 'Open',
             pointWidth: 20,
             data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'initial'),
             turboThreshold: 0,
@@ -173,7 +173,7 @@ export const WorkItemEventsTimelineChart = Chart({
           {
             key: 'terminal_states',
             id: 'terminal_states',
-            name: 'terminal',
+            name: 'Completed',
             pointWidth: 20,
             data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'terminal'),
             turboThreshold: 0,
@@ -187,7 +187,7 @@ export const WorkItemEventsTimelineChart = Chart({
           {
             key: 'wip_states',
             id: 'wip_states',
-            name: 'wip',
+            name: 'Wip',
             pointWidth: 20,
             data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'in-progress'),
             turboThreshold: 0,
@@ -200,7 +200,7 @@ export const WorkItemEventsTimelineChart = Chart({
           }
         ],
         legend: {
-          enabled: false
+          enabled: true
         },
         time: {
           // Since we are already passing in UTC times we
