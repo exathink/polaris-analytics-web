@@ -8,7 +8,7 @@ const buttons = {
   'source': <RadioButton key='source' value={'source'}>Source</RadioButton>
 }
 
-export class WorkItemEventsTimelineRollupSelector extends React.Component {
+export class WorkItemEventsTimelineGroupSelector extends React.Component {
 
   constructor(props) {
     super(props);

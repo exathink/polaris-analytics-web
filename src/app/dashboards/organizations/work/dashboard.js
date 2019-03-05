@@ -120,7 +120,7 @@ export const dashboard = () => (
                     markLatest
                     groupBy={'workItem'}
                     groupings={['workItem', 'status', 'source']}
-
+                    showHeader={true}
 
                   />
               }

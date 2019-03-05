@@ -2,7 +2,7 @@
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 export class WorkItemEventsTimelineChartModel {
-  constructor(workItemEvents, totalWorkItems, groupBy='state', filterCategories=null) {
+  constructor(workItemEvents, totalWorkItems, groupBy='workItem', filterCategories=null) {
     this.groupBy = groupBy;
     this.totalWorkItems = totalWorkItems;
     this.getCategory = this.initCategorySelector(groupBy)

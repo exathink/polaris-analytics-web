@@ -1,3 +1,3 @@
 export {WorkItemEventsTimelineChart} from './workItemEventsTimelineChart';
 export {WorkItemEventsTimelineChartView} from './workItemEventsTimelineChartView';
-export {WorkItemEventsTimelineRollupSelector} from './workItemEventsTimelineGroupSelector';
+export {WorkItemEventsTimelineGroupSelector} from './workItemEventsTimelineGroupSelector';

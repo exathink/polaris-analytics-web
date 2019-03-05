@@ -3,7 +3,7 @@ import {WorkItemEventsTimelineChart} from "./index";
 import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
 import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
-import {WorkItemEventsTimelineRollupSelector} from "./workItemEventsTimelineGroupSelector";
+import {WorkItemEventsTimelineGroupSelector} from "./workItemEventsTimelineGroupSelector";
 import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
@@ -135,10 +135,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
   }
 
   getTimelineRollupHeader() {
-    const {workItemEvents} = this.props;
+    const {workItemEvents, totalWorkItems} = this.props;
     return (
       <WorkItemEventsTimelineRollupBarchart
-        model={new WorkItemEventsTimelineChartModel(workItemEvents, this.state.selectedGrouping)}
+        model={new WorkItemEventsTimelineChartModel(workItemEvents, totalWorkItems,  this.state.selectedGrouping)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -180,7 +180,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
         <Flex column style={{height: height, width: "100%"}}>
           <Flex column align='center' style={{height: "5%"}}>
-            <WorkItemEventsTimelineRollupSelector groupings={this.props.groupings} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+            <WorkItemEventsTimelineGroupSelector groupings={this.props.groupings} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
           </Flex>
           <Flex style={{height:"95%"}}>
             <Box w={this.showHeader() ? "90%" : "100%"}>
