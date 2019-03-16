@@ -241,7 +241,7 @@ export const WorkItemEventsTimelineChart = Chart({
             color: '#437f61',
             marker: {
               symbol: 'circle',
-              radius: 2
+              radius: 3
             }
           }
         ],
