@@ -7,12 +7,14 @@ import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
-  if (['open', 'unscheduled', 'unstarted'].includes(workItemState)) {
-    return 'initial'
-  } else if (['closed', 'accepted'].includes(workItemState)) {
-    return 'terminal'
-  } else {
-    return 'in-progress'
+  if (workItemState != null) {
+    if (['open', 'unscheduled', 'unstarted'].includes(workItemState)) {
+      return 'initial'
+    } else if (['closed', 'accepted'].includes(workItemState)) {
+      return 'terminal'
+    } else {
+      return 'in-progress'
+    }
   }
 }
 
@@ -41,6 +43,54 @@ function getTitleText(latest, commits, totalCommits) {
 }
 
 
+function workItemStateChangeTooltip(event, shortTooltip, header) {
+  const transition = `Status: ${event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `
+
+  return tooltipHtml(shortTooltip ? {
+    header: `${header}<br/>${transition}`,
+    body: [
+      [`Source: `, `${event.workItemsSourceName}`],
+      [`Id: `, `#${event.displayId}`],
+      [`Date: `, `${event.eventDate}`],
+    ]
+  } : {
+    header: `${header}<br/>${transition}`,
+    body: [
+      [`Source: `, `${event.workItemsSourceName}`],
+      [`Id: `, `#${event.displayId}`],
+      [`Date: `, `${event.eventDate}`],
+    ]
+  })
+}
+
+function workItemCommitTooltip(event, shortTooltip, header) {
+  const commit = `${event.committer}: committed to ${event.repository} on branch ${event.branch}`
+  return tooltipHtml(shortTooltip ? {
+    header: `${header}<br/>${commit}`,
+    body: [
+      [`Message: `, `${elide(event.commitMessage, 60)}`],
+      [`Author: `, `${event.author}`],
+      [`Date: `, `${event.commitDate}`]
+    ]
+  } : {
+    header: `${header}<br/>${commit}`,
+    body: [
+      [`Message: `, `${elide(event.commitMessage, 60)}`],
+      [`Author: `, `${event.author}`],
+      [`Date: `, `${event.commitDate}`]
+    ]
+  })
+}
+
+function getTooltip(point, shortTooltip) {
+  const event = point.timelineEvent;
+  const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.name, 50)}`;
+  if (event.eventDate != null) {
+    return workItemStateChangeTooltip(event, shortTooltip, header);
+  } else {
+    return workItemCommitTooltip(event, shortTooltip, header);
+  }
+}
 
 export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps:
@@ -56,20 +106,20 @@ export const WorkItemEventsTimelineChart = Chart({
   getConfig:
 
     ({model, context, intl, view, days, before, latestCommit, latest, totalWorkItems, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
-      const workItemEvents = model.workItemEvents;
+      const timelineEvents = model.timelineEvents;
       const categoryIndex = model.categoriesIndex;
       const category = model.groupBy
 
       // sort in descending order of activity
       const categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
-      const series_data = workItemEvents.map((workItemEvent, index) => {
-        const eventDate = toMoment(workItemEvent.eventDate);
+      const series_data = timelineEvents.map((timelineEvent, index) => {
+        const eventDate = toMoment(timelineEvent.eventDate || timelineEvent.commitDate);
         return (
           {
             x: eventDate.valueOf(),
-            y: categories.indexOf(model.getCategory(workItemEvent)),
+            y: categories.indexOf(model.getCategory(timelineEvent)),
             z: 3,
-            workItemEvent: workItemEvent
+            timelineEvent: timelineEvent
           }
         )
       });
@@ -99,7 +149,7 @@ export const WorkItemEventsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: getTitleText(latest, workItemEvents,totalWorkItemEvents),
+          text: getTitleText(latest, timelineEvents,totalWorkItemEvents),
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
@@ -134,26 +184,8 @@ export const WorkItemEventsTimelineChart = Chart({
           useHTML: true,
           hideDelay: 50,
           formatter: function () {
-            const event = this.point.workItemEvent;
-            const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.name, 50)}`;
-            const transition = `Status: ${event.previousState? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `
-
-            return tooltipHtml(shortTooltip ? {
-              header: `${header}<br/>${transition}`,
-              body: [
-                [`Source: `, `${event.workItemsSourceName}`],
-                [`Id: `, `#${event.displayId}`],
-                [`Date: `, `${event.eventDate}`],
-              ]
-            } : {
-              header: `${header}<br/>${transition}`,
-              body: [
-                [`Source: `, `${event.workItemsSourceName}`],
-                [`Id: `, `#${event.displayId}`],
-                [`Date: `, `${event.eventDate}`],
-              ]
-            })
-          }
+            return getTooltip(this.point, shortTooltip);
+          },
         },
         series: [
           {
@@ -161,7 +193,7 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'initial_states',
             name: 'Open',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'initial'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'initial'),
             turboThreshold: 0,
             allowPointSelect: true,
             color: '#1c98cb',
@@ -175,7 +207,7 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'terminal_states',
             name: 'Completed',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'terminal'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'terminal'),
             turboThreshold: 0,
             allowPointSelect: true,
             color:  '#8f9a8e',
@@ -189,13 +221,27 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'wip_states',
             name: 'Wip',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.workItemEvent.newState) == 'in-progress'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'in-progress'),
             turboThreshold: 0,
             allowPointSelect: true,
             color: '#199a4a',
             marker: {
               symbol: 'diamond',
               radius: 6
+            }
+          },
+          {
+            key: 'commits',
+            id: 'commits',
+            name: 'commits',
+            pointWidth: 20,
+            data: series_data.filter(point=>point.timelineEvent.commitDate != null),
+            turboThreshold: 0,
+            allowPointSelect: true,
+            color: '#437f61',
+            marker: {
+              symbol: 'circle',
+              radius: 2
             }
           }
         ],

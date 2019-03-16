@@ -64,6 +64,26 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                             }
                         }
                     }
+                    workItemCommits(days: $days, before: $before, first: $latest) {
+                       count
+                       edges {
+                        node {
+                            workItemsSourceName
+                            workItemType
+                            name
+                            key
+                            displayId
+                            commitHash
+                            commitMessage
+                            committer
+                            commitDate
+                            author
+                            authorDate
+                            branch
+                            repository
+                        }
+                       }
+                    }
                 }
             }
         `
@@ -82,11 +102,14 @@ export const DimensionWorkItemEventsNavigatorWidget = (
           if (error) return null;
 
           const workItemEvents = data[dimension].workItemEvents.edges.map(edge => edge.node);
+          const workItemCommits = data[dimension].workItemCommits.edges.map(edge => edge.node);
           const totalEvents = data[dimension].workItemEvents.count;
+          const totalCommits = data[dimension].workItemCommits.count;
           const totalWorkItems = data[dimension].workItems.count;
           context.cacheView(getViewCacheKey(instanceKey, display), (
                 <WorkItemEventsTimelineChartView
                   workItemEvents={workItemEvents}
+                  workItemCommits={workItemCommits}
                   context={context}
                   instanceKey={instanceKey}
                   view={view}
