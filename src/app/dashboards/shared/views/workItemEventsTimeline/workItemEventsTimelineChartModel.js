@@ -20,6 +20,8 @@ export class WorkItemEventsTimelineChartModel {
       return (workItem) => workItem.eventDate? capitalizeFirstLetter(workItem['newState']) : 'Commit'
     } else if (groupBy == 'source') {
       return (workItem) => workItem['workItemsSourceName']
+    } else if (groupBy == 'type') {
+      return (workItem) => workItem['workItemType']
     } else {
       return (workItem) => workItem[groupBy]
     }

@@ -5,7 +5,8 @@ import {RadioGroup, RadioButton} from "../../../../../components/uielements/radi
 const buttons = {
   'workItem': <RadioButton key='workItem' value={'workItem'}>WorkItem</RadioButton>,
   'event': <RadioButton key='event' value={'event'}>Event</RadioButton>,
-  'source': <RadioButton key='source' value={'source'}>Source</RadioButton>
+  'source': <RadioButton key='source' value={'source'}>Source</RadioButton>,
+  'type': <RadioButton key='type' value={'type'}>Type</RadioButton>,
 }
 
 export class WorkItemEventsTimelineGroupSelector extends React.Component {
