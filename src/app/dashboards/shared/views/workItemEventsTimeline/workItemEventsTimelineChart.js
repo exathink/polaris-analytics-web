@@ -8,7 +8,7 @@ import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
   if (workItemState != null) {
-    if (['open', 'unscheduled', 'unstarted'].includes(workItemState)) {
+    if (['created', 'open', 'unscheduled', 'unstarted'].includes(workItemState)) {
       return 'initial'
     } else if (['closed', 'accepted'].includes(workItemState)) {
       return 'terminal'
@@ -36,10 +36,8 @@ function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
   }
 }
 
-function getTitleText(latest, commits, totalCommits) {
-  return latest && latest === commits.length ?
-    `Last ${latest} Commits ${latest < totalCommits ? `of ${totalCommits}`: ``}`
-    : `${commits.length} Active Work Items`
+function getTitleText(totalWorkItems) {
+  return `${totalWorkItems} Active Work Items`
 }
 
 
@@ -149,12 +147,12 @@ export const WorkItemEventsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: getTitleText(latest, timelineEvents,totalWorkItemEvents),
-          align: view === 'detail' ? 'center' : 'left'
+          text: getTitleText(totalWorkItems),
+          align: 'left'
         },
         subtitle: {
           text: getSubtitleText(before, startWindow, endWindow, latestCommit, days),
-          align: view === 'detail' ? 'center' : 'left'
+          align: 'left'
         },
         xAxis: {
           type: 'datetime',
@@ -233,7 +231,7 @@ export const WorkItemEventsTimelineChart = Chart({
           {
             key: 'commits',
             id: 'commits',
-            name: 'commits',
+            name: 'Commit',
             pointWidth: 20,
             data: series_data.filter(point=>point.timelineEvent.commitDate != null),
             turboThreshold: 0,
