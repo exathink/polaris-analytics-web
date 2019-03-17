@@ -115,7 +115,7 @@ export const dashboard = () => (
                     instanceKey={organization.key}
                     context={context}
                     view={view}
-                    days={30}
+                    days={7}
                     latestCommit={organization.latestCommit}
                     markLatest
                     groupBy={'workItem'}
