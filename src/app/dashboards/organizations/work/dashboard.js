@@ -119,7 +119,7 @@ export const dashboard = () => (
                     latestCommit={organization.latestCommit}
                     markLatest
                     groupBy={'workItem'}
-                    groupings={['workItem', 'status', 'source']}
+                    groupings={['workItem', 'event', 'source']}
                     showHeader={true}
 
                   />

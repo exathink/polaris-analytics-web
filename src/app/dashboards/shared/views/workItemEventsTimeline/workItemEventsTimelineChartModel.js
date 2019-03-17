@@ -16,7 +16,7 @@ export class WorkItemEventsTimelineChartModel {
   initCategorySelector(groupBy) {
     if (groupBy == 'workItem') {
       return (workItem) => workItem['displayId']
-    } else if (groupBy == 'status') {
+    } else if (groupBy == 'event') {
       return (workItem) => workItem.eventDate? capitalizeFirstLetter(workItem['newState']) : 'Commit'
     } else if (groupBy == 'source') {
       return (workItem) => workItem['workItemsSourceName']

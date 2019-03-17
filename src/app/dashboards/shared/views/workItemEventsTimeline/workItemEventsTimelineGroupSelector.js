@@ -4,7 +4,7 @@ import {RadioGroup, RadioButton} from "../../../../../components/uielements/radi
 
 const buttons = {
   'workItem': <RadioButton key='workItem' value={'workItem'}>WorkItem</RadioButton>,
-  'status': <RadioButton key='status' value={'status'}>Event</RadioButton>,
+  'event': <RadioButton key='event' value={'event'}>Event</RadioButton>,
   'source': <RadioButton key='source' value={'source'}>Source</RadioButton>
 }
 
