@@ -13,11 +13,30 @@ function getWorkItemName(workItemEvents, displayId) {
   }
 }
 
+
+
 function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
   if (groupBy == 'workItem') {
-    const workItem = timelineEvents.find(item => item.displayId == series.name)
+    let workItem = null;
+    let commitCount = 0;
+    let eventCount = 0;
+    for (let i=0; i < timelineEvents.length; i++) {
+      if(timelineEvents[i].displayId === series.name) {
+        workItem = timelineEvents[i];
+        if(timelineEvents[i].eventDate != null) {
+          eventCount = eventCount + 1;
+        } else {
+          commitCount = commitCount + 1;
+        }
+      }
+    }
     if (workItem) {
-      return `<p><b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}<br/>${workItem.name}<br/><br/> ${categoriesIndex[series.name]} events</p>`
+      return `<p>
+                 <b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}
+                 <br/>${workItem.name}<br/>
+                 <br/>${commitCount} commits, ${eventCount} status updates 
+                 <br/>
+              </p>`
     } else {
       return `<br>${series.name}<br/><br/> ${categoriesIndex[series.name]} events</p>`
     }
