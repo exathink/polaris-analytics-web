@@ -1,8 +1,30 @@
-import {Chart} from "../../../../framework/viz/charts";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
 import {getCategoriesIndex} from "./workItemEventsTimelineChartModel";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
+
+function getWorkItemName(workItemEvents, displayId) {
+  const workItem = workItemEvents.find(item => item.displayId == displayId)
+  if (workItem) {
+    return workItem.name
+  } else {
+    return displayId
+  }
+}
+
+function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
+  if (groupBy == 'workItem') {
+    const workItem = timelineEvents.find(item => item.displayId == series.name)
+    if (workItem) {
+      return `<p><b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}<br/>${workItem.name}<br/><br/> ${categoriesIndex[series.name]} events</p>`
+    } else {
+      return `<br>${series.name}<br/><br/> ${categoriesIndex[series.name]} events</p>`
+    }
+  } else {
+    return `<br>${series.name}<br/><br/> ${categoriesIndex[series.name]} events</p>`
+  }
+}
 
 export const WorkItemEventsTimelineRollupBarchart = Chart({
   chartUpdateProps:
@@ -14,7 +36,7 @@ export const WorkItemEventsTimelineRollupBarchart = Chart({
   mapPoints: points => points.map( point => point.name),
   getConfig:
     ({model, suppressDataLabelsThreshold}) => {
-      const {workItemEvents, categoriesIndex, groupBy} = model
+      const {timelineEvents, categoriesIndex, groupBy} = model
 
       const series = Object.keys(categoriesIndex).map(
         category => ({
@@ -71,9 +93,10 @@ export const WorkItemEventsTimelineRollupBarchart = Chart({
           enabled: false
         },
         tooltip: {
+          useHTML: true,
           hideDelay: 50,
           formatter: function() {
-            return this.series.name
+            return getTooltip(timelineEvents, categoriesIndex, groupBy, this.series)
           }
         },
       }

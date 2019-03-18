@@ -62,7 +62,7 @@ function workItemStateChangeTooltip(event, shortTooltip, header) {
 }
 
 function workItemCommitTooltip(event, shortTooltip, header) {
-  const commit = `${event.committer}: committed to ${event.repository} on branch ${event.branch}`
+  const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`
   return tooltipHtml(shortTooltip ? {
     header: `${header}<br/>${commit}`,
     body: [
