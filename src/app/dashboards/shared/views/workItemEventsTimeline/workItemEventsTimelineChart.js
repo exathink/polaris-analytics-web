@@ -41,7 +41,8 @@ function getTitleText(totalWorkItems) {
 }
 
 
-function workItemStateChangeTooltip(event, shortTooltip, header) {
+function workItemStateChangeTooltip(event, shortTooltip) {
+  const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.name, 50)}`;
   const transition = `Status: ${event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `
 
   return tooltipHtml(shortTooltip ? {
@@ -61,7 +62,8 @@ function workItemStateChangeTooltip(event, shortTooltip, header) {
   })
 }
 
-function workItemCommitTooltip(event, shortTooltip, header) {
+function workItemCommitTooltip(event, shortTooltip) {
+  const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.workItemName, 50)}`;
   const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`
   return tooltipHtml(shortTooltip ? {
     header: `${header}<br/>${commit}`,
@@ -82,11 +84,11 @@ function workItemCommitTooltip(event, shortTooltip, header) {
 
 function getTooltip(point, shortTooltip) {
   const event = point.timelineEvent;
-  const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.name, 50)}`;
+
   if (event.eventDate != null) {
-    return workItemStateChangeTooltip(event, shortTooltip, header);
+    return workItemStateChangeTooltip(event, shortTooltip);
   } else {
-    return workItemCommitTooltip(event, shortTooltip, header);
+    return workItemCommitTooltip(event, shortTooltip);
   }
 }
 

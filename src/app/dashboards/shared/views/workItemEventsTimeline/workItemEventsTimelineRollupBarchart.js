@@ -7,7 +7,7 @@ import {capitalizeFirstLetter} from "../../../../helpers/utility";
 function getWorkItemName(workItemEvents, displayId) {
   const workItem = workItemEvents.find(item => item.displayId == displayId)
   if (workItem) {
-    return workItem.name
+    return workItem.eventDate ? workItem.name : workItem.workItemName
   } else {
     return displayId
   }
@@ -33,7 +33,7 @@ function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
     if (workItem) {
       return `<p>
                  <b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}
-                 <br/>${workItem.name}<br/>
+                 <br/>${workItem.eventDate? workItem.name: workItem.workItemName}<br/>
                  <br/>${commitCount} commits, ${eventCount} status updates 
                  <br/>
               </p>`

@@ -70,6 +70,8 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                        count
                        edges {
                         node {
+                            workItemName
+                            workItemKey
                             workItemsSourceName
                             workItemType
                             name
