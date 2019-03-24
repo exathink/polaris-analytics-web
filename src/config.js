@@ -6,7 +6,7 @@ const siteConfig = {
   siteName: 'URJUNA',
   siteIcon: 'ion ion-arrow-graph-up-right',
   homePath: '/app',
-  footerText: 'Exathink, LLC ©2018',
+  footerText: '©Exathink, LLC 2017-2019',
 };
 const themeConfig = {
   topbar: 'themedefault',
