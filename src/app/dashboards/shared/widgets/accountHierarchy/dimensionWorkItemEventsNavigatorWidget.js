@@ -22,6 +22,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       days,
       before,
       latestWorkItemEvent,
+      latestCommit,
       latest,
       view,
       groupBy,
@@ -35,20 +36,20 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       showTable,
       onSelectionChange,
       pollInterval,
-      referenceDate,
+      commitsReferenceDate,
 
   }) => (
     <Query
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_workItemEvents($key: String!, $days: Int, $before: DateTime, $latest: Int) {
+            query ${dimension}_workItemEvents($key: String!, $days: Int, $workItemsBefore: DateTime, $commitsBefore: DateTime, $latest: Int) {
                 ${dimension}(key: $key){
                     id
-                    workItems(days: $days, before: $before, first: $latest, summariesOnly:true) {
+                    workItems(days: $days, before: $workItemsBefore, first: $latest, summariesOnly:true) {
                         count
                     }
-                    workItemEvents(days: $days, before: $before, first: $latest) {
+                    workItemEvents(days: $days, before: $workItemsBefore, first: $latest) {
                         count
                         edges {
                             node {
@@ -65,7 +66,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                             }
                         }
                     }
-                    workItemCommits(days: $days, before: $before, first: $latest) {
+                    workItemCommits(days: $days, before: $commitsBefore, first: $latest) {
                        count
                        edges {
                         node {
@@ -92,7 +93,8 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before != null ? moment(before) : (latestWorkItemEvent ? toMoment(latestWorkItemEvent) : null),
+        workItemsBefore: before != null ? moment(before) : (latestWorkItemEvent ? toMoment(latestWorkItemEvent) : null),
+        commitsBefore: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
         latest: latest
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
