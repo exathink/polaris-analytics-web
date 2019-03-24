@@ -45,7 +45,7 @@ class WithOrganization extends React.Component {
         query={
           gql`
             query with_organization_instance($key: String!) {
-                organization(key: $key, interfaces:[CommitSummary, ProjectCount, RepositoryCount, WorkItemsSourceCount]){
+                organization(key: $key, interfaces:[CommitSummary, ProjectCount, RepositoryCount, WorkItemsSourceCount, WorkItemEventSpan]){
                     id
                     name
                     key
@@ -55,6 +55,8 @@ class WithOrganization extends React.Component {
                     projectCount
                     repositoryCount
                     workItemsSourceCount
+                    earliestWorkItemEvent
+                    latestWorkItemEvent
                 }
             }
         `
