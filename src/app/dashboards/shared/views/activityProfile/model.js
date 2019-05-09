@@ -1,9 +1,22 @@
-import {Model} from "../../../../framework/viz/model/model";
 import type {Context} from "../../../../framework/navigation/context/context";
 import {ActiveContext} from "../../../../framework/navigation/context/activeContext";
 import moment from "moment/moment";
 import {withActivityLevel} from "../../helpers/activityLevel";
 import {toMoment} from "../../../../helpers/utility";
+
+
+export class Model<T> {
+  data: T;
+  version: number;
+
+
+  constructor(data: T, version: number = 0) {
+    this.data = data;
+    this.version = version;
+
+  }
+
+}
 
 export type ActivityLevel = {
   display_name: string,
