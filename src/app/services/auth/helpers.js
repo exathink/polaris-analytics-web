@@ -1,5 +1,7 @@
 import { getCookie, timestamp } from '../../helpers/utility';
-import { SESSION_COOKIE_NAME, SESSION_COOKIE_EXP_NAME } from './constants';
+
+export const SESSION_COOKIE_NAME = 'session_key';
+export const SESSION_COOKIE_EXP_NAME = 'session_expiration';
 
 export const getSessionKey = () => getCookie(SESSION_COOKIE_NAME);
 export const getSessionExpiration = () => getCookie(SESSION_COOKIE_EXP_NAME);
