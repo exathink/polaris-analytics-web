@@ -3,15 +3,15 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {ConnectedRouter} from 'react-router-redux';
 
 
-import App from '../app/app';
-import Login from '../app/components/auth/Login';
-import Logout from '../app/components/auth/Logout';
+import App from './app/app';
+import Login from './app/components/auth/Login';
+import Logout from './app/components/auth/Logout';
 
-import RestrictedRoute from './restrictedRoute';
-import FourZeroFour from "../containers/Page/404";
+import RestrictedRoute from './app/components/auth/restrictedRoute';
+import FourZeroFour from "./containers/Page/404";
 import {connect} from "react-redux";
-import Register from "../app/components/auth/Registration";
-import {withViewerContext} from "../app/framework/viewer/viewerContext";
+import Register from "./app/components/auth/Registration";
+import {withViewerContext} from "./app/framework/viewer/viewerContext";
 
 const AppRedirector = withViewerContext(
   ({viewer}) => {

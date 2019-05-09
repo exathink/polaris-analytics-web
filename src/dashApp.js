@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store, history } from './redux/store';
-import AllRoutes from './routes/router';
+import AllRoutes from './router';
 import { ThemeProvider } from 'styled-components';
 import { LocaleProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
