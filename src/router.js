@@ -10,19 +10,7 @@ import Logout from './app/components/auth/Logout';
 import RestrictedRoute from './app/components/auth/restrictedRoute';
 import FourZeroFour from "./containers/Page/404";
 import {connect} from "react-redux";
-import Register from "./app/components/auth/Registration";
 import {withViewerContext} from "./app/framework/viewer/viewerContext";
-
-const AppRedirector = withViewerContext(
-  ({viewer}) => {
-    if (viewer.account != null) {
-        return (<Redirect to='/app'/>);
-    } else {
-      return (<Redirect to='/register'/>)
-    }
-});
-
-
 
 export default ({history}) => (
   <ConnectedRouter history={history}>
@@ -36,15 +24,11 @@ export default ({history}) => (
         component={Logout}
       />
       <RestrictedRoute
-        path="/register"
-        component={Register}
-      />
-      <RestrictedRoute
         path="/app"
         component={App}
       />
       <RestrictedRoute
-        exact path="/" component={AppRedirector}
+        exact path="/" component={() => <Redirect to='/app'/>}
       />
       <RestrictedRoute
         component={FourZeroFour}

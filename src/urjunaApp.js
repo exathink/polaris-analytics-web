@@ -11,30 +11,30 @@ import config, {
   getCurrentLanguage
 } from './containers/LanguageSwitcher/config';
 import { themeConfig } from './config';
-import DashAppHolder from './dashAppStyle';
+import AppHolder from './urjunaStyle';
 import {DefaultApolloProvider} from "./app/services/graphql";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
 
-const DashApp = () => (
+const UrjunaApp = () => (
   <LocaleProvider locale={currentAppLocale.antd}>
     <IntlProvider
       locale={currentAppLocale.locale}
       messages={currentAppLocale.messages}
     >
       <ThemeProvider theme={themes[themeConfig.theme]}>
-        <DashAppHolder>
+        <AppHolder>
           <DefaultApolloProvider>
             <Provider store={store}>
               <AllRoutes history={history} />
             </Provider>
           </DefaultApolloProvider>
-        </DashAppHolder>
+        </AppHolder>
       </ThemeProvider>
     </IntlProvider>
   </LocaleProvider>
 );
-export default DashApp;
+export default UrjunaApp;
 export { AppLocale };
