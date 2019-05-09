@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { authenticated } from '../app/services/auth/helpers';
-import authActions from '../redux/auth/actions';
 import { Route, Redirect } from 'react-router-dom';
+import {analytics_service} from "../app/services/graphql";
+import gql from "graphql-tag";
+import {Loading} from "../app/components/graphql/loading";
+import {Query} from "react-apollo";
+import {ViewerContext} from "../app/framework/viewer/viewerContext";
 
-const { requestUserData } = authActions;
 
-const RestrictedRoute = ({ component: Component, authorized, requestUserData, ...rest  }) => (
+
+
+
+export default ({ component: Component, ...rest  }) => (
   <Route
     {...rest}
 
@@ -15,19 +21,14 @@ const RestrictedRoute = ({ component: Component, authorized, requestUserData, ..
         if (!authenticated())
           return <Redirect to={{pathname: '/login', from: props.location.pathname}}/>;
 
-        if(!authorized) {
-          requestUserData();
-          return null;
-        }
-
-        return <Component {...props} />;
+        return (
+          <ViewerContext.Provider>
+            <Component {...props} />
+          </ViewerContext.Provider>
+        )
       }
     }
   />
 );
 
-const mapStateToProps = state => ({
-  authorized: state.auth.get('authorized')
-});
 
-export default connect(mapStateToProps, { requestUserData })(RestrictedRoute);

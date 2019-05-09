@@ -20,8 +20,9 @@ import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
 import {build_context_url_tree} from "./framework/navigation/context/helpers";
 import {NavigationContext} from "./framework/navigation/context/navigationContext";
-import {DefaultApolloProvider} from "./services/graphql";
 import {UserContext} from "./framework/user/userContext";
+
+
 
 const {Content, Footer} = Layout;
 const {logout} = authAction;
@@ -35,8 +36,8 @@ export class App extends Component {
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <AppHolder>
-          <DefaultApolloProvider>
             <UserContext.Provider value={this.props.userContext}>
+
               <NavigationContext.Provider rootContext={AppContext}>
                 <Layout style={{height: '100vh'}}>
                   <Debounce time="1000" handler="onResize">
@@ -85,8 +86,8 @@ export class App extends Component {
                   </Layout>
                 </Layout>
               </NavigationContext.Provider>
+
             </UserContext.Provider>
-          </DefaultApolloProvider>
         </AppHolder>
       </ThemeProvider>
     );

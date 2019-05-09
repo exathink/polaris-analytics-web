@@ -3,8 +3,7 @@ import {CardGrid} from "../../components/cardGrid";
 import {NavCard} from "../../components/cards";
 import {Contexts} from "../../meta";
 import {FormattedMessage} from 'react-intl';
-import {connect} from 'react-redux';
-
+import {withViewerContext} from "../../framework/viewer/viewerContext";
 
 const messages = {
   yourDashboards: <FormattedMessage id='landing.yourDashboards' defaultMessage='Your Dashboards'/>,
@@ -12,12 +11,11 @@ const messages = {
   ossDashboards: <FormattedMessage id='landing.ossDashboards' defaultMessage='Browse open source dashboards'/>
 };
 
-export const Landing = connect(state => ({
-  account: state.user.get('account')
-}))(({account}) => (
+export const Landing = withViewerContext(
+  ({viewer}) => (
     <CardGrid>
       {
-        account.repo_count > 0?
+        viewer.account != null?
             <NavCard
             link={'/app/dashboard'}
             icon={`ion ${Contexts.accounts.icon}`}

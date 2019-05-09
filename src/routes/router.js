@@ -11,13 +11,11 @@ import RestrictedRoute from './restrictedRoute';
 import FourZeroFour from "../containers/Page/404";
 import {connect} from "react-redux";
 import Register from "../app/components/auth/Registration";
+import {withViewerContext} from "../app/framework/viewer/viewerContext";
 
-
-const AppRedirector = connect(state => ({
-    account: state.user.get('account')
-  }))((props) => {
-    const account = props.account;
-    if (account.initialized) {
+const AppRedirector = withViewerContext(
+  ({viewer}) => {
+    if (viewer.account != null) {
         return (<Redirect to='/app'/>);
     } else {
       return (<Redirect to='/register'/>)

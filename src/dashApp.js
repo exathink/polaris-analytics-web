@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store, history } from './redux/store';
-import PublicRoutes from './routes/router';
+import AllRoutes from './routes/router';
 import { ThemeProvider } from 'styled-components';
 import { LocaleProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
@@ -12,6 +12,7 @@ import config, {
 } from './containers/LanguageSwitcher/config';
 import { themeConfig } from './config';
 import DashAppHolder from './dashAppStyle';
+import {DefaultApolloProvider} from "./app/services/graphql";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
@@ -25,9 +26,11 @@ const DashApp = () => (
     >
       <ThemeProvider theme={themes[themeConfig.theme]}>
         <DashAppHolder>
+          <DefaultApolloProvider>
             <Provider store={store}>
-              <PublicRoutes history={history} />
+              <AllRoutes history={history} />
             </Provider>
+          </DefaultApolloProvider>
         </DashAppHolder>
       </ThemeProvider>
     </IntlProvider>

@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {withUserContext} from "../../framework/user/userContext";
+import {withViewerContext} from "../../framework/viewer/viewerContext";
 import {Query} from "react-apollo";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
@@ -20,7 +20,7 @@ class WithAccount extends React.Component {
     const {
       render,
       pollInterval,
-      account,
+      viewer,
       context,
     } = this.props;
 
@@ -29,8 +29,8 @@ class WithAccount extends React.Component {
         client={analytics_service}
         query={
           gql`
-            query with_account_instance($key: String!) {
-                account(key: $key, interfaces:[CommitSummary]){
+            query with_account_instance {
+                account(interfaces:[CommitSummary]){
                     id
                     name
                     key
@@ -50,9 +50,6 @@ class WithAccount extends React.Component {
             }
         `
         }
-        variables={{
-          key: account.account_key
-        }}
         pollInterval={pollInterval}
       >
         {
@@ -67,7 +64,7 @@ class WithAccount extends React.Component {
                 context={context}
                 account={accountInstance}
                 onMount={
-                  () => this.onDashboardMounted(account)
+                  () => this.onDashboardMounted(accountInstance)
                 }
               />
             )
@@ -77,6 +74,6 @@ class WithAccount extends React.Component {
     )
   }
 }
-export const AccountDashboard = withUserContext(withNavigationContext(WithAccount));
+export const AccountDashboard = withNavigationContext(WithAccount);
 
 
