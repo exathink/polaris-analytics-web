@@ -2,7 +2,7 @@ import React from 'react';
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
 import {withRouter} from "react-router";
-import {UserContext} from "../user/userContext";
+
 
 const {Provider, Consumer} = React.createContext({})
 
