@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+
 import Popover from '../../../components/uielements/popover';
 import TopbarDropdownWrapper from './topbarDropdown.style';
-import authActions from '../../../redux/auth/actions';
 import {gravatar_url} from "../../helpers/gravatar";
 import {FormattedMessage} from "react-intl";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
+import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 
 const messages = {
   logout: <FormattedMessage id='topbaruser.logout' defaultMessage='Logout'/>,
@@ -28,11 +28,16 @@ class TopbarUser extends Component {
     this.setState({ visible: !this.state.visible });
   }
 
+  logout(){
+    this.props.navigate.push('/logout')
+  }
+
+
   render() {
     const userName = this.props.viewer.firstName;
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
-        <a className="isoDropdownLink" onClick={this.props.logout}>
+        <a className="isoDropdownLink" onClick={this.logout.bind(this)}>
             <p>{messages.logout} {userName}</p>
         </a>
       </TopbarDropdownWrapper>
@@ -56,5 +61,5 @@ class TopbarUser extends Component {
   }
 }
 
-const { logout } = authActions;
-export default withViewerContext(connect(null, { logout })(TopbarUser));
+
+export default withViewerContext(withNavigationContext(TopbarUser));
