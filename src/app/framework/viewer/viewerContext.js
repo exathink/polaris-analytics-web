@@ -7,6 +7,7 @@ import {withRouter} from "react-router";
 const {Provider, Consumer} = React.createContext({})
 
 class ViewerContextProvider extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
@@ -14,32 +15,24 @@ class ViewerContextProvider extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  async loadViewerInfo() {
     try {
       const result = await analytics_service.query({
         query: gql`
             query viewer_info {
                 viewer {
-                    userName
-                    firstName
-                    lastName
-                    email
-                    roles
-                    accountKey
-                    account {
-                        key
-                        name
-                    }
+                    ...ViewerInfoFields
                 }
-            }`
-
+            }
+            ${ViewerContext.fragments.viewerInfoFields}
+        `
       })
       if (result.data != null) {
         this.setState({
           viewer: result.data.viewer
         })
       }
-    } catch(error) {
+    } catch (error) {
       this.setState({
         ...this.state,
         error: error
@@ -47,14 +40,25 @@ class ViewerContextProvider extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    this.loadViewerInfo()
+  }
+
+  async refresh() {
+    this.loadViewerInfo()
+  }
+
   render() {
     return (
       this.state.viewer != null ?
-        <Provider value={this.state.viewer}>
+        <Provider value={{
+          viewer: this.state.viewer,
+          refresh: this.refresh.bind(this)
+        }}>
           {this.props.children}
         </Provider>
         : this.state.error != null ?
-          "Unknown user error"
+        "Unknown user error"
         : null
     )
   }
@@ -63,16 +67,45 @@ class ViewerContextProvider extends React.Component {
 
 export const ViewerContext = {
   Provider: ViewerContextProvider,
-  Consumer: Consumer
+  Consumer: Consumer,
+
+  fragments: {
+    viewerInfoFields: gql`
+        fragment ViewerInfoFields on Viewer {
+            userName
+            company
+            firstName
+            lastName
+            email
+            roles
+            accountKey
+            account {
+                id
+                key
+                name
+                organizations(summariesOnly: true) {
+                    count
+                }
+                projects(summariesOnly: true){
+                    count
+                }
+                repositories(summariesOnly: true){
+                    count
+                }
+            }
+        }
+    `
+  },
+  queries: {}
 };
 
 export const withViewerContext = Component => (
   props =>
     <ViewerContext.Consumer>
       {
-        viewer =>
+        viewerContext =>
           <Component
-            viewer={viewer}
+            viewerContext={viewerContext}
             {...props}/>
       }
     </ViewerContext.Consumer>

@@ -34,7 +34,8 @@ class TopbarUser extends Component {
 
 
   render() {
-    const userName = this.props.viewer.firstName;
+    const {viewerContext} = this.props;
+    const userName = viewerContext.viewer.firstName;
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
         <a className="isoDropdownLink" onClick={this.logout.bind(this)}>
@@ -53,7 +54,7 @@ class TopbarUser extends Component {
         placement="bottomLeft"
       >
         <div className="isoImgWrapper">
-          <img alt="user" src={`${gravatar_url(this.props.viewer.email, 36, 'mm')}`} />
+          <img alt="user" src={`${gravatar_url(viewerContext.viewer.email, 36, 'mm')}`} />
           <span className="userActivity online" />
         </div>
       </Popover>

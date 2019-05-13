@@ -30,22 +30,6 @@ export const analytics_service = new ApolloClient({
 analytics_service.defaultPollInterval = () => defaultPollInterval(analytics_service);
 
 
-export const admin_service = new ApolloClient({
-  cache: new InMemoryCache({
-    fragmentMatcher: new IntrospectionFragmentMatcher({
-      introspectionQueryResultData: adminFragmentTypes
-    })
-  }),
-  link: new HttpLink({
-    uri: GRAPHQL_ADMIN_URL,
-    credentials: 'include',
-  })
-});
-admin_service.defaultPollInterval = () => defaultPollInterval(admin_service);
-
-
-
-
 export const DefaultApolloProvider = props => (
   <ApolloProvider client={analytics_service}>
     {props.children}

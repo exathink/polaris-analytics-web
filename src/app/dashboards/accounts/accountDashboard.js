@@ -20,7 +20,6 @@ class WithAccount extends React.Component {
     const {
       render,
       pollInterval,
-      viewer,
       context,
     } = this.props;
 
