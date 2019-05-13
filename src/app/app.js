@@ -62,7 +62,7 @@ export class App extends Component {
                     }}
                   >
                     <LayoutWrapper id="app-content-area" className="app-content-wrapper">
-                      <DashboardControlBar/>
+
                       <div className={"app-content"}>
                         <AppRouter url={url} {...this.props} />
                       </div>

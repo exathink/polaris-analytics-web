@@ -1,6 +1,6 @@
 import './dashboard.css';
 import React from 'react';
-
+import {DashboardControlBar} from "../../../containers/controlbar/controlbar";
 
 import {Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findByProps} from "../../../helpers/reactHelpers";
@@ -16,6 +16,7 @@ export class DashboardLayout extends React.Component {
       const selectedChildren = findByProps(children, 'name', match.params.selected);
       return (
             <div className={"dashboard"}>
+              <DashboardControlBar/>
               <DashboardRow h={"100%"}>
                 {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
               </DashboardRow>
@@ -25,7 +26,8 @@ export class DashboardLayout extends React.Component {
     } else {
       return (
           <div className={"dashboard"}>
-          {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
+            <DashboardControlBar/>
+            {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
           </div>
       );
     }
