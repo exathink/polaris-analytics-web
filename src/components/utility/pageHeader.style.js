@@ -3,7 +3,7 @@ import { palette } from 'styled-theme';
 import WithDirection from '../../config/withDirection';
 
 const WDComponentTitleWrapper = styled.h1`
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 500;
   color: ${palette('secondary', 2)};
   width: 100%;
