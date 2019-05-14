@@ -17,7 +17,7 @@ export class DashboardLayout extends React.Component {
       return (
             <div className={"dashboard"}>
               <DashboardControlBar/>
-              <DashboardRow h={"100%"}>
+              <DashboardRow h={"98%"}>
                 {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
               </DashboardRow>
             </div>

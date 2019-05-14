@@ -104,7 +104,7 @@ export const dashboard = () => (
                 null
             }
           </DashboardRow>
-          <DashboardRow h={"63%"}>
+          <DashboardRow h={"59%"}>
             <DashboardWidget
               w={1}
               name="commits"

@@ -35,7 +35,7 @@ export const dashboard = () => (
               }
             />
           </DashboardRow>
-          <DashboardRow h='90%'>
+          <DashboardRow h='81%'>
             <DashboardWidget
               w={1}
               name="commits"
