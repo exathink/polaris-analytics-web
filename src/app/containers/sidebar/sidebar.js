@@ -14,6 +14,7 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
+import {withViewerContext, verifyRoles} from "../../framework/viewer/viewerContext";
 
 const {Sider} = Layout;
 
@@ -79,7 +80,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const {app} = this.props;
+    const {app, viewerContext} = this.props;
     const customizedTheme = getCurrentTheme('sidebarTheme', themeConfig.theme);
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
     const mode = collapsed === true ? 'vertical' : 'inline';
@@ -95,10 +96,16 @@ class Sidebar extends Component {
 
     const currentContext = this.props.context;
     const optionalTopics = this.props.optionalTopics || [];
-    const topicRoutes = currentContext.routes().filter(route => route.topic);
+
+    const topicRoutes = currentContext.routes().filter(
+      route => route.topic
+    )
+    const visibleRoutes = topicRoutes.filter(
+      route => route.allowedRoles == null || verifyRoles(viewerContext.viewer, route.allowedRoles)
+    )
     const activeTopicRoutes = [
-      ...topicRoutes.filter(route => !route.topic.optional),
-      ...topicRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
+      ...visibleRoutes.filter(route => !route.topic.optional),
+      ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
     ];
 
     const menuProps = {
@@ -153,9 +160,9 @@ class Sidebar extends Component {
 }
 
 
-export default withRouter(withNavigationContext(connect(
+export default withRouter(withViewerContext(withNavigationContext(connect(
   state => ({
     app: state.App.toJS(),
   }),
   {toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed}
-)(Sidebar)));
+)(Sidebar))));
