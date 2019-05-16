@@ -3,10 +3,13 @@ import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 
 import type {Context} from './context';
+import {withViewerContext, verifyRoles} from "../../viewer/viewerContext";
+import AppContext from "../../../context";
 
-
-export const contextRouterFor = (context: Context, path: string = '') : React.ComponentType<any>  => {
+export const buildContextRouter = (context: Context, viewer: any = null, path: string = '') : React.ComponentType<any>  => {
   return class extends React.Component<any> {
+
+
 
     buildRoutes() {
       const {match} = this.props;
@@ -14,6 +17,10 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
         (route: any, index: number) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
+          }
+          if(route.allowedRoles != null  && !verifyRoles(viewer, route.allowedRoles)) {
+            // dont render this into the route tree if the user does not have the required roles.
+            return null;
           }
           const terminal =
             route.component ? {component: route.component} :
@@ -46,7 +53,7 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={contextRouterFor(childContext, `${path}/${route.match}`)}
+                component={buildContextRouter(childContext, viewer, `${path}/${route.match}`)}
               /> :
               null;
 
@@ -77,7 +84,9 @@ export const contextRouterFor = (context: Context, path: string = '') : React.Co
 
 
 
-
+export const getContextRouterFor = (context:Context, path:string ='') => withViewerContext(
+  props => React.createElement(buildContextRouter(AppContext, props.viewerContext.viewer), props)
+)
 
 
 

@@ -110,3 +110,7 @@ export const withViewerContext = Component => (
       }
     </ViewerContext.Consumer>
 );
+
+export function verifyRoles(viewer, roles) {
+  return roles.some(role => viewer.roles.indexOf(role) != -1)
+}
