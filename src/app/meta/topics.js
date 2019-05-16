@@ -42,4 +42,29 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.work' defaultMessage="Work"/>),
     icon: 'ion-clipboard'
   },
+  settings: {
+    name: 'settings',
+    display: () => (<FormattedMessage id='topics.settings' defaultMessage="Settings"/>),
+    icon: 'ion-ios-cog'
+  },
+  admin: {
+    name: 'admin',
+    display: () => (<FormattedMessage id='topics.admin' defaultMessage="Admin"/>),
+    icon: 'ion-ios-cog'
+  },
+  manage: {
+    name: 'manage',
+    display: () => (<FormattedMessage id='topics.manage' defaultMessage="Manage"/>),
+    icon: 'ion-ios-cog'
+  },
+  accounts: {
+    name: 'accounts',
+    display: () => (<FormattedMessage id='topics.accounts' defaultMessage="Accounts"/>),
+    icon: 'ion-ios-home'
+  },
+  dashboard: {
+    name: 'dashboard',
+    display: () => (<FormattedMessage id='topics.dashboard' defaultMessage="Deshboards"/>),
+    icon: 'ion-ios-pulse'
+  },
 };

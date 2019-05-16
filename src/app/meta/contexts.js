@@ -30,6 +30,10 @@ const messages = defineMessages({
   oss: {
     id: 'contexts.oss',
     defaultMessage: "Open Source"
+  },
+  admin: {
+    id: 'contexts.admin',
+    defaultMessage: "Admin"
   }
 
 });
@@ -133,6 +137,18 @@ export const Contexts = {
           />
         },
     icon: 'ion-ios-list',
+    color: '#6b5fb2',
+  },
+  admin: {
+    name: 'admin',
+    message: messages.admin,
+    display:
+        function () {
+          return <FormattedMessage
+            {...messages.admin}
+          />
+        },
+    icon: 'ion-ios-cog',
     color: '#6b5fb2',
   },
 };

@@ -3,14 +3,18 @@ import {CardGrid} from "../../components/cardGrid";
 import {NavCard} from "../../components/cards";
 import {Contexts} from "../../meta";
 import {FormattedMessage} from 'react-intl';
+import {isAdmin} from "../../helpers/utility";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
 import {AccountSetup} from "./accountSetup/accountSetup";
+
 
 const messages = {
   yourDashboards: <FormattedMessage id='landing.yourDashboards' defaultMessage='Your Dashboards'/>,
   importRepositories: <FormattedMessage id='landing.importRepositories' defaultMessage='Analyze your code'/>,
-  ossDashboards: <FormattedMessage id='landing.ossDashboards' defaultMessage='Browse open source dashboards'/>
+  ossDashboards: <FormattedMessage id='landing.ossDashboards' defaultMessage='Browse open source dashboards'/>,
+  admin: <FormattedMessage id='landing.admin' defaultMessage='Admin'/>
 };
+
 
 export const Landing = withViewerContext(
   ({viewerContext}) => {
@@ -39,6 +43,15 @@ export const Landing = withViewerContext(
           icon={`ion ${Contexts.oss.icon}`}
           title={messages.ossDashboards}
           />
+          {
+            isAdmin(viewer) ?
+              <NavCard
+                link={'/app/admin'}
+                icon={`ion ${Contexts.admin.icon}`}
+                title={messages.admin}
+              />
+              : null
+          }
 
         </CardGrid>
       )
