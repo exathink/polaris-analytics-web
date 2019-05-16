@@ -160,3 +160,7 @@ export function getCommitTimelineEndWindow(latestCommit) {
 export function snakeToUpperCamel(s) {
   return s.split('_').reduce((res, word, i) => `${res}${word.charAt(0).toUpperCase()}${word.substr(1).toLowerCase()}`, '');
 }
+
+export function isAdmin(viewer) {
+  return viewer.roles && viewer.roles.includes("admin");
+}
