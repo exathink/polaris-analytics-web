@@ -1,8 +1,8 @@
-import type {Context} from "../framework/navigation/context/context";
+import type {Context} from "../../framework/navigation/context/context";
 import PublicProjects from "./projects/topic";
 import PublicOrganizations from "./organizations/topic";
 
-import {Contexts} from "../meta";
+import {Contexts} from "../../meta/index";
 
 const context: Context = {
   ...Contexts.oss,

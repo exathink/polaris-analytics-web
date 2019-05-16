@@ -1,5 +1,5 @@
-import asyncComponent from "../../../helpers/AsyncFunc";
-import {Topics} from "../../meta";
+import asyncComponent from "../../../../helpers/AsyncFunc";
+import {Topics} from "../../../meta/index";
 
 const topic = {
   ...Topics.projects,

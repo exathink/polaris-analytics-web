@@ -1,9 +1,9 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {analytics_service} from "../../services/graphql";
-import {CardGrid} from "../../components/cardGrid";
-import {ProjectCard} from "../../components/cards/projectCard";
+import {analytics_service} from "../../../services/graphql/index";
+import {CardGrid} from "../../../components/cardGrid/index";
+import {ProjectCard} from "../../../components/cards/projectCard";
 
 
 export class BrowsePublicProjects extends React.Component {

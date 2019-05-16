@@ -5,6 +5,8 @@ import Accounts from "./accounts/context";
 import Repositories from "./repositories/context";
 import Contributors from "./contributors/context";
 import Commits from "./commits/context";
+import OpenSource from "./oss/context";
+
 
 const context: Context = {
   name: 'dashboard',
@@ -33,6 +35,10 @@ const context: Context = {
     {
       match: 'commits',
       context: Commits,
+    },
+    {
+      match: 'oss',
+      context: OpenSource,
     },
     {
       match: '',

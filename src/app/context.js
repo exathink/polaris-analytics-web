@@ -1,8 +1,6 @@
 import type {Context} from "./framework/navigation/context/context";
 import Dashboard from "./dashboards/context";
 import DashboardTopic from "./dashboards/topic";
-
-import OpenSource from "./oss/context";
 import Admin from "./admin/context";
 import AdminTopic from "./admin/topic";
 
@@ -33,10 +31,6 @@ const context: Context = {
       match: 'admin',
       topic: AdminTopic,
       allowedRoles: ['admin']
-    },
-    {
-      match: 'oss',
-      context: OpenSource,
     },
     {
       match: '',

@@ -1,10 +1,10 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {analytics_service} from '../../services/graphql'
+import {analytics_service} from '../../../services/graphql/index'
 
-import {CardGrid} from "../../components/cardGrid";
-import {OrganizationCard} from "../../components/cards";
+import {CardGrid} from "../../../components/cardGrid/index";
+import {OrganizationCard} from "../../../components/cards/index";
 
 
 export class BrowsePublicOrganizations extends React.Component {
