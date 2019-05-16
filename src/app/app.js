@@ -7,7 +7,7 @@ import {ThemeProvider} from 'styled-components';
 import appActions from '../redux/app/actions';
 import Sidebar from './containers/sidebar/sidebar';
 import Topbar from './containers/topbar/topbar';
-import AppRouter from './appRouter';
+import {AppRouter} from './appRouter';
 import {siteConfig} from '../config.js';
 import themes from '../config/themes/index';
 import {themeConfig} from '../config';
@@ -87,8 +87,6 @@ export class App extends Component {
 }
 
 export default connect(
-  state => ({
-    userContext: state.user,
-  }),
+  null,
   {toggleAll}
 )(App);
