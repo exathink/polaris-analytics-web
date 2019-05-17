@@ -15,26 +15,26 @@ const context: Context = {
   hidden: false,
   routes: [
     {
-      match: 'dashboard/.',
-      context: Dashboard,
-    },
-    {
-      match: 'dashboard',
+      match: 'topic/dashboard',
       topic: DashboardTopic,
     },
     {
-      match: 'admin/.',
-      context: Admin,
-      allowedRoles: ['admin']
+      match: 'dashboard',
+      context: Dashboard,
     },
     {
-      match: 'admin',
+      match: 'topic/admin',
       topic: AdminTopic,
       allowedRoles: ['admin']
     },
     {
+      match: 'admin',
+      context: Admin,
+      allowedRoles: ['admin']
+    },
+    {
       match: '',
-      redirect: 'dashboard'
+      redirect: 'topic/dashboard'
     }
   ]
 };

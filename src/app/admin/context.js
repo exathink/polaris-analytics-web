@@ -1,31 +1,18 @@
 import React from "react";
 import type {Context} from "../framework/navigation/context/context";
-
-import {Contexts} from "../meta";
-import {Topics} from '../meta';
-
-import {FormattedMessage} from "react-intl";
-import asyncComponent from "../../helpers/AsyncFunc";
-
-
-
-
-const messages = {
-  instanceDisplay: (instanceName) => (
-    <FormattedMessage
-      id="contexts.admin.accounts.instance"
-      defaultMessage="Account: {instance}"
-      values={{instance: instanceName}}/>
-  )
-};
-
+import {Contexts, Topics} from "../meta";
+import Accounts from './accounts/context';
 
 const context: Context = {
   ...Contexts.admin,
   routes: [
     {
+      match: 'accounts',
+      context: Accounts
+    },
+    {
       match: '',
-      component: () => 'Admin Context Root'
+      redirect: 'accounts'
     }
   ]
 };
