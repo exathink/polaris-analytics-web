@@ -99,14 +99,16 @@ export const ViewerContext = {
   queries: {}
 };
 
-export const withViewerContext = Component => (
+export const withViewerContext = (Component, allowedRoles=null) => (
   props =>
     <ViewerContext.Consumer>
       {
         viewerContext =>
-          <Component
-            viewerContext={viewerContext}
-            {...props}/>
+          allowedRoles == null || verifyRoles(viewerContext.viewer, allowedRoles) ?
+            <Component
+              viewerContext={viewerContext}
+              {...props}/>
+            :null
       }
     </ViewerContext.Consumer>
 );
