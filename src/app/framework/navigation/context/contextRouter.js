@@ -28,6 +28,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
                 route.redirect ? {render: () => <Redirect to={`${match.url}/${route.redirect}`}/>} :
                   null;
 
+
           // This is the child component displayed at this path. May be null.
           const terminalRoute =
             terminal != null ?
@@ -35,6 +36,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
                 <Route
                   key={`${route.match} (terminal)`}
                   path={`${match.path}/${route.match}`}
+                  exact={route.exact != null ? route.exact : true}
                   {...terminal}
                 /> :
                 // Empty string match pattern
