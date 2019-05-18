@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {Tag, Icon, Divider} from 'antd';
 
 import {AddAccountForm} from "./addAccountForm";
-
+import {AllAccountsTable} from "./allAccountsTable";
 
 const columns = [
   {
@@ -84,12 +84,7 @@ export default class extends React.Component {
             name={'table'}
             w={1}
             showDetail={true}
-            render={
-              () =>
-                <React.Fragment>
-                  <Table columns={columns} dataSource={data}/>
-                </React.Fragment>
-            }
+            render={() => <AllAccountsTable/>}
           />
         </DashboardRow>
       </Dashboard>
