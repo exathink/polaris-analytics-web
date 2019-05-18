@@ -52,7 +52,9 @@ export const DashboardRow = ({children, h, title, controls, align, ...rest}) => 
               <nav className={'menu title-control-container'} style={{width: '70%'}}>
                 <React.Fragment>
                   {
-                    controls.map(
+                    // Adding reverse here because we would like to the controls to laid
+                    // out left to right in the same order that they appear in the array
+                    controls.reverse().map(
                       control =>
                         <div className={'title-control'}>
                           {React.createElement(control)}
