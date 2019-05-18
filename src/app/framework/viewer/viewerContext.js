@@ -108,7 +108,7 @@ export const withViewerContext = (Component, allowedRoles=null) => (
             <Component
               viewerContext={viewerContext}
               {...props}/>
-            :null
+            :'Access Denied'
       }
     </ViewerContext.Consumer>
 );
