@@ -35,7 +35,7 @@ export const DashboardWidget = withNavigationContext(
               <nav className={'menu title-control-container'} >
                 <React.Fragment>
                   {
-                    controls.reverse().map(
+                    controls.map(
                       control =>
                         <div className={'title-control'}>
                           {React.createElement(control)}
