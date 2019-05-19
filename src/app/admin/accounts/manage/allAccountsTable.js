@@ -5,47 +5,59 @@ import {Table} from 'antd';
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {Loading} from "../../../components/graphql/loading";
 import {analytics_service} from '../../../services/graphql';
+import {withAntPagination} from "../../../components/graphql/withAntPagination";
 
-const { Column, ColumnGroup } = Table;
 
+const {Column} = Table;
 
-const AllAccountsTable = () => (
+const AllAccountsPaginatedTable = ({pageSize, currentCursor, onNewPage}) => (
   <Query
     client={analytics_service}
     query={
       gql`
-        query allAccounts {
-          allAccounts (first: 20){
-            count
-            edges{
-              node{
-                id
-                name
-                key
-                created
-              }
+      query allAccounts($pageSize: Int!, $endCursor: String) {
+          allAccounts (first: $pageSize, after: $endCursor){
+                count
+                edges {
+                    node {
+                        id
+                        name
+                        key
+                        created
+                    }
+                }
             }
-          }
-}
-      `
+      }
+  `
     }
+    variables={{
+      pageSize: pageSize,
+      endCursor: currentCursor
+    }}
   >
     {
       ({loading, error, data}) => {
-        if (loading) return <Loading/>;
         if (error) return null;
-        const tableData = data.allAccounts.edges.map(edge => edge.node);
-        const totalItems = data.allAccounts.count;
+        let tableData = [];
+        let totalItems = 0;
+        if (!loading) {
+          tableData = data.allAccounts.edges.map(edge => edge.node);
+          totalItems = data.allAccounts.count;
+        }
         return (
           <Table
             dataSource={tableData}
+            loading={loading}
+            rowKey={record => record.id}
             pagination={{
-              total: tableData.length,
-              defaultPageSize: 10,
+              total: totalItems,
+              defaultPageSize: pageSize,
               hideOnSinglePage: true
-            }}>
+
+            }}
+            onChange={onNewPage}
+          >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
             <Column title={"Key"} dataIndex={"key"} key={"key"}/>
             <Column title={"Created"} dataIndex={"created"} key={"created"}/>
@@ -54,6 +66,7 @@ const AllAccountsTable = () => (
       }
     }
   </Query>
-);
+)
 
-export const AllAccountsTableWidget = withViewerContext(AllAccountsTable, ['admin'])
+
+export const AllAccountsTableWidget = withViewerContext(withAntPagination(AllAccountsPaginatedTable), ['admin'])
