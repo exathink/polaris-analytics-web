@@ -10,8 +10,14 @@ export const withSubmissionCache = (Component) => {
         this.setState({values})
       }
     }
+
     render() {
-      return <Component submit={this.submitWrapper.bind(this)} lastSubmission={this.state.values}/>
+      return <Component
+        submissionCache={{
+          submit: this.submitWrapper.bind(this),
+          lastSubmission: this.state.values
+        }}
+      />
     }
   }
 }

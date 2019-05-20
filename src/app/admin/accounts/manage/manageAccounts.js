@@ -19,52 +19,53 @@ const CREATE_ACCOUNT = gql`
     }
 `
 
-export class ManageAccounts extends React.Component {
-  render() {
-    const {submit, lastSubmission} = this.props
-    return (
-      <Mutation mutation={CREATE_ACCOUNT}>
-        {
-          (createAccount, {data, loading, error}) => {
-            return (
-              <Dashboard h={"100%"}>
-                <DashboardRow
-                  title={"All Accounts"}
-                  controls={[
-                    () =>
-                      <AddAccountForm
-                        onSubmit={
-                          submit(
-                            values => createAccount({
-                              variables: {
-                                createAccountInput: {
-                                  company: values.company
-                                }
-                              }
-                            })
-                          )
-                        }
-                        loading={loading}
-                        error={error}
-                        values={lastSubmission}
-                      />
-                  ]}
-                >
-                  <DashboardWidget
-                    name={'table'}
-                    w={1}
-                    showDetail={true}
-                    render={() => <AllAccountsTableWidget reload={data}/>}
+export const ManageAccounts = (
+  {
+    submissionCache: {
+      submit,
+      lastSubmission
+    }
+  }) => (
+  <Mutation mutation={CREATE_ACCOUNT}>
+    {
+      (createAccount, {data, loading, error}) => {
+        return (
+          <Dashboard h={"100%"}>
+            <DashboardRow
+              title={"All Accounts"}
+              controls={[
+                () =>
+                  <AddAccountForm
+                    onSubmit={
+                      submit(
+                        values => createAccount({
+                          variables: {
+                            createAccountInput: {
+                              company: values.company
+                            }
+                          }
+                        })
+                      )
+                    }
+                    loading={loading}
+                    error={error}
+                    values={lastSubmission}
                   />
-                </DashboardRow>
-              </Dashboard>
-            )
-          }
-        }
-      </Mutation>
-    );
-  }
-}
+              ]}
+            >
+              <DashboardWidget
+                name={'table'}
+                w={1}
+                showDetail={true}
+                render={() => <AllAccountsTableWidget reload={data}/>}
+              />
+            </DashboardRow>
+          </Dashboard>
+        )
+      }
+    }
+  </Mutation>
+)
 
 export default withSubmissionCache(ManageAccounts)
 
