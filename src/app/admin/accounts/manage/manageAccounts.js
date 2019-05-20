@@ -5,6 +5,7 @@ import {Mutation} from "react-apollo";
 import {AddAccountForm} from "./addAccountForm";
 import {AllAccountsTableWidget} from "./allAccountsTable";
 import Notification from "../../../../components/notification";
+import {withSubmissionCache} from "../../../components/forms/withSubmissionCache";
 
 const CREATE_ACCOUNT = gql`
     mutation createAccount ($createAccountInput: CreateAccountInput!){
@@ -18,17 +19,9 @@ const CREATE_ACCOUNT = gql`
     }
 `
 
-export default class extends React.Component {
-  state = {values: null}
-
-  submitWrapper(submit) {
-    return (values) => {
-      submit(values);
-      this.setState({values})
-    }
-  }
-
+export class ManageAccounts extends React.Component {
   render() {
+    const {submit, lastSubmission} = this.props
     return (
       <Mutation mutation={CREATE_ACCOUNT}>
         {
@@ -41,7 +34,7 @@ export default class extends React.Component {
                     () =>
                       <AddAccountForm
                         onSubmit={
-                          this.submitWrapper(
+                          submit(
                             values => createAccount({
                               variables: {
                                 createAccountInput: {
@@ -51,9 +44,9 @@ export default class extends React.Component {
                             })
                           )
                         }
-                        values={this.state.values}
                         loading={loading}
                         error={error}
+                        values={lastSubmission}
                       />
                   ]}
                 >
@@ -73,6 +66,6 @@ export default class extends React.Component {
   }
 }
 
-
+export default withSubmissionCache(ManageAccounts)
 
 
