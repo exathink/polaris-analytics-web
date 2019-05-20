@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
 import {AddAccountForm} from "./addAccountForm";
 import {AllAccountsTableWidget} from "./allAccountsTable";
+import Notification from "../../../../components/notification";
 
 const CREATE_ACCOUNT = gql`
     mutation createAccount ($createAccountInput: CreateAccountInput!){
@@ -18,11 +19,21 @@ const CREATE_ACCOUNT = gql`
 `
 
 export default class extends React.Component {
+  state = {values: null}
+
+  submitWrapper(submit) {
+    return (values) => {
+      submit(values);
+      this.setState({values})
+    }
+  }
+
   render() {
     return (
       <Mutation mutation={CREATE_ACCOUNT}>
         {
-          (createAccount, {data, loading, error}) => (
+          (createAccount, {data, loading, error}) => {
+            return (
               <Dashboard h={"100%"}>
                 <DashboardRow
                   title={"All Accounts"}
@@ -30,15 +41,19 @@ export default class extends React.Component {
                     () =>
                       <AddAccountForm
                         onSubmit={
-                          values => createAccount({
-                            variables: {
-                              createAccountInput: {
-                                company: values.company
+                          this.submitWrapper(
+                            values => createAccount({
+                              variables: {
+                                createAccountInput: {
+                                  company: values.company
+                                }
                               }
-                            }
-                          })
+                            })
+                          )
                         }
+                        values={this.state.values}
                         loading={loading}
+                        error={error}
                       />
                   ]}
                 >
@@ -49,8 +64,9 @@ export default class extends React.Component {
                     render={() => <AllAccountsTableWidget reload={data}/>}
                   />
                 </DashboardRow>
-            </Dashboard>
-          )
+              </Dashboard>
+            )
+          }
         }
       </Mutation>
     );
