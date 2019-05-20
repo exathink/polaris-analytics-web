@@ -11,7 +11,7 @@ import {withAntPagination} from "../../../components/graphql/withAntPagination";
 
 const {Column} = Table;
 
-const AllAccountsPaginatedTable = ({pageSize, currentCursor, onNewPage}) => (
+const AllAccountsPaginatedTable = ({paging, pageSize, currentCursor, onNewPage, reload}) => (
   <Query
     client={analytics_service}
     query={
@@ -35,6 +35,7 @@ const AllAccountsPaginatedTable = ({pageSize, currentCursor, onNewPage}) => (
       pageSize: pageSize,
       endCursor: currentCursor
     }}
+    fetchPolicy={reload ? 'network-only' : 'cache-first'}
   >
     {
       ({loading, error, data}) => {
