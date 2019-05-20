@@ -57,7 +57,7 @@ export const ManageAccounts = (
                 name={'table'}
                 w={1}
                 showDetail={true}
-                render={() => <AllAccountsTableWidget reload={data}/>}
+                render={() => <AllAccountsTableWidget newData={data? data.createAccount: null}/>}
               />
             </DashboardRow>
           </Dashboard>

@@ -8,7 +8,7 @@ export const withSubmissionHandler = (Component) => {
       visible: false
     }
 
-    openNotification = (type, message, key) => {
+    openNotification = (type, message, key, duration) => {
       notification[type]({
         message: message,
         duration: 0,
@@ -47,15 +47,17 @@ export const withSubmissionHandler = (Component) => {
     };
 
     componentDidMount() {
-      if (this.props.error) {
-        const notificationKey = `open${Date.now()}`;
+      const {values, error } = this.props;
+      const notificationKey = `open${Date.now()}`;
+      if (error) {
         this.setState({
           notification: notificationKey
         })
         this.openNotification(
           'error',
-          `${this.props.error}`,
+          `${error}`,
           notificationKey,
+          0
         );
       }
     }
