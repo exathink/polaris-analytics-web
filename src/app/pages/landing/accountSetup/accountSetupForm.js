@@ -7,7 +7,7 @@ import Notification from '../../../../components/notification';
 
 const FormItem = Form.Item;
 
-class FormWIthSubmissionButton extends React.Component {
+class AccountSetupForm extends React.Component {
   state = {
     confirmDirty: false,
   };
@@ -72,5 +72,4 @@ class FormWIthSubmissionButton extends React.Component {
   }
 }
 
-const WrappedFormWIthSubmissionButton = Form.create()(FormWIthSubmissionButton);
-export default WrappedFormWIthSubmissionButton;
+export default Form.create()(AccountSetupForm);

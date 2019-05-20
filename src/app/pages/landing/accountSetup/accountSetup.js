@@ -1,5 +1,4 @@
 import React from 'react';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
 
 import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
