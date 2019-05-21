@@ -32,7 +32,7 @@ const DetailTabs = (props) => (
   <Tabs>
     <TabList>
       <Tab>History</Tab>
-      <Tab>Inceptions</Tab>
+      <Tab>Cohorts</Tab>
     </TabList>
 
     <CustomTabPanel>

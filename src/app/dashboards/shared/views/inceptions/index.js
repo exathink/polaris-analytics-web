@@ -31,26 +31,27 @@ export const InceptionsBarChart = Chart({
           type: 'column'
         },
         title: {
-          text: 'Inceptions Summary'
+          text: 'Cohort Summary'
         },
         xAxis: {
           type: 'linear',
           title: {
-            text: 'Year'
+            text: 'Inception Year'
           }
         },
         yAxis: {
           type: 'linear',
-          title: {
-            text: 'Inceptions'
-          }
+          visible: false
         },
         series: [{
-          key: 'inceptions',
-          id: 'inceptions',
-          name: 'Inceptions',
+          key: 'cohorts',
+          id: 'cohorts',
+          name: 'Cohort size',
           data: series_data
-        }]
+        }],
+        legend: {
+            enabled: false
+        }
       }
     }
 });
