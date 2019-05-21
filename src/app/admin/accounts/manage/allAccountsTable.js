@@ -61,7 +61,6 @@ const AllAccountsPaginatedTable = ({paging, pageSize, currentCursor, onNewPage, 
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
             <Column title={"Key"} dataIndex={"key"} key={"key"}/>
-            <Column title={"Created"} dataIndex={"created"} key={"created"}/>
           </Table>
         )
       }
