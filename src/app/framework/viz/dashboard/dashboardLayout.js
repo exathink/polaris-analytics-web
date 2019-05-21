@@ -55,8 +55,8 @@ export const DashboardRow = ({children, h, title, controls, align, ...rest}) => 
                     // Adding reverse here because we would like to the controls to laid
                     // out left to right in the same order that they appear in the array
                     controls.reverse().map(
-                      control =>
-                        <div className={'title-control'}>
+                      (control, index) =>
+                        <div key={index} className={'title-control'}>
                           {React.createElement(control)}
                         </div>
                     )

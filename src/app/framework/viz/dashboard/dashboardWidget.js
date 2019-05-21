@@ -36,8 +36,8 @@ export const DashboardWidget = withNavigationContext(
                 <React.Fragment>
                   {
                     controls.map(
-                      control =>
-                        <div className={'title-control'}>
+                      (control, index)  =>
+                        <div key={index} className={'title-control'}>
                           {React.createElement(control)}
                         </div>
                     )
