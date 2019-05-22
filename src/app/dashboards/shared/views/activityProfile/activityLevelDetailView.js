@@ -31,7 +31,7 @@ export type Props = {
 const DetailTabs = (props) => (
   <Tabs>
     <TabList>
-      <Tab>History</Tab>
+      <Tab>Timelines</Tab>
       <Tab>Cohorts</Tab>
     </TabList>
 
