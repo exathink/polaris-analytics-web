@@ -3,7 +3,7 @@ import {notification} from "antd";
 import {display_error} from "../../helpers/utility";
 
 export const withSubmissionHandler = (Component) => {
-  return class SubmissionErrorHandler extends React.Component {
+  return class SubmissionHandler extends React.Component {
     state = {
       notification: null,
       visible: false
