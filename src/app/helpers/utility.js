@@ -164,3 +164,11 @@ export function snakeToUpperCamel(s) {
 export function isAdmin(viewer) {
   return viewer.roles && viewer.roles.includes("admin");
 }
+
+export function display_error(error) {
+  if (error.graphQLErrors != null) {
+    return `${error}`.replace('GraphQL error:', '')
+  } else {
+    return `${error}`
+  }
+}

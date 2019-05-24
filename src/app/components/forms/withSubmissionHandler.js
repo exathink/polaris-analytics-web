@@ -1,5 +1,6 @@
 import React from 'react';
 import {notification} from "antd";
+import {display_error} from "../../helpers/utility";
 
 export const withSubmissionHandler = (Component) => {
   return class SubmissionErrorHandler extends React.Component {
@@ -55,7 +56,7 @@ export const withSubmissionHandler = (Component) => {
         })
         this.openNotification(
           'error',
-          `${error}`,
+          `${display_error(error)}`,
           notificationKey,
           0
         );
