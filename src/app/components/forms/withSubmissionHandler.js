@@ -28,10 +28,12 @@ export const withSubmissionHandler = (Component) => {
       if (this.state.notification) {
         notification.close(this.state.notification)
       }
+      this.props.form.resetFields()
       this.setState({
         notification: null,
         visible: false
       });
+
     };
 
     onSubmit = e => {
