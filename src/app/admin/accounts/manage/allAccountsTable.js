@@ -17,13 +17,17 @@ const AllAccountsPaginatedTable = ({paging, pageSize, currentCursor, onNewPage, 
     query={
       gql`
       query allAccounts($pageSize: Int!, $endCursor: String) {
-          allAccounts (first: $pageSize, after: $endCursor){
+          allAccounts (first: $pageSize, after: $endCursor, interfaces: [UserInfo, OwnerInfo]){
                 count
                 edges {
                     node {
                         id
                         name
                         key
+                        ownerKey
+                        email
+                        firstName
+                        lastName
                         created
                     }
                 }
@@ -61,6 +65,7 @@ const AllAccountsPaginatedTable = ({paging, pageSize, currentCursor, onNewPage, 
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
             <Column title={"Key"} dataIndex={"key"} key={"key"}/>
+            <Column title={"Owner"} dataIndex={"email"} key={"email"}/>
           </Table>
         )
       }
