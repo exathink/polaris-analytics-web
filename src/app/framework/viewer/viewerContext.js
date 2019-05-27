@@ -114,5 +114,6 @@ export const withViewerContext = (Component, allowedRoles=null) => (
 );
 
 export function verifyRoles(viewer, roles) {
-  return roles.some(role => viewer.roles.indexOf(role) != -1)
+  return roles? roles.some(role => viewer.roles.indexOf(role) != -1) : true
 }
+
