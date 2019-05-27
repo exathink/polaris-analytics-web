@@ -3,8 +3,8 @@ import {NavCard} from "./navCard";
 import {withViewerContext, verifySystemRoles} from "../../framework/viewer/viewerContext";
 
 export const ContextNavCard = withViewerContext(
-  ({context, title, viewerContext: {viewer}, allowedRoles}) => (
-    verifySystemRoles(viewer, allowedRoles) ?
+  ({context, title, viewerContext, allowedRoles}) => (
+    viewerContext.hasSystemRoles(allowedRoles) ?
       <NavCard
         link={context.url_for}
         icon={context.icon}

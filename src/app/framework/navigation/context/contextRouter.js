@@ -6,7 +6,7 @@ import type {Context} from './context';
 import {withViewerContext, verifySystemRoles} from "../../viewer/viewerContext";
 import AppContext from "../../../context";
 
-export const buildContextRouter = (context: Context, viewer: any = null, path: string = '') : React.ComponentType<any>  => {
+export const buildContextRouter = (context: Context, viewerContext: any = null, path: string = '') : React.ComponentType<any>  => {
   return class extends React.Component<any> {
 
 
@@ -18,7 +18,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
-          if(route.allowedRoles != null  && !verifySystemRoles(viewer, route.allowedRoles)) {
+          if(route.allowedRoles != null  && !viewerContext.hasSystemRoles(route.allowedRoles)) {
             // dont render this into the route tree if the user does not have the required roles.
             return null;
           }
@@ -55,7 +55,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
               <Route
                 key={`${route.match} (childRouter)`}
                 path={`${match.path}/${route.match}`}
-                component={buildContextRouter(childContext, viewer, `${path}/${route.match}`)}
+                component={buildContextRouter(childContext, viewerContext, `${path}/${route.match}`)}
               /> :
               null;
 
@@ -87,7 +87,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
 
 
 export const getContextRouterFor = (context:Context, path:string ='') => withViewerContext(
-  props => React.createElement(buildContextRouter(AppContext, props.viewerContext.viewer), props)
+  props => React.createElement(buildContextRouter(AppContext, props.viewerContext), props)
 )
 
 

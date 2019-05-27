@@ -48,17 +48,57 @@ class ViewerContextProvider extends React.Component {
     this.loadViewerInfo()
   }
 
+  isAccountOwner() {
+    return this.state.viewer.accountRoles.find(
+      scopedRole =>
+        scopedRole.scopeKey == this.state.viewer.accountKey &&
+        scopedRole.role == 'owner'
+    )
+  }
+
+  hasSystemRoles(roles) {
+    if (roles != null) {
+      let found = false;
+      for (let i=0; i < roles.length && !found; i++) {
+        const role = roles[i];
+        if (role == 'account-owner') {
+          found = this.isAccountOwner()
+        } else {
+          found = this.state.viewer.systemRoles.indexOf(role) != -1;
+        }
+      }
+      return found
+    } else {
+      // if no roles are provided then the assumption is that this guard will pass.
+      return true
+    }
+  }
+
+  hasAccountRoles (accountKey, roles){
+    if (roles  != null ) {
+      const accountRole = this.state.viewer.accountRoles.find(scopedRole => scopedRole.scopeKey == accountKey)
+      if (accountRole) {
+        return roles.indexOf(accountRole) != -1
+      }
+    } else {
+      return true
+    }
+  }
+
+
   render() {
     return (
       this.state.viewer != null ?
         <Provider value={{
           viewer: this.state.viewer,
-          refresh: this.refresh.bind(this)
+          refresh: this.refresh.bind(this),
+          hasAccountRoles : this.hasAccountRoles.bind(this),
+          hasSystemRoles: this.hasSystemRoles.bind(this)
         }}>
           {this.props.children}
         </Provider>
         : this.state.error != null ?
-        "Unknown user error"
+        `Unknown user error: ${this.state.error}`
         : null
     )
   }
@@ -78,6 +118,10 @@ export const ViewerContext = {
             lastName
             email
             systemRoles
+            accountRoles {
+                scopeKey
+                role
+            }
             accountKey
             account {
                 id
@@ -104,7 +148,7 @@ export const withViewerContext = (Component, allowedRoles=null) => (
     <ViewerContext.Consumer>
       {
         viewerContext =>
-          allowedRoles == null || verifySystemRoles(viewerContext.viewer, allowedRoles) ?
+          viewerContext.hasSystemRoles(allowedRoles) ?
             <Component
               viewerContext={viewerContext}
               {...props}/>
@@ -113,7 +157,5 @@ export const withViewerContext = (Component, allowedRoles=null) => (
     </ViewerContext.Consumer>
 );
 
-export function verifySystemRoles(viewer, roles) {
-  return roles? roles.some(role => viewer.systemRoles.indexOf(role) != -1) : true
-}
+
 

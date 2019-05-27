@@ -25,12 +25,12 @@ const context: Context = {
     {
       match: 'topic/admin',
       topic: AdminTopic,
-      allowedRoles: ['admin']
+      allowedRoles: ['admin', 'account-owner']
     },
     {
       match: 'admin',
       context: Admin,
-      allowedRoles: ['admin']
+      allowedRoles: ['admin', 'account-owner']
     },
     {
       match: '',
