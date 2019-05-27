@@ -14,7 +14,7 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {withViewerContext, verifyRoles} from "../../framework/viewer/viewerContext";
+import {withViewerContext, verifySystemRoles} from "../../framework/viewer/viewerContext";
 
 const {Sider} = Layout;
 
@@ -101,7 +101,7 @@ class Sidebar extends Component {
       route => route.topic
     )
     const visibleRoutes = topicRoutes.filter(
-      route => route.allowedRoles == null || verifyRoles(viewerContext.viewer, route.allowedRoles)
+      route => route.allowedRoles == null || verifySystemRoles(viewerContext.viewer, route.allowedRoles)
     )
     const activeTopicRoutes = [
       ...visibleRoutes.filter(route => !route.topic.optional),

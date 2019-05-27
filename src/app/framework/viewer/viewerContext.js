@@ -77,7 +77,7 @@ export const ViewerContext = {
             firstName
             lastName
             email
-            roles
+            systemRoles
             accountKey
             account {
                 id
@@ -104,7 +104,7 @@ export const withViewerContext = (Component, allowedRoles=null) => (
     <ViewerContext.Consumer>
       {
         viewerContext =>
-          allowedRoles == null || verifyRoles(viewerContext.viewer, allowedRoles) ?
+          allowedRoles == null || verifySystemRoles(viewerContext.viewer, allowedRoles) ?
             <Component
               viewerContext={viewerContext}
               {...props}/>
@@ -113,7 +113,7 @@ export const withViewerContext = (Component, allowedRoles=null) => (
     </ViewerContext.Consumer>
 );
 
-export function verifyRoles(viewer, roles) {
-  return roles? roles.some(role => viewer.roles.indexOf(role) != -1) : true
+export function verifySystemRoles(viewer, roles) {
+  return roles? roles.some(role => viewer.systemRoles.indexOf(role) != -1) : true
 }
 

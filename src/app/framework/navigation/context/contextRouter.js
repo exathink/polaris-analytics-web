@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 
 import type {Context} from './context';
-import {withViewerContext, verifyRoles} from "../../viewer/viewerContext";
+import {withViewerContext, verifySystemRoles} from "../../viewer/viewerContext";
 import AppContext from "../../../context";
 
 export const buildContextRouter = (context: Context, viewer: any = null, path: string = '') : React.ComponentType<any>  => {
@@ -18,7 +18,7 @@ export const buildContextRouter = (context: Context, viewer: any = null, path: s
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
           }
-          if(route.allowedRoles != null  && !verifyRoles(viewer, route.allowedRoles)) {
+          if(route.allowedRoles != null  && !verifySystemRoles(viewer, route.allowedRoles)) {
             // dont render this into the route tree if the user does not have the required roles.
             return null;
           }
