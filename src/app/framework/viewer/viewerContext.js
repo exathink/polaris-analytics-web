@@ -11,7 +11,8 @@ class ViewerContextProvider extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewer: null
+      viewer: null,
+      accountKey: null
     }
   }
 
@@ -29,7 +30,8 @@ class ViewerContextProvider extends React.Component {
       })
       if (result.data != null) {
         this.setState({
-          viewer: result.data.viewer
+          viewer: result.data.viewer,
+          accountKey: result.data.viewer.accountKey
         })
       }
     } catch (error) {
@@ -91,6 +93,7 @@ class ViewerContextProvider extends React.Component {
       this.state.viewer != null ?
         <Provider value={{
           viewer: this.state.viewer,
+          accountKey: this.state.accountKey,
           refresh: this.refresh.bind(this),
           hasAccountRoles : this.hasAccountRoles.bind(this),
           hasSystemRoles: this.hasSystemRoles.bind(this)

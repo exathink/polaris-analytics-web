@@ -21,6 +21,7 @@ class WithAccount extends React.Component {
       render,
       pollInterval,
       context,
+      viewerContext,
     } = this.props;
 
     return (
@@ -28,8 +29,8 @@ class WithAccount extends React.Component {
         client={analytics_service}
         query={
           gql`
-            query with_account_instance {
-                account(interfaces:[CommitSummary]){
+            query with_account_instance($key: String!) {
+                account(key: $key, interfaces:[CommitSummary]){
                     id
                     name
                     key
@@ -49,6 +50,9 @@ class WithAccount extends React.Component {
             }
         `
         }
+        variables={{
+          key: viewerContext.accountKey
+        }}
         pollInterval={pollInterval}
       >
         {
@@ -73,6 +77,6 @@ class WithAccount extends React.Component {
     )
   }
 }
-export const AccountDashboard = withNavigationContext(WithAccount);
+export const AccountDashboard = withNavigationContext(withViewerContext(WithAccount));
 
 

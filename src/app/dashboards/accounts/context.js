@@ -1,8 +1,9 @@
 // @flow
 import Activity from './activity/topic';
 import Contributors from './contributors/topic';
-import type {Context} from '../../framework/navigation/context/context';
+import Admin from './admin/topic';
 
+import type {Context} from '../../framework/navigation/context/context';
 import {Contexts} from "../../meta/contexts";
 
 const context: Context = {
@@ -16,6 +17,11 @@ const context: Context = {
     {
       match: 'contributors',
       topic: Contributors
+    },
+    {
+      match: 'admin',
+      topic: Admin,
+      allowedRoles: ['account-owner']
     },
     {
       match:'',

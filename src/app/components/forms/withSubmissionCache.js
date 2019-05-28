@@ -17,6 +17,7 @@ export const withSubmissionCache = (Component) => {
           submit: this.submitWrapper.bind(this),
           lastSubmission: this.state.values
         }}
+        {...this.props}
       />
     }
   }
