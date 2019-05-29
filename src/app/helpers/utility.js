@@ -1,5 +1,6 @@
 import { Map } from 'immutable';
 import moment from 'moment';
+import {notification} from "antd";
 
 export function clearToken() {
   localStorage.removeItem('id_token');
@@ -172,3 +173,11 @@ export function display_error(error) {
     return `${error}`
   }
 }
+
+export function openNotification(type, message, duration=3) {
+    notification[type]({
+      message: message,
+      duration: duration,
+      key:`open${Date.now()}`
+    })
+};
