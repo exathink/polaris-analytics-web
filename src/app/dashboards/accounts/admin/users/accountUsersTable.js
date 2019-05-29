@@ -11,7 +11,16 @@ import {withAntPagination} from "../../../../components/graphql/withAntPaginatio
 
 const {Column} = Table;
 
-const AccountUsersPaginatedTable = ({account, paging, pageSize, currentCursor, onNewPage, newData}) => (
+const AccountUsersPaginatedTable = (
+  {
+    view,
+    viewerContext:{ viewer },
+    paging,
+    pageSize,
+    currentCursor,
+    onNewPage,
+    newData
+  }) => (
   <Query
     client={analytics_service}
     query={
@@ -39,7 +48,7 @@ const AccountUsersPaginatedTable = ({account, paging, pageSize, currentCursor, o
     variables={{
       pageSize: pageSize,
       endCursor: currentCursor,
-      accountKey: account.key
+      accountKey: viewer.accountKey
     }}
     fetchPolicy={newData ? 'network-only' : 'cache-first'}
   >
@@ -66,7 +75,6 @@ const AccountUsersPaginatedTable = ({account, paging, pageSize, currentCursor, o
             onChange={onNewPage}
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
-            <Column title={"Key"} dataIndex={"key"} key={"key"}/>
             <Column title={"Email"} dataIndex={"email"} key={"email"}/>
             <Column title={"Role"} dataIndex={"role"} key={"role"}/>
           </Table>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Dashboard} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
 
 import {AccountDashboard} from "../accountDashboard";
 
@@ -11,17 +11,13 @@ const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Account Overview'/>
 };
 
-export const dashboard = () =>(
-  <AccountDashboard
-   render={
-     ({account, context, match}) => {
-       return (
-         <Dashboard dashboard={`${dashboard_id}`}>
-            <ManageUsersDashboardWidget name='users' account={account}/>
-         </Dashboard>
-       )
-     }
-   }
-  />
-);
-export default dashboard;
+export default function AccountAdminDashboard() {
+  return (
+    <Dashboard dashboard={`${dashboard_id}`}>
+      <DashboardRow h={"30%"}>
+        <ManageUsersDashboardWidget w={1/2} name='users'/>
+      </DashboardRow>
+    </Dashboard>
+  )
+}
+
