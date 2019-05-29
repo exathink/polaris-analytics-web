@@ -36,22 +36,6 @@
   margin: 1px;
 }
 
-.dashboard-row-title-container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-.dashboard-row-title-container .title-control-container {
-  display: flex;
-  flex-direction: row-reverse;
-  margin: 2px;
-}
-
-.title-control {
-  margin: 1px;
-}
-
 .dashboard-item-title-container {
   width: 100%;
   display: flex;
@@ -61,14 +45,15 @@
 }
 
 .dashboard-item-title-container .title-control-container {
+  width: 87%;
   display: flex;
+  flex-direction: row-reverse;
   margin: 2px;
 }
 
-
-
-
-
+.dashboard-item-title-container .title-control-container .title-control {
+  margin: 1px;
+}
 .dashboard-row-title {
   font-size: 2.2vh;
   font-weight: 400;

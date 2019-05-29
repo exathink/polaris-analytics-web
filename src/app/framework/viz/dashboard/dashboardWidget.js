@@ -1,6 +1,7 @@
 import React from "react";
 import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
+import {withRouter} from 'react-router';
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
   showDetail ?
@@ -14,8 +15,11 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
     null
 );
 
+function getControlProps(itemSelected, showDetail, rest) {
+   return
+}
 
-export const DashboardWidget = withNavigationContext(
+export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, controls, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
   return (
     <Flex column w={w} m={1} className="dashboard-item">
@@ -35,10 +39,15 @@ export const DashboardWidget = withNavigationContext(
               <nav className={'menu title-control-container'} >
                 <React.Fragment>
                   {
-                    controls.map(
+                    controls.reverse().map(
                       (control, index)  =>
                         <div key={index} className={'title-control'}>
-                          {React.createElement(control)}
+                          {
+                            itemSelected && showDetail ?
+                              React.createElement(control, {...{view: 'detail'}, ...rest})
+                              :
+                              React.createElement(control, {...{view: 'primary'}, ...rest})
+                          }
                         </div>
                     )
                   }
@@ -67,4 +76,4 @@ export const DashboardWidget = withNavigationContext(
 
     </Flex>
   )
-});
+}));
