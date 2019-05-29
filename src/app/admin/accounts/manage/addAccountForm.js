@@ -73,4 +73,4 @@ const AddAccount = (
 );
 
 
-export const AddAccountForm = Form.create()(withSubmissionHandler(withFormDrawer(FORM_TITLE, AddAccount)));
+export const AddAccountForm = Form.create()(withSubmissionHandler(withFormDrawer(FORM_TITLE, AddAccount, 'Create')));

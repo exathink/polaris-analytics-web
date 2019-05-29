@@ -5,7 +5,7 @@ import {withSubmissionHandler} from "./withSubmissionHandler";
 
 const {Option} = Select;
 
-export function withFormDrawer(title, Form) {
+export function withFormDrawer(title, Form, submitTitle='Submit') {
   return (
     props => {
       const {
@@ -20,7 +20,7 @@ export function withFormDrawer(title, Form) {
       return (
         <React.Fragment>
           <Button type="primary" onClick={show}>
-            <Icon type="plus"/> New account
+            <Icon type="plus"/> {title}
           </Button>
           <Drawer
             title={title}
@@ -45,7 +45,7 @@ export function withFormDrawer(title, Form) {
                 Cancel
               </Button>
               <Button onClick={onSubmit} type="primary">
-                Submit
+                {submitTitle}
               </Button>
             </div>
           </Drawer>
