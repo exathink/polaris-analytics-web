@@ -87,6 +87,10 @@ class ViewerContextProvider extends React.Component {
     }
   }
 
+  getViewerOrganizations(role=null) {
+    const organizations = this.state.viewer.organizationRoles;
+    return role != null ? organizations.filter(organization => organization.role === role) : organizations;
+  }
 
   render() {
     return (
@@ -96,7 +100,8 @@ class ViewerContextProvider extends React.Component {
           accountKey: this.state.accountKey,
           refresh: this.refresh.bind(this),
           hasAccountRoles : this.hasAccountRoles.bind(this),
-          hasSystemRoles: this.hasSystemRoles.bind(this)
+          hasSystemRoles: this.hasSystemRoles.bind(this),
+          getViewerOrganizations: this.getViewerOrganizations.bind(this)
         }}>
           {this.props.children}
         </Provider>
@@ -122,6 +127,14 @@ export const ViewerContext = {
             email
             systemRoles
             accountRoles {
+                key
+                name
+                scopeKey
+                role
+            }
+            organizationRoles {
+                key
+                name
                 scopeKey
                 role
             }
