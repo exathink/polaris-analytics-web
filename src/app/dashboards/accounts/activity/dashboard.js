@@ -123,46 +123,51 @@ export const dashboard = () =>(
                </DashboardRow>
                : null
            }
-           <DashboardRow h={`${66/rows}%`} title={Contexts.repositories.display()}>
-             <DashboardWidget
-               w={1 / 2}
-               name="repositories-activity-profile"
-               render={
-                 ({view}) =>
-                   <ChildDimensionActivityProfileWidget
-                     dimension={'account'}
-                     childDimension={'repositories'}
-                     instanceKey={account.key}
-                     childContext={Repositories}
-                     context={context}
-                     enableDrillDown={true}
-                     suppressDataLabelsAt={500}
-                     view={view}
-                     pageSize={50}
-                   />
-               }
-               showDetail={true}
-             />
-             <DashboardWidget
-               w={1 / 2}
-               name="most-active-repositories"
-               render={
-                 ({view}) =>
-                   <DimensionMostActiveChildrenWidget
-                     dimension={'account'}
-                     instanceKey={account.key}
-                     childConnection={'recentlyActiveRepositories'}
-                     context={context}
-                     childContext={Repositories}
-                     top={10}
-                     latestCommit={account.latestCommit}
-                     days={1}
-                     view={view}
-                   />
-               }
-               showDetail={true}
-             />
-           </DashboardRow>
+           {
+             account.repositories.count > 0 ?
+               <DashboardRow h={`${66 / rows}%`} title={Contexts.repositories.display()}>
+                 <DashboardWidget
+                   w={1 / 2}
+                   name="repositories-activity-profile"
+                   render={
+                     ({view}) =>
+                       <ChildDimensionActivityProfileWidget
+                         dimension={'account'}
+                         childDimension={'repositories'}
+                         instanceKey={account.key}
+                         childContext={Repositories}
+                         context={context}
+                         enableDrillDown={true}
+                         suppressDataLabelsAt={500}
+                         view={view}
+                         pageSize={50}
+                       />
+                   }
+                   showDetail={true}
+                 />
+                 <DashboardWidget
+                   w={1 / 2}
+                   name="most-active-repositories"
+                   render={
+                     ({view}) =>
+                       <DimensionMostActiveChildrenWidget
+                         dimension={'account'}
+                         instanceKey={account.key}
+                         childConnection={'recentlyActiveRepositories'}
+                         context={context}
+                         childContext={Repositories}
+                         top={10}
+                         latestCommit={account.latestCommit}
+                         days={1}
+                         view={view}
+                       />
+                   }
+                   showDetail={true}
+                 />
+               </DashboardRow>
+               : null
+
+           }
          </Dashboard>
        )
      }
