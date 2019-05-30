@@ -1,4 +1,4 @@
-import {getActivityLevel} from "./activityLevel";
+import {getActivityLevel, ACTIVITY_LEVEL_INITIAL} from "./activityLevel";
 import {toMoment} from "../../../helpers/utility";
 import moment from "moment";
 
@@ -8,7 +8,7 @@ export function getDaysSinceCommit(serverCommitDate) {
 export function findActivityLevel(serverLatestCommitDate) {
   return serverLatestCommitDate ?  getActivityLevel({
     days_since_latest_commit: getDaysSinceCommit(serverLatestCommitDate)
-  }) : null;
+  }) : ACTIVITY_LEVEL_INITIAL;
 }
 
 export function getTimelineRefreshInterval(serverLatestCommitDate) {

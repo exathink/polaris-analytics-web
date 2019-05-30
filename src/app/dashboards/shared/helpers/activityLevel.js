@@ -45,6 +45,13 @@ export const ACTIVITY_LEVEL_UNKNOWN = {
   visible: false
 };
 
+export const ACTIVITY_LEVEL_INITIAL = {
+  display_name: 'Initial',
+  color: Colors.ActivityLevel.INITIAL,
+  isMember: () => false,
+  visible: false
+};
+
 // map names to activity level
 export const ACTIVITY_LEVEL = ACTIVITY_LEVELS.reduce((levelMap, level) => {
   levelMap[level.display_name] = level;
