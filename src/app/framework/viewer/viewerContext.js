@@ -58,6 +58,10 @@ class ViewerContextProvider extends React.Component {
     )
   }
 
+  isAdmin() {
+    return this.hasSystemRoles(['admin'])
+  }
+
   hasSystemRoles(roles) {
     if (roles != null) {
       let found = false;
@@ -101,7 +105,9 @@ class ViewerContextProvider extends React.Component {
           refresh: this.refresh.bind(this),
           hasAccountRoles : this.hasAccountRoles.bind(this),
           hasSystemRoles: this.hasSystemRoles.bind(this),
-          getViewerOrganizations: this.getViewerOrganizations.bind(this)
+          getViewerOrganizations: this.getViewerOrganizations.bind(this),
+          isAdmin: this.isAdmin.bind(this),
+          isAccountOwner: this.isAccountOwner.bind(this)
         }}>
           {this.props.children}
         </Provider>
