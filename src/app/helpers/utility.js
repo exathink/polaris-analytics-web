@@ -147,7 +147,7 @@ export function formatCommitDate(serverCommitDate) {
 }
 
 export function fromNow(serverCommitDate) {
-  return moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true)
+  return serverCommitDate ? moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true) : 'None'
 }
 
 export function isToday(serverCommitDate) {
