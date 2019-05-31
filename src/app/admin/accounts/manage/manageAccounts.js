@@ -55,7 +55,7 @@ export const ManageAccounts = (
                     }
                     loading={loading}
                     error={error}
-                    values={lastSubmission}
+                    lastSubmission={lastSubmission}
                   />
               ]}
             >

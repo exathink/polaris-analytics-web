@@ -163,3 +163,7 @@ html[dir='rtl'] .ant-notification-notice-with-icon {
 html[dir='rtl'] .dz-hidden-input {
   display: none;
 }
+
+html[dir='rtl'] .hidden {
+  display: none
+}

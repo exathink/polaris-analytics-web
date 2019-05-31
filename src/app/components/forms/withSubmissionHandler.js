@@ -36,17 +36,11 @@ export const withSubmissionHandler = (Component) => {
 
     };
 
-    onSubmit = e => {
-      e.preventDefault();
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-
-          if (this.props.onSubmit) {
-            this.props.onSubmit(values)
-          }
-          this.onClose();
-        }
-      });
+    onSubmit(values) {
+      if (this.props.onSubmit) {
+        this.props.onSubmit(values)
+      }
+      this.onClose();
     };
 
     componentDidMount() {
@@ -65,23 +59,14 @@ export const withSubmissionHandler = (Component) => {
       }
     }
 
-    initialValue = (key, defaultValue) => {
-      if (this.state.notification) {
-        if (this.props.values) {
-          return this.props.values[key] || defaultValue
-        }
-      }
-      return defaultValue
-    }
-
     render() {
-      const {onSubmit, ...rest} = this.props;
+      const {onSubmit, lastSubmission, error, ...rest} = this.props;
       return <Component
         submissionHandler={{
-          visible: this.state.notification || this.state.visible,
+          visible: this.state.notification != null || this.state.visible,
           show: this.show.bind(this),
           hide: this.onClose.bind(this),
-          initialValue: this.initialValue.bind(this),
+          lastSubmission: error ? lastSubmission : null,
           onSubmit: this.onSubmit.bind(this)
         }}
         {...rest}
