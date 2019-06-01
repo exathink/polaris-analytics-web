@@ -1,7 +1,7 @@
 import React from "react";
-import {Col, Divider, Form, Input, Row, Select} from "antd";
-import {withSubmissionHandler} from "../../../../components/forms/withSubmissionHandler";
-import {withFormDrawer} from "../../../../components/forms/withFormDrawer";
+import {Col, Form, Input, Row, Select} from "antd";
+
+import {createForm} from "../../../../components/forms/createForm";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 
 const {Option} = Select;
@@ -10,12 +10,10 @@ const FORM_TITLE = 'Invite user';
 const InviteUser = withViewerContext((
   {
     viewerContext: {viewer, getViewerOrganizations},
+    currentValue,
+    onSubmit,
     form: {
       getFieldDecorator
-    },
-    submissionHandler: {
-      initialValue,
-      onSubmit
     }
   }
 ) => {
@@ -31,7 +29,7 @@ const InviteUser = withViewerContext((
                 {type: 'email', message: 'The input is not a valid email'},
                 {required: true, message: 'Email is required'}
               ],
-              initialValue: initialValue('email', null)
+              initialValue: currentValue('email', null)
             })(<Input placeholder="email"/>)}
           </Form.Item>
         </Col>
@@ -41,7 +39,7 @@ const InviteUser = withViewerContext((
               rules: [
                 {required: true, message: 'First name is required'}
               ],
-              initialValue: initialValue('firstName', null)
+              initialValue: currentValue('firstName', null)
             })(<Input placeholder="first name"/>)}
           </Form.Item>
         </Col>
@@ -51,7 +49,7 @@ const InviteUser = withViewerContext((
               rules: [
                 {required: true, message: 'Last name is required'}
               ],
-              initialValue: initialValue('lastName', null)
+              initialValue: currentValue('lastName', null)
             })(<Input placeholder="last name"/>)}
           </Form.Item>
         </Col>
@@ -63,7 +61,7 @@ const InviteUser = withViewerContext((
                   rules: [
                     {required: true, message: 'At least one organization must be selected.'}
                   ],
-                  initialValue: initialValue('organizations', [organizations[0].key])
+                  initialValue: currentValue('organizations', [organizations[0].key])
                 })(
                   <Select
                     mode="multiple"
@@ -93,4 +91,4 @@ const InviteUser = withViewerContext((
 });
 
 
-export const InviteUserForm = Form.create()(withSubmissionHandler(withFormDrawer(FORM_TITLE, InviteUser, 'Invite')));
+export const InviteUserForm = createForm(InviteUser, {drawer: true, title: 'Invite User', submitTitle: 'Invite'});

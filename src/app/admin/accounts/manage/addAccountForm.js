@@ -1,26 +1,28 @@
 import React from "react";
-import Button from "../../../../components/uielements/button";
-import {Col, DatePicker, Drawer, Form, Icon, Input, Row, Select, Divider} from "antd";
-import {notification} from "antd";
-import {withSubmissionHandler} from "../../../components/forms/withSubmissionHandler";
-import {withFormDrawer} from "../../../components/forms/withFormDrawer";
+import {Col, Form, Input, Row, Select} from "antd";
+import {createForm} from "../../../components/forms/createForm";
 
 const {Option} = Select;
-const PARTS = ['COMPANY', 'OWNER']
-const FORM_TITLE = 'Add a new account';
+const PARTS = ['company', 'owner']
+const PART_OPTIONS = {
+  company: {
+    title: 'Account'
+  },
+  owner: {
+    title: 'Account Owner'
+  }
+}
 const AddAccount = (
   {
     part,
     currentValue,
+    onSubmit,
     form: {
       getFieldDecorator
-    },
-    submissionHandler: {
-      onSubmit
     }
   }
 ) => (
-      part === 'COMPANY' ?
+      part === 'company' ?
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item label="Company">
@@ -32,7 +34,7 @@ const AddAccount = (
           </Col>
         </Row>
         :
-      part === 'OWNER' ?
+      part === 'owner' ?
         <React.Fragment>
           <Row gutter={16}>
             <Col span={24}>
@@ -78,4 +80,4 @@ const AddAccount = (
 );
 
 
-export const AddAccountForm = Form.create()(withSubmissionHandler(withFormDrawer(FORM_TITLE, AddAccount, 'Create', PARTS)));
+export const AddAccountForm = createForm(AddAccount, {drawer: true, title: 'Add New Account', submitTitle: 'Create', parts: PARTS, partOptions: PART_OPTIONS});
