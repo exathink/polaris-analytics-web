@@ -55,17 +55,17 @@ function withForm(FormFields, options) {
             Cancel
           </Button>
           {
-            (0 <= part) && (part < parts.length - 1) ?
-              <Button tabIndex="-1" onClick={onNext} style={{marginRight: 8}}>
-                Next
+            (0 < part) && (part < parts.length) ?
+              <Button tabIndex="-1" onClick={onPrev} style={{marginRight: 8}}>
+                Previous
               </Button>
               :
               null
           }
           {
-            (0 < part) && (part < parts.length) ?
-              <Button tabIndex="-1" onClick={onPrev} style={{marginRight: 8}}>
-                Previous
+            (0 <= part) && (part < parts.length - 1) ?
+              <Button tabIndex="-1" onClick={onNext} style={{marginRight: 8}}>
+                Next
               </Button>
               :
               null
