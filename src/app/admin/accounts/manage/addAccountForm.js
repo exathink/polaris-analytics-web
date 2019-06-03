@@ -1,12 +1,15 @@
 import React from "react";
-import {Col, Form, Input, Row, Select} from "antd";
+import {Col, Form, Input, Radio, Row, Select} from "antd";
 import {createForm} from "../../../components/forms/createForm";
 
 const {Option} = Select;
-const PARTS = ['company', 'owner']
+const PARTS = ['company', 'organization', 'owner']
 const PART_OPTIONS = {
   company: {
     title: 'Account'
+  },
+  organization: {
+    title: 'Default Organization'
   },
   owner: {
     title: 'Account Owner'
@@ -22,18 +25,69 @@ const AddAccount = (
     }
   }
 ) => (
-      part === 'company' ?
+  part === 'company' ?
+    <React.Fragment>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Name">
+            {getFieldDecorator('accountName', {
+              rules: [{required: true, message: 'Account name is required'}],
+              initialValue: currentValue('accountName', null)
+            })(<Input placeholder="Account name"/>)}
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Work Tracking Default">
+            {getFieldDecorator('accountWorkTracking', {
+              rules: [{required: true, message: 'A value must be selected'}],
+              initialValue: currentValue('accountWorkTracking', 'none')
+            })(
+              <Radio.Group name="inputType" defaultValue={'none'} buttonStyle={"solid"}>
+                <Radio.Button value={'none'}>None</Radio.Button>
+                <Radio.Button value={'jira'}>Jira</Radio.Button>
+                <Radio.Button value={'pivotal'}>Pivotal Tracker</Radio.Button>
+                <Radio.Button value={'github'}>Github</Radio.Button>
+              </Radio.Group>
+            )}
+          </Form.Item>
+
+        </Col>
+      </Row>
+    </React.Fragment>
+    :
+    part === 'organization' ?
+      <React.Fragment>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item label="Company">
-              {getFieldDecorator('company', {
-                rules: [{required: true, message: 'Company name is required'}],
-                initialValue: currentValue('company', null)
-              })(<Input placeholder="Company"/>)}
+            <Form.Item label="Name">
+              {getFieldDecorator('organizationName', {
+                rules: [{required: true, message: 'Organization name is required'}],
+                initialValue: currentValue('organizationName', currentValue('accountName', null))
+              })(<Input placeholder="Organization name"/>)}
             </Form.Item>
           </Col>
         </Row>
-        :
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item label="Work Tracking">
+              {getFieldDecorator('organizationWorkTracking', {
+                rules: [{required: true, message: 'A value must be selected'}],
+                initialValue: currentValue('organizationWorkTracking', currentValue('accountWorkTracking', 'none'))
+              })(
+                <Radio.Group name="inputType" defaultValue={'none'} buttonStyle={"solid"}>
+                  <Radio.Button value={'none'}>None</Radio.Button>
+                  <Radio.Button value={'jira'}>Jira</Radio.Button>
+                  <Radio.Button value={'pivotal'}>Pivotal Tracker</Radio.Button>
+                  <Radio.Button value={'github'}>Github</Radio.Button>
+                </Radio.Group>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+      </React.Fragment>
+      :
       part === 'owner' ?
         <React.Fragment>
           <Row gutter={16}>
@@ -80,4 +134,10 @@ const AddAccount = (
 );
 
 
-export const AddAccountForm = createForm(AddAccount, {drawer: true, title: 'Add New Account', submitTitle: 'Create', parts: PARTS, partOptions: PART_OPTIONS});
+export const AddAccountForm = createForm(AddAccount, {
+  drawer: true,
+  title: 'Add New Account',
+  submitTitle: 'Create',
+  parts: PARTS,
+  partOptions: PART_OPTIONS
+});

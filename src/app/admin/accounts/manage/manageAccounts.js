@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
 import {AddAccountForm} from "./addAccountForm";
 import {AllAccountsTableWidget} from "./allAccountsTable";
-import Notification from "../../../../components/notification";
 import {withSubmissionCache} from "../../../components/forms/withSubmissionCache";
 
 const CREATE_ACCOUNT = gql`
@@ -41,7 +40,16 @@ export const ManageAccounts = (
                         values => createAccount({
                           variables: {
                             createAccountInput: {
-                              company: values.company,
+                              name: values.accountName,
+                              profile: {
+                                defaultWorkTracking: values.accountWorkTracking
+                              },
+                              defaultOrganization: {
+                                name: values.organizationName,
+                                profile: {
+                                  defaultWorkTracking: values.organizationWorkTracking
+                                }
+                              },
                               accountOwnerInfo: {
                                 firstName: values.firstName,
                                 lastName: values.lastName,
