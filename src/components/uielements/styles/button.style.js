@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { palette } from 'styled-theme';
-import { transition } from '../../../config/style-util';
+import {palette} from 'styled-theme';
+import {transition} from '../../../config/style-util';
 
 const Buttons = ComponentName => styled(ComponentName)`
   &.ant-btn {
@@ -25,12 +25,11 @@ const Buttons = ComponentName => styled(ComponentName)`
     user-select: none;
     position: relative;
     color: ${palette('text', 1)};
-    border-color: ${palette('border', 0)};
+    border-color: ${palette('border', 1)};
     ${transition()};
 
     &:hover {
       border-color: ${palette('primary', 0)};
-      color: ${palette('secondary', 6)};
     }
 
     > .anticon + span,
