@@ -1,8 +1,6 @@
 import React from "react";
 import {NavCard} from "../components/cards";
-import Dashboard from './context';
 import {CardGrid} from "../components/cardGrid";
-import {Contexts} from "../meta";
 
 import Accounts from "./accounts/context";
 import Organizations from "./organizations/context";
@@ -31,7 +29,7 @@ export default withViewerContext(
       );
     } else {
       const organizations = viewerContext.getViewerOrganizations();
-      return viewerContext.isAccountOwner() || organizations.length > 1 ?
+      return organizations.length > 1 ?
         <Redirect to={`${Accounts.url_for}`}/>
         :
         <Redirect to={`${url_for_instance(Organizations, organizations[0].name, organizations[0].key)}`}/>
