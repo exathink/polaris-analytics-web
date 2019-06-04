@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {DashboardWidget} from "../../../framework/viz/dashboard";
 import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
 import {AddAccountForm} from "./addAccountForm";
@@ -20,18 +20,21 @@ const CREATE_ACCOUNT = gql`
 
 export const ManageAccounts = (
   {
+    w,
     submissionCache: {
       submit,
       lastSubmission
-    }
+    },
+    ...rest
   }) => (
   <Mutation mutation={CREATE_ACCOUNT}>
     {
       (createAccount, {data, loading, error}) => {
         return (
-          <Dashboard h={"100%"}>
-            <DashboardRow
-              title={"All Accounts"}
+            <DashboardWidget
+              name={'accounts'}
+              title={"Accounts"}
+              w={w}
               controls={[
                 () =>
                   <AddAccountForm
@@ -66,15 +69,10 @@ export const ManageAccounts = (
                     lastSubmission={lastSubmission}
                   />
               ]}
-            >
-              <DashboardWidget
-                name={'table'}
-                w={1}
-                showDetail={true}
-                render={() => <AllAccountsTableWidget newData={data? data.createAccount: null}/>}
-              />
-            </DashboardRow>
-          </Dashboard>
+              showDetail={true}
+              render={() => <AllAccountsTableWidget newData={data ? data.createAccount : null}/>}
+              {...rest}
+            />
         )
       }
     }

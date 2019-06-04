@@ -136,7 +136,7 @@ const AddAccount = (
 
 export const AddAccountForm = createForm(AddAccount, {
   drawer: true,
-  title: 'Add New Account',
+  title: 'New Account',
   submitTitle: 'Create',
   parts: PARTS,
   partOptions: PART_OPTIONS

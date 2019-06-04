@@ -1,8 +1,8 @@
 import React from "react";
 import {Col, Form, Input, Row, Select} from "antd";
 
-import {createForm} from "../../../../components/forms/createForm";
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+import {createForm} from "../../../components/forms/createForm";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 const {Option} = Select;
 

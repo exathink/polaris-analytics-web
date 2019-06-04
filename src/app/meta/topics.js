@@ -52,19 +52,24 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.admin' defaultMessage="Admin"/>),
     icon: 'ion-ios-cog'
   },
-  manage: {
-    name: 'manage',
-    display: () => (<FormattedMessage id='topics.manage' defaultMessage="Manage"/>),
+  system: {
+    name: 'system',
+    display: () => (<FormattedMessage id='topics.system' defaultMessage="System"/>),
     icon: 'ion-ios-cog'
   },
-  accounts: {
-    name: 'accounts',
-    display: () => (<FormattedMessage id='topics.accounts' defaultMessage="Accounts"/>),
+  account: {
+    name: 'account',
+    display: () => (<FormattedMessage id='topics.account' defaultMessage="Account"/>),
     icon: 'ion-ios-home'
   },
   dashboard: {
     name: 'dashboard',
     display: () => (<FormattedMessage id='topics.dashboard' defaultMessage="Deshboards"/>),
     icon: 'ion-ios-pulse'
+  },
+  user: {
+    name: 'user',
+    display: () => (<FormattedMessage id='topics.user' defaultMessage="User"/>),
+    icon: 'ion-person'
   },
 };

@@ -1,13 +1,12 @@
 import React from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
+import {DashboardWidget} from "../../../framework/viz/dashboard";
 import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
-import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
+import {withSubmissionCache} from "../../../components/forms/withSubmissionCache";
 import {AccountUsersTableWidget} from "./accountUsersTable";
-import Button from "../../../../../components/uielements/button";
 import {InviteUserForm} from "./inviteUserForm";
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {openNotification} from "../../../../helpers/utility";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {openNotification} from "../../../helpers/utility";
 
 const INVITE_USER = gql`
     mutation inviteUser ($inviteUserInput: InviteUserInput!){

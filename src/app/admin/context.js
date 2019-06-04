@@ -1,19 +1,28 @@
 import React from "react";
 import type {Context} from "../framework/navigation/context/context";
-import {Contexts, Topics} from "../meta";
-import Accounts from './accounts/context';
+import {Contexts} from "../meta";
+import System from './system/topic';
+import Account from './account/topic';
+
 
 const context: Context = {
-  ...Contexts.admin,
+  ...Contexts.settings,
   routes: [
     {
-      match: 'accounts',
-      context: Accounts
+      match: 'account',
+      topic: Account,
+      allowedRoles: ['admin', 'account-owner']
+    },
+    {
+      match: 'system',
+      topic: System,
+      allowedRoles: ['admin']
     },
     {
       match: '',
-      redirect: 'accounts'
+      redirect: 'account'
     }
   ]
 };
 export default context;
+

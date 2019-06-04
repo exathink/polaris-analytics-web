@@ -1,8 +1,7 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Dashboard, DashboardRow} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow} from '../../framework/viz/dashboard';
 
-import {AccountDashboard} from "../accountDashboard";
 
 import {ManageUsersDashboardWidget} from "./users/manageUsers";
 

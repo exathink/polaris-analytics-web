@@ -32,12 +32,24 @@ class TopbarUser extends Component {
     this.props.navigate.push('/logout')
   }
 
+  settings(){
+    this.props.navigate.push('/app/admin');
+    this.hide()
+  }
 
   render() {
     const {viewerContext} = this.props;
     const userName = viewerContext.viewer.firstName;
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
+        {
+          viewerContext.hasSystemRoles(['admin', 'account-owner']) ?
+            <a className="isoDropdownLink" onClick={this.settings.bind(this)}>
+              <p>Settings</p>
+            </a>
+            :
+            null
+        }
         <a className="isoDropdownLink" onClick={this.logout.bind(this)}>
             <p>{messages.logout} {userName}</p>
         </a>
