@@ -3,7 +3,6 @@ import asyncComponent from "../../../../helpers/AsyncFunc";
 
 const topic =  {
   ...Topics.projects,
-  optional: true,
   routes: [
     {
       match: '',

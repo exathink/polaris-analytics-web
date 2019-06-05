@@ -5,7 +5,6 @@ import gql from "graphql-tag";
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
-import ProjectsTopic from "./projects/topic";
 import WorkTopic from "./work/topic";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
@@ -19,10 +18,6 @@ class WithOrganization extends React.Component {
     } = this.props;
 
     var optionalTopics = [];
-    // We dont show projects navigation for orgs where no projects have been set up.
-    if(organization && organization.projectCount > 0) {
-      optionalTopics.push(ProjectsTopic.name)
-    }
     if(organization && organization.workItemsSourceCount > 0) {
       optionalTopics.push(WorkTopic.name)
     }
