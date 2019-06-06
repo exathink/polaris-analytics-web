@@ -88,6 +88,14 @@ export class ActiveContext {
     }
   }
 
+  go(scope, route) {
+    if(scope == '.') {
+      this.navigator.push(`${this.matchUrl()}/${route}`)
+    } else if (scope == '..'){
+      this.navigator.push(`${this.matchInfo.url}/${route}`)
+    }
+  }
+
   drillDown(context, instanceName, instanceKey) {
     const selectedTopic = this.selectedRoute.topic;
     this.navigate(context, instanceName, instanceKey, selectedTopic? selectedTopic.name : '');
