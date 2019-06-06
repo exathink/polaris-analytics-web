@@ -5,6 +5,10 @@ const topic =  {
   ...Topics.projects,
   routes: [
     {
+      match: 'new',
+      component: asyncComponent(() => import('./manage/addProject'))
+    },
+    {
       match: '',
       component: asyncComponent(() => import('./dashboard'))
     }

@@ -1,25 +1,48 @@
 import React from 'react';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {Contexts} from "../../../meta/contexts";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {OrganizationDashboard} from "../organizationDashboard";
+import {ProjectsTableWidget} from "./manage/projectsTable";
 
 import Projects from "../../projects/context"
+import {Icon} from "antd";
+import Button from "../../../../components/uielements/button";
 
-const dashboard_id = 'dashboards.activity.organization.instance';
+
+const dashboard_id = 'dashboards.projects.organization.instance';
 
 
 export default () => (
   <OrganizationDashboard
-    pollInterval={60*1000}
+    pollInterval={60 * 1000}
     render={
       ({organization, context}) => (
         <Dashboard
           dashboard={`${dashboard_id}`}
         >
-          <DashboardRow h='22%' title={Contexts.projects.display()}>
+          <DashboardRow h={"70%"}>
+            <DashboardWidget
+              w={1}
+              name="projects"
+              title={"Projects"}
+              controls={[
+                () =>
+                  <Button type="primary" onClick={()=>context.go('.', 'new')}>
+                    <Icon type="plus"/> New Project
+                  </Button>
+              ]}
+              render={
+                () =>
+                  <ProjectsTableWidget
+                    organizationKey={organization.key}
+                  />
+              }
+              showDetail={false}
+            />
+          </DashboardRow>
+          <DashboardRow h='22%'>
             <DashboardWidget
               w={1 / 2}
               name="project-activity-levels"
@@ -59,6 +82,7 @@ export default () => (
               showDetail={true}
             />
           </DashboardRow>
+
         </Dashboard>
       )
     }/>
