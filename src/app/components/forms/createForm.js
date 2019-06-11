@@ -93,7 +93,7 @@ function withForm(FormFields, options) {
 
     constructor(props) {
       super(props);
-      this.state = this.initialState(props.values)
+      this.state = this.initialState(props.error && props.values)
     }
 
 
