@@ -8,6 +8,7 @@ import {createForm} from "../../../../components/forms/createForm";
 
 import Button from "../../../../../components/uielements/button";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
+import {NoData} from "../../../../components/misc/noData";
 
 
 function urlMunge(connectorType, url) {
@@ -89,7 +90,7 @@ const AddConnector = (
                   <Input
                     placeholder="<company>"
                     addonBefore="https://"
-                    addonAfter="atlassian.net"
+                    addonAfter=".atlassian.net"
                   />
                 )}
               </Form.Item>
@@ -153,7 +154,7 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
       accountKey: viewerContext.accountKey,
       connectorType: connectorType
     }}
-    fetchPolicy={newData ? 'network-only' : 'cache-first'}
+    pollInterval={5000}
   >
     {
       ({loading, error, data}) => {
@@ -163,34 +164,39 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
         return (
           <React.Fragment>
             <div className={'connectors-table'}>
-              <Table
-                dataSource={connectors}
-                loading={loading}
-                rowKey={record => record.id}
-                pagination={{
-                  total: connectors.length,
-                  defaultPageSize: 5,
-                  hideOnSinglePage: true
-                }}
-              >
-                <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
-                <Table.Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
-                <Table.Column title={"State"} dataIndex={"state"} key={"state"}/>
-                <Table.Column
-                  title=""
-                  key="action"
-                  render={
-                    (text, record) =>
-                      <Button type={'primary'}
-                              onClick={() => onConnectorSelected(record)}
+              {
+                connectors.length > 0 ?
+                  <Table
+                    dataSource={connectors}
+                    loading={loading}
+                    rowKey={record => record.id}
+                    pagination={{
+                      total: connectors.length,
+                      defaultPageSize: 5,
+                      hideOnSinglePage: true
+                    }}
+                  >
+                    <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
+                    <Table.Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
+                    <Table.Column title={"State"} dataIndex={"state"} key={"state"}/>
+                    <Table.Column
+                      title=""
+                      key="action"
+                      render={
+                        (text, record) =>
+                          <Button type={'primary'}
+                                  onClick={() => onConnectorSelected(record)}
+                                  disabled={record.accountKey !== viewerContext.accountKey || record.state !== 'enabled'}
 
-                      >
-                        Select
-                      </Button>
-                  }
-                />
-              </Table>
-
+                          >
+                            Select
+                          </Button>
+                      }
+                    />
+                  </Table>
+                  :
+                  <NoData message={`No ${connectorType} connectors registered.`}/>
+              }
             </div>
             {React.createElement(addConnectorForm)}
           </React.Fragment>
