@@ -84,16 +84,16 @@ function withForm(FormFields, options) {
 
   return class FormController extends React.Component {
 
-    initialState = () => ({
+    initialState = (values) => ({
       index: 0,
       visible: !drawer,
-      values: {},
+      values: values || {},
       notification: null
     })
 
     constructor(props) {
       super(props);
-      this.state = this.initialState()
+      this.state = this.initialState(props.values)
     }
 
 
@@ -146,7 +146,7 @@ function withForm(FormFields, options) {
         notification.close(this.state.notification)
       }
       this.props.form.resetFields()
-      this.setState(this.initialState());
+      this.setState(this.initialState(null));
 
     };
 
@@ -158,7 +158,7 @@ function withForm(FormFields, options) {
       });
     };
 
-    componentDidMount() {
+    checkForErrors() {
       const {error, lastSubmission} = this.props;
       const notificationKey = `open${Date.now()}`;
       if (error) {
@@ -174,6 +174,10 @@ function withForm(FormFields, options) {
           0
         );
       }
+    }
+
+    componentDidMount() {
+      this.checkForErrors()
     }
 
 
