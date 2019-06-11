@@ -1,15 +1,16 @@
 import React from 'react';
 import './steps.css';
 import {Button, message, Steps} from 'antd';
+import {SelectConnectorStep} from "./selectConnectorStep";
 
-import {ConfigureSourceForm} from "./configureSourceForm";
 
-const { Step } = Steps;
+const {Step} = Steps;
 
 const steps = [
   {
-    title: 'Configure Source',
-    content: () => <ConfigureSourceForm/>,
+    title: 'Select Connector',
+    content: SelectConnectorStep,
+    showNext: false
   },
   {
     title: 'Select Projects To Import',
@@ -21,36 +22,53 @@ const steps = [
   },
 ];
 
+
 export class AddProjectWorkflow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       current: 0,
+      selectedConnector: null
     };
   }
 
   next() {
     const current = this.state.current + 1;
-    this.setState({ current });
+    this.setState({current});
   }
 
   prev() {
     const current = this.state.current - 1;
-    this.setState({ current });
+    this.setState({current});
+  }
+
+
+  onConnectorSelected(connector) {
+    this.setState({
+      current: 1,
+      selectedConnector: connector
+    })
   }
 
   render() {
-    const { current } = this.state;
+    const {current} = this.state;
     return (
       <React.Fragment>
         <Steps current={current}>
           {steps.map(item => (
-            <Step key={item.title} title={item.title} />
+            <Step key={item.title} title={item.title}/>
           ))}
         </Steps>
-        <div className="steps-content">{React.createElement(steps[current].content)}</div>
+        <div className="steps-content">
+          {
+            React.createElement(steps[current].content, {
+              onConnectorSelected: this.onConnectorSelected.bind(this)
+            })
+          }
+        </div>
+
         <div className="steps-action">
-          {current < steps.length - 1 && (
+          {steps[current].showNext && current < steps.length - 1 && (
             <Button type="primary" onClick={() => this.next()}>
               Next
             </Button>
@@ -61,8 +79,8 @@ export class AddProjectWorkflow extends React.Component {
             </Button>
           )}
           {current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              Previous
+            <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
+              Back
             </Button>
           )}
         </div>

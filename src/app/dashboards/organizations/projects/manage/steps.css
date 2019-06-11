@@ -8,6 +8,21 @@
   padding-top: 80px;
 }
 
+.steps-content .connectors-table {
+  margin-bottom: 50px;
+}
+
 .steps-action {
   margin-top: 24px;
+}
+
+.ant-carousel .slick-slide {
+  line-height: 168px;
+  background-color: #2a6496;
+}
+
+
+.ant-carousel .slick-slide .no-data {
+  font-size: 20px;
+  line-height: 168px;
 }
