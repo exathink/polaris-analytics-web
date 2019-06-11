@@ -1,14 +1,13 @@
 // GraphQL Client Setup
 import React from 'react';
 import ApolloClient from 'apollo-client';
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import {InMemoryCache, IntrospectionFragmentMatcher} from 'apollo-cache-inmemory';
+import {HttpLink} from 'apollo-link-http';
 
 import analyticsFragmentTypes from '../../../config/graphql/analyticsFragmentTypes.json';
-import adminFragmentTypes from '../../../config/graphql/adminFragmentTypes';
 
 
-import {GRAPHQL_ADMIN_URL, GRAPHQL_ANALYTICS_URL} from "../../../config/url";
+import {GRAPHQL_ANALYTICS_URL, GRAPHQL_WORK_TRACKING_URL} from "../../../config/url";
 
 import {ApolloProvider} from 'react-apollo';
 
@@ -28,6 +27,19 @@ export const analytics_service = new ApolloClient({
   })
 });
 analytics_service.defaultPollInterval = () => defaultPollInterval(analytics_service);
+
+export const work_tracking_service = new ApolloClient({
+  cache: new InMemoryCache({
+    fragmentMatcher: new IntrospectionFragmentMatcher({
+      introspectionQueryResultData: analyticsFragmentTypes
+    })
+  }),
+  link: new HttpLink({
+    uri: GRAPHQL_WORK_TRACKING_URL,
+    credentials: 'include',
+  })
+});
+analytics_service.defaultPollInterval = () => defaultPollInterval(work_tracking_service);
 
 
 export const DefaultApolloProvider = props => (
