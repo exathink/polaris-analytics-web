@@ -13,10 +13,31 @@ import {NoData} from "../../../../components/misc/noData";
 
 function urlMunge(connectorType, url) {
   if (connectorType === 'jira') {
-    return `${url.startsWith('https://') ? '' : 'https://'}${url}${url.endsWith('.atlassian.net')? '' : '.atlassian.net'}`
+    return `${url.startsWith('https://') ? '' : 'https://'}${url}${url.endsWith('.atlassian.net') ? '' : '.atlassian.net'}`
   }
   return url;
 }
+
+const CREATE_CONNECTOR = gql`
+    mutation createConnector ($createConnectorInput: CreateConnectorInput!){
+        createConnector(createConnectorInput: $createConnectorInput){
+            connector {
+                id
+                name
+                key
+            }
+        }
+    }
+`
+const DELETE_CONNECTOR = gql`
+    mutation deleteConnector($deleteConnectorInput: DeleteConnectorInput!) {
+        deleteConnector(deleteConnectorInput:$deleteConnectorInput){
+            deleted
+        }
+    }
+`
+
+
 export class SelectConnectorStep extends React.Component {
   state = {
     connectorType: 'jira'
@@ -127,7 +148,17 @@ export const AddConnectorForm = createForm(AddConnector, {
 });
 
 
-const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelected, addConnectorForm, newData}) => (
+const SelectConnectorWidget = (
+  {
+    viewerContext,
+    connectorType,
+    onConnectorSelected,
+    addConnectorForm,
+    deleteConnector,
+    newData,
+    updating
+  }
+) => (
   <Query
     client={work_tracking_service}
     query={
@@ -152,15 +183,22 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
     }
     variables={{
       accountKey: viewerContext.accountKey,
-      connectorType: connectorType
+      connectorType: connectorType,
+      newData: newData,
+      updating: updating
     }}
-    pollInterval={5000}
+    fetchPolicy={newData ? 'network-only' : 'cache-first'}
+    pollInterval={newData ? 5000 : 0}
   >
     {
       ({loading, error, data}) => {
         if (error) return null;
-        if (loading) return null;
-        const connectors = data.connectors.edges.map(edge => edge.node)
+        let connectors = []
+        if (!loading) {
+           connectors = data.connectors.edges.map(edge => edge.node)
+        }
+        const showLoading = loading || updating
+
         return (
           <React.Fragment>
             <div className={'connectors-table'}>
@@ -168,7 +206,7 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
                 connectors.length > 0 ?
                   <Table
                     dataSource={connectors}
-                    loading={loading}
+                    loading={showLoading}
                     rowKey={record => record.id}
                     pagination={{
                       total: connectors.length,
@@ -181,7 +219,7 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
                     <Table.Column title={"State"} dataIndex={"state"} key={"state"}/>
                     <Table.Column
                       title=""
-                      key="action"
+                      key="select"
                       render={
                         (text, record) =>
                           <Button type={'primary'}
@@ -193,9 +231,30 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
                           </Button>
                       }
                     />
+                    <Table.Column
+                      title=""
+                      key="delete"
+                      render={
+                        (text, record) =>
+                          <Button type={'primary'}
+                                  onClick={
+                                    () => deleteConnector({
+                                      variables: {
+                                        deleteConnectorInput: {
+                                          connectorKey: record.key
+                                        }
+                                      }
+                                    })
+                                  }
+                                  disabled={record.state === 'enabled'}
+                          >
+                            Delete
+                          </Button>
+                      }
+                    />
                   </Table>
                   :
-                  <NoData message={`No ${connectorType} connectors registered.`}/>
+                  <NoData loading={showLoading} message={`No ${connectorType} connectors registered.`}/>
               }
             </div>
             {React.createElement(addConnectorForm)}
@@ -206,17 +265,6 @@ const SelectConnectorWidget = ({viewerContext, connectorType, onConnectorSelecte
   </Query>
 )
 
-const CREATE_CONNECTOR = gql`
-    mutation createConnector ($createConnectorInput: CreateConnectorInput!){
-        createConnector(createConnectorInput: $createConnectorInput){
-            connector {
-                id
-                name
-                key
-            }
-        }
-    }
-`
 
 const SelectConnector =
   withSubmissionCache(
@@ -233,44 +281,58 @@ const SelectConnector =
         }
       ) => (
         <Mutation
-          mutation={CREATE_CONNECTOR}
+          mutation={DELETE_CONNECTOR}
           client={work_tracking_service}
         >
           {
-            (createConnector, {data, loading, error}) => {
-              return (
+            (deleteConnector, deleteConnectorResult) => (
+              <Mutation
+                mutation={CREATE_CONNECTOR}
+                client={work_tracking_service}
+              >
+                {
+                  (createConnector, createConnectorResult) => {
+                    const data = deleteConnectorResult.data || createConnectorResult.data;
+                    const updating = deleteConnectorResult.loading || createConnectorResult.loading;
 
-                <SelectConnectorWidget
-                  viewerContext={viewerContext}
-                  connectorType={connectorType}
-                  onConnectorSelected={onConnectorSelected}
-                  addConnectorForm={
-                    () =>
-                      <AddConnectorForm
+                    return (
+
+                      <SelectConnectorWidget
+                        viewerContext={viewerContext}
                         connectorType={connectorType}
-                        onSubmit={
-                          submit(
-                            values => createConnector({
-                              variables: {
-                                createConnectorInput: {
-                                  name: values.name,
-                                  accountKey: viewerContext.accountKey,
-                                  connectorType: connectorType,
-                                  baseUrl: urlMunge(connectorType, values.baseUrl)
-                                }
+                        onConnectorSelected={onConnectorSelected}
+                        addConnectorForm={
+                          () =>
+                            <AddConnectorForm
+                              connectorType={connectorType}
+                              onSubmit={
+                                submit(
+                                  values => createConnector({
+                                    variables: {
+                                      createConnectorInput: {
+                                        name: values.name,
+                                        accountKey: viewerContext.accountKey,
+                                        connectorType: connectorType,
+                                        baseUrl: urlMunge(connectorType, values.baseUrl)
+                                      }
+                                    }
+                                  })
+                                )
                               }
-                            })
-                          )
+                              loading={createConnectorResult.loading}
+                              error={createConnectorResult.error}
+                              values={lastSubmission}
+                            />
                         }
-                        loading={loading}
-                        error={error}
-                        values={lastSubmission}
+                        newData={data}
+                        updating={updating}
+                        deleteConnector={deleteConnector}
                       />
+                    )
                   }
-                  newData={data && data.createConnector}
-                />
-              )
-            }
+                }
+              </Mutation>
+            )
           }
         </Mutation>
       )
