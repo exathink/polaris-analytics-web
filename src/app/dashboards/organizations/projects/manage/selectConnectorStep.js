@@ -1,6 +1,6 @@
 import React from "react";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {Mutation, Query} from "react-apollo";
+import {compose, Query} from "react-apollo";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {Col, Form, Input, Radio, Row, Table} from "antd";
@@ -9,6 +9,8 @@ import {createForm} from "../../../../components/forms/createForm";
 import Button from "../../../../../components/uielements/button";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {NoData} from "../../../../components/misc/noData";
+
+import {withMutation} from "../../../../components/graphql/withMutation";
 
 
 function urlMunge(connectorType, url) {
@@ -195,7 +197,7 @@ const SelectConnectorWidget = (
         if (error) return null;
         let connectors = []
         if (!loading) {
-           connectors = data.connectors.edges.map(edge => edge.node)
+          connectors = data.connectors.edges.map(edge => edge.node)
         }
         const showLoading = loading || updating
 
@@ -267,76 +269,70 @@ const SelectConnectorWidget = (
 
 
 const SelectConnector =
-  withSubmissionCache(
-    withViewerContext(
-      (
-        {
-          viewerContext,
-          connectorType,
-          onConnectorSelected,
-          submissionCache: {
-            submit,
-            lastSubmission
-          }
+  compose(
+    withViewerContext,
+    withSubmissionCache,
+    withMutation(DELETE_CONNECTOR, {name: 'deleteConnector', client: work_tracking_service}),
+    withMutation(CREATE_CONNECTOR, {name: 'createConnector', client: work_tracking_service})
+  )(
+    (
+      {
+        // from parent
+        connectorType,
+        onConnectorSelected,
+
+        // HOC injections
+        viewerContext,
+        submissionCache: {
+          submit,
+          lastSubmission
+        },
+        deleteConnectorMutation: {
+          deleteConnector,
+          deleteConnectorResult
+        },
+        createConnectorMutation: {
+          createConnector,
+          createConnectorResult
         }
-      ) => (
-        <Mutation
-          mutation={DELETE_CONNECTOR}
-          client={work_tracking_service}
-        >
-          {
-            (deleteConnector, deleteConnectorResult) => (
-              <Mutation
-                mutation={CREATE_CONNECTOR}
-                client={work_tracking_service}
-              >
-                {
-                  (createConnector, createConnectorResult) => {
-                    const data = deleteConnectorResult.data || createConnectorResult.data;
-                    const updating = deleteConnectorResult.loading || createConnectorResult.loading;
-
-                    return (
-
-                      <SelectConnectorWidget
-                        viewerContext={viewerContext}
-                        connectorType={connectorType}
-                        onConnectorSelected={onConnectorSelected}
-                        addConnectorForm={
-                          () =>
-                            <AddConnectorForm
-                              connectorType={connectorType}
-                              onSubmit={
-                                submit(
-                                  values => createConnector({
-                                    variables: {
-                                      createConnectorInput: {
-                                        name: values.name,
-                                        accountKey: viewerContext.accountKey,
-                                        connectorType: connectorType,
-                                        baseUrl: urlMunge(connectorType, values.baseUrl)
-                                      }
-                                    }
-                                  })
-                                )
-                              }
-                              loading={createConnectorResult.loading}
-                              error={createConnectorResult.error}
-                              values={lastSubmission}
-                            />
+      }
+    ) => {
+      const data = deleteConnectorResult.data || createConnectorResult.data;
+      const loading = deleteConnectorResult.loading || createConnectorResult.loading;
+      return (
+        <SelectConnectorWidget
+          viewerContext={viewerContext}
+          connectorType={connectorType}
+          onConnectorSelected={onConnectorSelected}
+          addConnectorForm={
+            () =>
+              <AddConnectorForm
+                connectorType={connectorType}
+                onSubmit={
+                  submit(
+                    values => createConnector({
+                      variables: {
+                        createConnectorInput: {
+                          name: values.name,
+                          accountKey: viewerContext.accountKey,
+                          connectorType: connectorType,
+                          baseUrl: urlMunge(connectorType, values.baseUrl)
                         }
-                        newData={data}
-                        updating={updating}
-                        deleteConnector={deleteConnector}
-                      />
-                    )
-                  }
+                      }
+                    })
+                  )
                 }
-              </Mutation>
-            )
+                loading={createConnectorResult.loading}
+                error={createConnectorResult.error}
+                values={lastSubmission}
+              />
           }
-        </Mutation>
+          newData={data}
+          updating={loading}
+          deleteConnector={deleteConnector}
+        />
       )
-    )
+    }
   )
 
 
