@@ -4,7 +4,7 @@ export const withMutationCache = (Component) => {
   return class MutationCache extends React.Component {
     state = {values: null, mutation: null}
 
-    mutationWrapper(mutate, mutation=null) {
+    mutationWrapper(mutation, mutate) {
       return (values) => {
         mutate(values);
         this.setState({values,  mutation})
@@ -12,10 +12,12 @@ export const withMutationCache = (Component) => {
     }
 
     notify(mutations) {
-      for(let i=0; i< mutations.length; i++){
-        const mutation = mutations[i];
-        if (mutation.mutate === this.state.mutation){
-          mutation.notify && mutation.notify()
+      if (this.state.mutation != null) {
+        for (let i = 0; i < mutations.length; i++) {
+          const mutation = mutations[i];
+          if (mutation.mutate === this.state.mutation.mutate) {
+            mutation.notify && mutation.notify()
+          }
         }
       }
     }
