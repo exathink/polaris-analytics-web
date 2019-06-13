@@ -194,11 +194,10 @@ compose(
 
   }
   ) => {
-    const {createConnector, createConnectorResult} = createConnectorMutation;
-    const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
-
     notify([createConnectorMutation, deleteConnectorMutation])
 
+    const {createConnector, createConnectorResult} = createConnectorMutation;
+    const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
     return (
       <Query
         client={work_tracking_service}
@@ -225,7 +224,6 @@ compose(
         variables={{
           accountKey: viewerContext.accountKey,
           connectorType: connectorType,
-          newData: createConnectorResult.data || deleteConnector.data,
           updating: createConnectorResult.loading || deleteConnectorResult.loading
         }}
         fetchPolicy={'cache-and-network'}
@@ -237,7 +235,7 @@ compose(
             if (!loading) {
               connectors = data.connectors.edges.map(edge => edge.node)
             }
-            const showLoading = loading || createConnectorResult.loading || deleteConnectorResult.loading
+
 
             return (
               <React.Fragment>
@@ -246,7 +244,7 @@ compose(
                     connectors.length > 0 ?
                       <Table
                         dataSource={connectors}
-                        loading={showLoading}
+                        loading={loading}
                         rowKey={record => record.id}
                         pagination={{
                           total: connectors.length,
@@ -279,6 +277,7 @@ compose(
                               <Button type={'primary'}
                                       onClick={
                                         mutate(
+                                          deleteConnectorMutation,
                                           () => deleteConnector({
                                             variables: {
                                               deleteConnectorInput: {
@@ -286,7 +285,6 @@ compose(
                                               }
                                             }
                                           }),
-                                          deleteConnector
                                         )
                                       }
                                       disabled={record.state === 'enabled'}
@@ -297,13 +295,14 @@ compose(
                         />
                       </Table>
                       :
-                      <NoData loading={showLoading} message={`No ${connectorType} connectors registered.`}/>
+                      <NoData loading={loading} message={`No ${connectorType} connectors registered.`}/>
                   }
                 </div>
                 <AddConnectorForm
                   connectorType={connectorType}
                   onSubmit={
                     mutate(
+                      createConnectorMutation,
                       values => createConnector({
                         variables: {
                           createConnectorInput: {
@@ -313,8 +312,7 @@ compose(
                             baseUrl: urlMunge(connectorType, values.baseUrl)
                           }
                         }
-                      }),
-                      createConnector
+                      })
                     )
                   }
                   loading={createConnectorResult.loading}
