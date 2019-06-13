@@ -1,0 +1,10 @@
+.connectors-table {
+  margin: 10px 0 50px 0;
+}
+
+.connectors-table .no-data {
+  padding: 50px;
+  line-height: 100px;
+  font-size: 16pt;
+
+}
