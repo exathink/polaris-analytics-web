@@ -16,11 +16,12 @@ export const withMutation = ({name, mutation, client, notification}) => {
                 // we use the mutation name for the function for
                 // cleaner calling code
                 [name]: mutate,
-                // we pass the generic mutate name so that callers
-                // checking for the mutation without knowing which mutation it is can
-                // use this field.
+                // we pass the generic mutate name so that clients can handle mutations generically.
                 mutate: mutate,
+                // same deal: named version for cleaner call site code
                 [`${name}Result`]: result,
+                // generic version for mutation cache etc.
+                result: result,
                 notify: () => notification && result.data && notification(result.data)
               }
             }
