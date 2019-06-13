@@ -1,0 +1,8 @@
+.button-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-bar .ant-btn {
+    margin: 1px;
+}
