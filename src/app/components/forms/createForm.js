@@ -88,7 +88,7 @@ function withForm(FormFields, options) {
       index: 0,
       visible: !drawer,
       values: values || {},
-      notification: null
+      notification: null,
     })
 
     constructor(props) {
@@ -161,11 +161,12 @@ function withForm(FormFields, options) {
     checkForErrors() {
       const {error, lastSubmission} = this.props;
       const notificationKey = `open${Date.now()}`;
-      if (error) {
+      if (error && error !== this.state.lastSubmissionError) {
         this.setState({
           visible: true,
           values: lastSubmission || this.state.values,
-          notification: notificationKey
+          notification: notificationKey,
+          lastSubmissionError: error,
         })
         this.openNotification(
           'error',
@@ -177,6 +178,10 @@ function withForm(FormFields, options) {
     }
 
     componentDidMount() {
+      this.checkForErrors()
+    }
+
+    componentDidUpdate() {
       this.checkForErrors()
     }
 
