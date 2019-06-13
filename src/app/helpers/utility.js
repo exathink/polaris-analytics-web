@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import {Map} from 'immutable';
 import moment from 'moment';
 import {notification} from "antd";
 
@@ -174,7 +174,7 @@ export function display_error(error) {
   }
 }
 
-export function openNotification(type, message, duration=3) {
+export function openNotification(type, message, duration=2) {
     notification[type]({
       message: message,
       duration: duration,
