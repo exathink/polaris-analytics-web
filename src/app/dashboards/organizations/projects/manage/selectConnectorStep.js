@@ -7,6 +7,7 @@ import {Col, Form, Input, Radio, Row, Table} from "antd";
 import {createForm} from "../../../../components/forms/createForm";
 
 import Button from "../../../../../components/uielements/button";
+import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import {withMutationCache} from "../../../../components/graphql/withMutationCache";
 import {NoData} from "../../../../components/misc/noData";
 
@@ -25,7 +26,7 @@ const CREATE_CONNECTOR = {
   name: 'createConnector',
   mutation: gql`
       mutation createConnector ($createConnectorInput: CreateConnectorInput!){
-          createConnector(createConnectorInput: $createConnectorInput){
+          createConnectors(createConnectorInput: $createConnectorInput){
               connector {
                   id
                   name
@@ -42,14 +43,14 @@ const CREATE_CONNECTOR = {
 const DELETE_CONNECTOR = {
   name: 'deleteConnector',
   mutation: gql`
-    mutation deleteConnector($deleteConnectorInput: DeleteConnectorInput!) {
-        deleteConnector(deleteConnectorInput:$deleteConnectorInput){
-            deleted
-        }
-    }
-`,
+      mutation deleteConnector($deleteConnectorInput: DeleteConnectorInput!) {
+          deleteConnector(deleteConnectorInput:$deleteConnectorInput){
+              deleted
+          }
+      }
+  `,
   client: work_tracking_service,
-  notification: (data) => openNotification('success',`Connector deleted.`)
+  notification: (data) => openNotification('success', `Connector deleted.`)
 }
 
 export class SelectConnectorStep extends React.Component {
@@ -157,20 +158,17 @@ const AddConnector = (
 
 export const AddConnectorForm = createForm(AddConnector, {
   drawer: true,
-  title: 'Create Connector',
+  title: 'New Connector',
   submitTitle: 'Create'
 });
 
-function notify(lastMutation, {createConnector, createConnectorResult}, {deleteConnector, deleteConnectorResult}) {
-  if (lastMutation != null) {
-    if (lastMutation === createConnector && createConnectorResult.data != null) {
-      openNotification('success', 'Connector Created')
-    } else if (lastMutation == deleteConnector && deleteConnectorResult.data != null) {
-      openNotification('success', "Connector Deleted")
-    }
-  }
-}
 
+function disableDelete(connectorType, state) {
+  if (connectorType === 'jira') {
+    return state === 'installed' || state === 'enabled'
+  }
+  return false
+}
 
 const SelectConnectorWidget =
 compose(
@@ -198,6 +196,7 @@ compose(
 
     const {createConnector, createConnectorResult} = createConnectorMutation;
     const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
+
     return (
       <Query
         client={work_tracking_service}
@@ -224,19 +223,19 @@ compose(
         variables={{
           accountKey: viewerContext.accountKey,
           connectorType: connectorType,
-          updating: createConnectorResult.loading || deleteConnectorResult.loading
+          loading: createConnectorResult.loading || deleteConnectorResult.loading,
+          data: createConnectorResult.data || deleteConnectorResult.data
         }}
-        fetchPolicy={'cache-and-network'}
+        fetchPolicy={'network-only'}
+        pollInterval={5000}
       >
         {
           ({loading, error, data}) => {
             if (error) return null;
             let connectors = []
             if (!loading) {
-              connectors = data.connectors.edges.map(edge => edge.node)
+              connectors = data.connectors.edges.map(edge => edge.node);
             }
-
-
             return (
               <React.Fragment>
                 <div className={'connectors-table'}>
@@ -257,40 +256,51 @@ compose(
                         <Table.Column title={"State"} dataIndex={"state"} key={"state"}/>
                         <Table.Column
                           title=""
+                          width={80}
                           key="select"
                           render={
                             (text, record) =>
-                              <Button type={'primary'}
+                              <ButtonBar>
+                                {
+                                  record.accountKey != null ?
+                                    <Button
+                                      size={"small"}
+                                      type={'primary'}
                                       onClick={() => onConnectorSelected(record)}
-                                      disabled={record.accountKey !== viewerContext.accountKey || record.state !== 'enabled'}
+                                      disabled={record.state !== 'enabled'}
 
-                              >
-                                Select
-                              </Button>
-                          }
-                        />
-                        <Table.Column
-                          title=""
-                          key="delete"
-                          render={
-                            (text, record) =>
-                              <Button type={'primary'}
-                                      onClick={
-                                        mutate(
-                                          deleteConnectorMutation,
-                                          () => deleteConnector({
-                                            variables: {
-                                              deleteConnectorInput: {
-                                                connectorKey: record.key
-                                              }
-                                            }
-                                          }),
-                                        )
-                                      }
-                                      disabled={record.state === 'enabled'}
-                              >
-                                Delete
-                              </Button>
+                                    >
+                                      Select
+                                    </Button>
+                                    :
+                                    <Button
+                                      size={"small"}
+                                      type={'primary'}
+                                    >
+                                      Register
+                                    </Button>
+                                }
+
+                                <Button
+                                  size={"small"}
+                                  type={'primary'}
+                                  onClick={
+                                    mutate(
+                                      deleteConnectorMutation,
+                                      () => deleteConnector({
+                                        variables: {
+                                          deleteConnectorInput: {
+                                            connectorKey: record.key
+                                          }
+                                        }
+                                      }),
+                                    )
+                                  }
+                                  disabled={disableDelete(connectorType, record.state)}
+                                >
+                                  Delete
+                                </Button>
+                              </ButtonBar>
                           }
                         />
                       </Table>
