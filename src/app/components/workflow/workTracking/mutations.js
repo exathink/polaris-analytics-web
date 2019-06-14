@@ -31,3 +31,16 @@ export const DELETE_CONNECTOR = {
   client: work_tracking_service,
   notification: (data) => openNotification('success', `Connector deleted.`)
 }
+
+export const REGISTER_CONNECTOR = {
+  name: 'registerConnector',
+  mutation: gql`
+      mutation registerConnector($registerConnectorInput: RegisterConnectorInput!) {
+          registerConnector(registerConnectorInput:$registerConnectorInput){
+              registered
+          }
+      }
+  `,
+  client: work_tracking_service,
+  notification: (data) => openNotification('success', `Connector registered.`)
+}

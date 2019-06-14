@@ -8,7 +8,7 @@ import {ConnectorsTable} from "./connectorsTable";
 
 import {withMutation} from "../../graphql/withMutation";
 import {NewConnectorFormButton} from "./newConnectorFormButton";
-import {CREATE_CONNECTOR, DELETE_CONNECTOR} from "./mutations";
+import {CREATE_CONNECTOR, DELETE_CONNECTOR, REGISTER_CONNECTOR} from "./mutations";
 
 
 function urlMunge(connectorType, url) {
@@ -23,6 +23,7 @@ export const SelectConnectorWidget =
 compose(
   withViewerContext,
   withMutationCache,
+  withMutation(REGISTER_CONNECTOR),
   withMutation(DELETE_CONNECTOR),
   withMutation(CREATE_CONNECTOR),
 )
@@ -38,13 +39,13 @@ compose(
     },
     createConnectorMutation,
     deleteConnectorMutation,
+    registerConnectorMutation,
 
   }
   ) => {
-    notify([createConnectorMutation, deleteConnectorMutation])
-
     const {createConnector, createConnectorResult} = createConnectorMutation;
     const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
+    const {registerConnector, registerConnectorResult} = registerConnectorMutation;
 
     return (
       <Query
@@ -53,6 +54,7 @@ compose(
           gql`
         query getAccountConnectors($accountKey: String!, $connectorType: String!) {
             connectors (accountKey: $accountKey, includeNulls: true, connectorType: $connectorType) {
+                count
                 edges {
                     node {
                         id
@@ -72,11 +74,10 @@ compose(
         variables={{
           accountKey: viewerContext.accountKey,
           connectorType: connectorType,
-          loading: createConnectorResult.loading || deleteConnectorResult.loading,
-          data: createConnectorResult.data || deleteConnectorResult.data
+          loading: createConnectorResult.loading || deleteConnectorResult.loading || registerConnectorResult.loading,
+          data: createConnectorResult.data || deleteConnectorResult.data || registerConnectorResult.data
         }}
-        fetchPolicy={'network-only'}
-        pollInterval={5000}
+        fetchPolicy={'cache-and-network'}
       >
         {
           ({loading, error, data}) => {
@@ -104,23 +105,40 @@ compose(
                       }),
                     )
                   }
+                  onConnectorRegistered={
+                    (values) => mutate(
+                      registerConnectorMutation,
+                      values => registerConnector({
+                        variables: {
+                          registerConnectorInput: {
+                            accountKey: viewerContext.accountKey,
+                            connectorKey: values.key,
+                            name: values.name,
+                          }
+                        }
+                      })
+                    )(values)
+                  }
+                  lastRegistrationError={registerConnectorResult.error}
+                  lastRegistrationSubmission={lastSubmission}
                 />
 
-                <NewConnectorFormButton
+                < NewConnectorFormButton
                   connectorType={connectorType}
                   onSubmit={
                     mutate(
                       createConnectorMutation,
-                      values => createConnector({
-                        variables: {
-                          createConnectorInput: {
-                            name: values.name,
-                            accountKey: viewerContext.accountKey,
-                            connectorType: connectorType,
-                            baseUrl: urlMunge(connectorType, values.baseUrl)
+                      values =>
+                        createConnector({
+                          variables: {
+                            createConnectorInput: {
+                              name: values.name,
+                              accountKey: viewerContext.accountKey,
+                              connectorType: connectorType,
+                              baseUrl: urlMunge(connectorType, values.baseUrl)
+                            }
                           }
-                        }
-                      })
+                        })
                     )
                   }
                   loading={createConnectorResult.loading}
