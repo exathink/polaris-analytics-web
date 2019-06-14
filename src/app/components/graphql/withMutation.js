@@ -1,13 +1,32 @@
 import React from 'react';
 import {Mutation} from 'react-apollo';
 
-export const withMutation = ({name, mutation, client, notification}) => {
+function refetchQueries(refetchSpec, props, fetchData) {
+  return refetchSpec.map(
+    spec => ({
+      query: spec.query,
+      variables: spec.variables || spec.mapPropsToVariables ? Object.assign(
+        spec.variables || {},
+        spec.mapPropsToVariables ? spec.mapPropsToVariables(props, fetchData) : {}
+      ) : {}
+    })
+  )
+}
+
+export const withMutation = ({name, mutation, client, notification}, refetchSpec = null) => {
   return (Component) => {
     return props => (
       <Mutation
         mutation={mutation}
-        onCompleted={ data => notification && notification(data)}
+        onCompleted={data => notification && notification(data)}
         client={client}
+        {...
+          refetchSpec ?
+            {
+              refetchQueries:
+                (fetchData) => refetchQueries(refetchSpec, props, fetchData)
+            } : {}
+        }
       >
         {
           (mutate, result) => {
@@ -25,7 +44,7 @@ export const withMutation = ({name, mutation, client, notification}) => {
                 result: result,
               }
             }
-            return <Component { ...injectedProp } {...props} />
+            return <Component {...injectedProp} {...props} />
           }
         }
       </Mutation>
