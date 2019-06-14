@@ -81,7 +81,7 @@ export const ConnectorsTable = (
                           size={"small"}
                           type={'primary'}
                           onClick={
-                            onConnectorDeleted(record)
+                            () => onConnectorDeleted(record)
                           }
                           disabled={disableDelete(connectorType, record.state)}
                         >
