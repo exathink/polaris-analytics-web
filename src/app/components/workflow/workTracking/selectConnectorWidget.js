@@ -19,18 +19,7 @@ function urlMunge(connectorType, url) {
   return url;
 }
 
-function shouldPoll(connectors, connectorType) {
-  if (connectorType === 'jira') {
-    for( let i = 0; i < connectors.length; i++) {
-      if (connectors[i].state !== 'enabled') {
-        return true
-      }
-    }
-    return false
-  }
 
-
-}
 
 const ALL_CONNECTORS_QUERY = gql`
     query getAccountConnectors($accountKey: String!, $connectorType: String!) {
@@ -100,13 +89,8 @@ export const SelectConnectorWidget =
             accountKey: viewerContext.accountKey,
             connectorType: connectorType,
           }}
-          onCompleted={
-            data =>
-              shouldPoll(data.connectors.edges.map(edge=>edge.node), connectorType)
-                ? startPolling()
-                : stopPolling()
-          }
-          pollInterval={ polling ? 10000 : 0 }
+
+          pollInterval={ connectorType === 'jira' ? 10000 : 0 }
         >
           {
             ({loading, error, data}) => {
