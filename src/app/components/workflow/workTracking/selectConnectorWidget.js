@@ -7,6 +7,7 @@ import {withSubmissionCache} from "../../forms/withSubmissionCache";
 import {ConnectorsTable} from "./connectorsTable";
 
 import {withMutation} from "../../graphql/withMutation";
+import {withPollingManager} from "../../graphql/withPollingManager";
 import {NewConnectorFormButton} from "./newConnectorFormButton";
 import {CREATE_CONNECTOR, DELETE_CONNECTOR, REGISTER_CONNECTOR} from "./mutations";
 
@@ -18,6 +19,18 @@ function urlMunge(connectorType, url) {
   return url;
 }
 
+function shouldPoll(connectors, connectorType) {
+  if (connectorType === 'jira') {
+    for( let i = 0; i < connectors.length; i++) {
+      if (connectors[i].state !== 'enabled') {
+        return true
+      }
+    }
+    return false
+  }
+
+
+}
 
 const ALL_CONNECTORS_QUERY = gql`
     query getAccountConnectors($accountKey: String!, $connectorType: String!) {
@@ -54,6 +67,7 @@ export const SelectConnectorWidget =
     withMutation(REGISTER_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withMutation(DELETE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withMutation(CREATE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
+    withPollingManager
   )
   ((
     {
@@ -67,7 +81,11 @@ export const SelectConnectorWidget =
       createConnectorMutation,
       deleteConnectorMutation,
       registerConnectorMutation,
-
+      pollingManager: {
+        polling,
+        startPolling,
+        stopPolling
+      }
     }
     ) => {
       const {createConnector, createConnectorResult} = createConnectorMutation;
@@ -82,6 +100,13 @@ export const SelectConnectorWidget =
             accountKey: viewerContext.accountKey,
             connectorType: connectorType,
           }}
+          onCompleted={
+            data =>
+              shouldPoll(data.connectors.edges.map(edge=>edge.node), connectorType)
+                ? startPolling()
+                : stopPolling()
+          }
+          pollInterval={ polling ? 10000 : 0 }
         >
           {
             ({loading, error, data}) => {
