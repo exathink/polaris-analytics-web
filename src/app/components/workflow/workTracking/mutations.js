@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import {work_tracking_service} from "../../../services/graphql";
-import {openNotification} from "../../../helpers/utility";
+import {display_error, openNotification} from "../../../helpers/utility";
 
 export const CREATE_CONNECTOR = {
   name: 'createConnector',
@@ -16,7 +16,7 @@ export const CREATE_CONNECTOR = {
       }
   `,
   client: work_tracking_service,
-  notification: (data) => openNotification('success', `Created connector ${data.createConnector.connector.name}`)
+  success: (data) => openNotification('success', `Connector ${data.createConnector.connector.name} registered`)
 }
 
 export const DELETE_CONNECTOR = {
@@ -24,12 +24,13 @@ export const DELETE_CONNECTOR = {
   mutation: gql`
       mutation deleteConnector($deleteConnectorInput: DeleteConnectorInput!) {
           deleteConnector(deleteConnectorInput:$deleteConnectorInput){
-              deleted
+              connectorName
           }
       }
   `,
   client: work_tracking_service,
-  notification: (data) => openNotification('success', `Connector deleted.`)
+  success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} deleted.`),
+  error: err => openNotification('error', `${display_error(err)}`)
 }
 
 export const REGISTER_CONNECTOR = {
@@ -38,9 +39,12 @@ export const REGISTER_CONNECTOR = {
       mutation registerConnector($registerConnectorInput: RegisterConnectorInput!) {
           registerConnector(registerConnectorInput:$registerConnectorInput){
               registered
+              connector {
+                  name
+              }
           }
       }
   `,
   client: work_tracking_service,
-  notification: (data) => openNotification('success', `Connector registered.`)
+  success: (data) => openNotification('success', `Connector ${data.registerConnector.connector.name} registered.`)
 }
