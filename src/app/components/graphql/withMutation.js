@@ -6,6 +6,7 @@ export const withMutation = ({name, mutation, client, notification}) => {
     return props => (
       <Mutation
         mutation={mutation}
+        onCompleted={ data => notification && notification(data)}
         client={client}
       >
         {
@@ -22,7 +23,6 @@ export const withMutation = ({name, mutation, client, notification}) => {
                 [`${name}Result`]: result,
                 // generic version for mutation cache etc.
                 result: result,
-                notify: () => notification && result.data && notification(result.data)
               }
             }
             return <Component { ...injectedProp } {...props} />
