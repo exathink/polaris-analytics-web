@@ -13,12 +13,13 @@ function refetchQueries(refetchSpec, props, fetchData) {
   )
 }
 
-export const withMutation = ({name, mutation, client, notification}, refetchSpec = null) => {
+export const withMutation = ({name, mutation, client, success, error }, refetchSpec = null) => {
   return (Component) => {
     return props => (
       <Mutation
         mutation={mutation}
-        onCompleted={data => notification && notification(data)}
+        onCompleted={data => success && success(data)}
+        onError={err => error && error(err)}
         client={client}
         {...
           refetchSpec ?
