@@ -4,6 +4,8 @@ import {message, Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep} from "./selectProjectsStep";
+import {ImportProjectStep} from "./importProjectStep";
+
 
 const {Step} = Steps;
 
@@ -20,8 +22,12 @@ const steps = [
     disableNextIf: ({selectedProjects}) => selectedProjects.length == 0
   },
   {
+    title: 'Configure Import',
+    content: ImportProjectStep,
+  },
+  {
     title: 'Import Projects',
-    content: () => 'Last-content',
+    content: () => 'import'
   },
 ];
 

@@ -16,11 +16,19 @@
   margin: 1px;
 }
 
+.import-project .import-mode-text {
+  margin: 3px;
+  font-style: italic;
+}
 .ant-carousel .slick-slide {
   line-height: 168px;
   background-color: #2a6496;
 }
 
+.selected-projects {
+  margin: 50px;
+
+}
 
 .ant-carousel .slick-slide .no-data {
   font-size: 20px;
