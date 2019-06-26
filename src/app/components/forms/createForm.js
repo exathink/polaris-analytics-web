@@ -192,11 +192,11 @@ function withForm(FormFields, options) {
       const partProps = hasParts && partOptions[parts[part]] || {}
       // We want to override the submitted props to do field validation before submit.
       const {onSubmit, ...rest} = this.props;
-
+      const disabled = this.props.enabled != null && !this.props.enabled
       return (
         drawer ?
           <React.Fragment>
-            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)}>
+            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
               {noPlus || <Icon type="plus"/>} {drawerButtonTitle}
             </Button>
             <Drawer
