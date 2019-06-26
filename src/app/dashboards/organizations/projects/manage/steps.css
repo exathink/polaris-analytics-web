@@ -12,6 +12,10 @@
   margin-top: 24px;
 }
 
+.steps-action .ant-btn {
+  margin: 1px;
+}
+
 .ant-carousel .slick-slide {
   line-height: 168px;
   background-color: #2a6496;

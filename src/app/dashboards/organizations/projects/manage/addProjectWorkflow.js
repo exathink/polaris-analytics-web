@@ -1,8 +1,9 @@
 import React from 'react';
 import './steps.css';
-import {Button, message, Steps} from 'antd';
+import {message, Steps} from 'antd';
+import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
-
+import {SelectProjectsStep} from "./selectProjectsStep";
 
 const {Step} = Steps;
 
@@ -13,11 +14,13 @@ const steps = [
     showNext: false
   },
   {
-    title: 'Select Projects To Import',
-    content: () => 'Second-content',
+    title: 'Select Projects',
+    content: SelectProjectsStep,
+    showNext: true,
+    disableNextIf: ({selectedProjects}) => selectedProjects.length == 0
   },
   {
-    title: 'Create Projects',
+    title: 'Import Projects',
     content: () => 'Last-content',
   },
 ];
@@ -28,7 +31,8 @@ export class AddProjectWorkflow extends React.Component {
     super(props);
     this.state = {
       current: 0,
-      selectedConnector: null
+      selectedConnector: {},
+      selectedProjects: [],
     };
   }
 
@@ -46,12 +50,21 @@ export class AddProjectWorkflow extends React.Component {
   onConnectorSelected(connector) {
     this.setState({
       current: 1,
-      selectedConnector: connector
+      selectedConnector: connector,
+      selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
+    })
+  }
+
+  onProjectsSelected(selectedProjects) {
+    this.setState({
+      selectedProjects: selectedProjects
     })
   }
 
   render() {
     const {current} = this.state;
+    const currentStep = steps[current];
+    const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state)
     return (
       <React.Fragment>
         <Steps current={current}>
@@ -62,14 +75,23 @@ export class AddProjectWorkflow extends React.Component {
         <div className="steps-content">
           {
             React.createElement(steps[current].content, {
-              onConnectorSelected: this.onConnectorSelected.bind(this)
-            })
+                onConnectorSelected: this.onConnectorSelected.bind(this),
+                selectedConnector: this.state.selectedConnector,
+                onProjectsSelected: this.onProjectsSelected.bind(this),
+                selectedProjects: this.state.selectedProjects
+              }
+            )
           }
         </div>
 
         <div className="steps-action">
-          {steps[current].showNext && current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()}>
+          {current > 0 && (
+            <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
+              Back
+            </Button>
+          )}
+          {currentStep.showNext && current < steps.length - 1 && (
+            <Button type="primary" onClick={() => this.next()} disabled={disableNext}>
               Next
             </Button>
           )}
@@ -78,11 +100,7 @@ export class AddProjectWorkflow extends React.Component {
               Done
             </Button>
           )}
-          {current > 0 && (
-            <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-              Back
-            </Button>
-          )}
+
         </div>
       </React.Fragment>
     );
