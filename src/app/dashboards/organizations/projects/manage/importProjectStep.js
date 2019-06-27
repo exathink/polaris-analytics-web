@@ -6,6 +6,7 @@ import {createForm} from "../../../../components/forms/createForm";
 
 export const SelectImportMode = ({importMode, onChange}) => (
   <React.Fragment>
+    <h4>Import Mode</h4>
     <Radio.Group
       name="importMode"
       value={importMode}
@@ -19,7 +20,7 @@ export const SelectImportMode = ({importMode, onChange}) => (
       {
         importMode === 'separate' ?
           'Import each remote project as a separate local project' :
-          'Import remote projects as sub-projects of a local project'
+          'Import remote projects as sub-projects of a  single local project'
       }
     </div>
   </React.Fragment>
@@ -34,7 +35,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave}) => (
         dataSource={selectedProjects}
         columns={[
           {
-            title: 'Remote Project',
+            title: 'Remote project',
             dataIndex: 'name',
           },
           {
@@ -42,17 +43,24 @@ export const SeparateModeImport = ({selectedProjects, handleSave}) => (
             dataIndex: 'description'
           },
           {
-            title: 'Local Project Name',
+            title: 'Imported project name',
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,
-            width: '30%'
+            width: '20%'
+          },
+          {
+            title: 'Days of history to import',
+            dataIndex: 'importDays',
+            editable: true,
+            enableEdits: true,
+            width: '20%'
           },
         ]}
         handleSave={handleSave}
         pagination={{
           total: selectedProjects.length,
-          defaultPageSize: 10,
+          defaultPageSize: 1,
           hideOnSinglePage: true
 
         }}
@@ -73,15 +81,15 @@ const ProjectNameForm = (
   <Form hideRequiredMark>
     <Row gutter={16}>
       <Col span={24}>
-        <h4>Local Project Name</h4>
+        <h4>Imported project name</h4>
         <Form.Item>
           {
             getFieldDecorator('localName', {
               rules: [
-                {required: true, message: 'Local Project Name is required'}
+                {required: true, message: 'Imported project name is required'}
               ],
               initialValue: selectedProjects[0].name
-            })(<Input placeholder="Local Project Name"/>)
+            })(<Input placeholder="Imported project name"/>)
           }
         </Form.Item>
       </Col>
@@ -90,31 +98,46 @@ const ProjectNameForm = (
 )
 
 
-export const SingleModeImport = Form.create()(({form, selectedProjects, onProjectNameChanged}) => {
-  return (
-    <React.Fragment>
-      <div className={'selected-projects'}>
-        <ProjectNameForm form={form} selectedProjects={selectedProjects}/>
-        <React.Fragment>
-          {selectedProjects.length > 1 && <h4>Remote Projects</h4>}
-          <Table
-            dataSource={selectedProjects}
-            pagination={{
-              total: selectedProjects.length,
-              defaultPageSize: 10,
-              hideOnSinglePage: true
+export const SingleModeImport = Form.create()(({form, handleSave, selectedProjects, onProjectNameChanged}) => {
+    return (
+      <React.Fragment>
+        <div className={'selected-projects'}>
+          <ProjectNameForm form={form} selectedProjects={selectedProjects}/>
+          <React.Fragment>
+            {selectedProjects.length > 1 && <h4>Remote Projects</h4>}
+            <EditableTable
+              dataSource={selectedProjects}
+              columns={[
+                {
+                  title: selectedProjects.length > 1 ? 'Sub-project' : 'Remote project',
+                  dataIndex: 'name',
+                },
+                {
+                  title: 'Description',
+                  dataIndex: 'description'
+                },
+                {
+                  title: 'Days of history to import',
+                  dataIndex: 'importDays',
+                  editable: true,
+                  enableEdits: true,
+                  width: '20%'
+                },
+              ]}
+              handleSave={handleSave}
+              pagination={{
+                total: selectedProjects.length,
+                defaultPageSize: 1,
+                hideOnSinglePage: true
 
-            }}
-          >
-            <Table.Column title={selectedProjects.length > 1 ? 'Sub-Project' : 'Remote Project'} dataIndex={'name'}/>
-            <Table.Column title={'Description'} dataIndex={'description'}/>
-          </Table>
-        </React.Fragment>
-      </div>
-      <Button type={'primary'}>Import Project</Button>
-    </React.Fragment>
-  )
-}
+              }}
+            />
+          </React.Fragment>
+        </div>
+        <Button type={'primary'}>Import Project</Button>
+      </React.Fragment>
+    )
+  }
 )
 
 export class ImportProjectStep extends React.Component {
@@ -131,7 +154,7 @@ export class ImportProjectStep extends React.Component {
 
   mapSelectedProjects(projects) {
     return projects.map(
-      project => ({...project, ...{localName: project.name}})
+      project => ({...project, ...{localName: project.name, importDays: 90}})
     )
   }
 
@@ -166,11 +189,12 @@ export class ImportProjectStep extends React.Component {
 
     return (
       <div className={'import-project'}>
+        <h3>{selectedProjects.length} {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
         {
-          selectedProjects.length > 1 ?
+          selectedProjects.length > 1 &&
             <SelectImportMode selectedProjects={selectedProjects} importMode={this.state.importMode}
                               onChange={this.onImportModeChanged.bind(this)}/>
-            : null
+
         }
         {
           this.state.importMode === 'separate' ?
@@ -178,6 +202,7 @@ export class ImportProjectStep extends React.Component {
             :
             <SingleModeImport selectedProjects={selectedProjects}
                               importedProjectName={this.state.importedProjectName}
+                              handleSave={this.onSave.bind(this)}
                               onProjectNameChanged={this.onProjectNameChanged.bind(this)}/>
         }
 
