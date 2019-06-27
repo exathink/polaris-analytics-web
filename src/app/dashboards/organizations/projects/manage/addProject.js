@@ -16,7 +16,7 @@ export default () => (
           <DashboardRow h={"95%"}>
             <DashboardWidget
               w={1}
-              render={() => <AddProjectWorkflow/>}
+              render={() => <AddProjectWorkflow organization={organization}/>}
             />
           </DashboardRow>
         </Dashboard>

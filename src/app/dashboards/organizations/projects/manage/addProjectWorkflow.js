@@ -84,7 +84,8 @@ export class AddProjectWorkflow extends React.Component {
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
                 onProjectsSelected: this.onProjectsSelected.bind(this),
-                selectedProjects: this.state.selectedProjects
+                selectedProjects: this.state.selectedProjects,
+                organization: this.props.organization
               }
             )
           }
