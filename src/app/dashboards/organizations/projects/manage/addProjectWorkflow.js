@@ -5,7 +5,8 @@ import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep} from "./selectProjectsStep";
 import {ConfigureImportStep} from "./configureImportStep";
-
+import {work_tracking_service} from "../../../../services/graphql";
+import gql from "graphql-tag";
 
 const {Step} = Steps;
 
@@ -39,6 +40,7 @@ export class AddProjectWorkflow extends React.Component {
       current: 0,
       selectedConnector: {},
       selectedProjects: [],
+      importedProjectKeys: [],
     };
   }
 
@@ -67,6 +69,65 @@ export class AddProjectWorkflow extends React.Component {
     })
   }
 
+  buildProjectsInput(importMode, selectedProjects, importedProjectName) {
+    if (importMode === 'single') {
+      return [{
+        importedProjectName: importedProjectName,
+        workItemsSources: selectedProjects.map(
+          project => ({
+            workItemsSourceName: project.name,
+            workItemsSourceKey: project.key,
+            importDays: project.importDays
+          })
+        )
+      }]
+    } else {
+      return selectedProjects.map(
+        project => ({
+          importedProjectName: project.localName,
+          workItemsSources: [
+            {
+              workItemsSourceName: project.name,
+              workItemsSourceKey: project.key,
+              importDays: project.importDays
+            }
+          ]
+        })
+      )
+    }
+  }
+
+  async onImportConfigured(importMode, selectedProjects, importedProjectName=null) {
+    const {organization, viewerContext} = this.props;
+
+    try {
+      const result = await work_tracking_service.mutate({
+        mutation: gql`
+            mutation importProjects($importProjectsInput: ImportProjectsInput!) {
+                importProjects(importProjectsInput: $importProjectsInput) {
+                    projectKeys
+                }
+            }
+        `,
+        variables: {
+          importProjectsInput: {
+            accountKey: viewerContext.accountKey,
+            organizationKey: organization.key,
+            projects: this.buildProjectsInput(importMode, selectedProjects, importedProjectName)
+          }
+        }
+      })
+      if (result.data) {
+        this.setState({
+          current: 3,
+          importedProjectKeys: result.data.importProjects.projectKeys
+        })
+      }
+    } catch (error) {
+        console.log(`Error: ${error}`)
+    }
+  }
+
   render() {
     const {current} = this.state;
     const currentStep = steps[current];
@@ -85,7 +146,8 @@ export class AddProjectWorkflow extends React.Component {
                 selectedConnector: this.state.selectedConnector,
                 onProjectsSelected: this.onProjectsSelected.bind(this),
                 selectedProjects: this.state.selectedProjects,
-                organization: this.props.organization
+                onImportConfigured: this.onImportConfigured.bind(this),
+                importedProjectKeys: this.state.importedProjectKeys
               }
             )
           }

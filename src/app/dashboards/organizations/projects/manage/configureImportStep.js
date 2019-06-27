@@ -28,7 +28,7 @@ export const SelectImportMode = ({importMode, onChange}) => (
 );
 
 
-export const SeparateModeImport = ({selectedProjects, handleSave}) => (
+export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => (
   <React.Fragment>
     <div className={'selected-projects'}>
       <EditableTable
@@ -66,7 +66,13 @@ export const SeparateModeImport = ({selectedProjects, handleSave}) => (
         }}
       />
     </div>
-    <Button type={'primary'}>Import {selectedProjects.length > 1 ? 'Projects' : 'Project'}</Button>
+    <Button
+      type={'primary'}
+      onClick={
+        () => onImport()
+      }
+    >Import {selectedProjects.length > 1 ? 'Projects' : 'Project'}
+    </Button>
   </React.Fragment>
 )
 
@@ -98,7 +104,7 @@ const ProjectNameForm = (
 )
 
 
-export const SingleModeImport = Form.create()(({form, handleSave, selectedProjects, onProjectNameChanged}) => {
+export const SingleModeImport = Form.create()(({form, handleSave, selectedProjects, onProjectNameChanged, onImport}) => {
     return (
       <React.Fragment>
         <div className={'selected-projects'}>
@@ -134,7 +140,12 @@ export const SingleModeImport = Form.create()(({form, handleSave, selectedProjec
             />
           </React.Fragment>
         </div>
-        <Button type={'primary'}>Import Project</Button>
+        <Button
+          type={'primary'}
+          onClick={
+            () => onImport(form.getFieldValue('localName'))
+          }
+        >Import Project</Button>
       </React.Fragment>
     )
   }
@@ -184,6 +195,14 @@ export class ConfigureImportStep extends React.Component {
     })
   }
 
+  doSingleModeImport(importedProjectName) {
+    this.props.onImportConfigured('single', this.state.selectedProjects, importedProjectName)
+  }
+
+  doSeparateModeImport() {
+    this.props.onImportConfigured('separate', this.state.selectedProjects)
+  }
+
   render() {
     const {selectedProjects} = this.state
 
@@ -192,18 +211,29 @@ export class ConfigureImportStep extends React.Component {
         <h3>{selectedProjects.length} {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
         {
           selectedProjects.length > 1 &&
-            <SelectImportMode selectedProjects={selectedProjects} importMode={this.state.importMode}
-                              onChange={this.onImportModeChanged.bind(this)}/>
+            <SelectImportMode
+              selectedProjects={selectedProjects}
+              importMode={this.state.importMode}
+
+              onChange={this.onImportModeChanged.bind(this)}
+            />
 
         }
         {
           this.state.importMode === 'separate' ?
-            <SeparateModeImport selectedProjects={selectedProjects} handleSave={this.onSave.bind(this)}/>
+            <SeparateModeImport
+              selectedProjects={selectedProjects}
+              handleSave={this.onSave.bind(this)}
+              onImport={this.doSeparateModeImport.bind(this)}
+            />
             :
-            <SingleModeImport selectedProjects={selectedProjects}
-                              importedProjectName={this.state.importedProjectName}
-                              handleSave={this.onSave.bind(this)}
-                              onProjectNameChanged={this.onProjectNameChanged.bind(this)}/>
+            <SingleModeImport
+              selectedProjects={selectedProjects}
+              importedProjectName={this.state.importedProjectName}
+              handleSave={this.onSave.bind(this)}
+              onProjectNameChanged={this.onProjectNameChanged.bind(this)}
+              onImport={this.doSingleModeImport.bind(this)}
+            />
         }
 
       </div>
