@@ -26,12 +26,14 @@ class EditableCell extends React.Component {
   };
 
   save = e => {
-    const { record, handleSave } = this.props;
+    const { record, handleSave, enableEdits } = this.props;
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
         return;
       }
-      this.toggleEdit();
+      if (!enableEdits) {
+        this.toggleEdit();
+      }
       handleSave(record, values);
     });
   };
@@ -66,6 +68,7 @@ class EditableCell extends React.Component {
   render() {
     const {
       editable,
+      enableEdits,
       dataIndex,
       title,
       record,
