@@ -4,7 +4,7 @@ import {message, Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep} from "./selectProjectsStep";
-import {ImportProjectStep} from "./importProjectStep";
+import {ConfigureImportStep} from "./configureImportStep";
 
 
 const {Step} = Steps;
@@ -23,7 +23,7 @@ const steps = [
   },
   {
     title: 'Configure Import',
-    content: ImportProjectStep,
+    content: ConfigureImportStep,
   },
   {
     title: 'Import Projects',

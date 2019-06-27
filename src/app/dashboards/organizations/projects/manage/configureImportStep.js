@@ -140,7 +140,7 @@ export const SingleModeImport = Form.create()(({form, handleSave, selectedProjec
   }
 )
 
-export class ImportProjectStep extends React.Component {
+export class ConfigureImportStep extends React.Component {
 
 
   constructor(props) {
