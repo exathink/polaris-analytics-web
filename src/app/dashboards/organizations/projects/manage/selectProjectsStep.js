@@ -8,6 +8,7 @@ import {withSubmissionCache} from "../../../../components/forms/withSubmissionCa
 
 import {Col, Form, Input, Row, Table} from "antd";
 import {createForm} from "../../../../components/forms/createForm";
+import {NoData} from "../../../../components/misc/noData";
 
 
 const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
@@ -57,24 +58,31 @@ export class SelectProjectsStep extends React.Component {
             return (
               <div className={'select-projects'}>
                 <h3>Server: {selectedConnector.baseUrl}</h3>
-                <span>{workItemsSources.length} projects available to import</span>
-                <Table
-                  dataSource={workItemsSources}
-                  loading={loading}
-                  rowKey={record => record.key}
-                  rowSelection={{
-                    selectedRowKeys: selectedProjects.map(project => project.key),
-                    onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
-                  }}
-                  pagination={{
-                    total: workItemsSources.length,
-                    defaultPageSize: 5,
-                    hideOnSinglePage: true
-                  }}
-                >
-                  <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
-                  <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
-                </Table>
+                {
+                  workItemsSources.length > 0 ?
+                    <React.Fragment>
+                      <span>{workItemsSources.length} projects available to import</span>
+                      <Table
+                        dataSource={workItemsSources}
+                        loading={loading}
+                        rowKey={record => record.key}
+                        rowSelection={{
+                          selectedRowKeys: selectedProjects.map(project => project.key),
+                          onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
+                        }}
+                        pagination={{
+                          total: workItemsSources.length,
+                          defaultPageSize: 5,
+                          hideOnSinglePage: true
+                        }}
+                      >
+                        <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
+                        <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
+                      </Table>
+                    </React.Fragment>
+                    :
+                    <NoData message={"No projects available to import"}/>
+                }
               </div>
             )
           }
