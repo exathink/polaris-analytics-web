@@ -3,7 +3,7 @@ import './steps.css';
 import {message, Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
-import {SelectProjectsStep} from "./selectProjectsStep";
+import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./selectProjectsStep";
 import {ConfigureImportStep} from "./configureImportStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";

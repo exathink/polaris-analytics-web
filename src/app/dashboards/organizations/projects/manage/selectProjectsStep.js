@@ -11,7 +11,7 @@ import {createForm} from "../../../../components/forms/createForm";
 import {NoData} from "../../../../components/misc/noData";
 
 
-const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
+export const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
     query getConnectorWorkItemsSources($connectorKey: String!) {
         workTrackingConnector(key: $connectorKey) {
             id
@@ -34,6 +34,14 @@ const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
         }
     }
 `
+
+export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
+  query: WORK_ITEMS_SOURCES_QUERY,
+  mapPropsToVariables: props => ({
+    connectorKey: props.selectedConnector.key
+  })
+};
+
 
 export class SelectProjectsStep extends React.Component {
 
