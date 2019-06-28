@@ -7,6 +7,7 @@ import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./
 import {ConfigureImportStep} from "./configureImportStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
+import  {refetchQueries} from "../../../../components/graphql/utils";
 
 const {Step} = Steps;
 
@@ -50,7 +51,9 @@ export class AddProjectWorkflow extends React.Component {
   }
 
   prev() {
-    const current = this.state.current - 1;
+    // if we are in the final stage, back should take us to Select Projects
+    // since we will have cleared the selected projects at that point.
+    const current = this.state.current < 3 ? this.state.current - 1 : 1;
     this.setState({current});
   }
 
@@ -115,12 +118,18 @@ export class AddProjectWorkflow extends React.Component {
             organizationKey: organization.key,
             projects: this.buildProjectsInput(importMode, selectedProjects, importedProjectName)
           }
-        }
+        },
+        refetchQueries: (fetchData) => refetchQueries(
+          [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY],
+          {...this.props,...this.state} ,
+          fetchData
+        )
       })
       if (result.data) {
         this.setState({
           current: 3,
-          importedProjectKeys: result.data.importProjects.projectKeys
+          importedProjectKeys: result.data.importProjects.projectKeys,
+          selectedProjects: []
         })
       }
     } catch (error) {

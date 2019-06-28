@@ -36,7 +36,7 @@ export const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
 `
 
 export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
-  query: WORK_ITEMS_SOURCES_QUERY,
+  query: CONNECTOR_WORK_ITEMS_SOURCES_QUERY,
   mapPropsToVariables: props => ({
     connectorKey: props.selectedConnector.key
   })
