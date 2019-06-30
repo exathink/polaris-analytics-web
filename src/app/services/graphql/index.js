@@ -5,6 +5,7 @@ import {InMemoryCache, IntrospectionFragmentMatcher} from 'apollo-cache-inmemory
 import {HttpLink} from 'apollo-link-http';
 
 import analyticsFragmentTypes from '../../../config/graphql/analyticsFragmentTypes.json';
+import workTrackingFragmentTypes from "../../../config/graphql/workTrackingFragmentTypes.json";
 
 
 import {GRAPHQL_ANALYTICS_URL, GRAPHQL_WORK_TRACKING_URL} from "../../../config/url";
@@ -31,7 +32,7 @@ analytics_service.defaultPollInterval = () => defaultPollInterval(analytics_serv
 export const work_tracking_service = new ApolloClient({
   cache: new InMemoryCache({
     fragmentMatcher: new IntrospectionFragmentMatcher({
-      introspectionQueryResultData: analyticsFragmentTypes
+      introspectionQueryResultData: workTrackingFragmentTypes
     })
   }),
   link: new HttpLink({

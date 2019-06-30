@@ -72,7 +72,7 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
-    "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/adminFragmentTypes.json",
+    "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8300 ./src/config/graphql/workTrackingFragmentTypes.json",
     "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start",
     "analyze": "source-map-explorer ./build/static/js/main.*"
   }

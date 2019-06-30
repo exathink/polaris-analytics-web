@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"INTERFACE","name":"NamedNode","possibleTypes":[{"name":"Connector"},{"name":"WorkTrackingConnector"},{"name":"WorkItemsSource"}]},{"kind":"INTERFACE","name":"ConnectorInfo","possibleTypes":[{"name":"Connector"},{"name":"WorkTrackingConnector"}]},{"kind":"INTERFACE","name":"WorkItemsSourceInfo","possibleTypes":[{"name":"WorkItemsSource"}]}]}}
