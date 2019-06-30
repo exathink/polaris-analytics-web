@@ -38,7 +38,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
       pageSize: pageSize,
       endCursor: currentCursor
     }}
-    pollInterval={1000}
+    fetchPolicy={'cache-and-network'}
 
   >
     {
