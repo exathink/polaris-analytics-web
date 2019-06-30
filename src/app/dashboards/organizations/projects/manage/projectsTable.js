@@ -18,6 +18,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
       gql`
       query organizationProjects($organizationKey: String!, $pageSize: Int!, $endCursor: String) {
         organization(key: $organizationKey) {
+            id
             projects (first: $pageSize, after: $endCursor){
                   count
                   edges {
@@ -37,7 +38,8 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
       pageSize: pageSize,
       endCursor: currentCursor
     }}
-    fetchPolicy={newData ? 'network-only' : 'cache-first'}
+    pollInterval={1000}
+
   >
     {
       ({loading, error, data}) => {
