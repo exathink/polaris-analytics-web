@@ -172,12 +172,12 @@ export const AddProjectWorkflow = withNavigationContext(
               { current < 3 ? 'Back' : 'Import More Projects'}
             </Button>
           )}
-          {currentStep.showNext && current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()} disabled={disableNext}>
+          {currentStep.showNext && current < steps.length - 1 && !disableNext && (
+            <Button type="primary" onClick={() => this.next()}>
               Next
             </Button>
           )}
-          {current === steps.length - 1 && (
+          {(disableNext || current === steps.length - 1) && (
             <Button type="primary" onClick={() => context.go('..', 'projects')}>
               Done
             </Button>
