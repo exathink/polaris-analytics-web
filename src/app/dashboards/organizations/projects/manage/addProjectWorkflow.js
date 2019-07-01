@@ -9,6 +9,7 @@ import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import  {refetchQueries} from "../../../../components/graphql/utils";
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 const {Step} = Steps;
 
@@ -34,8 +35,8 @@ const steps = [
   },
 ];
 
-
-export class AddProjectWorkflow extends React.Component {
+export const AddProjectWorkflow = withNavigationContext(
+  class _AddProjectWorkflow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -142,6 +143,8 @@ export class AddProjectWorkflow extends React.Component {
     const {current} = this.state;
     const currentStep = steps[current];
     const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state)
+    const {context} = this.props;
+
     return (
       <React.Fragment>
         <Steps current={current}>
@@ -175,7 +178,7 @@ export class AddProjectWorkflow extends React.Component {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>
+            <Button type="primary" onClick={() => context.go('..', 'projects')}>
               Done
             </Button>
           )}
@@ -184,5 +187,5 @@ export class AddProjectWorkflow extends React.Component {
       </React.Fragment>
     );
   }
-}
+})
 
