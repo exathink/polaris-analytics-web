@@ -165,7 +165,7 @@ export class AddProjectWorkflow extends React.Component {
         <div className="steps-action">
           {current > 0 && (
             <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-              Back
+              { current < 3 ? 'Back' : 'Import More Projects'}
             </Button>
           )}
           {currentStep.showNext && current < steps.length - 1 && (
