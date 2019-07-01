@@ -5,6 +5,7 @@ import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./selectProjectsStep";
 import {ConfigureImportStep} from "./configureImportStep";
+import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import  {refetchQueries} from "../../../../components/graphql/utils";
@@ -29,7 +30,7 @@ const steps = [
   },
   {
     title: 'Import Projects',
-    content: () => 'import'
+    content: ShowImportStateStep
   },
 ];
 

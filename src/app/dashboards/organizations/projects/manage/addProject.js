@@ -13,7 +13,6 @@ export default withViewerContext(
     }
   ) => (
   <OrganizationDashboard
-    pollInterval={60 * 1000}
     render={
       ({organization, context}) => (
         <Dashboard
