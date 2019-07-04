@@ -143,7 +143,8 @@ export const SelectConnectorWidget =
                                 name: values.name,
                                 accountKey: viewerContext.accountKey,
                                 connectorType: connectorType,
-                                baseUrl: urlMunge(connectorType, values.baseUrl)
+                                baseUrl: urlMunge(connectorType, values.baseUrl),
+                                apiKey: values.apiKey
                               }
                             }
                           })
