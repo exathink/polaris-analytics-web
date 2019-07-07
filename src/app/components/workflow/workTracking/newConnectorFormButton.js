@@ -66,6 +66,37 @@ const AddConnectorForm = (
           :
           null
       }
+      {
+        connectorType === 'github' ?
+          <React.Fragment>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item label="Github Organization">
+                  {getFieldDecorator('githubOrganization', {
+                    rules: [
+                      {required: true, message: 'Github Organization'}
+                    ],
+                    initialValue: currentValue('githubOrganization', null)
+                  })(<Input placeholder="Github Organization"/>)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item label="OAuth Access Token">
+                  {getFieldDecorator('githubAccessToken', {
+                    rules: [
+                      {required: true, message: 'OAuth Access Token'}
+                    ],
+                    initialValue: currentValue('githubAccessToken', null)
+                  })(<Input placeholder="OAuth Access Token"/>)}
+                </Form.Item>
+              </Col>
+            </Row>
+          </React.Fragment>
+          :
+          null
+      }
     </React.Fragment>
   )
 }

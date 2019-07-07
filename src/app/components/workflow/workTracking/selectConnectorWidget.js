@@ -144,7 +144,9 @@ export const SelectConnectorWidget =
                                 accountKey: viewerContext.accountKey,
                                 connectorType: connectorType,
                                 baseUrl: urlMunge(connectorType, values.baseUrl),
-                                apiKey: values.apiKey
+                                apiKey: values.apiKey,
+                                githubAccessToken: values.githubAccessToken,
+                                githubOrganization: values.githubOrganization
                               }
                             }
                           })
