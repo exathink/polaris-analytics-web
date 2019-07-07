@@ -18,8 +18,12 @@ export const SelectConnectorType = ({connectorType, onChange}) => (
 );
 
 export class SelectConnectorStep extends React.Component {
-  state = {
-    connectorType: 'jira'
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      connectorType: props.selectedConnector.connectorType || 'jira'
+    }
   }
 
   onConnectorTypeChanged(e) {
