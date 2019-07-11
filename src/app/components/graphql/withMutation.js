@@ -2,7 +2,9 @@ import React from 'react';
 import {Mutation} from 'react-apollo';
 import {refetchQueries} from "./utils";
 
-export const withMutation = ({name, mutation, client, success, error }, refetchSpec = null) => {
+import {TrackingReceiptMonitor} from "./trackingReceiptMonitor";
+
+export const withMutation = ({name, mutation, client, success, error, getTrackingReceipt}, refetchSpec = null) => {
   return (Component) => {
     return props => (
       <Mutation
@@ -11,7 +13,7 @@ export const withMutation = ({name, mutation, client, success, error }, refetchS
         onError={err => error && error(err)}
         client={client}
         {...
-          refetchSpec ?
+          refetchSpec && !getTrackingReceipt ?
             {
               refetchQueries:
                 (fetchData) => refetchQueries(refetchSpec, props, fetchData)
@@ -34,7 +36,22 @@ export const withMutation = ({name, mutation, client, success, error }, refetchS
                 result: result,
               }
             }
-            return <Component {...injectedProp} {...props} />
+            return getTrackingReceipt ?
+              <TrackingReceiptMonitor
+                client={client}
+                trackingReceiptKey={getTrackingReceipt(result)}
+                {...
+                  refetchSpec ?
+                    {
+                      refetchQueries:
+                        () => refetchQueries(refetchSpec, props)
+                    } : {}
+                }
+              >
+                <Component {...injectedProp} {...props} />
+              </TrackingReceiptMonitor>
+              :
+              <Component {...injectedProp} {...props} />
           }
         }
       </Mutation>
