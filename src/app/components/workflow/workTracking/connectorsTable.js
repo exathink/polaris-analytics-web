@@ -6,7 +6,8 @@ import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import './connectorsTable.css'
 
-function disableDelete(connectorType, state) {
+function disableDelete(connectorType, connector) {
+  const state = connector.state;
   if (connectorType === 'jira') {
     return state === 'installed' || state === 'enabled'
   }
@@ -83,9 +84,9 @@ export const ConnectorsTable = (
                           onClick={
                             () => onConnectorDeleted(record)
                           }
-                          disabled={disableDelete(connectorType, record.state)}
+                          disabled={disableDelete(connectorType, record)}
                         >
-                          Delete
+                          Archive
                         </Button>
                       </ButtonBar>
                     )

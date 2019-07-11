@@ -35,6 +35,7 @@ const ALL_CONNECTORS_QUERY = gql`
                     accountKey
                     organizationKey
                     state
+                    archived
                 }
             }
         }
@@ -97,7 +98,7 @@ export const SelectConnectorWidget =
               if (error) return null;
               let connectors = []
               if (!loading) {
-                connectors = data.connectors.edges.map(edge => edge.node);
+                connectors = data.connectors.edges.map(edge => edge.node).filter(node => !node.archived);
               }
               return (
                 <React.Fragment>

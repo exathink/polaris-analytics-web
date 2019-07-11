@@ -29,7 +29,7 @@ export const DELETE_CONNECTOR = {
       }
   `,
   client: work_tracking_service,
-  success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} deleted.`),
+  success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} archived.`),
   error: err => openNotification('error', `${display_error(err)}`)
 }
 
