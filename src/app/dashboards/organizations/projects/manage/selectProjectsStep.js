@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
+import {TrackingReceiptMonitor} from "../../../../components/graphql/trackingReceiptMonitor";
 
 import {Col, Form, Input, Row, Table} from "antd";
 import {createForm} from "../../../../components/forms/createForm";
@@ -22,12 +23,15 @@ const REFETCH_PROJECTS_MUTATION = {
       mutation refreshConnectorProjects($connectorKey: String!) {
           refreshConnectorProjects(refreshConnectorProjectsInput:{
               connectorKey: $connectorKey
+              track: true
           }){
               success
+              trackingReceiptKey
           }
       }
   `,
-  client: work_tracking_service
+  client: work_tracking_service,
+  getTrackingReceipt: (result) => result.data ? result.data.refreshConnectorProjects.trackingReceiptKey : null
 }
 
 export const CONNECTOR_WORK_ITEMS_SOURCES_QUERY = gql`
@@ -64,11 +68,11 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
 
 export const SelectProjectsStep =
   compose(
-    withMutation(REFETCH_PROJECTS_MUTATION)
+    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
 
         return (
@@ -78,7 +82,6 @@ export const SelectProjectsStep =
             variables={{
               connectorKey: selectedConnector.key
             }}
-            pollInterval={5000}
           >
             {
               ({loading, error, data}) => {
@@ -90,10 +93,23 @@ export const SelectProjectsStep =
                 return (
                   <div className={'select-projects'}>
                     <h3>Server: {selectedConnector.baseUrl}</h3>
+                    <Button
+                      type={'primary'}
+                      icon={'cloud-sync'}
+                      onClick={
+                        () => refetchProjects({
+                          variables: {
+                            connectorKey: selectedConnector.key
+                          }
+                        })}
+                      loading={refetchProjectsResult.data && !trackingReceiptCompleted}
+                    >
+                      Sync
+                    </Button>
                     {
                       workItemsSources.length > 0 ?
                         <React.Fragment>
-                          <span>{workItemsSources.length} projects available to import</span>
+
                           <Table
                             dataSource={workItemsSources}
                             loading={loading}
@@ -104,6 +120,7 @@ export const SelectProjectsStep =
                             }}
                             pagination={{
                               total: workItemsSources.length,
+                              showTotal: total => `${total} Projects`,
                               defaultPageSize: 5,
                               hideOnSinglePage: true
                             }}
@@ -115,19 +132,8 @@ export const SelectProjectsStep =
                         :
                         <NoData message={"No projects imported"}/>
                     }
-                    <Button
-                      type={'primary'}
-                      onClick={
-                        () => refetchProjects({
-                          variables: {
-                            connectorKey: selectedConnector.key
-                          }
-                        })}
-                      loading={refetchProjectsResult.loading}
-                    >
-                      Refresh Projects
-                    </Button>
                   </div>
+
                 )
               }
             }
