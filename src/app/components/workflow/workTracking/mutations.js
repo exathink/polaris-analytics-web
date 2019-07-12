@@ -25,11 +25,12 @@ export const DELETE_CONNECTOR = {
       mutation deleteConnector($deleteConnectorInput: DeleteConnectorInput!) {
           deleteConnector(deleteConnectorInput:$deleteConnectorInput){
               connectorName
+              disposition
           }
       }
   `,
   client: work_tracking_service,
-  success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} archived.`),
+  success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} ${data.deleteConnector.disposition}.`),
   error: err => openNotification('error', `${display_error(err)}`)
 }
 

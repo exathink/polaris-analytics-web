@@ -1,18 +1,15 @@
-import {Table} from "antd";
+import {Table, Modal } from "antd";
 import {ButtonBar} from "../../../containers/buttonBar/buttonBar";
 import Button from "../../../../components/uielements/button";
 import React from "react";
 import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import './connectorsTable.css'
+import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
 
-function disableDelete(connectorType, connector) {
-  const state = connector.state;
-  if (connectorType === 'jira') {
-    return state === 'installed' || state === 'enabled'
-  }
-  return false
-}
+const { confirm } = Modal;
+
+
 
 export const ConnectorsTable = (
   {
@@ -78,16 +75,11 @@ export const ConnectorsTable = (
                             />
                         }
 
-                        <Button
-                          size={"small"}
-                          type={'primary'}
-                          onClick={
-                            () => onConnectorDeleted(record)
-                          }
-                          disabled={disableDelete(connectorType, record)}
-                        >
-                          Archive
-                        </Button>
+                        <DeleteConfirmationModalButton
+                          connectorType={connectorType}
+                          record={record}
+                          onConnectorDeleted={onConnectorDeleted}
+                        />
                       </ButtonBar>
                     )
                   }
