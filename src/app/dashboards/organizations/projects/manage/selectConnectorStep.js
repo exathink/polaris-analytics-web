@@ -1,10 +1,10 @@
 import React from "react";
-import {Radio} from "antd";
+import { Radio } from "antd";
 
-import {SelectConnectorWidget} from "../../../../components/workflow/workTracking/selectConnectorWidget";
+import { SelectConnectorWidget } from "../../../../components/workflow/workTracking/selectConnectorWidget";
 
 
-export const SelectConnectorType = ({connectorType, onChange}) => (
+export const SelectConnectorType = ({ connectorType, onChange }) => (
   <Radio.Group
     name="connectorType"
     value={connectorType}
@@ -21,8 +21,9 @@ export class SelectConnectorStep extends React.Component {
 
   constructor(props) {
     super(props);
+    let { connectorType } = props.selectedConnector;
     this.state = {
-      connectorType: props.selectedConnector.connectorType || 'jira'
+      connectorType: (!connectorType || connectorType == 'atlassian') ? 'jira' : connectorType
     }
   }
 
