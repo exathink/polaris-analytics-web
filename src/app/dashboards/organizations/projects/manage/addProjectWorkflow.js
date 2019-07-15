@@ -61,6 +61,8 @@ export const AddProjectWorkflow = withNavigationContext(
 
 
   onConnectorSelected(connector) {
+    const {connectorType} = connector
+    connector.connectorType = connectorType == 'atlassian' ? 'jira' : connectorType;
     this.setState({
       current: 1,
       selectedConnector: connector,
