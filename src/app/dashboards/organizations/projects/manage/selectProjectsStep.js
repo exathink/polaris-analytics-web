@@ -15,6 +15,18 @@ import {createForm} from "../../../../components/forms/createForm";
 
 import {NoData} from "../../../../components/misc/noData";
 
+function getServerUrl(selectedConnector) {
+  switch (selectedConnector.connectorType) {
+    case 'pivotal':
+      return 'Pivotal Tracker.com';
+      break;
+    case 'github':
+      return 'GitHub.com';
+      break;
+    default:
+      return selectedConnector.baseUrl;
+  }
+}
 
 
 const REFETCH_PROJECTS_MUTATION = {
@@ -92,10 +104,10 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'select-projects'}>
-                    <h3>Server: {selectedConnector.baseUrl}</h3>
+                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
                     <Button
                       type={'primary'}
-                      icon={'cloud-sync'}
+                      icon={'download'}
                       onClick={
                         () => refetchProjects({
                           variables: {
@@ -104,7 +116,7 @@ export const SelectProjectsStep =
                         })}
                       loading={refetchProjectsResult.data && !trackingReceiptCompleted}
                     >
-                      Sync
+                      Fetch Projects
                     </Button>
                     {
                       workItemsSources.length > 0 ?
@@ -125,7 +137,7 @@ export const SelectProjectsStep =
                               hideOnSinglePage: true
                             }}
                           >
-                            <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
+                            <Table.Column title={"Remote Project Name"} dataIndex={"name"} key={"name"}/>
                             <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
                           </Table>
                         </React.Fragment>
