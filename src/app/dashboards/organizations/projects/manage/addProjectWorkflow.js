@@ -1,6 +1,6 @@
 import React from 'react';
 import './steps.css';
-import {message, Steps} from 'antd';
+import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./selectProjectsStep";
@@ -142,9 +142,8 @@ export const AddProjectWorkflow = withNavigationContext(
   render() {
     const {current} = this.state;
     const currentStep = steps[current];
-    const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state)
-    const {context} = this.props;
-
+    const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
+    const {context, organization} = this.props;
     return (
       <React.Fragment>
         <Steps current={current}>
@@ -160,7 +159,8 @@ export const AddProjectWorkflow = withNavigationContext(
                 onProjectsSelected: this.onProjectsSelected.bind(this),
                 selectedProjects: this.state.selectedProjects,
                 onImportConfigured: this.onImportConfigured.bind(this),
-                importedProjectKeys: this.state.importedProjectKeys
+                importedProjectKeys: this.state.importedProjectKeys,
+                organization: organization
               }
             )
           }
