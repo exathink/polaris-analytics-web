@@ -1,8 +1,8 @@
 import React from 'react';
-import {Col, Form, Input, Radio, Row, Table} from "antd";
+import {Radio} from "antd";
 import {EditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
-import {ExistingModeImport} from "./existingModeImport";
+import {ProjectSetupForm} from './projectSetupForm';
 
 const inputModeDescription = {
   single: 'Import remote projects as sub-projects of a single local project',
@@ -84,81 +84,6 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
   </React.Fragment>
 )
 
-const ProjectNameForm = (
-  {
-    selectedProjects,
-    form: {
-      getFieldDecorator
-    }
-  }
-) => (
-    <Form hideRequiredMark>
-      <Row gutter={16}>
-        <Col span={24}>
-          <h4>Imported project name</h4>
-          <Form.Item>
-            {
-              getFieldDecorator('localName', {
-                rules: [
-                  {required: true, message: 'Imported project name is required'}
-                ],
-                initialValue: selectedProjects[0].name
-              })(<Input placeholder="Imported project name"/>)
-            }
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
-  )
-
-
-export const SingleModeImport = Form.create()(({form, handleSave, selectedProjects, onImport}) => {
-  return (
-    <React.Fragment>
-      <div className={'selected-projects'}>
-        <ProjectNameForm form={form} selectedProjects={selectedProjects}/>
-        <React.Fragment>
-          {selectedProjects.length > 1 && <h4>Remote Projects</h4>}
-          <EditableTable
-            dataSource={selectedProjects}
-            columns={[
-              {
-                title: selectedProjects.length > 1 ? 'Sub-project' : 'Remote project',
-                dataIndex: 'name',
-              },
-              {
-                title: 'Description',
-                dataIndex: 'description'
-              },
-              {
-                title: 'Days of history to import',
-                dataIndex: 'importDays',
-                editable: true,
-                enableEdits: true,
-                width: '20%'
-              },
-            ]}
-            handleSave={handleSave}
-            pagination={{
-              total: selectedProjects.length,
-              defaultPageSize: 1,
-              hideOnSinglePage: true
-
-            }}
-          />
-        </React.Fragment>
-      </div>
-      <Button
-        type={'primary'}
-        onClick={
-          () => onImport(form.getFieldValue('localName'))
-        }
-      >Import Project</Button>
-    </React.Fragment>
-  )
-}
-)
-
 export class ConfigureImportStep extends React.Component {
 
 
@@ -168,6 +93,7 @@ export class ConfigureImportStep extends React.Component {
       importMode: props.selectedProjects.length == 1 ? 'single' : 'separate',
       selectedProjects: this.mapSelectedProjects(props.selectedProjects),
       importedProjectName: null,
+      selectedProjectKey: null
     }
   }
 
@@ -189,6 +115,10 @@ export class ConfigureImportStep extends React.Component {
     this.setState({importedProjectName: projectName})
   }
 
+  onProjectSelectChanged(projectKey) {
+    this.setState({selectedProjectKey: projectKey})
+  }
+
   onSave(record, values) {
     const editedProjects = [...this.state.selectedProjects];
     const index = editedProjects.findIndex(item => record.key === item.key);
@@ -206,9 +136,8 @@ export class ConfigureImportStep extends React.Component {
     this.props.onImportConfigured('single', this.state.selectedProjects, importedProjectName)
   }
 
-  doExistingModeImport(importedProjectName) {
-    // this.props.onImportConfigured('single', this.state.selectedProjects, importedProjectName)
-    console.log(importedProjectName);
+  doExistingModeImport() {
+     this.props.onImportConfigured('existing', this.state.selectedProjects, this.state.selectedProjectKey)
   }
 
   doSeparateModeImport() {
@@ -216,7 +145,7 @@ export class ConfigureImportStep extends React.Component {
   }
 
   render() {
-    const {selectedProjects} = this.state
+    const {selectedProjects, importMode} = this.state
     const {organization} = this.props
     return (
       <div className={'import-project'}>
@@ -224,14 +153,14 @@ export class ConfigureImportStep extends React.Component {
         {
           <SelectImportMode
             selectedProjects={selectedProjects}
-            importMode={this.state.importMode}
+            importMode={importMode}
             onChange={this.onImportModeChanged.bind(this)}
             organization={organization}
           />
-
         }
         {
-          this.state.importMode === 'single' && <SingleModeImport
+          this.state.importMode === 'single' && <ProjectSetupForm
+            importMode={importMode}
             selectedProjects={selectedProjects}
             importedProjectName={this.state.importedProjectName}
             handleSave={this.onSave.bind(this)}
@@ -240,11 +169,12 @@ export class ConfigureImportStep extends React.Component {
           />
         }
         {
-          this.state.importMode === 'existing' && <ExistingModeImport
-            selectedProjects={selectedProjects}
-            handleSave={this.onSave.bind(this)}
-            onImport={this.doExistingModeImport.bind(this)}
+          this.state.importMode === 'existing' && <ProjectSetupForm
+            importMode={importMode}
             organization={organization}
+            selectedProjects={selectedProjects}
+            onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
+            onImport={this.doExistingModeImport.bind(this)}
           />
         }
         {
