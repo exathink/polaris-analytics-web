@@ -7,10 +7,10 @@ import gql from "graphql-tag";
 import {Select} from 'antd';
 const {Option} = Select;
 
-export class ExistingModeImport extends React.Component {
+export class OrganizationProjectSelectorWidget extends React.Component {
 
   render() {
-    const {key: organizationKey} = this.props.organization
+    const {organizationKey, placeholder} = this.props;
     return (
       <Query
         client={analytics_service}
@@ -33,7 +33,7 @@ export class ExistingModeImport extends React.Component {
           `
         }
         variables={{
-          organizationKey: organizationKey
+          organizationKey
         }}
       >
         {
@@ -43,8 +43,15 @@ export class ExistingModeImport extends React.Component {
             return (
               <React.Fragment>
                 <div className={'selected-projects'}>
-                  <Select onChange={value => this.props.onProjectSelectChanged(value)} placeholder="Select an existing project">
-                    {projects.map(project => <Option key={project.node.key} value={project.node.key}>{project.node.name}</Option>)}
+                  <Select
+                    onChange={value => this.props.onProjectSelectChanged(value)}
+                    placeholder={placeholder}
+                  >
+                    {projects.map(project =>
+                      <Option key={project.node.key}
+                        value={project.node.key}>{project.node.name}
+                      </Option>
+                    )}
                   </Select>
                 </div>
               </React.Fragment>

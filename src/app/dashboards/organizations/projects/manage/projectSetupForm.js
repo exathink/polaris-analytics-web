@@ -1,9 +1,8 @@
 import React from 'react';
 import {Col, Form, Input, Row} from "antd";
 import {EditableTable} from "../../../../components/forms/editableTable";
-import Button from "../../../../../components/uielements/button";
 
-import {ExistingModeImport} from "./existingModeImport";
+import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";
 
 const ProjectNameForm = (
   {
@@ -32,21 +31,23 @@ const ProjectNameForm = (
     </Form>
   )
 
-function handleClick(onImport, importMode, form) {
-  const value = importMode == 'single' ? form.getFieldValue('localName') : null;
-  onImport(value);
-}
-
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onImport, importMode, organization, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, importMode, organizationKey, onProjectSelectChanged}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
-        {importMode == 'single' && <ProjectNameForm form={form} selectedProjects={selectedProjects} />}
+        {importMode == 'single' &&
+          <ProjectNameForm
+            form={form}
+            selectedProjects={selectedProjects}
+          />
+        }
         {importMode == 'existing' &&
-          <ExistingModeImport
-            organization={organization}
+          <OrganizationProjectSelectorWidget
+            organizationKey={organizationKey}
             onProjectSelectChanged={onProjectSelectChanged}
-          />}
+            placeholder="Select an existing project"
+          />
+        }
         <React.Fragment>
           {selectedProjects.length > 1 && <h4>Remote Projects</h4>}
           <EditableTable
@@ -73,17 +74,10 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
               total: selectedProjects.length,
               defaultPageSize: 1,
               hideOnSinglePage: true
-
             }}
           />
         </React.Fragment>
       </div>
-      <Button
-        type={'primary'}
-        onClick={
-          () => handleClick(onImport, importMode, form)
-        }
-      >Import Project</Button>
     </React.Fragment>
   )
 }
