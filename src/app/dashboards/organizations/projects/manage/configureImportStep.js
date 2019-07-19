@@ -137,7 +137,7 @@ export class ConfigureImportStep extends React.Component {
   }
 
   doExistingModeImport() {
-     this.props.onImportConfigured('existing', this.state.selectedProjects, this.state.selectedProjectKey)
+     this.props.onImportConfigured('existing', this.state.selectedProjects, null, this.state.selectedProjectKey)
   }
 
   doSeparateModeImport() {

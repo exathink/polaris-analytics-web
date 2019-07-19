@@ -89,7 +89,7 @@ export const AddProjectWorkflow = withNavigationContext(
           }]
         case 'existing':
           return [{
-            importedProjectKey: importedProjectKey,
+            existingProjectKey: importedProjectKey,
             workItemsSources: selectedProjects.map(
               project => ({
                 workItemsSourceName: project.name,
