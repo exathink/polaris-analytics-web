@@ -7,6 +7,23 @@ import gql from "graphql-tag";
 import {Select} from 'antd';
 const {Option} = Select;
 
+export const ORGANIZATION_PROJECT_QUERY = gql`
+  query getOrganizationProjects($organizationKey: String!){
+    organization(key: $organizationKey) {
+      id
+      projects {
+          edges {
+            node {
+                id
+                name
+                key
+            }
+          }
+        }
+      }
+    }
+  `
+
 export class OrganizationProjectSelectorWidget extends React.Component {
 
   render() {
@@ -14,27 +31,11 @@ export class OrganizationProjectSelectorWidget extends React.Component {
     return (
       <Query
         client={analytics_service}
-        query={
-          gql`
-          query getOrganizationProjects($organizationKey: String!){
-            organization(key: $organizationKey) {
-              id
-              projects {
-                  edges {
-                    node {
-                        id
-                        name
-                        key
-                    }
-                  }
-                }
-              }
-            }
-          `
-        }
+        query={ORGANIZATION_PROJECT_QUERY}
         variables={{
           organizationKey
         }}
+        fetchPolicy={'cache-and-network'}
       >
         {
           ({loading, error, data}) => {
@@ -43,6 +44,7 @@ export class OrganizationProjectSelectorWidget extends React.Component {
             return (
               <React.Fragment>
                 <div className={'selected-projects'}>
+                  <h4>Select a project</h4>
                   <Select
                     onChange={value => this.props.onProjectSelectChanged(value)}
                     placeholder={placeholder}

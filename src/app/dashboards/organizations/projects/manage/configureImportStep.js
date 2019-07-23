@@ -1,5 +1,11 @@
 import React from 'react';
+
+import {Query} from "react-apollo";
+import {analytics_service} from "../../../../services/graphql";
+import gql from "graphql-tag";
+
 import {Radio} from "antd";
+
 import {EditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
@@ -10,31 +16,57 @@ const inputModeDescription = {
   separate: 'Import each remote project as a separate local project'
 }
 
-export const SelectImportMode = ({selectedProjects, importMode, onChange, projectCount}) => (
-  <React.Fragment>
-    <h4>Import Mode</h4>
-    <Radio.Group
-      name="importMode"
-      value={importMode}
-      buttonStyle={"solid"}
-      onChange={onChange}
-    >
-      <Radio.Button value={'single'}>Single</Radio.Button>
-      {projectCount > 0 &&
-        <Radio.Button value={'existing'}>Existing</Radio.Button>
-      }
-      {selectedProjects.length > 1 &&
-        <Radio.Button value={'separate'}>Separate</Radio.Button>
-      }
-    </Radio.Group>
-    <div className={'import-mode-text'}>
-      {
-        inputModeDescription[importMode]
-      }
-    </div>
-  </React.Fragment>
+export const ORGANIZATION_PROJECT_COUNT_QUERY = gql`
+query getOrganizationProjectCount($organizationKey: String!){
+  organization(key: $organizationKey) {
+      id
+      projectCount
+    }
+  }
+`;
 
-);
+export const SelectImportMode = ({selectedProjects, importMode, onChange, organizationKey}) => {
+  return (
+    <Query
+      client={analytics_service}
+      query={ORGANIZATION_PROJECT_COUNT_QUERY}
+      variables={{organizationKey}}
+      fetchPolicy={'no-cache'}
+    >
+      {
+        ({loading, error, data}) => {
+          if (loading || error) return null;
+          const {projectCount} = data.organization;
+          return (
+            (projectCount > 0 || selectedProjects.length > 1) &&
+            <React.Fragment>
+              <h4>Import Mode</h4>
+              <Radio.Group
+                name="importMode"
+                value={importMode}
+                buttonStyle={"solid"}
+                onChange={onChange}
+              >
+                <Radio.Button value={'single'}>Single</Radio.Button>
+                {projectCount > 0 &&
+                  <Radio.Button value={'existing'}>Existing</Radio.Button>
+                }
+                {selectedProjects.length > 1 &&
+                  <Radio.Button value={'separate'}>Separate</Radio.Button>
+                }
+              </Radio.Group>
+              <div className={'import-mode-text'}>
+                {
+                  inputModeDescription[importMode]
+                }
+              </div>
+            </React.Fragment>
+          )
+        }
+      }
+    </Query>
+  )
+};
 
 export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => (
   <React.Fragment>
@@ -84,9 +116,9 @@ export class ConfigureImportStep extends React.Component {
     super(props);
 
     this.state = {
-      importMode: props.selectedProjects.length == 1 ? 'single' : 'separate',
+      importMode: props.selectedProjects.length === 1 ? 'single' : 'separate',
       selectedProjects: this.mapSelectedProjects(props.selectedProjects),
-      importedProjectName: props.selectedProjects.length == 1 ? props.selectedProjects[0].name : null,
+      importedProjectName: props.selectedProjects.length === 1 ? props.selectedProjects[0].name : null,
       selectedProjectKey: null
     }
   }
@@ -128,37 +160,33 @@ export class ConfigureImportStep extends React.Component {
   doImport(importMode) {
     const {selectedProjects, importedProjectName, selectedProjectKey} = this.state;
     switch (importMode) {
-      case 'single':
-        this.props.onImportConfigured('single', selectedProjects, importedProjectName)
-        break;
       case 'existing':
         this.props.onImportConfigured('existing', selectedProjects, null, selectedProjectKey)
         break;
       case 'separate':
         this.props.onImportConfigured('separate', selectedProjects)
         break;
-
+      default: // single
+        this.props.onImportConfigured('single', selectedProjects, importedProjectName)
     }
   }
 
   render() {
     const {selectedProjects, importMode, importedProjectName} = this.state;
-    const {organization} = this.props;
-    const {key, projectCount} = organization;
+    const {organizationKey} = this.props;
     return (
       <div className={'import-project'}>
         <h3>{selectedProjects.length} {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
         {
-          (projectCount > 0 || selectedProjects.length > 1) &&
           <SelectImportMode
             selectedProjects={selectedProjects}
             importMode={importMode}
             onChange={this.onImportModeChanged.bind(this)}
-            projectCount={projectCount}
+            organizationKey={organizationKey}
           />
         }
         {
-          this.state.importMode === 'single' &&
+          importMode === 'single' &&
           <ProjectSetupForm
             importMode={importMode}
             selectedProjects={selectedProjects}
@@ -168,16 +196,16 @@ export class ConfigureImportStep extends React.Component {
           />
         }
         {
-          this.state.importMode === 'existing' &&
+          importMode === 'existing' &&
           <ProjectSetupForm
             importMode={importMode}
-            organizationKey={key}
+            organizationKey={organizationKey}
             selectedProjects={selectedProjects}
             onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
           />
         }
         {
-          this.state.importMode === 'separate' &&
+          importMode === 'separate' &&
           <SeparateModeImport
             selectedProjects={selectedProjects}
             handleSave={this.onSave.bind(this)}

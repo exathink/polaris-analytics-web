@@ -59,7 +59,6 @@ export const AddProjectWorkflow = withNavigationContext(
       this.setState({current});
     }
 
-
     onConnectorSelected(connector) {
       this.setState({
         current: 1,
@@ -172,7 +171,7 @@ export const AddProjectWorkflow = withNavigationContext(
                 selectedProjects: this.state.selectedProjects,
                 onImportConfigured: this.onImportConfigured.bind(this),
                 importedProjectKeys: this.state.importedProjectKeys,
-                organization: organization
+                organizationKey: organization.key
               }
               )
             }
