@@ -57,6 +57,7 @@ export class SelectConnectorStep extends React.Component {
         <SelectConnectorWidget
           connectorType={this.state.connectorType}
           onConnectorSelected={this.props.onConnectorSelected}
+          organizationKey={this.props.organizationKey}
         />
       </div>
     )
