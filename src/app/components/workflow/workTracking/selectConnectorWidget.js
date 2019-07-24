@@ -59,24 +59,25 @@ export const SelectConnectorWidget =
     withMutation(CREATE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withPollingManager
   )
-  ((
-    {
-      connectorType,
-      onConnectorSelected,
-      viewerContext,
-      submissionCache: {
-        submit,
-        lastSubmission,
-      },
-      createConnectorMutation,
-      deleteConnectorMutation,
-      registerConnectorMutation,
-      pollingManager: {
-        polling,
-        startPolling,
-        stopPolling
+    ((
+      {
+        connectorType,
+        onConnectorSelected,
+        viewerContext,
+        submissionCache: {
+          submit,
+          lastSubmission,
+        },
+        createConnectorMutation,
+        deleteConnectorMutation,
+        registerConnectorMutation,
+        pollingManager: {
+          polling,
+          startPolling,
+          stopPolling
+        },
+        organizationKey
       }
-    }
     ) => {
       const {createConnector, createConnectorResult} = createConnectorMutation;
       const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
@@ -91,7 +92,7 @@ export const SelectConnectorWidget =
             connectorType: connectorType,
           }}
 
-          pollInterval={ connectorType === 'jira' ? 10000 : 0 }
+          pollInterval={connectorType === 'jira' ? 10000 : 0}
         >
           {
             ({loading, error, data}) => {
@@ -142,8 +143,9 @@ export const SelectConnectorWidget =
                             variables: {
                               createConnectorInput: {
                                 name: values.name,
-                                accountKey: viewerContext.accountKey,
                                 connectorType: connectorType,
+                                accountKey: viewerContext.accountKey,
+                                organizationKey: organizationKey,
                                 baseUrl: urlMunge(connectorType, values.baseUrl),
                                 apiKey: values.apiKey,
                                 githubAccessToken: values.githubAccessToken,
@@ -163,7 +165,7 @@ export const SelectConnectorWidget =
         </Query>
       );
     }
-  )
+    )
 
 
 
