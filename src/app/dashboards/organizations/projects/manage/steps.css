@@ -36,6 +36,10 @@
 
 }
 
+.selected-projects .ant-select{
+  min-width: 400px;
+}
+
 .no-data {
   font-size: 20px;
   line-height: 168px;
