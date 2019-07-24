@@ -60,5 +60,6 @@ export const TEST_CONNECTOR = {
         }
     `,
     client: work_tracking_service,
-    success: (data) => openNotification('success', `Connector test was successful.`)
+    success: (data) => openNotification('success', `Connector test was successful.`),
+    error: err => openNotification('error', `${display_error(err)}`)
 }
