@@ -118,7 +118,7 @@ export class ConfigureImportStep extends React.Component {
     this.state = {
       importMode: props.selectedProjects.length === 1 ? 'single' : 'separate',
       selectedProjects: this.mapSelectedProjects(props.selectedProjects),
-      importedProjectName: props.selectedProjects.length === 1 ? props.selectedProjects[0].name : null,
+      importedProjectName: props.selectedProjects.length ? props.selectedProjects[0].name : null,
       selectedProjectKey: null
     }
   }
@@ -137,6 +137,7 @@ export class ConfigureImportStep extends React.Component {
   }
 
   onProjectNameChanged(projectName) {
+    console.log(projectName);
     this.setState({importedProjectName: projectName})
   }
 

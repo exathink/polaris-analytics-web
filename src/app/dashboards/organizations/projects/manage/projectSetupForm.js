@@ -9,9 +9,12 @@ const ProjectNameForm = (
     selectedProjects,
     form: {
       getFieldDecorator
-    }
+    },
+    placeholder,
+    onProjectNameChanged
   }
-) => (
+) => {
+  return (
     <Form hideRequiredMark>
       <Row gutter={16}>
         <Col span={24}>
@@ -23,15 +26,18 @@ const ProjectNameForm = (
                   {required: true, message: 'Imported project name is required'}
                 ],
                 initialValue: selectedProjects[0].name
-              })(<Input placeholder="Imported project name" />)
+              })(<Input
+                placeholder={placeholder}
+                onChange={e => onProjectNameChanged(e.target.value)}
+              />)
             }
           </Form.Item>
         </Col>
       </Row>
     </Form>
   )
-
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, importMode, organizationKey, onProjectSelectChanged}) => {
+}
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -39,6 +45,8 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
           <ProjectNameForm
             form={form}
             selectedProjects={selectedProjects}
+            onProjectNameChanged={onProjectNameChanged}
+            placeholder="Imported project name"
           />
         }
         {importMode == 'existing' &&
