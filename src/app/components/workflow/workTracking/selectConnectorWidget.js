@@ -22,8 +22,8 @@ function urlMunge(connectorType, url) {
 
 
 const ALL_CONNECTORS_QUERY = gql`
-    query getAccountConnectors($accountKey: String!, $connectorType: String!) {
-        connectors (accountKey: $accountKey, includeNulls: true, connectorType: $connectorType) {
+    query getAccountConnectors($accountKey: String!, $organizationKey: String!, $connectorType: String!) {
+        connectors (accountKey: $accountKey, organizationKey: $organizationKey includeNullAccounts: true, connectorType: $connectorType) {
             count
             edges {
                 node {
@@ -46,6 +46,7 @@ const REFETCH_ALL_CONNECTORS = {
   query: ALL_CONNECTORS_QUERY,
   mapPropsToVariables: props => ({
     accountKey: props.viewerContext.accountKey,
+    organizationKey: props.organizationKey,
     connectorType: props.connectorType,
   })
 };
@@ -92,6 +93,7 @@ export const SelectConnectorWidget =
           query={ALL_CONNECTORS_QUERY}
           variables={{
             accountKey: viewerContext.accountKey,
+            organizationKey: organizationKey,
             connectorType: connectorType,
           }}
 
