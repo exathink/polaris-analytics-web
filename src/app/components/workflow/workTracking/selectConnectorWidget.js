@@ -128,6 +128,7 @@ export const SelectConnectorWidget =
                           variables: {
                             registerConnectorInput: {
                               accountKey: viewerContext.accountKey,
+                              organizationKey: organizationKey,
                               connectorKey: values.key,
                               name: values.name,
                             }
