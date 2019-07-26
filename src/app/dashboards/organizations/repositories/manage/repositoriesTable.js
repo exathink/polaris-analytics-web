@@ -11,7 +11,7 @@ import {withAntPagination} from "../../../../components/graphql/withAntPaginatio
 
 const {Column} = Table;
 
-const RepositoriesPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage, newData}) => (
+const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, onNewPage}) => (
   <Query
     client={analytics_service}
     query={
