@@ -5,6 +5,10 @@ const topic =  {
   ...Topics.repositories,
   routes: [
     {
+      match: 'new',
+      component: asyncComponent(() => import('./manage/addRepository'))
+    },
+    {
       match: '',
       component: asyncComponent(() => import('./dashboard'))
     }

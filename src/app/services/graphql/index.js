@@ -6,9 +6,9 @@ import {HttpLink} from 'apollo-link-http';
 
 import analyticsFragmentTypes from '../../../config/graphql/analyticsFragmentTypes.json';
 import workTrackingFragmentTypes from "../../../config/graphql/workTrackingFragmentTypes.json";
+import vcsFragmentTypes from "../../../config/graphql/vcsFragmentTypes.json";
 
-
-import {GRAPHQL_ANALYTICS_URL, GRAPHQL_WORK_TRACKING_URL} from "../../../config/url";
+import {GRAPHQL_ANALYTICS_URL, GRAPHQL_WORK_TRACKING_URL, GRAPHQL_VCS_URL} from "../../../config/url";
 
 import {ApolloProvider} from 'react-apollo';
 
@@ -41,6 +41,19 @@ export const work_tracking_service = new ApolloClient({
   })
 });
 analytics_service.defaultPollInterval = () => defaultPollInterval(work_tracking_service);
+
+export const vcs_service = new ApolloClient({
+  cache: new InMemoryCache({
+    fragmentMatcher: new IntrospectionFragmentMatcher({
+      introspectionQueryResultData: vcsFragmentTypes
+    })
+  }),
+  link: new HttpLink({
+    uri: GRAPHQL_VCS_URL,
+    credentials: 'include',
+  })
+});
+vcs_service.defaultPollInterval = () => defaultPollInterval(vcs_service);
 
 
 export const DefaultApolloProvider = props => (
