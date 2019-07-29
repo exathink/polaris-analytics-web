@@ -1,10 +1,11 @@
 import React from "react";
-import { Radio } from "antd";
+import {Radio} from "antd";
+import {work_tracking_service} from "../../../../services/graphql";
 
-import { SelectConnectorWidget } from "../../../../components/workflow/workTracking/selectConnectorWidget";
+import {SelectConnectorWidget} from "../../../../components/workflow/connectors/selectConnectorWidget";
 
 
-export const SelectConnectorType = ({ connectorType, onChange }) => (
+export const SelectConnectorType = ({connectorType, onChange}) => (
   <Radio.Group
     name="connectorType"
     value={connectorType}
@@ -20,8 +21,8 @@ export const SelectConnectorType = ({ connectorType, onChange }) => (
 
 function getWorkTrackingType(connector) {
   const {connectorType, productType} = connector;
-  if(connectorType) {
-    switch(connectorType) {
+  if (connectorType) {
+    switch (connectorType) {
       case 'atlassian':
         return 'jira'; // This could be replaced with productType, but right now the back end does not return this.
       default:
@@ -58,6 +59,7 @@ export class SelectConnectorStep extends React.Component {
           connectorType={this.state.connectorType}
           onConnectorSelected={this.props.onConnectorSelected}
           organizationKey={this.props.organizationKey}
+          service={work_tracking_service}
         />
       </div>
     )
