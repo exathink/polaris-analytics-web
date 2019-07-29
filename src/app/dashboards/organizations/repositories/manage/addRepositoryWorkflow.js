@@ -13,7 +13,7 @@ const steps = [
     {
         title: 'Select Connector',
         content: SelectConnectorStep,
-        showNext: false
+        showNext: true
       },
       {
         title: 'Select Repositories',
@@ -32,7 +32,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
     constructor(props) {
       super(props);
       this.state = {
-        current: 1,
+        current: 0,
         selectedConnector: {},
       };
     }
@@ -43,7 +43,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
     }
 
     prev() {
-      const current = this.state.current < steps.length-1 ? this.state.current - 1 : 1;
+      const current = this.state.current < steps.length ? this.state.current - 1 : 1;
       this.setState({current});
     }
 
