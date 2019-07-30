@@ -1,5 +1,6 @@
 import React from "react";
 import {Radio} from "antd";
+import {ApolloProvider} from 'react-apollo';
 import {work_tracking_service} from "../../../../services/graphql";
 
 import {SelectConnectorWidget} from "../../../../components/workflow/connectors/selectConnectorWidget";
@@ -54,13 +55,14 @@ export class SelectConnectorStep extends React.Component {
           connectorType={this.state.connectorType}
           onChange={this.onConnectorTypeChanged.bind(this)}
         />
-
-        <SelectConnectorWidget
-          connectorType={this.state.connectorType}
-          onConnectorSelected={this.props.onConnectorSelected}
-          organizationKey={this.props.organizationKey}
-          service={work_tracking_service}
-        />
+        <ApolloProvider client={work_tracking_service}>
+          <SelectConnectorWidget
+            connectorType={this.state.connectorType}
+            onConnectorSelected={this.props.onConnectorSelected}
+            organizationKey={this.props.organizationKey}
+            service={work_tracking_service}
+          />
+        </ApolloProvider>
       </div>
     )
   }

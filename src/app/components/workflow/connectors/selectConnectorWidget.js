@@ -89,7 +89,6 @@ export const SelectConnectorWidget =
 
       return (
         <Query
-          client={service}
           query={ALL_CONNECTORS_QUERY}
           variables={{
             accountKey: viewerContext.accountKey,

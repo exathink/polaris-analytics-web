@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {compose, Query} from "react-apollo";
-import {work_tracking_service} from "../../../services/graphql/index";
 import gql from "graphql-tag";
 
 import {Modal} from 'antd';
@@ -18,7 +17,6 @@ function disableDelete(connectorType, connector) {
 const DeleteConfirmationModal = ({record, onConnectorDeleted, onDone}) => {
   return (
     <Query
-      client={work_tracking_service}
       query={
         gql`
           query getConnectorAttachedCount($connectorKey: String!){
