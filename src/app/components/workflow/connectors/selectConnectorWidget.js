@@ -62,7 +62,6 @@ export const SelectConnectorWidget =
   )
   ((
     {
-      service,
       connectorType,
       onConnectorSelected,
       viewerContext,

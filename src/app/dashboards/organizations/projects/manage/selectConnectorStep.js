@@ -60,7 +60,6 @@ export class SelectConnectorStep extends React.Component {
             connectorType={this.state.connectorType}
             onConnectorSelected={this.props.onConnectorSelected}
             organizationKey={this.props.organizationKey}
-            service={work_tracking_service}
           />
         </ApolloProvider>
       </div>
