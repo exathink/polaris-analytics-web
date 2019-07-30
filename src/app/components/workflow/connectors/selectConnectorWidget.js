@@ -1,7 +1,6 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {compose, Query} from "react-apollo";
-import {work_tracking_service} from "../../../services/graphql/index";
 import gql from "graphql-tag";
 import {withSubmissionCache} from "../../forms/withSubmissionCache";
 import {ConnectorsTable} from "./connectorsTable";
@@ -89,7 +88,6 @@ export const SelectConnectorWidget =
 
       return (
         <Query
-          client={work_tracking_service}
           query={ALL_CONNECTORS_QUERY}
           variables={{
             accountKey: viewerContext.accountKey,

@@ -1,5 +1,4 @@
 import gql from "graphql-tag";
-import {work_tracking_service} from "../../../services/graphql";
 import {display_error, openNotification} from "../../../helpers/utility";
 
 export const CREATE_CONNECTOR = {
@@ -15,7 +14,7 @@ export const CREATE_CONNECTOR = {
           }
       }
   `,
-    client: work_tracking_service,
+    client: null,
     success: (data) => openNotification('success', `Connector ${data.createConnector.connector.name} registered`)
 }
 
@@ -29,7 +28,7 @@ export const DELETE_CONNECTOR = {
           }
       }
   `,
-    client: work_tracking_service,
+    client: null,
     success: data => openNotification('success', `Connector ${data.deleteConnector.connectorName} ${data.deleteConnector.disposition}.`),
     error: err => openNotification('error', `${display_error(err)}`)
 }
@@ -46,7 +45,7 @@ export const REGISTER_CONNECTOR = {
           }
       }
   `,
-    client: work_tracking_service,
+    client: null,
     success: (data) => openNotification('success', `Connector ${data.registerConnector.connector.name} registered.`)
 }
 
@@ -59,7 +58,7 @@ export const TEST_CONNECTOR = {
             }
         }
     `,
-    client: work_tracking_service,
+    client: null,
     success: (data) => openNotification('success', `Connector test was successful.`),
     error: err => openNotification('error', `${display_error(err)}`)
 }
