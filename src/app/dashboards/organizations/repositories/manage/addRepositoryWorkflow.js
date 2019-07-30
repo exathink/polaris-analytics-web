@@ -13,7 +13,7 @@ const steps = [
   {
     title: 'Select Connector',
     content: SelectConnectorStep,
-    showNext: true
+    showNext: false
   },
   {
     title: 'Select Repositories',
@@ -71,7 +71,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
             {
               React.createElement(steps[current].content, {
                 organizationKey: organization.key,
-                onConnectorSelected: this.onConnectorSelected.bind(this)
+                onConnectorSelected: this.onConnectorSelected.bind(this),
+                selectedConnector: this.state.selectedConnector,
               })
             }
           </div>
