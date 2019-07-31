@@ -1,17 +1,21 @@
 import React from 'react';
-
-import {Table} from 'antd';
-
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
+import {Table} from 'antd';
+
+import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
+import {ArchiveProjectConfirmationModalButton} from "./archiveProjectConfirmationModal";
+
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
 
+const onProjectArchived = project => {
+  // ToDo: Implement mutation to archive project
+  console.log(project)
+}
 
-const {Column} = Table;
-
-const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage, newData}) => (
+const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage}) => (
   <Query
     client={analytics_service}
     query={
@@ -26,6 +30,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
                           id
                           name
                           key
+                          repositoryCount
                       }
                   }
               }
@@ -63,7 +68,29 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
             }}
             onChange={onNewPage}
           >
-            <Column title={"Name"} dataIndex={"name"} key={"name"}/>
+            <Table.Column title={"Name"} dataIndex={"name"} key={"name"} />
+
+            {/* Repositories column is just for testing purposes */}
+            <Table.Column title={"Repositories"} dataIndex={"repositoryCount"} key={"key"} />
+            {/* Repositories column is just for testing purposes */}
+
+            <Table.Column
+              title=""
+              width={80}
+              key="select"
+              render={
+                (text, record) => {
+                  return (
+                    <ButtonBar>
+                      <ArchiveProjectConfirmationModalButton
+                        record={record}
+                        onProjectArchived={onProjectArchived}
+                      />
+                    </ButtonBar>
+                  )
+                }
+              }
+            />
           </Table>
         )
       }
