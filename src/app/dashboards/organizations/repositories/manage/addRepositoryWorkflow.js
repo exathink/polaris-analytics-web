@@ -2,8 +2,12 @@ import React from 'react';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
-import {SelectRepositoriesStep} from "./selectRepositoriesStep";
+import {SelectRepositoriesStep, REFETCH_CONNECTOR_REPOSITORIES_QUERY} from "./selectRepositoriesStep";
+import {ReviewImportStep} from "./reviewImportStep";
 import {ShowImportStateStep} from "./showImportStateStep";
+import {vcs_service} from "../../../../services/graphql";
+import gql from "graphql-tag";
+import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import './steps.css';
 
@@ -18,11 +22,12 @@ const steps = [
   {
     title: 'Select Repositories',
     content: SelectRepositoriesStep,
-    showNext: true
+    showNext: true,
+    disableNextIf: ({selectedRepositories}) => selectedRepositories.length == 0
   },
   {
-    title: 'Import Repositories',
-    content: ShowImportStateStep,
+    title: 'Review Import',
+    content: ReviewImportStep,
     showNext: false
   }
 ];
@@ -34,6 +39,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       this.state = {
         current: 0,
         selectedConnector: {},
+        selectedRepositories: []
       };
     }
 
@@ -51,9 +57,56 @@ export const AddRepositoryWorkflow = withNavigationContext(
       this.setState({
         current: 1,
         selectedConnector: connector,
-        selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
+        selectedRepositories: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedRepositories
       })
     }
+
+    onRepositoriesSelected(selectedRepositories) {
+      this.setState({
+        selectedRepositories: selectedRepositories
+      })
+    }
+
+    getRepositoryKeys() {
+      const {selectedRepositories} = this.state;
+      return selectedRepositories.map(repo => repo.key)
+    }
+
+    async onDoImport() {
+      const {organization, viewerContext} = this.props;
+      try {
+        const result = await vcs_service.mutate({
+          mutation: gql`
+              mutation importRepositories($importRepositoriesInput: ImportRepositoriesInput!) {
+                  importRepositories(importRepositoriesInput: $importRepositoriesInput) {
+                    importedRepositoryKeys
+                  }
+              }
+          `,
+          variables: {
+            importRepositoriesInput: {
+              organizationKey: organization.key,
+              repositoryKeys: this.getRepositoryKeys()
+            }
+          },
+          refetchQueries: (fetchData) => refetchQueries(
+            [REFETCH_CONNECTOR_REPOSITORIES_QUERY],
+            {...this.props, ...this.state},
+            fetchData
+          )
+        })
+        if (result.data) {
+          this.setState({
+            current: 1,
+            importedRepositoryKeys: result.data.importRepositories.importedRepositoryKeys,
+            selectedRepositories: []
+          })
+        }
+      } catch (error) {
+        console.log(`Error: ${error}`)
+      }
+    }
+
 
     render() {
       const {current} = this.state;
@@ -73,6 +126,9 @@ export const AddRepositoryWorkflow = withNavigationContext(
                 organizationKey: organization.key,
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
+                onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                selectedRepositories: this.state.selectedRepositories,
+                onDoImport: this.onDoImport.bind(this)
               })
             }
           </div>

@@ -17,28 +17,14 @@
   min-width: 85px;
 }
 
-.import-project .import-mode-text {
-  margin: 3px;
-  font-style: italic;
-}
-
-.import-project .ant-radio-button {
-  min-width: 60px;
-}
-
-.ant-carousel .slick-slide {
-  line-height: 168px;
-  background-color: #2a6496;
-}
-
-.selected-projects {
+.selected-repositories {
   margin: 50px;
-
 }
 
-.selected-projects .ant-select{
-  min-width: 400px;
+.selected-repositories button {
+  margin-top: 20px;
 }
+
 
 .no-data {
   font-size: 20px;

@@ -3,7 +3,7 @@ export class ShowImportStateStep extends React.Component {
 
   render() {
     return (
-      <div className={'select-connector'}>
+      <div className={'import-repository'}>
         Show Import State step
       </div>
     )
