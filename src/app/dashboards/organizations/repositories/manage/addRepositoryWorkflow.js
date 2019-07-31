@@ -10,22 +10,22 @@ import './steps.css';
 const {Step} = Steps;
 
 const steps = [
-    {
-        title: 'Select Connector',
-        content: SelectConnectorStep,
-        showNext: true
-      },
-      {
-        title: 'Select Repositories',
-        content: SelectRepositoriesStep,
-        showNext: true
-      },
-      {
-        title: 'Import Repositories',
-        content: ShowImportStateStep,
-        showNext: false
-      }
-    ];
+  {
+    title: 'Select Connector',
+    content: SelectConnectorStep,
+    showNext: false
+  },
+  {
+    title: 'Select Repositories',
+    content: SelectRepositoriesStep,
+    showNext: true
+  },
+  {
+    title: 'Import Repositories',
+    content: ShowImportStateStep,
+    showNext: false
+  }
+];
 
 export const AddRepositoryWorkflow = withNavigationContext(
   class _AddRepositoryWorkflow extends React.Component {
@@ -47,6 +47,14 @@ export const AddRepositoryWorkflow = withNavigationContext(
       this.setState({current});
     }
 
+    onConnectorSelected(connector) {
+      this.setState({
+        current: 1,
+        selectedConnector: connector,
+        selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
+      })
+    }
+
     render() {
       const {current} = this.state;
       const currentStep = steps[current];
@@ -62,9 +70,10 @@ export const AddRepositoryWorkflow = withNavigationContext(
           <div className="steps-content">
             {
               React.createElement(steps[current].content, {
-                organizationKey: organization.key
-              }
-              )
+                organizationKey: organization.key,
+                onConnectorSelected: this.onConnectorSelected.bind(this),
+                selectedConnector: this.state.selectedConnector,
+              })
             }
           </div>
 
