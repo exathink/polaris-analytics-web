@@ -5,6 +5,9 @@ import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectRepositoriesStep, REFETCH_CONNECTOR_REPOSITORIES_QUERY} from "./selectRepositoriesStep";
 import {ReviewImportStep} from "./reviewImportStep";
 import {ShowImportStateStep} from "./showImportStateStep";
+import {vcs_service} from "../../../../services/graphql";
+import gql from "graphql-tag";
+import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import './steps.css';
 
@@ -41,6 +44,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       this.state = {
         current: 0,
         selectedConnector: {},
+        selectedRepositories: []
       };
     }
 
@@ -58,7 +62,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       this.setState({
         current: 1,
         selectedConnector: connector,
-        selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
+        selectedRepositories: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedRepositories
       })
     }
 
@@ -127,6 +131,9 @@ export const AddRepositoryWorkflow = withNavigationContext(
                 organizationKey: organization.key,
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
+                onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                selectedRepositories: this.state.selectedRepositories,
+                onDoImport: this.onDoImport.bind(this)
               })
             }
           </div>
