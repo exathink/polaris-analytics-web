@@ -29,6 +29,11 @@ const steps = [
     title: 'Review Import',
     content: ReviewImportStep,
     showNext: false
+  },
+  {
+    title: 'Import Repositories',
+    content: ShowImportStateStep,
+    showNext: false
   }
 ];
 
@@ -97,7 +102,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
         })
         if (result.data) {
           this.setState({
-            current: 1,
+            current: 3,
             importedRepositoryKeys: result.data.importRepositories.importedRepositoryKeys,
             selectedRepositories: []
           })
@@ -128,7 +133,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
                 selectedConnector: this.state.selectedConnector,
                 onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
                 selectedRepositories: this.state.selectedRepositories,
-                onDoImport: this.onDoImport.bind(this)
+                onDoImport: this.onDoImport.bind(this),
+                importedRepositoryKeys: this.state.importedRepositoryKeys
               })
             }
           </div>
