@@ -7,6 +7,7 @@ import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {Input, Table, Icon} from "antd";
 import {NoData} from "../../../../components/misc/noData";
+import {runInThisContext} from 'vm';
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -102,34 +103,23 @@ export const SelectProjectsStep =
       state = {searchText: ''};
 
       getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
-          <div style={{padding: 8}}>
-            <Input
-              ref={node => {
-                this.searchInput = node;
-              }}
-              placeholder={`Search ${dataIndex}`}
-              value={selectedKeys[0]}
-              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-              style={{width: 188, marginBottom: 8, display: 'block'}}
-            />
-            <Button
-              type="primary"
-              onClick={() => this.handleSearch(selectedKeys, confirm)}
-              icon="search"
-              size="small"
-              style={{width: 90, marginRight: 8}}
-            >
-              Search
-        </Button>
-            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{width: 90}}>
-              Reset
-        </Button>
-          </div>
-        ),
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, filters}) => {
+          this.clearFilters = clearFilters
+          return (
+            <div style={{padding: 8}}>
+              <Input
+                ref={node => this.searchInput = node}
+                placeholder={`Search ${dataIndex}`}
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+                style={{marginBottom: 8, display: 'block'}}
+              />
+            </div>
+          )
+        },
         filterIcon: filtered => (
-          <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}} />
+          <Icon type={filtered ? "close" : "search"} style={{color: filtered ? '#1890ff' : undefined}} />
         ),
         onFilter: (value, record) =>
           record[dataIndex]
@@ -138,7 +128,11 @@ export const SelectProjectsStep =
             .includes(value.toLowerCase()),
         onFilterDropdownVisibleChange: visible => {
           if (visible) {
-            setTimeout(() => this.searchInput.select());
+            if (this.searchInput.props.value) {
+              this.handleReset(this.clearFilters);
+            } else {
+              setTimeout(() => this.searchInput.select());
+            }
           }
         },
         render: text => (
@@ -194,7 +188,7 @@ export const SelectProjectsStep =
                   workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(edge => edge.node);
                 }
                 return (
-                  <div className={'select-projects'}>
+                  <div className={'selected-projects'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
                     <Button
                       type={'primary'}
