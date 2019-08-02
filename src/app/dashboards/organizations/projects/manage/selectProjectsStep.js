@@ -77,12 +77,28 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
+const columns = [
+  {
+    title: 'Remote Project Name',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['ascend'],
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  },
+]
+
 
 export const SelectProjectsStep =
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
+
       render() {
         const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
@@ -125,6 +141,7 @@ export const SelectProjectsStep =
                           <Table
                             dataSource={workItemsSources}
                             loading={loading}
+                            columns={columns}
                             rowKey={record => record.key}
                             rowSelection={{
                               selectedRowKeys: selectedProjects.map(project => project.key),
@@ -137,12 +154,10 @@ export const SelectProjectsStep =
                               hideOnSinglePage: true
                             }}
                           >
-                            <Table.Column title={"Remote Project Name"} dataIndex={"name"} key={"name"}/>
-                            <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
                           </Table>
                         </React.Fragment>
                         :
-                        <NoData message={"No projects imported"}/>
+                        <NoData message={"No projects imported"} />
                     }
                   </div>
 
