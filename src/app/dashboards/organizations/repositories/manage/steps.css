@@ -30,3 +30,7 @@
   font-size: 20px;
   line-height: 168px;
 }
+
+.show-import-state .ant-table .import-in-process {
+  color: #1db539;
+}

@@ -54,7 +54,9 @@ export const AddRepositoryWorkflow = withNavigationContext(
     }
 
     prev() {
-      const current = this.state.current < steps.length ? this.state.current - 1 : 1;
+      // if we are in the final stage, back should take us to Select Repositories
+      // since we will have cleared the selected projects at that point.
+      const current = this.state.current < 3 ? this.state.current - 1 : 1;
       this.setState({current});
     }
 
@@ -142,7 +144,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           <div className="steps-action">
             {current > 0 && (
               <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                {current < steps.length ? 'Back' : 'Import More Repositories'}
+                {current < 3 ? 'Back' : 'Import More Repositories'}
               </Button>
             )}
             {currentStep.showNext && current < steps.length - 1 && !disableNext && (
