@@ -1,7 +1,8 @@
 import React from "react";
-import {Query} from "react-apollo";
+import {Query, compose} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {Table, Progress} from "antd";
+import {withPollingManager} from "../../../../components/graphql/withPollingManager";
 import gql from "graphql-tag";
 
 
@@ -25,105 +26,163 @@ const SHOW_IMPORT_STATE_QUERY = gql`
     }
 `
 
-function getPercentComplete(commitCount, commitsInProcess){
+function getPercentComplete(commitCount, commitsInProcess) {
   if (commitCount > 0) {
     if (commitsInProcess != null) {
-      return Math.floor(((commitCount - commitsInProcess)/commitCount) * 100)
+      return
     } else {
-      return null
+      return 0
     }
   } else {
-    return null
+    return 0
   }
 }
 
-function getCommitsProcessed(commitCount, commitsInProcess){
 
-    if (commitsInProcess != null) {
-      return (commitCount - commitsInProcess)
-    } else {
-      return null
+export class ShowImportStateStep extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      repositoryIndex: {},
+      numImported: 0
     }
-
-}
-
-export const ShowImportStateStep = (
-  {
-    selectedConnector,
-    importedRepositoryKeys
   }
-) => {
-  return (
-    <Query
-      client={vcs_service}
-      query={SHOW_IMPORT_STATE_QUERY}
-      variables={{
-        connectorKey: selectedConnector.key,
-        repositoryKeys: importedRepositoryKeys
-      }}
-      pollInterval={1000}
-    >
-      {
-        ({loading, error, data}) => {
-          if (error) return null;
-          let repositories = []
-          if (!loading) {
-            repositories = data.vcsConnector.repositories.edges.map(
-              edge => ({
-                key: edge.node.key,
-                name: edge.node.name,
-                importState: edge.node.importState == 'polling for updates' ? 'imported' : edge.node.importState,
-                commitCount: edge.node.commitCount,
-                commitsProcessed: getCommitsProcessed(edge.node.commitCount, edge.node.commitsInProcess),
-                percentComplete: getPercentComplete(edge.node.commitCount, edge.node.commitsInProcess)
-              })
-            );
+
+  getImportState(repository) {
+    const currentState = this.state.repositoryIndex[repository.key];
+    if (currentState != null) {
+      if ((currentState.importState === 'importing'  || currentState.importState === 'verifying') && repository.importState == 'import queued') {
+        return 'verifying'
+      } else {
+        return repository.importState === 'polling for updates' ? 'imported' : repository.importState
+      }
+    } else {
+      return repository.importState
+    }
+  }
+
+  getImportProgress(repository) {
+    const {commitCount, commitsInProcess} = repository;
+    const currentState = this.state.repositoryIndex[repository.key];
+    console.log(`Commits in Process: ${commitsInProcess}`);
+
+    let commitsProcessed = 0;
+    if (commitCount != null) {
+        commitsProcessed = commitsInProcess != null ?
+                            (commitCount - commitsInProcess) :
+                              currentState != null ?
+                                commitCount :
+                                  0;
+    }
+    const percentComplete = commitCount != null ? Math.ceil((commitsProcessed / commitCount) * 100) : 0;
+    console.log(`Percent Complete: ${percentComplete}`);
+
+    return {
+      commitsProcessed: currentState != null ? Math.max(currentState.commitsProcessed, commitsProcessed) : commitsProcessed,
+      percentComplete: currentState != null ? Math.max(currentState.percentComplete, percentComplete): percentComplete
+    }
+  }
+
+
+  onDataUpdated(data) {
+    const repositories = data.vcsConnector.repositories.edges.map(
+      edge => {
+        const repository = edge.node;
+        return {
+          key: repository.key,
+          name: repository.name,
+          commitCount: repository.commitCount,
+          importState: this.getImportState(repository),
+          ...this.getImportProgress(repository)
+        }
+      }
+    )
+    this.setState({
+      repositoryIndex: repositories.reduce(
+        (index, repository) => {
+          index[repository.key] = repository;
+          return index;
+        },
+        {}
+      ),
+      numImported: repositories.filter(repository => repository.importState === 'imported' || repository.importState == 'verifying').length
+    })
+  }
+
+  render() {
+    const {
+      selectedConnector,
+      importedRepositoryKeys
+    } = this.props;
+
+    return (
+      <Query
+        client={vcs_service}
+        query={SHOW_IMPORT_STATE_QUERY}
+        variables={{
+          connectorKey: selectedConnector.key,
+          repositoryKeys: importedRepositoryKeys
+        }}
+        pollInterval={1000}
+        onCompleted={
+          data => {
+            this.onDataUpdated(data)
           }
+        }
+      >
+        {
+          ({loading, error, data}) => {
+            if (error) return null;
+            const {repositoryIndex, numImported} = this.state;
+            const repositories = Object.values(repositoryIndex);
+            return (
+              <div className={'show-import-state'}>
 
-          const numImported = repositories.filter(repository => repository.importState === 'imported').length
+                {
+                  repositories.length > 0 &&
+                  <Progress type={'circle'} percent={(numImported / repositories.length) * 100}/>
+                }
+                <Table
+                  dataSource={repositories}
+                  loading={repositories.length == 0}
+                  rowKey={record => record.key}
 
-          return (
-            <div className={'show-import-state'}>
-
-              {
-                repositories.length > 0 &&
-                <Progress type={'circle'} percent={(numImported / repositories.length) * 100}/>
-              }
-              <Table
-                dataSource={repositories}
-                loading={loading}
-                rowKey={record => record.key}
-
-                pagination={{
-                  total: repositories.length,
-                  defaultPageSize: 5,
-                  hideOnSinglePage: true
-                }}
-              >
-                <Table.Column title={"Repository"} dataIndex={"name"} key={"name"}/>
-                <Table.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
-                <Table.Column title={"Total Commits"} dataIndex={"commitCount"} key={"commitCount"}/>
-                <Table.Column title={"Total Imported"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
-                <Table.Column
-                  title={""}
-                  dataIndex={"percentComplete"}
-                  key={"percentComplete"}
-                  render={
-                    percentComplete => (
-                      percentComplete != null &&
+                  pagination={{
+                    total: repositories.length,
+                    defaultPageSize: 5,
+                    hideOnSinglePage: true
+                  }}
+                >
+                  <Table.Column title={"Repository"} dataIndex={"name"} key={"name"}/>
+                  <Table.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
+                  <Table.Column title={"Total Commits"} dataIndex={"commitCount"} key={"commitCount"}/>
+                  <Table.Column title={"Total Imported"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
+                  <Table.Column
+                    title={""}
+                    dataIndex={"percentComplete"}
+                    key={"percentComplete"}
+                    render={
+                      percentComplete => (
+                        percentComplete != null &&
                         <Progress
                           percent={
                             percentComplete
                           }
                         />
-                    )
-                  }
-                />
-              </Table>
-            </div>
-          );
+                      )
+                    }
+                  />
+                </Table>
+              </div>
+            );
+          }
         }
-      }
-    </Query>
-  )
+      </Query>
+    )
+  }
 }
+
+
+
