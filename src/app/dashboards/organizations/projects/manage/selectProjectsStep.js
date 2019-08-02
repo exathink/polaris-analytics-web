@@ -168,6 +168,8 @@ export const SelectProjectsStep =
             dataIndex: 'name',
             key: 'name',
             ...this.getColumnSearchProps('name'),
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortDirections: ['ascend'],
           },
           {
             title: 'Description',
