@@ -1,18 +1,11 @@
 import React from 'react';
 
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {compose, Query} from "react-apollo";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import gql from "graphql-tag";
-import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {TrackingReceiptMonitor} from "../../../../components/graphql/trackingReceiptMonitor";
-
-import {Col, Form, Input, Row, Table} from "antd";
-import {createForm} from "../../../../components/forms/createForm";
-
-
+import {Input, Table, Icon} from "antd";
 import {NoData} from "../../../../components/misc/noData";
 
 function getServerUrl(selectedConnector) {
@@ -78,14 +71,110 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
 };
 
 
+/*
+  In the search example used in Antd they include a component called Highlighter
+
+  import Highlighter from 'react-highlight-words';
+
+  In order not to polute the package.json I created this component to produce the same effect
+
+*/
+const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
+  const splitText = textToHighlight.toLowerCase().split(searchWords.toLowerCase())
+  const foundText = textToHighlight.substr(textToHighlight.toLowerCase().indexOf(searchWords.toLowerCase()), searchWords.length)
+  return (
+    searchWords.length && splitText.length > 1
+      ?
+      <React.Fragment>
+        <span>{splitText[0]}</span>
+        <span style={highlightStyle}>{foundText}</span>
+        <span>{splitText[1]}</span>
+      </React.Fragment>
+      : <span>{textToHighlight}</span>
+  )
+}
+
 export const SelectProjectsStep =
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
+      state = {searchText: ''};
+
+      getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+          <div style={{padding: 8}}>
+            <Input
+              ref={node => {
+                this.searchInput = node;
+              }}
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              style={{width: 188, marginBottom: 8, display: 'block'}}
+            />
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm)}
+              icon="search"
+              size="small"
+              style={{width: 90, marginRight: 8}}
+            >
+              Search
+        </Button>
+            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{width: 90}}>
+              Reset
+        </Button>
+          </div>
+        ),
+        filterIcon: filtered => (
+          <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}} />
+        ),
+        onFilter: (value, record) =>
+          record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+          if (visible) {
+            setTimeout(() => this.searchInput.select());
+          }
+        },
+        render: text => (
+          <Highlighter
+            highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
+            searchWords={this.state.searchText}
+            textToHighlight={text.toString()}
+          />
+        ),
+      });
+
+      handleSearch = (selectedKeys, confirm) => {
+        confirm();
+        this.setState({searchText: selectedKeys[0]});
+      };
+
+      handleReset = clearFilters => {
+        clearFilters();
+        this.setState({searchText: ''});
+      };
       render() {
         const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
+        const columns = [
+          {
+            title: 'Remote Project Name',
+            dataIndex: 'name',
+            key: 'name',
+            ...this.getColumnSearchProps('name'),
+          },
+          {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description'
+          }
+        ]
 
         return (
           <Query
@@ -124,6 +213,7 @@ export const SelectProjectsStep =
 
                           <Table
                             dataSource={workItemsSources}
+                            columns={columns}
                             loading={loading}
                             rowKey={record => record.key}
                             rowSelection={{
@@ -137,12 +227,10 @@ export const SelectProjectsStep =
                               hideOnSinglePage: true
                             }}
                           >
-                            <Table.Column title={"Remote Project Name"} dataIndex={"name"} key={"name"}/>
-                            <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
                           </Table>
                         </React.Fragment>
                         :
-                        <NoData message={"No projects imported"}/>
+                        <NoData message={"No projects imported"} />
                     }
                   </div>
 
