@@ -32,5 +32,13 @@
 }
 
 .show-import-state .ant-table .import-in-process {
-  color: #1db539;
+  color: #1741b5;
+}
+
+.show-import-state .ant-table .import-complete {
+  color:  #1db539;
+}
+
+.show-import-state .ant-table .import-failed {
+  color: #b5111a;
 }

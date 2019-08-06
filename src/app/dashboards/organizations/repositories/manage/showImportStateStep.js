@@ -7,16 +7,17 @@ import gql from "graphql-tag";
 
 const stateSortOrder = {
   'importing': 0,
-  'verifying': 1,
-  'imported': 2,
-  'import queued': 3
+  'queued': 2,
+  'failed': 1,
+  'imported': 3,
+
 }
 
 const stateClassIndex = {
-  'import queued': 'import-queued',
+  'queued': 'import-queued',
   'importing': 'import-in-process',
-  'verifying': 'import-in-process',
-  'imported': 'import-complete'
+  'imported': 'import-complete',
+  'failed': 'import-failed'
 }
 
 const SHOW_IMPORT_STATE_QUERY = gql`
@@ -39,18 +40,6 @@ const SHOW_IMPORT_STATE_QUERY = gql`
     }
 `
 
-function getPercentComplete(commitCount, commitsInProcess) {
-  if (commitCount > 0) {
-    if (commitsInProcess != null) {
-      return
-    } else {
-      return 0
-    }
-  } else {
-    return 0
-  }
-}
-
 
 export class ShowImportStateStep extends React.Component {
 
@@ -63,45 +52,50 @@ export class ShowImportStateStep extends React.Component {
     }
   }
 
-  getImportState(repository) {
-    const currentState = this.state.repositoryIndex[repository.key];
-    if (currentState != null) {
-      if ((currentState.importState === 'importing' || currentState.importState === 'verifying') && repository.importState == 'import queued') {
-        return 'verifying'
-      } else {
-        return repository.importState === 'polling for updates' ? 'imported' : repository.importState
-      }
-    } else {
-      return repository.importState
+  getDisplayedImportState(repository) {
+    const {importState, commitCount} = repository;
+    const percentComplete = this.getPercentComplete(repository);
+
+    console.log(`Import State: ${importState} Commit Count: ${commitCount} PercentComplete: ${percentComplete}`)
+
+    const displayedImportState =
+    (importState === 'import-ready' && (commitCount === null || commitCount === 0)) ? 'queued' :
+      (importState === 'import-queued' && (commitCount === 0 || commitCount === 0)) ? 'queued' :
+        (importState === 'import-queued' && commitCount > 0) ? 'importing' :
+          (importState === 'import-ready' && commitCount > 0 && percentComplete < 100) ? 'importing' :
+            (percentComplete === 100) ? 'imported' :
+              (importState === 'polling') ? 'imported' :
+                (importState === 'import-failed') ? 'failed' :
+                  null
+
+    if (displayedImportState === null ) {
+      console.log(`Cannot display import state: S: ${importState} C: ${commitCount}`)
     }
+    return displayedImportState
+  }
+
+  getCommitsProcessed(repository) {
+    const {commitCount, commitsInProcess} = repository;
+    return (commitCount || 0) - (commitsInProcess || 0);
+  }
+
+  getPercentComplete(repository) {
+    const {commitCount} = repository;
+    return (commitCount != null && commitCount > 0) ? Math.ceil((this.getCommitsProcessed(repository) / commitCount) * 100) : 0;
+
   }
 
   getImportProgress(repository) {
-    const {commitCount, commitsInProcess} = repository;
     const currentState = this.state.repositoryIndex[repository.key];
-    console.log(`Commits in Process: ${commitsInProcess}`);
 
-    let commitsProcessed = 0;
-    if (commitCount != null) {
-      commitsProcessed = commitsInProcess != null ?
-        (commitCount - commitsInProcess) :
-        currentState != null ?
-          commitCount :
-          0;
-    }
-    const percentComplete = (commitCount != null && commitCount > 0) ? Math.ceil((commitsProcessed / commitCount) * 100) : 0;
-    console.log(`Percent Complete: ${percentComplete}`);
-
+    const commitsProcessed = this.getCommitsProcessed(repository);
+    const percentComplete = this.getPercentComplete(repository)
     return {
       commitsProcessed: currentState != null ? Math.max(currentState.commitsProcessed, commitsProcessed) : commitsProcessed,
       percentComplete: currentState != null ? Math.max(currentState.percentComplete, percentComplete) : percentComplete
     }
   }
 
-
-  groupByState(repositories) {
-    return
-  }
 
   onDataUpdated(data) {
     const repositories = data.vcsConnector.repositories.edges.map(
@@ -111,7 +105,7 @@ export class ShowImportStateStep extends React.Component {
           key: repository.key,
           name: repository.name,
           commitCount: repository.commitCount,
-          importState: this.getImportState(repository),
+          importState: this.getDisplayedImportState(repository),
           ...this.getImportProgress(repository)
         }
       }
@@ -159,8 +153,8 @@ export class ShowImportStateStep extends React.Component {
           ({loading, error, data}) => {
             if (error) return null;
             const {repositoryIndex, stateIndex} = this.state;
-            const numImported = stateIndex['imported'] || 0 + stateIndex['verifying'] || 0;
-            const numQueued = stateIndex['import queued'] || 0;
+            const numImported = stateIndex['imported'] || 0;
+            const numQueued = stateIndex['queued'] || 0;
             // Sort the list so the active ones stay at the top and the queued ones are at the bottom
             const repositories = Object.values(repositoryIndex).sort(
               (a, b) => stateSortOrder[a.importState] - stateSortOrder[b.importState]
@@ -170,10 +164,16 @@ export class ShowImportStateStep extends React.Component {
 
                 {
                   repositories.length > 0 &&
-                    numQueued == repositories.length ?
-                      <Spin size={"large"} tip={`${repositories.length} imports queued`}/>
+                  numQueued == repositories.length ?
+                    <Spin size={"large"} tip={`${repositories.length} imports queued`}/>
                     :
-                      <Progress type={'circle'} percent={Math.ceil((numImported / repositories.length) * 100)}/>
+                    <Progress
+                      type={'circle'}
+                      percent={Math.ceil((numImported / repositories.length) * 100)}
+                      format={
+                        () => `${numImported}/${repositories.length}`
+                      }
+                    />
                 }
                 <Table
                   dataSource={repositories}
