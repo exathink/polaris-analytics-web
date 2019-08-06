@@ -5,6 +5,7 @@ import Button from "../../../../../components/uielements/button";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
+import {withSearch} from "../../../../components/antHelpers/withSearch";
 import {Table} from "antd";
 import {NoData} from "../../../../components/misc/noData";
 
@@ -60,13 +61,29 @@ export const REFETCH_CONNECTOR_REPOSITORIES_QUERY = {
   })
 };
 
-export const SelectRepositoriesStep =
+const cols = [
+  {
+    title: 'Repository Name',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['ascend'],
+    isSearchField: true
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  }
+]
+
+export const SelectRepositoriesStep = withSearch(
   compose(
     withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, columns} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
 
         return (
@@ -106,6 +123,7 @@ export const SelectRepositoriesStep =
 
                           <Table
                             dataSource={repositories}
+                            columns={columns}
                             loading={loading}
                             rowKey={record => record.key}
                             rowSelection={{
@@ -119,8 +137,6 @@ export const SelectRepositoriesStep =
                               hideOnSinglePage: true
                             }}
                           >
-                            <Table.Column title={"Repository Name"} dataIndex={"name"} key={"name"} />
-                            <Table.Column title={"Description"} dataIndex={"description"} key={"description"} />
                           </Table>
                         </React.Fragment>
                         :
@@ -136,4 +152,4 @@ export const SelectRepositoriesStep =
         )
       }
     }
-  )
+  ), cols)
