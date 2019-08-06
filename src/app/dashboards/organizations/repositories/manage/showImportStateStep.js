@@ -59,14 +59,14 @@ export class ShowImportStateStep extends React.Component {
     console.log(`Import State: ${importState} Commit Count: ${commitCount} PercentComplete: ${percentComplete}`)
 
     const displayedImportState =
-    (importState === 'import-ready' && (commitCount === null || commitCount === 0)) ? 'queued' :
-      (importState === 'import-queued' && (commitCount === 0 || commitCount === 0)) ? 'queued' :
-        (importState === 'import-queued' && commitCount > 0) ? 'importing' :
-          (importState === 'import-ready' && commitCount > 0 && percentComplete < 100) ? 'importing' :
-            (percentComplete === 100) ? 'imported' :
-              (importState === 'polling') ? 'imported' :
-                (importState === 'import-failed') ? 'failed' :
-                  null
+      (percentComplete === 100) ? 'imported' :
+        (importState === 'polling') ? 'imported' :
+          (importState === 'import-failed') ? 'failed' :
+            (importState === 'import-ready' && (commitCount === null || commitCount === 0)) ? 'queued' :
+              (importState === 'import-queued' && (commitCount === 0 || commitCount === 0)) ? 'queued' :
+                (importState === 'import-queued' && commitCount > 0) ? 'importing' :
+                  (importState === 'import-ready' && commitCount > 0 && percentComplete < 100) ? 'importing' :
+                      null
 
     if (displayedImportState === null ) {
       console.log(`Cannot display import state: S: ${importState} C: ${commitCount}`)
@@ -165,7 +165,7 @@ export class ShowImportStateStep extends React.Component {
                 {
                   repositories.length > 0 &&
                   numQueued == repositories.length ?
-                    <Spin size={"large"} tip={`${repositories.length} imports queued`}/>
+                    <Spin size={"large"} tip={`${repositories.length} repositories queued for import`}/>
                     :
                     <Progress
                       type={'circle'}
