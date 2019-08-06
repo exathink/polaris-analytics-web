@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {compose, Query} from "react-apollo";
-import {work_tracking_service} from "../../../../services/graphql/index";
+import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {Input, Table, Icon} from "antd";
+import {withSearch} from "../../../../components/graphql/withSearch";
+import {Table} from "antd";
 import {NoData} from "../../../../components/misc/noData";
-import {runInThisContext} from 'vm';
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -21,7 +21,6 @@ function getServerUrl(selectedConnector) {
       return selectedConnector.baseUrl;
   }
 }
-
 
 const REFETCH_PROJECTS_MUTATION = {
   name: 'refetchProjects',
@@ -71,107 +70,30 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
+const cols = [
+  {
+    title: 'Remote Project Name',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['ascend'],
+    isSearchField: true
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  }
+]
 
-/*
-  In the search example used in Antd they include a component called Highlighter
-
-  import Highlighter from 'react-highlight-words';
-
-  In order not to polute the package.json I created this component to produce the same effect
-
-*/
-const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
-  const splitText = textToHighlight.toLowerCase().split(searchWords.toLowerCase())
-  const foundText = textToHighlight.substr(textToHighlight.toLowerCase().indexOf(searchWords.toLowerCase()), searchWords.length)
-  return (
-    searchWords.length && splitText.length > 1
-      ?
-      <React.Fragment>
-        <span>{splitText[0]}</span>
-        <span style={highlightStyle}>{foundText}</span>
-        <span>{splitText[1]}</span>
-      </React.Fragment>
-      : <span>{textToHighlight}</span>
-  )
-}
-
-export const SelectProjectsStep =
+export const SelectProjectsStep = withSearch(
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
-      state = {searchText: ''};
-
-      getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, filters}) => {
-          this.clearFilters = clearFilters
-          return (
-            <div style={{padding: 8}}>
-              <Input
-                ref={node => this.searchInput = node}
-                placeholder={`Search ${dataIndex}`}
-                value={selectedKeys[0]}
-                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-                style={{marginBottom: 8, display: 'block'}}
-              />
-            </div>
-          )
-        },
-        filterIcon: filtered => (
-          <Icon type={filtered ? "close" : "search"} style={{color: filtered ? '#1890ff' : undefined}} />
-        ),
-        onFilter: (value, record) =>
-          record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase()),
-        onFilterDropdownVisibleChange: visible => {
-          if (visible) {
-            if (this.searchInput.props.value) {
-              this.handleReset(this.clearFilters);
-            } else {
-              setTimeout(() => this.searchInput.select());
-            }
-          }
-        },
-        render: text => (
-          <Highlighter
-            highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
-            searchWords={this.state.searchText}
-            textToHighlight={text.toString()}
-          />
-        ),
-      });
-
-      handleSearch = (selectedKeys, confirm) => {
-        confirm();
-        this.setState({searchText: selectedKeys[0]});
-      };
-
-      handleReset = clearFilters => {
-        clearFilters();
-        this.setState({searchText: ''});
-      };
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, columns} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
-        const columns = [
-          {
-            title: 'Remote Project Name',
-            dataIndex: 'name',
-            key: 'name',
-            ...this.getColumnSearchProps('name'),
-            sorter: (a, b) => a.name.localeCompare(b.name),
-            sortDirections: ['ascend'],
-          },
-          {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description'
-          }
-        ]
-
         return (
           <Query
             client={work_tracking_service}
@@ -217,7 +139,6 @@ export const SelectProjectsStep =
                               onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
                             }}
                             pagination={{
-                              total: workItemsSources.length,
                               showTotal: total => `${total} Projects`,
                               defaultPageSize: 5,
                               hideOnSinglePage: true
@@ -238,8 +159,4 @@ export const SelectProjectsStep =
         )
       }
     }
-  )
-
-
-
-
+  ), cols)
