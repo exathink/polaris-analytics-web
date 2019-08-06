@@ -1,5 +1,6 @@
 import React from 'react';
 import {Input, Icon} from "antd";
+import './withSearch.css';
 
 const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
     const splitText = textToHighlight.toLowerCase().split(searchWords.toLowerCase())
