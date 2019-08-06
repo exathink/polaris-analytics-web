@@ -20,13 +20,13 @@ export const withSearch = (WrappedTableComponent, columns) => {
     return class SearchQuery extends React.Component {
         constructor(props) {
             super(props);
-            const searchColumns = columns.map(column => {
+            const tableColumns = columns.map(column => {
                 if (column.isSearchField) {
                     column = {...column, ...this.getColumnSearchProps(column.dataIndex)};
                 }
                 return column;
             })
-            this.state = {searchText: '', searchColumns};
+            this.state = {searchText: '', tableColumns};
         }
 
         getColumnSearchProps = dataIndex => ({
@@ -81,7 +81,7 @@ export const withSearch = (WrappedTableComponent, columns) => {
         };
 
         render() {
-            return <WrappedTableComponent {...this.props} columns={this.state.searchColumns} />
+            return <WrappedTableComponent {...this.props} columns={this.state.tableColumns} />
         }
 
     };
