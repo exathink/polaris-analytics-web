@@ -5,7 +5,7 @@ import Button from "../../../../../components/uielements/button";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {withSearch} from "../../../../components/graphql/withSearch";
+import {withSearch} from "../../../../components/antHelpers/withSearch";
 import {Table} from "antd";
 import {NoData} from "../../../../components/misc/noData";
 
