@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {compose, Query} from "react-apollo";
-import {work_tracking_service} from "../../../../services/graphql/index";
+import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
-import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {TrackingReceiptMonitor} from "../../../../components/graphql/trackingReceiptMonitor";
-
-import {Col, Form, Input, Row, Table} from "antd";
-import {createForm} from "../../../../components/forms/createForm";
-
-
+import {withSearch} from "../../../../components/graphql/withSearch";
+import {Table} from "antd";
 import {NoData} from "../../../../components/misc/noData";
 
 function getServerUrl(selectedConnector) {
@@ -27,7 +21,6 @@ function getServerUrl(selectedConnector) {
       return selectedConnector.baseUrl;
   }
 }
-
 
 const REFETCH_PROJECTS_MUTATION = {
   name: 'refetchProjects',
@@ -77,16 +70,30 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
+const cols = [
+  {
+    title: 'Remote Project Name',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['ascend'],
+    isSearchField: true
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  }
+]
 
-export const SelectProjectsStep =
+export const SelectProjectsStep = withSearch(
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, columns} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
-
         return (
           <Query
             client={work_tracking_service}
@@ -103,7 +110,7 @@ export const SelectProjectsStep =
                   workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(edge => edge.node);
                 }
                 return (
-                  <div className={'select-projects'}>
+                  <div className={'selected-projects'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
                     <Button
                       type={'primary'}
@@ -124,6 +131,7 @@ export const SelectProjectsStep =
 
                           <Table
                             dataSource={workItemsSources}
+                            columns={columns}
                             loading={loading}
                             rowKey={record => record.key}
                             rowSelection={{
@@ -131,18 +139,15 @@ export const SelectProjectsStep =
                               onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
                             }}
                             pagination={{
-                              total: workItemsSources.length,
                               showTotal: total => `${total} Projects`,
                               defaultPageSize: 5,
                               hideOnSinglePage: true
                             }}
                           >
-                            <Table.Column title={"Remote Project Name"} dataIndex={"name"} key={"name"}/>
-                            <Table.Column title={"Description"} dataIndex={"description"} key={"description"}/>
                           </Table>
                         </React.Fragment>
                         :
-                        <NoData message={"No projects imported"}/>
+                        <NoData message={"No projects imported"} />
                     }
                   </div>
 
@@ -154,8 +159,4 @@ export const SelectProjectsStep =
         )
       }
     }
-  )
-
-
-
-
+  ), cols)

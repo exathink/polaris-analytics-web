@@ -40,7 +40,17 @@
   min-width: 400px;
 }
 
+.selected-projects .ant-dropdown{
+  top: 204px !important;
+  left: 116px !important;
+}
+
+.selected-projects .ant-dropdown input{
+  width: 100% !important;
+}
+
 .no-data {
   font-size: 20px;
   line-height: 168px;
 }
+
