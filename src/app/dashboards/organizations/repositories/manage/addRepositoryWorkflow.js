@@ -9,7 +9,7 @@ import {vcs_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import './steps.css';
+import '../../steps.css';
 
 const {Step} = Steps;
 
@@ -163,4 +163,3 @@ export const AddRepositoryWorkflow = withNavigationContext(
       );
     }
   })
-

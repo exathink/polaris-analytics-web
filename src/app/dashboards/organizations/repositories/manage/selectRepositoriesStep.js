@@ -122,6 +122,7 @@ export const SelectRepositoriesStep = withSearch(
                         <React.Fragment>
 
                           <Table
+                            size="small"
                             dataSource={repositories}
                             columns={columns}
                             loading={loading}
@@ -133,7 +134,7 @@ export const SelectRepositoriesStep = withSearch(
                             pagination={{
                               total: repositories.length,
                               showTotal: total => `${total} Repositories`,
-                              defaultPageSize: 5,
+                              defaultPageSize: 10,
                               hideOnSinglePage: true
                             }}
                           >

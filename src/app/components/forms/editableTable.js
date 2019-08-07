@@ -125,6 +125,7 @@ export class EditableTable extends React.Component {
             </Button>
         }
         <Table
+          size="small"
           components={components}
           rowClassName={() => 'editable-row'}
           bordered
@@ -136,4 +137,3 @@ export class EditableTable extends React.Component {
     );
   }
 }
-

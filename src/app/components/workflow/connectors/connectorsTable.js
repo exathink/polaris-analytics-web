@@ -31,6 +31,7 @@ export const ConnectorsTable = (
       {
         loading || connectors.length > 0 ?
           <Table
+            size="small"
             dataSource={connectors}
             loading={loading}
             rowKey={record => record.id}

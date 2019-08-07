@@ -3,6 +3,7 @@
   height: 100%;
 }
 .dashboard-row {
+  height: 100%;
 }
 
 .dashboard-item {
@@ -77,6 +78,6 @@
   opacity: 1;
 }
 
-
-
-
+::-webkit-scrollbar {
+  display: none;
+}
