@@ -5,22 +5,28 @@
   background-color: #fafafa;
   height: 100%;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 14px;
+}
+
+.steps-content div.ant-table-wrapper {
+  margin-top: 18px;
+  margin-bottom: 32px;
+}
+
+
+table thead tr th,
+table tbody tr td {
+  white-space: nowrap;
 }
 
 .steps-action {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .steps-action .ant-btn {
   margin: 1px;
   min-width: 85px;
 }
-
-.selected-repositories {
-  margin: 50px;
-}
-
 
 .no-data {
   font-size: 20px;
@@ -31,10 +37,27 @@
   color: #1741b5;
 }
 
+.show-import-state .ant-table .status-importing {
+  color: #1741b5;
+}
+
 .show-import-state .ant-table .import-complete {
+  color: #1db539;
+}
+
+.show-import-state .ant-table .status-complete {
   color:  #1db539;
 }
 
 .show-import-state .ant-table .import-failed {
   color: #b5111a;
+}
+
+
+
+
+
+.ant-layout-footer {
+  margin: 0;
+  padding: 0;
 }

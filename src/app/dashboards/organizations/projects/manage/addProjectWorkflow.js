@@ -1,5 +1,4 @@
 import React from 'react';
-import './steps.css';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectConnectorStep} from "./selectConnectorStep";
@@ -10,6 +9,7 @@ import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
+import '../../steps.css';
 
 const {Step} = Steps;
 
@@ -211,4 +211,3 @@ export const AddProjectWorkflow = withNavigationContext(
       );
     }
   })
-
