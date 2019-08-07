@@ -130,6 +130,7 @@ export const SelectProjectsStep = withSearch(
                         <React.Fragment>
 
                           <Table
+                            size="small"
                             dataSource={workItemsSources}
                             columns={columns}
                             loading={loading}
@@ -140,7 +141,7 @@ export const SelectProjectsStep = withSearch(
                             }}
                             pagination={{
                               showTotal: total => `${total} Projects`,
-                              defaultPageSize: 5,
+                              defaultPageSize: 10,
                               hideOnSinglePage: true
                             }}
                           >

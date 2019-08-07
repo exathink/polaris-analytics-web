@@ -10,6 +10,7 @@ export class ReviewImportStep extends React.Component {
       <div className={'selected-repositories'}>
         <h3>{selectedRepositories.length} {selectedRepositories.length > 1 ? 'repositories' : 'repository'} selected for import</h3>
         <Table
+          size="small"
           dataSource={selectedRepositories}
           rowKey={record => record.key}
           pagination={{
