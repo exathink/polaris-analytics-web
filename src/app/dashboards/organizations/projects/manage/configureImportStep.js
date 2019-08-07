@@ -77,10 +77,12 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
           {
             title: 'Remote project',
             dataIndex: 'name',
+            width: '20%'
           },
           {
             title: 'Description',
-            dataIndex: 'description'
+            dataIndex: 'description',
+            width: '40%'
           },
           {
             title: 'Imported project name',
@@ -222,5 +224,3 @@ export class ConfigureImportStep extends React.Component {
     )
   }
 }
-
-
