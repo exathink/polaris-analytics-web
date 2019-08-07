@@ -64,10 +64,12 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
               {
                 title: selectedProjects.length > 1 ? 'Sub-project' : 'Remote project',
                 dataIndex: 'name',
+                width: '30%'
               },
               {
                 title: 'Description',
-                dataIndex: 'description'
+                dataIndex: 'description',
+                width: '50%'
               },
               {
                 title: 'Days of history to import',
