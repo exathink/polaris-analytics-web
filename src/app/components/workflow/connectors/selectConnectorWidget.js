@@ -148,31 +148,36 @@ export const SelectConnectorWidget =
                     lastRegistrationError={registerConnectorResult.error}
                     lastRegistrationSubmission={lastSubmission}
                   />
-
-                  < NewConnectorFormButton
-                    connectorType={connectorType}
-                    onSubmit={
-                      submit(
-                        values =>
-                          createConnector({
-                            variables: {
-                              createConnectorInput: {
-                                name: values.name,
-                                connectorType: connectorType,
-                                accountKey: viewerContext.accountKey,
-                                organizationKey: organizationKey,
-                                baseUrl: urlMunge(connectorType, values.baseUrl),
-                                apiKey: values.apiKey,
-                                githubAccessToken: values.githubAccessToken,
-                                githubOrganization: values.githubOrganization
-                              }
-                            }
-                          })
-                      )
-                    }
-                    error={createConnectorResult.error}
-                    lastSubmission={lastSubmission}
-                  />
+                  {
+                    viewerContext.isOrganizationOwner(organizationKey) ?
+                      < NewConnectorFormButton
+                        connectorType={connectorType}
+                        onSubmit={
+                          submit(
+                            values =>
+                              createConnector({
+                                variables: {
+                                  createConnectorInput: {
+                                    name: values.name,
+                                    connectorType: connectorType,
+                                    accountKey: viewerContext.accountKey,
+                                    organizationKey: organizationKey,
+                                    baseUrl: urlMunge(connectorType, values.baseUrl),
+                                    apiKey: values.apiKey,
+                                    githubAccessToken: values.githubAccessToken,
+                                    githubOrganization: values.githubOrganization
+                                  }
+                                }
+                              })
+                          )
+                        }
+                        error={createConnectorResult.error}
+                        lastSubmission={lastSubmission}
+                      />
+                      :
+                      connectors.length === 0 &&
+                        <span>Please contact an administrator for your organization to add a connector</span>
+                  }
                 </React.Fragment>
               )
             }

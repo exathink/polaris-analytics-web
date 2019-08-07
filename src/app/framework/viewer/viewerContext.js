@@ -96,6 +96,10 @@ class ViewerContextProvider extends React.Component {
     return role != null ? organizations.filter(organization => organization.role === role) : organizations;
   }
 
+  isOrganizationOwner(organizationKey) {
+    return this.getViewerOrganizations('owner').some(organization => organization.key === organizationKey)
+  }
+
   render() {
     return (
       this.state.viewer != null ?
@@ -107,7 +111,8 @@ class ViewerContextProvider extends React.Component {
           hasSystemRoles: this.hasSystemRoles.bind(this),
           getViewerOrganizations: this.getViewerOrganizations.bind(this),
           isAdmin: this.isAdmin.bind(this),
-          isAccountOwner: this.isAccountOwner.bind(this)
+          isAccountOwner: this.isAccountOwner.bind(this),
+          isOrganizationOwner: this.isOrganizationOwner.bind(this)
         }}>
           {this.props.children}
         </Provider>
