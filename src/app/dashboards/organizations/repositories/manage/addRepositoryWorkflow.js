@@ -119,7 +119,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {current} = this.state;
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
-      const {context, organization} = this.props;
+      const {context, organization, onDone} = this.props;
       return (
         <React.Fragment>
           <Steps current={current}>
@@ -153,7 +153,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
             </Button>
             )}
             {(disableNext || current === steps.length - 1) && (
-              <Button type="primary" onClick={() => context.go('..', 'repositories')}>
+              <Button type="primary" onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
                 Done
             </Button>
             )}
