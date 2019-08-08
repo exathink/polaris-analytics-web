@@ -40,6 +40,101 @@ const AppHolder = styled.div`
     }
   }
 
+  .ant-radio-button-wrapper,
+  .ant-pagination {
+    font-size: 11px;
+    @media only screen and (min-width: 768px) {
+      font-size: 12px;
+    }
+    @media only screen and (min-width: 992px) {
+      font-size: 13px;
+    }
+    @media only screen and (min-width: 1200px) {
+      font-size: 14px;
+    }
+  }
+
+  .ant-table {
+    .ant-table-content {
+      .ant-table-body {
+        .ant-table-thead tr th,
+        .ant-table-tbody tr td {
+          white-space: nowrap;
+          padding: 4px;
+          font-size: 11px;
+          line-height: 13px;
+          @media only screen and (min-width: 768px) {
+            font-size: 12px;
+            line-height: 14px;
+          }
+          @media only screen and (min-width: 992px) {
+            font-size: 13px;
+            line-height: 16px;
+          }
+          @media only screen and (min-width: 1200px) {
+            font-size: 14px;
+            line-height: 17px;
+          }
+          input {
+            height: auto;
+            padding: 4px;
+            border-radius: 2px;
+            font-size: 11px;
+            @media only screen and (min-width: 768px) {
+              font-size: 12px;
+            }
+            @media only screen and (min-width: 992px) {
+              font-size: 13px;
+            }
+            @media only screen and (min-width: 1200px) {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ant-steps {
+    .ant-steps-item-title,
+    .ant-steps-item-icon {
+      font-size: 12px;
+      line-height: 14px;
+      @media only screen and (min-width: 768px) {
+        font-size: 13px;
+        line-height: 16px;
+      }
+      @media only screen and (min-width: 992px) {
+        font-size: 14px;
+        line-height: 17px;
+      }
+      @media only screen and (min-width: 1200px) {
+        font-size: 16px;
+        line-height: 19px;
+      }
+    }
+    .ant-steps-item-icon {
+      width: 21px;
+      height: 21px;
+      line-height: 21px;
+      @media only screen and (min-width: 768px) {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+      }
+      @media only screen and (min-width: 992px) {
+        width: 29px;
+        height: 29px;
+        line-height: 29px;
+      }
+      @media only screen and (min-width: 1200px) {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+      }
+    }
+  }
+
   .isoLayoutContent {
     width: 100%;
     padding: 35px;
@@ -72,7 +167,7 @@ const AppHolder = styled.div`
   button {
     border-radius: 0;
   }
-  
+
   .app-content-wrapper {
     width: 100%;
     height: 100%;
@@ -85,10 +180,10 @@ const AppHolder = styled.div`
     height: 97%;
     overflow-y: auto;
   }
-  
+
   a {
       color: ${palette('text', 0)};
-      
+
       &:hover {
       color: ${palette('primary', 0)};
       }

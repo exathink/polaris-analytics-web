@@ -4,8 +4,17 @@ import { palette } from 'styled-theme';
 const AntRadiobox = ComponentName => styled(ComponentName)`
   &.ant-radio-wrapper,
   .ant-radio-wrapper {
-    font-size: 13px;
     color: ${palette('text', 1)};
+    font-size: 11px;
+    @media only screen and (min-width: 768px) {
+      font-size: 12px;
+    }
+    @media only screen and (min-width: 992px) {
+      font-size: 13px;
+    }
+    @media only screen and (min-width: 1200px) {
+      font-size: 14px;
+    }
 
     .ant-radio-inner {
       &:after {

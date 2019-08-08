@@ -64,7 +64,7 @@ const TopbarWrapper = styled.div`
           position: absolute;
         }
       }
-      
+
       .topBarContext {
           display: -webkit-inline-flex;
           display: -ms-inline-flex;
@@ -76,27 +76,34 @@ const TopbarWrapper = styled.div`
           outline: 0;
           position: relative;
           cursor: pointer;
-          
+
           i {
             font-size: 28px;
             color: ${palette('text', 3)};
-            
-            
           }
-          
+
           span {
-            font-size: 23px;
+            font-size: 16px;
+            line-height: 19px;
+            @media only screen and (min-width: 768px) {
+              font-size: 18px;
+              line-height: 22px;
+            }
+            @media only screen and (min-width: 992px) {
+              font-size: 20px;
+              line-height: 24px;
+            }
+            @media only screen and (min-width: 1200px) {
+              font-size: 23px;
+              line-height: 28px;
+            }
             margin-left: 10px;
-            
             color: ${palette('text', 3)};
             text-transform: capitalize;
-           
           }
-          
-          
       }
     }
-    
+
     .isoRight {
       display: flex;
       align-items: center;
