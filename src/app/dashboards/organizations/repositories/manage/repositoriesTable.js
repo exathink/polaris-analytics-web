@@ -19,13 +19,17 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
       query organizationRepositories($organizationKey: String!, $pageSize: Int!, $endCursor: String) {
         organization(key: $organizationKey) {
             id
-            repositories (first: $pageSize, after: $endCursor){
+            repositories (first: $pageSize, after: $endCursor, interfaces: [CommitSummary]){
                   count
                   edges {
                       node {
                           id
                           name
                           key
+                          description
+                          earliestCommit
+                          latestCommit
+                          commitCount
                       }
                   }
               }
@@ -65,6 +69,10 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
             onChange={onNewPage}
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
+            <Column title={"Commit Count"} dataIndex={"commitCount"} key={"commitCount"}/>
+            <Column title={"Earliest Commit"} dataIndex={"earliestCommit"} key={"earliestCommit"}/>
+            <Column title={"Latest Commit"} dataIndex={"latestCommit"} key={"latestCommit"}/>
+            <Column title={"Description"} dataIndex={"description"} key={"description"}/>
           </Table>
         )
       }
@@ -73,4 +81,4 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
 )
 
 
-export const RepositoriesTableWidget = withViewerContext(withAntPagination(RepositoriesPaginatedTable))
+export const RepositoriesTableWidget = withViewerContext(withAntPagination(RepositoriesPaginatedTable, 8))
