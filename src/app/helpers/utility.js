@@ -114,7 +114,7 @@ export function human_span(date_a, date_b) {
 
   const months = span.months();
   const d_months = `${months > 0 ? months + (months > 1 ? ' Months': ' Month'): ''}`;
-  return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : '0 Years';
+  return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : 'Less than a month';
 }
 
 export function elide(str, length) {
@@ -160,6 +160,10 @@ export function getCommitTimelineEndWindow(latestCommit) {
 
 export function snakeToUpperCamel(s) {
   return s.split('_').reduce((res, word, i) => `${res}${word.charAt(0).toUpperCase()}${word.substr(1).toLowerCase()}`, '');
+}
+
+export function daysSinceDate(someDate) {
+  return moment().utc().diff(moment(someDate), 'days')
 }
 
 export function isAdmin(viewer) {

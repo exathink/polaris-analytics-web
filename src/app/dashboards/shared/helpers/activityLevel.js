@@ -1,6 +1,7 @@
 import {Colors} from "../config";
 import type {ActivityLevel, ActivitySummary} from "../views/activityProfile/model";
 import {flatten} from "../../../helpers/collections";
+import {daysSinceDate} from "../../../helpers/utility";
 
 export const ACTIVITY_LEVELS: Array<ActivityLevel> = [
   {
@@ -64,6 +65,14 @@ export const ACTIVITY_LEVELS_REVERSED = [...ACTIVITY_LEVELS].reverse();
 
 export function getActivityLevel(activitySummary: ActivitySummary): ActivityLevel {
   const level = ACTIVITY_LEVELS.find(level => level.isMember(activitySummary));
+  return level || ACTIVITY_LEVEL_UNKNOWN
+}
+
+export function getActivityLevelFromDate(latestCommit) {
+  const days_since_latest_commit = daysSinceDate(latestCommit);
+  const level = ACTIVITY_LEVELS.find(level => level.isMember({
+    days_since_latest_commit: days_since_latest_commit
+  }));
   return level || ACTIVITY_LEVEL_UNKNOWN
 }
 
