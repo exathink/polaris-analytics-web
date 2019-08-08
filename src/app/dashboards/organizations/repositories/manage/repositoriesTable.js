@@ -1,13 +1,19 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-
+import {Link} from 'react-router-dom';
 import {Table} from 'antd';
 
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
-
+import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
+import Button from "../../../../../components/uielements/button";
+import {RegisterConnectorFormButton} from "../../../../components/workflow/connectors/registerConnectorFormButton";
+import {DeleteConfirmationModalButton} from "../../../../components/workflow/connectors/deleteConfirmationModal";
+import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
+import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
+import {fromNow, human_span} from "../../../../helpers/utility";
 
 const {Column} = Table;
 
@@ -19,7 +25,7 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
       query organizationRepositories($organizationKey: String!, $pageSize: Int!, $endCursor: String) {
         organization(key: $organizationKey) {
             id
-            repositories (first: $pageSize, after: $endCursor, interfaces: [CommitSummary]){
+            repositories (first: $pageSize, after: $endCursor, interfaces: [CommitSummary, ContributorCount]){
                   count
                   edges {
                       node {
@@ -30,6 +36,7 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
                           earliestCommit
                           latestCommit
                           commitCount
+                          contributorCount
                       }
                   }
               }
@@ -68,11 +75,68 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
             }}
             onChange={onNewPage}
           >
-            <Column title={"Name"} dataIndex={"name"} key={"name"}/>
-            <Column title={"Commit Count"} dataIndex={"commitCount"} key={"commitCount"}/>
-            <Column title={"Earliest Commit"} dataIndex={"earliestCommit"} key={"earliestCommit"}/>
-            <Column title={"Latest Commit"} dataIndex={"latestCommit"} key={"latestCommit"}/>
-            <Column title={"Description"} dataIndex={"description"} key={"description"}/>
+            <Column
+              title={"Name"}
+              dataIndex={"name"}
+              key={"name"}
+              render={
+                (name, record) =>
+                  <RepositoryLink
+                    repositoryName={record.name}
+                    repositoryKey={record.key}
+                  >
+                    {name}
+                  </RepositoryLink>
+              }
+            />
+            <Column title={"Commits"} dataIndex={"commitCount"} key={"commitCount"}/>
+            <Column title={"Contributors"} dataIndex={"contributorCount"} key={"contributorCount"}/>
+            <Column
+              title={"History"}
+              dataIndex={"earliestCommit"}
+              key={"earliestCommit"}
+              render={
+                (_, record) => human_span(record.latestCommit, record.earliestCommit)
+              }
+            />
+            <Column
+              title={"Latest Commit"}
+              dataIndex={"latestCommit"}
+              key={"latestCommit"}
+              render={
+                (latestCommit) => fromNow(latestCommit)
+              }
+            />
+            <Column
+              title={"Status"}
+              dataIndex={"latestCommit"}
+              key={"activityProfile"}
+              render={
+                (latestCommit) => getActivityLevelFromDate(latestCommit).display_name
+              }
+            />
+            <Column
+              key={"actions"}
+              width={80}
+              render={
+                (name, record) =>
+                  <ButtonBar>
+                    <RepositoryLink
+                      repositoryName={record.name}
+                      repositoryKey={record.key}
+                    >
+                      <Button
+                        type={'primary'}
+                        size={'small'}
+                      >
+                        Select
+                      </Button>
+                    </RepositoryLink>
+                  </ButtonBar>
+              }
+            />
+
+
           </Table>
         )
       }
@@ -81,4 +145,4 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
 )
 
 
-export const RepositoriesTableWidget = withViewerContext(withAntPagination(RepositoriesPaginatedTable, 8))
+export const RepositoriesTableWidget = withViewerContext(withAntPagination(RepositoriesPaginatedTable, 7))
