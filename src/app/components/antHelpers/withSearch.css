@@ -1,8 +1,5 @@
 .ant-dropdown{
-    top: 204px !important;
-    left: 116px !important;
-}
-
-.ant-dropdown input{
-    width: 100% !important;
+    top: 138px !important;
+    left: 66px !important;
+    width: 25%;
 }
