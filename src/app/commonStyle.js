@@ -57,10 +57,27 @@ const AppHolder = styled.div`
   .ant-table {
     .ant-table-content {
       .ant-table-body {
+        .ant-table-thead tr th {
+          padding: 7px;
+        }
+      }
+    }
+  }
+  .ant-table {
+    .ant-table-content {
+      .ant-table-body {
+        .ant-table-tbody tr td {
+          padding: 4px;
+        }
+      }
+    }
+  }
+  .ant-table {
+    .ant-table-content {
+      .ant-table-body {
         .ant-table-thead tr th,
         .ant-table-tbody tr td {
           white-space: nowrap;
-          padding: 4px;
           font-size: 11px;
           line-height: 13px;
           @media only screen and (min-width: 768px) {
