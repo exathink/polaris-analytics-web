@@ -176,6 +176,7 @@ export class ShowImportStateStep extends React.Component {
                     />
                 }
                 <Table
+                  size="small"
                   dataSource={repositories}
                   loading={repositories.length == 0}
                   rowKey={record => record.key}
@@ -216,6 +217,3 @@ export class ShowImportStateStep extends React.Component {
     )
   }
 }
-
-
-

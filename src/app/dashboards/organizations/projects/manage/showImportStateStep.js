@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {compose, Query} from "react-apollo";
+import {Query} from "react-apollo";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import gql from "graphql-tag";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
@@ -94,6 +94,7 @@ export const ShowImportStateStep = (
                       }
                     />
                   <Table
+                    size="small"
                     dataSource={workItemsSources}
                     loading={loading}
                     rowKey={record => record.key}
