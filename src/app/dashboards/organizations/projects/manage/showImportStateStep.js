@@ -1,14 +1,9 @@
 import React from 'react';
 
-import {compose, Query} from "react-apollo";
+import {Query} from "react-apollo";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import gql from "graphql-tag";
-import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-
-import {Col, Form, Input, Row, Table} from "antd";
-import {createForm} from "../../../../components/forms/createForm";
-import {NoData} from "../../../../components/misc/noData";
-
+import {Table} from "antd";
 
 const SHOW_IMPORT_STATE_QUERY = gql`
     query showImportState($connectorKey:String!, $projectKeys: [String]!){
@@ -63,6 +58,7 @@ export const ShowImportStateStep = (
             return (
               <div className={'show-import-state'}>
                   <Table
+                    size="small"
                     dataSource={workItemsSources}
                     loading={loading}
                     rowKey={record => record.key}
