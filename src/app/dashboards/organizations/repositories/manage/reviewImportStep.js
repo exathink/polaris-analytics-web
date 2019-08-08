@@ -20,7 +20,7 @@ export class ReviewImportStep extends React.Component {
             hideOnSinglePage: true
           }}
         >
-          <Table.Column title={"Repository Name"} dataIndex={"name"} key={"name"} />
+          <Table.Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
           <Table.Column title={"Description"} dataIndex={"description"} key={"description"} />
         </Table>
         <Button

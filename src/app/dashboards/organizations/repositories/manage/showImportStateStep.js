@@ -189,7 +189,7 @@ export class ShowImportStateStep extends React.Component {
                     hideOnSinglePage: true
                   }}
                 >
-                  <Table.Column title={"Repository"} dataIndex={"name"} key={"name"}/>
+                  <Table.Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
                   <Table.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
                   <Table.Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
                   <Table.Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
