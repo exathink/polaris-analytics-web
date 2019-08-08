@@ -43,7 +43,6 @@ export default () => (
                   childContext={Repositories}
                   enableDrillDown={true}
                   view={view}
-                  pageSize={50}
                   referenceDate={lastRefresh}
                   referenceCount={organization.commitCount}
                 />
