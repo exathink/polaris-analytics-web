@@ -1,6 +1,5 @@
 import React from 'react';
 import {Icon} from "antd";
-
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
@@ -17,7 +16,7 @@ export default () => (
   <OrganizationDashboard
     pollInterval={60*1000}
     render={(
-      {organization, context}) => (
+      {organization, context, lastRefresh}) => (
       <Dashboard
         dashboard={`${dashboard_id}`}
       >
@@ -56,7 +55,8 @@ export default () => (
                   enableDrillDown={true}
                   view={view}
                   pageSize={50}
-                  referenceDate={organization.latestCommit}
+                  referenceDate={lastRefresh}
+                  referenceCount={organization.commitCount}
                 />
             }
             showDetail={true}
@@ -74,6 +74,7 @@ export default () => (
                   childContext={Repositories}
                   top={10}
                   latestCommit={organization.latestCommit}
+
                   days={1}
                   view={view}
                 />
