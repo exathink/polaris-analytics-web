@@ -68,6 +68,7 @@ const cols = [
     key: 'name',
     sorter: (a, b) => a.name.localeCompare(b.name),
     sortDirections: ['ascend'],
+    width: '30%',
     isSearchField: true
   },
   {
