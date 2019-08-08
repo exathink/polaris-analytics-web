@@ -20,27 +20,16 @@ export default () => (
       <Dashboard
         dashboard={`${dashboard_id}`}
       >
-          <DashboardRow h={"70%"}>
-            <DashboardWidget
-              w={1}
-              name="repositories"
-              title={"Repositories"}
-              controls={[
+        <DashboardRow
+          h='22%'
+          title={"Repositories"}
+            controls={[
                 () =>
                   <Button type="primary" onClick={()=>context.go('.', 'new')}>
-                    <Icon type="plus"/> New Repository
+                    <Icon type="download"/> Import Repositories
                   </Button>
               ]}
-              render={
-                () =>
-                  <RepositoriesTableWidget
-                    organizationKey={organization.key}
-                  />
-              }
-              showDetail={false}
-            />
-          </DashboardRow>
-        <DashboardRow h='22%'>
+        >
           <DashboardWidget
             w={1 / 2}
             name="respository-activity-levels"
@@ -82,6 +71,21 @@ export default () => (
             showDetail={true}
           />
         </DashboardRow>
+        <DashboardRow
+            h={"68%"}
+          >
+            <DashboardWidget
+              w={1}
+              name="repositories"
+              render={
+                () =>
+                  <RepositoriesTableWidget
+                    organizationKey={organization.key}
+                  />
+              }
+              showDetail={false}
+            />
+          </DashboardRow>
       </Dashboard>
     )}
   />
