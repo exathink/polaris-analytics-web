@@ -1,10 +1,5 @@
 .ant-dropdown{
-    top: 126px !important;
+    top: 138px !important;
     left: 66px !important;
     width: 25%;
-}
-
-.ant-dropdown input {
-    height: auto;
-    border-radius: 2px;
 }
