@@ -58,7 +58,8 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
             pagination={{
               total: totalItems,
               defaultPageSize: pageSize,
-              hideOnSinglePage: true
+              hideOnSinglePage: true,
+              showTotal: total => `${total} Repositories`
 
             }}
             onChange={onNewPage}
