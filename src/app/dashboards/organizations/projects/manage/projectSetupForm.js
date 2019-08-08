@@ -14,13 +14,24 @@ const ProjectNameForm = (
     onProjectNameChanged
   }
 ) => {
+  const formItemLayout = {
+    labelCol: {
+      span: 8
+    },
+    wrapperCol: {
+      span: 10
+    }
+  };
   return (
     <Form hideRequiredMark>
       <Row gutter={16}>
         <Col span={24}>
-          <h4>Imported project name</h4>
-          <Form.Item>
+          <Form.Item
+            {...formItemLayout}
+            label={placeholder}
+          >
             {
+
               getFieldDecorator('localName', {
                 rules: [
                   {required: true, message: 'Imported project name is required'}
@@ -57,7 +68,6 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
           />
         }
         <React.Fragment>
-          {selectedProjects.length > 1 && <h4>Remote Projects</h4>}
           <EditableTable
             dataSource={selectedProjects}
             columns={[
