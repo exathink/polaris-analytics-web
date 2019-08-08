@@ -21,11 +21,6 @@
   margin-bottom: 10px;
 }
 
-table thead tr th,
-table tbody tr td {
-  white-space: nowrap;
-}
-
 .steps-action .ant-btn {
   margin: 1px;
   min-width: 85px;
