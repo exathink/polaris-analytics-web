@@ -22,7 +22,7 @@ class Topbar extends Component {
       background: customizedTheme.backgroundColor,
       position: 'fixed',
       width: '100%',
-      height: 64
+      height: 56
     };
     return (
       <TopbarWrapper>
