@@ -43,9 +43,9 @@ export class App extends Component {
                     )}
                 />
               </Debounce>
-              <Topbar url={url}/>
+              <Topbar url={url} />
               <Layout style={{flexDirection: 'row', overflowX: 'hidden'}}>
-                <Sidebar url={url}/>
+                <Sidebar url={url} />
                 <Layout
                   className="isoContentMainLayout"
                   style={{
@@ -55,7 +55,7 @@ export class App extends Component {
                   <Content
                     className="isomorphicContent"
                     style={{
-                      padding: '70px 0 0 0',
+                      padding: '64px 0 0 0',
                       flexShrink: '0',
                       background: '#f1f3f6',
                       height: '94vh'
