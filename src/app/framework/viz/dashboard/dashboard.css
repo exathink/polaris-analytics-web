@@ -29,6 +29,7 @@
 .dashboard-row-title-container .title-control-container {
   display: flex;
   flex-direction: row-reverse;
+  padding-right: 12px;
   margin: 2px;
 }
 
