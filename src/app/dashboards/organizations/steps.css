@@ -9,7 +9,7 @@
 }
 
 .steps-content form.ant-form {
-  margin-top: 18px;
+  margin-top: 10px;
 }
 
 .steps-content form.ant-form label {
@@ -17,7 +17,8 @@
 }
 
 .steps-content div.ant-table-wrapper {
-  margin-top: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 table thead tr th,
@@ -25,12 +26,10 @@ table tbody tr td {
   white-space: nowrap;
 }
 
-.steps-action {
-  margin-top: 18px;
-}
+.steps-action .ant-btn {
+  margin: 1px;
+  min-width: 85px;
 
-.steps-content form.ant-form label {
-  font-weight: 500;
 }
 
 
