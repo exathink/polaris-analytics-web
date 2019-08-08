@@ -1,6 +1,7 @@
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
+import moment from 'moment';
 
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
@@ -9,8 +10,11 @@ import WorkTopic from "./work/topic";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
-
 class WithOrganization extends React.Component {
+
+  state = {
+    lastRefresh: moment()
+  }
 
   onDashboardMounted(organization) {
     const {
@@ -26,6 +30,12 @@ class WithOrganization extends React.Component {
     }
   }
 
+  refresh() {
+    this.setState({
+      lastRefresh: moment()
+    })
+  }
+
   render() {
     const {
       render,
@@ -37,10 +47,9 @@ class WithOrganization extends React.Component {
     return (
       <Query
         client={analytics_service}
-        query={
-          gql`
-            query with_organization_instance($key: String!) {
-                organization(key: $key, interfaces:[CommitSummary, ProjectCount, RepositoryCount, WorkItemsSourceCount, WorkItemEventSpan]){
+        query={gql`
+            query with_organization_instance($key: String!, $referenceDate: DateTime) {
+                organization(key: $key, interfaces:[CommitSummary, ProjectCount, RepositoryCount, WorkItemsSourceCount, WorkItemEventSpan], referenceDate: $referenceDate){
                     id
                     name
                     key
@@ -54,12 +63,13 @@ class WithOrganization extends React.Component {
                     latestWorkItemEvent
                 }
             }
-        `
-        }
+        `}
         variables={{
-          key: context.getInstanceKey('organization')
+          key: context.getInstanceKey('organization'),
+          referenceDate: this.state.lastRefresh
         }}
         pollInterval={polling ? pollInterval : 0}
+
       >
         {
           ({loading, error, data}) => {
@@ -75,6 +85,8 @@ class WithOrganization extends React.Component {
                 onMount={
                   () => this.onDashboardMounted(organization)
                 }
+                refresh={this.refresh.bind(this)}
+                lastRefresh={this.state.lastRefresh}
               />
             )
           }
