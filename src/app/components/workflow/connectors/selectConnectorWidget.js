@@ -149,7 +149,7 @@ export const SelectConnectorWidget =
                     lastRegistrationSubmission={lastSubmission}
                   />
                   {
-                    viewerContext.isOrganizationOwner(organizationKey) ?
+                    viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
                       < NewConnectorFormButton
                         connectorType={connectorType}
                         onSubmit={
