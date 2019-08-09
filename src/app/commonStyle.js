@@ -112,6 +112,10 @@ const AppHolder = styled.div`
     }
   }
 
+  .ant-steps-item-title:after {
+    top: 10px;
+  }
+
   .ant-steps {
     .ant-steps-item-title,
     .ant-steps-item-icon {
