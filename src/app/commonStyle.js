@@ -117,6 +117,7 @@ const AppHolder = styled.div`
     .ant-steps-item-icon {
       font-size: 12px;
       line-height: 14px;
+      top: 7px;
       @media only screen and (min-width: 768px) {
         font-size: 13px;
         line-height: 16px;
