@@ -15,10 +15,25 @@ const Buttons = ComponentName => styled(ComponentName)`
     border: 1px solid transparent;
     white-space: nowrap;
     line-height: 1.5;
-    padding: 0 25px;
-    font-size: 14px;
+    font-size: 11px;
+    padding: 0 11px;
+    height: 25px;
+    @media only screen and (min-width: 768px) {
+      font-size: 12px;
+      height: 29px;
+      padding: 0 16px;
+    }
+    @media only screen and (min-width: 992px) {
+      font-size: 13px;
+      height: 33px;
+      padding: 0 21px;
+    }
+    @media only screen and (min-width: 1200px) {
+      font-size: 14px;
+      height: 36px;
+      padding: 0 25px;
+    }
     border-radius: 4px;
-    height: 36px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -35,17 +50,17 @@ const Buttons = ComponentName => styled(ComponentName)`
     > .anticon + span,
     > span + .anticon {
       margin: ${props =>
-        props['data-rtl'] === 'rtl' ? '0 0.5em 0 0' : '0 0 0 0.5em'};
+    props['data-rtl'] === 'rtl' ? '0 0.5em 0 0' : '0 0 0 0.5em'};
     }
 
     .anticon-right {
       transform: ${props =>
-        props['data-rtl'] === 'rtl' ? 'rotate(180deg)' : 'rotate(0)'};
+    props['data-rtl'] === 'rtl' ? 'rotate(180deg)' : 'rotate(0)'};
     }
 
     .anticon-left {
       transform: ${props =>
-        props['data-rtl'] === 'rtl' ? 'rotate(180deg)' : 'rotate(0)'};
+    props['data-rtl'] === 'rtl' ? 'rotate(180deg)' : 'rotate(0)'};
     }
 
     &.ant-btn-primary {
@@ -60,16 +75,31 @@ const Buttons = ComponentName => styled(ComponentName)`
     }
 
     &.ant-btn-sm {
-      padding: 0 15px;
-      height: 28px;
-      font-size: 12px;
+      font-size: 9px;
+      height: 20px;
+      padding: 0 10px;
+      @media only screen and (min-width: 768px) {
+        font-size: 10px;
+        height: 23px;
+        padding: 0 12px;
+      }
+      @media only screen and (min-width: 992px) {
+        font-size: 11px;
+        height: 26px;
+        padding: 0 14px;
+      }
+      @media only screen and (min-width: 1200px) {
+        font-size: 12px;
+        height: 28px;
+        padding: 0 15px;
+      }
 
       &.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline) {
         padding: ${props =>
-          props['data-rtl'] === 'rtl' ? '0 24px 0 15px' : '0 15px 0 24px'};
+    props['data-rtl'] === 'rtl' ? '0 24px 0 15px' : '0 15px 0 24px'};
         .anticon {
           margin: ${props =>
-            props['data-rtl'] === 'rtl' ? '0 -17px 0 0' : '0 0 0 -17px'};
+    props['data-rtl'] === 'rtl' ? '0 -17px 0 0' : '0 0 0 -17px'};
         }
       }
     }
@@ -158,7 +188,7 @@ const Buttons = ComponentName => styled(ComponentName)`
     &.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline)
       .anticon {
       margin: ${props =>
-        props['data-rtl'] === 'rtl' ? '0 -14px 0 0' : '0 0 0 -14px'};
+    props['data-rtl'] === 'rtl' ? '0 -14px 0 0' : '0 0 0 -14px'};
     }
 
     &.isoButton {
@@ -206,9 +236,9 @@ const Buttons = ComponentName => styled(ComponentName)`
 
   + .ant-btn-group {
     margin-left: ${props =>
-      props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
+    props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
     margin-right: ${props =>
-      props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
+    props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
   }
 `;
 
@@ -287,43 +317,43 @@ const ButtonsGroup = ComponentName => styled(ComponentName)`
 
     > .ant-btn:first-child:not(:last-child) {
       border-radius: ${props =>
-        props['data-rtl'] === 'rtl' ? '0 4px 4px 0' : '4px 0 0 4px'};
+    props['data-rtl'] === 'rtl' ? '0 4px 4px 0' : '4px 0 0 4px'};
     }
 
     > .ant-btn:last-child:not(:first-child) {
       border-radius: ${props =>
-        props['data-rtl'] === 'rtl' ? '4px 0 0 4px' : '0 4px 4px 0'};
+    props['data-rtl'] === 'rtl' ? '4px 0 0 4px' : '0 4px 4px 0'};
     }
 
     .ant-btn-primary:last-child:not(:first-child),
     .ant-btn-primary + .ant-btn-primary {
       border-left-color: ${props =>
-        props['data-rtl'] === 'rtl'
-          ? palette('primary', 0)
-          : palette('primary', 2)};
+    props['data-rtl'] === 'rtl'
+      ? palette('primary', 0)
+      : palette('primary', 2)};
       border-right-color: ${props =>
-        props['data-rtl'] === 'rtl'
-          ? palette('primary', 2)
-          : palette('primary', 0)};
+    props['data-rtl'] === 'rtl'
+      ? palette('primary', 2)
+      : palette('primary', 0)};
     }
 
     .ant-btn-primary:first-child:not(:last-child) {
       border-left-color: ${props =>
-        props['data-rtl'] === 'rtl'
-          ? palette('primary', 2)
-          : palette('primary', 0)};
+    props['data-rtl'] === 'rtl'
+      ? palette('primary', 2)
+      : palette('primary', 0)};
       border-right-color: ${props =>
-        props['data-rtl'] === 'rtl'
-          ? palette('primary', 0)
-          : palette('primary', 2)};
+    props['data-rtl'] === 'rtl'
+      ? palette('primary', 0)
+      : palette('primary', 2)};
     }
 
     .ant-btn + .ant-btn,
     + .ant-btn {
       margin-left: ${props =>
-        props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
+    props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
       margin-right: ${props =>
-        props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
+    props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
     }
 
     &.ant-btn-group-lg {
@@ -345,9 +375,9 @@ const ButtonsGroup = ComponentName => styled(ComponentName)`
 
   &.ant-btn-group + &.ant-btn-group {
     margin-left: ${props =>
-      props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
+    props['data-rtl'] === 'rtl' ? '0' : '-1px'} !important;
     margin-right: ${props =>
-      props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
+    props['data-rtl'] === 'rtl' ? '-1px' : '0'} !important;
   }
 `;
 
@@ -365,4 +395,4 @@ const GhostButtons = ComponentName => styled(ComponentName)`
   }
 `;
 
-export { Buttons, ButtonsGroup, RadioButtons, GhostButtons };
+export {Buttons, ButtonsGroup, RadioButtons, GhostButtons};
