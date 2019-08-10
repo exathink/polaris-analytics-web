@@ -18,7 +18,7 @@ export default () => (
   <OrganizationDashboard
     pollInterval={60 * 1000}
     render={
-      ({organization, context}) => (
+      ({organization, context, lastRefresh}) => (
         <Dashboard
           dashboard={`${dashboard_id}`}
         >
@@ -56,8 +56,8 @@ export default () => (
                     childContext={Projects}
                     enableDrillDown={true}
                     view={view}
-                    pageSize={50}
-                    referenceDate={organization.latestCommit}
+                    referenceDate={lastRefresh}
+                    referenceCount={organization.workItemsSourceCount}
                   />
               }
               showDetail={true}
