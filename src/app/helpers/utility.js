@@ -166,6 +166,21 @@ export function daysSinceDate(someDate) {
   return moment().utc().diff(moment(someDate), 'days')
 }
 
+export function latestDate(date_a , date_b) {
+  return (
+    date_a != null ?
+      (
+        date_b != null ?
+          (
+            moment.max(date_a, date_b)
+          ) :
+          date_a
+      ) :
+      date_b
+  )
+}
+
+
 export function isAdmin(viewer) {
   return viewer.roles && viewer.roles.includes("admin");
 }
@@ -185,3 +200,4 @@ export function openNotification(type, message, duration=2) {
       key:`open${Date.now()}`
     })
 };
+
