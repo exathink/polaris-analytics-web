@@ -44,3 +44,12 @@
   font-size: 20px;
   line-height: 168px;
 }
+
+.show-import-state .ant-table .status-importing {
+  color: #1741b5;
+}
+
+.show-import-state .ant-table .status-complete {
+  color:  #1db539;
+}
+
