@@ -4,7 +4,6 @@ import Button from "../../../../components/uielements/button";
 import React from "react";
 import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
-import './connectorsTable.css'
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
 
 
@@ -99,7 +98,7 @@ export const ConnectorsTable = (
             />
           </Table>
           :
-          <NoData message={`No ${connectorType} connectors registered.`}/>
+          null
       }
     </div>
 
