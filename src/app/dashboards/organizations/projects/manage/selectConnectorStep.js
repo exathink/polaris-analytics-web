@@ -4,7 +4,7 @@ import {ApolloProvider} from 'react-apollo';
 import {work_tracking_service} from "../../../../services/graphql";
 
 import {SelectConnectorWidget} from "../../../../components/workflow/connectors/selectConnectorWidget";
-
+import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
 
 export const SelectConnectorType = ({connectorType, onChange}) => (
   <Radio.Group
@@ -13,9 +13,9 @@ export const SelectConnectorType = ({connectorType, onChange}) => (
     buttonStyle={"solid"}
     onChange={onChange}
   >
-    <Radio.Button value={'jira'}>Jira</Radio.Button>
-    <Radio.Button value={'pivotal'}>Pivotal Tracker</Radio.Button>
-    <Radio.Button value={'github'}>Github</Radio.Button>
+    <Radio.Button value={'jira'}>{getConnectorTypeDisplayName('jira')}</Radio.Button>
+    <Radio.Button value={'pivotal'}>{getConnectorTypeDisplayName('pivotal')}</Radio.Button>
+    <Radio.Button value={'github'}>{getConnectorTypeDisplayName('github')}</Radio.Button>
   </Radio.Group>
 );
 
@@ -60,6 +60,7 @@ export class SelectConnectorStep extends React.Component {
             connectorType={this.state.connectorType}
             onConnectorSelected={this.props.onConnectorSelected}
             organizationKey={this.props.organizationKey}
+            onConnectorsUpdated={this.props.onConnectorsUpdated}
           />
         </ApolloProvider>
       </div>

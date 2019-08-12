@@ -15,7 +15,7 @@ const {Step} = Steps;
 
 const steps = [
   {
-    title: 'Select Connector',
+    titleFromProps: props => props.availableConnectors.length > 0 ? 'Select Connector' : 'Create Connector',
     content: SelectConnectorStep,
     showNext: false
   },
@@ -41,6 +41,7 @@ export const AddProjectWorkflow = withNavigationContext(
       super(props);
       this.state = {
         current: 0,
+        availableConnectors: [],
         selectedConnector: {},
         selectedProjects: [],
         importedProjectKeys: [],
@@ -64,6 +65,12 @@ export const AddProjectWorkflow = withNavigationContext(
         current: 1,
         selectedConnector: connector,
         selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
+      })
+    }
+
+    onConnectorsUpdated(connectors) {
+      this.setState({
+        availableConnectors: connectors
       })
     }
 
@@ -158,13 +165,18 @@ export const AddProjectWorkflow = withNavigationContext(
       return (
         <React.Fragment>
           <Steps current={current}>
-            {steps.map(item => (
-              <Step key={item.title} title={item.title} />
+            {steps.map((item, index) => (
+              <Step key={index}
+                    title={
+                      (item.titleFromProps && item.titleFromProps({...this.props, ...this.state})) || item.title
+                    }
+              />
             ))}
           </Steps>
           <div className="steps-content">
             {
               React.createElement(steps[current].content, {
+                onConnectorsUpdated: this.onConnectorsUpdated.bind(this),
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
                 onProjectsSelected: this.onProjectsSelected.bind(this),
