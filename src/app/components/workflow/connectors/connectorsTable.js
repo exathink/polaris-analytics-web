@@ -1,11 +1,14 @@
-import {CompactTable} from "../../../../components/uielements/table";
+import React from "react";
+
 import {ButtonBar} from "../../../containers/buttonBar/buttonBar";
 import Button from "../../../../components/uielements/button";
-import React from "react";
 import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
+import {CompactTable} from "../../../components/tables";
+import './connectorsTable.css'
 
+const {Column}=CompactTable;
 
 function includeHostColumn(connectorType) {
   return connectorType == 'jira';
@@ -40,13 +43,13 @@ export const ConnectorsTable = (
               hideOnSinglePage: true
             }}
           >
-            <CompactTable.Column title={"Name"} dataIndex={"name"} key={"name"}/>
+            <Column title={"Name"} dataIndex={"name"} key={"name"}/>
             {
               includeHostColumn(connectorType) &&
-              <CompactTable.Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
+              <Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
             }
-            <CompactTable.Column title={"State"} dataIndex={"state"} key={"state"}/>
-            <CompactTable.Column
+            <Column title={"State"} dataIndex={"state"} key={"state"}/>
+            <Column
               title=""
               width={80}
               key="select"

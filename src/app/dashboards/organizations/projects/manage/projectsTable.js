@@ -1,11 +1,13 @@
 import React from 'react';
 
+
 import {Table} from 'antd';
 import moment from 'moment';
-import {CompactTable} from "../../../../../components/uielements/table";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
+import {CompactTable} from "../../../../components/tables";
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
@@ -13,7 +15,6 @@ import {fromNow, human_span, latestDate} from "../../../../helpers/utility";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
-
 
 const {Column} = CompactTable;
 

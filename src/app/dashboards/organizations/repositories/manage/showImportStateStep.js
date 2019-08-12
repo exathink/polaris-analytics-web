@@ -1,11 +1,12 @@
 import React from "react";
-import {Query, compose} from "react-apollo";
-import {vcs_service} from "../../../../services/graphql";
-import {Progress, Spin} from "antd";
-import {CompactTable} from "../../../../../components/uielements/table";
-
-import {withPollingManager} from "../../../../components/graphql/withPollingManager";
+import {Query} from "react-apollo";
 import gql from "graphql-tag";
+import {Progress, Spin} from "antd";
+
+import {vcs_service} from "../../../../services/graphql";
+import {CompactTable} from "../../../../components/tables";
+
+const {Column} = CompactTable;
 
 const stateSortOrder = {
   'importing': 0,
@@ -191,11 +192,11 @@ export class ShowImportStateStep extends React.Component {
                     hideOnSinglePage: true
                   }}
                 >
-                  <CompactTable.Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
-                  <CompactTable.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
-                  <CompactTable.Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
-                  <CompactTable.Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
-                  <CompactTable.Column
+                  <Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
+                  <Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
+                  <Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
+                  <Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
+                  <Column
                     title={""}
                     dataIndex={"percentComplete"}
                     key={"percentComplete"}

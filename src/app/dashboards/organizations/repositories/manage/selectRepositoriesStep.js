@@ -1,12 +1,12 @@
 import React from 'react';
 import gql from "graphql-tag";
-import Button from "../../../../../components/uielements/button";
 
+import Button from "../../../../../components/uielements/button";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {withSearch} from "../../../../components/antHelpers/withSearch";
-import {CompactTable} from "../../../../../components/uielements/table";
+import {CompactTable} from "../../../../components/tables";
 import {NoData} from "../../../../components/misc/noData";
 
 function getServerUrl(selectedConnector) {
