@@ -1,5 +1,6 @@
 import React from "react";
-import {Table} from "antd";
+import {CompactTable} from "../../../../../components/uielements/table";
+
 import Button from "../../../../../components/uielements/button";
 
 export class ReviewImportStep extends React.Component {
@@ -9,7 +10,7 @@ export class ReviewImportStep extends React.Component {
     return (
       <div className={'selected-repositories'}>
         <h3>{selectedRepositories.length} {selectedRepositories.length > 1 ? 'repositories' : 'repository'} selected for import</h3>
-        <Table
+        <CompactTable
           size="small"
           dataSource={selectedRepositories}
           rowKey={record => record.key}
@@ -20,9 +21,9 @@ export class ReviewImportStep extends React.Component {
             hideOnSinglePage: true
           }}
         >
-          <Table.Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
-          <Table.Column title={"Description"} dataIndex={"description"} key={"description"} />
-        </Table>
+          <CompactTable.Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
+          <CompactTable.Column title={"Description"} dataIndex={"description"} key={"description"} />
+        </CompactTable>
         <Button
           type={'primary'}
           onClick={() => onDoImport()}

@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {withSearch} from "../../../../components/antHelpers/withSearch";
-import {Table} from "antd";
+import {CompactTable} from "../../../../../components/uielements/table";
 import {NoData} from "../../../../components/misc/noData";
 
 function getServerUrl(selectedConnector) {
@@ -130,7 +130,7 @@ export const SelectProjectsStep = withSearch(
                       workItemsSources.length > 0 ?
                         <React.Fragment>
 
-                          <Table
+                          <CompactTable
                             size="small"
                             dataSource={workItemsSources}
                             columns={columns}
@@ -146,7 +146,7 @@ export const SelectProjectsStep = withSearch(
                               hideOnSinglePage: true
                             }}
                           >
-                          </Table>
+                          </CompactTable>
                         </React.Fragment>
                         :
                         <NoData message={"No projects imported"} />

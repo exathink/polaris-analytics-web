@@ -3,12 +3,11 @@ import React from 'react';
 import {Query} from "react-apollo";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import gql from "graphql-tag";
-
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-
-import {Col, Form, Input, Row, Table, Spin, Progress} from "antd";
+import {Col, Form, Input, Row, Spin, Progress} from "antd";
 import {createForm} from "../../../../components/forms/createForm";
 import {NoData} from "../../../../components/misc/noData";
+import {CompactTable} from "../../../../../components/uielements/table";
 
 const importStateDisplayMap = {
   ready: 'queued',
@@ -27,7 +26,6 @@ const importStateClassIndex = {
   importing: 'status-importing',
   complete: 'status-complete'
 }
-
 
 const SHOW_IMPORT_STATE_QUERY = gql`
     query showImportState($connectorKey:String!, $projectKeys: [String]!){
@@ -109,10 +107,10 @@ export const ShowImportStateStep = (
                   hideOnSinglePage: true
                 }}
               >
-                <Table.Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
-                <Table.Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
-                <Table.Column title={"Work Items Imported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
-                <Table.Column
+                <CompactTable.Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
+                <CompactTable.Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
+                <CompactTable.Column title={"Work Items Imported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
+                <CompactTable.Column
                   title={"Import Status"}
                   dataIndex={"importState"}
                   key={"importState"}

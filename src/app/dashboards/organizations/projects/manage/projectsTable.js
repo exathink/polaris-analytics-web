@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Table} from 'antd';
 import moment from 'moment';
-
+import {CompactTable} from "../../../../../components/uielements/table";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,7 +15,7 @@ import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 
 
-const {Column} = Table;
+const {Column} = CompactTable;
 
 const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage, newData}) => (
   <Query
@@ -71,7 +71,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
           totalItems = data.organization.projects.count;
         }
         return (
-          <Table
+          <CompactTable
             dataSource={tableData}
             loading={loading}
             rowKey={record => record.id}
@@ -136,7 +136,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
               }
             />
 
-          </Table>
+          </CompactTable>
         )
       }
     }

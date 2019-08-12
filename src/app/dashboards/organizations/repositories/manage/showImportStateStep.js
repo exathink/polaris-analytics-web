@@ -1,7 +1,9 @@
 import React from "react";
 import {Query, compose} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
-import {Table, Progress, Spin} from "antd";
+import {Progress, Spin} from "antd";
+import {CompactTable} from "../../../../../components/uielements/table";
+
 import {withPollingManager} from "../../../../components/graphql/withPollingManager";
 import gql from "graphql-tag";
 
@@ -175,7 +177,7 @@ export class ShowImportStateStep extends React.Component {
                       }
                     />
                 }
-                <Table
+                <CompactTable
                   size="small"
                   dataSource={repositories}
                   loading={repositories.length == 0}
@@ -189,11 +191,11 @@ export class ShowImportStateStep extends React.Component {
                     hideOnSinglePage: true
                   }}
                 >
-                  <Table.Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
-                  <Table.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
-                  <Table.Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
-                  <Table.Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
-                  <Table.Column
+                  <CompactTable.Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
+                  <CompactTable.Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
+                  <CompactTable.Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
+                  <CompactTable.Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
+                  <CompactTable.Column
                     title={""}
                     dataIndex={"percentComplete"}
                     key={"percentComplete"}
@@ -208,7 +210,7 @@ export class ShowImportStateStep extends React.Component {
                       )
                     }
                   />
-                </Table>
+                </CompactTable>
               </div>
             );
           }
