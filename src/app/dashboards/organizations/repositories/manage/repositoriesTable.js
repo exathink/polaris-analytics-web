@@ -1,21 +1,19 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {Link} from 'react-router-dom';
-import {Table} from 'antd';
+import {CompactTable} from "../../../../../components/uielements/table";
+
 
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 import Button from "../../../../../components/uielements/button";
-import {RegisterConnectorFormButton} from "../../../../components/workflow/connectors/registerConnectorFormButton";
-import {DeleteConfirmationModalButton} from "../../../../components/workflow/connectors/deleteConfirmationModal";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
 import {fromNow, human_span} from "../../../../helpers/utility";
 
-const {Column} = Table;
+const {Column} = CompactTable;
 
 const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, onNewPage}) => (
   <Query
@@ -62,7 +60,7 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
           totalItems = data.organization.repositories.count;
         }
         return (
-          <Table
+          <CompactTable
             dataSource={tableData}
             loading={loading}
             rowKey={record => record.id}
@@ -137,7 +135,7 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
             />
 
 
-          </Table>
+          </CompactTable>
         )
       }
     }

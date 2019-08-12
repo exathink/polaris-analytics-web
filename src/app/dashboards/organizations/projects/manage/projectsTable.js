@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Table} from 'antd';
+import {CompactTable} from "../../../../../components/uielements/table";
 
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
@@ -9,7 +9,7 @@ import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
 
 
-const {Column} = Table;
+const {Column} = CompactTable;
 
 const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage, newData}) => (
   <Query
@@ -51,7 +51,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
           totalItems = data.organization.projects.count;
         }
         return (
-          <Table
+          <CompactTable
             dataSource={tableData}
             loading={loading}
             rowKey={record => record.id}
@@ -64,7 +64,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
             onChange={onNewPage}
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
-          </Table>
+          </CompactTable>
         )
       }
     }
