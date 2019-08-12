@@ -1,13 +1,11 @@
 import React from 'react';
-
-import {CompactTable} from "../../../../../components/uielements/table";
-
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
+
+import {CompactTable} from "../../../../components/tables";
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../../services/graphql';
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
-
 
 const {Column} = CompactTable;
 

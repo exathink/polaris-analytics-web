@@ -1,7 +1,9 @@
 import React from "react";
-import {CompactTable} from "../../../../../components/uielements/table";
 
 import Button from "../../../../../components/uielements/button";
+import {CompactTable} from "../../../../components/tables";
+
+const { Column} = CompactTable;
 
 export class ReviewImportStep extends React.Component {
 
@@ -21,8 +23,8 @@ export class ReviewImportStep extends React.Component {
             hideOnSinglePage: true
           }}
         >
-          <CompactTable.Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
-          <CompactTable.Column title={"Description"} dataIndex={"description"} key={"description"} />
+          <Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
+          <Column title={"Description"} dataIndex={"description"} key={"description"} />
         </CompactTable>
         <Button
           type={'primary'}
