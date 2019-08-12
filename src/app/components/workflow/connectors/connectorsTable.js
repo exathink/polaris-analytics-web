@@ -1,4 +1,4 @@
-import {Table, Modal} from "antd";
+import {CompactTable} from "../../../../components/uielements/table";
 import {ButtonBar} from "../../../containers/buttonBar/buttonBar";
 import Button from "../../../../components/uielements/button";
 import React from "react";
@@ -30,7 +30,7 @@ export const ConnectorsTable = (
     <div className={'connectors-table'}>
       {
         loading || connectors.length > 0 ?
-          <Table
+          <CompactTable
             size="small"
             dataSource={connectors}
             loading={loading}
@@ -41,13 +41,13 @@ export const ConnectorsTable = (
               hideOnSinglePage: true
             }}
           >
-            <Table.Column title={"Name"} dataIndex={"name"} key={"name"}/>
+            <CompactTable.Column title={"Name"} dataIndex={"name"} key={"name"}/>
             {
               includeHostColumn(connectorType) &&
-              <Table.Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
+              <CompactTable.Column title={"Host"} dataIndex={"baseUrl"} key={"baseUrl"}/>
             }
-            <Table.Column title={"State"} dataIndex={"state"} key={"state"}/>
-            <Table.Column
+            <CompactTable.Column title={"State"} dataIndex={"state"} key={"state"}/>
+            <CompactTable.Column
               title=""
               width={80}
               key="select"
@@ -98,7 +98,7 @@ export const ConnectorsTable = (
                 }
               }
             />
-          </Table>
+          </CompactTable>
           :
           <NoData message={`No ${connectorType} connectors registered.`}/>
       }
