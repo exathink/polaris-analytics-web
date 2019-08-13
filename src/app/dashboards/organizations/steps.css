@@ -16,6 +16,10 @@
   font-weight: 500;
 }
 
+.steps-content .ant-select {
+  min-width: 30%;
+}
+
 .steps-content div.ant-table-wrapper {
   margin-top: 10px;
   margin-bottom: 10px;
