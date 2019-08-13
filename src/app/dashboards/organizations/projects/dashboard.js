@@ -7,7 +7,7 @@ import {OrganizationDashboard} from "../organizationDashboard";
 import {ProjectsTableWidget} from "./manage/projectsTable";
 
 import Projects from "../../projects/context"
-import {Col, Icon, Row} from "antd";
+import {Icon, Row, Card, Col} from "antd";
 import Button from "../../../../components/uielements/button";
 
 import {IconCard} from "../../../components/cards/iconCard";
@@ -96,12 +96,29 @@ export default () => (
 );
 
 const NoProjectsView = ({context}) => (
-  <div className={'no-data-landing'}>
+  <div className={'no-projects'}>
     <div style={{padding: '30px'}}>
       <Row gutter={16}>
         <Col offset={10} span={24}>
           <a onClick={() => context.go('.', 'new')}>
-            <IconCard icon={Projects.icon} title={"Import Projects"}/>
+            <Card
+              hoverable={true}
+              bordered={true}
+              title={"Import Projects"}
+              cover={
+                <img
+                  alt="example"
+                  src="/images/third-party/planning-12-512.png"
+                />
+              }
+              style={{width: 300, marginTop: 100}}
+              actions={[
+
+                <Icon type="download" key="edit"/>,
+
+              ]}
+            >
+            </Card>
           </a>
         </Col>
       </Row>

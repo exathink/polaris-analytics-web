@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Icon, Row} from "antd";
+import {Card, Col, Icon, Row} from "antd";
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
@@ -96,12 +96,29 @@ export default () => (
 );
 
 const NoRepositoriesView = ({context}) => (
-  <div className={'no-data-landing'}>
+  <div className={'no-projects'}>
     <div style={{padding: '30px'}}>
       <Row gutter={16}>
         <Col offset={10} span={24}>
           <a onClick={() => context.go('.', 'new')}>
-            <IconCard icon={Repositories.icon} title={"Import Repositories"}/>
+            <Card
+              hoverable={true}
+              bordered={true}
+              title={"Import Repositories"}
+              cover={
+                <img
+                  alt="example"
+                  src="/images/third-party/git-logomark-black@2x.png"
+                />
+              }
+              style={{width: 300, marginTop: 100}}
+              actions={[
+
+                <Icon type="download" key="edit"/>,
+
+              ]}
+            >
+            </Card>
           </a>
         </Col>
       </Row>
