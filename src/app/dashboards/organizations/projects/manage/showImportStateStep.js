@@ -93,7 +93,7 @@ export const ShowImportStateStep = (
                   () => `${numImported}/${workItemsSources.length}`
                 }
               />
-              <Table
+              <CompactTable
                 size="small"
                 dataSource={workItemsSources}
                 loading={loading}
@@ -126,7 +126,7 @@ export const ShowImportStateStep = (
                         />
                   }
                 />
-              </Table>
+              </CompactTable>
             </div>
           );
         }

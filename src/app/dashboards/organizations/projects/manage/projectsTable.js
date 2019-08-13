@@ -1,15 +1,13 @@
 import React from 'react';
-
-
-import {Table} from 'antd';
 import moment from 'moment';
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {Query} from 'react-apollo';
+
 import gql from 'graphql-tag';
-import {CompactTable} from "../../../../components/tables";
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+import {Query} from 'react-apollo';
 import {analytics_service} from '../../../../services/graphql';
+
+import {CompactTable} from "../../../../components/tables";
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
 import {fromNow, human_span, latestDate} from "../../../../helpers/utility";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";

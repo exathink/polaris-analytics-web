@@ -6,7 +6,7 @@ import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
 import {CompactTable} from "../../../components/tables";
-import './connectorsTable.css'
+import './connectors.css'
 
 const {Column}=CompactTable;
 
@@ -39,8 +39,9 @@ export const ConnectorsTable = (
             rowKey={record => record.id}
             pagination={{
               total: connectors.length,
-              defaultPageSize: 5,
-              hideOnSinglePage: true
+              defaultPageSize: 8,
+              hideOnSinglePage: true,
+              showTotal: total => `${total} Connectors`
             }}
           >
             <Column title={"Name"} dataIndex={"name"} key={"name"}/>
