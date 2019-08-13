@@ -176,7 +176,7 @@ export const AddProjectWorkflow = withNavigationContext(
             {steps.map((item, index) => (
               <Step key={index}
                     style={index > current ? {display: 'none'} : {}}
-                    title={item.title || item.renderTitle && item.renderTitle(this.state)}
+                    title={item.title}
               />
             ))}
           </Steps>

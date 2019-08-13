@@ -17,19 +17,6 @@ export class SelectIntegrationStep extends React.Component {
         <div style={{padding: '30px'}}>
           <Row gutter={16}>
             <Col span={8}>
-              <a onClick={() => this.props.onConnectorTypeSelected('jira')}>
-                <Card hoverable={true} bordered={true} style={{width: 300, marginTop: 16}}>
-                  <Meta
-                    avatar={
-                      <Avatar src="/images/third-party/jira-mark-contained-gradient-neutral@2x.png"/>
-                    }
-                    title="Jira"
-                    description="Import Projects and Issues"
-                  />
-                </Card>
-              </a>
-            </Col>
-            <Col span={8}>
               <a onClick={() => this.props.onConnectorTypeSelected('github')}>
                 <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}>
                   <Meta
@@ -37,24 +24,41 @@ export class SelectIntegrationStep extends React.Component {
                       <Avatar src="/images/third-party/GitHub-Mark-120px-plus.png"/>
                     }
                     title="Github"
-                    description="Import Repository Issues"
+                    description="Import Repositories and Commits"
+                  />
+                </Card>
+              </a>
+            </Col>
+            {
+            /**
+            <Col span={8}>
+              <a onClick={() => this.props.onConnectorTypeSelected('bitbucket')}>
+                <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}>
+                  <Meta
+                    avatar={
+                      <Avatar src="/images/third-party/bitbucket-mark-contained-gradient-neutral@2x.png"/>
+                    }
+                    title="Bit Bucket"
+                    description="Import Repositories and Commits"
                   />
                 </Card>
               </a>
             </Col>
             <Col span={8}>
-              <a onClick={() => this.props.onConnectorTypeSelected('pivotal')}>
+              <a onClick={() => this.props.onConnectorTypeSelected('gitlab')}>
                 <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}>
                   <Meta
                     avatar={
-                      <Avatar src="/images/third-party/Tracker_Icon.svg"/>
+                      <Avatar src="/images/third-party/gitlab-icon-rgb.svg"/>
                     }
-                    title="Pivotal Tracker"
-                    description="Import Projects and Stories"
+                    title="GitLab"
+                    description="Import Repositories and Commits"
                   />
                 </Card>
               </a>
             </Col>
+            **/
+            }
           </Row>
         </div>
 

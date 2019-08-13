@@ -109,48 +109,51 @@ export const SelectConnectorWidget =
                 <div className={'select-connector'}>
                   {
                     connectors.length > 0 ?
-                      <ConnectorsTable
-                        connectorType={connectorType}
-                        connectors={connectors}
-                        loading={loading}
-                        onConnectorSelected={onConnectorSelected}
-                        onConnectorDeleted={
-                          (record) => deleteConnector({
-                            variables: {
-                              deleteConnectorInput: {
-                                connectorKey: record.key
-                              }
-                            }
-                          })
-                        }
-                        onConnectorRegistered={
-                          (values) => submit(
-                            values => registerConnector({
+                      <React.Fragment>
+                        <h4>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h4>
+                        <ConnectorsTable
+                          connectorType={connectorType}
+                          connectors={connectors}
+                          loading={loading}
+                          onConnectorSelected={onConnectorSelected}
+                          onConnectorDeleted={
+                            (record) => deleteConnector({
                               variables: {
-                                registerConnectorInput: {
-                                  accountKey: viewerContext.accountKey,
-                                  organizationKey: organizationKey,
-                                  connectorKey: values.key,
-                                  name: values.name,
+                                deleteConnectorInput: {
+                                  connectorKey: record.key
                                 }
                               }
                             })
-                          )(values)
-                        }
-                        onConnectorTested={
-                          (values) => submit(
-                            values => testConnector({
-                              variables: {
-                                testConnectorInput: {
-                                  connectorKey: values.key
+                          }
+                          onConnectorRegistered={
+                            (values) => submit(
+                              values => registerConnector({
+                                variables: {
+                                  registerConnectorInput: {
+                                    accountKey: viewerContext.accountKey,
+                                    organizationKey: organizationKey,
+                                    connectorKey: values.key,
+                                    name: values.name,
+                                  }
                                 }
-                              }
-                            })
-                          )(values)
-                        }
-                        lastRegistrationError={registerConnectorResult.error}
-                        lastRegistrationSubmission={lastSubmission}
-                      />
+                              })
+                            )(values)
+                          }
+                          onConnectorTested={
+                            (values) => submit(
+                              values => testConnector({
+                                variables: {
+                                  testConnectorInput: {
+                                    connectorKey: values.key
+                                  }
+                                }
+                              })
+                            )(values)
+                          }
+                          lastRegistrationError={registerConnectorResult.error}
+                          lastRegistrationSubmission={lastSubmission}
+                        />
+                      </React.Fragment>
                       :
                       <CreateConnectorInstructions connectorType={connectorType}/>
                   }

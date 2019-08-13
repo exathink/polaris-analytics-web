@@ -1,6 +1,7 @@
 import React from 'react';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
+import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectRepositoriesStep, REFETCH_CONNECTOR_REPOSITORIES_QUERY} from "./selectRepositoriesStep";
 import {ReviewImportStep} from "./reviewImportStep";
@@ -14,6 +15,11 @@ import '../../steps.css';
 const {Step} = Steps;
 
 const steps = [
+  {
+    title: 'Select Provider',
+    content: SelectIntegrationStep,
+    showNext: false
+  },
   {
     title: 'Select Connector',
     content: SelectConnectorStep,
@@ -43,6 +49,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       super(props);
       this.state = {
         current: 0,
+        selectedConnectorType: null,
         selectedConnector: {},
         selectedRepositories: []
       };
@@ -56,13 +63,20 @@ export const AddRepositoryWorkflow = withNavigationContext(
     prev() {
       // if we are in the final stage, back should take us to Select Repositories
       // since we will have cleared the selected projects at that point.
-      const current = this.state.current < 3 ? this.state.current - 1 : 1;
+      const current = this.state.current < 4 ? this.state.current - 1 : 2;
       this.setState({current});
+    }
+
+    onConnectorTypeSelected(connectorType) {
+      this.setState({
+        current: 1,
+        selectedConnectorType: connectorType,
+      })
     }
 
     onConnectorSelected(connector) {
       this.setState({
-        current: 1,
+        current: 2,
         selectedConnector: connector,
         selectedRepositories: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedRepositories
       })
@@ -104,7 +118,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
         })
         if (result.data) {
           this.setState({
-            current: 3,
+            current: 4,
             importedRepositoryKeys: result.data.importRepositories.importedRepositoryKeys,
             selectedRepositories: []
           })
@@ -123,14 +137,19 @@ export const AddRepositoryWorkflow = withNavigationContext(
       return (
         <React.Fragment>
           <Steps current={current}>
-            {steps.map(item => (
-              <Step key={item.title} title={item.title} />
+            {steps.map((item, index) => (
+              <Step key={index}
+                    style={index > current ? {display: 'none'} : {}}
+                    title={item.title}
+              />
             ))}
           </Steps>
           <div className="steps-content">
             {
               React.createElement(steps[current].content, {
                 organizationKey: organization.key,
+                onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+                selectedConnectorType: this.state.selectedConnectorType,
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
                 onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
@@ -144,7 +163,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           <div className="steps-action">
             {current > 0 && (
               <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                {current < 3 ? 'Back' : 'Import More Repositories'}
+                {current < 4 ? 'Back' : 'Import More Repositories'}
               </Button>
             )}
             {currentStep.showNext && current < steps.length - 1 && !disableNext && (
