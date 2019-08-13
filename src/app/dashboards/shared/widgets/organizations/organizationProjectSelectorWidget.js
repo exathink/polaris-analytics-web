@@ -1,10 +1,10 @@
 import React from 'react';
-
-import {Query} from "react-apollo";
-import {analytics_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
-
+import {Query} from "react-apollo";
 import {Select} from 'antd';
+
+import {analytics_service} from "../../../../services/graphql";
+
 const {Option} = Select;
 
 export const ORGANIZATION_PROJECT_QUERY = gql`
