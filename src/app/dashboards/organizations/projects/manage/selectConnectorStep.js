@@ -51,13 +51,9 @@ export class SelectConnectorStep extends React.Component {
   render() {
     return (
       <div className={'select-connector'}>
-        <SelectConnectorType
-          connectorType={this.state.connectorType}
-          onChange={this.onConnectorTypeChanged.bind(this)}
-        />
         <ApolloProvider client={work_tracking_service}>
           <SelectConnectorWidget
-            connectorType={this.state.connectorType}
+            connectorType={this.props.selectedConnectorType}
             onConnectorSelected={this.props.onConnectorSelected}
             organizationKey={this.props.organizationKey}
             onConnectorsUpdated={this.props.onConnectorsUpdated}
