@@ -48,7 +48,6 @@ export const AddProjectWorkflow = withNavigationContext(
       this.state = {
         current: 0,
         selectedConnectorType: null,
-        availableConnectors: [],
         selectedConnector: {},
         selectedProjects: [],
         importedProjectKeys: [],
@@ -82,11 +81,6 @@ export const AddProjectWorkflow = withNavigationContext(
       })
     }
 
-    onConnectorsUpdated(connectors) {
-      this.setState({
-        availableConnectors: connectors
-      })
-    }
 
     onProjectsSelected(selectedProjects) {
       this.setState({
@@ -191,7 +185,6 @@ export const AddProjectWorkflow = withNavigationContext(
               React.createElement(steps[current].content, {
                   onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
                   selectedConnectorType: this.state.selectedConnectorType,
-                  onConnectorsUpdated: this.onConnectorsUpdated.bind(this),
                   onConnectorSelected: this.onConnectorSelected.bind(this),
                   selectedConnector: this.state.selectedConnector,
                   onProjectsSelected: this.onProjectsSelected.bind(this),

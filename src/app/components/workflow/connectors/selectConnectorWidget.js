@@ -66,7 +66,6 @@ export const SelectConnectorWidget =
     {
       connectorType,
       onConnectorSelected,
-      onConnectorsUpdated,
       viewerContext,
       submissionCache: {
         submit,
@@ -97,9 +96,6 @@ export const SelectConnectorWidget =
             organizationKey: organizationKey,
             connectorType: connectorType,
           }}
-          onCompleted={
-            data => onConnectorsUpdated && onConnectorsUpdated(data.connectors.edges)
-          }
           pollInterval={connectorType === 'jira' ? 10000 : 0}
         >
           {
