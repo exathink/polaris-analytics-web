@@ -40,8 +40,7 @@ const AppHolder = styled.div`
     }
   }
 
-  .ant-radio-button-wrapper,
-  .ant-pagination {
+  .ant-radio-button-wrapper {
     font-size: 11px;
     @media only screen and (min-width: 768px) {
       font-size: 12px;
@@ -53,7 +52,6 @@ const AppHolder = styled.div`
       font-size: 14px;
     }
   }
-
 
   .ant-steps-item-title:after {
     top: 10px;

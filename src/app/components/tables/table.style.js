@@ -2,26 +2,15 @@ import styled from 'styled-components';
 
 const CompactStyle = ComponentName => styled(ComponentName)`
 .ant-table {
+  min-height: 40vh;
   .ant-table-content {
     .ant-table-body {
       .ant-table-thead tr th {
         padding: 7px;
       }
-    }
-  }
-}
-.ant-table {
-  .ant-table-content {
-    .ant-table-body {
       .ant-table-tbody tr td {
         padding: 4px;
       }
-    }
-  }
-}
-.ant-table {
-  .ant-table-content {
-    .ant-table-body {
       .ant-table-thead tr th,
       .ant-table-tbody tr td {
         white-space: nowrap;
@@ -56,6 +45,19 @@ const CompactStyle = ComponentName => styled(ComponentName)`
         }
       }
     }
+  }
+}
+
+.ant-pagination {
+  font-size: 11px;
+  @media only screen and (min-width: 768px) {
+    font-size: 12px;
+  }
+  @media only screen and (min-width: 992px) {
+    font-size: 13px;
+  }
+  @media only screen and (min-width: 1200px) {
+    font-size: 14px;
   }
 }
 `;
