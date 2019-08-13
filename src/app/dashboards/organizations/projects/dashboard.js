@@ -18,31 +18,20 @@ export default () => (
   <OrganizationDashboard
     pollInterval={60 * 1000}
     render={
-      ({organization, context}) => (
+      ({organization, context, lastRefresh}) => (
         <Dashboard
           dashboard={`${dashboard_id}`}
         >
-          <DashboardRow h={"70%"}>
-            <DashboardWidget
-              w={1}
-              name="projects"
-              title={"Projects"}
-              controls={[
-                () =>
-                  <Button type="primary" onClick={()=>context.go('.', 'new')}>
-                    <Icon type="plus"/> New Project
-                  </Button>
-              ]}
-              render={
-                () =>
-                  <ProjectsTableWidget
-                    organizationKey={organization.key}
-                  />
-              }
-              showDetail={false}
-            />
-          </DashboardRow>
-          <DashboardRow h='22%'>
+          <DashboardRow
+            h='22%'
+            title={"Projects"}
+            controls={[
+              () =>
+                <Button type="primary" onClick={() => context.go('.', 'new')}>
+                  <Icon type="plus"/> New Project
+                </Button>
+            ]}
+          >
             <DashboardWidget
               w={1 / 2}
               name="project-activity-levels"
@@ -56,8 +45,8 @@ export default () => (
                     childContext={Projects}
                     enableDrillDown={true}
                     view={view}
-                    pageSize={50}
-                    referenceDate={organization.latestCommit}
+                    referenceDate={lastRefresh}
+                    referenceCount={organization.workItemsSourceCount}
                   />
               }
               showDetail={true}
@@ -82,6 +71,20 @@ export default () => (
               showDetail={true}
             />
           </DashboardRow>
+          <DashboardRow h={"68%"}>
+            <DashboardWidget
+              w={1}
+              name="projects"
+              render={
+                () =>
+                  <ProjectsTableWidget
+                    organizationKey={organization.key}
+                  />
+              }
+              showDetail={false}
+            />
+          </DashboardRow>
+
 
         </Dashboard>
       )

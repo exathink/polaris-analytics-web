@@ -1,6 +1,7 @@
 import React from 'react';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
+import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./selectProjectsStep";
 import {ConfigureImportStep} from "./configureImportStep";
@@ -15,7 +16,12 @@ const {Step} = Steps;
 
 const steps = [
   {
-    title: 'Select Connector',
+    title: 'Select Provider',
+    content: SelectIntegrationStep,
+    showNext: false
+  },
+  {
+    title:  'Select Connector',
     content: SelectConnectorStep,
     showNext: false
   },
@@ -41,6 +47,7 @@ export const AddProjectWorkflow = withNavigationContext(
       super(props);
       this.state = {
         current: 0,
+        selectedConnectorType: null,
         selectedConnector: {},
         selectedProjects: [],
         importedProjectKeys: [],
@@ -55,17 +62,25 @@ export const AddProjectWorkflow = withNavigationContext(
     prev() {
       // if we are in the final stage, back should take us to Select Projects
       // since we will have cleared the selected projects at that point.
-      const current = this.state.current < 3 ? this.state.current - 1 : 1;
+      const current = this.state.current < 4 ? this.state.current - 1 : 2;
       this.setState({current});
+    }
+
+    onConnectorTypeSelected(connectorType) {
+      this.setState({
+        current: 1,
+        selectedConnectorType: connectorType,
+      })
     }
 
     onConnectorSelected(connector) {
       this.setState({
-        current: 1,
+        current: 2,
         selectedConnector: connector,
         selectedProjects: this.state.selectedConnector.key !== connector.key ? [] : this.state.selectedProjects
       })
     }
+
 
     onProjectsSelected(selectedProjects) {
       this.setState({
@@ -119,12 +134,12 @@ export const AddProjectWorkflow = withNavigationContext(
       try {
         const result = await work_tracking_service.mutate({
           mutation: gql`
-            mutation importProjects($importProjectsInput: ImportProjectsInput!) {
-                importProjects(importProjectsInput: $importProjectsInput) {
-                    projectKeys
-                }
-            }
-        `,
+              mutation importProjects($importProjectsInput: ImportProjectsInput!) {
+                  importProjects(importProjectsInput: $importProjectsInput) {
+                      projectKeys
+                  }
+              }
+          `,
           variables: {
             importProjectsInput: {
               accountKey: viewerContext.accountKey,
@@ -140,7 +155,7 @@ export const AddProjectWorkflow = withNavigationContext(
         })
         if (result.data) {
           this.setState({
-            current: 3,
+            current: 4,
             importedProjectKeys: result.data.importProjects.projectKeys,
             selectedProjects: []
           })
@@ -154,25 +169,30 @@ export const AddProjectWorkflow = withNavigationContext(
       const {current} = this.state;
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
-      const {context, organization} = this.props;
+      const {context, organization, onDone} = this.props;
       return (
         <React.Fragment>
           <Steps current={current}>
-            {steps.map(item => (
-              <Step key={item.title} title={item.title} />
+            {steps.map((item, index) => (
+              <Step key={index}
+                    style={index > current ? {display: 'none'} : {}}
+                    title={item.title || item.renderTitle && item.renderTitle(this.state)}
+              />
             ))}
           </Steps>
           <div className="steps-content">
             {
               React.createElement(steps[current].content, {
-                onConnectorSelected: this.onConnectorSelected.bind(this),
-                selectedConnector: this.state.selectedConnector,
-                onProjectsSelected: this.onProjectsSelected.bind(this),
-                selectedProjects: this.state.selectedProjects,
-                onImportConfigured: this.onImportConfigured.bind(this),
-                importedProjectKeys: this.state.importedProjectKeys,
-                organizationKey: organization.key
-              }
+                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+                  selectedConnectorType: this.state.selectedConnectorType,
+                  onConnectorSelected: this.onConnectorSelected.bind(this),
+                  selectedConnector: this.state.selectedConnector,
+                  onProjectsSelected: this.onProjectsSelected.bind(this),
+                  selectedProjects: this.state.selectedProjects,
+                  onImportConfigured: this.onImportConfigured.bind(this),
+                  importedProjectKeys: this.state.importedProjectKeys,
+                  organizationKey: organization.key
+                }
               )
             }
           </div>
@@ -180,18 +200,18 @@ export const AddProjectWorkflow = withNavigationContext(
           <div className="steps-action">
             {current > 0 && (
               <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                {current < 3 ? 'Back' : 'Import More Projects'}
+                {current < 4 ? 'Back' : 'Import More Projects'}
               </Button>
             )}
             {currentStep.showNext && current < steps.length - 1 && !disableNext && (
               <Button type="primary" onClick={() => this.next()}>
                 Next
-            </Button>
+              </Button>
             )}
             {(disableNext || current === steps.length - 1) && (
-              <Button type="primary" onClick={() => context.go('..', 'projects')}>
+              <Button type="primary" onClick={() => onDone && onDone(this.state.selectedProjects)}>
                 Done
-            </Button>
+              </Button>
             )}
 
           </div>

@@ -197,10 +197,10 @@ function withForm(FormFields, options) {
         drawer ?
           <React.Fragment>
             <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
-              {noPlus || <Icon type="plus"/>} {drawerButtonTitle}
+              {noPlus || <Icon type="plus"/>} {this.props.title || drawerButtonTitle}
             </Button>
             <Drawer
-              title={partProps.title || title}
+              title={this.props.title || partProps.title || title}
               width={720}
               onClose={this.onClose.bind(this)}
               visible={this.state.visible}

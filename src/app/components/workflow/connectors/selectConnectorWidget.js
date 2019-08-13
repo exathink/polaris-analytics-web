@@ -4,10 +4,13 @@ import {compose, Query} from "react-apollo";
 import gql from "graphql-tag";
 import {withSubmissionCache} from "../../forms/withSubmissionCache";
 import {ConnectorsTable} from "./connectorsTable";
-
+import {getConnectorTypeDisplayName} from "./utility";
 import {withMutation} from "../../graphql/withMutation";
 import {withPollingManager} from "../../graphql/withPollingManager";
 import {NewConnectorFormButton} from "./newConnectorFormButton";
+import {CreateConnectorInstructions} from "./createConnectorInstructions";
+
+import './connectors.css'
 import {CREATE_CONNECTOR, DELETE_CONNECTOR, REGISTER_CONNECTOR, TEST_CONNECTOR} from "./mutations";
 
 
@@ -17,7 +20,6 @@ function urlMunge(connectorType, url) {
   }
   return url;
 }
-
 
 
 const ALL_CONNECTORS_QUERY = gql`
@@ -94,7 +96,6 @@ export const SelectConnectorWidget =
             organizationKey: organizationKey,
             connectorType: connectorType,
           }}
-
           pollInterval={connectorType === 'jira' ? 10000 : 0}
         >
           {
@@ -105,53 +106,59 @@ export const SelectConnectorWidget =
                 connectors = data.connectors.edges.map(edge => edge.node).filter(node => !node.archived);
               }
               return (
-                <React.Fragment>
-                  <ConnectorsTable
-                    connectorType={connectorType}
-                    connectors={connectors}
-                    loading={loading}
-                    onConnectorSelected={onConnectorSelected}
-                    onConnectorDeleted={
-                      (record) => deleteConnector({
-                        variables: {
-                          deleteConnectorInput: {
-                            connectorKey: record.key
-                          }
+                <div className={'select-connector'}>
+                  {
+                    connectors.length > 0 ?
+                      <ConnectorsTable
+                        connectorType={connectorType}
+                        connectors={connectors}
+                        loading={loading}
+                        onConnectorSelected={onConnectorSelected}
+                        onConnectorDeleted={
+                          (record) => deleteConnector({
+                            variables: {
+                              deleteConnectorInput: {
+                                connectorKey: record.key
+                              }
+                            }
+                          })
                         }
-                      })
-                    }
-                    onConnectorRegistered={
-                      (values) => submit(
-                        values => registerConnector({
-                          variables: {
-                            registerConnectorInput: {
-                              accountKey: viewerContext.accountKey,
-                              organizationKey: organizationKey,
-                              connectorKey: values.key,
-                              name: values.name,
-                            }
-                          }
-                        })
-                      )(values)
-                    }
-                    onConnectorTested={
-                      (values) => submit(
-                        values => testConnector({
-                          variables: {
-                            testConnectorInput: {
-                              connectorKey: values.key
-                            }
-                          }
-                        })
-                      )(values)
-                    }
-                    lastRegistrationError={registerConnectorResult.error}
-                    lastRegistrationSubmission={lastSubmission}
-                  />
+                        onConnectorRegistered={
+                          (values) => submit(
+                            values => registerConnector({
+                              variables: {
+                                registerConnectorInput: {
+                                  accountKey: viewerContext.accountKey,
+                                  organizationKey: organizationKey,
+                                  connectorKey: values.key,
+                                  name: values.name,
+                                }
+                              }
+                            })
+                          )(values)
+                        }
+                        onConnectorTested={
+                          (values) => submit(
+                            values => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: values.key
+                                }
+                              }
+                            })
+                          )(values)
+                        }
+                        lastRegistrationError={registerConnectorResult.error}
+                        lastRegistrationSubmission={lastSubmission}
+                      />
+                      :
+                      <CreateConnectorInstructions connectorType={connectorType}/>
+                  }
                   {
                     viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
                       < NewConnectorFormButton
                         connectorType={connectorType}
+                        title={connectors.length > 0 ? 'Add Connector' : `Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
                         onSubmit={
                           submit(
                             values =>
@@ -176,16 +183,16 @@ export const SelectConnectorWidget =
                       />
                       :
                       connectors.length === 0 &&
-                        <span>Please contact an administrator for your organization to add a connector</span>
+                      <span>Please contact an administrator for your organization to add a connector</span>
                   }
-                </React.Fragment>
+                </div>
               )
             }
           }
         </Query>
       );
     }
-    )
+  )
 
 
 

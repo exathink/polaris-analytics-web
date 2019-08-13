@@ -23,12 +23,12 @@ export default () => (
         <DashboardRow
           h='22%'
           title={"Repositories"}
-            controls={[
-                () =>
-                  <Button type="primary" onClick={()=>context.go('.', 'new')}>
-                    <Icon type="download"/> Import Repositories
-                  </Button>
-              ]}
+          controls={[
+              () =>
+                <Button type="primary" onClick={()=>context.go('.', 'new')}>
+                  <Icon type="download"/> Import Repositories
+                </Button>
+            ]}
         >
           <DashboardWidget
             w={1 / 2}

@@ -14,14 +14,26 @@ export default withViewerContext(
   ) => (
   <OrganizationDashboard
     render={
-      ({organization, context}) => (
+      ({organization, context, refresh}) => (
         <Dashboard
           dashboard={`${dashboard_id}`}
         >
           <DashboardRow h={"95%"}>
             <DashboardWidget
               w={1}
-              render={() => <AddProjectWorkflow organization={organization} viewerContext={viewerContext}/>}
+              render={
+                () =>
+                  <AddProjectWorkflow
+                    organization={organization}
+                    viewerContext={viewerContext}
+                    onDone={
+                      () => {
+                        refresh();
+                        context.go('..', 'projects')
+                      }
+                    }
+                  />
+              }
             />
           </DashboardRow>
         </Dashboard>
