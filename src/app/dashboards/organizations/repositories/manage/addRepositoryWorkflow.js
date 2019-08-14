@@ -136,6 +136,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {context, organization, onDone} = this.props;
       return (
         <React.Fragment>
+          <h2>Import Repositories</h2>
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step key={index}

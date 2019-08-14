@@ -11,6 +11,7 @@ import Repositories from "../../repositories/context";
 import Button from "../../../../components/uielements/button";
 import {IconCard} from "../../../components/cards/iconCard";
 import Projects from "../../projects/context";
+import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -100,29 +101,9 @@ const NoRepositoriesView = ({context}) => (
     <div style={{padding: '30px'}}>
       <Row gutter={16}>
         <Col offset={10} span={24}>
-          <a onClick={() => context.go('.', 'new')}>
-            <Card
-              hoverable={true}
-              bordered={true}
-              title={"Import Repositories"}
-              cover={
-                <img
-                  alt="example"
-                  src="/images/third-party/git-logomark-black@2x.png"
-                />
-              }
-              style={{width: 300, marginTop: 100}}
-              actions={[
-
-                <Icon type="download" key="edit"/>,
-
-              ]}
-            >
-            </Card>
-          </a>
+          <ImportRepositoriesCard onClick={()=>context.go('.', 'new')}/>
         </Col>
       </Row>
     </div>
-
   </div>
 );

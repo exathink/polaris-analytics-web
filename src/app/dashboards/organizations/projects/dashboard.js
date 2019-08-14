@@ -11,6 +11,7 @@ import {Icon, Row, Card, Col} from "antd";
 import Button from "../../../../components/uielements/button";
 
 import {IconCard} from "../../../components/cards/iconCard";
+import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
 
 const dashboard_id = 'dashboards.projects.organization.instance';
 
@@ -100,26 +101,7 @@ const NoProjectsView = ({context}) => (
     <div style={{padding: '30px'}}>
       <Row gutter={16}>
         <Col offset={10} span={24}>
-          <a onClick={() => context.go('.', 'new')}>
-            <Card
-              hoverable={true}
-              bordered={true}
-              title={"Import Projects"}
-              cover={
-                <img
-                  alt="example"
-                  src="/images/third-party/planning-12-512.png"
-                />
-              }
-              style={{width: 300, marginTop: 100}}
-              actions={[
-
-                <Icon type="download" key="edit"/>,
-
-              ]}
-            >
-            </Card>
-          </a>
+          <ImportProjectsCard onClick={() => context.go('.', 'new')}/>
         </Col>
       </Row>
     </div>
