@@ -172,11 +172,12 @@ export const AddProjectWorkflow = withNavigationContext(
       const {context, organization, onDone} = this.props;
       return (
         <React.Fragment>
+          <h2>Import Projects</h2>
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step key={index}
                     style={index > current ? {display: 'none'} : {}}
-                    title={item.title || item.renderTitle && item.renderTitle(this.state)}
+                    title={item.title}
               />
             ))}
           </Steps>
