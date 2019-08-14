@@ -14,6 +14,7 @@ import Contributors from "../../contributors/context";
 import {Card, Col, Icon, Row} from "antd";
 import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
 import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
+import {ActivityDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -134,53 +135,10 @@ export const dashboard = () => (
             </DashboardRow>
           </Dashboard>
           :
-          <NoDataLandingView organization={organization} context={context}/>
+          <ActivityDashboardSetup organization={organization} context={context}/>
     }
   />
 );
 export default dashboard;
 
 
-const NoDataLandingView = ({organization, context}) => {
-  const noProjects = organization.projectCount === 0;
-  const noRepositories = organization.repositoryCount === 0;
-
-  return (
-    <div className={'no-repositories'}>
-
-      <div style={{padding: '30px'}}>
-        <Row>
-          <Col offset={6} span={12}>
-            <h1>Setup Organization {organization.name}</h1>
-            <p>
-              To view activity for this organization, you must import project data from a work tracking system
-               that you use to manage your engineering projects, and commit data from from a Git based version control system.
-              The process is simple and should take under 30 minutes in most cases. You may import project and commit data in any order.
-            </p>
-            <p>
-              Once the initial data import is complete, Urjuna will
-              keep your data updated automatically in real-time.
-            </p>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          {
-            noProjects &&
-              <Col offset={6} span={6}>
-                <ImportProjectsCard onClick={() => context.go('..', 'projects')}/>
-              </Col>
-          }
-          {
-            noRepositories &&
-            <Col span={12}>
-              <ImportRepositoriesCard onClick={() => context.go('..', 'repositories')}/>
-            </Col>
-          }
-
-        </Row>
-      </div>
-
-    </div>
-
-  )
-}
