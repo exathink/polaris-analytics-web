@@ -12,6 +12,7 @@ import Button from "../../../../components/uielements/button";
 import {IconCard} from "../../../components/cards/iconCard";
 import Projects from "../../projects/context";
 import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
+import {RepositoriesDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -91,19 +92,8 @@ export default () => (
             </DashboardRow>
           </Dashboard>
           :
-          <NoRepositoriesView context={context}/>
+          <RepositoriesDashboardSetup context={context}/>
     )}
   />
 );
 
-const NoRepositoriesView = ({context}) => (
-  <div className={'no-projects'}>
-    <div style={{padding: '30px'}}>
-      <Row gutter={16}>
-        <Col offset={10} span={24}>
-          <ImportRepositoriesCard onClick={()=>context.go('.', 'new')}/>
-        </Col>
-      </Row>
-    </div>
-  </div>
-);

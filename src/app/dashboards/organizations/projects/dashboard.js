@@ -7,11 +7,9 @@ import {OrganizationDashboard} from "../organizationDashboard";
 import {ProjectsTableWidget} from "./manage/projectsTable";
 
 import Projects from "../../projects/context"
-import {Icon, Row, Card, Col} from "antd";
+import {Icon} from "antd";
 import Button from "../../../../components/uielements/button";
-
-import {IconCard} from "../../../components/cards/iconCard";
-import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
+import {ProjectsDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.projects.organization.instance';
 
@@ -91,21 +89,10 @@ export default () => (
 
           </Dashboard>
           :
-          <NoProjectsView context={context}/>
+          <ProjectsDashboardSetup context={context}/>
       )
     }/>
 );
 
-const NoProjectsView = ({context}) => (
-  <div className={'no-projects'}>
-    <div style={{padding: '30px'}}>
-      <Row gutter={16}>
-        <Col offset={10} span={24}>
-          <ImportProjectsCard onClick={() => context.go('.', 'new')}/>
-        </Col>
-      </Row>
-    </div>
 
-  </div>
-);
 

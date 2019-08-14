@@ -28,17 +28,17 @@ export const ActivityDashboardSetup = ({organization, context}) => {
             }
           </Col>
         </Row>
-        <Row gutter={16}>
+        <Row type={'flex'}>
           {
             noProjects &&
             <Col offset={projectsOffset} span={6}>
-              <ImportProjectsCard onClick={() => context.go('..', 'projects')}/>
+              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'projects')}/>
             </Col>
           }
           {
             noRepositories &&
             <Col offset={repositoriesOffset} span={6}>
-              <ImportRepositoriesCard onClick={() => context.go('..', 'repositories')}/>
+              <ImportRepositoriesCard title={"Connect Version Control System"} onClick={() => context.go('..', 'repositories')}/>
             </Col>
           }
 
