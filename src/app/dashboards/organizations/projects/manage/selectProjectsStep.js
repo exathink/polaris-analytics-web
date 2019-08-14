@@ -73,23 +73,22 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
 const cols = [
   {
     title: 'Remote Project Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['ascend'],
-    width: '30%',
+    name: 'name',
+    width: '40%',
+    isSortField: true,
     isSearchField: true
   },
   {
     title: 'Description',
-    dataIndex: 'description',
-    key: 'description'
+    name: 'description',
+    width: '60%'
   }
-]
+];
 
-export const SelectProjectsStep = withSearch(
+export const SelectProjectsStep = (
   compose(
-    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
+    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
+    withSearch(cols)
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
@@ -128,26 +127,22 @@ export const SelectProjectsStep = withSearch(
                     </Button>
                     {
                       workItemsSources.length > 0 ?
-                        <React.Fragment>
-
-                          <CompactTable
-                            size="small"
-                            dataSource={workItemsSources}
-                            columns={columns}
-                            loading={loading}
-                            rowKey={record => record.key}
-                            rowSelection={{
-                              selectedRowKeys: selectedProjects.map(project => project.key),
-                              onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
-                            }}
-                            pagination={{
-                              showTotal: total => `${total} Projects`,
-                              defaultPageSize: 10,
-                              hideOnSinglePage: true
-                            }}
-                          >
-                          </CompactTable>
-                        </React.Fragment>
+                        <CompactTable
+                          dataSource={workItemsSources}
+                          columns={columns}
+                          loading={loading}
+                          rowKey={record => record.key}
+                          rowSelection={{
+                            selectedRowKeys: selectedProjects.map(project => project.key),
+                            onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
+                          }}
+                          pagination={{
+                            showTotal: total => `${total} Projects`,
+                            defaultPageSize: 10,
+                            hideOnSinglePage: true
+                          }}
+                        >
+                        </CompactTable>
                         :
                         <NoData message={"No projects imported"} />
                     }
@@ -161,4 +156,4 @@ export const SelectProjectsStep = withSearch(
         )
       }
     }
-  ), cols)
+  ))
