@@ -66,7 +66,7 @@ export const REFETCH_CONNECTOR_REPOSITORIES_QUERY = {
 export const SelectRepositoriesStep = (
   compose(
     withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
-    withSearch()
+    withSearch
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
@@ -112,7 +112,9 @@ export const SelectRepositoriesStep = (
                           rowKey={record => record.key}
                           rowSelection={{
                             selectedRowKeys: selectedRepositories.map(repository => repository.key),
-                            onChange: (selectedKeys, selectedRows) => onRepositoriesSelected(selectedRows),
+                            onSelect: (record, selected) => onRepositoriesSelected([record], selected),
+                            onSelectAll: (selected, selectedRows, changeRows) => onRepositoriesSelected(changeRows, selected)
+
                           }}
                           pagination={{
                             showTotal: total => `${total} Repositories`,

@@ -82,11 +82,19 @@ export const AddRepositoryWorkflow = withNavigationContext(
       })
     }
 
-    onRepositoriesSelected(selectedRepositories) {
+    onRepositoriesSelected(records, selected) {
+      const curSelectedList = this.state.selectedRepositories;
+      let newSelectedList = [];
+      if (selected) {
+        newSelectedList = [...curSelectedList, ...records];
+      } else {
+        newSelectedList = curSelectedList.filter(curRecord => !records.find(newRecord => curRecord.key === newRecord.key));
+      }
       this.setState({
-        selectedRepositories: selectedRepositories
-      })
+        selectedRepositories: newSelectedList
+      });
     }
+
 
     getRepositoryKeys() {
       const {selectedRepositories} = this.state;
@@ -140,8 +148,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step key={index}
-                    style={index > current ? {display: 'none'} : {}}
-                    title={item.title}
+                style={index > current ? {display: 'none'} : {}}
+                title={item.title}
               />
             ))}
           </Steps>

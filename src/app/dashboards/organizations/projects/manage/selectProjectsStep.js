@@ -75,7 +75,7 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
 export const SelectProjectsStep = (
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
-    withSearch()
+    withSearch
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
@@ -121,7 +121,8 @@ export const SelectProjectsStep = (
                           rowKey={record => record.key}
                           rowSelection={{
                             selectedRowKeys: selectedProjects.map(project => project.key),
-                            onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
+                            onSelect: (record, selected) => onProjectsSelected([record], selected),
+                            onSelectAll: (selected, selectedRows, changeRows) => onProjectsSelected(changeRows, selected)
                           }}
                           pagination={{
                             showTotal: total => `${total} Projects`,
