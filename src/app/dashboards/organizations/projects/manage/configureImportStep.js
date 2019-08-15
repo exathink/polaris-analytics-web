@@ -9,6 +9,7 @@ import {Radio} from "antd";
 import {EditableTable, CompactEditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
+import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const inputModeDescription = {
   single: 'Import remote projects into a new Urjuna project',
@@ -112,7 +113,7 @@ export class ConfigureImportStep extends React.Component {
     this.state = {
       importMode: 'single',
       selectedProjects: this.mapSelectedProjects(props.selectedProjects),
-      importedProjectName: props.selectedProjects.length ? props.selectedProjects[0].name : null,
+      importedProjectName: props.selectedProjects.length ? capitalizeFirstLetter(props.selectedProjects[0].name) : null,
       selectedProjectKey: null
     }
   }

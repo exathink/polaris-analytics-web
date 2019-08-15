@@ -1,12 +1,13 @@
 import React from 'react';
 import {Col, Form, Input, Row} from "antd";
 import {EditableTable} from "../../../../components/forms/editableTable";
-
+import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";
 
 const ProjectNameForm = (
   {
     selectedProjects,
+    importedProjectName,
     form: {
       getFieldDecorator
     },
@@ -36,7 +37,7 @@ const ProjectNameForm = (
                 rules: [
                   {required: true, message: 'Imported project name is required'}
                 ],
-                initialValue: selectedProjects[0].name
+                initialValue: importedProjectName || capitalizeFirstLetter(selectedProjects[0].name)
               })(<Input
                 onChange={e => onProjectNameChanged(e.target.value)}
               />)
@@ -47,7 +48,7 @@ const ProjectNameForm = (
     </Form>
   )
 }
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, selectedProjectKey, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -55,6 +56,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
           <ProjectNameForm
             form={form}
             selectedProjects={selectedProjects}
+            importedProjectName={importedProjectName}
             onProjectNameChanged={onProjectNameChanged}
             label={"Urjuna Project"}
           />
