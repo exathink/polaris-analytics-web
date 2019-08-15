@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import { Input, Button, Popconfirm, Form } from 'antd';
+import {Table, CompactTable} from "../tables";
 
 const EditableContext = React.createContext();
 
@@ -93,7 +94,7 @@ export class EditableTable extends React.Component {
 
 
   render() {
-    const { dataSource, columns, handleSave, ...rest } = this.props;
+    const { dataSource, columns, handleSave, compact, ...rest } = this.props;
     const components = {
       body: {
         row: EditableFormRow,
@@ -116,6 +117,16 @@ export class EditableTable extends React.Component {
         }),
       };
     });
+
+    const tableProps = {
+      size:"small",
+      components: components,
+      rowClassName: () => 'editable-row',
+      bordered: true,
+      dataSource: dataSource,
+      columns:mappedColumns,
+      ...rest
+    }
     return (
       <div>
         {
@@ -124,16 +135,18 @@ export class EditableTable extends React.Component {
               Add a row
             </Button>
         }
-        <Table
-          size="small"
-          components={components}
-          rowClassName={() => 'editable-row'}
-          bordered
-          dataSource={dataSource}
-          columns={mappedColumns}
-          {...rest}
-        />
+        {
+          compact ?
+            <CompactTable
+              {...tableProps}
+            />
+            :
+            <Table
+              {...tableProps}
+            />
+        }
       </div>
-    );
+    )
   }
 }
+
