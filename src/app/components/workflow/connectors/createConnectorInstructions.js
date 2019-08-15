@@ -120,7 +120,7 @@ const PivotalConnectorInstructions = () => (
     <h3>Create a Pivotal Tracker Connector</h3>
     <p>
       The Pivotal Tracker Connector for Urjuna integrates with the Pivotal Tracker Rest API.
-      API requests have to be authenticated with credentials for a specific Tracker user,
+      API requests have to be authenticated with an API token for a specific Tracker user,
       on whose behalf the request is being made. You should use an API token for a user who has access to
       all the Tracker Projects that you wish to import in Urjuna.
     </p>
