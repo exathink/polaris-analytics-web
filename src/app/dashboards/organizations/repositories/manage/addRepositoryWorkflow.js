@@ -82,10 +82,30 @@ export const AddRepositoryWorkflow = withNavigationContext(
       })
     }
 
-    onRepositoriesSelected(selectedRepositories) {
+    onRepositoriesSelected(record, selected) {
+      const curSelectedList = this.state.selectedRepositories;
+      let newSelectedList = [];
+      if (selected) {
+        newSelectedList = [...curSelectedList, record];
+      } else {
+        newSelectedList = curSelectedList.filter(item => item.key !== record.key);
+      }
       this.setState({
-        selectedRepositories: selectedRepositories
-      })
+        selectedRepositories: newSelectedList
+      });
+    }
+
+    onAllRepositoriesSelected(selected, selectedRows, changeRows) {
+      const curSelectedList = this.state.selectedRepositories;
+      let newSelectedList = [];
+      if (selected) {
+        newSelectedList = [...curSelectedList, ...changeRows];
+      } else {
+        newSelectedList = curSelectedList.filter(currentRecord => !changeRows.find(changedRecord => currentRecord.key !== changedRecord.key));
+      }
+      this.setState({
+        selectedRepositories: newSelectedList
+      });
     }
 
     getRepositoryKeys() {
@@ -140,8 +160,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step key={index}
-                    style={index > current ? {display: 'none'} : {}}
-                    title={item.title}
+                style={index > current ? {display: 'none'} : {}}
+                title={item.title}
               />
             ))}
           </Steps>
@@ -154,6 +174,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
                 onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                onAllRepositoriesSelected: this.onAllRepositoriesSelected.bind(this),
                 selectedRepositories: this.state.selectedRepositories,
                 onDoImport: this.onDoImport.bind(this),
                 importedRepositoryKeys: this.state.importedRepositoryKeys

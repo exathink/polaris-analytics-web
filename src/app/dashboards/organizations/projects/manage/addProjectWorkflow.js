@@ -21,7 +21,7 @@ const steps = [
     showNext: false
   },
   {
-    title:  'Select Connector',
+    title: 'Select Connector',
     content: SelectConnectorStep,
     showNext: false
   },
@@ -81,12 +81,32 @@ export const AddProjectWorkflow = withNavigationContext(
       })
     }
 
-
-    onProjectsSelected(selectedProjects) {
+    onProjectsSelected(record, selected) {
+      const curSelectedList = this.state.selectedProjects;
+      let newSelectedList = [];
+      if (selected) {
+        newSelectedList = [...curSelectedList, record];
+      } else {
+        newSelectedList = curSelectedList.filter(item => item.key !== record.key);
+      }
       this.setState({
-        selectedProjects: selectedProjects
-      })
+        selectedProjects: newSelectedList
+      });
     }
+
+    onAllProjectsSelected(selected, selectedRows, changeRows) {
+      const curSelectedList = this.state.selectedProjects;
+      let newSelectedList = [];
+      if (selected) {
+        newSelectedList = [...curSelectedList, ...changeRows];
+      } else {
+        newSelectedList = curSelectedList.filter(currentRecord => !changeRows.find(changedRecord => currentRecord.key !== changedRecord.key));
+      }
+      this.setState({
+        selectedProjects: newSelectedList
+      });
+    }
+
 
     buildProjectsInput(importMode, selectedProjects, importedProjectName, importedProjectKey) {
       switch (importMode) {
@@ -176,24 +196,25 @@ export const AddProjectWorkflow = withNavigationContext(
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step key={index}
-                    style={index > current ? {display: 'none'} : {}}
-                    title={item.title}
+                style={index > current ? {display: 'none'} : {}}
+                title={item.title}
               />
             ))}
           </Steps>
           <div className="steps-content">
             {
               React.createElement(steps[current].content, {
-                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
-                  selectedConnectorType: this.state.selectedConnectorType,
-                  onConnectorSelected: this.onConnectorSelected.bind(this),
-                  selectedConnector: this.state.selectedConnector,
-                  onProjectsSelected: this.onProjectsSelected.bind(this),
-                  selectedProjects: this.state.selectedProjects,
-                  onImportConfigured: this.onImportConfigured.bind(this),
-                  importedProjectKeys: this.state.importedProjectKeys,
-                  organizationKey: organization.key
-                }
+                onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+                selectedConnectorType: this.state.selectedConnectorType,
+                onConnectorSelected: this.onConnectorSelected.bind(this),
+                selectedConnector: this.state.selectedConnector,
+                onProjectsSelected: this.onProjectsSelected.bind(this),
+                onAllProjectsSelected: this.onAllProjectsSelected.bind(this),
+                selectedProjects: this.state.selectedProjects,
+                onImportConfigured: this.onImportConfigured.bind(this),
+                importedProjectKeys: this.state.importedProjectKeys,
+                organizationKey: organization.key
+              }
               )
             }
           </div>

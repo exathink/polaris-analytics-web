@@ -83,9 +83,8 @@ export const SelectRepositoriesStep = (
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, columns} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, onAllRepositoriesSelected, trackingReceiptCompleted, columns} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
-
         return (
           <Query
             client={vcs_service}
@@ -126,7 +125,8 @@ export const SelectRepositoriesStep = (
                           rowKey={record => record.key}
                           rowSelection={{
                             selectedRowKeys: selectedRepositories.map(repository => repository.key),
-                            onChange: (selectedKeys, selectedRows) => onRepositoriesSelected(selectedRows),
+                            onSelect: (record, selected) => onRepositoriesSelected(record, selected),
+                            onSelectAll: (selected, selectedRows, changeRows) => onAllRepositoriesSelected(selected, selectedRows, changeRows)
                           }}
                           pagination={{
                             total: repositories.length,

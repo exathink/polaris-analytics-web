@@ -6,10 +6,10 @@ const CompactStyle = ComponentName => styled(ComponentName)`
   .ant-table-content {
     .ant-table-body {
       .ant-table-thead tr th {
-        padding: 7px 0;
+        padding: 7px 6px;
       }
       .ant-table-tbody tr td {
-        padding: 4px 0;
+        padding: 4px 6px;
       }
       .ant-table-thead tr th,
       .ant-table-tbody tr td {
