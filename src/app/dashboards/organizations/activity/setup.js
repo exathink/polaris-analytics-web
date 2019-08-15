@@ -68,7 +68,7 @@ const InitialSetupText = ({organization}) => (
 
 const SetupProjectsText = ({organization}) => (
   <React.Fragment>
-    <h1>Set up Work Tracking System for {organization.name}</h1>
+    <h1>Connect Work Tracking System for {organization.name}</h1>
     <p>
       Congratulations! You have completed the version control system setup for {organization.name}.
       Now let's finish by completing the work tracking system setup.
@@ -78,7 +78,7 @@ const SetupProjectsText = ({organization}) => (
 
 const SetupRepositoriesText = ({organization}) => (
   <React.Fragment>
-    <h1>Set up Version Control System for {organization.name}</h1>
+    <h1>Connect Version Control System for {organization.name}</h1>
     <p>
       Congratulations! You have completed the work tracking system setup for {organization.name}.
       Now let's finish by completing the version control system setup.

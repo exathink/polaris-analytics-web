@@ -11,18 +11,15 @@ export const ProjectsDashboardSetup = ({context}) => (
           <h1>Connect your Work Tracking System</h1>
           <p>
             Connecting your work tracking system allows Urjuna to analyze your product
-            delivery process. Rather than mapping projects one to one with those in your work tracking system
-            we recommend that you model the primary customer facing product lines delivered by this organization
-            as Urjuna Projects.
+            delivery process. A <em>Project</em> in Urjuna should model a single customer facing product or product line delivered
+            by this organization. A single Urjuna project may be mapped to <em>one or more</em> remote projects in your work tracking system.
           </p>
           <p>
-            A single Urjuna project may be mapped to <em>one or more</em> remote projects in your work tracking system. We will
-            provide aggregate metrics across these remote projects at the Urjuna project level, as well as allow you drill down into each of the
-            sub-projects in detail. This gives you consolidated visibility across product work streams in a manner
+            The Urjuna project will aggregate metrics across its remote sub-projects, as well as allow you drill down into each of the
+            sub-projects in further detail. This gives you consolidated visibility across product work streams in a manner
             that aligns with the way your products are delivered to customers, while also getting granular visibility into
             execution work streams in your work tracking system.
           </p>
-
         </Col>
       </Row>
       <Row gutter={16}>

@@ -20,10 +20,9 @@ export const RepositoriesDashboardSetup = ({context}) => (
             in real-time as new commits are made.
           </p>
           <p>
-            Note: <em>Each git repository is cloned and analyzed in an ephemeral container that is destroyed permanently along with any disk resources used,
-            immediately after each analysis of a repository.
-            Urjuna only retains the analyzed commit history. We do not persist your source code permanently or retain any copies of your
-            code other than when it under active analysis.</em>
+            Note: <em>Each git repository is cloned and analyzed in an ephemeral container that is destroyed permanently along with any disk resources used
+            to persist copies of your source code, immediately after each analysis of a repository. Urjuna only retains the analyzed commit history and never makes copies
+            of your source code other than when it is under active analysis.</em>
           </p>
 
 
