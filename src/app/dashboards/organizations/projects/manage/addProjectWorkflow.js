@@ -171,7 +171,7 @@ export const AddProjectWorkflow = withNavigationContext(
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
       const {context, organization, onDone} = this.props;
       return (
-        <React.Fragment>
+        <div style={{height: "100%"}}>
           <h2>Import Projects</h2>
           <Steps current={current}>
             {steps.map((item, index) => (
@@ -216,7 +216,7 @@ export const AddProjectWorkflow = withNavigationContext(
             )}
 
           </div>
-        </React.Fragment>
+        </div>
       );
     }
   })
