@@ -110,7 +110,7 @@ export const SelectConnectorWidget =
                   {
                     connectors.length > 0 ?
                       <React.Fragment>
-                        <h4>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h4>
+                        <h3>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
                         <ConnectorsTable
                           connectorType={connectorType}
                           connectors={connectors}
@@ -155,35 +155,39 @@ export const SelectConnectorWidget =
                         />
                       </React.Fragment>
                       :
-                      <CreateConnectorInstructions connectorType={connectorType}/>
+                      <h3>{`No available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
                   }
+
                   {
                     viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
-                      < NewConnectorFormButton
-                        connectorType={connectorType}
-                        title={connectors.length > 0 ? 'Add Connector' : `Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
-                        onSubmit={
-                          submit(
-                            values =>
-                              createConnector({
-                                variables: {
-                                  createConnectorInput: {
-                                    name: values.name,
-                                    connectorType: connectorType,
-                                    accountKey: viewerContext.accountKey,
-                                    organizationKey: organizationKey,
-                                    baseUrl: urlMunge(connectorType, values.baseUrl),
-                                    apiKey: values.apiKey,
-                                    githubAccessToken: values.githubAccessToken,
-                                    githubOrganization: values.githubOrganization
+                      <React.Fragment>
+                        < NewConnectorFormButton
+                          connectorType={connectorType}
+                          title={`Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
+                          onSubmit={
+                            submit(
+                              values =>
+                                createConnector({
+                                  variables: {
+                                    createConnectorInput: {
+                                      name: values.name,
+                                      connectorType: connectorType,
+                                      accountKey: viewerContext.accountKey,
+                                      organizationKey: organizationKey,
+                                      baseUrl: urlMunge(connectorType, values.baseUrl),
+                                      apiKey: values.apiKey,
+                                      githubAccessToken: values.githubAccessToken,
+                                      githubOrganization: values.githubOrganization
+                                    }
                                   }
-                                }
-                              })
-                          )
-                        }
-                        error={createConnectorResult.error}
-                        lastSubmission={lastSubmission}
-                      />
+                                })
+                            )
+                          }
+                          error={createConnectorResult.error}
+                          lastSubmission={lastSubmission}
+                        />
+                        <CreateConnectorInstructions initial={connectors.length === 0 } connectorType={connectorType}/>
+                      </React.Fragment>
                       :
                       connectors.length === 0 &&
                       <span>Please contact an administrator for your organization to add a connector</span>
