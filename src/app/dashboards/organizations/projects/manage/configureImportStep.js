@@ -196,6 +196,7 @@ export class ConfigureImportStep extends React.Component {
             importMode={importMode}
             organizationKey={organizationKey}
             selectedProjects={selectedProjects}
+            selectedProjectKey={this.state.selectedProjectKey}
             onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
           />
         }

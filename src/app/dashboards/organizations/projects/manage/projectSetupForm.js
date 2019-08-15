@@ -47,7 +47,7 @@ const ProjectNameForm = (
     </Form>
   )
 }
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, selectedProjectKey, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -62,6 +62,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
         {importMode == 'existing' &&
           <OrganizationProjectSelectorWidget
             organizationKey={organizationKey}
+            selectedProjectKey={selectedProjectKey}
             onProjectSelectChanged={onProjectSelectChanged}
             placeholder="Select an existing project"
           />

@@ -27,7 +27,7 @@ export const ORGANIZATION_PROJECT_QUERY = gql`
 export class OrganizationProjectSelectorWidget extends React.Component {
 
   render() {
-    const {organizationKey, placeholder} = this.props;
+    const {organizationKey, selectedProjectKey, placeholder} = this.props;
     return (
       <Query
         client={analytics_service}
@@ -48,6 +48,7 @@ export class OrganizationProjectSelectorWidget extends React.Component {
                     className={'projects-selector'}
                     onChange={value => this.props.onProjectSelectChanged(value)}
                     placeholder={placeholder}
+                    defaultValue={selectedProjectKey}
                   >
                     {projects.map(project =>
                       <Option key={project.node.key}
