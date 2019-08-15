@@ -9,6 +9,8 @@ import {withSearch} from "../../../../components/antHelpers/withSearch";
 import {CompactTable} from "../../../../components/tables";
 import {NoData} from "../../../../components/misc/noData";
 
+const Column = CompactTable;
+
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'pivotal':
@@ -70,31 +72,16 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
-const cols = [
-  {
-    title: 'Remote Project Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['ascend'],
-    width: '30%',
-    isSearchField: true
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description'
-  }
-]
-
-export const SelectProjectsStep = withSearch(
+export const SelectProjectsStep = (
   compose(
-    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
+    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
+    withSearch()
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, columns} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, getColumnSearchProps} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
+
         return (
           <Query
             client={work_tracking_service}
@@ -128,26 +115,35 @@ export const SelectProjectsStep = withSearch(
                     </Button>
                     {
                       workItemsSources.length > 0 ?
-                        <React.Fragment>
-
-                          <CompactTable
-                            size="small"
-                            dataSource={workItemsSources}
-                            columns={columns}
-                            loading={loading}
-                            rowKey={record => record.key}
-                            rowSelection={{
-                              selectedRowKeys: selectedProjects.map(project => project.key),
-                              onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
-                            }}
-                            pagination={{
-                              showTotal: total => `${total} Projects`,
-                              defaultPageSize: 10,
-                              hideOnSinglePage: true
-                            }}
-                          >
-                          </CompactTable>
-                        </React.Fragment>
+                        <CompactTable
+                          dataSource={workItemsSources}
+                          loading={loading}
+                          rowKey={record => record.key}
+                          rowSelection={{
+                            selectedRowKeys: selectedProjects.map(project => project.key),
+                            onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
+                          }}
+                          pagination={{
+                            showTotal: total => `${total} Projects`,
+                            defaultPageSize: 10,
+                            hideOnSinglePage: true
+                          }}
+                        >
+                          <Column
+                            title='Remote Project Name'
+                            dataIndex='name'
+                            key='name'
+                            width='30%'
+                            sorter={(a, b) => a.name.localeCompare(b.name)}
+                            sortDirections={['ascend']}
+                            {...getColumnSearchProps('name')}
+                          />
+                          <Column
+                            title='Description'
+                            dataIndex='description'
+                            key='description'
+                          />
+                        </CompactTable>
                         :
                         <NoData message={"No projects imported"} />
                     }
@@ -161,4 +157,4 @@ export const SelectProjectsStep = withSearch(
         )
       }
     }
-  ), cols)
+  ))

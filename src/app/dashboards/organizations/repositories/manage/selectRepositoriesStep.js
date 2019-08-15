@@ -9,6 +9,8 @@ import {withSearch} from "../../../../components/antHelpers/withSearch";
 import {CompactTable} from "../../../../components/tables";
 import {NoData} from "../../../../components/misc/noData";
 
+const Column = CompactTable;
+
 function getServerUrl(selectedConnector) {
   return selectedConnector.baseUrl;
 }
@@ -61,30 +63,14 @@ export const REFETCH_CONNECTOR_REPOSITORIES_QUERY = {
   })
 };
 
-const cols = [
-  {
-    title: 'Repository Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['ascend'],
-    width: '30%',
-    isSearchField: true
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description'
-  }
-]
-
-export const SelectRepositoriesStep = withSearch(
+export const SelectRepositoriesStep = (
   compose(
-    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
+    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
+    withSearch()
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, columns} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, getColumnSearchProps} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
 
         return (
@@ -120,27 +106,35 @@ export const SelectRepositoriesStep = withSearch(
                     </Button>
                     {
                       repositories.length > 0 ?
-                        <React.Fragment>
-
-                          <CompactTable
-                            size="small"
-                            dataSource={repositories}
-                            columns={columns}
-                            loading={loading}
-                            rowKey={record => record.key}
-                            rowSelection={{
-                              selectedRowKeys: selectedRepositories.map(repository => repository.key),
-                              onChange: (selectedKeys, selectedRows) => onRepositoriesSelected(selectedRows),
-                            }}
-                            pagination={{
-                              total: repositories.length,
-                              showTotal: total => `${total} Repositories`,
-                              defaultPageSize: 10,
-                              hideOnSinglePage: true
-                            }}
-                          >
-                          </CompactTable>
-                        </React.Fragment>
+                        <CompactTable
+                          dataSource={repositories}
+                          loading={loading}
+                          rowKey={record => record.key}
+                          rowSelection={{
+                            selectedRowKeys: selectedRepositories.map(repository => repository.key),
+                            onChange: (selectedKeys, selectedRows) => onRepositoriesSelected(selectedRows),
+                          }}
+                          pagination={{
+                            showTotal: total => `${total} Repositories`,
+                            defaultPageSize: 10,
+                            hideOnSinglePage: true
+                          }}
+                        >
+                          <Column
+                            title='Repository Name'
+                            dataIndex='name'
+                            key='name'
+                            width='30%'
+                            sorter={(a, b) => a.name.localeCompare(b.name)}
+                            sortDirections={['ascend']}
+                            {...getColumnSearchProps('name')}
+                          />
+                          <Column
+                            title='Description'
+                            dataIndex='description'
+                            key='description'
+                          />
+                        </CompactTable>
                         :
                         <NoData message={"No repositories imported"} />
                     }
@@ -154,4 +148,4 @@ export const SelectRepositoriesStep = withSearch(
         )
       }
     }
-  ), cols)
+  ))
