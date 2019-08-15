@@ -22,6 +22,22 @@ function getServerUrl(selectedConnector) {
   }
 }
 
+function getFetchProjectsButtonName(selectedConnector) {
+  switch (selectedConnector.connectorType) {
+    case 'github':
+      return 'Fetch Repositories with Issues';
+      break;
+    case 'pivotal':
+      return 'Fetch Tracker Projects';
+      break;
+    case 'jira':
+      return 'Fetch Jira Projects';
+      break;
+    default:
+      return 'Fetch Projects';
+  }
+}
+
 const REFETCH_PROJECTS_MUTATION = {
   name: 'refetchProjects',
   mutation: gql`
@@ -124,7 +140,7 @@ export const SelectProjectsStep = withSearch(
                         })}
                       loading={refetchProjectsResult.data && !trackingReceiptCompleted}
                     >
-                      Fetch Projects
+                      {getFetchProjectsButtonName(selectedConnector)}
                     </Button>
                     {
                       workItemsSources.length > 0 ?
@@ -149,7 +165,7 @@ export const SelectProjectsStep = withSearch(
                           </CompactTable>
                         </React.Fragment>
                         :
-                        <NoData message={"No projects imported"} />
+                        <NoData message={"No projects imported"}/>
                     }
                   </div>
 
