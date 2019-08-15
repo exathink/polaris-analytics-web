@@ -7,6 +7,7 @@ import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
 import WorkTopic from "./work/topic";
+import ContributorsTopic from "./contributors/topic";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
@@ -22,9 +23,10 @@ class WithOrganization extends React.Component {
     } = this.props;
 
     var optionalTopics = [];
-    if(organization && organization.workItemsSourceCount > 0) {
-      optionalTopics.push(WorkTopic.name)
+    if(organization && organization.commitCount > 0) {
+      optionalTopics.push(ContributorsTopic.name)
     }
+
     if (optionalTopics.length > 0) {
       showOptionalTopics(optionalTopics)
     }
