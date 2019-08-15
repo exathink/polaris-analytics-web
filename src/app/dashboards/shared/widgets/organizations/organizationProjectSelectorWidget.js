@@ -43,8 +43,9 @@ export class OrganizationProjectSelectorWidget extends React.Component {
             const {edges: projects} = data.organization.projects;
             return (
               <React.Fragment>
-                <div  className={'selected-projects'}>
+                <div>
                   <Select
+                    className={'projects-selector'}
                     onChange={value => this.props.onProjectSelectChanged(value)}
                     placeholder={placeholder}
                   >

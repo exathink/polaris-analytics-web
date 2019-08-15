@@ -11,6 +11,7 @@ import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import '../../steps.css';
+import './addProjectsWorkflow.css';
 
 const {Step} = Steps;
 
