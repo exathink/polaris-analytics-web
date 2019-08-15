@@ -5,10 +5,10 @@ import Button from "../../../../components/uielements/button";
 import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
-import {CompactTable} from "../../../components/tables";
+import {Table} from "../../../components/tables";
 import './connectors.css'
 
-const {Column}=CompactTable;
+const {Column}=Table;
 
 function includeHostColumn(connectorType) {
   return connectorType == 'jira';
@@ -32,7 +32,7 @@ export const ConnectorsTable = (
     <div className={'connectors-table'}>
       {
         loading || connectors.length > 0 ?
-          <CompactTable
+          <Table
             size="small"
             dataSource={connectors}
             loading={loading}
@@ -101,7 +101,7 @@ export const ConnectorsTable = (
                 }
               }
             />
-          </CompactTable>
+          </Table>
           :
           null
       }
