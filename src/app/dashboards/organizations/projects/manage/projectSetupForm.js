@@ -10,7 +10,7 @@ const ProjectNameForm = (
     form: {
       getFieldDecorator
     },
-    placeholder,
+    label,
     onProjectNameChanged
   }
 ) => {
@@ -28,7 +28,7 @@ const ProjectNameForm = (
         <Col span={24}>
           <Form.Item
             {...formItemLayout}
-            label={placeholder}
+            label={label}
           >
             {
 
@@ -38,7 +38,6 @@ const ProjectNameForm = (
                 ],
                 initialValue: selectedProjects[0].name
               })(<Input
-                placeholder={placeholder}
                 onChange={e => onProjectNameChanged(e.target.value)}
               />)
             }
@@ -57,7 +56,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             form={form}
             selectedProjects={selectedProjects}
             onProjectNameChanged={onProjectNameChanged}
-            placeholder="Imported project name"
+            label={"Urjuna Project"}
           />
         }
         {importMode == 'existing' &&
@@ -72,7 +71,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             dataSource={selectedProjects}
             columns={[
               {
-                title: selectedProjects.length > 1 ? 'Sub-project' : 'Remote project',
+                title: 'Remote project',
                 dataIndex: 'name',
                 width: '30%'
               },
@@ -92,7 +91,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             handleSave={handleSave}
             pagination={{
               total: selectedProjects.length,
-              defaultPageSize: 1,
+              defaultPageSize: 3,
               hideOnSinglePage: true
             }}
           />

@@ -6,13 +6,13 @@ import gql from "graphql-tag";
 
 import {Radio} from "antd";
 
-import {EditableTable} from "../../../../components/forms/editableTable";
+import {EditableTable, CompactEditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 
 const inputModeDescription = {
-  single: 'Import remote projects as sub-projects of a single local project',
-  existing: 'Import remote projects into an existing project',
+  single: 'Import remote projects into a new Urjuna project',
+  existing: 'Import remote projects into an existing Urjuna project',
   separate: 'Import each remote project as a separate local project'
 }
 
@@ -38,28 +38,19 @@ export const SelectImportMode = ({selectedProjects, importMode, onChange, organi
           if (loading || error) return null;
           const {projectCount} = data.organization;
           return (
-            (projectCount > 0 || selectedProjects.length > 1) &&
+            projectCount > 0 &&
             <React.Fragment>
-              <h4>Import Mode</h4>
+              <div><em>{inputModeDescription[importMode]}</em></div>
               <Radio.Group
                 name="importMode"
                 value={importMode}
                 buttonStyle={"solid"}
                 onChange={onChange}
               >
-                <Radio.Button value={'single'}>Single</Radio.Button>
-                {projectCount > 0 &&
-                  <Radio.Button value={'existing'}>Existing</Radio.Button>
-                }
-                {selectedProjects.length > 1 &&
-                  <Radio.Button value={'separate'}>Separate</Radio.Button>
-                }
+                <Radio.Button value={'single'}>New</Radio.Button>
+                <Radio.Button value={'existing'}>Existing</Radio.Button>
               </Radio.Group>
-              <div className={'import-mode-text'}>
-                {
-                  inputModeDescription[importMode]
-                }
-              </div>
+
             </React.Fragment>
           )
         }
@@ -72,6 +63,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
   <React.Fragment>
     <div className={'selected-projects'}>
       <EditableTable
+        compact={true}
         dataSource={selectedProjects}
         columns={[
           {
@@ -85,7 +77,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
             width: '40%'
           },
           {
-            title: 'Imported project name',
+            title: 'Urjuna Project',
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,
@@ -102,7 +94,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
         handleSave={handleSave}
         pagination={{
           total: selectedProjects.length,
-          defaultPageSize: 1,
+          defaultPageSize: 5,
           hideOnSinglePage: true
 
         }}
@@ -118,7 +110,7 @@ export class ConfigureImportStep extends React.Component {
     super(props);
 
     this.state = {
-      importMode: props.selectedProjects.length === 1 ? 'single' : 'separate',
+      importMode: 'single',
       selectedProjects: this.mapSelectedProjects(props.selectedProjects),
       importedProjectName: props.selectedProjects.length ? props.selectedProjects[0].name : null,
       selectedProjectKey: null
@@ -179,7 +171,7 @@ export class ConfigureImportStep extends React.Component {
     const {organizationKey} = this.props;
     return (
       <div className={'import-project'}>
-        <h3>{selectedProjects.length} {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
+        <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
         {
           <SelectImportMode
             selectedProjects={selectedProjects}
@@ -219,6 +211,7 @@ export class ConfigureImportStep extends React.Component {
           onClick={
             () => this.doImport(importMode)
           }
+          disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
         >Import {selectedProjects.length > 1 ? 'Projects' : 'Project'}</Button>
       </div>
     )
