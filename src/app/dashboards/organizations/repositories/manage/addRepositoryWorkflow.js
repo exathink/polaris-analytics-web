@@ -82,19 +82,11 @@ export const AddRepositoryWorkflow = withNavigationContext(
       })
     }
 
-    onRepositoriesSelected(records, selected) {
-      const curSelectedList = this.state.selectedRepositories;
-      let newSelectedList = [];
-      if (selected) {
-        newSelectedList = [...curSelectedList, ...records];
-      } else {
-        newSelectedList = curSelectedList.filter(curRecord => !records.find(newRecord => curRecord.key === newRecord.key));
-      }
+    onRepositoriesSelected(selectedRepositories) {
       this.setState({
-        selectedRepositories: newSelectedList
+        selectedRepositories
       });
     }
-
 
     getRepositoryKeys() {
       const {selectedRepositories} = this.state;
@@ -161,7 +153,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
                 selectedConnectorType: this.state.selectedConnectorType,
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
-                onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                onRecordsSelected: this.onRepositoriesSelected.bind(this),
                 selectedRepositories: this.state.selectedRepositories,
                 onDoImport: this.onDoImport.bind(this),
                 importedRepositoryKeys: this.state.importedRepositoryKeys

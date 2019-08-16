@@ -79,7 +79,7 @@ export const SelectProjectsStep = (
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, getColumnSearchProps} = this.props;
+        const {selectedConnector, selectedProjects, trackingReceiptCompleted, getColumnSearchProps, handleRecordSelection} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
 
         return (
@@ -121,8 +121,8 @@ export const SelectProjectsStep = (
                           rowKey={record => record.key}
                           rowSelection={{
                             selectedRowKeys: selectedProjects.map(project => project.key),
-                            onSelect: (record, selected) => onProjectsSelected([record], selected),
-                            onSelectAll: (selected, selectedRows, changeRows) => onProjectsSelected(changeRows, selected)
+                            onSelect: (record, selected) => handleRecordSelection([record], selected),
+                            onSelectAll: (selected, selectedRows, changeRows) => handleRecordSelection(changeRows, selected)
                           }}
                           pagination={{
                             showTotal: total => `${total} Projects`,

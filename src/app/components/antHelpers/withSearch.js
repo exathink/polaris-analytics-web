@@ -1,27 +1,13 @@
 import React from 'react';
 import {Input, Icon} from "antd";
 import './withSearch.css';
-
-const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
-    const splitText = textToHighlight.toLowerCase().split(searchWords.toLowerCase())
-    const foundText = textToHighlight.substr(textToHighlight.toLowerCase().indexOf(searchWords.toLowerCase()), searchWords.length)
-    return (
-        searchWords.length && splitText.length > 1
-            ?
-            <React.Fragment>
-                <span>{splitText[0]}</span>
-                <span style={highlightStyle}>{foundText}</span>
-                <span>{splitText[1]}</span>
-            </React.Fragment>
-            : <span>{textToHighlight}</span>
-    )
-}
+import {Highlighter} from './searchHighlighter';
 
 export const withSearch = (WrappedTableComponent) => {
     return class SearchQuery extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {searchText: ''};
+            this.state = {searchText: '', selectedRecords: []};
         }
 
         getColumnSearchProps = dataIndex => ({
@@ -75,8 +61,20 @@ export const withSearch = (WrappedTableComponent) => {
             this.setState({searchText: ''});
         };
 
+        handleRecordSelection = (affectedRecords, selected) => {
+            const curSelectedList = this.state.selectedRecords;
+            let newSelectedList = [];
+            if (selected) {
+                newSelectedList = [...curSelectedList, ...affectedRecords];
+            } else {
+                newSelectedList = curSelectedList.filter(curRecord => !affectedRecords.find(newRecord => curRecord.key === newRecord.key));
+            }
+            this.setState({selectedRecords: newSelectedList})
+            this.props.onRecordsSelected(newSelectedList)
+        }
+
         render() {
-            return <WrappedTableComponent {...this.props} getColumnSearchProps={this.getColumnSearchProps} />
+            return <WrappedTableComponent {...this.props} getColumnSearchProps={this.getColumnSearchProps} handleRecordSelection={this.handleRecordSelection} />
         }
 
     };

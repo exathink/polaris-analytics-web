@@ -70,7 +70,7 @@ export const SelectRepositoriesStep = (
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, getColumnSearchProps} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, getColumnSearchProps, handleRecordSelection} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
 
         return (
@@ -112,8 +112,8 @@ export const SelectRepositoriesStep = (
                           rowKey={record => record.key}
                           rowSelection={{
                             selectedRowKeys: selectedRepositories.map(repository => repository.key),
-                            onSelect: (record, selected) => onRepositoriesSelected([record], selected),
-                            onSelectAll: (selected, selectedRows, changeRows) => onRepositoriesSelected(changeRows, selected)
+                            onSelect: (record, selected) => handleRecordSelection([record], selected),
+                            onSelectAll: (selected, selectedRows, changeRows) => handleRecordSelection(changeRows, selected)
 
                           }}
                           pagination={{

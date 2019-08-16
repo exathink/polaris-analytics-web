@@ -81,16 +81,9 @@ export const AddProjectWorkflow = withNavigationContext(
       })
     }
 
-    onProjectsSelected(records, selected) {
-      const curSelectedList = this.state.selectedProjects;
-      let newSelectedList = [];
-      if (selected) {
-        newSelectedList = [...curSelectedList, ...records];
-      } else {
-        newSelectedList = curSelectedList.filter(curRecord => !records.find(newRecord => curRecord.key === newRecord.key));
-      }
+    onProjectsSelected(selectedProjects) {
       this.setState({
-        selectedProjects: newSelectedList
+        selectedProjects
       });
     }
 
@@ -194,7 +187,7 @@ export const AddProjectWorkflow = withNavigationContext(
                 selectedConnectorType: this.state.selectedConnectorType,
                 onConnectorSelected: this.onConnectorSelected.bind(this),
                 selectedConnector: this.state.selectedConnector,
-                onProjectsSelected: this.onProjectsSelected.bind(this),
+                onRecordsSelected: this.onProjectsSelected.bind(this),
                 selectedProjects: this.state.selectedProjects,
                 onImportConfigured: this.onImportConfigured.bind(this),
                 importedProjectKeys: this.state.importedProjectKeys,
