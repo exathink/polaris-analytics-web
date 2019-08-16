@@ -165,7 +165,7 @@ export const SelectProjectsStep = withSearch(
                           </CompactTable>
                         </React.Fragment>
                         :
-                        <NoData message={"No projects imported"}/>
+                        <NoData message={"No new projects to import"}/>
                     }
                   </div>
 

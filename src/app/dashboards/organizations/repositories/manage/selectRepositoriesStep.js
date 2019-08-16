@@ -142,7 +142,7 @@ export const SelectRepositoriesStep = withSearch(
                           </CompactTable>
                         </React.Fragment>
                         :
-                        <NoData message={"No repositories imported"} />
+                        <NoData message={"No new repositories to import"} />
                     }
                   </div>
 
