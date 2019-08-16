@@ -168,7 +168,7 @@ export class ShowImportStateStep extends React.Component {
                 {
                   repositories.length > 0 &&
                   numQueued == repositories.length ?
-                    <Spin size={"large"} tip={`${repositories.length} repositories queued for import`}/>
+                    <Spin size={"large"} tip={`Allocating containers to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
                     :
                     <Progress
                       type={'circle'}
