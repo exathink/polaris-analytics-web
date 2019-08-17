@@ -5,9 +5,11 @@ import Button from "../../../../../components/uielements/button";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {withSearch} from "../../../../components/antHelpers/withSearch";
-import {CompactTable} from "../../../../components/tables";
+import {Table} from "../../../../components/tables";
+import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
+
 import {NoData} from "../../../../components/misc/noData";
+import {lexicographic} from "../../../../helpers/utility";
 
 function getServerUrl(selectedConnector) {
   return selectedConnector.baseUrl;
@@ -32,7 +34,7 @@ const REFETCH_REPOSITORIES_MUTATION = {
 
 export const CONNECTOR_REPOSITORIES_QUERY = gql`
     query getConnectorWorkItemsSources($connectorKey: String!) {
-      vcsConnector(key: $connectorKey) {
+        vcsConnector(key: $connectorKey) {
             id
             name
             key
@@ -78,7 +80,43 @@ const cols = [
   }
 ]
 
-export const SelectRepositoriesStep = withSearch(
+const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onRepositoriesSelected}) => {
+  const {Column} = Table;
+
+
+  return (
+    <Table
+      size="small"
+      dataSource={dataSource}
+      loading={loading}
+      rowKey={record => record.key}
+      pagination={{
+        showTotal: total => `${total} Repositories`,
+        defaultPageSize: 10,
+        hideOnSinglePage: true
+      }}
+      rowSelection={useSelectionHandler(onRepositoriesSelected, selectedRepositories)}
+    >
+      <Column
+        title={'Repository'}
+        dataIndex={'name'}
+        key={'name'}
+        sorter={lexicographic('name')}
+        sortDirection={'ascend'}
+        width={"30%"}
+        {...useSearch('name')}
+      />
+      <Column
+        title={'Description'}
+        dataIndex={'description'}
+        key={'description'}
+        {...useSearch('description')}
+      />
+    </Table>
+  )
+}
+
+export const SelectRepositoriesStep =
   compose(
     withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
   )(
@@ -120,29 +158,14 @@ export const SelectRepositoriesStep = withSearch(
                     </Button>
                     {
                       repositories.length > 0 ?
-                        <React.Fragment>
-
-                          <CompactTable
-                            size="small"
-                            dataSource={repositories}
-                            columns={columns}
-                            loading={loading}
-                            rowKey={record => record.key}
-                            rowSelection={{
-                              selectedRowKeys: selectedRepositories.map(repository => repository.key),
-                              onChange: (selectedKeys, selectedRows) => onRepositoriesSelected(selectedRows),
-                            }}
-                            pagination={{
-                              total: repositories.length,
-                              showTotal: total => `${total} Repositories`,
-                              defaultPageSize: 10,
-                              hideOnSinglePage: true
-                            }}
-                          >
-                          </CompactTable>
-                        </React.Fragment>
+                        <SelectRepositoriesTable
+                          loading={loading}
+                          dataSource={repositories}
+                          selectedRepositories={selectedRepositories}
+                          onRepositoriesSelected={onRepositoriesSelected}
+                        />
                         :
-                        <NoData message={"No new repositories to import"} />
+                        <NoData message={"No new repositories to import"}/>
                     }
                   </div>
 
@@ -154,4 +177,4 @@ export const SelectRepositoriesStep = withSearch(
         )
       }
     }
-  ), cols)
+  );

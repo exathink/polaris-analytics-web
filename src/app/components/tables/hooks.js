@@ -70,23 +70,23 @@ export function useSearch(dataIndex, onSearch=null) {
 
 
 export function useSelectionHandler(onSelectionsChanged, initialSelections) {
-  const [selected, setSelected] = useState(initialSelections);
+  const [selected, setSelected] = useState(initialSelections || []);
 
   const onSelect = (record) => {
     const newSelections = [...selected, record];
     setSelected(newSelections);
-    onSelectionsChanged(newSelections);
+    onSelectionsChanged && onSelectionsChanged(newSelections);
   }
 
   const onDeselect = (record) => {
     const newSelections = selected.filter(r => r.key !== record.key)
     setSelected(newSelections);
-    onSelectionsChanged(newSelections);
+    onSelectionsChanged && onSelectionsChanged(newSelections);
   }
 
 
   return {
-    selectedRowKeys: initialSelections.map(row => row.key),
+    selectedRowKeys: initialSelections ? initialSelections.map(row => row.key) : [],
     onSelect: (record, selected, selectedRow, _) => (
       selected ?
         onSelect(record)
@@ -95,7 +95,7 @@ export function useSelectionHandler(onSelectionsChanged, initialSelections) {
     ),
     onSelectAll: (selected, selectedRows, changeRows) => {
       setSelected(selectedRows);
-      onSelectionsChanged(selectedRows)
+      onSelectionsChanged && onSelectionsChanged(selectedRows)
     }
   }
 }
