@@ -3,17 +3,19 @@ import React, {useState} from 'react';
 import {Table, Input, Button, Icon} from 'antd';
 import {Highlighter} from "../misc/highlighter";
 
-export function useSearch(dataIndex) {
+export function useSearch(dataIndex, onSearch=null) {
   const [searchText, setSearchText] = useState(null);
 
   const handleSearch = (selectedKeys, confirm) => {
     confirm();
     setSearchText(selectedKeys[0]);
+    onSearch && onSearch(selectedKeys[0])
   };
 
   const handleReset = clearFilters => {
     clearFilters();
     setSearchText('');
+    onSearch && onSearch(null)
   };
 
   const searchProps = {
