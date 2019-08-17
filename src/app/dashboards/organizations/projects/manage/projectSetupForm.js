@@ -3,6 +3,7 @@ import {Col, Form, Input, Row} from "antd";
 import {EditableTable} from "../../../../components/forms/editableTable";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";
+import {useSelectionHandler} from "../../../../components/tables/hooks";
 
 const ProjectNameForm = (
   {
@@ -48,7 +49,7 @@ const ProjectNameForm = (
     </Form>
   )
 }
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onProjectsSelected,  selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -97,6 +98,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
               defaultPageSize: 3,
               hideOnSinglePage: true
             }}
+            rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
           />
         </React.Fragment>
       </div>

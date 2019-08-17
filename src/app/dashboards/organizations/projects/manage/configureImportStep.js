@@ -10,6 +10,7 @@ import {EditableTable, CompactEditableTable} from "../../../../components/forms/
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import {useSelectionHandler} from "../../../../components/tables/hooks";
 
 const inputModeDescription = {
   single: 'Import remote projects into a new Urjuna project',
@@ -99,6 +100,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
           hideOnSinglePage: true
 
         }}
+
       />
     </div>
   </React.Fragment>
@@ -112,7 +114,6 @@ export class ConfigureImportStep extends React.Component {
 
     this.state = {
       importMode: 'single',
-      selectedProjects: this.mapSelectedProjects(props.selectedProjects),
       importedProjectName: props.selectedProjects.length ? capitalizeFirstLetter(props.selectedProjects[0].name) : null,
       selectedProjectKey: null
     }
@@ -153,8 +154,9 @@ export class ConfigureImportStep extends React.Component {
     })
   }
 
-  doImport(importMode) {
-    const {selectedProjects, importedProjectName, selectedProjectKey} = this.state;
+  doImport(importMode, selectedProjects) {
+    const {importedProjectName, selectedProjectKey} = this.state;
+
     switch (importMode) {
       case 'existing':
         this.props.onImportConfigured('existing', selectedProjects, null, selectedProjectKey)
@@ -168,8 +170,9 @@ export class ConfigureImportStep extends React.Component {
   }
 
   render() {
-    const {selectedProjects, importMode, importedProjectName} = this.state;
-    const {organizationKey} = this.props;
+    const {importMode, importedProjectName} = this.state;
+    const {organizationKey, onProjectsSelected} = this.props;
+    const selectedProjects = this.mapSelectedProjects(this.props.selectedProjects);
     return (
       <div className={'import-project'}>
         <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
@@ -189,6 +192,7 @@ export class ConfigureImportStep extends React.Component {
             importedProjectName={importedProjectName}
             handleSave={this.onSave.bind(this)}
             onProjectNameChanged={this.onProjectNameChanged.bind(this)}
+            onProjectsSelected={onProjectsSelected}
           />
         }
         {
@@ -199,6 +203,7 @@ export class ConfigureImportStep extends React.Component {
             selectedProjects={selectedProjects}
             selectedProjectKey={this.state.selectedProjectKey}
             onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
+            onProjectsSelected={onProjectsSelected}
           />
         }
         {
@@ -211,7 +216,7 @@ export class ConfigureImportStep extends React.Component {
         <Button
           type={'primary'}
           onClick={
-            () => this.doImport(importMode)
+            () => this.doImport(importMode, selectedProjects)
           }
           disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
         >Import {selectedProjects.length > 1 ? 'Projects' : 'Project'}</Button>
