@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
-import { Table, Input, Button, Icon } from 'antd';
+import {Table, Input, Button, Icon} from 'antd';
+import {Highlighter} from "../misc/highlighter";
 
 export function useSearch(dataIndex) {
   const [searchText, setSearchText] = useState(null);
@@ -16,8 +17,8 @@ export function useSearch(dataIndex) {
   };
 
   const searchProps = {
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
+    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+      <div style={{padding: 8}}>
         <Input
           ref={node => {
             searchProps.searchInput = node;
@@ -26,25 +27,25 @@ export function useSearch(dataIndex) {
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
+          style={{width: 188, marginBottom: 8, display: 'block'}}
         />
         <Button
           type="primary"
           onClick={() => handleSearch(selectedKeys, confirm)}
           icon="search"
           size="small"
-          style={{ width: 90, marginRight: 8 }}
+          style={{width: 90, marginRight: 8}}
         >
           Search
         </Button>
-        <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+        <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
           Reset
         </Button>
       </div>
     ),
 
     filterIcon: filtered => (
-      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+      <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}}/>
     ),
 
     onFilter: (value, record) =>
@@ -60,13 +61,15 @@ export function useSearch(dataIndex) {
       }
     },
     render: text => (
-      <em>{text}</em>
+      <Highlighter
+        highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
+        searchWords={searchText || ''}
+        textToHighlight={text.toString()}
+      />
     ),
   }
   return searchProps
 }
-
-
 
 
 export function useSelectionHandler(onSelectionsChanged, initialSelections) {
@@ -87,7 +90,7 @@ export function useSelectionHandler(onSelectionsChanged, initialSelections) {
 
   return {
     selectedRowKeys: initialSelections.map(row => row.key),
-    onSelect: (record, selected, selectedRow, _ ) => (
+    onSelect: (record, selected, selectedRow, _) => (
       selected ?
         onSelect(record)
         :
