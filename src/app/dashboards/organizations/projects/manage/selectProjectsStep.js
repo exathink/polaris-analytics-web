@@ -5,8 +5,8 @@ import gql from "graphql-tag";
 import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {withSearch} from "../../../../components/antHelpers/withSearch";
-import {CompactTable} from "../../../../components/tables";
+import {Table} from "../../../../components/tables";
+import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
 
 function getServerUrl(selectedConnector) {
@@ -86,24 +86,43 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
-const cols = [
-  {
-    title: 'Remote Project Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['ascend'],
-    width: '30%',
-    isSearchField: true
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description'
-  }
-]
+const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsSelected}) => {
+  const {Column} = Table;
 
-export const SelectProjectsStep = withSearch(
+
+  return (
+    <Table
+      size="small"
+      dataSource={dataSource}
+      loading={loading}
+      rowKey={record => record.key}
+      pagination={{
+        showTotal: total => `${total} Projects`,
+        defaultPageSize: 10,
+        hideOnSinglePage: true
+      }}
+      rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
+    >
+      <Column
+        title={'Remote Project Name'}
+        dataIndex={'name'}
+        key={'name'}
+        sorter={(a, b) => a.name.localeCompare(b.name)}
+        sortDirection={'ascend'}
+        width={"30%"}
+        {...useSearch('name')}
+      />
+      <Column
+        title={'Description'}
+        dataIndex={'description'}
+        key={'description'}
+        {...useSearch('description')}
+      />
+    </Table>
+  )
+}
+
+export const SelectProjectsStep =
   compose(
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
@@ -144,26 +163,12 @@ export const SelectProjectsStep = withSearch(
                     </Button>
                     {
                       workItemsSources.length > 0 ?
-                        <React.Fragment>
-
-                          <CompactTable
-                            size="small"
-                            dataSource={workItemsSources}
-                            columns={columns}
-                            loading={loading}
-                            rowKey={record => record.key}
-                            rowSelection={{
-                              selectedRowKeys: selectedProjects.map(project => project.key),
-                              onChange: (selectedKeys, selectedRows) => onProjectsSelected(selectedRows),
-                            }}
-                            pagination={{
-                              showTotal: total => `${total} Projects`,
-                              defaultPageSize: 10,
-                              hideOnSinglePage: true
-                            }}
-                          >
-                          </CompactTable>
-                        </React.Fragment>
+                        <SelectProjectsTable
+                          loading={loading}
+                          dataSource={workItemsSources}
+                          selectedProjects={selectedProjects}
+                          onProjectsSelected={onProjectsSelected}
+                        />
                         :
                         <NoData message={"No new projects to import"}/>
                     }
@@ -177,4 +182,6 @@ export const SelectProjectsStep = withSearch(
         )
       }
     }
-  ), cols)
+  );
+
+
