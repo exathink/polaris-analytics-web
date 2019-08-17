@@ -8,6 +8,7 @@ import {withMutation} from "../../../../components/graphql/withMutation";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
+import {lexicographic} from "../../../../helpers/utility";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -107,7 +108,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
         title={'Remote Project Name'}
         dataIndex={'name'}
         key={'name'}
-        sorter={(a, b) => a.name.localeCompare(b.name)}
+        sorter={lexicographic('name')}
         sortDirection={'ascend'}
         width={"30%"}
         {...useSearch('name')}

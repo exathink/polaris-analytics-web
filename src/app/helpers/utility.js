@@ -201,3 +201,6 @@ export function openNotification(type, message, duration=2) {
     })
 };
 
+export function lexicographic(field) {
+  return (a,b) => a[field] && b[field] ? a[field].localeCompare(b[field]) : 0
+}
