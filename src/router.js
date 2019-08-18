@@ -1,6 +1,5 @@
 import React from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
-import {ConnectedRouter} from 'react-router-redux';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 
 
 import App from './app/app';
@@ -9,11 +8,9 @@ import Logout from './app/components/auth/Logout';
 
 import RestrictedRoute from './app/components/auth/restrictedRoute';
 import FourZeroFour from "./containers/Page/404";
-import {connect} from "react-redux";
-import {withViewerContext} from "./app/framework/viewer/viewerContext";
 
-export default ({history}) => (
-  <ConnectedRouter history={history}>
+export default () => (
+  <BrowserRouter>
     <Switch>
       <Route
         path="/login"
@@ -34,5 +31,5 @@ export default ({history}) => (
         component={FourZeroFour}
       />
     </Switch>
-  </ConnectedRouter>
+  </BrowserRouter>
 );

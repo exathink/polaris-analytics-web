@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { store, history } from './redux/store';
+import { store} from './redux/store';
 import AllRoutes from './router';
 import { ThemeProvider } from 'styled-components';
 import { LocaleProvider } from 'antd';
@@ -28,7 +28,7 @@ const UrjunaApp = () => (
         <AppHolder>
           <DefaultApolloProvider>
             <Provider store={store}>
-              <AllRoutes history={history} />
+              <AllRoutes/>
             </Provider>
           </DefaultApolloProvider>
         </AppHolder>
