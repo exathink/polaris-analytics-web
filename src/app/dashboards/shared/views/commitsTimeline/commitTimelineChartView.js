@@ -12,7 +12,10 @@ export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedGrouping: props.groupBy
+      model: new CommitTimelineChartModel(props.commits, props.groupBy),
+      selectedGrouping: props.groupBy,
+      selectedCategories: null,
+      selectedCommits: null
     }
   }
 
@@ -38,8 +41,8 @@ export class CommitsTimelineChartView extends React.Component {
       model: model,
       selectedCategories: selected
     });
-    if(onSelectionChange) {
-        onSelectionChange(model.commits)
+    if (onSelectionChange) {
+      onSelectionChange(model.commits)
     }
   }
 
@@ -48,7 +51,7 @@ export class CommitsTimelineChartView extends React.Component {
       context
     } = this.props;
 
-    if ( commits && commits.length === 1) {
+    if (commits && commits.length === 1) {
       const commit = commits[0];
       context.navigate(Commits, commit.name, commit.key)
     }
@@ -69,31 +72,15 @@ export class CommitsTimelineChartView extends React.Component {
       selectedCommits: commits,
     });
 
-    if(onSelectionChange) {
-        onSelectionChange(commits)
-    } else if(view !== 'detail' || !showTable) {
+    if (onSelectionChange) {
+      onSelectionChange(commits)
+    } else if (view !== 'detail' || !showTable) {
       this.navigateToCommit(commits)
     }
   }
 
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      commits,
-      groupBy
-    } = nextProps;
 
-    let state = null;
-    if (!prevState.selectedCategories && !prevState.selectedCommits) {
-        state = {
-          ...prevState,
-          model: new CommitTimelineChartModel(commits, groupBy),
-          selectedCategories: null,
-          selectedCommits: null
-        }
-    }
-    return state;
-  }
 
   getCommitTimelineChart(model) {
     const {
@@ -172,30 +159,31 @@ export class CommitsTimelineChartView extends React.Component {
 
     return (
 
-        <Flex column style={{height: height, width: "100%"}}>
-          <Flex column align='center' style={{height: "5%"}}>
-            <CommitTimelineRollupSelector groupings={this.props.groupings} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
-          </Flex>
-          <Flex style={{height:"95%"}}>
-            <Box w={this.showHeader() ? "90%" : "100%"}>
-
-
-              {
-                this.getCommitTimelineChart(model)
-              }
-
-            </Box>
-            {
-              this.showHeader() ?
-                <Box w={"10%"}>
-                  {
-                    this.getTimelineRollupHeader()
-                  }
-                </Box>
-                : null
-            }
-          </Flex>
+      <Flex column style={{height: height, width: "100%"}}>
+        <Flex column align='center' style={{height: "5%"}}>
+          <CommitTimelineRollupSelector groupings={this.props.groupings}
+                                        onGroupingChanged={this.onGroupingChanged.bind(this)}/>
         </Flex>
+        <Flex style={{height: "95%"}}>
+          <Box w={this.showHeader() ? "90%" : "100%"}>
+
+
+            {
+              this.getCommitTimelineChart(model)
+            }
+
+          </Box>
+          {
+            this.showHeader() ?
+              <Box w={"10%"}>
+                {
+                  this.getTimelineRollupHeader()
+                }
+              </Box>
+              : null
+          }
+        </Flex>
+      </Flex>
     )
   }
 
