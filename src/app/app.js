@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Layout} from 'antd';
+import {Layout, Spin} from 'antd';
 import {Debounce} from 'react-throttle';
 import WindowResizeListener from 'react-window-size-listener';
 import {ThemeProvider} from 'styled-components';
@@ -64,7 +64,9 @@ export class App extends Component {
                     <LayoutWrapper id="app-content-area" className="app-content-wrapper">
 
                       <div className={"app-content"}>
-                        <AppRouter url={url} {...this.props} />
+                        <React.Suspense fallback={<Spin/>}>
+                          <AppRouter url={url} {...this.props} />
+                        </React.Suspense>
                       </div>
                     </LayoutWrapper>
                   </Content>

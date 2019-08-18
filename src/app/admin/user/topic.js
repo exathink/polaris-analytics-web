@@ -1,6 +1,6 @@
 import React from "react";
 import {Topics} from "../../meta";
-import asyncComponent from "../../../helpers/AsyncFunc";
+
 
 
 const topic = {
@@ -8,7 +8,7 @@ const topic = {
   routes: [
     {
       match: '',
-      component: asyncComponent(() => import('./landing'))
+      component: React.lazy(() => import('./landing'))
     }
   ]
 }

@@ -1,12 +1,12 @@
+import React from 'react';
 import {Topics} from "../../../meta/topics";
-import asyncComponent from "../../../../helpers/AsyncFunc";
 
 const topic =  {
   ...Topics.activity,
   routes: [
     {
       match: '',
-      component: asyncComponent(() => import('./dashboard'))
+      component: React.lazy(() => import('./dashboard'))
     }
   ]
 };
