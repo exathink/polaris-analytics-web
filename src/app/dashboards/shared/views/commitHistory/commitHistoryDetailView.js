@@ -19,13 +19,12 @@ const CumulativeCommitCountDetailPanels = (
     view,
     showHeader,
     onAreaChartSelectionChange,
-    onCommitTimelineSelectionChange,
     referenceDate,
   }
 ) => {
   return (
     <React.Fragment>
-      <VizRow h={"70%"}>
+      <VizRow h={"93%"}>
         <VizItem w={"30%"}>
           <CumulativeCommitCountChart
             cumulativeCommitCounts={cumulativeCommitCounts}
@@ -46,34 +45,14 @@ const CumulativeCommitCountDetailPanels = (
             before={before}
             shortTooltip={true}
             groupBy={detailViewCommitsGroupBy}
-            onSelectionChange={onCommitTimelineSelectionChange}
             showHeader
             suppressHeaderDataLabels={3}
             referenceDate={referenceDate}
+            showTable={true}
           />
         </VizItem>
       </VizRow>
-      <VizRow h={"30%"}>
-        <VizItem w={"100%"}>
-          {
-            selectedCommits ?
-              <CommitsTimelineTable commits={selectedCommits}/>
-              :
-              <DimensionCommitsNavigatorWidget
-                dimension={dimension}
-                instanceKey={instanceKey}
-                context={context}
-                view={view}
-                days={days}
-                before={before}
-                groupBy={detailViewCommitsGroupBy}
-                display={'table'}
-                referenceDate={referenceDate}
-              />
-          }
-        </VizItem>
 
-      </VizRow>
     </React.Fragment>
   )
 };
@@ -83,7 +62,6 @@ export class CommitHistoryDetailView extends React.Component {
     super(props)
     this.state = {
       areaChartSelections: null,
-      commitTimelineSelections: null,
     }
   }
 
@@ -91,21 +69,12 @@ export class CommitHistoryDetailView extends React.Component {
     this.setState((state, props) => (
       {
         areaChartSelections: selections,
-        commitTimelineSelections: null,
       }
     ));
   }
 
 
 
-  onCommitTimelineSelectionChange(selections) {
-    this.setState((state, props) => (
-      {
-        areaChartSelections: state.areaChartSelections,
-        commitTimelineSelections: selections
-      }
-    ));
-  }
 
   getSelectionDateRange(selections) {
     return selections.reduce(
@@ -140,7 +109,6 @@ export class CommitHistoryDetailView extends React.Component {
         before={before}
         selectedCommits={this.state.commitTimelineSelections}
         onAreaChartSelectionChange={this.onAreaChartSelectionChange.bind(this)}
-        onCommitTimelineSelectionChange={this.onCommitTimelineSelectionChange.bind(this)}
         {...this.props}
       />
     )
