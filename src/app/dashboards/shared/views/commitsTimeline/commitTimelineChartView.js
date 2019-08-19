@@ -1,27 +1,77 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
-import {CommitTimelineChartModel} from "./commitTimelineChartModel";
 import {CommitTimelineRollupSelector} from "./commitTimelineGroupSelector";
 import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
+
+export class CommitTimelineViewModel {
+  constructor(commits, groupBy = 'author', filterCategories = null) {
+    this.groupBy = groupBy;
+    this.getCategory = this.initCategorySelector(groupBy)
+    this.commits = filterCategories ? this.filter(commits, filterCategories) : commits
+    this.categoriesIndex = this.initCategoryIndex(this.commits, groupBy, filterCategories)
+  }
+
+
+  initCategorySelector(groupBy) {
+    if (groupBy !== 'workItem') {
+      return (commit) => commit[groupBy]
+    } else {
+      // Does not handle commits that are attached to multiple issues. leaving it as it is for now
+      // since that is not likely a very common scenario. Revisit if that changes.
+      return (commit) => commit.workItemsSummaries.length > 0 ? `#${commit.workItemsSummaries[0].displayId}` : "Untracked"
+    }
+  }
+
+  filter(commits, filterCategories) {
+    return commits.filter(commit => filterCategories.indexOf(this.getCategory(commit)) !== -1)
+  }
+
+  initCategoryIndex(commits, groupBy, filterCategories) {
+    return commits.reduce(
+      (index, commit) => {
+        const category = this.getCategory(commit);
+        if (index[category] === undefined) {
+          index[category] = 1
+        } else {
+          index[category] = index[category] + 1
+        }
+        return index
+      },
+      {}
+    );
+  }
+}
 
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: new CommitTimelineChartModel(props.commits, props.groupBy),
+      commits: props.commits,
+      model: new CommitTimelineViewModel(props.commits, props.groupBy),
       selectedGrouping: props.groupBy,
       selectedCategories: null,
       selectedCommits: null
     }
   }
 
+
+  componentDidUpdate() {
+    if (this.props.commits != this.state.commits) {
+      this.setState({
+        commits: this.props.commits,
+        model: new CommitTimelineViewModel(this.props.commits, this.state.selectedGrouping),
+      })
+    }
+  }
+
   onGroupingChanged(groupBy) {
     this.setState({
-      model: new CommitTimelineChartModel(this.props.commits, groupBy),
+      model: new CommitTimelineViewModel(this.props.commits, groupBy),
       selectedGrouping: groupBy,
       selectedCategories: null,
       selectedCommits: null
@@ -35,9 +85,8 @@ export class CommitsTimelineChartView extends React.Component {
       onSelectionChange,
     } = this.props;
 
-    const model = new CommitTimelineChartModel(commits, this.state.selectedGrouping, selected)
+    const model = new CommitTimelineViewModel(commits, this.state.selectedGrouping, selected)
     this.setState({
-      ...this.state,
       model: model,
       selectedCategories: selected
     });
@@ -68,7 +117,6 @@ export class CommitsTimelineChartView extends React.Component {
     // updates to props.commits until selections are done.
     // The selections also feed the commits table if its being shown.
     this.setState({
-      ...this.state,
       selectedCommits: commits,
     });
 
@@ -78,8 +126,6 @@ export class CommitsTimelineChartView extends React.Component {
       this.navigateToCommit(commits)
     }
   }
-
-
 
 
   getCommitTimelineChart(model) {
@@ -122,7 +168,7 @@ export class CommitsTimelineChartView extends React.Component {
     const {commits} = this.props;
     return (
       <CommitsTimelineRollupBarChart
-        model={new CommitTimelineChartModel(commits, this.state.selectedGrouping)}
+        model={new CommitTimelineViewModel(commits, this.state.selectedGrouping)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -166,12 +212,9 @@ export class CommitsTimelineChartView extends React.Component {
         </Flex>
         <Flex style={{height: "95%"}}>
           <Box w={this.showHeader() ? "90%" : "100%"}>
-
-
             {
               this.getCommitTimelineChart(model)
             }
-
           </Box>
           {
             this.showHeader() ?
@@ -187,20 +230,18 @@ export class CommitsTimelineChartView extends React.Component {
     )
   }
 
-  getDetailLayout(model, showHeader, showTable) {
+  getDetailLayout(model, showHeader) {
     return (
       <Flex column style={{height: "100%", width: "100%"}}>
         {
-          this.getPrimaryLayout(showTable ? "72%" : "100%", model)
+          this.getPrimaryLayout("72%", model)
         }
         {
-          showTable ?
-            <Flex style={{height: "28%", width: "100%"}}>
-              {
-                this.getTimelineTable(model.commits)
-              }
-            </Flex>
-            : null
+          <Flex style={{height: "28%", width: "100%"}}>
+            {
+              this.getTimelineTable(model.commits)
+            }
+          </Flex>
         }
       </Flex>
     )
@@ -215,7 +256,7 @@ export class CommitsTimelineChartView extends React.Component {
 
     return (
       view === 'detail' ?
-        this.getDetailLayout(this.state.model, showHeader, showTable)
+        this.getDetailLayout(this.state.model, showHeader)
         : this.getPrimaryLayout('95%', this.state.model, showHeader)
     )
 
