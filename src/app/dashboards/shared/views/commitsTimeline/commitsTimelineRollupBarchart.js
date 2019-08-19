@@ -1,6 +1,5 @@
 import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
-import {getCategoriesIndex} from "./commitTimelineChartModel";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
