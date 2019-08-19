@@ -38,10 +38,10 @@ export const DimensionCommitsNavigatorWidget = (
       referenceDate,
 
   }) => (
-    <Query
-      client={analytics_service}
-      query={
-        gql`
+  <Query
+    client={analytics_service}
+    query={
+      gql`
             query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime) {
                 ${dimension}(key: $key, referenceDate: $referenceDate){
                     id
@@ -81,52 +81,49 @@ export const DimensionCommitsNavigatorWidget = (
                 }
             }
         `
-      }
-      variables={{
-        key: instanceKey,
-        days: days || 0,
-        before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
-        latest: latest,
-        referenceDate: referenceDate
-      }}
-      pollInterval={pollInterval || analytics_service.defaultPollInterval()}
-    >
-      {
-        ({loading, error, data}) => {
-          if (loading) return context.getCachedView(getViewCacheKey(instanceKey, display)) || <Loading/>;
-          if (error) return null;
+    }
+    variables={{
+      key: instanceKey,
+      days: days || 0,
+      before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
+      latest: latest,
+      referenceDate: referenceDate
+    }}
+    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+  >
+    {
+      ({loading, error, data}) => {
+        if (loading) return context.getCachedView(getViewCacheKey(instanceKey, display)) || <Loading/>;
+        if (error) return null;
 
-          const commits = data[dimension].commits.edges.map(edge => edge.node);
-          const totalCommits = data[dimension].commits.count;
-          context.cacheView(getViewCacheKey(instanceKey, display), (
-            display === 'table' ?
-                <CommitsTimelineTable commits={commits}/>
-                :
-                <CommitsTimelineChartView
-                  commits={commits}
-                  context={context}
-                  instanceKey={instanceKey}
-                  view={view}
-                  groupBy={groupBy}
-                  groupings={groupings}
-                  smartGrouping={smartGrouping}
-                  days={days}
-                  before={before}
-                  latestCommit={latestCommit}
-                  latest={latest}
-                  totalCommits={totalCommits}
-                  shortTooltip={shortTooltip}
-                  showHeader={showHeader}
-                  polling={pollInterval}
-                  markLatest={markLatest}
-                  showTable={showTable}
-                  onSelectionChange={onSelectionChange}
-                />
-          ));
-          return context.getCachedView(getViewCacheKey(instanceKey, display));
-        }
+        const commits = data[dimension].commits.edges.map(edge => edge.node);
+        const totalCommits = data[dimension].commits.count;
+        context.cacheView(getViewCacheKey(instanceKey, display), (
+          <CommitsTimelineChartView
+            commits={commits}
+            context={context}
+            instanceKey={instanceKey}
+            view={view}
+            groupBy={groupBy}
+            groupings={groupings}
+            smartGrouping={smartGrouping}
+            days={days}
+            before={before}
+            latestCommit={latestCommit}
+            latest={latest}
+            totalCommits={totalCommits}
+            shortTooltip={shortTooltip}
+            showHeader={showHeader}
+            polling={pollInterval}
+            markLatest={markLatest}
+            showTable={showTable}
+            onSelectionChange={onSelectionChange}
+          />
+        ));
+        return context.getCachedView(getViewCacheKey(instanceKey, display));
       }
-    </Query>
+    }
+  </Query>
 );
 
 
