@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavCard} from "./navCard";
-import {withViewerContext, verifySystemRoles} from "../../framework/viewer/viewerContext";
+import {withViewerContext} from "../../framework/viewer/viewerContext";
 
 export const ContextNavCard = withViewerContext(
   ({context, title, viewerContext, allowedRoles}) => (

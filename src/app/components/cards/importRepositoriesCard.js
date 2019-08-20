@@ -1,5 +1,4 @@
 import React from "react";
-import {Icon} from "antd";
 import {LauncherCard} from "./launcher/launcherCard";
 
 export const ImportRepositoriesCard = ({onClick, title, style, compact}) => (
