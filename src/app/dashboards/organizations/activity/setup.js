@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Row, Progress} from "antd";
+import {Col, Row} from "antd";
 import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
 import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
 
