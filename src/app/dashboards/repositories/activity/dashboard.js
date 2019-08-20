@@ -6,7 +6,6 @@ import {
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 import {RepositoryDashboard} from "../repositoryDashboard";
-import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 
 const dashboard_id = 'dashboards.activity.repositories.instance';
 const messages = {
@@ -62,4 +61,3 @@ export const dashboard = () => (
   />
 );
 export default dashboard;
-

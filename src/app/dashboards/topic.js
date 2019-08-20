@@ -1,5 +1,4 @@
-import React from "react";
-import {Contexts, Topics} from "../meta";
+import {Topics} from "../meta";
 
 import Landing from './landing';
 
