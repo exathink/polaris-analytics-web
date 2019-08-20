@@ -1,7 +1,6 @@
 import React from 'react';
-import {Card, Col, Icon, Row} from "antd";
+import {Icon} from "antd";
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {Contexts} from "../../../meta/contexts";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {OrganizationDashboard} from "../organizationDashboard";
@@ -9,9 +8,6 @@ import {RepositoriesTableWidget} from "./manage/repositoriesTable";
 
 import Repositories from "../../repositories/context";
 import Button from "../../../../components/uielements/button";
-import {IconCard} from "../../../components/cards/iconCard";
-import Projects from "../../projects/context";
-import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
 import {RepositoriesDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
@@ -96,4 +92,3 @@ export default () => (
     )}
   />
 );
-

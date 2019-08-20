@@ -29,7 +29,7 @@ const steps = [
     title: 'Select Repositories',
     content: SelectRepositoriesStep,
     showNext: true,
-    disableNextIf: ({selectedRepositories}) => selectedRepositories.length == 0
+    disableNextIf: ({selectedRepositories}) => selectedRepositories.length === 0
   },
   {
     title: 'Review Import',
@@ -94,7 +94,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
     }
 
     async onDoImport() {
-      const {organization, viewerContext} = this.props;
+      const {organization} = this.props;
       try {
         const result = await vcs_service.mutate({
           mutation: gql`
@@ -133,7 +133,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {current} = this.state;
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
-      const {context, organization, onDone} = this.props;
+      const {organization, onDone} = this.props;
       return (
         <React.Fragment>
           <h2>Import Repositories</h2>

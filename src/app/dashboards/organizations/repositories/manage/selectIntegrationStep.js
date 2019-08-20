@@ -1,10 +1,5 @@
 import React from "react";
-import {Radio, Row, Col, Card, Avatar} from "antd";
-import {ApolloProvider} from 'react-apollo';
-import {work_tracking_service} from "../../../../services/graphql";
-
-import {SelectConnectorWidget} from "../../../../components/workflow/connectors/selectConnectorWidget";
-import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
+import {Row, Col, Card, Avatar} from "antd";
 
 const {Meta} = Card;
 

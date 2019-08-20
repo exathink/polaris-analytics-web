@@ -63,23 +63,6 @@ export const REFETCH_CONNECTOR_REPOSITORIES_QUERY = {
   })
 };
 
-const cols = [
-  {
-    title: 'Repository Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['ascend'],
-    width: '30%',
-    isSearchField: true
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description'
-  }
-]
-
 const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onRepositoriesSelected}) => {
   const {Column} = Table;
 
@@ -122,7 +105,7 @@ export const SelectRepositoriesStep =
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, columns} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
 
         return (
