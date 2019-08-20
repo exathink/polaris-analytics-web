@@ -1,22 +1,10 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {Chart} from "../../../../framework/viz/charts";
 import {Colors} from "../../config";
-import {getCategoriesIndex} from "./workItemEventsTimelineChartModel";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
-function getWorkItemName(workItemEvents, displayId) {
-  const workItem = workItemEvents.find(item => item.displayId == displayId)
-  if (workItem) {
-    return workItem.eventDate ? workItem.name : workItem.workItemName
-  } else {
-    return displayId
-  }
-}
-
-
-
 function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
-  if (groupBy == 'workItem') {
+  if (groupBy === 'workItem') {
     let workItem = null;
     let commitCount = 0;
     let eventCount = 0;
@@ -34,7 +22,7 @@ function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
       return `<p>
                  <b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}
                  <br/>${workItem.eventDate? workItem.name: workItem.workItemName}<br/>
-                 <br/>${commitCount} commits, ${eventCount} status updates 
+                 <br/>${commitCount} commits, ${eventCount} status updates
                  <br/>
               </p>`
     } else {

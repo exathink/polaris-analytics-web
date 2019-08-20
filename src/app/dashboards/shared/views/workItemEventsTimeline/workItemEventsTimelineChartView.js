@@ -4,7 +4,6 @@ import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
 import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
 import {WorkItemEventsTimelineGroupSelector} from "./workItemEventsTimelineGroupSelector";
-import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
 export class WorkItemEventsTimelineChartView extends React.Component {
@@ -47,17 +46,6 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     });
     if(onSelectionChange) {
         onSelectionChange(model.workItemEvents)
-    }
-  }
-
-  navigateToCommit(workItemEvents) {
-    const {
-      context
-    } = this.props;
-
-    if ( workItemEvents && workItemEvents.length === 1) {
-      const workItemEvent = workItemEvents[0];
-      // context.navigate(Commits, workItemEvent.name, workItemEvent.key)
     }
   }
 

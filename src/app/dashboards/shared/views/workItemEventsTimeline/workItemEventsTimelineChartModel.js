@@ -14,13 +14,13 @@ export class WorkItemEventsTimelineChartModel {
 
 
   initCategorySelector(groupBy) {
-    if (groupBy == 'workItem') {
+    if (groupBy === 'workItem') {
       return (workItem) => workItem['displayId']
-    } else if (groupBy == 'event') {
+    } else if (groupBy === 'event') {
       return (workItem) => workItem.eventDate? capitalizeFirstLetter(workItem['newState']) : 'Commit'
-    } else if (groupBy == 'source') {
+    } else if (groupBy === 'source') {
       return (workItem) => workItem['workItemsSourceName']
-    } else if (groupBy == 'type') {
+    } else if (groupBy === 'type') {
       return (workItem) => workItem['workItemType']
     } else {
       return (workItem) => workItem[groupBy]
