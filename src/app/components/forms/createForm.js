@@ -1,9 +1,7 @@
 import React from "react";
 import Button from "../../../components/uielements/button";
-import {Drawer, Form, Icon, notification, Select} from "antd";
+import {Drawer, Form, Icon, notification} from "antd";
 import {display_error} from "../../helpers/utility";
-
-const {Option} = Select;
 
 function withForm(FormFields, options) {
   const title = options.title
@@ -34,7 +32,7 @@ function withForm(FormFields, options) {
       <React.Fragment>
         <Form layout={layout} hideRequiredMark onSubmit={!hasParts ? onSubmit : null}>
           <FormFields
-            part={ hasParts ? parts[part] : null}
+            part={hasParts ? parts[part] : null}
             currentValue={currentValue}
             onSubmit={onSubmit}
             {...rest}
@@ -72,7 +70,7 @@ function withForm(FormFields, options) {
               null
           }
           {
-            parts.length == 0 || part === parts.length - 1 ?
+            parts.length === 0 || part === parts.length - 1 ?
               <Button onClick={onSubmit} type="primary">
                 {submitTitle}
               </Button>
@@ -189,7 +187,7 @@ function withForm(FormFields, options) {
 
     render() {
       const part = this.state.index;
-      const partProps = hasParts && partOptions[parts[part]] || {}
+      const partProps = hasParts && (partOptions[parts[part]] || {})
       // We want to override the submitted props to do field validation before submit.
       const {onSubmit, ...rest} = this.props;
       const disabled = this.props.enabled != null && !this.props.enabled
@@ -197,7 +195,7 @@ function withForm(FormFields, options) {
         drawer ?
           <React.Fragment>
             <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
-              {noPlus || <Icon type="plus"/>} {this.props.title || drawerButtonTitle}
+              {noPlus || <Icon type="plus" />} {this.props.title || drawerButtonTitle}
             </Button>
             <Drawer
               title={this.props.title || partProps.title || title}

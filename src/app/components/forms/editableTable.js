@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Popconfirm, Form } from 'antd';
+import { Input, Button, Form } from 'antd';
 import {Table, CompactTable} from "../tables";
 
 const EditableContext = React.createContext();
@@ -149,4 +149,3 @@ export class EditableTable extends React.Component {
     )
   }
 }
-
