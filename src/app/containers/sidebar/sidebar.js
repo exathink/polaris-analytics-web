@@ -14,7 +14,7 @@ import {rtl} from '../../../config/withDirection';
 import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {withViewerContext, verifySystemRoles} from "../../framework/viewer/viewerContext";
+import {withViewerContext} from "../../framework/viewer/viewerContext";
 
 const {Sider} = Layout;
 

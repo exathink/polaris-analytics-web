@@ -6,7 +6,6 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 const {Option} = Select;
 
-const FORM_TITLE = 'Invite user';
 const InviteUser = withViewerContext((
   {
     viewerContext: {viewer, getViewerOrganizations},

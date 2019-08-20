@@ -1,4 +1,3 @@
-import React from "react";
 import type {Context} from "../framework/navigation/context/context";
 import {Contexts} from "../meta";
 import System from './system/topic';
@@ -25,4 +24,3 @@ const context: Context = {
   ]
 };
 export default context;
-
