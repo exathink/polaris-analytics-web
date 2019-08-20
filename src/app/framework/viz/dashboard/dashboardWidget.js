@@ -15,10 +15,6 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
     null
 );
 
-function getControlProps(itemSelected, showDetail, rest) {
-   return
-}
-
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, controls, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
   return (

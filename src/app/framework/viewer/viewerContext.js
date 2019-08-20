@@ -1,7 +1,6 @@
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
-import {withRouter} from "react-router";
 
 
 const {Provider, Consumer} = React.createContext({})
@@ -53,8 +52,8 @@ class ViewerContextProvider extends React.Component {
   isAccountOwner() {
     return this.state.viewer.accountRoles.find(
       scopedRole =>
-        scopedRole.scopeKey == this.state.viewer.accountKey &&
-        scopedRole.role == 'owner'
+        scopedRole.scopeKey === this.state.viewer.accountKey &&
+        scopedRole.role === 'owner'
     )
   }
 
@@ -67,10 +66,10 @@ class ViewerContextProvider extends React.Component {
       let found = false;
       for (let i=0; i < roles.length && !found; i++) {
         const role = roles[i];
-        if (role == 'account-owner') {
+        if (role === 'account-owner') {
           found = this.isAccountOwner()
         } else {
-          found = this.state.viewer.systemRoles.indexOf(role) != -1;
+          found = this.state.viewer.systemRoles.indexOf(role) !== -1;
         }
       }
       return found
@@ -82,9 +81,9 @@ class ViewerContextProvider extends React.Component {
 
   hasAccountRoles (accountKey, roles){
     if (roles  != null ) {
-      const accountRole = this.state.viewer.accountRoles.find(scopedRole => scopedRole.scopeKey == accountKey)
+      const accountRole = this.state.viewer.accountRoles.find(scopedRole => scopedRole.scopeKey === accountKey)
       if (accountRole) {
-        return roles.indexOf(accountRole) != -1
+        return roles.indexOf(accountRole) !== -1
       }
     } else {
       return true
@@ -102,7 +101,7 @@ class ViewerContextProvider extends React.Component {
 
   render() {
     return (
-      this.state.viewer != null ?
+      this.state.viewer !== null ?
         <Provider value={{
           viewer: this.state.viewer,
           accountKey: this.state.accountKey,
@@ -116,7 +115,7 @@ class ViewerContextProvider extends React.Component {
         }}>
           {this.props.children}
         </Provider>
-        : this.state.error != null ?
+        : this.state.error !== null ?
         `Unknown user error: ${this.state.error}`
         : null
     )
@@ -183,6 +182,3 @@ export const withViewerContext = (Component, allowedRoles=null) => (
       }
     </ViewerContext.Consumer>
 );
-
-
-
