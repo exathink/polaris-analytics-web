@@ -61,8 +61,7 @@ export const SelectConnectorWidget =
     withMutation(CREATE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withMutation(TEST_CONNECTOR),
     withPollingManager
-  )
-  ((
+  )((
     {
       connectorType,
       onConnectorSelected,
@@ -82,124 +81,121 @@ export const SelectConnectorWidget =
       },
       organizationKey
     }
-    ) => {
-      const {createConnector, createConnectorResult} = createConnectorMutation;
-      const {deleteConnector, deleteConnectorResult} = deleteConnectorMutation;
-      const {registerConnector, registerConnectorResult} = registerConnectorMutation;
-      const {testConnector, testConnectorResult} = testConnectorMutation;
+  ) => {
+    const {createConnector, createConnectorResult} = createConnectorMutation;
+    const {deleteConnector} = deleteConnectorMutation;
+    const {registerConnector, registerConnectorResult} = registerConnectorMutation;
+    const {testConnector} = testConnectorMutation;
 
-      return (
-        <Query
-          query={ALL_CONNECTORS_QUERY}
-          variables={{
-            accountKey: viewerContext.accountKey,
-            organizationKey: organizationKey,
-            connectorType: connectorType,
-          }}
-          pollInterval={connectorType === 'jira' ? 10000 : 0}
-        >
-          {
-            ({loading, error, data}) => {
-              if (error) return null;
-              let connectors = []
-              if (!loading) {
-                connectors = data.connectors.edges.map(edge => edge.node).filter(node => !node.archived);
-              }
-              return (
-                <div className={'select-connector'}>
-                  {
-                    connectors.length > 0 ?
-                      <React.Fragment>
-                        <h3>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
-                        <ConnectorsTable
-                          connectorType={connectorType}
-                          connectors={connectors}
-                          loading={loading}
-                          onConnectorSelected={onConnectorSelected}
-                          onConnectorDeleted={
-                            (record) => deleteConnector({
+    return (
+      <Query
+        query={ALL_CONNECTORS_QUERY}
+        variables={{
+          accountKey: viewerContext.accountKey,
+          organizationKey: organizationKey,
+          connectorType: connectorType,
+        }}
+        pollInterval={connectorType === 'jira' ? 10000 : 0}
+      >
+        {
+          ({loading, error, data}) => {
+            if (error) return null;
+            let connectors = []
+            if (!loading) {
+              connectors = data.connectors.edges.map(edge => edge.node).filter(node => !node.archived);
+            }
+            return (
+              <div className={'select-connector'}>
+                {
+                  connectors.length > 0 ?
+                    <React.Fragment>
+                      <h3>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                      <ConnectorsTable
+                        connectorType={connectorType}
+                        connectors={connectors}
+                        loading={loading}
+                        onConnectorSelected={onConnectorSelected}
+                        onConnectorDeleted={
+                          (record) => deleteConnector({
+                            variables: {
+                              deleteConnectorInput: {
+                                connectorKey: record.key
+                              }
+                            }
+                          })
+                        }
+                        onConnectorRegistered={
+                          (values) => submit(
+                            values => registerConnector({
                               variables: {
-                                deleteConnectorInput: {
-                                  connectorKey: record.key
+                                registerConnectorInput: {
+                                  accountKey: viewerContext.accountKey,
+                                  organizationKey: organizationKey,
+                                  connectorKey: values.key,
+                                  name: values.name,
                                 }
                               }
                             })
-                          }
-                          onConnectorRegistered={
-                            (values) => submit(
-                              values => registerConnector({
+                          )(values)
+                        }
+                        onConnectorTested={
+                          (values) => submit(
+                            values => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: values.key
+                                }
+                              }
+                            })
+                          )(values)
+                        }
+                        lastRegistrationError={registerConnectorResult.error}
+                        lastRegistrationSubmission={lastSubmission}
+                      />
+                    </React.Fragment>
+                    :
+                    <h3>{`No available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                }
+
+                {
+                  viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
+                    <React.Fragment>
+                      < NewConnectorFormButton
+                        connectorType={connectorType}
+                        title={`Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
+                        onSubmit={
+                          submit(
+                            values =>
+                              createConnector({
                                 variables: {
-                                  registerConnectorInput: {
+                                  createConnectorInput: {
+                                    name: values.name,
+                                    connectorType: connectorType,
                                     accountKey: viewerContext.accountKey,
                                     organizationKey: organizationKey,
-                                    connectorKey: values.key,
-                                    name: values.name,
+                                    baseUrl: urlMunge(connectorType, values.baseUrl),
+                                    apiKey: values.apiKey,
+                                    githubAccessToken: values.githubAccessToken,
+                                    githubOrganization: values.githubOrganization
                                   }
                                 }
                               })
-                            )(values)
-                          }
-                          onConnectorTested={
-                            (values) => submit(
-                              values => testConnector({
-                                variables: {
-                                  testConnectorInput: {
-                                    connectorKey: values.key
-                                  }
-                                }
-                              })
-                            )(values)
-                          }
-                          lastRegistrationError={registerConnectorResult.error}
-                          lastRegistrationSubmission={lastSubmission}
-                        />
-                      </React.Fragment>
-                      :
-                      <h3>{`No available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
-                  }
-
-                  {
-                    viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
-                      <React.Fragment>
-                        < NewConnectorFormButton
-                          connectorType={connectorType}
-                          title={`Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
-                          onSubmit={
-                            submit(
-                              values =>
-                                createConnector({
-                                  variables: {
-                                    createConnectorInput: {
-                                      name: values.name,
-                                      connectorType: connectorType,
-                                      accountKey: viewerContext.accountKey,
-                                      organizationKey: organizationKey,
-                                      baseUrl: urlMunge(connectorType, values.baseUrl),
-                                      apiKey: values.apiKey,
-                                      githubAccessToken: values.githubAccessToken,
-                                      githubOrganization: values.githubOrganization
-                                    }
-                                  }
-                                })
-                            )
-                          }
-                          error={createConnectorResult.error}
-                          lastSubmission={lastSubmission}
-                        />
-                        <CreateConnectorInstructions initial={connectors.length === 0 } connectorType={connectorType}/>
-                      </React.Fragment>
-                      :
-                      connectors.length === 0 &&
-                      <span>Please contact an administrator for your organization to add a connector</span>
-                  }
-                </div>
-              )
-            }
+                          )
+                        }
+                        error={createConnectorResult.error}
+                        lastSubmission={lastSubmission}
+                      />
+                      <CreateConnectorInstructions initial={connectors.length === 0} connectorType={connectorType} />
+                    </React.Fragment>
+                    :
+                    connectors.length === 0 &&
+                    <span>Please contact an administrator for your organization to add a connector</span>
+                }
+              </div>
+            )
           }
-        </Query>
-      );
-    }
+        }
+      </Query>
+    );
+  }
   )
-
-
-

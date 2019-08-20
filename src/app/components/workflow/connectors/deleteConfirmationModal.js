@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {compose, Query} from "react-apollo";
+import {Query} from "react-apollo";
 import gql from "graphql-tag";
 
 import {Modal} from 'antd';
@@ -33,7 +33,7 @@ const DeleteConfirmationModal = ({record, onConnectorDeleted, onDone}) => {
       }}
       onCompleted={
         (data) => {
-          if (data.workTrackingConnector.workItemsSources.count == 0) {
+          if (data.workTrackingConnector.workItemsSources.count === 0) {
             onConnectorDeleted(record)
           }
         }
