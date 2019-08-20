@@ -77,7 +77,7 @@ export const ShowImportStateStep = (
               })
             ).sort(
               (a, b) =>
-                importStateSortOrder[a] - importStateSortOrder[b]
+                importStateSortOrder[a.importState] - importStateSortOrder[b.importState]
             );
           }
           const numImported = workItemsSources.filter(
