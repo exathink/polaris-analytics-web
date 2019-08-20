@@ -30,7 +30,7 @@ const steps = [
     title: 'Select Projects',
     content: SelectProjectsStep,
     showNext: true,
-    disableNextIf: ({selectedProjects}) => selectedProjects.length == 0
+    disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
   },
   {
     title: 'Configure Import',
@@ -170,7 +170,7 @@ export const AddProjectWorkflow = withNavigationContext(
       const {current} = this.state;
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
-      const {context, organization, onDone} = this.props;
+      const {organization, onDone} = this.props;
       return (
         <div style={{height: "100%"}}>
           <h2>Import Projects</h2>

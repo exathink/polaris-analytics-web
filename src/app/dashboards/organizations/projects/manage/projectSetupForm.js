@@ -53,7 +53,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
-        {importMode == 'single' &&
+        {importMode === 'single' &&
           <ProjectNameForm
             form={form}
             selectedProjects={selectedProjects}
@@ -62,7 +62,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             label={"Urjuna Project"}
           />
         }
-        {importMode == 'existing' &&
+        {importMode === 'existing' &&
           <OrganizationProjectSelectorWidget
             organizationKey={organizationKey}
             selectedProjectKey={selectedProjectKey}

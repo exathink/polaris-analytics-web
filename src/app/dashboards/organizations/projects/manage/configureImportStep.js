@@ -6,11 +6,10 @@ import gql from "graphql-tag";
 
 import {Radio} from "antd";
 
-import {EditableTable, CompactEditableTable} from "../../../../components/forms/editableTable";
+import {EditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
-import {useSelectionHandler} from "../../../../components/tables/hooks";
 
 const inputModeDescription = {
   single: 'Import remote projects into a new Urjuna project',

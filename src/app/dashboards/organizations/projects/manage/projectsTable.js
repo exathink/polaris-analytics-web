@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
@@ -9,8 +8,7 @@ import {CompactTable} from "../../../../components/tables";
 import {withAntPagination} from "../../../../components/graphql/withAntPagination";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
-import {fromNow, human_span, latestDate} from "../../../../helpers/utility";
-import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
+import {fromNow} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 
