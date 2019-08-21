@@ -1,6 +1,5 @@
 import React from 'react';
 import {CumulativeCommitCountChart} from "./index";
-import {CommitsTimelineTable} from "../commitsTimeline";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
 import {VizItem, VizRow} from "../../containers/layout";
 import moment from 'moment';

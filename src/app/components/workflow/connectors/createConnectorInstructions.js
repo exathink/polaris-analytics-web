@@ -1,6 +1,5 @@
 import React from 'react';
 import {Col, Row, Collapse} from "antd";
-import {ImportRepositoriesCard} from "../../cards/importRepositoriesCard";
 
 const {Panel} = Collapse;
 
@@ -172,6 +171,3 @@ export const CreateConnectorInstructions = ({initial, connectorType}) => {
       return `Unknown connector type: ${connectorType}`;
   }
 }
-
-
-

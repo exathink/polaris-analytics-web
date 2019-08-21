@@ -1,8 +1,7 @@
 import React from "react";
-import {Col, Form, Input, Radio, Row, Select} from "antd";
+import {Col, Form, Input, Radio, Row} from "antd";
 import {createForm} from "../../../components/forms/createForm";
 
-const {Option} = Select;
 const PARTS = ['company', 'organization', 'owner']
 const PART_OPTIONS = {
   company: {

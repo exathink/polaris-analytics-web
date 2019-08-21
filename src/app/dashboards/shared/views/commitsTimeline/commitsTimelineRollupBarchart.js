@@ -13,7 +13,7 @@ export const CommitsTimelineRollupBarChart = Chart({
   mapPoints: points => points.map( point => point.name),
   getConfig:
     ({model, suppressDataLabelsThreshold}) => {
-      const {commits, categoriesIndex, groupBy} = model
+      const {categoriesIndex, groupBy} = model
 
       const series = Object.keys(categoriesIndex).map(
         category => ({

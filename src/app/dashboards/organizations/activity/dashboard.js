@@ -11,9 +11,6 @@ import {OrganizationDashboard} from '../organizationDashboard';
 import Projects from "../../projects/context";
 import Repositories from "../../repositories/context";
 import Contributors from "../../contributors/context";
-import {Card, Col, Icon, Row} from "antd";
-import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
-import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
 import {ActivityDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
@@ -140,5 +137,3 @@ export const dashboard = () => (
   />
 );
 export default dashboard;
-
-

@@ -7,7 +7,6 @@ import {
 } from "../../shared/widgets/accountHierarchy";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {getTimelineRefreshInterval} from "../../shared/helpers/commitUtils";
 
 const dashboard_id = 'dashboards.activity.projects.instance';
 const messages = {
@@ -65,4 +64,3 @@ export const dashboard = () => (
     />
 );
 export default dashboard;
-

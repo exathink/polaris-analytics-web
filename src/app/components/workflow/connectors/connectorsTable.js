@@ -2,7 +2,6 @@ import React from "react";
 
 import {ButtonBar} from "../../../containers/buttonBar/buttonBar";
 import Button from "../../../../components/uielements/button";
-import {NoData} from "../../misc/noData";
 import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
 import {Table} from "../../../components/tables";
@@ -11,7 +10,7 @@ import './connectors.css'
 const {Column}=Table;
 
 function includeHostColumn(connectorType) {
-  return connectorType == 'jira';
+  return connectorType === 'jira';
 }
 
 export const ConnectorsTable = (

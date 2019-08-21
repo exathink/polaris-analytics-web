@@ -1,5 +1,4 @@
 import React from "react";
-import {Radio} from "antd";
 import {ApolloProvider} from 'react-apollo';
 import {vcs_service} from "../../../../services/graphql";
 

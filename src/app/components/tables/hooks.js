@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {Table, Input, Button, Icon} from 'antd';
+import {Input, Icon} from 'antd';
 import {Highlighter} from "../misc/highlighter";
 
 export function useSearch(dataIndex, onSearch=null) {

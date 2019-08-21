@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 
 import {analytics_service} from '../../../../services/graphql/index'
-import {CommitsTimelineChartView, CommitsTimelineTable} from "../../views/commitsTimeline";
+import {CommitsTimelineChartView} from "../../views/commitsTimeline";
 import moment from 'moment';
 import {toMoment} from "../../../../helpers/utility";
 
@@ -125,5 +125,3 @@ export const DimensionCommitsNavigatorWidget = (
     }
   </Query>
 );
-
-

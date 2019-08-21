@@ -14,10 +14,8 @@ function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'pivotal':
       return 'Pivotal Tracker.com';
-      break;
     case 'github':
       return 'GitHub.com';
-      break;
     default:
       return selectedConnector.baseUrl;
   }
@@ -27,13 +25,10 @@ function getFetchProjectsButtonName(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'github':
       return 'Fetch Repositories with Issues';
-      break;
     case 'pivotal':
       return 'Fetch Tracker Projects';
-      break;
     case 'jira':
       return 'Fetch Jira Projects';
-      break;
     default:
       return 'Fetch Projects';
   }
@@ -129,7 +124,7 @@ export const SelectProjectsStep =
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, columns} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
         const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
         return (
           <Query
@@ -184,5 +179,3 @@ export const SelectProjectsStep =
       }
     }
   );
-
-

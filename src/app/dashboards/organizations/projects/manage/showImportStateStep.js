@@ -2,10 +2,7 @@ import React from 'react';
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 
-import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {Col, Form, Input, Row, Spin, Progress} from "antd";
-import {createForm} from "../../../../components/forms/createForm";
-import {NoData} from "../../../../components/misc/noData";
+import {Spin, Progress} from "antd";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import {CompactTable} from "../../../../components/tables";
 const {Column} = CompactTable;

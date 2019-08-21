@@ -6,7 +6,6 @@ import moment from 'moment';
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
-import WorkTopic from "./work/topic";
 import ContributorsTopic from "./contributors/topic";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
@@ -98,5 +97,3 @@ class WithOrganization extends React.Component {
   }
 }
 export const OrganizationDashboard = withNavigationContext(WithOrganization);
-
-

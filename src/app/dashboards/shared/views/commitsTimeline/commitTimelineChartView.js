@@ -1,11 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {CommitTimelineRollupSelector} from "./commitTimelineGroupSelector";
-import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
 
 
 export class CommitTimelineViewModel {
@@ -61,7 +59,7 @@ export class CommitsTimelineChartView extends React.Component {
 
 
   componentDidUpdate() {
-    if (this.props.commits != this.state.commits) {
+    if (this.props.commits !== this.state.commits) {
       this.setState({
         commits: this.props.commits,
         model: new CommitTimelineViewModel(this.props.commits, this.state.selectedGrouping),
@@ -250,8 +248,7 @@ export class CommitsTimelineChartView extends React.Component {
   render() {
     const {
       view,
-      showHeader,
-      showTable,
+      showHeader
     } = this.props;
 
     return (

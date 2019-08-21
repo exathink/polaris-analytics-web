@@ -167,7 +167,7 @@ export class ShowImportStateStep extends React.Component {
 
                 {
                   repositories.length > 0 &&
-                  numQueued == repositories.length ?
+                  numQueued === repositories.length ?
                     <Spin size={"large"} tip={`Allocating containers to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
                     :
                     <Progress
@@ -181,7 +181,7 @@ export class ShowImportStateStep extends React.Component {
                 <CompactTable
                   size="small"
                   dataSource={repositories}
-                  loading={repositories.length == 0}
+                  loading={repositories.length === 0}
                   rowKey={record => record.key}
                   rowClassName={
                     (record, index) => stateClassIndex[record.importState]

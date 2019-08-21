@@ -3,8 +3,6 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment, snakeToUpperCamel} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {queueTime} from "../../helpers/commitUtils";
-import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
   if (workItemState != null) {
@@ -193,7 +191,7 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'initial_states',
             name: 'Open',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'initial'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) === 'initial'),
             turboThreshold: 0,
             allowPointSelect: true,
             color: '#1c98cb',
@@ -207,7 +205,7 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'terminal_states',
             name: 'Completed',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'terminal'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) === 'terminal'),
             turboThreshold: 0,
             allowPointSelect: true,
             color:  '#8f9a8e',
@@ -221,7 +219,7 @@ export const WorkItemEventsTimelineChart = Chart({
             id: 'wip_states',
             name: 'Wip',
             pointWidth: 20,
-            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) == 'in-progress'),
+            data: series_data.filter(point=>getStateType(point.timelineEvent.newState) === 'in-progress'),
             turboThreshold: 0,
             allowPointSelect: true,
             color: '#199a4a',
@@ -259,5 +257,3 @@ export const WorkItemEventsTimelineChart = Chart({
       }
     }
 });
-
-

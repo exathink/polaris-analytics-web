@@ -1,14 +1,8 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow} from '../../framework/viz/dashboard';
-
-
 import {ManageUsersDashboardWidget} from "./users/manageUsers";
 
 const dashboard_id = 'dashboards.admin.account';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Account Overview'/>
-};
 
 export default function AccountAdminDashboard() {
   return (
@@ -19,4 +13,3 @@ export default function AccountAdminDashboard() {
     </Dashboard>
   )
 }
-

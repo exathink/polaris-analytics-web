@@ -89,9 +89,9 @@ export class ActiveContext {
   }
 
   go(scope, route) {
-    if(scope == '.') {
+    if(scope === '.') {
       this.navigator.push(`${this.matchUrl()}/${route}`)
-    } else if (scope == '..'){
+    } else if (scope ==='..'){
       this.navigator.push(`${this.matchInfo.url}/${route}`)
     }
   }

@@ -109,7 +109,6 @@ export const DimensionWorkItemEventsNavigatorWidget = (
           const workItemEvents = data[dimension].workItemEvents.edges.map(edge => edge.node);
           const workItemCommits = data[dimension].workItemCommits.edges.map(edge => edge.node);
           const totalEvents = data[dimension].workItemEvents.count;
-          const totalCommits = data[dimension].workItemCommits.count;
           const totalWorkItems = data[dimension].workItems.count;
           context.cacheView(getViewCacheKey(instanceKey, display), (
                 <WorkItemEventsTimelineChartView
@@ -139,5 +138,3 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       }
     </Query>
 );
-
-
