@@ -5,6 +5,7 @@ import Button from "../../../../../components/uielements/button";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
+import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 
@@ -101,12 +102,14 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
 
 export const SelectRepositoriesStep =
   compose(
-    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
+    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
+    withMutation(TEST_CONNECTOR)
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted} = this.props;
-        const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation} = this.props;
+        const {refetchRepositories, refetchRepositoriesResult} = refetchRepositoriesMutation;
+        const {testConnector} = testConnectorMutation;
 
         return (
           <Query
@@ -138,6 +141,22 @@ export const SelectRepositoriesStep =
                       loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
                     >
                       Fetch Repositories
+                    </Button>
+                    <Button
+                      type={'primary'}
+                      icon={'check'}
+                      className={'check-button'}
+                      disabled={selectedConnector.state !== 'enabled'}
+                      onClick={
+                        () => testConnector({
+                          variables: {
+                            testConnectorInput: {
+                              connectorKey: selectedConnector.key
+                            }
+                          }
+                        })}
+                    >
+                      {'Test connector'}
                     </Button>
                     {
                       repositories.length > 0 ?

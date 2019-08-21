@@ -21,7 +21,6 @@ export const ConnectorsTable = (
     onConnectorSelected,
     onConnectorDeleted,
     onConnectorRegistered,
-    onConnectorTested,
     lastRegistrationError,
     lastRegistrationSubmission
   }
@@ -59,14 +58,6 @@ export const ConnectorsTable = (
 
                   return (
                     <ButtonBar>
-                      <Button
-                        size={"small"}
-                        type={'primary'}
-                        onClick={() => onConnectorTested(record)}
-                        disabled={record.state !== 'enabled'}
-                      >
-                        Test
-                      </Button>
                       {
                         record.accountKey != null ?
                           <Button

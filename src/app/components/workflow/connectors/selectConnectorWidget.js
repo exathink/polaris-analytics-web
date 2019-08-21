@@ -11,7 +11,7 @@ import {NewConnectorFormButton} from "./newConnectorFormButton";
 import {CreateConnectorInstructions} from "./createConnectorInstructions";
 
 import './connectors.css'
-import {CREATE_CONNECTOR, DELETE_CONNECTOR, REGISTER_CONNECTOR, TEST_CONNECTOR} from "./mutations";
+import {CREATE_CONNECTOR, DELETE_CONNECTOR, REGISTER_CONNECTOR} from "./mutations";
 
 
 function urlMunge(connectorType, url) {
@@ -59,7 +59,6 @@ export const SelectConnectorWidget =
     withMutation(REGISTER_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withMutation(DELETE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
     withMutation(CREATE_CONNECTOR, [REFETCH_ALL_CONNECTORS]),
-    withMutation(TEST_CONNECTOR),
     withPollingManager
   )((
     {
@@ -73,7 +72,6 @@ export const SelectConnectorWidget =
       createConnectorMutation,
       deleteConnectorMutation,
       registerConnectorMutation,
-      testConnectorMutation,
       pollingManager: {
         polling,
         startPolling,
@@ -85,7 +83,6 @@ export const SelectConnectorWidget =
     const {createConnector, createConnectorResult} = createConnectorMutation;
     const {deleteConnector} = deleteConnectorMutation;
     const {registerConnector, registerConnectorResult} = registerConnectorMutation;
-    const {testConnector} = testConnectorMutation;
 
     return (
       <Query
@@ -133,17 +130,6 @@ export const SelectConnectorWidget =
                                   organizationKey: organizationKey,
                                   connectorKey: values.key,
                                   name: values.name,
-                                }
-                              }
-                            })
-                          )(values)
-                        }
-                        onConnectorTested={
-                          (values) => submit(
-                            values => testConnector({
-                              variables: {
-                                testConnectorInput: {
-                                  connectorKey: values.key
                                 }
                               }
                             })

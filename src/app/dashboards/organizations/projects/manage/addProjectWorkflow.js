@@ -1,4 +1,5 @@
 import React from 'react';
+import {ApolloProvider} from 'react-apollo';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
 import {SelectIntegrationStep} from "./selectIntegrationStep";
@@ -22,7 +23,7 @@ const steps = [
     showNext: false
   },
   {
-    title:  'Select Connector',
+    title: 'Select Connector',
     content: SelectConnectorStep,
     showNext: false
   },
@@ -172,19 +173,20 @@ export const AddProjectWorkflow = withNavigationContext(
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
       const {organization, onDone} = this.props;
       return (
-        <div style={{height: "100%"}}>
-          <h2>Import Projects</h2>
-          <Steps current={current}>
-            {steps.map((item, index) => (
-              <Step key={index}
-                    style={index > current ? {display: 'none'} : {}}
-                    title={item.title}
-              />
-            ))}
-          </Steps>
-          <div className="steps-content">
-            {
-              React.createElement(steps[current].content, {
+        <ApolloProvider client={work_tracking_service}>
+          <div style={{height: "100%"}}>
+            <h2>Import Projects</h2>
+            <Steps current={current}>
+              {steps.map((item, index) => (
+                <Step key={index}
+                  style={index > current ? {display: 'none'} : {}}
+                  title={item.title}
+                />
+              ))}
+            </Steps>
+            <div className="steps-content">
+              {
+                React.createElement(steps[current].content, {
                   onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
                   selectedConnectorType: this.state.selectedConnectorType,
                   onConnectorSelected: this.onConnectorSelected.bind(this),
@@ -195,29 +197,30 @@ export const AddProjectWorkflow = withNavigationContext(
                   importedProjectKeys: this.state.importedProjectKeys,
                   organizationKey: organization.key
                 }
-              )
-            }
-          </div>
+                )
+              }
+            </div>
 
-          <div className="steps-action">
-            {current > 0 && (
-              <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                {current < 4 ? 'Back' : 'Import More Projects'}
+            <div className="steps-action">
+              {current > 0 && (
+                <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
+                  {current < 4 ? 'Back' : 'Import More Projects'}
+                </Button>
+              )}
+              {currentStep.showNext && current < steps.length - 1 && !disableNext && (
+                <Button type="primary" onClick={() => this.next()}>
+                  Next
               </Button>
-            )}
-            {currentStep.showNext && current < steps.length - 1 && !disableNext && (
-              <Button type="primary" onClick={() => this.next()}>
-                Next
+              )}
+              {(disableNext || current === steps.length - 1) && (
+                <Button type="primary" onClick={() => onDone && onDone(this.state.selectedProjects)}>
+                  Done
               </Button>
-            )}
-            {(disableNext || current === steps.length - 1) && (
-              <Button type="primary" onClick={() => onDone && onDone(this.state.selectedProjects)}>
-                Done
-              </Button>
-            )}
+              )}
 
+            </div>
           </div>
-        </div>
+        </ApolloProvider>
       );
     }
   })
