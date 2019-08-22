@@ -2,6 +2,7 @@ import React from 'react';
 import gql from "graphql-tag";
 
 import Button from "../../../../../components/uielements/button";
+import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
@@ -129,35 +130,42 @@ export const SelectRepositoriesStep =
                 return (
                   <div className={'selected-repositories'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
-                    <Button
-                      type={'primary'}
-                      icon={'download'}
-                      onClick={
-                        () => refetchRepositories({
-                          variables: {
-                            connectorKey: selectedConnector.key
-                          }
-                        })}
-                      loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
-                    >
-                      Fetch Repositories
+                    <ButtonBar>
+                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'center'}>
+                        <Button
+                          type={'primary'}
+                          icon={'download'}
+                          onClick={
+                            () => refetchRepositories({
+                              variables: {
+                                connectorKey: selectedConnector.key
+                              }
+                            })}
+                          loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
+                        >
+                          Fetch Repositories
                     </Button>
-                    <Button
-                      type={'primary'}
-                      icon={'check'}
-                      className={'check-button'}
-                      disabled={selectedConnector.state !== 'enabled'}
-                      onClick={
-                        () => testConnector({
-                          variables: {
-                            testConnectorInput: {
-                              connectorKey: selectedConnector.key
-                            }
-                          }
-                        })}
-                    >
-                      {'Test connector'}
-                    </Button>
+                      </ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'right'}>
+                        <Button
+                          type={'primary'}
+                          icon={'check'}
+                          size={'small'}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onClick={
+                            () => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: selectedConnector.key
+                                }
+                              }
+                            })}
+                        >
+                          {'Test connector'}
+                        </Button>
+                      </ButtonBarColumn>
+                    </ButtonBar>
                     {
                       repositories.length > 0 ?
                         <SelectRepositoriesTable
@@ -167,7 +175,7 @@ export const SelectRepositoriesStep =
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
                         :
-                        <NoData message={"No new repositories to import"}/>
+                        <NoData message={"No new repositories to import"} />
                     }
                   </div>
 

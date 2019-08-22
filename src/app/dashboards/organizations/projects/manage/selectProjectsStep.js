@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 
 import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
+import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
@@ -148,35 +149,43 @@ export const SelectProjectsStep =
                 return (
                   <div className={'selected-projects'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
-                    <Button
-                      type={'primary'}
-                      icon={'download'}
-                      onClick={
-                        () => refetchProjects({
-                          variables: {
-                            connectorKey: selectedConnector.key
-                          }
-                        })}
-                      loading={refetchProjectsResult.data && !trackingReceiptCompleted}
-                    >
-                      {getFetchProjectsButtonName(selectedConnector)}
-                    </Button>
-                    <Button
-                      type={'primary'}
-                      icon={'check'}
-                      className={'check-button'}
-                      disabled={selectedConnector.state !== 'enabled'}
-                      onClick={
-                        () => testConnector({
-                          variables: {
-                            testConnectorInput: {
-                              connectorKey: selectedConnector.key
-                            }
-                          }
-                        })}
-                    >
-                      {'Test connector'}
-                    </Button>
+
+                    <ButtonBar>
+                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'center'}>
+                        <Button
+                          type={'primary'}
+                          icon={'download'}
+                          onClick={
+                            () => refetchProjects({
+                              variables: {
+                                connectorKey: selectedConnector.key
+                              }
+                            })}
+                          loading={refetchProjectsResult.data && !trackingReceiptCompleted}
+                        >
+                          {getFetchProjectsButtonName(selectedConnector)}
+                        </Button>
+                      </ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'right'}>
+                        <Button
+                          type={'primary'}
+                          icon={'check'}
+                          size={'small'}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onClick={
+                            () => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: selectedConnector.key
+                                }
+                              }
+                            })}
+                        >
+                          {'Test connector'}
+                        </Button>
+                      </ButtonBarColumn>
+                    </ButtonBar>
                     {
                       workItemsSources.length > 0 ?
                         <SelectProjectsTable
