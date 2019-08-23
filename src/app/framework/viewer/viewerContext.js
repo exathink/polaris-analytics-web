@@ -101,7 +101,7 @@ class ViewerContextProvider extends React.Component {
 
   render() {
     return (
-      this.state.viewer !== null ?
+      this.state.viewer != null &&
         <Provider value={{
           viewer: this.state.viewer,
           accountKey: this.state.accountKey,
@@ -115,9 +115,6 @@ class ViewerContextProvider extends React.Component {
         }}>
           {this.props.children}
         </Provider>
-        : this.state.error !== null ?
-        `Unknown user error: ${this.state.error}`
-        : null
     )
   }
 
