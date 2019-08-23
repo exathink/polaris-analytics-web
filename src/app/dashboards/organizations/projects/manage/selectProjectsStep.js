@@ -4,7 +4,9 @@ import gql from "graphql-tag";
 
 import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
+import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {withMutation} from "../../../../components/graphql/withMutation";
+import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
@@ -120,12 +122,15 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
 
 export const SelectProjectsStep =
   compose(
-    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
+    withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
+    withMutation(TEST_CONNECTOR)
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted} = this.props;
-        const {refetchProjects, refetchProjectsResult} = this.props.refetchProjectsMutation;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, refetchProjectsMutation, testConnectorMutation} = this.props;
+        const {refetchProjects, refetchProjectsResult} = refetchProjectsMutation;
+        const {testConnector} = testConnectorMutation;
+
         return (
           <Query
             client={work_tracking_service}
@@ -144,19 +149,43 @@ export const SelectProjectsStep =
                 return (
                   <div className={'selected-projects'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
-                    <Button
-                      type={'primary'}
-                      icon={'download'}
-                      onClick={
-                        () => refetchProjects({
-                          variables: {
-                            connectorKey: selectedConnector.key
-                          }
-                        })}
-                      loading={refetchProjectsResult.data && !trackingReceiptCompleted}
-                    >
-                      {getFetchProjectsButtonName(selectedConnector)}
-                    </Button>
+
+                    <ButtonBar>
+                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'center'}>
+                        <Button
+                          type={'primary'}
+                          icon={'download'}
+                          onClick={
+                            () => refetchProjects({
+                              variables: {
+                                connectorKey: selectedConnector.key
+                              }
+                            })}
+                          loading={refetchProjectsResult.data && !trackingReceiptCompleted}
+                        >
+                          {getFetchProjectsButtonName(selectedConnector)}
+                        </Button>
+                      </ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'right'}>
+                        <Button
+                          type={'primary'}
+                          icon={'check'}
+                          size={'small'}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onClick={
+                            () => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: selectedConnector.key
+                                }
+                              }
+                            })}
+                        >
+                          {'Test connector'}
+                        </Button>
+                      </ButtonBarColumn>
+                    </ButtonBar>
                     {
                       workItemsSources.length > 0 ?
                         <SelectProjectsTable
@@ -166,7 +195,7 @@ export const SelectProjectsStep =
                           onProjectsSelected={onProjectsSelected}
                         />
                         :
-                        <NoData message={"No new projects to import"}/>
+                        <NoData message={"No new projects to import"} />
                     }
                   </div>
 

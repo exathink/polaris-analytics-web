@@ -2,9 +2,11 @@ import React from 'react';
 import gql from "graphql-tag";
 
 import Button from "../../../../../components/uielements/button";
+import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
+import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 
@@ -101,12 +103,14 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
 
 export const SelectRepositoriesStep =
   compose(
-    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
+    withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
+    withMutation(TEST_CONNECTOR)
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted} = this.props;
-        const {refetchRepositories, refetchRepositoriesResult} = this.props.refetchRepositoriesMutation;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation} = this.props;
+        const {refetchRepositories, refetchRepositoriesResult} = refetchRepositoriesMutation;
+        const {testConnector} = testConnectorMutation;
 
         return (
           <Query
@@ -126,19 +130,42 @@ export const SelectRepositoriesStep =
                 return (
                   <div className={'selected-repositories'}>
                     <h3>Server: {getServerUrl(selectedConnector)}</h3>
-                    <Button
-                      type={'primary'}
-                      icon={'download'}
-                      onClick={
-                        () => refetchRepositories({
-                          variables: {
-                            connectorKey: selectedConnector.key
-                          }
-                        })}
-                      loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
-                    >
-                      Fetch Repositories
+                    <ButtonBar>
+                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'center'}>
+                        <Button
+                          type={'primary'}
+                          icon={'download'}
+                          onClick={
+                            () => refetchRepositories({
+                              variables: {
+                                connectorKey: selectedConnector.key
+                              }
+                            })}
+                          loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
+                        >
+                          Fetch Repositories
                     </Button>
+                      </ButtonBarColumn>
+                      <ButtonBarColumn span={8} alignButton={'right'}>
+                        <Button
+                          type={'primary'}
+                          icon={'check'}
+                          size={'small'}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onClick={
+                            () => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: selectedConnector.key
+                                }
+                              }
+                            })}
+                        >
+                          {'Test connector'}
+                        </Button>
+                      </ButtonBarColumn>
+                    </ButtonBar>
                     {
                       repositories.length > 0 ?
                         <SelectRepositoriesTable
@@ -148,7 +175,7 @@ export const SelectRepositoriesStep =
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
                         :
-                        <NoData message={"No new repositories to import"}/>
+                        <NoData message={"No new repositories to import"} />
                     }
                   </div>
 
