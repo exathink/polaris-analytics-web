@@ -122,7 +122,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           fetchPolicy: 'network-only'
         })
         if (result.data) {
-          if (!result.data.vcsConnector.repositories.edges.length) {
+          if (!result.data.vcsConnector.repositories.count) {
             openNotification('warn', 'There are no imports in progress')
             return
           } else {
