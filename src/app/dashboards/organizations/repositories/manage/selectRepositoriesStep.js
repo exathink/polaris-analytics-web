@@ -108,7 +108,7 @@ export const SelectRepositoriesStep =
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation} = this.props;
+        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation, getActiveImports} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = refetchRepositoriesMutation;
         const {testConnector} = testConnectorMutation;
 
@@ -148,22 +148,33 @@ export const SelectRepositoriesStep =
                     </Button>
                       </ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'right'}>
-                        <Button
-                          type={'primary'}
-                          icon={'check'}
-                          size={'small'}
-                          disabled={selectedConnector.state !== 'enabled'}
-                          onClick={
-                            () => testConnector({
-                              variables: {
-                                testConnectorInput: {
-                                  connectorKey: selectedConnector.key
+                        <React.Fragment>
+                          <Button
+                            type={'primary'}
+                            icon={'check'}
+                            size={'small'}
+                            disabled={selectedConnector.state !== 'enabled'}
+                            onClick={
+                              () => testConnector({
+                                variables: {
+                                  testConnectorInput: {
+                                    connectorKey: selectedConnector.key
+                                  }
                                 }
-                              }
-                            })}
-                        >
-                          {'Test connector'}
-                        </Button>
+                              })}
+                          >
+                            {'Test connector'}
+                          </Button>
+                          <Button
+                            type={'primary'}
+                            icon={'import'}
+                            size={'small'}
+                            disabled={selectedRepositories.length}
+                            onClick={getActiveImports}
+                          >
+                            {'Active imports'}
+                          </Button>
+                        </React.Fragment>
                       </ButtonBarColumn>
                     </ButtonBar>
                     {
