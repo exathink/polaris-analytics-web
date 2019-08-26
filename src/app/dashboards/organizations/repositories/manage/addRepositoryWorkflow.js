@@ -110,8 +110,6 @@ export const AddRepositoryWorkflow = withNavigationContext(
                     id
                     name
                     key
-                    description
-                    importState
                   }
                 }
               }
@@ -119,7 +117,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
           }`,
           variables: {
             connectorKey: selectedConnector.key
-          }
+          },
+          fetchPolicy: 'network-only'
         })
         if (result.data) {
           this.setState({
