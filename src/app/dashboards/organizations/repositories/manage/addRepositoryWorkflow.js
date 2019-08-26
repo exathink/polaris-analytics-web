@@ -159,11 +159,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           )
         })
         if (result.data) {
-          this.setState({
-            current: 4,
-            importedRepositoryKeys: result.data.importRepositories.importedRepositoryKeys,
-            selectedRepositories: []
-          })
+          this.getActiveImports()
         }
       } catch (error) {
         console.log(`Error: ${error}`)
