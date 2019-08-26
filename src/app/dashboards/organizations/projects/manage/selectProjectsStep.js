@@ -9,19 +9,9 @@ import {withMutation} from "../../../../components/graphql/withMutation";
 import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
+import {ServerInfo} from "../../../../components/workflow/connectors/utility";
 import {NoData} from "../../../../components/misc/noData";
 import {lexicographic} from "../../../../helpers/utility";
-
-function getServerUrl(selectedConnector) {
-  switch (selectedConnector.connectorType) {
-    case 'pivotal':
-      return 'Pivotal Tracker.com';
-    case 'github':
-      return 'GitHub.com';
-    default:
-      return selectedConnector.baseUrl;
-  }
-}
 
 function getFetchProjectsButtonName(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -148,8 +138,7 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
-
+                    <h3>Server: <ServerInfo selectedConnector={selectedConnector} /></h3>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>

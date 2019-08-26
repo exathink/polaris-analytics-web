@@ -9,13 +9,10 @@ import {withMutation} from "../../../../components/graphql/withMutation";
 import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
-
+import {ServerInfo} from "../../../../components/workflow/connectors/utility";
 import {NoData} from "../../../../components/misc/noData";
 import {lexicographic} from "../../../../helpers/utility";
 
-function getServerUrl(selectedConnector) {
-  return selectedConnector.baseUrl;
-}
 
 const REFETCH_REPOSITORIES_MUTATION = {
   name: 'refetchRepositories',
@@ -129,7 +126,7 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div className={'selected-repositories'}>
-                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
+                    <h3>Server: <ServerInfo selectedConnector={selectedConnector} /></h3>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
