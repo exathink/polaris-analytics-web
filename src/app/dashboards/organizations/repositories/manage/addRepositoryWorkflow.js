@@ -103,13 +103,10 @@ export const AddRepositoryWorkflow = withNavigationContext(
           query getActiveImports($connectorKey: String!) {
             vcsConnector(key: $connectorKey) {
               id
-              key
               repositories(importMode: importing) {
-                count
                 edges {
                   node {
                     id
-                    name
                     key
                   }
                 }
@@ -122,7 +119,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           fetchPolicy: 'network-only'
         })
         if (result.data) {
-          if (!result.data.vcsConnector.repositories.count) {
+          if (!result.data.vcsConnector.repositories.edges.length) {
             openNotification('warn', 'There are no imports in progress')
             return
           } else {
