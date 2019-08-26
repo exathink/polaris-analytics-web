@@ -43,6 +43,35 @@ function getWorkItemSummaryText(commit) {
   return workItemsSummaries
 }
 
+
+
+const bucketToBubbleSize = [
+  2,
+  8,
+  9,
+  10,
+  16,
+  22,
+]
+
+function z_bucket(lines){
+  if (lines != null) {
+    if (lines <= 10) {
+      return 1
+    } else if (lines <= 50) {
+      return 2
+    } else if (lines <= 100) {
+      return 3
+    } else if (lines <= 1000) {
+      return 4
+    } else {
+      return 5
+    }
+  } else {
+    return 0
+  }
+}
+
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
@@ -69,11 +98,25 @@ export const CommitsTimelineChart = Chart({
           {
             x: commit_date.valueOf(),
             y: categories.indexOf(model.getCategory(commit)),
-            z: commit.stats.lines,
+            z: z_bucket(commit.stats.lines),
             commit: commit
           }
         )
       });
+
+      const z_bucket_range = series_data.reduce(
+        (minmax, point) => {
+          if(minmax.min === null || minmax.min > point.z) {
+            minmax.min = point.z
+          }
+          if (minmax.max === null || minmax.max < point.z) {
+            minmax.max = point.z
+          }
+          return minmax;
+        },
+        {min: null, max:null}
+      )
+
 
 
       const latest_point = markLatest && series_data.length > 0 && series_data.reduce(
@@ -167,7 +210,7 @@ export const CommitsTimelineChart = Chart({
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
                 ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
-                [`Queue Time: `, `${queueTime(this.point.commit)}`],
+                [`Lines: `, `${this.point.commit.stats.lines}`],
               ]
             } : {
               header: `${workItemHeader} Author: ${this.point.commit.author}`,
@@ -192,15 +235,19 @@ export const CommitsTimelineChart = Chart({
           {
             key: 'timeline',
             id: 'timeline',
-            name: 'timeline',
+            name: '<span style="font-size: 10px; color: #666; font-style: italic">Bubble Size: Lines Changed</span>',
             pointWidth: 20,
             data: series_data,
+            minSize: bucketToBubbleSize[z_bucket_range.min],
+            maxSize: bucketToBubbleSize[z_bucket_range.max],
+            sizeBy: 'width',
             turboThreshold: 0,
-            allowPointSelect: true
+            allowPointSelect: true,
+
           }
         ],
         legend: {
-          enabled: false
+          enabled: z_bucket_range.min !== z_bucket_range.max
         },
         time: {
           // Since we are already passing in UTC times we

@@ -5,6 +5,10 @@ import {Chart, tooltipHtml} from '../../../../../framework/viz/charts/index';
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";
 
+function getSubtitleText(intl, model) {
+  const baseText = `Bubble size: ${displayPlural(intl, model.secondaryMeasureContext)}`;
+  return model.childCount > model.data.length ? `${baseText}<br/>Showing top ${model.data.length} of ${model.childCount} by commits` : baseText
+}
 
 const componentId = 'activitySummaryBubbleChart';
 
@@ -50,7 +54,7 @@ const initSeries = props => {
         name: activity_level.display_name,
         data: seriesData,
         visible: level_partition.visible,
-        zMin: 1
+        zMin: 1,
       }
     )
   });
@@ -82,13 +86,20 @@ const getConfig =  props => {
       text: intl.formatMessage(messages.title, {subject: childContextName})
     },
     subtitle: {
-      text: model.childCount > model.data.length ? `Top ${model.data.length} of ${model.childCount}` : null
+      text: `${getSubtitleText(intl, model)}`
     },
     legend: {
+      title: {
+        text: 'Activity Levels<br/><span style="font-size: 10px; color: #666; font-weight: normal">Click to select</span>',
+        style: {
+          fontStyle: 'italic'
+        }
+      },
       align: 'right',
       layout: 'vertical',
       verticalAlign: 'middle',
-      reversed: true
+      itemMarginBottom: 3,
+      reversed: true,
     },
     xAxis: {
       type: 'linear',
