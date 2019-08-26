@@ -11,6 +11,7 @@ import {vcs_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
+import {openNotification} from "../../../../helpers/utility";
 import '../../steps.css';
 
 const {Step} = Steps;
@@ -121,11 +122,16 @@ export const AddRepositoryWorkflow = withNavigationContext(
           fetchPolicy: 'network-only'
         })
         if (result.data) {
-          this.setState({
-            current: 4,
-            importedRepositoryKeys: result.data.vcsConnector.repositories.edges.map(row => row.node.key),
-            selectedRepositories: []
-          })
+          if (!result.data.vcsConnector.repositories.edges.length) {
+            openNotification('warn', 'There are no imports in progress')
+            return
+          } else {
+            this.setState({
+              current: 4,
+              importedRepositoryKeys: result.data.vcsConnector.repositories.edges.map(row => row.node.key),
+              selectedRepositories: []
+            })
+          }
         }
       } catch (error) {
         console.log(`Error: ${error}`)
