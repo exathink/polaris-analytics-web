@@ -59,7 +59,7 @@ export class ShowImportStateStep extends React.Component {
     const {importState, commitCount} = repository;
     const percentComplete = this.getPercentComplete(repository);
 
-    console.log(`Import State: ${importState} Commit Count: ${commitCount} PercentComplete: ${percentComplete}`)
+
 
     const displayedImportState =
       (percentComplete === 100) ? 'imported' :
