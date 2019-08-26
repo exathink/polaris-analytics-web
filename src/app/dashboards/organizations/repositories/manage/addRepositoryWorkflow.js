@@ -11,6 +11,7 @@ import {vcs_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
+import {openNotification} from "../../../../helpers/utility";
 import '../../steps.css';
 
 const {Step} = Steps;
@@ -94,6 +95,46 @@ export const AddRepositoryWorkflow = withNavigationContext(
       return selectedRepositories.map(repo => repo.key)
     }
 
+    async getActiveImports() {
+      const {selectedConnector} = this.state;
+      try {
+        const result = await vcs_service.query({
+          query: gql`
+          query getActiveImports($connectorKey: String!) {
+            vcsConnector(key: $connectorKey) {
+              id
+              repositories(importMode: importing) {
+                edges {
+                  node {
+                    id
+                    key
+                  }
+                }
+              }
+            }
+          }`,
+          variables: {
+            connectorKey: selectedConnector.key
+          },
+          fetchPolicy: 'network-only'
+        })
+        if (result.data) {
+          if (!result.data.vcsConnector.repositories.edges.length) {
+            openNotification('warn', 'There are no imports in progress')
+            return
+          } else {
+            this.setState({
+              current: 4,
+              importedRepositoryKeys: result.data.vcsConnector.repositories.edges.map(row => row.node.key),
+              selectedRepositories: []
+            })
+          }
+        }
+      } catch (error) {
+        console.log(`Error: ${error}`)
+      }
+    }
+
     async onDoImport() {
       const {organization} = this.props;
       try {
@@ -118,11 +159,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           )
         })
         if (result.data) {
-          this.setState({
-            current: 4,
-            importedRepositoryKeys: result.data.importRepositories.importedRepositoryKeys,
-            selectedRepositories: []
-          })
+          this.getActiveImports()
         }
       } catch (error) {
         console.log(`Error: ${error}`)
@@ -137,49 +174,50 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {organization, onDone} = this.props;
       return (
         <ApolloProvider client={vcs_service}>
-            <h2>Import Repositories</h2>
-            <Steps current={current}>
-              {steps.map((item, index) => (
-                <Step key={index}
-                  style={index > current ? {display: 'none'} : {}}
-                  title={item.title}
-                />
-              ))}
-            </Steps>
-            <div className="steps-content">
-              {
-                React.createElement(steps[current].content, {
-                  organizationKey: organization.key,
-                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
-                  selectedConnectorType: this.state.selectedConnectorType,
-                  onConnectorSelected: this.onConnectorSelected.bind(this),
-                  selectedConnector: this.state.selectedConnector,
-                  onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
-                  selectedRepositories: this.state.selectedRepositories,
-                  onDoImport: this.onDoImport.bind(this),
-                  importedRepositoryKeys: this.state.importedRepositoryKeys
-                })
-              }
-            </div>
+          <h2>Import Repositories</h2>
+          <Steps current={current}>
+            {steps.map((item, index) => (
+              <Step key={index}
+                style={index > current ? {display: 'none'} : {}}
+                title={item.title}
+              />
+            ))}
+          </Steps>
+          <div className="steps-content">
+            {
+              React.createElement(steps[current].content, {
+                organizationKey: organization.key,
+                onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+                selectedConnectorType: this.state.selectedConnectorType,
+                onConnectorSelected: this.onConnectorSelected.bind(this),
+                selectedConnector: this.state.selectedConnector,
+                onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                selectedRepositories: this.state.selectedRepositories,
+                onDoImport: this.onDoImport.bind(this),
+                getActiveImports: this.getActiveImports.bind(this),
+                importedRepositoryKeys: this.state.importedRepositoryKeys
+              })
+            }
+          </div>
 
-            <div className="steps-action">
-              {current > 0 && (
-                <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                  {current < 4 ? 'Back' : 'Import More Repositories'}
-                </Button>
-              )}
-              {currentStep.showNext && current < steps.length - 1 && !disableNext && (
-                <Button type="primary" onClick={() => this.next()}>
-                  Next
+          <div className="steps-action">
+            {current > 0 && (
+              <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
+                {current < 4 ? 'Back' : 'Import More Repositories'}
+              </Button>
+            )}
+            {currentStep.showNext && current < steps.length - 1 && !disableNext && (
+              <Button type="primary" onClick={() => this.next()}>
+                Next
             </Button>
-              )}
-              {(disableNext || current === steps.length - 1) && (
-                <Button type="primary" onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
-                  Done
+            )}
+            {(disableNext || current === steps.length - 1) && (
+              <Button type="primary" onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
+                Done
             </Button>
-              )}
+            )}
 
-            </div>
+          </div>
         </ApolloProvider>
 
       );
