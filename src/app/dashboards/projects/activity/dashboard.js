@@ -50,7 +50,7 @@ export const dashboard = () => (
                     latestWorkItemEvent={project.latestWorkItemEvent}
                     markLatest
                     groupBy={'workItem'}
-                    groupings={['workItem', 'event', 'source', 'type']}
+                    groupings={['workItem', 'type', 'event', 'source']}
                     showHeader={true}
 
                   />

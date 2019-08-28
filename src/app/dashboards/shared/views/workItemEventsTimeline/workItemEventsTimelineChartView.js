@@ -9,8 +9,18 @@ import {WorkItemEventsTimelineGroupSelector} from "./workItemEventsTimelineGroup
 export class WorkItemEventsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      workItemEvents,
+      workItemCommits,
+      totalWorkItems,
+      groupBy
+    } = this.props;
+
     this.state = {
-      selectedGrouping: props.groupBy
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, groupBy),
+      selectedGrouping: groupBy,
+      selectedCategories: null,
+      selectedCommits: null
     }
   }
 
@@ -72,25 +82,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
   }
 
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      workItemEvents,
-      workItemCommits,
-      totalWorkItems,
-      groupBy
-    } = nextProps;
 
-    let state = null;
-    if (!prevState.selectedCategories && !prevState.selectedWorkItemEvents) {
-        state = {
-          ...prevState,
-          model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, groupBy),
-          selectedCategories: null,
-          selectedWorkItemEvents: null
-        }
-    }
-    return state;
-  }
 
   getWorkItemEventsTimelineChart(model) {
     const {
