@@ -73,5 +73,6 @@ export const RegisterConnectorFormButton = createForm(RegisterConnectorForm, {
   title: 'Register',
   submitTitle: 'Register',
   buttonSize: 'small',
-  noPlus: true
+  isAdd: false,
+  isEdit: false
 });

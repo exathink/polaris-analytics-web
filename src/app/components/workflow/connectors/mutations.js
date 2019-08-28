@@ -62,3 +62,20 @@ export const TEST_CONNECTOR = {
     success: (data) => openNotification('success', `Connector test was successful.`),
     error: err => openNotification('error', `${display_error(err)}`)
 }
+
+export const EDIT_CONNECTOR = {
+    name: 'editConnector',
+    mutation: gql`
+      mutation editConnector ($editConnectorInput: EditConnectorInput!){
+          editConnector(editConnectorInput: $editConnectorInput){
+              connector {
+                  id
+                  name
+                  key
+              }
+          }
+      }
+  `,
+    client: null,
+    success: (data) => openNotification('success', `Connector ${data.editConnector.connector.name} updated`)
+}

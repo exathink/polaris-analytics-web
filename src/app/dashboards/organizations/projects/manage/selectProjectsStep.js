@@ -11,6 +11,10 @@ import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
 import {lexicographic} from "../../../../helpers/utility";
+import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
+import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
+import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
+import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -122,14 +126,21 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
 
 export const SelectProjectsStep =
   compose(
+    withSubmissionCache,
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
-    withMutation(TEST_CONNECTOR)
+    withMutation(TEST_CONNECTOR),
+    withMutation(EDIT_CONNECTOR)
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, refetchProjectsMutation, testConnectorMutation} = this.props;
+        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, refetchProjectsMutation, testConnectorMutation, submissionCache, editConnectorMutation} = this.props;
         const {refetchProjects, refetchProjectsResult} = refetchProjectsMutation;
+        const {submit, lastSubmission} = submissionCache;
+
         const {testConnector} = testConnectorMutation;
+        const {editConnector, editConnectorResult} = editConnectorMutation;
+
+        const {connectorType} = selectedConnector;
 
         return (
           <Query
@@ -182,8 +193,29 @@ export const SelectProjectsStep =
                               }
                             })}
                         >
-                          {'Test connector'}
+                          {'Test Connector'}
                         </Button>
+                        <EditConnectorFormButton
+                          connector={selectedConnector}
+                          title={`Edit ${getConnectorTypeDisplayName(connectorType)} Connector`}
+                          onSubmit={
+                            submit(
+                              values =>
+                                editConnector({
+                                  variables: {
+                                    editConnectorInput: {
+                                      name: values.name,
+                                      connectorType: connectorType,
+                                      apiKey: values.apiKey,
+                                      githubAccessToken: values.githubAccessToken
+                                    }
+                                  }
+                                })
+                            )
+                          }
+                          error={editConnectorResult.error}
+                          lastSubmission={lastSubmission}
+                        />
                       </ButtonBarColumn>
                     </ButtonBar>
                     {
