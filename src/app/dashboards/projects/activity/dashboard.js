@@ -3,7 +3,7 @@ import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget
+  DimensionWorkItemEventsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 
 import {ProjectDashboard} from "../projectDashboard";
@@ -34,30 +34,30 @@ export const dashboard = () => (
               }
             />
           </DashboardRow>
-          <DashboardRow h='81%'>
+          <DashboardRow h={"59%"}>
             <DashboardWidget
               w={1}
-              name="commits"
-              title={"Contributions"}
+              name="workItemEvents"
               render={
                 ({view}) =>
-                  <DimensionCommitsNavigatorWidget
+                  <DimensionWorkItemEventsNavigatorWidget
                     dimension={'project'}
                     instanceKey={project.key}
                     context={context}
                     view={view}
-                    days={1}
+                    days={7}
                     latestCommit={project.latestCommit}
-                    groupBy={'repository'}
-                    groupings={['repository', 'author', 'workItem']}
-                    showHeader
-                    showTable
+                    latestWorkItemEvent={project.latestWorkItemEvent}
+                    markLatest
+                    groupBy={'workItem'}
+                    groupings={['workItem', 'event', 'source', 'type']}
+                    showHeader={true}
+
                   />
               }
               showDetail={true}
             />
           </DashboardRow>
-
         </Dashboard>
       )
     }
