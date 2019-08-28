@@ -49,7 +49,7 @@ export const dashboard = () => (
                     latestCommit={project.latestCommit}
                     latestWorkItemEvent={project.latestWorkItemEvent}
                     groupBy={'workItem'}
-                    groupings={['workItem', 'type', 'event', 'source']}
+                    groupings={['workItem', 'event' ,'type',  'source']}
                     showHeader={true}
 
                   />
