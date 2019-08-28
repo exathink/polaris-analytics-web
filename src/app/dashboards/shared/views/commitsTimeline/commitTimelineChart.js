@@ -240,7 +240,6 @@ export const CommitsTimelineChart = Chart({
             data: series_data,
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
-            sizeBy: 'width',
             turboThreshold: 0,
             allowPointSelect: true,
 
