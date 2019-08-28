@@ -45,10 +45,9 @@ export const dashboard = () => (
                     instanceKey={project.key}
                     context={context}
                     view={view}
-                    days={7}
+                    days={1}
                     latestCommit={project.latestCommit}
                     latestWorkItemEvent={project.latestWorkItemEvent}
-                    markLatest
                     groupBy={'workItem'}
                     groupings={['workItem', 'type', 'event', 'source']}
                     showHeader={true}

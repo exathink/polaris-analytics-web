@@ -10,8 +10,18 @@ export class WorkItemEventsTimelineChartModel {
     this.getCategory = this.initCategorySelector(groupBy)
     this.timelineEvents = filterCategories ? this.filter(this.allEvents, filterCategories) : this.allEvents
     this.categoriesIndex = this.initCategoryIndex(this.timelineEvents, groupBy, filterCategories)
+    this.eventsIndex = groupBy === 'workItem' ? this.initEventsIndex(this.timelineEvents) : {}
   }
 
+  initEventsIndex(timelineEvents) {
+    return timelineEvents.reduce(
+      (index, event) => {
+        index[event.displayId] = event;
+        return index;
+      },
+      {}
+    )
+  }
 
   initCategorySelector(groupBy) {
     if (groupBy === 'workItem') {

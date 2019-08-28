@@ -123,14 +123,6 @@ export const WorkItemEventsTimelineChart = Chart({
       });
 
 
-      const latest_point = markLatest && series_data.length > 0 && series_data.reduce(
-        (latest, point) => latest.x < point.x ? point : latest,
-        series_data[0]
-      );
-      if (latest_point) {
-        latest_point.color = Colors.ActivityLevel.ACTIVE
-      }
-
       let startWindow = null;
       let endWindow = before && moment(before)
       if (endWindow) {
@@ -166,7 +158,7 @@ export const WorkItemEventsTimelineChart = Chart({
           title: {
             text: capitalizeFirstLetter(category)
           },
-          categories: categories.map(cat => `${cat}: ${categoryIndex[cat]}`),
+          categories: categories,
           scrollbar: {
             enabled: view === 'detail' && showScrollbar,
             showFull: false
@@ -175,11 +167,26 @@ export const WorkItemEventsTimelineChart = Chart({
           min: 0,
           max: categories.length - 1,
           labels: {
-            useHTML: true,
+            align: 'left',
+            reserveSpace: true,
+            useHTML: false,
+            formatter: function() {
+              if(category === 'workItem') {
+                const event = model.eventsIndex[this.value];
+                if (event != null) {
+                  return event.eventDate ? event.name : event.workItemName;
+                } else {
+                  return this.value;
+                }
+              } else {
+                return this.value
+              }
+            }
           }
         },
         tooltip: {
           useHTML: true,
+          outside: false,
           hideDelay: 50,
           formatter: function () {
             return getTooltip(this.point, shortTooltip);
