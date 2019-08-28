@@ -3,6 +3,7 @@ import moment from 'moment';
 import {Colors} from "../../config";
 import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment, snakeToUpperCamel} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
   if (workItemState != null) {
@@ -39,7 +40,7 @@ function getTitleText(totalWorkItems) {
 }
 
 
-function workItemStateChangeTooltip(event, shortTooltip) {
+function workItemStateChangeTooltip(intl, event, shortTooltip) {
   const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.name, 50)}`;
   const transition = `Status: ${event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `
 
@@ -48,19 +49,19 @@ function workItemStateChangeTooltip(event, shortTooltip) {
     body: [
       [`Source: `, `${event.workItemsSourceName}`],
       [`Id: `, `#${event.displayId}`],
-      [`Date: `, `${event.eventDate}`],
+      [`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`],
     ]
   } : {
     header: `${header}<br/>${transition}`,
     body: [
       [`Source: `, `${event.workItemsSourceName}`],
       [`Id: `, `#${event.displayId}`],
-      [`Date: `, `${event.eventDate}`],
+      [`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`],
     ]
   })
 }
 
-function workItemCommitTooltip(event, shortTooltip) {
+function workItemCommitTooltip(intl, event, shortTooltip) {
   const header = `${snakeToUpperCamel(event.workItemType)}: ${elide(event.workItemName, 50)}`;
   const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`
   return tooltipHtml(shortTooltip ? {
@@ -68,25 +69,25 @@ function workItemCommitTooltip(event, shortTooltip) {
     body: [
       [`Message: `, `${elide(event.commitMessage, 60)}`],
       [`Author: `, `${event.author}`],
-      [`Date: `, `${event.commitDate}`]
+      [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`]
     ]
   } : {
     header: `${header}<br/>${commit}`,
     body: [
       [`Message: `, `${elide(event.commitMessage, 60)}`],
       [`Author: `, `${event.author}`],
-      [`Date: `, `${event.commitDate}`]
+      [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`]
     ]
   })
 }
 
-function getTooltip(point, shortTooltip) {
+function getTooltip(intl, point, shortTooltip) {
   const event = point.timelineEvent;
 
   if (event.eventDate != null) {
-    return workItemStateChangeTooltip(event, shortTooltip);
+    return workItemStateChangeTooltip(intl, event, shortTooltip);
   } else {
-    return workItemCommitTooltip(event, shortTooltip);
+    return workItemCommitTooltip(intl, event, shortTooltip);
   }
 }
 
@@ -189,7 +190,7 @@ export const WorkItemEventsTimelineChart = Chart({
           outside: false,
           hideDelay: 50,
           formatter: function () {
-            return getTooltip(this.point, shortTooltip);
+            return getTooltip(intl, this.point, shortTooltip);
           },
         },
         series: [
