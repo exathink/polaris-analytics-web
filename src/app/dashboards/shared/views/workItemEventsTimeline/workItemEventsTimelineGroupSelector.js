@@ -11,14 +11,7 @@ const buttons = {
 
 export class WorkItemEventsTimelineGroupSelector extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-  }
-
   onChange = (e) => {
-
-
     if(this.props.onGroupingChanged) {
       this.props.onGroupingChanged(e.target.value)
     }
@@ -33,7 +26,7 @@ export class WorkItemEventsTimelineGroupSelector extends React.Component {
           Group By
           </Box>
           <Box>
-            <RadioGroup  onChange={this.onChange} value={this.props.selectedGrouping} size={"small"}>
+            <RadioGroup  defaultValue={this.props.selectedGrouping} onChange={this.onChange} size={"small"}>
               {
                 groupings.map(grouping => buttons[grouping])
               }
