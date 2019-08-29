@@ -103,7 +103,5 @@ const AddConnectorForm = (
 export const NewConnectorFormButton = createForm(AddConnectorForm, {
   drawer: true,
   title: 'New Connector',
-  submitTitle: 'Register',
-  isAdd: true,
-  isEdit: false
+  submitTitle: 'Register'
 });

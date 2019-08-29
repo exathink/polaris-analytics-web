@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Form, Input, Row} from "antd";
-import {createForm} from "../../forms/createForm";
+import {editForm} from "../../forms/editForm";
 
 const EditConnectorForm = (
     {
@@ -81,11 +81,7 @@ const EditConnectorForm = (
         </React.Fragment>
     )
 }
-export const EditConnectorFormButton = createForm(EditConnectorForm, {
+export const EditConnectorFormButton = editForm(EditConnectorForm, {
     drawer: true,
-    title: 'Edit Connector',
-    submitTitle: 'Update',
-    buttonSize: 'small',
-    isAdd: false,
-    isEdit: true
+    title: 'Edit Connector'
 });

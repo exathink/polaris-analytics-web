@@ -177,6 +177,7 @@ export const SelectRepositoriesStep =
                         <EditConnectorFormButton
                           connector={selectedConnector}
                           title={`Edit ${getConnectorTypeDisplayName(connectorType)} Connector`}
+                          disabled={selectedConnector.state !== 'enabled'}
                           onSubmit={
                             submit(
                               values =>
