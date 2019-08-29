@@ -13,16 +13,12 @@ export class WorkItemEventsTimelineGroupSelector extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      value: props.groupings ? props.groupings[0] : null
-    }
+
   }
 
   onChange = (e) => {
-    console.log('radio checked', e.target.value);
-    this.setState({
-      value: e.target.value,
-    });
+
+
     if(this.props.onGroupingChanged) {
       this.props.onGroupingChanged(e.target.value)
     }
@@ -37,7 +33,7 @@ export class WorkItemEventsTimelineGroupSelector extends React.Component {
           Group By
           </Box>
           <Box>
-            <RadioGroup  onChange={this.onChange} value={this.state.value} size={"small"}>
+            <RadioGroup  onChange={this.onChange} value={this.props.selectedGrouping} size={"small"}>
               {
                 groupings.map(grouping => buttons[grouping])
               }
