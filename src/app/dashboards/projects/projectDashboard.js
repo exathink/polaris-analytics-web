@@ -28,13 +28,14 @@ class WithProject extends React.Component {
         query={
           gql`
             query with_project_instance($key: String!) {
-                project(key: $key, interfaces:[CommitSummary]){
+                project(key: $key, interfaces:[CommitSummary, WorkItemEventSpan]){
                     id
                     name
                     key
                     earliestCommit
                     latestCommit
                     commitCount
+                    latestWorkItemEvent
                 }
             }
         `
