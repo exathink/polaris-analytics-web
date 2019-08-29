@@ -23,6 +23,15 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       selectedCommits: null
     }
   }
+  componentDidUpdate() {
+    const {model} = this.state;
+    const {workItemEvents, workItemCommits, totalWorkItems} = this.props
+    if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits || model.totalWorkItems !== totalWorkItems){
+      this.setState({
+        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, this.state.selectedGrouping),
+      })
+    }
+  }
 
   onGroupingChanged(groupBy) {
     const {
@@ -168,7 +177,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
         <Flex column style={{height: height, width: "100%"}}>
           <Flex column align='center' style={{height: "5%"}}>
-            <WorkItemEventsTimelineGroupSelector groupings={this.props.groupings} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+            <WorkItemEventsTimelineGroupSelector groupings={this.props.groupings} selectedGrouping={this.state.selectedGrouping} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
           </Flex>
           <Flex style={{height:"95%"}}>
             <Box w={this.showHeader() ? "90%" : "100%"}>
