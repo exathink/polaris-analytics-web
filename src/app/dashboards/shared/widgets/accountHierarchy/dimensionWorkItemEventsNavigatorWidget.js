@@ -9,6 +9,13 @@ import {WorkItemEventsTimelineChartView} from "../../views/workItemEventsTimelin
 import moment from 'moment';
 import {toMoment} from "../../../../helpers/utility";
 
+function getLatestDate(latestWorkItemEvent, latestCommit) {
+  if (latestWorkItemEvent != null && latestCommit != null){
+    return moment.max(toMoment(latestWorkItemEvent), toMoment(latestCommit))
+  } else {
+    return latestWorkItemEvent || latestCommit;
+  }
+}
 
 function getViewCacheKey(instanceKey, display) {
   return `DimensionWorkItemEventsNavigator:${instanceKey}:${display}`
@@ -43,13 +50,13 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_workItemEvents($key: String!, $days: Int, $workItemsBefore: DateTime, $commitsBefore: DateTime, $latest: Int) {
-                ${dimension}(key: $key){
+            query ${dimension}_workItemEvents($key: String!, $days: Int, $before: DateTime, $referenceDate: DateTime, $latest: Int) {
+                ${dimension}(key: $key, referenceDate: $referenceDate){
                     id
-                    workItems(days: $days, before: $workItemsBefore, first: $latest, summariesOnly:true) {
+                    workItems(days: $days, before: $before, first: $latest, summariesOnly:true) {
                         count
                     }
-                    workItemEvents(days: $days, before: $workItemsBefore, first: $latest) {
+                    workItemEvents(days: $days, before: $before, first: $latest) {
                         count
                         edges {
                             node {
@@ -66,7 +73,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                             }
                         }
                     }
-                    workItemCommits(days: $days, before: $commitsBefore, first: $latest) {
+                    workItemCommits(days: $days, before: $before, first: $latest) {
                        count
                        edges {
                         node {
@@ -95,8 +102,8 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        workItemsBefore: before != null ? moment(before) : (latestWorkItemEvent ? toMoment(latestWorkItemEvent) : null),
-        commitsBefore: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
+        before: before,
+        referenceDate: getLatestDate(latestWorkItemEvent, latestCommit),
         latest: latest
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
