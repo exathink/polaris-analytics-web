@@ -107,7 +107,7 @@ export const WorkItemEventsTimelineChart = Chart({
     ({model, context, intl, view, days, before,  latestEvent, latest, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const timelineEvents = model.timelineEvents;
       const categoryIndex = model.categoriesIndex;
-      const totalWorkItems = Object.keys(model.workItemsIndex).length;
+      const totalWorkItems = model.totalWorkItems;
       const category = model.groupBy
 
       // sort in descending order of activity
@@ -170,19 +170,6 @@ export const WorkItemEventsTimelineChart = Chart({
           labels: {
             align: 'left',
             reserveSpace: true,
-            formatter: function() {
-              if(category === 'workItem') {
-                const event = model.workItemsIndex[this.value];
-
-                if (event != null) {
-                  return event.eventDate ? event.name : event.workItemName;
-                } else {
-                  return this.value;
-                }
-              } else {
-                return this.value
-              }
-            }
           }
         },
         tooltip: {

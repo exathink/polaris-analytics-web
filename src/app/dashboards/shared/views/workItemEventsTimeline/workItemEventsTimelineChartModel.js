@@ -6,26 +6,19 @@ export class WorkItemEventsTimelineChartModel {
     this.workItemEvents = workItemEvents;
     this.workItemCommits = workItemCommits;
     this.allEvents = [...workItemEvents, ...workItemCommits];
+    this.totalWorkItems = new Set(this.allEvents.map(event => event.displayId)).size;
     this.getCategory = this.initCategorySelector(groupBy);
     this.timelineEvents = filterCategories ? this.filter(this.allEvents, filterCategories) : this.allEvents;
     this.categoriesIndex = this.initCategoryIndex(this.timelineEvents, groupBy, filterCategories);
-    this.workItemsIndex = this.initWorkItemsIndex(this.timelineEvents);
+
   }
 
-  initWorkItemsIndex(timelineEvents) {
-    return timelineEvents.reduce(
-      (index, event) => {
-        index[event.displayId] = event;
-        return index;
-      },
-      {}
-    )
-  }
+
 
 
   initCategorySelector(groupBy) {
     if (groupBy === 'workItem') {
-      return (workItem) => workItem['displayId']
+      return (workItem) => workItem.eventDate? workItem['name'] : workItem['workItemName']
     } else if (groupBy === 'event') {
       return (workItem) => workItem.eventDate? capitalizeFirstLetter(workItem['newState']) : 'Commit'
     } else if (groupBy === 'source') {
