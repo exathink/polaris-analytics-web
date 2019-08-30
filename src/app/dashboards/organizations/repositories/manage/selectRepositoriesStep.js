@@ -10,14 +10,20 @@ import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutatio
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
-import {lexicographic} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
+import {REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "../../projects/manage/selectProjectsStep";
 
 function getServerUrl(selectedConnector) {
-  return selectedConnector.baseUrl;
+  switch (selectedConnector.connectorType) {
+    case 'github':
+      return 'GitHub.com';
+    default:
+      return selectedConnector.baseUrl;
+  }
 }
 
 const REFETCH_REPOSITORIES_MUTATION = {
@@ -113,7 +119,7 @@ export const SelectRepositoriesStep =
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation, getActiveImports, submissionCache, editConnectorMutation} = this.props;
+        const {selectedConnectorType, selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation, getActiveImports, submissionCache, editConnectorMutation} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = refetchRepositoriesMutation;
         const {submit, lastSubmission} = submissionCache;
 
@@ -139,7 +145,7 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div className={'selected-repositories'}>
-                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
+                    <h3>{capitalizeFirstLetter(selectedConnector.name)} @ {getServerUrl(selectedConnector)}</h3>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
@@ -175,8 +181,9 @@ export const SelectRepositoriesStep =
                           {'Test Connector'}
                         </Button>
                         <EditConnectorFormButton
+                          connectorType={selectedConnectorType}
                           connector={selectedConnector}
-                          title={`Edit ${getConnectorTypeDisplayName(connectorType)} Connector`}
+                          title={`Edit Connector`}
                           disabled={selectedConnector.state !== 'enabled'}
                           onSubmit={
                             submit(
@@ -184,6 +191,7 @@ export const SelectRepositoriesStep =
                                 editConnector({
                                   variables: {
                                     editConnectorInput: {
+                                      key: selectedConnector.key,
                                       name: values.name,
                                       connectorType: connectorType,
                                       apiKey: values.apiKey,
