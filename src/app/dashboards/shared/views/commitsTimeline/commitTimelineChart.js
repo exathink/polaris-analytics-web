@@ -91,7 +91,11 @@ export const CommitsTimelineChart = Chart({
       const category = model.groupBy
 
       // sort in descending order of activity
-      const categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
+      let categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
+      // we want Untracked to show up at the end regardless of activity count. This is ugly, but gets the job done.
+      if (category === 'workItem' && categories.indexOf('Untracked') > 0) {
+        categories = [...categories.filter(cat => cat !== 'Untracked'), 'Untracked']
+      }
       const series_data = commits.map((commit, index) => {
         const commit_date = toMoment(commit.commitDate);
         return (
@@ -162,7 +166,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: capitalizeFirstLetter(category)
           },
-          categories: categories.map(cat => `${cat}: ${categoryIndex[cat]}`),
+          categories: categories,
           scrollbar: {
             enabled: view === 'detail' && showScrollbar,
             showFull: false
@@ -171,7 +175,8 @@ export const CommitsTimelineChart = Chart({
           min: 0,
           max: categories.length - 1,
           labels: {
-            useHTML: true,
+            align: 'left',
+            reserveSpace: true,
             events: {
               /* This code relies on the custom events module which is breaks core highcharts code in many places
               *  so we have turned it off for now and this click event will have no effect. Revisit when we
