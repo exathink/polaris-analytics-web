@@ -9,13 +9,12 @@ function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
     let commitCount = 0;
     let eventCount = 0;
     for (let i=0; i < timelineEvents.length; i++) {
-      if(timelineEvents[i].displayId === series.name) {
+      if(timelineEvents[i].eventDate != null && timelineEvents[i].name === series.name) {
         workItem = timelineEvents[i];
-        if(timelineEvents[i].eventDate != null) {
-          eventCount = eventCount + 1;
-        } else {
-          commitCount = commitCount + 1;
-        }
+        eventCount = eventCount + 1;
+      } else if( timelineEvents[i].workItemName === series.name) {
+        workItem = timelineEvents[i];
+        commitCount = commitCount + 1;
       }
     }
     if (workItem) {
