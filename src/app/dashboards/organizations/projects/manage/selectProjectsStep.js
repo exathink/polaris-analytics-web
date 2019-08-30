@@ -6,15 +6,13 @@ import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
 import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
+import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
-import {lexicographic, capitalizeFirstLetter} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
-import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {

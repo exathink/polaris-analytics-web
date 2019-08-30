@@ -6,16 +6,13 @@ import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/butto
 import {compose, Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
-import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
+import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
 import {capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
-import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
-import {REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "../../projects/manage/selectProjectsStep";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {

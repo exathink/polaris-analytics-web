@@ -24,7 +24,7 @@ export const dashboard = () => (
     pollInterval={60 * 1000}
     render={
       ({organization, context}) =>
-        organization.projectCount > 0 && organization.repositoryCount > 0 ?
+        organization.repositoryCount > 0 ?
           <Dashboard
             dashboard={`${dashboard_id}`}
           >
@@ -43,44 +43,6 @@ export const dashboard = () => (
               />
             </DashboardRow>
             <DashboardRow h={"22%"}>
-              <DashboardWidget
-                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
-                name="most-active-repositories"
-                render={
-                  ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'organization'}
-                      instanceKey={organization.key}
-                      childConnection={'recentlyActiveRepositories'}
-                      context={context}
-                      childContext={Repositories}
-                      top={10}
-                      latestCommit={organization.latestCommit}
-                      days={1}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
-              <DashboardWidget
-                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
-                name="most-active-contributors"
-                render={
-                  ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'organization'}
-                      instanceKey={organization.key}
-                      childConnection={'recentlyActiveContributors'}
-                      context={context}
-                      childContext={Contributors}
-                      top={10}
-                      latestCommit={organization.latestCommit}
-                      days={1}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
               {
                 organization.projectCount > 0 ?
                   <DashboardWidget
@@ -105,6 +67,44 @@ export const dashboard = () => (
                   :
                   null
               }
+              <DashboardWidget
+                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
+                name="most-active-contributors"
+                render={
+                  ({view}) =>
+                    <DimensionMostActiveChildrenWidget
+                      dimension={'organization'}
+                      instanceKey={organization.key}
+                      childConnection={'recentlyActiveContributors'}
+                      context={context}
+                      childContext={Contributors}
+                      top={10}
+                      latestCommit={organization.latestCommit}
+                      days={1}
+                      view={view}
+                    />
+                }
+                showDetail={true}
+              />
+              <DashboardWidget
+                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
+                name="most-active-repositories"
+                render={
+                  ({view}) =>
+                    <DimensionMostActiveChildrenWidget
+                      dimension={'organization'}
+                      instanceKey={organization.key}
+                      childConnection={'recentlyActiveRepositories'}
+                      context={context}
+                      childContext={Repositories}
+                      top={10}
+                      latestCommit={organization.latestCommit}
+                      days={1}
+                      view={view}
+                    />
+                }
+                showDetail={true}
+              />
             </DashboardRow>
             <DashboardRow h={"59%"}>
               <DashboardWidget
@@ -122,7 +122,7 @@ export const dashboard = () => (
                       latestCommit={organization.latestCommit}
                       markLatest
                       groupBy={'workItem'}
-                      groupings={['workItem','repository', 'author']}
+                      groupings={['workItem','author', 'repository']}
                       showHeader
                       showTable
                     />
