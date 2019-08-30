@@ -1,17 +1,18 @@
 import React from "react";
-import {Col, Form, Input, Row} from "antd";
+import {Col, Form, Input, Row, Icon} from "antd";
 import {createForm} from "../../forms/createForm";
 
 const EditConnectorForm = (
     {
         connector,
+        connectorType,
         currentValue,
         form: {
             getFieldDecorator
         }
     }
 ) => {
-    const {name, connectorType, baseUrl} = connector;
+    const {name, baseUrl} = connector;
     return (
         <React.Fragment>
             <Row gutter={16}>
@@ -50,11 +51,8 @@ const EditConnectorForm = (
                         <Col span={24}>
                             <Form.Item label="API Key">
                                 {getFieldDecorator('apiKey', {
-                                    rules: [
-                                        {required: true, message: 'Api Key is required'}
-                                    ],
                                     initialValue: currentValue('apiKey', null)
-                                })(<Input placeholder="API Key" />)}
+                                })(<Input placeholder="New API key (optional)" />)}
                             </Form.Item>
                         </Col>
                     </Row>
@@ -67,11 +65,8 @@ const EditConnectorForm = (
                         <Col span={24}>
                             <Form.Item label="OAuth Access Token">
                                 {getFieldDecorator('githubAccessToken', {
-                                    rules: [
-                                        {required: true, message: 'OAuth Access Token'}
-                                    ],
                                     initialValue: currentValue('githubAccessToken', null)
-                                })(<Input placeholder="OAuth Access Token" />)}
+                                })(<Input placeholder="New access token (optional)" />)}
                             </Form.Item>
                         </Col>
                     </Row>
@@ -85,5 +80,5 @@ export const EditConnectorFormButton = createForm(EditConnectorForm, {
     drawer: true,
     title: 'Edit Connector',
     buttonSize: 'small',
-    noPlus: true
+    icon: <Icon type={'edit'}/>
 });
