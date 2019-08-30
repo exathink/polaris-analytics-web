@@ -88,8 +88,8 @@ export const dashboard = () => (
                     view={view}
                     days={30}
                     latestCommit={contributor.latestCommit}
-                    groupBy={'repository'}
-                    groupings={['repository', 'workItem']}
+                    groupBy={'workItem'}
+                    groupings={['workItem', 'repository', ]}
                     smartGrouping={false}
                     showHeader
                     showTable
