@@ -22,29 +22,32 @@ function getViewCacheKey(instanceKey, display) {
 
 export const DimensionWorkItemEventsNavigatorWidget = (
   {
-      dimension,
-      instanceKey,
-      context,
-      days,
-      before,
-      latestWorkItemEvent,
-      latestCommit,
-      latest,
-      view,
-      groupBy,
-      groupings,
-      smartGrouping,
-      display,
-      shortTooltip,
-      markLatest,
-      showHeader,
-      suppressHeaderDataLabels,
-      showTable,
-      onSelectionChange,
-      pollInterval,
-      commitsReferenceDate,
+    dimension,
+    instanceKey,
+    context,
+    days,
+    before,
+    latestWorkItemEvent,
+    latestCommit,
+    latest,
+    view,
+    groupBy,
+    groupings,
+    smartGrouping,
+    display,
+    shortTooltip,
+    markLatest,
+    showHeader,
+    suppressHeaderDataLabels,
+    showTable,
+    onSelectionChange,
+    pollInterval,
+    commitsReferenceDate,
 
-  }) => (
+  }) => {
+  const latestEvent = getLatest(latestWorkItemEvent, latestCommit);
+  const endWindow = before || latestEvent;
+  return (
     <Query
       client={analytics_service}
       query={
@@ -98,7 +101,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before || getLatest(latestWorkItemEvent, latestCommit),
+        before: endWindow,
         referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
         latest: latest
       }}
@@ -113,29 +116,30 @@ export const DimensionWorkItemEventsNavigatorWidget = (
           const workItemCommits = data[dimension].workItemCommits.edges.map(edge => edge.node);
           const totalEvents = data[dimension].workItemEvents.count;
           context.cacheView(getViewCacheKey(instanceKey, display), (
-                <WorkItemEventsTimelineChartView
-                  workItemEvents={workItemEvents}
-                  workItemCommits={workItemCommits}
-                  context={context}
-                  instanceKey={instanceKey}
-                  view={view}
-                  groupBy={groupBy}
-                  groupings={groupings}
-                  smartGrouping={smartGrouping}
-                  days={days}
-                  before={before}
-                  latest={latest}
-                  latestEvent={getLatest(latestWorkItemEvent, latestCommit)}
-                  totalEvents={totalEvents}
-                  shortTooltip={shortTooltip}
-                  showHeader={showHeader}
-                  polling={pollInterval}
-                  markLatest={markLatest}
-                  onSelectionChange={onSelectionChange}
-                />
+            <WorkItemEventsTimelineChartView
+              workItemEvents={workItemEvents}
+              workItemCommits={workItemCommits}
+              context={context}
+              instanceKey={instanceKey}
+              view={view}
+              groupBy={groupBy}
+              groupings={groupings}
+              smartGrouping={smartGrouping}
+              days={days}
+              before={endWindow}
+              latest={latest}
+              latestEvent={latestEvent}
+              totalEvents={totalEvents}
+              shortTooltip={shortTooltip}
+              showHeader={showHeader}
+              polling={pollInterval}
+              markLatest={markLatest}
+              onSelectionChange={onSelectionChange}
+            />
           ));
           return context.getCachedView(getViewCacheKey(instanceKey, display));
         }
       }
     </Query>
-);
+  )
+};
