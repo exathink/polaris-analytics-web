@@ -1,7 +1,7 @@
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 export class WorkItemEventsTimelineChartModel {
-  constructor(workItemEvents, workItemCommits, totalWorkItems, groupBy = 'workItem', filterCategories = null) {
+  constructor(workItemEvents, workItemCommits, groupBy = 'workItem', filterCategories = null) {
     this.groupBy = groupBy;
     this.workItemEvents = workItemEvents;
     this.workItemCommits = workItemCommits;
