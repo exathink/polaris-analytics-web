@@ -23,7 +23,7 @@ const RegisterConnectorForm = (
                 {required: true, message: 'Name is required'}
               ],
               initialValue: currentValue('name', connector.name)
-            })(<Input placeholder="name"/>)}
+            })(<Input placeholder="name" />)}
           </Form.Item>
         </Col>
       </Row>
@@ -58,7 +58,7 @@ const RegisterConnectorForm = (
                     {required: true, message: 'Api Key is required'}
                   ],
                   initialValue: connector.apiKey,
-                })(<Input disabled={true} placeholder="API Key"/>)}
+                })(<Input disabled={true} placeholder="API Key" />)}
               </Form.Item>
             </Col>
           </Row>

@@ -9,12 +9,21 @@ import {withMutation} from "../../../../components/graphql/withMutation";
 import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
-
 import {NoData} from "../../../../components/misc/noData";
-import {lexicographic} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
+import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
+import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
+import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
+import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
+import {REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "../../projects/manage/selectProjectsStep";
 
 function getServerUrl(selectedConnector) {
-  return selectedConnector.baseUrl;
+  switch (selectedConnector.connectorType) {
+    case 'github':
+      return 'GitHub.com';
+    default:
+      return selectedConnector.baseUrl;
+  }
 }
 
 const REFETCH_REPOSITORIES_MUTATION = {
@@ -103,14 +112,21 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
 
 export const SelectRepositoriesStep =
   compose(
+    withSubmissionCache,
     withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
-    withMutation(TEST_CONNECTOR)
+    withMutation(TEST_CONNECTOR),
+    withMutation(EDIT_CONNECTOR, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {
-        const {selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation, getActiveImports} = this.props;
+        const {selectedConnectorType, selectedConnector, selectedRepositories, onRepositoriesSelected, trackingReceiptCompleted, refetchRepositoriesMutation, testConnectorMutation, getActiveImports, submissionCache, editConnectorMutation} = this.props;
         const {refetchRepositories, refetchRepositoriesResult} = refetchRepositoriesMutation;
+        const {submit, lastSubmission} = submissionCache;
+
         const {testConnector} = testConnectorMutation;
+        const {editConnector, editConnectorResult} = editConnectorMutation;
+
+        const {connectorType} = selectedConnector;
 
         return (
           <Query
@@ -129,7 +145,7 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div className={'selected-repositories'}>
-                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
+                    <h3>{capitalizeFirstLetter(selectedConnector.name)} @ {getServerUrl(selectedConnector)}</h3>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
@@ -148,33 +164,55 @@ export const SelectRepositoriesStep =
                     </Button>
                       </ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'right'}>
-                        <React.Fragment>
-                          <Button
-                            type={'primary'}
-                            icon={'check'}
-                            size={'small'}
-                            disabled={selectedConnector.state !== 'enabled'}
-                            onClick={
-                              () => testConnector({
-                                variables: {
-                                  testConnectorInput: {
-                                    connectorKey: selectedConnector.key
-                                  }
+                        <Button
+                          type={'primary'}
+                          icon={'check'}
+                          size={'small'}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onClick={
+                            () => testConnector({
+                              variables: {
+                                testConnectorInput: {
+                                  connectorKey: selectedConnector.key
                                 }
-                              })}
-                          >
-                            {'Test connector'}
-                          </Button>
-                          <Button
-                            type={'primary'}
-                            icon={'import'}
-                            size={'small'}
-                            disabled={selectedRepositories.length}
-                            onClick={getActiveImports}
-                          >
-                            {'Active imports'}
-                          </Button>
-                        </React.Fragment>
+                              }
+                            })}
+                        >
+                          {'Test Connector'}
+                        </Button>
+                        <EditConnectorFormButton
+                          connectorType={selectedConnectorType}
+                          connector={selectedConnector}
+                          title={`Edit Connector`}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onSubmit={
+                            submit(
+                              values =>
+                                editConnector({
+                                  variables: {
+                                    editConnectorInput: {
+                                      key: selectedConnector.key,
+                                      name: values.name,
+                                      connectorType: connectorType,
+                                      apiKey: values.apiKey,
+                                      githubAccessToken: values.githubAccessToken
+                                    }
+                                  }
+                                })
+                            )
+                          }
+                          error={editConnectorResult.error}
+                          lastSubmission={lastSubmission}
+                        />
+                        <Button
+                          type={'primary'}
+                          icon={'import'}
+                          size={'small'}
+                          disabled={selectedRepositories.length}
+                          onClick={getActiveImports}
+                        >
+                          {'Active Imports'}
+                        </Button>
                       </ButtonBarColumn>
                     </ButtonBar>
                     {

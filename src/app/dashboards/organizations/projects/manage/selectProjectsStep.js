@@ -10,7 +10,11 @@ import {TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutatio
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
-import {lexicographic} from "../../../../helpers/utility";
+import {lexicographic, capitalizeFirstLetter} from "../../../../helpers/utility";
+import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
+import {getConnectorTypeDisplayName} from "../../../../components/workflow/connectors/utility";
+import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
+import {EDIT_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -122,14 +126,21 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
 
 export const SelectProjectsStep =
   compose(
+    withSubmissionCache,
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
-    withMutation(TEST_CONNECTOR)
+    withMutation(TEST_CONNECTOR),
+    withMutation(EDIT_CONNECTOR, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
-        const {selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, refetchProjectsMutation, testConnectorMutation} = this.props;
+        const {selectedConnectorType, selectedConnector, selectedProjects, onProjectsSelected, trackingReceiptCompleted, refetchProjectsMutation, testConnectorMutation, submissionCache, editConnectorMutation} = this.props;
         const {refetchProjects, refetchProjectsResult} = refetchProjectsMutation;
+        const {submit, lastSubmission} = submissionCache;
+
         const {testConnector} = testConnectorMutation;
+        const {editConnector, editConnectorResult} = editConnectorMutation;
+
+        const {connectorType} = selectedConnector;
 
         return (
           <Query
@@ -148,7 +159,7 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Server: {getServerUrl(selectedConnector)}</h3>
+                    <h3>{capitalizeFirstLetter(selectedConnector.name)} @ {getServerUrl(selectedConnector)}</h3>
 
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
@@ -182,8 +193,32 @@ export const SelectProjectsStep =
                               }
                             })}
                         >
-                          {'Test connector'}
+                          {'Test Connector'}
                         </Button>
+                        <EditConnectorFormButton
+                          connectorType={selectedConnectorType}
+                          connector={selectedConnector}
+                          title={`Edit Connector`}
+                          disabled={selectedConnector.state !== 'enabled'}
+                          onSubmit={
+                            submit(
+                              values =>
+                                editConnector({
+                                  variables: {
+                                    editConnectorInput: {
+                                      key: selectedConnector.key,
+                                      name: values.name,
+                                      connectorType: connectorType,
+                                      apiKey: values.apiKey,
+                                      githubAccessToken: values.githubAccessToken
+                                    }
+                                  }
+                                })
+                            )
+                          }
+                          error={editConnectorResult.error}
+                          lastSubmission={lastSubmission}
+                        />
                       </ButtonBarColumn>
                     </ButtonBar>
                     {

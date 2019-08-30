@@ -15,6 +15,7 @@ function withForm(FormFields, options) {
   const layout = options.layout || 'vertical';
   const buttonSize = options.buttonSize || 'default'
   const noPlus = options.noPlus || false
+  const drawerButtonIcon = options.icon
 
   const FormBody = (
     {
@@ -195,7 +196,7 @@ function withForm(FormFields, options) {
         drawer ?
           <React.Fragment>
             <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
-              {noPlus || <Icon type="plus" />} {this.props.title || drawerButtonTitle}
+              {drawerButtonIcon || noPlus || <Icon type="plus" />}{this.props.title || drawerButtonTitle}
             </Button>
             <Drawer
               title={this.props.title || partProps.title || title}
