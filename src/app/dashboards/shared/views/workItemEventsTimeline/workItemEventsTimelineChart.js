@@ -7,7 +7,7 @@ import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
   if (workItemState != null) {
-    if (['created', 'open', 'unscheduled', 'unstarted'].includes(workItemState)) {
+    if (['created', 'open', 'unscheduled', 'unstarted', 'planned', 'Backlog'].includes(workItemState)) {
       return 'initial'
     } else if (['closed', 'accepted'].includes(workItemState)) {
       return 'terminal'
@@ -104,9 +104,10 @@ export const WorkItemEventsTimelineChart = Chart({
 
   getConfig:
 
-    ({model, context, intl, view, days, before, latestCommit, latest, totalWorkItems, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({model, context, intl, view, days, before, latestCommit, latest, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const timelineEvents = model.timelineEvents;
       const categoryIndex = model.categoriesIndex;
+      const totalWorkItems = Object.keys(model.workItemsIndex).length;
       const category = model.groupBy
 
       // sort in descending order of activity
@@ -172,7 +173,7 @@ export const WorkItemEventsTimelineChart = Chart({
             reserveSpace: true,
             formatter: function() {
               if(category === 'workItem') {
-                const event = model.eventsIndex[this.value];
+                const event = model.workItemsIndex[this.value];
 
                 if (event != null) {
                   return event.eventDate ? event.name : event.workItemName;

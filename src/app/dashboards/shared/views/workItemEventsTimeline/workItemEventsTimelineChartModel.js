@@ -6,14 +6,13 @@ export class WorkItemEventsTimelineChartModel {
     this.workItemEvents = workItemEvents;
     this.workItemCommits = workItemCommits;
     this.allEvents = [...workItemEvents, ...workItemCommits];
-    this.totalWorkItems = totalWorkItems;
-    this.getCategory = this.initCategorySelector(groupBy)
-    this.timelineEvents = filterCategories ? this.filter(this.allEvents, filterCategories) : this.allEvents
-    this.categoriesIndex = this.initCategoryIndex(this.timelineEvents, groupBy, filterCategories)
-    this.eventsIndex = groupBy === 'workItem' ? this.initEventsIndex(this.timelineEvents) : {}
+    this.getCategory = this.initCategorySelector(groupBy);
+    this.timelineEvents = filterCategories ? this.filter(this.allEvents, filterCategories) : this.allEvents;
+    this.categoriesIndex = this.initCategoryIndex(this.timelineEvents, groupBy, filterCategories);
+    this.workItemsIndex = this.initWorkItemsIndex(this.timelineEvents);
   }
 
-  initEventsIndex(timelineEvents) {
+  initWorkItemsIndex(timelineEvents) {
     return timelineEvents.reduce(
       (index, event) => {
         index[event.displayId] = event;
@@ -22,6 +21,7 @@ export class WorkItemEventsTimelineChartModel {
       {}
     )
   }
+
 
   initCategorySelector(groupBy) {
     if (groupBy === 'workItem') {
