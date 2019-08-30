@@ -25,7 +25,7 @@ function getDaysSubtitle(days, prefix='Last') {
 function getSubtitleText(before, startWindow, endWindow, latestEvent, days){
   const endWindowDays = endWindow && daysFromNow(endWindow)
   if(latestEvent) {
-    return isToday(latestEvent) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${latestEvent.format('MM/DD/YYYY hh:mm a')}`
+    return isToday(latestEvent) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${toMoment(latestEvent).format('MM/DD/YYYY hh:mm a')}`
   } else if(!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
@@ -152,8 +152,7 @@ export const WorkItemEventsTimelineChart = Chart({
           type: 'datetime',
           title: {
             text: 'Timeline'
-          },
-          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() :  latestEvent ? toMoment( latestEvent).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
+          }
         },
         yAxis: {
           id: 'y-items',
