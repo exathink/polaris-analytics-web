@@ -170,13 +170,12 @@ export const WorkItemEventsTimelineChart = Chart({
           labels: {
             align: 'left',
             reserveSpace: true,
-            useHTML: true,
             formatter: function() {
               if(category === 'workItem') {
                 const event = model.eventsIndex[this.value];
 
                 if (event != null) {
-                  return `<a>${event.eventDate ? event.name : event.workItemName}</a>`;
+                  return event.eventDate ? event.name : event.workItemName;
                 } else {
                   return this.value;
                 }
@@ -188,7 +187,6 @@ export const WorkItemEventsTimelineChart = Chart({
         },
         tooltip: {
           useHTML: true,
-          outside: true,
           hideDelay: 50,
           formatter: function () {
             return getTooltip(intl, this.point, shortTooltip);
