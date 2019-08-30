@@ -12,12 +12,11 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     const {
       workItemEvents,
       workItemCommits,
-      totalWorkItems,
       groupBy
     } = this.props;
 
     this.state = {
-      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, groupBy),
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy),
       selectedGrouping: groupBy,
       selectedCategories: null,
       selectedCommits: null
@@ -25,10 +24,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
   }
   componentDidUpdate() {
     const {model} = this.state;
-    const {workItemEvents, workItemCommits, totalWorkItems} = this.props
-    if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits || model.totalWorkItems !== totalWorkItems){
+    const {workItemEvents, workItemCommits} = this.props
+    if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits){
       this.setState({
-        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, this.state.selectedGrouping),
+        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,  this.state.selectedGrouping),
       })
     }
   }
@@ -37,11 +36,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     const {
       workItemEvents,
       workItemCommits,
-      totalWorkItems,
     } = this.props;
 
     this.setState({
-      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, groupBy),
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,groupBy),
       selectedGrouping: groupBy,
       selectedCategories: null,
       selectedCommits: null
@@ -53,11 +51,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     const {
       workItemEvents,
       workItemCommits,
-      totalWorkItems,
       onSelectionChange,
     } = this.props;
 
-    const model = new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems, this.state.selectedGrouping, selected)
+    const model = new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,  this.state.selectedGrouping, selected)
     this.setState({
       ...this.state,
       model: model,
@@ -102,7 +99,6 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       latestWorkItemEvent,
       latest,
       totalWorkItemEvents,
-      totalWorkItems,
       view,
       shortTooltip,
       markLatest,
@@ -121,7 +117,6 @@ export class WorkItemEventsTimelineChartView extends React.Component {
         latestWorkItemEvent={latestWorkItemEvent}
         latest={latest}
         totalWorkItemEvents={totalWorkItemEvents}
-        totalWorkItems={totalWorkItems}
         shortTooltip={shortTooltip}
         markLatest={markLatest}
         polling={polling}
@@ -132,10 +127,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
   }
 
   getTimelineRollupHeader() {
-    const {workItemEvents, workItemCommits, totalWorkItems} = this.props;
+    const {workItemEvents, workItemCommits} = this.props;
     return (
       <WorkItemEventsTimelineRollupBarchart
-        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, totalWorkItems,  this.state.selectedGrouping)}
+        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,   this.state.selectedGrouping)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )

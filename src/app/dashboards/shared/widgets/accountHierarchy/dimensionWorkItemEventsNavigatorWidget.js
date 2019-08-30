@@ -51,9 +51,6 @@ export const DimensionWorkItemEventsNavigatorWidget = (
             query ${dimension}_workItemEvents($key: String!, $days: Int, $before: DateTime, $referenceString: String, $latest: Int) {
                 ${dimension}(key: $key, referenceString: $referenceString){
                     id
-                    workItems(days: $days, before: $before, first: $latest, summariesOnly:true) {
-                        count
-                    }
                     workItemEvents(days: $days, before: $before, first: $latest) {
                         count
                         edges {
@@ -114,7 +111,6 @@ export const DimensionWorkItemEventsNavigatorWidget = (
           const workItemEvents = data[dimension].workItemEvents.edges.map(edge => edge.node);
           const workItemCommits = data[dimension].workItemCommits.edges.map(edge => edge.node);
           const totalEvents = data[dimension].workItemEvents.count;
-          const totalWorkItems = data[dimension].workItems.count;
           context.cacheView(getViewCacheKey(instanceKey, display), (
                 <WorkItemEventsTimelineChartView
                   workItemEvents={workItemEvents}
@@ -130,7 +126,6 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                   latest={latest}
                   latestWorkItemEvent={latestWorkItemEvent}
                   totalEvents={totalEvents}
-                  totalWorkItems={totalWorkItems}
                   shortTooltip={shortTooltip}
                   showHeader={showHeader}
                   polling={pollInterval}
