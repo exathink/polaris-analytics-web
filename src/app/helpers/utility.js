@@ -171,9 +171,9 @@ export function getLatest(server_date_a , server_date_b) {
   const date_a = server_date_a != null ? moment.utc(server_date_a) : null;
   const date_b = server_date_b != null ? moment.utc(server_date_b) : null;
   if (date_a != null && date_b != null) {
-    return moment.max(date_a, date_b)
+    return date_a.isBefore(date_b) ? server_date_b : server_date_a
   } else {
-    return date_a || date_b
+    return (date_a && server_date_a) || (date_b && server_date_b)
   }
 }
 
