@@ -22,10 +22,10 @@ function getDaysSubtitle(days, prefix='Last') {
       : days > 0 ? `${prefix} 24 hours` : ``;
 }
 
-function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
+function getSubtitleText(before, startWindow, endWindow, latestEvent, days){
   const endWindowDays = endWindow && daysFromNow(endWindow)
-  if(latestCommit) {
-    return isToday(latestCommit) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
+  if(latestEvent) {
+    return isToday(latestEvent) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${latestEvent.format('MM/DD/YYYY hh:mm a')}`
   } else if(!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
@@ -104,7 +104,7 @@ export const WorkItemEventsTimelineChart = Chart({
 
   getConfig:
 
-    ({model, context, intl, view, days, before, latestCommit, latest, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({model, context, intl, view, days, before,  latestEvent, latest, totalWorkItemEvents, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
       const timelineEvents = model.timelineEvents;
       const categoryIndex = model.categoriesIndex;
       const totalWorkItems = Object.keys(model.workItemsIndex).length;
@@ -145,7 +145,7 @@ export const WorkItemEventsTimelineChart = Chart({
           align: 'left'
         },
         subtitle: {
-          text: getSubtitleText(before, startWindow, endWindow, latestCommit, days),
+          text: getSubtitleText(before, startWindow, endWindow,  latestEvent, days),
           align: 'left'
         },
         xAxis: {
@@ -153,7 +153,7 @@ export const WorkItemEventsTimelineChart = Chart({
           title: {
             text: 'Timeline'
           },
-          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
+          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() :  latestEvent ? toMoment( latestEvent).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
         },
         yAxis: {
           id: 'y-items',

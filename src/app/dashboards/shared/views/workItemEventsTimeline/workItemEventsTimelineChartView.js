@@ -96,7 +96,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       context,
       days,
       before,
-      latestWorkItemEvent,
+      latestEvent,
       latest,
       totalWorkItemEvents,
       view,
@@ -114,7 +114,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
         view={view}
         days={days}
         before={before}
-        latestWorkItemEvent={latestWorkItemEvent}
+        latestEvent={ latestEvent}
         latest={latest}
         totalWorkItemEvents={totalWorkItemEvents}
         shortTooltip={shortTooltip}
@@ -166,7 +166,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
 
   getPrimaryLayout(height, model) {
-
+    const {showHeader} = this.props;
 
     return (
 
@@ -175,7 +175,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
             <WorkItemEventsTimelineGroupSelector groupings={this.props.groupings} selectedGrouping={this.state.selectedGrouping} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
           </Flex>
           <Flex style={{height:"95%"}}>
-            <Box w={this.showHeader() ? "90%" : "100%"}>
+            <Box w={showHeader ? "90%" : "100%"}>
 
 
               {
@@ -184,7 +184,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
             </Box>
             {
-              this.showHeader() ?
+              showHeader ?
                 <Box w={"10%"}>
                   {
                     this.getTimelineRollupHeader()

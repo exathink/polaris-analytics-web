@@ -3,7 +3,7 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
-
+import {getLatest} from "../../../../helpers/utility";
 import {analytics_service} from '../../../../services/graphql/index'
 import {WorkItemEventsTimelineChartView} from "../../views/workItemEventsTimeline";
 import moment from 'moment';
@@ -14,6 +14,7 @@ function getReferenceString(latestWorkItemEvent, latestCommit) {
   const commitValue = latestCommit ? moment(latestCommit).valueOf() : 0;
   return `${commitValue + eventValue}`
 }
+
 
 function getViewCacheKey(instanceKey, display) {
   return `DimensionWorkItemEventsNavigator:${instanceKey}:${display}`
@@ -97,7 +98,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       variables={{
         key: instanceKey,
         days: days || 0,
-        before: before,
+        before: before || getLatest(latestWorkItemEvent, latestCommit),
         referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
         latest: latest
       }}
@@ -124,7 +125,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
                   days={days}
                   before={before}
                   latest={latest}
-                  latestWorkItemEvent={latestWorkItemEvent}
+                  latestEvent={getLatest(latestWorkItemEvent, latestCommit)}
                   totalEvents={totalEvents}
                   shortTooltip={shortTooltip}
                   showHeader={showHeader}

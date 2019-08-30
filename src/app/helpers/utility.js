@@ -138,9 +138,10 @@ export function week_to_date(year, week) {
     return moment(`${year}W${adjusted_week}`);
 }
 
-export function toMoment(serverCommitDate) {
-  return moment(`${serverCommitDate}Z`);
+export function toMoment(serverDate) {
+  return moment(`${serverDate}Z`);
 }
+
 
 export function formatCommitDate(serverCommitDate) {
   return toMoment(serverCommitDate).format("dddd MM/DD/YYYY hh:mm a")
@@ -166,18 +167,14 @@ export function daysSinceDate(someDate) {
   return moment().utc().diff(moment(someDate), 'days')
 }
 
-export function latestDate(date_a , date_b) {
-  return (
-    date_a != null ?
-      (
-        date_b != null ?
-          (
-            moment.max(date_a, date_b)
-          ) :
-          date_a
-      ) :
-      date_b
-  )
+export function getLatest(server_date_a , server_date_b) {
+  const date_a = server_date_a != null ? moment.utc(server_date_a) : null;
+  const date_b = server_date_b != null ? moment.utc(server_date_b) : null;
+  if (date_a != null && date_b != null) {
+    return moment.max(date_a, date_b)
+  } else {
+    return date_a || date_b
+  }
 }
 
 
