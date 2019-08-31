@@ -6,7 +6,7 @@ import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/
 import {displaySingular, formatTerm, displayPlural} from "../../../../../i18n/index";
 
 function getSubtitleText(intl, model) {
-  const baseText = `Bubble size: ${displayPlural(intl, model.secondaryMeasureContext)}`;
+  const baseText = model.secondaryMeasureContext ? `Bubble size: ${displayPlural(intl, model.secondaryMeasureContext)}` : ``;
   return model.childCount > model.data.length ? `${baseText}<br/>Showing top ${model.data.length} of ${model.childCount} by commits` : baseText
 }
 
