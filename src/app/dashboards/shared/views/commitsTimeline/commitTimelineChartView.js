@@ -4,7 +4,7 @@ import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {CommitTimelineRollupSelector} from "./commitTimelineGroupSelector";
-
+import {CommitsDaysRangeSlider} from "./commitsDaysRangeSlider";
 
 export class CommitTimelineViewModel {
   constructor(commits, groupBy = 'author', filterCategories = null) {
@@ -199,12 +199,17 @@ export class CommitsTimelineChartView extends React.Component {
 
 
   getPrimaryLayout(height, model) {
+    const {view, days, setDaysRange} = this.props;
 
+    const showSlider = view === 'detail';
 
     return (
 
       <Flex column style={{height: height, width: "100%"}}>
-        <Flex column align='center' style={{height: "5%"}}>
+        <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider? 'left' : 'center'} style={{height: "5%"}}>
+
+          {showSlider && <CommitsDaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>}
+
           <CommitTimelineRollupSelector groupings={this.props.groupings}
                                         onGroupingChanged={this.onGroupingChanged.bind(this)}/>
         </Flex>

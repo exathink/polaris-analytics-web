@@ -1,6 +1,6 @@
 import React from 'react';
-import {Flex, Box} from 'reflexbox'
-import {RadioGroup, RadioButton} from "../../../../../components/uielements/radio";
+import {Box} from 'reflexbox'
+import {RadioButton, RadioGroup} from "../../../../../components/uielements/radio";
 
 const buttons = {
   'repository': <RadioButton key='repository' value={'repository'}>Repository</RadioButton>,
@@ -31,7 +31,7 @@ export class CommitTimelineRollupSelector extends React.Component {
     const { groupings } = this.props;
     return (
       groupings ?
-        <Flex>
+        <React.Fragment>
           <Box pr={1} pt={"1px"}>
           Group By
           </Box>
@@ -42,7 +42,7 @@ export class CommitTimelineRollupSelector extends React.Component {
               }
             </RadioGroup>
           </Box>
-        </Flex>
+        </React.Fragment>
         : null
     );
   }
