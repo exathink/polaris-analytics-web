@@ -86,7 +86,7 @@ export const dashboard = () => (
                     instanceKey={contributor.key}
                     context={context}
                     view={view}
-                    days={30}
+                    days={1}
                     latestCommit={contributor.latestCommit}
                     groupBy={'workItem'}
                     groupings={['workItem', 'repository', ]}
