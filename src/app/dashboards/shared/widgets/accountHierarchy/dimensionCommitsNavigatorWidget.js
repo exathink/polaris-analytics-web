@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
@@ -16,32 +16,35 @@ function getViewCacheKey(instanceKey, display) {
 
 export const DimensionCommitsNavigatorWidget = (
   {
-      dimension,
-      instanceKey,
-      context,
-      days,
-      before,
-      latestCommit,
-      latest,
-      view,
-      groupBy,
-      groupings,
-      smartGrouping,
-      display,
-      shortTooltip,
-      markLatest,
-      showHeader,
-      suppressHeaderDataLabels,
-      showTable,
-      onSelectionChange,
-      pollInterval,
-      referenceDate,
+    dimension,
+    instanceKey,
+    context,
+    days,
+    before,
+    latestCommit,
+    latest,
+    view,
+    groupBy,
+    groupings,
+    smartGrouping,
+    display,
+    shortTooltip,
+    markLatest,
+    showHeader,
+    suppressHeaderDataLabels,
+    showTable,
+    onSelectionChange,
+    pollInterval,
+    referenceDate,
 
-  }) => (
-  <Query
-    client={analytics_service}
-    query={
-      gql`
+  }) => {
+  const [daysRange, setDaysRange] = useState(days || 1);
+
+  return (
+    <Query
+      client={analytics_service}
+      query={
+        gql`
             query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime) {
                 ${dimension}(key: $key, referenceDate: $referenceDate){
                     id
@@ -81,47 +84,49 @@ export const DimensionCommitsNavigatorWidget = (
                 }
             }
         `
-    }
-    variables={{
-      key: instanceKey,
-      days: days || 0,
-      before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
-      latest: latest,
-      referenceDate: referenceDate
-    }}
-    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
-  >
-    {
-      ({loading, error, data}) => {
-        if (loading) return context.getCachedView(getViewCacheKey(instanceKey, display)) || <Loading/>;
-        if (error) return null;
-
-        const commits = data[dimension].commits.edges.map(edge => edge.node);
-        const totalCommits = data[dimension].commits.count;
-        context.cacheView(getViewCacheKey(instanceKey, display), (
-          <CommitsTimelineChartView
-            commits={commits}
-            context={context}
-            instanceKey={instanceKey}
-            view={view}
-            groupBy={groupBy}
-            groupings={groupings}
-            smartGrouping={smartGrouping}
-            days={days}
-            before={before}
-            latestCommit={latestCommit}
-            latest={latest}
-            totalCommits={totalCommits}
-            shortTooltip={shortTooltip}
-            showHeader={showHeader}
-            polling={pollInterval}
-            markLatest={markLatest}
-            showTable={showTable}
-            onSelectionChange={onSelectionChange}
-          />
-        ));
-        return context.getCachedView(getViewCacheKey(instanceKey, display));
       }
-    }
-  </Query>
-);
+      variables={{
+        key: instanceKey,
+        days: daysRange,
+        before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
+        latest: latest,
+        referenceDate: referenceDate
+      }}
+      pollInterval={pollInterval || analytics_service.defaultPollInterval()}
+    >
+      {
+        ({loading, error, data}) => {
+          if (loading) return context.getCachedView(getViewCacheKey(instanceKey, display)) || <Loading/>;
+          if (error) return null;
+
+          const commits = data[dimension].commits.edges.map(edge => edge.node);
+          const totalCommits = data[dimension].commits.count;
+          context.cacheView(getViewCacheKey(instanceKey, display), (
+            <CommitsTimelineChartView
+              commits={commits}
+              context={context}
+              instanceKey={instanceKey}
+              view={view}
+              groupBy={groupBy}
+              groupings={groupings}
+              smartGrouping={smartGrouping}
+              days={daysRange}
+              setDaysRange={setDaysRange}
+              before={before}
+              latestCommit={latestCommit}
+              latest={latest}
+              totalCommits={totalCommits}
+              shortTooltip={shortTooltip}
+              showHeader={showHeader}
+              polling={pollInterval}
+              markLatest={markLatest}
+              showTable={showTable}
+              onSelectionChange={onSelectionChange}
+            />
+          ));
+          return context.getCachedView(getViewCacheKey(instanceKey, display));
+        }
+      }
+    </Query>
+  )
+};
