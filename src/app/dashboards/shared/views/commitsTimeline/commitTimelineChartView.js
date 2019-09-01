@@ -3,8 +3,15 @@ import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
-import {CommitTimelineRollupSelector} from "./commitTimelineGroupSelector";
-import {CommitsDaysRangeSlider} from "./commitsDaysRangeSlider";
+import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
+import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
+
+const commitTimelineGroupings = {
+  repository: "Repository",
+  workItem: "Work Item",
+  author: "Author"
+}
+
 
 export class CommitTimelineViewModel {
   constructor(commits, groupBy = 'author', filterCategories = null) {
@@ -199,7 +206,8 @@ export class CommitsTimelineChartView extends React.Component {
 
 
   getPrimaryLayout(height, model) {
-    const {view, days, setDaysRange} = this.props;
+    const {view, days, setDaysRange, groupings} = this.props;
+    const {selectedGrouping} = this.state;
 
     const showSlider = view === 'detail';
 
@@ -207,11 +215,25 @@ export class CommitsTimelineChartView extends React.Component {
 
       <Flex column style={{height: height, width: "100%"}}>
         <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider? 'left' : 'center'} style={{height: "5%"}}>
-
-          {showSlider && <CommitsDaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>}
-
-          <CommitTimelineRollupSelector groupings={this.props.groupings}
-                                        onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+          {
+            showSlider &&
+              <Box w={"35%"}>
+                <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
+              </Box>
+          }
+          <Box>
+            <GroupingSelector
+              groupings={
+                groupings.map(
+                  grouping => ({
+                    key: grouping,
+                    display: commitTimelineGroupings[grouping]
+                  })
+                )
+              }
+              initialValue={selectedGrouping}
+              onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+          </Box>
         </Flex>
         <Flex style={{height: "95%"}}>
           <Box w={this.showHeader() ? "90%" : "100%"}>
