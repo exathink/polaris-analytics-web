@@ -93,7 +93,7 @@ export const CommitsTimelineChart = Chart({
       // sort in descending order of activity
       let categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
       // we want Untracked to show up at the end regardless of activity count. This is ugly, but gets the job done.
-      if (category === 'workItem' && categories.indexOf('Untracked') > 0) {
+      if (category === 'workItem' && categories.indexOf('Untracked') >= 0) {
         categories = [...categories.filter(cat => cat !== 'Untracked'), 'Untracked']
       }
       const series_data = commits.map((commit, index) => {
