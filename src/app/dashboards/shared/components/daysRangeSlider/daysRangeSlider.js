@@ -1,8 +1,8 @@
-import React from "react";
-import {Box} from "reflexbox";
+import {Box, Flex} from "reflexbox";
 import {Slider} from "antd";
+import React from "react";
 
-const marks = [1,3,7,14,30].reduce(
+const marks = [1, 3, 7, 14, 30].reduce(
   (result, mark) => {
     result[mark] = {
       style: {
@@ -16,13 +16,12 @@ const marks = [1,3,7,14,30].reduce(
   {}
 );
 
-
-export const CommitsDaysRangeSlider = ({initialDays, setDaysRange}) => (
-  <React.Fragment>
+export const DaysRangeSlider = ({initialDays, setDaysRange}) => (
+  <Flex align={'center'}>
     <Box pr={1} pt={"1px"}>
       Days
     </Box>
-    <Box pr={2} w={"35%"} align={'center'}>
+    <Box pr={2} w={"100%"}>
       <Slider
         defaultValue={initialDays || 1}
         min={1}
@@ -31,7 +30,5 @@ export const CommitsDaysRangeSlider = ({initialDays, setDaysRange}) => (
         included={true}
         onAfterChange={value => setDaysRange && setDaysRange(value)}/>
     </Box>
-  </React.Fragment>
+  </Flex>
 )
-
-
