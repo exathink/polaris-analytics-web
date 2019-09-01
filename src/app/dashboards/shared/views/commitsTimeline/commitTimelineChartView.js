@@ -5,6 +5,7 @@ import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
+import {Statistic} from 'antd';
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -18,6 +19,9 @@ export class CommitTimelineViewModel {
     this.groupBy = groupBy;
     this.getCategory = this.initCategorySelector(groupBy)
     this.commits = filterCategories ? this.filter(commits, filterCategories) : commits
+    this.traceability = this.commits.length > 0 ?
+      this.commits.filter(commit=>commit.workItemsSummaries.length > 0).length / this.commits.length
+      : null
     this.categoriesIndex = this.initCategoryIndex(this.commits, groupBy, filterCategories)
   }
 
@@ -170,12 +174,35 @@ export class CommitsTimelineChartView extends React.Component {
   }
 
   getTimelineRollupHeader() {
-    const {commits} = this.props;
+    const {model} = this.state;
+
+
     return (
-      <CommitsTimelineRollupBarChart
-        model={new CommitTimelineViewModel(commits, this.state.selectedGrouping)}
-        onSelectionChange={this.onCategoriesSelected.bind(this)}
-      />
+      <div style={{height: "100%"}}>
+        <div style={{
+          height: "15%",
+          backgroundColor: '#f2f3f6',
+          borderColor: 'GhostWhite',
+          borderStyle: 'solid',
+          borderWidth: '2px'
+        }}>
+          <Statistic
+            title="Traceability"
+            value={ model.traceability != null ? model.traceability * 100 : 'N/A'}
+            precision={model.traceability != null && 2}
+            valueStyle={{ color: '#3f8600' }}
+
+            suffix={model.traceability != null && "%"}
+            style={{backgroundColor: '#f2f3f6'}}
+          />
+        </div>
+        <div style={{height: "85%"}}>
+          <CommitsTimelineRollupBarChart
+            model={model}
+            onSelectionChange={this.onCategoriesSelected.bind(this)}
+          />
+        </div>
+      </div>
     )
   }
 
@@ -236,20 +263,16 @@ export class CommitsTimelineChartView extends React.Component {
           </Box>
         </Flex>
         <Flex style={{height: "95%"}}>
-          <Box w={this.showHeader() ? "90%" : "100%"}>
+          <Box w={"90%"}>
             {
               this.getCommitTimelineChart(model)
             }
           </Box>
-          {
-            this.showHeader() ?
-              <Box w={"10%"}>
-                {
-                  this.getTimelineRollupHeader()
-                }
-              </Box>
-              : null
-          }
+          <Box w={"10%"}>
+            {
+              this.getTimelineRollupHeader()
+            }
+          </Box>
         </Flex>
       </Flex>
     )
