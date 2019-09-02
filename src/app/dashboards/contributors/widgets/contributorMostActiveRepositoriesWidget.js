@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../components/graphql/loading";
@@ -19,7 +19,10 @@ export const ContributorMostActiveRepositoriesWidget = (
     view,
     referenceDate,
 
-  }) => (
+  }) => {
+  const [daysRange, setDaysRange] = useState(days || 1);
+
+  return (
     <Query
       client={analytics_service}
       query={
@@ -39,7 +42,7 @@ export const ContributorMostActiveRepositoriesWidget = (
       variables={{
         key: instanceKey,
         top: top || 20,
-        days: days || 7,
+        days: daysRange,
         before: latestCommit ? toMoment(latestCommit) : null,
         referenceDate: referenceDate
       }}
@@ -56,7 +59,8 @@ export const ContributorMostActiveRepositoriesWidget = (
               activeChildren={activeChildren}
               view={view}
               top={top}
-              days={days}
+              days={daysRange}
+              setDaysRange={setDaysRange}
               latestCommit={latestCommit}
               onSelectionChange={
                 (children) => {
@@ -68,10 +72,11 @@ export const ContributorMostActiveRepositoriesWidget = (
         }
       }
     </Query>
-);
+  )
+};
 
 function onChildrenSelected(context, childContext, children) {
-  if(children.length === 1) {
+  if (children.length === 1) {
     const child = children[0];
     context.navigate(childContext, child.name, child.key)
   }
