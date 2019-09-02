@@ -157,7 +157,7 @@ export const CommitsTimelineChart = Chart({
         xAxis: {
           type: 'datetime',
           title: {
-            text: 'Timeline'
+            text: 'Timeline <br/> <span style="font-size: 9px; color: #666; font-style: italic">Bubble Size: Source Lines Changed</span>'
           },
           max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
         },
@@ -238,11 +238,23 @@ export const CommitsTimelineChart = Chart({
         },
         series: [
           {
-            key: 'timeline',
-            id: 'timeline',
-            name: '<span style="font-size: 10px; color: #666; font-style: italic">Bubble Size: Lines Changed</span>',
-            pointWidth: 20,
-            data: series_data,
+            key: 'commits',
+            id: 'commits',
+            name: 'Commits',
+
+            data: series_data.filter(point => point.commit.numParents <= 1),
+            minSize: bucketToBubbleSize[z_bucket_range.min],
+            maxSize: bucketToBubbleSize[z_bucket_range.max],
+            turboThreshold: 0,
+            allowPointSelect: true,
+
+          },
+          {
+            key: 'merges',
+            id: 'merges',
+            name: 'Merges',
+
+            data: series_data.filter(point => point.commit.numParents > 1),
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
             turboThreshold: 0,
