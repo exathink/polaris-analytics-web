@@ -142,11 +142,11 @@ export const WorkItemEventsTimelineChart = Chart({
         },
         title: {
           text: getTitleText(totalWorkItems),
-          align: 'left'
+          align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
           text: getSubtitleText(before, startWindow, endWindow,  latestEvent, days),
-          align: 'left'
+          align: view === 'detail' ? 'center' : 'left'
         },
         xAxis: {
           type: 'datetime',
