@@ -210,27 +210,28 @@ export const CommitsTimelineChart = Chart({
             return tooltipHtml(shortTooltip ? {
               header: `${workItemHeader} Author: ${this.point.commit.author}`,
               body: [
+                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
                 ['Commit: ', `${this.point.commit.name}`],
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
-                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
+
                 [`Lines: `, `${this.point.commit.stats.lines}`],
               ]
             } : {
               header: `${workItemHeader} Author: ${this.point.commit.author}`,
               body: [
-                ['Commit: ', `${this.point.commit.name}`],
+                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
-                [`Queue Time: `, `${queueTime(this.point.commit)}`],
                 [`------`, ``],
-                ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
+                ['Commit: ', `${this.point.commit.name}`],
                 [`Committer: `, `${this.point.commit.committer}`],
                 [`------`, ``],
                 [`Files: `, `${this.point.commit.stats.files}`],
                 [`Lines: `, `${this.point.commit.stats.lines}`],
+                [`Queue Time: `, `${queueTime(this.point.commit)}`],
 
               ]
             })
