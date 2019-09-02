@@ -264,7 +264,8 @@ export const CommitsTimelineChart = Chart({
           }
         ],
         legend: {
-          enabled: z_bucket_range.min !== z_bucket_range.max
+          enabled: z_bucket_range.min !== z_bucket_range.max,
+          align: 'right'
         },
         time: {
           // Since we are already passing in UTC times we
