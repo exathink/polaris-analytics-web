@@ -19,7 +19,7 @@ function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
     return getDaysSubtitle(days)
   } else {
     return startWindow ?
-      `${startWindow.format('MM/DD/YYYY')} - ${endWindow.format('MM/DD/YYYY')}`
+      `${startWindow.format('MM/DD/YYYY')} - ${endWindow.format('MM/DD/YYYY')} (${days} days)`
       : ``
   }
 }
