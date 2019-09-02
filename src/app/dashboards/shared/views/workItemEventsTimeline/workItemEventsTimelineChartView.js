@@ -4,7 +4,15 @@ import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
 import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
 import {WorkItemEventsTimelineGroupSelector} from "./workItemEventsTimelineGroupSelector";
+import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
+import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 
+const workItemEventsTimelineGroupings = {
+  workItem: "Work Item",
+  event: "Event",
+  type: "Type",
+  source: "Source",
+}
 
 export class WorkItemEventsTimelineChartView extends React.Component {
   constructor(props) {
@@ -22,12 +30,13 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       selectedCommits: null
     }
   }
+
   componentDidUpdate() {
     const {model} = this.state;
     const {workItemEvents, workItemCommits} = this.props
-    if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits){
+    if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits) {
       this.setState({
-        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,  this.state.selectedGrouping),
+        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping),
       })
     }
   }
@@ -39,7 +48,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     } = this.props;
 
     this.setState({
-      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,groupBy),
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy),
       selectedGrouping: groupBy,
       selectedCategories: null,
       selectedCommits: null
@@ -54,14 +63,14 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       onSelectionChange,
     } = this.props;
 
-    const model = new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,  this.state.selectedGrouping, selected)
+    const model = new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping, selected)
     this.setState({
       ...this.state,
       model: model,
       selectedCategories: selected
     });
-    if(onSelectionChange) {
-        onSelectionChange(model.workItemEvents)
+    if (onSelectionChange) {
+      onSelectionChange(model.workItemEvents)
     }
   }
 
@@ -80,14 +89,12 @@ export class WorkItemEventsTimelineChartView extends React.Component {
       selectedWorkItemEvents: workItemEvents,
     });
 
-    if(onSelectionChange) {
-        onSelectionChange(workItemEvents)
-    } else if(view !== 'detail' || !showTable) {
+    if (onSelectionChange) {
+      onSelectionChange(workItemEvents)
+    } else if (view !== 'detail' || !showTable) {
       //this.navigateToWorkItemEvent(workItemEvents)
     }
   }
-
-
 
 
   getWorkItemEventsTimelineChart(model) {
@@ -114,7 +121,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
         view={view}
         days={days}
         before={before}
-        latestEvent={ latestEvent}
+        latestEvent={latestEvent}
         latest={latest}
         totalWorkItemEvents={totalWorkItemEvents}
         shortTooltip={shortTooltip}
@@ -130,7 +137,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     const {workItemEvents, workItemCommits} = this.props;
     return (
       <WorkItemEventsTimelineRollupBarchart
-        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits,   this.state.selectedGrouping)}
+        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -166,34 +173,54 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
 
   getPrimaryLayout(height, model) {
-    const {showHeader} = this.props;
-
+    const {showHeader, view,  days, setDaysRange, groupings} = this.props;
+    const {selectedGrouping} = this.state;
+    const showSlider = view === 'detail';
     return (
 
-        <Flex column style={{height: height, width: "100%"}}>
-          <Flex column align='center' style={{height: "5%"}}>
-            <WorkItemEventsTimelineGroupSelector groupings={this.props.groupings} selectedGrouping={this.state.selectedGrouping} onGroupingChanged={this.onGroupingChanged.bind(this)}/>
-          </Flex>
-          <Flex style={{height:"95%"}}>
-            <Box w={showHeader ? "90%" : "100%"}>
-
-
-              {
-                this.getWorkItemEventsTimelineChart(model)
-              }
-
+      <Flex column style={{height: height, width: "100%"}}>
+        <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider ? 'left' : 'center'}
+              style={{height: "5%"}}>
+          {
+            showSlider &&
+            <Box w={"35%"}>
+              <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
             </Box>
-            {
-              showHeader ?
-                <Box w={"10%"}>
-                  {
-                    this.getTimelineRollupHeader()
-                  }
-                </Box>
-                : null
-            }
-          </Flex>
+          }
+          <Box>
+            <GroupingSelector
+              groupings={
+                groupings.map(
+                  grouping => ({
+                    key: grouping,
+                    display: workItemEventsTimelineGroupings[grouping]
+                  })
+                )
+              }
+              initialValue={selectedGrouping}
+              onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+          </Box>
         </Flex>
+        <Flex style={{height: "95%"}}>
+          <Box w={showHeader ? "90%" : "100%"}>
+
+
+            {
+              this.getWorkItemEventsTimelineChart(model)
+            }
+
+          </Box>
+          {
+            showHeader ?
+              <Box w={"10%"}>
+                {
+                  this.getTimelineRollupHeader()
+                }
+              </Box>
+              : null
+          }
+        </Flex>
+      </Flex>
     )
   }
 

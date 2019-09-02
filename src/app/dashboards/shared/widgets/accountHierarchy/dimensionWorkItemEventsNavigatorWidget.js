@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState} from 'react';
 
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
@@ -47,6 +47,8 @@ export const DimensionWorkItemEventsNavigatorWidget = (
   }) => {
   const latestEvent = getLatest(latestWorkItemEvent, latestCommit);
   const endWindow = before || latestEvent;
+  const [daysRange, setDaysRange] = useState(days);
+
   return (
     <Query
       client={analytics_service}
@@ -100,7 +102,7 @@ export const DimensionWorkItemEventsNavigatorWidget = (
       }
       variables={{
         key: instanceKey,
-        days: days || 0,
+        days: daysRange || 0,
         before: endWindow,
         referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
         latest: latest
@@ -125,7 +127,8 @@ export const DimensionWorkItemEventsNavigatorWidget = (
               groupBy={groupBy}
               groupings={groupings}
               smartGrouping={smartGrouping}
-              days={days}
+              days={daysRange}
+              setDaysRange={setDaysRange}
               before={endWindow}
               latest={latest}
               latestEvent={latestEvent}
