@@ -5,7 +5,8 @@ import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
-import {Statistic} from 'antd';
+import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
+
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -191,7 +192,7 @@ export class CommitsTimelineChartView extends React.Component {
             title="Traceability"
             value={ model.traceability != null ? model.traceability * 100 : 'N/A'}
             precision={model.traceability != null && 2}
-            valueStyle={{ color: '#3f8600' }}
+            valueStyle={{ color: '#3f8600'}}
 
             suffix={model.traceability != null && "%"}
             style={{backgroundColor: '#f2f3f6'}}

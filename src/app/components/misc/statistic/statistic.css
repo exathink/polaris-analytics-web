@@ -1,0 +1,19 @@
+.ant-statistic-title {
+    font-size: 1.8vh;
+}
+
+.ant-statistic-content {
+    line-height: 2vh;
+}
+
+.ant-statistic-content-value-int {
+    font-size: 2.2vh
+}
+
+.ant-statistic-content-value-decimal {
+    font-size: 1.8vh
+}
+
+.ant-statistic-content-suffix {
+    font-size: 1.4vh
+}
