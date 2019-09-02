@@ -70,7 +70,7 @@ export const MostActiveChildrenBarChart = Chart({
         xAxis: {
           type: 'category',
           title: {
-            text: 'Repository'
+            text: childContextName
           },
           visible: view === 'detail'
         },
