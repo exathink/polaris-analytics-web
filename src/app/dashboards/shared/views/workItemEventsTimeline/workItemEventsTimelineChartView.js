@@ -3,7 +3,6 @@ import {WorkItemEventsTimelineChart} from "./index";
 import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
 import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
-import {WorkItemEventsTimelineGroupSelector} from "./workItemEventsTimelineGroupSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 

@@ -10,7 +10,8 @@ import {Statistic} from 'antd';
 const commitTimelineGroupings = {
   repository: "Repository",
   workItem: "Work Item",
-  author: "Author"
+  author: "Author",
+  branch: "Branch"
 }
 
 
