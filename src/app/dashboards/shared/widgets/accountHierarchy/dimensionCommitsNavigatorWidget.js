@@ -64,6 +64,7 @@ export const DimensionCommitsNavigatorWidget = (
                                 branch
                                 repository
                                 repositoryKey
+                                numParents
                                 stats {
                                     files
                                     lines
