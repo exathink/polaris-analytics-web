@@ -248,19 +248,22 @@ export class CommitsTimelineChartView extends React.Component {
                 <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
               </Box>
           }
-          <Box>
-            <GroupingSelector
-              groupings={
-                groupings.map(
-                  grouping => ({
-                    key: grouping,
-                    display: commitTimelineGroupings[grouping]
-                  })
-                )
-              }
-              initialValue={selectedGrouping}
-              onGroupingChanged={this.onGroupingChanged.bind(this)}/>
-          </Box>
+          {
+            groupings &&
+              <Box>
+                <GroupingSelector
+                  groupings={
+                    groupings.map(
+                      grouping => ({
+                        key: grouping,
+                        display: commitTimelineGroupings[grouping]
+                      })
+                    )
+                  }
+                  initialValue={selectedGrouping}
+                  onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+              </Box>
+          }
         </Flex>
         <Flex style={{height: "95%"}}>
           <Box w={"90%"}>
