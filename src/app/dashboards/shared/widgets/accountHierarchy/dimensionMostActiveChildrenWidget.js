@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
@@ -25,7 +25,9 @@ export const DimensionMostActiveChildrenWidget = (
     view,
     pollInterval
 
-  }) => (
+  }) => {
+    const [daysRange, setDaysRange] = useState(days || 1)
+    return (
     <Query
       client={analytics_service}
       query={
@@ -50,7 +52,7 @@ export const DimensionMostActiveChildrenWidget = (
       variables={{
         key: instanceKey,
         top: top || 20,
-        days: days || 7,
+        days:daysRange,
         before: before ? moment(before) : latestCommit ? toMoment(latestCommit) : null,
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
@@ -70,7 +72,8 @@ export const DimensionMostActiveChildrenWidget = (
               top={top}
               before={before}
               latestCommit={latestCommit}
-              days={days}
+              days={daysRange}
+              setDaysRange={setDaysRange}
               onSelectionChange={
                 (children) => {
                   onChildrenSelected(context, childContext, children)
@@ -83,7 +86,8 @@ export const DimensionMostActiveChildrenWidget = (
         }
       }
     </Query>
-);
+)
+};
 
 function onChildrenSelected(context, childContext, children) {
   if(children && children.length === 1) {
