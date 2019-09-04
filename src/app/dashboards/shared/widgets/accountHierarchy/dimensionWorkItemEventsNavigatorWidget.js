@@ -1,19 +1,11 @@
-import React , {useState} from 'react';
+import React, {useState} from 'react';
 
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
-import {getLatest} from "../../../../helpers/utility";
+import {getLatest, getReferenceString} from "../../../../helpers/utility";
 import {analytics_service} from '../../../../services/graphql/index'
 import {WorkItemEventsTimelineChartView} from "../../views/workItemEventsTimeline";
-import moment from 'moment';
-
-
-function getReferenceString(latestWorkItemEvent, latestCommit) {
-  const eventValue = latestWorkItemEvent ? moment(latestWorkItemEvent).valueOf() : 0;
-  const commitValue = latestCommit ? moment(latestCommit).valueOf() : 0;
-  return `${commitValue + eventValue}`
-}
 
 
 function getViewCacheKey(instanceKey, display) {

@@ -7,7 +7,7 @@ import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from '../../../../services/graphql/index'
 import {CommitsTimelineChartView} from "../../views/commitsTimeline";
 import moment from 'moment';
-import {toMoment} from "../../../../helpers/utility";
+import {toMoment, getReferenceString} from "../../../../helpers/utility";
 
 
 function getViewCacheKey(instanceKey, display) {
@@ -22,6 +22,7 @@ export const DimensionCommitsNavigatorWidget = (
     days,
     before,
     latestCommit,
+    latestWorkItemEvent,
     latest,
     view,
     groupBy,
@@ -45,8 +46,8 @@ export const DimensionCommitsNavigatorWidget = (
       client={analytics_service}
       query={
         gql`
-            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime) {
-                ${dimension}(key: $key, referenceDate: $referenceDate){
+            query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime, $referenceString: String) {
+                ${dimension}(key: $key, referenceString: $referenceString){
                     id
                     commits(days: $days, before: $before, first: $latest, referenceDate: $referenceDate) {
                         count
@@ -91,7 +92,8 @@ export const DimensionCommitsNavigatorWidget = (
         days: daysRange,
         before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
         latest: latest,
-        referenceDate: referenceDate
+        referenceDate: referenceDate,
+        referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
       }}
       pollInterval={pollInterval || analytics_service.defaultPollInterval()}
     >

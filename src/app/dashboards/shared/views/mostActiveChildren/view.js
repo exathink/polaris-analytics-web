@@ -2,9 +2,8 @@ import React from 'react';
 import {MostActiveChildrenBarChart} from './mostActiveChildrenBarChart';
 import {VizItem, VizRow} from "../../containers/layout";
 import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
-import {Flex, Box} from 'reflexbox';
+import {Box, Flex} from 'reflexbox';
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
-import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 
 
 export const MostActiveChildrenSummaryView = (props) => (

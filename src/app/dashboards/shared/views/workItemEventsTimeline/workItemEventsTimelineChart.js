@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, isToday, toMoment, snakeToUpperCamel} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {formatDateTime} from "../../../../i18n";
 

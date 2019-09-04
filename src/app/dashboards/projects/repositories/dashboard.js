@@ -70,6 +70,7 @@ export const dashboard = () => (
                     view={view}
                     days={1}
                     latestCommit={project.latestCommit}
+                    latestWorkItemEvent={project.latestWorkItemEvent}
                     groupBy={'workItem'}
                     groupings={['workItem', 'author', 'repository', 'branch']}
                     showHeader

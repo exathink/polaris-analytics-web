@@ -120,6 +120,7 @@ export const dashboard = () => (
                       view={view}
                       days={1}
                       latestCommit={organization.latestCommit}
+                      latestWorkItemEvent={organization.latestWorkItemEvent}
                       markLatest
                       groupBy={'workItem'}
                       groupings={['workItem','author', 'repository', 'branch']}
