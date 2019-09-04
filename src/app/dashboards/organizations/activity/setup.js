@@ -7,8 +7,8 @@ export const ActivityDashboardSetup = ({organization, context}) => {
   const noProjects = organization.projectCount === 0;
   const noRepositories = organization.repositoryCount === 0;
 
-  const projectsOffset = noRepositories ? 6 : 9;
-  const repositoriesOffset = noProjects ? 0 : 9;
+  const repositoriesOffset = noProjects ? 6 : 9;
+  const projectsOffset = noRepositories ? 0 : 9;
 
 
   return (
@@ -20,28 +20,27 @@ export const ActivityDashboardSetup = ({organization, context}) => {
             {
               noProjects && noRepositories ?
                 <InitialSetupText organization={organization}/>
-              : noProjects ?
-                  <SetupProjectsText organization={organization} />
-                : noRepositories ?
-                  <SetupRepositoriesText organization={organization}/>
+              : noRepositories ?
+                  <SetupRepositoriesText organization={organization} />
+                : noProjects ?
+                  <SetupProjectsText organization={organization}/>
                   : null
             }
           </Col>
         </Row>
         <Row type={'flex'}>
           {
-            noProjects &&
-            <Col offset={projectsOffset} span={6}>
-              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'projects')}/>
-            </Col>
-          }
-          {
             noRepositories &&
             <Col offset={repositoriesOffset} span={6}>
               <ImportRepositoriesCard title={"Connect Version Control System"} onClick={() => context.go('..', 'repositories')}/>
             </Col>
           }
-
+          {
+            noProjects &&
+            <Col offset={projectsOffset} span={6}>
+              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'projects')}/>
+            </Col>
+          }
         </Row>
       </div>
 
