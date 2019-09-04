@@ -63,15 +63,14 @@ const JiraConnectorInstructions = () => (
 const GithubConnectorInstructions = () => (
   <div>
     <h3>Create a Github Connector</h3>
-    <p>The Urjuna Github Connector uses the Github Rest API to import repository issues and commit data. Each connector
+    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
       is scoped
-      to specific Github Organization and you must create separate connectors for each Github organization that you are
+      to a specific Github Organization and you must create separate connectors for each Github organization that you are
       connecting to.
     </p>
     <p>
-      Github connectors for an organization can be used to import issues as well as repository and commit data. So any
-      connectors you
-      create will be available to use in both work tracking and version control system import workflows.
+      If you use Github for version control as well as for issue tracking for an organization, the same connector can be used
+      in repository and project import workflows.
     </p>
     <p>
       The integration process is straightforward.
@@ -82,7 +81,7 @@ const GithubConnectorInstructions = () => (
         Github organization name as the connector name.
       </li>
       <li>
-        Provide the OAuth access token.
+        Provide an OAuth personal access token.
         <ol>
           <li>Login to Github as the user who is a member of the Github organization above.</li>
           <li>Click on your user profile on the top right corner.</li>
@@ -90,7 +89,7 @@ const GithubConnectorInstructions = () => (
           <li>Create a new personal access token for the connector. For scopes
             select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
           </li>
-          <li>Copy the personal access token an enter it is a the OAuth access token in Create Connector form and click
+          <li>Copy the personal access token an enter it as the OAuth access token in Create Connector form and click
             "Register".
           </li>
         </ol>
@@ -101,10 +100,9 @@ const GithubConnectorInstructions = () => (
 
     <p>Note 1: You may use the same personal access token across multiple connectors provided it has access to the
       Github organization it is connecting to.
-      You may delete the personal access token at any time to revoke access to all connectors that use the given token.
     </p>
     <p>
-      Note 2: For work tracking integration purposes, each Github repository that contains issues is considered a remote
+      Note 2: If you use Github to track issues, each Github repository that contains issues is considered a remote
       project. We recommend grouping
       the repositories where you maintain issues for a given product or product line and importing them as sub-projects
       of a single Urjuna Project that models this
