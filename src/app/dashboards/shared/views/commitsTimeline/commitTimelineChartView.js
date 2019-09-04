@@ -200,7 +200,9 @@ export class CommitsTimelineChartView extends React.Component {
         </div>
         <div style={{height: "85%"}}>
           <CommitsTimelineRollupBarChart
-            model={model}
+            /* We cannot use the model on state here because this should include all the categories
+            *  even when some a selected*/
+            model={new CommitTimelineViewModel(this.state.commits, this.state.selectedGrouping)}
             onSelectionChange={this.onCategoriesSelected.bind(this)}
           />
         </div>
