@@ -65,8 +65,8 @@ export const dashboard = () => (
                     childConnection={'recentlyActiveRepositories'}
                     context={context}
                     childContext={Repositories}
-                    top={5}
-                    days={30}
+                    top={10}
+                    days={1}
                     latestCommit={contributor.latestCommit}
                     view={view}
                   />
