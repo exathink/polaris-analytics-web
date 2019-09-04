@@ -14,7 +14,7 @@ function getDaysSubtitle(days, prefix='Last') {
 function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
   const endWindowDays = endWindow && daysFromNow(endWindow)
   if(latestCommit) {
-    return isToday(latestCommit) ? getDaysSubtitle(days) : `${getDaysSubtitle(days,'')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
+    return `${getDaysSubtitle(days,'')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
   } else if(!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
