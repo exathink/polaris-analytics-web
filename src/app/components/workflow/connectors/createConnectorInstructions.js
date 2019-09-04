@@ -46,6 +46,11 @@ const JiraConnectorInstructions = () => (
     <ol>
       <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps.
       </li>
+      <li>
+        Click on Settings and enable private listings and development mode. This is needed while the Urjuna app
+        is in private beta. Once the app is released on the Atlassian Marketplace this step will not be needed.
+        You should see an 'Upload App' link (potentially after refreshing the page).
+      </li>
       <li>Click on the 'Upload App' link</li>
       <li>Use <em>https://polaris-services.exathink.com/work-tracking/atlassian_connect/descriptor</em> for
         the
