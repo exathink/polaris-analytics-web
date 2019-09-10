@@ -1,174 +1,124 @@
 import React from 'react';
-import {Col, Row, Collapse} from "antd";
-
-const {Panel} = Collapse;
 
 
-const InstructionsWrapper = ({initial, children}) => (
-  <div className={'create-connector-instructions'}>
-    <Collapse>
-      <Panel key={'instructions'} header={'Instructions'}>
-        <Row>
-          <Col span={12}>
-            {children}
-          </Col>
-        </Row>
-      </Panel>
-    </Collapse>
-  </div>
+const JiraConnectorInstructions = ({part}) => (
+  part === 'instructions' ?
+    <div>
+      <p>
+        Urjuna provides the <b>Urjuna Connector for Jira, </b> an
+        <em> Atlassian Connect </em> app that lets external applications connect securely
+        with Atlassian products. There
+        are two steps in connecting Urjuna to a Jira Server.
+      </p>
+      <h3>Step 1. Install the Urjuna Connector for Jira App on your Jira Server</h3>
+      <p>
+        You will need administrator privileges to do this.
+      </p>
+
+
+      <ol>
+        <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps.
+        </li>
+        <li>
+          Click on Settings in the Manage Apps view, and enable private listings <em>and</em> development mode
+          checkboxes.
+          This is needed while the Urjuna app
+          is in private beta. Once the app is released on the Atlassian Marketplace this step will not be needed.
+          You should see an 'Upload App' link (you may need to refresh your page to see this link).
+        </li>
+        <li>Click on the 'Upload App' link</li>
+        <li>Use <em>https://polaris-services.exathink.com/work-tracking/atlassian_connect/descriptor</em> for
+          the
+          url.
+        </li>
+        <li>
+          Click upload and wait for the installation to complete successfully.
+        </li>
+        <li>
+          Click Next below to proceed to the final step in the installation.
+        </li>
+      </ol>
+    </div>
+    :
+    part === 'setup' ?
+      <div>
+        <h3>Step 2. Register the Atlassian Connect App in Urjuna</h3>
+        <p>
+          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and associates it with your current
+          organization.
+        </p>
+      </div>
+      : null
 );
 
-const JiraConnectorInstructions = () => (
-  <div>
-    <h3>Create a Jira Cloud Connector</h3>
-    <p>
-      Urjuna provides an <a href="https://marketplace.atlassian.com/addons/app/jira" target={"_blank"}>Atlassian
-      Connect</a> app for integrating with Jira Cloud. There are two steps in configuring this integration.
-    </p>
+const GithubConnectorInstructions = ({part}) => (
+  part === 'instructions' &&
+    <div>
+      <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+        is scoped
+        to a specific Github Organization and you must create separate connectors for each Github organization that you
+        are
+        connecting to.
+      </p>
+      <p>
+        If you use Github for version control as well as for issue tracking for an organization, the same connector can be
+        used
+        in repository and project import workflows.
+      </p>
+      <p>
+        The integration process is straightforward. You will need a personal access token to authenticate Urjuna
+        with Github.
+      </p>
 
-    First, create an Urjuna Connector to the Jira instance.
-    <ol>
-      <li>Click the "Create Jira Connector" button above.</li>
-      <li>Provide an name for the connector and the URL to the Jira instance that you are connecting to and click
-        "Register".
-      </li>
-      <li>Your should now see your new connector in the table above, in the <em>awaiting_install</em> state.</li>
-    </ol>
-    <p>
-      At this point a Connector to your Jira instance has been registered in Urjuna, but it has not yet been
-      authorized to connect to that instance. To do this, you must install the Urjuna Atlassian Connect app as an add-on
-      on
-      your
-      Jira instance. The app is not yet publicly available via the Atlassian marketplace while Urjuna is in private
-      beta, but it
-      can be privately installed from your Jira
-      Cloud instance.You will need administrative privileges on the Jira instance to complete this step.</p>
-    <ol>
-      <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps.
-      </li>
-      <li>
-        Click on Settings and enable private listings and development mode. This is needed while the Urjuna app
-        is in private beta. Once the app is released on the Atlassian Marketplace this step will not be needed.
-        You should see an 'Upload App' link (potentially after refreshing the page).
-      </li>
-      <li>Click on the 'Upload App' link</li>
-      <li>Use <em>https://polaris-services.exathink.com/work-tracking/atlassian_connect/descriptor</em> for
-        the
-        url
-      </li>
-      <li>Click upload and wait for the installation to complete.</li>
-    </ol>
-
-    If the installation is successful, the state of the connector in the table above should change
-    to <em>enabled</em> after a few minutes.
-    Your connector is now ready to use. Click "Select" to move to the next step and begin importing your projects.
-  </div>
+      <ol>
+        <li>Login to Github as the user who is a member of the Github organization above.</li>
+        <li>Click on your user profile on the top right corner.</li>
+        <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
+        <li>Create a new personal access token for the connector. For scopes
+          select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
+        </li>
+        <li>Copy the personal access token and enter it as the OAuth access token in the next step.
+        </li>
+      </ol>
+    </div>
 );
 
-const GithubConnectorInstructions = () => (
+const PivotalConnectorInstructions = ({part}) => (
+  part === 'instructions' &&
   <div>
-    <h3>Create a Github Connector</h3>
-    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
-      is scoped
-      to a specific Github Organization and you must create separate connectors for each Github organization that you are
-      connecting to.
-    </p>
-    <p>
-      If you use Github for version control as well as for issue tracking for an organization, the same connector can be used
-      in repository and project import workflows.
-    </p>
-    <p>
-      The integration process is straightforward.
-    </p>
-    <ol>
-      <li>Click the "Create Github Connector" button above.</li>
-      <li>Provide a name for the connector and the Github organization you wish to connect to. We recommend using the
-        Github organization name as the connector name.
-      </li>
-      <li>
-        Provide an OAuth personal access token.
-        <ol>
-          <li>Login to Github as the user who is a member of the Github organization above.</li>
-          <li>Click on your user profile on the top right corner.</li>
-          <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
-          <li>Create a new personal access token for the connector. For scopes
-            select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
-          </li>
-          <li>Copy the personal access token an enter it as the OAuth access token in Create Connector form and click
-            "Register".
-          </li>
-        </ol>
-      </li>
-      The new connector should display in the connectors table and its state should be <em>enabled</em>. Click "Select"
-      to proceed to the next step.
-    </ol>
-
-    <p>Note 1: You may use the same personal access token across multiple connectors provided it has access to the
-      Github organization it is connecting to.
-    </p>
-    <p>
-      Note 2: If you use Github to track issues, each Github repository that contains issues is considered a remote
-      project. We recommend grouping
-      the repositories where you maintain issues for a given product or product line and importing them as sub-projects
-      of a single Urjuna Project that models this
-      product or product line.
-    </p>
-
-  </div>
-);
-
-const PivotalConnectorInstructions = () => (
-  <div>
-    <h3>Create a Pivotal Tracker Connector</h3>
     <p>
       The Pivotal Tracker Connector for Urjuna integrates with the Pivotal Tracker Rest API.
       API requests have to be authenticated with an API token for a specific Tracker user,
       on whose behalf the request is being made. You should use an API token for a user who has access to
       all the Tracker Projects that you wish to import in Urjuna.
     </p>
-    <p>
-      The integration process is straightforward.
-    </p>
-    <ol>
-      <li>Click the "Create Pivotal Tracker Connector" button.</li>
-      <li>Provide a name for the connector.</li>
-      <li>
-        Provide the API Key
-        <ol>
-          <li>Login to Pivotal Tracker as the user whose API key you want to use.</li>
-          <li>Click on your user profile on the top right corner and select Profile.</li>
-          <li>Scroll to the bottom of the page where you will find an API Token section.</li>
-          <li>Copy the API token and enter it as the API Key in the form, and click "Register".</li>
-        </ol>
-      </li>
-      The new connector should display in the connectors table and its state should be <em>enabled</em>.
 
-      Click "Select" to proceed to the next step and import Projects and Stories.
+     The API key can be retrieved as follows.
+    <ol>
+      <li>Login to Pivotal Tracker as the user whose API key you want to use.</li>
+      <li>Click on your user profile on the top right corner and select Profile.</li>
+      <li>Scroll to the bottom of the page where you will find an API Token section.</li>
+      <li>Copy the API token and enter it in the next step.</li>
     </ol>
 
   </div>
 );
 
-export const CreateConnectorInstructions = ({initial, connectorType}) => {
+export const CreateConnectorInstructions = ({part, connectorType}) => {
   switch (connectorType) {
     case 'jira':
       return (
-        <InstructionsWrapper initial={initial}>
-          <JiraConnectorInstructions/>
-        </InstructionsWrapper>
+        <JiraConnectorInstructions part={part}/>
       );
 
     case 'github':
       return (
-        <InstructionsWrapper>
-          <GithubConnectorInstructions/>
-        </InstructionsWrapper>
+        <GithubConnectorInstructions part={part}/>
       );
     case 'pivotal':
       return (
-        <InstructionsWrapper>
-          <PivotalConnectorInstructions/>
-        </InstructionsWrapper>
+        <PivotalConnectorInstructions part={part}/>
+
       );
     default:
       return `Unknown connector type: ${connectorType}`;
