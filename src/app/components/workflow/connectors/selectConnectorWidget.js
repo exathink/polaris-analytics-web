@@ -24,7 +24,7 @@ function urlMunge(connectorType, url) {
 
 const ALL_CONNECTORS_QUERY = gql`
     query getAccountConnectors($accountKey: String!, $organizationKey: String!, $connectorType: String!) {
-        connectors (accountKey: $accountKey, organizationKey: $organizationKey includeNullAccounts: true, connectorType: $connectorType) {
+        connectors (accountKey: $accountKey, organizationKey: $organizationKey , connectorType: $connectorType) {
             count
             edges {
                 node {
