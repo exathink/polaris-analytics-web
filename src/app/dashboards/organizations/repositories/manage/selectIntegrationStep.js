@@ -24,8 +24,7 @@ export class SelectIntegrationStep extends React.Component {
                 </Card>
               </a>
             </Col>
-            {
-            /**
+
             <Col span={8}>
               <a onClick={() => this.props.onConnectorTypeSelected('bitbucket')}>
                 <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}>
@@ -39,6 +38,8 @@ export class SelectIntegrationStep extends React.Component {
                 </Card>
               </a>
             </Col>
+            {
+            /**
             <Col span={8}>
               <a onClick={() => this.props.onConnectorTypeSelected('gitlab')}>
                 <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}>

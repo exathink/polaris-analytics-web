@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Col, Row} from "antd";
-import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
+import Button from "../../../../components/uielements/button";
 
 export const RepositoriesDashboardSetup = ({context}) => (
   <div className={'no-repositories'}>
@@ -30,7 +30,7 @@ export const RepositoriesDashboardSetup = ({context}) => (
       </Row>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col offset={9} span={6}>
-          <ImportRepositoriesCard onClick={() => context.go('.', 'new')} compact={true}/>
+          <Button type={"primary"} size={"large"} onClick={() => context.go('.', 'new')}>Import Repositories</Button>
         </Col>
       </Row>
     </div>
