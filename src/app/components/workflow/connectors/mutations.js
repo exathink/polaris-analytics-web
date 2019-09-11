@@ -33,21 +33,6 @@ export const DELETE_CONNECTOR = {
     error: err => openNotification('error', `${display_error(err)}`)
 }
 
-export const REGISTER_CONNECTOR = {
-    name: 'registerConnector',
-    mutation: gql`
-      mutation registerConnector($registerConnectorInput: RegisterConnectorInput!) {
-          registerConnector(registerConnectorInput:$registerConnectorInput){
-              registered
-              connector {
-                  name
-              }
-          }
-      }
-  `,
-    client: null,
-    success: (data) => openNotification('success', `Connector ${data.registerConnector.connector.name} registered.`)
-}
 
 export const TEST_CONNECTOR = {
     name: 'testConnector',

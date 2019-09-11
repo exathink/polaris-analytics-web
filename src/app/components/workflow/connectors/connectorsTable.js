@@ -2,12 +2,11 @@ import React from "react";
 
 import {ButtonBar} from "../../../containers/buttonBar/buttonBar";
 import Button from "../../../../components/uielements/button";
-import {RegisterConnectorFormButton} from "./registerConnectorFormButton";
 import {DeleteConfirmationModalButton} from "./deleteConfirmationModal";
 import {Table} from "../../../components/tables";
 import './connectors.css'
 
-const {Column}=Table;
+const {Column} = Table;
 
 function includeHostColumn(connectorType) {
   return connectorType === 'jira';
@@ -20,7 +19,6 @@ export const ConnectorsTable = (
     loading,
     onConnectorSelected,
     onConnectorDeleted,
-    onConnectorRegistered,
     lastRegistrationError,
     lastRegistrationSubmission
   }
@@ -54,33 +52,16 @@ export const ConnectorsTable = (
               key="select"
               render={
                 (text, record) => {
-                  const lastRegistrationKey = lastRegistrationSubmission && lastRegistrationSubmission.key
-
                   return (
                     <ButtonBar>
-                      {
-                        record.accountKey != null ?
-                          <Button
-                            size={"small"}
-                            type={'primary'}
-                            onClick={() => onConnectorSelected(record)}
-                            disabled={record.state !== 'enabled'}
-                          >
-                            Select
-                          </Button>
-                          :
-                          <RegisterConnectorFormButton
-                            connectorType={connectorType}
-                            connector={record}
-                            onSubmit={
-                              (values) =>
-                                onConnectorRegistered(Object.assign(values, {key: record.key}))
-                            }
-                            error={record.key === lastRegistrationKey ? lastRegistrationError : null}
-                            lastSubmission={record.key === lastRegistrationKey ? lastRegistrationSubmission : null}
-                          />
-                      }
-
+                      <Button
+                        size={"small"}
+                        type={'primary'}
+                        onClick={() => onConnectorSelected(record)}
+                        disabled={record.state !== 'enabled'}
+                      >
+                        Select
+                      </Button>
                       <DeleteConfirmationModalButton
                         connectorType={connectorType}
                         record={record}
