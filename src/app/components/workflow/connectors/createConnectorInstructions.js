@@ -44,7 +44,63 @@ const JiraConnectorInstructions = ({part}) => (
       <div>
         <h3>Step 2. Register the Atlassian Connect App in Urjuna</h3>
         <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and associates it with your current
+          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and
+          associates it with your current
+          organization.
+        </p>
+      </div>
+      : null
+);
+
+const BitbucketConnectorInstructions = ({part}) => (
+  part === 'instructions' ?
+    <div>
+      <p>
+        Urjuna provides the <b>Urjuna Connector for Bitbucket, </b> an
+        <em> Atlassian Connect </em> app that lets external applications connect securely
+        with Atlassian products. There
+        are two steps in connecting Urjuna to a Jira Server.
+      </p>
+      <h3>Step 1. Install the Urjuna Connector for Bitbucket App in your Bitbucket Cloud account</h3>
+      <p>
+        You will need administrator privileges to do this.
+      </p>
+
+
+      <ol>
+        <li>Login to your Bitbucket Cloud as an adminstrator and navigate to
+          Profile -> Bitbucket Settings -> Apps and Features -> Installed Apps.
+        </li>
+        <li>
+          You should see an 'Install app from URL' link. Click on this link
+        </li>
+        <li>Use <em>https://polaris-services.exathink.com/vcs/atlassian_connect/descriptor</em> for
+          the
+          url.
+        </li>
+        <li>
+          Click upload and wait for the installation to complete successfully.
+        </li>
+        <li>
+          Make a note of the account key for the user under whose account you have installed the app.
+          You can find this from the url of the page on which you just finished installing the Urjuna Atlassian Connect App.
+          The url should be of the form
+          <em> https://bitbucket.org/account/user/{"{user-account-key}"}/addon-management</em>.
+          Make a note of the UUID that is between the curly braces in the url. We will need
+          this next, to complete the registration of the connector within Urjuna.
+        </li>
+        <li>
+          Click Next below to proceed to the final step in the installation.
+        </li>
+      </ol>
+    </div>
+    :
+    part === 'setup' ?
+      <div>
+        <h3>Step 2. Register the Atlassian Connect App in Urjuna</h3>
+        <p>
+          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and
+          associates it with your current
           organization.
         </p>
       </div>
@@ -53,34 +109,34 @@ const JiraConnectorInstructions = ({part}) => (
 
 const GithubConnectorInstructions = ({part}) => (
   part === 'instructions' &&
-    <div>
-      <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
-        is scoped
-        to a specific Github Organization and you must create separate connectors for each Github organization that you
-        are
-        connecting to.
-      </p>
-      <p>
-        If you use Github for version control as well as for issue tracking for an organization, the same connector can be
-        used
-        in repository and project import workflows.
-      </p>
-      <p>
-        The integration process is straightforward. You will need a personal access token to authenticate Urjuna
-        with Github.
-      </p>
+  <div>
+    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+      is scoped
+      to a specific Github Organization and you must create separate connectors for each Github organization that you
+      are
+      connecting to.
+    </p>
+    <p>
+      If you use Github for version control as well as for issue tracking for an organization, the same connector can be
+      used
+      in repository and project import workflows.
+    </p>
+    <p>
+      The integration process is straightforward. You will need a personal access token to authenticate Urjuna
+      with Github.
+    </p>
 
-      <ol>
-        <li>Login to Github as the user who is a member of the Github organization above.</li>
-        <li>Click on your user profile on the top right corner.</li>
-        <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
-        <li>Create a new personal access token for the connector. For scopes
-          select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
-        </li>
-        <li>Copy the personal access token and enter it as the OAuth access token in the next step.
-        </li>
-      </ol>
-    </div>
+    <ol>
+      <li>Login to Github as the user who is a member of the Github organization above.</li>
+      <li>Click on your user profile on the top right corner.</li>
+      <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
+      <li>Create a new personal access token for the connector. For scopes
+        select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
+      </li>
+      <li>Copy the personal access token and enter it as the OAuth access token in the next step.
+      </li>
+    </ol>
+  </div>
 );
 
 const PivotalConnectorInstructions = ({part}) => (
@@ -93,7 +149,7 @@ const PivotalConnectorInstructions = ({part}) => (
       all the Tracker Projects that you wish to import in Urjuna.
     </p>
 
-     The API key can be retrieved as follows.
+    The API key can be retrieved as follows.
     <ol>
       <li>Login to Pivotal Tracker as the user whose API key you want to use.</li>
       <li>Click on your user profile on the top right corner and select Profile.</li>
@@ -118,6 +174,11 @@ export const CreateConnectorInstructions = ({part, connectorType}) => {
     case 'pivotal':
       return (
         <PivotalConnectorInstructions part={part}/>
+
+      );
+    case 'bitbucket':
+      return (
+        <BitbucketConnectorInstructions part={part}/>
 
       );
     default:

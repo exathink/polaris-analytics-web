@@ -67,6 +67,27 @@ const AddConnectorForm = (
             null
         }
         {
+          connectorType === 'bitbucket' ?
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item label="BitBucket Account Key">
+                  {getFieldDecorator('bbAccountKey', {
+                    rules: [
+                      {required: true, message: 'Bitbucket account key is required'}
+                    ],
+                    initialValue: currentValue('bbAccountKey', null)
+                  })(
+                    <Input
+                      placeholder="the key for the account where the app is installed"
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+            :
+            null
+        }
+        {
           connectorType === 'pivotal' ?
             <Row gutter={16}>
               <Col span={24}>

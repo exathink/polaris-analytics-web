@@ -88,7 +88,6 @@ export const SelectConnectorWidget =
             organizationKey: organizationKey,
             connectorType: connectorType,
           }}
-          pollInterval={connectorType === 'jira' ? 10000 : 0}
         >
           {
             ({loading, error, data}) => {
@@ -145,7 +144,8 @@ export const SelectConnectorWidget =
                                       baseUrl: urlMunge(connectorType, values.baseUrl),
                                       apiKey: values.apiKey,
                                       githubAccessToken: values.githubAccessToken,
-                                      githubOrganization: values.githubOrganization
+                                      githubOrganization: values.githubOrganization,
+                                      bbAccountKey: values.bbAccountKey
                                     }
                                   }
                                 })
