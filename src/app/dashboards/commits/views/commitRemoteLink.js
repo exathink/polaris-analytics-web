@@ -11,7 +11,11 @@ function getRepoBrowseUrl(repoUrl){
       return [repoUrl.replace(/^git@gitlab.com:/, 'https://gitlab.com/').replace(/.git$/, ''), 'Gitlab']
     } else if (repoUrl.startsWith('https://gitlab.com')) {
       return [repoUrl.replace(/.git$/, ''), 'Gitlab']
-    } else return [undefined, undefined]
+    }
+    else if (repoUrl.match(/https:\/\/(.*)@bitbucket.org/)) {
+        return [repoUrl.replace(/.git$/,''), 'BitBucket']
+    }
+    else return [undefined, undefined]
   }
 }
 
@@ -20,6 +24,8 @@ function getCommitBrowseUrl(repoUrl, commitHash) {
     const [repoBrowseUrl, source] = getRepoBrowseUrl(repoUrl);
     if ('Github' === source || 'Gitlab' === source) {
       return [`${repoBrowseUrl}/commit/${commitHash}`, source]
+    } else if('BitBucket' === source) {
+      return [`${repoBrowseUrl}/commits/${commitHash}`, source]
     }
   }
   return [undefined, undefined]
