@@ -160,6 +160,39 @@ const PivotalConnectorInstructions = ({part}) => (
   </div>
 );
 
+
+const GitlabConnectorInstructions = ({part}) => (
+  part === 'instructions' &&
+  <div>
+    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+      is scoped
+      to a specific Github Organization and you must create separate connectors for each Github organization that you
+      are
+      connecting to.
+    </p>
+    <p>
+      If you use Github for version control as well as for issue tracking for an organization, the same connector can be
+      used
+      in repository and project import workflows.
+    </p>
+    <p>
+      The integration process is straightforward. You will need a personal access token to authenticate Urjuna
+      with Github.
+    </p>
+
+    <ol>
+      <li>Login to Github as the user who is a member of the Github organization above.</li>
+      <li>Click on your user profile on the top right corner.</li>
+      <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
+      <li>Create a new personal access token for the connector. For scopes
+        select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
+      </li>
+      <li>Copy the personal access token and enter it as the OAuth access token in the next step.
+      </li>
+    </ol>
+  </div>
+);
+
 export const CreateConnectorInstructions = ({part, connectorType}) => {
   switch (connectorType) {
     case 'jira':
@@ -181,6 +214,10 @@ export const CreateConnectorInstructions = ({part, connectorType}) => {
         <BitbucketConnectorInstructions part={part}/>
 
       );
+    case 'gitlab':
+      return(
+        <GitlabConnectorInstructions part={part}/>
+      )
     default:
       return `Unknown connector type: ${connectorType}`;
   }

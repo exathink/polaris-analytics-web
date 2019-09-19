@@ -145,7 +145,8 @@ export const SelectConnectorWidget =
                                       apiKey: values.apiKey,
                                       githubAccessToken: values.githubAccessToken,
                                       githubOrganization: values.githubOrganization,
-                                      bbAccountKey: values.bbAccountKey
+                                      bbAccountKey: values.bbAccountKey,
+                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
                                     }
                                   }
                                 })
