@@ -164,30 +164,28 @@ const PivotalConnectorInstructions = ({part}) => (
 const GitlabConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+    <p>The Urjuna Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
       is scoped
-      to a specific Github Organization and you must create separate connectors for each Github organization that you
-      are
-      connecting to.
+      to a specific Gitlab user.
     </p>
     <p>
-      If you use Github for version control as well as for issue tracking for an organization, the same connector can be
-      used
-      in repository and project import workflows.
-    </p>
-    <p>
-      The integration process is straightforward. You will need a personal access token to authenticate Urjuna
-      with Github.
+      You will need a personal access token for the user to authenticate Urjuna
+      with Gitlab. We recommend that you use a the personal access token for a user who is either an owner
+      or a member of all the projects that you need to analyze in Urjuna.
     </p>
 
     <ol>
-      <li>Login to Github as the user who is a member of the Github organization above.</li>
+      <li>Login to Gitlab as the user specified above,</li>
       <li>Click on your user profile on the top right corner.</li>
-      <li>Navigate to Settings -> Developer Settings -> Personal Access Tokens</li>
-      <li>Create a new personal access token for the connector. For scopes
-        select <em>read:org</em>, <em>read:user</em> and <em>repo</em>.
+      <li>Navigate to Settings -> Access Tokens</li>
+      <li>Name your access token. We suggest "Urjuna Connector"</li>
+      <li>Don't specify an expiry date. </li>
+      <li>For scopes
+        select <em>api</em> and <em>read:repository</em>
       </li>
-      <li>Copy the personal access token and enter it as the OAuth access token in the next step.
+      <li>Create the access token</li>
+      <li>
+        Copy the personal access token displayed to the clipboard and enter it as the Personal access token in the next step.
       </li>
     </ol>
   </div>
