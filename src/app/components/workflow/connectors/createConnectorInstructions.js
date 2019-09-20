@@ -181,7 +181,7 @@ const GitlabConnectorInstructions = ({part}) => (
       <li>Name your access token. We suggest "Urjuna Connector"</li>
       <li>Don't specify an expiry date. </li>
       <li>For scopes
-        select <em>api</em> and <em>read:repository</em>
+        select <em>api</em>, <em>read:user</em> <em>read:repository</em>
       </li>
       <li>Create the access token</li>
       <li>
