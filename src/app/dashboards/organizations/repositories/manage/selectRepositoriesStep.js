@@ -192,7 +192,8 @@ export const SelectRepositoriesStep =
                                       name: values.name,
                                       connectorType: connectorType,
                                       apiKey: values.apiKey,
-                                      githubAccessToken: values.githubAccessToken
+                                      githubAccessToken: values.githubAccessToken,
+                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
                                     }
                                   }
                                 })
