@@ -137,6 +137,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
 
     async onDoImport() {
       const {organization} = this.props;
+      const {selectedConnector} = this.state;
+
       try {
         const result = await vcs_service.mutate({
           mutation: gql`
@@ -149,6 +151,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
           variables: {
             importRepositoriesInput: {
               organizationKey: organization.key,
+              connectorKey: selectedConnector.key,
               repositoryKeys: this.getRepositoryKeys()
             }
           },
