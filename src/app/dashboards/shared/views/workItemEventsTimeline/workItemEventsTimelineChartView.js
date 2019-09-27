@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WorkItemEventsTimelineChart} from "./index";
 import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
 import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
+import {Tabs} from 'antd';
+
+const {TabPane} = Tabs;
 
 const workItemEventsTimelineGroupings = {
   workItem: "Work Item",
@@ -13,41 +16,47 @@ const workItemEventsTimelineGroupings = {
   source: "Source",
 }
 
-export class WorkItemEventsTimelineChartView extends React.Component {
+class WorkItemEventsTimelinePane extends React.Component {
   constructor(props) {
     super(props);
     const {
       workItemEvents,
       workItemCommits,
-      groupBy
+      groupBy,
+      stateFilter
     } = this.props;
 
     this.state = {
-      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy),
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy, stateFilter),
       selectedGrouping: groupBy,
       selectedCategories: null,
-      selectedCommits: null
+      selectedCommits: null,
     }
   }
 
   componentDidUpdate() {
     const {model} = this.state;
-    const {workItemEvents, workItemCommits} = this.props
+    const {workItemEvents, workItemCommits, stateFilter} = this.props
     if (model.workItemEvents !== workItemEvents || model.workItemCommits !== workItemCommits) {
       this.setState({
-        model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping),
+        model: new WorkItemEventsTimelineChartModel(
+          workItemEvents, workItemCommits, this.state.selectedGrouping,
+          stateFilter),
       })
     }
   }
+
+
 
   onGroupingChanged(groupBy) {
     const {
       workItemEvents,
       workItemCommits,
+      stateFilter
     } = this.props;
 
     this.setState({
-      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy),
+      model: new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, groupBy, stateFilter),
       selectedGrouping: groupBy,
       selectedCategories: null,
       selectedCommits: null
@@ -59,10 +68,13 @@ export class WorkItemEventsTimelineChartView extends React.Component {
     const {
       workItemEvents,
       workItemCommits,
+      stateFilter,
       onSelectionChange,
     } = this.props;
 
-    const model = new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping, selected)
+    const model = new WorkItemEventsTimelineChartModel(
+      workItemEvents, workItemCommits, this.state.selectedGrouping, stateFilter, selected
+    )
     this.setState({
       ...this.state,
       model: model,
@@ -133,10 +145,10 @@ export class WorkItemEventsTimelineChartView extends React.Component {
   }
 
   getTimelineRollupHeader() {
-    const {workItemEvents, workItemCommits} = this.props;
+    const {workItemEvents, workItemCommits, stateFilter} = this.props;
     return (
       <WorkItemEventsTimelineRollupBarchart
-        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping)}
+        model={new WorkItemEventsTimelineChartModel(workItemEvents, workItemCommits, this.state.selectedGrouping, stateFilter)}
         onSelectionChange={this.onCategoriesSelected.bind(this)}
       />
     )
@@ -172,7 +184,7 @@ export class WorkItemEventsTimelineChartView extends React.Component {
 
 
   getPrimaryLayout(height, model) {
-    const {showHeader, view,  days, setDaysRange, groupings} = this.props;
+    const {showHeader, view, days, setDaysRange, groupings} = this.props;
     const {selectedGrouping} = this.state;
     const showSlider = view === 'detail';
     return (
@@ -254,7 +266,27 @@ export class WorkItemEventsTimelineChartView extends React.Component {
         this.getDetailLayout(this.state.model, showHeader, showTable)
         : this.getPrimaryLayout('95%', this.state.model, showHeader)
     )
-
   }
 
 }
+
+export const WorkItemEventsTimelineChartView = props => {
+  const [filter, setFilter] = useState('in-progress')
+  return (
+    <Tabs
+      defaultActiveKey="in-progress"
+      style={{height: "100%"}}
+      onTabClick={key => setFilter(key)}>
+      <TabPane tab="In-Progress" key="in-progress" style={{height: "100%"}}>
+        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+      </TabPane>
+      <TabPane tab="New" key="new" style={{height: "100%"}}>
+        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+      </TabPane>
+      <TabPane tab="Complete" key="terminal" style={{height: "100%"}}>
+        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+      </TabPane>
+    </Tabs>
+  )
+}
+

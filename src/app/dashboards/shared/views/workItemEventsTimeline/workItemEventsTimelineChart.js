@@ -4,18 +4,7 @@ import {Colors} from "../../config";
 import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {formatDateTime} from "../../../../i18n";
-
-function getStateType(workItemState) {
-  if (workItemState != null) {
-    if (['created', 'open', 'unscheduled', 'unstarted', 'planned', 'backlog'].includes(workItemState.toLowerCase())) {
-      return 'initial'
-    } else if (['closed', 'accepted'].includes(workItemState.toLowerCase())) {
-      return 'terminal'
-    } else {
-      return 'in-progress'
-    }
-  }
-}
+import {getStateType} from "./workItemEventsTimelineChartModel";
 
 function getDaysSubtitle(days, prefix='Last') {
   return days > 1 ? `${prefix} ${days} Days`
