@@ -7,9 +7,9 @@ import {formatDateTime} from "../../../../i18n";
 
 function getStateType(workItemState) {
   if (workItemState != null) {
-    if (['created', 'open', 'unscheduled', 'unstarted', 'planned', 'Backlog'].includes(workItemState)) {
+    if (['created', 'open', 'unscheduled', 'unstarted', 'planned', 'backlog'].includes(workItemState.toLowerCase())) {
       return 'initial'
-    } else if (['closed', 'accepted'].includes(workItemState)) {
+    } else if (['closed', 'accepted'].includes(workItemState.toLowerCase())) {
       return 'terminal'
     } else {
       return 'in-progress'
