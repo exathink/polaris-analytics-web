@@ -19,7 +19,7 @@ function getTooltip(timelineEvents, categoriesIndex, groupBy, series) {
     }
     if (workItem) {
       return `<p>
-                 <b>${capitalizeFirstLetter(workItem.workItemType)}: </b>#${series.name}
+                 <b>${capitalizeFirstLetter(workItem.workItemType)}: </b>${series.name}
                  <br/>${workItem.eventDate? workItem.name: workItem.workItemName}<br/>
                  <br/>${commitCount} commits, ${eventCount} status updates
                  <br/>
