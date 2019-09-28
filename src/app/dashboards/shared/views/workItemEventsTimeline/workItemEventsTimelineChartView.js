@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {WorkItemEventsTimelineChart} from "./index";
 import {Box, Flex} from 'reflexbox';
 import {WorkItemEventsTimelineRollupBarchart} from './workItemEventsTimelineRollupBarchart'
-import {WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
+import {getStateType, WorkItemEventsTimelineChartModel} from "./workItemEventsTimelineChartModel";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {Tabs} from 'antd';
@@ -45,7 +45,6 @@ class WorkItemEventsTimelinePane extends React.Component {
       })
     }
   }
-
 
 
   onGroupingChanged(groupBy) {
@@ -272,20 +271,30 @@ class WorkItemEventsTimelinePane extends React.Component {
 
 export const WorkItemEventsTimelineChartView = props => {
   const [filter, setFilter] = useState('in-progress')
+  const stateTypes = new Set(props.workItemEvents.map(event => getStateType(event.state)))
   return (
     <Tabs
       defaultActiveKey="in-progress"
       style={{height: "100%"}}
       onTabClick={key => setFilter(key)}>
-      <TabPane tab="In-Progress" key="in-progress" style={{height: "100%"}}>
-        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
-      </TabPane>
-      <TabPane tab="New" key="new" style={{height: "100%"}}>
-        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
-      </TabPane>
-      <TabPane tab="Complete" key="terminal" style={{height: "100%"}}>
-        <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
-      </TabPane>
+      {
+        stateTypes.has('new') &&
+          <TabPane tab="New" key="new" style={{height: "100%"}}>
+            <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+          </TabPane>
+      }
+      {
+        stateTypes.has('in-progress') &&
+          <TabPane tab="In-Progress" key="in-progress" style={{height: "100%"}}>
+            <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+          </TabPane>
+      }
+      {
+        stateTypes.has('terminal') &&
+          <TabPane tab="Complete" key="terminal" style={{height: "100%"}}>
+            <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
+          </TabPane>
+      }
     </Tabs>
   )
 }
