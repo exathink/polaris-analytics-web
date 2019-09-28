@@ -31,7 +31,7 @@ export class WorkItemEventsTimelineChartModel {
 
   initCategorySelector(groupBy) {
     if (groupBy === 'workItem') {
-      return (workItem) => workItem.eventDate? workItem['name'] : workItem['workItemName']
+      return (workItem) => `${workItem.displayId}: ${workItem.eventDate? workItem['name'] : workItem['workItemName']}`
     } else if (groupBy === 'event') {
       return (workItem) => workItem.eventDate? capitalizeFirstLetter(workItem['newState']) : 'Commit'
     } else if (groupBy === 'source') {
