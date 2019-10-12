@@ -278,8 +278,8 @@ export const WorkItemEventsTimelineChartView = props => {
       style={{height: "100%"}}
       onTabClick={key => setFilter(key)}>
       {
-        stateTypes.has('new') &&
-          <TabPane tab="New" key="new" style={{height: "100%"}}>
+        stateTypes.has('initial') &&
+          <TabPane tab="New" key="initial" style={{height: "100%"}}>
             <WorkItemEventsTimelinePane stateFilter={filter} {...props} />
           </TabPane>
       }
