@@ -270,11 +270,18 @@ class WorkItemEventsTimelinePane extends React.Component {
 }
 
 export const WorkItemEventsTimelineChartView = props => {
-  const [filter, setFilter] = useState('in-progress')
+
+  /* The active state types in the current model */
   const stateTypes = new Set(props.workItemEvents.map(event => getStateType(event.state)))
+
+  const [filter, setFilter] = useState(
+    /* Choose a state type that is in the active state types as initial state. Array shows the preferred ordering*/
+    ['in-progress', 'terminal', 'initial'].find(state => stateTypes.has(state)) || 'in-progress'
+  )
+
   return (
     <Tabs
-      defaultActiveKey="in-progress"
+      defaultActiveKey={filter}
       style={{height: "100%"}}
       onTabClick={key => setFilter(key)}>
       {
