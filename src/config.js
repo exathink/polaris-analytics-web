@@ -3,10 +3,10 @@ export default {
 };
 
 const siteConfig = {
-  siteName: 'URJUNA',
+  siteName: 'FLOW',
   siteIcon: 'ion ion-arrow-graph-up-right',
   homePath: '/app',
-  footerText: '©Exathink, LLC 2017-2019',
+  footerText: '©Exathink, LLC 2017-2020',
 };
 const themeConfig = {
   topbar: 'themedefault',
