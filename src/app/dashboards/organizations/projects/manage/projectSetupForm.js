@@ -59,7 +59,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             selectedProjects={selectedProjects}
             importedProjectName={importedProjectName}
             onProjectNameChanged={onProjectNameChanged}
-            label={"Urjuna Project"}
+            label={"Polaris Flow Project"}
           />
         }
         {importMode === 'existing' &&

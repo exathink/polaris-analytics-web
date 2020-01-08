@@ -12,8 +12,8 @@ import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const inputModeDescription = {
-  single: 'Import remote projects into a new Urjuna project',
-  existing: 'Import remote projects into an existing Urjuna project',
+  single: 'Import remote projects into a new Polaris Flow project',
+  existing: 'Import remote projects into an existing Polaris Flow project',
   separate: 'Import each remote project as a separate local project'
 }
 
@@ -78,7 +78,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
             width: '40%'
           },
           {
-            title: 'Urjuna Project',
+            title: 'Polaris Flow Project',
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,

@@ -10,12 +10,12 @@ export const ProjectsDashboardSetup = ({context}) => (
         <Col offset={6} span={12}>
           <h1>Connect your Work Tracking System</h1>
           <p>
-            Connecting your work tracking system allows Urjuna to analyze your product
-            delivery process. A <em>Project</em> in Urjuna should model a single customer facing product or product line delivered
-            by this organization. A single Urjuna project may be mapped to <em>one or more</em> remote projects in your work tracking system.
+            Connecting your work tracking system allows Polaris Flow to analyze your product
+            delivery process. A <em>Project</em> in Polaris Flow should model a single customer facing product or product line delivered
+            by this organization. A single Polaris Flow project may be mapped to <em>one or more</em> remote projects in your work tracking system.
           </p>
           <p>
-            The Urjuna project will aggregate metrics across its remote sub-projects, and also allow you drill down into each of the
+            The Polaris Flow project will aggregate metrics across its remote sub-projects, and also allow you drill down into each of the
             sub-projects in further detail.
           </p>
         </Col>

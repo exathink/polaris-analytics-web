@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UrjunaApp from './urjunaApp';
+import PolarisFlowApp from './polarisFlow';
 import 'antd/dist/antd.css';
 
-ReactDOM.render(<UrjunaApp />, document.getElementById('root'));
+ReactDOM.render(<PolarisFlowApp />, document.getElementById('root'));
 
 // Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('./urjunaApp.js', () => {
-    const NextApp = require('./urjunaApp').default;
+  module.hot.accept('./polarisFlow.js', () => {
+    const NextApp = require('./polarisFlow').default;
     ReactDOM.render(<NextApp />, document.getElementById('root'));
   });
 }

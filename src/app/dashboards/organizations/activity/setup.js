@@ -59,7 +59,7 @@ const InitialSetupText = ({organization}) => (
       any order.
     </p>
     <p>
-      Once the initial data import is complete, Urjuna will
+      Once the initial data import is complete, Polaris Flow will
       keep your data updated automatically in real-time.
     </p>
   </React.Fragment>

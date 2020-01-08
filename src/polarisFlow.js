@@ -11,14 +11,14 @@ import config, {
   getCurrentLanguage
 } from './containers/LanguageSwitcher/config';
 import { themeConfig } from './config';
-import AppHolder from './urjunaStyle';
+import AppHolder from './polarisFlowStyle';
 import {DefaultApolloProvider} from "./app/services/graphql";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
 
-const UrjunaApp = () => (
+const PolarisFlowApp = () => (
   <LocaleProvider locale={currentAppLocale.antd}>
     <IntlProvider
       locale={currentAppLocale.locale}
@@ -36,5 +36,5 @@ const UrjunaApp = () => (
     </IntlProvider>
   </LocaleProvider>
 );
-export default UrjunaApp;
+export default PolarisFlowApp;
 export { AppLocale };

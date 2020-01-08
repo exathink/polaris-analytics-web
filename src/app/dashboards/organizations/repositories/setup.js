@@ -10,7 +10,7 @@ export const RepositoriesDashboardSetup = ({context}) => (
         <Col offset={6} span={12}>
           <h1>Connect your Version Control System</h1>
           <p>
-            Connecting your version control system allows Urjuna to analyze the changes in the code that goes into your product.
+            Connecting your version control system allows Polaris Flow to analyze the changes in the code that goes into your product.
             This analysis gives valuable insights into the day to day engineering practices on your team and connects code deliverables
             to product deliverables.
           </p>
@@ -21,7 +21,7 @@ export const RepositoriesDashboardSetup = ({context}) => (
           </p>
           <p>
             Note: <em>Each git repository is cloned and analyzed in an ephemeral container that is destroyed permanently along with any disk resources used
-            to persist copies of your source code, immediately after each analysis of a repository. Urjuna only retains the analyzed commit history and never makes copies
+            to persist copies of your source code, immediately after each analysis of a repository. Polaris Flow only retains the analyzed commit history and never makes copies
             of your source code other than when it is under active analysis.</em>
           </p>
 

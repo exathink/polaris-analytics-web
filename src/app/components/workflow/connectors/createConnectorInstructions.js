@@ -5,12 +5,12 @@ const JiraConnectorInstructions = ({part}) => (
   part === 'instructions' ?
     <div>
       <p>
-        Urjuna provides the <b>Urjuna Connector for Jira, </b> an
+        Polaris Flow provides the <b>Polaris Flow Connector for Jira, </b> an
         <em> Atlassian Connect </em> app that lets external applications connect securely
         with Atlassian products. There
-        are two steps in connecting Urjuna to a Jira Server.
+        are two steps in connecting Polaris Flow to a Jira Server.
       </p>
-      <h3>Step 1. Install the Urjuna Connector for Jira App on your Jira Server</h3>
+      <h3>Step 1. Install the Polaris Flow Connector for Jira App on your Jira Server</h3>
       <p>
         You will need administrator privileges to do this.
       </p>
@@ -22,7 +22,7 @@ const JiraConnectorInstructions = ({part}) => (
         <li>
           Click on Settings in the Manage Apps view, and enable private listings <em>and</em> development mode
           checkboxes.
-          This is needed while the Urjuna app
+          This is needed while the Polaris Flow app
           is in private beta. Once the app is released on the Atlassian Marketplace this step will not be needed.
           You should see an 'Upload App' link (you may need to refresh your page to see this link).
         </li>
@@ -42,9 +42,9 @@ const JiraConnectorInstructions = ({part}) => (
     :
     part === 'setup' ?
       <div>
-        <h3>Step 2. Register the Atlassian Connect App in Urjuna</h3>
+        <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
         <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and
+          This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
           associates it with your current
           organization.
         </p>
@@ -56,12 +56,12 @@ const BitbucketConnectorInstructions = ({part}) => (
   part === 'instructions' ?
     <div>
       <p>
-        Urjuna provides the <b>Urjuna Connector for Bitbucket, </b> an
+        Polaris Flow provides the <b>Polaris Flow Connector for Bitbucket, </b> an
         <em> Atlassian Connect </em> app that lets external applications connect securely
         with Atlassian products. There
-        are two steps in connecting Urjuna to a Jira Server.
+        are two steps in connecting Polaris Flow to a Jira Server.
       </p>
-      <h3>Step 1. Install the Urjuna Connector for Bitbucket App in your Bitbucket Cloud account</h3>
+      <h3>Step 1. Install the Polaris Flow Connector for Bitbucket App in your Bitbucket Cloud account</h3>
       <p>
         You will need administrator privileges to do this.
       </p>
@@ -83,11 +83,11 @@ const BitbucketConnectorInstructions = ({part}) => (
         </li>
         <li>
           Make a note of the account key for the user under whose account you have installed the app.
-          You can find this from the url of the page on which you just finished installing the Urjuna Atlassian Connect App.
+          You can find this from the url of the page on which you just finished installing the Polaris Flow Atlassian Connect App.
           The url should be of the form
           <em> https://bitbucket.org/account/user/{"{user-account-key}"}/addon-management</em>.
           Make a note of the UUID that is between the curly braces in the url. We will need
-          this next, to complete the registration of the connector within Urjuna.
+          this next, to complete the registration of the connector within Polaris Flow.
         </li>
         <li>
           Click Next below to proceed to the final step in the installation.
@@ -97,9 +97,9 @@ const BitbucketConnectorInstructions = ({part}) => (
     :
     part === 'setup' ?
       <div>
-        <h3>Step 2. Register the Atlassian Connect App in Urjuna</h3>
+        <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
         <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Urjuna account and
+          This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
           associates it with your current
           organization.
         </p>
@@ -110,7 +110,7 @@ const BitbucketConnectorInstructions = ({part}) => (
 const GithubConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Urjuna Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+    <p>The Polaris Flow Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
       is scoped
       to a specific Github Organization and you must create separate connectors for each Github organization that you
       are
@@ -122,7 +122,7 @@ const GithubConnectorInstructions = ({part}) => (
       in repository and project import workflows.
     </p>
     <p>
-      The integration process is straightforward. You will need a personal access token to authenticate Urjuna
+      The integration process is straightforward. You will need a personal access token to authenticate Polaris Flow
       with Github.
     </p>
 
@@ -143,10 +143,10 @@ const PivotalConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
     <p>
-      The Pivotal Tracker Connector for Urjuna integrates with the Pivotal Tracker Rest API.
+      The Pivotal Tracker Connector for Polaris Flow integrates with the Pivotal Tracker Rest API.
       API requests have to be authenticated with an API token for a specific Tracker user,
       on whose behalf the request is being made. You should use an API token for a user who has access to
-      all the Tracker Projects that you wish to import in Urjuna.
+      all the Tracker Projects that you wish to import in Polaris Flow.
     </p>
 
     The API key can be retrieved as follows.
@@ -164,21 +164,21 @@ const PivotalConnectorInstructions = ({part}) => (
 const GitlabConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Urjuna Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
+    <p>The Polaris Flow Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
       is scoped
       to a specific Gitlab user.
     </p>
     <p>
-      You will need a personal access token for the user to authenticate Urjuna
+      You will need a personal access token for the user to authenticate Polaris Flow
       with Gitlab. We recommend that you use a the personal access token for a user who is either an owner
-      or a member of all the projects that you need to analyze in Urjuna.
+      or a member of all the projects that you need to analyze in Polaris Flow.
     </p>
 
     <ol>
       <li>Login to Gitlab as the user specified above,</li>
       <li>Click on your user profile on the top right corner.</li>
       <li>Navigate to Settings -> Access Tokens</li>
-      <li>Name your access token. We suggest "Urjuna Connector"</li>
+      <li>Name your access token. We suggest "Polaris Flow Connector"</li>
       <li>Don't specify an expiry date. </li>
       <li>For scopes
         select <em>api</em>, <em>read:user</em> <em>read:repository</em>
