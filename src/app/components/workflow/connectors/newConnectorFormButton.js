@@ -137,18 +137,32 @@ const AddConnectorForm = (
         }
         {
           connectorType === 'gitlab' ?
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item label="Personal Access Token">
-                  {getFieldDecorator('gitlabPersonalAccessToken', {
-                    rules: [
-                      {required: true, message: 'Personal Access Token is required'}
-                    ],
-                    initialValue: currentValue('gitlabPersonalAccessToken', null)
-                  })(<Input placeholder="Personal Access Token"/>)}
-                </Form.Item>
-              </Col>
-            </Row>
+            <React.Fragment>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Gitlab Host URL">
+                    {getFieldDecorator('baseUrl', {
+                      rules: [
+                        {required: false, message: 'Gitlab Host URL'}
+                      ],
+                      initialValue: currentValue('baseUrl', null)
+                    })(<Input placeholder="Defaults to https://gitlab.com"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Personal Access Token">
+                    {getFieldDecorator('gitlabPersonalAccessToken', {
+                      rules: [
+                        {required: true, message: 'Personal Access Token is required'}
+                      ],
+                      initialValue: currentValue('gitlabPersonalAccessToken', null)
+                    })(<Input placeholder="Personal Access Token"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </React.Fragment>
             :
             null
         }
