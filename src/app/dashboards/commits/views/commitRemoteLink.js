@@ -1,7 +1,7 @@
 import React from 'react';
 import {RowNoOverflow} from "../../shared/containers/flex/rowNoOverflow";
 
-function getRepoBrowseUrl(repoUrl){
+function getRepoBrowseUrl(repoUrl, integrationType){
   if(repoUrl){
     if (repoUrl.startsWith('https://github.com')) {
       return [repoUrl.replace(/.git$/, ''), 'Github']
@@ -9,7 +9,7 @@ function getRepoBrowseUrl(repoUrl){
       return [repoUrl.replace(/^git@github.com:/, 'https://github.com/').replace(/.git$/, ''), 'Github']
     } else if (repoUrl.startsWith('git@gitlab.com')) {
       return [repoUrl.replace(/^git@gitlab.com:/, 'https://gitlab.com/').replace(/.git$/, ''), 'Gitlab']
-    } else if (repoUrl.startsWith('https://gitlab.com')) {
+    } else if (integrationType === 'gitlab') {
       return [repoUrl.replace(/.git$/, ''), 'Gitlab']
     }
     else if (repoUrl.match(/https:\/\/(.*)@bitbucket.org/)) {
@@ -19,9 +19,9 @@ function getRepoBrowseUrl(repoUrl){
   }
 }
 
-function getCommitBrowseUrl(repoUrl, commitHash) {
+function getCommitBrowseUrl(repoUrl, integrationType, commitHash) {
   if(commitHash && repoUrl) {
-    const [repoBrowseUrl, source] = getRepoBrowseUrl(repoUrl);
+    const [repoBrowseUrl, source] = getRepoBrowseUrl(repoUrl, integrationType);
     if ('Github' === source || 'Gitlab' === source) {
       return [`${repoBrowseUrl}/commit/${commitHash}`, source]
     } else if('BitBucket' === source) {
@@ -32,7 +32,7 @@ function getCommitBrowseUrl(repoUrl, commitHash) {
 }
 
 export const CommitRemoteLink = ({commit}) => {
-  const [commitBrowseUrl, source] = getCommitBrowseUrl(commit.repositoryUrl, commit.commitHash);
+  const [commitBrowseUrl, source] = getCommitBrowseUrl(commit.repositoryUrl, commit.integrationType, commit.commitHash);
 
    return  (
      commitBrowseUrl ?

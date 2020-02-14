@@ -16,6 +16,7 @@ export const WithCommit = ({commitKey, render}) => (
                     name
                     commitHash
                     repository
+                    integrationType
                     repositoryKey
                     repositoryUrl
                     author
