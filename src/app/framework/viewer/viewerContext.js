@@ -99,6 +99,24 @@ class ViewerContextProvider extends React.Component {
     return this.getViewerOrganizations('owner').some(organization => organization.key === organizationKey)
   }
 
+
+  isFeatureFlagActive(featureFlag) {
+    const userEnablement = this.state.viewer.featureFlags.edges.find(
+      edge => edge.node.name === featureFlag && edge.node.enabled != null
+    )
+    if (userEnablement != null) {
+      return userEnablement.node.enabled
+    } else {
+      const accountEnablement = this.state.viewer.account.featureFlags.edges.find(
+        edge => edge.node.name === featureFlag && edge.node.enabled != null
+      )
+      if (accountEnablement != null) {
+        return accountEnablement.node.enabled
+      }
+    }
+    return false
+  }
+
   render() {
     return (
       this.state.viewer != null &&
@@ -111,7 +129,8 @@ class ViewerContextProvider extends React.Component {
           getViewerOrganizations: this.getViewerOrganizations.bind(this),
           isAdmin: this.isAdmin.bind(this),
           isAccountOwner: this.isAccountOwner.bind(this),
-          isOrganizationOwner: this.isOrganizationOwner.bind(this)
+          isOrganizationOwner: this.isOrganizationOwner.bind(this),
+          isFeatureFlagActive: this.isFeatureFlagActive.bind(this)
         }}>
           {this.props.children}
         </Provider>
@@ -150,6 +169,15 @@ export const ViewerContext = {
                 id
                 key
                 name
+                featureFlags {
+                  edges {
+                    node {
+                      name
+                      key
+                      enabled
+                    }
+                  }
+                }
                 organizations(summariesOnly: true) {
                     count
                 }
@@ -160,6 +188,16 @@ export const ViewerContext = {
                     count
                 }
             }
+            featureFlags {
+              edges {
+                node {
+                  name
+                  key
+                  enabled
+                }
+              }
+            }
+             
         }
     `
   },
