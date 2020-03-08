@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {Contexts} from "../../../meta/contexts";
-import {DimensionMostActiveChildrenWidget, DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import Repositories from "../../repositories/context";
 import {ProjectDashboard} from "../projectDashboard";
@@ -56,30 +56,7 @@ export const dashboard = () => (
               showDetail={true}
             />
           </DashboardRow>
-          <DashboardRow h='81%'>
-            <DashboardWidget
-              w={1}
-              name="commits"
-              title={"Contributions"}
-              render={
-                ({view}) =>
-                  <DimensionCommitsNavigatorWidget
-                    dimension={'project'}
-                    instanceKey={project.key}
-                    context={context}
-                    view={view}
-                    days={1}
-                    latestCommit={project.latestCommit}
-                    latestWorkItemEvent={project.latestWorkItemEvent}
-                    groupBy={'workItem'}
-                    groupings={['workItem', 'author', 'repository', 'branch']}
-                    showHeader
-                    showTable
-                  />
-              }
-              showDetail={true}
-            />
-          </DashboardRow>
+
 
         </Dashboard>
       )
