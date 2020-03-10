@@ -43,7 +43,11 @@ export class CommitTimelineViewModel {
   }
 
   filter(commits, filterCategories) {
-    return commits.filter(commit => filterCategories.indexOf(this.getCategories(commit)) !== -1)
+    return commits.filter(
+      commit => this.getCategories(commit).some(
+        category => filterCategories.indexOf(category) !== -1
+      )
+    )
   }
 
   initCategoryIndex(commits, groupBy, filterCategories) {
@@ -51,10 +55,18 @@ export class CommitTimelineViewModel {
     for(let i=0; i < commits.length; i++) {
       const categories = this.getCategories(commits[i]);
       for(let j=0; j < categories.length; j++) {
+
         const category = categories[j];
+        // If we are filtering categories then the ones that are not in the
+        // filter should not be in the index.
+        if (filterCategories != null && filterCategories.indexOf(category) === -1 ) {
+          break;
+        }
+        // if we are seeing this category for the first time then initialize with a commit count of 1
         if (categoryIndex[category] === undefined) {
           categoryIndex[category] = 1
         } else {
+          // Add to the commit count of the category.
           categoryIndex[category] = categoryIndex[category] + 1
         }
       }
