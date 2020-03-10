@@ -36,7 +36,7 @@ function getWorkItemSummaryText(commit) {
     workItemsSummaries = "None"
   } else if (commit.workItemsSummaries.length  === 1) {
     const item = commit.workItemsSummaries[0]
-    workItemsSummaries = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (#${item.displayId})`
+    workItemsSummaries = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (${item.displayId})`
   } else {
     workItemsSummaries = "*"
   }
