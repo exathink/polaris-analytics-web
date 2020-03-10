@@ -31,16 +31,24 @@ function getTitleText(latest, commits, totalCommits) {
 }
 
 function getWorkItemSummaryText(commit) {
-  let workItemsSummaries = ""
-  if (commit.workItemsSummaries.length  === 0) {
-    workItemsSummaries = "None"
-  } else if (commit.workItemsSummaries.length  === 1) {
-    const item = commit.workItemsSummaries[0]
-    workItemsSummaries = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (${item.displayId})`
-  } else {
-    workItemsSummaries = "*"
+  let workItemsSummaryText = ""
+  if (commit.workItemsSummaries != null) {
+    if (commit.workItemsSummaries.length === 0) {
+      workItemsSummaryText = "Work Item: None"
+    } else if (commit.workItemsSummaries.length === 1) {
+      const item = commit.workItemsSummaries[0]
+      workItemsSummaryText = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (${item.displayId})`
+    } else {
+      workItemsSummaryText = commit.workItemsSummaries.reduce(
+        (summary, item, index, workItemsSummaries) =>
+          `${summary} ${item.displayId}${index < workItemsSummaries.length - 1   ? ', ': '.'}`
+        ,
+        "Work Items: "
+      )
+
+    }
   }
-  return workItemsSummaries
+  return workItemsSummaryText
 }
 
 
@@ -205,7 +213,7 @@ export const CommitsTimelineChart = Chart({
           useHTML: true,
           hideDelay: 50,
           formatter: function () {
-            const workItemHeader = this.point.commit.workItemsSummaries.length > 0 ? `${getWorkItemSummaryText(this.point.commit)} <br/>` : '';
+            const workItemHeader = `${getWorkItemSummaryText(this.point.commit)} <br/>`;
 
             return tooltipHtml(shortTooltip ? {
               header: `${workItemHeader} Author: ${this.point.commit.author}`,
