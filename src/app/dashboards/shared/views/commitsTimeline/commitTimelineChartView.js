@@ -34,7 +34,7 @@ export class CommitTimelineViewModel {
     } else {
       // Does not handle commits that are attached to multiple issues. leaving it as it is for now
       // since that is not likely a very common scenario. Revisit if that changes.
-      return (commit) => commit.workItemsSummaries.length > 0 ? `${commit.workItemsSummaries[0].name}` : "Untracked"
+      return (commit) => commit.workItemsSummaries.length > 0 ? `${commit.workItemsSummaries[0].displayId}: ${commit.workItemsSummaries[0].name}` : "Untracked"
     }
   }
 
