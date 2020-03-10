@@ -104,17 +104,21 @@ export const CommitsTimelineChart = Chart({
       if (category === 'workItem' && categories.indexOf('Untracked') >= 0) {
         categories = ['Untracked', ...categories.filter(cat => cat !== 'Untracked')]
       }
-      const series_data = commits.map((commit, index) => {
+
+      const series_data = []
+      for(let i=0; i < commits.length; i++) {
+        const commit = commits[i];
         const commit_date = toMoment(commit.commitDate);
-        return (
-          {
+        const commitCategories = model.getCategories(commit)
+        for (let j=0; j < commitCategories.length; j++) {
+          series_data.push({
             x: commit_date.valueOf(),
-            y: categories.indexOf(model.getCategory(commit)),
+            y: categories.indexOf(commitCategories[j]),
             z: z_bucket(commit.stats.lines),
             commit: commit
-          }
-        )
-      });
+          })
+        }
+      }
 
       const z_bucket_range = series_data.reduce(
         (minmax, point) => {

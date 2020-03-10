@@ -19,7 +19,7 @@ const commitTimelineGroupings = {
 export class CommitTimelineViewModel {
   constructor(commits, groupBy = 'author', filterCategories = null) {
     this.groupBy = groupBy;
-    this.getCategory = this.initCategorySelector(groupBy)
+    this.getCategories = this.initCategorySelector(groupBy)
     this.commits = filterCategories ? this.filter(commits, filterCategories) : commits
     this.traceability = this.commits.length > 0 ?
       this.commits.filter(commit=>commit.workItemsSummaries.length > 0).length / this.commits.length
@@ -30,31 +30,36 @@ export class CommitTimelineViewModel {
 
   initCategorySelector(groupBy) {
     if (groupBy !== 'workItem') {
-      return (commit) => commit[groupBy]
+      return (commit) => [commit[groupBy]]
     } else {
-      // Does not handle commits that are attached to multiple issues. leaving it as it is for now
-      // since that is not likely a very common scenario. Revisit if that changes.
-      return (commit) => commit.workItemsSummaries.length > 0 ? `${commit.workItemsSummaries[0].displayId}: ${commit.workItemsSummaries[0].name}` : "Untracked"
+      return (commit) =>
+        commit.workItemsSummaries.length > 0 ?
+          commit.workItemsSummaries.map(
+            workItem =>
+            `${workItem.displayId}: ${workItem.name}`
+          )
+          : ["Untracked"]
     }
   }
 
   filter(commits, filterCategories) {
-    return commits.filter(commit => filterCategories.indexOf(this.getCategory(commit)) !== -1)
+    return commits.filter(commit => filterCategories.indexOf(this.getCategories(commit)) !== -1)
   }
 
   initCategoryIndex(commits, groupBy, filterCategories) {
-    return commits.reduce(
-      (index, commit) => {
-        const category = this.getCategory(commit);
-        if (index[category] === undefined) {
-          index[category] = 1
+    let categoryIndex = {}
+    for(let i=0; i < commits.length; i++) {
+      const categories = this.getCategories(commits[i]);
+      for(let j=0; j < categories.length; j++) {
+        const category = categories[j];
+        if (categoryIndex[category] === undefined) {
+          categoryIndex[category] = 1
         } else {
-          index[category] = index[category] + 1
+          categoryIndex[category] = categoryIndex[category] + 1
         }
-        return index
-      },
-      {}
-    );
+      }
+    }
+    return categoryIndex;
   }
 }
 
