@@ -1,11 +1,11 @@
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import React from 'react';
-import StickerWidget from '../../containers/stickers/simpleSticker/sticker-widget';
-import {VizItem, VizRow} from "../../containers/layout/index";
+import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
+import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Contexts, Topics} from "../../../../meta";
-import {findActivityLevel} from "../../helpers/commitUtils";
+import {findActivityLevel} from "../../../shared/helpers/commitUtils";
 
-import {LatestCommitView} from "../latestCommit/latestCommitView";
+import {LatestCommitView} from "../../../shared/views/latestCommit/latestCommitView";
 
 const ActivitySummaryPanelView = (
   {
@@ -57,7 +57,7 @@ const ActivitySummaryPanelView = (
           {/* Sticker Widget */}
           <StickerWidget
             number={secondaryMeasure ? secondaryMeasure.toLocaleString() : '0'}
-            text={secondaryMeasureContext.display(secondaryMeasure)}
+            text={"Active Contributors"}
             icon={secondaryMeasureContext.icon}
             fontColor={fontColor}
             bgColor={bgColor}

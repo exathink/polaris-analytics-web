@@ -1,8 +1,8 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
+import {ProjectActivitySummaryPanelWidget} from "../widgets/projectActivitySummaryWidget";
 import {
-  DimensionActivitySummaryPanelWidget,
   DimensionCommitsNavigatorWidget
 } from "../../shared/widgets/accountHierarchy";
 
@@ -27,9 +27,9 @@ export const dashboard = () => (
               title={messages.topRowTitle}
               render={
                 () =>
-                  <DimensionActivitySummaryPanelWidget
-                    dimension={'project'}
+                  <ProjectActivitySummaryPanelWidget
                     instanceKey={project.key}
+                    contributorCountDays={30}
                   />
               }
             />
