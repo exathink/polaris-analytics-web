@@ -3,7 +3,7 @@ import React from 'react';
 import {DashboardControlBar} from "../../../containers/controlbar/controlbar";
 
 import {Flex} from 'reflexbox';
-import {cloneChildrenWithProps, findByProps} from "../../../helpers/reactHelpers";
+import {cloneChildrenWithProps, findFirstDescendant} from "../../../helpers/reactHelpers";
 
 import {Tabs} from "antd";
 
@@ -13,7 +13,7 @@ export class DashboardLayout extends React.Component {
   render() {
     const {children, itemSelected, match, ...rest} = this.props;
     if (itemSelected != null && itemSelected) {
-      const selectedChildren = findByProps(children, 'name', match.params.selected);
+      const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
         <div className={"dashboard"}>
           <DashboardControlBar/>
