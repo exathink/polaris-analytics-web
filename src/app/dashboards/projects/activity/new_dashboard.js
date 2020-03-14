@@ -1,12 +1,20 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
+import {
+  Dashboard,
+  DashboardRow,
+  DashboardTabPane,
+  DashboardTabs,
+  DashboardWidget
+} from '../../../framework/viz/dashboard';
 import {ProjectActivitySummaryPanelWidget} from "../widgets/projectActivitySummaryWidget";
 import {
-  DimensionCommitsNavigatorWidget
+  DimensionCommitsNavigatorWidget,
+  DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 
 import {ProjectDashboard} from "../projectDashboard";
+import Contributors from "../../contributors/context";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -35,28 +43,74 @@ export const dashboard = () => (
             />
           </DashboardRow>
           <DashboardRow h='81%'>
-            <DashboardWidget
-              w={1}
-              name="commits"
-              title={"Contributions"}
-              render={
-                ({view}) =>
-                  <DimensionCommitsNavigatorWidget
-                    dimension={'project'}
-                    instanceKey={project.key}
-                    context={context}
-                    view={view}
-                    days={1}
-                    latestCommit={project.latestCommit}
-                    latestWorkItemEvent={project.latestWorkItemEvent}
-                    groupBy={'workItem'}
-                    groupings={['workItem', 'author', 'repository', 'branch']}
-                    showHeader
-                    showTable
+            <DashboardTabs
+              defaultActiveKey={'development'}
+            >
+              <DashboardTabPane tab={'Active'} key={'development'}>
+                <DashboardRow h={'25%'}>
+                  <DashboardWidget
+                    w={1/3}
+                    render={() => null}
                   />
-              }
-              showDetail={true}
-            />
+                  <DashboardWidget
+                    w={1/3}
+                    render={() => null}
+                  />
+                  <DashboardWidget
+                    w={1 / 3}
+                    name="most-active-contributors"
+                    render={
+                      ({view}) =>
+                        <DimensionMostActiveChildrenWidget
+                          dimension={'project'}
+                          instanceKey={project.key}
+                          childConnection={'recentlyActiveContributors'}
+                          context={context}
+                          childContext={Contributors}
+                          top={10}
+                          latestCommit={project.latestCommit}
+                          days={1}
+                          view={view}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                </DashboardRow>
+                <DashboardRow h={'75%'}>
+                  <DashboardWidget
+                    w={1}
+                    name="commits"
+                    title={"Code Changes"}
+                    render={
+                      ({view}) =>
+                        <DimensionCommitsNavigatorWidget
+                          dimension={'project'}
+                          instanceKey={project.key}
+                          context={context}
+                          view={view}
+                          days={1}
+                          latestCommit={project.latestCommit}
+                          latestWorkItemEvent={project.latestWorkItemEvent}
+                          groupBy={'workItem'}
+                          groupings={['workItem', 'author', 'repository', 'branch']}
+                          showHeader
+                          showTable
+                        />
+                    }
+                    showDetail={true}
+                  />
+                </DashboardRow>
+              </DashboardTabPane>
+              <DashboardTabPane tab={'Watchlist'} key={'watchlist'}>
+
+              </DashboardTabPane>
+              <DashboardTabPane tab={'Code Complete'} key={'code-complete'}>
+
+              </DashboardTabPane>
+              <DashboardTabPane tab={'Closed'} key={'closed'}>
+
+              </DashboardTabPane>
+            </DashboardTabs>
           </DashboardRow>
         </Dashboard>
       )
