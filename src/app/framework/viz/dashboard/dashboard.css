@@ -13,6 +13,21 @@
   position: relative;
 }
 
+.ant-tabs.dashboard-tabs {
+  height: 100%;
+  width: 100%
+}
+
+.dashboard-tabs .ant-tabs-content {
+  height: 100%;
+  width: 100%
+}
+
+.ant-tabs-tabpane.dashboard-tab-pane {
+  height: 100%;
+  width: 100%
+}
+
 .dashboard-item-title {
   font-size: 2.2vh;
   font-weight: 400;

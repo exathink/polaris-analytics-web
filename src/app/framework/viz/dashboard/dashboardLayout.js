@@ -5,6 +5,9 @@ import {DashboardControlBar} from "../../../containers/controlbar/controlbar";
 import {Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findByProps} from "../../../helpers/reactHelpers";
 
+import {Tabs} from "antd";
+
+const {TabPane} = Tabs;
 
 export class DashboardLayout extends React.Component {
   render() {
@@ -80,10 +83,21 @@ export const DashboardRow = ({children, h, title, controls, align, ...rest}) => 
 );
 
 
+export const DashboardTabs = ({children, ...rest}) => (
+  <Tabs className={'dashboard-tabs'} {...rest} >
+    {
+      children
+    }
+  </Tabs>
+)
 
-
-
-
+export const DashboardTabPane = ({children, ...rest}) => (
+  <TabPane className={'dashboard-tab-pane'} {...rest}>
+    {
+      children
+    }
+  </TabPane>
+)
 
 
 
