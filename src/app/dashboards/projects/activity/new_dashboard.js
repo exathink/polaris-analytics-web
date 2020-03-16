@@ -32,7 +32,7 @@ export const dashboard = () => (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h='15%'>
             <DashboardWidget
-              w={1}
+              w={1/3}
               name="activity-summary"
               title={messages.topRowTitle}
               render={
