@@ -7,7 +7,9 @@ import {
   DashboardTabs,
   DashboardWidget
 } from '../../../framework/viz/dashboard';
-import {ProjectActivitySummaryPanelWidget} from "../widgets/projectActivitySummaryWidget";
+
+import {ProjectActivitySummaryWidget} from "./activitySummary";
+
 import {
   DimensionCommitsNavigatorWidget,
   DimensionMostActiveChildrenWidget
@@ -35,7 +37,7 @@ export const dashboard = () => (
               title={messages.topRowTitle}
               render={
                 () =>
-                  <ProjectActivitySummaryPanelWidget
+                  <ProjectActivitySummaryWidget
                     instanceKey={project.key}
                     contributorCountDays={30}
                   />

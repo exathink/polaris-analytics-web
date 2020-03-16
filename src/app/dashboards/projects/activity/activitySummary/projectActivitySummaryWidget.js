@@ -1,13 +1,13 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import {Loading} from "../../../components/graphql/loading";
-import {analytics_service} from "../../../services/graphql";
-import {ActivitySummaryPanel} from "../views/activitySummary";
-import {Contexts} from "../../../meta/index";
+import {Loading} from "../../../../components/graphql/loading";
+import {analytics_service} from "../../../../services/graphql";
+import {ActivitySummaryPanel} from "./activitySummaryPanelView";
+import {Contexts} from "../../../../meta";
 
 
-export const ProjectActivitySummaryPanelWidget = (
+export const ProjectActivitySummaryWidget = (
   {
     instanceKey,
     contributorCountDays,

@@ -1,5 +1,5 @@
-import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import React from 'react';
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Contexts, Topics} from "../../../../meta";
