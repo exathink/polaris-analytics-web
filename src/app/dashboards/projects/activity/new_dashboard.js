@@ -9,6 +9,7 @@ import {
 } from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
+import {ProjectWorkItemSummaryWidget} from "./workItemSummary";
 
 import {
   DimensionCommitsNavigatorWidget,
@@ -32,17 +33,29 @@ export const dashboard = () => (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h='15%'>
             <DashboardWidget
-              w={1/3}
+              w={1/4}
               name="activity-summary"
               title={messages.topRowTitle}
               render={
                 () =>
                   <ProjectActivitySummaryWidget
                     instanceKey={project.key}
-                    contributorCountDays={30}
                   />
               }
             />
+            <DashboardWidget
+              w={0.30}
+              name="workitem-summary"
+              title={"Pipeline"}
+              render={
+                () =>
+                  <ProjectWorkItemSummaryWidget
+                    instanceKey={project.key}
+                  />
+              }
+              showDetail={true}
+            />
+
           </DashboardRow>
           <DashboardRow h='81%'>
             <DashboardTabs
