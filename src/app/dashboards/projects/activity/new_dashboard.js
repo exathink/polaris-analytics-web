@@ -51,6 +51,7 @@ export const dashboard = () => (
                 () =>
                   <ProjectWorkItemSummaryWidget
                     instanceKey={project.key}
+                    latestWorkItemEvent={project.latestWorkItemEvent}
                   />
               }
               showDetail={true}

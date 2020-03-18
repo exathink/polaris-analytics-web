@@ -10,12 +10,13 @@ import {PROJECT_WORK_ITEM_SUMMARIES} from "../queries";
 export const ProjectWorkItemSummaryWidget = (
   {
     instanceKey,
+    latestWorkItemEvent,
     pollInterval
   }) => (
   <Query
     client={analytics_service}
     query={PROJECT_WORK_ITEM_SUMMARIES}
-    variables={{key: instanceKey}}
+    variables={{key: instanceKey, referenceString: latestWorkItemEvent}}
     errorPolicy={'all'}
     pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >
