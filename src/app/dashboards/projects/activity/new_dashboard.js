@@ -29,7 +29,14 @@ export const dashboard = () => (
   <ProjectDashboard
     pollInterval={1000 * 60}
     render={
-      ({project, context}) => (
+      ({
+         project: {
+           key,
+           latestWorkItemEvent,
+           latestCommit
+         },
+         context
+      }) => (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h='15%'>
             <DashboardWidget
@@ -39,7 +46,7 @@ export const dashboard = () => (
               render={
                 () =>
                   <ProjectActivitySummaryWidget
-                    instanceKey={project.key}
+                    instanceKey={key}
                   />
               }
             />
@@ -50,8 +57,8 @@ export const dashboard = () => (
               render={
                 () =>
                   <ProjectWorkItemSummaryWidget
-                    instanceKey={project.key}
-                    latestWorkItemEvent={project.latestWorkItemEvent}
+                    instanceKey={key}
+                    latestWorkItemEvent={latestWorkItemEvent}
                   />
               }
               showDetail={true}
@@ -79,12 +86,12 @@ export const dashboard = () => (
                       ({view}) =>
                         <DimensionMostActiveChildrenWidget
                           dimension={'project'}
-                          instanceKey={project.key}
+                          instanceKey={key}
                           childConnection={'recentlyActiveContributors'}
                           context={context}
                           childContext={Contributors}
                           top={10}
-                          latestCommit={project.latestCommit}
+                          latestCommit={latestCommit}
                           days={1}
                           view={view}
                         />
@@ -101,12 +108,12 @@ export const dashboard = () => (
                       ({view}) =>
                         <DimensionCommitsNavigatorWidget
                           dimension={'project'}
-                          instanceKey={project.key}
+                          instanceKey={key}
                           context={context}
                           view={view}
                           days={1}
-                          latestCommit={project.latestCommit}
-                          latestWorkItemEvent={project.latestWorkItemEvent}
+                          latestCommit={latestCommit}
+                          latestWorkItemEvent={latestWorkItemEvent}
                           groupBy={'workItem'}
                           groupings={['workItem', 'author', 'repository', 'branch']}
                           showHeader
