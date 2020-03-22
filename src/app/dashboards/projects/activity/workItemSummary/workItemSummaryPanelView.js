@@ -1,9 +1,6 @@
 import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Topics} from "../../../../meta";
-import {findActivityLevel} from "../../../shared/helpers/commitUtils";
 
 
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
@@ -20,8 +17,7 @@ const WorkItemSummaryPanelView = (
   }
 ) => {
 
-  const bgColor = context.color();
-  const fontColor = "#ffffff";
+
   return (
     <React.Fragment>
       <VizRow h={"100%"}>

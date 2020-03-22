@@ -1,6 +1,5 @@
 import React from 'react';
 import {Query} from 'react-apollo';
-import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from "../../../../services/graphql";
 import {WorkItemSummaryPanel} from "./workItemSummaryPanelView";
