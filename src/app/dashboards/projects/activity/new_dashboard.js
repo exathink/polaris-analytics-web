@@ -10,6 +10,7 @@ import {
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectWorkItemSummaryWidget} from "./workItemSummary";
+import {ProjectCycleMetricsWidget} from "./cycleMetrics";
 
 import {
   DimensionCommitsNavigatorWidget,
@@ -40,7 +41,7 @@ export const dashboard = () => (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h='15%'>
             <DashboardWidget
-              w={1/4}
+              w={0.2}
               name="activity-summary"
               title={messages.topRowTitle}
               render={
@@ -59,6 +60,22 @@ export const dashboard = () => (
                   <ProjectWorkItemSummaryWidget
                     instanceKey={key}
                     latestWorkItemEvent={latestWorkItemEvent}
+                  />
+              }
+              showDetail={true}
+            />
+            <DashboardWidget
+              w={0.25}
+              name="cycle-metrics"
+              title={"Cycle Metrics"}
+              subtitle={"Last 30 Days"}
+              render={
+                () =>
+                  <ProjectCycleMetricsWidget
+                    instanceKey={key}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    days={30}
+                    targetPercentile={0.70}
                   />
               }
               showDetail={true}

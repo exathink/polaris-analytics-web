@@ -206,3 +206,12 @@ export function openNotification(type, message, duration=2) {
 export function lexicographic(field) {
   return (a,b) => a[field] && b[field] ? a[field].localeCompare(b[field]) : 0
 }
+
+export function percentileToText(percentile) {
+  if(percentile === 0.5) {
+    return 'Median'
+  } else {
+    return `${Math.round(percentile*100)}th Percentile`
+  }
+
+}
