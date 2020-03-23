@@ -52,7 +52,7 @@ export const dashboard = () => (
               }
             />
             <DashboardWidget
-              w={0.30}
+              w={0.25}
               name="workitem-summary"
               title={"Pipeline"}
               render={
@@ -65,7 +65,7 @@ export const dashboard = () => (
               showDetail={true}
             />
             <DashboardWidget
-              w={0.25}
+              w={0.30}
               name="cycle-metrics"
               title={"Cycle Metrics"}
               subtitle={"Last 30 Days"}

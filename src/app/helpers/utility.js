@@ -211,7 +211,7 @@ export function percentileToText(percentile) {
   if(percentile === 0.5) {
     return 'Median'
   } else {
-    return `${Math.round(percentile*100)}th Percentile`
+    return `${Math.round(percentile*100)}th Pct`
   }
 
 }
