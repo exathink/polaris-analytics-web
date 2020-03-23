@@ -44,7 +44,7 @@ const WorkItemSummaryPanelView = (
         <VizItem w={0.4}>
           <Statistic
             title="Code Complete"
-            value={complete}
+            value={complete || 0}
             precision={0}
             valueStyle={{ color: '#3f8600'}}
             style={{backgroundColor: '#f2f3f6'}}
