@@ -11,6 +11,7 @@ export const PROJECT_WORK_ITEM_SUMMARIES = gql`
                     wip
                     complete
                     closed
+                    unmapped
                 }
                }
                 
