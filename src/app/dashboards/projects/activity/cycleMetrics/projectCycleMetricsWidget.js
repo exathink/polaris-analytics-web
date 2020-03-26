@@ -32,6 +32,7 @@ export const ProjectCycleMetricsWidget = (
         const {...cycleMetrics} = data['project'];
         return (
           <ProjectCycleMetricsView
+            instanceKey={instanceKey}
             {...cycleMetrics}
           />
         )

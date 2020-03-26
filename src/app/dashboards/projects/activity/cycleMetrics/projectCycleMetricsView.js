@@ -1,13 +1,12 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
-import {Tooltip} from "antd";
 import {percentileToText} from "../../../../helpers/utility";
 
 export const ProjectCycleMetricsView = (
   {
     percentileLeadTime,
-    percentileCycleTime,
+    avgLeadTime,
     avgCycleTime,
     workItemsInScope,
     targetPercentile
@@ -36,16 +35,28 @@ export const ProjectCycleMetricsView = (
           />
         </VizItem>
         <VizItem w={0.3}>
-          <Statistic
-            title={<span>Cycle Time <sup>Avg</sup></span>}
-            value={avgCycleTime || 0}
-            precision={1}
-            valueStyle={{ color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Days"}
-          />
-        </VizItem>
+          {
+            avgCycleTime > 0 ?
+              <Statistic
+                title={<span>Cycle Time <sup>Avg</sup></span>}
+                value={avgCycleTime || 0}
+                precision={1}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Days"}
+              />
+              :
+              <Statistic
+                title={<span>Lead Time <sup>Avg</sup></span>}
+                value={avgLeadTime || 0}
+                precision={1}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Days"}
+              />
 
+          }
+        </VizItem>
       </VizRow>
     </React.Fragment>
 );
