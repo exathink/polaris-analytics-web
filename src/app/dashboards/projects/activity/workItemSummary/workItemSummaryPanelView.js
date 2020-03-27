@@ -91,7 +91,7 @@ const WorkItemSummaryPanelView = (
                   :
                   <Statistic
                     title="Backlog"
-                    value={backlog}
+                    value={backlog ||0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
                     style={{backgroundColor: '#f2f3f6'}}
