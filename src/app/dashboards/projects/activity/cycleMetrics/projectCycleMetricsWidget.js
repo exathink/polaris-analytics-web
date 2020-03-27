@@ -11,6 +11,7 @@ export const ProjectCycleMetricsWidget = (
     latestWorkItemEvent,
     days,
     targetPercentile,
+    stateMappingIndex,
     pollInterval
   }) => (
   <Query
@@ -33,6 +34,7 @@ export const ProjectCycleMetricsWidget = (
         return (
           <ProjectCycleMetricsView
             instanceKey={instanceKey}
+            stateMappingIndex={stateMappingIndex}
             {...cycleMetrics}
           />
         )

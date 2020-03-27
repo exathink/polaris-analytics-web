@@ -120,6 +120,7 @@ export const dashboard = () => (
                         <ProjectCycleMetricsWidget
                           instanceKey={key}
                           latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
                           days={30}
                           targetPercentile={0.70}
                         />
