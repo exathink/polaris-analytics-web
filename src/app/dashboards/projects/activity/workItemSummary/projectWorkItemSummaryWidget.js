@@ -10,6 +10,7 @@ export const ProjectWorkItemSummaryWidget = (
   {
     instanceKey,
     latestWorkItemEvent,
+    stateMappingIndex,
     pollInterval
   }) => (
   <Query
@@ -33,6 +34,7 @@ export const ProjectWorkItemSummaryWidget = (
 
                     }
                   }
+                  stateMappingIndex={stateMappingIndex}
                 />
             )
 
