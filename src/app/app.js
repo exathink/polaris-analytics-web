@@ -18,6 +18,7 @@ import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
 import {build_context_url_tree} from "./framework/navigation/context/helpers";
 import {NavigationContext} from "./framework/navigation/context/navigationContext";
+import {DashboardControlBar} from "./containers/controlbar/controlbar";
 
 
 const {Content, Footer} = Layout;
@@ -63,6 +64,7 @@ export class App extends Component {
                     <LayoutWrapper id="app-content-area" className="app-content-wrapper">
 
                       <div className={"app-content"}>
+                        <DashboardControlBar/>
                         <React.Suspense fallback={<Spin/>}>
                           <AppRouter url={url} {...this.props} />
                         </React.Suspense>
