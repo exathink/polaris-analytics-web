@@ -24,7 +24,7 @@ export const PROJECT_CYCLE_METRICS = gql`
             project(
                   key: $key, 
                   interfaces: [AggregateCycleMetrics],
-                  cycleMetricsDays: $days,
+                  closedWithinDays: $days,
                   cycleMetricsTargetPercentile: $targetPercentile, 
                   referenceString: $referenceString,
                   ) {
