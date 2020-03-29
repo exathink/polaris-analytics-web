@@ -23,13 +23,13 @@ export const PROJECT_CYCLE_METRICS = gql`
            query projectCycleMetrics($key: String!, $referenceString: String, $days: Int, $targetPercentile: Float) {
             project(
                   key: $key, 
-                  interfaces: [CycleMetrics],
+                  interfaces: [AggregateCycleMetrics],
                   cycleMetricsDays: $days,
                   cycleMetricsTargetPercentile: $targetPercentile, 
                   referenceString: $referenceString,
                   ) {
                 id
-                ... on CycleMetrics {
+                ... on AggregateCycleMetrics {
                       minLeadTime
                       avgLeadTime
                       maxLeadTime
