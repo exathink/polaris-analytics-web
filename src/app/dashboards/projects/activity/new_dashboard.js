@@ -116,9 +116,10 @@ export const dashboard = () => (
                     title={"Cycle Metrics"}
                     subtitle={"Last 30 Days"}
                     render={
-                      () =>
+                      ({view}) =>
                         <ProjectCycleMetricsWidget
                           instanceKey={key}
+                          view = {view}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}

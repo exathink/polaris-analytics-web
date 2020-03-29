@@ -3,7 +3,7 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 
-export const ProjectCycleMetricsView = (
+export const ProjectCycleMetricsSummaryView = (
   {
     percentileLeadTime,
     avgLeadTime,
