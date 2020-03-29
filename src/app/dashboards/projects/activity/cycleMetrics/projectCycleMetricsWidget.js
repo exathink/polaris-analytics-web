@@ -3,19 +3,22 @@ import {analytics_service} from "../../../../services/graphql";
 import {PROJECT_CYCLE_METRICS} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
 import {ProjectCycleMetricsSummaryView} from "./projectCycleMetricsSummaryView";
+import {ProjectCycleMetricsDetailView} from "./projectCycleMetricsDetailView";
+
 import {Query} from "react-apollo";
 
 export const ProjectCycleMetricsWidget = (
   {
     instanceKey,
     view,
+    showAll,
     latestWorkItemEvent,
     days,
     targetPercentile,
     stateMappingIndex,
     pollInterval
   }) => (
-  view == 'primary' ?
+  view === 'primary' ?
     <Query
       client={analytics_service}
       query={PROJECT_CYCLE_METRICS}
@@ -36,6 +39,7 @@ export const ProjectCycleMetricsWidget = (
           return (
             <ProjectCycleMetricsSummaryView
               instanceKey={instanceKey}
+              showAll={showAll}
               stateMappingIndex={stateMappingIndex}
               {...cycleMetrics}
             />
@@ -45,5 +49,12 @@ export const ProjectCycleMetricsWidget = (
       }
     </Query>
     :
-    null
+    <ProjectCycleMetricsDetailView
+      instanceKey={instanceKey}
+      view={view}
+      latestWorkItemEvent={latestWorkItemEvent}
+      days={days}
+      targetPercentile={targetPercentile}
+      stateMappingIndex={stateMappingIndex}
+    />
 )
