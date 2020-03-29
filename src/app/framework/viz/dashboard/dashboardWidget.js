@@ -4,11 +4,11 @@ import {withNavigationContext} from "../../navigation/components/withNavigationC
 import {withRouter} from 'react-router';
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
-  showDetail ?
+  showDetail && !itemSelected?
     <nav className="dashboard-item-menu">
       <i
         className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
-        title={itemSelected ? "Hide Details" : "Show Details"}
+        title={"Show Details"}
         onClick={onClick}
       />
     </nav> :
