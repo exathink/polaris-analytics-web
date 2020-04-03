@@ -2,7 +2,7 @@ import React from "react";
 import {analytics_service} from "../../../../services/graphql";
 import {PROJECT_CYCLE_METRICS} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
-import {ProjectCycleMetricsSummaryView} from "./projectCycleMetricsSummaryView";
+import {ProjectAggregateCycleMetricsPanel} from "./projectAggregateCycleMetricsPanel";
 import {ProjectCycleMetricsDetailView} from "./projectCycleMetricsDetailView";
 
 import {Query} from "react-apollo";
@@ -37,7 +37,7 @@ export const ProjectCycleMetricsWidget = (
           if (error) return null;
           const {...cycleMetrics} = data['project'];
           return (
-            <ProjectCycleMetricsSummaryView
+            <ProjectAggregateCycleMetricsPanel
               instanceKey={instanceKey}
               showAll={showAll}
               stateMappingIndex={stateMappingIndex}
