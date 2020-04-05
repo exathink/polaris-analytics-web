@@ -1,18 +1,16 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {displayPlural, displaySingular, formatDateTime, formatTerm} from "../../../../i18n";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {elide, pick, toMoment} from "../../../../helpers/utility";
-import moment from "moment";
+import {pick, toMoment} from "../../../../helpers/utility";
 
-export const CycleMetricsScatterPlotChart = Chart({
+export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'model')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({model, intl}) => {
+  getConfig: ({model, days, intl}) => {
     return {
       chart: {
         type: 'scatter',
@@ -21,10 +19,10 @@ export const CycleMetricsScatterPlotChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: "Scatter Plot"
+        text: "Flow Metrics"
       },
       subtitle: {
-        text: `Subtitle`
+        text: `Last ${days} days`
       },
       legend: {
         title: {
@@ -42,14 +40,14 @@ export const CycleMetricsScatterPlotChart = Chart({
       xAxis: {
         type: 'datetime',
         title: {
-          text: `Close Date`
+          text: `Date Closed`
         }
       },
       yAxis: {
         type: 'linear',
         id: 'cycle-metric',
         title: {
-          text: `${formatTerm(intl, 'Lead Time')}`
+          text: `Days`
         }
       },
       series: [
@@ -96,8 +94,9 @@ export const CycleMetricsScatterPlotChart = Chart({
           return tooltipHtml({
               header: `Work Item: ${this.point.cycle.name}`,
               body: [
-                ['Lead Time: ', `${this.point.cycle.leadTime}`],
-                ['Cycle Time: ', `${this.point.cycle.cycleTime}`],
+                ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
+                ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)}`],
+                ['Cycle Time: ', `${intl.formatNumber(this.point.cycle.cycleTime) || 'N/A'}`],
               ]
             })
         }

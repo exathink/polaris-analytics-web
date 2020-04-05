@@ -10,7 +10,7 @@ import {
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectWorkItemSummaryWidget} from "./workItemSummary";
-import {ProjectCycleMetricsWidget} from "./cycleMetrics";
+import {ProjectFlowMetricsWidget} from "./flowMetrics";
 
 import {
   DimensionCommitsNavigatorWidget,
@@ -112,12 +112,12 @@ export const dashboard = () => (
                 stateMappingIndex.isValid()?
                   <DashboardWidget
                     w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.35}
-                    name="cycle-metrics"
-                    title={"Cycle Metrics"}
+                    name="flow-metrics"
+                    title={"Flow Metrics"}
                     subtitle={"Last 30 Days"}
                     render={
                       ({view}) =>
-                        <ProjectCycleMetricsWidget
+                        <ProjectFlowMetricsWidget
                           instanceKey={key}
                           view = {view}
                           latestWorkItemEvent={latestWorkItemEvent}

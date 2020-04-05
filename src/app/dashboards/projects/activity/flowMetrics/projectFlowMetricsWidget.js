@@ -2,12 +2,12 @@ import React from "react";
 import {analytics_service} from "../../../../services/graphql";
 import {PROJECT_CYCLE_METRICS} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
-import {ProjectAggregateCycleMetricsPanel} from "./projectAggregateCycleMetricsPanel";
-import {ProjectCycleMetricsDetailView} from "./projectCycleMetricsDetailView";
+import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView";
+import {ProjectFlowMetricsDetailDashboard} from "./projectFlowMetricsDetailDashboard";
 
 import {Query} from "react-apollo";
 
-export const ProjectCycleMetricsWidget = (
+export const ProjectFlowMetricsWidget = (
   {
     instanceKey,
     view,
@@ -37,7 +37,7 @@ export const ProjectCycleMetricsWidget = (
           if (error) return null;
           const {...cycleMetrics} = data['project'];
           return (
-            <ProjectAggregateCycleMetricsPanel
+            <ProjectAggregateFlowMetricsView
               instanceKey={instanceKey}
               showAll={showAll}
               stateMappingIndex={stateMappingIndex}
@@ -49,7 +49,7 @@ export const ProjectCycleMetricsWidget = (
       }
     </Query>
     :
-    <ProjectCycleMetricsDetailView
+    <ProjectFlowMetricsDetailDashboard
       instanceKey={instanceKey}
       view={view}
       latestWorkItemEvent={latestWorkItemEvent}

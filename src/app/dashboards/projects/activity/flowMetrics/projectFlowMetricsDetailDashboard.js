@@ -1,11 +1,11 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectCycleMetricsWidget} from "./projectCycleMetricsWidget";
-import {ProjectCycleMetricsScatterPlotWidget} from "./projectCycleMetricsScatterPlotWidget";
+import {ProjectFlowMetricsWidget} from "./projectFlowMetricsWidget";
+import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowMetricsWidget";
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
 
-export const ProjectCycleMetricsDetailView = (
+export const ProjectFlowMetricsDetailDashboard = (
   {
     instanceKey,
     latestWorkItemEvent,
@@ -21,7 +21,7 @@ export const ProjectCycleMetricsDetailView = (
         name="cycle-metrics-summary-detailed"
         render={
           ({view}) =>
-            <ProjectCycleMetricsWidget
+            <ProjectFlowMetricsWidget
               instanceKey={instanceKey}
               view={view}
               showAll={true}
@@ -36,12 +36,11 @@ export const ProjectCycleMetricsDetailView = (
     </DashboardRow>
     <DashboardRow h={"80%"}>
       <DashboardWidget
-        title={"Cycle Metrics Detail"}
         w={1}
         name="cycle-metrics-delivery-details"
         render={
           ({view}) =>
-            <ProjectCycleMetricsScatterPlotWidget
+            <ProjectDeliveryCycleFlowMetricsWidget
               instanceKey={instanceKey}
               view={view}
               showAll={true}
