@@ -64,6 +64,10 @@ export const PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL = gql`
                       id
                       name
                       key
+                      ... on WorkItemInfo {
+                        displayId
+                        workItemType
+                      }
                       ... on DeliveryCycleInfo {
                         startDate
                         endDate

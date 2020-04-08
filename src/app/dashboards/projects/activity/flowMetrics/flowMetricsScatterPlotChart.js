@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {pick, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, pick, toMoment} from "../../../../helpers/utility";
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
@@ -92,7 +92,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-              header: `Work Item: ${this.point.cycle.name}`,
+              header: `${capitalizeFirstLetter(this.point.cycle.workItemType)}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
               body: [
                 ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
                 ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)}`],

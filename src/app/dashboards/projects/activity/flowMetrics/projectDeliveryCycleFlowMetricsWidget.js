@@ -37,6 +37,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
               'id',
               'name',
               'key',
+              'displayId',
+              'workItemType',
               'startDate',
               'endDate',
               'leadTime',
