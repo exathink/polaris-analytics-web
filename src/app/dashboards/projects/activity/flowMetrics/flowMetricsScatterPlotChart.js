@@ -5,12 +5,12 @@ import {capitalizeFirstLetter, pick, toMoment} from "../../../../helpers/utility
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'model')
+    pick(props, 'model', 'selectedMetric')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({model, days, intl}) => {
+  getConfig: ({model, days, selectedMetric, metricsMeta, intl}) => {
     return {
       chart: {
         type: 'scatter',
@@ -19,14 +19,14 @@ export const FlowMetricsScatterPlotChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: "Flow Metrics"
+        text: metricsMeta[selectedMetric].display
       },
       subtitle: {
-        text: `Last ${days} days`
+        text: `Work items closed in the last ${days} days`
       },
       legend: {
         title: {
-          text: 'Cycle Metrics',
+          text: metricsMeta[selectedMetric].display,
           style: {
             fontStyle: 'italic'
           }
@@ -54,12 +54,12 @@ export const FlowMetricsScatterPlotChart = Chart({
         {
           key: 'lead-time',
           id: 'lead-time',
-          name: 'Lead Time',
+          name: selectedMetric,
 
           data: model.map(
             cycle => ({
               x: toMoment(cycle.endDate).valueOf(),
-              y: cycle.leadTime,
+              y: cycle[selectedMetric],
               z: 1,
               cycle: cycle
             })
@@ -68,23 +68,6 @@ export const FlowMetricsScatterPlotChart = Chart({
           allowPointSelect: true,
 
         },
-        {
-          key: 'cycle-time',
-          id: 'cycle-time',
-          name: 'Cycle Time',
-
-          data: model.map(
-            cycle => ({
-              x: toMoment(cycle.endDate).valueOf(),
-              y: cycle.cycleTime,
-              z: 1,
-              cycle: cycle
-            })
-          ),
-          turboThreshold: 0,
-          allowPointSelect: true,
-
-        }
       ],
       tooltip: {
         useHTML: true,

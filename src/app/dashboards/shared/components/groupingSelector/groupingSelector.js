@@ -2,11 +2,11 @@ import {Box, Flex} from "reflexbox";
 import {RadioButton, RadioGroup} from "../../../../../components/uielements/radio";
 import React from "react";
 
-export const GroupingSelector = ({groupings, initialValue, onGroupingChanged}) => (
+export const GroupingSelector = ({label, groupings, initialValue, onGroupingChanged}) => (
   groupings &&
   <Flex align={'center'}>
     <Box pr={1} pt={"1px"}>
-      Group By
+      {label || "Group By"}
     </Box>
     <Box>
       <RadioGroup

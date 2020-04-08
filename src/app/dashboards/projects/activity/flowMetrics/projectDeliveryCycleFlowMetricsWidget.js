@@ -3,7 +3,7 @@ import {analytics_service} from "../../../../services/graphql";
 import {PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
 import {pick} from "../../../../helpers/utility";
-import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
+import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
 import {Query} from "react-apollo";
 
 export const ProjectDeliveryCycleFlowMetricsWidget = (
@@ -46,7 +46,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
             )
           );
           return (
-            <FlowMetricsScatterPlotChart
+            <ProjectDeliveryCyclesFlowMetricsView
               days={days}
               model={flowMetricsData}
             />
