@@ -11,6 +11,37 @@ export const FlowMetricsScatterPlotChart = Chart({
   mapPoints: (points, _) => points.map(point => point),
 
   getConfig: ({model, days, selectedMetric, metricsMeta, intl}) => {
+    const deliveryCyclesByWorkItemType = model.reduce(
+      (groups, cycle) => {
+        if (groups[cycle.workItemType] != null) {
+          groups[cycle.workItemType].push(cycle);
+        } else {
+          groups[cycle.workItemType] = [cycle]
+        }
+        return groups;
+      },
+      {}
+    )
+    const series = Object.entries(deliveryCyclesByWorkItemType).map(
+      ([workItemType, cycles]) => (
+        {
+          key: workItemType,
+          id: workItemType,
+          name: workItemType,
+
+          data: cycles.map(
+            cycle => ({
+              x: toMoment(cycle.endDate).valueOf(),
+              y: cycle[selectedMetric],
+              z: 1,
+              cycle: cycle
+            })
+          ),
+          turboThreshold: 0,
+          allowPointSelect: true,
+        }
+      )
+    )
     return {
       chart: {
         type: 'scatter',
@@ -26,7 +57,7 @@ export const FlowMetricsScatterPlotChart = Chart({
       },
       legend: {
         title: {
-          text: metricsMeta[selectedMetric].display,
+          text: "Type",
           style: {
             fontStyle: 'italic'
           }
@@ -50,25 +81,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`
         }
       },
-      series: [
-        {
-          key: 'lead-time',
-          id: 'lead-time',
-          name: selectedMetric,
-
-          data: model.map(
-            cycle => ({
-              x: toMoment(cycle.endDate).valueOf(),
-              y: cycle[selectedMetric],
-              z: 1,
-              cycle: cycle
-            })
-          ),
-          turboThreshold: 0,
-          allowPointSelect: true,
-
-        },
-      ],
+      series: series,
       tooltip: {
         useHTML: true,
         followPointer: false,
