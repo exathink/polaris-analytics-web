@@ -5,15 +5,21 @@ import {useFetchProjectAggregateCycleMetrics} from "../hooks/useProjectAggregate
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
-    display: 'Lead Time'
+    display: 'Lead Time',
+    value : cycle => cycle.leadTime
   },
   cycleTime: {
-    display: 'Cycle Time'
+    display: 'Cycle Time',
+    value: cycle => cycle.cycleTime
+  },
+  backlogTime: {
+    display: 'Backlog Time',
+    value: cycle => cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0
   }
 }
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, projectCycleMetrics,  initialMetric}) => {
-  const groupings = ['leadTime', 'cycleTime'];
+  const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   return (
     <React.Fragment>

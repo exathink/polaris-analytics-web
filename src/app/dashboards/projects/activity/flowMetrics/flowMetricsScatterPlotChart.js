@@ -34,7 +34,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           data: cycles.map(
             cycle => ({
               x: toMoment(cycle.endDate).valueOf(),
-              y: cycle[selectedMetric],
+              y: metricsMeta[selectedMetric].value(cycle),
               z: 1,
               cycle: cycle
             })
@@ -84,16 +84,26 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`
         },
         max: Math.ceil(projectCycleMetrics.maxLeadTime) + 1,
-        plotLines: [{
-          color: 'red',
-          value: projectCycleMetrics.percentileLeadTime,
-          dashStyle: 'longdashdot',
-          width: 1,
-          label: {
-            text: `${percentileToText(projectCycleMetrics.targetPercentile)} Lead Time=${intl.formatNumber(projectCycleMetrics.percentileLeadTime)} days`,
-            align: `left`
-          }
-        }],
+        plotLines: [
+          {
+            color: 'blue',
+            value: projectCycleMetrics.maxLeadTime,
+            dashStyle: 'longdashdot',
+            width: 1,
+            label: {
+              text: `Max Lead Time=${intl.formatNumber(projectCycleMetrics.maxLeadTime)} days`,
+              align: `left`
+            }
+          }, {
+            color: 'red',
+            value: projectCycleMetrics.percentileLeadTime,
+            dashStyle: 'longdashdot',
+            width: 1,
+            label: {
+              text: `${percentileToText(projectCycleMetrics.targetPercentile)} Lead Time=${intl.formatNumber(projectCycleMetrics.percentileLeadTime)} days`,
+              align: `left`
+            }
+          }],
 
       },
       series: series,
@@ -102,12 +112,16 @@ export const FlowMetricsScatterPlotChart = Chart({
         followPointer: false,
         hideDelay: 50,
         formatter: function () {
+          const cycleTime = metricsMeta['cycleTime'].value(this.point.cycle);
+          const backlogTime = metricsMeta['backlogTime'].value(this.point.cycle);
           return tooltipHtml({
             header: `${capitalizeFirstLetter(this.point.cycle.workItemType)}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
             body: [
               ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
-              ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)}`],
-              ['Cycle Time: ', `${intl.formatNumber(this.point.cycle.cycleTime) || 'N/A'}`],
+              [`------`, ``],
+              ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)} days`],
+              ['Cycle Time: ', cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : 'N/A'],
+              ['Backlog Time: ', backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : 'N/A']
             ]
           })
         }
