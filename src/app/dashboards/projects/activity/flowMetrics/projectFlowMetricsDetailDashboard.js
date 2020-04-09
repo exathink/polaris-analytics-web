@@ -50,7 +50,7 @@ export const ProjectFlowMetricsDetailDashboard = (
               targetPercentile={targetPercentile}
             />
         }
-        showDetail={false}
+        showDetail={true}
       />
     </DashboardRow>
   </Dashboard>

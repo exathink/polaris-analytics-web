@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
+import {useFetchProjectAggregateCycleMetrics} from "../hooks/useProjectAggregateCycleMetrics";
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
@@ -11,7 +12,7 @@ const projectDeliveryCycleFlowMetricsMeta = {
   }
 }
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({model, days, initialMetric}) => {
+export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, projectCycleMetrics,  initialMetric}) => {
   const groupings = ['leadTime', 'cycleTime'];
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   return (
@@ -34,6 +35,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({model, days, initialMetric
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+        projectCycleMetrics={projectCycleMetrics}
       />
     </React.Fragment>
   )

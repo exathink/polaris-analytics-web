@@ -1,10 +1,11 @@
 import React from "react";
 import {analytics_service} from "../../../../services/graphql";
-import {PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL} from "../queries";
+import {PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL, PROJECT_CYCLE_METRICS} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
 import {pick} from "../../../../helpers/utility";
 import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
 import {Query} from "react-apollo";
+import {useFetchProjectAggregateCycleMetrics} from "../hooks/useProjectAggregateCycleMetrics";
 
 export const ProjectDeliveryCycleFlowMetricsWidget = (
   {
@@ -12,10 +13,13 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
     view,
     showAll,
     latestWorkItemEvent,
+    targetPercentile,
     days,
     stateMappingIndex,
     pollInterval
-  }) => (
+  }) => {
+  const projectCycleMetrics = useFetchProjectAggregateCycleMetrics(instanceKey, days, targetPercentile, latestWorkItemEvent);
+  return (
     <Query
       client={analytics_service}
       query={PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL}
@@ -47,8 +51,10 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
           );
           return (
             <ProjectDeliveryCyclesFlowMetricsView
+              instanceKey={instanceKey}
               days={days}
               model={flowMetricsData}
+              projectCycleMetrics={projectCycleMetrics}
             />
           )
 
@@ -56,4 +62,4 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       }
     </Query>
 
-)
+)}

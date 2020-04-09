@@ -1,7 +1,9 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {percentileToText} from "../../../../helpers/utility";
 
 import {capitalizeFirstLetter, pick, toMoment} from "../../../../helpers/utility";
+import {Colors} from "../../../shared/config";
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
@@ -10,7 +12,7 @@ export const FlowMetricsScatterPlotChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({model, days, selectedMetric, metricsMeta, intl}) => {
+  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, intl}) => {
     const deliveryCyclesByWorkItemType = model.reduce(
       (groups, cycle) => {
         if (groups[cycle.workItemType] != null) {
@@ -45,6 +47,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     return {
       chart: {
         type: 'scatter',
+        backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
         panKey: 'shift',
         zoomType: 'xy'
@@ -75,11 +78,23 @@ export const FlowMetricsScatterPlotChart = Chart({
         }
       },
       yAxis: {
-        type: 'linear',
+        type: 'logarithmic',
         id: 'cycle-metric',
         title: {
           text: `Days`
-        }
+        },
+        max: Math.ceil(projectCycleMetrics.maxLeadTime) + 1,
+        plotLines: [{
+          color: 'red',
+          value: projectCycleMetrics.percentileLeadTime,
+          dashStyle: 'longdashdot',
+          width: 1,
+          label: {
+            text: `${percentileToText(projectCycleMetrics.targetPercentile)} Lead Time=${intl.formatNumber(projectCycleMetrics.percentileLeadTime)} days`,
+            align: `left`
+          }
+        }],
+
       },
       series: series,
       tooltip: {
@@ -88,13 +103,13 @@ export const FlowMetricsScatterPlotChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-              header: `${capitalizeFirstLetter(this.point.cycle.workItemType)}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
-              body: [
-                ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
-                ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)}`],
-                ['Cycle Time: ', `${intl.formatNumber(this.point.cycle.cycleTime) || 'N/A'}`],
-              ]
-            })
+            header: `${capitalizeFirstLetter(this.point.cycle.workItemType)}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
+            body: [
+              ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
+              ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)}`],
+              ['Cycle Time: ', `${intl.formatNumber(this.point.cycle.cycleTime) || 'N/A'}`],
+            ]
+          })
         }
 
       },
