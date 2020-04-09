@@ -1,5 +1,5 @@
 import React from 'react';
-import {Query} from 'react-apollo';
+import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from "../../../../services/graphql";
@@ -10,11 +10,10 @@ export const ProjectActivitySummaryWidget = (
   {
     instanceKey,
     pollInterval
-  }) => (
-  <Query
-    client={analytics_service}
-    query={
-      gql`
+  }) => {
+
+  const {loading, error, data} = useQuery(
+    gql`
            query projectActivitySummary($key: String!) {
             project(key: $key, interfaces: [CommitSummary]) {
                 id
@@ -23,30 +22,32 @@ export const ProjectActivitySummaryWidget = (
                 }
             }
            }
-      `}
-    variables={{key: instanceKey}}
-    errorPolicy={'all'}
-    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
-  >
-    {
-      ({loading, error, data}) => {
-        if (loading) return <Loading/>;
-        if (error) return null;
-        const {...commitSummary} = data['project'];
-            return(
-                <ActivitySummaryPanel
-                  model={
-                    {
-                      ...commitSummary,
-                    }
-                  }
-                />
-            )
+      `, {
 
-      }
+      service: analytics_service,
+      variables: {
+        key: instanceKey,
+      },
+      errorPolicy: "all",
+      pollInterval: pollInterval || analytics_service.defaultPollInterval()
     }
-  </Query>
-);
+  );
+
+  if (loading) return <Loading/>;
+  if (error) return null;
+  const {...commitSummary} = data['project'];
+  return (
+    <ActivitySummaryPanel
+      model={
+        {
+          ...commitSummary,
+        }
+      }
+    />
+  )
+}
+
+
 
 
 
