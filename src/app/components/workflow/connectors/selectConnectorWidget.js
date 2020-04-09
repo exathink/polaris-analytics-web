@@ -1,7 +1,8 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {compose, Query} from "react-apollo";
+import {Query} from "react-apollo";
 import gql from "graphql-tag";
+import {compose} from "../../../helpers/utility";
 import {withSubmissionCache} from "../../forms/withSubmissionCache";
 import {ConnectorsTable} from "./connectorsTable";
 import {getConnectorTypeDisplayName} from "./utility";

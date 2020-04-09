@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
-import {useFetchProjectAggregateCycleMetrics} from "../hooks/useProjectAggregateCycleMetrics";
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
