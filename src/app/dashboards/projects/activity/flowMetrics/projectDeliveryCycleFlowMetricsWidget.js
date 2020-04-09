@@ -4,8 +4,7 @@ import {PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL, PROJECT_CYCLE_METRICS} from "../q
 import {Loading} from "../../../../components/graphql/loading";
 import {pick} from "../../../../helpers/utility";
 import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
-import {Query} from "react-apollo";
-import {useFetchProjectAggregateCycleMetrics} from "../hooks/useProjectAggregateCycleMetrics";
+import {useQuery} from '@apollo/react-hooks';
 
 export const ProjectDeliveryCycleFlowMetricsWidget = (
   {
@@ -18,48 +17,55 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
     stateMappingIndex,
     pollInterval
   }) => {
-  const projectCycleMetrics = useFetchProjectAggregateCycleMetrics(instanceKey, days, targetPercentile, latestWorkItemEvent);
-  return (
-    <Query
-      client={analytics_service}
-      query={PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL}
-      variables={{
+
+  const {data: projectCycleMetricsData} = useQuery(
+    PROJECT_CYCLE_METRICS, {
+      service: analytics_service,
+      variables: {
+        key: instanceKey,
+        days: days,
+        targetPercentile: targetPercentile,
+        referenceString: latestWorkItemEvent
+      },
+    }
+  );
+
+  const { loading, error, data: projectDeliveryCycleData } = useQuery(
+    PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL, {
+      client: analytics_service,
+      variables: {
         key: instanceKey,
         referenceString: latestWorkItemEvent,
         days: days
-      }}
-      errorPolicy={'all'}
-      pollInterval={pollInterval || analytics_service.defaultPollInterval()}
-    >
-      {
-        ({loading, error, data}) => {
-          if (loading) return <Loading/>;
-          if (error) return null;
-          const flowMetricsData  = data.project.workItemDeliveryCycles.edges.map(
-            edge => pick(
-              edge.node,
-              'id',
-              'name',
-              'key',
-              'displayId',
-              'workItemType',
-              'startDate',
-              'endDate',
-              'leadTime',
-              'cycleTime'
-            )
-          );
-          return (
-            <ProjectDeliveryCyclesFlowMetricsView
-              instanceKey={instanceKey}
-              days={days}
-              model={flowMetricsData}
-              projectCycleMetrics={projectCycleMetrics}
-            />
-          )
+      },
+      errorPolicy: 'all',
+      pollInterval: pollInterval || analytics_service.defaultPollInterval()
+    });
 
-        }
-      }
-    </Query>
+  if (loading) return <Loading/>;
+  if (error) return null;
+  const projectCycleMetrics = projectCycleMetricsData ? projectCycleMetricsData.project : {};
+  const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map(
+    edge => pick(
+      edge.node,
+      'id',
+      'name',
+      'key',
+      'displayId',
+      'workItemType',
+      'startDate',
+      'endDate',
+      'leadTime',
+      'cycleTime'
+    )
+  );
+  return (
+    <ProjectDeliveryCyclesFlowMetricsView
+      instanceKey={instanceKey}
+      days={days}
+      model={flowMetricsData}
+      projectCycleMetrics={projectCycleMetrics}
+    />
+  );
+}
 
-)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {compose, Query} from "react-apollo";
+import {Query} from "react-apollo";
 import gql from "graphql-tag";
 
 import {work_tracking_service} from "../../../../services/graphql";
@@ -10,7 +10,7 @@ import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/co
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
-import {capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
+import {compose, capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 

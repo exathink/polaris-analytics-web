@@ -1,6 +1,9 @@
 import {Map} from 'immutable';
 import moment from 'moment';
 import {notification} from "antd";
+import flowright from "lodash.flowright";
+
+export const compose = flowright;
 
 export function clearToken() {
   localStorage.removeItem('id_token');
