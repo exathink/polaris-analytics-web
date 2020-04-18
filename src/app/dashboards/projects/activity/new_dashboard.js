@@ -21,7 +21,7 @@ import {
 import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
-import {useFetchProjectWorkItemSourcesStateMappings} from "./hooks/useProjectWorkItemStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -74,7 +74,7 @@ export const dashboard = () => (
          context
       }) => {
 
-        const stateMappingIndex = new StateMappingIndex(useFetchProjectWorkItemSourcesStateMappings(key));
+        const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
 
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
