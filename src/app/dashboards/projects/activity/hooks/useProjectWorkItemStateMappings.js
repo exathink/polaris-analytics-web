@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import {fetchQueryEffect} from "../../../../components/graphql/utils";
 
 export function useFetchProjectWorkItemSourcesStateMappings(projectKey) {
-  const [workItemStateMappings, setStateMappings] = useState([]);
+  const [workItemStateMappings, setStateMappings] = useState(null);
 
   useEffect(fetchQueryEffect({
       service: analytics_service,

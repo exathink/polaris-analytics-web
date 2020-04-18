@@ -91,7 +91,7 @@ export const dashboard = () => (
                 }
               />
               {
-                stateMappingIndex.isValid() ?
+                stateMappingIndex.isValid() &&
                   <DashboardWidget
                     w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
                     name="workitem-summary"
@@ -106,11 +106,9 @@ export const dashboard = () => (
                     }
                     showDetail={true}
                   />
-                  :
-                  null
               }
               {
-                stateMappingIndex.isValid()?
+                stateMappingIndex.isValid() &&
                   <DashboardWidget
                     w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
                     name="flow-metrics"
@@ -129,11 +127,10 @@ export const dashboard = () => (
                     }
                     showDetail={true}
                   />
-                  :
-                  null
+
               }
               {
-                stateMappingIndex.isValid()?
+                stateMappingIndex.isValid() &&
                   <DashboardWidget
                     w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.30}
                     name="defect-metrics"
@@ -152,8 +149,6 @@ export const dashboard = () => (
                     }
                     showDetail={true}
                   />
-                  :
-                  null
               }
 
             </DashboardRow>
