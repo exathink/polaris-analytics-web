@@ -29,6 +29,10 @@ export function useQueryProjectDefectMetricsSummary({instanceKey, days, targetPe
                 ... on WorkItemStateTypeCounts {
                   workItemStateTypeCounts {
                     backlog
+                    open
+                    wip
+                    complete
+                    closed
                   }
                 }
             }

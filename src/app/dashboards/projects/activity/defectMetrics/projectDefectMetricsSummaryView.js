@@ -13,14 +13,19 @@ export const ProjectDefectMetricsSummaryView = (
     percentileCycleTime,
     targetPercentile,
     maxCycleTime,
-    workItemsInScope: numClosedDefects,
     workItemStateTypeCounts: {
-      backlog: openDefects
+      backlog,
+      open,
+      wip,
+      complete,
+      closed
     },
     stateMappingIndex,
   }
 ) => {
-  const closeRate = numClosedDefects && openDefects ? (numClosedDefects / (numClosedDefects + openDefects) * 100) : null;
+  const numOpenDefects = (backlog || 0)  + (open || 0) + (wip || 0)  + (complete || 0);
+  const numClosedDefects = closed;
+  const closeRate = numClosedDefects && numOpenDefects ? (numClosedDefects / (numClosedDefects + numOpenDefects) * 100) : null;
 
   return (
     stateMappingIndex.isValid() ?
@@ -28,8 +33,8 @@ export const ProjectDefectMetricsSummaryView = (
         <VizRow h={"100%"}>
           <VizItem w={0.30}>
             <Statistic
-              title="Backlog"
-              value={openDefects || 0}
+              title="Unresolved"
+              value={numOpenDefects || 0}
               precision={0}
               valueStyle={{color: '#3f8600'}}
               style={{backgroundColor: '#f2f3f6'}}
