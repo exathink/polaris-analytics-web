@@ -11,41 +11,54 @@ export const ProjectDefectMetricsSummaryView = (
     maxLeadTime,
     avgCycleTime,
     percentileCycleTime,
-    maxCycleTime,
-
-    workItemsInScope,
     targetPercentile,
+    maxCycleTime,
+    workItemsInScope: numClosedDefects,
     workItemStateTypeCounts: {
       backlog: openDefects
     },
     stateMappingIndex,
   }
-) => (
-  stateMappingIndex.isValid() ?
-    <React.Fragment>
-      <VizRow h={"100%"}>
-        <VizItem w={0.25}>
-          <Statistic
-            title="Backlog"
-            value={openDefects || 0}
-            precision={0}
-            valueStyle={{color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Defects"}
-          />
-        </VizItem>
-        <VizItem w={0.25}>
-          <Statistic
-            title="Throughput"
-            value={workItemsInScope || 0}
-            precision={0}
-            valueStyle={{color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Defects"}
-          />
-        </VizItem>
-      </VizRow>
-    </React.Fragment>
-    :
-    null
-);
+) => {
+  const closeRate = numClosedDefects && openDefects ? (numClosedDefects / (numClosedDefects + openDefects) * 100) : null;
+
+  return (
+    stateMappingIndex.isValid() ?
+      <React.Fragment>
+        <VizRow h={"100%"}>
+          <VizItem w={0.30}>
+            <Statistic
+              title="Backlog"
+              value={openDefects || 0}
+              precision={0}
+              valueStyle={{color: '#3f8600'}}
+              style={{backgroundColor: '#f2f3f6'}}
+              suffix={"Defects"}
+            />
+          </VizItem>
+          <VizItem w={0.30}>
+            <Statistic
+              title="Close Rate"
+              value={ closeRate || 'N/A'}
+              precision={2}
+              valueStyle={{color: '#3f8600'}}
+              style={{backgroundColor: '#f2f3f6'}}
+              suffix={closeRate != null ? '%' : ''}
+            />
+          </VizItem>
+          <VizItem w={0.35}>
+            <Statistic
+              title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+              value={percentileLeadTime || 0}
+              precision={1}
+              valueStyle={{color: '#3f8600'}}
+              style={{backgroundColor: '#f2f3f6'}}
+              suffix={"Days"}
+            />
+          </VizItem>
+        </VizRow>
+      </React.Fragment>
+      :
+      null
+  )
+};
