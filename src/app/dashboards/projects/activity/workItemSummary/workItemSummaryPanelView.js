@@ -28,17 +28,7 @@ const WorkItemSummaryPanelView = (
           {
             stateMappingIndex.numInProcessStates() > 0 ?
               <VizRow h={"100%"}>
-                <VizItem w={0.2}>
-                  <Statistic
-                    title="Backlog"
-                    value={backlog || 0}
-                    precision={0}
-                    valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
-                    suffix={"Work Items"}
-                  />
-                </VizItem>
-                <VizItem w={0.2}>
+                <VizItem w={0.3}>
                   <Statistic
                     title="Open"
                     value={open || 0}
@@ -48,7 +38,7 @@ const WorkItemSummaryPanelView = (
                     suffix={"Work Items"}
                   />
                 </VizItem>
-                <VizItem w={0.2}>
+                <VizItem w={0.3}>
                   <Statistic
                     title="Wip"
                     value={wip || 0}

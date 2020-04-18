@@ -1,5 +1,5 @@
 .ant-statistic-title {
-    font-size: 1.8vh;
+    font-size: 1.7vh;
 }
 
 .ant-statistic-content {
@@ -7,11 +7,11 @@
 }
 
 .ant-statistic-content-value {
-    font-size: 2.2vh
+    font-size: 2.1vh
 }
 
 .ant-statistic-content-value-int {
-    font-size: 2.2vh
+    font-size: 2.1vh
 }
 
 .ant-statistic-content-value-decimal {
@@ -19,7 +19,7 @@
 }
 
 .ant-statistic-content-suffix {
-    font-size: 1.4vh
+    font-size: 1.3vh
 }
 
 .viz-item .ant-statistic {
