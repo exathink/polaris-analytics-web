@@ -39,8 +39,9 @@ export function useQueryProjectCycleMetrics({instanceKey, days, targetPercentile
         days: days,
         targetPercentile: targetPercentile,
         referenceString: referenceString
-
-      }
+      },
+      errorPolicy: "all",
+      pollInterval: analytics_service.defaultPollInterval()
     }
   )
 }
