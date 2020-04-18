@@ -1,0 +1,1 @@
+export {ProjectDefectMetricsWidget} from "./projectDefectMetricsWidget";
