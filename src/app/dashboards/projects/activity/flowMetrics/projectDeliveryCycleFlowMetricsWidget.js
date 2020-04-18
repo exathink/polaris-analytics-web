@@ -1,10 +1,9 @@
 import React from "react";
-import {analytics_service} from "../../../../services/graphql";
-import {PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL, PROJECT_CYCLE_METRICS} from "../queries";
 import {Loading} from "../../../../components/graphql/loading";
 import {pick} from "../../../../helpers/utility";
 import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
-import {useQuery} from '@apollo/react-hooks';
+import {useQueryProjectCycleMetrics} from "../hooks/useQueryProjectCycleMetrics";
+import {useQueryProjectClosedDeliveryCycleDetail} from "../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 export const ProjectDeliveryCycleFlowMetricsWidget = (
   {
@@ -18,29 +17,13 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
     pollInterval
   }) => {
 
-  const {data: projectCycleMetricsData} = useQuery(
-    PROJECT_CYCLE_METRICS, {
-      service: analytics_service,
-      variables: {
-        key: instanceKey,
-        days: days,
-        targetPercentile: targetPercentile,
-        referenceString: latestWorkItemEvent
-      },
-    }
-  );
+  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
+    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
+  )
 
-  const { loading, error, data: projectDeliveryCycleData } = useQuery(
-    PROJECT_CLOSED_DELIVERY_CYCLES_DETAIL, {
-      client: analytics_service,
-      variables: {
-        key: instanceKey,
-        referenceString: latestWorkItemEvent,
-        days: days
-      },
-      errorPolicy: 'all',
-      pollInterval: pollInterval || analytics_service.defaultPollInterval()
-    });
+  const { loading, error, data: projectDeliveryCycleData } = useQueryProjectClosedDeliveryCycleDetail(
+    {instanceKey, days, referenceString: latestWorkItemEvent}
+  );
 
   if (loading) return <Loading/>;
   if (error) return null;

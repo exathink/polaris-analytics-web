@@ -11,6 +11,7 @@ import {
 import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectWorkItemSummaryWidget} from "./workItemSummary";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
+import {ProjectDefectMetricsWidget} from "./defectMetrics";
 
 import {
   DimensionCommitsNavigatorWidget,
@@ -20,7 +21,7 @@ import {
 import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
-import {useFetchProjectWorkItemSourcesStateMappings} from "./hooks/useProjectWorkItemStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -73,13 +74,13 @@ export const dashboard = () => (
          context
       }) => {
 
-        const stateMappingIndex = new StateMappingIndex(useFetchProjectWorkItemSourcesStateMappings(key));
+        const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
 
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
             <DashboardRow h='15%'>
               <DashboardWidget
-                w={0.2}
+                w={0.25}
                 name="activity-summary"
                 title={messages.topRowTitle}
                 render={
@@ -90,9 +91,9 @@ export const dashboard = () => (
                 }
               />
               {
-                stateMappingIndex.isValid() ?
+                stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.25 : 0.20}
+                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
                     name="workitem-summary"
                     title={"Pipeline"}
                     render={
@@ -105,13 +106,11 @@ export const dashboard = () => (
                     }
                     showDetail={true}
                   />
-                  :
-                  null
               }
               {
-                stateMappingIndex.isValid()?
+                stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.35}
+                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
                     name="flow-metrics"
                     title={"Flow Metrics"}
                     subtitle={"Last 30 Days"}
@@ -128,8 +127,28 @@ export const dashboard = () => (
                     }
                     showDetail={true}
                   />
-                  :
-                  null
+
+              }
+              {
+                stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.30}
+                    name="defect-metrics"
+                    title={"Defect Metrics"}
+                    subtitle={"Last 30 Days"}
+                    render={
+                      ({view}) =>
+                        <ProjectDefectMetricsWidget
+                          instanceKey={key}
+                          view = {view}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={0.70}
+                        />
+                    }
+                    showDetail={true}
+                  />
               }
 
             </DashboardRow>

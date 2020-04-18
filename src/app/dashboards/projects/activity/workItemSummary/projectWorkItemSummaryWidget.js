@@ -1,10 +1,8 @@
 import React from 'react';
-import {Query} from 'react-apollo';
 import {Loading} from "../../../../components/graphql/loading";
-import {analytics_service} from "../../../../services/graphql";
 import {WorkItemSummaryPanel} from "./workItemSummaryPanelView";
 
-import {PROJECT_WORK_ITEM_SUMMARIES} from "../queries";
+import {useQueryProjectWorkItemSummaries} from "../hooks/useQueryProjectWorkItemSummaries";
 
 export const ProjectWorkItemSummaryWidget = (
   {
@@ -12,36 +10,25 @@ export const ProjectWorkItemSummaryWidget = (
     latestWorkItemEvent,
     stateMappingIndex,
     pollInterval
-  }) => (
-  <Query
-    client={analytics_service}
-    query={PROJECT_WORK_ITEM_SUMMARIES}
-    variables={{key: instanceKey, referenceString: latestWorkItemEvent}}
-    errorPolicy={'all'}
-    pollInterval={pollInterval || analytics_service.defaultPollInterval()}
-  >
-    {
-      ({loading, error, data}) => {
-        if (loading) return <Loading/>;
-        if (error) return null;
-        const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
-            return(
-                <WorkItemSummaryPanel
-                  model={
-                    {
+  }) => {
+  const {loading, error, data} = useQueryProjectWorkItemSummaries({instanceKey, referenceString: latestWorkItemEvent})
+  if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+  if (error) return null;
+  const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
+  return (
+    <WorkItemSummaryPanel
+      model={
+        {
 
-                      ...workItemStateTypeCounts
+          ...workItemStateTypeCounts
 
-                    }
-                  }
-                  stateMappingIndex={stateMappingIndex}
-                />
-            )
-
+        }
       }
-    }
-  </Query>
-);
+      stateMappingIndex={stateMappingIndex}
+    />
+  )
+
+}
 
 
 
