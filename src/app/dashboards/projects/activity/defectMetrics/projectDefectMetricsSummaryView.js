@@ -13,18 +13,17 @@ export const ProjectDefectMetricsSummaryView = (
     percentileCycleTime,
     targetPercentile,
     maxCycleTime,
+    workItemsInScope: numClosedDefects,
     workItemStateTypeCounts: {
       backlog,
       open,
       wip,
       complete,
-      closed
     },
     stateMappingIndex,
   }
 ) => {
   const numOpenDefects = (backlog || 0)  + (open || 0) + (wip || 0)  + (complete || 0);
-  const numClosedDefects = closed;
   const closeRate = numClosedDefects && numOpenDefects ? (numClosedDefects / (numClosedDefects + numOpenDefects) * 100) : null;
 
   return (
