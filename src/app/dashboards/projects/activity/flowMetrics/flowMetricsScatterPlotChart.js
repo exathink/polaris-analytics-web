@@ -1,10 +1,32 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {percentileToText} from "../../../../helpers/utility";
+import {percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {
+  Colors,
+  Symbols,
+  WorkItemColorMap,
+  WorkItemSymbolMap,
+  WorkItemTypeDisplayName,
+  WorkItemTypeScatterRadius,
+  WorkItemTypeSortOrder
+} from "../../../shared/config";
 
-import {capitalizeFirstLetter, pick, toMoment} from "../../../../helpers/utility";
-import {Colors} from "../../../shared/config";
 
+function mapColor(workItem) {
+  if (!workItem.isBug) {
+    return WorkItemColorMap[workItem.workItemType]
+  } else {
+    return Colors.WorkItemType.bug
+  }
+}
+
+function mapSymbol(workItem) {
+  if (!workItem.isBug) {
+    return WorkItemSymbolMap[workItem.workItemType]
+  } else {
+    return Symbols.WorkItemType.bug
+  }
+}
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'model', 'selectedMetric')
@@ -24,13 +46,19 @@ export const FlowMetricsScatterPlotChart = Chart({
       },
       {}
     )
-    const series = Object.entries(deliveryCyclesByWorkItemType).map(
+    const series = Object.entries(deliveryCyclesByWorkItemType).sort(
+      (entryA, entryB) => WorkItemTypeSortOrder[entryA[0]] - WorkItemTypeSortOrder[entryB[0]]
+    ).map(
       ([workItemType, cycles]) => (
         {
           key: workItemType,
           id: workItemType,
-          name: workItemType,
-
+          name: WorkItemTypeDisplayName[workItemType],
+          color: mapColor(cycles[0]),
+          marker: {
+            symbol: mapSymbol(cycles[0]),
+            radius: WorkItemTypeScatterRadius[workItemType],
+          },
           data: cycles.map(
             cycle => ({
               x: toMoment(cycle.endDate).valueOf(),
@@ -47,6 +75,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     return {
       chart: {
         type: 'scatter',
+        animation: false,
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
         panKey: 'shift',
@@ -115,7 +144,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           const cycleTime = metricsMeta['cycleTime'].value(this.point.cycle);
           const backlogTime = metricsMeta['backlogTime'].value(this.point.cycle);
           return tooltipHtml({
-            header: `${capitalizeFirstLetter(this.point.cycle.workItemType)}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
+            header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
             body: [
               ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
               [`------`, ``],
