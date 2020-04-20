@@ -23,44 +23,130 @@ export const ProjectDefectMetricsSummaryView = (
     stateMappingIndex,
   }
 ) => {
-  const numOpenDefects = (backlog || 0)  + (open || 0) + (wip || 0)  + (complete || 0);
+  const numOpenDefects = (backlog || 0) + (open || 0) + (wip || 0) + (complete || 0);
   const closeRate = numClosedDefects && numOpenDefects ? (numClosedDefects / (numClosedDefects + numOpenDefects) * 100) : null;
 
   return (
     stateMappingIndex.isValid() ?
       <React.Fragment>
-        <VizRow h={"100%"}>
-          <VizItem w={0.30}>
-            <Statistic
-              title="Unresolved"
-              value={numOpenDefects || 0}
-              precision={0}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Defects"}
-            />
-          </VizItem>
-          <VizItem w={0.30}>
-            <Statistic
-              title="Close Rate"
-              value={ closeRate || 'N/A'}
-              precision={2}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={closeRate != null ? '%' : ''}
-            />
-          </VizItem>
-          <VizItem w={0.35}>
-            <Statistic
-              title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-              value={percentileLeadTime || 0}
-              precision={1}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Days"}
-            />
-          </VizItem>
-        </VizRow>
+        {
+          !showAll ?
+            <VizRow h={"80%"}>
+              <VizItem>
+                <Statistic
+                  title="Unresolved"
+                  value={numOpenDefects || 0}
+                  precision={0}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Defects"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title="Close Rate"
+                  value={closeRate || 'N/A'}
+                  precision={2}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={closeRate != null ? '%' : ''}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                  value={percentileLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+            </VizRow>
+            :
+            <VizRow h={"100%"}>
+              <VizItem>
+                <Statistic
+                  title="Unresolved"
+                  value={numOpenDefects || 0}
+                  precision={0}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Defects"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title="Close Rate"
+                  value={closeRate || 'N/A'}
+                  precision={2}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={closeRate != null ? '%' : ''}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Lead Time <sup>{`Avg`}</sup> </span>}
+                  value={avgLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                  value={percentileLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Lead Time <sup>{`Max`}</sup> </span>}
+                  value={maxLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Cycle Time <sup>{`Avg`}</sup> </span>}
+                  value={avgLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Cycle Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                  value={percentileCycleTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+              <VizItem>
+                <Statistic
+                  title={<span>Cycle Time <sup>{`Max`}</sup> </span>}
+                  value={maxCycleTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+            </VizRow>
+        }
       </React.Fragment>
       :
       null
