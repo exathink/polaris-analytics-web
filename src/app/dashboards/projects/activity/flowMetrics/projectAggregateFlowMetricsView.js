@@ -20,103 +20,150 @@ export const ProjectAggregateFlowMetricsView = (
 ) => (
   stateMappingIndex.isValid() ?
     <React.Fragment>
-      <VizRow h={"100%"}>
-        <VizItem w={0.25}>
-          <Statistic
-            title="Throughput"
-            value={workItemsInScope || 0}
-            precision={0}
-            valueStyle={{color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Work Items"}
-          />
-        </VizItem>
-        {
-          showAll && stateMappingIndex.numInProcessStates() > 0 &&
-          <VizItem w={0.35}>
-            <Statistic
-              title={<span>Lead Time <sup>{`Avg`}</sup> </span>}
-              value={avgLeadTime || 0}
-              precision={1}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Days"}
-            />
-          </VizItem>
-        }
-        <VizItem w={0.35}>
-          <Statistic
-            title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-            value={percentileLeadTime || 0}
-            precision={1}
-            valueStyle={{color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Days"}
-          />
-        </VizItem>
-        {
-          showAll &&
-          <VizItem w={0.35}>
-            <Statistic
-              title={<span>Lead Time <sup>{`Max`}</sup> </span>}
-              value={maxLeadTime || 0}
-              precision={1}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Days"}
-            />
-          </VizItem>
-        }
-        <VizItem w={0.3}>
-          {
-            stateMappingIndex.numInProcessStates() > 0 ?
+      {
+        !showAll ?
+          <VizRow h={"80%"}>
+            <VizItem>
               <Statistic
-                title={<span>Cycle Time <sup>Avg</sup></span>}
-                value={avgCycleTime || 0}
+                title="Throughput"
+                value={workItemsInScope || 0}
+                precision={0}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Work Items"}
+              />
+            </VizItem>
+            <VizItem>
+              <Statistic
+                title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                value={percentileLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
                 style={{backgroundColor: '#f2f3f6'}}
                 suffix={"Days"}
               />
-              :
-              <Statistic
-                title={<span>Lead Time <sup>Avg</sup></span>}
-                value={avgLeadTime || 0}
-                precision={1}
-                valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
-                suffix={"Days"}
-              />
+            </VizItem>
+            <VizItem>
+              {
+                stateMappingIndex.numInProcessStates() > 0 ?
+                  <Statistic
+                    title={<span>Cycle Time <sup>Avg</sup></span>}
+                    value={avgCycleTime || 0}
+                    precision={1}
+                    valueStyle={{color: '#3f8600'}}
+                    style={{backgroundColor: '#f2f3f6'}}
+                    suffix={"Days"}
+                  />
+                  :
+                  <Statistic
+                    title={<span>Lead Time <sup>Avg</sup></span>}
+                    value={avgLeadTime || 0}
+                    precision={1}
+                    valueStyle={{color: '#3f8600'}}
+                    style={{backgroundColor: '#f2f3f6'}}
+                    suffix={"Days"}
+                  />
 
-          }
-        </VizItem>
-        {
-          showAll && stateMappingIndex.numInProcessStates() > 0 &&
-          <VizItem w={0.35}>
-            <Statistic
-              title={<span>Cycle Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-              value={percentileCycleTime || 0}
-              precision={1}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Days"}
-            />
-          </VizItem>
-        }
-        {
-          showAll && stateMappingIndex.numInProcessStates() > 0 &&
-          <VizItem w={0.35}>
-            <Statistic
-              title={<span>Cycle Time <sup>{`Max`}</sup> </span>}
-              value={maxCycleTime || 0}
-              precision={1}
-              valueStyle={{color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
-              suffix={"Days"}
-            />
-          </VizItem>
-        }
-      </VizRow>
+              }
+            </VizItem>
+          </VizRow>
+          :
+          <VizRow h={"80%"}>
+            <VizItem>
+              <Statistic
+                title="Throughput"
+                value={workItemsInScope || 0}
+                precision={0}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Work Items"}
+              />
+            </VizItem>
+            {
+              stateMappingIndex.numInProcessStates() > 0 &&
+              <VizItem>
+                <Statistic
+                  title={<span>Lead Time <sup>{`Avg`}</sup> </span>}
+                  value={avgLeadTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+            }
+            <VizItem>
+              <Statistic
+                title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                value={percentileLeadTime || 0}
+                precision={1}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Days"}
+              />
+            </VizItem>
+            <VizItem>
+              <Statistic
+                title={<span>Lead Time <sup>{`Max`}</sup> </span>}
+                value={maxLeadTime || 0}
+                precision={1}
+                valueStyle={{color: '#3f8600'}}
+                style={{backgroundColor: '#f2f3f6'}}
+                suffix={"Days"}
+              />
+            </VizItem>
+            <VizItem>
+              {
+                stateMappingIndex.numInProcessStates() > 0 ?
+                  <Statistic
+                    title={<span>Cycle Time <sup>Avg</sup></span>}
+                    value={avgCycleTime || 0}
+                    precision={1}
+                    valueStyle={{color: '#3f8600'}}
+                    style={{backgroundColor: '#f2f3f6'}}
+                    suffix={"Days"}
+                  />
+                  :
+                  <Statistic
+                    title={<span>Lead Time <sup>Avg</sup></span>}
+                    value={avgLeadTime || 0}
+                    precision={1}
+                    valueStyle={{color: '#3f8600'}}
+                    style={{backgroundColor: '#f2f3f6'}}
+                    suffix={"Days"}
+                  />
+
+              }
+            </VizItem>
+            {
+              stateMappingIndex.numInProcessStates() > 0 &&
+              <VizItem>
+                <Statistic
+                  title={<span>Cycle Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
+                  value={percentileCycleTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+            }
+            {
+              stateMappingIndex.numInProcessStates() > 0 &&
+              <VizItem>
+                <Statistic
+                  title={<span>Cycle Time <sup>{`Max`}</sup> </span>}
+                  value={maxCycleTime || 0}
+                  precision={1}
+                  valueStyle={{color: '#3f8600'}}
+                  style={{backgroundColor: '#f2f3f6'}}
+                  suffix={"Days"}
+                />
+              </VizItem>
+            }
+          </VizRow>
+
+      }
     </React.Fragment>
     :
     null
