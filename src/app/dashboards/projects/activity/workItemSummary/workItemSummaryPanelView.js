@@ -27,8 +27,8 @@ const WorkItemSummaryPanelView = (
         <React.Fragment>
           {
             stateMappingIndex.numInProcessStates() > 0 ?
-              <VizRow h={"100%"}>
-                <VizItem w={0.3}>
+              <VizRow h={"80%"}>
+                <VizItem>
                   <Statistic
                     title="Open"
                     value={open || 0}
@@ -38,7 +38,7 @@ const WorkItemSummaryPanelView = (
                     suffix={"Work Items"}
                   />
                 </VizItem>
-                <VizItem w={0.3}>
+                <VizItem>
                   <Statistic
                     title="Wip"
                     value={wip || 0}
@@ -48,7 +48,7 @@ const WorkItemSummaryPanelView = (
                     suffix={"Work Items"}
                   />
                 </VizItem>
-                <VizItem w={0.4}>
+                <VizItem>
                   <Statistic
                     title="Code Complete"
                     value={complete || 0}
@@ -76,8 +76,8 @@ const WorkItemSummaryPanelView = (
         </React.Fragment>
         :
         <React.Fragment>
-          <VizRow h={"100%"}>
-            <VizItem w={0.5}>
+          <VizRow h={"80%"}>
+            <VizItem>
               {
                 stateMappingIndex.numInProcessStates() > 0 ?
                   <Statistic
@@ -99,7 +99,7 @@ const WorkItemSummaryPanelView = (
                   />
               }
             </VizItem>
-            <VizItem w={0.5}>
+            <VizItem>
               <Statistic
                 title="Unmapped"
                 value={unmapped || 0}

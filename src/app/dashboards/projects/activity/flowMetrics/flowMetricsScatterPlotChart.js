@@ -34,7 +34,7 @@ export const FlowMetricsScatterPlotChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, intl}) => {
+  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, intl}) => {
     const deliveryCyclesByWorkItemType = model.reduce(
       (groups, cycle) => {
         if (groups[cycle.workItemType] != null) {
@@ -85,7 +85,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         text: metricsMeta[selectedMetric].display
       },
       subtitle: {
-        text: `Work items closed in the last ${days} days`
+        text: defectsOnly ? `Defects closed in the last ${days} days`:  `Work items closed in the last ${days} days`
       },
       legend: {
         title: {
