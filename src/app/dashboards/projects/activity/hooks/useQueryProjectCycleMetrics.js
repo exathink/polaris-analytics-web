@@ -2,18 +2,19 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectCycleMetrics({instanceKey, days, targetPercentile, referenceString}) {
+export function useQueryProjectCycleMetrics({instanceKey, days, targetPercentile, defectsOnly, referenceString}) {
   return useQuery(
     gql`
-     query projectAggregateCycleMetrics($key: String!, $referenceString: String, $days: Int, $targetPercentile: Float) {
+     query projectAggregateCycleMetrics($key: String!, $referenceString: String, $days: Int, $targetPercentile: Float, $defectsOnly : Boolean) {
       project(
             key: $key, 
             interfaces: [AggregateCycleMetrics],
             closedWithinDays: $days,
             cycleMetricsTargetPercentile: $targetPercentile, 
+            defectsOnly: $defectsOnly,
             referenceString: $referenceString,
             ) {
-          id
+          
           ... on AggregateCycleMetrics {
                 minLeadTime
                 avgLeadTime
@@ -38,6 +39,7 @@ export function useQueryProjectCycleMetrics({instanceKey, days, targetPercentile
         key: instanceKey,
         days: days,
         targetPercentile: targetPercentile,
+        defectsOnly: defectsOnly,
         referenceString: referenceString
       },
       errorPolicy: "all",
