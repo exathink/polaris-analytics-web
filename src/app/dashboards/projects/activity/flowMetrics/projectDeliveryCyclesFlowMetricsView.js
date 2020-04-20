@@ -17,7 +17,7 @@ const projectDeliveryCycleFlowMetricsMeta = {
   }
 }
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, projectCycleMetrics,  initialMetric}) => {
+export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, projectCycleMetrics,  initialMetric, defectsOnly}) => {
   const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   return (
@@ -41,6 +41,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, 
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         projectCycleMetrics={projectCycleMetrics}
+        defectsOnly={defectsOnly}
       />
     </React.Fragment>
   )
