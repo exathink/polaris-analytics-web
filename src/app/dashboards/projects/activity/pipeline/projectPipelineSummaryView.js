@@ -5,7 +5,7 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 
-const WorkItemSummaryPanelView = (
+const PipelineSummaryView = (
   {
     model: {
       backlog,
@@ -115,7 +115,7 @@ const WorkItemSummaryPanelView = (
   )
 };
 
-export const WorkItemSummaryPanel = withNavigationContext(WorkItemSummaryPanelView);
+export const ProjectPipelineSummaryView = withNavigationContext(PipelineSummaryView);
 
 
 

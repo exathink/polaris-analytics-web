@@ -1,10 +1,10 @@
 import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
-import {WorkItemSummaryPanel} from "./workItemSummaryPanelView";
+import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 
 import {useQueryProjectWorkItemSummaries} from "../hooks/useQueryProjectWorkItemSummaries";
 
-export const ProjectWorkItemSummaryWidget = (
+export const ProjectPipelineWidget = (
   {
     instanceKey,
     latestWorkItemEvent,
@@ -18,7 +18,7 @@ export const ProjectWorkItemSummaryWidget = (
     if (error) return null;
     const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
     return (
-      <WorkItemSummaryPanel
+      <ProjectPipelineSummaryView
         model={
           {
 

@@ -9,7 +9,7 @@ import {
 } from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
-import {ProjectWorkItemSummaryWidget} from "./workItemSummary";
+import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 
@@ -98,7 +98,7 @@ export const dashboard = () => (
                     title={"Pipeline"}
                     render={
                       ({view}) =>
-                        <ProjectWorkItemSummaryWidget
+                        <ProjectPipelineWidget
                           instanceKey={key}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
