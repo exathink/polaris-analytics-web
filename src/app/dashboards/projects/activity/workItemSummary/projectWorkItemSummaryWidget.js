@@ -9,24 +9,29 @@ export const ProjectWorkItemSummaryWidget = (
     instanceKey,
     latestWorkItemEvent,
     stateMappingIndex,
+    view,
     pollInterval
   }) => {
-  const {loading, error, data} = useQueryProjectWorkItemSummaries({instanceKey, referenceString: latestWorkItemEvent})
-  if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
-  if (error) return null;
-  const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
-  return (
-    <WorkItemSummaryPanel
-      model={
-        {
+  if (view === 'primary') {
+    const {loading, error, data} = useQueryProjectWorkItemSummaries({instanceKey, referenceString: latestWorkItemEvent})
+    if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+    if (error) return null;
+    const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
+    return (
+      <WorkItemSummaryPanel
+        model={
+          {
 
-          ...workItemStateTypeCounts
+            ...workItemStateTypeCounts
 
+          }
         }
-      }
-      stateMappingIndex={stateMappingIndex}
-    />
-  )
+        stateMappingIndex={stateMappingIndex}
+      />
+    )
+  } else {
+    return null;
+  }
 
 }
 

@@ -97,11 +97,12 @@ export const dashboard = () => (
                     name="workitem-summary"
                     title={"Pipeline"}
                     render={
-                      () =>
+                      ({view}) =>
                         <ProjectWorkItemSummaryWidget
                           instanceKey={key}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
+                          view={view}
                         />
                     }
                     showDetail={true}
