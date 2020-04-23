@@ -1,6 +1,7 @@
 import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
 import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
+import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
 
 import {useQueryProjectWorkItemSummaries} from "../hooks/useQueryProjectWorkItemSummaries";
 
@@ -30,7 +31,13 @@ export const ProjectPipelineWidget = (
       />
     )
   } else {
-    return null;
+    return (
+      <ProjectPipelineDetailDashboard
+        instanceKey={instanceKey}
+        latestWorkItemEvent={latestWorkItemEvent}
+        stateMappingIndex={stateMappingIndex}
+      />
+    )
   }
 
 }
