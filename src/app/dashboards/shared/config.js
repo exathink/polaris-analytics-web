@@ -80,3 +80,19 @@ export const WorkItemTypeDisplayName = {
   subtask: 'Subtask',
   pull_request: 'Pull Request'
 }
+
+export const WorkItemStateTypeSortOrder = {
+  backlog: 0,
+  open: 1,
+  wip: 2,
+  complete: 3,
+  closed: 4
+}
+
+export const WorkItemStateTypeDisplayName = {
+  backlog: 'Backlog',
+  open: 'Open',
+  wip: 'Wip',
+  complete: 'Code Complete',
+  closed: 'Closed'
+}

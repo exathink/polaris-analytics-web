@@ -3,10 +3,10 @@ import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
 
-export function useQueryProjectWorkItemSummaries({instanceKey, referenceString}) {
+export function useQueryProjectPipelineSummary({instanceKey, referenceString}) {
   return useQuery(
     gql`
-     query projectWorkItemSummaries($key: String!, $referenceString: String) {
+     query projectPipelineSummary($key: String!, $referenceString: String) {
       project(key: $key, interfaces: [WorkItemStateTypeCounts], referenceString: $referenceString) {
           id
           ... on WorkItemStateTypeCounts {

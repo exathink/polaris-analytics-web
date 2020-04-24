@@ -3,7 +3,7 @@ import {Loading} from "../../../../components/graphql/loading";
 import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
 
-import {useQueryProjectWorkItemSummaries} from "../hooks/useQueryProjectWorkItemSummaries";
+import {useQueryProjectPipelineSummary} from "../hooks/useQueryProjectPipelineSummary";
 
 export const ProjectPipelineWidget = (
   {
@@ -14,7 +14,7 @@ export const ProjectPipelineWidget = (
     pollInterval
   }) => {
   if (view === 'primary') {
-    const {loading, error, data} = useQueryProjectWorkItemSummaries({instanceKey, referenceString: latestWorkItemEvent})
+    const {loading, error, data} = useQueryProjectPipelineSummary({instanceKey, referenceString: latestWorkItemEvent})
     if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
     if (error) return null;
     const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
