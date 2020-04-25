@@ -10,7 +10,8 @@ export const ProjectPipelineDetailDashboard = (
     instanceKey,
     latestWorkItemEvent,
     stateMappingIndex,
-
+    days,
+    targetPercentile,
   }) => (
   <Dashboard dashboard={dashboard_id}>
     <DashboardRow h={"15%"}>
@@ -41,6 +42,8 @@ export const ProjectPipelineDetailDashboard = (
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
+              days={days}
+              targetPercentile={targetPercentile}
             />
         }
         showDetail={true}

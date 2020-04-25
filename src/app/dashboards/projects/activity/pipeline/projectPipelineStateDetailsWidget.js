@@ -3,14 +3,22 @@ import {Loading} from "../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../hooks/useQueryProjectPipelineStateDetails";
 import {ProjectPipelineStateDetailsView} from "./projectPipelineStateDetailsView";
 import {toMoment, daysFromNow, fromNow} from "../../../../helpers/utility";
+import {useQueryProjectCycleMetrics} from "../hooks/useQueryProjectCycleMetrics";
 
 export const ProjectPipelineStateDetailsWidget = (
   {
     instanceKey,
     latestWorkItemEvent,
+    days,
+    targetPercentile,
     stateMappingIndex
   }
 ) => {
+
+  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
+    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
+  )
+
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     referenceString: latestWorkItemEvent
@@ -29,6 +37,7 @@ export const ProjectPipelineStateDetailsWidget = (
   return (
     <ProjectPipelineStateDetailsView
       workItems={workItems}
+      projectCycleMetrics={projectCycleMetricsData? projectCycleMetricsData.project : {}}
     />
   )
 }

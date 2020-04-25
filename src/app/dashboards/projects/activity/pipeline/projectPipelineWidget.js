@@ -10,6 +10,8 @@ export const ProjectPipelineWidget = (
     instanceKey,
     latestWorkItemEvent,
     stateMappingIndex,
+    days,
+    targetPercentile,
     view,
     pollInterval
   }) => {
@@ -36,6 +38,8 @@ export const ProjectPipelineWidget = (
         instanceKey={instanceKey}
         latestWorkItemEvent={latestWorkItemEvent}
         stateMappingIndex={stateMappingIndex}
+        days={days}
+        targetPercentile={targetPercentile}
       />
     )
   }
