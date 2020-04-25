@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, percentileToText, pick, toMoment, daysFromNow} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeSortOrder, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatTerm} from "../../../../i18n";
 
@@ -36,20 +36,28 @@ export const PipelineStateDistributionChart = Chart({
         data: workItemsByStateType[stateType].sort(
           (itemA, itemB) =>
             itemA.state < itemB.state ? -1 :
-              itemA.state > itemB.state ? 1 : 0
+              itemA.state > itemB.state ? 1 :
+                // All items with the same state are sorted in DESCENDING order of time in state
+                // oldest items show up at bottom in the chart
+                (itemB.timeInState - itemA.timeInState)
         ).map(
-          workItem => ({
-            name: workItem.state,
-            y: 1,
-            workItem: workItem
-          })
+          workItem => {
+            return({
+              name: workItem.displayId,
+              y: workItem.timeInState,
+              workItem: workItem
+            })
+          }
         )
       })
     )
     return {
       chart: {
-        type: 'column',
+        type: 'bar',
         backgroundColor: Colors.Chart.backgroundColor,
+        panning: true,
+        panKey: 'shift',
+        zoomType: 'xy'
       },
       title: {
         text: `Pipeline Status`
@@ -57,21 +65,17 @@ export const PipelineStateDistributionChart = Chart({
       xAxis: {
         type: 'category',
         title: {
-          text: 'State'
+          text: 'Work Item'
         }
       },
       yAxis: {
         allowDecimals: false,
         title: {
-          text: 'Days'
+          text: 'Days in State'
         }
       },
 
-      plotOptions: {
-        series: {
-          stacking: 'normal'
-        }
-      },
+
       tooltip: {
         useHTML: true,
         hideDelay: 50,
@@ -79,7 +83,8 @@ export const PipelineStateDistributionChart = Chart({
           return tooltipHtml({
             header: `${this.point.workItem.displayId}: ${this.point.workItem.name}`,
             body: [
-              [`Days:`, `${intl.formatNumber(this.y)}`]
+              [`State:`, `${this.point.workItem.state}`],
+              [`Days in State:`, `${intl.formatNumber(this.y)}`],
             ]
           })
         }
