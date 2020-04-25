@@ -96,3 +96,11 @@ export const WorkItemStateTypeDisplayName = {
   complete: 'Code Complete',
   closed: 'Closed'
 }
+
+export const WorkItemStateTypeColor = {
+  backlog: '#8f9a8e',
+  open: '#069a99',
+  wip: '#2f9a32',
+  complete: '#47479a',
+  closed: '#7824b5'
+}

@@ -5,7 +5,7 @@ import {
   Colors,
   WorkItemStateTypeSortOrder,
   WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName
+  WorkItemTypeDisplayName, WorkItemStateTypeColor
 } from "../../../shared/config";
 import {formatTerm} from "../../../../i18n";
 
@@ -36,6 +36,7 @@ export const PipelineStateDistributionChart = Chart({
       // Series definition for this state type
       stateType => ({
         name: WorkItemStateTypeDisplayName[stateType],
+        color: WorkItemStateTypeColor[stateType],
         // Within the series the work items are sorted by state. This is needed to consistently
         // stack the columns in the column chart.
         data: workItemsByStateType[stateType].sort(
