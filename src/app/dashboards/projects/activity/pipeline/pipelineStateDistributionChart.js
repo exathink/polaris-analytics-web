@@ -89,9 +89,10 @@ export const PipelineStateDistributionChart = Chart({
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.workItem.workItemType]}: ${this.point.workItem.name}`,
             body: [
-              [`Id: `, `${this.point.workItem.displayId}`],
+              [`Id:`, `${this.point.workItem.displayId}`],
               [`State:`, `${this.point.workItem.state}`],
-              [`Days in State:`, `${intl.formatNumber(this.y)}`],
+              [`Entered:`, `${this.point.workItem.timeInStateDisplay}`],
+              [`Time in State:`, `${intl.formatNumber(this.y)} days`],
             ]
           })
         }
