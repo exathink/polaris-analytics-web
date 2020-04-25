@@ -1,36 +1,47 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, percentileToText, pick, toMoment, daysFromNow} from "../../../../helpers/utility";
+import {pick} from "../../../../helpers/utility";
+import {cycleMetricsReferencePlotlines} from "../shared/chartParts";
+
 import {
   Colors,
-  WorkItemStateTypeSortOrder,
+  WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName, WorkItemStateTypeColor
+  WorkItemStateTypeSortOrder,
+  WorkItemTypeDisplayName
 } from "../../../shared/config";
-import {formatTerm} from "../../../../i18n";
+
+function getMaxDays(workItems, projectCycleMetrics) {
+  return workItems.reduce(
+    (max, workItem) => workItem.timeInState > max ? workItem.timeInState : max,
+    projectCycleMetrics.maxLeadTime || 0
+  )
+
+
+}
 
 export const PipelineStateDistributionChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems')
+    pick(props, 'workItems', 'projectCycleMetrics')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItems, intl}) => {
+  getConfig: ({workItems, projectCycleMetrics, intl}) => {
 
-    const workItemsByStateType = workItems.reduce(
-      (workItemsByStateType, workItem) => {
-        if (workItemsByStateType[workItem.stateType] != null) {
-          workItemsByStateType[workItem.stateType].push(workItem)
+    const workItemsMeta = workItems.reduce(
+      (workItemsMeta, workItem) => {
+        if (workItemsMeta[workItem.stateType] != null) {
+          workItemsMeta[workItem.stateType].push(workItem)
         } else {
-          workItemsByStateType[workItem.stateType] = [workItem]
+          workItemsMeta[workItem.stateType] = [workItem]
         }
-        return workItemsByStateType
+        return workItemsMeta
       },
       {}
     )
     // One series per state type, series are sorted by standard state type sort order
-    const series = Object.keys(workItemsByStateType).sort(
+    const series = Object.keys(workItemsMeta).sort(
       (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
     ).map(
       // Series definition for this state type
@@ -39,7 +50,7 @@ export const PipelineStateDistributionChart = Chart({
         color: WorkItemStateTypeColor[stateType],
         // Within the series the work items are sorted by state. This is needed to consistently
         // stack the columns in the column chart.
-        data: workItemsByStateType[stateType].sort(
+        data: workItemsMeta[stateType].sort(
           (itemA, itemB) =>
             itemA.state < itemB.state ? -1 :
               itemA.state > itemB.state ? 1 :
@@ -76,10 +87,12 @@ export const PipelineStateDistributionChart = Chart({
       },
       yAxis: {
         type: 'logarithmic',
+        max: getMaxDays(workItems, projectCycleMetrics),
         allowDecimals: false,
         title: {
           text: 'Days in State'
-        }
+        },
+        plotLines: cycleMetricsReferencePlotlines(projectCycleMetrics, intl)
       },
 
 

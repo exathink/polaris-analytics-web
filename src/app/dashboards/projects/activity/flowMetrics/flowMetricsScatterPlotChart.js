@@ -11,6 +11,7 @@ import {
   WorkItemTypeSortOrder
 } from "../../../shared/config";
 
+import {cycleMetricsReferencePlotlines} from "../shared/chartParts";
 
 function mapColor(workItem) {
   if (!workItem.isBug) {
@@ -113,27 +114,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`
         },
         max: Math.ceil(projectCycleMetrics.maxLeadTime) + 1,
-        plotLines: [
-          {
-            color: 'blue',
-            value: projectCycleMetrics.maxLeadTime,
-            dashStyle: 'longdashdot',
-            width: 1,
-            label: {
-              text: `Max Lead Time=${intl.formatNumber(projectCycleMetrics.maxLeadTime)} days`,
-              align: `left`
-            }
-          }, {
-            color: 'red',
-            value: projectCycleMetrics.percentileLeadTime,
-            dashStyle: 'longdashdot',
-            width: 1,
-            label: {
-              text: `${percentileToText(projectCycleMetrics.targetPercentile)} Lead Time=${intl.formatNumber(projectCycleMetrics.percentileLeadTime)} days`,
-              align: `left`
-            }
-          }],
-
+        plotLines: cycleMetricsReferencePlotlines(projectCycleMetrics, intl),
       },
       series: series,
       tooltip: {
