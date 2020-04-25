@@ -69,6 +69,7 @@ export const PipelineStateDistributionChart = Chart({
         }
       },
       yAxis: {
+        type: 'logarithmic',
         allowDecimals: false,
         title: {
           text: 'Days in State'
