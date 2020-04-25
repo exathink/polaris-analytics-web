@@ -14,7 +14,7 @@ export function useQueryProjectPipelineStateDetails({instanceKey, referenceStrin
                 name
                 key
                 displayId
-                description
+                workItemType
                 state
                 stateType
                 

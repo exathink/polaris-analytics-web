@@ -1,7 +1,12 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, percentileToText, pick, toMoment, daysFromNow} from "../../../../helpers/utility";
-import {Colors, WorkItemStateTypeSortOrder, WorkItemStateTypeDisplayName} from "../../../shared/config";
+import {
+  Colors,
+  WorkItemStateTypeSortOrder,
+  WorkItemStateTypeDisplayName,
+  WorkItemTypeDisplayName
+} from "../../../shared/config";
 import {formatTerm} from "../../../../i18n";
 
 export const PipelineStateDistributionChart = Chart({
@@ -82,8 +87,9 @@ export const PipelineStateDistributionChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-            header: `${this.point.workItem.displayId}: ${this.point.workItem.name}`,
+            header: `${WorkItemTypeDisplayName[this.point.workItem.workItemType]}: ${this.point.workItem.name}`,
             body: [
+              [`Id: `, `${this.point.workItem.displayId}`],
               [`State:`, `${this.point.workItem.state}`],
               [`Days in State:`, `${intl.formatNumber(this.y)}`],
             ]
