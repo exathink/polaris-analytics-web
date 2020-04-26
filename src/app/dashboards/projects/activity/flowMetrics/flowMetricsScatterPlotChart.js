@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -11,7 +11,7 @@ import {
   WorkItemTypeSortOrder
 } from "../../../shared/config";
 
-import {cycleMetricsReferencePlotlines} from "../shared/chartParts";
+import {PlotLines} from "../shared/chartParts";
 
 function mapColor(workItem) {
   if (!workItem.isBug) {
@@ -114,7 +114,10 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`
         },
         max: Math.ceil(projectCycleMetrics.maxLeadTime) + 1,
-        plotLines: cycleMetricsReferencePlotlines(projectCycleMetrics, intl),
+        plotLines: [
+          PlotLines.maxLeadTime(projectCycleMetrics, intl),
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl)
+        ],
       },
       series: series,
       tooltip: {

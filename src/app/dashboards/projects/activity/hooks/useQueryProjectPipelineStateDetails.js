@@ -23,8 +23,15 @@ export function useQueryProjectPipelineStateDetails({instanceKey, referenceStrin
                     currentStateTransition {
                       eventDate
                     }
+                    currentDeliveryCycleDurations {
+                      state
+                      stateType
+                      daysInState
+                    }
                   }
+                  
                 }
+                
               }
             }
         }
