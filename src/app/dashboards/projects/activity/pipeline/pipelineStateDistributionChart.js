@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {pick} from "../../../../helpers/utility";
-import {cycleMetricsReferencePlotlines} from "../shared/chartParts";
+import {PlotLines} from "../shared/chartParts";
 
 import {
   Colors,
@@ -14,7 +14,7 @@ import {
 function getMaxDays(workItems, projectCycleMetrics) {
   return workItems.reduce(
     (max, workItem) => workItem.timeInState > max ? workItem.timeInState : max,
-    projectCycleMetrics.maxLeadTime || 0
+    projectCycleMetrics.percentileLeadTime || 0
   )
 
 
@@ -29,43 +29,60 @@ export const PipelineStateDistributionChart = Chart({
 
   getConfig: ({workItems, projectCycleMetrics, intl}) => {
 
-    const workItemsMeta = workItems.reduce(
-      (workItemsMeta, workItem) => {
-        if (workItemsMeta[workItem.stateType] != null) {
-          workItemsMeta[workItem.stateType].push(workItem)
+    // work items are grouped into buckets based on their current state
+    const workItemsByStateType = workItems.reduce(
+      (workItemsByStateType, workItem) => {
+        if (workItemsByStateType[workItem.stateType] != null) {
+          workItemsByStateType[workItem.stateType].push(workItem)
         } else {
-          workItemsMeta[workItem.stateType] = [workItem]
+          workItemsByStateType[workItem.stateType] = [workItem]
         }
-        return workItemsMeta
+        return workItemsByStateType
       },
       {}
     )
-    // One series per state type, series are sorted by standard state type sort order
-    const series = Object.keys(workItemsMeta).sort(
+    // One series is created per bucket by current state type, series are sorted by standard state type sort order
+    const series = Object.keys(workItemsByStateType).sort(
       (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
     ).map(
       // Series definition for this state type
       stateType => ({
         name: WorkItemStateTypeDisplayName[stateType],
+        // default color for the series. points will override, but this shows on the legend.
         color: WorkItemStateTypeColor[stateType],
-        // Within the series the work items are sorted by state. This is needed to consistently
-        // stack the columns in the column chart.
-        data: workItemsMeta[stateType].sort(
-          (itemA, itemB) =>
-            itemA.state < itemB.state ? -1 :
-              itemA.state > itemB.state ? 1 :
-                // All items with the same state are sorted in DESCENDING order of time in state
-                // oldest items show up at bottom in the chart
-                (itemB.timeInState - itemA.timeInState)
-        ).map(
-          workItem => {
-            return({
-              name: workItem.displayId,
-              y: workItem.timeInState,
-              workItem: workItem
-            })
-          }
-        )
+        stacking: true,
+        // Within the series the work items are sorted by current state. This is needed to consistently
+        // order the columns in the column chart.
+        data: workItemsByStateType[stateType].sort(
+            (itemA, itemB) =>
+              itemA.state < itemB.state ? -1 :
+                itemA.state > itemB.state ? 1 :
+                  // All items with the same state are sorted in DESCENDING order of time in state
+                  // oldest items show up at the top of each group in the chart
+                  (itemB.timeInState - itemA.timeInState)
+          ).flatMap(
+            // each work item is mapped to one or more points
+            // in the series, one point per distinct state that was in
+            // prior to the current state. So we flatMap here instead of map
+            workItem =>
+              workItem.workItemStateDetails.currentDeliveryCycleDurations.sort(
+                (durationA , durationB) =>
+                  durationA.daysInState && durationB.daysInState ?
+                    // If both states are prior states sort the delivery cycle durations by standard state type order
+                    WorkItemStateTypeSortOrder[durationA.stateType] - WorkItemStateTypeSortOrder[durationB.stateType] :
+                    // otherwise the current state, the state with null days in state gets sorted last
+                    durationA.daysInState ? -1 : 1
+              ).map(
+                // This is single point in the series
+                durationInState => ({
+                  name: workItem.displayId,
+                  y: durationInState.daysInState || workItem.timeInState,
+                  color: WorkItemStateTypeColor[durationInState.stateType],
+                  durationInState: durationInState,
+                  workItem: workItem
+                })
+              )
+          )
       })
     )
     return {
@@ -86,13 +103,15 @@ export const PipelineStateDistributionChart = Chart({
         }
       },
       yAxis: {
-        type: 'logarithmic',
+        type: 'linear',
         max: getMaxDays(workItems, projectCycleMetrics),
         allowDecimals: false,
         title: {
           text: 'Days in State'
         },
-        plotLines: cycleMetricsReferencePlotlines(projectCycleMetrics, intl)
+        plotLines: [
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl)
+        ],
       },
 
 
@@ -100,14 +119,20 @@ export const PipelineStateDistributionChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
+          const {displayId, workItemType, name, state, timeInStateDisplay} = this.point.workItem;
+
           return tooltipHtml({
-            header: `${WorkItemTypeDisplayName[this.point.workItem.workItemType]}: ${this.point.workItem.name}`,
-            body: [
-              [`Id:`, `${this.point.workItem.displayId}`],
-              [`State:`, `${this.point.workItem.state}`],
-              [`Entered:`, `${this.point.workItem.timeInStateDisplay}`],
-              [`Time in State:`, `${intl.formatNumber(this.y)} days`],
-            ]
+            header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
+            body: this.point.durationInState.state === this.point.workItem.state ?
+              [
+                [`Current State:`, `${state}`],
+                [`Entered:`, `${timeInStateDisplay}`],
+                [`Time in State:`, `${intl.formatNumber(this.y)} days`],
+              ] : [
+                [`Phase:`, `${WorkItemStateTypeDisplayName[this.point.durationInState.stateType]}`],
+                [`State:`, `${this.point.durationInState.state}`],
+                [`Time in State:`, `${intl.formatNumber(this.y)} days`],
+              ]
           })
         }
       },
