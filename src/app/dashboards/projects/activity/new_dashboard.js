@@ -22,6 +22,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import Repositories from "../../repositories/context";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -72,7 +73,7 @@ export const dashboard = () => (
            latestCommit
          },
          context
-      }) => {
+       }) => {
 
         const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
 
@@ -92,66 +93,66 @@ export const dashboard = () => (
               />
               {
                 stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
-                    name="workitem-summary"
-                    title={"Pipeline"}
-                    render={
-                      ({view}) =>
-                        <ProjectPipelineWidget
-                          instanceKey={key}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={0.70}
-                          view={view}
-                        />
-                    }
-                    showDetail={true}
-                  />
+                <DashboardWidget
+                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
+                  name="workitem-summary"
+                  title={"Pipeline"}
+                  render={
+                    ({view}) =>
+                      <ProjectPipelineWidget
+                        instanceKey={key}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        stateMappingIndex={stateMappingIndex}
+                        days={30}
+                        targetPercentile={0.70}
+                        view={view}
+                      />
+                  }
+                  showDetail={true}
+                />
               }
               {
                 stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
-                    name="flow-metrics"
-                    title={"Flow Metrics"}
-                    subtitle={"Last 30 Days"}
-                    render={
-                      ({view}) =>
-                        <ProjectFlowMetricsWidget
-                          instanceKey={key}
-                          view = {view}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={0.70}
-                        />
-                    }
-                    showDetail={true}
-                  />
+                <DashboardWidget
+                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
+                  name="flow-metrics"
+                  title={"Flow Metrics"}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    ({view}) =>
+                      <ProjectFlowMetricsWidget
+                        instanceKey={key}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        stateMappingIndex={stateMappingIndex}
+                        days={30}
+                        targetPercentile={0.70}
+                      />
+                  }
+                  showDetail={true}
+                />
 
               }
               {
                 stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.30}
-                    name="defect-metrics"
-                    title={"Defect Metrics"}
-                    subtitle={"Last 30 Days"}
-                    render={
-                      ({view}) =>
-                        <ProjectDefectMetricsWidget
-                          instanceKey={key}
-                          view = {view}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={0.70}
-                        />
-                    }
-                    showDetail={true}
-                  />
+                <DashboardWidget
+                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.30}
+                  name="defect-metrics"
+                  title={"Defect Metrics"}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    ({view}) =>
+                      <ProjectDefectMetricsWidget
+                        instanceKey={key}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        stateMappingIndex={stateMappingIndex}
+                        days={30}
+                        targetPercentile={0.70}
+                      />
+                  }
+                  showDetail={true}
+                />
               }
 
             </DashboardRow>
@@ -167,10 +168,6 @@ export const dashboard = () => (
                     />
                     <DashboardWidget
                       w={1 / 3}
-                      render={() => null}
-                    />
-                    <DashboardWidget
-                      w={1 / 3}
                       name="most-active-contributors"
                       render={
                         ({view}) =>
@@ -180,6 +177,25 @@ export const dashboard = () => (
                             childConnection={'recentlyActiveContributors'}
                             context={context}
                             childContext={Contributors}
+                            top={10}
+                            latestCommit={latestCommit}
+                            days={1}
+                            view={view}
+                          />
+                      }
+                      showDetail={true}
+                    />
+                    <DashboardWidget
+                      w={1/3}
+                      name="most-active-repositories"
+                      render={
+                        ({view}) =>
+                          <DimensionMostActiveChildrenWidget
+                            dimension={'project'}
+                            instanceKey={key}
+                            childConnection={'recentlyActiveRepositories'}
+                            context={context}
+                            childContext={Repositories}
                             top={10}
                             latestCommit={latestCommit}
                             days={1}
