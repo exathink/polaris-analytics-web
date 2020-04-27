@@ -15,6 +15,10 @@ const messages = defineMessages({
     id: 'contexts.projects.display',
     defaultMessage: "{quantity, plural, one {Project} other {Projects}}"
   },
+  work_items: {
+    id: 'contexts.work_items.display',
+    defaultMessage: "{quantity, plural, one {Work Item} other {Work Items}}"
+  },
   repositories: {
     id: 'contexts.repositories.display',
     defaultMessage: "{quantity, plural, one {Repository} other {Repositories}}"
@@ -75,6 +79,19 @@ export const Contexts = {
   projects: {
     name: 'projects',
     message: messages.projects,
+    display:
+        (quantity = 0) => {
+          return <FormattedMessage
+            {...messages.projects}
+            values={{quantity: quantity}}
+        />
+        },
+    icon: 'ion-folder',
+    color: '#356eb2'
+  },
+  work_items: {
+    name: 'work_items',
+    message: messages.work_items,
     display:
         (quantity = 0) => {
           return <FormattedMessage

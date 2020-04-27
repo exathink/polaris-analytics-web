@@ -18,6 +18,8 @@ import {
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 
+import {Contexts} from "../../../meta/contexts";
+
 import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
@@ -164,7 +166,22 @@ export const dashboard = () => (
                   <DashboardRow h={'25%'}>
                     <DashboardWidget
                       w={1 / 3}
-                      render={() => null}
+                      name="most-active-work-items"
+                      render={
+                        ({view}) =>
+                          <DimensionMostActiveChildrenWidget
+                            dimension={'project'}
+                            instanceKey={key}
+                            childConnection={'recentlyActiveWorkItems'}
+                            context={context}
+                            childContext={Contexts.work_items}
+                            top={10}
+                            latestCommit={latestCommit}
+                            days={1}
+                            view={view}
+                          />
+                      }
+                      showDetail={true}
                     />
                     <DashboardWidget
                       w={1 / 3}

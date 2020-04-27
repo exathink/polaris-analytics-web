@@ -17,7 +17,7 @@ export function useQueryProjectPipelineStateDetails({instanceKey, referenceStrin
                 workItemType
                 state
                 stateType
-                
+              
                 ... on WorkItemStateDetails {
                   workItemStateDetails {
                     currentStateTransition {
