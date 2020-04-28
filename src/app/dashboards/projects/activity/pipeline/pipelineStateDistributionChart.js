@@ -13,11 +13,12 @@ import {
 
 function getMaxDays(workItems, projectCycleMetrics) {
   return workItems.reduce(
-    (max, workItem) => workItem.timeInState > max ? workItem.timeInState : max,
+    (max, workItem) => workItem.timeInState + workItem.timeInPriorStates > max ?
+      workItem.timeInState + workItem.timeInPriorStates
+      :
+      max,
     projectCycleMetrics.percentileLeadTime || 0
   )
-
-
 }
 
 export const PipelineStateDistributionChart = Chart({

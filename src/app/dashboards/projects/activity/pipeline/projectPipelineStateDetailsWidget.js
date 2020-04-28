@@ -26,11 +26,16 @@ export const ProjectPipelineStateDetailsWidget = (
   if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
   if (error) return null;
   const workItems = data['project']['workItems']['edges'].map(edge => {
-    const latestTransitionDate = edge.node.workItemStateDetails.currentStateTransition.eventDate;
+    const workItemStateDetails = edge.node.workItemStateDetails;
+    const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
     return {
       ...edge.node,
       timeInState: daysFromNow(toMoment(latestTransitionDate)),
-      timeInStateDisplay: fromNow(latestTransitionDate)
+      timeInStateDisplay: fromNow(latestTransitionDate),
+      timeInPriorStates: workItemStateDetails.currentDeliveryCycleDurations.reduce(
+        (total, duration) => total + duration.daysInState
+        , 0
+      )
     }
   });
 
