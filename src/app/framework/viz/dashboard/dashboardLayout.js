@@ -15,7 +15,7 @@ export class DashboardLayout extends React.Component {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
         <div className={"dashboard"}>
-          <DashboardRow h={"100%"}>
+          <DashboardRow h={"98%"}>
             {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
           </DashboardRow>
         </div>
