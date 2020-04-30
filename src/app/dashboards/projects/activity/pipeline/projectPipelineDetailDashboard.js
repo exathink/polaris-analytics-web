@@ -31,7 +31,7 @@ export const ProjectPipelineDetailDashboard = (
         showDetail={false}
       />
     </DashboardRow>
-    <DashboardRow h={"83%"}>
+    <DashboardRow h={"81%"}>
       <DashboardWidget
         w={1}
         name="project-pipeline-state-detail-view"
