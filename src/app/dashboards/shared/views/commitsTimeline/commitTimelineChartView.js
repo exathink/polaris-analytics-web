@@ -215,7 +215,7 @@ export class CommitsTimelineChartView extends React.Component {
             style={{backgroundColor: '#f2f3f6'}}
           />
         </div>
-        <div style={{height: "85%"}}>
+        <div style={{height: "82%"}}>
           <CommitsTimelineRollupBarChart
             /* We cannot use the model on state here because this should include all the categories
             *  even when some a selected*/
