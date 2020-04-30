@@ -81,7 +81,7 @@ export const DashboardRow = ({children, h, title, controls, align, ...rest}) => 
 
 
 export const DashboardTabs = ({children, ...rest}) => (
-  <Tabs className={'dashboard-tabs'} {...rest} >
+  <Tabs className={'dashboard-tabs'} animated={false} {...rest} >
     {
       children
     }
