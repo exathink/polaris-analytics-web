@@ -328,13 +328,13 @@ export class CommitsTimelineChartView extends React.Component {
 
     return (
       <VizRow h={1}>
-        <VizItem w={1}>
+
           {
             view === 'detail' ?
               this.getDetailLayout(this.state.model, showHeader)
               : this.getPrimaryLayout('100%', this.state.model, showHeader)
           }
-        </VizItem>
+
       </VizRow>
     )
   }
