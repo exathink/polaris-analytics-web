@@ -245,15 +245,6 @@ export const dashboard = () => (
                     />
                   </DashboardRow>
                 </DashboardTabPane>
-                <DashboardTabPane tab={'Watchlist'} key={'watchlist'}>
-
-                </DashboardTabPane>
-                <DashboardTabPane tab={'Code Complete'} key={'code-complete'}>
-
-                </DashboardTabPane>
-                <DashboardTabPane tab={'Closed'} key={'closed'}>
-
-                </DashboardTabPane>
               </DashboardTabs>
             </DashboardRow>
           </Dashboard>
