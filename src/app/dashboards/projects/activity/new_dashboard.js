@@ -12,7 +12,6 @@ import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
-
 import {
   DimensionCommitsNavigatorWidget,
   DimensionMostActiveChildrenWidget
@@ -162,7 +161,7 @@ export const dashboard = () => (
               <DashboardTabs
                 defaultActiveKey={'development'}
               >
-                <DashboardTabPane tab={'Active'} key={'development'}>
+                <DashboardTabPane tab={'Code Changes'} key={'development'}>
                   <DashboardRow h={'25%'}>
                     <DashboardWidget
                       w={1 / 3}
@@ -203,7 +202,7 @@ export const dashboard = () => (
                       showDetail={true}
                     />
                     <DashboardWidget
-                      w={1/3}
+                      w={1 / 3}
                       name="most-active-repositories"
                       render={
                         ({view}) =>
@@ -226,7 +225,6 @@ export const dashboard = () => (
                     <DashboardWidget
                       w={1}
                       name="commits"
-                      title={"Code Changes"}
                       render={
                         ({view}) =>
                           <DimensionCommitsNavigatorWidget
