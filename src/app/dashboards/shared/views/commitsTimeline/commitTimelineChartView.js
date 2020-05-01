@@ -7,7 +7,7 @@ import {GroupingSelector} from "../../components/groupingSelector/groupingSelect
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 
-import {VizRow, VizItem} from "../../containers/layout";
+import {VizRow} from "../../containers/layout";
 
 const commitTimelineGroupings = {
   repository: "Repository",
