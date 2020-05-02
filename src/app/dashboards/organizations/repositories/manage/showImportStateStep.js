@@ -146,6 +146,7 @@ export class ShowImportStateStep extends React.Component {
           repositoryKeys: importedRepositoryKeys
         }}
         pollInterval={1000}
+        notifyOnNetworkStatusChange={true}
         onCompleted={
           data => {
             this.onDataUpdated(data)

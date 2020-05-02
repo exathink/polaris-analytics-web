@@ -31,6 +31,7 @@ const DeleteConfirmationModal = ({record, onConnectorDeleted, onDone}) => {
       variables={{
         connectorKey: record.key
       }}
+      notifyOnNetworkStatusChange={true}
       onCompleted={
         (data) => {
           if (data.workTrackingConnector.workItemsSources.count === 0) {

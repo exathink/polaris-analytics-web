@@ -75,11 +75,15 @@ export class TrackingReceiptMonitor extends React.Component {
           variables={{
             trackingReceiptKey: trackingReceiptKey
           }}
+          notifyOnNetworkStatusChange={true}
           pollInterval={this.state.polling ? 1000 : 0}
           onCompleted={this.onTrackingReceiptInfoUpdated.bind(this)}
         >
           {
-            () => React.cloneElement(child, {trackingReceiptCompleted: this.state.trackingReceiptCompleted})
+            ({loading, error, data}) => {
+              console.log('Tracking receipt render..')
+              return React.cloneElement(child, {trackingReceiptCompleted: this.state.trackingReceiptCompleted})
+            }
           }
         </Query>
         :
