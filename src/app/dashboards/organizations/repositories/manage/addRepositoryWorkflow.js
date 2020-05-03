@@ -1,7 +1,6 @@
 import React from 'react';
 import {ApolloProvider} from 'react-apollo';
 import {Steps} from 'antd';
-import Button from "../../../../../components/uielements/button";
 import {WorkflowActionButton} from "../../../../components/workflow/workflowActionButton";
 import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
@@ -198,16 +197,16 @@ export const AddRepositoryWorkflow = withNavigationContext(
                     {current < 4 ? 'Back' : 'Import More Repositories'}
                   </WorkflowActionButton>
                 )}
-                {
-                  <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
-                    Done
-                  </WorkflowActionButton>
-                }
                 {currentStep.showNext && current < steps.length - 1 && (
                   <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
                     Next
                   </WorkflowActionButton>
                 )}
+                {
+                  <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
+                    Done
+                  </WorkflowActionButton>
+                }
               </Flex>
             <Flex column h={0.75} className="steps-content">
               {
