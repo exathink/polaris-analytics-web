@@ -2,6 +2,7 @@ import React from 'react';
 import {ApolloProvider} from 'react-apollo';
 import {Steps} from 'antd';
 import Button from "../../../../../components/uielements/button";
+import {WorkflowActionButton} from "../../../../components/workflow/workflowActionButton";
 import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
 import {SelectRepositoriesStep, REFETCH_CONNECTOR_REPOSITORIES_QUERY} from "./selectRepositoriesStep";
@@ -193,22 +194,20 @@ export const AddRepositoryWorkflow = withNavigationContext(
             </Flex>
             <Flex h={0.10} justify='center' pt={'10px'} className="steps-action">
                 {current > 0 && (
-                  <Button size={'small'} type="primary" shape={'circle'} style={{backgroundColor: '#7824b5', borderColor: '#7824b5'}} onClick={() => this.prev()}>
+                  <WorkflowActionButton onClick={() => this.prev()}>
                     {current < 4 ? 'Back' : 'Import More Repositories'}
-                  </Button>
+                  </WorkflowActionButton>
                 )}
                 {
-                  <Button size={'small'} type="primary" shape={'circle'} style={{backgroundColor: '#7824b5', borderColor: '#7824b5'}}
-                          onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
+                  <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
                     Done
-                  </Button>
+                  </WorkflowActionButton>
                 }
                 {currentStep.showNext && current < steps.length - 1 && (
-                  <Button size={'small'} type="primary"   shape={'circle'} style={!disableNext ? {backgroundColor: '#7824b5', borderColor: '#7824b5'} : {}} disabled={disableNext} onClick={() => this.next()}>
+                  <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
                     Next
-                  </Button>
+                  </WorkflowActionButton>
                 )}
-
               </Flex>
             <Flex column h={0.75} className="steps-content">
               {
