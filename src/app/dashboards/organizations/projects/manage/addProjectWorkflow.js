@@ -1,20 +1,18 @@
 import React from 'react';
 import {ApolloProvider} from 'react-apollo';
-import {Steps} from 'antd';
-import Button from "../../../../../components/uielements/button";
+
 import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
-import {SelectProjectsStep, REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY} from "./selectProjectsStep";
+import {REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY, SelectProjectsStep} from "./selectProjectsStep";
 import {ConfigureImportStep} from "./configureImportStep";
 import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import '../../../../components/workflow/steps.css';
-import './addProjectsWorkflow.css';
 
-const {Step} = Steps;
+import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
+
 
 const steps = [
   {
@@ -174,52 +172,43 @@ export const AddProjectWorkflow = withNavigationContext(
       const {organization, onDone} = this.props;
       return (
         <ApolloProvider client={work_tracking_service}>
-          <div style={{height: "100%"}}>
-            <h2>Import Projects</h2>
-            <Steps current={current}>
-              {steps.map((item, index) => (
-                <Step key={index}
-                  style={index > current ? {display: 'none'} : {}}
-                  title={item.title}
-                />
-              ))}
-            </Steps>
-            <div className="steps-content">
-              {
-                React.createElement(steps[current].content, {
-                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
-                  selectedConnectorType: this.state.selectedConnectorType,
-                  onConnectorSelected: this.onConnectorSelected.bind(this),
-                  selectedConnector: this.state.selectedConnector,
-                  onProjectsSelected: this.onProjectsSelected.bind(this),
-                  selectedProjects: this.state.selectedProjects,
-                  onImportConfigured: this.onImportConfigured.bind(this),
-                  importedProjectKeys: this.state.importedProjectKeys,
-                  organizationKey: organization.key
-                }
-                )
-              }
-            </div>
-
-            <div className="steps-action">
-              {current > 0 && (
-                <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                  {current < 4 ? 'Back' : 'Import More Projects'}
-                </Button>
-              )}
-              {currentStep.showNext && current < steps.length - 1 && !disableNext && (
-                <Button type="primary" onClick={() => this.next()}>
-                  Next
-              </Button>
-              )}
-              {(disableNext || current === steps.length - 1) && (
-                <Button type="primary" onClick={() => onDone && onDone(this.state.selectedProjects)}>
-                  Done
-              </Button>
-              )}
-
-            </div>
-          </div>
+          <WorkflowView
+            title={"Import Projects"}
+            steps={steps}
+            current={current}
+            renderNavigationControls={
+              () => (
+                <React.Fragment>
+                  {
+                    <WorkflowActionButton onClick={() => onDone && onDone(this.state.selectedProjects)}>
+                      Done
+                    </WorkflowActionButton>
+                  }
+                  {current > 0 && (
+                    <WorkflowActionButton onClick={() => this.prev()}>
+                      {current < 4 ? 'Back' : 'Import More Projects'}
+                    </WorkflowActionButton>
+                  )}
+                  {currentStep.showNext && current < steps.length - 1 && (
+                    <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
+                      Next
+                    </WorkflowActionButton>
+                  )}
+                </React.Fragment>
+              )
+            }
+            stepProps={{
+              onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+              selectedConnectorType: this.state.selectedConnectorType,
+              onConnectorSelected: this.onConnectorSelected.bind(this),
+              selectedConnector: this.state.selectedConnector,
+              onProjectsSelected: this.onProjectsSelected.bind(this),
+              selectedProjects: this.state.selectedProjects,
+              onImportConfigured: this.onImportConfigured.bind(this),
+              importedProjectKeys: this.state.importedProjectKeys,
+              organizationKey: organization.key
+            }}
+          />
         </ApolloProvider>
       );
     }
