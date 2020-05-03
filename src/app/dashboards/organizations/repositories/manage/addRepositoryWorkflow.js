@@ -1,10 +1,9 @@
 import React from 'react';
 import {ApolloProvider} from 'react-apollo';
-import {Steps} from 'antd';
-import {WorkflowActionButton} from "../../../../components/workflow/workflowActionButton";
+
 import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
-import {SelectRepositoriesStep, REFETCH_CONNECTOR_REPOSITORIES_QUERY} from "./selectRepositoriesStep";
+import {REFETCH_CONNECTOR_REPOSITORIES_QUERY, SelectRepositoriesStep} from "./selectRepositoriesStep";
 import {ReviewImportStep} from "./reviewImportStep";
 import {ShowImportStateStep} from "./showImportStateStep";
 import {vcs_service} from "../../../../services/graphql";
@@ -12,10 +11,8 @@ import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {openNotification} from "../../../../helpers/utility";
-import '../../../../components/workflow/steps.css';
-import {Flex, Box} from "reflexbox";
 
-const {Step} = Steps;
+import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
 
 const steps = [
   {
@@ -178,57 +175,45 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {organization, onDone} = this.props;
       return (
         <ApolloProvider client={vcs_service}>
-          <Flex column style={{height: "100%", width: "100%"}}>
-            <Flex column h={0.15}>
-              <h2>Import Repositories</h2>
-              <Steps current={current}>
-                {steps.map((item, index) => (
-                  <Step key={index}
-                        style={index > current ? {display: 'none'} : {}}
-                        title={item.title}
-                  />
-                ))}
-              </Steps>
-
-            </Flex>
-            <Flex h={0.10} justify='center' pt={'10px'} className="steps-action">
-                {current > 0 && (
-                  <WorkflowActionButton onClick={() => this.prev()}>
-                    {current < 4 ? 'Back' : 'Import More Repositories'}
-                  </WorkflowActionButton>
-                )}
-                {currentStep.showNext && current < steps.length - 1 && (
-                  <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
-                    Next
-                  </WorkflowActionButton>
-                )}
-                {
-                  <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
-                    Done
-                  </WorkflowActionButton>
-                }
-              </Flex>
-            <Flex column h={0.75} className="steps-content">
-              {
-                React.createElement(steps[current].content, {
-                  organizationKey: organization.key,
-                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
-                  selectedConnectorType: this.state.selectedConnectorType,
-                  onConnectorSelected: this.onConnectorSelected.bind(this),
-                  selectedConnector: this.state.selectedConnector,
-                  onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
-                  selectedRepositories: this.state.selectedRepositories,
-                  onDoImport: this.onDoImport.bind(this),
-                  getActiveImports: this.getActiveImports.bind(this),
-                  importedRepositoryKeys: this.state.importedRepositoryKeys
-                })
-              }
-            </Flex>
-
-
-          </Flex>
+          <WorkflowView
+            title={"Import Repositories"}
+            steps={steps}
+            current={current}
+            renderNavigationControls={
+              () => (
+                <React.Fragment>
+                  {
+                    <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
+                      Done
+                    </WorkflowActionButton>
+                  }
+                  {current > 0 && (
+                    <WorkflowActionButton onClick={() => this.prev()}>
+                      {current < 4 ? 'Back' : 'Import More Repositories'}
+                    </WorkflowActionButton>
+                  )}
+                  {currentStep.showNext && current < steps.length - 1 && (
+                    <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
+                      Next
+                    </WorkflowActionButton>
+                  )}
+                </React.Fragment>
+              )
+            }
+            stepProps={{
+              organizationKey: organization.key,
+              onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+              selectedConnectorType: this.state.selectedConnectorType,
+              onConnectorSelected: this.onConnectorSelected.bind(this),
+              selectedConnector: this.state.selectedConnector,
+              onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+              selectedRepositories: this.state.selectedRepositories,
+              onDoImport: this.onDoImport.bind(this),
+              getActiveImports: this.getActiveImports.bind(this),
+              importedRepositoryKeys: this.state.importedRepositoryKeys
+            }}
+          />
         </ApolloProvider>
-
       );
     }
   })

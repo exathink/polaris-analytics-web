@@ -10,7 +10,7 @@ import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/co
 import {Table} from "../../../../components/tables";
 import {useSearch, useSelectionHandler} from "../../../../components/tables/hooks";
 import {NoData} from "../../../../components/misc/noData";
-import {compose, capitalizeFirstLetter, lexicographic} from "../../../../helpers/utility";
+import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 
