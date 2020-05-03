@@ -94,7 +94,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
                   </ProjectLink>
               }
             />
-            <Column title={"Sub-Projects"} dataIndex={"subProjectCount"} key={"subProjectCountCount"}/>
+            <Column title={"Work Streams"} dataIndex={"subProjectCount"} key={"subProjectCountCount"}/>
             <Column title={"Repositories"} dataIndex={"repositoryCount"} key={"repositoryCount"}/>
             <Column
               title={"Last Commit"}
