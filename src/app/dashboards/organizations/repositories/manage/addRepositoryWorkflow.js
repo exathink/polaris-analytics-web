@@ -13,6 +13,7 @@ import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {openNotification} from "../../../../helpers/utility";
 import '../../steps.css';
+import {Flex, Box} from "reflexbox";
 
 const {Step} = Steps;
 
@@ -177,50 +178,57 @@ export const AddRepositoryWorkflow = withNavigationContext(
       const {organization, onDone} = this.props;
       return (
         <ApolloProvider client={vcs_service}>
-          <h2>Import Repositories</h2>
-          <Steps current={current}>
-            {steps.map((item, index) => (
-              <Step key={index}
-                style={index > current ? {display: 'none'} : {}}
-                title={item.title}
-              />
-            ))}
-          </Steps>
-          <div className="steps-content">
-            {
-              React.createElement(steps[current].content, {
-                organizationKey: organization.key,
-                onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
-                selectedConnectorType: this.state.selectedConnectorType,
-                onConnectorSelected: this.onConnectorSelected.bind(this),
-                selectedConnector: this.state.selectedConnector,
-                onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
-                selectedRepositories: this.state.selectedRepositories,
-                onDoImport: this.onDoImport.bind(this),
-                getActiveImports: this.getActiveImports.bind(this),
-                importedRepositoryKeys: this.state.importedRepositoryKeys
-              })
-            }
-          </div>
+          <Flex column style={{height: "100%", width: "100%"}}>
+            <Flex column h={0.15}>
+              <h2>Import Repositories</h2>
+              <Steps current={current}>
+                {steps.map((item, index) => (
+                  <Step key={index}
+                        style={index > current ? {display: 'none'} : {}}
+                        title={item.title}
+                  />
+                ))}
+              </Steps>
 
-          <div className="steps-action">
-            {current > 0 && (
-              <Button type="primary" style={{marginLeft: 8}} onClick={() => this.prev()}>
-                {current < 4 ? 'Back' : 'Import More Repositories'}
-              </Button>
-            )}
-            {currentStep.showNext && current < steps.length - 1 && !disableNext && (
-              <Button type="primary" onClick={() => this.next()}>
-                Next
-            </Button>
-            )}
-            {(disableNext || current === steps.length - 1) && (
-              <Button type="primary" onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
-                Done
-            </Button>
-            )}
+            </Flex>
+            <Flex h={0.10} justify='center' pt={'10px'} className="steps-action">
+                {current > 0 && (
+                  <Button size={'small'} type="primary" shape={'circle'} style={{backgroundColor: '#7824b5', borderColor: '#7824b5'}} onClick={() => this.prev()}>
+                    {current < 4 ? 'Back' : 'Import More Repositories'}
+                  </Button>
+                )}
+                {
+                  <Button size={'small'} type="primary" shape={'circle'} style={{backgroundColor: '#7824b5', borderColor: '#7824b5'}}
+                          onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
+                    Done
+                  </Button>
+                }
+                {currentStep.showNext && current < steps.length - 1 && (
+                  <Button size={'small'} type="primary"   shape={'circle'} style={!disableNext ? {backgroundColor: '#7824b5', borderColor: '#7824b5'} : {}} disabled={disableNext} onClick={() => this.next()}>
+                    Next
+                  </Button>
+                )}
 
-          </div>
+              </Flex>
+            <Flex column h={0.75} className="steps-content">
+              {
+                React.createElement(steps[current].content, {
+                  organizationKey: organization.key,
+                  onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
+                  selectedConnectorType: this.state.selectedConnectorType,
+                  onConnectorSelected: this.onConnectorSelected.bind(this),
+                  selectedConnector: this.state.selectedConnector,
+                  onRepositoriesSelected: this.onRepositoriesSelected.bind(this),
+                  selectedRepositories: this.state.selectedRepositories,
+                  onDoImport: this.onDoImport.bind(this),
+                  getActiveImports: this.getActiveImports.bind(this),
+                  importedRepositoryKeys: this.state.importedRepositoryKeys
+                })
+              }
+            </Flex>
+
+
+          </Flex>
         </ApolloProvider>
 
       );
