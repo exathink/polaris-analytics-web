@@ -51,6 +51,7 @@ export const AddProjectWorkflow = withNavigationContext(
         selectedConnector: {},
         selectedProjects: [],
         importedProjectKeys: [],
+        importedWorkItemsSourcesKeys: []
       };
     }
 
@@ -157,6 +158,7 @@ export const AddProjectWorkflow = withNavigationContext(
           this.setState({
             current: 4,
             importedProjectKeys: result.data.importProjects.projectKeys,
+            importedWorkItemsSourcesKeys: selectedProjects.map(project => project.key),
             selectedProjects: []
           })
         }
@@ -206,6 +208,7 @@ export const AddProjectWorkflow = withNavigationContext(
               selectedProjects: this.state.selectedProjects,
               onImportConfigured: this.onImportConfigured.bind(this),
               importedProjectKeys: this.state.importedProjectKeys,
+              importedWorkItemsSourcesKeys: this.state.importedWorkItemsSourcesKeys,
               organizationKey: organization.key
             }}
           />

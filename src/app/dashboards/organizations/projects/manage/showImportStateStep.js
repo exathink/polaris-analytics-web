@@ -5,6 +5,8 @@ import gql from "graphql-tag";
 import {Spin, Progress} from "antd";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import {CompactTable} from "../../../../components/tables";
+import {Loading} from "../../../../components/graphql/loading";
+
 const {Column} = CompactTable;
 const importStateDisplayMap = {
   ready: 'queued',
@@ -46,7 +48,8 @@ const SHOW_IMPORT_STATE_QUERY = gql`
 export const ShowImportStateStep = (
   {
     selectedConnector,
-    importedProjectKeys
+    importedProjectKeys,
+    importedWorkItemsSourcesKeys
   }
 ) => {
   return (
@@ -61,70 +64,82 @@ export const ShowImportStateStep = (
     >
       {
         ({loading, error, data}) => {
+          if (loading) return <Loading/>;
           if (error) return null;
           let workItemsSources = []
-          if (!loading) {
-            workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(
-              edge => ({
-                key: edge.node.key,
-                name: edge.node.name,
-                importDays: edge.node.initialImportDays,
-                importState: importStateDisplayMap[edge.node.importState],
-                workItemCount: edge.node.workItemCount
-              })
-            ).sort(
-              (a, b) =>
-                importStateSortOrder[a.importState] - importStateSortOrder[b.importState]
-            );
-          }
+
+          workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(
+            edge => ({
+              key: edge.node.key,
+              name: edge.node.name,
+              importDays: edge.node.initialImportDays,
+              importState: importStateDisplayMap[edge.node.importState],
+              workItemCount: edge.node.workItemCount
+            })
+          ).filter(
+            /* Filter out the work items sources from the source projects that were not
+            * actually imported in this round. This is needed because we will get back
+            * all the work items sources in the project from the above query and when we
+            * are importing into an existing project it will include previously imported
+            * sources as well. */
+            workItemsSource => importedWorkItemsSourcesKeys.indexOf(workItemsSource.key) >= 0
+          ).sort(
+            (a, b) =>
+              importStateSortOrder[a.importState] - importStateSortOrder[b.importState]
+          );
+
           const numImported = workItemsSources.filter(
             source => source.importState === 'complete'
           ).length
 
           return (
-            <div className={'show-import-state'}>
-              <Progress
-                type={'circle'}
-                percent={Math.ceil((numImported / workItemsSources.length) * 100)}
-                format={
-                  () => `${numImported}/${workItemsSources.length}`
-                }
-              />
-              <CompactTable
-                size="small"
-                dataSource={workItemsSources}
-                loading={loading}
-                rowKey={record => record.key}
-                rowClassName={
-                  (record, index) => importStateClassIndex[record.importState]
-                }
-                pagination={{
-                  total: workItemsSources.length,
-                  defaultPageSize: 5,
-                  hideOnSinglePage: true
-                }}
-              >
-                <Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
-                <Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
-                <Column title={"Work Items Imported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
-                <Column
-                  title={"Import Status"}
-                  dataIndex={"importState"}
-                  key={"importState"}
-                  render={
-                    importState =>
-                      importState !== 'complete' ?
-                        <Spin tip={importState}/>
-                        :
-                        <Progress
-                          type='circle'
-                          width={30}
-                          percent={100}
-                        />
+            workItemsSources.length > 0 ? (
+              <div className={'show-import-state'}>
+                <Progress
+                  type={'circle'}
+                  percent={Math.ceil((numImported / workItemsSources.length) * 100)}
+                  format={
+                    () => `${numImported}/${workItemsSources.length}`
                   }
                 />
-              </CompactTable>
-            </div>
+                <CompactTable
+                  size="small"
+                  dataSource={workItemsSources}
+                  loading={loading}
+                  rowKey={record => record.key}
+                  rowClassName={
+                    (record, index) => importStateClassIndex[record.importState]
+                  }
+                  pagination={{
+                    total: workItemsSources.length,
+                    defaultPageSize: 5,
+                    hideOnSinglePage: true
+                  }}
+                >
+                  <Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
+                  <Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
+                  <Column title={"Work Items Imported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
+                  <Column
+                    title={"Import Status"}
+                    dataIndex={"importState"}
+                    key={"importState"}
+                    render={
+                      importState =>
+                        importState !== 'complete' ?
+                          <Spin tip={importState}/>
+                          :
+                          <Progress
+                            type='circle'
+                            width={30}
+                            percent={100}
+                          />
+                    }
+                  />
+                </CompactTable>
+              </div>
+            )
+              :
+              <Loading/>
           );
         }
       }

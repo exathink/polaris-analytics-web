@@ -12,8 +12,8 @@ import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const inputModeDescription = {
-  single: 'Import as work stream in a new Polaris Flow project',
-  existing: 'Create new work stream(s) in an existing Polaris Flow project',
+  single: 'Import as work stream(s) in a new Polaris Flow project',
+  existing: 'Import as new work stream(s) into an existing Polaris Flow project',
   separate: 'Import each remote project as a separate local project'
 }
 
