@@ -14,6 +14,7 @@ import {compose, capitalizeFirstLetter, lexicographic} from "../../../../helpers
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 
+
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'github':
@@ -84,7 +85,8 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
       pagination={{
         showTotal: total => `${total} Repositories`,
         defaultPageSize: 10,
-        hideOnSinglePage: true
+        hideOnSinglePage: true,
+        position: 'top'
       }}
       rowSelection={useSelectionHandler(onRepositoriesSelected, selectedRepositories)}
     >
@@ -141,13 +143,16 @@ export const SelectRepositoriesStep =
                   repositories = data.vcsConnector.repositories.edges.map(edge => edge.node);
                 }
                 return (
-                  <div className={'selected-repositories'}>
-                    <h3>{capitalizeFirstLetter(selectedConnector.name)} @ {getServerUrl(selectedConnector)}</h3>
+                  <div style={{height: "100%"}} className={'selected-repositories'}>
+                    <h3>Select repositories to import from connector {selectedConnector.name}</h3>
+                    <h4>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
+                    <h5>{getServerUrl(selectedConnector)}</h5>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
                         <Button
                           type={'primary'}
+                          size={'small'}
                           icon={'download'}
                           onClick={
                             () => refetchRepositories({
@@ -157,7 +162,7 @@ export const SelectRepositoriesStep =
                             })}
                           loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
                         >
-                          Fetch Repositories
+                          Refresh Available Repositories
                     </Button>
                       </ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'right'}>
