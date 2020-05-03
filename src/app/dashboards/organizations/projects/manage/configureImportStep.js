@@ -12,8 +12,8 @@ import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const inputModeDescription = {
-  single: 'Import remote projects into a new Polaris Flow project',
-  existing: 'Import remote projects into an existing Polaris Flow project',
+  single: 'Import as work stream in a new Polaris Flow project',
+  existing: 'Create new work stream(s) in an existing Polaris Flow project',
   separate: 'Import each remote project as a separate local project'
 }
 
@@ -21,7 +21,9 @@ export const ORGANIZATION_PROJECT_COUNT_QUERY = gql`
 query getOrganizationProjectCount($organizationKey: String!){
   organization(key: $organizationKey) {
       id
-      projectCount
+      projects(summariesOnly: true) {
+        count
+      }
     }
   }
 `;
@@ -37,10 +39,11 @@ export const SelectImportMode = ({selectedProjects, importMode, onChange, organi
       {
         ({loading, error, data}) => {
           if (loading || error) return null;
-          const {projectCount} = data.organization;
+          const projectCount = data.organization.projects.count;
           return (
             projectCount > 0 &&
             <React.Fragment>
+              <h4>Select Import Mode</h4>
               <div><em>{inputModeDescription[importMode]}</em></div>
               <Radio.Group
                 name="importMode"

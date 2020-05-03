@@ -2,7 +2,7 @@ import React from 'react';
 import gql from "graphql-tag";
 import {Query} from "react-apollo";
 import {Select} from 'antd';
-
+import {Flex} from 'reflexbox';
 import {analytics_service} from "../../../../services/graphql";
 
 const {Option} = Select;
@@ -42,22 +42,26 @@ export class OrganizationProjectSelectorWidget extends React.Component {
             if (loading || error) return null;
             const {edges: projects} = data.organization.projects;
             return (
-              <React.Fragment>
-                <div>
-                  <Select
-                    className={'projects-selector'}
-                    onChange={value => this.props.onProjectSelectChanged(value)}
-                    placeholder={placeholder}
-                    defaultValue={selectedProjectKey}
-                  >
-                    {projects.map(project =>
-                      <Option key={project.node.key}
-                        value={project.node.key}>{project.node.name}
-                      </Option>
-                    )}
-                  </Select>
-                </div>
-              </React.Fragment>
+              projects.length > 0 && (
+                <React.Fragment>
+                  <Flex style={{paddingTop: '10px', paddingBottom: '8px' ,justifyContent: 'center', alignContent: 'center'}}>
+                    <span style={{fontSize: '14px', fontWeight: '800' , alignSelf: 'center', paddingRight: '10px'}}>Select Destination Project: </span>
+                    <Select
+                      className={'projects-selector'}
+                      onChange={value => this.props.onProjectSelectChanged(value)}
+                      placeholder={placeholder}
+                      defaultValue={selectedProjectKey}
+                      style={{alignSelf: 'center'}}
+                    >
+                      {projects.map(project =>
+                        <Option key={project.node.key}
+                                value={project.node.key}>{project.node.name}
+                        </Option>
+                      )}
+                    </Select>
+                  </Flex>
+                </React.Fragment>
+              )
             )
           }
         }

@@ -28,13 +28,13 @@ function getServerUrl(selectedConnector) {
 function getFetchProjectsButtonName(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'github':
-      return 'Fetch Repositories with Issues';
+      return 'Fetch Available Repositories with Issues';
     case 'pivotal':
-      return 'Fetch Tracker Projects';
+      return 'Fetch Available Projects';
     case 'jira':
-      return 'Fetch Jira Projects';
+      return 'Fetch Available Projects';
     default:
-      return 'Fetch Projects';
+      return 'Fetch Available Projects';
   }
 }
 
@@ -157,13 +157,15 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>{capitalizeFirstLetter(selectedConnector.name)} @ {getServerUrl(selectedConnector)}</h3>
-
+                    <h3>Select projects to import from connector {selectedConnector.name}</h3>
+                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} projects available`} </h4>
+                    <h5>{getServerUrl(selectedConnector)}</h5>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
                         <Button
                           type={'primary'}
+                          size={'small'}
                           icon={'download'}
                           onClick={
                             () => refetchProjects({

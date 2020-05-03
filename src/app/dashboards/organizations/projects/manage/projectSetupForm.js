@@ -59,7 +59,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             selectedProjects={selectedProjects}
             importedProjectName={importedProjectName}
             onProjectNameChanged={onProjectNameChanged}
-            label={"Polaris Flow Project"}
+            label={"New Project Name"}
           />
         }
         {importMode === 'existing' &&
@@ -68,6 +68,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             selectedProjectKey={selectedProjectKey}
             onProjectSelectChanged={onProjectSelectChanged}
             placeholder="Select an existing project"
+            label={"Select existing project"}
           />
         }
         <React.Fragment>
