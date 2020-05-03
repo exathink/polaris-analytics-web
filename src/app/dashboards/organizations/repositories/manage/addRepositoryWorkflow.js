@@ -12,7 +12,7 @@ import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {openNotification} from "../../../../helpers/utility";
-import '../../steps.css';
+import '../../../../components/workflow/steps.css';
 import {Flex, Box} from "reflexbox";
 
 const {Step} = Steps;

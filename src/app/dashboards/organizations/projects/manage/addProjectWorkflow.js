@@ -11,7 +11,7 @@ import {work_tracking_service} from "../../../../services/graphql";
 import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import '../../steps.css';
+import '../../../../components/workflow/steps.css';
 import './addProjectsWorkflow.css';
 
 const {Step} = Steps;
