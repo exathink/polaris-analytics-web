@@ -3,7 +3,7 @@ import {CumulativeCommitCountChart} from "./index";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
 import {VizItem, VizRow} from "../../containers/layout";
 import moment from 'moment';
-
+import {Flex, Box} from "reflexbox";
 
 const CumulativeCommitCountDetailPanels = (
   {
@@ -24,7 +24,7 @@ const CumulativeCommitCountDetailPanels = (
   return (
     <React.Fragment>
       <VizRow h={"93%"}>
-        <VizItem w={"30%"}>
+        <Flex column w={"30%"} h={1} className={'viz-item'}>
           <CumulativeCommitCountChart
             cumulativeCommitCounts={cumulativeCommitCounts}
             context={context}
@@ -32,9 +32,9 @@ const CumulativeCommitCountDetailPanels = (
             onSelectionChange={onAreaChartSelectionChange}
             zoomTriggersSelection={false}
           />
-        </VizItem>
+        </Flex>
 
-        <VizItem w={"70%"}>
+        <Flex column w={"70%"} h={1} className={'viz-item'}>
           <DimensionCommitsNavigatorWidget
             dimension={dimension}
             instanceKey={instanceKey}
@@ -49,7 +49,7 @@ const CumulativeCommitCountDetailPanels = (
             referenceDate={referenceDate}
             showTable={true}
           />
-        </VizItem>
+        </Flex>
       </VizRow>
 
     </React.Fragment>

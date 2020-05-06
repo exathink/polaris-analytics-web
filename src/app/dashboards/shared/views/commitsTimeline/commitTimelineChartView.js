@@ -6,6 +6,7 @@ import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
+import {VizRow} from "../../containers/layout";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -325,7 +326,7 @@ export class CommitsTimelineChartView extends React.Component {
     } = this.props;
 
     return (
-      <div style={{height: "100%", width: "100%"}}>
+      <VizRow h={1}>
 
           {
             view === 'detail' ?
@@ -333,7 +334,7 @@ export class CommitsTimelineChartView extends React.Component {
               : this.getPrimaryLayout('100%', this.state.model, showHeader)
           }
 
-      </div>
+      </VizRow>
     )
   }
 
