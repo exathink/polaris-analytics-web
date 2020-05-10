@@ -1,9 +1,9 @@
 import React from 'react';
 import {CumulativeCommitCountChart} from "./index";
 import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
-import {VizItem, VizRow} from "../../containers/layout";
+import {VizRow} from "../../containers/layout";
 import moment from 'moment';
-import {Flex, Box} from "reflexbox";
+import {Flex} from "reflexbox";
 
 const CumulativeCommitCountDetailPanels = (
   {
