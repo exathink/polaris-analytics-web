@@ -21,6 +21,7 @@ export const GroupingSelector = ({label, groupings, initialValue, onGroupingChan
               <RadioButton
                 key={grouping.key}
                 value={grouping.key}
+                style={grouping.style}
               >
                 {grouping.display}
               </RadioButton>
