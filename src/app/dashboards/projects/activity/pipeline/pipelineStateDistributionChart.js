@@ -8,7 +8,7 @@ import {
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
-  WorkItemTypeDisplayName
+  WorkItemTypeDisplayName, WorkItemTypeSortOrder, WorkItemColorMap
 } from "../../../shared/config";
 
 function getMaxDays(workItems, projectCycleMetrics) {
@@ -29,13 +29,26 @@ export const PipelineStateDistributionChart = Chart({
   mapPoints: (points, _) => points.map(point => point),
 
   getConfig: ({workItems, stateType, projectCycleMetrics, intl}) => {
-
-
-    const series = [
-      {
-        name: WorkItemStateTypeDisplayName[stateType],
+    // The list of work items represents work items of a single series type.
+    const workItemsByWorkItemType = workItems.reduce(
+      (workItemsByWorkItemType, workItem) => {
+        if (workItemsByWorkItemType[workItem.workItemType] != null) {
+          workItemsByWorkItemType[workItem.workItemType].push(workItem)
+        } else {
+          workItemsByWorkItemType[workItem.workItemType] = [workItem]
+        }
+        return workItemsByWorkItemType
+      },
+      {}
+    );
+    // We group the work items into series by work item type.
+    const series = Object.keys(workItemsByWorkItemType).sort(
+      (typeA, typeB) => WorkItemTypeSortOrder[typeA] - WorkItemTypeSortOrder[typeB]
+    ).map(
+      workItemType => ({
+        name: WorkItemTypeDisplayName[workItemType],
         // default color for the series. points will override, but this shows on the legend.
-        color: WorkItemStateTypeColor[stateType],
+        color: WorkItemColorMap[workItemType],
         stacking: true,
         // Within the series, each workItem is represented by one or more points which are stacked on top of
         // each other,
@@ -44,7 +57,7 @@ export const PipelineStateDistributionChart = Chart({
         // of the series. These priorStateDurations are ordered by the standard stateType ordering.
 
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
-        data: workItems.flatMap(
+        data: workItemsByWorkItemType[workItemType].flatMap(
           workItem => {
             // Total up the prior state durations by state type.
             const priorStateDurations = workItem.workItemStateDetails.currentDeliveryCycleDurations.reduce(
@@ -85,7 +98,8 @@ export const PipelineStateDistributionChart = Chart({
           }
         )
       }
-    ];
+      )
+    );
 
     return {
       chart: {
@@ -142,7 +156,7 @@ export const PipelineStateDistributionChart = Chart({
       series: series,
       legend: {
         title: {
-          text: "Phase",
+          text: "Type",
           style: {
             fontStyle: 'italic'
           }
