@@ -112,3 +112,8 @@ export const WorkItemStateTypeSubColors = {
   complete: ['#47479a', '#71499a', '#79579a', '#9a7f97', '#8d689a'],
   closed: ['#7824b5', '#9a0db5', '#4b09b5', '#0526b5', '#1603b5']
 }
+
+export function assignWorkItemStateColor(stateType, index) {
+  // Assign a color from the sub pallete using the index. Wraps around to zero.
+  return WorkItemStateTypeSubColors[stateType][index % WorkItemStateTypeSubColors[stateType].length]
+}
