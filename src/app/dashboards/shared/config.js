@@ -12,7 +12,7 @@ export const Colors = {
     bug: '#b5111a',
     pullRequest: '#7824b5',
     epic: '#b5945a',
-    task: '#229cb5',
+    task: '#4445ec',
     default: '#8f9a8e'
   },
   Chart: {
@@ -103,4 +103,12 @@ export const WorkItemStateTypeColor = {
   wip: '#2f9a32',
   complete: '#47479a',
   closed: '#7824b5'
+}
+
+export const WorkItemStateTypeSubColors = {
+  backlog: ['#8f9a8e', '#81859a', '#9a848d', '#878b9a', '#9a8a7f'],
+  open: ['#069a99', '#22949a', '#15809a', '#8d7d9a', '#5b689a'],
+  wip: ['#2f9a32', '#879a2e', '#639a0d', '#28a759', '#0aa737'],
+  complete: ['#47479a', '#71499a', '#79579a', '#9a7f97', '#8d689a'],
+  closed: ['#7824b5', '#9a0db5', '#4b09b5', '#0526b5', '#1603b5']
 }
