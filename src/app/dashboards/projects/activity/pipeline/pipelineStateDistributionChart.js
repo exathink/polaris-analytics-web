@@ -28,26 +28,11 @@ export const PipelineStateDistributionChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItems, projectCycleMetrics, intl}) => {
+  getConfig: ({workItems, stateType, projectCycleMetrics, intl}) => {
 
-    // work items are grouped into buckets based on their current state
-    const workItemsByStateType = workItems.reduce(
-      (workItemsByStateType, workItem) => {
-        if (workItemsByStateType[workItem.stateType] != null) {
-          workItemsByStateType[workItem.stateType].push(workItem)
-        } else {
-          workItemsByStateType[workItem.stateType] = [workItem]
-        }
-        return workItemsByStateType
-      },
-      {}
-    )
-    // One series is created per bucket by current state type, series are sorted by standard state type sort order
-    const series = Object.keys(workItemsByStateType).sort(
-      (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
-    ).map(
-      // This gives a single series data structure including work items of a given state type.
-      stateType => ({
+
+    const series = [
+      {
         name: WorkItemStateTypeDisplayName[stateType],
         // default color for the series. points will override, but this shows on the legend.
         color: WorkItemStateTypeColor[stateType],
@@ -59,7 +44,7 @@ export const PipelineStateDistributionChart = Chart({
         // of the series. These priorStateDurations are ordered by the standard stateType ordering.
 
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
-        data: workItemsByStateType[stateType].flatMap(
+        data: workItems.flatMap(
           workItem => {
             // Total up the prior state durations by state type.
             const priorStateDurations = workItem.workItemStateDetails.currentDeliveryCycleDurations.reduce(
@@ -99,8 +84,9 @@ export const PipelineStateDistributionChart = Chart({
             return workItemPoints
           }
         )
-      })
-    )
+      }
+    ];
+
     return {
       chart: {
         type: 'bar',

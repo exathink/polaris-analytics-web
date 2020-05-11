@@ -47,6 +47,7 @@ const PipelineStateDetailsView = (
             onGroupingChanged={setSelectedStateType}
           />
           < PipelineStateDistributionChart
+            stateType={selectedStateType}
             workItems={workItemsByStateType[selectedStateType]}
             projectCycleMetrics={projectCycleMetrics}
           />
