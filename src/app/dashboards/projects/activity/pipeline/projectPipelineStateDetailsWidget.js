@@ -41,6 +41,7 @@ export const ProjectPipelineStateDetailsWidget = (
   });
 
   return (
+    workItems.length > 0 &&
     <ProjectPipelineStateDetailsView
       view={view}
       workItems={workItems}

@@ -77,6 +77,8 @@ const PipelineStateDetailsView = (
           </VizRow>
         )
       }
+    } else {
+      return null;
     }
   }
 ;
