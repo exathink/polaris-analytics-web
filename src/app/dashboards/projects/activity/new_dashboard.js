@@ -142,7 +142,7 @@ export const dashboard = () => (
                   name="defect-metrics"
                   title={"Defect Metrics"}
                   subtitle={"Last 30 Days"}
-
+                  hideTitlesInDetailView={true}
                   render  ={
                     ({view}) =>
                       <ProjectDefectMetricsWidget
