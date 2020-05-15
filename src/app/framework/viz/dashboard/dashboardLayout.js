@@ -32,7 +32,7 @@ export class DashboardLayout extends React.Component {
 
 }
 
-export const DashboardRow = ({children, h, title, controls, align, ...rest}) => (
+export const DashboardRow = ({children, h, title, subTitle, controls, align, ...rest}) => (
   <React.Fragment>
     {
       title || controls ?
@@ -43,13 +43,19 @@ export const DashboardRow = ({children, h, title, controls, align, ...rest}) => 
                 <h3 className="dashboard-row-title">
                   {title}
                 </h3>
+                {
+                  subTitle &&
+                    <h4 className="dashboard-row-subtitle">
+                      {subTitle}
+                    </h4>
+                }
               </nav>
               :
               null
           }
           {
             controls ?
-              <nav className={'menu title-control-container'} style={{width: '70%'}}>
+              <nav className={'menu title-control-container'} style={{width: '70%', paddingRight: '75px'}}>
                 <React.Fragment>
                   {
                     // Adding reverse here because we would like to the controls to laid
