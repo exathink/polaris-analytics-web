@@ -16,14 +16,14 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
 );
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, controls, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
   return (
     <Flex column w={w} m={1} className="dashboard-item">
       {
         title || subtitle || controls ?
         <div className={"dashboard-item-title-container"}>
           {
-            title ?
+            title && (!itemSelected || !hideTitlesInDetailView) ?
               <h3 className="dashboard-item-title">
                 {title}
               </h3>
@@ -31,7 +31,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
               null
           }
           {
-            subtitle ?
+            subtitle && (!itemSelected || !hideTitlesInDetailView) ?
               <h5 className="dashboard-item-subtitle">
                 {subtitle}
               </h5>
