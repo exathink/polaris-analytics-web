@@ -91,7 +91,7 @@ function getSeriesGroupedByState(workItems, stateType) {
         color: assignWorkItemStateColor(stateType, index),
         stacking: true,
         maxPointWidth: 30,
-
+        minPointLength: 3,
 
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemsByState[workItemState].flatMap(
@@ -125,6 +125,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
         color: WorkItemColorMap[workItemType],
         stacking: true,
         maxPointWidth: 30,
+        minPointLength: 3,
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemsByWorkItemType[workItemType].flatMap(
           workItem => getDataPoints(workItem)
