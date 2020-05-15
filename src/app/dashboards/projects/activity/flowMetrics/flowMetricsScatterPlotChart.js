@@ -12,6 +12,7 @@ import {
 } from "../../../shared/config";
 
 import {PlotLines} from "../shared/chartParts";
+import {formatDateTime} from "../../../../i18n";
 
 function mapColor(workItem) {
   if (!workItem.isBug) {
@@ -142,7 +143,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
             body: [
-              ['Closed Date: ', `${intl.formatDate(this.point.cycle.endDate)}`],
+              ['Closed: ', `${formatDateTime(intl, this.point.x)}`],
               [`------`, ``],
               ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)} days`],
               ['Cycle Time: ', cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : 'N/A'],
@@ -167,7 +168,15 @@ export const FlowMetricsScatterPlotChart = Chart({
           }
         }
 
-      }
+      },
+      time: {
+          // Since we are already passing in UTC times we
+          // dont need the chart to translate the time to UTC
+          // This makes sure the tooltips text matches the timeline
+          // on the axis.
+          useUTC: false
+        }
+
     }
 
   }
