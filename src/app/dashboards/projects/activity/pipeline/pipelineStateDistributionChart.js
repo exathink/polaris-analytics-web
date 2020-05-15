@@ -49,6 +49,9 @@ function getDataPoints(workItem) {
   );
   const workItemPoints = Object.keys(priorStateDurations).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
+  ).filter(
+    // we remove backlog time from the display since we want to highlight elapsed cycle time against targets
+    stateType => stateType !== 'backlog'
   ).map(
     stateType => ({
       name: workItem.displayId,
@@ -176,7 +179,10 @@ export const PipelineStateDistributionChart = Chart({
           text: 'Days in State'
         },
         plotLines: [
-          PlotLines.percentileLeadTime(projectCycleMetrics, intl)
+          PlotLines.avgCycleTime(projectCycleMetrics, intl),
+          PlotLines.percentileCycleTime(projectCycleMetrics, intl),
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl),
+          PlotLines.maxLeadTime(projectCycleMetrics, intl)
         ],
       },
 

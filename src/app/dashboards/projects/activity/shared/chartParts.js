@@ -24,6 +24,31 @@ export const PlotLines = {
         align: `left`
       }
     }
+  ),
+  percentileCycleTime: (aggregateCycleMetrics, intl) => (
+    {
+      color: 'orange',
+      value: aggregateCycleMetrics.percentileCycleTime,
+      dashStyle: 'longdashdot',
+      width: 1,
+      label: {
+        text: `${percentileToText(aggregateCycleMetrics.targetPercentile)} Cycle Time=${intl.formatNumber(aggregateCycleMetrics.percentileCycleTime)} days`,
+        align: `left`
+      }
+    }
+  ),
+  avgCycleTime: (aggregateCycleMetrics, intl) => (
+    {
+      color: 'orange',
+      value: aggregateCycleMetrics.avgCycleTime,
+      dashStyle: 'longdashdot',
+      width: 1,
+      label: {
+        text: ` Avg. Cycle Time ${intl.formatNumber(aggregateCycleMetrics.avgCycleTime)} days`,
+        align: `left`
+      }
+    }
   )
+
 }
 
