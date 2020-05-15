@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 import {ProjectFlowMetricsWidget} from "./projectFlowMetricsWidget";
 import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowMetricsWidget";
+import {DaysRangeSlider} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
+
 
 export const ProjectFlowMetricsDetailDashboard = (
   {
@@ -13,9 +15,23 @@ export const ProjectFlowMetricsDetailDashboard = (
     days,
     targetPercentile
 
-  }) => (
-  <Dashboard dashboard={dashboard_id}>
-    <DashboardRow h={"15%"}>
+  }) => {
+  const [daysRange, setDaysRange] = useState(days || 30)
+  return (
+  <Dashboard
+    dashboard={dashboard_id}
+  >
+    <DashboardRow
+      h={"20%"}
+      title={`Flow Metrics`}
+      subTitle={`Last ${daysRange} days`}
+      controls={[
+        () =>
+          <div style={{minWidth:"500px"}}>
+            <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange}/>
+          </div>
+      ]}
+    >
       <DashboardWidget
         w={1}
         name="cycle-metrics-summary-detailed"
@@ -27,14 +43,14 @@ export const ProjectFlowMetricsDetailDashboard = (
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
-              days={days}
+              days={daysRange}
               targetPercentile={targetPercentile}
             />
         }
         showDetail={false}
       />
     </DashboardRow>
-    <DashboardRow h={"80%"}>
+    <DashboardRow h={"75%"}>
       <DashboardWidget
         w={1}
         name="cycle-metrics-delivery-details"
@@ -46,7 +62,7 @@ export const ProjectFlowMetricsDetailDashboard = (
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
-              days={days}
+              days={daysRange}
               targetPercentile={targetPercentile}
             />
         }
@@ -54,4 +70,4 @@ export const ProjectFlowMetricsDetailDashboard = (
       />
     </DashboardRow>
   </Dashboard>
-);
+)};

@@ -119,6 +119,7 @@ export const dashboard = () => (
                   name="flow-metrics"
                   title={"Flow Metrics"}
                   subtitle={"Last 30 Days"}
+                  hideTitlesInDetailView={true}
                   render={
                     ({view}) =>
                       <ProjectFlowMetricsWidget
@@ -141,7 +142,8 @@ export const dashboard = () => (
                   name="defect-metrics"
                   title={"Defect Metrics"}
                   subtitle={"Last 30 Days"}
-                  render={
+
+                  render  ={
                     ({view}) =>
                       <ProjectDefectMetricsWidget
                         instanceKey={key}
