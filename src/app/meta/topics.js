@@ -32,6 +32,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.commit' defaultMessage="Commit"/>),
     icon: 'ion-code'
   },
+  work_item: {
+    name: 'work_item',
+    display: () => (<FormattedMessage id='topics.work_item' defaultMessage="Work Item"/>),
+    icon: 'ion-checkmark'
+  },
   history: {
     name: 'history',
     display: () => (<FormattedMessage id='topics.history' defaultMessage="History"/>),

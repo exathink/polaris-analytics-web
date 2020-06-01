@@ -5,6 +5,7 @@ import Accounts from "./accounts/context";
 import Repositories from "./repositories/context";
 import Contributors from "./contributors/context";
 import Commits from "./commits/context";
+import WorkItems from "./work_items/context";
 import OpenSource from "./oss/context";
 
 
@@ -35,6 +36,10 @@ const context: Context = {
     {
       match: 'commits',
       context: Commits,
+    },
+    {
+      match: 'work_items',
+      context: WorkItems,
     },
     {
       match: 'oss',

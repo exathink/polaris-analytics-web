@@ -95,11 +95,11 @@ export const Contexts = {
     display:
         (quantity = 0) => {
           return <FormattedMessage
-            {...messages.projects}
+            {...messages.work_items}
             values={{quantity: quantity}}
         />
         },
-    icon: 'ion-folder',
+    icon: 'ion-checkmark',
     color: '#356eb2'
   },
   contributors: {
