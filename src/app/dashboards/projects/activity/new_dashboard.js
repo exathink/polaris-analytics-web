@@ -17,13 +17,14 @@ import {
   DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
 
-import {Contexts} from "../../../meta/contexts";
+
 
 import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import Repositories from "../../repositories/context";
+import WorkItems from "../../work_items/context";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -175,7 +176,7 @@ export const dashboard = () => (
                             instanceKey={key}
                             childConnection={'recentlyActiveWorkItems'}
                             context={context}
-                            childContext={Contexts.work_items}
+                            childContext={WorkItems}
                             top={10}
                             latestCommit={latestCommit}
                             days={1}

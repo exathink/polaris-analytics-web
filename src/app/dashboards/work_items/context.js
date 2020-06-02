@@ -37,7 +37,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'commit'
+            redirect: 'work_item'
           }
         ]
       }
