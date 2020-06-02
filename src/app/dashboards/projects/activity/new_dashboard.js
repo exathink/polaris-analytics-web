@@ -18,6 +18,9 @@ import {
 } from "../../shared/widgets/accountHierarchy";
 
 
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {WORK_ITEMS_DETAIL_DASHBOARD} from "../../../../config/featureFlags";
+import {Contexts} from "../../../meta";
 
 import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
@@ -64,7 +67,7 @@ class StateMappingIndex {
 }
 
 
-export const dashboard = () => (
+export const dashboard = ({viewerContext}) => (
   <ProjectDashboard
     pollInterval={1000 * 60}
     render={
@@ -176,7 +179,7 @@ export const dashboard = () => (
                             instanceKey={key}
                             childConnection={'recentlyActiveWorkItems'}
                             context={context}
-                            childContext={WorkItems}
+                            childContext={viewerContext.isFeatureFlagActive(WORK_ITEMS_DETAIL_DASHBOARD) ? WorkItems : Contexts.work_items}
                             top={10}
                             latestCommit={latestCommit}
                             days={1}
@@ -256,4 +259,4 @@ export const dashboard = () => (
     }
   />
 );
-export default dashboard;
+export default withViewerContext(dashboard);
