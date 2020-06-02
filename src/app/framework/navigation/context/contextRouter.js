@@ -22,6 +22,11 @@ export const buildContextRouter = (context: Context, viewerContext: any = null, 
             // dont render this into the route tree if the user does not have the required roles.
             return null;
           }
+          if(route.requiredFeatures != null  &&
+              !route.requiredFeatures.every(viewerContext.isFeatureFlagActive)) {
+            // dont render this into the route tree if the specified feature flags are not enabled for the user.
+            return null;
+          }
           const terminal =
             route.component ? {component: route.component} :
               route.render ? {render: route.render} :
