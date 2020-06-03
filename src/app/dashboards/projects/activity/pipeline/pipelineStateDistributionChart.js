@@ -37,10 +37,11 @@ function getDataPoints(workItem) {
     (priorStateDurations, durationInfo) => {
       // we drop the record for the current state if it has no previous accumulated time.
       if (durationInfo.daysInState != null) {
-        if (priorStateDurations[durationInfo.stateType] != null) {
-          priorStateDurations[durationInfo.stateType] = priorStateDurations[durationInfo.stateType] + durationInfo.daysInState
+        const stateType = durationInfo.stateType || 'unmapped';
+        if (priorStateDurations[stateType] != null) {
+          priorStateDurations[stateType] = priorStateDurations[stateType] + durationInfo.daysInState
         } else {
-          priorStateDurations[durationInfo.stateType] = durationInfo.daysInState
+          priorStateDurations[stateType] = durationInfo.daysInState
         }
       }
       return priorStateDurations
@@ -179,10 +180,10 @@ export const PipelineStateDistributionChart = Chart({
           text: 'Days in State'
         },
         plotLines: [
-          PlotLines.avgCycleTime(projectCycleMetrics, intl),
-          PlotLines.percentileCycleTime(projectCycleMetrics, intl),
-          PlotLines.percentileLeadTime(projectCycleMetrics, intl),
-          PlotLines.maxLeadTime(projectCycleMetrics, intl)
+          PlotLines.avgCycleTime(projectCycleMetrics, intl,'left'),
+          PlotLines.percentileCycleTime(projectCycleMetrics, intl, 'right'),
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl,'left'),
+          PlotLines.maxLeadTime(projectCycleMetrics, intl,'right')
         ],
       },
 

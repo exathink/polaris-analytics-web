@@ -82,6 +82,7 @@ export const WorkItemTypeDisplayName = {
 }
 
 export const WorkItemStateTypeSortOrder = {
+  unmapped: -1,
   backlog: 0,
   open: 1,
   wip: 2,
@@ -90,6 +91,7 @@ export const WorkItemStateTypeSortOrder = {
 }
 
 export const WorkItemStateTypeDisplayName = {
+  unmapped: 'Unmapped',
   backlog: 'Backlog',
   open: 'Open',
   wip: 'Wip',
@@ -98,7 +100,8 @@ export const WorkItemStateTypeDisplayName = {
 }
 
 export const WorkItemStateTypeColor = {
-  backlog: '#8f9a8e',
+  unmapped: '#8f9a8e',
+  backlog: '#6e9a8e',
   open: '#069a99',
   wip: '#2f9a32',
   complete: '#47479a',

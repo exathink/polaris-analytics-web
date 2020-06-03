@@ -1,7 +1,7 @@
 import {percentileToText} from "../../../../helpers/utility";
 
 export const PlotLines = {
-  maxLeadTime:  (aggregateCycleMetrics, intl) => (
+  maxLeadTime:  (aggregateCycleMetrics, intl, align='left') => (
     {
       color: 'blue',
       value: aggregateCycleMetrics.maxLeadTime,
@@ -9,11 +9,11 @@ export const PlotLines = {
       width: 1,
       label: {
         text: `Max Lead Time=${intl.formatNumber(aggregateCycleMetrics.maxLeadTime)} days`,
-        align: `left`
+        align: align
       }
     }
   ),
-  percentileLeadTime: (aggregateCycleMetrics, intl) => (
+  percentileLeadTime: (aggregateCycleMetrics, intl, align='left') => (
     {
       color: 'red',
       value: aggregateCycleMetrics.percentileLeadTime,
@@ -21,11 +21,11 @@ export const PlotLines = {
       width: 1,
       label: {
         text: `${percentileToText(aggregateCycleMetrics.targetPercentile)} Lead Time=${intl.formatNumber(aggregateCycleMetrics.percentileLeadTime)} days`,
-        align: `left`
+        align: align
       }
     }
   ),
-  percentileCycleTime: (aggregateCycleMetrics, intl) => (
+  percentileCycleTime: (aggregateCycleMetrics, intl, align='left') => (
     {
       color: 'orange',
       value: aggregateCycleMetrics.percentileCycleTime,
@@ -33,11 +33,11 @@ export const PlotLines = {
       width: 1,
       label: {
         text: `${percentileToText(aggregateCycleMetrics.targetPercentile)} Cycle Time=${intl.formatNumber(aggregateCycleMetrics.percentileCycleTime)} days`,
-        align: `left`
+        align: align
       }
     }
   ),
-  avgCycleTime: (aggregateCycleMetrics, intl) => (
+  avgCycleTime: (aggregateCycleMetrics, intl, align=`left`) => (
     {
       color: 'orange',
       value: aggregateCycleMetrics.avgCycleTime,
@@ -45,7 +45,7 @@ export const PlotLines = {
       width: 1,
       label: {
         text: ` Avg. Cycle Time ${intl.formatNumber(aggregateCycleMetrics.avgCycleTime)} days`,
-        align: `left`
+        align: align
       }
     }
   )
