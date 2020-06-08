@@ -6,6 +6,7 @@ import {WorkItemStateView} from "./views/workItemStateView";
 
 import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {elide} from "../../../helpers/utility";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -27,8 +28,8 @@ export const dashboard =
                   name="name"
                   render={
                     () =>
-                      <h2 style={{color: "#6c6c6c"}}>
-                        {`${workItem.displayId}: ${workItem.name}`}
+                      <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
+                        {`${workItem.displayId}: ${elide(workItem.name,250)}`}
                       </h2>
                   }
                 />
