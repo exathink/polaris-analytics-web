@@ -1,17 +1,6 @@
 import React from 'react';
-import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
-import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Topics} from "../../../../meta";
-import {
-  Colors,
-  Symbols,
-  WorkItemColorMap,
-  WorkItemSymbolMap,
-  WorkItemTypeDisplayName,
-  WorkItemTypeScatterRadius,
-  WorkItemTypeSortOrder,
-  WorkItemStateTypeIcon, WorkItemStateTypeColor, WorkItemStateTypeDisplayName
-} from "../../../shared/config";
+import {VizItem} from "../../../shared/containers/layout";
+import {WorkItemStateTypeDisplayName} from "../../../shared/config";
 
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {Statistic} from "antd";
