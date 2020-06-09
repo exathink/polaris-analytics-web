@@ -33,6 +33,7 @@ class WithWorkItem extends React.Component {
                     name
                     key
                     displayId
+                    workItemType
                     state
                     stateType
                     earliestCommit

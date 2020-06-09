@@ -8,6 +8,8 @@ import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {elide} from "../../../helpers/utility";
 
+import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
+
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
 
@@ -39,7 +41,7 @@ export const dashboard =
               >
                 <DashboardWidget
                   w={1/2}
-                  name="details"
+                  name="header"
                   render={
                     ({view}) =>
                       <WorkItemStateView
@@ -49,7 +51,24 @@ export const dashboard =
                   }
                 />
               </DashboardRow>
+              <DashboardRow
+                h={'20%'}
+              >
+                <DashboardWidget
+                  w={1/2}
+                  name="duration-detail"
+                  render={
+                    ({view}) =>
+                      <WorkItemDurationDetailsWidget
+                        instanceKey={workItem.key}
+                        latestWorkItemEvent={workItem.latestWorkItemEvent}
+                        view={view}
+                      />
+                  }
+                />
+              </DashboardRow>
             </Dashboard>
+
           )
         }
       }
