@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, fromNow, pick, toMoment} from "../../../../helpers/utility";
 import {PlotLines} from "../shared/chartParts";
 
 import {
@@ -20,7 +20,7 @@ function getMaxDays(workItems, projectCycleMetrics) {
       workItem.timeInState + workItem.timeInPriorStates
       :
       max,
-    projectCycleMetrics.percentileLeadTime || 0
+    (projectCycleMetrics && projectCycleMetrics.percentileLeadTime) || 0
   )
 }
 
@@ -66,7 +66,7 @@ function getDataPoints(workItem) {
   //finally push a point for the current work item state at the end
   workItemPoints.push({
     name: workItem.displayId,
-    y: workItem.timeInState,
+    y: workItem.stateType !== 'closed' ? workItem.timeInState : 0,
     priorState: false,
     workItem: workItem
   })
@@ -146,13 +146,27 @@ export const PipelineStateDistributionChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, intl}) => {
+  getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, title, shortTooltip,  intl}) => {
+
+    const workItemsWithAggregateDurations = workItems.map( workItem => {
+    const workItemStateDetails = workItem.workItemStateDetails;
+    const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
+    return {
+      ...workItem,
+      timeInState: daysFromNow(toMoment(latestTransitionDate)),
+      timeInStateDisplay: fromNow(latestTransitionDate),
+      timeInPriorStates: workItemStateDetails.currentDeliveryCycleDurations.reduce(
+        (total, duration) => total + duration.daysInState
+        , 0
+      )
+    }
+  })
 
     let series = [];
     if (groupBy === 'state') {
-      series = getSeriesGroupedByState(workItems, stateType)
+      series = getSeriesGroupedByState(workItemsWithAggregateDurations, stateType)
     } else {
-      series = getSeriesGroupedByWorkItemType(workItems, stateType)
+      series = getSeriesGroupedByWorkItemType(workItemsWithAggregateDurations, stateType)
     }
 
     return {
@@ -164,27 +178,27 @@ export const PipelineStateDistributionChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Pipeline Status:  ${WorkItemStateTypeDisplayName[stateType]}`
+        text: title || `Pipeline Status:  ${WorkItemStateTypeDisplayName[stateType]}`
       },
       xAxis: {
         type: 'category',
         title: {
-          text: 'Work Item'
+          text: workItems.length > 1 ? 'Work Item' : null
         }
       },
       yAxis: {
         type: 'linear',
-        max: getMaxDays(workItems, projectCycleMetrics),
+        max: getMaxDays(workItemsWithAggregateDurations, projectCycleMetrics),
         allowDecimals: false,
         title: {
-          text: 'Days in State'
+          text: 'Days'
         },
-        plotLines: [
+        plotLines: projectCycleMetrics ? [
           PlotLines.avgCycleTime(projectCycleMetrics, intl,'left'),
           PlotLines.percentileCycleTime(projectCycleMetrics, intl, 'right'),
           PlotLines.percentileLeadTime(projectCycleMetrics, intl,'left'),
           PlotLines.maxLeadTime(projectCycleMetrics, intl,'right')
-        ],
+        ] : [],
       },
 
 
@@ -192,7 +206,7 @@ export const PipelineStateDistributionChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, timeInStateDisplay} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, timeInStateDisplay} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
@@ -205,7 +219,7 @@ export const PipelineStateDistributionChart = Chart({
               [
                 [`Current State:`, `${state}`],
                 [`Entered:`, `${timeInStateDisplay}`],
-                [`Time in State:`, `${intl.formatNumber(this.y)} days`],
+                stateType !== 'closed' ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ['',''],
               ]
           })
         }
@@ -213,7 +227,7 @@ export const PipelineStateDistributionChart = Chart({
       series: series,
       legend: {
         title: {
-          text: groupBy === 'state' ? "State" : "Type",
+          text: groupBy === 'state' ? "Current State" : "Type",
           style: {
             fontStyle: 'italic'
           }
