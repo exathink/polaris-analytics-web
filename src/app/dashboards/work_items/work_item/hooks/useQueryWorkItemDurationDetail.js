@@ -2,10 +2,10 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryWorkItemDetail({instanceKey, referenceString}) {
+export function useQueryWorkItemDurationDetail({instanceKey, referenceString}) {
   return useQuery(
     gql`
-      query workItemDetailDetail($key: String!, $referenceString: String) {
+      query workItemDurationDetail($key: String!, $referenceString: String) {
         workItem(key: $key, interfaces: [WorkItemStateDetails], referenceString: $referenceString){
               id
               name
