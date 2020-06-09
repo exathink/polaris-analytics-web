@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {WorkItemDetailsWidget} from "./details/workItemDetailsWidget";
+
 
 import {WorkItemStateView} from "./views/workItemStateView";
 
