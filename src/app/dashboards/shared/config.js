@@ -108,6 +108,20 @@ export const WorkItemStateTypeColor = {
   closed: '#7824b5'
 }
 
+export const WorkItemStateTypeIcon = {
+  unmapped: 'ion-exclamation',
+  backlog: 'ion-caretup',
+  open: 'ion-caretup',
+  wip: 'ion-caretleft',
+  complete:'ion-caretdown',
+  closed: 'ion-closecircle'
+}
+
+export const WorkItemIcons = {
+  phase: 'ion-ios-arrow-forward',
+  state: 'ion-flash'
+}
+
 export const WorkItemStateTypeSubColors = {
   backlog: ['#8f9a8e', '#81859a', '#9a848d', '#878b9a', '#9a8a7f'],
   open: ['#069a99', '#22949a', '#15809a', '#8d7d9a', '#5b689a'],
