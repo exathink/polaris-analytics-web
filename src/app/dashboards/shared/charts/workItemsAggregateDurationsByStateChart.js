@@ -33,7 +33,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
         if (durations[j].stateType !== 'backlog') {
           /* adjust duration to include current state if needed*/
           let daysInState = durations[j].daysInState;
-          if (workItems[i].state === state) {
+          if (workItems[i].state === state && durations[j].stateType !== 'closed') {
             daysInState = daysInState + daysFromNow(toMoment(workItems[i].workItemStateDetails.currentStateTransition.eventDate));
           }
           if (aggregateDurations[state] != null) {
@@ -41,7 +41,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
           } else {
             aggregateDurations[state] = {
               stateType: durations[j].stateType,
-              daysInState: daysInState
+              daysInState: daysInState || 0
             };
           }
         }
@@ -103,6 +103,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       },
       series: [{
         data: series_data,
+        minPointLength: 3,
       }],
       legend: {
         enabled: false
