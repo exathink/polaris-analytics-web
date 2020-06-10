@@ -1,7 +1,7 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, daysFromNow, fromNow, pick, toMoment} from "../../../../helpers/utility";
-import {PlotLines} from "../shared/chartParts";
+import {Chart, tooltipHtml} from "../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {capitalizeFirstLetter, daysFromNow, fromNow, pick, toMoment} from "../../../helpers/utility";
+import {PlotLines} from "../../projects/activity/shared/chartParts";
 
 import {
   assignWorkItemStateColor,
@@ -12,7 +12,7 @@ import {
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
   WorkItemTypeSortOrder
-} from "../../../shared/config";
+} from "../config";
 
 function getMaxDays(workItems, projectCycleMetrics) {
   return workItems.reduce(
@@ -139,7 +139,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
   );
 }
 
-export const PipelineStateDistributionChart = Chart({
+export const WorkItemsDurationsByPhaseChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'workItems', 'projectCycleMetrics', 'groupBy')
   ),

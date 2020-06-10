@@ -1,6 +1,6 @@
 import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {PipelineStateDistributionChart} from "../../../projects/activity/pipeline/pipelineStateDistributionChart";
+import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemsDurationsByPhaseChart";
 
 export const WorkItemDurationDetailsView = (
   {
@@ -11,7 +11,7 @@ export const WorkItemDurationDetailsView = (
 
     <VizRow h={1}>
       <VizItem w={1}>
-        <PipelineStateDistributionChart
+        <WorkItemsDurationsByPhaseChart
           workItems={[workItem]}
           stateType={workItem.stateType}
           groupBy={'state'}

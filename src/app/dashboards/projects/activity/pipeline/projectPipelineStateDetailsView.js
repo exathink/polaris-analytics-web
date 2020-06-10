@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import {PipelineStateDistributionChart} from "./pipelineStateDistributionChart";
+import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemsDurationsByPhaseChart";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../shared/config";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
@@ -67,7 +67,7 @@ const PipelineStateDetailsView = (
                   onGroupingChanged={setSelectedGrouping}
                 />
               </Flex>
-              < PipelineStateDistributionChart
+              < WorkItemsDurationsByPhaseChart
                 stateType={selectedStateType}
                 groupBy={selectedGrouping}
                 workItems={workItemsByStateType[selectedStateType]}

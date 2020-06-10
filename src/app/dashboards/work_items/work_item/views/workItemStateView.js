@@ -2,14 +2,13 @@ import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import StickerWidget from "../../../shared/containers/stickers/simpleSticker/sticker-widget";
 import {Contexts} from "../../../../meta";
-import {formatCommitDate, fromNow} from "../../../../helpers/utility";
+import {fromNow} from "../../../../helpers/utility";
 import {
+  WorkItemColorMap,
   WorkItemIcons,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemTypeDisplayName,
-  WorkItemColorMap,
-
 } from "../../../shared/config";
 
 export const WorkItemStateView = ({workItem, context, view}) => (
