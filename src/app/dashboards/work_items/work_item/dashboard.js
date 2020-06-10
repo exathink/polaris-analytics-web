@@ -55,7 +55,7 @@ export const dashboard =
                 h={'20%'}
               >
                 <DashboardWidget
-                  w={1/2}
+                  w={1}
                   name="duration-detail"
                   render={
                     ({view}) =>
