@@ -8,6 +8,7 @@ import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {elide} from "../../../helpers/utility";
 
+import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
@@ -46,6 +47,18 @@ export const dashboard =
                     ({view}) =>
                       <WorkItemStateView
                         workItem={workItem}
+                        view={view}
+                      />
+                  }
+                />
+                <DashboardWidget
+                  w={1/2}
+                  name="cycle-metrics"
+                  render={
+                    ({view}) =>
+                      <WorkItemFlowMetricsWidget
+                        instanceKey={workItem.key}
+                        latestWorkItemEvent={workItem.latestWorkItemEvent}
                         view={view}
                       />
                   }
