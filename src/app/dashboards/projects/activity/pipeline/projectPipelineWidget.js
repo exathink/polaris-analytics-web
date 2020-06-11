@@ -13,6 +13,7 @@ export const ProjectPipelineWidget = (
     days,
     targetPercentile,
     view,
+    context,
     pollInterval
   }) => {
   if (view === 'primary') {
@@ -40,6 +41,7 @@ export const ProjectPipelineWidget = (
         stateMappingIndex={stateMappingIndex}
         days={days}
         targetPercentile={targetPercentile}
+        context={context}
       />
     )
   }

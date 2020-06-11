@@ -8,6 +8,7 @@ const dashboard_id = 'dashboards.activity.projects.pipeline.detail';
 export const ProjectPipelineDetailDashboard = (
   {
     instanceKey,
+    context,
     latestWorkItemEvent,
     stateMappingIndex,
     days,
@@ -40,6 +41,7 @@ export const ProjectPipelineDetailDashboard = (
             <ProjectPipelineStateDetailsWidget
               instanceKey={instanceKey}
               view={view}
+              context={context}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
               days={days}

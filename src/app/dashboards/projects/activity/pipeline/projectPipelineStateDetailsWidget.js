@@ -11,7 +11,8 @@ export const ProjectPipelineStateDetailsWidget = (
     days,
     targetPercentile,
     stateMappingIndex,
-    view
+    view,
+    context
   }
 ) => {
 
@@ -31,6 +32,7 @@ export const ProjectPipelineStateDetailsWidget = (
     workItems.length > 0 &&
     <ProjectPipelineStateDetailsView
       view={view}
+      context={context}
       workItems={workItems}
       projectCycleMetrics={projectCycleMetricsData? projectCycleMetricsData.project : {}}
     />

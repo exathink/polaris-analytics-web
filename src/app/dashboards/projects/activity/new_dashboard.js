@@ -111,6 +111,7 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         targetPercentile={0.70}
                         view={view}
+                        context={context}
                       />
                   }
                   showDetail={true}
