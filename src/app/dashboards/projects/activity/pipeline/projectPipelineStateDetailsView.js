@@ -6,12 +6,13 @@ import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeS
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from 'reflexbox';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
-
+import WorkItems from "../../../work_items/context"
 const PipelineStateDetailsView = (
   {
     workItems,
     projectCycleMetrics,
-    view
+    view,
+    context
   }) => {
     if (workItems.length > 0) {
       const workItemsByStateType = workItems.reduce(
@@ -72,6 +73,14 @@ const PipelineStateDetailsView = (
                 groupBy={selectedGrouping}
                 workItems={workItemsByStateType[selectedStateType]}
                 projectCycleMetrics={projectCycleMetrics}
+                onSelectionChange={
+                  (workItems) => {
+                    console.log('Selection changed: workItems.length')
+                    if (workItems.length === 1) {
+                      context.navigate(WorkItems, workItems[0].displayId, workItems[0].key)
+                    }
+                  }
+                }
               />
             </VizItem>
           </VizRow>
