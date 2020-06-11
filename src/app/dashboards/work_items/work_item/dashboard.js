@@ -38,7 +38,7 @@ export const dashboard =
                 />
               </DashboardRow>
               <DashboardRow
-                h={"15%"}
+                h={"10%"}
               >
                 <DashboardWidget
                   w={1/2}
@@ -65,7 +65,7 @@ export const dashboard =
                 />
               </DashboardRow>
               <DashboardRow
-                h={'20%'}
+                h={'25%'}
               >
                 <DashboardWidget
                   w={1}
