@@ -9,6 +9,7 @@ export const ProjectFlowMetricsWidget = (
   {
     instanceKey,
     view,
+    context,
     showAll,
     latestWorkItemEvent,
     days,
@@ -36,6 +37,7 @@ export const ProjectFlowMetricsWidget = (
       <ProjectFlowMetricsDetailDashboard
         instanceKey={instanceKey}
         view={view}
+        context={context}
         latestWorkItemEvent={latestWorkItemEvent}
         days={days}
         targetPercentile={targetPercentile}

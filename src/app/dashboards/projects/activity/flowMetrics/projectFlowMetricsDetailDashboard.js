@@ -10,6 +10,7 @@ const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
 export const ProjectFlowMetricsDetailDashboard = (
   {
     instanceKey,
+    context,
     latestWorkItemEvent,
     stateMappingIndex,
     days,
@@ -59,6 +60,7 @@ export const ProjectFlowMetricsDetailDashboard = (
             <ProjectDeliveryCycleFlowMetricsWidget
               instanceKey={instanceKey}
               view={view}
+              context={context}
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}

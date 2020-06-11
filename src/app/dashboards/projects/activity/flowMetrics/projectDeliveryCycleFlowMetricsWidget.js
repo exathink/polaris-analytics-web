@@ -9,6 +9,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
   {
     instanceKey,
     view,
+    context,
     showAll,
     latestWorkItemEvent,
     targetPercentile,
@@ -36,6 +37,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       'name',
       'key',
       'displayId',
+      'workItemKey',
       'workItemType',
       'startDate',
       'endDate',
@@ -46,6 +48,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
   return (
     <ProjectDeliveryCyclesFlowMetricsView
       instanceKey={instanceKey}
+      context={context}
       days={days}
       model={flowMetricsData}
       projectCycleMetrics={projectCycleMetrics}

@@ -129,6 +129,7 @@ export const dashboard = ({viewerContext}) => (
                       <ProjectFlowMetricsWidget
                         instanceKey={key}
                         view={view}
+                        context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         stateMappingIndex={stateMappingIndex}
                         days={30}
