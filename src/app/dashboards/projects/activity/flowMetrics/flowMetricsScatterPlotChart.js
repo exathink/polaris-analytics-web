@@ -46,7 +46,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     pick(props, 'model', 'selectedMetric')
   ),
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) => points.map(point => point),
+  mapPoints: (points, _) => points.map(point => point.cycle),
 
   getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, intl}) => {
     const deliveryCyclesByWorkItemType = model.reduce(
