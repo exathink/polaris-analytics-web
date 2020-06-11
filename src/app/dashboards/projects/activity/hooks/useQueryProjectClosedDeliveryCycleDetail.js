@@ -23,6 +23,7 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
                       key
                       ... on WorkItemInfo {
                         displayId
+                        workItemKey
                         workItemType
                         isBug
                       }
