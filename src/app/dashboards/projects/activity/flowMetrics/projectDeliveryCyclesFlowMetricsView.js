@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
+import WorkItems from '../../../work_items/context';
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
@@ -17,7 +18,7 @@ const projectDeliveryCycleFlowMetricsMeta = {
   }
 }
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, projectCycleMetrics,  initialMetric, defectsOnly}) => {
+export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics,  initialMetric, defectsOnly}) => {
   const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   return (
@@ -42,6 +43,13 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, model, days, 
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         projectCycleMetrics={projectCycleMetrics}
         defectsOnly={defectsOnly}
+        onSelectionChange={
+          (workItems) => {
+            if(workItems.length === 1) {
+              context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey)
+            }
+          }
+        }
       />
     </React.Fragment>
   )
