@@ -96,7 +96,7 @@ function getSeriesGroupedByState(workItems, stateType) {
         stacking: true,
         maxPointWidth: 30,
         minPointLength: 3,
-
+        allowPointSelect: true,
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemsByState[workItemState].flatMap(
           workItem => getDataPoints(workItem)
@@ -144,7 +144,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
     pick(props, 'workItems', 'projectCycleMetrics', 'groupBy')
   ),
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) => points.map(point => point),
+  mapPoints: (points, _) => points.map(point => point.workItem),
 
   getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, title, shortTooltip,  intl}) => {
 
