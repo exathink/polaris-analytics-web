@@ -32,6 +32,7 @@ export const DimensionCommitsNavigatorWidget = (
     shortTooltip,
     markLatest,
     showHeader,
+    hideTraceability,
     suppressHeaderDataLabels,
     showTable,
     onSelectionChange,
@@ -89,7 +90,7 @@ export const DimensionCommitsNavigatorWidget = (
       }
       variables={{
         key: instanceKey,
-        days: daysRange,
+        days: (days && daysRange) || null,
         before: before != null ? moment(before) : (latestCommit ? toMoment(latestCommit) : null),
         latest: latest,
         referenceDate: referenceDate,
@@ -113,7 +114,7 @@ export const DimensionCommitsNavigatorWidget = (
               groupBy={groupBy}
               groupings={groupings}
               smartGrouping={smartGrouping}
-              days={daysRange}
+              days={days && daysRange}
               setDaysRange={setDaysRange}
               before={before}
               latestCommit={latestCommit}
@@ -121,6 +122,7 @@ export const DimensionCommitsNavigatorWidget = (
               totalCommits={totalCommits}
               shortTooltip={shortTooltip}
               showHeader={showHeader}
+              hideTraceability={hideTraceability}
               polling={pollInterval}
               markLatest={markLatest}
               showTable={showTable}
