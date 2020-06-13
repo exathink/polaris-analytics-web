@@ -194,28 +194,32 @@ export class CommitsTimelineChartView extends React.Component {
 
   getTimelineRollupHeader() {
     const {model} = this.state;
+    const {hideTraceability} = this.props;
 
 
     return (
       <div style={{height: "100%"}}>
-        <div style={{
-          height: "18%",
-          backgroundColor: '#f2f3f6',
-          borderColor: 'GhostWhite',
-          borderStyle: 'solid',
-          borderWidth: '2px'
-        }}>
-          <Statistic
-            title="Traceability"
-            value={model.traceability != null ? model.traceability * 100 : 'N/A'}
-            precision={model.traceability != null && 2}
-            valueStyle={{color: '#3f8600'}}
+        {
+          !hideTraceability &&
+            <div style={{
+              height: "18%",
+              backgroundColor: '#f2f3f6',
+              borderColor: 'GhostWhite',
+              borderStyle: 'solid',
+              borderWidth: '2px'
+            }}>
+              <Statistic
+                title="Traceability"
+                value={model.traceability != null ? model.traceability * 100 : 'N/A'}
+                precision={model.traceability != null && 2}
+                valueStyle={{color: '#3f8600'}}
 
-            suffix={model.traceability != null && "%"}
-            style={{backgroundColor: '#f2f3f6'}}
-          />
-        </div>
-        <div style={{height: "82%"}}>
+                suffix={model.traceability != null && "%"}
+                style={{backgroundColor: '#f2f3f6'}}
+              />
+            </div>
+        }
+        <div style={hideTraceability ? {height:"82%"} : {}}>
           <CommitsTimelineRollupBarChart
             /* We cannot use the model on state here because this should include all the categories
             *  even when some a selected*/
@@ -257,7 +261,7 @@ export class CommitsTimelineChartView extends React.Component {
     const {view, days, setDaysRange, groupings} = this.props;
     const {selectedGrouping} = this.state;
 
-    const showSlider = view === 'detail';
+    const showSlider = days && (view === 'detail');
 
     return (
         <Flex column style={{height: height, width: "100%"}}>
