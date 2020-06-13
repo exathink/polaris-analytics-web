@@ -1,25 +1,32 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {capitalizeFirstLetter, daysFromNow, fromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
+import {
+  capitalizeFirstLetter,
+  daysFromNow,
+  fromNow,
+  elide,
+  snakeToUpperCamel,
+  toMoment
+} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
 
-function getDaysSubtitle(days, prefix='Last') {
+function getDaysSubtitle(days, prefix = 'Last') {
   return days > 1 ? `${prefix} ${days} Days`
-      : days > 0 ? `${prefix} 24 hours` : ``;
+    : days > 0 ? `${prefix} 24 hours` : ``;
 }
 
-function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
+function getSubtitleText(before, startWindow, endWindow, latestCommit, days) {
   const endWindowDays = endWindow && daysFromNow(endWindow)
-  if(latestCommit) {
+  if (latestCommit) {
     if (days) {
       return `${getDaysSubtitle(days, '')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
     } else {
       return `Latest commit was ${fromNow(latestCommit)}`
     }
-  } else if(!before || (endWindowDays <= 1)) {
+  } else if (!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
     return startWindow ?
@@ -31,7 +38,7 @@ function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
 function getTitleText(latest, commits, totalCommits) {
   return latest && latest === commits.length ?
     `Last ${latest} Commits ${latest < totalCommits ? `of ${totalCommits}`: ``}`
-    : `${commits.length} ${commits.length > 1 ? ' Commits' : ' Commit'}`
+    : `${commits.length} ${commits.length === 1 ? ' Commit' : ' Commits'}`
 }
 
 function getWorkItemSummaryText(commit) {
@@ -45,7 +52,7 @@ function getWorkItemSummaryText(commit) {
     } else {
       workItemsSummaryText = commit.workItemsSummaries.reduce(
         (summary, item, index, workItemsSummaries) =>
-          `${summary} ${item.displayId}${index < workItemsSummaries.length - 1   ? ', ': '.'}`
+          `${summary} ${item.displayId}${index < workItemsSummaries.length - 1 ? ', ' : '.'}`
         ,
         "Work Items: "
       )
@@ -54,7 +61,6 @@ function getWorkItemSummaryText(commit) {
   }
   return workItemsSummaryText
 }
-
 
 
 const bucketToBubbleSize = [
@@ -66,7 +72,7 @@ const bucketToBubbleSize = [
   22,
 ]
 
-function z_bucket(lines){
+function z_bucket(lines) {
   if (lines != null) {
     if (lines <= 10) {
       return 1
@@ -110,11 +116,11 @@ export const CommitsTimelineChart = Chart({
       }
 
       const series_data = []
-      for(let i=0; i < commits.length; i++) {
+      for (let i = 0; i < commits.length; i++) {
         const commit = commits[i];
         const commit_date = toMoment(commit.commitDate);
         const commitCategories = model.getCategories(commit)
-        for (let j=0; j < commitCategories.length; j++) {
+        for (let j = 0; j < commitCategories.length; j++) {
           series_data.push({
             x: commit_date.valueOf(),
             y: categories.indexOf(commitCategories[j]),
@@ -126,7 +132,7 @@ export const CommitsTimelineChart = Chart({
 
       const z_bucket_range = series_data.reduce(
         (minmax, point) => {
-          if(minmax.min === null || minmax.min > point.z) {
+          if (minmax.min === null || minmax.min > point.z) {
             minmax.min = point.z
           }
           if (minmax.max === null || minmax.max < point.z) {
@@ -134,9 +140,8 @@ export const CommitsTimelineChart = Chart({
           }
           return minmax;
         },
-        {min: null, max:null}
+        {min: null, max: null}
       )
-
 
 
       const latest_point = markLatest && series_data.length > 0 && series_data.reduce(
@@ -163,7 +168,7 @@ export const CommitsTimelineChart = Chart({
           panKey: 'shift',
         },
         title: {
-          text: getTitleText(latest, commits,totalCommits),
+          text: getTitleText(latest, commits, totalCommits),
           align: view === 'detail' ? 'center' : 'left'
         },
         subtitle: {
@@ -175,7 +180,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: 'Timeline <br/> <span style="font-size: 9px; color: #666; font-style: italic">Bubble Size: Source Lines Changed</span>'
           },
-          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1,'h').valueOf() : moment().add(1, 'h').valueOf()
+          max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1, 'h').valueOf() : moment().add(1, 'h').valueOf()
         },
         yAxis: {
           id: 'y-items',
