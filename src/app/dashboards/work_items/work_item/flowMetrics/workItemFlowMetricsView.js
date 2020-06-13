@@ -1,15 +1,6 @@
 import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-
-import {Contexts} from "../../../../meta";
-import {daysFromNow, fromNow, percentileToText, toMoment} from "../../../../helpers/utility";
-import {
-  WorkItemColorMap,
-  WorkItemIcons,
-  WorkItemStateTypeColor,
-  WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName,
-} from "../../../shared/config";
+import {daysFromNow, toMoment} from "../../../../helpers/utility";
 import {Statistic} from "antd";
 
 function getCycleMetrics(workItem) {
@@ -52,7 +43,7 @@ export const WorkItemFlowMetricsView = ({workItem, context, view}) => {
         </VizItem>
         <VizItem w={1 / 2}>
           <Statistic
-            title={<span>Cycle Time <sup>{`Min`}</sup> </span>}
+            title={<span>Cycle Time {workItem.stateType !== 'closed' && <sup>{`Min`}</sup>} </span>}
             value={cycleTime || 0}
             precision={1}
             valueStyle={{color: '#3f8600'}}
