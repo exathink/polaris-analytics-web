@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, fromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -14,7 +14,11 @@ function getDaysSubtitle(days, prefix='Last') {
 function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
   const endWindowDays = endWindow && daysFromNow(endWindow)
   if(latestCommit) {
-    return `${getDaysSubtitle(days,'')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
+    if (days) {
+      return `${getDaysSubtitle(days, '')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
+    } else {
+      return `Latest commit was ${fromNow(latestCommit)}`
+    }
   } else if(!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
   } else {
@@ -27,7 +31,7 @@ function getSubtitleText(before, startWindow, endWindow, latestCommit, days){
 function getTitleText(latest, commits, totalCommits) {
   return latest && latest === commits.length ?
     `Last ${latest} Commits ${latest < totalCommits ? `of ${totalCommits}`: ``}`
-    : `${commits.length} Commits`
+    : `${commits.length} ${commits.length > 1 ? ' Commits' : ' Commit'}`
 }
 
 function getWorkItemSummaryText(commit) {
