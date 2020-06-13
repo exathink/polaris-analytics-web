@@ -10,6 +10,7 @@ import {elide} from "../../../helpers/utility";
 
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -32,16 +33,16 @@ export const dashboard =
                   render={
                     () =>
                       <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-                        {`${workItem.displayId}: ${elide(workItem.name,250)}`}
+                        {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
                       </h2>
                   }
                 />
               </DashboardRow>
               <DashboardRow
-                h={"10%"}
+                h={"12%"}
               >
                 <DashboardWidget
-                  w={1/2}
+                  w={1 / 2}
                   name="header"
                   render={
                     ({view}) =>
@@ -52,7 +53,7 @@ export const dashboard =
                   }
                 />
                 <DashboardWidget
-                  w={1/2}
+                  w={1 / 2}
                   name="cycle-metrics"
                   render={
                     ({view}) =>
@@ -67,6 +68,7 @@ export const dashboard =
               <DashboardRow
                 h={'25%'}
               >
+
                 <DashboardWidget
                   w={1}
                   name="duration-detail"
@@ -78,6 +80,31 @@ export const dashboard =
                         view={view}
                       />
                   }
+                />
+              </DashboardRow>
+              <DashboardRow h={'55%'}>
+                <DashboardWidget
+                  w={1}
+                  name="commits"
+                  title={"Commit History"}
+                  render={
+                    ({view}) =>
+                      <DimensionCommitsNavigatorWidget
+                        dimension={'workItem'}
+                        instanceKey={workItem.key}
+                        context={context}
+                        view={view}
+
+                        latestCommit={workItem.latestCommit}
+                        latestWorkItemEvent={workItem.latestWorkItemEvent}
+                        groupBy={'author'}
+                        groupings={['author', 'repository', 'branch']}
+                        showHeader
+                        showTable
+                        hideTraceability
+                      />
+                  }
+                  showDetail={true}
                 />
               </DashboardRow>
             </Dashboard>
