@@ -10,6 +10,8 @@ import {elide} from "../../../helpers/utility";
 
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
+import {WorkItemEventTimelineWidget} from "./eventTimeline/workItemEventTimelineWidget";
+
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
@@ -60,6 +62,7 @@ export const dashboard =
                       <WorkItemFlowMetricsWidget
                         instanceKey={workItem.key}
                         latestWorkItemEvent={workItem.latestWorkItemEvent}
+
                         view={view}
                       />
                   }
@@ -70,7 +73,7 @@ export const dashboard =
               >
 
                 <DashboardWidget
-                  w={1}
+                  w={2/3}
                   name="duration-detail"
                   render={
                     ({view}) =>
@@ -78,6 +81,20 @@ export const dashboard =
                         instanceKey={workItem.key}
                         latestWorkItemEvent={workItem.latestWorkItemEvent}
                         view={view}
+                      />
+                  }
+                />
+                <DashboardWidget
+                  w={1/3}
+                  name="timeline"
+                  render={
+                    ({view}) =>
+                      <WorkItemEventTimelineWidget
+                        instanceKey={workItem.key}
+                        latestWorkItemEvent={workItem.latestWorkItemEvent}
+                        latestCommit={workItem.latestCommit}
+                        view={view}
+                        context={context}
                       />
                   }
                 />
