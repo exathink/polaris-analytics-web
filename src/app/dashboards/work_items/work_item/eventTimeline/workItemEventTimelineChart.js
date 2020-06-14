@@ -19,25 +19,34 @@ export const WorkItemEventsTimelineChart = Chart({
 
 
       const series_data = [
-          ...workItem.workItemEvents.map((timelineEvent, index) => {
+        ...workItem.workItemEvents.map((timelineEvent, index) => {
           const eventDate = toMoment(timelineEvent.eventDate);
           return (
             {
               x: eventDate.valueOf(),
               y: 0,
               z: 3,
+              marker: {
+                symbol: 'triangle',
+                radius: 6
+              },
+              color: '#1c98cb',
               timelineEvent: timelineEvent,
               workItem: workItem
             }
           )
         }),
-          ...workItem.workItemCommits.map((timelineEvent, index) => {
+        ...workItem.workItemCommits.map((timelineEvent, index) => {
           const eventDate = toMoment(timelineEvent.commitDate);
           return (
             {
               x: eventDate.valueOf(),
               y: 1,
               z: 3,
+              marker: {
+                symbol: 'circle',
+                radius: 4
+              },
               timelineEvent: timelineEvent,
               workItem: workItem
             }
@@ -69,7 +78,7 @@ export const WorkItemEventsTimelineChart = Chart({
           title: {
             text: null
           },
-          categories: ['Events','Commits' ],
+          categories: ['Events', 'Commits'],
           reversed: true,
           labels: {
             align: 'left',
@@ -104,18 +113,11 @@ export const WorkItemEventsTimelineChart = Chart({
         },
         series: [
           {
-            key: 'initial_states',
-            id: 'initial_states',
-            name: 'Open',
+            name: 'timeline',
             pointWidth: 20,
             data: series_data,
             turboThreshold: 0,
             allowPointSelect: true,
-            color: '#1c98cb',
-            marker: {
-              symbol: 'triangle',
-              radius: 6
-            }
           },
         ],
         legend: {
