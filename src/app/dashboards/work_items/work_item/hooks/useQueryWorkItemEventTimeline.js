@@ -32,6 +32,7 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                             commitHash
                             commitMessage
                             commitDate
+                            committer
                             author
                             authorDate
                             branch
