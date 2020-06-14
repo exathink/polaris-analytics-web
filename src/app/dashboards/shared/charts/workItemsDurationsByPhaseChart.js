@@ -182,6 +182,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
       },
       xAxis: {
         type: 'category',
+        visible: workItems.length > 1,
         title: {
           text: workItems.length > 1 ? 'Work Item' : null
         }
@@ -236,6 +237,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         layout: 'vertical',
         verticalAlign: 'middle',
         itemMarginBottom: 3,
+        enabled: workItems.length > 1
 
       },
     }
