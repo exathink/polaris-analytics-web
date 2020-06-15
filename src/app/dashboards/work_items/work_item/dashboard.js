@@ -83,6 +83,7 @@ export const dashboard =
                         view={view}
                       />
                   }
+                  showDetail={true}
                 />
                 <DashboardWidget
                   w={1/3}
@@ -97,6 +98,7 @@ export const dashboard =
                         context={context}
                       />
                   }
+                  showDetail={true}
                 />
               </DashboardRow>
               <DashboardRow h={'55%'}>
