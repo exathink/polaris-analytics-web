@@ -100,7 +100,7 @@ export const dashboard = ({viewerContext}) => (
                 stateMappingIndex.isValid() &&
                 <DashboardWidget
                   w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
-                  name="workitem-summary"
+                  name="pipeline"
                   title={"Pipeline"}
                   render={
                     ({view}) =>
