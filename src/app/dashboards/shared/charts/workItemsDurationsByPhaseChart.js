@@ -51,8 +51,8 @@ function getDataPoints(workItem) {
   const workItemPoints = Object.keys(priorStateDurations).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
   ).filter(
-    // we remove backlog time from the display since we want to highlight elapsed cycle time against targets
-    stateType => stateType !== 'backlog'
+    // For non-closed items we remove backlog time from the display since we want to highlight elapsed cycle time against targets
+    stateType => workItem.stateType !== 'closed' ? stateType !== 'backlog' : true
   ).map(
     stateType => ({
       name: workItem.displayId,

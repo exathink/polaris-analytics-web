@@ -18,8 +18,8 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       const durations = workItems[i].workItemStateDetails.currentDeliveryCycleDurations;
       for (let j = 0; j < durations.length; j++) {
         const state = durations[j].state
-        /* filter out backlog */
-        if (durations[j].stateType !== 'backlog') {
+        /* filter out backlog for non-closed items*/
+        if (workItems[i].stateType === 'closed' || durations[j].stateType !== 'backlog') {
           /* adjust duration to include current state if needed*/
           let daysInState = durations[j].daysInState;
           if (workItems[i].state === state && durations[j].stateType !== 'closed') {
