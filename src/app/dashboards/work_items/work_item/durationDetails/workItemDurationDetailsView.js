@@ -16,14 +16,14 @@ export const WorkItemDurationDetailsView = (
           workItems={[workItem]}
           stateType={workItem.stateType}
           groupBy={'state'}
-          title={'Time spent by phase'}
+          title={workItem.stateType !== 'closed' ? 'Cycle time by phase' : 'Lead time by phase'}
           shortTooltip={true}
         />
       </VizItem>
       <VizItem w={1/2}>
         <WorkItemsAggregateDurationsByStateChart
           workItems={[workItem]}
-          title={'Time spent by state'}
+          title={workItem.stateType !== 'closed' ? 'Cycle time by state' : 'Lead time by state'}
         />
       </VizItem>
     </VizRow>

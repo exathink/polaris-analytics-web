@@ -1,11 +1,17 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, elide, pick, toMoment} from "../../../../helpers/utility";
-import {Colors} from "../../../shared/config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
 import {getStateType} from "../../../shared/views/workItemEventsTimeline/workItemEventsTimelineChartModel";
 
-
+const workItemEventSymbol = {
+  unmapped: 'triangle',
+  backlog: 'triangle',
+  open: 'diamond',
+  wip: 'diamond',
+  closed: 'triangle-down'
+}
 export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps:
     (props) => pick(props, 'workItem'),
@@ -19,18 +25,22 @@ export const WorkItemEventsTimelineChart = Chart({
 
 
       const series_data = [
-        ...workItem.workItemEvents.map((timelineEvent, index) => {
+        ...workItem.workItemEvents.filter(
+          /* filter out backlog events for work items that are not in closed state */
+          timelineEvent => workItem.stateType !== 'closed' ? timelineEvent.newStateType !== 'backlog' : true
+        ).map((timelineEvent, index) => {
           const eventDate = toMoment(timelineEvent.eventDate);
+          const newStateType = timelineEvent.newStateType || 'unmapped';
           return (
             {
               x: eventDate.valueOf(),
               y: 0,
               z: 3,
               marker: {
-                symbol: 'triangle',
+                symbol:  workItemEventSymbol[newStateType],
                 radius: 6
               },
-              color: '#1c98cb',
+              color: WorkItemStateTypeColor[newStateType],
               timelineEvent: timelineEvent,
               workItem: workItem
             }
@@ -91,9 +101,10 @@ export const WorkItemEventsTimelineChart = Chart({
           formatter: function () {
             const event = this.point.timelineEvent;
             if (event.eventDate != null) {
-              const transition = `Status: ${event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `;
+              const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || 'unmapped']}`;
+              const transition = `State: ${event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``} ${capitalizeFirstLetter(event.newState)} `;
               return tooltipHtml({
-                header: `${transition}`,
+                header: `${header}<br/>${transition}`,
                 body: [
                   [`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`],
                 ]

@@ -101,7 +101,7 @@ export const WorkItemStateTypeDisplayName = {
 
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
-  backlog: '#6e9a8e',
+  backlog: '#65b59c',
   open: '#069a99',
   wip: '#2f9a32',
   complete: '#47479a',

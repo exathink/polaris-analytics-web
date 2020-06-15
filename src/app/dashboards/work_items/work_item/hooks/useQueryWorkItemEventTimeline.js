@@ -11,6 +11,9 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                     id
                     name
                     displayId
+                    workItemType
+                    state
+                    stateType
                     workItemEvents{
                         count
                         edges {
@@ -19,7 +22,9 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                                 state
                                 eventDate
                                 previousState
+                                previousStateType
                                 newState
+                                newStateType
                             }
                         }
                     }
