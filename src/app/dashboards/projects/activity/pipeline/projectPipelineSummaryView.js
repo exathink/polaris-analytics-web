@@ -2,7 +2,7 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 
-
+import {WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 
 const PipelineSummaryView = (
@@ -28,33 +28,33 @@ const PipelineSummaryView = (
           {
             stateMappingIndex.numInProcessStates() > 0 ?
               <VizRow h={"80%"}>
-                <VizItem>
+                <VizItem w={1/3}>
                   <Statistic
-                    title="Open"
+                    title={WorkItemStateTypeDisplayName['open']}
                     value={open || 0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
                 </VizItem>
-                <VizItem>
+                <VizItem w={1/3}>
                   <Statistic
-                    title="Wip"
+                    title={WorkItemStateTypeDisplayName['wip']}
                     value={wip || 0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
                 </VizItem>
-                <VizItem>
+                <VizItem w={1/3}>
                   <Statistic
-                    title="Code Complete"
+                    title={WorkItemStateTypeDisplayName['complete']}
                     value={complete || 0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
                 </VizItem>
@@ -67,7 +67,7 @@ const PipelineSummaryView = (
                     value={backlog || 0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
                 </VizItem>
@@ -85,7 +85,7 @@ const PipelineSummaryView = (
                     value={(open || 0) + (wip || 0) + (complete || 0)}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
                   :
@@ -94,7 +94,7 @@ const PipelineSummaryView = (
                     value={backlog ||0}
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Work Items"}
                   />
               }
@@ -105,7 +105,7 @@ const PipelineSummaryView = (
                 value={unmapped || 0}
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Work Items"}
               />
             </VizItem>

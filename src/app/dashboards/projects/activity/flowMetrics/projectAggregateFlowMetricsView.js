@@ -23,27 +23,27 @@ export const ProjectAggregateFlowMetricsView = (
       {
         !showAll ?
           <VizRow h={"80%"}>
-            <VizItem>
+            <VizItem w={0.30}>
               <Statistic
                 title="Throughput"
                 value={workItemsInScope || 0}
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Work Items"}
               />
             </VizItem>
-            <VizItem>
+            <VizItem w={0.40}>
               <Statistic
                 title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
                 value={percentileLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Days"}
               />
             </VizItem>
-            <VizItem>
+            <VizItem w={0.35}>
               {
                 stateMappingIndex.numInProcessStates() > 0 ?
                   <Statistic
@@ -51,7 +51,7 @@ export const ProjectAggregateFlowMetricsView = (
                     value={avgCycleTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Days"}
                   />
                   :
@@ -60,7 +60,7 @@ export const ProjectAggregateFlowMetricsView = (
                     value={avgLeadTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Days"}
                   />
 
@@ -75,7 +75,7 @@ export const ProjectAggregateFlowMetricsView = (
                 value={workItemsInScope || 0}
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Work Items"}
               />
             </VizItem>
@@ -87,7 +87,7 @@ export const ProjectAggregateFlowMetricsView = (
                   value={avgLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -98,7 +98,7 @@ export const ProjectAggregateFlowMetricsView = (
                 value={percentileLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Days"}
               />
             </VizItem>
@@ -108,7 +108,7 @@ export const ProjectAggregateFlowMetricsView = (
                 value={maxLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
-                style={{backgroundColor: '#f2f3f6'}}
+
                 suffix={"Days"}
               />
             </VizItem>
@@ -120,7 +120,7 @@ export const ProjectAggregateFlowMetricsView = (
                     value={avgCycleTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Days"}
                   />
                   :
@@ -129,7 +129,7 @@ export const ProjectAggregateFlowMetricsView = (
                     value={avgLeadTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
-                    style={{backgroundColor: '#f2f3f6'}}
+
                     suffix={"Days"}
                   />
 
@@ -143,7 +143,7 @@ export const ProjectAggregateFlowMetricsView = (
                   value={percentileCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -156,7 +156,7 @@ export const ProjectAggregateFlowMetricsView = (
                   value={maxCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>

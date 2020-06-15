@@ -32,33 +32,33 @@ export const ProjectDefectMetricsSummaryView = (
         {
           !showAll ?
             <VizRow h={"80%"}>
-              <VizItem>
+              <VizItem w={0.3}>
                 <Statistic
                   title="Unresolved"
                   value={numOpenDefects || 0}
                   precision={0}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Defects"}
                 />
               </VizItem>
-              <VizItem>
+              <VizItem w={0.35}>
                 <Statistic
                   title="Close Rate"
                   value={closeRate || 'N/A'}
                   precision={2}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={closeRate != null ? '%' : ''}
                 />
               </VizItem>
-              <VizItem>
+              <VizItem w={0.4}>
                 <Statistic
                   title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
                   value={percentileLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -71,7 +71,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={numOpenDefects || 0}
                   precision={0}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Defects"}
                 />
               </VizItem>
@@ -81,7 +81,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={closeRate || 'N/A'}
                   precision={2}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={closeRate != null ? '%' : ''}
                 />
               </VizItem>
@@ -91,7 +91,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={avgLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -101,7 +101,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={percentileLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -111,7 +111,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={maxLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -121,7 +121,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={avgLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -131,7 +131,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={percentileCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
@@ -141,7 +141,7 @@ export const ProjectDefectMetricsSummaryView = (
                   value={maxCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
-                  style={{backgroundColor: '#f2f3f6'}}
+
                   suffix={"Days"}
                 />
               </VizItem>
