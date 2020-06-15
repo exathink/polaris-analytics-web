@@ -130,6 +130,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
         stacking: true,
         maxPointWidth: 30,
         minPointLength: 3,
+        allowPointSelect: true,
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemsByWorkItemType[workItemType].flatMap(
           workItem => getDataPoints(workItem)
