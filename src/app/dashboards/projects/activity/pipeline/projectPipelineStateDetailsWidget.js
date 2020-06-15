@@ -16,7 +16,7 @@ export const ProjectPipelineStateDetailsWidget = (
   }
 ) => {
 
-  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
+  const {loading: cycleMetricsLoading, data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
     {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
   )
 
@@ -24,7 +24,7 @@ export const ProjectPipelineStateDetailsWidget = (
     instanceKey,
     referenceString: latestWorkItemEvent
   })
-  if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+  if (cycleMetricsLoading || loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
   if (error) return null;
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 

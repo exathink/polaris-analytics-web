@@ -141,7 +141,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
 
 export const WorkItemsDurationsByPhaseChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems', 'projectCycleMetrics', 'groupBy')
+    pick(props, 'workItems', 'projectCycleMetrics', 'groupBy', 'stateType')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
