@@ -3,13 +3,13 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {capitalizeFirstLetter, elide, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
-import {getStateType} from "../../../shared/views/workItemEventsTimeline/workItemEventsTimelineChartModel";
 
 const workItemEventSymbol = {
   unmapped: 'triangle',
   backlog: 'triangle',
   open: 'diamond',
   wip: 'diamond',
+  complete: 'diamond',
   closed: 'triangle-down'
 }
 export const WorkItemEventsTimelineChart = Chart({
