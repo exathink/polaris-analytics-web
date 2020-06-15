@@ -1,4 +1,3 @@
-
 export function refetchQueries(refetchSpec, props, fetchData) {
   return refetchSpec.map(
     spec => ({
@@ -37,8 +36,21 @@ export function fetchQueryEffect({service, query, variables, onSuccess, onError}
           }
         }
       }
+
       fetch()
     }
   );
+
+}
+
+export function logGraphQlError(source, error) {
+  console.log(`GraphQL Error from ${source}`);
+  console.log(`Error: ${error.message}`);
+  if (error.graphQLErrors != null && error.graphQLErrors.length > 0) {
+    error.graphQLErrors.map(({message}) => console.log(message));
+  }
+  if (error.networkError != null && error.networkError.result != null) {
+    error.networkError.result.errors.map(({message}) => console.log(message));
+  }
 
 }

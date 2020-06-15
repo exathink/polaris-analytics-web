@@ -3,6 +3,7 @@ import {Loading} from "../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../hooks/useQueryProjectPipelineStateDetails";
 import {ProjectPipelineStateDetailsView} from "./projectPipelineStateDetailsView";
 import {useQueryProjectCycleMetrics} from "../hooks/useQueryProjectCycleMetrics";
+import {logGraphQlError} from "../../../../components/graphql/utils";
 
 export const ProjectPipelineStateDetailsWidget = (
   {
@@ -16,16 +17,23 @@ export const ProjectPipelineStateDetailsWidget = (
   }
 ) => {
 
-  const {loading: cycleMetricsLoading, data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
+  const {loading: cycleMetricsLoading, error: cycleMetricsError, data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
     {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
   )
+  if (cycleMetricsError) {
+    logGraphQlError('ProjectPipelineStateDetailsWidget.cycleMetrics', cycleMetricsError);
+    return null;
+  }
 
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     referenceString: latestWorkItemEvent
   })
   if (cycleMetricsLoading || loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
-  if (error) return null;
+  if (error) {
+    logGraphQlError('ProjectPipelineStateDetailsWidget.pipelineStateDetails', error);
+    return null;
+  }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
   return (
