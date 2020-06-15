@@ -1,14 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {Colors} from "../../config";
-import {
-  capitalizeFirstLetter,
-  daysFromNow,
-  fromNow,
-  elide,
-  snakeToUpperCamel,
-  toMoment
-} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -24,7 +17,7 @@ function getSubtitleText(before, startWindow, endWindow, latestCommit, days) {
     if (days) {
       return `${getDaysSubtitle(days, '')} ending ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
     } else {
-      return `Latest commit was ${fromNow(latestCommit)}`
+      return `Latest commit: ${toMoment(latestCommit).format('MM/DD/YYYY hh:mm a')}`
     }
   } else if (!before || (endWindowDays <= 1)) {
     return getDaysSubtitle(days)
