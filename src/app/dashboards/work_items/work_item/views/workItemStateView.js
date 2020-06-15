@@ -2,7 +2,6 @@ import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import StickerWidget from "../../../shared/containers/stickers/simpleSticker/sticker-widget";
 import {Contexts} from "../../../../meta";
-import {fromNow} from "../../../../helpers/utility";
 import {
   WorkItemColorMap,
   WorkItemIcons,
@@ -10,44 +9,42 @@ import {
   WorkItemStateTypeDisplayName,
   WorkItemTypeDisplayName,
 } from "../../../shared/config";
+import {LatestCommitView} from "../../../shared/views/latestCommit/latestCommitView";
 
 export const WorkItemStateView = ({workItem, context, view}) => (
-    <React.Fragment>
-      <VizRow h={"100%"}>
-        <VizItem w={1 / 3}>
-          {/* Sticker Widget */}
-          <StickerWidget
-            number={'Type'}
-            text={WorkItemTypeDisplayName[workItem.workItemType]}
-            icon={Contexts.work_items.icon}
-            fontColor={"#ffffff"}
-            bgColor={WorkItemColorMap[workItem.workItemType]}
-          />
-        </VizItem>
-        <VizItem w={1/3}>
-          {/* Sticker Widget */}
-          <StickerWidget
-            number={'Phase'}
-            text={WorkItemStateTypeDisplayName[workItem.stateType] || WorkItemStateTypeDisplayName['unmapped']}
-            icon={WorkItemIcons.phase}
-            fontColor={"#ffffff"}
-            bgColor={WorkItemStateTypeColor[workItem.stateType]}
+  <React.Fragment>
+    <VizRow h={"100%"}>
+      <VizItem w={workItem.stateType === 'closed' ? 1 / 2 : 1 / 3}>
+        {/* Sticker Widget */}
+        <StickerWidget
+          number={WorkItemTypeDisplayName[workItem.workItemType]}
+          text={workItem.displayId}
+          icon={Contexts.work_items.icon}
+          fontColor={"#ffffff"}
+          bgColor={WorkItemColorMap[workItem.workItemType]}
+        />
+      </VizItem>
+      <VizItem w={workItem.stateType === 'closed' ? 1 / 2 : 1 / 3}>
+        {/* Sticker Widget */}
+        <StickerWidget
+          number={WorkItemStateTypeDisplayName[workItem.stateType] || WorkItemStateTypeDisplayName['unmapped']}
+          text={workItem.state}
+          icon={WorkItemIcons.phase}
+          fontColor={"#ffffff"}
+          bgColor={WorkItemStateTypeColor[workItem.stateType]}
 
-          />
-        </VizItem>
-        <VizItem w={1/3}>
-          {/* Sticker Widget */}
-          <StickerWidget
-            number={'State'}
-            hoverText={`Entered: ${fromNow(workItem.latestWorkItemEvent)}`}
-            text={workItem.state}
-            icon={WorkItemIcons.state}
-            fontColor={"#ffffff"}
-            bgColor={WorkItemStateTypeColor[workItem.stateType]}
-          />
-        </VizItem>
-
-      </VizRow>
-    </React.Fragment>
+        />
+      </VizItem>
+      {
+        workItem.stateType !== 'closed' &&
+          <VizItem w={1 / 3}>
+            <LatestCommitView
+              latestCommit={workItem.latestCommit}
+              asStatistic={true}
+            />
+          </VizItem>
+      }
+    </VizRow>
+  </React.Fragment>
 );
 
