@@ -154,6 +154,7 @@ export const dashboard = ({viewerContext}) => (
                       <ProjectDefectMetricsWidget
                         instanceKey={key}
                         view={view}
+                        context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         stateMappingIndex={stateMappingIndex}
                         days={30}

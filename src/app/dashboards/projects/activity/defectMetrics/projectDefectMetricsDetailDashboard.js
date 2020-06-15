@@ -12,7 +12,9 @@ export const ProjectDefectMetricsDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    targetPercentile
+    targetPercentile,
+    view,
+    context
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
@@ -56,6 +58,7 @@ export const ProjectDefectMetricsDetailDashboard = (
               <ProjectDeliveryCycleFlowMetricsWidget
                 instanceKey={instanceKey}
                 view={view}
+                context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}

@@ -13,6 +13,7 @@ export const ProjectDefectMetricsWidget = (
     latestWorkItemEvent,
     stateMappingIndex,
     view,
+    context,
     showAll,
     pollInterval
   }) => {
@@ -42,6 +43,8 @@ export const ProjectDefectMetricsWidget = (
         targetPercentile={targetPercentile}
         stateMappingIndex={stateMappingIndex}
         latestWorkItemEvent={latestWorkItemEvent}
+        view={view}
+        context={context}
       />
     )
   }
