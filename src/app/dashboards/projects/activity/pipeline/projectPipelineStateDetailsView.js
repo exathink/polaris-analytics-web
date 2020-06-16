@@ -29,7 +29,13 @@ const PipelineStateDetailsView = (
       const stateTypes = Object.keys(workItemsByStateType).sort(
         (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
       )
-      const [selectedStateType, setSelectedStateType] = useState(stateTypes[0]);
+
+      const [selectedStateType, setSelectedStateType] = useState(
+        /* priority order to select the default open tab when we first render this component */
+        ['wip','deliver','complete','open','closed','backlog'].find(
+          stateType => workItemsByStateType[stateType].length > 0
+        ) || stateTypes[0]
+      );
       const [selectedGrouping, setSelectedGrouping] = useState('state');
 
       if (selectedStateType != null) {
