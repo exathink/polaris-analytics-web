@@ -147,7 +147,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, title, shortTooltip,  intl}) => {
+  getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, singleWorkItemMode, title, shortTooltip,  intl}) => {
 
     const workItemsWithAggregateDurations = workItems.map( workItem => {
     const workItemStateDetails = workItem.workItemStateDetails;
@@ -183,9 +183,9 @@ export const WorkItemsDurationsByPhaseChart = Chart({
       },
       xAxis: {
         type: 'category',
-        visible: workItems.length > 1,
+        visible: !singleWorkItemMode,
         title: {
-          text: workItems.length > 1 ? 'Work Item' : null
+          text: !singleWorkItemMode ? 'Work Item' : null
         }
       },
       yAxis: {
@@ -238,7 +238,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         layout: 'vertical',
         verticalAlign: 'middle',
         itemMarginBottom: 3,
-        enabled: workItems.length > 1
+        enabled: !singleWorkItemMode
 
       },
     }

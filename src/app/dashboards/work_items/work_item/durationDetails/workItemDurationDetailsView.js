@@ -17,6 +17,7 @@ export const WorkItemDurationDetailsView = (
           stateType={workItem.stateType}
           groupBy={'state'}
           title={workItem.stateType !== 'closed' ? 'Cycle time by phase' : 'Lead time by phase'}
+          singleWorkItemMode={view === 'primary'}
           shortTooltip={true}
         />
       </VizItem>
