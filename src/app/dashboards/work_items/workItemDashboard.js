@@ -1,7 +1,7 @@
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
-
+import {logGraphQlError} from "../../components/graphql/utils";
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {Query} from "react-apollo";
@@ -28,10 +28,11 @@ class WithWorkItem extends React.Component {
         query={
           gql`
             query with_work_item_instance($key: String!) {
-                workItem(key: $key, interfaces:[CommitSummary, WorkItemEventSpan]){
+                workItem(key: $key, interfaces:[CommitSummary, WorkItemEventSpan, WorkItemsSourceRef]){
                     id
                     name
                     key
+                    url
                     displayId
                     workItemType
                     state
@@ -40,6 +41,7 @@ class WithWorkItem extends React.Component {
                     latestCommit
                     commitCount
                     latestWorkItemEvent
+                    workTrackingIntegrationType
                 }
             }
         `
@@ -52,7 +54,10 @@ class WithWorkItem extends React.Component {
         {
           ({loading, error, data}) => {
             if (loading) return <Loading/>;
-            if (error) return null;
+            if (error) {
+              logGraphQlError('workItemDashboard', error);
+              return null;
+            }
             const workItem = data.workItem;
 
             return (

@@ -11,7 +11,7 @@ import {elide} from "../../../helpers/utility";
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
 import {WorkItemEventTimelineWidget} from "./eventTimeline/workItemEventTimelineWidget";
-
+import {WorkItemRemoteLink} from "./views/workItemRemoteLink";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
@@ -34,9 +34,7 @@ export const dashboard =
                   name="name"
                   render={
                     () =>
-                      <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-                        {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
-                      </h2>
+                      <WorkItemRemoteLink workItem={workItem}/>
                   }
                 />
               </DashboardRow>
