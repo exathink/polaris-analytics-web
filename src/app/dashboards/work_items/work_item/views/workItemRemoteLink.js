@@ -11,10 +11,8 @@ function getRemoteBrowseUrl(workItem) {
       return `${url.origin}/browse/${workItem.displayId}`;
     case 'pivotal_tracker':
       return workItem.url;
-      break;
     case 'github':
       return workItem.url.replace('api.github.com/repos', 'github.com');
-      break;
     default:
       return null;
   }

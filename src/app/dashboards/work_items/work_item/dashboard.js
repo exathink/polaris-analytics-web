@@ -6,7 +6,6 @@ import {WorkItemStateView} from "./views/workItemStateView";
 
 import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {elide} from "../../../helpers/utility";
 
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
