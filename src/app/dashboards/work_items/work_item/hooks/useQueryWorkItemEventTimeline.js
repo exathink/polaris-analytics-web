@@ -18,7 +18,7 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                         count
                         edges {
                             node {
-                              
+                                id
                                 state
                                 eventDate
                                 previousState

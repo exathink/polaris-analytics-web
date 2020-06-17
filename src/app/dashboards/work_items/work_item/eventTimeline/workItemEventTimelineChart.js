@@ -17,7 +17,20 @@ export const WorkItemEventsTimelineChart = Chart({
     (props) => pick(props, 'workItem'),
 
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) => points.map(point => point.workItem),
+  mapPoints: (points, _) => points.map(point => ({
+      workItem: point.workItem,
+      event: point.timelineEvent.eventDate != null ?
+        {
+          type: 'event',
+          timelineEventId: point.timelineEventId,
+        }
+        :
+        {
+            type: 'commit',
+            name: point.timelineEvent.name,
+            key: point.timelineEvent.key
+        }
+    })),
 
   getConfig:
 

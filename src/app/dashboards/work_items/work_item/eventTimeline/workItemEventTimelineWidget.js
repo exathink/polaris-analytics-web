@@ -35,8 +35,8 @@ export const WorkItemEventTimelineWidget = (
   return (
     <WorkItemEventTimelineView
       workItem={workItem}
-      view
-      context
+      view={view}
+      context={context}
     />
   )
 }
