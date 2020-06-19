@@ -27,11 +27,11 @@ export const WorkItemStateView = ({workItem, context, view}) => (
       <VizItem w={workItem.stateType === 'closed' ? 1 / 2 : 1 / 3}>
         {/* Sticker Widget */}
         <StickerWidget
-          number={WorkItemStateTypeDisplayName[workItem.stateType] || WorkItemStateTypeDisplayName['unmapped']}
+          number={WorkItemStateTypeDisplayName[workItem.stateType || 'unmapped']}
           text={workItem.state}
           icon={WorkItemIcons.phase}
           fontColor={"#ffffff"}
-          bgColor={WorkItemStateTypeColor[workItem.stateType]}
+          bgColor={WorkItemStateTypeColor[workItem.stateType || 'unmapped']}
 
         />
       </VizItem>
