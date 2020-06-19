@@ -25,6 +25,8 @@ export const dashboard = () => (
                     instanceKey={repository.key}
                     context={context}
                     view={view}
+                    detailViewGroupings={['author','workItem']}
+                    detailViewCommitsGroupBy={'author'}
                     referenceDate={repository.latestCommit}
                   />
               }
