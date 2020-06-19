@@ -123,6 +123,7 @@ export const WorkItemIcons = {
 }
 
 export const WorkItemStateTypeSubColors = {
+  unmapped: ['#6c6c6c'],
   backlog: ['#8f9a8e', '#81859a', '#9a848d', '#878b9a', '#9a8a7f'],
   open: ['#069a99', '#22949a', '#15809a', '#8d7d9a', '#5b689a'],
   wip: ['#2f9a32', '#879a2e', '#639a0d', '#28a759', '#0aa737'],
@@ -131,6 +132,7 @@ export const WorkItemStateTypeSubColors = {
 }
 
 export function assignWorkItemStateColor(stateType, index) {
+  const subcolorMap = WorkItemStateTypeSubColors[stateType||'unmapped'];
   // Assign a color from the sub pallete using the index. Wraps around to zero.
-  return WorkItemStateTypeSubColors[stateType][index % WorkItemStateTypeSubColors[stateType].length]
+  return subcolorMap[index % subcolorMap.length]
 }
