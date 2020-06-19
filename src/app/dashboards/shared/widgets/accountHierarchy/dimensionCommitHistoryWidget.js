@@ -16,6 +16,7 @@ export const DimensionCommitHistoryWidget = (
     instanceKey,
     context,
     view,
+    detailViewGroupings,
     detailViewCommitsGroupBy,
     referenceDate,
 
@@ -56,6 +57,7 @@ export const DimensionCommitHistoryWidget = (
                 dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
+                detailViewGroupings={detailViewGroupings}
                 detailViewCommitsGroupBy={detailViewCommitsGroupBy}
                 referenceDate={referenceDate}
               />

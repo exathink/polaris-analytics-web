@@ -11,6 +11,7 @@ const CumulativeCommitCountDetailPanels = (
     context,
     dimension,
     instanceKey,
+    detailViewGroupings,
     detailViewCommitsGroupBy,
     days,
     before,
@@ -43,6 +44,7 @@ const CumulativeCommitCountDetailPanels = (
             days={days}
             before={before}
             shortTooltip={true}
+            groupings={detailViewGroupings}
             groupBy={detailViewCommitsGroupBy}
             showHeader
             suppressHeaderDataLabels={3}
