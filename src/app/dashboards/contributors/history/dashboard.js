@@ -23,7 +23,8 @@ export const dashboard = ()=> (
                     instanceKey={contributor.key}
                     context={context}
                     view={view}
-                    detailViewCommitsGroupBy={'repository'}
+                    detailViewGroupings={['workItem', 'repository']}
+                    detailViewCommitsGroupBy={'workItem'}
                     referenceDate={contributor.latestCommit}
                   />
               }
