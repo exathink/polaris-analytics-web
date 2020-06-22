@@ -5,8 +5,11 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../shared/config";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from 'reflexbox';
+import {Checkbox} from 'antd';
+
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import WorkItems from "../../../work_items/context"
+
 const PipelineStateDetailsView = (
   {
     workItems,
@@ -14,7 +17,9 @@ const PipelineStateDetailsView = (
     view,
     context
   }) => {
+
     if (workItems.length > 0) {
+      /* Index the candidates by state type. These will be used to populate each tab */
       const workItemsByStateType = workItems.reduce(
         (workItemsByStateType, workItem) => {
           if (workItemsByStateType[workItem.stateType] != null) {
@@ -32,13 +37,22 @@ const PipelineStateDetailsView = (
 
       const [selectedStateType, setSelectedStateType] = useState(
         /* priority order to select the default open tab when we first render this component */
-        ['wip','deliver','complete','open','closed','backlog'].find(
+        ['wip', 'deliver', 'complete', 'open', 'closed', 'backlog'].find(
           stateType => workItemsByStateType[stateType].length > 0
         ) || stateTypes[0]
       );
+      const [showEpics, setShowEpics] = useState(false);
       const [selectedGrouping, setSelectedGrouping] = useState('state');
 
       if (selectedStateType != null) {
+        /* if showEpics is false (the default) we filter out epics before rendering
+        *  otherwise we show all the work items*/
+        const candidateWorkItems = showEpics ? workItemsByStateType[selectedStateType] :
+          workItemsByStateType[selectedStateType].filter(
+            workItem => workItem.workItemType !== 'epic'
+          )
+        const epicsFiltered = candidateWorkItems.length !== workItemsByStateType[selectedStateType].length;
+
         return (
           <VizRow h={1}>
             <VizItem w={1}>
@@ -60,6 +74,16 @@ const PipelineStateDetailsView = (
                   initialValue={selectedStateType}
                   onGroupingChanged={setSelectedStateType}
                 />
+                <Checkbox
+                  /* if there are no epics filtered out we should not enable the checkbox*/
+                  disabled={!showEpics && !epicsFiltered}
+                  checked={showEpics}
+                  onChange={
+                    e => setShowEpics(e.target.checked)
+                  }
+                >
+                  Show Epics
+                </Checkbox>
                 <GroupingSelector
                   label={"Group Work Items By"}
                   groupings={
@@ -77,7 +101,7 @@ const PipelineStateDetailsView = (
               < WorkItemsDurationsByPhaseChart
                 stateType={selectedStateType}
                 groupBy={selectedGrouping}
-                workItems={workItemsByStateType[selectedStateType]}
+                workItems={candidateWorkItems}
                 projectCycleMetrics={projectCycleMetrics}
                 onSelectionChange={
                   (workItems) => {
