@@ -43,13 +43,17 @@ function getMaxDays(deliveryCycles, projectCycleMetrics) {
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'model', 'selectedMetric')
+    pick(props, 'model', 'selectedMetric', 'showEpicsAndSubTasks')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.cycle),
 
-  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, intl}) => {
-    const deliveryCyclesByWorkItemType = model.reduce(
+  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, showEpicsAndSubTasks,intl}) => {
+    const candidateCycles = showEpicsAndSubTasks != null && !showEpicsAndSubTasks ?
+      model.filter(cycle => cycle.workItemType !== 'epic' && cycle.workItemType !== 'subtask')
+      :model;
+
+    const deliveryCyclesByWorkItemType = candidateCycles.reduce(
       (groups, cycle) => {
         if (groups[cycle.workItemType] != null) {
           groups[cycle.workItemType].push(cycle);
@@ -126,7 +130,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         title: {
           text: `Days`
         },
-        max: getMaxDays(model, projectCycleMetrics),
+        max: getMaxDays(candidateCycles, projectCycleMetrics),
         plotLines: [
           PlotLines.maxLeadTime(projectCycleMetrics, intl),
           PlotLines.percentileLeadTime(projectCycleMetrics, intl)

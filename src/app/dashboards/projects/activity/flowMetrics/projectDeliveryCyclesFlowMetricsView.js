@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
 import WorkItems from '../../../work_items/context';
+import {Checkbox} from 'antd';
+import {Flex} from 'reflexbox';
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
     display: 'Lead Time',
-    value : cycle => cycle.leadTime
+    value: cycle => cycle.leadTime
   },
   cycleTime: {
     display: 'Cycle Time',
@@ -18,24 +20,36 @@ const projectDeliveryCycleFlowMetricsMeta = {
   }
 }
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics,  initialMetric, defectsOnly}) => {
+export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics, initialMetric, defectsOnly}) => {
   const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
+  const [showEpicsAndSubTasks, setShowEpicsAndSubTasks] = useState(false);
+
   return (
     <React.Fragment>
-      <GroupingSelector
-        label={"Show"}
-        groupings={
-          groupings.map(
-            grouping => ({
-              key: grouping,
-              display: projectDeliveryCycleFlowMetricsMeta[grouping].display
-            })
-          )
-        }
-        initialValue={selectedMetric}
-        onGroupingChanged={setSelectedMetric}
-      />
+      <Flex justify={'space-between'}>
+        <GroupingSelector
+          label={"Show"}
+          groupings={
+            groupings.map(
+              grouping => ({
+                key: grouping,
+                display: projectDeliveryCycleFlowMetricsMeta[grouping].display
+              })
+            )
+          }
+          initialValue={selectedMetric}
+          onGroupingChanged={setSelectedMetric}
+        />
+        <Checkbox
+          checked={showEpicsAndSubTasks}
+          onChange={
+            e => setShowEpicsAndSubTasks(e.target.checked)
+          }
+        >
+          Show Epics & Sub-tasks
+        </Checkbox>
+      </Flex>
       <FlowMetricsScatterPlotChart
         days={days}
         model={model}
@@ -43,9 +57,10 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         projectCycleMetrics={projectCycleMetrics}
         defectsOnly={defectsOnly}
+        showEpicsAndSubTasks={showEpicsAndSubTasks}
         onSelectionChange={
           (workItems) => {
-            if(workItems.length === 1) {
+            if (workItems.length === 1) {
               context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey)
             }
           }
