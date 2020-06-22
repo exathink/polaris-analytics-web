@@ -43,12 +43,12 @@ function getMaxDays(deliveryCycles, projectCycleMetrics) {
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'model', 'selectedMetric', 'showEpicsAndSubTasks')
+    pick(props, 'model', 'selectedMetric', 'showEpicsAndSubTasks', 'yAxisScale')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.cycle),
 
-  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, showEpicsAndSubTasks,intl}) => {
+  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, showEpicsAndSubTasks, yAxisScale, intl}) => {
     const candidateCycles = showEpicsAndSubTasks != null && !showEpicsAndSubTasks ?
       model.filter(cycle => cycle.workItemType !== 'epic' && cycle.workItemType !== 'subtask')
       :model;
@@ -125,7 +125,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         }
       },
       yAxis: {
-        type: 'logarithmic',
+        type: yAxisScale,
         id: 'cycle-metric',
         title: {
           text: `Days`
