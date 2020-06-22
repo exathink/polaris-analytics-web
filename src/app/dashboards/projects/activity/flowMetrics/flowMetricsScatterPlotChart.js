@@ -159,6 +159,7 @@ export const FlowMetricsScatterPlotChart = Chart({
       },
       plotOptions: {
         series: {
+          animation: false,
           dataLabels: {
             enabled: true,
             format: `{point.name}`,
