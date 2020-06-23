@@ -4,6 +4,7 @@ import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
 import WorkItems from '../../../work_items/context';
 import {Checkbox} from 'antd';
 import {Flex} from 'reflexbox';
+import {PlotLines} from "../shared/chartParts";
 
 const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {

@@ -131,16 +131,21 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`
         },
         max: getMaxDays(candidateCycles, projectCycleMetrics),
-        plotLines: [
+        plotLines: selectedMetric === 'cycleTime' ? [
+          PlotLines.maxCycleTime(projectCycleMetrics, intl),
+          PlotLines.percentileCycleTime(projectCycleMetrics, intl, 'right'),
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl, 'right'),
           PlotLines.maxLeadTime(projectCycleMetrics, intl),
-          PlotLines.percentileLeadTime(projectCycleMetrics, intl)
+        ] :  [
+          PlotLines.maxLeadTime(projectCycleMetrics, intl),
+          PlotLines.percentileLeadTime(projectCycleMetrics, intl, 'right')
         ],
       },
       series: series,
       tooltip: {
         useHTML: true,
         followPointer: false,
-        hideDelay: 50,
+        hideDelay: 0,
         formatter: function () {
           const cycleTime = metricsMeta['cycleTime'].value(this.point.cycle);
           const backlogTime = metricsMeta['backlogTime'].value(this.point.cycle);
