@@ -10,7 +10,7 @@ export function useQueryProjectPipelineStateDetails({instanceKey, referenceStrin
           workItems (activeOnly: true, interfaces: [WorkItemStateDetails]){
             edges {
               node {
-                id
+                
                 name
                 key
                 displayId
