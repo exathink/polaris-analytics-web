@@ -3875,6 +3875,18 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
+highcharts-custom-events@^3.0.4:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/highcharts-custom-events/-/highcharts-custom-events-3.0.5.tgz#7774c8b0388e61f255500a411f87b52fc190fd76"
+  integrity sha512-REruI3fTt119tuf+ygKLg1/U+btIzQCcj9locEAGPTPcecFAx3SjeSFm3uFev50GqTnRjpixNmsXAPNVbiGZbQ==
+  dependencies:
+    highcharts ">=5.0.9"
+
+highcharts@>=5.0.9:
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-8.1.2.tgz#a4e7d74a6140028e676a3a54f5fd0ea6ccbcc90e"
+  integrity sha512-Q124Lj+2+bVY2MKMd7d8uSVAmhZVzWgknUUzUBEC27S94dCyK6PBgahuwiMP/ET4w7qSFBBi4OC77ZUb0Vnuyg==
+
 highcharts@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-7.2.1.tgz#313c434bbfd4525a72b76c6bfbd9c39dfe2d1993"

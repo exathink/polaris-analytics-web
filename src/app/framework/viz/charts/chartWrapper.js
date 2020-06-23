@@ -8,6 +8,7 @@ const Highcharts = require('highcharts/highstock');
 
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/xrange')(Highcharts);
+require('highcharts-custom-events')(Highcharts);
 
 
 class ChartWrapper extends React.Component {
