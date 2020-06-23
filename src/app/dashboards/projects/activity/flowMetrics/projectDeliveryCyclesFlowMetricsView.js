@@ -42,32 +42,39 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
           initialValue={selectedMetric}
           onGroupingChanged={setSelectedMetric}
         />
-         <GroupingSelector
-          label={"Y-Axis"}
-          groupings={
-            [
+        {
+          !defectsOnly &&
+          <Checkbox
+            checked={showEpicsAndSubTasks}
+            onChange={
+              e => setShowEpicsAndSubTasks(e.target.checked)
+            }
+          >
+            Show Epics & Sub-tasks
+          </Checkbox>
+        }
+        {
+          !defectsOnly &&
+          <GroupingSelector
+            label={"Y-Axis"}
+            groupings={
+              [
 
-              {
-                key: 'logarithmic',
-                display: 'Log'
-              },
-              {
-                key: 'linear',
-                display: 'Linear'
-              },
-            ]
-          }
-          initialValue={'logarithmic'}
-          onGroupingChanged={setYAxisScale}
-        />
-        <Checkbox
-          checked={showEpicsAndSubTasks}
-          onChange={
-            e => setShowEpicsAndSubTasks(e.target.checked)
-          }
-        >
-          Show Epics & Sub-tasks
-        </Checkbox>
+                {
+                  key: 'logarithmic',
+                  display: 'Log'
+                },
+                {
+                  key: 'linear',
+                  display: 'Linear'
+                },
+              ]
+            }
+            initialValue={'logarithmic'}
+            onGroupingChanged={setYAxisScale}
+          />
+        }
+
       </Flex>
       <FlowMetricsScatterPlotChart
         days={days}
