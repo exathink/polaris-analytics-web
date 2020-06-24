@@ -8,6 +8,7 @@ import {analytics_service} from '../../../../services/graphql/index'
 import {CommitsTimelineChartView} from "../../views/commitsTimeline";
 import moment from 'moment';
 import {toMoment, getReferenceString} from "../../../../helpers/utility";
+import {navigateToContext} from "../../navigation/navigate";
 
 
 function getViewCacheKey(instanceKey, display) {
@@ -36,6 +37,7 @@ export const DimensionCommitsNavigatorWidget = (
     suppressHeaderDataLabels,
     showTable,
     onSelectionChange,
+    onCategoryItemSelected,
     pollInterval,
     referenceDate,
 
@@ -127,6 +129,7 @@ export const DimensionCommitsNavigatorWidget = (
               markLatest={markLatest}
               showTable={showTable}
               onSelectionChange={onSelectionChange}
+              onCategoryItemSelected={(category, name, key) => navigateToContext(context, category, name, key)}
             />
           ));
           return context.getCachedView(getViewCacheKey(instanceKey, display));
