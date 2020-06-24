@@ -86,7 +86,8 @@ export const MostActiveChildrenBarChart = Chart({
           id: 'Recent commits',
           name: 'Commits',
           data: series_data,
-          allowPointSelect: true
+          allowPointSelect: true,
+          cursor: 'pointer'
         }],
         legend: {
           enabled: false
