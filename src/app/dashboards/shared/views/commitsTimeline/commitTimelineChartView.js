@@ -19,12 +19,13 @@ const commitTimelineGroupings = {
 export class CommitTimelineViewModel {
   constructor(commits, groupBy = 'author', filterCategories = null) {
     this.groupBy = groupBy;
-    this.getCategories = this.initCategorySelector(groupBy)
-    this.commits = filterCategories ? this.filter(commits, filterCategories) : commits
+    this.getCategories = this.initCategorySelector(groupBy);
+    this.mapCategoryToNode = this.initCategoryReverseMapper(groupBy);
+    this.commits = filterCategories ? this.filter(commits, filterCategories) : commits;
     this.traceability = this.commits.length > 0 ?
       this.commits.filter(commit => commit.workItemsSummaries.length > 0).length / this.commits.length
-      : null
-    this.categoriesIndex = this.initCategoryIndex(this.commits, groupBy, filterCategories)
+      : null;
+    this.categoriesIndex = this.initCategoryIndex(this.commits, groupBy, filterCategories);
   }
 
 
@@ -41,6 +42,43 @@ export class CommitTimelineViewModel {
           : ["Untracked"]
     }
   }
+
+  initCategoryReverseMapper(groupBy) {
+    if (groupBy !== 'workItem') {
+      return (commits, category) => {
+        const commit = commits.find(commit => commit[groupBy] === category);
+        if (commit) {
+          switch (groupBy) {
+            case 'author': {
+              return [commit.author, commit.authorKey];
+
+            }
+            case 'repository': {
+              return [commit.repository, commit.repositoryKey]
+            }
+            default: {
+              break
+            }
+          }
+        }
+        return [];
+      }
+    } else {
+      return (commits, workItemDisplay) => {
+        const workItem = commits.flatMap(
+          commit => commit.workItemsSummaries
+        ).find(
+          workItem => (workItem != null) && `${workItem.displayId}: ${workItem.name}` === workItemDisplay
+        );
+        if (workItem) {
+          return [workItem.displayId, workItem.key]
+        } else {
+          return []
+        }
+      }
+    }
+  }
+
 
   filter(commits, filterCategories) {
     return commits.filter(
@@ -74,7 +112,6 @@ export class CommitTimelineViewModel {
     return categoryIndex;
   }
 }
-
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
@@ -168,6 +205,7 @@ export class CommitsTimelineChartView extends React.Component {
       view,
       shortTooltip,
       markLatest,
+      onCategoryItemSelected,
       polling,
 
     } = this.props;
@@ -187,6 +225,7 @@ export class CommitsTimelineChartView extends React.Component {
         markLatest={markLatest}
         polling={polling}
         onSelectionChange={this.onCommitsSelected.bind(this)}
+        onCategoryItemSelected={onCategoryItemSelected}
         showScrollbar={true}
       />
     )
@@ -201,25 +240,25 @@ export class CommitsTimelineChartView extends React.Component {
       <div style={{height: "100%"}}>
         {
           !hideTraceability &&
-            <div style={{
-              height: "18%",
-              backgroundColor: '#f2f3f6',
-              borderColor: 'GhostWhite',
-              borderStyle: 'solid',
-              borderWidth: '2px'
-            }}>
-              <Statistic
-                title="Traceability"
-                value={model.traceability != null ? model.traceability * 100 : 'N/A'}
-                precision={model.traceability != null && 2}
-                valueStyle={{color: '#3f8600'}}
+          <div style={{
+            height: "18%",
+            backgroundColor: '#f2f3f6',
+            borderColor: 'GhostWhite',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+          }}>
+            <Statistic
+              title="Traceability"
+              value={model.traceability != null ? model.traceability * 100 : 'N/A'}
+              precision={model.traceability != null && 2}
+              valueStyle={{color: '#3f8600'}}
 
-                suffix={model.traceability != null && "%"}
-                style={{backgroundColor: '#f2f3f6'}}
-              />
-            </div>
+              suffix={model.traceability != null && "%"}
+              style={{backgroundColor: '#f2f3f6'}}
+            />
+          </div>
         }
-        <div style={hideTraceability ? {height:"82%"} : {}}>
+        <div style={hideTraceability ? {height: "82%"} : {}}>
           <CommitsTimelineRollupBarChart
             /* We cannot use the model on state here because this should include all the categories
             *  even when some a selected*/
@@ -264,45 +303,45 @@ export class CommitsTimelineChartView extends React.Component {
     const showSlider = days && (view === 'detail');
 
     return (
-        <Flex column style={{height: height, width: "100%"}}>
-          <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider ? 'left' : 'center'}
-                style={{height: "5%"}}>
-            {
-              showSlider &&
-              <Box w={"35%"}>
-                <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
-              </Box>
-            }
-            {
-              groupings &&
-              <Box>
-                <GroupingSelector
-                  groupings={
-                    groupings.map(
-                      grouping => ({
-                        key: grouping,
-                        display: commitTimelineGroupings[grouping]
-                      })
-                    )
-                  }
-                  initialValue={selectedGrouping}
-                  onGroupingChanged={this.onGroupingChanged.bind(this)}/>
-              </Box>
-            }
-          </Flex>
-          <Flex style={{height: "95%"}}>
-            <Box w={"90%"}>
-              {
-                this.getCommitTimelineChart(model)
-              }
+      <Flex column style={{height: height, width: "100%"}}>
+        <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider ? 'left' : 'center'}
+              style={{height: "5%"}}>
+          {
+            showSlider &&
+            <Box w={"35%"}>
+              <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
             </Box>
-            <Box w={"10%"}>
-              {
-                this.getTimelineRollupHeader()
-              }
+          }
+          {
+            groupings &&
+            <Box>
+              <GroupingSelector
+                groupings={
+                  groupings.map(
+                    grouping => ({
+                      key: grouping,
+                      display: commitTimelineGroupings[grouping]
+                    })
+                  )
+                }
+                initialValue={selectedGrouping}
+                onGroupingChanged={this.onGroupingChanged.bind(this)}/>
             </Box>
-          </Flex>
+          }
         </Flex>
+        <Flex style={{height: "95%"}}>
+          <Box w={"90%"}>
+            {
+              this.getCommitTimelineChart(model)
+            }
+          </Box>
+          <Box w={"10%"}>
+            {
+              this.getTimelineRollupHeader()
+            }
+          </Box>
+        </Flex>
+      </Flex>
     )
   }
 
@@ -332,11 +371,11 @@ export class CommitsTimelineChartView extends React.Component {
     return (
       <VizRow h={1}>
 
-          {
-            view === 'detail' ?
-              this.getDetailLayout(this.state.model, showHeader)
-              : this.getPrimaryLayout('100%', this.state.model, showHeader)
-          }
+        {
+          view === 'detail' ?
+            this.getDetailLayout(this.state.model, showHeader)
+            : this.getPrimaryLayout('100%', this.state.model, showHeader)
+        }
 
       </VizRow>
     )
