@@ -96,7 +96,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, showScrollbar, onAuthorSelected, onRepositorySelected}) => {
+    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, showScrollbar, onCategoryItemSelected}) => {
       const commits = model.commits;
       const categoryIndex = model.categoriesIndex;
       const category = model.groupBy
@@ -192,22 +192,14 @@ export const CommitsTimelineChart = Chart({
             align: 'left',
             reserveSpace: true,
             events: {
-              /* This code relies on the custom events module which is breaks core highcharts code in many places
-              *  so we have turned it off for now and this click event will have no effect. Revisit when we
-              *  can use the module more reliably.
-              * */
               click: function () {
                 const cat_index = this.axis.categories.indexOf(this.value);
                 if (cat_index !== -1) {
-                  if ((onAuthorSelected && category === 'author') || (onRepositorySelected && category === 'repository')) {
+                  if (onCategoryItemSelected != null) {
                     const category_name = categories[cat_index];
-                    const commit = commits.find(commit => commit[category] === category_name);
-                    if (commit) {
-                      if (category === 'author') {
-                        onAuthorSelected(commit.author, commit.authorKey)
-                      } else {
-                        onRepositorySelected(commit.repository, commit.repositoryKey)
-                      }
+                    const [nodeName, nodeKey] = model.mapCategoryToNode(commits, category_name);
+                    if (onCategoryItemSelected && (nodeName != null) && (nodeKey != null)) {
+                      onCategoryItemSelected(category, nodeName, nodeKey)
                     }
                   }
                 }
