@@ -98,6 +98,20 @@ export class DefaultSelectionEventHandler {
      * shim it to make it behave that way inside the handler.
      *
      *
+     * Note: 6/24/2020: The above bug was fixed on Jun 17, 2019 and it should be in Highcharts 8, so we can consider
+     * unwinding this code when we upgrade to that version.
+     *
+     *  However we have another problem now in this area. We are opting to use
+     *  the custom events module in order to register for y-axis click events:
+     * see https://polaris.exathink.com/app/dashboard/work_items/PO-198/1c614aa9-51ab-4c7b-a8cd-0d97f435358a/work_item
+     *
+     * But when we use the custom event module chart.getSelectedPoints returns an empty list every time.
+       so this entire bit of logic does not work and always behaves like a single selection. We are going to
+       live with that behavior and ditch multi-select ability for now, so that we can support y-axis navigation which
+       is  a more critical function. But if and when we get a fix to custom events, we can revisit this code.
+
+       Right now.. this code does not work as advertised. But we will keep it here under the assumption that it
+       will be fixed by BlackLabel and Highcharts updates in the future.
     * */
     const selected = this.getRawChart().getSelectedPoints();
     if (selected.find(point => point === e.point)) {
