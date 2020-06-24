@@ -17,7 +17,7 @@ export const ContributorRepositoriesActivityProfileWidget = (
     childDimension,
     view,
     referenceDate,
-    ...rest,
+    ...rest
   }) => {
   return <Query
     client={analytics_service}
