@@ -191,6 +191,9 @@ export const CommitsTimelineChart = Chart({
           labels: {
             align: 'left',
             reserveSpace: true,
+            style: {
+              cursor: 'pointer'
+            },
             events: {
               click: function () {
                 const cat_index = this.axis.categories.indexOf(this.value);
@@ -248,7 +251,7 @@ export const CommitsTimelineChart = Chart({
             key: 'commits',
             id: 'commits',
             name: 'Commits',
-
+            cursor: view == 'detail'? 'auto' : 'pointer',
             data: series_data.filter(point => point.commit.numParents <= 1),
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
@@ -260,7 +263,7 @@ export const CommitsTimelineChart = Chart({
             key: 'merges',
             id: 'merges',
             name: 'Merges',
-
+            cursor: view == 'detail'? 'auto' : 'pointer',
             data: series_data.filter(point => point.commit.numParents > 1),
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
