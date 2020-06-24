@@ -258,7 +258,7 @@ export class CommitsTimelineChartView extends React.Component {
             />
           </div>
         }
-        <div style={hideTraceability ? {height: "82%"} : {}}>
+        <div style={!hideTraceability ? {height: "82%"} : {}}>
           <CommitsTimelineRollupBarChart
             /* We cannot use the model on state here because this should include all the categories
             *  even when some a selected*/
