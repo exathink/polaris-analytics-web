@@ -13,11 +13,11 @@ module.exports = function override(config, env) {
 
   config =  rewireInlineImportGraphqlAst(config, env);
 
-  config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
+  config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }, 'antd-import-plugin'],
     config
   );
 
-  config = injectBabelPlugin(['import', {libraryName: 'lodash', libraryDirectory: "", camel2DashComponentName: false }],
+  config = injectBabelPlugin(['import', {libraryName: 'lodash', libraryDirectory: "", camel2DashComponentName: false }, 'lodash-import-plugin'],
     config
   );
 

@@ -1,1 +1,2 @@
-export {Table, CompactTable} from './table';
+export {CompactTable} from './table';
+export {Table} from 'antd';

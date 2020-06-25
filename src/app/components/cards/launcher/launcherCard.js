@@ -3,8 +3,8 @@ import {Card, Icon} from "antd";
 import './launcherCard.css';
 
 export const LauncherCard = ({onClick, title, description, cover, style, iconType}) => (
-  <a onClick={onClick}>
     <Card
+      onClick={onClick}
       className={'launcher-card'}
       hoverable={true}
       bordered={true}
@@ -20,5 +20,4 @@ export const LauncherCard = ({onClick, title, description, cover, style, iconTyp
         />
       }
     </Card>
-  </a>
 )

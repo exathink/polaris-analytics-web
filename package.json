@@ -33,7 +33,7 @@
     "react-redux": "^7.0.2",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "1.0.17",
+    "react-scripts": "2.0.3",
     "react-sidebar": "^2.3.2",
     "react-sizeme": "^2.6.12",
     "react-table": "^6.8.0",
@@ -75,5 +75,11 @@
     "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8300 ./src/config/graphql/workTrackingFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/vcsFragmentTypes.json",
     "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start",
     "analyze": "source-map-explorer ./build/static/js/main.*"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

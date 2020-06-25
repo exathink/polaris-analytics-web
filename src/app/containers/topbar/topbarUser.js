@@ -44,15 +44,15 @@ class TopbarUser extends Component {
       <TopbarDropdownWrapper className="isoUserDropdown">
         {
           viewerContext.hasSystemRoles(['admin', 'account-owner']) ?
-            <a className="isoDropdownLink" onClick={this.settings.bind(this)}>
+            <span className="isoDropdownLink" style={{cursor: 'pointer'}} onClick={this.settings.bind(this)}>
               <p>Settings</p>
-            </a>
+            </span>
             :
             null
         }
-        <a className="isoDropdownLink" onClick={this.logout.bind(this)}>
+        <span className="isoDropdownLink" style={{cursor: 'pointer'}} onClick={this.logout.bind(this)}>
             <p>{messages.logout} {userName}</p>
-        </a>
+        </span>
       </TopbarDropdownWrapper>
     );
 

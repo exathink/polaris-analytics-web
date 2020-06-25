@@ -252,10 +252,12 @@ const TopbarWrapper = styled.div`
             text-decoration: none;
             display: flex;
             justify-content: flex-start;
+            
             ${transition()};
 
             &:hover {
               background-color: ${palette('secondary', 6)};
+              
             }
           }
         }
