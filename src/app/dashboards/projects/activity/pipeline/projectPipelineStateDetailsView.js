@@ -37,8 +37,8 @@ const PipelineStateDetailsView = (
 
       const [selectedStateType, setSelectedStateType] = useState(
         /* priority order to select the default open tab when we first render this component */
-        ['wip', 'deliver', 'complete', 'open', 'closed', 'backlog'].find(
-          stateType => workItemsByStateType[stateType].length > 0
+        ['wip', 'complete', 'open', 'closed', 'backlog'].find(
+          stateType => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
         ) || stateTypes[0]
       );
       const [showEpics, setShowEpics] = useState(false);
