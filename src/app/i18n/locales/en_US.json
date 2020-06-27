@@ -39,7 +39,7 @@
   "contexts.commits.display": "{quantity, plural, one {Commit} other {Commits}}",
   "contexts.work_items.display": "{quantity, plural, one {Work Item} other {WorkItems}}",
   "contexts.oss": "Open Source",
-  "topics.activity": "Activity",
+  "topics.activity": "FlowBoard",
   "topics.contributors": "Contributors",
   "topics.projects": "Projects",
   "topics.repositories": "Repositories",

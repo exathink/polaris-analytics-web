@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl';
 export const Topics = {
   activity: {
     name: 'activity',
-    display: () => (<FormattedMessage id='topics.activity' defaultMessage="Activity"/>),
+    display: () => (<FormattedMessage id='topics.activity' defaultMessage="FlowBoard"/>),
     icon: 'ion-ios-pulse-strong'
   },
   contributors: {

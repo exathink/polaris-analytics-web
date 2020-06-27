@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
-import WorkItem from './work_item/topic';
+import Activity from './activity/topic';
 
 
 import {Contexts} from "../../meta/contexts";
@@ -32,12 +32,12 @@ const context : Context = {
         display: match => messages.instanceDisplay(match.params.work_item),
         routes: [
           {
-            match: 'work_item',
-            topic: WorkItem
+            match: 'activity',
+            topic: Activity
           },
           {
             match: '',
-            redirect: 'work_item'
+            redirect: 'activity'
           }
         ]
       }
