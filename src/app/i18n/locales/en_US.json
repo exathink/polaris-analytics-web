@@ -40,6 +40,7 @@
   "contexts.work_items.display": "{quantity, plural, one {Work Item} other {WorkItems}}",
   "contexts.oss": "Open Source",
   "topics.activity": "FlowBoard",
+  "topics.trends": "Trends",
   "topics.contributors": "Contributors",
   "topics.projects": "Projects",
   "topics.repositories": "Repositories",

@@ -9,8 +9,11 @@ import Activity from './activity/topic';
 import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
+import Trends from "./trends/topic";
 
 import {Contexts} from "../../meta/contexts";
+
+import {PROJECTS_TRENDS_DASHBOARD} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -37,6 +40,11 @@ const context : Context = {
           {
             match: 'activity',
             topic: Activity
+          },
+          {
+            requiredFeatures: [PROJECTS_TRENDS_DASHBOARD],
+            match: 'trends',
+            topic: Trends
           },
           {
             match: 'repositories',

@@ -7,6 +7,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.activity' defaultMessage="FlowBoard"/>),
     icon: 'ion-ios-pulse-strong'
   },
+  trends: {
+    name: 'trends',
+    display: () => (<FormattedMessage id='topics.trends' defaultMessage="Trends"/>),
+    icon: 'ion-arrow-graph-up-right'
+  },
   contributors: {
     name: 'contributors',
     display: () => (<FormattedMessage id='topics.contributors' defaultMessage="Contributors"/>),
