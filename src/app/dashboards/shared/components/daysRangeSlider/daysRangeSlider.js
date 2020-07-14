@@ -2,7 +2,7 @@ import {Box, Flex} from "reflexbox";
 import {Slider} from "antd";
 import React from "react";
 
-const marks = [1, 3, 7, 14, 30].reduce(
+const marks = [1, 3, 7, 14, 30, 45, 60].reduce(
   (result, mark) => {
     result[mark] = {
       style: {
@@ -25,7 +25,7 @@ export const DaysRangeSlider = ({initialDays, setDaysRange}) => (
       <Slider
         defaultValue={initialDays || 1}
         min={1}
-        max={30}
+        max={60}
         marks={marks}
         included={true}
         onAfterChange={value => setDaysRange && setDaysRange(value)}/>
