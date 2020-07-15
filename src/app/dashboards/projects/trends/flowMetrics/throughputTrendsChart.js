@@ -17,11 +17,13 @@ export const ThroughputTrendsChart = Chart({
           name: 'Total Closed',
           data: flowMetricsTrends.map(
             measurement => ({
-              x: toMoment(measurement.measurementDate).valueOf(),
+              x: toMoment(measurement.measurementDate, true).valueOf(),
               y: measurement['workItemsInScope'],
               measurement: measurement
             })
-          )
+          ).sort(
+              (m1, m2) => m1.x - m2.x
+            )
         }
       ]
       return {
@@ -37,11 +39,11 @@ export const ThroughputTrendsChart = Chart({
           text: 'Throughput'
         },
         subtitle: {
-          text: `Past ${measurementPeriod} days`
+          text: `${measurementPeriod} day trend`
         },
         legend: {
           title: {
-            text: `Window: Prior ${measurementWindow} days`,
+            text: ``,
             style: {
               fontStyle: 'italic'
             }
@@ -55,7 +57,7 @@ export const ThroughputTrendsChart = Chart({
           type: 'datetime',
           title: {
             text: `Days`
-          }
+          },
         },
         yAxis: {
           type: 'linear',

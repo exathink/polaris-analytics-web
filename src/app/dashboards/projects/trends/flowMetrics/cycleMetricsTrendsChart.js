@@ -19,10 +19,12 @@ export const CycleMetricsTrendsChart = Chart({
           name: 'Avg. Lead Time',
           data: flowMetricsTrends.map(
             measurement => ({
-              x: toMoment(measurement.measurementDate).valueOf(),
+              x: toMoment(measurement.measurementDate, true).valueOf(),
               y: measurement['avgLeadTime'],
               measurement: measurement
             })
+          ).sort(
+            (m1, m2) => m1.x - m2.x
           )
         },
         {
@@ -31,11 +33,13 @@ export const CycleMetricsTrendsChart = Chart({
           name: 'Avg. Cycle Time',
           data: flowMetricsTrends.map(
             measurement => ({
-              x: toMoment(measurement['measurementDate']).valueOf(),
+              x: toMoment(measurement['measurementDate'], true).valueOf(),
               y: measurement['avgCycleTime'],
               measurement: measurement
             })
-          )
+          ).sort(
+              (m1, m2) => m1.x - m2.x
+            )
         },
       ]
       return {
@@ -51,11 +55,11 @@ export const CycleMetricsTrendsChart = Chart({
           text: 'Lead/Cycle Time'
         },
         subtitle: {
-          text: `Past ${measurementPeriod} days`
+          text: `${measurementPeriod} day trend`
         },
         legend: {
           title: {
-            text: `Window: Prior ${measurementWindow} days`,
+            text: ``,
             style: {
               fontStyle: 'italic'
             }
