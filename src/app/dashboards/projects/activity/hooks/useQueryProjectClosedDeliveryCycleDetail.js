@@ -18,7 +18,7 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
           ) {
                edges {
                   node {
-                      id
+                      
                       name
                       key
                       ... on WorkItemInfo {
