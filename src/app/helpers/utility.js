@@ -141,9 +141,11 @@ export function week_to_date(year, week) {
     return moment(`${year}W${adjusted_week}`);
 }
 
-export function toMoment(serverDate) {
-  return moment(`${serverDate}Z`);
+export function toMoment(serverDate, as_date=false) {
+  return as_date ? moment(serverDate) : moment(`${serverDate}Z`);
 }
+
+
 
 
 export function formatCommitDate(serverCommitDate) {
