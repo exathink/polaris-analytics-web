@@ -11,12 +11,14 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, targetPercentile, intl}) => {
 
+      const boxPlotSeriesName = 'Variability';
+      const lineSeriesName = `${percentileToText(targetPercentile)}`;
 
       const series = [
         {
           key: 'cycle_time_percentile',
           id: 'cycle_time_percentile',
-          name: `${percentileToText(targetPercentile)}`,
+          name: `${lineSeriesName}`,
           type: 'line',
           data: flowMetricsTrends.map(
             measurement => ({
@@ -31,7 +33,7 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
         {
           key: 'cycle_time_box',
           id: 'cycle_time_box',
-          name: 'Variability',
+          name: `${boxPlotSeriesName}`,
           type: 'boxplot',
           data: flowMetricsTrends.map(
             measurement => ({
@@ -58,14 +60,14 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
           zoomType: 'xy'
         },
         title: {
-          text: 'Cycle Time Predictability'
+          text: 'Predictability'
         },
         subtitle: {
           text: `${measurementPeriod} day trend`
         },
         legend: {
           title: {
-            text: ``,
+            text: `Cycle Time`,
             style: {
               fontStyle: 'italic'
             }
@@ -93,8 +95,8 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
           followPointer: false,
           hideDelay: 0,
           formatter: function () {
-            return tooltipHtml({
-              header: `Cycle Time Dispersion: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            return tooltipHtml(this.point.series.name === boxPlotSeriesName ? {
+              header: `${this.point.series.name}: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 ['Maximum:  ', `${intl.formatNumber(this.point.measurement.maxCycleTime)} days`],
                 ['Upper Quartile: ', `${intl.formatNumber(this.point.measurement.q3CycleTime)} days`],
@@ -102,11 +104,16 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
                 ['Lower Quartile: ', `${intl.formatNumber(this.point.measurement.q1CycleTime)} days`],
                 ['Minimum: ', `${intl.formatNumber(this.point.measurement.minCycleTime)} days`],
                 [`------`, ``],
+                ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
+
+              ]
+            }: {
+              header: `${this.point.series.name}: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+              body: [
                 [`${percentileToText(targetPercentile)}`, `${intl.formatNumber(this.point.measurement.percentileCycleTime)} days`],
                 [`Average: `, `${intl.formatNumber(this.point.measurement.avgCycleTime)} days`],
                 [`------`, ``],
                 ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
-
               ]
             })
           }
