@@ -33,6 +33,7 @@ export const ProjectFlowMetricsTrendsWidget = (
     return (
       <ProjectFlowMetricsTrendsView
         flowMetricsTrends={flowMetricsTrends}
+        targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
       />

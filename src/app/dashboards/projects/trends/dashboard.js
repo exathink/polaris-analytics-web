@@ -19,7 +19,7 @@ const dashboard = ({viewerContext}) => (
        }) => {
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
-            <DashboardRow h='30%'>
+            <DashboardRow h='40%'>
               <DashboardWidget
                 w={1}
                 name="activity-summary"
