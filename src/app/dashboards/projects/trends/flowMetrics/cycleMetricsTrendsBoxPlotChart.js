@@ -124,7 +124,6 @@ export const CycleMetricsTrendsBoxPlotChart = Chart({
             animation: false,
 
           }
-
         },
         time: {
           // Since we are already passing in UTC times we

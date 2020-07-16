@@ -1,9 +1,7 @@
 import React from 'react';
 import {CycleMetricsTrendsChart} from "./cycleMetricsTrendsChart"
-import {ThroughputTrendsChart} from "./throughputTrendsChart";
 import {CycleMetricsTrendsBoxPlotChart} from "./cycleMetricsTrendsBoxPlotChart"
-import {Flex} from 'reflexbox';
-import {VizRow, VizItem} from "../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../shared/containers/layout";
 
 export const ProjectFlowMetricsTrendsView = ({
     flowMetricsTrends,
@@ -12,21 +10,15 @@ export const ProjectFlowMetricsTrendsView = ({
     measurementWindow
   }) => (
     <VizRow h={1}>
-      <VizItem w={0.3}>
-        <ThroughputTrendsChart
-          flowMetricsTrends={flowMetricsTrends}
-          measurementPeriod={measurementPeriod}
-          measurementWindow={measurementWindow}
-        />
-      </VizItem>
-      <VizItem w={0.3}>
+
+      <VizItem w={0.5}>
         <CycleMetricsTrendsChart
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
         />
       </VizItem>
-      <VizItem w={0.3}>
+      <VizItem w={0.5}>
         <CycleMetricsTrendsBoxPlotChart
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}
