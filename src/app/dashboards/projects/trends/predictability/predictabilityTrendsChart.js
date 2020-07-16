@@ -5,7 +5,7 @@ import {Colors, WorkItemTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
 
 
-export const CycleMetricsTrendsBoxPlotChart = Chart({
+export const PredictabilityTrendsChart = Chart({
     chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementPeriod', 'measurementWindow'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
