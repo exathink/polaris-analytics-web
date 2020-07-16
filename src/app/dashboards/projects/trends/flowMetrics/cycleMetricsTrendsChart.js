@@ -13,20 +13,7 @@ export const CycleMetricsTrendsChart = Chart({
 
 
       const series = [
-        {
-          key: 'avg_lead_time',
-          id: 'avg_lead_time',
-          name: 'Avg. Lead Time',
-          data: flowMetricsTrends.map(
-            measurement => ({
-              x: toMoment(measurement.measurementDate, true).valueOf(),
-              y: measurement['avgLeadTime'],
-              measurement: measurement
-            })
-          ).sort(
-            (m1, m2) => m1.x - m2.x
-          )
-        },
+
         {
           key: 'avg_cycle_time',
           id: 'avg_cycle_time',
@@ -41,6 +28,21 @@ export const CycleMetricsTrendsChart = Chart({
               (m1, m2) => m1.x - m2.x
             )
         },
+        {
+          key: 'avg_lead_time',
+          id: 'avg_lead_time',
+          name: 'Avg. Lead Time',
+          visible: false,
+          data: flowMetricsTrends.map(
+            measurement => ({
+              x: toMoment(measurement.measurementDate, true).valueOf(),
+              y: measurement['avgLeadTime'],
+              measurement: measurement
+            })
+          ).sort(
+            (m1, m2) => m1.x - m2.x
+          )
+        },
       ]
       return {
         chart: {
@@ -52,7 +54,7 @@ export const CycleMetricsTrendsChart = Chart({
           zoomType: 'xy'
         },
         title: {
-          text: 'Lead/Cycle Time'
+          text: 'Cycle Time'
         },
         subtitle: {
           text: `${measurementPeriod} day trend`
@@ -90,8 +92,8 @@ export const CycleMetricsTrendsChart = Chart({
             return tooltipHtml({
               header: `${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
                 ['Avg. Cycle Time: ', `${intl.formatNumber(this.point.measurement.avgCycleTime)} days`],
+                ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
                 [`------`, ``],
                 ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
                 ['Earliest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.earliestClosedDate).valueOf())}`],

@@ -14,7 +14,22 @@ export const ThroughputTrendsChart = Chart({
         {
           key: 'throughput',
           id: 'throughput',
+          name: 'Throughput',
+          data: flowMetricsTrends.map(
+            measurement => ({
+              x: toMoment(measurement.measurementDate, true).valueOf(),
+              y: measurement['workItemsWithCommits'],
+              measurement: measurement
+            })
+          ).sort(
+              (m1, m2) => m1.x - m2.x
+            )
+        },
+        {
+          key: 'throughput',
+          id: 'throughput',
           name: 'Total Closed',
+          visible: false,
           data: flowMetricsTrends.map(
             measurement => ({
               x: toMoment(measurement.measurementDate, true).valueOf(),
@@ -24,7 +39,8 @@ export const ThroughputTrendsChart = Chart({
           ).sort(
               (m1, m2) => m1.x - m2.x
             )
-        }
+        },
+
       ]
       return {
         chart: {
@@ -74,12 +90,13 @@ export const ThroughputTrendsChart = Chart({
             return tooltipHtml({
               header: `${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
+                ['Throughput: ', `${intl.formatNumber(this.point.measurement.workItemsWithCommits)} work items`],
                 ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
                 ['Earliest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.earliestClosedDate).valueOf())}`],
                 ['Latest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.latestClosedDate).valueOf())}`],
                 [`------`, ``],
-                ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
                 ['Avg. Cycle Time: ', `${intl.formatNumber(this.point.measurement.avgCycleTime)} days`],
+                ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
                 ['Null Cycle Time : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`]
               ]
             })

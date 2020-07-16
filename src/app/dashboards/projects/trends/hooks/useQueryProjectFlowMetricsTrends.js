@@ -33,7 +33,13 @@ export function useQueryProjectFlowMetricsTrends(
               samplingFrequency: $samplingFrequency,
               leadTimeTargetPercentile: $targetPercentile,
               cycleTimeTargetPercentile: $targetPercentile,
-              metrics: [avg_lead_time, avg_cycle_time]
+              metrics: [
+                avg_lead_time, 
+                avg_cycle_time,
+                work_items_in_scope,
+                work_items_with_commits, 
+                work_items_with_null_cycle_time
+              ]
             },
             referenceString: $referenceString,
             ) {
@@ -43,6 +49,7 @@ export function useQueryProjectFlowMetricsTrends(
                 avgCycleTime
                 workItemsWithNullCycleTime
                 workItemsInScope
+                workItemsWithCommits
                 earliestClosedDate
                 latestClosedDate
             }
