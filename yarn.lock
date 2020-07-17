@@ -5618,10 +5618,10 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-highcharts-custom-events@^3.0.4:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/highcharts-custom-events/-/highcharts-custom-events-3.0.5.tgz#7774c8b0388e61f255500a411f87b52fc190fd76"
-  integrity sha512-REruI3fTt119tuf+ygKLg1/U+btIzQCcj9locEAGPTPcecFAx3SjeSFm3uFev50GqTnRjpixNmsXAPNVbiGZbQ==
+highcharts-custom-events@^3.0.6:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/highcharts-custom-events/-/highcharts-custom-events-3.0.9.tgz#bd3458d64e4a58921e1abf8584032175c8562d0a"
+  integrity sha512-+l/7IW2TuiuignilYemVODbfmHtX21ySfqWrWNRLYtOiiIYN1E5k/VDO9zaZ1Su5GlWmeqixmAfk72Ty1GWUqw==
   dependencies:
     highcharts ">=5.0.9"
 
