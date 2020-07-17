@@ -1,7 +1,7 @@
 import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 
-import {useQueryProjectFlowMetricsTrends} from "../hooks/useQueryProjectFlowMetricsTrends"
+import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectCycleTimeTrendsView} from "./cycleTimeTrendsView"
 
 export const ProjectCycleTimeTrendsWidget = (
