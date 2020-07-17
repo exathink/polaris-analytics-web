@@ -12,8 +12,8 @@ export const ThroughputTrendsChart = Chart({
 
       const series = [
         {
-          key: 'throughput',
-          id: 'throughput',
+          key: 'throughput1',
+          id: 'throughput1',
           name: 'Throughput',
           data: flowMetricsTrends.map(
             measurement => ({
@@ -26,8 +26,8 @@ export const ThroughputTrendsChart = Chart({
             )
         },
         {
-          key: 'throughput',
-          id: 'throughput',
+          key: 'throughput2',
+          id: 'throughput2',
           name: 'Total Closed',
           visible: false,
           data: flowMetricsTrends.map(
