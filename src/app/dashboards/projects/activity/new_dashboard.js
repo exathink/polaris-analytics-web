@@ -134,6 +134,7 @@ export const dashboard = ({viewerContext}) => (
                         latestWorkItemEvent={latestWorkItemEvent}
                         stateMappingIndex={stateMappingIndex}
                         days={30}
+                        measurementWindow={30}
                         targetPercentile={0.70}
                       />
                   }

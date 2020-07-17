@@ -6,15 +6,9 @@ import {percentileToText} from "../../../../helpers/utility";
 export const ProjectAggregateFlowMetricsView = (
   {
     showAll,
-    percentileLeadTime,
-    avgLeadTime,
-    maxLeadTime,
-    avgCycleTime,
-    percentileCycleTime,
-    maxCycleTime,
-
-    workItemsInScope,
     targetPercentile,
+    currentCycleMetrics,
+    previousCycleMetrics,
     stateMappingIndex,
   }
 ) => (
@@ -26,7 +20,7 @@ export const ProjectAggregateFlowMetricsView = (
             <VizItem w={0.30}>
               <Statistic
                 title="Throughput"
-                value={workItemsInScope || 0}
+                value={currentCycleMetrics.workItemsWithCommits || 0}
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
@@ -36,7 +30,7 @@ export const ProjectAggregateFlowMetricsView = (
             <VizItem w={0.40}>
               <Statistic
                 title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                value={percentileLeadTime || 0}
+                value={currentCycleMetrics.percentileLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
 
@@ -48,7 +42,7 @@ export const ProjectAggregateFlowMetricsView = (
                 stateMappingIndex.numInProcessStates() > 0 ?
                   <Statistic
                     title={<span>Cycle Time <sup>Avg</sup></span>}
-                    value={avgCycleTime || 0}
+                    value={currentCycleMetrics.avgCycleTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
 
@@ -57,7 +51,7 @@ export const ProjectAggregateFlowMetricsView = (
                   :
                   <Statistic
                     title={<span>Lead Time <sup>Avg</sup></span>}
-                    value={avgLeadTime || 0}
+                    value={currentCycleMetrics.avgLeadTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
 
@@ -72,7 +66,7 @@ export const ProjectAggregateFlowMetricsView = (
             <VizItem>
               <Statistic
                 title="Throughput"
-                value={workItemsInScope || 0}
+                value={currentCycleMetrics.workItemsWithCommits || 0}
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
@@ -84,7 +78,7 @@ export const ProjectAggregateFlowMetricsView = (
               <VizItem>
                 <Statistic
                   title={<span>Lead Time <sup>{`Avg`}</sup> </span>}
-                  value={avgLeadTime || 0}
+                  value={currentCycleMetrics.avgLeadTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
 
@@ -95,7 +89,7 @@ export const ProjectAggregateFlowMetricsView = (
             <VizItem>
               <Statistic
                 title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                value={percentileLeadTime || 0}
+                value={currentCycleMetrics.percentileLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
 
@@ -105,7 +99,7 @@ export const ProjectAggregateFlowMetricsView = (
             <VizItem>
               <Statistic
                 title={<span>Lead Time <sup>{`Max`}</sup> </span>}
-                value={maxLeadTime || 0}
+                value={currentCycleMetrics.maxLeadTime || 0}
                 precision={1}
                 valueStyle={{color: '#3f8600'}}
 
@@ -117,7 +111,7 @@ export const ProjectAggregateFlowMetricsView = (
                 stateMappingIndex.numInProcessStates() > 0 ?
                   <Statistic
                     title={<span>Cycle Time <sup>Avg</sup></span>}
-                    value={avgCycleTime || 0}
+                    value={currentCycleMetrics.avgCycleTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
 
@@ -126,7 +120,7 @@ export const ProjectAggregateFlowMetricsView = (
                   :
                   <Statistic
                     title={<span>Lead Time <sup>Avg</sup></span>}
-                    value={avgLeadTime || 0}
+                    value={currentCycleMetrics.avgLeadTime || 0}
                     precision={1}
                     valueStyle={{color: '#3f8600'}}
 
@@ -140,7 +134,7 @@ export const ProjectAggregateFlowMetricsView = (
               <VizItem>
                 <Statistic
                   title={<span>Cycle Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                  value={percentileCycleTime || 0}
+                  value={currentCycleMetrics.percentileCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
 
@@ -153,7 +147,7 @@ export const ProjectAggregateFlowMetricsView = (
               <VizItem>
                 <Statistic
                   title={<span>Cycle Time <sup>{`Max`}</sup> </span>}
-                  value={maxCycleTime || 0}
+                  value={currentCycleMetrics.maxCycleTime || 0}
                   precision={1}
                   valueStyle={{color: '#3f8600'}}
 

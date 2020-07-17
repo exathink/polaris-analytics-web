@@ -45,6 +45,7 @@ export const ProjectFlowMetricsDetailDashboard = (
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
               days={daysRange}
+              measurementWindow={30}
               targetPercentile={targetPercentile}
             />
         }
