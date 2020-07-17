@@ -85,46 +85,14 @@ export class DefaultSelectionEventHandler {
   };
 
   getSelectedPoints(e) {
-    /* This rigmarole is there to work around the "designed" behavior
-     of getSelectedPoints(). Inside the selection handler the points returned are the ones
-     *before* the selection is made rather than after. See https://github.com/highcharts/highcharts/issues/9099
-     * for a discussion.
-     *
-     * Thus in effect we have to implement the logic that makes this.selected behave as though the current point
-     * were selected or deselected by this action based on the previous state of the selections.
-     *
-     * The goal is to make this.selected match the visual state of the point selections *after* this handler returns.
-     * Ideally this should have been as simple as calling this.getSelectedPoints() but alas it is not to be so we have to
-     * shim it to make it behave that way inside the handler.
-     *
-     *
-     * Note: 6/24/2020: The above bug was fixed on Jun 17, 2019 and it should be in Highcharts 8, so we can consider
-     * unwinding this code when we upgrade to that version.
-     *
-     *  However we have another problem now in this area. We are opting to use
-     *  the custom events module in order to register for y-axis click events:
-     * see https://polaris.exathink.com/app/dashboard/work_items/PO-198/1c614aa9-51ab-4c7b-a8cd-0d97f435358a/work_item
-     *
-     * But when we use the custom event module chart.getSelectedPoints returns an empty list every time.
-       so this entire bit of logic does not work and always behaves like a single selection. We are going to
-       live with that behavior and ditch multi-select ability for now, so that we can support y-axis navigation which
-       is  a more critical function. But if and when we get a fix to custom events, we can revisit this code.
-
-       Right now.. this code does not work as advertised. But we will keep it here under the assumption that it
-       will be fixed by BlackLabel and Highcharts updates in the future.
+    /* per update to highcharts-custom-events 3.0.6 this
+    call to getSelectedPoints() should work as expected. So the
+    previous hacks to work around it are now taken out.
+    leaving shim around it just in case we find something new and
+    need to revert to old hacks.
     * */
-    const selected = this.getRawChart().getSelectedPoints();
-    if (selected.find(point => point === e.point)) {
-      if (e.shiftKey || e.metaKey || e.ctrlKey ) {
-        return selected.filter(point => point !== e.point);
-      } else {
-        return [];
-      }
-    } else if (e.shiftKey || e.metaKey || e.ctrlKey ){
-      return [e.point, ...selected];
-    } else {
-      return [e.point];
-    }
+    return this.getRawChart().getSelectedPoints();
+
   }
   pointClicked(e) {
     this.selected = this.getSelectedPoints(e);
