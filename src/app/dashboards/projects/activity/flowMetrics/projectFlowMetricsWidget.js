@@ -4,6 +4,7 @@ import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView
 import {ProjectFlowMetricsDetailDashboard} from "./projectFlowMetricsDetailDashboard";
 
 import {useQueryProjectCycleMetrics} from "../hooks/useQueryProjectCycleMetrics";
+import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends";
 
 export const ProjectFlowMetricsWidget = (
   {
@@ -13,23 +14,32 @@ export const ProjectFlowMetricsWidget = (
     showAll,
     latestWorkItemEvent,
     days,
+    measurementWindow,
+    samplingFrequency,
     targetPercentile,
     stateMappingIndex,
     pollInterval
   }) => {
   if (view === 'primary') {
-    const {loading, error, data} = useQueryProjectCycleMetrics(
-      {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
-    );
+    const {loading, error, data} = useQueryProjectFlowMetricsTrends({
+      instanceKey,
+      days:7,
+      targetPercentile,
+      measurementWindow:measurementWindow,
+      samplingFrequency: 7,
+      referenceString: latestWorkItemEvent
+    });
     if (loading) return <Loading/>;
     if (error) return null;
-    const {...cycleMetrics} = data['project'];
+    const {cycleMetricsTrends} = data['project'];
     return (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
         showAll={showAll}
         stateMappingIndex={stateMappingIndex}
-        {...cycleMetrics}
+        targetPercentile={targetPercentile}
+        currentCycleMetrics={cycleMetricsTrends[0]}
+        previousCycleMetrics={cycleMetricsTrends[1]}
       />
     )
   } else {

@@ -103,7 +103,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         text: metricsMeta[selectedMetric].display
       },
       subtitle: {
-        text: defectsOnly ? `Defects closed in the last ${days} days`:  `Work items closed in the last ${days} days`
+        text: defectsOnly ? `${candidateCycles.length} Defects closed in the last ${days} days`:  ` ${candidateCycles.length} Work items closed in the last ${days} days`
       },
       legend: {
         title: {

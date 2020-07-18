@@ -1,8 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {pick, toMoment} from "../../../../helpers/utility";
-import {Colors, WorkItemTypeDisplayName} from "../../../shared/config";
-import {formatDateTime} from "../../../../i18n";
+import {Colors} from "../../../shared/config";
 
 
 export const CycleMetricsTrendsChart = Chart({
