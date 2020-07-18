@@ -4,10 +4,10 @@ import {Icon} from 'antd'
 export {Statistic, Icon} from 'antd';
 
 // Display the trend indicator only if abs value of the delta is greater than this threshold.
-export const TrendIndicatorDisplayThreshold = 1.0;
+export const TrendIndicatorDisplayThreshold = 2;
 
 export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=TrendIndicatorDisplayThreshold}) => {
-  const delta = (firstValue - secondValue)/(1.0*firstValue);
+  const delta = ((firstValue - secondValue)/(1.0*firstValue))*100;
   return (
       Math.abs(delta ) > deltaThreshold &&
         <Icon
