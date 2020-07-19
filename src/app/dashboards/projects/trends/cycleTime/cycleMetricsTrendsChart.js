@@ -97,7 +97,7 @@ export const CycleMetricsTrendsChart = Chart({
                 ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
                 ['Earliest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.earliestClosedDate).valueOf())}`],
                 ['Latest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.latestClosedDate).valueOf())}`],
-                ['Null Cycle Time : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`],
+                ['No Cycle Time  : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`],
               ]
             })
           }

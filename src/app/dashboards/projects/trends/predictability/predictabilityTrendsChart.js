@@ -104,6 +104,7 @@ export const PredictabilityTrendsChart = Chart({
                 ['Minimum: ', `${intl.formatNumber(this.point.measurement.minCycleTime)} days`],
                 [`------`, ``],
                 ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
+                ['No Cycle Time : ', `${intl.formatNumber(this.point.measurement.workItemsWithNullCycleTime)} work items`],
 
               ]
             }: {

@@ -97,7 +97,7 @@ export const ThroughputTrendsChart = Chart({
                 [`------`, ``],
                 ['Avg. Cycle Time: ', `${intl.formatNumber(this.point.measurement.avgCycleTime)} days`],
                 ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
-                ['Null Cycle Time : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`]
+                ['No Cycle Time  : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`]
               ]
             })
           }
