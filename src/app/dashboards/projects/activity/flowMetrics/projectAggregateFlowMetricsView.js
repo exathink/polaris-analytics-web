@@ -113,7 +113,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                         deltaThreshold={trendIndicatorThreshold}
                       />
                     }
-                    suffix={"Work Items"}
+                    suffix={"Specs"}
                   />
                 </VizItem>
                 {
