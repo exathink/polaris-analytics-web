@@ -25,6 +25,7 @@ export const ProjectFlowMetricsWidget = (
       targetPercentile,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
+      specsOnly: true,
       referenceString: latestWorkItemEvent
     });
     if (loading) return <Loading/>;
