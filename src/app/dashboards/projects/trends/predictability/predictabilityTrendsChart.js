@@ -66,7 +66,7 @@ export const PredictabilityTrendsChart = Chart({
         },
         legend: {
           title: {
-            text: `Cycle Time`,
+            text: `Spec Cycle Time`,
             style: {
               fontStyle: 'italic'
             }

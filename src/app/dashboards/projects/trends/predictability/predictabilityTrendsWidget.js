@@ -22,8 +22,10 @@ export const ProjectPredictabilityTrendsWidget = (
         instanceKey: instanceKey,
         days: days,
         measurementWindow: measurementWindow,
+        specsOnly: true,
         samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile
+        targetPercentile: targetPercentile,
+        referenceString: latestWorkItemEvent,
 
       }
     );
