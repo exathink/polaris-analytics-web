@@ -10,6 +10,7 @@ export function useQueryProjectFlowMetricsTrends(
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    specsOnly,
     referenceString
   }) {
   return useQuery(
@@ -21,6 +22,7 @@ export function useQueryProjectFlowMetricsTrends(
           $samplingFrequency: Int!,
           $targetPercentile: Float!,
           $before: DateTime,
+          $specsOnly: Boolean, 
           $referenceString: String, 
           ) {
       project(
@@ -47,7 +49,8 @@ export function useQueryProjectFlowMetricsTrends(
                 work_items_in_scope,
                 work_items_with_commits, 
                 work_items_with_null_cycle_time
-              ]
+              ],
+              specsOnly: $specsOnly
             },
             referenceString: $referenceString,
             ) {
@@ -81,7 +84,8 @@ export function useQueryProjectFlowMetricsTrends(
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         targetPercentile: targetPercentile,
-        referenceString: referenceString
+        referenceString: referenceString,
+        specsOnly: specsOnly
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()
