@@ -11,7 +11,7 @@ import {Untracked} from "../../config";
 
 const commitTimelineGroupings = {
   repository: "Repository",
-  workItem: "Work Item",
+  workItem: "Spec",
   author: "Author",
   branch: "Branch"
 }
