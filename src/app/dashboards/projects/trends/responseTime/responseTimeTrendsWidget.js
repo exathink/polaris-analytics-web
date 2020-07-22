@@ -2,9 +2,9 @@ import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends"
-import {ProjectCycleTimeTrendsView} from "./cycleTimeTrendsView"
+import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 
-export const ProjectCycleTimeTrendsWidget = (
+export const ProjectResponseTimeTrendsWidget = (
   {
     instanceKey,
     view,
@@ -23,15 +23,16 @@ export const ProjectCycleTimeTrendsWidget = (
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile
-
+        targetPercentile: targetPercentile,
+        specsOnly: true,
+        referenceString: latestWorkItemEvent,
       }
     );
     if (loading) return <Loading/>;
     if (error) return null;
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
-      <ProjectCycleTimeTrendsView
+      <ProjectResponseTimeTrendsView
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}

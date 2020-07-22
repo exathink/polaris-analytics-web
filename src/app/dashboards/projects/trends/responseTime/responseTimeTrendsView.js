@@ -1,8 +1,8 @@
 import React from 'react';
-import {CycleMetricsTrendsChart} from "./cycleMetricsTrendsChart"
+import {ResponseTimeTrendsChart} from "./responseTimeTrendsChart"
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 
-export const ProjectCycleTimeTrendsView = ({
+export const ProjectResponseTimeTrendsView = ({
     flowMetricsTrends,
     targetPercentile,
     measurementPeriod,
@@ -10,7 +10,7 @@ export const ProjectCycleTimeTrendsView = ({
   }) => (
     <VizRow h={1}>
       <VizItem w={1}>
-        <CycleMetricsTrendsChart
+        <ResponseTimeTrendsChart
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}

@@ -4,7 +4,7 @@ import {pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 
 
-export const CycleMetricsTrendsChart = Chart({
+export const ResponseTimeTrendsChart = Chart({
     chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementPeriod', 'measurementWindow'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
@@ -51,14 +51,14 @@ export const CycleMetricsTrendsChart = Chart({
           zoomType: 'xy'
         },
         title: {
-          text: 'Cycle Time'
+          text: 'Response Time'
         },
         subtitle: {
           text: `${measurementPeriod} day trend`
         },
         legend: {
           title: {
-            text: ``,
+            text: `Specs`,
             style: {
               fontStyle: 'italic'
             }

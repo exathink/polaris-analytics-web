@@ -3,7 +3,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectPredictabilityTrendsWidget} from "./predictability"
 import {ProjectThroughputTrendsWidget} from "./throughput"
-import {ProjectCycleTimeTrendsWidget} from "./cycleTime"
+import {ProjectResponseTimeTrendsWidget} from "./responseTime"
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 
 const dashboard_id = 'dashboards.trends.projects.dashboard.instance';
@@ -50,7 +50,7 @@ const dashboard = ({viewerContext}) => (
 
                 render={
                   ({view}) =>
-                    <ProjectCycleTimeTrendsWidget
+                    <ProjectResponseTimeTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
                       days={45}
