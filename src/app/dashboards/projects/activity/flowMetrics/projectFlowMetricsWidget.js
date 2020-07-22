@@ -2,8 +2,6 @@ import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView";
 import {ProjectFlowMetricsDetailDashboard} from "./projectFlowMetricsDetailDashboard";
-
-import {useQueryProjectCycleMetrics} from "../hooks/useQueryProjectCycleMetrics";
 import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends";
 
 export const ProjectFlowMetricsWidget = (

@@ -7,6 +7,7 @@ import {GroupingSelector} from "../../components/groupingSelector/groupingSelect
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {VizRow} from "../../containers/layout";
+import {Untracked} from "../../config";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -39,7 +40,7 @@ export class CommitTimelineViewModel {
             workItem =>
               `${workItem.displayId}: ${workItem.name}`
           )
-          : ["Untracked"]
+          : [Untracked]
     }
   }
 

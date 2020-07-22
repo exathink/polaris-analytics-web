@@ -9,10 +9,7 @@ export const CycleMetricsTrendsChart = Chart({
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, intl}) => {
-
-
       const series = [
-
         {
           key: 'avg_cycle_time',
           id: 'avg_cycle_time',
@@ -42,6 +39,7 @@ export const CycleMetricsTrendsChart = Chart({
             (m1, m2) => m1.x - m2.x
           )
         },
+
       ]
       return {
         chart: {

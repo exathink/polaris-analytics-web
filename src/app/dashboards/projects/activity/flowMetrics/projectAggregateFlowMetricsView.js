@@ -1,6 +1,10 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Statistic, Icon, TrendIndicator, TrendIndicatorDisplayThreshold} from "../../../../../app/components/misc/statistic/statistic";
+import {
+  Statistic,
+  TrendIndicator,
+  TrendIndicatorDisplayThreshold
+} from "../../../../../app/components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 
@@ -35,7 +39,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                         deltaThreshold={trendIndicatorThreshold}
                       />
                     }
-                    suffix={"Work Items"}
+                    suffix={"Specs"}
                   />
                 </VizItem>
                 <VizItem w={0.40}>

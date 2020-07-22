@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
-import {Colors} from "../../config";
+import {Colors, Untracked} from "../../config";
 import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
@@ -103,9 +103,9 @@ export const CommitsTimelineChart = Chart({
 
       // sort in descending order of activity
       let categories = Object.keys(categoryIndex).sort((a, b) => categoryIndex[b] - categoryIndex[a]);
-      // we want Untracked to show up at the end regardless of activity count. This is ugly, but gets the job done.
-      if (category === 'workItem' && categories.indexOf('Untracked') >= 0) {
-        categories = ['Untracked', ...categories.filter(cat => cat !== 'Untracked')]
+      // we want Untracked items to show up at the end regardless of activity count. This is ugly, but gets the job done.
+      if (category === 'workItem' && categories.indexOf(Untracked) >= 0) {
+        categories = [Untracked, ...categories.filter(cat => cat !== Untracked)]
       }
 
       const series_data = []

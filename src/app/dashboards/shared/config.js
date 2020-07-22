@@ -17,9 +17,16 @@ export const Colors = {
   },
   Chart: {
     backgroundColor: "#f2f3f6"
-  }
+  },
+  DefaultSeriesColors: ['#0d233a', '#2f7ed8', '#8bbc21', '#910000', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'
+  ]
+
 
 };
+
+
+export const Untracked = 'No Spec';
 
 export const WorkItemColorMap = {
   issue: Colors.WorkItemType.story,
