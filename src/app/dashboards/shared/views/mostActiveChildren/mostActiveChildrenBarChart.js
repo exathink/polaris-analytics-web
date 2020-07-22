@@ -5,6 +5,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import moment from 'moment';
 import {findActivityLevel} from "../../helpers/commitUtils";
 import {toMoment, isToday} from "../../../../helpers/utility";
+import {Contexts} from "../../../../meta";
 
 function formatDays(days) {
   return days > 1 ? `${days} days` : `24 Hours`
@@ -48,7 +49,8 @@ export const MostActiveChildrenBarChart = Chart({
           backgroundColor: Colors.Chart.backgroundColor
         },
         title: {
-          text: `Most Active ${displayPlural(intl, childContext)} `,
+          // hack alert
+          text: childContext.name === Contexts.work_items.name ? `Most Active Specs` :  `Most Active ${displayPlural(intl, childContext)} `,
           align: 'left'
         },
         subtitle: {
