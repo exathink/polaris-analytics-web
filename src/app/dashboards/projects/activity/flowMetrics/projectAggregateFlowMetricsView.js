@@ -1,12 +1,17 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {
-  Statistic,
-  TrendIndicator,
-  TrendIndicatorDisplayThreshold
-} from "../../../../../app/components/misc/statistic/statistic";
-import {percentileToText} from "../../../../helpers/utility";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+
+
+import {
+  AvgCycleTime,
+  AvgLeadTime,
+  MaxCycleTime,
+  MaxLeadTime,
+  PercentileCycleTime,
+  PercentileLeadTime,
+  Throughput
+} from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((
   {
@@ -18,7 +23,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
     viewerContext
   }
   ) => {
-    const trendIndicatorThreshold = viewerContext.trendIndicatorThreshold || TrendIndicatorDisplayThreshold;
+    const trendIndicatorThreshold = viewerContext.trendIndicatorThreshold;
+
     return (
       stateMappingIndex.isValid() ?
         <React.Fragment>
@@ -26,183 +32,84 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
             !showAll ?
               <VizRow h={"80%"}>
                 <VizItem w={0.30}>
-                  <Statistic
-                    title="Throughput"
-                    value={currentCycleMetrics.workItemsWithCommits || 0}
-                    precision={0}
-                    valueStyle={{color: '#3f8600'}}
-                    prefix={
-                      <TrendIndicator
-                        firstValue={currentCycleMetrics.workItemsWithCommits}
-                        secondValue={previousCycleMetrics.workItemsWithCommits}
-                        good={TrendIndicator.isPositive}
-                        deltaThreshold={trendIndicatorThreshold}
-                      />
-                    }
-                    suffix={"Specs"}
+                  <Throughput
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem w={0.40}>
-                  <Statistic
-                    title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                    value={currentCycleMetrics.percentileLeadTime || 0}
-                    precision={1}
-                    valueStyle={{color: '#3f8600'}}
-                    prefix={
-                      <TrendIndicator
-                        firstValue={currentCycleMetrics.percentileLeadTime}
-                        secondValue={previousCycleMetrics.percentileLeadTime}
-                        good={TrendIndicator.isNegative}
-                        deltaThreshold={trendIndicatorThreshold}
-                      />
-                    }
-                    suffix={"Days"}
+                  <PercentileLeadTime
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    targetPercentile={targetPercentile}
+                    deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem w={0.35}>
                   {
                     stateMappingIndex.numInProcessStates() > 0 ?
-                      <Statistic
-                        title={<span>Cycle Time <sup>Avg</sup></span>}
-                        value={currentCycleMetrics.avgCycleTime || 0}
-                        precision={1}
-                        valueStyle={{color: '#3f8600'}}
-                        prefix={
-                          <TrendIndicator
-                            firstValue={currentCycleMetrics.avgCycleTime}
-                            secondValue={previousCycleMetrics.avgCycleTime}
-                            good={TrendIndicator.isNegative}
-                            deltaThreshold={trendIndicatorThreshold}
-                          />
-                        }
-                        suffix={"Days"}
+                      <AvgCycleTime
+                        currentCycleMetrics={currentCycleMetrics}
+                        previousCycleMetrics={previousCycleMetrics}
+                        deltaThreshold={trendIndicatorThreshold}
                       />
                       :
-                      <Statistic
-                        title={<span>Lead Time <sup>Avg</sup></span>}
-                        value={currentCycleMetrics.avgLeadTime || 0}
-                        precision={1}
-                        valueStyle={{color: '#3f8600'}}
-                        prefix={
-                          <TrendIndicator
-                            firstValue={currentCycleMetrics.avgLeadTime}
-                            secondValue={previousCycleMetrics.avgLeadTime}
-                            good={TrendIndicator.isNegative}
-                            deltaThreshold={trendIndicatorThreshold}
-                          />
-                        }
-                        suffix={"Days"}
+                      <AvgLeadTime
+                        currentCycleMetrics={currentCycleMetrics}
+                        previousCycleMetrics={previousCycleMetrics}
+                        deltaThreshold={trendIndicatorThreshold}
                       />
-
                   }
                 </VizItem>
               </VizRow>
               :
               <VizRow h={"80%"}>
                 <VizItem>
-                  <Statistic
-                    title="Throughput"
-                    value={currentCycleMetrics.workItemsWithCommits || 0}
-                    precision={0}
-                    valueStyle={{color: '#3f8600'}}
-                    prefix={
-                      <TrendIndicator
-                        firstValue={currentCycleMetrics.workItemsWithCommits}
-                        secondValue={previousCycleMetrics.workItemsWithCommits}
-                        good={TrendIndicator.isPositive}
-                        deltaThreshold={trendIndicatorThreshold}
-                      />
-                    }
-                    suffix={"Specs"}
+                  <Throughput
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 {
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem>
-                    <Statistic
-                      title={<span>Lead Time <sup>{`Avg`}</sup> </span>}
-                      value={currentCycleMetrics.avgLeadTime || 0}
-                      precision={1}
-                      valueStyle={{color: '#3f8600'}}
-                      prefix={
-                        <TrendIndicator
-                          firstValue={currentCycleMetrics.avgLeadTime}
-                          secondValue={previousCycleMetrics.avgLeadTime}
-                          good={TrendIndicator.isNegative}
-                          deltaThreshold={trendIndicatorThreshold}
-                        />
-                      }
-                      suffix={"Days"}
+                    <AvgLeadTime
+                      currentCycleMetrics={currentCycleMetrics}
+                      previousCycleMetrics={previousCycleMetrics}
+                      deltaThreshold={trendIndicatorThreshold}
                     />
                   </VizItem>
                 }
                 <VizItem>
-                  <Statistic
-                    title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                    value={currentCycleMetrics.percentileLeadTime || 0}
-                    precision={1}
-                    valueStyle={{color: '#3f8600'}}
-                    prefix={
-                      <TrendIndicator
-                        firstValue={currentCycleMetrics.percentileLeadTime}
-                        secondValue={previousCycleMetrics.percentileLeadTime}
-                        good={TrendIndicator.isNegative}
-                        deltaThreshold={trendIndicatorThreshold}
-                      />
-                    }
-                    suffix={"Days"}
+                  <PercentileLeadTime
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    targetPercentile={targetPercentile}
+                    deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem>
-                  <Statistic
-                    title={<span>Lead Time <sup>{`Max`}</sup> </span>}
-                    value={currentCycleMetrics.maxLeadTime || 0}
-                    precision={1}
-                    valueStyle={{color: '#3f8600'}}
-                    prefix={
-                      <TrendIndicator
-                        firstValue={currentCycleMetrics.maxLeadTime}
-                        secondValue={previousCycleMetrics.maxLeadTime}
-                        good={TrendIndicator.isNegative}
-                        deltaThreshold={trendIndicatorThreshold}
-                      />
-                    }
-                    suffix={"Days"}
+                  <MaxLeadTime
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem>
                   {
                     stateMappingIndex.numInProcessStates() > 0 ?
-                      <Statistic
-                        title={<span>Cycle Time <sup>Avg</sup></span>}
-                        value={currentCycleMetrics.avgCycleTime || 0}
-                        precision={1}
-                        valueStyle={{color: '#3f8600'}}
-                        prefix={
-                          <TrendIndicator
-                            firstValue={currentCycleMetrics.avgCycleTime}
-                            secondValue={previousCycleMetrics.avgCycleTime}
-                            good={TrendIndicator.isNegative}
-                            deltaThreshold={trendIndicatorThreshold}
-                          />
-                        }
-                        suffix={"Days"}
+                      <AvgCycleTime
+                        currentCycleMetrics={currentCycleMetrics}
+                        previousCycleMetrics={previousCycleMetrics}
+                        deltaThreshold={trendIndicatorThreshold}
                       />
                       :
-                      <Statistic
-                        title={<span>Lead Time <sup>Avg</sup></span>}
-                        value={currentCycleMetrics.avgLeadTime || 0}
-                        precision={1}
-                        valueStyle={{color: '#3f8600'}}
-                        prefix={
-                          <TrendIndicator
-                            firstValue={currentCycleMetrics.avgLeadTime}
-                            secondValue={previousCycleMetrics.avgLeadTime}
-                            good={TrendIndicator.isNegative}
-                            deltaThreshold={trendIndicatorThreshold}
-                          />
-                        }
-                        suffix={"Days"}
+                      <AvgLeadTime
+                        currentCycleMetrics={currentCycleMetrics}
+                        previousCycleMetrics={previousCycleMetrics}
+                        deltaThreshold={trendIndicatorThreshold}
                       />
 
                   }
@@ -210,40 +117,21 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 {
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem>
-                    <Statistic
-                      title={<span>Cycle Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
-                      value={currentCycleMetrics.percentileCycleTime || 0}
-                      precision={1}
-                      valueStyle={{color: '#3f8600'}}
-                      prefix={
-                        <TrendIndicator
-                          firstValue={currentCycleMetrics.percentileCycleTime}
-                          secondValue={previousCycleMetrics.percentileCycleTime}
-                          good={TrendIndicator.isNegative}
-                          deltaThreshold={trendIndicatorThreshold}
-                        />
-                      }
-                      suffix={"Days"}
+                    <PercentileCycleTime
+                      currentCycleMetrics={currentCycleMetrics}
+                      previousCycleMetrics={previousCycleMetrics}
+                      targetPercentile={targetPercentile}
+                      deltaThreshold={trendIndicatorThreshold}
                     />
                   </VizItem>
                 }
                 {
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem>
-                    <Statistic
-                      title={<span>Cycle Time <sup>{`Max`}</sup> </span>}
-                      value={currentCycleMetrics.maxCycleTime || 0}
-                      precision={1}
-                      valueStyle={{color: '#3f8600'}}
-                      prefix={
-                        <TrendIndicator
-                          firstValue={currentCycleMetrics.maxCycleTime}
-                          secondValue={previousCycleMetrics.maxCycleTime}
-                          good={TrendIndicator.isNegative}
-                          deltaThreshold={trendIndicatorThreshold}
-                        />
-                      }
-                      suffix={"Days"}
+                    <MaxCycleTime
+                      currentCycleMetrics={currentCycleMetrics}
+                      previousCycleMetrics={previousCycleMetrics}
+                      deltaThreshold={trendIndicatorThreshold}
                     />
                   </VizItem>
                 }

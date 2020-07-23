@@ -7,15 +7,19 @@ export {Statistic, Icon} from 'antd';
 export const TrendIndicatorDisplayThreshold = 2;
 
 export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=TrendIndicatorDisplayThreshold}) => {
-  const delta = ((firstValue - secondValue)/(1.0*firstValue))*100;
-  return (
-      Math.abs(delta ) > deltaThreshold &&
-        <Icon
-          type={delta > 0 ?  'arrow-up' : 'arrow-down'}
-          style={good(delta)? {color: '#399a15'} : {color: '#9a3727'}}
+  if (firstValue && secondValue) {
+    const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+    return (
+      Math.abs(delta) > deltaThreshold &&
+      <Icon
+        type={delta > 0 ? 'arrow-up' : 'arrow-down'}
+        style={good(delta) ? {color: '#399a15'} : {color: '#9a3727'}}
 
-        />
-  )
+      />
+    )
+  } else {
+    return null;
+  }
 }
 
 TrendIndicator.isPositive = (delta) => delta > 0;
