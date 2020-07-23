@@ -178,7 +178,7 @@ export const CommitsTimelineChart = Chart({
         yAxis: {
           id: 'y-items',
           title: {
-            text: capitalizeFirstLetter(category)
+            text: category !== 'workItem' ? capitalizeFirstLetter(category) : `Spec`
           },
           categories: categories,
           scrollbar: {
