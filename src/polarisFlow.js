@@ -13,10 +13,13 @@ import config, {
 import { themeConfig } from './config';
 import AppHolder from './polarisFlowStyle';
 import {DefaultApolloProvider} from "./app/services/graphql";
+import {initGA} from "./app/ga";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
+// Run the Google Analytics initialization
+initGA();
 
 const PolarisFlowApp = () => (
   <LocaleProvider locale={currentAppLocale.antd}>
