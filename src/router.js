@@ -1,5 +1,6 @@
 import React from 'react';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Router, Switch} from 'react-router-dom';
+import {createBrowserHistory} from "history";
 
 
 import App from './app/app';
@@ -8,9 +9,18 @@ import Logout from './app/components/auth/Logout';
 
 import RestrictedRoute from './app/components/auth/restrictedRoute';
 import FourZeroFour from "./containers/Page/404";
+import ReactGA from "react-ga";
+
+const history = createBrowserHistory();
+
+history.listen((location) => {
+    ReactGA.set({page: location.pathname});
+    ReactGA.pageview(location.pathname);
+  }
+);
 
 export default () => (
-  <BrowserRouter>
+  <Router history={history}>
     <Switch>
       <Route
         path="/login"
@@ -31,5 +41,5 @@ export default () => (
         component={FourZeroFour}
       />
     </Switch>
-  </BrowserRouter>
+  </Router>
 );
