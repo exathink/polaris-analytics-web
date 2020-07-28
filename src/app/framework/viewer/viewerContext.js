@@ -1,6 +1,7 @@
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
 import gql from "graphql-tag";
+import ReactGA from 'react-ga';
 
 
 const {Provider, Consumer} = React.createContext({})
@@ -21,6 +22,7 @@ class ViewerContextProvider extends React.Component {
         query: gql`
             query viewer_info {
                 viewer {
+                    key
                     ...ViewerInfoFields
                 }
             }
@@ -28,6 +30,10 @@ class ViewerContextProvider extends React.Component {
         `
       })
       if (result.data != null) {
+        // Add the user key to Google Analytics.
+        if (result.data.viewer != null) {
+          ReactGA.set({userId: result.data.viewer.key})
+        }
         this.setState({
           viewer: result.data.viewer,
           accountKey: result.data.viewer.accountKey
