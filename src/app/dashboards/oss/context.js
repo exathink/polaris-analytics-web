@@ -12,7 +12,7 @@ const context: Context = {
       topic: PublicOrganizations
     },
     {
-      match: 'projects',
+      match: 'value-streams',
       topic: PublicProjects
     },
     {

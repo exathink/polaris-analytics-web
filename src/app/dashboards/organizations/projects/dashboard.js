@@ -11,10 +11,16 @@ import {Icon} from "antd";
 import Button from "../../../../components/uielements/button";
 import {ProjectsDashboardSetup} from "./setup";
 
+import {Contexts} from "../../../meta";
+import {injectIntl} from "react-intl";
+import {displayPlural, displaySingular} from "../../../i18n";
+
 const dashboard_id = 'dashboards.projects.organization.instance';
 
 
-export default () => (
+
+
+export default injectIntl(({intl}) => (
   <OrganizationDashboard
     pollInterval={60 * 1000}
     render={
@@ -25,17 +31,17 @@ export default () => (
           >
             <DashboardRow
               h='22%'
-              title={"Projects"}
+              title={displayPlural(intl, Contexts.projects)}
               controls={[
                 () =>
                   <Button type="primary" onClick={() => context.go('.', 'new')}>
-                    <Icon type="plus"/> New Project
+                    <Icon type="plus"/> {`New ${displaySingular(intl, Contexts.projects)}`}
                   </Button>
               ]}
             >
               <DashboardWidget
                 w={1 / 2}
-                name="project-activity-levels"
+                name={`value-stream-activity-levels`}
                 render={
                   ({view}) =>
                     <ChildDimensionActivityProfileWidget
@@ -54,7 +60,7 @@ export default () => (
               />
               <DashboardWidget
                 w={1 / 2}
-                name="most-active-projects"
+                name={`most-active-value-stream`}
                 render={
                   ({view}) =>
                     <DimensionMostActiveChildrenWidget
@@ -75,7 +81,7 @@ export default () => (
             <DashboardRow h={"68%"}>
               <DashboardWidget
                 w={1}
-                name="projects"
+                name={`${displayPlural(intl, Contexts.projects)}`}
                 render={
                   () =>
                     <ProjectsTableWidget
@@ -92,7 +98,7 @@ export default () => (
           <ProjectsDashboardSetup context={context}/>
       )
     }/>
-);
+));
 
 
 

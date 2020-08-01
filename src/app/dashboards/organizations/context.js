@@ -35,7 +35,7 @@ const context = {
             topic: Activity
           },
           {
-            match: 'projects',
+            match: 'value-streams',
             topic: Project
           },
           {
