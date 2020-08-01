@@ -175,7 +175,7 @@ export const AddProjectWorkflow = withNavigationContext(
       return (
         <ApolloProvider client={work_tracking_service}>
           <WorkflowView
-            title={"Import Projects"}
+            title={"Connect Remote Projects"}
             steps={steps}
             current={current}
             renderNavigationControls={

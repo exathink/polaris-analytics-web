@@ -12,9 +12,9 @@ import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const inputModeDescription = {
-  single: 'Import as work stream(s) in a new Polaris Flow project',
-  existing: 'Import as new work stream(s) into an existing Polaris Flow project',
-  separate: 'Import each remote project as a separate local project'
+  single: 'Import as work stream(s) in a new Polaris Flow Value Stream',
+  existing: 'Import as new work stream(s) into an existing Polaris Flow Value Stream',
+  separate: 'Import each remote project as a separate Polaris Value Stream'
 }
 
 export const ORGANIZATION_PROJECT_COUNT_QUERY = gql`

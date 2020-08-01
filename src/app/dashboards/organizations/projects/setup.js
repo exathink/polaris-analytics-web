@@ -11,18 +11,19 @@ export const ProjectsDashboardSetup = ({context}) => (
           <h1>Connect your Work Tracking System</h1>
           <p>
             Connecting your work tracking system allows Polaris Flow to analyze your product
-            delivery process. A <em>Project</em> in Polaris Flow should model a single customer facing product or product line delivered
-            by this organization. A single Polaris Flow project may be mapped to <em>one or more</em> remote projects in your work tracking system.
+            delivery process. A <em>Value Stream</em> in Polaris Flow should model a single customer facing product or product line delivered
+            by this organization. A single Value Stream may be mapped to <em>one or more</em> remote projects in your work tracking system.
+            Each such remote project is called a <em>Work Stream</em> in Polaris.
           </p>
           <p>
-            The Polaris Flow project will aggregate metrics across its remote sub-projects, and also allow you drill down into each of the
-            sub-projects in further detail.
+            A Polaris Flow Value Stream will aggregate metrics across work streams, and also allow you
+            to drill down into the details for the work streams.
           </p>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col offset={9} span={6}>
-          <Button type={'primary'} size={"large"} onClick={() => context.go('.', 'new')} compact={true}>Import Projects</Button>
+          <Button type={'primary'} size={"large"} onClick={() => context.go('.', 'new')} compact={true}>Connect Remote Projects</Button>
         </Col>
       </Row>
     </div>

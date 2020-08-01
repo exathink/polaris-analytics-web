@@ -176,7 +176,7 @@ export const AddRepositoryWorkflow = withNavigationContext(
       return (
         <ApolloProvider client={vcs_service}>
           <WorkflowView
-            title={"Import Repositories"}
+            title={"Connect Remote Repositories"}
             steps={steps}
             current={current}
             renderNavigationControls={
