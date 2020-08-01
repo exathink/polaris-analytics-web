@@ -45,7 +45,7 @@ export class OrganizationProjectSelectorWidget extends React.Component {
               projects.length > 0 && (
                 <React.Fragment>
                   <Flex style={{paddingTop: '10px', paddingBottom: '8px' ,justifyContent: 'center', alignContent: 'center'}}>
-                    <span style={{fontSize: '14px', fontWeight: '800' , alignSelf: 'center', paddingRight: '10px'}}>Select Destination Project: </span>
+                    <span style={{fontSize: '14px', fontWeight: '800' , alignSelf: 'center', paddingRight: '10px'}}>Select Existing Value Stream: </span>
                     <Select
                       className={'projects-selector'}
                       onChange={value => this.props.onProjectSelectChanged(value)}

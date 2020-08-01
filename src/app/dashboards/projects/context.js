@@ -22,7 +22,7 @@ const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
       id="contexts.projects.instance"
-      defaultMessage="Project: {instance}"
+      defaultMessage="Value Stream: {instance}"
       values={{instance: instanceName}}/>
   )
 };

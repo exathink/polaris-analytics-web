@@ -13,7 +13,7 @@ const messages = defineMessages({
   },
   projects: {
     id: 'contexts.projects.display',
-    defaultMessage: "{quantity, plural, one {Project} other {Projects}}"
+    defaultMessage: "{quantity, plural, one {Value Stream} other {Value Streams}}"
   },
   work_items: {
     id: 'contexts.work_items.display',

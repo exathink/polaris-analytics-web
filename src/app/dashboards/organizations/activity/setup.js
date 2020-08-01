@@ -38,7 +38,7 @@ export const ActivityDashboardSetup = ({organization, context}) => {
           {
             noProjects &&
             <Col offset={projectsOffset} span={6}>
-              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'projects')}/>
+              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'value-streams')}/>
             </Col>
           }
         </Row>

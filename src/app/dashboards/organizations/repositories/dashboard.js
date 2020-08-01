@@ -27,7 +27,7 @@ export default () => (
               controls={[
                 () =>
                   <Button type="primary" onClick={() => context.go('.', 'new')}>
-                    <Icon type="download"/> Import Repositories
+                    <Icon type="download"/> Connect Repositories
                   </Button>
               ]}
             >

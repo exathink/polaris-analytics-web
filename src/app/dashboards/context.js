@@ -19,7 +19,7 @@ const context: Context = {
       context: Organizations,
     },
     {
-      match: 'projects',
+      match: 'value-streams',
       context: Projects,
     },
     {
