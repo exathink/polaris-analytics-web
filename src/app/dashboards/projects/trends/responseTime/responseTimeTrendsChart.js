@@ -2,45 +2,24 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
+import {getMetricsRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
 
-export function getMetricsRange(measurements, metrics) {
-  return measurements.reduce(
-    (metricsRange, measurement) => metrics.reduce(
-      (result, metric) => {
-        result[metric] = {
-          min: Math.min(result[metric], measurement[metric]),
-          max: Math.max(result[metric], measurement[metric])
-        };
-        return result
-      },
-      {}
-    ),metrics.reduce(
-      (initial, metric) => {
-        initial[metric] = {
-          min: Number.MAX_VALUE,
-          max: Number.MIN_VALUE
-        };
-        return initial
-      }
-    ), {}
-  )
-}
 
 export const ResponseTimeTrendsChart = Chart({
     chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementPeriod', 'measurementWindow'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, intl}) => {
-      
-      const responseTimeRange = flowMetricsTrends.reduce(
-        ({minLeadTime,maxLeadTime, minCycleTime, maxCycleTime}, measurement) => ({
-            minLeadTime: Math.min(minLeadTime, measurement['avgLeadTime']),
-            maxLeadTime: Math.max(maxLeadTime, measurement['avgLeadTime']),
-            minCycleTime: Math.min(minCycleTime, measurement['avgCycleTime']),
-            maxCycleTime: Math.max(maxCycleTime, measurement['avgCycleTime']),
-          }),
-        {minLeadTime:Number.MAX_VALUE, maxLeadTime:0, minCycleTime: Number.MAX_VALUE, maxCycleTime: 0}
-      )
+
+      // Get the extreme values of the two metrics we are showing and
+      // stuff them into conveniently named variable
+      const responseTimeRange = getMetricsRange(flowMetricsTrends, ['avgCycleTime', 'avgLeadTime'])
+      const minLeadTime = responseTimeRange['avgLeadTime'].min;
+      const maxLeadTime = responseTimeRange['avgLeadTime'].max;
+      const minCycleTime = responseTimeRange['avgCycleTime'].min;
+      const maxCycleTime = responseTimeRange['avgCycleTime'].max;
+
+
       const series = [
         {
           key: 'avg_cycle_time',
@@ -73,6 +52,7 @@ export const ResponseTimeTrendsChart = Chart({
         },
 
       ]
+
       return {
         chart: {
           type: 'line',
@@ -113,13 +93,13 @@ export const ResponseTimeTrendsChart = Chart({
             text: `Days`
           },
           min:0,
-          max: responseTimeRange.maxLeadTime * 2,
+          max: maxLeadTime * 2,
           plotBands:[
             {
-              to: responseTimeRange.minCycleTime,
-              from: responseTimeRange.maxCycleTime,
+              to: minCycleTime,
+              from: maxCycleTime,
               label: {
-                text: `Spread: ${intl.formatNumber(((responseTimeRange.maxCycleTime-responseTimeRange.minCycleTime)/responseTimeRange.minCycleTime)*100)}%`,
+                text: `Spread: ${intl.formatNumber(getPercentSpread(minCycleTime, maxCycleTime))}%`,
                 align: 'right',
                 verticalAlign: 'top',
                 x: -10,
@@ -130,18 +110,18 @@ export const ResponseTimeTrendsChart = Chart({
           ],
           plotLines:[
             {
-              value: responseTimeRange.maxCycleTime,
+              value: maxCycleTime,
               label: {
-                text: `Max: ${intl.formatNumber(responseTimeRange.maxCycleTime)}`,
+                text: `Max: ${intl.formatNumber(maxCycleTime)}`,
                 align: 'left',
                 verticalAlign: 'top',
 
               }
             },
             {
-              value: responseTimeRange.minCycleTime,
+              value: minCycleTime,
               label: {
-                text: `Min: ${intl.formatNumber(responseTimeRange.minCycleTime)}`,
+                text: `Min: ${intl.formatNumber(minCycleTime)}`,
                 align: 'left',
                 verticalAlign: 'bottom',
                 x: 15,
