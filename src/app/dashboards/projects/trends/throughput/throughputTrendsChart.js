@@ -99,7 +99,7 @@ export const ThroughputTrendsChart = Chart({
               to: throughputRange.specMin,
               from: throughputRange.specMax,
               label: {
-                text: `Delta: ${((throughputRange.specMax-throughputRange.specMin)/throughputRange.specMax)*100}%`,
+                text: `Spread: ${((throughputRange.specMax-throughputRange.specMin)/throughputRange.specMin)*100}%`,
                 align: 'right',
                 verticalAlign: 'top',
                 x: -10,
@@ -123,9 +123,12 @@ export const ThroughputTrendsChart = Chart({
               label: {
                 text: `Min: ${throughputRange.specMin}`,
                 align: 'left',
-                verticalAlign: 'middle'
+                verticalAlign: 'bottom',
+                x: 15,
+                y: 15
               },
-              zIndex: 3
+              zIndex: 3,
+
             },
 
           ]
