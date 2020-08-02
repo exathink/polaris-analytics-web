@@ -3,12 +3,44 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 
+export function getMetricsRange(measurements, metrics) {
+  return measurements.reduce(
+    (metricsRange, measurement) => metrics.reduce(
+      (result, metric) => {
+        result[metric] = {
+          min: Math.min(result[metric], measurement[metric]),
+          max: Math.max(result[metric], measurement[metric])
+        };
+        return result
+      },
+      {}
+    ),metrics.reduce(
+      (initial, metric) => {
+        initial[metric] = {
+          min: Number.MAX_VALUE,
+          max: Number.MIN_VALUE
+        };
+        return initial
+      }
+    ), {}
+  )
+}
 
 export const ResponseTimeTrendsChart = Chart({
     chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementPeriod', 'measurementWindow'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, intl}) => {
+      
+      const responseTimeRange = flowMetricsTrends.reduce(
+        ({minLeadTime,maxLeadTime, minCycleTime, maxCycleTime}, measurement) => ({
+            minLeadTime: Math.min(minLeadTime, measurement['avgLeadTime']),
+            maxLeadTime: Math.max(maxLeadTime, measurement['avgLeadTime']),
+            minCycleTime: Math.min(minCycleTime, measurement['avgCycleTime']),
+            maxCycleTime: Math.max(maxCycleTime, measurement['avgCycleTime']),
+          }),
+        {minLeadTime:Number.MAX_VALUE, maxLeadTime:0, minCycleTime: Number.MAX_VALUE, maxCycleTime: 0}
+      )
       const series = [
         {
           key: 'avg_cycle_time',
@@ -80,6 +112,45 @@ export const ResponseTimeTrendsChart = Chart({
           title: {
             text: `Days`
           },
+          min:0,
+          max: responseTimeRange.maxLeadTime * 2,
+          plotBands:[
+            {
+              to: responseTimeRange.minCycleTime,
+              from: responseTimeRange.maxCycleTime,
+              label: {
+                text: `Spread: ${intl.formatNumber(((responseTimeRange.maxCycleTime-responseTimeRange.minCycleTime)/responseTimeRange.minCycleTime)*100)}%`,
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: -5,
+              }
+            },
+
+          ],
+          plotLines:[
+            {
+              value: responseTimeRange.maxCycleTime,
+              label: {
+                text: `Max: ${intl.formatNumber(responseTimeRange.maxCycleTime)}`,
+                align: 'left',
+                verticalAlign: 'top',
+
+              }
+            },
+            {
+              value: responseTimeRange.minCycleTime,
+              label: {
+                text: `Min: ${intl.formatNumber(responseTimeRange.minCycleTime)}`,
+                align: 'left',
+                verticalAlign: 'bottom',
+                x: 15,
+                y: 15
+              },
+              zIndex: 3
+            },
+
+          ]
         },
         tooltip: {
           useHTML: true,
