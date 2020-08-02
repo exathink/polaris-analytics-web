@@ -9,7 +9,13 @@ export const ThroughputTrendsChart = Chart({
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementPeriod, measurementWindow, intl}) => {
-
+      const throughputRange = flowMetricsTrends.reduce(
+        ({min,max}, measurement) => ({
+            max: Math.max(max, measurement['workItemsInScope']),
+            min: Math.min(min, measurement['workItemsInScope'])
+          }),
+        {min:Number.MAX_VALUE, max:0}
+      )
       const series = [
         {
           key: 'throughput1',
@@ -23,8 +29,8 @@ export const ThroughputTrendsChart = Chart({
               measurement: measurement
             })
           ).sort(
-              (m1, m2) => m1.x - m2.x
-            )
+            (m1, m2) => m1.x - m2.x
+          )
         },
         {
           key: 'throughput2',
@@ -39,8 +45,8 @@ export const ThroughputTrendsChart = Chart({
               measurement: measurement
             })
           ).sort(
-              (m1, m2) => m1.x - m2.x
-            )
+            (m1, m2) => m1.x - m2.x
+          )
         },
 
 
@@ -77,6 +83,7 @@ export const ThroughputTrendsChart = Chart({
           title: {
             text: `Days`
           },
+
         },
         yAxis: {
           type: 'linear',
@@ -84,6 +91,43 @@ export const ThroughputTrendsChart = Chart({
           title: {
             text: `Work Items`
           },
+          min: 0,
+          max: throughputRange.max * 2,
+          plotBands:[
+            {
+              to: throughputRange.min,
+              from: throughputRange.max,
+              label: {
+                text: `Delta: ${((throughputRange.max-throughputRange.min)/throughputRange.max)*100}%`,
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: -5,
+              }
+            },
+
+          ],
+          plotLines:[
+            {
+              value: throughputRange.max,
+              label: {
+                text: `Max: ${throughputRange.max}`,
+                align: 'left',
+                verticalAlign: 'top',
+
+              }
+            },
+            {
+              value: throughputRange.min,
+              label: {
+                text: `Min: ${throughputRange.min}`,
+                align: 'left',
+                verticalAlign: 'middle'
+              },
+              zIndex: 3
+            },
+
+          ]
         },
         tooltip: {
           useHTML: true,
