@@ -10,18 +10,19 @@ export const ThroughputTrendsChart = Chart({
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementPeriod, measurementWindow, intl}) => {
       const throughputRange = flowMetricsTrends.reduce(
-        ({min,max}, measurement) => ({
+        ({min,max, specMax, specMin}, measurement) => ({
             max: Math.max(max, measurement['workItemsInScope']),
-            min: Math.min(min, measurement['workItemsInScope'])
+            min: Math.min(min, measurement['workItemsInScope']),
+            specMax: Math.max(specMax, measurement['workItemsWithCommits']),
+            specMin: Math.min(specMin, measurement['workItemsWithCommits']),
           }),
-        {min:Number.MAX_VALUE, max:0}
+        {min:Number.MAX_VALUE, max:0, specMin: Number.MAX_VALUE, specMax: 0}
       )
       const series = [
         {
           key: 'throughput1',
           id: 'throughput1',
           name: 'Specs',
-
           data: flowMetricsTrends.map(
             measurement => ({
               x: toMoment(measurement.measurementDate, true).valueOf(),
@@ -95,10 +96,10 @@ export const ThroughputTrendsChart = Chart({
           max: throughputRange.max * 2,
           plotBands:[
             {
-              to: throughputRange.min,
-              from: throughputRange.max,
+              to: throughputRange.specMin,
+              from: throughputRange.specMax,
               label: {
-                text: `Delta: ${((throughputRange.max-throughputRange.min)/throughputRange.max)*100}%`,
+                text: `Delta: ${((throughputRange.specMax-throughputRange.specMin)/throughputRange.specMax)*100}%`,
                 align: 'right',
                 verticalAlign: 'top',
                 x: -10,
@@ -109,18 +110,18 @@ export const ThroughputTrendsChart = Chart({
           ],
           plotLines:[
             {
-              value: throughputRange.max,
+              value: throughputRange.specMax,
               label: {
-                text: `Max: ${throughputRange.max}`,
+                text: `Max: ${throughputRange.specMax}`,
                 align: 'left',
                 verticalAlign: 'top',
 
               }
             },
             {
-              value: throughputRange.min,
+              value: throughputRange.specMin,
               label: {
-                text: `Min: ${throughputRange.min}`,
+                text: `Min: ${throughputRange.specMin}`,
                 align: 'left',
                 verticalAlign: 'middle'
               },
