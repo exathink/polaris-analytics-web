@@ -12,7 +12,6 @@ export const ThroughputTrendsChart = Chart({
       const throughputRange = getMetricsRange(flowMetricsTrends, ['workItemsWithCommits', 'workItemsInScope']);
       const minSpecThroughput = throughputRange['workItemsWithCommits'].min;
       const maxSpecThroughput = throughputRange['workItemsWithCommits'].max;
-      const minTotalWorkItems = throughputRange['workItemsInScope'].min;
       const maxTotalWorkItems = throughputRange['workItemsInScope'].max;
 
       const series = [

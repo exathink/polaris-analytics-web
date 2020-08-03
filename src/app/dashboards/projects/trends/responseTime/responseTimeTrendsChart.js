@@ -14,7 +14,6 @@ export const ResponseTimeTrendsChart = Chart({
       // Get the extreme values of the two metrics we are showing and
       // stuff them into conveniently named variable
       const responseTimeRange = getMetricsRange(flowMetricsTrends, ['avgCycleTime', 'avgLeadTime'])
-      const minLeadTime = responseTimeRange['avgLeadTime'].min;
       const maxLeadTime = responseTimeRange['avgLeadTime'].max;
       const minCycleTime = responseTimeRange['avgCycleTime'].min;
       const maxCycleTime = responseTimeRange['avgCycleTime'].max;
