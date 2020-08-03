@@ -227,3 +227,12 @@ export function pick(o, ...fields) {
         return a;
     }, {});
 }
+
+export function i18nNumber(intl, n) {
+  return intl.formatNumber(n)
+}
+
+export function i18nDate(intl, dt) {
+  return intl.formatDate(toMoment(dt).valueOf())
+}
+
