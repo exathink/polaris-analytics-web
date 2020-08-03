@@ -232,7 +232,15 @@ export function i18nNumber(intl, n) {
   return intl.formatNumber(n)
 }
 
-export function i18nDate(intl, dt) {
-  return intl.formatDate(toMoment(dt).valueOf())
+export function i18nDate(intl, dt, format="YYYY-MM-DD") {
+  return intl.formatDate(toMoment(dt,format).valueOf())
+}
+
+export function i18nDateTime(intl, dt, format="YYYY-MM-DDTHH:mm:ss") {
+  return intl.formatDate(toMoment(dt,format).valueOf())
+}
+
+export function i18nDateTimeWithMillseconds(intl, dt, format="YYYY-MM-DDTHH:mm:ss.SSS") {
+  return intl.formatDate(toMoment(dt,format).valueOf())
 }
 
