@@ -1,10 +1,10 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../helpers/utility";
+import {pick, toMoment, i18nNumber} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 import {getMetricRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
 
-function getPlotBands(config, measurements) {
+function getPlotBands(config, measurements, intl) {
   if(config.plotBands) {
     const {min, max} = getMetricRange(measurements, config.plotBands.metric)
       return {
@@ -13,7 +13,7 @@ function getPlotBands(config, measurements) {
               to: max,
               from: min,
               label: {
-                text: `Spread: ${getPercentSpread(min, max)}%`,
+                text: `Spread: ${i18nNumber(intl, getPercentSpread(min, max))}%`,
                 align: 'right',
                 verticalAlign: 'top',
                 x: -10,
@@ -26,7 +26,7 @@ function getPlotBands(config, measurements) {
             {
               value: max,
               label: {
-                text: `Max: ${max}`,
+                text: `Max: ${i18nNumber(intl, max)}`,
                 align: 'left',
                 verticalAlign: 'top',
 
@@ -35,7 +35,7 @@ function getPlotBands(config, measurements) {
             {
               value: min,
               label: {
-                text: `Min: ${min}`,
+                text: `Min: ${i18nNumber(intl,min)}`,
                 align: 'left',
                 verticalAlign: 'bottom',
                 x: 15,
@@ -97,6 +97,7 @@ export const MeasurementTrendLineChart = Chart({
         (metric, index) => ({
           key: metric.key,
           id: metric.key,
+          type: metric.type,
           name: metric.displayName,
           visible: metric.visible,
           data: measurements.map(
@@ -113,7 +114,7 @@ export const MeasurementTrendLineChart = Chart({
 
       const {min: yAxisMin, max: yAxisMax} = getYAxisRange(config, measurements);
 
-      const plotBands = getPlotBands(config, measurements);
+      const plotBands = getPlotBands(config, measurements, intl);
 
       const tooltip = getTooltip(config, intl);
 
