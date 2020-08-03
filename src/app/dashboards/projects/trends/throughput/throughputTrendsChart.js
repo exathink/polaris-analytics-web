@@ -2,22 +2,19 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
-
+import {getMetricsRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
 
 export const ThroughputTrendsChart = Chart({
     chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementWindow', 'measurementPeriod'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({flowMetricsTrends, measurementPeriod, measurementWindow, intl}) => {
-      const throughputRange = flowMetricsTrends.reduce(
-        ({min,max, specMax, specMin}, measurement) => ({
-            max: Math.max(max, measurement['workItemsInScope']),
-            min: Math.min(min, measurement['workItemsInScope']),
-            specMax: Math.max(specMax, measurement['workItemsWithCommits']),
-            specMin: Math.min(specMin, measurement['workItemsWithCommits']),
-          }),
-        {min:Number.MAX_VALUE, max:0, specMin: Number.MAX_VALUE, specMax: 0}
-      )
+      const throughputRange = getMetricsRange(flowMetricsTrends, ['workItemsWithCommits', 'workItemsInScope']);
+      const minSpecThroughput = throughputRange['workItemsWithCommits'].min;
+      const maxSpecThroughput = throughputRange['workItemsWithCommits'].max;
+      const minTotalWorkItems = throughputRange['workItemsInScope'].min;
+      const maxTotalWorkItems = throughputRange['workItemsInScope'].max;
+
       const series = [
         {
           key: 'throughput1',
@@ -93,13 +90,13 @@ export const ThroughputTrendsChart = Chart({
             text: `Work Items`
           },
           min: 0,
-          max: throughputRange.max * 2,
+          max: maxTotalWorkItems * 2,
           plotBands:[
             {
-              to: throughputRange.specMin,
-              from: throughputRange.specMax,
+              to: minSpecThroughput,
+              from: maxSpecThroughput,
               label: {
-                text: `Spread: ${((throughputRange.specMax-throughputRange.specMin)/throughputRange.specMin)*100}%`,
+                text: `Spread: ${getPercentSpread(minSpecThroughput, maxSpecThroughput)}%`,
                 align: 'right',
                 verticalAlign: 'top',
                 x: -10,
@@ -110,18 +107,18 @@ export const ThroughputTrendsChart = Chart({
           ],
           plotLines:[
             {
-              value: throughputRange.specMax,
+              value: maxSpecThroughput,
               label: {
-                text: `Max: ${throughputRange.specMax}`,
+                text: `Max: ${maxSpecThroughput}`,
                 align: 'left',
                 verticalAlign: 'top',
 
               }
             },
             {
-              value: throughputRange.specMin,
+              value: minSpecThroughput,
               label: {
-                text: `Min: ${throughputRange.specMin}`,
+                text: `Min: ${minSpecThroughput}`,
                 align: 'left',
                 verticalAlign: 'bottom',
                 x: 15,
