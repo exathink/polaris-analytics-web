@@ -1,122 +1,58 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../helpers/utility";
-import {Colors} from "../../../shared/config";
+import React from 'react';
+import {i18nDate, i18nNumber} from "../../../../helpers/utility";
+import {MeasurementTrendLineChart} from "../../../shared/views/measurementTrend/measurementTrendLineChart";
 
+export const ResponseTimeTrendsChart = (
+  {
+    flowMetricsTrends,
+    measurementPeriod,
+    measurementWindow
+  }) => (
+  <MeasurementTrendLineChart
+    measurements={flowMetricsTrends}
+    metrics={[
+      {key: 'avgCycleTime', displayName: 'Avg. Cycle Time', visible: true, type:'line'},
+      {key: 'avgLeadTime', displayName: 'Avg. Lead Time', visible: false, type: 'line'}
+    ]}
+    measurementPeriod={measurementPeriod}
+    measurementWindow={measurementWindow}
 
-export const ResponseTimeTrendsChart = Chart({
-    chartUpdateProps: props => pick(props, 'flowMetricsTrends', 'measurementPeriod', 'measurementWindow'),
-    eventHandler: DefaultSelectionEventHandler,
-    mapPoints: (points, _) => points,
-    getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, intl}) => {
-      const series = [
-        {
-          key: 'avg_cycle_time',
-          id: 'avg_cycle_time',
-          name: 'Avg. Cycle Time',
-          data: flowMetricsTrends.map(
-            measurement => ({
-              x: toMoment(measurement['measurementDate'], true).valueOf(),
-              y: measurement['avgCycleTime'],
-              measurement: measurement
-            })
-          ).sort(
-              (m1, m2) => m1.x - m2.x
-            )
-        },
-        {
-          key: 'avg_lead_time',
-          id: 'avg_lead_time',
-          name: 'Avg. Lead Time',
-          visible: false,
-          data: flowMetricsTrends.map(
-            measurement => ({
-              x: toMoment(measurement.measurementDate, true).valueOf(),
-              y: measurement['avgLeadTime'],
-              measurement: measurement
-            })
-          ).sort(
-            (m1, m2) => m1.x - m2.x
-          )
-        },
-
-      ]
-      return {
-        chart: {
-          type: 'line',
-          animation: false,
-          backgroundColor: Colors.Chart.backgroundColor,
-          panning: true,
-          panKey: 'shift',
-          zoomType: 'xy'
-        },
-        title: {
-          text: 'Response Time'
-        },
-        subtitle: {
-          text: `${measurementPeriod} day trend`
-        },
-        legend: {
-          title: {
-            text: `Specs`,
-            style: {
-              fontStyle: 'italic'
+    config={{
+      title: 'Response Time',
+      legendText: 'Specs',
+      yAxisUom: 'Days',
+      plotBands: {
+        metric: 'avgCycleTime'
+      },
+      yAxisNormalization: {
+        metric: 'avgLeadTime',
+        minScale: 0,
+        maxScale: 2,
+      },
+      tooltip: {
+        formatter: (measurement, seriesKey, intl) => {
+          const selectedMetricDisplay = seriesKey === 'avgCycleTime' ?
+            ['Avg. Cycle Time: ', `${i18nNumber(intl, measurement.avgCycleTime)} days`] :
+            ['Avg. Lead Time: ', `${i18nNumber(intl, measurement.avgLeadTime)} days`];
+          return (
+            {
+              header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
+              body:
+                [
+                  selectedMetricDisplay
+                  ,
+                  [`------`, ``],
+                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} work items`],
+                  ['Earliest Closed: ', `${i18nDate(intl, measurement.earliestClosedDate)}`],
+                  ['Latest Closed: ', `${i18nDate(intl, measurement.latestClosedDate)}`],
+                  ['No Cycle Time  : ', `${measurement.workItemsWithNullCycleTime} work items`],
+                ]
             }
-          },
-          align: 'right',
-          layout: 'vertical',
-          verticalAlign: 'middle',
-          itemMarginBottom: 3,
-        },
-        xAxis: {
-          type: 'datetime',
-          title: {
-            text: `Date`
-          }
-        },
-        yAxis: {
-          type: 'linear',
-          id: 'cycle-metric',
-          title: {
-            text: `Days`
-          },
-        },
-        tooltip: {
-          useHTML: true,
-          followPointer: false,
-          hideDelay: 0,
-          formatter: function () {
-            return tooltipHtml({
-              header: `${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
-              body: [
-                ['Avg. Cycle Time: ', `${intl.formatNumber(this.point.measurement.avgCycleTime)} days`],
-                ['Avg. Lead Time: ', `${intl.formatNumber(this.point.measurement.avgLeadTime)} days`],
-                [`------`, ``],
-                ['Total Closed: ', `${intl.formatNumber(this.point.measurement.workItemsInScope)} work items`],
-                ['Earliest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.earliestClosedDate).valueOf())}`],
-                ['Latest Closed: ', `${intl.formatDate(toMoment(this.point.measurement.latestClosedDate).valueOf())}`],
-                ['No Cycle Time  : ', `${this.point.measurement.workItemsWithNullCycleTime} work items`],
-              ]
-            })
-          }
-        },
-        series: series,
-        plotOptions: {
-          series: {
-            animation: false,
-
-          }
-
-        },
-        time: {
-          // Since we are already passing in UTC times we
-          // dont need the chart to translate the time to UTC
-          // This makes sure the tooltips text matches the timeline
-          // on the axis.
-          useUTC: false
+          )
         }
       }
-
-    }
-  }
+    }}
+  />
 )
+
+
