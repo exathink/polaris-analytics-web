@@ -73,18 +73,23 @@ function getTooltip(config, intl) {
 
 function getYAxisRange(config, measurements) {
   if (config.yAxisNormalization) {
-    const {min, max} = getMetricRange(measurements, config.yAxisNormalization.metric)
+    if (config.yAxisNormalization.metric) {
+      const {min, max} = getMetricRange(measurements, config.yAxisNormalization.metric)
 
-    return {
-      // The min value of the axis will be set to 0 unless the minScale is specified
-      min: (config.yAxisNormalization.minScale || 0) * min,
-      // The max value of the axis will be set to max unless the maxScale value is specified.
-      max: (config.yAxisNormalization.maxScale || 1) * max
-    }
-  } else {
-    return {
+      return {
+        // The min value of the axis will be set to 0 unless the minScale is specified
+        min: (config.yAxisNormalization.minScale || 0) * min,
+        // The max value of the axis will be set to max unless the maxScale value is specified.
+        max: (config.yAxisNormalization.maxScale || 1) * max
+      }
+    } else if (config.yAxisNormalization.max && config.yAxisNormalization.min) {
+      return {
+        min: config.yAxisNormalization.min,
+        max: config.yAxisNormalization.max
+      }
     }
   }
+  return {}
 }
 
 export const MeasurementTrendLineChart = Chart({
@@ -103,7 +108,7 @@ export const MeasurementTrendLineChart = Chart({
           data: measurements.map(
             measurement => ({
               x: toMoment(measurement.measurementDate, true).valueOf(),
-              y: measurement[metric.key],
+              y: metric.value ? metric.value(measurement) : measurement[metric.key],
               measurement: measurement
             })
           ).sort(
@@ -148,7 +153,7 @@ export const MeasurementTrendLineChart = Chart({
         xAxis: {
           type: 'datetime',
           title: {
-            text: config.xAxisUom || `Days`
+            text: config.xAxisUom || `${measurementWindow} days ending`
           },
 
         },
