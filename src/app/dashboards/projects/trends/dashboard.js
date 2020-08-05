@@ -4,6 +4,8 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectPredictabilityTrendsWidget} from "./predictability"
 import {ProjectThroughputTrendsWidget} from "./throughput"
 import {ProjectResponseTimeTrendsWidget} from "./responseTime"
+import {ProjectTraceabilityTrendsWidget} from "./traceability";
+
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 
 const dashboard_id = 'dashboards.trends.projects.dashboard.instance';
@@ -22,7 +24,30 @@ const dashboard = ({viewerContext}) => (
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
             <DashboardRow
-              h='40%'
+              h={"30%"}
+              title={"Alignment"}
+            >
+              <DashboardWidget
+                w={1/3}
+                name="traceability"
+
+                render={
+                  ({view}) =>
+                    <ProjectTraceabilityTrendsWidget
+                      instanceKey={key}
+                      measurementWindow={30}
+                      days={45}
+                      samplingFrequency={7}
+                      context={context}
+                      view={view}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                    />
+                }
+                showDetail={true}
+              />
+            </DashboardRow>
+            <DashboardRow
+              h='30%'
               title={`Flow Metrics`}
             >
               <DashboardWidget
