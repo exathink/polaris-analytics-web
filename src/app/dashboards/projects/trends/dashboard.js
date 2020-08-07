@@ -6,6 +6,8 @@ import {ProjectThroughputTrendsWidget} from "./throughput"
 import {ProjectResponseTimeTrendsWidget} from "./responseTime"
 import {ProjectTraceabilityTrendsWidget} from "./traceability";
 
+import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
+
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 
 const dashboard_id = 'dashboards.trends.projects.dashboard.instance';
@@ -23,35 +25,38 @@ const dashboard = ({viewerContext}) => (
        }) => {
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
-            <DashboardRow
-              h={"30%"}
-              title={"Alignment"}
-            >
-              <DashboardWidget
-                w={1/3}
-                name="traceability"
+            {
+              viewerContext.isFeatureFlagActive(PROJECTS_ALIGNMENT_TRENDS_WIDGETS) &&
+                < DashboardRow
+                  h={"30%"}
+                  title={"Alignment"}
+                >
+                  <DashboardWidget
+                    w={1 / 3}
+                    name="traceability"
 
-                render={
-                  ({view}) =>
-                    <ProjectTraceabilityTrendsWidget
-                      instanceKey={key}
-                      measurementWindow={30}
-                      days={45}
-                      samplingFrequency={7}
-                      context={context}
-                      view={view}
-                      latestWorkItemEvent={latestWorkItemEvent}
-                    />
-                }
-                showDetail={true}
-              />
-            </DashboardRow>
+                    render={
+                      ({view}) =>
+                        <ProjectTraceabilityTrendsWidget
+                          instanceKey={key}
+                          measurementWindow={30}
+                          days={45}
+                          samplingFrequency={7}
+                          context={context}
+                          view={view}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                </DashboardRow>
+            }
             <DashboardRow
               h='30%'
               title={`Flow Metrics`}
             >
               <DashboardWidget
-                w={1/3}
+                w={1 / 3}
                 name="throughput"
 
                 render={
@@ -70,7 +75,7 @@ const dashboard = ({viewerContext}) => (
                 showDetail={true}
               />
               <DashboardWidget
-                w={1/3}
+                w={1 / 3}
                 name="cycle-time"
 
                 render={
@@ -89,7 +94,7 @@ const dashboard = ({viewerContext}) => (
                 showDetail={true}
               />
               <DashboardWidget
-                w={1/3}
+                w={1 / 3}
                 name="predictability"
                 render={
                   ({view}) =>
