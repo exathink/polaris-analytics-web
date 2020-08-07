@@ -4,48 +4,62 @@ import {pick, toMoment, i18nNumber} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 import {getMetricRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
 
-function getPlotBands(config, measurements, intl) {
-  if(config.plotBands) {
-    const {min, max} = getMetricRange(measurements, config.plotBands.metric)
-      return {
-          plotBands: [
+function getPlotBands(config, measurements, metrics, intl) {
+  if (config.plotBands) {
+    const metricConfig = metrics.find(metric => metric.key === config.plotBands.metric);
+    let range = getMetricRange(measurements, config.plotBands.metric)
+    if (metricConfig != null && metricConfig.value != null) {
+      range = getMetricRange(
+        measurements.map(
+          measurement => (
             {
-              to: max,
-              from: min,
-              label: {
-                text: `Spread: ${i18nNumber(intl, getPercentSpread(min, max))}%`,
-                align: 'right',
-                verticalAlign: 'top',
-                x: -10,
-                y: -5,
-              }
-            },
+              value: metricConfig.value(measurement)
+            })
+        ),
+        'value'
+      )
+    }
+    const {min, max} = range;
 
-          ],
-          plotLines: [
-            {
-              value: max,
-              label: {
-                text: `Max: ${i18nNumber(intl, max)}`,
-                align: 'left',
-                verticalAlign: 'top',
+    return {
+      plotBands: [
+        {
+          to: max,
+          from: min,
+          label: {
+            text: `Spread: ${i18nNumber(intl, getPercentSpread(min, max))}%`,
+            align: 'right',
+            verticalAlign: 'top',
+            x: -10,
+            y: -5,
+          }
+        },
 
-              }
-            },
-            {
-              value: min,
-              label: {
-                text: `Min: ${i18nNumber(intl,min)}`,
-                align: 'left',
-                verticalAlign: 'bottom',
-                x: 15,
-                y: 15
-              },
-              zIndex: 3,
+      ],
+      plotLines: [
+        {
+          value: max,
+          label: {
+            text: `Max: ${i18nNumber(intl, max)}`,
+            align: 'left',
+            verticalAlign: 'top',
 
-            }
-          ]
+          }
+        },
+        {
+          value: min,
+          label: {
+            text: `Min: ${i18nNumber(intl, min)}`,
+            align: 'left',
+            verticalAlign: 'bottom',
+            x: 15,
+            y: 15
+          },
+          zIndex: 3,
+
         }
+      ]
+    }
   } else {
     return {}
   }
@@ -56,15 +70,15 @@ function getTooltip(config, intl) {
   if (config.tooltip) {
     return {
       tooltip: {
-          useHTML: true,
-          followPointer: false,
-          hideDelay: 0,
-          formatter: function () {
-            return tooltipHtml(
-              config.tooltip.formatter(this.point.measurement, this.point.series.options.key, intl)
-            )
-          }
+        useHTML: true,
+        followPointer: false,
+        hideDelay: 0,
+        formatter: function () {
+          return tooltipHtml(
+            config.tooltip.formatter(this.point.measurement, this.point.series.options.key, intl)
+          )
         }
+      }
     }
   } else {
     return {}
@@ -117,9 +131,9 @@ export const MeasurementTrendLineChart = Chart({
         })
       );
 
-      const {min: yAxisMin, max: yAxisMax} = getYAxisRange(config, measurements);
+      const {min: yAxisMin, max: yAxisMax} = getYAxisRange(config, measurements, metrics);
 
-      const plotBands = getPlotBands(config, measurements, intl);
+      const plotBands = getPlotBands(config, measurements, metrics, intl);
 
       const tooltip = getTooltip(config, intl);
 

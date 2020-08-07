@@ -25,7 +25,9 @@ export const TraceabilityTrendsChart = ({
       config={{
         title: 'Traceability',
         yAxisUom: 'Traceability (%)',
-
+        plotBands: {
+          metric: 'traceability'
+        },
         yAxisNormalization: {
           min: 0.1,
           max: 100,
