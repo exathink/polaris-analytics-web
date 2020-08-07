@@ -27,7 +27,7 @@ export const TraceabilityTrendsChart = ({
         yAxisUom: 'Traceability (%)',
 
         yAxisNormalization: {
-          min: 0,
+          min: 0.1,
           max: 100,
         },
         tooltip: {
@@ -38,7 +38,7 @@ export const TraceabilityTrendsChart = ({
                 ['Traceability: ', `${i18nNumber(intl, measurement.traceability * 100)} %`],
 
                 [`------`, ``],
-                ['Commits with Specs (for this project): ', `${i18nNumber(intl, measurement.specCount)}`],
+                ['Commits with Specs: ', `${i18nNumber(intl, measurement.specCount)}`],
                 ['Commits without Specs: ', `${i18nNumber(intl, measurement.nospecCount)}`],
                 ['Total Commits: ', `${i18nNumber(intl, measurement.totalCommits)}`],
 

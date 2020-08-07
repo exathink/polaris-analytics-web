@@ -27,7 +27,7 @@ export const ResponseTimeTrendsChart = (
       yAxisNormalization: {
         metric: 'avgLeadTime',
         minScale: 0,
-        maxScale: 2,
+        maxScale: 1.25,
       },
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {

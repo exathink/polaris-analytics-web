@@ -25,7 +25,7 @@ export const ThroughputTrendsChart = ({
         yAxisNormalization: {
           metric: 'workItemsInScope',
           minScale: 0,
-          maxScale: 2,
+          maxScale: 1.25,
         },
         tooltip: {
           formatter: (measurement, seriesKey, intl) => (
