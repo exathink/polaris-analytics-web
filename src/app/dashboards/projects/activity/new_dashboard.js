@@ -28,6 +28,7 @@ import Contributors from "../../contributors/context";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import Repositories from "../../repositories/context";
 import WorkItems from "../../work_items/context";
+import {ProjectPipelineStateDetailsWidget} from "./pipeline/projectPipelineStateDetailsWidget";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -150,7 +151,7 @@ export const dashboard = ({viewerContext}) => (
                   title={"Defect Metrics"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
-                  render  ={
+                  render={
                     ({view}) =>
                       <ProjectDefectMetricsWidget
                         instanceKey={key}
@@ -167,11 +168,33 @@ export const dashboard = ({viewerContext}) => (
               }
 
             </DashboardRow>
-            <DashboardRow h='81%'>
+            <DashboardRow h='78%'>
               <DashboardTabs
-                defaultActiveKey={'development'}
+                defaultActiveKey={'queues'}
               >
-                <DashboardTabPane tab={'Code Changes'} key={'development'}>
+                <DashboardTabPane tab={'Queues'} key={'queues'}>
+
+                  <DashboardRow h={'93%'}>
+                    <DashboardWidget
+                      w={1}
+                      name="project-pipeline-state-detail-view"
+                      render={
+                        ({view}) =>
+                          <ProjectPipelineStateDetailsWidget
+                            instanceKey={key}
+                            view={view}
+                            context={context}
+                            latestWorkItemEvent={latestWorkItemEvent}
+                            stateMappingIndex={stateMappingIndex}
+                            days={30}
+                            targetPercentile={0.7}
+                          />
+                      }
+                      showDetail={true}
+                    />
+                  </DashboardRow>
+                </DashboardTabPane>
+                <DashboardTabPane tab={'Active Specs'} key={'build'}>
                   <DashboardRow h={'25%'}>
                     <DashboardWidget
                       w={1 / 3}
