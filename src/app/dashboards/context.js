@@ -7,7 +7,7 @@ import Contributors from "./contributors/context";
 import Commits from "./commits/context";
 import WorkItems from "./work_items/context";
 import OpenSource from "./oss/context";
-import {WORK_ITEMS_DETAIL_DASHBOARD} from "../../config/featureFlags";
+
 
 
 const context: Context = {
@@ -40,9 +40,6 @@ const context: Context = {
     },
     {
       match: 'work_items',
-      requiredFeatures: [
-        WORK_ITEMS_DETAIL_DASHBOARD
-      ],
       context: WorkItems,
     },
     {
