@@ -35,10 +35,7 @@ export const ThroughputTrendsChart = ({
                 ['Specs Closed: ', `${i18nNumber(intl, measurement.workItemsWithCommits)} specs`],
                 ['Earliest Closed: ', `${i18nDate(intl, measurement.earliestClosedDate)}`],
                 ['Latest Closed: ', `${i18nDate(intl, measurement.latestClosedDate)}`],
-                [`------`, ``],
-                ['Avg. Cycle Time: ', `${i18nNumber(intl, measurement.avgCycleTime)} days`],
-                ['Avg. Lead Time: ', `${i18nNumber(intl, measurement.avgLeadTime)} days`],
-                ['No Cycle Time  : ', `${measurement.workItemsWithNullCycleTime} work items`]
+
               ]: [
                   ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} work items`],
                   ['Specs Closed: ', `${i18nNumber(intl, measurement.workItemsWithCommits)} specs`]
