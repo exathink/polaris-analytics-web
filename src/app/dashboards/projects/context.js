@@ -13,7 +13,7 @@ import Trends from "./trends/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-import {PROJECTS_TRENDS_DASHBOARD} from "../../../config/featureFlags";
+
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -42,7 +42,7 @@ const context : Context = {
             topic: Activity
           },
           {
-            requiredFeatures: [PROJECTS_TRENDS_DASHBOARD],
+
             match: 'trends',
             topic: Trends
           },
