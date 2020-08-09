@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectPipelineWidget} from "./projectPipelineWidget";
+import {ProjectPhaseSummaryWidget} from "./projectPhaseSummaryWidget";
 import {ProjectPipelineStateDetailsWidget} from "./projectPipelineStateDetailsWidget";
 
 const dashboard_id = 'dashboards.activity.projects.pipeline.detail';
@@ -17,14 +17,13 @@ export const ProjectPipelineDetailDashboard = (
   <Dashboard dashboard={dashboard_id}>
     <DashboardRow h={"15%"}>
       <DashboardWidget
-        w={1}
+        w={1/4}
         name="project-pipeline-summary-detail-view"
         render={
           ({view}) =>
-            <ProjectPipelineWidget
+            <ProjectPhaseSummaryWidget
               instanceKey={instanceKey}
               view={view}
-              showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
             />
