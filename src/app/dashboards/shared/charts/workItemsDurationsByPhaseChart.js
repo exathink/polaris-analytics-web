@@ -179,7 +179,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: title || `Pipeline Status:  ${WorkItemStateTypeDisplayName[stateType]}`
+        text: title
       },
       xAxis: {
         type: 'category',

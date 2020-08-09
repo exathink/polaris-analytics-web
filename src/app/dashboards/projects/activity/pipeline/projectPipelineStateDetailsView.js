@@ -58,7 +58,7 @@ const PipelineStateDetailsView = (
             <VizItem w={1}>
               <Flex w={0.95} justify='space-between'>
                 <GroupingSelector
-                  label={"Phase"}
+                  label={"Queue"}
                   groupings={
                     stateTypes.map(
                       stateType => ({
@@ -102,6 +102,7 @@ const PipelineStateDetailsView = (
                 stateType={selectedStateType}
                 groupBy={selectedGrouping}
                 workItems={candidateWorkItems}
+                title={`Work Queue:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
                 projectCycleMetrics={projectCycleMetrics}
                 onSelectionChange={
                   (workItems) => {
