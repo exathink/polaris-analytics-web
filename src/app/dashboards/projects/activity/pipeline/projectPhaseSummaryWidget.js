@@ -1,6 +1,6 @@
 import {useQueryProjectPipelineSummary} from "../hooks/useQueryProjectPipelineSummary";
 import {Loading} from "../../../../components/graphql/loading";
-import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
+import {ProjectPipelinePhaseSummaryView} from "./projectPipelinePhaseSummaryView";
 import React from "react";
 
 export const ProjectPhaseSummaryWidget = (
@@ -16,7 +16,7 @@ export const ProjectPhaseSummaryWidget = (
     if (error) return null;
     const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
     return (
-      <ProjectPipelineSummaryView
+      <ProjectPipelinePhaseSummaryView
         model={
           {
 

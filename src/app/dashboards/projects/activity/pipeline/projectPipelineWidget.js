@@ -1,5 +1,8 @@
 import React from 'react';
+import {Loading} from "../../../../components/graphql/loading";
 import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
+import {useQueryProjectPipelineCycleMetrics} from "../hooks/useQueryProjectPipelineCycleMetrics";
+import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 
 export const ProjectPipelineWidget = (
   {
@@ -13,7 +16,23 @@ export const ProjectPipelineWidget = (
     pollInterval
   }) => {
   if (view === 'primary') {
-    return null;
+    const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
+      {
+        instanceKey,
+        targetPercentile,
+        specsOnly: false,
+        referenceString: latestWorkItemEvent
+      }
+    )
+    if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+    if (error) return null;
+    const pipelineCycleMetrics = data['project']['pipelineCycleMetrics'];
+    return (
+      <ProjectPipelineSummaryView
+        pipelineCycleMetrics={pipelineCycleMetrics}
+        targetPercentile={targetPercentile}
+      />
+    )
   } else {
     return (
       <ProjectPipelineDetailDashboard
