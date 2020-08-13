@@ -197,7 +197,6 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         },
         plotLines: projectCycleMetrics ? [
           PlotLines.avgCycleTime(projectCycleMetrics, intl,'left'),
-          PlotLines.percentileCycleTime(projectCycleMetrics, intl, 'right', 'bottom'),
           PlotLines.percentileLeadTime(projectCycleMetrics, intl,'left'),
 
         ] : [],
