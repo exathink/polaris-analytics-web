@@ -38,14 +38,6 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
-                <VizItem w={0.40}>
-                  <PercentileLeadTime
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
-                    targetPercentile={targetPercentile}
-                    deltaThreshold={trendIndicatorThreshold}
-                  />
-                </VizItem>
                 <VizItem w={0.35}>
                   {
                     stateMappingIndex.numInProcessStates() > 0 ?
@@ -61,6 +53,14 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                         deltaThreshold={trendIndicatorThreshold}
                       />
                   }
+                </VizItem>
+                <VizItem w={0.40}>
+                  <PercentileLeadTime
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    targetPercentile={targetPercentile}
+                    deltaThreshold={trendIndicatorThreshold}
+                  />
                 </VizItem>
               </VizRow>
               :
