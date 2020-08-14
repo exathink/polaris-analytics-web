@@ -12,6 +12,7 @@ import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationD
 import {WorkItemEventTimelineWidget} from "./eventTimeline/workItemEventTimelineWidget";
 import {WorkItemRemoteLink} from "./views/workItemRemoteLink";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import {WorkItemImplementationCostWidget} from "./implementationCosts/workItemImplementationCostWidget";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -41,7 +42,7 @@ export const dashboard =
                 h={"12%"}
               >
                 <DashboardWidget
-                  w={1 / 2}
+                  w={1 / 3}
                   name="header"
                   render={
                     ({view}) =>
@@ -52,11 +53,24 @@ export const dashboard =
                   }
                 />
                 <DashboardWidget
-                  w={1 / 2}
+                  w={1 / 3}
                   name="cycle-metrics"
                   render={
                     ({view}) =>
                       <WorkItemFlowMetricsWidget
+                        instanceKey={workItem.key}
+                        latestWorkItemEvent={workItem.latestWorkItemEvent}
+
+                        view={view}
+                      />
+                  }
+                />
+                <DashboardWidget
+                  w={1 / 3}
+                  name="implementation-cost"
+                  render={
+                    ({view}) =>
+                      <WorkItemImplementationCostWidget
                         instanceKey={workItem.key}
                         latestWorkItemEvent={workItem.latestWorkItemEvent}
 
