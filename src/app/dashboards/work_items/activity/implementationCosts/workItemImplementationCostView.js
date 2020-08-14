@@ -16,7 +16,7 @@ export const WorkItemImplementationCostView = (
     <VizRow h={1}>
       <VizItem w={1/3}>
         <Statistic
-            title={<span>Effort</span>}
+            title={<span>Cost</span>}
             value={ implementationCost || 'N/A'}
             precision={1}
             valueStyle={{color: '#3f8600'}}
