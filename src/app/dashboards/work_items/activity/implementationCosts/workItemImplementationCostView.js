@@ -5,8 +5,8 @@ import {Statistic} from "antd";
 export const WorkItemImplementationCostView = (
   {
     workItem: {
-      implementationCost,
-      implementationSpan,
+      effort,
+      duration,
       authorCount
     },
     view
@@ -17,7 +17,7 @@ export const WorkItemImplementationCostView = (
       <VizItem w={1/3}>
         <Statistic
             title={<span>Effort</span>}
-            value={ implementationCost || 'N/A'}
+            value={ effort || 'N/A'}
             precision={1}
             valueStyle={{color: '#3f8600'}}
             style={{backgroundColor: '#f2f3f6'}}
@@ -27,7 +27,7 @@ export const WorkItemImplementationCostView = (
       <VizItem w={1/3}>
         <Statistic
             title={<span>Duration</span>}
-            value={ implementationSpan || 'N/A'}
+            value={ duration || 'N/A'}
             precision={1}
             valueStyle={{color: '#3f8600'}}
             style={{backgroundColor: '#f2f3f6'}}

@@ -10,9 +10,11 @@ export function useQueryWorkItemImplementationCost({instanceKey, referenceString
               id
               name
               key
-              implementationCost
-              implementationSpan
+              
+              effort
+              duration
               authorCount
+              
        }
     }
     `, {
