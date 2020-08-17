@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeDisplayName, WorkItemStateTypeColor} from "../../../shared/config";
 import {Highcharts} from "../../../../framework/viz/charts/chartWrapper";
 require('highcharts/modules/funnel')(Highcharts);
@@ -42,7 +42,7 @@ export const PipelineFunnelChart = Chart({
       },
       legend: {
         title: {
-          text: 'Specs',
+          text: capitalizeFirstLetter(grouping),
           style: {
             fontStyle: 'italic'
           }
