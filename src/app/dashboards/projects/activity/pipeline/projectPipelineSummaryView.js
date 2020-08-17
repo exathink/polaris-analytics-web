@@ -2,7 +2,7 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
-import {AvgCycleTime, PercentileLeadTime} from "../../../shared/components/flowStatistics/flowStatistics";
+import {AvgCycleTime} from "../../../shared/components/flowStatistics/flowStatistics";
 
 const PipelineSummaryView = (
   {
