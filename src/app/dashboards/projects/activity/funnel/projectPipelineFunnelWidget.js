@@ -14,6 +14,9 @@ export const ProjectPipelineFunnelWidget = (
     context,
     pollInterval
   }) => {
+
+  const [selectedGrouping, setSelectedGrouping] = useState('all');
+
   const {loading, error, data} = useQueryProjectPipelineSummary(
     {
       instanceKey,
@@ -25,11 +28,15 @@ export const ProjectPipelineFunnelWidget = (
   if (loading ) return <Loading/>;
   if (error) return null;
   const {workItemStateTypeCounts, specStateTypeCounts} = data['project'];
+
+
   return (
     <ProjectPipelineFunnelView
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
       specStateTypeCounts={specStateTypeCounts}
+      selectedGrouping={selectedGrouping}
+      setSelectedGrouping={setSelectedGrouping}
       view={view}
     />
   )

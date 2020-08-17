@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {PipelineFunnelChart} from "./pipelineFunnelChart";
@@ -12,57 +12,55 @@ export const ProjectPipelineFunnelView = (
   {
     workItemStateTypeCounts,
     specStateTypeCounts,
+    selectedGrouping,
+    setSelectedGrouping,
     view,
     context,
   }
 ) => {
+
+
   return (
-    view === 'primary' ?
-      <VizRow h={"100%"}>
-        <VizItem w={1}>
+    <VizRow h={"100%"}>
+      <VizItem w={1}>
 
-          <div style={{width: "100%", height: "100%"}}>
+        <div style={{width: "100%", height: "100%"}}>
 
-            <PipelineFunnelChart
-              workItemStateTypeCounts={workItemStateTypeCounts}
-              specStateTypeCounts={specStateTypeCounts}
+          <PipelineFunnelChart
+            workItemStateTypeCounts={workItemStateTypeCounts}
+            specStateTypeCounts={specStateTypeCounts}
+            title={'Flow States'}
+            grouping={selectedGrouping}
+          />
+          <Flex w={1} justify={'center'}>
+            <GroupingSelector
+              label={'Show'}
+              groupings={
+                [
+                  {
+                    key: 'all',
+                    display: 'All'
+                  },
+                  {
+                    key: 'specs',
+                    display: 'Specs'
+                  },
+                ]
+              }
+              initialValue={selectedGrouping}
+              onGroupingChanged={(selected) => setSelectedGrouping(selected)}
             />
-            <Flex w={1} justify={'center'}>
-              <GroupingSelector
-                label={'Show'}
-                groupings={
-                  [
+          </Flex>
+        </div>
 
-                    {
-                      key: 'spec',
-                      display: 'Specs'
-                    },
-                    {
-                      key: 'all',
-                      display: 'All'
-                    },
-                  ]
-                }
-                initialValue={'spec'}
-              />
-            </Flex>
-          </div>
+      </VizItem>
+    </VizRow>
 
-        </VizItem>
-      </VizRow>
-      :
-      <Flex style={{height: "95%"}}>
-        <PipelineFunnelChart
-          title={'Status'}
-          workItemStateTypeCounts={workItemStateTypeCounts}
-          specStateTypeCounts={specStateTypeCounts}
-        />
-      </Flex>
 
   )
 };
 
-export const ProjectPipelineFunnel = withNavigationContext(ProjectPipelineFunnelView);
+
 
 
 

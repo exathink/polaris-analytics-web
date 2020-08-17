@@ -6,13 +6,16 @@ import {Highcharts} from "../../../../framework/viz/charts/chartWrapper";
 require('highcharts/modules/funnel')(Highcharts);
 
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => (
-    pick(props, 'workItemStateTypeCounts', 'specStateTypeCounts')
-  ),
+  chartUpdateProps: (props) => {
+    console.log(props);
+    return pick(props, 'workItemStateTypeCounts', 'specStateTypeCounts', 'grouping')
+  },
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItemStateTypeCounts, specStateTypeCounts, title, intl}) => {
+  getConfig: ({workItemStateTypeCounts, specStateTypeCounts, title, grouping, intl}) => {
+
+    const selectedSummary = grouping === 'specs' ? specStateTypeCounts : workItemStateTypeCounts;
 
     return {
       chart: {
@@ -53,11 +56,11 @@ export const PipelineFunnelChart = Chart({
       series: [{
         name: 'Foo',
         data: Object.keys(WorkItemStateTypeDisplayName).filter(
-          stateType => specStateTypeCounts[stateType] != null
+          stateType => selectedSummary[stateType] != null
         ).map(
           stateType=> ({
             name: WorkItemStateTypeDisplayName[stateType],
-            y: specStateTypeCounts[stateType] || 0,
+            y: selectedSummary[stateType] || 0,
             color: WorkItemStateTypeColor[stateType]
           })
         ),
