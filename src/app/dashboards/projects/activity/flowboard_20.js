@@ -170,7 +170,9 @@ export const dashboard = ({viewerContext}) => (
               </DashboardRow>
 
 
-              <DashboardRow h={'25%'}>
+              <DashboardRow h={'25%'}
+                title={"Pipeline"}
+              >
                 <DashboardWidget
                   w={1/3}
                   name="most-active-work-items"
@@ -226,7 +228,9 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                 />
               </DashboardRow>
-              <DashboardRow h={'65%'}>
+              <DashboardRow h={'60%'}
+                title={'Active Specs'}
+              >
                 <DashboardWidget
                   w={1}
                   name="commits"

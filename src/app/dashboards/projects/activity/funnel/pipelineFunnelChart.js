@@ -20,7 +20,7 @@ export const PipelineFunnelChart = Chart({
         backgroundColor: Colors.Chart.backgroundColor,
       },
       title: {
-        text: '',
+        text: title || 'Flow States',
         align: 'left'
       },
       plotOptions: {
@@ -31,7 +31,7 @@ export const PipelineFunnelChart = Chart({
             softConnector: true,
             color: 'black'
           },
-          center: ['40%', '50%'],
+          center: ['38%', '50%'],
           neckWidth: '15%',
           neckHeight: '50%',
           width: '80%'

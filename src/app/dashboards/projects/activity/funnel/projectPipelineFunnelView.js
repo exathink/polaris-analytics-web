@@ -22,9 +22,14 @@ export const ProjectPipelineFunnelView = (
         <VizItem w={1}>
 
           <div style={{width: "100%", height: "100%"}}>
+
+            <PipelineFunnelChart
+              workItemStateTypeCounts={workItemStateTypeCounts}
+              specStateTypeCounts={specStateTypeCounts}
+            />
             <Flex w={1} justify={'center'}>
               <GroupingSelector
-                label={'Development Funnel'}
+                label={'Show'}
                 groupings={
                   [
 
@@ -39,13 +44,8 @@ export const ProjectPipelineFunnelView = (
                   ]
                 }
                 initialValue={'spec'}
-
               />
             </Flex>
-            <PipelineFunnelChart
-              workItemStateTypeCounts={workItemStateTypeCounts}
-              specStateTypeCounts={specStateTypeCounts}
-            />
           </div>
 
         </VizItem>
@@ -53,6 +53,7 @@ export const ProjectPipelineFunnelView = (
       :
       <Flex style={{height: "95%"}}>
         <PipelineFunnelChart
+          title={'Status'}
           workItemStateTypeCounts={workItemStateTypeCounts}
           specStateTypeCounts={specStateTypeCounts}
         />
