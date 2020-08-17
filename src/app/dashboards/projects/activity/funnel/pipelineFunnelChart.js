@@ -28,7 +28,8 @@ export const PipelineFunnelChart = Chart({
           dataLabels: {
             enabled: true,
             format: '<b>{point.name}</b> ({point.y:,.0f})',
-            softConnector: true
+            softConnector: true,
+            color: 'black'
           },
           center: ['40%', '50%'],
           neckWidth: '15%',
@@ -51,10 +52,12 @@ export const PipelineFunnelChart = Chart({
       },
       series: [{
         name: 'Foo',
-        data: Object.keys(WorkItemStateTypeDisplayName).map(
+        data: Object.keys(WorkItemStateTypeDisplayName).filter(
+          stateType => specStateTypeCounts[stateType] != null
+        ).map(
           stateType=> ({
             name: WorkItemStateTypeDisplayName[stateType],
-            y: workItemStateTypeCounts[stateType] || 0,
+            y: specStateTypeCounts[stateType] || 0,
             color: WorkItemStateTypeColor[stateType]
           })
         ),
