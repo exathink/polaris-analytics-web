@@ -204,7 +204,7 @@ export const dashboard = ({viewerContext}) => (
                         view={view}
                       />
                   }
-                  showDetail={true}
+                  showDetail={false}
                 />
                 <DashboardWidget
                   w={1 / 3}
