@@ -4,7 +4,7 @@ import {withSize} from 'react-sizeme';
 
 import {HighchartsChart} from "./highchartsReact";
 
-const Highcharts = require('highcharts/highstock');
+export const Highcharts = require('highcharts/highstock');
 
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/xrange')(Highcharts);
