@@ -3,32 +3,42 @@ import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
 
-export function useQueryProjectPipelineSummary({instanceKey, referenceString}) {
+export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly,  closedWithinDays}) {
   return useQuery(
     gql`
-     query projectPipelineSummary($key: String!, $referenceString: String) {
-      project(key: $key, interfaces: [WorkItemStateTypeCounts], referenceString: $referenceString) {
-          id
-          ... on WorkItemStateTypeCounts {
-            workItemStateTypeCounts {
-              backlog
+     query projectPipelineSummary($key: String!, $defectsOnly: Boolean, $closedWithinDays: Int, $referenceString: String) {
+      project(
+        key: $key, interfaces: [WorkItemStateTypeCounts],
+        defectsOnly: $defectsOnly, 
+        closedWithinDays: $closedWithinDays, 
+        referenceString: $referenceString) {
+        
+          workItemStateTypeCounts {
+            backlog
+            open
+            wip
+            complete
+            closed
+            unmapped
+          }
+          specStateTypeCounts {
+            backlog
               open
               wip
               complete
               closed
               unmapped
-          }
-         }
-          
-      }
+         }  
+        }    
      }
 `, {
 
       service: analytics_service,
       variables: {
         key: instanceKey,
-        referenceString: referenceString
-
+        referenceString: referenceString,
+        defectsOnly: defectsOnly,
+        closedWithinDays: closedWithinDays
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()
