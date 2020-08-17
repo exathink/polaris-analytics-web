@@ -1,0 +1,1 @@
+export {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget"
