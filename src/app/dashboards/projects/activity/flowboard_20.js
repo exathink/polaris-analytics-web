@@ -1,12 +1,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {
-  Dashboard,
-  DashboardRow,
-  DashboardTabPane,
-  DashboardTabs,
-  DashboardWidget
-} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectPipelineWidget} from "./pipeline";
@@ -26,7 +20,6 @@ import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import Repositories from "../../repositories/context";
 import WorkItems from "../../work_items/context";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';

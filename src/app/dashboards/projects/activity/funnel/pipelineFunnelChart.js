@@ -1,8 +1,9 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
-import {Colors, WorkItemStateTypeDisplayName, WorkItemStateTypeColor} from "../../../shared/config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {Highcharts} from "../../../../framework/viz/charts/chartWrapper";
+
 require('highcharts/modules/funnel')(Highcharts);
 
 export const PipelineFunnelChart = Chart({

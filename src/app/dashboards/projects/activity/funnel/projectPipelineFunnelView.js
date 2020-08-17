@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
-import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
+import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {PipelineFunnelChart} from "./pipelineFunnelChart";
-import {VizStickerWidget} from "../../../shared/containers/stickers/vizSticker/vizStickerWidget";
-import {MostActiveChildrenBarChart} from "../../../shared/views/mostActiveChildren";
 import {Flex} from "reflexbox";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
-import {Checkbox} from "antd";
 
 export const ProjectPipelineFunnelView = (
   {
