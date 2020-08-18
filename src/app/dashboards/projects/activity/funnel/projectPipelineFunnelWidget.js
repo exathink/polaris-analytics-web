@@ -15,7 +15,7 @@ export const ProjectPipelineFunnelWidget = (
     pollInterval
   }) => {
 
-  const [selectedGrouping, setSelectedGrouping] = useState('all');
+  const [selectedGrouping, setSelectedGrouping] = useState('specs');
 
   const {loading, error, data} = useQueryProjectPipelineSummary(
     {
