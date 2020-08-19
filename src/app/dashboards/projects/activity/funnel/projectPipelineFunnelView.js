@@ -25,7 +25,7 @@ export const ProjectPipelineFunnelView = (
           <PipelineFunnelChart
             workItemStateTypeCounts={workItemStateTypeCounts}
             specStateTypeCounts={specStateTypeCounts}
-            title={'Flow States'}
+            title={' '}
             grouping={selectedGrouping}
           />
           <Flex w={1} justify={'center'}>
