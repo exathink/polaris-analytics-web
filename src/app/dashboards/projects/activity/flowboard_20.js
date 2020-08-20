@@ -79,7 +79,7 @@ export const dashboard = ({viewerContext}) => (
           <Dashboard dashboard={`${dashboard_id}`}>
             <DashboardRow h='15%'>
               <DashboardWidget
-                w={0.25}
+                w={1/3}
                 name="activity-summary"
                 title={messages.topRowTitle}
                 render={
@@ -89,12 +89,20 @@ export const dashboard = ({viewerContext}) => (
                     />
                 }
               />
+              <DashboardWidget
+                w={1/3}
+                name="predictability"
+                title={'Predictability'}
+                render={
+                  () => null
+                }
+              />
               {
                 stateMappingIndex.isValid() &&
                 <DashboardWidget
-                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.30}
+                  w={1/3}
                   name="defect-metrics"
-                  title={"Defect Metrics"}
+                  title={"Quality"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
                   render={
@@ -118,13 +126,14 @@ export const dashboard = ({viewerContext}) => (
 
 
             <DashboardRow h={'25%'}
+                          title={'Pipeline'}
             >
               {
                 stateMappingIndex.isValid() &&
                 <DashboardWidget
-                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
+                  w={1/3}
                   name="pipeline"
-                  title={"Work In Process"}
+                  title={"Wip"}
                   render={
                     ({view}) =>
                       <ProjectPipelineWidget
@@ -160,9 +169,9 @@ export const dashboard = ({viewerContext}) => (
               {
                 stateMappingIndex.isValid() &&
                 <DashboardWidget
-                  w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
+                  w={1/3}
                   name="flow-metrics"
-                  title={"Closed"}
+                  title={"Flow Metrics"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
                   render={
@@ -183,7 +192,7 @@ export const dashboard = ({viewerContext}) => (
 
               }
             </DashboardRow>
-            <DashboardRow h={'60%'}
+            <DashboardRow h={'55%'}
                           title={'Most Recent Contributions'}
             >
               <DashboardWidget
