@@ -8,19 +8,14 @@ import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
 
-import {
-  DimensionCommitsNavigatorWidget,
-  DimensionMostActiveChildrenWidget
-} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import WorkItems from "../../work_items/context";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
