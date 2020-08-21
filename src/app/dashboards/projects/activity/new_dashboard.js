@@ -1,12 +1,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {
-  Dashboard,
-  DashboardRow,
-  DashboardTabPane,
-  DashboardTabs,
-  DashboardWidget
-} from '../../../framework/viz/dashboard';
+import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectPipelineWidget} from "./pipeline";
@@ -24,8 +18,8 @@ import {ProjectDashboard} from "../projectDashboard";
 import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import Repositories from "../../repositories/context";
 import WorkItems from "../../work_items/context";
+import {ProjectPipelineFunnelWidget} from "./funnel";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 const messages = {
@@ -148,7 +142,7 @@ export const dashboard = ({viewerContext}) => (
                   title={"Defect Metrics"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
-                  render  ={
+                  render={
                     ({view}) =>
                       <ProjectDefectMetricsWidget
                         instanceKey={key}
@@ -166,100 +160,93 @@ export const dashboard = ({viewerContext}) => (
 
 
             </DashboardRow>
-            <DashboardRow h='81%'>
-              <DashboardTabs
-                defaultActiveKey={'development'}
-              >
-                <DashboardTabPane tab={'Active Specs'} key={'development'}>
-                  <DashboardRow h={'25%'}>
-                    <DashboardWidget
-                      w={1 / 3}
-                      name="most-active-work-items"
-                      render={
-                        ({view}) =>
-                          <DimensionMostActiveChildrenWidget
-                            dimension={'project'}
-                            instanceKey={key}
-                            childConnection={'recentlyActiveWorkItems'}
-                            context={context}
-                            childContext={WorkItems}
-                            top={10}
-                            latestCommit={latestCommit}
-                            days={1}
-                            view={view}
-                          />
-                      }
-                      showDetail={true}
+            <DashboardRow h='25%' title={" "}>
+              <DashboardWidget
+                w={1 / 3}
+                name="most-active-work-items"
+                render={
+                  ({view}) =>
+                    <DimensionMostActiveChildrenWidget
+                      dimension={'project'}
+                      instanceKey={key}
+                      childConnection={'recentlyActiveWorkItems'}
+                      context={context}
+                      childContext={WorkItems}
+                      top={10}
+                      latestCommit={latestCommit}
+                      days={1}
+                      view={view}
                     />
-                    <DashboardWidget
-                      w={1 / 3}
-                      name="most-active-contributors"
-                      render={
-                        ({view}) =>
-                          <DimensionMostActiveChildrenWidget
-                            dimension={'project'}
-                            instanceKey={key}
-                            childConnection={'recentlyActiveContributors'}
-                            context={context}
-                            childContext={Contributors}
-                            top={10}
-                            latestCommit={latestCommit}
-                            days={1}
-                            view={view}
-                          />
-                      }
-                      showDetail={true}
+                }
+                showDetail={true}
+              />
+              <DashboardWidget
+                w={1 / 3}
+                name="pipeline-funnel"
+
+                render={
+                  ({view}) =>
+                    <ProjectPipelineFunnelWidget
+                      instanceKey={key}
+                      context={context}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      days={30}
+                      view={view}
                     />
-                    <DashboardWidget
-                      w={1 / 3}
-                      name="most-active-repositories"
-                      render={
-                        ({view}) =>
-                          <DimensionMostActiveChildrenWidget
-                            dimension={'project'}
-                            instanceKey={key}
-                            childConnection={'recentlyActiveRepositories'}
-                            context={context}
-                            childContext={Repositories}
-                            top={10}
-                            latestCommit={latestCommit}
-                            days={1}
-                            view={view}
-                          />
-                      }
-                      showDetail={true}
+                }
+                showDetail={true}
+              />
+              <DashboardWidget
+                w={1 / 3}
+                name="most-active-contributors"
+                render={
+                  ({view}) =>
+                    <DimensionMostActiveChildrenWidget
+                      dimension={'project'}
+                      instanceKey={key}
+                      childConnection={'recentlyActiveContributors'}
+                      context={context}
+                      childContext={Contributors}
+                      top={10}
+                      latestCommit={latestCommit}
+                      days={1}
+                      view={view}
                     />
-                  </DashboardRow>
-                  <DashboardRow h={'65%'}>
-                    <DashboardWidget
-                      w={1}
-                      name="commits"
-                      render={
-                        ({view}) =>
-                          <DimensionCommitsNavigatorWidget
-                            dimension={'project'}
-                            instanceKey={key}
-                            context={context}
-                            view={view}
-                            days={1}
-                            latestCommit={latestCommit}
-                            latestWorkItemEvent={latestWorkItemEvent}
-                            groupBy={'workItem'}
-                            groupings={['workItem', 'author', 'repository', 'branch']}
-                            showHeader
-                            showTable
-                          />
-                      }
-                      showDetail={true}
+                }
+                showDetail={true}
+              />
+            </DashboardRow>
+            <DashboardRow h={'55%'}
+              title={'Most Recent Contributions'}
+            >
+              <DashboardWidget
+                w={1}
+                name="commits"
+                render={
+                  ({view}) =>
+                    <DimensionCommitsNavigatorWidget
+                      dimension={'project'}
+                      instanceKey={key}
+                      context={context}
+                      view={view}
+                      days={1}
+                      latestCommit={latestCommit}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      groupBy={'workItem'}
+                      groupings={['workItem', 'author', 'repository', 'branch']}
+                      showHeader
+                      showTable
                     />
-                  </DashboardRow>
-                </DashboardTabPane>
-              </DashboardTabs>
+                }
+                showDetail={true}
+              />
             </DashboardRow>
           </Dashboard>
         )
       }
     }
-  />
-);
+/>
+)
+;
 export default withViewerContext(dashboard);
