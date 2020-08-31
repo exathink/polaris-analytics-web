@@ -1,7 +1,7 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-
+import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 
 import {
   AvgCycleTime,
@@ -10,7 +10,8 @@ import {
   MaxLeadTime,
   PercentileCycleTime,
   PercentileLeadTime,
-  Throughput
+  Throughput,
+  Effort
 } from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((
@@ -27,10 +28,10 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
 
     return (
       stateMappingIndex.isValid() ?
-        <React.Fragment>
+        <div>
           {
             !showAll ?
-              <VizRow h={"80%"}>
+              <VizRow h={"50%"}>
                 <VizItem w={0.30}>
                   <Throughput
                     currentCycleMetrics={currentCycleMetrics}
@@ -138,7 +139,21 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               </VizRow>
 
           }
-        </React.Fragment>
+          {
+            viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
+              <VizRow h={"50%"}>
+                <VizItem w={0.30}>
+                  <Effort
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    deltaThreshold={trendIndicatorThreshold}
+                  />
+                </VizItem>
+              </VizRow>
+              :
+              null
+          }
+        </div>
         :
         null
     )

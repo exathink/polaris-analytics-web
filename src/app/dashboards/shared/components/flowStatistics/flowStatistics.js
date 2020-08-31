@@ -56,6 +56,18 @@ export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThre
   />
 );
 
+export const Effort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+  <FlowStatistic
+    title={"Effort"}
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'totalEffort'}
+    uom={'Dev-Days'}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
 export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
