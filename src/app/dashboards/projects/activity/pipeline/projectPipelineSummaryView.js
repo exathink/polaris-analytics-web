@@ -4,10 +4,10 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {
   AvgCycleTime,
-  TotalEffort,
   AvgDuration,
+  PercentileDuration,
   PercentileLeadTime,
-  PercentileDuration
+  TotalEffort
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
@@ -19,7 +19,7 @@ const PipelineSummaryView = withViewerContext((
     viewerContext
   }
 ) => {
-  const {workItemsInScope, workItemsWithCommits} = pipelineCycleMetrics;
+  const {workItemsWithCommits} = pipelineCycleMetrics;
   return (
     <div>
       <VizRow h={"50%"}>
