@@ -56,9 +56,9 @@ export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThre
   />
 );
 
-export const Effort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const TotalEffort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
   <FlowStatistic
-    title={"Effort"}
+    title={"Total Effort"}
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'totalEffort'}
@@ -67,6 +67,18 @@ export const Effort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshol
     deltaThreshold={deltaThreshold}
   />
 );
+
+export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+  <ResponseTime
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'avgDuration'}
+    displayName={'Duration'}
+    superScript={'Avg'}
+  />
+);
+
+
 
 export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
   <ResponseTime
