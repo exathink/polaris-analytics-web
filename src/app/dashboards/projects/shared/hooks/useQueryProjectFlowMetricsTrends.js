@@ -47,6 +47,7 @@ export function useQueryProjectFlowMetricsTrends(
                 percentile_lead_time, 
                 max_lead_time,
                 total_effort,
+                avg_duration,
                 work_items_in_scope,
                 work_items_with_commits, 
                 work_items_with_null_cycle_time
@@ -68,6 +69,7 @@ export function useQueryProjectFlowMetricsTrends(
                 percentileLeadTime
                 maxLeadTime
                 totalEffort
+                avgDuration
                 workItemsWithNullCycleTime
                 workItemsInScope
                 workItemsWithCommits
