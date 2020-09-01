@@ -56,6 +56,38 @@ export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThre
   />
 );
 
+export const TotalEffort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+  <FlowStatistic
+    title={"Total Effort"}
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'totalEffort'}
+    uom={'Dev-Days'}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+  <ResponseTime
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'avgDuration'}
+    displayName={'Duration'}
+    superScript={'Avg'}
+  />
+);
+
+export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, targetPercentile, deltaThreshold}) => (
+  <ResponseTime
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'percentileDuration'}
+    displayName={'Duration'}
+    superScript={percentileToText(targetPercentile)}
+  />
+);
+
 export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}

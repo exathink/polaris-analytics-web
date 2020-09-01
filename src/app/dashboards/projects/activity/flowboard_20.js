@@ -121,14 +121,14 @@ export const dashboard = ({viewerContext}) => (
 
 
             <DashboardRow h={'25%'}
-                          title={'Pipeline'}
+                          title={' '}
             >
               {
                 stateMappingIndex.isValid() &&
                 <DashboardWidget
                   w={1/3}
                   name="pipeline"
-                  title={"Wip"}
+                  title={"Work In Progress"}
                   render={
                     ({view}) =>
                       <ProjectPipelineWidget
@@ -167,7 +167,7 @@ export const dashboard = ({viewerContext}) => (
                   w={1/3}
                   name="flow-metrics"
                   title={"Flow Metrics"}
-                  subtitle={"Last 30 Days"}
+                  subtitle={"Closed Last 30 Days"}
                   hideTitlesInDetailView={true}
                   render={
                     ({view}) =>
