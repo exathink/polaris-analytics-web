@@ -20,10 +20,11 @@ const PipelineSummaryView = withViewerContext((
   }
 ) => {
   const {workItemsWithCommits} = pipelineCycleMetrics;
+  const flowboard20 = viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20)
   return (
     <div>
       <VizRow h={"50%"}>
-        <VizItem w={0.3}>
+        <VizItem w={flowboard20? 0.3 : 0.5}>
           <Statistic
             title={'Wip'}
             value={`${workItemsWithCommits}` || 0}
@@ -33,39 +34,42 @@ const PipelineSummaryView = withViewerContext((
             suffix={"Specs"}
           />
         </VizItem>
-        <VizItem w={0.3}>
+        <VizItem w={flowboard20? 0.3: 0.5}>
           <AvgCycleTime
             currentCycleMetrics={pipelineCycleMetrics}
             targetPercentile={targetPercentile}
           />
         </VizItem>
-        <VizItem w={0.3}>
-          <PercentileLeadTime
-            currentCycleMetrics={pipelineCycleMetrics}
-            targetPercentile={targetPercentile}
-          />
-        </VizItem>
-      </VizRow>
-      {
-        viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) &&
-          <VizRow h={"50%"}>
+        {
+          flowboard20 &&
             <VizItem w={0.3}>
-              <TotalEffort
-                currentCycleMetrics={pipelineCycleMetrics}
-              />
-            </VizItem>
-            <VizItem w={0.3}>
-              <AvgDuration
-                currentCycleMetrics={pipelineCycleMetrics}
-              />
-            </VizItem>
-            <VizItem w={0.3}>
-              <PercentileDuration
+              <PercentileLeadTime
                 currentCycleMetrics={pipelineCycleMetrics}
                 targetPercentile={targetPercentile}
               />
             </VizItem>
-          </VizRow>
+        }
+      </VizRow>
+      {
+         flowboard20 &&
+            <VizRow h={"50%"}>
+              <VizItem w={0.3}>
+                <TotalEffort
+                  currentCycleMetrics={pipelineCycleMetrics}
+                />
+              </VizItem>
+              <VizItem w={0.3}>
+                <AvgDuration
+                  currentCycleMetrics={pipelineCycleMetrics}
+                />
+              </VizItem>
+              <VizItem w={0.3}>
+                <PercentileDuration
+                  currentCycleMetrics={pipelineCycleMetrics}
+                  targetPercentile={targetPercentile}
+                />
+              </VizItem>
+            </VizRow>
       }
     </div>
   )
