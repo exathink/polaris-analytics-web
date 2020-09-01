@@ -16,11 +16,13 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 work_items_with_commits,
                 percentile_lead_time,
                 total_effort,
-                avg_duration
+                avg_duration,
+                percentile_duration
               ],
               defectsOnly: $defectsOnly,
               specsOnly: $specsOnly,
-              leadTimeTargetPercentile: $targetPercentile
+              leadTimeTargetPercentile: $targetPercentile,
+              durationTargetPercentile: $targetPercentile,
             },
             referenceString: $referenceString
           ) {
@@ -32,6 +34,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 workItemsInScope
                 totalEffort
                 avgDuration
+                percentileDuration
          }
       }
      }

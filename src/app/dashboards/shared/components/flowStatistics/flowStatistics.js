@@ -78,7 +78,15 @@ export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, deltaThr
   />
 );
 
-
+export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, targetPercentile, deltaThreshold}) => (
+  <ResponseTime
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'percentileDuration'}
+    displayName={'Duration'}
+    superScript={percentileToText(targetPercentile)}
+  />
+);
 
 export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
   <ResponseTime

@@ -35,6 +35,7 @@ export function useQueryProjectFlowMetricsTrends(
               samplingFrequency: $samplingFrequency,
               leadTimeTargetPercentile: $targetPercentile,
               cycleTimeTargetPercentile: $targetPercentile,
+              durationTargetPercentile: $targetPercentile,
               metrics: [
                 avg_lead_time, 
                 min_cycle_time,
@@ -48,6 +49,7 @@ export function useQueryProjectFlowMetricsTrends(
                 max_lead_time,
                 total_effort,
                 avg_duration,
+                percentile_duration,
                 work_items_in_scope,
                 work_items_with_commits, 
                 work_items_with_null_cycle_time
@@ -70,6 +72,7 @@ export function useQueryProjectFlowMetricsTrends(
                 maxLeadTime
                 totalEffort
                 avgDuration
+                percentileDuration
                 workItemsWithNullCycleTime
                 workItemsInScope
                 workItemsWithCommits
