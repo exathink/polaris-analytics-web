@@ -2,7 +2,7 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
-import {AvgCycleTime, Effort} from "../../../shared/components/flowStatistics/flowStatistics";
+import {AvgCycleTime, TotalEffort, AvgDuration} from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 
@@ -38,7 +38,12 @@ const PipelineSummaryView = withViewerContext((
         viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) &&
           <VizRow h={"50%"}>
             <VizItem w={0.5}>
-              <Effort
+              <TotalEffort
+                currentCycleMetrics={pipelineCycleMetrics}
+              />
+            </VizItem>
+            <VizItem w={0.5}>
+              <AvgDuration
                 currentCycleMetrics={pipelineCycleMetrics}
               />
             </VizItem>

@@ -11,7 +11,8 @@ import {
   PercentileCycleTime,
   PercentileLeadTime,
   Throughput,
-  Effort
+  TotalEffort,
+  AvgDuration
 } from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((
@@ -143,7 +144,14 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
             viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
               <VizRow h={"50%"}>
                 <VizItem w={0.30}>
-                  <Effort
+                  <TotalEffort
+                    currentCycleMetrics={currentCycleMetrics}
+                    previousCycleMetrics={previousCycleMetrics}
+                    deltaThreshold={trendIndicatorThreshold}
+                  />
+                </VizItem>
+                <VizItem w={0.30}>
+                  <AvgDuration
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
