@@ -36,8 +36,8 @@ export const ProjectPipelineFunnelWidget = (
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
       specStateTypeCounts={specStateTypeCounts}
-      selectedGrouping={selectedGrouping}
-      setSelectedGrouping={setWorkItemScope || setSelectedGrouping}
+      workItemScope={workItemScope || selectedGrouping}
+      setWorkItemScope={setWorkItemScope || setSelectedGrouping}
       view={view}
     />
   )
