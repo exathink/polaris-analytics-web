@@ -7,6 +7,7 @@ import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 export const ProjectPipelineWidget = (
   {
     instanceKey,
+    specsOnly,
     latestWorkItemEvent,
     stateMappingIndex,
     days,
@@ -20,7 +21,7 @@ export const ProjectPipelineWidget = (
       {
         instanceKey,
         targetPercentile,
-        specsOnly: false,
+        specsOnly: specsOnly,
         referenceString: latestWorkItemEvent
       }
     )
@@ -31,6 +32,7 @@ export const ProjectPipelineWidget = (
       <ProjectPipelineSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
         targetPercentile={targetPercentile}
+        specsOnly={specsOnly}
       />
     )
   } else {
@@ -41,6 +43,7 @@ export const ProjectPipelineWidget = (
         stateMappingIndex={stateMappingIndex}
         days={days}
         targetPercentile={targetPercentile}
+        specsOnly={specsOnly}
         context={context}
       />
     )
