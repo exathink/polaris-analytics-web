@@ -40,7 +40,7 @@ export const PipelineFunnelChart = Chart({
       },
       legend: {
         title: {
-          text: capitalizeFirstLetter(grouping),
+          text: grouping === 'specs' ? capitalizeFirstLetter(grouping): 'All Work Items',
           style: {
             fontStyle: 'italic'
           }
