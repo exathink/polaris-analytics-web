@@ -7,6 +7,7 @@ import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProje
 export const ProjectFlowMetricsWidget = (
   {
     instanceKey,
+    specsOnly,
     view,
     context,
     showAll,
@@ -25,7 +26,7 @@ export const ProjectFlowMetricsWidget = (
       targetPercentile,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
-      specsOnly: true,
+      specsOnly: specsOnly,
       referenceString: latestWorkItemEvent
     });
     if (loading) return <Loading/>;
@@ -35,6 +36,7 @@ export const ProjectFlowMetricsWidget = (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
         showAll={showAll}
+        specsOnly={specsOnly}
         stateMappingIndex={stateMappingIndex}
         targetPercentile={targetPercentile}
         currentCycleMetrics={cycleMetricsTrends[0]}
