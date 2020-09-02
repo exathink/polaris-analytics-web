@@ -7,6 +7,7 @@ import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 export const ProjectPipelineWidget = (
   {
     instanceKey,
+    specsOnly,
     latestWorkItemEvent,
     stateMappingIndex,
     days,
@@ -15,12 +16,14 @@ export const ProjectPipelineWidget = (
     context,
     pollInterval
   }) => {
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
+
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
       {
         instanceKey,
         targetPercentile,
-        specsOnly: false,
+        specsOnly: limitToSpecsOnly,
         referenceString: latestWorkItemEvent
       }
     )
@@ -31,6 +34,7 @@ export const ProjectPipelineWidget = (
       <ProjectPipelineSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
         targetPercentile={targetPercentile}
+        specsOnly={limitToSpecsOnly}
       />
     )
   } else {
@@ -41,6 +45,7 @@ export const ProjectPipelineWidget = (
         stateMappingIndex={stateMappingIndex}
         days={days}
         targetPercentile={targetPercentile}
+        specsOnly={limitToSpecsOnly}
         context={context}
       />
     )

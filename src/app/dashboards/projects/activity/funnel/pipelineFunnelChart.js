@@ -40,7 +40,7 @@ export const PipelineFunnelChart = Chart({
       },
       legend: {
         title: {
-          text: capitalizeFirstLetter(grouping),
+          text: grouping === 'specs' ? capitalizeFirstLetter(grouping): 'All Work Items',
           style: {
             fontStyle: 'italic'
           }
@@ -60,7 +60,7 @@ export const PipelineFunnelChart = Chart({
             name: WorkItemStateTypeDisplayName[stateType],
             y: selectedSummary[stateType] || 0,
             color: WorkItemStateTypeColor[stateType],
-            visible: stateType !== 'backlog'
+
           })
         ),
         showInLegend: true

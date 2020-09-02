@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
@@ -56,103 +56,108 @@ class StateMappingIndex {
 
 
 export const dashboard = ({viewerContext}) => (
-  <ProjectDashboard
-    pollInterval={1000 * 60}
-    render={
-      ({
-         project: {
-           key,
-           latestWorkItemEvent,
-           latestCommit
-         },
-         context
-       }) => {
+    <ProjectDashboard
+      pollInterval={1000 * 60}
+      render={
+        ({
+           project: {
+             key,
+             latestWorkItemEvent,
+             latestCommit
+           },
+           context
+         }) => {
 
-        const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
+          const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
+          const [workItemScope, setWorkItemScope] = useState('specs');
+          const specsOnly = workItemScope === 'specs';
 
-        return (
-          <Dashboard dashboard={`${dashboard_id}`}>
-            <DashboardRow h='15%'>
-              <DashboardWidget
-                w={1/3}
-                name="activity-summary"
-                title={messages.topRowTitle}
-                render={
-                  () =>
-                    <ProjectActivitySummaryWidget
-                      instanceKey={key}
-                    />
-                }
-              />
-              <DashboardWidget
-                w={1/3}
-                name="predictability"
-                title={'Predictability'}
-                render={
-                  () => null
-                }
-              />
-              {
-                stateMappingIndex.isValid() &&
+          return (
+            <Dashboard dashboard={`${dashboard_id}`}>
+              <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={1/3}
-                  name="defect-metrics"
-                  title={"Quality"}
-                  subtitle={"Last 30 Days"}
-                  hideTitlesInDetailView={true}
+                  w={1 / 3}
+                  name="activity-summary"
+                  title={messages.topRowTitle}
                   render={
-                    ({view}) =>
-                      <ProjectDefectMetricsWidget
+                    () =>
+                      <ProjectActivitySummaryWidget
                         instanceKey={key}
-                        view={view}
-                        context={context}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        stateMappingIndex={stateMappingIndex}
-                        days={30}
-                        targetPercentile={0.70}
                       />
                   }
-                  showDetail={true}
                 />
-              }
-
-
-            </DashboardRow>
-
-
-            <DashboardRow h={'25%'}
-                          title={' '}
-            >
-              {
-                stateMappingIndex.isValid() &&
                 <DashboardWidget
-                  w={1/3}
-                  name="pipeline"
-                  title={"Work In Progress"}
+                  w={1 / 3}
+                  name="predictability"
+                  title={'Predictability'}
                   render={
-                    ({view}) =>
-                      <ProjectPipelineWidget
-                        instanceKey={key}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        stateMappingIndex={stateMappingIndex}
-                        days={30}
-                        targetPercentile={0.70}
-                        view={view}
-                        context={context}
-                      />
+                    () => null
                   }
-                  showDetail={true}
                 />
-              }
-              <DashboardWidget
-                w={1 / 3}
-                name="pipeline-funnel"
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={1 / 3}
+                    name="defect-metrics"
+                    title={"Quality"}
+                    subtitle={"Last 30 Days"}
+                    hideTitlesInDetailView={true}
+                    render={
+                      ({view}) =>
+                        <ProjectDefectMetricsWidget
+                          instanceKey={key}
+                          view={view}
+                          context={context}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={0.70}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                }
+
+
+              </DashboardRow>
+
+
+              <DashboardRow h={'25%'}
+                            title={' '}
+              >
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={1 / 3}
+                    name="pipeline"
+                    title={"Work In Progress"}
+                    render={
+                      ({view}) =>
+                        <ProjectPipelineWidget
+                          instanceKey={key}
+                          specsOnly={specsOnly}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={0.70}
+                          view={view}
+                          context={context}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                }
+                <DashboardWidget
+                  w={1 / 3}
+                  name="pipeline-funnel"
 
                 render={
                   ({view}) =>
                     <ProjectPipelineFunnelWidget
                       instanceKey={key}
                       context={context}
+                      workItemScope={workItemScope}
+                      setWorkItemScope={setWorkItemScope}
                       latestWorkItemEvent={latestWorkItemEvent}
                       latestCommit={latestCommit}
                       days={30}
@@ -175,6 +180,7 @@ export const dashboard = ({viewerContext}) => (
                         instanceKey={key}
                         view={view}
                         context={context}
+                        specsOnly={specsOnly}
                         latestWorkItemEvent={latestWorkItemEvent}
                         stateMappingIndex={stateMappingIndex}
                         days={30}
@@ -185,40 +191,40 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                 />
 
-              }
-            </DashboardRow>
-            <DashboardRow h={'55%'}
-                          title={'Most Recent Contributions'}
-            >
-              <DashboardWidget
-                w={1}
-                name="commits"
-                render={
-                  ({view}) =>
-                    <DimensionCommitsNavigatorWidget
-                      dimension={'project'}
-                      instanceKey={key}
-                      context={context}
-                      view={view}
-                      days={1}
-                      latestCommit={latestCommit}
-                      latestWorkItemEvent={latestWorkItemEvent}
-                      groupBy={'workItem'}
-                      groupings={['workItem', 'author', 'repository', 'branch']}
-                      showHeader
-                      showTable
-                    />
                 }
-                showDetail={true}
-              />
-            </DashboardRow>
+              </DashboardRow>
+              <DashboardRow h={'55%'}
+                            title={'Most Recent Contributions'}
+              >
+                <DashboardWidget
+                  w={1}
+                  name="commits"
+                  render={
+                    ({view}) =>
+                      <DimensionCommitsNavigatorWidget
+                        dimension={'project'}
+                        instanceKey={key}
+                        context={context}
+                        view={view}
+                        days={1}
+                        latestCommit={latestCommit}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        groupBy={'workItem'}
+                        groupings={['workItem', 'author', 'repository', 'branch']}
+                        showHeader
+                        showTable
+                      />
+                  }
+                  showDetail={true}
+                />
+              </DashboardRow>
 
 
-          </Dashboard>
-        )
+            </Dashboard>
+          )
+        }
       }
-      }
-/>
-)
+    />
+  )
 ;
 export default withViewerContext(dashboard);

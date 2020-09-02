@@ -44,13 +44,13 @@ export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric,
 
 
 
-export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold, specsOnly}) => (
   <FlowStatistic
     title={"Throughput"}
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
-    metric={'workItemsWithCommits'}
-    uom={'Specs'}
+    metric={specsOnly? 'workItemsWithCommits' : 'workItemsInScope'}
+    uom={specsOnly ? 'Specs' : 'Items'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
   />

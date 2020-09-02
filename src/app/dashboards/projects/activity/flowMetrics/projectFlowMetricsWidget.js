@@ -7,6 +7,7 @@ import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProje
 export const ProjectFlowMetricsWidget = (
   {
     instanceKey,
+    specsOnly,
     view,
     context,
     showAll,
@@ -18,6 +19,7 @@ export const ProjectFlowMetricsWidget = (
     stateMappingIndex,
     pollInterval
   }) => {
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends({
       instanceKey,
@@ -25,7 +27,7 @@ export const ProjectFlowMetricsWidget = (
       targetPercentile,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
-      specsOnly: true,
+      specsOnly: limitToSpecsOnly,
       referenceString: latestWorkItemEvent
     });
     if (loading) return <Loading/>;
@@ -35,6 +37,7 @@ export const ProjectFlowMetricsWidget = (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
         showAll={showAll}
+        specsOnly={limitToSpecsOnly}
         stateMappingIndex={stateMappingIndex}
         targetPercentile={targetPercentile}
         currentCycleMetrics={cycleMetricsTrends[0]}
@@ -45,6 +48,7 @@ export const ProjectFlowMetricsWidget = (
     return (
       <ProjectFlowMetricsDetailDashboard
         instanceKey={instanceKey}
+        specsOnly={limitToSpecsOnly}
         view={view}
         context={context}
         latestWorkItemEvent={latestWorkItemEvent}

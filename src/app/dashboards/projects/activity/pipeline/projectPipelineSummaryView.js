@@ -15,11 +15,12 @@ import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 const PipelineSummaryView = withViewerContext((
   {
     pipelineCycleMetrics,
+    specsOnly,
     targetPercentile,
     viewerContext
   }
 ) => {
-  const {workItemsWithCommits} = pipelineCycleMetrics;
+  const {workItemsWithCommits, workItemsInScope} = pipelineCycleMetrics;
   const flowboard20 = viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20)
   return (
     <div>
@@ -27,11 +28,11 @@ const PipelineSummaryView = withViewerContext((
         <VizItem w={flowboard20? 0.3 : 0.5}>
           <Statistic
             title={'Wip'}
-            value={`${workItemsWithCommits}` || 0}
+            value={specsOnly ? `${workItemsWithCommits}` : `${workItemsInScope}` || 0}
             precision={0}
             valueStyle={{color: '#3f8600'}}
 
-            suffix={"Specs"}
+            suffix={specsOnly ? 'Specs' : 'Items'}
           />
         </VizItem>
         <VizItem w={flowboard20? 0.3: 0.5}>

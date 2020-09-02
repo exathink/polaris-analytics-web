@@ -18,6 +18,7 @@ import {
 export const ProjectAggregateFlowMetricsView = withViewerContext((
   {
     showAll,
+    specsOnly,
     targetPercentile,
     currentCycleMetrics,
     previousCycleMetrics,
@@ -38,6 +39,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
+                    specsOnly={specsOnly}
                   />
                 </VizItem>
                 <VizItem w={0.35}>
@@ -72,6 +74,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
+                    specsOnly={specsOnly}
                   />
                 </VizItem>
                 {
