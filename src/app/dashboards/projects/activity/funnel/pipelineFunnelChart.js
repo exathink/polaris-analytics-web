@@ -60,7 +60,7 @@ export const PipelineFunnelChart = Chart({
             name: WorkItemStateTypeDisplayName[stateType],
             y: selectedSummary[stateType] || 0,
             color: WorkItemStateTypeColor[stateType],
-            visible: stateType !== 'backlog'
+
           })
         ),
         showInLegend: true
