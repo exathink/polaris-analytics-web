@@ -19,6 +19,7 @@ export const ProjectFlowMetricsWidget = (
     stateMappingIndex,
     pollInterval
   }) => {
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends({
       instanceKey,
@@ -26,7 +27,7 @@ export const ProjectFlowMetricsWidget = (
       targetPercentile,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
-      specsOnly: specsOnly,
+      specsOnly: limitToSpecsOnly,
       referenceString: latestWorkItemEvent
     });
     if (loading) return <Loading/>;
@@ -36,7 +37,7 @@ export const ProjectFlowMetricsWidget = (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
         showAll={showAll}
-        specsOnly={specsOnly}
+        specsOnly={limitToSpecsOnly}
         stateMappingIndex={stateMappingIndex}
         targetPercentile={targetPercentile}
         currentCycleMetrics={cycleMetricsTrends[0]}
@@ -47,6 +48,7 @@ export const ProjectFlowMetricsWidget = (
     return (
       <ProjectFlowMetricsDetailDashboard
         instanceKey={instanceKey}
+        specsOnly={limitToSpecsOnly}
         view={view}
         context={context}
         latestWorkItemEvent={latestWorkItemEvent}
