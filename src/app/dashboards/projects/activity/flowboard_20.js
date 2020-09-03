@@ -145,6 +145,7 @@ export const dashboard = ({viewerContext}) => (
                         />
                     }
                     showDetail={true}
+                    hideTitlesInDetailView={true}
                   />
                 }
                 <DashboardWidget

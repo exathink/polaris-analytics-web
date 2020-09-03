@@ -2,10 +2,10 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, referenceString}) {
+export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString}) {
   return useQuery(
     gql`
-     query projectClosedDeliveryCycleDetail($key: String!, $referenceString: String, $days: Int, $defectsOnly: Boolean) {
+     query projectClosedDeliveryCycleDetail($key: String!, $referenceString: String, $days: Int, $defectsOnly: Boolean, $specsOnly: Boolean) {
       project(
             key: $key, 
             referenceString: $referenceString,
@@ -14,6 +14,7 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
           workItemDeliveryCycles(
             closedWithinDays: $days,
             defectsOnly: $defectsOnly,
+            specsOnly: $specsOnly,
             interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics]
           ) {
                edges {
@@ -48,6 +49,7 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
         key: instanceKey,
         days: days,
         defectsOnly: defectsOnly,
+        specsOnly: specsOnly,
         referenceString: referenceString
       },
       errorPolicy: "all",

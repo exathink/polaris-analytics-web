@@ -2,14 +2,14 @@ import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {PipelineFunnelChart} from "./pipelineFunnelChart";
 import {Flex} from "reflexbox";
-import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
+import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector";
 
 export const ProjectPipelineFunnelView = (
   {
     workItemStateTypeCounts,
     specStateTypeCounts,
-    selectedGrouping,
-    setSelectedGrouping,
+    workItemScope,
+    setWorkItemScope,
     view,
     context,
   }
@@ -26,25 +26,12 @@ export const ProjectPipelineFunnelView = (
             workItemStateTypeCounts={workItemStateTypeCounts}
             specStateTypeCounts={specStateTypeCounts}
             title={' '}
-            grouping={selectedGrouping}
+            grouping={workItemScope}
           />
           <Flex w={1} justify={'center'}>
-            <GroupingSelector
-              label={'Show'}
-              groupings={
-                [
-                  {
-                    key: 'all',
-                    display: 'All'
-                  },
-                  {
-                    key: 'specs',
-                    display: 'Specs'
-                  },
-                ]
-              }
-              initialValue={selectedGrouping}
-              onGroupingChanged={(selected) => setSelectedGrouping(selected)}
+            <WorkItemScopeSelector
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           </Flex>
         </div>

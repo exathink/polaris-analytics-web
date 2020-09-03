@@ -43,12 +43,12 @@ function getMaxDays(deliveryCycles, projectCycleMetrics) {
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'model', 'selectedMetric', 'showEpicsAndSubTasks', 'yAxisScale')
+    pick(props, 'model', 'selectedMetric', 'showEpicsAndSubTasks', 'yAxisScale', 'specsOnly')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.cycle),
 
-  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, showEpicsAndSubTasks, yAxisScale, intl}) => {
+  getConfig: ({model, days, selectedMetric, metricsMeta, projectCycleMetrics, defectsOnly, specsOnly, showEpicsAndSubTasks, yAxisScale, intl}) => {
     const candidateCycles = showEpicsAndSubTasks != null && !showEpicsAndSubTasks ?
       model.filter(cycle => cycle.workItemType !== 'epic' && cycle.workItemType !== 'subtask')
       :model;
@@ -106,7 +106,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         text: function() {
           const subTitle = defectsOnly ?
             `${candidateCycles.length} Defects closed in the last ${days} days`
-            : ` ${candidateCycles.length} Work items closed in the last ${days} days`
+            : ` ${candidateCycles.length} ${specsOnly ? 'Specs' : 'Work Items'} closed in the last ${days} days`
           // When showing cycle time we also report total with no cycle time if they exist.
           return selectedMetric === 'cycleTime'&& projectCycleMetrics.workItemsWithNullCycleTime > 0
             ? `${subTitle} (${projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`

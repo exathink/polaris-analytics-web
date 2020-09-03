@@ -20,7 +20,7 @@ const projectDeliveryCycleFlowMetricsMeta = {
   }
 }
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics, initialMetric, defectsOnly}) => {
+export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics, initialMetric, defectsOnly, specsOnly}) => {
   const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   const [yAxisScale, setYAxisScale] = useState('logarithmic')
@@ -83,6 +83,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         projectCycleMetrics={projectCycleMetrics}
         defectsOnly={defectsOnly}
+        specsOnly={specsOnly}
         showEpicsAndSubTasks={showEpicsAndSubTasks}
         yAxisScale={yAxisScale}
         onSelectionChange={

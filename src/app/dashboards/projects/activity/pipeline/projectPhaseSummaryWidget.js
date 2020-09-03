@@ -6,6 +6,7 @@ import React from "react";
 export const ProjectPhaseSummaryWidget = (
   {
     instanceKey,
+    specsOnly,
     latestWorkItemEvent,
     stateMappingIndex,
     view
@@ -14,16 +15,10 @@ export const ProjectPhaseSummaryWidget = (
   const {loading, error, data} = useQueryProjectPipelineSummary({instanceKey, referenceString: latestWorkItemEvent})
     if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
     if (error) return null;
-    const {...workItemStateTypeCounts} = data['project']['workItemStateTypeCounts'];
+    const  {workItemStateTypeCounts, specStateTypeCounts} = data['project'];
     return (
       <ProjectPipelinePhaseSummaryView
-        model={
-          {
-
-            ...workItemStateTypeCounts
-
-          }
-        }
+        model={specsOnly ? specStateTypeCounts : workItemStateTypeCounts}
         stateMappingIndex={stateMappingIndex}
       />
     )

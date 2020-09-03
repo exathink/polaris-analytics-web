@@ -8,6 +8,7 @@ import {logGraphQlError} from "../../../../components/graphql/utils";
 export const ProjectPipelineStateDetailsWidget = (
   {
     instanceKey,
+    specsOnly,
     latestWorkItemEvent,
     days,
     targetPercentile,
@@ -18,7 +19,7 @@ export const ProjectPipelineStateDetailsWidget = (
 ) => {
 
   const {loading: cycleMetricsLoading, error: cycleMetricsError, data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
-    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent}
+    {instanceKey, days, targetPercentile, specsOnly, referenceString: latestWorkItemEvent}
   )
   if (cycleMetricsError) {
     logGraphQlError('ProjectPipelineStateDetailsWidget.cycleMetrics', cycleMetricsError);
@@ -27,6 +28,7 @@ export const ProjectPipelineStateDetailsWidget = (
 
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
+    specsOnly,
     referenceString: latestWorkItemEvent
   })
   if (cycleMetricsLoading || loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;

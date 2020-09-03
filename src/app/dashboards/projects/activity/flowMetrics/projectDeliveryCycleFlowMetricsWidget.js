@@ -8,6 +8,7 @@ import {useQueryProjectClosedDeliveryCycleDetail} from "../hooks/useQueryProject
 export const ProjectDeliveryCycleFlowMetricsWidget = (
   {
     instanceKey,
+    specsOnly,
     view,
     context,
     showAll,
@@ -20,11 +21,11 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
   }) => {
 
   const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
-    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent, defectsOnly}
+    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent, defectsOnly, specsOnly}
   )
 
   const { loading, error, data: projectDeliveryCycleData } = useQueryProjectClosedDeliveryCycleDetail(
-    {instanceKey, days, defectsOnly, referenceString: latestWorkItemEvent}
+    {instanceKey, days, defectsOnly, specsOnly, referenceString: latestWorkItemEvent}
   );
 
   if (loading) return <Loading/>;
@@ -53,6 +54,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       model={flowMetricsData}
       projectCycleMetrics={projectCycleMetrics}
       defectsOnly={defectsOnly}
+      specsOnly={specsOnly}
     />
   );
 }

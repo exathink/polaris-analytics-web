@@ -93,7 +93,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={stateMappingIndex.numInProcessStates() > 0 ? 0.3 : 0.20}
                   name="pipeline"
-                  title={"Current Pipeline"}
+                  title={"Work In Progress"}
                   render={
                     ({view}) =>
                       <ProjectPipelineWidget
@@ -107,6 +107,7 @@ export const dashboard = ({viewerContext}) => (
                       />
                   }
                   showDetail={true}
+                  hideTitlesInDetailView={true}
                 />
               }
               {
