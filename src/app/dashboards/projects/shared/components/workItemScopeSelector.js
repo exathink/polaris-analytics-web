@@ -10,13 +10,14 @@ export const WorkItemScopeSelector = (
     label={'Show'}
     groupings={
       [
-        {
-          key: 'all',
-          display: 'All'
-        },
+
         {
           key: 'specs',
           display: 'Specs'
+        },
+        {
+          key: 'all',
+          display: 'All'
         },
       ]
     }
