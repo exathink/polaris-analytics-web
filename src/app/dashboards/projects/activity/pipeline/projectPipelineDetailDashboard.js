@@ -44,6 +44,7 @@ export const ProjectPipelineDetailDashboard = (
         <DashboardWidget
           w={1 / 4}
           name="project-pipeline-summary-detail-view"
+          subtitle={specsOnly ? `Active Specs by Phase`: `All Active Work Items by Phase`}
           render={
             ({view}) =>
               <ProjectPhaseSummaryWidget
