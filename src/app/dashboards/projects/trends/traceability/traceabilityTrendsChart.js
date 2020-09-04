@@ -5,14 +5,15 @@ import {MeasurementTrendLineChart} from "../../../shared/views/measurementTrend/
 export const TraceabilityTrendsChart = ({
   traceabilityTrends,
   measurementPeriod,
-  measurementWindow
+  measurementWindow,
+  excludeMerges,
 }) => (
   <MeasurementTrendLineChart
       measurements={traceabilityTrends}
       metrics={[
         {
           key: 'traceability',
-          displayName: 'Traceability',
+          displayName: excludeMerges? 'Excluding Merges' : 'Traceability',
           visible: true,
           type: 'line',
           value: measurement => measurement.traceability * 100

@@ -9,6 +9,7 @@ export function useQueryProjectTraceabilityTrends(
     days,
     measurementWindow,
     samplingFrequency,
+    excludeMerges,
     referenceString
   }) {
   return useQuery(
@@ -19,6 +20,7 @@ export function useQueryProjectTraceabilityTrends(
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
           $before: DateTime,
+          $excludeMerges: Boolean,
           $referenceString: String, 
           ) {
       project(
@@ -29,6 +31,7 @@ export function useQueryProjectTraceabilityTrends(
               days: $days,
               measurementWindow: $measurementWindow,
               samplingFrequency: $samplingFrequency,
+              excludeMerges: $excludeMerges,
             },
             referenceString: $referenceString,
             ) {
@@ -50,6 +53,7 @@ export function useQueryProjectTraceabilityTrends(
         before: before,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
+        excludeMerges: excludeMerges,
         referenceString: referenceString,
       },
       errorPolicy: "all",

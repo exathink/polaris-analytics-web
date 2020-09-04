@@ -195,7 +195,7 @@ export const dashboard = ({viewerContext}) => (
                 }
               </DashboardRow>
               <DashboardRow h={'55%'}
-                            title={'Most Recent Contributions'}
+                            title={'Latest Activity'}
               >
                 <DashboardWidget
                   w={1}
