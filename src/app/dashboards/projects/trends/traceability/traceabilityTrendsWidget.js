@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectTraceabilityTrends} from "./useQueryProjectTraceabilityTrends";
@@ -17,12 +17,14 @@ export const ProjectTraceabilityTrendsWidget = (
     targetPercentile,
     pollInterval
   }) => {
+    const [excludeMerges, setExcludeMerges] = useState(true);
     const {loading, error, data} = useQueryProjectTraceabilityTrends(
       {
         instanceKey: instanceKey,
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
+        excludeMerges: excludeMerges
       }
     );
     if (loading) return <Loading/>;
@@ -33,6 +35,9 @@ export const ProjectTraceabilityTrendsWidget = (
         traceabilityTrends={traceabilityTrends}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        excludeMerges={excludeMerges}
+        setExcludeMerges={setExcludeMerges}
+        view={view}
       />
     )
 }
