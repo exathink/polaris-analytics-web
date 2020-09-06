@@ -52,7 +52,7 @@ export const DimensionCommitsNavigatorWidget = (
             query ${dimension}_commits($key: String!, $days: Int, $before: DateTime, $latest: Int, $referenceDate: DateTime, $referenceString: String) {
                 ${dimension}(key: $key, referenceString: $referenceString){
                     id
-                    commits(days: $days, before: $before, first: $latest, referenceDate: $referenceDate) {
+                    commits(days: $days, before: $before, first: $latest, interfaces:[WorkItemsSummaries], referenceDate: $referenceDate) {
                         count
                         edges {
                             node {
