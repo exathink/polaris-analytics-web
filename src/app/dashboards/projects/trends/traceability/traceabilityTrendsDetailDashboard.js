@@ -76,6 +76,7 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
                 view={view}
                 days={measurementWindow}
                 nospecsOnly={true}
+                excludeMerges={excludeMerges}
                 latestWorkItemEvent={latestWorkItemEvent}
                 groupBy={'author'}
                 groupings={['author', 'repository', 'branch']}
