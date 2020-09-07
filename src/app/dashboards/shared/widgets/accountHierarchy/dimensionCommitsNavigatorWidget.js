@@ -25,6 +25,7 @@ export const DimensionCommitsNavigatorWidget = (
     latestCommit,
     latestWorkItemEvent,
     nospecsOnly,
+    excludeMerges,
     latest,
     view,
     groupBy,
@@ -138,6 +139,7 @@ export const DimensionCommitsNavigatorWidget = (
               before={before}
               latestCommit={latestCommit}
               latest={latest}
+              excludeMerges={excludeMerges}
               totalCommits={totalCommits}
               shortTooltip={shortTooltip}
               showHeader={showHeader}

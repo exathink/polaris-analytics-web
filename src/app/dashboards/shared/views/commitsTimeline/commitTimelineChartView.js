@@ -206,6 +206,7 @@ export class CommitsTimelineChartView extends React.Component {
       view,
       shortTooltip,
       markLatest,
+      excludeMerges,
       onCategoryItemSelected,
       polling,
 
@@ -224,6 +225,7 @@ export class CommitsTimelineChartView extends React.Component {
         totalCommits={totalCommits}
         shortTooltip={shortTooltip}
         markLatest={markLatest}
+        excludeMerges={excludeMerges}
         polling={polling}
         onSelectionChange={this.onCommitsSelected.bind(this)}
         onCategoryItemSelected={onCategoryItemSelected}

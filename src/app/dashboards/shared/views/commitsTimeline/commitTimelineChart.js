@@ -87,7 +87,8 @@ export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
       {
-        model: props.model
+        model: props.model,
+        excludeMerges: props.excludeMerges
       }
     ),
 
@@ -96,7 +97,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, shortTooltip, markLatest, showScrollbar, onCategoryItemSelected}) => {
+    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, excludeMerges, shortTooltip, markLatest, showScrollbar, onCategoryItemSelected}) => {
       const commits = model.commits;
       const categoryIndex = model.categoriesIndex;
       const category = model.groupBy
@@ -269,6 +270,7 @@ export const CommitsTimelineChart = Chart({
             maxSize: bucketToBubbleSize[z_bucket_range.max],
             turboThreshold: 0,
             allowPointSelect: true,
+            visible: !excludeMerges
 
           }
         ],
