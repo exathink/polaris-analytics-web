@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {TraceabilityTrendsChart} from "./traceabilityTrendsChart";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Checkbox} from "antd";
-import {Flex} from "reflexbox";
 
 export const ProjectTraceabilityTrendsView = (
   {

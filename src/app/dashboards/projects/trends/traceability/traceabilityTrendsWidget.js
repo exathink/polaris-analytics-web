@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectTraceabilityTrends} from "./useQueryProjectTraceabilityTrends";

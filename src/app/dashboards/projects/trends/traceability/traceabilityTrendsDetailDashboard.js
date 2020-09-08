@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector";
 import {Checkbox} from "antd";
 import {ProjectTraceabilityTrendsWidget} from "./traceabilityTrendsWidget";
 import {DimensionCommitsNavigatorWidget} from "../../../shared/widgets/accountHierarchy";
