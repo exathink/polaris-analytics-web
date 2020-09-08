@@ -45,6 +45,7 @@ const dashboard = ({viewerContext}) => (
                           context={context}
                           view={view}
                           latestWorkItemEvent={latestWorkItemEvent}
+                          latestCommit={latestCommit}
                         />
                     }
                     showDetail={true}
