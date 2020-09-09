@@ -38,7 +38,7 @@ export class LatestCommitView extends React.Component {
               value={this.state.text}
               precision={0}
               valueStyle={{ color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
+
             />
             :
         <StickerWidget
