@@ -3,19 +3,19 @@ import StickerWidget from "../../containers/stickers/simpleSticker/sticker-widge
 import {fromNow} from "../../../../helpers/utility";
 import {Statistic} from "antd";
 
-export class LatestCommitView extends React.Component {
+export class HumanizedDateView extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      text: fromNow(this.props.latestCommit)
+      text: fromNow(this.props.dateValue)
     }
     this.timer=null;
   }
 
   resetText() {
     this.setState({
-      text: fromNow(this.props.latestCommit)
+      text: fromNow(this.props.dateValue)
     })
   }
 
@@ -34,15 +34,15 @@ export class LatestCommitView extends React.Component {
     return (
       this.props.asStatistic ?
         <Statistic
-              title="Latest Commit"
+              title={this.props.title}
               value={this.state.text}
               precision={0}
               valueStyle={{ color: '#3f8600'}}
-              style={{backgroundColor: '#f2f3f6'}}
+
             />
             :
         <StickerWidget
-              number={"Latest Commit"}
+              number={this.props.title}
               text={this.state.text}
               icon="ion-clock"
               fontColor={this.props.fontColor}

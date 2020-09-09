@@ -78,11 +78,13 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={1 / 3}
                   name="activity-summary"
-                  title={messages.topRowTitle}
+                  title={'Activity'}
+                  subtitle={`Last 30 days`}
                   render={
                     () =>
                       <ProjectActivitySummaryWidget
                         instanceKey={key}
+                        days={30}
                       />
                   }
                 />

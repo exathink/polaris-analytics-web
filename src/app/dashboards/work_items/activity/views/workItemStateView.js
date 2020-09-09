@@ -9,7 +9,7 @@ import {
   WorkItemStateTypeDisplayName,
   WorkItemTypeDisplayName,
 } from "../../../shared/config";
-import {LatestCommitView} from "../../../shared/views/latestCommit/latestCommitView";
+import {HumanizedDateView} from "../../../shared/components/humanizedDateView/humanizedDateView";
 
 export const WorkItemStateView = ({workItem, context, view}) => (
   <React.Fragment>
@@ -38,8 +38,9 @@ export const WorkItemStateView = ({workItem, context, view}) => (
       {
         workItem.stateType !== 'closed' &&
           <VizItem w={1 / 3}>
-            <LatestCommitView
-              latestCommit={workItem.latestCommit}
+            <HumanizedDateView
+              title={'Latest Commit'}
+              dateValue={workItem.latestCommit}
               asStatistic={true}
             />
           </VizItem>
