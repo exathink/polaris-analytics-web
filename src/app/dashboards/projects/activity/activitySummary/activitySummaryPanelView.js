@@ -14,6 +14,7 @@ const ActivitySummaryPanelView = withViewerContext((
   {
     model: {
       contributorCount,
+      latestClosedDate,
       latestCommit
     },
     days,
@@ -50,7 +51,7 @@ const ActivitySummaryPanelView = withViewerContext((
             <HumanizedDateView
               asStatistic={true}
               title={'Latest Closed'}
-              dateValue={latestCommit}
+              dateValue={latestClosedDate}
               {...{fontColor, bgColor}}
             />
           </VizItem>
