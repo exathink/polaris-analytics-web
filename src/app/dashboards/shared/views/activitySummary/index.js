@@ -5,7 +5,7 @@ import {VizItem, VizRow} from "../../containers/layout/index";
 import {Contexts, Topics} from "../../../../meta";
 import {findActivityLevel} from "../../helpers/commitUtils";
 
-import {LatestCommitView} from "../latestCommit/latestCommitView";
+import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
 
 const ActivitySummaryPanelView = (
   {
@@ -36,8 +36,10 @@ const ActivitySummaryPanelView = (
           />
         </VizItem>
         <VizItem w={1 / 4}>
-          <LatestCommitView
-            {...{latestCommit, fontColor, bgColor}}
+          <HumanizedDateView
+            title={'Latest Commit'}
+            dateValue={latestCommit}
+            {...{fontColor, bgColor}}
           />
         </VizItem>
         <VizItem w={1 / 4}>

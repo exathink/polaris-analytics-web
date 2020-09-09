@@ -5,7 +5,7 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Topics} from "../../../../meta";
 import {findActivityLevel} from "../../../shared/helpers/commitUtils";
 
-import {LatestCommitView} from "../../../shared/views/latestCommit/latestCommitView";
+import {HumanizedDateView} from "../../../shared/components/humanizedDateView/humanizedDateView";
 import {Statistic} from "antd";
 
 const ActivitySummaryPanelView = (
@@ -42,15 +42,19 @@ const ActivitySummaryPanelView = (
             />
         </VizItem>
         <VizItem w={0.25}>
-          <LatestCommitView
+          <HumanizedDateView
             asStatistic={true}
-            {...{latestCommit, fontColor, bgColor}}
+            title={'Latest Closed'}
+            dateValue={latestCommit}
+            {...{fontColor, bgColor}}
           />
         </VizItem>
         <VizItem w={0.25}>
-          <LatestCommitView
+          <HumanizedDateView
             asStatistic={true}
-            {...{latestCommit, fontColor, bgColor}}
+            title={'Latest Commit'}
+            dateValue={latestCommit}
+            {...{fontColor, bgColor}}
           />
         </VizItem>
 
