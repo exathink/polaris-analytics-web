@@ -9,14 +9,18 @@ import {ActivitySummaryPanel} from "./activitySummaryPanelView";
 export const ProjectActivitySummaryWidget = (
   {
     instanceKey,
+    days,
     pollInterval
   }) => {
 
   const {loading, error, data} = useQuery(
     gql`
-           query projectActivitySummary($key: String!) {
-            project(key: $key, interfaces: [CommitSummary]) {
-                id
+           query projectActivitySummary($key: String!, $days: Int) {
+            project(key: $key, interfaces: [CommitSummary], contributorCountDays: $days) {
+                
+                ... on ContributorCount {
+                    contributorCount
+                }
                 ... on CommitSummary {
                     latestCommit
                 }
@@ -27,6 +31,7 @@ export const ProjectActivitySummaryWidget = (
       service: analytics_service,
       variables: {
         key: instanceKey,
+        days: days
       },
       errorPolicy: "all",
       pollInterval: pollInterval || analytics_service.defaultPollInterval()
@@ -35,14 +40,16 @@ export const ProjectActivitySummaryWidget = (
 
   if (loading) return <Loading/>;
   if (error) return null;
-  const {...commitSummary} = data['project'];
+  const {contributorCount, ...commitSummary} = data['project'];
   return (
     <ActivitySummaryPanel
       model={
         {
-          ...commitSummary,
+          contributorCount,
+          ...commitSummary
         }
       }
+      days={days}
     />
   )
 }
