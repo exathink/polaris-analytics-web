@@ -32,7 +32,7 @@ export const ProjectDefectMetricsSummaryView = (
         {
           !showAll ?
             <VizRow h={"80%"}>
-              <VizItem w={0.3}>
+              <VizItem w={0.5}>
                 <Statistic
                   title="Unresolved"
                   value={numOpenDefects || 0}
@@ -42,17 +42,8 @@ export const ProjectDefectMetricsSummaryView = (
                   suffix={"Defects"}
                 />
               </VizItem>
-              <VizItem w={0.35}>
-                <Statistic
-                  title="Close Rate"
-                  value={closeRate || 'N/A'}
-                  precision={2}
-                  valueStyle={{color: '#3f8600'}}
 
-                  suffix={closeRate != null ? '%' : ''}
-                />
-              </VizItem>
-              <VizItem w={0.4}>
+              <VizItem w={0.5}>
                 <Statistic
                   title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
                   value={percentileLeadTime || 0}
