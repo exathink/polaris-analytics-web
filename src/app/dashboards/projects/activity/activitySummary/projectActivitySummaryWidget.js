@@ -10,13 +10,14 @@ export const ProjectActivitySummaryWidget = (
   {
     instanceKey,
     days,
+    specsOnly,
     pollInterval
   }) => {
 
   const {loading, error, data} = useQuery(
     gql`
-           query projectActivitySummary($key: String!, $days: Int) {
-            project(key: $key, interfaces: [CommitSummary, ContributorCount, DeliveryCycleSpan], contributorCountDays: $days) {
+           query projectActivitySummary($key: String!, $days: Int, $specsOnly: Boolean) {
+            project(key: $key, interfaces: [CommitSummary, ContributorCount, DeliveryCycleSpan], contributorCountDays: $days, specsOnly: $specsOnly) {
                 
                 latestClosedDate
                 
@@ -33,7 +34,8 @@ export const ProjectActivitySummaryWidget = (
       service: analytics_service,
       variables: {
         key: instanceKey,
-        days: days
+        days: days,
+        specsOnly: specsOnly
       },
       errorPolicy: "all",
       pollInterval: pollInterval || analytics_service.defaultPollInterval()

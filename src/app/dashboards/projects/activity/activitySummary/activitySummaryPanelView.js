@@ -38,7 +38,7 @@ const ActivitySummaryPanelView = withViewerContext((
               bgColor={activityLevel.color}
             />
           </VizItem>
-          <VizItem w={0.25}>
+          <VizItem w={0.20}>
             <Statistic
               title={<span>{'Contributors'}</span>}
               value={contributorCount}
@@ -47,7 +47,7 @@ const ActivitySummaryPanelView = withViewerContext((
 
             />
           </VizItem>
-          <VizItem w={0.25}>
+          <VizItem w={0.30}>
             <HumanizedDateView
               asStatistic={true}
               title={'Latest Closed'}
@@ -55,7 +55,7 @@ const ActivitySummaryPanelView = withViewerContext((
               {...{fontColor, bgColor}}
             />
           </VizItem>
-          <VizItem w={0.25}>
+          <VizItem w={0.30}>
             <HumanizedDateView
               asStatistic={true}
               title={'Latest Commit'}

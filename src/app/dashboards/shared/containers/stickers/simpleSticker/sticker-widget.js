@@ -51,9 +51,7 @@ const StickerBody = ({number, numberHover, text, textColor}) => (
 )
 
 export const StickerIcon = ({fontColor, bgColor, width, icon, number, hoverText, text, link}) => {
-  const textColor = {
-    color: fontColor,
-  };
+
   const widgetStyle = {
     backgroundColor: bgColor,
     width: width,
