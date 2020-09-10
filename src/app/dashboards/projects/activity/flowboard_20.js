@@ -18,9 +18,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
-};
+
 
 class StateMappingIndex {
   constructor(stateMappings) {
@@ -78,13 +76,14 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={1 / 3}
                   name="activity-summary"
-                  title={'Activity'}
+                  title={specsOnly? 'Spec Activity' : 'Activity'}
                   subtitle={`Last 30 days`}
                   render={
                     () =>
                       <ProjectActivitySummaryWidget
                         instanceKey={key}
                         days={30}
+                        specsOnly={specsOnly}
                       />
                   }
                 />
@@ -132,7 +131,7 @@ export const dashboard = ({viewerContext}) => (
                   <DashboardWidget
                     w={1 / 3}
                     name="pipeline"
-                    title={"Work In Progress"}
+                    title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
                     render={
                       ({view}) =>
                         <ProjectPipelineWidget
