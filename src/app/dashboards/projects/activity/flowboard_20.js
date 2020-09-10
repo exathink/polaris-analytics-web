@@ -74,7 +74,7 @@ export const dashboard = ({viewerContext}) => (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={1 / 3}
+                  w={0.3}
                   name="activity-summary"
                   title={specsOnly? 'Spec Activity' : 'Activity'}
                   subtitle={`Last 30 days`}
@@ -88,7 +88,15 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                  w={1 / 3}
+                  w={0.25}
+                  name="alignment"
+                  title={'Alignment'}
+                  render={
+                    () => null
+                  }
+                />
+                <DashboardWidget
+                  w={0.25}
                   name="predictability"
                   title={'Predictability'}
                   render={
@@ -98,7 +106,7 @@ export const dashboard = ({viewerContext}) => (
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={1 / 3}
+                    w={0.20}
                     name="defect-metrics"
                     title={"Quality"}
                     subtitle={"Last 30 Days"}
