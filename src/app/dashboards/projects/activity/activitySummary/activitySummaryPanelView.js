@@ -31,13 +31,7 @@ const ActivitySummaryPanelView = withViewerContext((
     viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) ?
       <React.Fragment>
         <VizRow h={"100%"}>
-          <VizItem w={0.15}>
-            <StickerIcon
-              icon={Topics.activity.icon}
-              fontColor={fontColor}
-              bgColor={activityLevel.color}
-            />
-          </VizItem>
+
           <VizItem w={0.20}>
             <Statistic
               title={<span>{'Contributors'}</span>}
