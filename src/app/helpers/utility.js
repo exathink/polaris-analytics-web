@@ -213,12 +213,7 @@ export function lexicographic(field) {
 }
 
 export function percentileToText(percentile) {
-  if(percentile === 0.5) {
-    return 'Median'
-  } else {
-    return `${Math.round(percentile*100)}th Pct`
-  }
-
+    return `p${Math.round(percentile*100)}`
 }
 
 export function pick(o, ...fields) {
