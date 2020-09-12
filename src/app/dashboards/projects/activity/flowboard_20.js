@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
@@ -7,7 +6,7 @@ import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
-
+import {ProjectPredictabilityWidget} from "./predictability";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 
@@ -74,7 +73,7 @@ export const dashboard = ({viewerContext}) => (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={0.3}
+                  w={0.28}
                   name="activity-summary"
                   title={specsOnly? 'Spec Activity' : 'Activity'}
                   subtitle={`Last 30 days`}
@@ -88,7 +87,7 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                  w={0.25}
+                  w={0.33}
                   name="alignment"
                   title={'Alignment'}
                   render={
@@ -96,17 +95,26 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                  w={0.25}
+                  w={0.20}
                   name="predictability"
                   title={'Predictability'}
+                  subtitle={"Last 30 Days"}
                   render={
-                    () => null
+                    () =>
+                      <ProjectPredictabilityWidget
+                        instanceKey={key}
+                        days={30}
+                        leadTimeTarget={30}
+                        cycleTimeTarget={7}
+                        targetPercentile={0.70}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                      />
                   }
                 />
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={0.20}
+                    w={0.19}
                     name="defect-metrics"
                     title={"Quality"}
                     subtitle={"Last 30 Days"}
