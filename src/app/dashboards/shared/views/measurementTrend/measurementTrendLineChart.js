@@ -27,7 +27,6 @@ function getPlotBands(config, measurements, metrics, intl) {
           to: max,
           from: min,
           label: {
-            text: `Spread: ${i18nNumber(intl, getPercentSpread(min, max))}%`,
             align: 'right',
             verticalAlign: 'top',
             x: -10,
