@@ -68,6 +68,8 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
+          const leadTimeTarget = 30;
+          const cycleTimeTarget = 7;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
@@ -104,8 +106,8 @@ export const dashboard = ({viewerContext}) => (
                       <ProjectPredictabilityWidget
                         instanceKey={key}
                         days={30}
-                        leadTimeTarget={30}
-                        cycleTimeTarget={7}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
                         targetPercentile={0.70}
                         latestWorkItemEvent={latestWorkItemEvent}
                       />
@@ -204,6 +206,8 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         measurementWindow={30}
                         targetPercentile={0.70}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
                       />
                   }
                   showDetail={true}
