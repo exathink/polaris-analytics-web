@@ -45,9 +45,10 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 <VizItem w={0.35}>
                   {
                     stateMappingIndex.numInProcessStates() > 0 ?
-                      <AvgCycleTime
+                      <PercentileCycleTime
                         currentCycleMetrics={currentCycleMetrics}
                         previousCycleMetrics={previousCycleMetrics}
+                        targetPercentile={targetPercentile}
                         deltaThreshold={trendIndicatorThreshold}
                       />
                       :

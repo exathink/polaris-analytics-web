@@ -23,8 +23,8 @@ export const ProjectFlowMetricsWidget = (
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends({
       instanceKey,
-      days:7,
       targetPercentile,
+      days:7,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
       specsOnly: limitToSpecsOnly,
