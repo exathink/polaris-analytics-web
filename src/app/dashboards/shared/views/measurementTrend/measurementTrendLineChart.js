@@ -25,13 +25,7 @@ function getPlotBands(config, measurements, metrics, intl) {
       plotBands: [
         {
           to: max,
-          from: min,
-          label: {
-            align: 'right',
-            verticalAlign: 'top',
-            x: -10,
-            y: -5,
-          }
+          from: min
         },
 
       ],
