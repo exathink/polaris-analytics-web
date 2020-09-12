@@ -1,8 +1,8 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment, i18nNumber} from "../../../../helpers/utility";
+import {i18nNumber, pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
-import {getMetricRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
+import {getMetricRange} from "../../../shared/helpers/statsUtils";
 
 function getPlotBands(config, measurements, metrics, intl) {
   if (config.plotBands) {
