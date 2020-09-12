@@ -7,7 +7,7 @@ export {Statistic, Icon} from 'antd';
 export const TrendIndicatorDisplayThreshold = 2;
 
 export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=TrendIndicatorDisplayThreshold}) => {
-  if (firstValue && secondValue) {
+  if (firstValue && secondValue && good) {
     const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
     return (
       Math.abs(delta) > deltaThreshold &&
