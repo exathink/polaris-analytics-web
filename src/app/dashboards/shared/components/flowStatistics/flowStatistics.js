@@ -7,14 +7,17 @@ import {
 import {percentileToText} from "../../../../helpers/utility";
 
 
-const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, deltaThreshold}) => {
-  const value = (currentCycleMetrics && currentCycleMetrics[metric]) || 'N/A';
+export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, target, display, precision, deltaThreshold}) => {
+  const displayValue = display || (value => value)
+  const value = (currentCycleMetrics && displayValue(currentCycleMetrics[metric])) || 'N/A';
+
+  const color = target && currentCycleMetrics && currentCycleMetrics[metric] < target ? '#9a3727' : '#338807'
   return (
     <Statistic
       title={title}
       value={value}
-      precision={0}
-      valueStyle={{color: '#3f8600'}}
+      precision={precision || 0}
+      valueStyle={{color: color }}
       prefix={
         <TrendIndicator
           firstValue={(currentCycleMetrics && currentCycleMetrics[metric])}
