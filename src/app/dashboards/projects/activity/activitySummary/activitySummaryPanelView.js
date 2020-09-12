@@ -1,6 +1,6 @@
 import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import StickerWidget, {StickerIcon} from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
+import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Topics} from "../../../../meta";
 import {findActivityLevel} from "../../../shared/helpers/commitUtils";
