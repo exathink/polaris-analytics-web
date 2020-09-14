@@ -110,6 +110,7 @@ export const dashboard = ({viewerContext}) => (
                         cycleTimeTarget={cycleTimeTarget}
                         targetPercentile={0.70}
                         latestWorkItemEvent={latestWorkItemEvent}
+                        specsOnly={specsOnly}
                       />
                   }
                 />
