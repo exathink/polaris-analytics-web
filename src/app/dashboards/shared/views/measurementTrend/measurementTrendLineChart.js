@@ -1,8 +1,8 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment, i18nNumber} from "../../../../helpers/utility";
+import {i18nNumber, pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
-import {getMetricRange, getPercentSpread} from "../../../shared/helpers/statsUtils";
+import {getMetricRange} from "../../../shared/helpers/statsUtils";
 
 function getPlotBands(config, measurements, metrics, intl) {
   if (config.plotBands) {
@@ -25,14 +25,7 @@ function getPlotBands(config, measurements, metrics, intl) {
       plotBands: [
         {
           to: max,
-          from: min,
-          label: {
-            text: `Spread: ${i18nNumber(intl, getPercentSpread(min, max))}%`,
-            align: 'right',
-            verticalAlign: 'top',
-            x: -10,
-            y: -5,
-          }
+          from: min
         },
 
       ],

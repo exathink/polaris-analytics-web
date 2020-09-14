@@ -1,6 +1,6 @@
 import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import StickerWidget, {StickerIcon} from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
+import StickerWidget from '../../../shared/containers/stickers/simpleSticker/sticker-widget';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Topics} from "../../../../meta";
 import {findActivityLevel} from "../../../shared/helpers/commitUtils";
@@ -31,13 +31,7 @@ const ActivitySummaryPanelView = withViewerContext((
     viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) ?
       <React.Fragment>
         <VizRow h={"100%"}>
-          <VizItem w={0.15}>
-            <StickerIcon
-              icon={Topics.activity.icon}
-              fontColor={fontColor}
-              bgColor={activityLevel.color}
-            />
-          </VizItem>
+
           <VizItem w={0.20}>
             <Statistic
               title={<span>{'Contributors'}</span>}

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
 import {ProjectActivitySummaryWidget} from "./activitySummary";
@@ -7,7 +6,7 @@ import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
-
+import {ProjectPredictabilityWidget} from "./predictability";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 
@@ -69,12 +68,14 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
+          const leadTimeTarget = 30;
+          const cycleTimeTarget = 7;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={1 / 3}
+                  w={0.28}
                   name="activity-summary"
                   title={specsOnly? 'Spec Activity' : 'Activity'}
                   subtitle={`Last 30 days`}
@@ -88,17 +89,34 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                  w={1 / 3}
-                  name="predictability"
-                  title={'Predictability'}
+                  w={0.33}
+                  name="alignment"
+                  title={'Alignment'}
                   render={
                     () => null
+                  }
+                />
+                <DashboardWidget
+                  w={0.20}
+                  name="predictability"
+                  title={'Predictability'}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    () =>
+                      <ProjectPredictabilityWidget
+                        instanceKey={key}
+                        days={30}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                        targetPercentile={0.70}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                      />
                   }
                 />
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={1 / 3}
+                    w={0.19}
                     name="defect-metrics"
                     title={"Quality"}
                     subtitle={"Last 30 Days"}
@@ -188,6 +206,8 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         measurementWindow={30}
                         targetPercentile={0.70}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
                       />
                   }
                   showDetail={true}

@@ -20,6 +20,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
     showAll,
     specsOnly,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
     currentCycleMetrics,
     previousCycleMetrics,
     stateMappingIndex,
@@ -45,9 +47,11 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 <VizItem w={0.35}>
                   {
                     stateMappingIndex.numInProcessStates() > 0 ?
-                      <AvgCycleTime
+                      <PercentileCycleTime
                         currentCycleMetrics={currentCycleMetrics}
                         previousCycleMetrics={previousCycleMetrics}
+                        targetPercentile={targetPercentile}
+                        target={cycleTimeTarget}
                         deltaThreshold={trendIndicatorThreshold}
                       />
                       :
@@ -92,6 +96,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     targetPercentile={targetPercentile}
+                    target={leadTimeTarget}
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
@@ -126,6 +131,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                       currentCycleMetrics={currentCycleMetrics}
                       previousCycleMetrics={previousCycleMetrics}
                       targetPercentile={targetPercentile}
+                      target={cycleTimeTarget}
                       deltaThreshold={trendIndicatorThreshold}
                     />
                   </VizItem>
@@ -158,6 +164,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
+
                   />
                 </VizItem>
                 <VizItem w={0.40}>
@@ -166,6 +173,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={targetPercentile}
+
                   />
                 </VizItem>
               </VizRow>

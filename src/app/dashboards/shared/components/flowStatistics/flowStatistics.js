@@ -7,14 +7,17 @@ import {
 import {percentileToText} from "../../../../helpers/utility";
 
 
-const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, deltaThreshold}) => {
-  const value = (currentCycleMetrics && currentCycleMetrics[metric]) || 'N/A';
+export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, target, display, precision, deltaThreshold}) => {
+  const displayValue = display || (value => value)
+  const value = (currentCycleMetrics && displayValue(currentCycleMetrics[metric])) || 'N/A';
+
+  const color = target && currentCycleMetrics && good && !good(currentCycleMetrics[metric] - target) ? '#9a3727' : '#338807'
   return (
     <Statistic
       title={title}
       value={value}
-      precision={0}
-      valueStyle={{color: '#3f8600'}}
+      precision={precision || 0}
+      valueStyle={{color: color }}
       prefix={
         <TrendIndicator
           firstValue={(currentCycleMetrics && currentCycleMetrics[metric])}
@@ -29,7 +32,7 @@ const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric
 };
 
 
-export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric, uom, displayName, superScript, deltaThreshold}) => (
+export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric, uom, displayName, target,  superScript, deltaThreshold}) => (
   <FlowStatistic
     title={<span>{displayName}<sup> {superScript} </sup></span>}
     currentCycleMetrics={currentCycleMetrics}
@@ -38,13 +41,14 @@ export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric,
     uom={uom || 'Days'}
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
+    target={target}
   />
 );
 
 
 
 
-export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold, specsOnly}) => (
+export const Throughput = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold, specsOnly}) => (
   <FlowStatistic
     title={"Throughput"}
     currentCycleMetrics={currentCycleMetrics}
@@ -53,110 +57,145 @@ export const Throughput = ({currentCycleMetrics, previousCycleMetrics, deltaThre
     uom={specsOnly ? 'Specs' : 'Items'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
+    target={target}
   />
 );
 
-export const TotalEffort = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const TotalEffort = ({currentCycleMetrics, previousCycleMetrics, good, target, deltaThreshold}) => (
   <FlowStatistic
-    title={"Total Effort"}
+    title={<span>{'Effort'}<sup> {'Total'} </sup></span>}
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'totalEffort'}
     uom={'Dev-Days'}
+    // we want high total effort
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
+    target={target}
   />
 );
 
-export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const AvgEffort = ({currentCycleMetrics, previousCycleMetrics, good, target, deltaThreshold}) => (
+  <FlowStatistic
+    title={<span>{'Effort'}<sup> {'Avg'} </sup></span>}
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'avgEffort'}
+    uom={'Dev-Days'}
+    // we want low avg effort. high total with low average means more throughput.
+    good={TrendIndicator.isNegative}
+    deltaThreshold={deltaThreshold}
+    target={target}
+  />
+);
+
+export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'avgDuration'}
     displayName={'Duration'}
     superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, targetPercentile, deltaThreshold}) => (
+export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'percentileDuration'}
     displayName={'Duration'}
     superScript={percentileToText(targetPercentile)}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'minCycleTime'}
     displayName={'Cycle Time'}
     superScript={'Min'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
 
 
-export const AvgCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const AvgCycleTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'avgCycleTime'}
     displayName={'Cycle Time'}
     superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const MaxCycleTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const MaxCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'maxCycleTime'}
     displayName={'Cycle Time'}
     superScript={'Max'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const PercentileCycleTime = ({currentCycleMetrics, previousCycleMetrics, targetPercentile, deltaThreshold}) => (
+export const PercentileCycleTime = ({currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'percentileCycleTime'}
     displayName={'Cycle Time'}
     superScript={percentileToText(targetPercentile)}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const AvgLeadTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const AvgLeadTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'avgLeadTime'}
     displayName={'Lead Time'}
     superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const MaxLeadTime = ({currentCycleMetrics, previousCycleMetrics, deltaThreshold}) => (
+export const MaxLeadTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'maxLeadTime'}
     displayName={'Lead Time'}
     superScript={'Max'}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 
-export const PercentileLeadTime = ({currentCycleMetrics, previousCycleMetrics, targetPercentile, deltaThreshold}) => (
+export const PercentileLeadTime = ({currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'percentileLeadTime'}
     displayName={'Lead Time'}
     superScript={percentileToText(targetPercentile)}
+    target={target}
+    deltaThreshold={deltaThreshold}
   />
 );
 

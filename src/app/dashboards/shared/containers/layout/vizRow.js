@@ -4,7 +4,7 @@ import {Flex} from 'reflexbox';
 import {cloneChildrenWithProps} from "../../../../helpers/reactHelpers";
 
 export default ({children, h,  ...rest}) => (
-  <Flex auto align='center' justify='space-between' className="viz-row" style={{
+  <Flex auto align='center' justify='space-evenly' className="viz-row" style={{
     height: h
   }}>
     {cloneChildrenWithProps(children, {...rest})}
