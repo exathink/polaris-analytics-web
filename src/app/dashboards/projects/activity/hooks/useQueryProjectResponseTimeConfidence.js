@@ -28,8 +28,8 @@ export function useQueryProjectResponseTimeConfidenceTrends(
                     samplingFrequency: $samplingFrequency,
                     leadTimeTarget : $leadTimeTarget,
                     cycleTimeTarget: $cycleTimeTarget,
+                    specsOnly: $specsOnly,
                 }
-                specsOnly: $specsOnly,
                 referenceString: $referenceString
 
             ) {
