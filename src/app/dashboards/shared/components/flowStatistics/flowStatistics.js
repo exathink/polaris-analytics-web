@@ -39,6 +39,7 @@ export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric,
     previousCycleMetrics={previousCycleMetrics}
     metric={metric}
     uom={uom || 'Days'}
+    precision={1}
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
     target={target}
@@ -67,6 +68,7 @@ export const TotalEffort = ({currentCycleMetrics, previousCycleMetrics, good, ta
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'totalEffort'}
+    precision={1}
     uom={'Dev-Days'}
     // we want high total effort
     good={TrendIndicator.isPositive}
@@ -81,6 +83,7 @@ export const AvgEffort = ({currentCycleMetrics, previousCycleMetrics, good, targ
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
     metric={'avgEffort'}
+    precision={1}
     uom={'Dev-Days'}
     // we want low avg effort. high total with low average means more throughput.
     good={TrendIndicator.isNegative}
