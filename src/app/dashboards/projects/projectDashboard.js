@@ -36,6 +36,13 @@ class WithProject extends React.Component {
                     latestCommit
                     commitCount
                     latestWorkItemEvent
+                    settings {
+                        flowMetricsSettings {
+                            cycleTimeTarget
+                            leadTimeTarget
+                            responseTimeConfidenceTarget
+                        }
+                    }
                 }
             }
         `
