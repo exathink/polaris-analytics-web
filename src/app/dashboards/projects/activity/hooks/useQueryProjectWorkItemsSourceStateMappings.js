@@ -7,11 +7,10 @@ export function useQueryProjectWorkItemsSourceStateMappings({instanceKey}){
     gql`
             query getProjectWorkItemSourceStateMappings($projectKey: String!) {
               project(key: $projectKey) {
-                id
                 workItemsSources(interfaces: [WorkItemStateMappings]) {
                   edges {
                     node {
-                      id
+                      
                       workItemStateMappings {
                         state
                         stateType
