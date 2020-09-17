@@ -10,7 +10,8 @@ export const ProjectPredictabilityWidget = (
     days,
     leadTimeTarget,
     cycleTimeTarget,
-    targetPercentile,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
     responseTimeTarget,
     latestWorkItemEvent,
     specsOnly,
@@ -28,7 +29,8 @@ export const ProjectPredictabilityWidget = (
   return (
     <ProjectPredictabilityView
       responseTimeConfidenceTrends={responseTimeConfidenceTrends}
-      targetPercentile={targetPercentile}
+      leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+      cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
     />
   )
 }
