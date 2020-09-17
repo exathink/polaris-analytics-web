@@ -7,7 +7,7 @@ import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectPredictabilityWidget} from "./predictability";
-import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
@@ -242,6 +242,7 @@ export const dashboard = ({viewerContext}) => (
                         view={view}
                         days={1}
                         latestCommit={latestCommit}
+                        headerMetric={HeaderMetrics.latestCommit}
                         latestWorkItemEvent={latestWorkItemEvent}
                         groupBy={'workItem'}
                         groupings={['workItem', 'author', 'repository', 'branch']}
