@@ -16,7 +16,8 @@ const PipelineSummaryView = withViewerContext((
   {
     pipelineCycleMetrics,
     specsOnly,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     viewerContext
   }
 ) => {
@@ -38,7 +39,6 @@ const PipelineSummaryView = withViewerContext((
         <VizItem w={flowboard20? 0.3: 0.5}>
           <AvgCycleTime
             currentCycleMetrics={pipelineCycleMetrics}
-            targetPercentile={targetPercentile}
           />
         </VizItem>
         {
@@ -46,7 +46,7 @@ const PipelineSummaryView = withViewerContext((
             <VizItem w={0.3}>
               <PercentileLeadTime
                 currentCycleMetrics={pipelineCycleMetrics}
-                targetPercentile={targetPercentile}
+                targetPercentile={leadTimeTargetPercentile}
               />
             </VizItem>
         }
@@ -67,7 +67,7 @@ const PipelineSummaryView = withViewerContext((
               <VizItem w={0.3}>
                 <PercentileDuration
                   currentCycleMetrics={pipelineCycleMetrics}
-                  targetPercentile={targetPercentile}
+                  targetPercentile={cycleTimeTargetPercentile}
                 />
               </VizItem>
             </VizRow>
