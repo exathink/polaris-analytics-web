@@ -8,6 +8,7 @@ import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider"
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {VizRow} from "../../containers/layout";
 import {Untracked} from "../../config";
+import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -16,6 +17,10 @@ const commitTimelineGroupings = {
   branch: "Branch"
 }
 
+export const HeaderMetrics = {
+  traceability: 'traceability',
+  latestCommit: 'latestCommit'
+}
 
 export class CommitTimelineViewModel {
   constructor(commits, groupBy = 'author', filterCategories = null) {
@@ -113,6 +118,7 @@ export class CommitTimelineViewModel {
     return categoryIndex;
   }
 }
+
 export class CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
@@ -236,13 +242,19 @@ export class CommitsTimelineChartView extends React.Component {
 
   getTimelineRollupHeader() {
     const {model} = this.state;
-    const {hideTraceability} = this.props;
+    const {hideTraceability, headerMetric, latestCommit, view} = this.props;
 
+    // This is pretty much of kludge. But what we are trying to say here is that
+    // the traceabiity metric is always shown when in detail mode, and in primary view when headerMetric is not
+    // specified, unless it is explicity suppressed using hideTraceability. Kind of covers the cases we need
+    // until we refactor more the usage sites to show a cleaner more consistent view.
+    const showLatestCommit = view !== 'detail' && headerMetric == HeaderMetrics.latestCommit;
+    const showTraceability = view === 'detail' || (headerMetric !== HeaderMetrics.latestCommit && !hideTraceability);
 
     return (
       <div style={{height: "100%"}}>
         {
-          !hideTraceability &&
+          showTraceability &&
           <div style={{
             height: "18%",
             backgroundColor: '#f2f3f6',
@@ -258,6 +270,22 @@ export class CommitsTimelineChartView extends React.Component {
 
               suffix={model.traceability != null && "%"}
               style={{backgroundColor: '#f2f3f6'}}
+            />
+          </div>
+        }
+        {
+          showLatestCommit &&
+          <div style={{
+            height: "18%",
+            backgroundColor: '#f2f3f6',
+            borderColor: 'GhostWhite',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+          }}>
+            <HumanizedDateView
+              title={'Latest Commit'}
+              dateValue={latestCommit}
+              asStatistic={true}
             />
           </div>
         }

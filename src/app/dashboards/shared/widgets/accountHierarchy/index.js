@@ -4,6 +4,6 @@ export {DimensionContributorActivityProfileWidget} from './dimensionContributorA
 export {DimensionConnectionInceptionsWidget} from './dimensionConnectionInceptionsWidget';
 export {DimensionMostActiveChildrenWidget} from './dimensionMostActiveChildrenWidget';
 export {DimensionCommitHistoryWidget} from './dimensionCommitHistoryWidget';
-export {DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';
+export {HeaderMetrics, DimensionCommitsNavigatorWidget} from './dimensionCommitsNavigatorWidget';
 export {DimensionWeeklyContributorCountWidget} from './dimensionWeeklyContributorCounts';
 export {DimensionWorkItemEventsNavigatorWidget} from './dimensionWorkItemEventsNavigatorWidget';

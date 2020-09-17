@@ -1,3 +1,3 @@
 export {CommitsTimelineChart} from './commitTimelineChart';
 export {CommitsTimelineTable} from './commitsTimelineTable';
-export {CommitsTimelineChartView} from './commitTimelineChartView';
+export {HeaderMetrics, CommitsTimelineChartView} from './commitTimelineChartView';
