@@ -12,7 +12,8 @@ export const ProjectDefectMetricsDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     view,
     context
 
@@ -43,7 +44,8 @@ export const ProjectDefectMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                targetPercentile={targetPercentile}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               />
           }
           showDetail={false}
@@ -63,7 +65,8 @@ export const ProjectDefectMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                targetPercentile={targetPercentile}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
                 defectsOnly={true}
               />
           }

@@ -9,7 +9,8 @@ export const ProjectDefectMetricsWidget = (
   {
     instanceKey,
     days,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     latestWorkItemEvent,
     stateMappingIndex,
     view,
@@ -20,7 +21,7 @@ export const ProjectDefectMetricsWidget = (
 
   if (view === 'primary') {
     const {loading, error, data: projectDefectMetrics} = useQueryProjectDefectMetricsSummary(
-      {instanceKey, days, targetPercentile, ...{referenceString: latestWorkItemEvent}}
+      {instanceKey, days, targetPercentile: cycleTimeTargetPercentile, ...{referenceString: latestWorkItemEvent}}
     );
 
 
@@ -40,7 +41,8 @@ export const ProjectDefectMetricsWidget = (
       <ProjectDefectMetricsDetailDashboard
         instanceKey={instanceKey}
         days={days}
-        targetPercentile={targetPercentile}
+        leadTimeTargetPercentile={leadTimeTargetPercentile}
+        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         stateMappingIndex={stateMappingIndex}
         latestWorkItemEvent={latestWorkItemEvent}
         view={view}

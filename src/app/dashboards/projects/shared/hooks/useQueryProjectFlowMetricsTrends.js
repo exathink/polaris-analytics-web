@@ -9,7 +9,8 @@ export function useQueryProjectFlowMetricsTrends(
     days,
     measurementWindow,
     samplingFrequency,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     specsOnly,
     referenceString
   }) {
@@ -20,7 +21,8 @@ export function useQueryProjectFlowMetricsTrends(
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
-          $targetPercentile: Float!,
+          $leadTimeTargetPercentile: Float!,
+          $cycleTimeTargetPercentile: Float!,
           $before: DateTime,
           $specsOnly: Boolean, 
           $referenceString: String, 
@@ -33,9 +35,9 @@ export function useQueryProjectFlowMetricsTrends(
               days: $days,
               measurementWindow: $measurementWindow,
               samplingFrequency: $samplingFrequency,
-              leadTimeTargetPercentile: $targetPercentile,
-              cycleTimeTargetPercentile: $targetPercentile,
-              durationTargetPercentile: $targetPercentile,
+              leadTimeTargetPercentile: $leadTimeTargetPercentile,
+              cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
+              durationTargetPercentile: $cycleTimeTargetPercentile,
               metrics: [
                 avg_lead_time, 
                 min_cycle_time,
@@ -90,7 +92,9 @@ export function useQueryProjectFlowMetricsTrends(
         before: before,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile,
+
+        leadTimeTargetPercentile: leadTimeTargetPercentile,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
         referenceString: referenceString,
         specsOnly: specsOnly
       },

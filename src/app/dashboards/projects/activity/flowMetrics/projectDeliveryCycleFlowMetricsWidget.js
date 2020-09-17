@@ -13,7 +13,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
     context,
     showAll,
     latestWorkItemEvent,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     days,
     defectsOnly,
     stateMappingIndex,
@@ -21,7 +22,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
   }) => {
 
   const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
-    {instanceKey, days, targetPercentile, referenceString: latestWorkItemEvent, defectsOnly, specsOnly}
+    {instanceKey, days, targetPercentile: cycleTimeTargetPercentile, referenceString: latestWorkItemEvent, defectsOnly, specsOnly}
   )
 
   const { loading, error, data: projectDeliveryCycleData } = useQueryProjectClosedDeliveryCycleDetail(

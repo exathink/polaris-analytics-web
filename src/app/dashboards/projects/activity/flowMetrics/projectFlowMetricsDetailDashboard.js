@@ -16,7 +16,8 @@ export const ProjectFlowMetricsDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    targetPercentile
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
@@ -64,7 +65,8 @@ export const ProjectFlowMetricsDetailDashboard = (
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
                 measurementWindow={daysRange}
-                targetPercentile={targetPercentile}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               />
           }
           showDetail={false}
@@ -85,7 +87,8 @@ export const ProjectFlowMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                targetPercentile={targetPercentile}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               />
           }
           showDetail={true}
