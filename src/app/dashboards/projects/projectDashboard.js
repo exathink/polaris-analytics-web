@@ -41,6 +41,8 @@ class WithProject extends React.Component {
                             cycleTimeTarget
                             leadTimeTarget
                             responseTimeConfidenceTarget
+                            leadTimeConfidenceTarget
+                            cycleTimeConfidenceTarget
                         }
                     }
                 }

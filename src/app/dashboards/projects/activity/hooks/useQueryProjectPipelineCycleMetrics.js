@@ -2,10 +2,16 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPercentile, specsOnly, defectsOnly, referenceString}) {
+export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, referenceString}) {
   return useQuery(
     gql`
-     query projectPipelineCycleMetrics($key: String!, $referenceString: String, $targetPercentile: Float, $specsOnly: Boolean, $defectsOnly : Boolean) {
+     query projectPipelineCycleMetrics(
+         $key: String!, 
+         $referenceString: String, 
+         $leadTimeTargetPercentile: Float,
+         $cycleTimeTargetPercentile: Float,
+         $specsOnly: Boolean, 
+         $defectsOnly : Boolean) {
       project(
             key: $key, 
             interfaces: [PipelineCycleMetrics],
@@ -21,8 +27,8 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
               ],
               defectsOnly: $defectsOnly,
               specsOnly: $specsOnly,
-              leadTimeTargetPercentile: $targetPercentile,
-              durationTargetPercentile: $targetPercentile,
+              leadTimeTargetPercentile: $leadTimeTargetPercentile,
+              durationTargetPercentile: $cycleTimeTargetPercentile,
             },
             referenceString: $referenceString
           ) {
@@ -43,7 +49,8 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
       service: analytics_service,
       variables: {
         key: instanceKey,
-        targetPercentile: targetPercentile,
+        leadTimeTargetPercentile: leadTimeTargetPercentile,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
         defectsOnly: defectsOnly,
         specsOnly: specsOnly,
         referenceString: referenceString

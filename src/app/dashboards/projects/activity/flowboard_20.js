@@ -72,8 +72,9 @@ export const dashboard = ({viewerContext}) => (
           const {flowMetricsSettings} = settings;
           const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
           const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
-          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 0.7;
-
+          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
+          const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
+          const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
@@ -112,7 +113,8 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
-                        targetPercentile={responseTimeConfidenceTarget}
+                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                         latestWorkItemEvent={latestWorkItemEvent}
                         specsOnly={specsOnly}
                       />
@@ -135,7 +137,8 @@ export const dashboard = ({viewerContext}) => (
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
-                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                         />
                     }
                     showDetail={true}
@@ -164,6 +167,8 @@ export const dashboard = ({viewerContext}) => (
                           stateMappingIndex={stateMappingIndex}
                           days={30}
                           targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                           view={view}
                           context={context}
                         />
@@ -211,6 +216,8 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         measurementWindow={30}
                         targetPercentile={responseTimeConfidenceTarget}
+                        leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
                       />

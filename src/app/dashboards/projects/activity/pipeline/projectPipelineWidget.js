@@ -11,7 +11,8 @@ export const ProjectPipelineWidget = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     view,
     context,
     pollInterval
@@ -22,7 +23,8 @@ export const ProjectPipelineWidget = (
     const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
       {
         instanceKey,
-        targetPercentile,
+        leadTimeTargetPercentile,
+        cycleTimeTargetPercentile,
         specsOnly: limitToSpecsOnly,
         referenceString: latestWorkItemEvent
       }
@@ -33,7 +35,8 @@ export const ProjectPipelineWidget = (
     return (
       <ProjectPipelineSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
-        targetPercentile={targetPercentile}
+        leadTimeTargetPercentile={leadTimeTargetPercentile}
+        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         specsOnly={limitToSpecsOnly}
       />
     )
@@ -44,7 +47,8 @@ export const ProjectPipelineWidget = (
         latestWorkItemEvent={latestWorkItemEvent}
         stateMappingIndex={stateMappingIndex}
         days={days}
-        targetPercentile={targetPercentile}
+        leadTimeTargetPercentile={leadTimeTargetPercentile}
+        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         specsOnly={limitToSpecsOnly}
         context={context}
       />

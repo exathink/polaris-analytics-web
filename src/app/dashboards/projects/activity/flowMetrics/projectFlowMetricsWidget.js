@@ -15,7 +15,9 @@ export const ProjectFlowMetricsWidget = (
     days,
     measurementWindow,
     samplingFrequency,
-    targetPercentile,
+
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
     cycleTimeTarget,
     leadTimeTarget,
     stateMappingIndex,
@@ -25,7 +27,8 @@ export const ProjectFlowMetricsWidget = (
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends({
       instanceKey,
-      targetPercentile,
+      leadTimeTargetPercentile,
+      cycleTimeTargetPercentile,
       days:7,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
@@ -41,7 +44,8 @@ export const ProjectFlowMetricsWidget = (
         showAll={showAll}
         specsOnly={limitToSpecsOnly}
         stateMappingIndex={stateMappingIndex}
-        targetPercentile={targetPercentile}
+        leadTimeTargetPercentile={leadTimeTargetPercentile}
+        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         currentCycleMetrics={cycleMetricsTrends[0]}
@@ -57,7 +61,8 @@ export const ProjectFlowMetricsWidget = (
         context={context}
         latestWorkItemEvent={latestWorkItemEvent}
         days={days}
-        targetPercentile={targetPercentile}
+        leadTimeTargetPercentile={leadTimeTargetPercentile}
+        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         stateMappingIndex={stateMappingIndex}

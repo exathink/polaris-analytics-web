@@ -7,7 +7,8 @@ import {percentileToText} from "../../../../helpers/utility";
 export const ProjectPredictabilityView = (
   {
     responseTimeConfidenceTrends,
-    targetPercentile
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget
   }
 ) => {
   const current = responseTimeConfidenceTrends[0]
@@ -18,7 +19,7 @@ export const ProjectPredictabilityView = (
 
         <VizItem w={0.6}>
           <FlowStatistic
-            title={<span>{'CycleTime Target'}<sup> {percentileToText(targetPercentile)} </sup></span>}
+            title={<span>{'CycleTime'}<sup>{percentileToText(cycleTimeConfidenceTarget)} Target</sup></span>}
             currentCycleMetrics={current}
             previousCycleMetrics={previous}
             metric={'cycleTimeTarget'}
@@ -35,7 +36,7 @@ export const ProjectPredictabilityView = (
             display={value => value * 100}
             uom={'%'}
             precision={2}
-            target={targetPercentile}
+            target={cycleTimeConfidenceTarget}
             good={TrendIndicator.isPositive}
 
           />

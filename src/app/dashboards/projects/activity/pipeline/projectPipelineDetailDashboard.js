@@ -15,7 +15,8 @@ export const ProjectPipelineDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile
   }) => {
   const [workItemScope, setWorkItemScope] = useState('specs');
   const specsOnly = workItemScope === 'specs';
@@ -72,7 +73,7 @@ export const ProjectPipelineDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={days}
-                targetPercentile={targetPercentile}
+                targetPercentile={cycleTimeTargetPercentile}
               />
           }
           showDetail={true}
