@@ -1,7 +1,6 @@
 import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
-import {HumanizedDateView} from "../../../shared/components/humanizedDateView/humanizedDateView";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 

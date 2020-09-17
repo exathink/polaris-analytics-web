@@ -60,7 +60,8 @@ export const dashboard = ({viewerContext}) => (
            project: {
              key,
              latestWorkItemEvent,
-             latestCommit
+             latestCommit,
+             settings
            },
            context
          }) => {
@@ -68,8 +69,11 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
-          const leadTimeTarget = 30;
-          const cycleTimeTarget = 7;
+          const {flowMetricsSettings} = settings;
+          const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
+          const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
+          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 0.7;
+
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
@@ -108,7 +112,7 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
-                        targetPercentile={0.70}
+                        targetPercentile={responseTimeConfidenceTarget}
                         latestWorkItemEvent={latestWorkItemEvent}
                         specsOnly={specsOnly}
                       />
@@ -131,7 +135,7 @@ export const dashboard = ({viewerContext}) => (
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
-                          targetPercentile={0.70}
+                          targetPercentile={responseTimeConfidenceTarget}
                         />
                     }
                     showDetail={true}
@@ -159,7 +163,7 @@ export const dashboard = ({viewerContext}) => (
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
-                          targetPercentile={0.70}
+                          targetPercentile={responseTimeConfidenceTarget}
                           view={view}
                           context={context}
                         />
@@ -206,7 +210,7 @@ export const dashboard = ({viewerContext}) => (
                         stateMappingIndex={stateMappingIndex}
                         days={30}
                         measurementWindow={30}
-                        targetPercentile={0.70}
+                        targetPercentile={responseTimeConfidenceTarget}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
                       />
