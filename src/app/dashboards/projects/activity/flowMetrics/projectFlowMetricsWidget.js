@@ -15,7 +15,7 @@ export const ProjectFlowMetricsWidget = (
     days,
     measurementWindow,
     samplingFrequency,
-
+    targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     cycleTimeTarget,
@@ -27,8 +27,8 @@ export const ProjectFlowMetricsWidget = (
   if (view === 'primary') {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends({
       instanceKey,
-      leadTimeTargetPercentile,
-      cycleTimeTargetPercentile,
+      leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
+      cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile ,
       days:7,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,

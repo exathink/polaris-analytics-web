@@ -46,6 +46,21 @@ export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric,
   />
 );
 
+export const Traceability = ({title, currentMetric, previousMetric, target,  deltaThreshold}) => (
+  <FlowStatistic
+    title={title || 'Traceability'}
+    currentCycleMetrics={currentMetric}
+    previousCycleMetrics={previousMetric}
+    metric={'traceability'}
+    display={value => value * 100}
+    uom={'%'}
+    precision={1}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    target={target}
+  />
+);
+
 
 
 

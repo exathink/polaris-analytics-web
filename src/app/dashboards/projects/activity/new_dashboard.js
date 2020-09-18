@@ -85,6 +85,7 @@ export const dashboard = ({viewerContext}) => (
                   () =>
                     <ProjectActivitySummaryWidget
                       instanceKey={key}
+                      days={30}
                     />
                 }
               />

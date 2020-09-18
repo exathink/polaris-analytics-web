@@ -10,6 +10,7 @@ import moment from 'moment';
 import {toMoment, getReferenceString} from "../../../../helpers/utility";
 import {navigateToContext} from "../../navigation/navigate";
 
+export {HeaderMetrics} from "../../views/commitsTimeline";
 
 function getViewCacheKey(instanceKey, display) {
   return `DimensionCommitsNavigator:${instanceKey}:${display}`
@@ -36,6 +37,8 @@ export const DimensionCommitsNavigatorWidget = (
     markLatest,
     showHeader,
     hideTraceability,
+    // Use one of the legal values above.
+    headerMetric,
     suppressHeaderDataLabels,
     showTable,
     onSelectionChange,
@@ -144,6 +147,7 @@ export const DimensionCommitsNavigatorWidget = (
               shortTooltip={shortTooltip}
               showHeader={showHeader}
               hideTraceability={hideTraceability}
+              headerMetric={headerMetric}
               polling={pollInterval}
               markLatest={markLatest}
               showTable={showTable}

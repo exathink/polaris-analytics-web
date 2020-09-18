@@ -10,7 +10,6 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
             key: $key, 
             referenceString: $referenceString,
             ) {
-          id
           workItemDeliveryCycles(
             closedWithinDays: $days,
             defectsOnly: $defectsOnly,
