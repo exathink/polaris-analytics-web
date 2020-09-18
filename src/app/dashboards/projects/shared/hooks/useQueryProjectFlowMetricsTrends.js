@@ -9,6 +9,7 @@ export function useQueryProjectFlowMetricsTrends(
     days,
     measurementWindow,
     samplingFrequency,
+    targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     specsOnly,
@@ -93,8 +94,8 @@ export function useQueryProjectFlowMetricsTrends(
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
 
-        leadTimeTargetPercentile: leadTimeTargetPercentile,
-        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
+        leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile,
         referenceString: referenceString,
         specsOnly: specsOnly
       },
