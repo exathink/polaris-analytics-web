@@ -3,7 +3,7 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {FlowStatistic, PercentileCycleTime, PercentileLeadTime} from "../../../shared/components/flowStatistics/flowStatistics";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
-import {useModuloCounter} from "../../../shared/hooks/useModuloCounter";
+import {useGenerateTicks} from "../../../shared/hooks/useGenerateTicks";
 
 export const ProjectPredictabilityView = (
   {
@@ -20,7 +20,8 @@ export const ProjectPredictabilityView = (
 
   const currentCycleMetrics = cycleMetricsTrends[0]
   const previousCycleMetrics = cycleMetricsTrends[1]
-  const counter = useModuloCounter(4, 5000);
+  const tick = useGenerateTicks(4, 5000);
+
 
 
   return (
@@ -28,7 +29,7 @@ export const ProjectPredictabilityView = (
       <VizRow h={"100%"}>
         <VizItem w={0.6}>
           {
-              counter < 2 ?
+              tick < 2 ?
               <FlowStatistic
                 title={<span>{'CycleTime'}<sup>{percentileToText(cycleTimeConfidenceTarget)} Target</sup></span>}
                 currentCycleMetrics={current}
@@ -90,7 +91,7 @@ export const ProjectPredictabilityView = (
                 good={TrendIndicator.isPositive}
 
               />,
-            ][counter]
+            ][tick]
           }
         </VizItem>
       </VizRow>
