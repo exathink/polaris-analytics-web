@@ -46,9 +46,9 @@ export const ResponseTime = ({currentCycleMetrics, previousCycleMetrics, metric,
   />
 );
 
-export const Traceability = ({currentMetric, previousMetric, target,  deltaThreshold}) => (
+export const Traceability = ({title, currentMetric, previousMetric, target,  deltaThreshold}) => (
   <FlowStatistic
-    title={'Traceability'}
+    title={title || 'Traceability'}
     currentCycleMetrics={currentMetric}
     previousCycleMetrics={previousMetric}
     metric={'traceability'}
