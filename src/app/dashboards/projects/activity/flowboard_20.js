@@ -8,15 +8,11 @@ import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectPredictabilityWidget} from "./predictability";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
-
-import {Traceability} from "../../shared/components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {VizItem, VizRow} from "../../shared/containers/layout";
-import {Statistic} from "../../../components/misc/statistic/statistic";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 

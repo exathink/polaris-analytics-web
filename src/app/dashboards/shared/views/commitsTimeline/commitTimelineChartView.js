@@ -248,7 +248,7 @@ export class CommitsTimelineChartView extends React.Component {
     // the traceabiity metric is always shown when in detail mode, and in primary view when headerMetric is not
     // specified, unless it is explicity suppressed using hideTraceability. Kind of covers the cases we need
     // until we refactor more the usage sites to show a cleaner more consistent view.
-    const showLatestCommit = view !== 'detail' && headerMetric == HeaderMetrics.latestCommit;
+    const showLatestCommit = view !== 'detail' && headerMetric === HeaderMetrics.latestCommit;
     const showTraceability = view === 'detail' || (headerMetric !== HeaderMetrics.latestCommit && !hideTraceability);
 
     return (
