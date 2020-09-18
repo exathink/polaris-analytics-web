@@ -9,12 +9,14 @@ import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectPredictabilityWidget} from "./predictability";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
-
+import {Traceability} from "../../shared/components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {VizItem, VizRow} from "../../shared/containers/layout";
+import {Statistic} from "../../../components/misc/statistic/statistic";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -80,9 +82,9 @@ export const dashboard = ({viewerContext}) => (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={0.28}
+                  w={0.20}
                   name="activity-summary"
-                  title={specsOnly? 'Spec Activity' : 'Activity'}
+                  title={specsOnly ? 'Spec Activity' : 'Activity'}
                   subtitle={`Last 30 days`}
                   render={
                     () =>
@@ -93,31 +95,13 @@ export const dashboard = ({viewerContext}) => (
                       />
                   }
                 />
+
                 <DashboardWidget
-                  w={0.33}
+                  w={0.35}
                   name="alignment"
                   title={'Alignment'}
                   render={
                     () => null
-                  }
-                />
-                <DashboardWidget
-                  w={0.20}
-                  name="predictability"
-                  title={'Predictability'}
-                  subtitle={"Last 30 Days"}
-                  render={
-                    () =>
-                      <ProjectPredictabilityWidget
-                        instanceKey={key}
-                        days={30}
-                        leadTimeTarget={leadTimeTarget}
-                        cycleTimeTarget={cycleTimeTarget}
-                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        specsOnly={specsOnly}
-                      />
                   }
                 />
                 {
@@ -144,8 +128,55 @@ export const dashboard = ({viewerContext}) => (
                     showDetail={true}
                   />
                 }
+                <DashboardWidget
+                  w={0.20}
+                  name="predictability"
+                  title={'Predictability'}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    () =>
+                      <ProjectPredictabilityWidget
+                        instanceKey={key}
+                        days={30}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        specsOnly={specsOnly}
+                      />
+                  }
+                />
 
 
+                <DashboardWidget
+                  w={0.15}
+                  name="traceability"
+                  title={'Traceability'}
+                  subtitle={'Last 30 days'}
+                  render={
+                    () =>
+                      <VizRow h={1}>
+                        <VizItem w={0.5}>
+                          <Statistic
+                            title={'Target'}
+                            value={90}
+                            suffix={'%'}
+                            precision={0}
+                            valueStyle={{color: '#338807'}}
+                          />
+                        </VizItem>
+                        <VizItem w={0.5}>
+                          <Traceability
+                            title={'Actual'}
+                            currentMetric={{traceability: 0.76}}
+                            previousMetric={{traceability: 0.79}}
+                            target={0.80}
+                          />
+                        </VizItem>
+                      </VizRow>
+                  }
+                />
               </DashboardRow>
 
 
@@ -181,49 +212,49 @@ export const dashboard = ({viewerContext}) => (
                   w={1 / 3}
                   name="pipeline-funnel"
 
-                render={
-                  ({view}) =>
-                    <ProjectPipelineFunnelWidget
-                      instanceKey={key}
-                      context={context}
-                      workItemScope={workItemScope}
-                      setWorkItemScope={setWorkItemScope}
-                      latestWorkItemEvent={latestWorkItemEvent}
-                      latestCommit={latestCommit}
-                      days={30}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
-              {
-                stateMappingIndex.isValid() &&
-                <DashboardWidget
-                  w={1/3}
-                  name="flow-metrics"
-                  title={"Flow Metrics"}
-                  subtitle={"Closed Last 30 Days"}
-                  hideTitlesInDetailView={true}
                   render={
                     ({view}) =>
-                      <ProjectFlowMetricsWidget
+                      <ProjectPipelineFunnelWidget
                         instanceKey={key}
-                        view={view}
                         context={context}
-                        specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         latestWorkItemEvent={latestWorkItemEvent}
-                        stateMappingIndex={stateMappingIndex}
+                        latestCommit={latestCommit}
                         days={30}
-                        measurementWindow={30}
-                        targetPercentile={responseTimeConfidenceTarget}
-                        leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                        leadTimeTarget={leadTimeTarget}
-                        cycleTimeTarget={cycleTimeTarget}
+                        view={view}
                       />
                   }
                   showDetail={true}
                 />
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={1 / 3}
+                    name="flow-metrics"
+                    title={"Flow Metrics"}
+                    subtitle={"Closed Last 30 Days"}
+                    hideTitlesInDetailView={true}
+                    render={
+                      ({view}) =>
+                        <ProjectFlowMetricsWidget
+                          instanceKey={key}
+                          view={view}
+                          context={context}
+                          specsOnly={specsOnly}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          measurementWindow={30}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTarget={leadTimeTarget}
+                          cycleTimeTarget={cycleTimeTarget}
+                        />
+                    }
+                    showDetail={true}
+                  />
 
                 }
               </DashboardRow>
