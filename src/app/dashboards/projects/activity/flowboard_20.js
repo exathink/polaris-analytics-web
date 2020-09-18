@@ -97,7 +97,7 @@ export const dashboard = ({viewerContext}) => (
                 />
 
                 <DashboardWidget
-                  w={0.35}
+                  w={0.50}
                   name="alignment"
                   title={'Alignment'}
                   render={
@@ -145,36 +145,6 @@ export const dashboard = ({viewerContext}) => (
                         latestWorkItemEvent={latestWorkItemEvent}
                         specsOnly={specsOnly}
                       />
-                  }
-                />
-
-
-                <DashboardWidget
-                  w={0.15}
-                  name="traceability"
-                  title={'Traceability'}
-                  subtitle={'Last 30 days'}
-                  render={
-                    () =>
-                      <VizRow h={1}>
-                        <VizItem w={0.5}>
-                          <Statistic
-                            title={'Target'}
-                            value={90}
-                            suffix={'%'}
-                            precision={0}
-                            valueStyle={{color: '#338807'}}
-                          />
-                        </VizItem>
-                        <VizItem w={0.5}>
-                          <Traceability
-                            title={'Actual'}
-                            currentMetric={{traceability: 0.76}}
-                            previousMetric={{traceability: 0.79}}
-                            target={0.80}
-                          />
-                        </VizItem>
-                      </VizRow>
                   }
                 />
               </DashboardRow>
