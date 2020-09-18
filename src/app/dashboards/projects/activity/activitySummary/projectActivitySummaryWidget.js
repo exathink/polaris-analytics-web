@@ -5,19 +5,22 @@ import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from "../../../../services/graphql";
 import {ActivitySummaryPanel} from "./activitySummaryPanelView";
 
+import {getReferenceString} from "../../../../helpers/utility";
 
 export const ProjectActivitySummaryWidget = (
   {
     instanceKey,
     days,
     specsOnly,
+    latestWorkItemEvent,
+    latestCommit,
     pollInterval
   }) => {
 
   const {loading, error, data} = useQuery(
     gql`
-           query projectActivitySummary($key: String!, $days: Int, $specsOnly: Boolean) {
-            project(key: $key, interfaces: [CommitSummary, ContributorCount, DeliveryCycleSpan], contributorCountDays: $days, specsOnly: $specsOnly) {
+           query projectActivitySummary($key: String!, $days: Int, $specsOnly: Boolean, $referenceString: String) {
+            project(key: $key, interfaces: [CommitSummary, ContributorCount, DeliveryCycleSpan], contributorCountDays: $days, specsOnly: $specsOnly, referenceString: $referenceString) {
                 
                 latestClosedDate
                 
@@ -35,7 +38,8 @@ export const ProjectActivitySummaryWidget = (
       variables: {
         key: instanceKey,
         days: days,
-        specsOnly: specsOnly
+        specsOnly: specsOnly,
+        referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
       },
       errorPolicy: "all",
       pollInterval: pollInterval || analytics_service.defaultPollInterval()

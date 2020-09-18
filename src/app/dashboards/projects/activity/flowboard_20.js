@@ -88,6 +88,8 @@ export const dashboard = ({viewerContext}) => (
                         instanceKey={key}
                         days={30}
                         specsOnly={specsOnly}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
                       />
                   }
                 />
