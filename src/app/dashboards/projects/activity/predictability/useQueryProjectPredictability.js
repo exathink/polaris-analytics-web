@@ -3,44 +3,63 @@ import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
 
-export function useQueryProjectResponseTimeConfidenceTrends(
-  {instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, cycleTimeTarget, specsOnly, referenceString}
+export function useQueryProjectPredictability(
+  {instanceKey, days, leadTimeTarget, leadTimeConfidenceTarget,
+    cycleTimeTarget, cycleTimeConfidenceTarget, specsOnly, referenceString}
   ) {
   return useQuery(
     gql`
-        query projectResponseTimeTrends(
+        query projectPredictability(
             $key: String!,
             $days: Int!,
-            $measurementWindow: Int!,
-            $samplingFrequency: Int!,
             $leadTimeTarget: Int!,
+            $leadTimeConfidenceTarget: Float!,
             $cycleTimeTarget: Int!,
+            $cycleTimeConfidenceTarget: Float!,
             $specsOnly: Boolean,
             $referenceString: String
 
         ) {
             project(
                 key: $key,
-                interfaces: [ResponseTimeConfidenceTrends],
+                interfaces: [ResponseTimeConfidenceTrends, CycleMetricsTrends],
                 responseTimeConfidenceTrendsArgs: {
-                    days: $days,
-                    measurementWindow: $measurementWindow,
-                    samplingFrequency: $samplingFrequency,
+                    days: 7,
+                    measurementWindow: $days,
+                    samplingFrequency: 7,
                     leadTimeTarget : $leadTimeTarget,
                     cycleTimeTarget: $cycleTimeTarget,
                     specsOnly: $specsOnly,
+                },
+                cycleMetricsTrendsArgs: {
+                    days: 7,
+                    measurementWindow: $days,
+                    samplingFrequency: 7,
+                    leadTimeTargetPercentile: $leadTimeConfidenceTarget,
+                    cycleTimeTargetPercentile: $cycleTimeConfidenceTarget,
+                    specsOnly: $specsOnly,
+                    metrics: [
+                        percentile_lead_time,
+                        percentile_cycle_time
+                    ]
                 }
+                
                 referenceString: $referenceString
 
             ) {
 
                 responseTimeConfidenceTrends {
                     measurementDate
-                    measurementWindow
+                    
                     leadTimeTarget
                     leadTimeConfidence
                     cycleTimeTarget
                     cycleTimeConfidence
+                }
+                cycleMetricsTrends {
+                    measurementDate
+                    percentileLeadTime
+                    percentileCycleTime
                 }
             }
         }
@@ -50,10 +69,10 @@ export function useQueryProjectResponseTimeConfidenceTrends(
       variables: {
         key: instanceKey,
         days: days,
-        measurementWindow: measurementWindow,
-        samplingFrequency: samplingFrequency,
         leadTimeTarget: leadTimeTarget,
+        leadTimeConfidenceTarget: leadTimeConfidenceTarget,
         cycleTimeTarget: cycleTimeTarget,
+        cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
         specsOnly: specsOnly,
         referenceString: referenceString
       },
