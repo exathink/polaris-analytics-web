@@ -32,7 +32,7 @@ const ActivitySummaryPanelView = withViewerContext((
       <React.Fragment>
         <VizRow h={"100%"}>
 
-          <VizItem w={0.20}>
+          <VizItem w={0.50}>
             <Statistic
               title={<span>{'Contributors'}</span>}
               value={contributorCount}
@@ -41,7 +41,7 @@ const ActivitySummaryPanelView = withViewerContext((
 
             />
           </VizItem>
-          <VizItem w={0.30}>
+          <VizItem w={0.50}>
             <HumanizedDateView
               asStatistic={true}
               title={'Latest Closed'}
@@ -49,14 +49,7 @@ const ActivitySummaryPanelView = withViewerContext((
               {...{fontColor, bgColor}}
             />
           </VizItem>
-          <VizItem w={0.30}>
-            <HumanizedDateView
-              asStatistic={true}
-              title={'Latest Commit'}
-              dateValue={latestCommit}
-              {...{fontColor, bgColor}}
-            />
-          </VizItem>
+
 
         </VizRow>
       </React.Fragment>
