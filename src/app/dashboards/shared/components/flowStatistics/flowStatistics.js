@@ -108,6 +108,21 @@ export const AvgEffort = ({currentCycleMetrics, previousCycleMetrics, good, targ
   />
 );
 
+export const MaxEffort = ({currentCycleMetrics, previousCycleMetrics, good, target, deltaThreshold}) => (
+  <FlowStatistic
+    title={<span>{'Effort'}<sup> {'Max'} </sup></span>}
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'maxEffort'}
+    precision={1}
+    uom={'Dev-Days'}
+    // we want low avg effort. high total with low average means more throughput.
+    good={TrendIndicator.isNegative}
+    deltaThreshold={deltaThreshold}
+    target={target}
+  />
+);
+
 export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
@@ -120,6 +135,8 @@ export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, showTren
   />
 );
 
+
+
 export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
@@ -127,6 +144,18 @@ export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, t
     metric={'percentileDuration'}
     displayName={'Duration'}
     superScript={percentileToText(targetPercentile)}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const MaxDuration = ({currentCycleMetrics, previousCycleMetrics, showTrendIndicator, good, target, deltaThreshold}) => (
+  <ResponseTime
+    currentCycleMetrics={currentCycleMetrics}
+    previousCycleMetrics={previousCycleMetrics}
+    metric={'maxDuration'}
+    displayName={'Duration'}
+    superScript={'Max'}
     target={target}
     deltaThreshold={deltaThreshold}
   />
@@ -276,6 +305,57 @@ export const LeadTimeCarousel = ({title, currentCycleMetrics, previousCycleMetri
   </ComponentCarousel>
 )
 
+export const EffortCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <TotalEffort
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgEffort
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxEffort
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+  </ComponentCarousel>
+)
 
 
 
+
+export const DurationCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <PercentileDuration
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgDuration
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxDuration
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+  </ComponentCarousel>
+)
