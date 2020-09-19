@@ -5,6 +5,7 @@ import {
   TrendIndicatorDisplayThreshold
 } from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
+import {ComponentCarousel} from "../componentCarousel/componentCarousel";
 
 
 export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, target, display, precision, deltaThreshold}) => {
@@ -218,6 +219,63 @@ export const PercentileLeadTime = ({title, currentCycleMetrics, previousCycleMet
     deltaThreshold={deltaThreshold}
   />
 );
+
+// ----------------
+// Metrics Carousels
+// ----------------
+
+export const CycleTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <PercentileCycleTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgCycleTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxCycleTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+  </ComponentCarousel>
+)
+
+export const LeadTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <PercentileLeadTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgLeadTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxLeadTime
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+  </ComponentCarousel>
+)
+
 
 
 
