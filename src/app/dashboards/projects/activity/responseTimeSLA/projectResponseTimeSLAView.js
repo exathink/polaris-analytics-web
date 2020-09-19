@@ -1,11 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {FlowStatistic, PercentileCycleTime, PercentileLeadTime} from "../../../shared/components/flowStatistics/flowStatistics";
+import {
+  FlowStatistic,
+  PercentileCycleTime,
+  PercentileLeadTime
+} from "../../../shared/components/flowStatistics/flowStatistics";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {useGenerateTicks} from "../../../shared/hooks/useGenerateTicks";
 
-export const ProjectPredictabilityView = (
+export const ProjectResponseTimeSLAView = (
   {
     responseTimeConfidenceTrends,
     cycleMetricsTrends,

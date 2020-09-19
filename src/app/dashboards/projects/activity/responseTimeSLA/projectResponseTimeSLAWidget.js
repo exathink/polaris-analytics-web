@@ -1,10 +1,10 @@
 import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
-import {ProjectPredictabilityView} from "./projectPredictabilityView";
+import {ProjectResponseTimeSLAView} from "./projectResponseTimeSLAView";
 
-import {useQueryProjectPredictability} from "./useQueryProjectPredictability";
+import {useQueryProjectResponseTimeSLA} from "./useQueryProjectResponseTimeSLA";
 
-export const ProjectPredictabilityWidget = (
+export const ProjectResponseTimeSLAWidget = (
   {
     instanceKey,
     days,
@@ -18,7 +18,7 @@ export const ProjectPredictabilityWidget = (
     pollInterval
   }) => {
 
-  const {loading, error, data} = useQueryProjectPredictability({
+  const {loading, error, data} = useQueryProjectResponseTimeSLA({
     instanceKey, leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget, specsOnly,
     days, referenceString: latestWorkItemEvent
   })
@@ -27,7 +27,7 @@ export const ProjectPredictabilityWidget = (
   if (error) return null;
   const {responseTimeConfidenceTrends, cycleMetricsTrends} = data['project'];
   return (
-    <ProjectPredictabilityView
+    <ProjectResponseTimeSLAView
       responseTimeConfidenceTrends={responseTimeConfidenceTrends}
       cycleMetricsTrends={cycleMetricsTrends}
       leadTimeTarget={leadTimeTarget}

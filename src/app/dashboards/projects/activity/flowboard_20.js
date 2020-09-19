@@ -6,7 +6,7 @@ import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 import {ProjectPipelineFunnelWidget} from "./funnel";
-import {ProjectPredictabilityWidget} from "./predictability";
+import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
@@ -102,6 +102,25 @@ export const dashboard = ({viewerContext}) => (
                     () => null
                   }
                 />
+                <DashboardWidget
+                  w={0.20}
+                  name="response-time-sla"
+                  title={'Response Time'}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    () =>
+                      <ProjectResponseTimeSLAWidget
+                        instanceKey={key}
+                        days={30}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        specsOnly={specsOnly}
+                      />
+                  }
+                />
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
@@ -126,25 +145,7 @@ export const dashboard = ({viewerContext}) => (
                     showDetail={true}
                   />
                 }
-                <DashboardWidget
-                  w={0.20}
-                  name="predictability"
-                  title={'Predictability'}
-                  subtitle={"Last 30 Days"}
-                  render={
-                    () =>
-                      <ProjectPredictabilityWidget
-                        instanceKey={key}
-                        days={30}
-                        leadTimeTarget={leadTimeTarget}
-                        cycleTimeTarget={cycleTimeTarget}
-                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        specsOnly={specsOnly}
-                      />
-                  }
-                />
+
               </DashboardRow>
 
 

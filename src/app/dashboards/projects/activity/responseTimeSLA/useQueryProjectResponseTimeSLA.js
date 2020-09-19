@@ -3,13 +3,13 @@ import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
 
-export function useQueryProjectPredictability(
+export function useQueryProjectResponseTimeSLA(
   {instanceKey, days, leadTimeTarget, leadTimeConfidenceTarget,
     cycleTimeTarget, cycleTimeConfidenceTarget, specsOnly, referenceString}
   ) {
   return useQuery(
     gql`
-        query projectPredictability(
+        query projectResponseTimeSLA(
             $key: String!,
             $days: Int!,
             $leadTimeTarget: Int!,
