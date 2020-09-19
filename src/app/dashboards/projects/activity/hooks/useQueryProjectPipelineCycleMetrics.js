@@ -2,7 +2,7 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, referenceString}) {
+export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPercentile, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, referenceString}) {
   return useQuery(
     gql`
      query projectPipelineCycleMetrics(
@@ -70,8 +70,8 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTime
       service: analytics_service,
       variables: {
         key: instanceKey,
-        leadTimeTargetPercentile: leadTimeTargetPercentile,
-        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
+        leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile,
         defectsOnly: defectsOnly,
         specsOnly: specsOnly,
         referenceString: referenceString

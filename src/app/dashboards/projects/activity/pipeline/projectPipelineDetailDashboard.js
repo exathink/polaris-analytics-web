@@ -15,6 +15,7 @@ export const ProjectPipelineDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
+    targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile
   }) => {
