@@ -2,7 +2,7 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, referenceString}) {
+export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPercentile, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, referenceString}) {
   return useQuery(
     gql`
      query projectPipelineCycleMetrics(
@@ -17,30 +17,51 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTime
             interfaces: [PipelineCycleMetrics],
             pipelineCycleMetricsArgs: {
               metrics: [
-                avg_cycle_time,
-                work_items_in_scope,
-                work_items_with_commits,
                 percentile_lead_time,
+                avg_lead_time, 
+                max_lead_time,
+                percentile_cycle_time,
+                avg_cycle_time,
+                max_cycle_time,
                 total_effort,
+                avg_effort,
+                max_effort,
                 avg_duration,
-                percentile_duration
+                max_duration,
+                percentile_duration,
+                work_items_with_commits, 
+                work_items_in_scope,
               ],
               defectsOnly: $defectsOnly,
               specsOnly: $specsOnly,
               leadTimeTargetPercentile: $leadTimeTargetPercentile,
+              cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
               durationTargetPercentile: $cycleTimeTargetPercentile,
             },
             referenceString: $referenceString
           ) {
           pipelineCycleMetrics {
-                avgCycleTime
-                percentileLeadTime
-                targetPercentile
+              
                 workItemsWithCommits
                 workItemsInScope
+              
+                percentileLeadTime
+                avgLeadTime
+                maxLeadTime
+                targetPercentile
+                percentileCycleTime
+                avgCycleTime
+                maxCycleTime
+                
+              
                 totalEffort
-                avgDuration
+                avgEffort
+                maxEffort
                 percentileDuration
+                avgDuration
+                maxDuration
+              
+                
          }
       }
      }
@@ -49,8 +70,8 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, leadTime
       service: analytics_service,
       variables: {
         key: instanceKey,
-        leadTimeTargetPercentile: leadTimeTargetPercentile,
-        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
+        leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile,
         defectsOnly: defectsOnly,
         specsOnly: specsOnly,
         referenceString: referenceString

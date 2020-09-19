@@ -7,7 +7,11 @@ import {
   AvgDuration,
   PercentileDuration,
   PercentileLeadTime,
-  TotalEffort
+  TotalEffort,
+  EffortCarousel,
+  DurationCarousel,
+  LeadTimeCarousel,
+  CycleTimeCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
@@ -16,8 +20,11 @@ const PipelineSummaryView = withViewerContext((
   {
     pipelineCycleMetrics,
     specsOnly,
+    targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
     viewerContext
   }
 ) => {
@@ -26,7 +33,7 @@ const PipelineSummaryView = withViewerContext((
   return (
     <div>
       <VizRow h={"50%"}>
-        <VizItem w={flowboard20? 0.3 : 0.5}>
+        <VizItem w={flowboard20 ? 0.3 : 0.5}>
           <Statistic
             title={'Wip'}
             value={specsOnly ? `${workItemsWithCommits}` : `${workItemsInScope}` || 0}
@@ -36,41 +43,42 @@ const PipelineSummaryView = withViewerContext((
             suffix={specsOnly ? 'Specs' : 'Items'}
           />
         </VizItem>
-        <VizItem w={flowboard20? 0.3: 0.5}>
-          <AvgCycleTime
-            currentCycleMetrics={pipelineCycleMetrics}
-          />
+        <VizItem w={flowboard20 ? 0.3 : 0.5}>
+          <CycleTimeCarousel
+              currentCycleMetrics={pipelineCycleMetrics}
+              targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+              target={cycleTimeTarget}
+            />
         </VizItem>
         {
           flowboard20 &&
-            <VizItem w={0.3}>
-              <PercentileLeadTime
-                currentCycleMetrics={pipelineCycleMetrics}
-                targetPercentile={leadTimeTargetPercentile}
-              />
-            </VizItem>
+          <VizItem w={0.3}>
+            <LeadTimeCarousel
+              currentCycleMetrics={pipelineCycleMetrics}
+              targetPercentile={leadTimeTargetPercentile || targetPercentile}
+              target={leadTimeTarget}
+            />
+          </VizItem>
         }
       </VizRow>
       {
-         flowboard20 &&
-            <VizRow h={"50%"}>
-              <VizItem w={0.3}>
-                <TotalEffort
-                  currentCycleMetrics={pipelineCycleMetrics}
-                />
-              </VizItem>
-              <VizItem w={0.3}>
-                <AvgDuration
-                  currentCycleMetrics={pipelineCycleMetrics}
-                />
-              </VizItem>
-              <VizItem w={0.3}>
-                <PercentileDuration
-                  currentCycleMetrics={pipelineCycleMetrics}
-                  targetPercentile={cycleTimeTargetPercentile}
-                />
-              </VizItem>
-            </VizRow>
+        flowboard20 &&
+        <VizRow h={"50%"}>
+          <VizItem w={0.3}>
+            <EffortCarousel
+              currentCycleMetrics={pipelineCycleMetrics}
+            />
+          </VizItem>
+          <VizItem w={0.3}>
+            <DurationCarousel
+              currentCycleMetrics={pipelineCycleMetrics}
+              targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+            />
+          </VizItem>
+          <VizItem w={0.3}>
+
+          </VizItem>
+        </VizRow>
       }
     </div>
   )
