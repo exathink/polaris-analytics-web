@@ -4,12 +4,11 @@ import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 
 import {
-  AvgDuration,
   CycleTimeCarousel,
+  DurationCarousel,
+  EffortCarousel,
   LeadTimeCarousel,
-  PercentileDuration,
-  Throughput,
-  TotalEffort
+  Throughput
 } from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((
@@ -103,30 +102,25 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
           {
             viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
               <VizRow h={"50%"}>
-                <VizItem w={0.30}>
-                  <TotalEffort
+                <VizItem w={0.3}>
+                  <EffortCarousel
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem w={0.35}>
-                  <AvgDuration
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
-                    deltaThreshold={trendIndicatorThreshold}
-
-                  />
-                </VizItem>
-                <VizItem w={0.40}>
-                  <PercentileDuration
+                  <DurationCarousel
                     currentCycleMetrics={currentCycleMetrics}
                     previousCycleMetrics={previousCycleMetrics}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={cycleTimeTargetPercentile}
-
                   />
                 </VizItem>
+                <VizItem w={0.4}>
+
+                </VizItem>
+
               </VizRow>
               :
               null
