@@ -52,7 +52,7 @@ export const PipelineFunnelChart = Chart({
         enabled: true
       },
       series: [{
-        name: 'Foo',
+        name: grouping === 'specs' ? 'Specs' : 'Items',
         data: Object.keys(WorkItemStateTypeDisplayName).filter(
           stateType => selectedSummary[stateType] != null
         ).map(

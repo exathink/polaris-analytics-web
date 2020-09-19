@@ -16,6 +16,7 @@ export const ProjectFlowMetricsDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
+    targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
 
@@ -65,6 +66,7 @@ export const ProjectFlowMetricsDetailDashboard = (
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
                 measurementWindow={daysRange}
+                targetPercentile={targetPercentile}
                 leadTimeTargetPercentile={leadTimeTargetPercentile}
                 cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               />
