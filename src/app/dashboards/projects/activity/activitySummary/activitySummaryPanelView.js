@@ -14,9 +14,9 @@ const ActivitySummaryPanelView = withViewerContext((
   {
     model: {
       contributorCount,
-      latestClosedDate,
-      latestCommit
+
     },
+    latestCommit,
     days,
     context,
     viewerContext
@@ -32,7 +32,7 @@ const ActivitySummaryPanelView = withViewerContext((
       <React.Fragment>
         <VizRow h={"100%"}>
 
-          <VizItem w={0.50}>
+          <VizItem w={1}>
             <Statistic
               title={<span>{'Contributors'}</span>}
               value={contributorCount}
@@ -41,16 +41,6 @@ const ActivitySummaryPanelView = withViewerContext((
 
             />
           </VizItem>
-          <VizItem w={0.50}>
-            <HumanizedDateView
-              asStatistic={true}
-              title={'Latest Closed'}
-              dateValue={latestClosedDate}
-              {...{fontColor, bgColor}}
-            />
-          </VizItem>
-
-
         </VizRow>
       </React.Fragment>
       :

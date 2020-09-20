@@ -20,16 +20,8 @@ export const ProjectActivitySummaryWidget = (
   const {loading, error, data} = useQuery(
     gql`
            query projectActivitySummary($key: String!, $days: Int, $specsOnly: Boolean, $referenceString: String) {
-            project(key: $key, interfaces: [CommitSummary, ContributorCount, DeliveryCycleSpan], contributorCountDays: $days, specsOnly: $specsOnly, referenceString: $referenceString) {
-                
-                latestClosedDate
-                
-                ... on ContributorCount {
-                    contributorCount
-                }
-                ... on CommitSummary {
-                    latestCommit
-                }
+            project(key: $key, interfaces: [ContributorCount], contributorCountDays: $days, specsOnly: $specsOnly, referenceString: $referenceString) {
+                contributorCount
             }
            }
       `, {
@@ -48,17 +40,17 @@ export const ProjectActivitySummaryWidget = (
 
   if (loading) return <Loading/>;
   if (error) return null;
-  const {contributorCount, latestClosedDate,  ...commitSummary} = data['project'];
+  const {contributorCount} = data['project'];
   return (
     <ActivitySummaryPanel
       model={
         {
 
           contributorCount,
-          latestClosedDate,
-          ...commitSummary
+
         }
       }
+      latestCommit={latestCommit}
       days={days}
     />
   )
