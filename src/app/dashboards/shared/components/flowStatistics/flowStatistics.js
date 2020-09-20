@@ -6,6 +6,7 @@ import {
 } from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
+import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
 
 
 export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, target, display, precision, deltaThreshold}) => {
@@ -18,7 +19,7 @@ export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title,
       title={title}
       value={value}
       precision={precision || 0}
-      valueStyle={{color: color }}
+      valueStyle={{color: color}}
       prefix={
         <TrendIndicator
           firstValue={(currentCycleMetrics && currentCycleMetrics[metric])}
@@ -33,7 +34,7 @@ export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title,
 };
 
 
-export const ResponseTime = ({title, currentCycleMetrics, previousCycleMetrics, metric, uom, displayName, target,  superScript, deltaThreshold}) => (
+export const ResponseTime = ({title, currentCycleMetrics, previousCycleMetrics, metric, uom, displayName, target, superScript, deltaThreshold}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentCycleMetrics={currentCycleMetrics}
@@ -47,7 +48,7 @@ export const ResponseTime = ({title, currentCycleMetrics, previousCycleMetrics, 
   />
 );
 
-export const Traceability = ({title, currentMetric, previousMetric, target,  deltaThreshold}) => (
+export const Traceability = ({title, currentMetric, previousMetric, target, deltaThreshold}) => (
   <FlowStatistic
     title={title || 'Traceability'}
     currentCycleMetrics={currentMetric}
@@ -63,18 +64,24 @@ export const Traceability = ({title, currentMetric, previousMetric, target,  del
 );
 
 
-
-
 export const Throughput = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold, specsOnly}) => (
   <FlowStatistic
     title={"Throughput"}
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
-    metric={specsOnly? 'workItemsWithCommits' : 'workItemsInScope'}
+    metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
     uom={specsOnly ? 'Specs' : 'Items'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
+  />
+);
+
+export const LatestClosed = ({currentCycleMetrics}) => (
+  <HumanizedDateView
+    asStatistic={true}
+    title={'Latest Closed'}
+    dateValue={currentCycleMetrics['latestClosedDate']}
   />
 );
 
@@ -136,7 +143,6 @@ export const AvgDuration = ({currentCycleMetrics, previousCycleMetrics, showTren
 );
 
 
-
 export const PercentileDuration = ({currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
@@ -161,7 +167,7 @@ export const MaxDuration = ({currentCycleMetrics, previousCycleMetrics, showTren
   />
 );
 
-export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
+export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
@@ -172,7 +178,6 @@ export const MinCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,
     deltaThreshold={deltaThreshold}
   />
 );
-
 
 
 export const AvgCycleTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
@@ -187,7 +192,7 @@ export const AvgCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,
   />
 );
 
-export const MaxCycleTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
+export const MaxCycleTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
@@ -212,7 +217,7 @@ export const PercentileCycleTime = ({title, currentCycleMetrics, previousCycleMe
   />
 );
 
-export const AvgLeadTime = ({currentCycleMetrics, previousCycleMetrics, target,  deltaThreshold}) => (
+export const AvgLeadTime = ({currentCycleMetrics, previousCycleMetrics, target, deltaThreshold}) => (
   <ResponseTime
     currentCycleMetrics={currentCycleMetrics}
     previousCycleMetrics={previousCycleMetrics}
@@ -253,7 +258,7 @@ export const PercentileLeadTime = ({title, currentCycleMetrics, previousCycleMet
 // Metrics Carousels
 // ----------------
 
-export const CycleTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+export const CycleTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <PercentileCycleTime
       currentCycleMetrics={currentCycleMetrics}
@@ -279,7 +284,7 @@ export const CycleTimeCarousel = ({title, currentCycleMetrics, previousCycleMetr
   </ComponentCarousel>
 )
 
-export const LeadTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+export const LeadTimeCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <PercentileLeadTime
       currentCycleMetrics={currentCycleMetrics}
@@ -305,7 +310,7 @@ export const LeadTimeCarousel = ({title, currentCycleMetrics, previousCycleMetri
   </ComponentCarousel>
 )
 
-export const EffortCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+export const EffortCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <TotalEffort
       currentCycleMetrics={currentCycleMetrics}
@@ -332,9 +337,7 @@ export const EffortCarousel = ({title, currentCycleMetrics, previousCycleMetrics
 )
 
 
-
-
-export const DurationCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval=3000}) => (
+export const DurationCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <PercentileDuration
       currentCycleMetrics={currentCycleMetrics}
@@ -357,5 +360,21 @@ export const DurationCarousel = ({title, currentCycleMetrics, previousCycleMetri
       targetPercentile={targetPercentile}
       deltaThreshold={deltaThreshold}
     />
+  </ComponentCarousel>
+)
+
+export const ThroughputCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <Throughput
+      currentCycleMetrics={currentCycleMetrics}
+      previousCycleMetrics={previousCycleMetrics}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <LatestClosed
+      currentCycleMetrics={currentCycleMetrics}
+    />
+
   </ComponentCarousel>
 )
