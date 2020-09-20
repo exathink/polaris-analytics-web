@@ -3,15 +3,10 @@ import {withNavigationContext} from "../../../../framework/navigation/components
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {
-  AvgCycleTime,
-  AvgDuration,
-  PercentileDuration,
-  PercentileLeadTime,
-  TotalEffort,
-  EffortCarousel,
+  CycleTimeCarousel,
   DurationCarousel,
-  LeadTimeCarousel,
-  CycleTimeCarousel
+  EffortCarousel,
+  LeadTimeCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
