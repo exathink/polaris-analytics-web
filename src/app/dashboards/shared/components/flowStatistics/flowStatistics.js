@@ -8,12 +8,16 @@ import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
 import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
 
+const colors = {
+  good: '#338807',
+  bad: '#9a3727'
+}
 
 export const FlowStatistic = ({currentCycleMetrics, previousCycleMetrics, title, metric, uom, good, target, display, precision, deltaThreshold}) => {
   const displayValue = display || (value => value)
   const value = (currentCycleMetrics && displayValue(currentCycleMetrics[metric])) || 'N/A';
 
-  const color = target && currentCycleMetrics && good && !good(currentCycleMetrics[metric] - target) ? '#9a3727' : '#338807'
+  const color = target && currentCycleMetrics && good && !good(currentCycleMetrics[metric] - target) ? colors.bad : colors.good
   return (
     <Statistic
       title={title}
@@ -363,7 +367,7 @@ export const DurationCarousel = ({title, currentCycleMetrics, previousCycleMetri
   </ComponentCarousel>
 )
 
-export const ThroughputCarousel = ({title, currentCycleMetrics, previousCycleMetrics, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+export const ThroughputCarousel = ({title, currentCycleMetrics, previousCycleMetrics, specsOnly, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <Throughput
       currentCycleMetrics={currentCycleMetrics}
@@ -371,6 +375,7 @@ export const ThroughputCarousel = ({title, currentCycleMetrics, previousCycleMet
       target={target}
       targetPercentile={targetPercentile}
       deltaThreshold={deltaThreshold}
+      specsOnly={specsOnly}
     />
     <LatestClosed
       currentCycleMetrics={currentCycleMetrics}
@@ -378,3 +383,26 @@ export const ThroughputCarousel = ({title, currentCycleMetrics, previousCycleMet
 
   </ComponentCarousel>
 )
+
+export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, tickInterval = 3000}) => (
+    <ComponentCarousel tickInterval={tickInterval}>
+      <FlowStatistic
+        title={title || "Traceability"}
+        currentCycleMetrics={current}
+        previousCycleMetrics={previous}
+        metric={'traceability'}
+        display={value => value * 100}
+        uom={'%'}
+        good={TrendIndicator.isPositive}
+        deltaThreshold={deltaThreshold}
+        target={target}
+      />
+      <Statistic
+        title={'Target'}
+        value={target * 100}
+        precision={0}
+        valueStyle={{color: colors.good}}
+        suffix={'%'}
+      />
+    </ComponentCarousel>
+  )
