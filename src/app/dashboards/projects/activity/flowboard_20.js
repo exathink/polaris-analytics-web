@@ -79,10 +79,10 @@ export const dashboard = ({viewerContext}) => (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={0.25}
+                  w={0.20}
                   name="team"
                   title={'Team'}
-                  subtitle={`Last 30 days`}
+                  subtitle={`30 days`}
                   render={
                     () =>
                       <ProjectActivitySummaryWidget
@@ -93,9 +93,11 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                    w={0.10}
+                    w={0.13}
                     name="traceability"
                     title={'Traceability'}
+                    subtitle={'30 Days'}
+                    hideTitlesInDetailView={'true'}
                     render={
                       ({view}) =>
                         <ProjectTraceabilityTrendsWidget
@@ -125,7 +127,7 @@ export const dashboard = ({viewerContext}) => (
                   w={0.20}
                   name="response-time-sla"
                   title={'Response Time'}
-                  subtitle={"Last 30 Days"}
+                  subtitle={"30 Days"}
                   render={
                     () =>
                       <ProjectResponseTimeSLAWidget
@@ -146,7 +148,7 @@ export const dashboard = ({viewerContext}) => (
                     w={0.19}
                     name="defect-metrics"
                     title={"Quality"}
-                    subtitle={"Last 30 Days"}
+                    subtitle={"30 Days"}
                     hideTitlesInDetailView={true}
                     render={
                       ({view}) =>
@@ -221,7 +223,7 @@ export const dashboard = ({viewerContext}) => (
                     w={1 / 3}
                     name="flow-metrics"
                     title={"Flow Metrics"}
-                    subtitle={"Closed Last 30 Days"}
+                    subtitle={"30 Days"}
                     hideTitlesInDetailView={true}
                     render={
                       ({view}) =>
