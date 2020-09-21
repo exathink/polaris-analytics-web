@@ -13,6 +13,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -78,26 +79,44 @@ export const dashboard = ({viewerContext}) => (
             <Dashboard dashboard={`${dashboard_id}`}>
               <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={0.20}
-                  name="activity-summary"
-                  title={specsOnly ? 'Spec Activity' : 'Activity'}
+                  w={0.25}
+                  name="team"
+                  title={'Team'}
                   subtitle={`Last 30 days`}
                   render={
                     () =>
                       <ProjectActivitySummaryWidget
                         instanceKey={key}
                         days={30}
-                        specsOnly={specsOnly}
-                        latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
                       />
                   }
                 />
-
                 <DashboardWidget
-                  w={0.50}
+                    w={0.10}
+                    name="traceability"
+                    title={'Traceability'}
+                    render={
+                      ({view}) =>
+                        <ProjectTraceabilityTrendsWidget
+                          instanceKey={key}
+                          measurementWindow={30}
+                          days={7}
+                          samplingFrequency={7}
+                          context={context}
+                          view={view}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          latestCommit={latestCommit}
+                          asStatistic={{title: 'Current'}}
+                          target={0.9}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                <DashboardWidget
+                  w={0.37}
                   name="alignment"
-                  title={'Alignment'}
+                  title={'Flow Mix'}
                   render={
                     () => null
                   }
