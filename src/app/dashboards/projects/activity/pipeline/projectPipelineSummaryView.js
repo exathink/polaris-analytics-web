@@ -58,7 +58,7 @@ const PipelineSummaryView = withViewerContext((
       </VizRow>
       {
         flowboard20 &&
-        <VizRow h={"50%"}>
+        <VizRow h={"50%"} style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
           <VizItem w={0.3}>
             <EffortCarousel
               currentCycleMetrics={pipelineCycleMetrics}
