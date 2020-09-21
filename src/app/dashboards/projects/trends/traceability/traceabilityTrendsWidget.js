@@ -18,6 +18,8 @@ export const ProjectTraceabilityTrendsWidget = (
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    target,
+    asStatistic,
     pollInterval
   }) => {
     const excludeMergesDefault = excludeMerges != null ? excludeMerges : true;
@@ -40,6 +42,8 @@ export const ProjectTraceabilityTrendsWidget = (
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           excludeMerges={excludeMergesDefault}
+          asStatistic={asStatistic}
+          target={target}
         />
         :
         <ProjectTraceabilityTrendsDetailDashboard
