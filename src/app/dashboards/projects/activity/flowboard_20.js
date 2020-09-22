@@ -80,7 +80,7 @@ export const dashboard = ({viewerContext}) => (
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
-              <DashboardRow h='15%'>
+              <DashboardRow h='16%'>
                 <DashboardWidget
                   w={0.20}
                   name="team"
@@ -200,13 +200,13 @@ export const dashboard = ({viewerContext}) => (
               </DashboardRow>
 
 
-              <DashboardRow h={'25%'}
+              <DashboardRow h={'29%'}
                             title={' '}
               >
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={1 / 3}
+                    w={0.4}
                     name="pipeline"
                     title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
                     render={
@@ -229,7 +229,7 @@ export const dashboard = ({viewerContext}) => (
                   />
                 }
                 <DashboardWidget
-                  w={1 / 3}
+                  w={0.25}
                   name="pipeline-funnel"
 
                   render={
@@ -278,7 +278,7 @@ export const dashboard = ({viewerContext}) => (
 
                 }
               </DashboardRow>
-              <DashboardRow h={'55%'}
+              <DashboardRow h={'48%'}
                             title={'Latest Activity'}
               >
                 <DashboardWidget
