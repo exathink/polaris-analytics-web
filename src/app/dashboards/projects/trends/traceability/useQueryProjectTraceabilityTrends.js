@@ -14,7 +14,7 @@ export function useQueryProjectTraceabilityTrends(
   }) {
   return useQuery(
     gql`
-     query projectFlowMetricsTrends(
+     query projectTraceabilityTrends(
           $key: String!, 
           $days: Int!,
           $measurementWindow: Int!,
