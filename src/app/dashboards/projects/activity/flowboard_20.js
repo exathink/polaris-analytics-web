@@ -14,6 +14,9 @@ import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
+import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
+import {Box, Flex} from "reflexbox";
+import {Checkbox} from "antd";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -93,35 +96,62 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
                 <DashboardWidget
-                    w={0.13}
-                    name="traceability"
-                    title={'Traceability'}
-                    subtitle={'30 Days'}
-                    hideTitlesInDetailView={'true'}
-                    render={
-                      ({view}) =>
-                        <ProjectTraceabilityTrendsWidget
-                          instanceKey={key}
-                          measurementWindow={30}
-                          days={7}
-                          samplingFrequency={7}
-                          context={context}
-                          view={view}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          latestCommit={latestCommit}
-                          asStatistic={{title: 'Current'}}
-                          target={0.9}
-                        />
-                    }
-                    showDetail={true}
-                  />
+                  w={0.13}
+                  name="traceability"
+                  title={'Traceability'}
+                  subtitle={'30 Days'}
+                  hideTitlesInDetailView={'true'}
+                  render={
+                    ({view}) =>
+                      <ProjectTraceabilityTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={30}
+                        days={7}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        asStatistic={{title: 'Current'}}
+                        target={0.9}
+                      />
+                  }
+                  showDetail={true}
+                />
                 <DashboardWidget
                   w={0.37}
                   name="alignment"
                   title={'Flow Mix'}
-                  render={
-                    () => null
+                  subtitle={'30 days'}
+                  styles={{
+                    controlContainer: {
+                      width: '27%'
+                    }
+                  }}
+                  controls={
+                    [
+                      () => (
+                        <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
+                      )
+                    ]
                   }
+
+                  render={
+                    ({view}) =>
+                      <ProjectFlowMixTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={30}
+                        days={7}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        specsOnly={specsOnly}
+
+                      />
+                  }
+
                 />
                 <DashboardWidget
                   w={0.20}
