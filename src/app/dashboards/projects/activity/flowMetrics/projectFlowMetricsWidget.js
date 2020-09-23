@@ -49,8 +49,7 @@ export const ProjectFlowMetricsWidget = (
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
-        currentCycleMetrics={cycleMetricsTrends[0]}
-        previousCycleMetrics={cycleMetricsTrends[1]}
+        cycleMetricsTrends={cycleMetricsTrends}
       />
     )
   } else {

@@ -19,11 +19,11 @@ export const ProjectResponseTimeSLAView = (
     cycleTimeConfidenceTarget
   }
 ) => {
-  const current = responseTimeConfidenceTrends[0]
-  const previous = responseTimeConfidenceTrends[1]
 
-  const currentCycleMetrics = cycleMetricsTrends[0]
-  const previousCycleMetrics = cycleMetricsTrends[1]
+  const [current, previous] = responseTimeConfidenceTrends;
+
+  // cycle metrics trends are still being returned in descending order.
+  const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
   const tick = useGenerateTicks(4, 5000);
 
 

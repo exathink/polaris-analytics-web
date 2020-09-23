@@ -13,8 +13,10 @@ export const ProjectTraceabilityTrendsView = (
     asStatistic,
     target,
   }) => {
-  const current = traceabilityTrends.length > 0 ? traceabilityTrends[traceabilityTrends.length - 1] : null
-  const previous = traceabilityTrends.length > 1 ? traceabilityTrends[traceabilityTrends.length - 2] : null;
+  // trends come back in descending order so this is canonical pattern to
+  // extract the current and previous value.
+  const [current, previous] = traceabilityTrends;
+
   return (
     <VizRow h={"100%"}>
       <VizItem w={1}>

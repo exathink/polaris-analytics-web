@@ -33,8 +33,8 @@ export const PipelineFunnelChart = Chart({
             color: 'black'
           },
           center: ['38%', '50%'],
-          neckWidth: '15%',
-          neckHeight: '50%',
+          neckWidth: '30%',
+          neckHeight: '45%',
           width: '80%'
         }
       },

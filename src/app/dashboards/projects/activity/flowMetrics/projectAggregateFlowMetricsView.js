@@ -20,13 +20,14 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
     cycleTimeTargetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
-    currentCycleMetrics,
-    previousCycleMetrics,
+    cycleMetricsTrends,
+
     stateMappingIndex,
     viewerContext
   }
   ) => {
     const trendIndicatorThreshold = viewerContext.trendIndicatorThreshold;
+    const [current, previous] = cycleMetricsTrends;
 
     return (
       stateMappingIndex.isValid() ?
@@ -36,8 +37,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               <VizRow h={"50%"}>
                 <VizItem w={0.30}>
                   <ThroughputCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     specsOnly={specsOnly}
                   />
@@ -46,8 +47,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem w={0.35}>
                     <CycleTimeCarousel
-                      currentCycleMetrics={currentCycleMetrics}
-                      previousCycleMetrics={previousCycleMetrics}
+                      currentCycleMetrics={current}
+                      previousCycleMetrics={previous}
                       targetPercentile={cycleTimeTargetPercentile || targetPercentile}
                       target={cycleTimeTarget}
                       deltaThreshold={trendIndicatorThreshold}
@@ -56,8 +57,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 }
                 <VizItem w={0.40}>
                   <LeadTimeCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={leadTimeTargetPercentile || targetPercentile}
                     target={leadTimeTarget}
@@ -68,16 +69,16 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               <VizRow h={"80%"}>
                 <VizItem>
                   <ThroughputCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     specsOnly={specsOnly}
                   />
                 </VizItem>
                 <VizItem>
                   <LeadTimeCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={leadTimeTargetPercentile || targetPercentile}
                     target={leadTimeTarget}
@@ -88,8 +89,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem>
                     <CycleTimeCarousel
-                      currentCycleMetrics={currentCycleMetrics}
-                      previousCycleMetrics={previousCycleMetrics}
+                      currentCycleMetrics={current}
+                      previousCycleMetrics={previous}
                       deltaThreshold={trendIndicatorThreshold}
                       targetPercentile={leadTimeTargetPercentile || targetPercentile}
                       target={leadTimeTarget}
@@ -106,15 +107,15 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                       style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
                 <VizItem w={0.3}>
                   <EffortCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem w={0.35}>
                   <DurationCarousel
-                    currentCycleMetrics={currentCycleMetrics}
-                    previousCycleMetrics={previousCycleMetrics}
+                    currentCycleMetrics={current}
+                    previousCycleMetrics={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={cycleTimeTargetPercentile}
                   />

@@ -13,6 +13,8 @@ export const reduceFlowMix = (result, item) => {
   return result
 }
 
+
+
 export const ProjectFlowMixTrendsView = (
   {
     flowMixTrends,
@@ -22,8 +24,7 @@ export const ProjectFlowMixTrendsView = (
     asStatistic,
     target,
   }) => {
-  const current = flowMixTrends.length > 0 ? flowMixTrends[0] : []
-  const previous = flowMixTrends.length > 1 ? flowMixTrends[1] : [];
+  const [current, previous] = flowMixTrends;
   const metric = specsOnly ? 'totalEffort' : 'workItemCount';
   const currentMix = current.flowMix.reduce(reduceFlowMix, {metric: metric});
   const previousMix = previous.flowMix.reduce(reduceFlowMix, {metric: metric});
