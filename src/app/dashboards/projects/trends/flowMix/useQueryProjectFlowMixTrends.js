@@ -2,45 +2,46 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectTraceabilityTrends(
+export function useQueryProjectFlowMixTrends(
   {
     instanceKey,
     before,
     days,
     measurementWindow,
     samplingFrequency,
-    excludeMerges,
+    specsOnly,
     referenceString
   }) {
   return useQuery(
     gql`
-     query projectTraceabilityTrends(
+     query projectFlowMixTrends(
           $key: String!, 
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
           $before: DateTime,
-          $excludeMerges: Boolean,
           $referenceString: String, 
+          $specsOnly: Boolean,
           ) {
       project(
             key: $key, 
-            interfaces: [TraceabilityTrends],
-             traceabilityTrendsArgs: {
+            interfaces: [FlowMixTrends],
+             flowMixTrendsArgs: {
               before: $before,
               days: $days,
               measurementWindow: $measurementWindow,
               samplingFrequency: $samplingFrequency,
-              excludeMerges: $excludeMerges,
+              specsOnly: $specsOnly,
             },
             referenceString: $referenceString,
             ) {
-            traceabilityTrends {   
+            flowMixTrends {   
                 measurementDate
-                traceability
-                specCount
-                nospecCount
-                totalCommits
+                flowMix {
+                    category
+                    workItemCount
+                    totalEffort
+                }
             }
         }
      }
@@ -53,7 +54,7 @@ export function useQueryProjectTraceabilityTrends(
         before: before,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        excludeMerges: excludeMerges,
+        specsOnly: specsOnly,
         referenceString: referenceString,
       },
       errorPolicy: "all",

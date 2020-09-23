@@ -16,7 +16,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
 );
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
   return (
     <Flex column w={w} m={1} className="dashboard-item">
       {
@@ -40,7 +40,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
           }
           {
             controls ?
-              <nav className={'menu title-control-container'} >
+              <nav className={'menu title-control-container'} style={{...styles.controlContainer}}>
                 <React.Fragment>
                   {
                     controls.reverse().map(

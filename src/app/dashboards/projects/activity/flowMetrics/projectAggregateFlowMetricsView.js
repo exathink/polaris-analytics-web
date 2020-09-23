@@ -86,22 +86,24 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
 
                 {
                   stateMappingIndex.numInProcessStates() > 0 &&
-                    <VizItem>
-                      <CycleTimeCarousel
-                        currentCycleMetrics={currentCycleMetrics}
-                        previousCycleMetrics={previousCycleMetrics}
-                        deltaThreshold={trendIndicatorThreshold}
-                        targetPercentile={leadTimeTargetPercentile || targetPercentile}
-                        target={leadTimeTarget}
-                      />
-                    </VizItem>
+                  <VizItem>
+                    <CycleTimeCarousel
+                      currentCycleMetrics={currentCycleMetrics}
+                      previousCycleMetrics={previousCycleMetrics}
+                      deltaThreshold={trendIndicatorThreshold}
+                      targetPercentile={leadTimeTargetPercentile || targetPercentile}
+                      target={leadTimeTarget}
+                    />
+                  </VizItem>
                 }
               </VizRow>
 
           }
           {
             viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
-              <VizRow h={"50%"}>
+
+              <VizRow h={"50%"}
+                      style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
                 <VizItem w={0.3}>
                   <EffortCarousel
                     currentCycleMetrics={currentCycleMetrics}
@@ -122,6 +124,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 </VizItem>
 
               </VizRow>
+
               :
               null
           }
