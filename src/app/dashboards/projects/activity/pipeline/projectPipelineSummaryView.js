@@ -40,7 +40,7 @@ const PipelineSummaryView = withViewerContext((
         </VizItem>
         <VizItem w={flowboard20 ? 0.3 : 0.5}>
           <CycleTimeCarousel
-              currentCycleMetrics={pipelineCycleMetrics}
+              currentMeasurement={pipelineCycleMetrics}
               targetPercentile={cycleTimeTargetPercentile || targetPercentile}
               target={cycleTimeTarget}
             />
@@ -49,7 +49,7 @@ const PipelineSummaryView = withViewerContext((
           flowboard20 &&
           <VizItem w={0.3}>
             <LeadTimeCarousel
-              currentCycleMetrics={pipelineCycleMetrics}
+              currentMeasurement={pipelineCycleMetrics}
               targetPercentile={leadTimeTargetPercentile || targetPercentile}
               target={leadTimeTarget}
             />
@@ -61,12 +61,12 @@ const PipelineSummaryView = withViewerContext((
         <VizRow h={"50%"} style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
           <VizItem w={0.3}>
             <EffortCarousel
-              currentCycleMetrics={pipelineCycleMetrics}
+              currentMeasurement={pipelineCycleMetrics}
             />
           </VizItem>
           <VizItem w={0.3}>
             <DurationCarousel
-              currentCycleMetrics={pipelineCycleMetrics}
+              currentMeasurement={pipelineCycleMetrics}
               targetPercentile={cycleTimeTargetPercentile || targetPercentile}
             />
           </VizItem>

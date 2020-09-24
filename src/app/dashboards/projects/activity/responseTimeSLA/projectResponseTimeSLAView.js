@@ -36,8 +36,8 @@ export const ProjectResponseTimeSLAView = (
               tick < 2 ?
               <FlowStatistic
                 title={<span>{'CycleTime'}<sup>{percentileToText(cycleTimeConfidenceTarget)} Target</sup></span>}
-                currentCycleMetrics={current}
-                previousCycleMetrics={previous}
+                currentMeasurement={current}
+                previousMeasurement={previous}
                 metric={'cycleTimeTarget'}
                 uom={'Days'}
 
@@ -45,8 +45,8 @@ export const ProjectResponseTimeSLAView = (
               :
               <FlowStatistic
                 title={<span>{'LeadTime'}<sup>{percentileToText(leadTimeConfidenceTarget)} Target</sup></span>}
-                currentCycleMetrics={current}
-                previousCycleMetrics={previous}
+                currentMeasurement={current}
+                previousMeasurement={previous}
                 metric={'leadTimeTarget'}
                 uom={'Days'}
 
@@ -58,18 +58,16 @@ export const ProjectResponseTimeSLAView = (
             [
               <PercentileCycleTime
                 title={'Actual'}
-                currentCycleMetrics={currentCycleMetrics}
-                previousCycleMetrics={previousCycleMetrics}
+                currentMeasurement={currentCycleMetrics}
+                previousMeasurement={previousCycleMetrics}
                 target={cycleTimeTarget}
                 targetPercentile={cycleTimeConfidenceTarget}
               />,
 
               <FlowStatistic
                 title={<span>{'% at Target'}</span>}
-                currentCycleMetrics={current}
-                previousCycleMetrics={previous}
-                metric={'cycleTimeConfidence'}
-                display={value => value * 100}
+                currentValue={current['cycleTimeConfidence']*100}
+                previousValue={previous['cycleTimeConfidence']*100}
                 uom={'%'}
                 precision={2}
                 target={cycleTimeConfidenceTarget}
@@ -78,16 +76,15 @@ export const ProjectResponseTimeSLAView = (
               />,
               <PercentileLeadTime
                 title={'Actual'}
-                currentCycleMetrics={currentCycleMetrics}
-                previousCycleMetrics={previousCycleMetrics}
+                currentMeasurement={currentCycleMetrics}
+                previousMeasurement={previousCycleMetrics}
                 target={leadTimeTarget}
                 targetPercentile={leadTimeConfidenceTarget}
               />,
               <FlowStatistic
                 title={<span>{'% at Target'}</span>}
-                currentCycleMetrics={current}
-                previousCycleMetrics={previous}
-                metric={'leadTimeConfidence'}
+                currentValue={current['leadTimeConfidence']*100}
+                previousMeasurement={previous['leadTimeConfidence']*100}
                 display={value => value * 100}
                 uom={'%'}
                 precision={2}

@@ -37,8 +37,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               <VizRow h={"50%"}>
                 <VizItem w={0.30}>
                   <ThroughputCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     specsOnly={specsOnly}
                   />
@@ -47,8 +47,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem w={0.35}>
                     <CycleTimeCarousel
-                      currentCycleMetrics={current}
-                      previousCycleMetrics={previous}
+                      currentMeasurement={current}
+                      previousMeasurement={previous}
                       targetPercentile={cycleTimeTargetPercentile || targetPercentile}
                       target={cycleTimeTarget}
                       deltaThreshold={trendIndicatorThreshold}
@@ -57,8 +57,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 }
                 <VizItem w={0.40}>
                   <LeadTimeCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={leadTimeTargetPercentile || targetPercentile}
                     target={leadTimeTarget}
@@ -69,16 +69,16 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               <VizRow h={"80%"}>
                 <VizItem>
                   <ThroughputCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     specsOnly={specsOnly}
                   />
                 </VizItem>
                 <VizItem>
                   <LeadTimeCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={leadTimeTargetPercentile || targetPercentile}
                     target={leadTimeTarget}
@@ -89,8 +89,8 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   stateMappingIndex.numInProcessStates() > 0 &&
                   <VizItem>
                     <CycleTimeCarousel
-                      currentCycleMetrics={current}
-                      previousCycleMetrics={previous}
+                      currentMeasurement={current}
+                      previousMeasurement={previous}
                       deltaThreshold={trendIndicatorThreshold}
                       targetPercentile={leadTimeTargetPercentile || targetPercentile}
                       target={leadTimeTarget}
@@ -107,15 +107,15 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                       style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
                 <VizItem w={0.3}>
                   <EffortCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
                 <VizItem w={0.35}>
                   <DurationCarousel
-                    currentCycleMetrics={current}
-                    previousCycleMetrics={previous}
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
                     targetPercentile={cycleTimeTargetPercentile}
                   />
