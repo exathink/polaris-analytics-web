@@ -37,8 +37,8 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Features'}
-          currentValue={percentage(currentMix.feature[metric], currentMix.total)}
-          previousValue={percentage(previousMix.feature[metric], previousMix.total)}
+          currentValue={currentMix.feature ? percentage(currentMix.feature[metric], currentMix.total) : 0}
+          previousValue={previousMix.feature? percentage(previousMix.feature[metric], previousMix.total): 0}
 
           uom={'%'}
           precision={2}
@@ -48,8 +48,8 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Defects'}
-          currentValue={percentage(currentMix.defect[metric], currentMix.total)}
-          previousValue={percentage(previousMix.defect[metric], previousMix.total)}
+          currentValue={currentMix.defect ? percentage(currentMix.defect[metric], currentMix.total) : 0}
+          previousValue={previousMix.defect ? percentage(previousMix.defect[metric], previousMix.total): 0}
           uom={'%'}
           precision={2}
           target={target}
@@ -58,8 +58,8 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Tasks'}
-          currentValue={percentage(currentMix.task[metric], currentMix.total)}
-          previousValue={percentage(previousMix.task[metric], previousMix.total)}
+          currentValue={currentMix.task ? percentage(currentMix.task[metric], currentMix.total): 0}
+          previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total): 0}
           uom={'%'}
           precision={2}
       />

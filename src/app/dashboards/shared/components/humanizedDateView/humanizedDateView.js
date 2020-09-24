@@ -37,7 +37,6 @@ export class HumanizedDateView extends React.Component {
 
 
   render() {
-    console.log(`${this.props.title}: ${this.state.text}`);
     return (
       this.props.asStatistic ?
         <Statistic
