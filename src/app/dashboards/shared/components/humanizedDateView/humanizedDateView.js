@@ -14,13 +14,19 @@ export class HumanizedDateView extends React.Component {
   }
 
   resetText() {
-    this.setState({
-      text: fromNow(this.props.dateValue)
-    })
+    const display = fromNow(this.props.dateValue)
+    if (this.state.text != display) {
+      this.setState({text: display})
+    }
+
+  }
+
+  componentDidUpdate() {
+    this.resetText()
   }
 
   componentDidMount() {
-    this.timer = window.setInterval(this.resetText.bind(this), 60*1000);
+    this.timer = window.setInterval(this.resetText.bind(this), this.props.tick || 60*1000);
   }
 
   componentWillUnmount() {
@@ -31,6 +37,7 @@ export class HumanizedDateView extends React.Component {
 
 
   render() {
+    console.log(`${this.props.title}: ${this.state.text}`);
     return (
       this.props.asStatistic ?
         <Statistic
