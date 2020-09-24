@@ -2,6 +2,7 @@ import React from 'react';
 import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
+import {percentage} from "../../../../helpers/utility";
 
 export const reduceFlowMix = (result, item) => {
   result[item.category] = item;
@@ -36,10 +37,9 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Features'}
-          currentCycleMetrics={currentMix.feature}
-          previousCycleMetrics={previousMix.feature}
-          metric={metric}
-          display={value => (value/(1.0*currentMix.total))*100}
+          currentValue={percentage(currentMix.feature[metric], currentMix.total)}
+          previousValue={percentage(previousMix.feature[metric], previousMix.total)}
+
           uom={'%'}
           precision={2}
           target={target}
@@ -48,10 +48,8 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Defects'}
-          currentCycleMetrics={currentMix.defect}
-          previousCycleMetrics={previousMix.defect}
-          metric={metric}
-          display={value => (value/(1.0*currentMix.total))*100}
+          currentValue={percentage(currentMix.defect[metric], currentMix.total)}
+          previousValue={percentage(previousMix.defect[metric], previousMix.total)}
           uom={'%'}
           precision={2}
           target={target}
@@ -60,14 +58,10 @@ export const ProjectFlowMixTrendsView = (
       <VizItem w={0.25}>
         <FlowStatistic
           title={'Tasks'}
-          currentCycleMetrics={currentMix.task}
-          previousCycleMetrics={previousMix.task}
-          metric={metric}
-          display={value => (value/(1.0*currentMix.total))*100}
+          currentValue={percentage(currentMix.task[metric], currentMix.total)}
+          previousValue={percentage(previousMix.task[metric], previousMix.total)}
           uom={'%'}
           precision={2}
-
-
       />
       </VizItem>
     </VizRow>
