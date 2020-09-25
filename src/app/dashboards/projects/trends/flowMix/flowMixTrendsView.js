@@ -4,6 +4,8 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentage} from "../../../../helpers/utility";
 
+import {FlowMixTrendsChart} from "./flowMixTrendsChart";
+
 export const reduceFlowMix = (result, item) => {
   result[item.category] = item;
   if (result['total'] != null) {
@@ -80,5 +82,8 @@ export const ProjectFlowMixTrendsView = (
       <ProjectFlowMixTrendsStatsView
         {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
       />
-      : null
+      :
+      <FlowMixTrendsChart
+        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
+      />
 )
