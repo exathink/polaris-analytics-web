@@ -52,6 +52,7 @@ export const FlowMixTrendsChart = Chart({
       )
     )
 
+    const metricDisplay = specsOnly? 'Effort' : 'Items';
 
     return {
       chart: {
@@ -62,10 +63,10 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: 'Flow Mix'
+        text: `${specsOnly ? 'Spec':  ''} Flow Mix`
       },
       subtitle: {
-        text: `${measurementPeriod} day trend`
+        text: `% of ${metricDisplay}: ${measurementPeriod} day trend`
       },
       legend: {
         title: {
@@ -100,7 +101,7 @@ export const FlowMixTrendsChart = Chart({
           const flowType = this.point.series.name;
           const metric = specsOnly? 'totalEffort' : 'workItemCount';
           const value = this.point.flowMixItem[metric];
-          const metricDisplay = specsOnly? 'Effort' : 'Items';
+
           const uom = specsOnly ? 'Dev-Days' : 'Items';
           return tooltipHtml({
               header: `Flow Type: ${flowType} <br/>Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,

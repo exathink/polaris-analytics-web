@@ -3,6 +3,7 @@ import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectFlowMixTrends} from "./useQueryProjectFlowMixTrends";
 import {ProjectFlowMixTrendsView} from "./flowMixTrendsView";
+import {ProjectFlowMixTrendsDetailDashboard} from "./flowMixTrendsDetailDashboard";
 
 export const ProjectFlowMixTrendsWidget = (
   {
@@ -35,6 +36,7 @@ export const ProjectFlowMixTrendsWidget = (
     if (error) return null;
     const {flowMixTrends} = data['project'];
     return (
+      view !== 'detail' ?
         <ProjectFlowMixTrendsView
           flowMixTrends={flowMixTrends}
           measurementWindow={measurementWindow}
@@ -43,5 +45,17 @@ export const ProjectFlowMixTrendsWidget = (
           target={target}
           specsOnly={specsOnly}
         />
+        :
+        <ProjectFlowMixTrendsDetailDashboard
+          instanceKey={instanceKey}
+          measurementWindow={measurementWindow}
+          days={days}
+          samplingFrequency={samplingFrequency}
+          view={view}
+          latestCommit={latestCommit}
+          latestWorkItemEvent={latestWorkItemEvent}
+          specsOnly={specsOnly}
+          />
+
     )
 }
