@@ -130,8 +130,9 @@ export const dashboard = ({viewerContext}) => (
                   }}
                   controls={
                     [
-                      () => (
-                        <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
+                      ({view}) => (
+                        view !== 'detail' &&
+                          <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
                       )
                     ]
                   }
@@ -152,7 +153,8 @@ export const dashboard = ({viewerContext}) => (
 
                       />
                   }
-
+                  hideTitlesInDetailView={true}
+                  showDetail={true}
                 />
                 <DashboardWidget
                   w={0.20}
