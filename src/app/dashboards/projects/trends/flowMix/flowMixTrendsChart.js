@@ -107,7 +107,7 @@ export const FlowMixTrendsChart = Chart({
               header: `Flow Type: ${flowType} <br/>Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Percentage: `, `${intl.formatNumber(this.point.percentage)}%`],
-                [`${metricDisplay}: `, `${intl.formatNumber(value)} ${uom}`],
+                [`${flowType}s: `, `${intl.formatNumber(value)} ${uom}`],
                 [`Total: `, `${intl.formatNumber(this.point.total)} ${uom}`],
 
               ]
