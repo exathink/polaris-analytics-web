@@ -49,9 +49,9 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
             ({view}) =>
               <ProjectTraceabilityTrendsWidget
                 instanceKey={instanceKey}
-                measurementWindow={measurementWindow}
-                days={days}
-                samplingFrequency={samplingFrequency}
+                measurementWindow={30}
+                days={45}
+                samplingFrequency={7}
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
@@ -65,7 +65,7 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
         <DashboardWidget
           w={1}
           name="commits"
-          title={"Commits Without Specs"}
+          title={"Commits Without Specs: Last 30 days"}
           render={
             ({view}) =>
               <DimensionCommitsNavigatorWidget
