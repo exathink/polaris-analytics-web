@@ -71,6 +71,7 @@ const dashboard = ({viewerContext}) => (
 
                       />
                   }
+                  showDetail={true}
 
                 />
                 <DashboardWidget
