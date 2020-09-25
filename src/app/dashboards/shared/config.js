@@ -15,6 +15,12 @@ export const Colors = {
     task: '#4445ec',
     default: '#8f9a8e'
   },
+  FlowType: {
+    feature: '#64de95',
+    defect: '#ea9c9c',
+    task: '#b0b1e2',
+    default: '#8f9a8e'
+  },
   Chart: {
     backgroundColor: "#f2f3f6"
   },
