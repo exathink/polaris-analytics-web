@@ -23,6 +23,7 @@ export const ProjectFlowMixTrendsStatsView = (
     measurementPeriod,
     measurementWindow,
     specsOnly,
+    showCounts,
     asStatistic,
     target,
   }) => {
@@ -76,6 +77,8 @@ export const ProjectFlowMixTrendsView = (
     measurementWindow,
     specsOnly,
     asStatistic,
+    view,
+    showCounts,
     target,
   }) => (
     asStatistic ?
@@ -84,6 +87,6 @@ export const ProjectFlowMixTrendsView = (
       />
       :
       <FlowMixTrendsChart
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
+        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target, showCounts, view}  }
       />
 )

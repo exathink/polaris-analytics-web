@@ -61,6 +61,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
                 latestCommit={latestCommit}
                 specsOnly={specsOnly}
                 asStatistic={false}
+                showCounts={true}
               />
 
           }

@@ -8,7 +8,7 @@ export const FlowMixTrendsChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, intl}) => {
+  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, intl}) => {
 
     // we build one series per flow type (category)
     //
@@ -35,24 +35,55 @@ export const FlowMixTrendsChart = Chart({
       }
     )
 
-    const series = Object.keys(seriesData).map(
+    const flow_mix_series = Object.keys(seriesData).map(
       category => (
         {
-          key: category,
-          id: category,
+          key: `${category}%`,
+          id: `${category}%`,
           name: `${capitalizeFirstLetter(category)}`,
           type: 'column',
           stacking: 'percent',
           maxPointWidth: 30,
           minPointLength: 1,
+          dataLabels: {
+            enabled: showCounts,
+            formatter: function () {
+              return `${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 0})}%`
+            }
+          },
           color: Colors.FlowType[category],
+          showInLegend: !showCounts,
           data: seriesData[category],
-          total: seriesData[category].map(point=>point.y).reduce((a,b)=>a+b,0)
         }
       )
     )
 
-    const metricDisplay = specsOnly? 'Effort' : 'Items';
+    const work_item_count_series = showCounts ?
+      Object.keys(seriesData).map(
+        category => (
+          {
+            key: `${category}#`,
+            id: `${category}#`,
+            name: `${capitalizeFirstLetter(category)}`,
+            type: 'spline',
+            color: Colors.FlowType[category],
+            data: seriesData[category].map(
+              point => ({
+                x: point.x,
+                y: point.flowMixItem.workItemCount,
+                measurement: point.measurement,
+                flowMixItem: point.flowMixItem
+              })
+            ),
+            yAxis: 1,
+
+          }
+        )
+      ) :
+      [];
+    const series = [...work_item_count_series, ...flow_mix_series];
+
+    const metricDisplay = specsOnly ? 'Effort' : 'Items';
 
     return {
       chart: {
@@ -63,14 +94,14 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${specsOnly ? 'Spec':  ''} Flow Mix`
+        text: `${specsOnly ? 'Spec' : ''} Flow Mix`
       },
       subtitle: {
-        text: `% of ${metricDisplay}: ${measurementPeriod} day trend`
+        text: showCounts ? `% of ${metricDisplay} vs Throughput: ${measurementPeriod} day trend` : `% of ${metricDisplay}: ${measurementPeriod} day trend`
       },
       legend: {
         title: {
-          text: `${specsOnly? 'Specs' : 'All Items'}`,
+          text: `${showCounts ? (specsOnly ? 'Spec Throughput' : 'Overall Throughput') : (specsOnly ? 'Spec Flow Types' : 'Flow Types')}`,
           style: {
             fontStyle: 'italic'
           }
@@ -86,41 +117,64 @@ export const FlowMixTrendsChart = Chart({
           text: `${measurementWindow} days ending`
         }
       },
-      yAxis: {
-        type: 'linear',
-        id: 'flow-mix',
-        title: {
-          text: `${specsOnly ? '% Effort' : '% Items'}`
+      yAxis: [
+        {
+          id: 'flow-mix-percentage',
+          type: 'linear',
+          title: {
+            text: `${specsOnly ? '% Effort' : '% Items'}`
+          }
         },
-      },
+        // secondary y axis for work item count, show only if showCounts is enabled.
+        ...showCounts ?
+          [
+            {
+              id: 'work-item-count',
+              type: 'linear',
+              title: {
+                text: `Throughput`
+              },
+              opposite: true
+            }
+          ] : [],
+
+      ],
       tooltip: {
         useHTML: true,
         followPointer: false,
         hideDelay: 0,
         formatter: function () {
           const flowType = this.point.series.name;
-          const metric = specsOnly? 'totalEffort' : 'workItemCount';
+          const metric = specsOnly ? 'totalEffort' : 'workItemCount';
+          const metricDisplay = specsOnly? 'Effort' : 'Throughput';
           const value = this.point.flowMixItem[metric];
 
           const uom = specsOnly ? 'Dev-Days' : 'Items';
-          return tooltipHtml({
-              header: `Flow Type: ${flowType} <br/>Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
-              body: [
-                [`Percentage: `, `${intl.formatNumber(this.point.percentage)}%`],
-                [`${flowType}s: `, `${intl.formatNumber(value)} ${uom}`],
-                [`Total: `, `${intl.formatNumber(this.point.total)} ${uom}`],
+          return tooltipHtml( this.point.series.type === 'column' ? {
+            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
+            body: [
+              [`Percentage: `, `${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}%`],
+              [`${metricDisplay}: `, `${intl.formatNumber(value)} ${uom}`],
+              [`Total: `, `${intl.formatNumber(this.point.total)} ${uom}`],
 
-              ]
-            })
+            ]
+          } : {
+            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
+            body: [
+              [`Throughput: `, `${intl.formatNumber(this.point.y)}`],
+            ]
+          })
         }
-      },
+      }
+      ,
       series: series,
       plotOptions: {
         series: {
           animation: false,
 
         }
-      },
+      }
+      ,
       time: {
         // Since we are already passing in UTC times we
         // dont need the chart to translate the time to UTC

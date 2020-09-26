@@ -20,6 +20,7 @@ export const ProjectFlowMixTrendsWidget = (
     targetPercentile,
     target,
     asStatistic,
+    showCounts,
     pollInterval
   }) => {
 
@@ -44,6 +45,8 @@ export const ProjectFlowMixTrendsWidget = (
           asStatistic={asStatistic}
           target={target}
           specsOnly={specsOnly}
+          view={view}
+          showCounts={showCounts}
         />
         :
         <ProjectFlowMixTrendsDetailDashboard
