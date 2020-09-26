@@ -6,7 +6,8 @@ import {
   CycleTimeCarousel,
   DurationCarousel,
   EffortCarousel,
-  LeadTimeCarousel
+  LeadTimeCarousel,
+  LatencyCarousel,
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
@@ -40,10 +41,10 @@ const PipelineSummaryView = withViewerContext((
         </VizItem>
         <VizItem w={flowboard20 ? 0.3 : 0.5}>
           <CycleTimeCarousel
-              currentMeasurement={pipelineCycleMetrics}
-              targetPercentile={cycleTimeTargetPercentile || targetPercentile}
-              target={cycleTimeTarget}
-            />
+            currentMeasurement={pipelineCycleMetrics}
+            targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+            target={cycleTimeTarget}
+          />
         </VizItem>
         {
           flowboard20 &&
@@ -58,7 +59,12 @@ const PipelineSummaryView = withViewerContext((
       </VizRow>
       {
         flowboard20 &&
-        <VizRow h={"50%"} style={{marginTop: '10px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
+        <VizRow h={"50%"} style={{
+          marginTop: '10px',
+          borderTopWidth: '1px',
+          borderTopStyle: 'solid',
+          borderTopColor: 'rgba(0,0,0,0.1)'
+        }}>
           <VizItem w={0.3}>
             <EffortCarousel
               currentMeasurement={pipelineCycleMetrics}
@@ -71,7 +77,10 @@ const PipelineSummaryView = withViewerContext((
             />
           </VizItem>
           <VizItem w={0.3}>
-
+            <LatencyCarousel
+              currentMeasurement={pipelineCycleMetrics}
+              targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+            />
           </VizItem>
         </VizRow>
       }
