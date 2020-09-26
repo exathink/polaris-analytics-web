@@ -32,8 +32,8 @@ export const PipelineFunnelChart = Chart({
             softConnector: true,
             color: 'black'
           },
-          center: ['38%', '50%'],
-          neckWidth: '30%',
+          center: ['45%', '50%'],
+          neckWidth: '25%',
           neckHeight: '45%',
           width: '80%'
         }
