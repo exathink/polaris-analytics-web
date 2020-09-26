@@ -385,8 +385,8 @@ export const ThroughputCarousel = ({title, currentMeasurement, previousMeasureme
   </ComponentCarousel>
 )
 
-export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, tickInterval = 3000}) => (
-    <ComponentCarousel tickInterval={tickInterval}>
+export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled=false, tickInterval = 3000}) => (
+    <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
       <FlowStatistic
         title={title || "Traceability"}
         currentValue={current['traceability']*100}
