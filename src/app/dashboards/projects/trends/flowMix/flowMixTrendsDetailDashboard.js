@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/vi
 import {ProjectFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector";
+import {ProjectTraceabilityTrendsWidget} from "../traceability";
 
 const dashboard_id = 'dashboards.projects.trends.flow-mix.detail';
 
@@ -30,6 +31,28 @@ export const ProjectFlowMixTrendsDetailDashboard = (
         h={0.5}
         title={`Flow Mix Trends: Last 45 days`}
         controls={[
+
+          ({view}) =>
+            <div style={{minWidth: "300px"}}>
+              <Flex align={'start'}>
+                <Box pr={2} w={"100%"}>
+                  <ProjectTraceabilityTrendsWidget
+                    instanceKey={instanceKey}
+                    measurementWindow={30}
+                    days={7}
+                    samplingFrequency={7}
+                    context={context}
+                    view={view}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                    asStatistic={true}
+                    primaryStatOnly={true}
+                    target={0.9}
+                  />
+                </Box>
+              </Flex>
+            </div>
+          ,
           () => (
             <div style={{minWidth: "300px", padding: "15px"}}>
               <Flex align={'center'}>
