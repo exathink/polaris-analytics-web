@@ -33,25 +33,26 @@ export const ProjectFlowMixTrendsDetailDashboard = (
         controls={[
 
           ({view}) =>
-            <div style={{minWidth: "300px"}}>
-              <Flex align={'start'}>
-                <Box pr={2} w={"100%"}>
-                  <ProjectTraceabilityTrendsWidget
-                    instanceKey={instanceKey}
-                    measurementWindow={30}
-                    days={7}
-                    samplingFrequency={7}
-                    context={context}
-                    view={view}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    asStatistic={true}
-                    primaryStatOnly={true}
-                    target={0.9}
-                  />
-                </Box>
-              </Flex>
-            </div>
+            specsOnly &&
+              <div style={{minWidth: "300px"}}>
+                <Flex align={'start'}>
+                  <Box pr={2} w={"100%"}>
+                    <ProjectTraceabilityTrendsWidget
+                      instanceKey={instanceKey}
+                      measurementWindow={30}
+                      days={7}
+                      samplingFrequency={7}
+                      context={context}
+                      view={view}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      asStatistic={true}
+                      primaryStatOnly={true}
+                      target={0.9}
+                    />
+                  </Box>
+                </Flex>
+              </div>
           ,
           () => (
             <div style={{minWidth: "300px", padding: "15px"}}>
