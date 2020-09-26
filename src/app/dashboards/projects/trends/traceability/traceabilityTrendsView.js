@@ -11,6 +11,7 @@ export const ProjectTraceabilityTrendsView = (
     measurementWindow,
     excludeMerges,
     asStatistic,
+    primaryStatOnly,
     target,
   }) => {
   // trends come back in descending order so this is canonical pattern to
@@ -24,6 +25,7 @@ export const ProjectTraceabilityTrendsView = (
           asStatistic ?
             <TraceabilityCarousel
               {...asStatistic}
+              disabled={primaryStatOnly}
               current={current}
               previous={previous}
               target={target}
