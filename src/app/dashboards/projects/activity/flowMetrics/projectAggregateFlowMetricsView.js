@@ -104,7 +104,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
             viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
 
               <VizRow h={"50%"}
-                      style={{borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
+                      style={{marginTop: '10px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
                 <VizItem w={0.3}>
                   <EffortCarousel
                     currentMeasurement={current}
