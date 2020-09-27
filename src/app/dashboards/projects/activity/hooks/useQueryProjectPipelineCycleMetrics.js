@@ -29,6 +29,9 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 avg_duration,
                 max_duration,
                 percentile_duration,
+                avg_latency,
+                max_latency, 
+                percentile_latency,
                 work_items_with_commits, 
                 work_items_in_scope,
               ],
@@ -37,6 +40,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
               leadTimeTargetPercentile: $leadTimeTargetPercentile,
               cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
               durationTargetPercentile: $cycleTimeTargetPercentile,
+              latencyTargetPercentile: $cycleTimeTargetPercentile,
             },
             referenceString: $referenceString
           ) {
@@ -60,6 +64,9 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 percentileDuration
                 avgDuration
                 maxDuration
+                avgLatency
+                percentileLatency
+                maxLatency
               
                 
          }

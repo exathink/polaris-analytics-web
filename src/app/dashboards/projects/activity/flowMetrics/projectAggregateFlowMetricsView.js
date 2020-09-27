@@ -8,7 +8,8 @@ import {
   DurationCarousel,
   EffortCarousel,
   LeadTimeCarousel,
-  ThroughputCarousel
+  ThroughputCarousel,
+  LatencyCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((
@@ -121,7 +122,12 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   />
                 </VizItem>
                 <VizItem w={0.4}>
-
+                  <LatencyCarousel
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
+                    deltaThreshold={trendIndicatorThreshold}
+                    targetPercentile={cycleTimeTargetPercentile}
+                  />
                 </VizItem>
 
               </VizRow>
