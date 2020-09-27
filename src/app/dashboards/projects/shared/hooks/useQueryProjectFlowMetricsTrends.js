@@ -39,6 +39,7 @@ export function useQueryProjectFlowMetricsTrends(
               leadTimeTargetPercentile: $leadTimeTargetPercentile,
               cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
               durationTargetPercentile: $cycleTimeTargetPercentile,
+              latencyTargetPercentile: $cycleTimeTargetPercentile,
               metrics: [
                 avg_lead_time, 
                 min_cycle_time,

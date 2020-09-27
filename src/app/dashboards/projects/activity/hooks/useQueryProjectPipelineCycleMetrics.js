@@ -40,6 +40,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
               leadTimeTargetPercentile: $leadTimeTargetPercentile,
               cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
               durationTargetPercentile: $cycleTimeTargetPercentile,
+              latencyTargetPercentile: $cycleTimeTargetPercentile,
             },
             referenceString: $referenceString
           ) {
