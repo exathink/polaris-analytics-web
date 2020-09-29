@@ -37,6 +37,7 @@ export const ProjectResponseTimeTrendsWidget = (
         targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        view={view}
       />
     )
 }
