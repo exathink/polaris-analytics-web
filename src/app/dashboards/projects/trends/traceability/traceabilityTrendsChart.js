@@ -15,7 +15,7 @@ export const TraceabilityTrendsChart = ({
           key: 'traceability',
           displayName: excludeMerges? 'Excluding Merges' : 'Traceability',
           visible: true,
-          type: 'line',
+          type: 'spline',
           value: measurement => measurement.traceability * 100
         },
 
