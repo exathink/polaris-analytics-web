@@ -5,13 +5,14 @@ import {MeasurementTrendLineChart} from "../../../shared/views/measurementTrend/
 export const ThroughputTrendsChart = ({
   flowMetricsTrends,
   measurementPeriod,
-  measurementWindow
+  measurementWindow,
+  view
 }) => (
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: 'workItemsWithCommits', displayName: 'Specs Closed', visible: true, type: 'line'},
-        {key: 'workItemsInScope', displayName: 'Total Closed', visible: false, type: 'line'}
+        {key: 'workItemsWithCommits', displayName: 'Specs Closed', visible: true, type: 'spline'},
+        {key: 'workItemsInScope', displayName: 'Total Closed', visible: view === 'detail', type: 'spline'},
       ]}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}

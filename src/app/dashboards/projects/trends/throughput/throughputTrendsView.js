@@ -6,7 +6,8 @@ export const ProjectThroughputTrendsView = ({
     flowMetricsTrends,
     targetPercentile,
     measurementPeriod,
-    measurementWindow
+    measurementWindow,
+    view
   }) => (
     <VizRow h={1}>
       <VizItem w={1}>
@@ -14,6 +15,7 @@ export const ProjectThroughputTrendsView = ({
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          view={view}
         />
       </VizItem>
     </VizRow>

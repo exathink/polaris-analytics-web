@@ -36,6 +36,7 @@ export const ProjectThroughputTrendsWidget = (
         targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        view={view}
       />
     )
 }
