@@ -53,6 +53,7 @@ export function useQueryProjectFlowMetricsTrends(
                 max_lead_time,
                 total_effort,
                 avg_effort,
+                percentile_effort,
                 max_effort,
                 avg_duration,
                 max_duration,
@@ -81,6 +82,7 @@ export function useQueryProjectFlowMetricsTrends(
                 percentileLeadTime
                 maxLeadTime
                 totalEffort
+                percentileEffort
                 avgEffort
                 maxEffort
                 avgDuration

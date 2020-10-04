@@ -17,6 +17,9 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     case 'percentileLatency': {
       return [`${percentileToText(targetPercentile)} Latency: `, `${i18nNumber(intl, measurement.percentileLatency)} days`]
     }
+    case 'percentileEffort': {
+      return [`${percentileToText(targetPercentile)} Effort: `, `${i18nNumber(intl, measurement.percentileEffort)} dev-days`]
+    }
     default: {
       return ['', '']
     }
@@ -36,7 +39,9 @@ export const ResponseTimeTrendsChart = (
     metrics={[
       {key: 'percentileLatency', displayName: `${percentileToText(targetPercentile)} Latency`, visible: view === 'detail', type: 'areaspline', stacked: true, color: '#beddd3'},
       {key: 'percentileDuration', displayName: `${percentileToText(targetPercentile)} Duration`, visible: view === 'detail', type: 'areaspline', stacked: true},
+
       {key: 'percentileCycleTime', displayName: `${percentileToText(targetPercentile)} Cycle Time`, visible: true, type:'spline'},
+      {key: 'percentileEffort', displayName: `${percentileToText(targetPercentile)} Effort`, visible: view === 'detail', type:'spline', color: '#0f49b1'},
       {key: 'percentileLeadTime', displayName: `${percentileToText(targetPercentile)} Lead Time`, visible: view === 'detail', type: 'spline'},
     ]}
     measurementPeriod={measurementPeriod}
