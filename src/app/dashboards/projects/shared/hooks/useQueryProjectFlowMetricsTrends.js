@@ -94,6 +94,7 @@ export function useQueryProjectFlowMetricsTrends(
                 workItemsWithCommits
                 earliestClosedDate
                 latestClosedDate
+                targetPercentile
             }
         }
      }

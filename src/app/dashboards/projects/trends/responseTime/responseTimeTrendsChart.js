@@ -1,21 +1,21 @@
 import React from 'react';
-import {i18nDate, i18nNumber} from "../../../../helpers/utility";
+import {i18nDate, i18nNumber, percentileToText} from "../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../shared/views/measurementTrend/measurementTrendLineChart";
 
 
-function getSelectedMetricDisplay(measurement, seriesKey, intl) {
+function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
-    case 'avgCycleTime': {
-      return ['Avg. Cycle Time: ', `${i18nNumber(intl, measurement.avgCycleTime)} days`]
+    case 'percentileCycleTime': {
+      return [`${percentileToText(targetPercentile)} Cycle Time: `, `${i18nNumber(intl, measurement.percentileCycleTime)} days`]
     }
-    case 'avgLeadTime': {
-      return ['Avg. Lead Time: ', `${i18nNumber(intl, measurement.avgLeadTime)} days`]
+    case 'percentileLeadTime': {
+      return [`${percentileToText(targetPercentile)} Lead Time: `, `${i18nNumber(intl, measurement.percentileLeadTime)} days`]
     }
-    case 'avgDuration': {
-      return ['Avg. Duration: ', `${i18nNumber(intl, measurement.avgDuration)} days`]
+    case 'percentileDuration': {
+      return [`${percentileToText(targetPercentile)} Duration: `, `${i18nNumber(intl, measurement.percentileDuration)} days`]
     }
-    case 'avgLatency': {
-      return ['Avg. Latency: ', `${i18nNumber(intl, measurement.avgLatency)} days`]
+    case 'percentileLatency': {
+      return [`${percentileToText(targetPercentile)} Latency: `, `${i18nNumber(intl, measurement.percentileLatency)} days`]
     }
 
   }
@@ -23,6 +23,7 @@ function getSelectedMetricDisplay(measurement, seriesKey, intl) {
 export const ResponseTimeTrendsChart = (
   {
     flowMetricsTrends,
+    targetPercentile,
     measurementPeriod,
     measurementWindow,
     view
@@ -30,10 +31,10 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'avgLatency', displayName: 'Avg. Latency', visible: view === 'detail', type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'avgDuration', displayName: 'Avg. Duration', visible: view === 'detail', type: 'areaspline', stacked: true},
-      {key: 'avgCycleTime', displayName: 'Avg. Cycle Time', visible: true, type:'spline'},
-      {key: 'avgLeadTime', displayName: 'Avg. Lead Time', visible: view === 'detail', type: 'spline'},
+      {key: 'percentileLatency', displayName: `${percentileToText(targetPercentile)} Latency`, visible: view === 'detail', type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'percentileDuration', displayName: `${percentileToText(targetPercentile)} Duration`, visible: view === 'detail', type: 'areaspline', stacked: true},
+      {key: 'percentileCycleTime', displayName: `${percentileToText(targetPercentile)} Cycle Time`, visible: true, type:'spline'},
+      {key: 'percentileLeadTime', displayName: `${percentileToText(targetPercentile)} Lead Time`, visible: view === 'detail', type: 'spline'},
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
@@ -43,13 +44,9 @@ export const ResponseTimeTrendsChart = (
       legendText: 'Specs',
       yAxisUom: 'Days',
       plotBands: {
-        metric: 'avgCycleTime'
+        metric: 'percentileCycleTime'
       },
-      yAxisNormalization: {
-        metric: 'avgLeadTime',
-        minScale: 0,
-        maxScale: 1,
-      },
+
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
 
@@ -58,7 +55,7 @@ export const ResponseTimeTrendsChart = (
               header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
               body:
                 [
-                  getSelectedMetricDisplay(measurement, seriesKey, intl)
+                  getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
                   ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} work items`],

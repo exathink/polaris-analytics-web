@@ -15,6 +15,7 @@ export const ProjectResponseTimeTrendsView = ({
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          targetPercentile={targetPercentile}
           view={view}
         />
       </VizItem>
