@@ -120,7 +120,9 @@ export const MeasurementTrendLineChart = Chart({
             })
           ).sort(
             (m1, m2) => m1.x - m2.x
-          )
+          ),
+          stacking: metric.stacked? 'normal' : null,
+          color: metric.color
         })
       );
 
