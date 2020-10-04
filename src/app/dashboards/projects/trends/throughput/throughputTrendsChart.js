@@ -11,8 +11,9 @@ export const ThroughputTrendsChart = ({
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: 'workItemsWithCommits', displayName: 'Specs Closed', visible: true, type: 'spline'},
         {key: 'workItemsInScope', displayName: 'Total Closed', visible: view === 'detail', type: 'spline'},
+        {key: 'workItemsWithCommits', displayName: 'Specs Closed', visible: true, type: 'spline'},
+
       ]}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
