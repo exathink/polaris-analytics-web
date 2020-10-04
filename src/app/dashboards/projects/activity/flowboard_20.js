@@ -83,81 +83,6 @@ export const dashboard = ({viewerContext}) => (
               <DashboardRow h='12%'>
                 <DashboardWidget
                   w={0.20}
-                  name="team"
-                  title={'Team'}
-                  subtitle={`30 days`}
-                  render={
-                    () =>
-                      <ProjectActivitySummaryWidget
-                        instanceKey={key}
-                        days={30}
-                        latestCommit={latestCommit}
-                      />
-                  }
-                />
-                <DashboardWidget
-                  w={0.13}
-                  name="traceability"
-                  title={'Traceability'}
-                  subtitle={'30 Days'}
-                  hideTitlesInDetailView={'true'}
-                  render={
-                    ({view}) =>
-                      <ProjectTraceabilityTrendsWidget
-                        instanceKey={key}
-                        measurementWindow={30}
-                        days={7}
-                        samplingFrequency={7}
-                        context={context}
-                        view={view}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        latestCommit={latestCommit}
-                        asStatistic={{title: 'Current'}}
-                        target={0.9}
-                      />
-                  }
-                  showDetail={true}
-                />
-                <DashboardWidget
-                  w={0.37}
-                  name="alignment"
-                  title={'Flow Mix'}
-                  subtitle={'30 days'}
-                  styles={{
-                    controlContainer: {
-                      width: '27%'
-                    }
-                  }}
-                  controls={
-                    [
-                      ({view}) => (
-                        view !== 'detail' &&
-                          <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
-                      )
-                    ]
-                  }
-
-                  render={
-                    ({view}) =>
-                      <ProjectFlowMixTrendsWidget
-                        instanceKey={key}
-                        measurementWindow={30}
-                        days={7}
-                        samplingFrequency={7}
-                        context={context}
-                        view={view}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        latestCommit={latestCommit}
-                        specsOnly={specsOnly}
-                        asStatistic={true}
-
-                      />
-                  }
-                  hideTitlesInDetailView={true}
-                  showDetail={true}
-                />
-                <DashboardWidget
-                  w={0.20}
                   name="response-time-sla"
                   title={'Response Time'}
                   subtitle={"30 Days"}
@@ -199,6 +124,83 @@ export const dashboard = ({viewerContext}) => (
                     showDetail={true}
                   />
                 }
+
+                <DashboardWidget
+                  w={0.37}
+                  name="alignment"
+                  title={'Flow Mix'}
+                  subtitle={'30 days'}
+                  styles={{
+                    controlContainer: {
+                      width: '27%'
+                    }
+                  }}
+                  controls={
+                    [
+                      ({view}) => (
+                        view !== 'detail' &&
+                          <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
+                      )
+                    ]
+                  }
+
+                  render={
+                    ({view}) =>
+                      <ProjectFlowMixTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={30}
+                        days={7}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        specsOnly={specsOnly}
+                        asStatistic={true}
+
+                      />
+                  }
+                  hideTitlesInDetailView={true}
+                  showDetail={true}
+                />
+
+                <DashboardWidget
+                  w={0.20}
+                  name="capacity"
+                  title={'Capacity'}
+                  subtitle={`30 days`}
+                  render={
+                    () =>
+                      <ProjectActivitySummaryWidget
+                        instanceKey={key}
+                        days={30}
+                        latestCommit={latestCommit}
+                      />
+                  }
+                />
+                <DashboardWidget
+                  w={0.13}
+                  name="traceability"
+                  title={'Traceability'}
+                  subtitle={'30 Days'}
+                  hideTitlesInDetailView={'true'}
+                  render={
+                    ({view}) =>
+                      <ProjectTraceabilityTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={30}
+                        days={7}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        asStatistic={{title: 'Current'}}
+                        target={0.9}
+                      />
+                  }
+                  showDetail={true}
+                />
 
               </DashboardRow>
 
