@@ -110,6 +110,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   <EffortCarousel
                     currentMeasurement={current}
                     previousMeasurement={previous}
+                    targetPercentile={cycleTimeTargetPercentile || targetPercentile}
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>

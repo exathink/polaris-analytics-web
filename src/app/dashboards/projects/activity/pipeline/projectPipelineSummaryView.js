@@ -68,6 +68,7 @@ const PipelineSummaryView = withViewerContext((
           <VizItem w={0.3}>
             <EffortCarousel
               currentMeasurement={pipelineCycleMetrics}
+              targetPercentile={cycleTimeTargetPercentile || targetPercentile}
             />
           </VizItem>
           <VizItem w={0.3}>

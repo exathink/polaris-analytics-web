@@ -26,6 +26,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 total_effort,
                 avg_effort,
                 max_effort,
+                percentile_effort,
                 avg_duration,
                 max_duration,
                 percentile_duration,
@@ -61,6 +62,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
                 totalEffort
                 avgEffort
                 maxEffort
+                percentileEffort
                 percentileDuration
                 avgDuration
                 maxDuration
