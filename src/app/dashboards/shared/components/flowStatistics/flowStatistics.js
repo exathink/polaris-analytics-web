@@ -120,6 +120,20 @@ export const AvgEffort = ({currentMeasurement, previousMeasurement, good, target
   />
 );
 
+export const PercentileEffort = ({currentMeasurement, previousMeasurement, good, target, targetPercentile, deltaThreshold}) => (
+  <FlowStatistic
+    title={<span>{'Effort'}<sup> {percentileToText(targetPercentile)} </sup></span>}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'percentileEffort'}
+    precision={1}
+    uom={'Dev-Days'}
+    good={TrendIndicator.isNegative}
+    deltaThreshold={deltaThreshold}
+    target={target}
+  />
+);
+
 export const MaxEffort = ({currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
   <FlowStatistic
     title={<span>{'Effort'}<sup> {'Max'} </sup></span>}
@@ -355,6 +369,13 @@ export const LeadTimeCarousel = ({title, currentMeasurement, previousMeasurement
 export const EffortCarousel = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <TotalEffort
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <PercentileEffort
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}
