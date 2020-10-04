@@ -30,9 +30,9 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
+      {key: 'avgLatency', displayName: 'Avg. Latency', visible: view === 'detail', type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'avgDuration', displayName: 'Avg. Duration', visible: view === 'detail', type: 'areaspline', stacked: true},
       {key: 'avgCycleTime', displayName: 'Avg. Cycle Time', visible: true, type:'spline'},
-      {key: 'avgLatency', displayName: 'Avg. Latency', visible: view === 'detail', type: 'spline'},
-      {key: 'avgDuration', displayName: 'Avg. Duration', visible: view ==='detail', type: 'spline'},
       {key: 'avgLeadTime', displayName: 'Avg. Lead Time', visible: view === 'detail', type: 'spline'},
     ]}
     measurementPeriod={measurementPeriod}
