@@ -15,7 +15,7 @@ export class HumanizedDateView extends React.Component {
 
   resetText() {
     const display = fromNow(this.props.dateValue)
-    if (this.state.text != display) {
+    if (this.state.text !== display) {
       this.setState({text: display})
     }
 
