@@ -15,8 +15,6 @@ import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
-import {Box, Flex} from "reflexbox";
-import {Checkbox} from "antd";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 

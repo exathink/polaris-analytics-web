@@ -1,7 +1,6 @@
 import React from 'react';
 import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentage} from "../../../../helpers/utility";
 
 import {FlowMixTrendsChart} from "./flowMixTrendsChart";

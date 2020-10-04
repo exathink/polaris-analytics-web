@@ -17,6 +17,9 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     case 'percentileLatency': {
       return [`${percentileToText(targetPercentile)} Latency: `, `${i18nNumber(intl, measurement.percentileLatency)} days`]
     }
+    default: {
+      return ['', '']
+    }
 
   }
 }
