@@ -209,50 +209,6 @@ export const dashboard = ({viewerContext}) => (
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
-                    w={0.29}
-                    name="pipeline"
-                    title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
-                    render={
-                      ({view}) =>
-                        <ProjectPipelineWidget
-                          instanceKey={key}
-                          specsOnly={specsOnly}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={responseTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          view={view}
-                          context={context}
-                        />
-                    }
-                    showDetail={true}
-                    hideTitlesInDetailView={true}
-                  />
-                }
-                <DashboardWidget
-                  w={0.36}
-                  name="pipeline-funnel"
-
-                  render={
-                    ({view}) =>
-                      <ProjectPipelineFunnelWidget
-                        instanceKey={key}
-                        context={context}
-                        workItemScope={workItemScope}
-                        setWorkItemScope={setWorkItemScope}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        latestCommit={latestCommit}
-                        days={30}
-                        view={view}
-                      />
-                  }
-                  showDetail={true}
-                />
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
                     w={0.34}
                     name="flow-metrics"
                     title={"Flow Metrics"}
@@ -280,6 +236,52 @@ export const dashboard = ({viewerContext}) => (
                   />
 
                 }
+                <DashboardWidget
+                  w={0.36}
+                  name="pipeline-funnel"
+
+                  render={
+                    ({view}) =>
+                      <ProjectPipelineFunnelWidget
+                        instanceKey={key}
+                        context={context}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        days={30}
+                        view={view}
+                      />
+                  }
+                  showDetail={true}
+                />
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={0.29}
+                    name="pipeline"
+                    title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
+                    render={
+                      ({view}) =>
+                        <ProjectPipelineWidget
+                          instanceKey={key}
+                          specsOnly={specsOnly}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          view={view}
+                          context={context}
+                        />
+                    }
+                    showDetail={true}
+                    hideTitlesInDetailView={true}
+                  />
+                }
+
+
               </DashboardRow>
               <DashboardRow h={'54%'}
                             title={'Latest Activity'}
