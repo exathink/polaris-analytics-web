@@ -3,6 +3,7 @@ import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
+import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
 
 export const ProjectResponseTimeTrendsWidget = (
   {
@@ -17,21 +18,22 @@ export const ProjectResponseTimeTrendsWidget = (
     targetPercentile,
     pollInterval
   }) => {
-    const {loading, error, data} = useQueryProjectFlowMetricsTrends(
-      {
-        instanceKey: instanceKey,
-        days: days,
-        measurementWindow: measurementWindow,
-        samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile,
-        specsOnly: true,
-        referenceString: latestWorkItemEvent,
-      }
-    );
-    if (loading) return <Loading/>;
-    if (error) return null;
-    const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
-    return (
+  const {loading, error, data} = useQueryProjectFlowMetricsTrends(
+    {
+      instanceKey: instanceKey,
+      days: days,
+      measurementWindow: measurementWindow,
+      samplingFrequency: samplingFrequency,
+      targetPercentile: targetPercentile,
+      specsOnly: true,
+      referenceString: latestWorkItemEvent,
+    }
+  );
+  if (loading) return <Loading/>;
+  if (error) return null;
+  const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
+  return (
+    view === 'primary' ?
       <ProjectResponseTimeTrendsView
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}
@@ -39,5 +41,16 @@ export const ProjectResponseTimeTrendsWidget = (
         measurementPeriod={days}
         view={view}
       />
-    )
+      :
+      <ProjectResponseTimeTrendsDetailDashboard
+        instanceKey={instanceKey}
+        measurementWindow={measurementWindow}
+        days={days}
+        samplingFrequency={samplingFrequency}
+        targetPercentile={targetPercentile}
+        context={context}
+        view={view}
+        latestWorkItemEvent={latestWorkItemEvent}
+      />
+  )
 }
