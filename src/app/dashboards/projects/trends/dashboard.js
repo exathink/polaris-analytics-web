@@ -10,6 +10,7 @@ import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectFlowMixTrendsWidget} from "./flowMix";
+import {ProjectCapacityTrendsWidget} from "./capacity";
 
 const dashboard_id = 'dashboards.trends.projects.dashboard.instance';
 const dashboard = ({viewerContext}) => (
@@ -76,12 +77,23 @@ const dashboard = ({viewerContext}) => (
                 />
                 <DashboardWidget
                   w={1/3}
-                  name="-"
+                  name="capacity"
                   render={
                     ({view}) =>
-                      null
+                      <ProjectCapacityTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={30}
+                        days={45}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
 
+                        target={0.9}
+                      />
                   }
+                  showDetail={true}
                 />
               </DashboardRow>
 

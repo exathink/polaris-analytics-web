@@ -2,6 +2,7 @@ import React from 'react';
 import {FlowStatistic, CommitDaysCarousel} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {percentage} from "../../../../helpers/utility";
+import {CapacityTrendsChart} from "./capacityTrendsChart";
 
 export const ProjectCapacityTrendsStatsView = (
   {
@@ -55,5 +56,7 @@ export const ProjectCapacityTrendsView = (
         {...{capacityTrends, measurementPeriod, measurementWindow, target}  }
       />
       :
-      null
+      <CapacityTrendsChart
+        {...{capacityTrends,measurementPeriod, measurementWindow, target}}
+      />
 )

@@ -184,6 +184,7 @@ export const dashboard = ({viewerContext}) => (
                         target={0.9}
                       />
                   }
+                  showDetail={true}
                 />
                 <DashboardWidget
                   w={0.13}
