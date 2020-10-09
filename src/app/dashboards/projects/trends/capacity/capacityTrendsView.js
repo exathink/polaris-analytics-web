@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
+import {FlowStatistic, CommitDaysCarousel} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {percentage} from "../../../../helpers/utility";
 
@@ -29,13 +29,9 @@ export const ProjectCapacityTrendsStatsView = (
         />
       </VizItem>
       <VizItem w={0.5}>
-        <FlowStatistic
-          title={'Commit Days'}
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          metric={'avgCommitDays'}
-          uom={' '}
-          precision={1}
+        <CommitDaysCarousel
+          current={current}
+          previous={previous}
           target={target}
         />
       </VizItem>
