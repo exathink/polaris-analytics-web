@@ -1,29 +1,31 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
+
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../shared/components/trendingControlBar/trendingControlBar";
+import {ProjectResponseTimeTrendsWidget} from "../responseTime";
+import {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget";
 
-const dashboard_id = 'dashboards.trends.projects.response-time.detail';
+const dashboard_id = 'dashboards.trends.projects.capacity.detail';
 
-
-export const ProjectResponseTimeTrendsDetailDashboard = (
+export const ProjectCapacityTrendsDetailDashboard = (
   {
-
     instanceKey,
     view,
     context,
     showAll,
     latestWorkItemEvent,
+    latestCommit,
     days,
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    target,
+    asStatistic,
     pollInterval
-  }
-) => {
+  }) => {
 
   const [
     [daysRange, setDaysRange],
@@ -31,13 +33,14 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     [frequencyRange, setFrequencyRange]
   ] = useTrendsControlBarState(45, 30, 7);
 
+
   return (
     <Dashboard
       dashboard={dashboard_id}
     >
       <DashboardRow
         h={1}
-        title={`Response Time Trends`}
+        title={`Capacity Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
           getTrendsControlBarControls(
@@ -51,19 +54,17 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
       >
         <DashboardWidget
           w={1}
-          name="response-time-trends"
+          name="capacity-trends-detail"
           render={
             ({view}) =>
-              <ProjectResponseTimeTrendsWidget
+              <ProjectCapacityTrendsWidget
                 instanceKey={instanceKey}
-
                 view={view}
-
                 latestWorkItemEvent={latestWorkItemEvent}
+                latestCommit={latestCommit}
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
-                targetPercentile={targetPercentile}
               />
           }
           showDetail={false}

@@ -48,7 +48,6 @@ export const ProjectCapacityTrendsView = (
     measurementWindow,
     asStatistic,
     view,
-    showCounts,
     target,
   }) => (
     asStatistic ?

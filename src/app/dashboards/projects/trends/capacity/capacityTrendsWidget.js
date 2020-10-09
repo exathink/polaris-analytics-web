@@ -4,7 +4,7 @@ import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectCapacityTrends} from "./useQueryProjectCapacityTrends";
 import {ProjectCapacityTrendsView} from "./capacityTrendsView";
-
+import {ProjectCapacityTrendsDetailDashboard} from "./capacityTrendsDetailDashboard";
 
 export const ProjectCapacityTrendsWidget = (
   {
@@ -47,7 +47,8 @@ export const ProjectCapacityTrendsWidget = (
 
       />
       :
-      null
-
+      <ProjectCapacityTrendsDetailDashboard
+        {...{instanceKey, days, measurementWindow, samplingFrequency, target}}
+      />
   )
 }
