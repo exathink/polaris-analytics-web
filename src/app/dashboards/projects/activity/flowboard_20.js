@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-
-import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
@@ -16,7 +14,6 @@ import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWor
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
-import {ProjectTraceabilityTrendsDetailDashboard} from "../trends/traceability/traceabilityTrendsDetailDashboard";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 

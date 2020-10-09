@@ -5,7 +5,6 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectResponseTimeTrendsWidget} from "../responseTime";
 import {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget";
 
 const dashboard_id = 'dashboards.trends.projects.capacity.detail';
