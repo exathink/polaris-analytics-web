@@ -15,6 +15,8 @@ import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
+import {ProjectCapacityTrendsWidget} from "../trends/capacity";
+import {ProjectTraceabilityTrendsDetailDashboard} from "../trends/traceability/traceabilityTrendsDetailDashboard";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -168,11 +170,18 @@ export const dashboard = ({viewerContext}) => (
                   title={'Capacity'}
                   subtitle={`30 days`}
                   render={
-                    () =>
-                      <ProjectActivitySummaryWidget
+                    ({view}) =>
+                      <ProjectCapacityTrendsWidget
                         instanceKey={key}
-                        days={30}
+                        measurementWindow={30}
+                        days={7}
+                        samplingFrequency={7}
+                        context={context}
+                        view={view}
+                        latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
+                        asStatistic={true}
+                        target={0.9}
                       />
                   }
                 />

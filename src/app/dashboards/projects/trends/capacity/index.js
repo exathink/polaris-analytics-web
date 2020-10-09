@@ -1,0 +1,1 @@
+export {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget"
