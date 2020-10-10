@@ -9,7 +9,7 @@ export function useQueryProjectCapacityTrends(
     days,
     measurementWindow,
     samplingFrequency,
-    specsOnly,
+    showContributorDetail,
     referenceString
   }) {
   return useQuery(
@@ -20,6 +20,7 @@ export function useQueryProjectCapacityTrends(
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
           $before: DateTime,
+          $showContributorDetail: Boolean,
           $referenceString: String,
           ) {
       project(
@@ -30,6 +31,7 @@ export function useQueryProjectCapacityTrends(
               days: $days,
               measurementWindow: $measurementWindow,
               samplingFrequency: $samplingFrequency,
+              showContributorDetail: $showContributorDetail
             },
             referenceString: $referenceString,
             ) {
@@ -50,6 +52,7 @@ export function useQueryProjectCapacityTrends(
         key: instanceKey,
         days: days,
         before: before,
+        showContributorDetail: showContributorDetail,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         referenceString: referenceString,

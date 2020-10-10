@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 
 import {
@@ -6,6 +6,8 @@ import {
   useTrendsControlBarState
 } from "../../../shared/components/trendingControlBar/trendingControlBar";
 import {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget";
+import {Box, Flex} from "reflexbox";
+import {Checkbox} from "antd";
 
 const dashboard_id = 'dashboards.trends.projects.capacity.detail';
 
@@ -26,6 +28,8 @@ export const ProjectCapacityTrendsDetailDashboard = (
     pollInterval
   }) => {
 
+  const [showContributorDetail, setShowContributorDetail] = useState(true);
+
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -41,14 +45,31 @@ export const ProjectCapacityTrendsDetailDashboard = (
         h={1}
         title={`Capacity Trends`}
         subTitle={`Last ${daysRange} days`}
-        controls={
-          getTrendsControlBarControls(
+        controls={[
+
+          ...getTrendsControlBarControls(
             [
               [daysRange, setDaysRange],
               [measurementWindowRange, setMeasurementWindowRange],
               [frequencyRange, setFrequencyRange]
             ]
-          )
+          ),
+          () => (
+            <div style={{padding: "10px", minWidth:'300px', marginLeft: '30px'}}>
+              <Flex align={'right'}>
+                <Box pr={2} w={"100%"}>
+                  <Checkbox
+                    enabled={true}
+                    checked={showContributorDetail}
+                    onChange={e => setShowContributorDetail(e.target.checked)}
+                  >
+                    Show Contributor Detail
+                  </Checkbox>
+                </Box>
+              </Flex>
+            </div>
+          ),
+          ]
         }
       >
         <DashboardWidget
@@ -64,6 +85,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
+                showContributorDetail={showContributorDetail}
               />
           }
           showDetail={false}

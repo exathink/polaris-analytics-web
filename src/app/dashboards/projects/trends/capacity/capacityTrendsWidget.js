@@ -11,7 +11,7 @@ export const ProjectCapacityTrendsWidget = (
     instanceKey,
     view,
     context,
-    showAll,
+    showContributorDetail,
     latestWorkItemEvent,
     latestCommit,
     days,
@@ -29,6 +29,7 @@ export const ProjectCapacityTrendsWidget = (
       days: days,
       measurementWindow: measurementWindow,
       samplingFrequency: samplingFrequency,
+      showContributorDetail: showContributorDetail,
     }
   );
   if (loading) return <Loading/>;
