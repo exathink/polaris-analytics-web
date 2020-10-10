@@ -43,6 +43,12 @@ export function useQueryProjectCapacityTrends(
                 minCommitDays
                 maxCommitDays
             }
+            contributorDetail {
+                measurementDate
+                contributorKey
+                contributorName
+                totalCommitDays
+            }
         }
      }
   `,

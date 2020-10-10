@@ -14,7 +14,6 @@ export const ProjectCapacityTrendsStatsView = (
   const [current, previous] = capacityTrends;
 
 
-
   return (
     <VizRow h={"100%"}>
       <VizItem w={0.5}>
@@ -43,18 +42,27 @@ export const ProjectCapacityTrendsStatsView = (
 export const ProjectCapacityTrendsView = (
   {
     capacityTrends,
+    contributorDetail,
+    showContributorDetail,
     measurementPeriod,
     measurementWindow,
     asStatistic,
     view,
     target,
   }) => (
-    asStatistic ?
-      <ProjectCapacityTrendsStatsView
-        {...{capacityTrends, measurementPeriod, measurementWindow, target}  }
-      />
-      :
-      <CapacityTrendsChart
-        {...{capacityTrends,measurementPeriod, measurementWindow, target}}
-      />
+  asStatistic ?
+    <ProjectCapacityTrendsStatsView
+      {...{capacityTrends, measurementPeriod, measurementWindow, target}}
+    />
+    :
+    <CapacityTrendsChart
+      {...{
+        capacityTrends,
+        contributorDetail,
+        showContributorDetail,
+        measurementPeriod,
+        measurementWindow,
+        target
+      }}
+    />
 )

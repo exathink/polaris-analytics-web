@@ -99,32 +99,37 @@ function getYAxisRange(config, measurements) {
   return {}
 }
 
+export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
+  const series = metrics.map(
+    (metric, index) => ({
+      key: metric.key,
+      id: metric.key,
+      type: metric.type,
+      name: metric.displayName,
+      visible: metric.visible,
+      data: measurements.map(
+        measurement => ({
+          x: toMoment(measurement.measurementDate, true).valueOf(),
+          y: metric.value ? metric.value(measurement) : measurement[metric.key],
+          measurement: measurement
+        })
+      ).sort(
+        (m1, m2) => m1.x - m2.x
+      ),
+      stacking: metric.stacked ? 'normal' : null,
+      color: metric.color
+    })
+  );
+  return series;
+}
+
 export const MeasurementTrendLineChart = Chart({
     chartUpdateProps: props => pick(props, 'measurements', 'metrics', 'config', 'measurementWindow', 'measurementPeriod'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points,
     getConfig: ({measurements, metrics, measurementPeriod, measurementWindow, config, intl}) => {
 
-      const series = metrics.map(
-        (metric, index) => ({
-          key: metric.key,
-          id: metric.key,
-          type: metric.type,
-          name: metric.displayName,
-          visible: metric.visible,
-          data: measurements.map(
-            measurement => ({
-              x: toMoment(measurement.measurementDate, true).valueOf(),
-              y: metric.value ? metric.value(measurement) : measurement[metric.key],
-              measurement: measurement
-            })
-          ).sort(
-            (m1, m2) => m1.x - m2.x
-          ),
-          stacking: metric.stacked? 'normal' : null,
-          color: metric.color
-        })
-      );
+      const series = getMeasurementTrendSeriesForMetrics(metrics, measurements);
 
       const {min: yAxisMin, max: yAxisMax} = getYAxisRange(config, measurements, metrics);
 

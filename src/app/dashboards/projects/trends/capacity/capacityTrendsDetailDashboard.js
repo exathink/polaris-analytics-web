@@ -16,7 +16,6 @@ export const ProjectCapacityTrendsDetailDashboard = (
     instanceKey,
     view,
     context,
-    showAll,
     latestWorkItemEvent,
     latestCommit,
     days,
@@ -50,8 +49,8 @@ export const ProjectCapacityTrendsDetailDashboard = (
           ...getTrendsControlBarControls(
             [
               [daysRange, setDaysRange],
-              [measurementWindowRange, setMeasurementWindowRange],
-              [frequencyRange, setFrequencyRange]
+              [measurementWindowRange, setMeasurementWindowRange, [7,30]],
+              [frequencyRange, setFrequencyRange, [7,30]]
             ]
           ),
           () => (
@@ -80,6 +79,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
               <ProjectCapacityTrendsWidget
                 instanceKey={instanceKey}
                 view={view}
+                showAllTrends={true}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
                 days={daysRange}

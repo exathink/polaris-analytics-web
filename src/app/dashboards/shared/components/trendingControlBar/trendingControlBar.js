@@ -18,9 +18,9 @@ export function useTrendsControlBarState(days, measurementWindow, samplingFreque
 
 export function getTrendsControlBarControls(
   [
-    [daysRange, setDaysRange],
-    [measurementWindowRange, setMeasurementWindowRange],
-    [frequencyRange, setFrequencyRange]
+    [daysRange, setDaysRange, daysMarks],
+    [measurementWindowRange, setMeasurementWindowRange, measurementWindowMarks],
+    [frequencyRange, setFrequencyRange, frequencyRangeMarks]
   ]
 ) {
   return [
@@ -29,7 +29,7 @@ export function getTrendsControlBarControls(
         <DaysRangeSlider
           initialDays={daysRange}
           setDaysRange={setDaysRange}
-          range={SIX_MONTHS}
+          range={daysMarks || SIX_MONTHS}
         />
       </div>
     ,
@@ -39,7 +39,7 @@ export function getTrendsControlBarControls(
           title={'Frequency'}
           initialDays={frequencyRange}
           setDaysRange={setFrequencyRange}
-          range={[1, 7, 14, 30]}
+          range={frequencyRangeMarks || [1, 7, 14, 30]}
         />
       </div>
     ,
@@ -49,7 +49,7 @@ export function getTrendsControlBarControls(
           title={'Window'}
           initialDays={measurementWindowRange}
           setDaysRange={setMeasurementWindowRange}
-          range={[1, 7, 14, 30]}
+          range={measurementWindowMarks || [1, 7, 14, 30]}
         />
       </div>
     ,
