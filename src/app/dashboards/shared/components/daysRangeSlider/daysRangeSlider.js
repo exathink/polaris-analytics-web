@@ -27,7 +27,7 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
     <Box pr={2} w={"100%"}>
       <Slider
         defaultValue={initialDays || 1}
-        min={1}
+        min={(range && range[0]) || 1}
         max={(range && range[range.length -1] )|| 60}
         marks={getMarks(range || SIXTY_DAYS)}
         included={true}

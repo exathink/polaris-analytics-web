@@ -310,6 +310,73 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
   />
 );
 
+// ---
+//  Commit Days
+// ----
+
+export const CommitDays = ({title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
+  <FlowStatistic
+    title={title || <span>{displayName}<sup> {superScript} </sup></span>}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={metric}
+    uom={' '}
+    precision={1}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    target={target}
+  />
+);
+
+export const AvgCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'avgCommitDays'}
+    displayName={'Commit Days'}
+    superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const MinCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'minCommitDays'}
+    displayName={'Commit Days'}
+    superScript={'Min'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const MaxCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'maxCommitDays'}
+    displayName={'Commit Days'}
+    superScript={'Max'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const TotalCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'totalCommitDays'}
+    displayName={'Commit Days'}
+    superScript={'Total'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+
 // ----------------
 // Metrics Carousels
 // ----------------
@@ -486,6 +553,35 @@ export const TraceabilityCarousel = ({title, current, previous, target, deltaThr
         precision={0}
         valueStyle={{color: colors.good}}
         suffix={'%'}
+      />
+    </ComponentCarousel>
+  )
+
+export const CommitDaysCarousel = ({current, previous, target, deltaThreshold, disabled=false, tickInterval = 3000}) => (
+    <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
+      <TotalCommitDays
+        currentMeasurement={current}
+        previousMeasurement={previous}
+        target={target}
+        deltaThreshold={deltaThreshold}
+      />
+      <AvgCommitDays
+        currentMeasurement={current}
+        previousMeasurement={previous}
+        target={target}
+        deltaThreshold={deltaThreshold}
+      />
+      <MaxCommitDays
+        currentMeasurement={current}
+        previousMeasurement={previous}
+        target={target}
+        deltaThreshold={deltaThreshold}
+      />
+      <MinCommitDays
+        currentMeasurement={current}
+        previousMeasurement={previous}
+        target={target}
+        deltaThreshold={deltaThreshold}
       />
     </ComponentCarousel>
   )
