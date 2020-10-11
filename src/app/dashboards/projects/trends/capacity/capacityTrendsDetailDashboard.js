@@ -49,8 +49,8 @@ export const ProjectCapacityTrendsDetailDashboard = (
           ...getTrendsControlBarControls(
             [
               [daysRange, setDaysRange],
-              [measurementWindowRange, setMeasurementWindowRange, [7,30]],
-              [frequencyRange, setFrequencyRange, [7,30]]
+              [measurementWindowRange, setMeasurementWindowRange, [1,7,30]],
+              [frequencyRange, setFrequencyRange, [1,7,30]]
             ]
           ),
           () => (
