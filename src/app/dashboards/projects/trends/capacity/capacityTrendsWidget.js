@@ -12,6 +12,7 @@ export const ProjectCapacityTrendsWidget = (
     view,
     context,
     showContributorDetail,
+    showEffort,
     latestWorkItemEvent,
     latestCommit,
     days,
@@ -42,7 +43,7 @@ export const ProjectCapacityTrendsWidget = (
         contributorDetail={contributorDetail}
         cycleMetricsTrends={cycleMetricsTrends}
         showContributorDetail={showContributorDetail}
-
+        showEffort={showEffort}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
         asStatistic={asStatistic}

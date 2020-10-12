@@ -28,6 +28,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
   }) => {
 
   const [showContributorDetail, setShowContributorDetail] = useState(true);
+  const [showEffort, setShowEffort] = useState(false);
 
   const [
     [daysRange, setDaysRange],
@@ -54,7 +55,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
             ]
           ),
           () => (
-            <div style={{padding: "10px", minWidth:'300px', marginLeft: '30px'}}>
+            <div style={{padding: "10px", minWidth:'200px', marginLeft: '15px'}}>
               <Flex align={'right'}>
                 <Box pr={2} w={"100%"}>
                   <Checkbox
@@ -62,12 +63,28 @@ export const ProjectCapacityTrendsDetailDashboard = (
                     checked={showContributorDetail}
                     onChange={e => setShowContributorDetail(e.target.checked)}
                   >
-                    Show Contributor Detail
+                    Show Contributors
                   </Checkbox>
                 </Box>
               </Flex>
             </div>
           ),
+          () => (
+            <div style={{padding: "10px", minWidth:'150px'}}>
+              <Flex align={'right'}>
+                <Box pr={2} w={"100%"}>
+                  <Checkbox
+                    enabled={true}
+                    checked={showEffort}
+                    onChange={e => setShowEffort(e.target.checked)}
+                  >
+                    Show Effort
+                  </Checkbox>
+                </Box>
+              </Flex>
+            </div>
+          ),
+
           ]
         }
       >
@@ -86,6 +103,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
                 showContributorDetail={showContributorDetail}
+                showEffort={showEffort}
               />
           }
           showDetail={false}

@@ -11,7 +11,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail, measurementWindow, measurementPeriod, specsOnly, showCounts, intl}) => {
+  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl}) => {
 
     // One series per contributor
     let contributorDetailSeries = []
@@ -61,11 +61,14 @@ const CapacityTrendsWithContributorDetailChart = Chart({
       capacityTrends
     );
 
-    const cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics([
-        {key: 'totalEffort', displayName: 'Total Effort', visible: false, type: 'areaspline', color: '#4c84ec'}
-      ],
-      cycleMetricsTrends
-    );
+    let cycleMetricsTrendsSeries = [];
+    if (showEffort) {
+      cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics([
+          {key: 'totalEffort', displayName: 'Total Effort', visible: true, type: 'areaspline', color: '#4c84ec'}
+        ],
+        cycleMetricsTrends
+      );
+    }
 
     return {
       chart: {
@@ -93,7 +96,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
           id: 'commit-days',
           type: 'linear',
           title: {
-            text: `Days`
+            text: `Commit Days`
           },
 
         },
@@ -118,7 +121,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
                 [`Total Commit Days`, `${intl.formatNumber(this.point.y)}`],
               ]
             } : this.point.series.name === 'Total Effort' ?  {
-              header: `Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+              header: `Total Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
@@ -143,6 +146,7 @@ export const CapacityTrendsChart = (
     contributorDetail,
     cycleMetricsTrends,
     showContributorDetail,
+    showEffort,
     measurementPeriod,
     measurementWindow,
     view
@@ -153,6 +157,7 @@ export const CapacityTrendsChart = (
     capacityTrends,
     contributorDetail,
     showContributorDetail,
+    showEffort,
     cycleMetricsTrends,
     measurementWindow,
     measurementPeriod
