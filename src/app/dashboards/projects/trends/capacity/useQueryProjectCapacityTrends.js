@@ -25,7 +25,7 @@ export function useQueryProjectCapacityTrends(
           ) {
       project(
             key: $key, 
-            interfaces: [CapacityTrends],
+            interfaces: [CapacityTrends, CycleMetricsTrends],
              capacityTrendsArgs: {
               before: $before,
               days: $days,
@@ -33,6 +33,15 @@ export function useQueryProjectCapacityTrends(
               samplingFrequency: $samplingFrequency,
               showContributorDetail: $showContributorDetail
             },
+            cycleMetricsTrendsArgs: {
+                before: $before,
+                days: $days,
+                measurementWindow: $measurementWindow,
+                samplingFrequency: $samplingFrequency,
+                metrics: [
+                    total_effort
+                ]
+            }
             referenceString: $referenceString,
             ) {
             capacityTrends {   
@@ -48,6 +57,10 @@ export function useQueryProjectCapacityTrends(
                 contributorKey
                 contributorName
                 totalCommitDays
+            }
+            cycleMetricsTrends {
+                measurementDate
+                totalEffort
             }
         }
      }

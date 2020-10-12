@@ -43,6 +43,7 @@ export const ProjectCapacityTrendsView = (
   {
     capacityTrends,
     contributorDetail,
+    cycleMetricsTrends,
     showContributorDetail,
     measurementPeriod,
     measurementWindow,
@@ -59,6 +60,7 @@ export const ProjectCapacityTrendsView = (
       {...{
         capacityTrends,
         contributorDetail,
+        cycleMetricsTrends,
         showContributorDetail,
         measurementPeriod,
         measurementWindow,
