@@ -34,12 +34,13 @@ export const ProjectCapacityTrendsWidget = (
   );
   if (loading) return <Loading/>;
   if (error) return null;
-  const {capacityTrends, contributorDetail} = data['project'];
+  const {capacityTrends, contributorDetail, cycleMetricsTrends} = data['project'];
   return (
     view !== 'detail' ?
       <ProjectCapacityTrendsView
         capacityTrends={capacityTrends}
         contributorDetail={contributorDetail}
+        cycleMetricsTrends={cycleMetricsTrends}
         showContributorDetail={showContributorDetail}
 
         measurementWindow={measurementWindow}
