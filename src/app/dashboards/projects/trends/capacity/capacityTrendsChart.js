@@ -5,6 +5,18 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../shared/config";
 
+function fteEquivalent(measurementWindow) {
+  switch (measurementWindow) {
+    case 7: return 5;
+
+    case 30: return 20;
+
+    default: return null;
+
+  }
+}
+
+
 
 const CapacityTrendsWithContributorDetailChart = Chart({
   chartUpdateProps: props => props,
@@ -54,6 +66,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
     }
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
+        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Baseline', visible: false, type: 'spline', color: '#8d9196'},
         {key: 'totalCommitDays', displayName: 'Total Commit Days', visible: true, type: 'spline', color: '#0f49b1'},
         {key: 'avgCommitDays', displayName: 'Avg Commit Days', visible: true, type: 'spline', },
 
