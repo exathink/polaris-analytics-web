@@ -32,7 +32,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
-  ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
+  ] = useTrendsControlBarState(45, 30, 7);
 
   return (
     <Dashboard id={dashboard_id}>
