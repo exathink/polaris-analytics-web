@@ -132,16 +132,25 @@ const CapacityTrendsWithContributorDetailChart = Chart({
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Total Commit Days`, `${intl.formatNumber(this.point.y)}`],
+                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+
               ]
             } : this.point.series.name === 'Total Effort' ?  {
               header: `Total Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
-            } : {
+            } : this.point.series.name === 'Avg Commit Days' ? {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Avg Commit Days`, `${intl.formatNumber(this.point.y)}`],
+                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+              ]
+            } : {
+              header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+              body: [
+                [`Baseline`, `${intl.formatNumber(this.point.y)} Commit Days`],
+                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             }
           )
