@@ -120,6 +120,13 @@ export function human_span(date_a, date_b) {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : 'Less than a month';
 }
 
+export function diff_in_days(date_a, date_b) {
+  const moment_a = moment(date_a);
+  const moment_b = moment(date_b);
+  const span = moment.duration(moment_a.diff(moment_b));
+  return span.days();
+}
+
 export function elide(str, length) {
   return str.length < length ? str : `${str.substring(0, length)} ...`
 }
