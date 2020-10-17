@@ -113,7 +113,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
                   name="flow-metrics"
-                  title={"Flow Metrics"}
+                  title={"Closed"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
                   render={
@@ -162,7 +162,7 @@ export const dashboard = ({viewerContext}) => (
             <DashboardRow h='30%' title={" "}>
               <DashboardWidget
                 w={1 / 3}
-                name="most-active-work-items"
+                name="engineering"
                 render={
                   ({view}) =>
                     <ProjectPipelineCycleTimeLatencyWidget
@@ -198,7 +198,7 @@ export const dashboard = ({viewerContext}) => (
               />
               <DashboardWidget
                 w={1 / 3}
-                name="most-active-work-items"
+                name="delivery"
                 render={
                   ({view}) =>
                     <ProjectPipelineCycleTimeLatencyWidget
