@@ -175,6 +175,7 @@ export const dashboard = ({viewerContext}) => (
                         stageName={'Engineering'}
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
                         cycleTimeTarget={7}
+
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         targetPercentile={0.70}
@@ -212,6 +213,7 @@ export const dashboard = ({viewerContext}) => (
                         stateTypes={[WorkItemStateTypes.deliver]}
                         groupByState={true}
                         cycleTimeTarget={15}
+                        latencyTarget={1}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         targetPercentile={0.70}
