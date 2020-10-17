@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick} from "../../../../helpers/utility";
+import {buildIndex, pick, elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getWorkItemDurations} from "./shared";
 
@@ -51,7 +51,7 @@ function getSeriesByStateType(workItems) {
   );
 }
 
-function getSeriesByState(workItems) {
+function getSeriesByState(workItems, view) {
   // We group the work items into series by state.
   const workItemsByState = buildIndex(workItems, workItem => workItem.state);
 
@@ -63,7 +63,7 @@ function getSeriesByState(workItems) {
         type: 'scatter',
         key: `${state}`,
         id: `${state}`,
-        name: state,
+        name: view === 'primary' ? elide(state, 10) : state,
         marker: {
 
           symbol: 'circle'
@@ -102,7 +102,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, shortTooltip, intl}) => {
+  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, shortTooltip, intl, view}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
@@ -114,7 +114,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
     const targetLatency = latencyTarget || (cycleTimeTarget && cycleTimeTarget * 0.1) || null;
 
     const cycleTimeVsLatencySeries = groupByState ?
-      getSeriesByState(workItemsWithAggregateDurations)
+      getSeriesByState(workItemsWithAggregateDurations, view)
       : getSeriesByStateType(workItemsWithAggregateDurations);
 
     return {
@@ -175,7 +175,9 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         title: {
           text: 'Latency in Days'
         },
-        min: Math.min(minLatency, targetLatency - 0.5),
+        // We need this rigmarole here because the min value cannot be 0 for
+        // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
+        min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
         plotLines: targetLatency ? [
           {
             color: 'red',
