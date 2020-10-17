@@ -94,6 +94,15 @@ export const WorkItemTypeDisplayName = {
   pull_request: 'Pull Request'
 }
 
+export const WorkItemStateTypes = {
+  backlog: 'backlog',
+  open: 'open',
+  build: 'wip',
+  deliver: 'complete',
+  closed: 'closed'
+}
+
+
 export const WorkItemStateTypeSortOrder = {
   unmapped: -1,
   backlog: 0,
@@ -115,7 +124,7 @@ export const WorkItemStateTypeDisplayName = {
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
-  open: '#069a99',
+  open: '#c4ab49',
   wip: '#2f9a32',
   complete: '#47479a',
   closed: '#7824b5'
