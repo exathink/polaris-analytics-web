@@ -36,6 +36,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     workItems.length > 0 &&
       <ProjectPipelineCycleTimeLatencyView
         stageName={stageName}
+        specsOnly={specsOnly}
         workItems={workItems}
         stateTypes={stateTypes}
         groupByState={groupByState}

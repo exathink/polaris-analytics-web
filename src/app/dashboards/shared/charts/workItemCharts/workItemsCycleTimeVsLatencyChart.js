@@ -88,21 +88,21 @@ function getSeriesByState(workItems, view) {
   );
 }
 
-function getTitle(workItems, stageName) {
+function getTitle(workItems, stageName, specsOnly) {
   const count = workItems.length;
-  const countDisplay = `${count} ${count === 1 ? 'Work Item' : 'Work Items'}`;
+  const countDisplay = `${count} ${count === 1 ? specsOnly ? 'Spec' : 'Work Item' : specsOnly ? 'Specs' :'Work Items'}`;
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
 
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems', 'stateTypes', 'stageName', 'groupByState', 'cycleTimeTarget')
+    pick(props, 'workItems', 'stateTypes', 'stageName', 'groupByState', 'cycleTimeTarget', 'specsOnly')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, shortTooltip, intl, view}) => {
+  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, intl, view}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
@@ -127,7 +127,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
       },
       title: {
-        text: getTitle(workItemsWithAggregateDurations, stageName),
+        text: getTitle(workItemsWithAggregateDurations, stageName, specsOnly),
         align: 'left',
       },
       subtitle: {
@@ -237,6 +237,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         layout: 'vertical',
         verticalAlign: 'middle',
         itemMarginBottom: 3,
+        enabled: workItemsWithAggregateDurations.length > 0
 
       },
     }

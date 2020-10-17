@@ -11,6 +11,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     groupByState,
     cycleTimeTarget,
     latencyTarget,
+    specsOnly,
     view,
     context
   }
@@ -22,6 +23,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
         <WorkItemsCycleTimeVsLatencyChart
           view={view}
           stageName={stageName}
+          specsOnly={specsOnly}
           workItems={workItems}
           stateTypes={stateTypes}
           groupByState={groupByState}
