@@ -172,7 +172,7 @@ export const dashboard = ({viewerContext}) => (
                     <ProjectPipelineCycleTimeLatencyWidget
                       instanceKey={key}
                         view={view}
-                        title={"Work Items in Engineering"}
+                        stageName={'Engineering'}
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
                         cycleTimeTarget={7}
                         context={context}
@@ -207,7 +207,7 @@ export const dashboard = ({viewerContext}) => (
                     <ProjectPipelineCycleTimeLatencyWidget
                       instanceKey={key}
                         view={view}
-                        title={"Work Items in Delivery"}
+                        stageName={'Delivery'}
 
                         stateTypes={[WorkItemStateTypes.deliver]}
                         groupByState={true}

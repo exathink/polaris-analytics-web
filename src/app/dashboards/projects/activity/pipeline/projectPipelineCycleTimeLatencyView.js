@@ -5,8 +5,7 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 
 export const ProjectPipelineCycleTimeLatencyView = (
   {
-    title,
-    subTitle,
+    stageName,
     workItems,
     stateTypes,
     groupByState,
@@ -22,8 +21,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     <VizRow h={1}>
       <VizItem w={1}>
         <WorkItemsCycleTimeVsLatencyChart
-          title={title}
-          subTitle={subTitle}
+          stageName={stageName}
           workItems={workItems}
           stateTypes={stateTypes}
           groupByState={groupByState}

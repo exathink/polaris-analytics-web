@@ -14,8 +14,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     days,
     targetPercentile,
     cycleTimeTarget,
-    title,
-    subTitle,
+    stageName,
     groupByState,
 
     view,
@@ -36,8 +35,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   return (
     workItems.length > 0 &&
       <ProjectPipelineCycleTimeLatencyView
-        title={title}
-        subTitle={subTitle}
+        stageName={stageName}
         workItems={workItems}
         stateTypes={stateTypes}
         groupByState={groupByState}
