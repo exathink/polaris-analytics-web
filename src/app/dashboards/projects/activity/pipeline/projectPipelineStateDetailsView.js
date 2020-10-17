@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemsDurationsByPhaseChart";
+import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemCharts/workItemsDurationsByPhaseChart";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../shared/config";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";

@@ -1,7 +1,8 @@
-import {Chart, tooltipHtml} from "../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, daysFromNow, fromNow, pick, toMoment, diff_in_days} from "../../../helpers/utility";
-import {PlotLines} from "../../projects/activity/shared/chartParts";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
+import {PlotLines} from "../../../projects/activity/shared/chartParts";
+import {getWorkItemDurations} from "./shared";
 
 import {
   assignWorkItemStateColor,
@@ -12,7 +13,7 @@ import {
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
   WorkItemTypeSortOrder
-} from "../config";
+} from "../../config";
 
 function getMaxDays(workItems, projectCycleMetrics) {
   return workItems.reduce(
@@ -140,6 +141,8 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
   );
 }
 
+
+
 export const WorkItemsDurationsByPhaseChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'workItems', 'projectCycleMetrics', 'groupBy', 'stateType')
@@ -149,21 +152,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
 
   getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, singleWorkItemMode, title, shortTooltip,  intl}) => {
 
-    const workItemsWithAggregateDurations = workItems.map( workItem => {
-    const workItemStateDetails = workItem.workItemStateDetails;
-    const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
-    return {
-      ...workItem,
-      timeInState: daysFromNow(toMoment(latestTransitionDate)),
-      duration: workItemStateDetails.commitCount ? diff_in_days(workItemStateDetails.latestCommit, workItemStateDetails.earliestCommit) : null,
-      latency: workItemStateDetails.commitCount ? daysFromNow(workItemStateDetails.latestCommit) : null,
-      timeInStateDisplay: fromNow(latestTransitionDate),
-      timeInPriorStates: workItemStateDetails.currentDeliveryCycleDurations.reduce(
-        (total, duration) => total + duration.daysInState
-        , 0
-      )
-    }
-  })
+    const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
 
     let series = [];
     if (groupBy === 'state') {
@@ -209,7 +198,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, commitCount, duration, latency, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, duration, latency, workItemStateDetails} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
