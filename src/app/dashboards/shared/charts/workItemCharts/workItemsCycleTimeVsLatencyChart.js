@@ -8,7 +8,8 @@ import {
   WorkItemStateTypeSortOrder,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName, WorkItemTypeScatterRadius
+  WorkItemTypeDisplayName, WorkItemTypeScatterRadius,
+  Symbols,
 } from "../../config";
 
 
@@ -27,8 +28,7 @@ function getSeriesByStateType(workItems) {
         name: `${WorkItemStateTypeDisplayName[stateType]}`,
         color: `${WorkItemStateTypeColor[stateType]}`,
         marker: {
-          symbol: 'circle',
-          radius: 5
+          symbol: 'circle'
         },
         allowPointSelect: true,
         data: workItemsByStateType[stateType].map(
@@ -36,6 +36,10 @@ function getSeriesByStateType(workItems) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
+              marker : {
+                symbol: Symbols.WorkItemType[workItem.workItemType],
+                radius: WorkItemTypeScatterRadius[workItem.workItemType],
+              },
               workItem: workItem
             }
           )
@@ -60,8 +64,8 @@ function getSeriesByState(workItems) {
         id: `${state}`,
         name: state,
         marker: {
-          symbol: 'circle',
-          radius: 5
+
+          symbol: 'circle'
         },
         allowPointSelect: true,
         data: workItemsByState[state].map(
@@ -69,6 +73,10 @@ function getSeriesByState(workItems) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
+              marker : {
+                symbol: Symbols.WorkItemType[workItem.workItemType],
+
+              },
               workItem: workItem
             }
           )
@@ -81,9 +89,10 @@ function getSeriesByState(workItems) {
 
 function getTitle(workItems, stageName) {
   const count = workItems.length;
-  const countDisplay =  `${count} ${count === 1 ? 'Work Item' : 'Work Items'}`;
+  const countDisplay = `${count} ${count === 1 ? 'Work Item' : 'Work Items'}`;
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
+
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
@@ -92,13 +101,16 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes,  groupByState, cycleTimeTarget, stageName, shortTooltip, intl}) => {
+  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, shortTooltip, intl}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
     );
 
-    const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems=>workItems.cycleTime));
+    const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
+    const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));
+
+    const targetLatency = latencyTarget || (cycleTimeTarget && cycleTimeTarget * 0.1) || null;
 
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations)
@@ -162,13 +174,25 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         title: {
           text: 'Latency in Days'
         },
+        min: Math.min(minLatency, targetLatency - 0.5),
+        plotLines: targetLatency ? [
+          {
+            color: 'red',
+            value: targetLatency,
+            dashStyle: 'longdashdot',
+            width: 1,
+            label: {
+              text: ` T= ${intl.formatNumber(targetLatency)}`,
+            }
+          }
+        ] : null,
       },
 
       tooltip: {
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay,  cycleTime, duration, latency, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, workItemStateDetails} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
@@ -182,9 +206,9 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               stateType !== 'closed' ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ['', ''],
 
               [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-              workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``,``],
+              workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
               duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ['', ''],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['',''],
+              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['', ''],
 
 
             ]
