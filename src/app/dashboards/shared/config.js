@@ -50,7 +50,7 @@ export const Symbols = {
     bug: 'circle',
     pullRequest: 'triangle-down',
     epic: 'diamond',
-    task: 'square'
+    task: 'triangle'
   }
 }
 
@@ -79,9 +79,9 @@ export const WorkItemTypeScatterRadius = {
   issue: 5,
   story: 5,
   bug: 5,
-  task: 4,
+  task: 5,
   subtask: 3,
-  pull_request: 4
+  pull_request: 5
 }
 
 export const WorkItemTypeDisplayName = {
