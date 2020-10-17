@@ -532,7 +532,13 @@ export const ThroughputCarousel = ({title, currentMeasurement, previousMeasureme
     <LatestClosed
       currentMeasurement={currentMeasurement}
     />
-
+    <TotalEffort
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
   </ComponentCarousel>
 )
 
