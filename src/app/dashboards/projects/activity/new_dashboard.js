@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
@@ -69,6 +69,8 @@ export const dashboard = ({viewerContext}) => (
        }) => {
 
         const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
+        const [workItemScope, setWorkItemScope] = useState('specs');
+        const specsOnly = workItemScope === 'specs';
 
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
@@ -101,6 +103,7 @@ export const dashboard = ({viewerContext}) => (
                         days={30}
                         targetPercentile={0.70}
                         view={view}
+                        specsOnly={specsOnly}
                         context={context}
                       />
                   }
@@ -124,6 +127,7 @@ export const dashboard = ({viewerContext}) => (
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         stateMappingIndex={stateMappingIndex}
+                        specsOnly={specsOnly}
                         days={30}
                         measurementWindow={30}
                         targetPercentile={0.70}
@@ -171,7 +175,7 @@ export const dashboard = ({viewerContext}) => (
                         stageName={'Engineering'}
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
                         cycleTimeTarget={7}
-
+                        specsOnly={specsOnly}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         targetPercentile={0.70}
@@ -190,6 +194,8 @@ export const dashboard = ({viewerContext}) => (
                       context={context}
                       latestWorkItemEvent={latestWorkItemEvent}
                       latestCommit={latestCommit}
+                      workItemScope={workItemScope}
+                      setWorkItemScope={setWorkItemScope}
                       days={30}
                       view={view}
                     />
@@ -213,6 +219,7 @@ export const dashboard = ({viewerContext}) => (
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         targetPercentile={0.70}
+                        specsOnly={specsOnly}
                     />
                 }
                 showDetail={true}

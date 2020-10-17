@@ -7,7 +7,6 @@ import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
