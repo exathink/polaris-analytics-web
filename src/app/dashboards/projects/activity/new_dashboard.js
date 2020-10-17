@@ -7,16 +7,12 @@ import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pi
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
 
-import {
-  DimensionCommitsNavigatorWidget,
-  DimensionMostActiveChildrenWidget
-} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectPipelineFunnelWidget} from "./funnel";

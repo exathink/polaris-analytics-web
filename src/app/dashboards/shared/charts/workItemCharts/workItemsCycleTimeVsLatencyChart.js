@@ -1,15 +1,16 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {pick, buildIndex, capitalizeFirstLetter} from "../../../../helpers/utility";
+import {buildIndex, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getWorkItemDurations} from "./shared";
 
 import {
   Colors,
-  WorkItemStateTypeSortOrder,
+  Symbols,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName, WorkItemTypeScatterRadius,
-  Symbols,
+  WorkItemStateTypeSortOrder,
+  WorkItemTypeDisplayName,
+  WorkItemTypeScatterRadius,
 } from "../../config";
 
 
