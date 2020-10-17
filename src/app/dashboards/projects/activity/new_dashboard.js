@@ -65,7 +65,8 @@ export const dashboard = ({viewerContext}) => (
            project: {
              key,
              latestWorkItemEvent,
-             latestCommit
+             latestCommit,
+             settings
            },
            context
          }) => {
@@ -73,6 +74,13 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
+
+          const {flowMetricsSettings} = settings;
+          const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
+          const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
+          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
+          const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
+          const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
@@ -113,7 +121,9 @@ export const dashboard = ({viewerContext}) => (
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
-                          targetPercentile={0.70}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                           view={view}
                           specsOnly={specsOnly}
                           context={context}
@@ -142,7 +152,11 @@ export const dashboard = ({viewerContext}) => (
                           specsOnly={specsOnly}
                           days={30}
                           measurementWindow={30}
-                          targetPercentile={0.70}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTarget={leadTimeTarget}
+                          cycleTimeTarget={cycleTimeTarget}
                         />
                     }
                     showDetail={true}
@@ -166,7 +180,7 @@ export const dashboard = ({viewerContext}) => (
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
-                          targetPercentile={0.70}
+                          targetPercentile={cycleTimeConfidenceTarget}
                         />
                     }
                     showDetail={true}
@@ -208,11 +222,11 @@ export const dashboard = ({viewerContext}) => (
                         view={view}
                         stageName={'Engineering'}
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
-                        cycleTimeTarget={7}
+                        cycleTimeTarget={cycleTimeTarget}
                         specsOnly={specsOnly}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
-                        targetPercentile={0.70}
+                        targetPercentile={cycleTimeConfidenceTarget}
                       />
                   }
                   showDetail={true}
@@ -248,11 +262,11 @@ export const dashboard = ({viewerContext}) => (
 
                         stateTypes={[WorkItemStateTypes.deliver]}
                         groupByState={true}
-                        cycleTimeTarget={15}
-                        latencyTarget={1}
+                        cycleTimeTarget={cycleTimeTarget}
+
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
-                        targetPercentile={0.70}
+                        targetPercentile={cycleTimeConfidenceTarget}
                         specsOnly={specsOnly}
                       />
                   }
