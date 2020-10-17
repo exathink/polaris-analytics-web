@@ -249,3 +249,26 @@ export function i18nDateTimeWithMillseconds(intl, dt, format="YYYY-MM-DDTHH:mm:s
 export function percentage(value, total) {
   return (value/(1.0*total))*100
 }
+
+/*
+  Given an array [e1, e2, .. en] return an object whose keys are the
+  unique values of the hashFn applied to elements of the array, and
+  the value of each key is an array containing the elements that hashed to that value.
+  ie: we build an index of the array that partitions the array by the hash values for
+  quick look up by the hash value. For this simple use case, the hashFn must return string values
+  so that they can be used as object keys.
+ */
+export function buildIndex(array, hashFn) {
+  return array.reduce(
+      (result, element) => {
+        const hash = hashFn(element);
+        if (result[hash] != null) {
+          result[hash].push(element)
+        } else {
+          result[hash] = [element]
+        }
+        return result
+      },
+      {}
+    );
+}
