@@ -1,24 +1,20 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-
+import {WorkItemStateTypes} from "../../shared/config";
 import {ProjectActivitySummaryWidget} from "./activitySummary";
-import {ProjectPipelineWidget} from "./pipeline";
+import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
-import {
-  DimensionCommitsNavigatorWidget,
-  DimensionMostActiveChildrenWidget
-} from "../../shared/widgets/accountHierarchy";
+
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import Contributors from "../../contributors/context";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import WorkItems from "../../work_items/context";
 import {ProjectPipelineFunnelWidget} from "./funnel";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
@@ -117,7 +113,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
                   name="flow-metrics"
-                  title={"Flow Metrics"}
+                  title={"Closed"}
                   subtitle={"Last 30 Days"}
                   hideTitlesInDetailView={true}
                   render={
@@ -163,22 +159,22 @@ export const dashboard = ({viewerContext}) => (
 
 
             </DashboardRow>
-            <DashboardRow h='25%' title={" "}>
+            <DashboardRow h='30%' title={" "}>
               <DashboardWidget
                 w={1 / 3}
-                name="most-active-work-items"
+                name="engineering"
                 render={
                   ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'project'}
+                    <ProjectPipelineCycleTimeLatencyWidget
                       instanceKey={key}
-                      childConnection={'recentlyActiveWorkItems'}
-                      context={context}
-                      childContext={WorkItems}
-                      top={10}
-                      latestCommit={latestCommit}
-                      days={1}
-                      view={view}
+                        view={view}
+                        stageName={'Engineering'}
+                        stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
+                        cycleTimeTarget={7}
+
+                        context={context}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        targetPercentile={0.70}
                     />
                 }
                 showDetail={true}
@@ -202,26 +198,28 @@ export const dashboard = ({viewerContext}) => (
               />
               <DashboardWidget
                 w={1 / 3}
-                name="most-active-contributors"
+                name="delivery"
                 render={
                   ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'project'}
+                    <ProjectPipelineCycleTimeLatencyWidget
                       instanceKey={key}
-                      childConnection={'recentlyActiveContributors'}
-                      context={context}
-                      childContext={Contributors}
-                      top={10}
-                      latestCommit={latestCommit}
-                      days={1}
-                      view={view}
+                        view={view}
+                        stageName={'Delivery'}
+
+                        stateTypes={[WorkItemStateTypes.deliver]}
+                        groupByState={true}
+                        cycleTimeTarget={15}
+                        latencyTarget={1}
+                        context={context}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        targetPercentile={0.70}
                     />
                 }
                 showDetail={true}
               />
             </DashboardRow>
-            <DashboardRow h={'55%'}
-              title={'Most Recent Contributions'}
+            <DashboardRow h={'50%'}
+              title={'Latest Commits'}
             >
               <DashboardWidget
                 w={1}

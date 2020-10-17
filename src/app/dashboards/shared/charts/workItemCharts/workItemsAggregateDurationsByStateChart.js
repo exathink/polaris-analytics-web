@@ -1,8 +1,8 @@
-import {Chart, tooltipHtml} from "../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {daysFromNow, pick, toMoment} from "../../../helpers/utility";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {daysFromNow, pick, toMoment} from "../../../../helpers/utility";
 
-import {Colors, WorkItemStateTypeColor, WorkItemTypeSortOrder} from "../config";
+import {Colors, WorkItemStateTypeColor, WorkItemTypeSortOrder} from "../../config";
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (

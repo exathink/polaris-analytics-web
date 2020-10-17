@@ -28,6 +28,9 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
                       stateType
                       daysInState
                     }
+                    earliestCommit
+                    latestCommit    
+                    commitCount
                   }
                   
                 }

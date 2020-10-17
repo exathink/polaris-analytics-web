@@ -1,7 +1,7 @@
 import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemsDurationsByPhaseChart";
-import {WorkItemsAggregateDurationsByStateChart} from "../../../shared/charts/workItemsAggregateDurationsByStateChart";
+import {WorkItemsDurationsByPhaseChart} from "../../../shared/charts/workItemCharts/workItemsDurationsByPhaseChart";
+import {WorkItemsAggregateDurationsByStateChart} from "../../../shared/charts/workItemCharts/workItemsAggregateDurationsByStateChart";
 
 export const WorkItemDurationDetailsView = (
   {

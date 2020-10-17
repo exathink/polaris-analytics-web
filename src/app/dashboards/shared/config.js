@@ -50,7 +50,7 @@ export const Symbols = {
     bug: 'circle',
     pullRequest: 'triangle-down',
     epic: 'diamond',
-    task: 'square'
+    task: 'triangle'
   }
 }
 
@@ -79,9 +79,9 @@ export const WorkItemTypeScatterRadius = {
   issue: 5,
   story: 5,
   bug: 5,
-  task: 4,
+  task: 5,
   subtask: 3,
-  pull_request: 4
+  pull_request: 5
 }
 
 export const WorkItemTypeDisplayName = {
@@ -93,6 +93,15 @@ export const WorkItemTypeDisplayName = {
   subtask: 'Subtask',
   pull_request: 'Pull Request'
 }
+
+export const WorkItemStateTypes = {
+  backlog: 'backlog',
+  open: 'open',
+  build: 'wip',
+  deliver: 'complete',
+  closed: 'closed'
+}
+
 
 export const WorkItemStateTypeSortOrder = {
   unmapped: -1,
@@ -115,7 +124,7 @@ export const WorkItemStateTypeDisplayName = {
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
-  open: '#069a99',
+  open: '#c4ab49',
   wip: '#2f9a32',
   complete: '#47479a',
   closed: '#7824b5'

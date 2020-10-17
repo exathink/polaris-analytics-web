@@ -120,6 +120,13 @@ export function human_span(date_a, date_b) {
   return years+months > 0 ? `${d_years}${(years > 0 ? ', ' : '')}${d_months}` : 'Less than a month';
 }
 
+export function diff_in_days(date_a, date_b) {
+  const moment_a = moment(date_a);
+  const moment_b = moment(date_b);
+  const span = moment.duration(moment_a.diff(moment_b));
+  return span.days();
+}
+
 export function elide(str, length) {
   return str.length < length ? str : `${str.substring(0, length)} ...`
 }
@@ -241,4 +248,27 @@ export function i18nDateTimeWithMillseconds(intl, dt, format="YYYY-MM-DDTHH:mm:s
 
 export function percentage(value, total) {
   return (value/(1.0*total))*100
+}
+
+/*
+  Given an array [e1, e2, .. en] return an object whose keys are the
+  unique values of the hashFn applied to elements of the array, and
+  the value of each key is an array containing the elements that hashed to that value.
+  ie: we build an index of the array that partitions the array by the hash values for
+  quick look up by the hash value. For this simple use case, the hashFn must return string values
+  so that they can be used as object keys.
+ */
+export function buildIndex(array, hashFn) {
+  return array.reduce(
+      (result, element) => {
+        const hash = hashFn(element);
+        if (result[hash] != null) {
+          result[hash].push(element)
+        } else {
+          result[hash] = [element]
+        }
+        return result
+      },
+      {}
+    );
 }
