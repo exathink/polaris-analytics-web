@@ -20,6 +20,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     <VizRow h={1}>
       <VizItem w={1}>
         <WorkItemsCycleTimeVsLatencyChart
+          view={view}
           stageName={stageName}
           workItems={workItems}
           stateTypes={stateTypes}
