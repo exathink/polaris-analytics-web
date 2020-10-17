@@ -12,8 +12,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     latestWorkItemEvent,
     latestCommit,
     days,
-    targetPercentile,
     cycleTimeTarget,
+    latencyTarget,
     stageName,
     groupByState,
 
@@ -39,9 +39,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         workItems={workItems}
         stateTypes={stateTypes}
         groupByState={groupByState}
-
-        targetPercentile={targetPercentile}
         cycleTimeTarget={cycleTimeTarget}
+        latencyTarget={latencyTarget}
         view={view}
         context={context}
       />

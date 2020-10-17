@@ -9,9 +9,8 @@ export const ProjectPipelineCycleTimeLatencyView = (
     workItems,
     stateTypes,
     groupByState,
-
-    targetPercentile,
     cycleTimeTarget,
+    latencyTarget,
     view,
     context
   }
@@ -26,6 +25,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
           stateTypes={stateTypes}
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
+          latencyTarget={latencyTarget}
           onSelectionChange={
             (workItems) => {
               if (workItems.length === 1) {
