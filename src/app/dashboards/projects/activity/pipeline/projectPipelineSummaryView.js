@@ -29,7 +29,7 @@ const PipelineSummaryView = withViewerContext((
   return (
     <div>
       <VizRow h={"50%"}>
-        <VizItem w={flowboard20 ? 0.3 : 0.5}>
+        <VizItem w={flowboard20 ? 0.3 : 0.4}>
           <Statistic
             title={'Wip'}
             value={specsOnly ? `${workItemsWithCommits}` : `${workItemsInScope}` || 0}
@@ -39,7 +39,7 @@ const PipelineSummaryView = withViewerContext((
             suffix={specsOnly ? 'Specs' : 'Items'}
           />
         </VizItem>
-        <VizItem w={flowboard20 ? 0.3 : 0.5}>
+        <VizItem w={flowboard20 ? 0.3 : 0.6}>
           <CycleTimeCarousel
             currentMeasurement={pipelineCycleMetrics}
             targetPercentile={cycleTimeTargetPercentile || targetPercentile}
