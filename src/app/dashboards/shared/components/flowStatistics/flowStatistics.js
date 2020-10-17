@@ -13,9 +13,9 @@ const colors = {
   bad: '#9a3727'
 }
 
-export const FlowStatistic = ({title, currentMeasurement, previousMeasurement,  metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold}) => {
+export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold}) => {
 
-  const value = currentValue || (currentMeasurement && currentMeasurement[metric]) ;
+  const value = currentValue || (currentMeasurement && currentMeasurement[metric]);
   const comp = previousValue || (previousMeasurement && previousMeasurement[metric]);
 
   const color = target && value && good && !good(value - target) ? colors.bad : colors.good
@@ -69,9 +69,9 @@ export const Traceability = ({title, currentMetric, previousMetric, target, delt
 );
 
 
-export const Throughput = ({currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
+export const Throughput = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
   <FlowStatistic
-    title={"Throughput"}
+    title={title || "Throughput"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
@@ -542,52 +542,68 @@ export const ThroughputCarousel = ({title, currentMeasurement, previousMeasureme
   </ComponentCarousel>
 )
 
-export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled=false, tickInterval = 3000}) => (
-    <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
-      <FlowStatistic
-        title={title || "Traceability"}
-        currentValue={current['traceability']*100}
-        previousValue={previous['traceability']*100}
-        uom={'%'}
-        good={TrendIndicator.isPositive}
-        deltaThreshold={deltaThreshold}
-        target={target*100}
-      />
-      <Statistic
-        title={'Target'}
-        value={target * 100}
-        precision={0}
-        valueStyle={{color: colors.good}}
-        suffix={'%'}
-      />
-    </ComponentCarousel>
-  )
+export const WipCarousel = ({title, currentMeasurement, specsOnly, deltaThreshold, tickInterval = 3000}) => (
+  <ComponentCarousel specsOnly={specsOnly} tickInterval={tickInterval}>
+    <Throughput
+      title={'Wip'}
+      currentMeasurement={currentMeasurement}
+      specsOnly={specsOnly}
+    />
+    <AvgDuration
+      currentMeasurement={currentMeasurement}
+    />
+    <TotalEffort
+      currentMeasurement={currentMeasurement}
+    />
+  </ComponentCarousel>
+)
 
-export const CommitDaysCarousel = ({current, previous, target, deltaThreshold, disabled=false, tickInterval = 3000}) => (
-    <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
-      <TotalCommitDays
-        currentMeasurement={current}
-        previousMeasurement={previous}
-        target={target}
-        deltaThreshold={deltaThreshold}
-      />
-      <AvgCommitDays
-        currentMeasurement={current}
-        previousMeasurement={previous}
-        target={target}
-        deltaThreshold={deltaThreshold}
-      />
-      <MaxCommitDays
-        currentMeasurement={current}
-        previousMeasurement={previous}
-        target={target}
-        deltaThreshold={deltaThreshold}
-      />
-      <MinCommitDays
-        currentMeasurement={current}
-        previousMeasurement={previous}
-        target={target}
-        deltaThreshold={deltaThreshold}
-      />
-    </ComponentCarousel>
-  )
+export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
+  <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
+    <FlowStatistic
+      title={title || "Traceability"}
+      currentValue={current['traceability'] * 100}
+      previousValue={previous['traceability'] * 100}
+      uom={'%'}
+      good={TrendIndicator.isPositive}
+      deltaThreshold={deltaThreshold}
+      target={target * 100}
+    />
+    <Statistic
+      title={'Target'}
+      value={target * 100}
+      precision={0}
+      valueStyle={{color: colors.good}}
+      suffix={'%'}
+    />
+  </ComponentCarousel>
+)
+
+export const CommitDaysCarousel = ({current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
+  <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
+    <TotalCommitDays
+      currentMeasurement={current}
+      previousMeasurement={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgCommitDays
+      currentMeasurement={current}
+      previousMeasurement={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxCommitDays
+      currentMeasurement={current}
+      previousMeasurement={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
+    <MinCommitDays
+      currentMeasurement={current}
+      previousMeasurement={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
+  </ComponentCarousel>
+)
