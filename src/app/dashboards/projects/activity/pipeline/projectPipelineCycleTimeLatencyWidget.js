@@ -2,6 +2,7 @@ import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../hooks/useQueryProjectPipelineStateDetails";
 import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
+import {getReferenceString} from "../../../../helpers/utility";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -27,7 +28,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
-    referenceString: latestWorkItemEvent
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading || error) return <Loading/>;
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
