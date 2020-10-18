@@ -198,7 +198,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, duration, latency, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, cycleTime, timeInStateDisplay, latestCommitDisplay,  duration, latency, workItemStateDetails} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
@@ -209,13 +209,15 @@ export const WorkItemsDurationsByPhaseChart = Chart({
               ]
               :
               [
+                [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
                 [`Current State:`, `${state}`],
                 [`Entered:`, `${timeInStateDisplay}`],
                 stateType !== 'closed' ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ['',''],
                 workItemStateDetails.commitCount != null ? [`-----------------`, ``] : ['', ''],
-                workItemStateDetails.commitCount != null ? [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount)}`] : ['', ''],
-                duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ['', ''],
-                latency != null ? [`Latency`, `${intl.formatNumber(latency)} days`] : ['', ''],
+                workItemStateDetails.commitCount != null ? [`Commits: `, `${intl.formatNumber(workItemStateDetails.commitCount)}`] : ['', ''],
+                latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ['', ''],
+                duration != null ? [`Duration: `, `${intl.formatNumber(duration)} days`] : ['', ''],
+                latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ['', ''],
               ]
           })
         }
