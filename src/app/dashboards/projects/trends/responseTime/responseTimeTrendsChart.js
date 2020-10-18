@@ -37,12 +37,12 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'percentileLatency', displayName: `${percentileToText(targetPercentile)} Latency`, visible: false, type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'percentileDuration', displayName: `${percentileToText(targetPercentile)} Duration`, visible: false, type: 'areaspline', stacked: true},
-
-      {key: 'percentileCycleTime', displayName: `${percentileToText(targetPercentile)} Cycle Time`, visible: true, type:'spline'},
-      {key: 'percentileEffort', displayName: `${percentileToText(targetPercentile)} Effort`, visible: false, type:'spline', color: '#0f49b1'},
       {key: 'percentileLeadTime', displayName: `${percentileToText(targetPercentile)} Lead Time`, visible: false, type: 'spline'},
+      {key: 'percentileCycleTime', displayName: `${percentileToText(targetPercentile)} Cycle Time`, visible: true, type:'spline'},
+      {key: 'percentileLatency', displayName: `${percentileToText(targetPercentile)} Delivery L..`, visible: false, type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'percentileDuration', displayName: `${percentileToText(targetPercentile)} Duration`, visible: false, type: 'areaspline', stacked: true},
+      {key: 'percentileEffort', displayName: `${percentileToText(targetPercentile)} Effort`, visible: false, type:'spline', color: '#0f49b1'},
+
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
