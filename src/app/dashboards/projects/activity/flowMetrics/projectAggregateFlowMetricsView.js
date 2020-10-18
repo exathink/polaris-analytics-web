@@ -5,9 +5,11 @@ import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 
 import {
   CycleTimeCarousel,
+  CycleTimeSLACarousel,
   DurationCarousel,
   EffortCarousel,
   LeadTimeCarousel,
+  LeadTimeSLACarousel,
   ThroughputCarousel,
   LatencyCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
@@ -22,90 +24,64 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
     leadTimeTarget,
     cycleTimeTarget,
     cycleMetricsTrends,
-
+    responseTimeConfidenceTrends,
     stateMappingIndex,
     viewerContext
   }
   ) => {
     const trendIndicatorThreshold = viewerContext.trendIndicatorThreshold;
     const [current, previous] = cycleMetricsTrends;
-
+    const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
     return (
       stateMappingIndex.isValid() ?
         <div>
-          {
-            !showAll ?
-              <VizRow h={"50%"}>
-                <VizItem w={0.30}>
-                  <ThroughputCarousel
-                    currentMeasurement={current}
-                    previousMeasurement={previous}
-                    deltaThreshold={trendIndicatorThreshold}
-                    specsOnly={specsOnly}
-                  />
-                </VizItem>
-                {
-                  stateMappingIndex.numInProcessStates() > 0 &&
-                  <VizItem w={0.35}>
-                    <CycleTimeCarousel
-                      currentMeasurement={current}
-                      previousMeasurement={previous}
-                      targetPercentile={cycleTimeTargetPercentile || targetPercentile}
-                      target={cycleTimeTarget}
-                      deltaThreshold={trendIndicatorThreshold}
-                    />
-                  </VizItem>
-                }
-                <VizItem w={0.40}>
-                  <LeadTimeCarousel
-                    currentMeasurement={current}
-                    previousMeasurement={previous}
-                    deltaThreshold={trendIndicatorThreshold}
-                    targetPercentile={leadTimeTargetPercentile || targetPercentile}
-                    target={leadTimeTarget}
-                  />
-                </VizItem>
-              </VizRow>
-              :
-              <VizRow h={"80%"}>
-                <VizItem>
-                  <ThroughputCarousel
-                    currentMeasurement={current}
-                    previousMeasurement={previous}
-                    deltaThreshold={trendIndicatorThreshold}
-                    specsOnly={specsOnly}
-                  />
-                </VizItem>
-                <VizItem>
-                  <LeadTimeCarousel
-                    currentMeasurement={current}
-                    previousMeasurement={previous}
-                    deltaThreshold={trendIndicatorThreshold}
-                    targetPercentile={leadTimeTargetPercentile || targetPercentile}
-                    target={leadTimeTarget}
-                  />
-                </VizItem>
 
-                {
-                  stateMappingIndex.numInProcessStates() > 0 &&
-                  <VizItem>
-                    <CycleTimeCarousel
-                      currentMeasurement={current}
-                      previousMeasurement={previous}
-                      deltaThreshold={trendIndicatorThreshold}
-                      targetPercentile={leadTimeTargetPercentile || targetPercentile}
-                      target={leadTimeTarget}
-                    />
-                  </VizItem>
-                }
-              </VizRow>
+          <VizRow h={"50%"}>
+            <VizItem w={0.30}>
+              <ThroughputCarousel
+                currentMeasurement={current}
+                previousMeasurement={previous}
+                deltaThreshold={trendIndicatorThreshold}
+                specsOnly={specsOnly}
+              />
+            </VizItem>
+            {
+              stateMappingIndex.numInProcessStates() > 0 &&
+              <VizItem w={0.35}>
+                <CycleTimeSLACarousel
+                  currentMeasurement={current}
+                  previousMeasurement={previous}
+                  currentConfidence={currentConfidence}
+                  previousConfidence={previousConfidence}
+                  targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+                  target={cycleTimeTarget}
+                  deltaThreshold={trendIndicatorThreshold}
+                />
+              </VizItem>
+            }
+            <VizItem w={0.40}>
+              <LeadTimeSLACarousel
+                currentMeasurement={current}
+                previousMeasurement={previous}
+                currentConfidence={currentConfidence}
+                previousConfidence={previousConfidence}
+                deltaThreshold={trendIndicatorThreshold}
+                targetPercentile={leadTimeTargetPercentile || targetPercentile}
+                target={leadTimeTarget}
+              />
+            </VizItem>
+          </VizRow>
 
-          }
           {
-            viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) && !showAll ?
+            viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) || showAll ?
 
               <VizRow h={"50%"}
-                      style={{marginTop: '10px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgba(0,0,0,0.1)'}}>
+                      style={{
+                        marginTop: '10px',
+                        borderTopWidth: '1px',
+                        borderTopStyle: 'solid',
+                        borderTopColor: 'rgba(0,0,0,0.1)'
+                      }}>
                 <VizItem w={0.3}>
                   <EffortCarousel
                     currentMeasurement={current}

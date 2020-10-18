@@ -2,7 +2,7 @@ import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView";
 import {ProjectFlowMetricsDetailDashboard} from "./projectFlowMetricsDetailDashboard";
-import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends";
+import {useQueryProjectFlowMetrics} from "./useQueryProjectFlowMetrics";
 
 export const ProjectFlowMetricsWidget = (
   {
@@ -25,10 +25,12 @@ export const ProjectFlowMetricsWidget = (
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   if (view === 'primary') {
-    const {loading, error, data} = useQueryProjectFlowMetricsTrends({
+    const {loading, error, data} = useQueryProjectFlowMetrics({
       instanceKey,
-      leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
-      cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile ,
+      leadTimeTarget,
+      cycleTimeTarget,
+      leadTimeConfidenceTarget: leadTimeTargetPercentile || targetPercentile,
+      cycleTimeConfidenceTarget: cycleTimeTargetPercentile || targetPercentile ,
       days:7,
       measurementWindow:measurementWindow,
       samplingFrequency: 7,
@@ -37,7 +39,7 @@ export const ProjectFlowMetricsWidget = (
     });
     if (loading) return <Loading/>;
     if (error) return null;
-    const {cycleMetricsTrends} = data['project'];
+    const {cycleMetricsTrends, responseTimeConfidenceTrends} = data['project'];
     return (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
@@ -50,6 +52,7 @@ export const ProjectFlowMetricsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={cycleMetricsTrends}
+        responseTimeConfidenceTrends={responseTimeConfidenceTrends}
       />
     )
   } else {
