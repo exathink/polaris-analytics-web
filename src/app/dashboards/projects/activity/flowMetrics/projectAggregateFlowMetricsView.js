@@ -36,7 +36,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
       stateMappingIndex.isValid() ?
         <div>
 
-          <VizRow h={"50%"}>
+          <VizRow h={viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) ? "50%" : "100%"}>
             <VizItem w={0.30}>
               <ThroughputCarousel
                 currentMeasurement={current}
@@ -70,10 +70,48 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 target={leadTimeTarget}
               />
             </VizItem>
+            {
+              showAll &&
+                <VizItem w={0.45} style={{
+                        paddingLeft: '100px',
+                        borderLeftWidth: '1px',
+                        borderLeftStyle: 'solid',
+                        borderLeftColor: 'rgba(0,0,0,0.1)'
+                      }}>
+                  <EffortCarousel
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
+                    targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+                    deltaThreshold={trendIndicatorThreshold}
+                  />
+                </VizItem>
+            }
+            {
+              showAll &&
+                <VizItem w={0.35} >
+                  <DurationCarousel
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
+                    deltaThreshold={trendIndicatorThreshold}
+                    targetPercentile={cycleTimeTargetPercentile}
+                  />
+                </VizItem>
+            }
+            {
+              showAll &&
+                <VizItem w={0.4}>
+                  <LatencyCarousel
+                    currentMeasurement={current}
+                    previousMeasurement={previous}
+                    deltaThreshold={trendIndicatorThreshold}
+                    targetPercentile={cycleTimeTargetPercentile}
+                  />
+                </VizItem>
+            }
           </VizRow>
 
           {
-            specsOnly && (viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) || showAll) ?
+            viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) ?
 
               <VizRow h={"50%"}
                       style={{

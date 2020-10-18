@@ -33,7 +33,7 @@ export const ProjectFlowMetricsDetailDashboard = (
       dashboard={dashboard_id}
     >
       <DashboardRow
-        h={"30%"}
+        h={"20%"}
         title={`${specsOnly? 'Specs' : 'Work Items' } Closed in Last ${daysRange} days`}
         controls={[
           () => (
@@ -56,7 +56,7 @@ export const ProjectFlowMetricsDetailDashboard = (
         ]}
       >
         <DashboardWidget
-          w={0.4}
+          w={1}
           title={"Flow Metrics"}
           subtitle={`${daysRange} days`}
           name="cycle-metrics-summary-detailed"
@@ -80,46 +80,8 @@ export const ProjectFlowMetricsDetailDashboard = (
           }
           showDetail={false}
         />
-        <DashboardWidget
-          w={0.37}
-          name="alignment"
-          title={'Flow Mix'}
-          subtitle={`${daysRange} days`}
-          styles={{
-            controlContainer: {
-              width: '27%'
-            }
-          }}
-          controls={
-            [
-              ({view}) => (
-                view !== 'detail' &&
-                <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
-              )
-            ]
-          }
-
-          render={
-            ({view}) =>
-              <ProjectFlowMixTrendsWidget
-                instanceKey={instanceKey}
-                measurementWindow={daysRange}
-                days={7}
-                samplingFrequency={7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-                specsOnly={specsOnly}
-                asStatistic={true}
-
-              />
-          }
-          hideTitlesInDetailView={true}
-          showDetail={true}
-        />
       </DashboardRow>
-      <DashboardRow h={"65%"}>
+      <DashboardRow h={"75%"}>
         <DashboardWidget
           w={1}
           name="cycle-metrics-delivery-details"
