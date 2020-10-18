@@ -73,7 +73,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
           </VizRow>
 
           {
-            viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) || showAll ?
+            specsOnly && (viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) || showAll) ?
 
               <VizRow h={"50%"}
                       style={{
