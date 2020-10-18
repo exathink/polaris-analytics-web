@@ -177,6 +177,10 @@ export const dashboard = ({viewerContext}) => (
                           stateMappingIndex={stateMappingIndex}
                           days={30}
                           targetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTarget={leadTimeTarget}
+                          cycleTimeTarget={cycleTimeTarget}
                         />
                     }
                     showDetail={true}
