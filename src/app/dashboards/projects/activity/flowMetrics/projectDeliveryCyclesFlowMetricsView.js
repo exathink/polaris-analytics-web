@@ -24,7 +24,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
   const groupings = ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   const [yAxisScale, setYAxisScale] = useState('logarithmic')
-  const [showEpicsAndSubTasks, setShowEpicsAndSubTasks] = useState(false);
+  const [showEpics, setShowEpics] = useState(false);
 
   return (
     <React.Fragment>
@@ -45,28 +45,28 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
         {
           !defectsOnly &&
           <Checkbox
-            checked={showEpicsAndSubTasks}
+            checked={showEpics}
             onChange={
-              e => setShowEpicsAndSubTasks(e.target.checked)
+              e => setShowEpics(e.target.checked)
             }
           >
-            Show Epics & Sub-tasks
+            Show Epics
           </Checkbox>
         }
         {
           !defectsOnly &&
           <GroupingSelector
-            label={"Y-Axis"}
+            label={"View"}
             groupings={
               [
 
                 {
                   key: 'logarithmic',
-                  display: 'Log'
+                  display: 'Normal'
                 },
                 {
                   key: 'linear',
-                  display: 'Linear'
+                  display: 'Outlier'
                 },
               ]
             }
@@ -84,7 +84,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, mode
         projectCycleMetrics={projectCycleMetrics}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
-        showEpicsAndSubTasks={showEpicsAndSubTasks}
+        showEpics={showEpics}
         yAxisScale={yAxisScale}
         onSelectionChange={
           (workItems) => {
