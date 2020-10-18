@@ -5,7 +5,6 @@ import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowM
 import {DaysRangeSlider} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector";
 import {Box, Flex} from "reflexbox";
-import {ProjectFlowMixTrendsWidget} from "../../trends/flowMix";
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
 

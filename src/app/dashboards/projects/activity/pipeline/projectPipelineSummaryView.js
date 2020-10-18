@@ -1,13 +1,12 @@
 import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {
   CycleTimeCarousel,
   DurationCarousel,
   EffortCarousel,
-  LeadTimeCarousel,
   LatencyCarousel,
+  LeadTimeCarousel,
   WipCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
@@ -25,7 +24,6 @@ const PipelineSummaryView = withViewerContext((
     viewerContext
   }
 ) => {
-  const {workItemsWithCommits, workItemsInScope} = pipelineCycleMetrics;
   const flowboard20 = viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20)
   return (
     <div>

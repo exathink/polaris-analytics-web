@@ -4,14 +4,12 @@ import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 
 import {
-  CycleTimeCarousel,
   CycleTimeSLACarousel,
   DurationCarousel,
   EffortCarousel,
-  LeadTimeCarousel,
+  LatencyCarousel,
   LeadTimeSLACarousel,
-  ThroughputCarousel,
-  LatencyCarousel
+  ThroughputCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 
 export const ProjectAggregateFlowMetricsView = withViewerContext((

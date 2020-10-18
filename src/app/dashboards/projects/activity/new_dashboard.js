@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import {FormattedMessage} from 'react-intl';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectActivitySummaryWidget} from "./activitySummary";
 import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
@@ -20,9 +18,7 @@ import {ProjectCapacityTrendsWidget} from "../trends/capacity";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
-const messages = {
-  topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
-};
+
 
 class StateMappingIndex {
   constructor(stateMappings) {
