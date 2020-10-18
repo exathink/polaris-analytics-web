@@ -186,12 +186,12 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
+export const AvgLatency = ({title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgLatency'}
-    displayName={'Latency'}
+    displayName={'Delivery Latency'}
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
@@ -199,24 +199,24 @@ export const AvgLatency = ({currentMeasurement, previousMeasurement, showTrendIn
 );
 
 
-export const PercentileLatency = ({currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
+export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'percentileLatency'}
-    displayName={'Latency'}
+    displayName={title || 'Latency'}
     superScript={percentileToText(targetPercentile)}
     target={target}
     deltaThreshold={deltaThreshold}
   />
 );
 
-export const MaxLatency = ({currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
+export const MaxLatency = ({title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'maxLatency'}
-    displayName={'Latency'}
+    displayName={title || 'Latency'}
     superScript={'Max'}
     target={target}
     deltaThreshold={deltaThreshold}
@@ -576,6 +576,7 @@ export const DurationCarousel = ({title, currentMeasurement, previousMeasurement
 export const LatencyCarousel = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <PercentileLatency
+      title={title}
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}
@@ -583,6 +584,7 @@ export const LatencyCarousel = ({title, currentMeasurement, previousMeasurement,
       deltaThreshold={deltaThreshold}
     />
     <AvgLatency
+      title={title}
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}
@@ -590,6 +592,7 @@ export const LatencyCarousel = ({title, currentMeasurement, previousMeasurement,
       deltaThreshold={deltaThreshold}
     />
     <MaxLatency
+      title={title}
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}

@@ -155,16 +155,24 @@ export const FlowMetricsScatterPlotChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function () {
+          const leadTime = metricsMeta['leadTime'].value(this.point.cycle);
           const cycleTime = metricsMeta['cycleTime'].value(this.point.cycle);
+          const latency = metricsMeta['latency'].value(this.point.cycle);
+          const duration = metricsMeta['duration'].value(this.point.cycle);
           const backlogTime = metricsMeta['backlogTime'].value(this.point.cycle);
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
             body: [
               ['Closed: ', `${formatDateTime(intl, this.point.x)}`],
               [`------`, ``],
-              ['Lead Time: ', `${intl.formatNumber(this.point.cycle.leadTime)} days`],
+              ['Lead Time: ', `${intl.formatNumber(leadTime)} days`],
+              ['Backlog Time: ', backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : 'N/A'],
               ['Cycle Time: ', cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : 'N/A'],
-              ['Backlog Time: ', backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : 'N/A']
+              ['Duration: ', specsOnly ? `${intl.formatNumber(duration)} days` : 'N/A'],
+              ['Delivery Latency: ', specsOnly ? `${intl.formatNumber(latency)} days` : 'N/A'],
+
+
+
             ]
           })
         }

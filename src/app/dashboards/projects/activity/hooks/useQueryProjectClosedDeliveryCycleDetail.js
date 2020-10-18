@@ -35,6 +35,8 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
                       ... on CycleMetrics {
                         leadTime
                         cycleTime
+                        duration
+                        latency
                       }
                   }
                }

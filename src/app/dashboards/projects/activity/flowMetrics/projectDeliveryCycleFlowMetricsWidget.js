@@ -44,7 +44,9 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       'startDate',
       'endDate',
       'leadTime',
-      'cycleTime'
+      'cycleTime',
+      'latency',
+      'duration',
     )
   );
   return (
