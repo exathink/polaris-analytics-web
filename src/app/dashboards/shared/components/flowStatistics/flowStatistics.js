@@ -381,7 +381,51 @@ export const TotalCommitDays = ({currentMeasurement, previousMeasurement, target
 // Metrics Carousels
 // ----------------
 
-export const CycleTimeCarousel = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+export const CycleTimeSLACarousel = ({title, currentMeasurement, previousMeasurement, currentConfidence, previousConfidence, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
+    <FlowStatistic
+      title={<span>{'CycleTime'}<sup>{percentileToText(targetPercentile)} Target</sup></span>}
+      currentMeasurement={currentConfidence}
+      previousMeasurement={previousConfidence}
+      metric={'cycleTimeTarget'}
+      uom={'Days'}
+    />
+    <PercentileCycleTime
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <AvgCycleTime
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxCycleTime
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <FlowStatistic
+      title={<span>{'% at Target'}</span>}
+      currentValue={currentConfidence && (currentConfidence['cycleTimeConfidence'] * 100)}
+      previousValue={previousConfidence && (previousConfidence['cycleTimeConfidence'] * 100)}
+      uom={'%'}
+      precision={2}
+      target={target}
+      good={TrendIndicator.isPositive}
+
+    />
+
+  </ComponentCarousel>
+)
+
+export const CycleTimeCarousel = ({title, currentMeasurement, previousMeasurement, currentConfidence, previousConfidence, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
     <PercentileCycleTime
       currentMeasurement={currentMeasurement}
@@ -433,15 +477,51 @@ export const LeadTimeCarousel = ({title, currentMeasurement, previousMeasurement
   </ComponentCarousel>
 )
 
-export const EffortCarousel = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+export const LeadTimeSLACarousel = ({title, currentMeasurement, previousMeasurement, currentConfidence, previousConfidence, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
-    <TotalEffort
+    <FlowStatistic
+      title={<span>{'LeadTime'}<sup>{percentileToText(targetPercentile)} Target</sup></span>}
+      currentMeasurement={currentConfidence}
+      previousMeasurement={previousConfidence}
+      metric={'leadTimeTarget'}
+      uom={'Days'}
+    />
+    <PercentileLeadTime
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}
       targetPercentile={targetPercentile}
       deltaThreshold={deltaThreshold}
     />
+    <AvgLeadTime
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <MaxLeadTime
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      target={target}
+      targetPercentile={targetPercentile}
+      deltaThreshold={deltaThreshold}
+    />
+    <FlowStatistic
+      title={<span>{'% at Target'}</span>}
+      currentValue={currentConfidence && (currentConfidence['leadTimeConfidence'] * 100)}
+      previousValue={previousConfidence && (previousConfidence['leadTimeConfidence'] * 100)}
+      uom={'%'}
+      precision={2}
+      target={target}
+      good={TrendIndicator.isPositive}
+
+    />
+  </ComponentCarousel>
+)
+
+export const EffortCarousel = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+  <ComponentCarousel tickInterval={tickInterval}>
     <PercentileEffort
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
