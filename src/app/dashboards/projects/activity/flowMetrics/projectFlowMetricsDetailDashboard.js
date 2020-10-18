@@ -14,11 +14,14 @@ export const ProjectFlowMetricsDetailDashboard = (
     instanceKey,
     context,
     latestWorkItemEvent,
+    latestCommit,
     stateMappingIndex,
     days,
-    targetPercentile,
+
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
+    cycleTimeTarget,
+    leadTimeTarget,
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
@@ -30,8 +33,7 @@ export const ProjectFlowMetricsDetailDashboard = (
     >
       <DashboardRow
         h={"20%"}
-        title={`Flow Metrics`}
-        subTitle={`Last ${daysRange} days`}
+        title={`${specsOnly? 'Specs' : 'Work Items' } Closed in Last ${daysRange} days`}
         controls={[
           () => (
             <div style={{minWidth: "300px", padding: "15px"}}>
@@ -43,7 +45,7 @@ export const ProjectFlowMetricsDetailDashboard = (
                   />
                 </Box>
               </Flex>
-              </div>
+            </div>
 
           ),
           () =>
@@ -54,21 +56,24 @@ export const ProjectFlowMetricsDetailDashboard = (
       >
         <DashboardWidget
           w={1}
+          title={"Flow Metrics"}
+          subtitle={`${daysRange} days`}
           name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
               <ProjectFlowMetricsWidget
                 instanceKey={instanceKey}
                 specsOnly={specsOnly}
-                view={view}
                 showAll={true}
+                view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
                 measurementWindow={daysRange}
-                targetPercentile={targetPercentile}
                 leadTimeTargetPercentile={leadTimeTargetPercentile}
                 cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
               />
           }
           showDetail={false}
