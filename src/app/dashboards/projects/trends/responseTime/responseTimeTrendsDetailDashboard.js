@@ -56,9 +56,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
             ({view}) =>
               <ProjectResponseTimeTrendsWidget
                 instanceKey={instanceKey}
-
                 view={view}
-
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
