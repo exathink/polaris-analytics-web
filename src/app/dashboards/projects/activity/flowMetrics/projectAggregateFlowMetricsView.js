@@ -16,7 +16,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
   {
     showAll,
     specsOnly,
-    targetPercentile,
+    
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -51,7 +51,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   previousMeasurement={previous}
                   currentConfidence={currentConfidence}
                   previousConfidence={previousConfidence}
-                  targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+                  targetPercentile={cycleTimeTargetPercentile}
                   target={cycleTimeTarget}
                   deltaThreshold={trendIndicatorThreshold}
                 />
@@ -64,7 +64,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 currentConfidence={currentConfidence}
                 previousConfidence={previousConfidence}
                 deltaThreshold={trendIndicatorThreshold}
-                targetPercentile={leadTimeTargetPercentile || targetPercentile}
+                targetPercentile={leadTimeTargetPercentile}
                 target={leadTimeTarget}
               />
             </VizItem>
@@ -79,7 +79,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   <EffortCarousel
                     currentMeasurement={current}
                     previousMeasurement={previous}
-                    targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+                    targetPercentile={cycleTimeTargetPercentile }
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>
@@ -122,7 +122,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                   <EffortCarousel
                     currentMeasurement={current}
                     previousMeasurement={previous}
-                    targetPercentile={cycleTimeTargetPercentile || targetPercentile}
+                    targetPercentile={cycleTimeTargetPercentile }
                     deltaThreshold={trendIndicatorThreshold}
                   />
                 </VizItem>

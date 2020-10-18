@@ -5,8 +5,8 @@ import {analytics_service} from "../../../../services/graphql";
 
 export function useQueryProjectFlowMetrics(
   {
-    instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeConfidenceTarget,
-    cycleTimeTarget, cycleTimeConfidenceTarget, specsOnly, referenceString
+    instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
+    cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, referenceString
   }
 ) {
   return useQuery(
@@ -17,9 +17,9 @@ export function useQueryProjectFlowMetrics(
             $measurementWindow: Int!,
             $samplingFrequency: Int!,
             $leadTimeTarget: Int!,
-            $leadTimeConfidenceTarget: Float!,
+            $leadTimeTargetPercentile: Float!,
             $cycleTimeTarget: Int!,
-            $cycleTimeConfidenceTarget: Float!,
+            $cycleTimeTargetPercentile: Float!,
             $specsOnly: Boolean,
             $referenceString: String
 
@@ -39,10 +39,10 @@ export function useQueryProjectFlowMetrics(
                     days: $days,
                     measurementWindow: $measurementWindow,
                     samplingFrequency: $samplingFrequency,
-                    leadTimeTargetPercentile: $leadTimeConfidenceTarget,
-                    cycleTimeTargetPercentile: $cycleTimeConfidenceTarget,
-                    durationTargetPercentile: $cycleTimeConfidenceTarget,
-                    latencyTargetPercentile: $cycleTimeConfidenceTarget,
+                    leadTimeTargetPercentile: $leadTimeTargetPercentile,
+                    cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
+                    durationTargetPercentile: $cycleTimeTargetPercentile,
+                    latencyTargetPercentile: $cycleTimeTargetPercentile,
                     specsOnly: $specsOnly,
                     metrics: [
                         avg_lead_time,
@@ -122,9 +122,9 @@ export function useQueryProjectFlowMetrics(
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         leadTimeTarget: leadTimeTarget,
-        leadTimeConfidenceTarget: leadTimeConfidenceTarget,
+        leadTimeTargetPercentile: leadTimeTargetPercentile,
         cycleTimeTarget: cycleTimeTarget,
-        cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
+        cycleTimeTargetPercentile: cycleTimeTargetPercentile,
         specsOnly: specsOnly,
         referenceString: referenceString
       },
