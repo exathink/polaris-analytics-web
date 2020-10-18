@@ -99,6 +99,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               showAll &&
                 <VizItem w={0.4}>
                   <LatencyCarousel
+                    title={'Delivery Latency'}
                     currentMeasurement={current}
                     previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
@@ -136,6 +137,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
                 </VizItem>
                 <VizItem w={0.4}>
                   <LatencyCarousel
+                    title={'Delivery Latency'}
                     currentMeasurement={current}
                     previousMeasurement={previous}
                     deltaThreshold={trendIndicatorThreshold}
