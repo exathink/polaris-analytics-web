@@ -19,6 +19,8 @@ export const ProjectFlowMetricsDetailDashboard = (
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
+    cycleTimeTarget,
+    leadTimeTarget,
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
@@ -53,15 +55,15 @@ export const ProjectFlowMetricsDetailDashboard = (
         ]}
       >
         <DashboardWidget
-          w={1}
+          w={0.4}
           name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
               <ProjectFlowMetricsWidget
                 instanceKey={instanceKey}
                 specsOnly={specsOnly}
-                view={view}
                 showAll={true}
+                view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
@@ -69,6 +71,8 @@ export const ProjectFlowMetricsDetailDashboard = (
                 targetPercentile={targetPercentile}
                 leadTimeTargetPercentile={leadTimeTargetPercentile}
                 cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
               />
           }
           showDetail={false}
