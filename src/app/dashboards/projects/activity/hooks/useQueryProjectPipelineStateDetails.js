@@ -7,34 +7,30 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
     gql`
       query projectPipelineStateDetails($key: String!, $specsOnly: Boolean, $referenceString: String) {
         project(key: $key, referenceString: $referenceString) {
-          workItems (activeOnly: true, interfaces: [WorkItemStateDetails], specsOnly: $specsOnly){
+          id
+          workItems (activeOnly: true, interfaces: [WorkItemStateDetails], specsOnly: $specsOnly, referenceString: $referenceString){
             edges {
               node {
-                
+                id
                 name
                 key
                 displayId
                 workItemType
                 state
                 stateType
-              
-                ... on WorkItemStateDetails {
-                  workItemStateDetails {
-                    currentStateTransition {
-                      eventDate
-                    }
-                    currentDeliveryCycleDurations {
-                      state
-                      stateType
-                      daysInState
-                    }
-                    earliestCommit
-                    latestCommit    
-                    commitCount
+                workItemStateDetails {
+                  currentStateTransition {
+                    eventDate
                   }
-                  
+                  currentDeliveryCycleDurations {
+                    state
+                    stateType
+                    daysInState
+                  }
+                  earliestCommit
+                  latestCommit    
+                  commitCount
                 }
-                
               }
             }
         }

@@ -226,6 +226,7 @@ export const dashboard = ({viewerContext}) => (
                         specsOnly={specsOnly}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
                         targetPercentile={cycleTimeConfidenceTarget}
                       />
                   }
@@ -266,6 +267,7 @@ export const dashboard = ({viewerContext}) => (
 
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
                         targetPercentile={cycleTimeConfidenceTarget}
                         specsOnly={specsOnly}
                       />
