@@ -3,11 +3,13 @@ import {Loading} from "../../../../components/graphql/loading";
 import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
 import {useQueryProjectPipelineCycleMetrics} from "../hooks/useQueryProjectPipelineCycleMetrics";
 import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
+import {getReferenceString} from "../../../../helpers/utility";
 
 export const ProjectPipelineWidget = (
   {
     instanceKey,
     specsOnly,
+    latestCommit,
     latestWorkItemEvent,
     stateMappingIndex,
     days,
@@ -28,7 +30,7 @@ export const ProjectPipelineWidget = (
         leadTimeTargetPercentile,
         cycleTimeTargetPercentile,
         specsOnly: limitToSpecsOnly,
-        referenceString: latestWorkItemEvent
+        referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
       }
     )
     if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;

@@ -114,6 +114,7 @@ export const dashboard = ({viewerContext}) => (
                       ({view}) =>
                         <ProjectPipelineWidget
                           instanceKey={key}
+                          latestCommit={latestCommit}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}
