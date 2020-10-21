@@ -39,7 +39,6 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
   return (
-    workItems.length > 0 &&
       <ProjectPipelineCycleTimeLatencyView
         stageName={stageName}
         specsOnly={specsOnly}
