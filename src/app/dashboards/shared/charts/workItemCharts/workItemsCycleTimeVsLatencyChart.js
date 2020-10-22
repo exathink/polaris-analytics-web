@@ -141,8 +141,8 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         align: 'left',
       },
       xAxis: {
-        type: 'linear',
-        min: 0,
+        type: 'logarithmic',
+        softMin: 0.5,
         max: Math.max(maxCycleTime, cycleTimeTarget || -1),
         visible: true,
         labels: {
@@ -177,6 +177,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         },
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
+
         min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
         plotLines: targetLatency ? [
           {
