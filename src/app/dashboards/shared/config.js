@@ -126,7 +126,7 @@ export const WorkItemStateTypeColor = {
   backlog: '#65b59c',
   open: '#c4ab49',
   wip: '#2f9a32',
-  complete: '#47479a',
+  complete: '#9898db',
   closed: '#7824b5'
 }
 
