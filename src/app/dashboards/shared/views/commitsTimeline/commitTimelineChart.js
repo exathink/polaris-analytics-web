@@ -5,6 +5,7 @@ import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} 
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
+import {WorkItemStateTypeColor, WorkItemTypeDisplayName, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 
 function getDaysSubtitle(days, prefix = 'Last') {
   return days > 1 ? `${prefix} ${days} Days`
@@ -41,7 +42,9 @@ function getWorkItemSummaryText(commit) {
       workItemsSummaryText = "Work Item: None"
     } else if (commit.workItemsSummaries.length === 1) {
       const item = commit.workItemsSummaries[0]
-      workItemsSummaryText = `${snakeToUpperCamel(item.workItemType)}: ${elide(item.name, 50)} (${item.displayId})`
+      workItemsSummaryText = `${item.displayId}: ${elide(item.name, 50)}
+                               <br/>${WorkItemTypeDisplayName[item.workItemType]}  (${WorkItemStateTypeDisplayName[item.stateType]})
+                              <br/>`
     } else {
       workItemsSummaryText = commit.workItemsSummaries.reduce(
         (summary, item, index, workItemsSummaries) =>
@@ -83,6 +86,20 @@ function z_bucket(lines) {
   }
 }
 
+function getYAxisCategoryDisplay(model, commits, categories, category) {
+  if (category === 'workItem') {
+    return categories.map(
+      category => {
+        const [_, __, stateType] = model.mapCategoryToNode(commits, category);
+        const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;`: '';
+        return `<span style="background-color: ${WorkItemStateTypeColor[stateType]}">.</span><span style="margin: 2px;${strikeThrough}">${category}</span>`
+      }
+      );
+  } else {
+    return categories
+  }
+}
+
 export const CommitsTimelineChart = Chart({
   chartUpdateProps:
     (props) => (
@@ -97,7 +114,7 @@ export const CommitsTimelineChart = Chart({
 
   getConfig:
 
-    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, excludeMerges, shortTooltip, markLatest, showScrollbar, onCategoryItemSelected}) => {
+    ({model, context, intl, view, days, before, latestCommit, latest, totalCommits, excludeMerges, shortTooltip, markLatest, showScrollbar, fullScreen, onCategoryItemSelected}) => {
       const commits = model.commits;
       const categoryIndex = model.categoriesIndex;
       const category = model.groupBy
@@ -172,7 +189,7 @@ export const CommitsTimelineChart = Chart({
         xAxis: {
           type: 'datetime',
           title: {
-            text: 'Timeline <br/> <span style="font-size: 9px; color: #666; font-style: italic">Bubble Size: Source Lines Changed</span>'
+            text: 'Timeline <br/> <span style="font-size: 9px; color: #666; font-style: italic;" >Bubble Size: Source Lines Changed</span>'
           },
           max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1, 'h').valueOf() : moment().add(1, 'h').valueOf()
         },
@@ -181,7 +198,7 @@ export const CommitsTimelineChart = Chart({
           title: {
             text: category !== 'workItem' ? capitalizeFirstLetter(category) : `Spec`
           },
-          categories: categories,
+          categories: getYAxisCategoryDisplay(model, commits, categories, category),
           scrollbar: {
             enabled: view === 'detail' && showScrollbar,
             showFull: false
@@ -195,6 +212,7 @@ export const CommitsTimelineChart = Chart({
             style: {
               cursor: 'pointer'
             },
+            useHTML: true,
             events: {
               click: function () {
                 const cat_index = this.axis.categories.indexOf(this.value);
@@ -213,6 +231,7 @@ export const CommitsTimelineChart = Chart({
         },
         tooltip: {
           useHTML: true,
+          outside: category === 'workItem' && !fullScreen,
           hideDelay: 50,
           formatter: function () {
             const workItemHeader = `${getWorkItemSummaryText(this.point.commit)} <br/>`;
