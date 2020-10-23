@@ -20,6 +20,8 @@ class NavigationContextProvider extends React.Component {
       showOptionalTopics: this.showOptionalTopics.bind(this),
       setPolling: this.setPolling.bind(this),
       polling: true,
+      fullScreen: false,
+      setFullScreen: this.setFullScreen.bind(this),
     }
   }
 
@@ -52,6 +54,13 @@ class NavigationContextProvider extends React.Component {
     this.setState({
       ...this.state,
       polling: polling
+    })
+  }
+
+  setFullScreen(fullScreen){
+    this.setState({
+      ...this.state,
+      fullScreen: fullScreen
     })
   }
 

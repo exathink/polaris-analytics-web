@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import screenfull from 'screenfull';
+import {withNavigationContext} from "../../app/framework/navigation/components/withNavigationContext";
 
 class FullscreenBtn extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activated: false
-    };
   }
 
-  toggleFullscreen() {
-    const  { componentId } = this.props;
 
-    screenfull.toggle(document.getElementById(componentId));
+  componentDidUpdate() {
+    const {fullScreen, componentId} = this.props;
 
-    this.setState({
-      activated: !screenfull.isFullscreen
-    });
+    if(fullScreen !== screenfull.isFullscreen) {
+      screenfull.toggle(document.getElementById(componentId));
+    }
+
   }
+
 
   render() {
+    const {fullScreen, setFullScreen} = this.props;
     return (
       <i
-        className={'menu-item ion ion-android' + (this.state.activated ? '-contract' : '-expand')}
-        title={(this.state.activated ? 'Exit' : 'Go') + ' Fullscreen' }
-        onClick={() => this.toggleFullscreen()}
+        className={'menu-item ion ion-android' + (fullScreen ? '-contract' : '-expand')}
+        title={(fullScreen ? 'Exit' : 'Go') + ' Fullscreen' }
+        onClick={() => {setFullScreen(!fullScreen)}}
       ></i>
     );
   }
 }
 
-export default FullscreenBtn;
+export default withNavigationContext(FullscreenBtn);
