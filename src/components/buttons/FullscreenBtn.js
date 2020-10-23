@@ -3,10 +3,6 @@ import screenfull from 'screenfull';
 import {withNavigationContext} from "../../app/framework/navigation/components/withNavigationContext";
 
 class FullscreenBtn extends Component {
-  constructor(props) {
-    super(props);
-  }
-
 
   componentDidUpdate() {
     const {fullScreen, componentId} = this.props;

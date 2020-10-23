@@ -1,11 +1,17 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
-import {Colors, Untracked} from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, snakeToUpperCamel, toMoment} from "../../../../helpers/utility";
+import {
+  Colors,
+  Untracked,
+  WorkItemStateTypeColor,
+  WorkItemStateTypeDisplayName,
+  WorkItemStateTypes,
+  WorkItemTypeDisplayName
+} from "../../config";
+import {capitalizeFirstLetter, daysFromNow, elide, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
-import {WorkItemStateTypeColor, WorkItemTypeDisplayName, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 
 function getDaysSubtitle(days, prefix = 'Last') {
   return days > 1 ? `${prefix} ${days} Days`
@@ -90,6 +96,7 @@ function getYAxisCategoryDisplay(model, commits, categories, category) {
   if (category === 'workItem') {
     return categories.map(
       category => {
+        // eslint-disable-next-line
         const [_, __, stateType] = model.mapCategoryToNode(commits, category);
         const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;`: '';
         return `<span style="background-color: ${WorkItemStateTypeColor[stateType]}">.</span><span style="margin: 2px;${strikeThrough}">${category}</span>`
