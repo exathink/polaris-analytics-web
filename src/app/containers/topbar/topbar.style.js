@@ -11,7 +11,7 @@ const TopbarWrapper = styled.div`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: ${props =>
       props['data-rtl'] === 'rtl' ? '0 265px 0 31px' : '0 31px 0 265px'};
-    z-index: 1000;
+    
     ${transition()};
 
     @media only screen and (max-width: 767px) {
