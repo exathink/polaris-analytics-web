@@ -101,6 +101,8 @@ export const DimensionCommitsNavigatorWidget = (
                                     key
                                     displayId
                                     url
+                                    stateType
+                                    state
                                 }
 
                             }
