@@ -9,6 +9,7 @@ import {Statistic} from "../../../../../app/components/misc/statistic/statistic"
 import {VizRow} from "../../containers/layout";
 import {Untracked} from "../../config";
 import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -77,7 +78,7 @@ export class CommitTimelineViewModel {
           workItem => (workItem != null) && `${workItem.displayId}: ${workItem.name}` === workItemDisplay
         );
         if (workItem) {
-          return [workItem.displayId, workItem.key]
+          return [workItem.displayId, workItem.key, workItem.stateType, workItem.state]
         } else {
           return []
         }
@@ -119,7 +120,7 @@ export class CommitTimelineViewModel {
   }
 }
 
-export class CommitsTimelineChartView extends React.Component {
+class _CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -215,6 +216,7 @@ export class CommitsTimelineChartView extends React.Component {
       excludeMerges,
       onCategoryItemSelected,
       polling,
+      fullScreen,
 
     } = this.props;
 
@@ -233,6 +235,7 @@ export class CommitsTimelineChartView extends React.Component {
         markLatest={markLatest}
         excludeMerges={excludeMerges}
         polling={polling}
+        fullScreen={fullScreen}
         onSelectionChange={this.onCommitsSelected.bind(this)}
         onCategoryItemSelected={onCategoryItemSelected}
         showScrollbar={true}
@@ -413,3 +416,5 @@ export class CommitsTimelineChartView extends React.Component {
   }
 
 }
+
+export const CommitsTimelineChartView = withNavigationContext(_CommitsTimelineChartView);
