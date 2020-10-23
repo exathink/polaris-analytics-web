@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
-import {PlotLines} from "../../../projects/activity/shared/chartParts";
+import {PlotLines} from "../../../projects/flow/shared/chartParts";
 import {getWorkItemDurations} from "./shared";
 
 import {

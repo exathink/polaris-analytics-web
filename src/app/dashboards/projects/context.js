@@ -5,7 +5,7 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
-import Activity from './activity/topic';
+import Activity from './flow/topic';
 import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
