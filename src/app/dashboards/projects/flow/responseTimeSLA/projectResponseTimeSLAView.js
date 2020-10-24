@@ -9,7 +9,8 @@ import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {useGenerateTicks} from "../../../shared/hooks/useGenerateTicks";
 
-export const ProjectResponseTimeSLAView = (
+
+const CycleTimeAndLeadTimeSLA = (
   {
     responseTimeConfidenceTrends,
     cycleMetricsTrends,
@@ -19,13 +20,9 @@ export const ProjectResponseTimeSLAView = (
     cycleTimeConfidenceTarget
   }
 ) => {
-
   const [current, previous] = responseTimeConfidenceTrends;
-
-  // cycle metrics trends are still being returned in descending order.
   const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
   const tick = useGenerateTicks(4, 5000);
-
 
 
   return (
@@ -33,7 +30,7 @@ export const ProjectResponseTimeSLAView = (
       <VizRow h={"100%"}>
         <VizItem w={0.6}>
           {
-              tick < 2 ?
+            tick < 2 ?
               <FlowStatistic
                 title={<span>{'CycleTime'}<sup>{percentileToText(cycleTimeConfidenceTarget)} Target</sup></span>}
                 currentMeasurement={current}
@@ -66,8 +63,8 @@ export const ProjectResponseTimeSLAView = (
 
               <FlowStatistic
                 title={<span>{'% at Target'}</span>}
-                currentValue={current['cycleTimeConfidence']*100}
-                previousValue={previous['cycleTimeConfidence']*100}
+                currentValue={current['cycleTimeConfidence'] * 100}
+                previousValue={previous['cycleTimeConfidence'] * 100}
                 uom={'%'}
                 precision={2}
                 target={cycleTimeConfidenceTarget}
@@ -83,8 +80,8 @@ export const ProjectResponseTimeSLAView = (
               />,
               <FlowStatistic
                 title={<span>{'% at Target'}</span>}
-                currentValue={current['leadTimeConfidence']*100}
-                previousMeasurement={previous['leadTimeConfidence']*100}
+                currentValue={current['leadTimeConfidence'] * 100}
+                previousMeasurement={previous['leadTimeConfidence'] * 100}
                 display={value => value * 100}
                 uom={'%'}
                 precision={2}
@@ -97,5 +94,169 @@ export const ProjectResponseTimeSLAView = (
         </VizItem>
       </VizRow>
     </React.Fragment>
+  )
+}
+
+const CycleTimeSLA = (
+  {
+    responseTimeConfidenceTrends,
+    cycleMetricsTrends,
+    cycleTimeTarget,
+    cycleTimeConfidenceTarget
+
+  }
+) => {
+  const [current, previous] = responseTimeConfidenceTrends;
+  const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
+  const tick = useGenerateTicks(2, 3000);
+
+
+  return (
+    <React.Fragment>
+      <VizRow h={"100%"}>
+        <VizItem w={0.6}>
+          <FlowStatistic
+            title={<span>{'Target '}<sup>{percentileToText(cycleTimeConfidenceTarget)}</sup></span>}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            metric={'cycleTimeTarget'}
+            uom={'Days'}
+
+          />
+        </VizItem>
+        <VizItem w={0.4}>
+          {
+            [
+              <PercentileCycleTime
+                title={'Actual'}
+                currentMeasurement={currentCycleMetrics}
+                previousMeasurement={previousCycleMetrics}
+                target={cycleTimeTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
+              />,
+              <FlowStatistic
+                title={<span>{'% at Target'}</span>}
+                currentValue={current['cycleTimeConfidence'] * 100}
+                previousValue={previous['cycleTimeConfidence'] * 100}
+                uom={'%'}
+                precision={2}
+                target={cycleTimeTarget}
+                good={TrendIndicator.isPositive}
+
+              />
+            ][tick]
+          }
+        </VizItem>
+      </VizRow>
+    </React.Fragment>
+  )
+}
+
+
+const LeadTimeSLA = (
+  {
+    responseTimeConfidenceTrends,
+    cycleMetricsTrends,
+    leadTimeTarget,
+    leadTimeConfidenceTarget
+
+  }
+) => {
+  const [current, previous] = responseTimeConfidenceTrends;
+  const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
+  const tick = useGenerateTicks(2, 3000);
+
+
+  return (
+    <React.Fragment>
+      <VizRow h={"100%"}>
+        <VizItem w={0.6}>
+          <FlowStatistic
+            title={<span>{'Target '}<sup>{percentileToText(leadTimeConfidenceTarget)}</sup></span>}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            metric={'leadTimeTarget'}
+            uom={'Days'}
+
+          />
+        </VizItem>
+        <VizItem w={0.4}>
+          {
+            [
+              <PercentileLeadTime
+                title={'Actual'}
+                currentMeasurement={currentCycleMetrics}
+                previousMeasurement={previousCycleMetrics}
+                target={leadTimeTarget}
+                targetPercentile={leadTimeConfidenceTarget}
+              />,
+              <FlowStatistic
+                title={<span>{'% at Target'}</span>}
+                currentValue={current['leadTimeConfidence'] * 100}
+                previousValue={previous['leadTimeConfidence'] * 100}
+                uom={'%'}
+                precision={2}
+                target={leadTimeTarget}
+                good={TrendIndicator.isPositive}
+
+              />
+            ][tick]
+          }
+        </VizItem>
+      </VizRow>
+    </React.Fragment>
+  )
+}
+
+export const ProjectResponseTimeSLAView = (
+  {
+    metric,
+    responseTimeConfidenceTrends,
+    cycleMetricsTrends,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget
+  }
+) => {
+
+
+  return (
+    metric === 'cycleTime' ?
+      <CycleTimeSLA
+        {
+          ...{
+            responseTimeConfidenceTrends,
+            cycleMetricsTrends,
+            cycleTimeTarget,
+            cycleTimeConfidenceTarget
+          }
+        }
+      />
+      :
+      metric === 'leadTime' ?
+        <LeadTimeSLA
+          {
+            ...{
+              responseTimeConfidenceTrends,
+              cycleMetricsTrends,
+              leadTimeTarget,
+              leadTimeConfidenceTarget
+            }
+          }
+        />
+        :
+        <CycleTimeAndLeadTimeSLA
+          {
+            ...{
+              responseTimeConfidenceTrends,
+              cycleMetricsTrends,
+              leadTimeTarget,
+              cycleTimeTarget,
+              leadTimeConfidenceTarget,
+              cycleTimeConfidenceTarget
+            }
+          }
+        />
   )
 };
