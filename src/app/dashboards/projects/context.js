@@ -5,7 +5,8 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
-import Activity from './flow/topic';
+import Flow from './flow/topic';
+import Value from './value/topic';
 import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
@@ -37,9 +38,14 @@ const context : Context = {
         ...Contexts.projects,
         display: match => messages.instanceDisplay(match.params.project),
         routes: [
+
           {
-            match: 'activity',
-            topic: Activity
+            match: 'value',
+            topic: Value
+          },
+          {
+            match: 'flow',
+            topic: Flow
           },
           {
 
@@ -60,7 +66,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'activity'
+            redirect: 'value'
           }
         ]
       }
