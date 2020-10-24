@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {ProjectPipelineWidget} from "./pipeline";
+import {WorkItemStateTypes} from "../../shared/config";
+import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
 import {ProjectDefectMetricsWidget} from "./defectMetrics";
-import {ProjectPipelineFunnelWidget} from "./funnel";
-import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
+
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
+
+
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
+
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
-import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
+import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
+import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -67,6 +70,7 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
+
           const {flowMetricsSettings} = settings;
           const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
           const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
@@ -76,95 +80,12 @@ export const dashboard = ({viewerContext}) => (
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
-              <DashboardRow h='12%'>
+              <DashboardRow h='15%'>
                 <DashboardWidget
-                  w={0.20}
-                  name="response-time-sla"
-                  title={'Response Time'}
-                  subtitle={"30 Days"}
-                  render={
-                    () =>
-                      <ProjectResponseTimeSLAWidget
-                        instanceKey={key}
-                        days={30}
-                        leadTimeTarget={leadTimeTarget}
-                        cycleTimeTarget={cycleTimeTarget}
-                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        specsOnly={specsOnly}
-                      />
-                  }
-                />
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={0.19}
-                    name="defect-metrics"
-                    title={"Quality"}
-                    subtitle={"30 Days"}
-                    hideTitlesInDetailView={true}
-                    render={
-                      ({view}) =>
-                        <ProjectDefectMetricsWidget
-                          instanceKey={key}
-                          view={view}
-                          context={context}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                        />
-                    }
-                    showDetail={true}
-                  />
-                }
-
-                <DashboardWidget
-                  w={0.37}
-                  name="alignment"
-                  title={'Flow Mix'}
-                  subtitle={'30 days'}
-                  styles={{
-                    controlContainer: {
-                      width: '27%'
-                    }
-                  }}
-                  controls={
-                    [
-                      ({view}) => (
-                        view !== 'detail' &&
-                          <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
-                      )
-                    ]
-                  }
-
-                  render={
-                    ({view}) =>
-                      <ProjectFlowMixTrendsWidget
-                        instanceKey={key}
-                        measurementWindow={30}
-                        days={7}
-                        samplingFrequency={7}
-                        context={context}
-                        view={view}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        latestCommit={latestCommit}
-                        specsOnly={specsOnly}
-                        asStatistic={true}
-
-                      />
-                  }
-                  hideTitlesInDetailView={true}
-                  showDetail={true}
-                />
-
-                <DashboardWidget
-                  w={0.20}
-                  name="capacity"
-                  title={'Capacity'}
-                  subtitle={`30 days`}
+                  w={0.25}
+                  name="team"
+                  title={'Contributors'}
+                  subtitle={`Last 30 days`}
                   render={
                     ({view}) =>
                       <ProjectCapacityTrendsWidget
@@ -183,8 +104,91 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                   hideTitlesInDetailView={true}
                 />
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={0.20}
+                    name="pipeline"
+                    title={"Work In Progress"}
+                    render={
+                      ({view}) =>
+                        <ProjectPipelineWidget
+                          instanceKey={key}
+                          latestCommit={latestCommit}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          view={view}
+                          specsOnly={specsOnly}
+                          context={context}
+                        />
+                    }
+                    showDetail={true}
+                    hideTitlesInDetailView={true}
+                  />
+                }
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
+                    name="flow-metrics"
+                    title={"Closed"}
+                    subtitle={"Last 30 Days"}
+                    hideTitlesInDetailView={true}
+                    render={
+                      ({view}) =>
+                        <ProjectFlowMetricsWidget
+                          instanceKey={key}
+                          view={view}
+                          context={context}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          specsOnly={specsOnly}
+                          days={30}
+                          measurementWindow={30}
+                          targetPercentile={responseTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTarget={leadTimeTarget}
+                          cycleTimeTarget={cycleTimeTarget}
+                        />
+                    }
+                    showDetail={true}
+                  />
+
+                }
+                {
+                  stateMappingIndex.isValid() &&
+                  <DashboardWidget
+                    w={0.25}
+                    name="defect-metrics"
+                    title={"Defect Metrics"}
+                    subtitle={"Last 30 Days"}
+                    hideTitlesInDetailView={true}
+                    render={
+                      ({view}) =>
+                        <ProjectDefectMetricsWidget
+                          instanceKey={key}
+                          view={view}
+                          context={context}
+                          latestWorkItemEvent={latestWorkItemEvent}
+                          stateMappingIndex={stateMappingIndex}
+                          days={30}
+                          targetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                          leadTimeTarget={leadTimeTarget}
+                          cycleTimeTarget={cycleTimeTarget}
+                        />
+                    }
+                    showDetail={true}
+                  />
+                }
                 <DashboardWidget
-                  w={0.13}
+                  w={0.15}
                   name="traceability"
                   title={'Traceability'}
                   subtitle={'30 Days'}
@@ -208,43 +212,29 @@ export const dashboard = ({viewerContext}) => (
                 />
 
               </DashboardRow>
-
-
-              <DashboardRow h={'28%'}
-                            title={' '}
-              >
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={0.34}
-                    name="flow-metrics"
-                    title={"Flow Metrics"}
-                    subtitle={"30 Days"}
-                    hideTitlesInDetailView={true}
-                    render={
-                      ({view}) =>
-                        <ProjectFlowMetricsWidget
-                          instanceKey={key}
-                          view={view}
-                          context={context}
-                          specsOnly={specsOnly}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          measurementWindow={30}
-                          targetPercentile={responseTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          leadTimeTarget={leadTimeTarget}
-                          cycleTimeTarget={cycleTimeTarget}
-                        />
-                    }
-                    showDetail={true}
-                  />
-
-                }
+              <DashboardRow h='30%' title={" "}>
                 <DashboardWidget
-                  w={0.36}
+                  w={1 / 3}
+                  name="engineering"
+                  render={
+                    ({view}) =>
+                      <ProjectPipelineCycleTimeLatencyWidget
+                        instanceKey={key}
+                        view={view}
+                        stageName={'Engineering'}
+                        stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
+                        cycleTimeTarget={cycleTimeTarget}
+                        specsOnly={specsOnly}
+                        context={context}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        targetPercentile={cycleTimeConfidenceTarget}
+                      />
+                  }
+                  showDetail={true}
+                />
+                <DashboardWidget
+                  w={1 / 3}
                   name="pipeline-funnel"
 
                   render={
@@ -252,46 +242,42 @@ export const dashboard = ({viewerContext}) => (
                       <ProjectPipelineFunnelWidget
                         instanceKey={key}
                         context={context}
-                        workItemScope={workItemScope}
-                        setWorkItemScope={setWorkItemScope}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         days={30}
                         view={view}
                       />
                   }
                   showDetail={true}
                 />
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={0.29}
-                    name="pipeline"
-                    title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
-                    render={
-                      ({view}) =>
-                        <ProjectPipelineWidget
-                          instanceKey={key}
-                          specsOnly={specsOnly}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={responseTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          view={view}
-                          context={context}
-                        />
-                    }
-                    showDetail={true}
-                    hideTitlesInDetailView={true}
-                  />
-                }
+                <DashboardWidget
+                  w={1 / 3}
+                  name="delivery"
+                  render={
+                    ({view}) =>
+                      <ProjectPipelineCycleTimeLatencyWidget
+                        instanceKey={key}
+                        view={view}
+                        stageName={'Delivery'}
 
+                        stateTypes={[WorkItemStateTypes.deliver]}
+                        groupByState={true}
+                        cycleTimeTarget={cycleTimeTarget}
 
+                        context={context}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        latestCommit={latestCommit}
+                        targetPercentile={cycleTimeConfidenceTarget}
+                        specsOnly={specsOnly}
+                      />
+                  }
+                  showDetail={true}
+                />
               </DashboardRow>
-              <DashboardRow h={'54%'}
-                            title={'Latest Activity'}
+              <DashboardRow h={'50%'}
+                            title={'Latest Commits'}
               >
                 <DashboardWidget
                   w={1}
@@ -305,8 +291,8 @@ export const dashboard = ({viewerContext}) => (
                         view={view}
                         days={1}
                         latestCommit={latestCommit}
-                        headerMetric={HeaderMetrics.latestCommit}
                         latestWorkItemEvent={latestWorkItemEvent}
+                        headerMetric={HeaderMetrics.latestCommit}
                         groupBy={'workItem'}
                         groupings={['workItem', 'author', 'repository', 'branch']}
                         showHeader
@@ -316,8 +302,6 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                 />
               </DashboardRow>
-
-
             </Dashboard>
           )
         }
