@@ -14,7 +14,7 @@ import Trends from "./trends/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-
+import {PROJECTS_FLOWBOARD_20} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -38,14 +38,14 @@ const context : Context = {
         ...Contexts.projects,
         display: match => messages.instanceDisplay(match.params.project),
         routes: [
-
-          {
-            match: 'value',
-            topic: Value
-          },
           {
             match: 'flow',
             topic: Flow
+          },
+          {
+            match: 'value',
+            requiredFeatures: [PROJECTS_FLOWBOARD_20],
+            topic: Value
           },
           {
 
@@ -66,7 +66,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'value'
+            redirect: 'flow'
           }
         ]
       }

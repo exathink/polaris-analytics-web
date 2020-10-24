@@ -84,7 +84,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={0.25}
                   name="team"
-                  title={'Contributors'}
+                  title={'II Contributors'}
                   subtitle={`Last 30 days`}
                   render={
                     ({view}) =>
