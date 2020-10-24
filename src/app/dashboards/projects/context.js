@@ -5,7 +5,8 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
-import Activity from './activity/topic';
+import Flow from './flow/topic';
+import Value from './value/topic';
 import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
@@ -13,7 +14,7 @@ import Trends from "./trends/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-
+import {PROJECTS_FLOWBOARD_20} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -38,8 +39,13 @@ const context : Context = {
         display: match => messages.instanceDisplay(match.params.project),
         routes: [
           {
-            match: 'activity',
-            topic: Activity
+            match: 'flow',
+            topic: Flow
+          },
+          {
+            match: 'value',
+            requiredFeatures: [PROJECTS_FLOWBOARD_20],
+            topic: Value
           },
           {
 
@@ -60,7 +66,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'activity'
+            redirect: 'flow'
           }
         ]
       }

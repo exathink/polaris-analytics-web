@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {ProjectPipelineWidget} from "./pipeline";
-import {ProjectFlowMetricsWidget} from "./flowMetrics";
-import {ProjectDefectMetricsWidget} from "./defectMetrics";
-import {ProjectPipelineFunnelWidget} from "./funnel";
-import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
+import {ProjectPipelineWidget} from "../flow/pipeline";
+import {ProjectFlowMetricsWidget} from "../flow/flowMetrics";
+import {ProjectDefectMetricsWidget} from "../flow/defectMetrics";
+import {ProjectPipelineFunnelWidget} from "../flow/funnel";
+import {ProjectResponseTimeSLAWidget} from "../flow/responseTimeSLA";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 
-import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "../flow/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
@@ -80,13 +80,14 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={0.20}
                   name="response-time-sla"
-                  title={'Response Time'}
+                  title={'Lead Time'}
                   subtitle={"30 Days"}
                   render={
                     () =>
                       <ProjectResponseTimeSLAWidget
                         instanceKey={key}
                         days={30}
+                        metric={'leadTime'}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
                         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}

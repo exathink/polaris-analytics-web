@@ -14,6 +14,7 @@ export const ProjectResponseTimeSLAWidget = (
     cycleTimeConfidenceTarget,
     responseTimeTarget,
     latestWorkItemEvent,
+    metric,
     specsOnly,
     pollInterval
   }) => {
@@ -28,6 +29,7 @@ export const ProjectResponseTimeSLAWidget = (
   const {responseTimeConfidenceTrends, cycleMetricsTrends} = data['project'];
   return (
     <ProjectResponseTimeSLAView
+      metric={metric}
       responseTimeConfidenceTrends={responseTimeConfidenceTrends}
       cycleMetricsTrends={cycleMetricsTrends}
       leadTimeTarget={leadTimeTarget}
