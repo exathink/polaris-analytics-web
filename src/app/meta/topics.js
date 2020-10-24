@@ -2,9 +2,19 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 export const Topics = {
+  flow: {
+    name: 'flow',
+    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow"/>),
+    icon: 'ion-ios-pulse-strong'
+  },
+  value: {
+    name: 'value',
+    display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
+    icon: 'ion-ios-infinite-outline'
+  },
   activity: {
     name: 'activity',
-    display: () => (<FormattedMessage id='topics.activity' defaultMessage="FlowBoard"/>),
+    display: () => (<FormattedMessage id='topics.activity' defaultMessage="Activity"/>),
     icon: 'ion-ios-pulse-strong'
   },
   trends: {
@@ -25,7 +35,7 @@ export const Topics = {
   repositories: {
     name: 'repositories',
     display: () => (<FormattedMessage id='topics.repositories' defaultMessage="Repositories"/>),
-    icon: 'ion-soup-can'
+    icon: 'ion-fork-repo'
   },
   organizations: {
     name: 'organizations',
