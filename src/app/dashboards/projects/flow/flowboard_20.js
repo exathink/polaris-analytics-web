@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
-import {ProjectFlowMetricsWidget} from "./flowMetrics";
-import {ProjectDefectMetricsWidget} from "./defectMetrics";
+import {ProjectPipelineCycleTimeLatencyWidget} from "./pipeline";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -11,47 +9,12 @@ import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widge
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-
-import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
+import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
-
-
-class StateMappingIndex {
-  constructor(stateMappings) {
-    this.stateMappings = stateMappings;
-    this.initIndex(stateMappings)
-  }
-
-  initIndex(stateMappings) {
-    if (stateMappings != null) {
-      this.index = {
-        backlog: 0,
-        open: 0,
-        wip: 0,
-        complete: 0,
-        closed: 0
-      }
-      for (let i = 0; i < stateMappings.length; i++) {
-        for (let j = 0; j < stateMappings[i].length; j++) {
-          this.index[stateMappings[i][j].stateType]++;
-        }
-      }
-    }
-  }
-
-  isValid() {
-    return this.index != null;
-  }
-
-  numInProcessStates() {
-    return this.index != null ? this.index.open + this.index.wip + this.index.complete : 0;
-  }
-}
-
 
 export const dashboard = ({viewerContext}) => (
     <ProjectDashboard
@@ -67,7 +30,6 @@ export const dashboard = ({viewerContext}) => (
            context
          }) => {
 
-          const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
 
@@ -84,7 +46,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={0.25}
                   name="team"
-                  title={'II Contributors'}
+                  title={'Capacity'}
                   subtitle={`Last 30 days`}
                   render={
                     ({view}) =>
@@ -104,89 +66,28 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                   hideTitlesInDetailView={true}
                 />
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={0.20}
-                    name="pipeline"
-                    title={"Work In Progress"}
-                    render={
-                      ({view}) =>
-                        <ProjectPipelineWidget
-                          instanceKey={key}
-                          latestCommit={latestCommit}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={responseTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          view={view}
-                          specsOnly={specsOnly}
-                          context={context}
-                        />
-                    }
-                    showDetail={true}
-                    hideTitlesInDetailView={true}
-                  />
-                }
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={stateMappingIndex.numInProcessStates() > 0 ? 0.35 : 0.35}
-                    name="flow-metrics"
-                    title={"Closed"}
-                    subtitle={"Last 30 Days"}
-                    hideTitlesInDetailView={true}
-                    render={
-                      ({view}) =>
-                        <ProjectFlowMetricsWidget
-                          instanceKey={key}
-                          view={view}
-                          context={context}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          specsOnly={specsOnly}
-                          days={30}
-                          measurementWindow={30}
-                          targetPercentile={responseTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          leadTimeTarget={leadTimeTarget}
-                          cycleTimeTarget={cycleTimeTarget}
-                        />
-                    }
-                    showDetail={true}
-                  />
+                <DashboardWidget
+                  w={0.20}
+                  name="response-time-sla"
+                  title={'Cycle Time'}
+                  subtitle={"Last 30 Days"}
+                  render={
+                    () =>
+                      <ProjectResponseTimeSLAWidget
+                        instanceKey={key}
+                        days={30}
+                        metric={'cycleTime'}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        specsOnly={specsOnly}
+                      />
+                  }
+                />
 
-                }
-                {
-                  stateMappingIndex.isValid() &&
-                  <DashboardWidget
-                    w={0.25}
-                    name="defect-metrics"
-                    title={"Defect Metrics"}
-                    subtitle={"Last 30 Days"}
-                    hideTitlesInDetailView={true}
-                    render={
-                      ({view}) =>
-                        <ProjectDefectMetricsWidget
-                          instanceKey={key}
-                          view={view}
-                          context={context}
-                          latestWorkItemEvent={latestWorkItemEvent}
-                          stateMappingIndex={stateMappingIndex}
-                          days={30}
-                          targetPercentile={cycleTimeConfidenceTarget}
-                          leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                          cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                          leadTimeTarget={leadTimeTarget}
-                          cycleTimeTarget={cycleTimeTarget}
-                        />
-                    }
-                    showDetail={true}
-                  />
-                }
+
                 <DashboardWidget
                   w={0.15}
                   name="traceability"
