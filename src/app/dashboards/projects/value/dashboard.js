@@ -80,13 +80,14 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={0.20}
                   name="response-time-sla"
-                  title={'Response Time'}
+                  title={'Lead Time'}
                   subtitle={"30 Days"}
                   render={
                     () =>
                       <ProjectResponseTimeSLAWidget
                         instanceKey={key}
                         days={30}
+                        metric={'leadTime'}
                         leadTimeTarget={leadTimeTarget}
                         cycleTimeTarget={cycleTimeTarget}
                         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
