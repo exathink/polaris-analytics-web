@@ -20,7 +20,7 @@ import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
 
-class StateMappingIndex {
+export class StateMappingIndex {
   constructor(stateMappings) {
     this.stateMappings = stateMappings;
     this.initIndex(stateMappings)

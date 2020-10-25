@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectPipelineCycleTimeLatencyWidget} from "./pipeline";
+import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -13,6 +13,9 @@ import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
+import {ProjectFlowMetricsWidget} from "./flowMetrics";
+import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {StateMappingIndex} from "./new_dashboard";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -30,6 +33,7 @@ export const dashboard = ({viewerContext}) => (
            context
          }) => {
 
+          const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('specs');
           const specsOnly = workItemScope === 'specs';
 
@@ -41,33 +45,13 @@ export const dashboard = ({viewerContext}) => (
           const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
 
           return (
-            <Dashboard dashboard={`${dashboard_id}`}>
-              <DashboardRow h='15%'>
+            <Dashboard
+              dashboard={`${dashboard_id}`}
+            >
+              <DashboardRow h='12%'>
+
                 <DashboardWidget
-                  w={0.25}
-                  name="team"
-                  title={'Capacity'}
-                  subtitle={`Last 30 days`}
-                  render={
-                    ({view}) =>
-                      <ProjectCapacityTrendsWidget
-                        instanceKey={key}
-                        measurementWindow={30}
-                        days={7}
-                        samplingFrequency={7}
-                        context={context}
-                        view={view}
-                        latestWorkItemEvent={latestWorkItemEvent}
-                        latestCommit={latestCommit}
-                        asStatistic={true}
-                        target={0.9}
-                      />
-                  }
-                  showDetail={true}
-                  hideTitlesInDetailView={true}
-                />
-                <DashboardWidget
-                  w={0.20}
+                  w={0.16}
                   name="response-time-sla"
                   title={'Cycle Time'}
                   subtitle={"Last 30 Days"}
@@ -87,12 +71,60 @@ export const dashboard = ({viewerContext}) => (
                   }
                 />
 
-
                 <DashboardWidget
-                  w={0.15}
+                  w={0.55}
+                  name="pipeline"
+                  title={"Work In Progress"}
+                  render={
+                    ({view}) =>
+                      <ProjectPipelineWidget
+                        instanceKey={key}
+                        latestCommit={latestCommit}
+                        latestWorkItemEvent={latestWorkItemEvent}
+
+                        days={30}
+                        targetPercentile={responseTimeConfidenceTarget}
+                        leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                        view={view}
+                        specsOnly={specsOnly}
+                        context={context}
+                      />
+                  }
+                  showDetail={true}
+                  hideTitlesInDetailView={true}
+                />
+                <DashboardWidget
+                  w={0.35}
+                  name="flow-metrics"
+                  title={"Throughput"}
+                  subtitle={"Last 30 Days"}
+                  hideTitlesInDetailView={true}
+                  render={
+                    ({view}) =>
+                      <ProjectFlowMetricsWidget
+                        instanceKey={key}
+                        view={view}
+                        context={context}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                        stateMappingIndex={stateMappingIndex}
+                        specsOnly={specsOnly}
+                        days={30}
+                        measurementWindow={30}
+                        targetPercentile={responseTimeConfidenceTarget}
+                        leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
+                      />
+                  }
+                  showDetail={true}
+                />
+                <DashboardWidget
+                  w={0.12}
                   name="traceability"
                   title={'Traceability'}
-                  subtitle={'30 Days'}
                   hideTitlesInDetailView={'true'}
                   render={
                     ({view}) =>
@@ -113,7 +145,7 @@ export const dashboard = ({viewerContext}) => (
                 />
 
               </DashboardRow>
-              <DashboardRow h='30%' title={" "}>
+              <DashboardRow h='33%' title={" "}>
                 <DashboardWidget
                   w={1 / 3}
                   name="engineering"
@@ -177,7 +209,7 @@ export const dashboard = ({viewerContext}) => (
                   showDetail={true}
                 />
               </DashboardRow>
-              <DashboardRow h={'50%'}
+              <DashboardRow h={'48%'}
                             title={'Latest Commits'}
               >
                 <DashboardWidget
