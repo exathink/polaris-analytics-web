@@ -67,7 +67,8 @@ export function useQueryProjectFlowMetrics(
                         percentile_duration,
                         work_items_in_scope,
                         work_items_with_commits,
-                        work_items_with_null_cycle_time
+                        work_items_with_null_cycle_time,
+                        cadence
                     ]
                 }
 
@@ -84,6 +85,7 @@ export function useQueryProjectFlowMetrics(
                 }
                 cycleMetricsTrends {
                     measurementDate
+                    measurementWindow
                     avgLeadTime
                     minCycleTime
                     q1CycleTime
@@ -105,6 +107,7 @@ export function useQueryProjectFlowMetrics(
                     maxLatency
                     percentileLatency
                     workItemsWithNullCycleTime
+                    cadence
                     workItemsInScope
                     workItemsWithCommits
                     earliestClosedDate

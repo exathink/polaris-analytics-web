@@ -13,16 +13,18 @@ const colors = {
   bad: '#9a3727'
 }
 
-export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold}) => {
+export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold, valueRender=value=>value}) => {
 
   const value = currentValue || (currentMeasurement && currentMeasurement[metric]);
   const comp = previousValue || (previousMeasurement && previousMeasurement[metric]);
 
   const color = target && value && good && !good(value - target) ? colors.bad : colors.good
+
+
   return (
     <Statistic
       title={title}
-      value={value || 'N/A'}
+      value={valueRender(value) || 'N/A'}
       precision={precision || 0}
       valueStyle={{color: color}}
       prefix={
@@ -74,6 +76,19 @@ export const LatestClosed = ({currentMeasurement}) => (
     asStatistic={true}
     title={'Latest Closed'}
     dateValue={currentMeasurement['latestClosedDate']}
+  />
+);
+
+export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+  <FlowStatistic
+    title={title || "Cadence"}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'cadence'}
+    valueRender={ value => `${value}/${currentMeasurement['measurementWindow']}`}
+    uom={'Days'}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
   />
 );
 

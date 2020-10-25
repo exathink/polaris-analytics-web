@@ -11,6 +11,7 @@ import {
   EffortCarousel,
   LatencyCarousel,
   LatestClosed,
+  Cadence,
   LeadTimeSLACarousel,
   Throughput,
   ThroughputCarousel,
@@ -52,9 +53,15 @@ export const PerformanceSummaryView = (
         />
       </VizItem>
       <VizItem w={0.25}>
-        <LatestClosed
-          currentMeasurement={current}
-        />
+        <ComponentCarousel tickInterval={3000}>
+          <LatestClosed
+            currentMeasurement={current}
+          />
+          <Cadence
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            />
+        </ComponentCarousel>
       </VizItem>
       <VizItem w={0.30}>
         <ComponentCarousel tickInterval={3000}>
