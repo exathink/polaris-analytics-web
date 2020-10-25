@@ -173,12 +173,12 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
+export const AvgLatency = ({ title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgLatency'}
-    displayName={'Latency'}
+    displayName={title || 'Latency'}
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
