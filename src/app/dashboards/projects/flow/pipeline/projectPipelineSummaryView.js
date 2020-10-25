@@ -2,13 +2,12 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {
-  PercentileCycleTime,
+  AvgDuration,
   CycleTimeCarousel,
-  DurationCarousel,
-  EffortCarousel,
-  LatencyCarousel,
-  LeadTimeCarousel,
-  WipCarousel, Throughput, TotalEffort, AvgLatency, AvgDuration
+  PercentileCycleTime,
+  Throughput,
+  TotalEffort,
+  WipCarousel
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";

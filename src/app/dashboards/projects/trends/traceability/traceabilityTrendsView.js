@@ -2,11 +2,7 @@ import React from 'react';
 import {TraceabilityTrendsChart} from "./traceabilityTrendsChart";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 
-import {
-  TraceabilityCarousel,
-  Traceability,
-  TraceabilityTarget
-} from "../../../shared/components/flowStatistics/flowStatistics";
+import {Traceability, TraceabilityTarget} from "../../../shared/components/flowStatistics/flowStatistics";
 
 
 const TraceabilityStatisticView = (

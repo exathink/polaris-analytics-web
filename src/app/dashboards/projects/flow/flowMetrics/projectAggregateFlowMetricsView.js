@@ -1,18 +1,20 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 
 import {
+  AvgCycleTime,
+  AvgDuration,
+  AvgLatency,
   CycleTimeSLACarousel,
   DurationCarousel,
   EffortCarousel,
   LatencyCarousel,
+  LatestClosed,
   LeadTimeSLACarousel,
-  ThroughputCarousel,
   Throughput,
+  ThroughputCarousel,
   TotalEffort,
-  LatestClosed, AvgCycleTime, AvgDuration, AvgLatency,
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../shared/components/componentCarousel/componentCarousel";
 
@@ -31,7 +33,6 @@ export const PerformanceSummaryView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-  const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
 
   return (
     <React.Fragment>
@@ -145,7 +146,7 @@ export const ImplementationMetricsCarouselView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-  const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
+
 
   return (
     <React.Fragment>

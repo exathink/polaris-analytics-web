@@ -10,7 +10,6 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectPipelineFunnelWidget} from "./funnel";
-import {ProjectCapacityTrendsWidget} from "../trends/capacity";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
