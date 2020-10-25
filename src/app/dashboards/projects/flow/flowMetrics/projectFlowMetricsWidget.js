@@ -10,7 +10,8 @@ export const ProjectFlowMetricsWidget = (
     specsOnly,
     view,
     context,
-    showAll,
+    display,
+    twoRows,
     latestWorkItemEvent,
     days,
     measurementWindow,
@@ -42,9 +43,9 @@ export const ProjectFlowMetricsWidget = (
     return (
       <ProjectAggregateFlowMetricsView
         instanceKey={instanceKey}
-        showAll={showAll}
+        display={display}
+        twoRows={twoRows}
         specsOnly={limitToSpecsOnly}
-        stateMappingIndex={stateMappingIndex}
         leadTimeTargetPercentile={leadTimeTargetPercentile}
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}

@@ -114,7 +114,7 @@ const CycleTimeSLA = (
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
-        <VizItem w={0.6}>
+        <VizItem w={0.4}>
           <FlowStatistic
             title={<span>{'Target '}<sup>{percentileToText(cycleTimeConfidenceTarget)}</sup></span>}
             currentMeasurement={current}
@@ -124,7 +124,7 @@ const CycleTimeSLA = (
 
           />
         </VizItem>
-        <VizItem w={0.4}>
+        <VizItem w={0.6}>
           {
             [
               <PercentileCycleTime

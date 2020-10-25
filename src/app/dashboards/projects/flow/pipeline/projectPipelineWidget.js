@@ -16,6 +16,7 @@ export const ProjectPipelineWidget = (
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
+    cycleTimeTarget,
     view,
     context,
     pollInterval
@@ -33,7 +34,7 @@ export const ProjectPipelineWidget = (
         referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
       }
     )
-    if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+    if (loading) return <Loading/>;
     if (error) return null;
     const pipelineCycleMetrics = data['project']['pipelineCycleMetrics'];
     return (
@@ -42,6 +43,7 @@ export const ProjectPipelineWidget = (
         targetPercentile={targetPercentile}
         leadTimeTargetPercentile={leadTimeTargetPercentile}
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+        cycleTimeTarget={cycleTimeTarget}
         specsOnly={limitToSpecsOnly}
       />
     )

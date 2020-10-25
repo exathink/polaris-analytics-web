@@ -53,20 +53,7 @@ export const ResponseTime = ({title, currentMeasurement, previousMeasurement, me
   />
 );
 
-export const Traceability = ({title, currentMetric, previousMetric, target, deltaThreshold}) => (
-  <FlowStatistic
-    title={title || 'Traceability'}
-    currentMeasurement={currentMetric}
-    previousMeasurement={previousMetric}
-    metric={'traceability'}
-    display={value => value * 100}
-    uom={'%'}
-    precision={1}
-    good={TrendIndicator.isPositive}
-    deltaThreshold={deltaThreshold}
-    target={target}
-  />
-);
+
 
 
 export const Throughput = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
@@ -186,12 +173,12 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
+export const AvgLatency = ({ title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgLatency'}
-    displayName={'Delivery Latency'}
+    displayName={title || 'Latency'}
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
@@ -641,9 +628,18 @@ export const WipCarousel = ({title, currentMeasurement, specsOnly, deltaThreshol
   </ComponentCarousel>
 )
 
-export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
-  <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
-    <FlowStatistic
+export const TraceabilityTarget = ({title, target}) => (
+  <Statistic
+      title={'Target'}
+      value={target * 100}
+      precision={0}
+      valueStyle={{color: colors.good}}
+      suffix={'%'}
+    />
+);
+
+export const Traceability = ({title, current, previous, target, deltaThreshold}) => (
+  <FlowStatistic
       title={title || "Traceability"}
       currentValue={current['traceability'] * 100}
       previousValue={previous['traceability'] * 100}
@@ -652,13 +648,26 @@ export const TraceabilityCarousel = ({title, current, previous, target, deltaThr
       deltaThreshold={deltaThreshold}
       target={target * 100}
     />
-    <Statistic
-      title={'Target'}
-      value={target * 100}
-      precision={0}
-      valueStyle={{color: colors.good}}
-      suffix={'%'}
+);
+
+
+
+export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
+  <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
+    <Traceability
+      title={title}
+      current={current}
+      previous={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
+      />
+    <TraceabilityTarget
+      current={current}
+      previous={previous}
+      target={target}
+      deltaThreshold={deltaThreshold}
     />
+
   </ComponentCarousel>
 )
 
