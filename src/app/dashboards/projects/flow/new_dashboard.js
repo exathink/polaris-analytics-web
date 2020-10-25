@@ -143,6 +143,7 @@ export const dashboard = ({viewerContext}) => (
                         <ProjectFlowMetricsWidget
                           instanceKey={key}
                           view={view}
+                          display={'cycleMetricsCarousel'}
                           context={context}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}

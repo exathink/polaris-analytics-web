@@ -227,6 +227,8 @@ export const dashboard = ({viewerContext}) => (
                         <ProjectFlowMetricsWidget
                           instanceKey={key}
                           view={view}
+                          display={'all'}
+                          twoRows={true}
                           context={context}
                           specsOnly={specsOnly}
                           latestWorkItemEvent={latestWorkItemEvent}
