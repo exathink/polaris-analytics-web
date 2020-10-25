@@ -64,7 +64,7 @@ export const ProjectFlowMetricsDetailDashboard = (
               <ProjectFlowMetricsWidget
                 instanceKey={instanceKey}
                 specsOnly={specsOnly}
-                showAll={true}
+                display={'all'}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
