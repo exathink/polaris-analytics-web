@@ -7,7 +7,8 @@ import {
   PercentileCycleTime,
   Throughput,
   TotalEffort,
-  WipCarousel
+  WipCarousel,
+  Wip
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
@@ -21,6 +22,7 @@ const FlowBoard20View = (
     cycleTimeTargetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
+    wipLimit,
     viewerContext
   }
 ) => {
@@ -46,11 +48,11 @@ const FlowBoard20View = (
         borderLeftStyle: 'solid',
         borderLeftColor: 'rgba(0,0,0,0.1)',
       }}>
-        <Throughput
-          title={'Wip'}
-          currentMeasurement={pipelineCycleMetrics}
-          specsOnly={specsOnly}
-        />
+      <Wip
+        currentMeasurement={pipelineCycleMetrics}
+        target={wipLimit}
+        specsOnly={specsOnly}
+      />
       </VizItem>
     </VizRow>
   )
@@ -97,6 +99,7 @@ const PipelineSummaryView = withViewerContext((
     cycleTimeTargetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
+    wipLimit,
     viewerContext
   }
 ) => (
@@ -111,6 +114,7 @@ const PipelineSummaryView = withViewerContext((
           cycleTimeTargetPercentile,
           leadTimeTarget,
           cycleTimeTarget,
+          wipLimit,
           viewerContext
         }
       }/> :
@@ -124,6 +128,7 @@ const PipelineSummaryView = withViewerContext((
           cycleTimeTargetPercentile,
           leadTimeTarget,
           cycleTimeTarget,
+          wipLimit,
           viewerContext
         }
       }/>

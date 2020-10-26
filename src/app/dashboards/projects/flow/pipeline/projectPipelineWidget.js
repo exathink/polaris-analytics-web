@@ -17,6 +17,7 @@ export const ProjectPipelineWidget = (
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     cycleTimeTarget,
+    wipLimit,
     view,
     context,
     pollInterval
@@ -44,6 +45,7 @@ export const ProjectPipelineWidget = (
         leadTimeTargetPercentile={leadTimeTargetPercentile}
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}
+        wipLimit={wipLimit}
         specsOnly={limitToSpecsOnly}
       />
     )
