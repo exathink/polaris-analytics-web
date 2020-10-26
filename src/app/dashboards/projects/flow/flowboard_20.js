@@ -13,6 +13,7 @@ import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
+import {ProjectPipelineImplementationCostWidget} from "./pipeline";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 
@@ -172,15 +173,13 @@ export const dashboard = ({viewerContext}) => (
 
                   render={
                     ({view}) =>
-                      <ProjectPipelineFunnelWidget
+                      <ProjectPipelineImplementationCostWidget
                         instanceKey={key}
+                        view={view}
+                        specsOnly={specsOnly}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
-                        workItemScope={workItemScope}
-                        setWorkItemScope={setWorkItemScope}
-                        days={30}
-                        view={view}
                       />
                   }
                   showDetail={true}
