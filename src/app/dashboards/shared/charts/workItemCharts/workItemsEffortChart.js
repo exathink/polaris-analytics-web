@@ -147,7 +147,7 @@ export const WorkItemsEffortChart = Chart({
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
             body: commitCount != null ? [
-              [`Effort`, `${intl.formatNumber(effort)} dev-days`],
+              [`Effort`, `${intl.formatNumber(effort)} Dev-Days`],
               [`-----------------`, ``],
               [`Duration`, `${intl.formatNumber(duration)} days`],
               [`Latest Commit`, `${latestCommitDisplay}`],
