@@ -13,7 +13,7 @@ export const ProjectPhaseSummaryWidget = (
   }
 ) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({instanceKey, referenceString: latestWorkItemEvent})
-    if (loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+    if (loading ) return <Loading/>;
     if (error) return null;
     const  {workItemStateTypeCounts, specStateTypeCounts} = data['project'];
     return (

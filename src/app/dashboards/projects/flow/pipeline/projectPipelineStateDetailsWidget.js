@@ -31,7 +31,7 @@ export const ProjectPipelineStateDetailsWidget = (
     specsOnly,
     referenceString: latestWorkItemEvent
   })
-  if (cycleMetricsLoading || loading || !stateMappingIndex || !stateMappingIndex.isValid()) return <Loading/>;
+  if (cycleMetricsLoading || loading ) return <Loading/>;
   if (error) {
     logGraphQlError('ProjectPipelineStateDetailsWidget.pipelineStateDetails', error);
     return null;
