@@ -12,9 +12,9 @@ import {
 } from "../../config";
 
 
-function getSeriesByStateType(workItems, intl) {
-  // We group the work items into series by state type.
-  const workItemsByStateType = buildIndex(workItems, workItem => workItem.stateType);
+function getSpecSeries(workItems, intl) {
+  // We group the work items for specs. These will always have non-zero effort.
+  const workItemsByStateType = buildIndex(workItems.filter(workItem => workItem.commitCount > 0), workItem => workItem.stateType);
 
   return Object.keys(workItemsByStateType).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
@@ -50,8 +50,44 @@ function getSeriesByStateType(workItems, intl) {
   );
 }
 
+function getNonSpecSeries(workItems, intl) {
+  // All nospecs will be put into a single series.
 
-
+  const nonSpecs = workItems.filter(workItem => workItem.commitCount === null);
+  return [
+    {
+      type: 'packedbubble',
+      key: `non-specs`,
+      id: `non-specs`,
+      name: `No Commits`,
+      showInLegend: false,
+      allowPointSelect: true,
+      data: nonSpecs.map(
+        workItem => (
+          {
+            value: 0.1,
+            name: `elide(${WorkItemTypeDisplayName[workItem.workItemType]}: ${workItem.displayId}<br/>${workItem.name}, 7)`,
+            color: WorkItemStateTypeColor[workItem.stateType],
+            workItem: workItem
+          }
+        )
+      ),
+      layoutAlgorithm: {
+        parentNodeOptions: {
+          marker: {
+            fillColor: '#b8c3c3',
+            fillOpacity: 0.3
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        format: "",
+        parentNodeFormat: '{point.series.name}',
+      }
+    }
+  ]
+}
 
 
 export const WorkItemsEffortChart = Chart({
@@ -67,7 +103,10 @@ export const WorkItemsEffortChart = Chart({
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
     );
 
-    const workItemEffortSeries = getSeriesByStateType(workItemsWithAggregateDurations, intl);
+    const series = [
+      ...getSpecSeries(workItemsWithAggregateDurations, intl),
+      ...(!specsOnly ? getNonSpecSeries(workItemsWithAggregateDurations, intl) : [])
+    ];
 
     return {
       chart: {
@@ -98,34 +137,39 @@ export const WorkItemsEffortChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state,  timeInStateDisplay, latestCommitDisplay, cycleTime, duration,  effort} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType,  timeInStateDisplay, latestCommitDisplay, cycleTime, duration, effort, commitCount} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
-            body: [
-              effort != null ? [`Effort`, `${intl.formatNumber(effort)} dev-days`] : ['', ''],
+            body: commitCount != null ? [
+              [`Effort`, `${intl.formatNumber(effort)} dev-days`],
               [`-----------------`, ``],
-              duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ['', ''],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['', ''],
+              [`Duration`, `${intl.formatNumber(duration)} days`],
+              [`Latest Commit`, `${latestCommitDisplay}`],
               [`-----------------`, ``],
               [`Current State:`, `${state}`],
               [`Entered:`, `${timeInStateDisplay}`],
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
-
-
+            ] : [
+              [`Phase:`, `${WorkItemStateTypeDisplayName[stateType]}`],
+              [`-----------------`, ``],
+              [`Current State:`, `${state}`],
+              [`Entered:`, `${timeInStateDisplay}`],
+              [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
+              [`-----------------`, ``],
+              [`Latest Commit`, `None`],
             ]
+
           })
         }
       },
-      series: [
-        ...workItemEffortSeries
-      ],
+      series: series,
       plotOptions: {
         packedbubble: {
           layoutAlgorithm: {
             enableSimulation: false,
             parentNodeLimit: true,
-
+            bubblePadding: 15,
             splitSeries: true,
             seriesInteraction: false
           },
