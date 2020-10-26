@@ -60,7 +60,7 @@ function getNonSpecSeries(workItems, intl) {
       key: `non-specs`,
       id: `non-specs`,
       name: `No Commits`,
-      showInLegend: false,
+
       allowPointSelect: true,
       data: nonSpecs.map(
         workItem => (
@@ -97,7 +97,7 @@ export const WorkItemsEffortChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes, specsOnly, intl, view}) => {
+  getConfig: ({workItems, stateTypes, specsOnly, wipLimit, intl, view}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
@@ -107,6 +107,8 @@ export const WorkItemsEffortChart = Chart({
       (totalEffort, workItem) => totalEffort + workItem.effort,
       0
     )
+
+
 
     const series = [
       ...getSpecSeries(workItemsWithAggregateDurations, intl),
@@ -172,9 +174,9 @@ export const WorkItemsEffortChart = Chart({
       plotOptions: {
         packedbubble: {
           layoutAlgorithm: {
-            enableSimulation: false,
+            enableSimulation: workItemsWithAggregateDurations.length > Math.min(wipLimit, 20),
             parentNodeLimit: true,
-            bubblePadding: 15,
+
             splitSeries: true,
             seriesInteraction: false
           },
@@ -193,7 +195,7 @@ export const WorkItemsEffortChart = Chart({
       },
       legend: {
         title: {
-          text: 'Phase',
+          text: specsOnly ? 'Specs' : 'Work Items',
           style: {
             fontStyle: 'italic'
           }
@@ -202,7 +204,7 @@ export const WorkItemsEffortChart = Chart({
         layout: 'vertical',
         verticalAlign: 'middle',
         itemMarginBottom: 3,
-
+        enabled: workItemsWithAggregateDurations.length > 0
 
       },
     }

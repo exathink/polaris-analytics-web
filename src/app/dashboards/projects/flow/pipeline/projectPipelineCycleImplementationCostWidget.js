@@ -10,17 +10,12 @@ export const ProjectPipelineImplementationCostWidget = (
   {
     instanceKey,
     specsOnly,
+    wipLimit,
     workItemScope,
     setWorkItemScope,
-    stateTypes,
+
     latestWorkItemEvent,
     latestCommit,
-    days,
-    cycleTimeTarget,
-    latencyTarget,
-    stageName,
-    groupByState,
-
     view,
     context
   }
@@ -42,15 +37,11 @@ export const ProjectPipelineImplementationCostWidget = (
 
   return (
       <ProjectPipelineImplementationCostView
-        stageName={stageName}
         specsOnly={specsOnly}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         workItems={workItems}
-        stateTypes={stateTypes}
-        groupByState={groupByState}
-        cycleTimeTarget={cycleTimeTarget}
-        latencyTarget={latencyTarget}
+        wipLimit={wipLimit}
         view={view}
         context={context}
       />
