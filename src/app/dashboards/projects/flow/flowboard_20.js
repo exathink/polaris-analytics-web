@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
+import {
+  ProjectPipelineCycleTimeLatencyWidget,
+  ProjectPipelineImplementationCostWidget,
+  ProjectPipelineWidget
+} from "./pipeline";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -9,7 +13,6 @@ import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widge
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
@@ -71,7 +74,7 @@ export const dashboard = ({viewerContext}) => (
                 />
 
                 <DashboardWidget
-                  w={0.45}
+                  w={0.25}
                   name="pipeline"
                   title={"Work In Progress"}
                   render={
@@ -158,6 +161,8 @@ export const dashboard = ({viewerContext}) => (
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
                         cycleTimeTarget={cycleTimeTarget}
                         specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
@@ -168,19 +173,19 @@ export const dashboard = ({viewerContext}) => (
                 />
                 <DashboardWidget
                   w={1 / 3}
-                  name="pipeline-funnel"
+                  name="pipeline-effort"
 
                   render={
                     ({view}) =>
-                      <ProjectPipelineFunnelWidget
+                      <ProjectPipelineImplementationCostWidget
                         instanceKey={key}
+                        view={view}
+                        specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
-                        workItemScope={workItemScope}
-                        setWorkItemScope={setWorkItemScope}
-                        days={30}
-                        view={view}
                       />
                   }
                   showDetail={true}
@@ -204,6 +209,8 @@ export const dashboard = ({viewerContext}) => (
                         latestCommit={latestCommit}
                         targetPercentile={cycleTimeConfidenceTarget}
                         specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                       />
                   }
                   showDetail={true}

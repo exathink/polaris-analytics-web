@@ -114,7 +114,7 @@ export const WorkItemStateTypeSortOrder = {
 
 export const WorkItemStateTypeDisplayName = {
   unmapped: 'Unmapped',
-  backlog: 'Backlog',
+  backlog: 'Define',
   open: 'Open',
   wip: 'Build',
   complete: 'Deliver',

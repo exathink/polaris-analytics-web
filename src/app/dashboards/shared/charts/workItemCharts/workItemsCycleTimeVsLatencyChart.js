@@ -143,7 +143,9 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
       xAxis: {
         type: 'logarithmic',
         softMin: 0.5,
-        max: Math.max(maxCycleTime, cycleTimeTarget || -1),
+        //1.2 is a fudge factor - otherwise the point gets cut off when it is at max.
+        // softMax causes the log axis to blow up
+        max: Math.max(maxCycleTime, cycleTimeTarget || -1)*1.2,
         visible: true,
         labels: {
           formatter: function () {
@@ -196,13 +198,14 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
             body: [
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
               [`Latency`, `${intl.formatNumber(latency)} days`],
+              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['', ''],
               [`-----------------`, ``],
               [`Current State:`, `${state}`],
               [`Entered:`, `${timeInStateDisplay}`],
@@ -212,7 +215,8 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
               workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
               duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ['', ''],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['', ''],
+              effort != null ? [`Effort`, `${intl.formatNumber(effort)} dev-days`] : ['', ''],
+
 
 
             ]

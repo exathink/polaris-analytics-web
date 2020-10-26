@@ -1,12 +1,12 @@
 import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../hooks/useQueryProjectPipelineStateDetails";
-import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
+import {ProjectPipelineImplementationCostView} from "./projectPipelineImplementationCostView";
 import {getReferenceString} from "../../../../helpers/utility";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
 
-export const ProjectPipelineCycleTimeLatencyWidget = (
+export const ProjectPipelineImplementationCostWidget = (
   {
     instanceKey,
     specsOnly,
@@ -35,13 +35,13 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   })
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectPipelineStateDetailsWidget.pipelineStateDetails', error);
+    logGraphQlError('ProjectPipelineImplementationCostWidget.pipelineStateDetails', error);
     return null;
   }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
   return (
-      <ProjectPipelineCycleTimeLatencyView
+      <ProjectPipelineImplementationCostView
         stageName={stageName}
         specsOnly={specsOnly}
         workItemScope={workItemScope}
