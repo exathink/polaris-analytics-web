@@ -45,6 +45,8 @@ export const dashboard = ({viewerContext}) => (
           const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
           const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
           const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
+          const wipLimit = flowMetricsSettings.wipLimit || 20;
+
 
           return (
             <Dashboard
@@ -89,6 +91,7 @@ export const dashboard = ({viewerContext}) => (
                         leadTimeTargetPercentile={leadTimeConfidenceTarget}
                         cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                         cycleTimeTarget={cycleTimeTarget}
+                        wipLimit={wipLimit}
                         view={view}
                         specsOnly={specsOnly}
                         context={context}
@@ -181,6 +184,7 @@ export const dashboard = ({viewerContext}) => (
                         instanceKey={key}
                         view={view}
                         specsOnly={specsOnly}
+                        wipLimit={wipLimit}
                         workItemScope={workItemScope}
                         setWorkItemScope={setWorkItemScope}
                         context={context}
