@@ -1,4 +1,4 @@
-import {daysFromNow, diff_in_days, fromNow, toMoment} from "../../../../helpers/utility";
+import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
 
 export function getWorkItemDurations(workItems) {
   return workItems.map(workItem => {
