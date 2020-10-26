@@ -9,10 +9,7 @@ export const ProjectPipelineImplementationCostView = (
   {
     stageName,
     workItems,
-    stateTypes,
-    groupByState,
-    cycleTimeTarget,
-    latencyTarget,
+    wipLimit,
     specsOnly,
     workItemScope,
     setWorkItemScope,
@@ -36,13 +33,10 @@ export const ProjectPipelineImplementationCostView = (
           }
           <WorkItemsEffortChart
             view={view}
-            stageName={stageName}
+
             specsOnly={specsOnly}
             workItems={workItems}
-            stateTypes={stateTypes}
-            groupByState={groupByState}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
+            wipLimit={wipLimit}
             onSelectionChange={
               (workItems) => {
                 if (workItems.length === 1) {
