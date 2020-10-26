@@ -45,10 +45,6 @@ const FlowBoard20View = (
         borderLeftWidth: '1px',
         borderLeftStyle: 'solid',
         borderLeftColor: 'rgba(0,0,0,0.1)',
-        paddingRight: '40px',
-        borderRightWidth: '1px',
-        borderRightStyle: 'solid',
-        borderRightColor: 'rgba(0,0,0,0.1)'
       }}>
         <Throughput
           title={'Wip'}
@@ -56,12 +52,6 @@ const FlowBoard20View = (
           specsOnly={specsOnly}
         />
       </VizItem>
-      <VizItem w={0.3}>
-        <TotalEffort
-          currentMeasurement={pipelineCycleMetrics}
-        />
-      </VizItem>
-
     </VizRow>
   )
 }

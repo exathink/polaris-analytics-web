@@ -74,7 +74,7 @@ export const dashboard = ({viewerContext}) => (
                 />
 
                 <DashboardWidget
-                  w={0.45}
+                  w={0.25}
                   name="pipeline"
                   title={"Work In Progress"}
                   render={
@@ -171,7 +171,7 @@ export const dashboard = ({viewerContext}) => (
                 />
                 <DashboardWidget
                   w={1 / 3}
-                  name="pipeline-funnel"
+                  name="pipeline-effort"
 
                   render={
                     ({view}) =>
