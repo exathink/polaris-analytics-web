@@ -103,6 +103,11 @@ export const WorkItemsEffortChart = Chart({
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
     );
 
+    const totalEffort = workItemsWithAggregateDurations.reduce(
+      (totalEffort, workItem) => totalEffort + workItem.effort,
+      0
+    )
+
     const series = [
       ...getSpecSeries(workItemsWithAggregateDurations, intl),
       ...(!specsOnly ? getNonSpecSeries(workItemsWithAggregateDurations, intl) : [])
@@ -118,11 +123,11 @@ export const WorkItemsEffortChart = Chart({
 
       },
       title: {
-        text: 'Effort by Phase',
+        text: `Total Wip Effort: ${intl.formatNumber(totalEffort)} Dev-Days`,
         align: 'left',
       },
       subtitle: {
-        text: `In Developer Days: ${intl.formatDate(Date.now(), {
+        text: `${intl.formatDate(Date.now(), {
           year: 'numeric',
           month: 'numeric',
           day: 'numeric',
