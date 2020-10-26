@@ -30,6 +30,9 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
                   earliestCommit
                   latestCommit    
                   commitCount
+                  effort
+                  duration
+                  
                 }
               }
             }

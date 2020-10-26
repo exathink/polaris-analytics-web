@@ -20,7 +20,8 @@ export function getWorkItemDurations(workItems) {
     return {
       ...workItem,
       timeInState: timeInState,
-      duration: workItemStateDetails.commitCount ? diff_in_days(workItemStateDetails.latestCommit, workItemStateDetails.earliestCommit) : null,
+      duration: workItemStateDetails.duration,
+      effort: workItemStateDetails.effort,
       // We should never get negative values, but we sometimes do when the mesurement is made very close in time to the event,
       // so we are taking abs defensively, so that negative latencies dont show up in the UI. Yes, its a hack.
       latency: Math.abs(Math.min(timeInState, timeSinceLatestCommit || Number.MAX_VALUE)),
