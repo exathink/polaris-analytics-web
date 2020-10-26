@@ -10,6 +10,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   {
     instanceKey,
     specsOnly,
+    workItemScope,
+    setWorkItemScope,
     stateTypes,
     latestWorkItemEvent,
     latestCommit,
@@ -42,6 +44,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
       <ProjectPipelineCycleTimeLatencyView
         stageName={stageName}
         specsOnly={specsOnly}
+        workItemScope={workItemScope}
+        setWorkItemScope={setWorkItemScope}
         workItems={workItems}
         stateTypes={stateTypes}
         groupByState={groupByState}

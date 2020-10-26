@@ -161,6 +161,8 @@ export const dashboard = ({viewerContext}) => (
                         stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
                         cycleTimeTarget={cycleTimeTarget}
                         specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
@@ -207,6 +209,8 @@ export const dashboard = ({viewerContext}) => (
                         latestCommit={latestCommit}
                         targetPercentile={cycleTimeConfidenceTarget}
                         specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                       />
                   }
                   showDetail={true}
