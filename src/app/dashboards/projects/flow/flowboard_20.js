@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
+import {
+  ProjectPipelineCycleTimeLatencyWidget,
+  ProjectPipelineImplementationCostWidget,
+  ProjectPipelineWidget
+} from "./pipeline";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -9,11 +13,9 @@ import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widge
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {ProjectPipelineFunnelWidget} from "./funnel";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "./flowMetrics";
-import {ProjectPipelineImplementationCostWidget} from "./pipeline";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 

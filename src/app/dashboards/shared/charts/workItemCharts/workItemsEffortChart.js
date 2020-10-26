@@ -51,11 +51,7 @@ function getSeriesByStateType(workItems, intl) {
 }
 
 
-function getTitle(workItems, stageName, specsOnly) {
-  const count = workItems.length;
-  const countDisplay = `${count} ${count === 1 ? specsOnly ? 'Spec' : 'Work Item' : specsOnly ? 'Specs' : 'Work Items'}`;
-  return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
-}
+
 
 
 export const WorkItemsEffortChart = Chart({
@@ -102,7 +98,7 @@ export const WorkItemsEffortChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state,  timeInStateDisplay, latestCommitDisplay, cycleTime, duration,  effort} = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
