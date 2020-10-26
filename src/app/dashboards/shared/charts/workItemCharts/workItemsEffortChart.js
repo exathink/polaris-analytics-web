@@ -114,6 +114,7 @@ export const WorkItemsEffortChart = Chart({
               [`-----------------`, ``],
               [`Current State:`, `${state}`],
               [`Entered:`, `${timeInStateDisplay}`],
+              [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
 
 
             ]
