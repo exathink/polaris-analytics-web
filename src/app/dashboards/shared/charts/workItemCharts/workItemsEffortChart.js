@@ -125,7 +125,7 @@ export const WorkItemsEffortChart = Chart({
 
       },
       title: {
-        text: `Total Wip Effort: ${intl.formatNumber(totalEffort)} Dev-Days`,
+        text: `Total Wip Effort: ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} Dev-Days`,
         align: 'left',
       },
       subtitle: {
