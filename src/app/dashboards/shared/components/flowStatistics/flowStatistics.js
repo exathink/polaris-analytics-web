@@ -13,7 +13,7 @@ const colors = {
   bad: '#9a3727'
 }
 
-export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold, valueRender=value=>value}) => {
+export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold, valueRender = value => value}) => {
 
   const value = currentValue || (currentMeasurement && currentMeasurement[metric]);
   const comp = previousValue || (previousMeasurement && previousMeasurement[metric]);
@@ -56,8 +56,6 @@ export const ResponseTime = ({title, currentMeasurement, previousMeasurement, me
 );
 
 
-
-
 export const Throughput = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
   <FlowStatistic
     title={title || "Throughput"}
@@ -70,6 +68,28 @@ export const Throughput = ({title, currentMeasurement, previousMeasurement, targ
     target={target}
   />
 );
+
+export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+  const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
+  return (
+    <ComponentCarousel tickInterval={2000} disabled={value < target}>
+      <FlowStatistic
+        title={title || "Wip"}
+        currentValue={value}
+        uom={specsOnly ? 'Specs' : 'Items'}
+        good={TrendIndicator.isNegative}
+        deltaThreshold={deltaThreshold}
+        target={target}
+      />
+      <FlowStatistic
+        title={"Limit"}
+        currentValue={target}
+        uom={'Items'}
+      />
+    </ComponentCarousel>
+  )
+
+};
 
 export const LatestClosed = ({currentMeasurement}) => (
   <HumanizedDateView
@@ -85,7 +105,7 @@ export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaTh
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
-    valueRender={ value => `${value}/${currentMeasurement['measurementWindow']}`}
+    valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -188,7 +208,7 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({ title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
+export const AvgLatency = ({title, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -645,26 +665,25 @@ export const WipCarousel = ({title, currentMeasurement, specsOnly, deltaThreshol
 
 export const TraceabilityTarget = ({title, target}) => (
   <Statistic
-      title={'Target'}
-      value={target * 100}
-      precision={0}
-      valueStyle={{color: colors.good}}
-      suffix={'%'}
-    />
+    title={'Target'}
+    value={target * 100}
+    precision={0}
+    valueStyle={{color: colors.good}}
+    suffix={'%'}
+  />
 );
 
 export const Traceability = ({title, current, previous, target, deltaThreshold}) => (
   <FlowStatistic
-      title={title || "Traceability"}
-      currentValue={current['traceability'] * 100}
-      previousValue={previous['traceability'] * 100}
-      uom={'%'}
-      good={TrendIndicator.isPositive}
-      deltaThreshold={deltaThreshold}
-      target={target * 100}
-    />
+    title={title || "Traceability"}
+    currentValue={current['traceability'] * 100}
+    previousValue={previous['traceability'] * 100}
+    uom={'%'}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    target={target * 100}
+  />
 );
-
 
 
 export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
@@ -675,7 +694,7 @@ export const TraceabilityCarousel = ({title, current, previous, target, deltaThr
       previous={previous}
       target={target}
       deltaThreshold={deltaThreshold}
-      />
+    />
     <TraceabilityTarget
       current={current}
       previous={previous}
