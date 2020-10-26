@@ -177,6 +177,8 @@ export const dashboard = ({viewerContext}) => (
                         instanceKey={key}
                         view={view}
                         specsOnly={specsOnly}
+                        workItemScope={workItemScope}
+                        setWorkItemScope={setWorkItemScope}
                         context={context}
                         latestWorkItemEvent={latestWorkItemEvent}
                         latestCommit={latestCommit}
