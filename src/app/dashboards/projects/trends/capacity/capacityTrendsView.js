@@ -57,16 +57,20 @@ export const ProjectCapacityTrendsView = (
       {...{capacityTrends, measurementPeriod, measurementWindow, target}}
     />
     :
-    <CapacityTrendsChart
-      {...{
-        capacityTrends,
-        contributorDetail,
-        cycleMetricsTrends,
-        showContributorDetail,
-        showEffort,
-        measurementPeriod,
-        measurementWindow,
-        target
-      }}
-    />
+    <VizRow h={1}>
+      <VizItem w={1}>
+        <CapacityTrendsChart
+          {...{
+            capacityTrends,
+            contributorDetail,
+            cycleMetricsTrends,
+            showContributorDetail,
+            showEffort,
+            measurementPeriod,
+            measurementWindow,
+            target
+          }}
+        />
+      </VizItem>
+    </VizRow>
 )

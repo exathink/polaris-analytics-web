@@ -21,6 +21,7 @@ export const ProjectFlowMixTrendsWidget = (
     target,
     asStatistic,
     showCounts,
+    chartOptions,
     pollInterval
   }) => {
 
@@ -46,6 +47,7 @@ export const ProjectFlowMixTrendsWidget = (
           target={target}
           specsOnly={specsOnly}
           view={view}
+          chartOptions={chartOptions}
           showCounts={showCounts}
         />
         :
@@ -58,6 +60,7 @@ export const ProjectFlowMixTrendsWidget = (
           latestCommit={latestCommit}
           latestWorkItemEvent={latestWorkItemEvent}
           specsOnly={specsOnly}
+          chartOptions={chartOptions}
           />
 
     )

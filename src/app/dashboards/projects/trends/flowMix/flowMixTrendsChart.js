@@ -8,7 +8,9 @@ export const FlowMixTrendsChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, intl}) => {
+  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, chartOptions={}, intl}) => {
+
+    const {alignTitle} = chartOptions;
 
     // we build one series per flow type (category)
     //
@@ -94,10 +96,12 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${specsOnly ? 'Spec' : ''} Flow Mix`
+        text: `Flow Types: Last ${measurementPeriod} days`,
+        align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay} vs Throughput: ${measurementPeriod} day trend` : `% of ${metricDisplay}: ${measurementPeriod} day trend`
+        text: showCounts ? `% of ${metricDisplay}, Throughput by Flow Type` : `% of ${metricDisplay} by Flow Type`,
+        align: alignTitle || 'center',
       },
       legend: {
         title: {
@@ -114,13 +118,17 @@ export const FlowMixTrendsChart = Chart({
       xAxis: {
         type: 'datetime',
         title: {
-          text: `${measurementWindow} days ending`
-        }
+          text: ` `
+        },
+
       },
       yAxis: [
         {
           id: 'flow-mix-percentage',
           type: 'linear',
+          lineWidth: 0,
+          minorGridLineWidth: 0,
+          lineColor: 'transparent',
           title: {
             text: `${specsOnly ? '% Effort' : '% Items'}`
           }
@@ -131,6 +139,9 @@ export const FlowMixTrendsChart = Chart({
             {
               id: 'work-item-count',
               type: 'linear',
+              lineWidth: 0,
+              minorGridLineWidth: 0,
+              lineColor: 'transparent',
               title: {
                 text: `Throughput`
               },
@@ -146,11 +157,11 @@ export const FlowMixTrendsChart = Chart({
         formatter: function () {
           const flowType = this.point.series.name;
           const metric = specsOnly ? 'totalEffort' : 'workItemCount';
-          const metricDisplay = specsOnly? 'Effort' : 'Throughput';
+          const metricDisplay = specsOnly ? 'Effort' : 'Throughput';
           const value = this.point.flowMixItem[metric];
 
           const uom = specsOnly ? 'Dev-Days' : 'Items';
-          return tooltipHtml( this.point.series.type === 'column' ? {
+          return tooltipHtml(this.point.series.type === 'column' ? {
             header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
             body: [
               [`Percentage: `, `${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}%`],
