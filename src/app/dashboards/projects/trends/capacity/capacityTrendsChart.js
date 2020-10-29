@@ -67,8 +67,8 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
         {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Baseline', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Total Commit Days', visible: true, type: 'spline', color: '#0f49b1'},
-        {key: 'avgCommitDays', displayName: 'Avg Commit Days', visible: true, type: 'spline', },
+        {key: 'totalCommitDays', displayName: 'Total Capacity', visible: true, type: 'spline', color: '#0f49b1'},
+        {key: 'avgCommitDays', displayName: 'Avg Capacity', visible: true, type: 'spline', },
 
       ],
       capacityTrends
@@ -109,7 +109,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
           id: 'commit-days',
           type: 'linear',
           title: {
-            text: `Commit Days`
+            text: `Dev-Days`
           },
 
         },
@@ -128,10 +128,10 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
 
               ]
-            } : this.point.series.name === 'Total Commit Days' ? {
+            } : this.point.series.name === 'Total Capacity' ? {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Total Commit Days`, `${intl.formatNumber(this.point.y)}`],
+                [`Total Capacity`, `${intl.formatNumber(this.point.y)}`],
                 [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]
@@ -140,17 +140,17 @@ const CapacityTrendsWithContributorDetailChart = Chart({
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
-            } : this.point.series.name === 'Avg Commit Days' ? {
+            } : this.point.series.name === 'Avg Capacity' ? {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Avg Commit Days`, `${intl.formatNumber(this.point.y)}`],
-                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`Avg Capacity:`, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Contributors:`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             } : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Baseline`, `${intl.formatNumber(this.point.y)} Commit Days`],
-                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`Baseline: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             }
           )
