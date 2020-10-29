@@ -8,11 +8,12 @@ import {ProjectResponseTimeSLAWidget} from "../flow/responseTimeSLA";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-
+import {Box, Flex} from "reflexbox";
 import {useProjectWorkItemSourcesStateMappings} from "../flow/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
 import {ProjectCapacityTrendsWidget} from "../trends/capacity";
+import {ProjectImplementationCostWidget} from "./implementationCost";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
@@ -125,7 +126,7 @@ export const dashboard = ({viewerContext}) => (
                 <DashboardWidget
                   w={0.37}
                   name="alignment"
-                  title={'Flow Mix'}
+                  title={'Flow Types'}
                   subtitle={'30 days'}
                   styles={{
                     controlContainer: {
@@ -136,7 +137,7 @@ export const dashboard = ({viewerContext}) => (
                     [
                       ({view}) => (
                         view !== 'detail' &&
-                          <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
+                        <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
                       )
                     ]
                   }
@@ -212,15 +213,15 @@ export const dashboard = ({viewerContext}) => (
 
 
               <DashboardRow h={'28%'}
-                            title={' '}
+                            title={'Flow Metrics'}
               >
                 {
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
                     w={0.34}
                     name="flow-metrics"
-                    title={"Flow Metrics"}
-                    subtitle={"30 Days"}
+                    title={"Last 30 Days"}
+
                     hideTitlesInDetailView={true}
                     render={
                       ({view}) =>
@@ -270,7 +271,7 @@ export const dashboard = ({viewerContext}) => (
                   <DashboardWidget
                     w={0.29}
                     name="pipeline"
-                    title={specsOnly ? "Specs In Progress" : "All Work In Progress"}
+                    title={"Work In Progress"}
                     render={
                       ({view}) =>
                         <ProjectPipelineWidget
@@ -290,36 +291,64 @@ export const dashboard = ({viewerContext}) => (
                     hideTitlesInDetailView={true}
                   />
                 }
-
-
               </DashboardRow>
-              <DashboardRow h={'54%'}
-                            title={'Latest Activity'}
+
+              <DashboardRow h={'49%'} title={'Flow Mix'}
               >
                 <DashboardWidget
-                  w={1}
-                  name="commits"
+                  w={0.34}
+                  name="closed-epic-effort"
                   render={
                     ({view}) =>
-                      <DimensionCommitsNavigatorWidget
-                        dimension={'project'}
+                      <ProjectImplementationCostWidget
                         instanceKey={key}
+                        days={30}
+                        specsOnly={specsOnly}
+                        view={view}
+                        latestCommit={latestCommit}
+                        latestWorkItemEvent={latestWorkItemEvent}
+                      />
+                  }
+                  showDetail={true}
+                />
+                <DashboardWidget
+                  w={0.36}
+                  name="flow-mix-detail"
+                  render={
+                    ({view}) =>
+                      <ProjectFlowMixTrendsWidget
+                        instanceKey={key}
+                        measurementWindow={7}
+                        days={30}
+                        samplingFrequency={7}
                         context={context}
                         view={view}
-                        days={1}
-                        latestCommit={latestCommit}
-                        headerMetric={HeaderMetrics.latestCommit}
                         latestWorkItemEvent={latestWorkItemEvent}
-                        groupBy={'workItem'}
-                        groupings={['workItem', 'author', 'repository', 'branch']}
-                        showHeader
-                        showTable
+                        latestCommit={latestCommit}
+                        specsOnly={specsOnly}
+                        showCounts={true}
+                        chartOptions={{alignTitle: 'left'}}
+                      />
+                  }
+                  showDetail={true}
+                />
+                <DashboardWidget
+                  w={0.29}
+                  name="current-epic-effort"
+                  render={
+                    ({view}) =>
+                      <ProjectImplementationCostWidget
+                        instanceKey={key}
+                        specsOnly={specsOnly}
+                        activeOnly={true}
+                        view={view}
+                        latestCommit={latestCommit}
+                        latestWorkItemEvent={latestWorkItemEvent}
                       />
                   }
                   showDetail={true}
                 />
               </DashboardRow>
-
 
             </Dashboard>
           )
