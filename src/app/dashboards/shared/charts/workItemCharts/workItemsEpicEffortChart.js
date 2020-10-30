@@ -33,6 +33,7 @@ function getSeries(workItems, specsOnly, intl, view) {
     dataLabels: {
       enabled: true,
       useHTML: true,
+
       formatter: function () {
         return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${specsOnly ? `Dev-Days` : `Work Items`}</div>`;
       }
@@ -94,6 +95,7 @@ export const WorkItemsEpicEffortChart = Chart({
 
       tooltip: {
         useHTML: true,
+        outside: true,
         hideDelay: 50,
         formatter: function () {
           const {name, value, workItems, percentage} = this.point;
