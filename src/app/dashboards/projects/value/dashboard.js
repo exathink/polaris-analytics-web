@@ -162,8 +162,8 @@ export const dashboard = ({viewerContext}) => (
 
                 <DashboardWidget
                   w={0.20}
-                  name="capacity"
-                  title={'Capacity'}
+                  name="team"
+                  title={'Team'}
                   subtitle={`30 days`}
                   render={
                     ({view}) =>
@@ -268,7 +268,7 @@ export const dashboard = ({viewerContext}) => (
                   stateMappingIndex.isValid() &&
                   <DashboardWidget
                     w={0.29}
-                    name="pipeline"
+                    name="wip"
                     title={"Work In Progress"}
                     render={
                       ({view}) =>
@@ -297,7 +297,7 @@ export const dashboard = ({viewerContext}) => (
               >
                 <DashboardWidget
                   w={0.34}
-                  name="closed-epic-effort"
+                  name="epic-flow-mix-closed"
                   render={
                     ({view}) =>
                       <ProjectImplementationCostWidget
@@ -313,7 +313,7 @@ export const dashboard = ({viewerContext}) => (
                 />
                 <DashboardWidget
                   w={0.36}
-                  name="flow-mix-detail"
+                  name="flow-type-flow-mix"
                   render={
                     ({view}) =>
                       <ProjectFlowMixTrendsWidget
@@ -334,7 +334,7 @@ export const dashboard = ({viewerContext}) => (
                 />
                 <DashboardWidget
                   w={0.29}
-                  name="current-epic-effort"
+                  name="epic-flow-mix-wip"
                   render={
                     ({view}) =>
                       <ProjectImplementationCostWidget

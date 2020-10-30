@@ -131,7 +131,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
             } : this.point.series.name === 'Total Capacity' ? {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Total Capacity`, `${intl.formatNumber(this.point.y)}`],
+                [`Total Capacity`, `${intl.formatNumber(this.point.y)} Dev-Days`],
                 [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]

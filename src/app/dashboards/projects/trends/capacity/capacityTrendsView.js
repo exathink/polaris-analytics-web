@@ -33,8 +33,8 @@ export const ProjectCapacityTrendsStatsView = (
       </VizItem>
       <VizItem w={0.55}>
         <TotalCommitDays
-          current={current}
-          previous={previous}
+          currentMeasurement={current}
+          previousMeasurement={previous}
           target={target}
         />
       </VizItem>
