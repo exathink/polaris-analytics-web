@@ -2,18 +2,18 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {
+  AvgCycleTime,
   AvgDuration,
+  AvgLatency,
   CycleTimeCarousel,
+  LatestCommit,
   PercentileCycleTime,
-  Throughput,
   TotalEffort,
+  Wip,
   WipCarousel,
-  Wip, LatestClosed, Cadence, AvgCycleTime, AvgLatency, LatestCommit, WipWithLimit
+  WipWithLimit
 } from "../../../shared/components/flowStatistics/flowStatistics";
-import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {ComponentCarousel} from "../../../shared/components/componentCarousel/componentCarousel";
-import {CycleMetricsCarouselView} from "../flowMetrics/projectAggregateFlowMetricsView";
 
 const FlowBoardSummaryView = (
   {
