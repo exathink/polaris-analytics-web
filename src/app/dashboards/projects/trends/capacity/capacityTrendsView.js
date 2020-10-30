@@ -1,5 +1,9 @@
 import React from 'react';
-import {CommitDaysCarousel, FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
+import {
+  CommitDaysCarousel,
+  FlowStatistic,
+  TotalCommitDays
+} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {CapacityTrendsChart} from "./capacityTrendsChart";
 
@@ -16,7 +20,7 @@ export const ProjectCapacityTrendsStatsView = (
 
   return (
     <VizRow h={"100%"}>
-      <VizItem w={0.5}>
+      <VizItem w={0.45}>
         <FlowStatistic
           title={'Contributors'}
           currentMeasurement={current}
@@ -27,8 +31,8 @@ export const ProjectCapacityTrendsStatsView = (
           target={target}
         />
       </VizItem>
-      <VizItem w={0.5}>
-        <CommitDaysCarousel
+      <VizItem w={0.55}>
+        <TotalCommitDays
           current={current}
           previous={previous}
           target={target}
