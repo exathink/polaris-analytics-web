@@ -8,6 +8,7 @@ import {getReferenceString} from "../../../../helpers/utility";
 export const ProjectPipelineWidget = (
   {
     instanceKey,
+    display,
     specsOnly,
     latestCommit,
     latestWorkItemEvent,
@@ -41,6 +42,8 @@ export const ProjectPipelineWidget = (
     return (
       <ProjectPipelineSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
+        display={display}
+        latestCommit={latestCommit}
         targetPercentile={targetPercentile}
         leadTimeTargetPercentile={leadTimeTargetPercentile}
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
