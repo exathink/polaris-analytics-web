@@ -5,10 +5,8 @@ import {ProjectFlowMetricsWidget} from "../flow/flowMetrics";
 import {ProjectDefectMetricsWidget} from "../flow/defectMetrics";
 import {ProjectPipelineFunnelWidget} from "../flow/funnel";
 import {ProjectResponseTimeSLAWidget} from "../flow/responseTimeSLA";
-import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-import {Box, Flex} from "reflexbox";
 import {useProjectWorkItemSourcesStateMappings} from "../flow/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
 import {ProjectFlowMixTrendsWidget} from "../trends/flowMix";
@@ -228,7 +226,7 @@ export const dashboard = ({viewerContext}) => (
                         <ProjectFlowMetricsWidget
                           instanceKey={key}
                           view={view}
-                          display={'all'}
+                          display={'valueBoardSummary'}
                           twoRows={true}
                           context={context}
                           specsOnly={specsOnly}
@@ -276,7 +274,9 @@ export const dashboard = ({viewerContext}) => (
                       ({view}) =>
                         <ProjectPipelineWidget
                           instanceKey={key}
+                          display={'valueBoardSummary'}
                           specsOnly={specsOnly}
+                          latestCommit={latestCommit}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}

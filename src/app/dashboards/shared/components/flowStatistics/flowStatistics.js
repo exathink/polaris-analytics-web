@@ -72,7 +72,6 @@ export const Throughput = ({title, currentMeasurement, previousMeasurement, targ
 export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
   const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
   return (
-    <ComponentCarousel tickInterval={2000} disabled={value < target}>
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
@@ -80,6 +79,21 @@ export const Wip = ({title, currentMeasurement, previousMeasurement, target, del
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
+      />
+  )
+}
+
+export const WipWithLimit = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+  const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
+  return (
+    <ComponentCarousel tickInterval={2000} disabled={value < target}>
+      <Wip
+        title={title}
+        currentMeasurement={currentMeasurement}
+        previousMeasurement={previousMeasurement}
+        target={target}
+        deltaThreshold={deltaThreshold}
+        specsOnly={specsOnly}
       />
       <FlowStatistic
         title={"Limit"}
@@ -96,6 +110,14 @@ export const LatestClosed = ({currentMeasurement}) => (
     asStatistic={true}
     title={'Latest Closed'}
     dateValue={currentMeasurement['latestClosedDate']}
+  />
+);
+
+export const LatestCommit = ({latestCommit}) => (
+  <HumanizedDateView
+    asStatistic={true}
+    title={'Latest Commit'}
+    dateValue={latestCommit}
   />
 );
 

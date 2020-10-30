@@ -2,18 +2,21 @@ import React from 'react';
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {
+  AvgCycleTime,
   AvgDuration,
+  AvgLatency,
   CycleTimeCarousel,
+  LatestCommit,
   PercentileCycleTime,
-  Throughput,
   TotalEffort,
+  Wip,
   WipCarousel,
-  Wip
+  WipWithLimit
 } from "../../../shared/components/flowStatistics/flowStatistics";
-import {PROJECTS_FLOWBOARD_20} from "../../../../../config/featureFlags";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+import {ComponentCarousel} from "../../../shared/components/componentCarousel/componentCarousel";
 
-const FlowBoard20View = (
+const FlowBoardSummaryView = (
   {
     pipelineCycleMetrics,
     specsOnly,
@@ -37,10 +40,16 @@ const FlowBoard20View = (
         />
       </VizItem>
       <VizItem w={0.3}>
-        <AvgDuration
-          currentMeasurement={pipelineCycleMetrics}
-          target={cycleTimeTarget}
-        />
+        <ComponentCarousel tickInterval={2000}>
+          <AvgCycleTime
+            currentMeasurement={pipelineCycleMetrics}
+            target={cycleTimeTarget}
+          />
+          <AvgDuration
+            currentMeasurement={pipelineCycleMetrics}
+            target={cycleTimeTarget}
+          />
+        </ComponentCarousel>
       </VizItem>
       <VizItem w={0.3} style={{
         paddingLeft: '40px',
@@ -48,11 +57,11 @@ const FlowBoard20View = (
         borderLeftStyle: 'solid',
         borderLeftColor: 'rgba(0,0,0,0.1)',
       }}>
-      <Wip
-        currentMeasurement={pipelineCycleMetrics}
-        target={wipLimit}
-        specsOnly={specsOnly}
-      />
+        <WipWithLimit
+          currentMeasurement={pipelineCycleMetrics}
+          target={wipLimit}
+          specsOnly={specsOnly}
+        />
       </VizItem>
     </VizRow>
   )
@@ -90,10 +99,85 @@ const NonFlowBoard20View = (
   )
 }
 
+export const ValueBoardSummaryView = (
+  {
+
+    pipelineCycleMetrics,
+
+    latestCommit,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    wipLimit,
+    specsOnly,
+
+  }
+) => {
+  const current = pipelineCycleMetrics;
+
+  return (
+    <div>
+      <VizRow h={"50"}>
+        <VizItem w={1 / 3}>
+          <Wip
+            currentMeasurement={current}
+            target={wipLimit}
+            specsOnly={specsOnly}
+          />
+        </VizItem>
+        <VizItem w={1 / 3}>
+          <AvgCycleTime
+            currentMeasurement={current}
+
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1 / 3}>
+          <LatestCommit
+            latestCommit={latestCommit}
+          />
+        </VizItem>
+      </VizRow>
+      <VizRow h={"50%"}
+              style={{
+                paddingTop: '20px',
+                borderTop: '1px',
+                borderTopStyle: 'solid',
+                borderTopColor: 'rgba(0,0,0,0.1)'
+              }}>
+        <VizItem w={1 / 3}>
+          <TotalEffort
+            currentMeasurement={current}
+
+          />
+        </VizItem>
+        <VizItem w={1 / 3}>
+          <AvgDuration
+            currentMeasurement={current}
+
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1 / 3}>
+          <AvgLatency
+            title={'Latency'}
+            currentMeasurement={current}
+
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+      </VizRow>
+    </div>
+  )
+};
+
 const PipelineSummaryView = withViewerContext((
   {
     pipelineCycleMetrics,
+    display,
     specsOnly,
+    latestCommit,
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
@@ -102,38 +186,64 @@ const PipelineSummaryView = withViewerContext((
     wipLimit,
     viewerContext
   }
-) => (
-  viewerContext.isFeatureFlagActive(PROJECTS_FLOWBOARD_20) ?
-    <FlowBoard20View
-      {
-        ...{
-          pipelineCycleMetrics,
-          specsOnly,
-          targetPercentile,
-          leadTimeTargetPercentile,
-          cycleTimeTargetPercentile,
-          leadTimeTarget,
-          cycleTimeTarget,
-          wipLimit,
-          viewerContext
-        }
-      }/> :
-    <NonFlowBoard20View
-      {
-        ...{
-          pipelineCycleMetrics,
-          specsOnly,
-          targetPercentile,
-          leadTimeTargetPercentile,
-          cycleTimeTargetPercentile,
-          leadTimeTarget,
-          cycleTimeTarget,
-          wipLimit,
-          viewerContext
-        }
-      }/>
+) => {
 
-));
+  switch (display) {
+    case 'flowboardSummary':
+      return (
+        <FlowBoardSummaryView
+          {
+            ...{
+              pipelineCycleMetrics,
+              specsOnly,
+              targetPercentile,
+              leadTimeTargetPercentile,
+              cycleTimeTargetPercentile,
+              leadTimeTarget,
+              cycleTimeTarget,
+              wipLimit,
+              viewerContext
+            }
+          }/>
+      )
+    case 'valueBoardSummary':
+      return (
+        <ValueBoardSummaryView
+          {
+            ...{
+              pipelineCycleMetrics,
+              latestCommit,
+              specsOnly,
+              targetPercentile,
+              leadTimeTargetPercentile,
+              cycleTimeTargetPercentile,
+              leadTimeTarget,
+              cycleTimeTarget,
+              wipLimit,
+              viewerContext
+            }
+          }/>
+      )
+    default:
+      return (
+        <NonFlowBoard20View
+          {
+            ...{
+              pipelineCycleMetrics,
+              specsOnly,
+              targetPercentile,
+              leadTimeTargetPercentile,
+              cycleTimeTargetPercentile,
+              leadTimeTarget,
+              cycleTimeTarget,
+              wipLimit,
+              viewerContext
+            }
+          }
+        />
+      )
+  }
+});
 
 
 export const ProjectPipelineSummaryView = withNavigationContext(PipelineSummaryView);

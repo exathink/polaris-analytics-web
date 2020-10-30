@@ -1,8 +1,8 @@
 import {Chart, Highcharts, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick, elide} from "../../../../helpers/utility";
+import {buildIndex, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypeColor} from "../../config";
+import {Colors} from "../../config";
 
 require('highcharts/modules/treemap')(Highcharts);
 

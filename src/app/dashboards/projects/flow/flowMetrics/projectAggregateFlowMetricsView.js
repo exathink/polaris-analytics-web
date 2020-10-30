@@ -6,12 +6,12 @@ import {
   AvgCycleTime,
   AvgDuration,
   AvgLatency,
+  Cadence,
   CycleTimeSLACarousel,
   DurationCarousel,
   EffortCarousel,
   LatencyCarousel,
   LatestClosed,
-  Cadence,
   LeadTimeSLACarousel,
   Throughput,
   ThroughputCarousel,
@@ -60,7 +60,7 @@ export const PerformanceSummaryView = (
           <Cadence
             currentMeasurement={current}
             previousMeasurement={previous}
-            />
+          />
         </ComponentCarousel>
       </VizItem>
       <VizItem w={0.30}>
@@ -87,6 +87,85 @@ export const PerformanceSummaryView = (
         </ComponentCarousel>
       </VizItem>
     </React.Fragment>
+  )
+};
+
+export const ValueBoardSummaryView = (
+  {
+
+    cycleMetricsTrends,
+    responseTimeConfidenceTrends,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    specsOnly,
+
+  }
+) => {
+  const [current, previous] = cycleMetricsTrends;
+
+  return (
+    <div >
+      <VizRow h={"50"}>
+        <VizItem w={1/3}>
+          <Throughput
+            title={'Closed'}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            specsOnly={specsOnly}
+          />
+        </VizItem>
+        <VizItem w={1/3}>
+          <ComponentCarousel tickInterval={3000}>
+            <LatestClosed
+              currentMeasurement={current}
+            />
+            <Cadence
+              currentMeasurement={current}
+              previousMeasurement={previous}
+            />
+          </ComponentCarousel>
+        </VizItem>
+        <VizItem w={1/3}>
+          <AvgCycleTime
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+
+          />
+        </VizItem>
+      </VizRow>
+      <VizRow h={"50%"}
+              style={{
+                paddingTop: '20px',
+                borderTop: '1px',
+                borderTopStyle: 'solid',
+                borderTopColor: 'rgba(0,0,0,0.1)'
+              }}>
+        <VizItem w={1/3}>
+          <TotalEffort
+            currentMeasurement={current}
+            previousMeasurement={previous}
+          />
+        </VizItem>
+        <VizItem w={1/3}>
+          <AvgDuration
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1/3}>
+          <AvgLatency
+            title={'Delivery Latency'}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+      </VizRow>
+    </div>
   )
 };
 
@@ -354,6 +433,22 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               twoRows={twoRows}
             />
           </VizRow>
+
+        )
+      case 'valueBoardSummary':
+        return (
+
+            <ValueBoardSummaryView
+              cycleMetricsTrends={cycleMetricsTrends}
+              responseTimeConfidenceTrends={responseTimeConfidenceTrends}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTargetPercentile={leadTimeTargetPercentile}
+              cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+              specsOnly={specsOnly}
+              twoRows={twoRows}
+            />
+
 
         )
       case 'all':

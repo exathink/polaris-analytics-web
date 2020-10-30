@@ -1,8 +1,6 @@
 import React from 'react';
-import WorkItems from "../../../work_items/context";
 import {WorkItemsEpicEffortChart} from "../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {Flex} from "reflexbox";
 
 
 export const ProjectImplementationCostView = (
