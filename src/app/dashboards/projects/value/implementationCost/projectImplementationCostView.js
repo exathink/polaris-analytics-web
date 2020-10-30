@@ -15,7 +15,7 @@ export const ProjectImplementationCostView = (
   }
 ) => {
   return (
-    <div style={{height: "100%"}}>
+
       <VizRow h={1}>
         <VizItem w={1}>
           <WorkItemsEpicEffortChart
@@ -25,10 +25,11 @@ export const ProjectImplementationCostView = (
             days={days}
             title={title}
             subtitile={subtitle}
-            view={view}/>
+            view={view}
+          />
         </VizItem>
       </VizRow>
-    </div>
+
   )
 
 }

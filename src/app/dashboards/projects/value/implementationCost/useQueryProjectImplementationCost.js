@@ -12,6 +12,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
             $days: Int,
             $referenceString: String) {
             project(key: $projectKey, referenceString: $referenceString) {
+                id
                 workItems(
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
