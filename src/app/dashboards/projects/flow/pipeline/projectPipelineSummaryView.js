@@ -14,6 +14,7 @@ import {
   WipWithLimit
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+import {ComponentCarousel} from "../../../shared/components/componentCarousel/componentCarousel";
 
 const FlowBoardSummaryView = (
   {
@@ -39,10 +40,16 @@ const FlowBoardSummaryView = (
         />
       </VizItem>
       <VizItem w={0.3}>
-        <AvgDuration
-          currentMeasurement={pipelineCycleMetrics}
-          target={cycleTimeTarget}
-        />
+        <ComponentCarousel tickInterval={2000}>
+          <AvgCycleTime
+            currentMeasurement={pipelineCycleMetrics}
+            target={cycleTimeTarget}
+          />
+          <AvgDuration
+            currentMeasurement={pipelineCycleMetrics}
+            target={cycleTimeTarget}
+          />
+        </ComponentCarousel>
       </VizItem>
       <VizItem w={0.3} style={{
         paddingLeft: '40px',
