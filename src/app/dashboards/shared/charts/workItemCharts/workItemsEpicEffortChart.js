@@ -103,7 +103,6 @@ export const WorkItemsEpicEffortChart = Chart({
             header: `${name}`,
             body: [
               [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
-              [`Percentage`, `${intl.formatNumber(percentage)} %`],
               [`Work Items`, `${workItems.length}`],
             ]
           })
