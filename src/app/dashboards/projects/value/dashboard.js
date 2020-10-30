@@ -228,7 +228,7 @@ export const dashboard = ({viewerContext}) => (
                         <ProjectFlowMetricsWidget
                           instanceKey={key}
                           view={view}
-                          display={'all'}
+                          display={'valueBoardSummary'}
                           twoRows={true}
                           context={context}
                           specsOnly={specsOnly}
@@ -276,7 +276,9 @@ export const dashboard = ({viewerContext}) => (
                       ({view}) =>
                         <ProjectPipelineWidget
                           instanceKey={key}
+                          display={'valueBoardSummary'}
                           specsOnly={specsOnly}
+                          latestCommit={latestCommit}
                           latestWorkItemEvent={latestWorkItemEvent}
                           stateMappingIndex={stateMappingIndex}
                           days={30}

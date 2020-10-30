@@ -83,6 +83,7 @@ export const dashboard = ({viewerContext}) => (
                     ({view}) =>
                       <ProjectPipelineWidget
                         instanceKey={key}
+                        display={'flowboardSummary'}
                         latestCommit={latestCommit}
                         latestWorkItemEvent={latestWorkItemEvent}
 
