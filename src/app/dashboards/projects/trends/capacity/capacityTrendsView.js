@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  CommitDaysCarousel,
-  FlowStatistic,
-  TotalCommitDays
-} from "../../../shared/components/flowStatistics/flowStatistics";
+import {FlowStatistic, TotalCommitDays} from "../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {CapacityTrendsChart} from "./capacityTrendsChart";
 

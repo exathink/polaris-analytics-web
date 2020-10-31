@@ -98,7 +98,7 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: true,
         hideDelay: 50,
         formatter: function () {
-          const {name, value, workItems, percentage} = this.point;
+          const {name, value, workItems} = this.point;
           return tooltipHtml({
             header: `${name}`,
             body: [
