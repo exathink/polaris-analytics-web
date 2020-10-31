@@ -115,7 +115,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations, view)
-      : getSeriesByStateType(workItemsWithAggregateDurations);
+      : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
     return {
       chart: {
@@ -228,7 +228,14 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
       ],
       plotOptions: {
         series: {
-          animation: false
+          animation: false,
+          dataLabels: {
+          enabled: true,
+          formatter: function() {
+            return this.point.workItem.displayId;
+          },
+        }
+
         }
       },
       legend: {
