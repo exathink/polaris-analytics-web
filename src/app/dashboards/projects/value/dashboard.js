@@ -218,8 +218,8 @@ export const dashboard = ({viewerContext}) => (
                   <DashboardWidget
                     w={0.34}
                     name="flow-metrics"
-                    title={"Last 30 Days"}
-
+                    title={`Closed `}
+                    subtitle={ 'Last 30 days'}
                     hideTitlesInDetailView={true}
                     render={
                       ({view}) =>
