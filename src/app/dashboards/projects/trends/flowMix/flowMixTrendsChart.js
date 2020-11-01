@@ -85,7 +85,7 @@ export const FlowMixTrendsChart = Chart({
       [];
     const series = [...work_item_count_series, ...flow_mix_series];
 
-    const metricDisplay = specsOnly ? 'Effort' : 'Items';
+    const metricDisplay = specsOnly ? 'Effort' : 'Volume';
 
     return {
       chart: {
