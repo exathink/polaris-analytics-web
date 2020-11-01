@@ -2,7 +2,7 @@ import React from 'react';
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectPredictabilityTrendsWidget} from "./predictability"
-import {ProjectThroughputTrendsWidget} from "./throughput"
+import {ProjectVolumeTrendsWidget} from "./throughput"
 import {ProjectResponseTimeTrendsWidget} from "./responseTime"
 import {ProjectTraceabilityTrendsWidget} from "./traceability";
 
@@ -109,7 +109,7 @@ const dashboard = ({viewerContext}) => (
 
                 render={
                   ({view}) =>
-                    <ProjectThroughputTrendsWidget
+                    <ProjectVolumeTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
                       days={45}

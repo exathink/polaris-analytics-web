@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectThroughputTrendsWidget} from "./throughputTrendsWidget";
+import {ProjectVolumeTrendsWidget} from "./throughputTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
@@ -9,7 +9,7 @@ import {
 const dashboard_id = 'dashboards.trends.projects.throughput.detail';
 
 
-export const ProjectThroughputTrendsDetailDashboard = (
+export const ProjectVolumeTrendsDetailDashboard = (
   {
 
     instanceKey,
@@ -37,7 +37,7 @@ export const ProjectThroughputTrendsDetailDashboard = (
     >
       <DashboardRow
         h={1}
-        title={`Throughput Trends`}
+        title={`Volume Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
           getTrendsControlBarControls(
@@ -54,7 +54,7 @@ export const ProjectThroughputTrendsDetailDashboard = (
           name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
-              <ProjectThroughputTrendsWidget
+              <ProjectVolumeTrendsWidget
                 instanceKey={instanceKey}
 
                 view={view}

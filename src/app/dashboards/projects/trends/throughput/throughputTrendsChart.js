@@ -2,7 +2,7 @@ import React from 'react';
 import {i18nDate, i18nNumber} from "../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../shared/views/measurementTrend/measurementTrendLineChart";
 
-export const ThroughputTrendsChart = ({
+export const VolumeTrendsChart = ({
   flowMetricsTrends,
   measurementPeriod,
   measurementWindow,
@@ -19,7 +19,7 @@ export const ThroughputTrendsChart = ({
       measurementWindow={measurementWindow}
 
       config={{
-        title: 'Throughput',
+        title: 'Volume',
         yAxisUom: 'Work Items',
         plotBands: {
           metric: 'workItemsWithCommits'

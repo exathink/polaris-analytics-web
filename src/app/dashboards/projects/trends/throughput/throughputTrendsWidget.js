@@ -2,10 +2,10 @@ import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryProjectFlowMetricsTrends} from "../../shared/hooks/useQueryProjectFlowMetricsTrends"
-import {ProjectThroughputTrendsView} from "./throughputTrendsView"
-import {ProjectThroughputTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
+import {ProjectVolumeTrendsView} from "./throughputTrendsView"
+import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
 
-export const ProjectThroughputTrendsWidget = (
+export const ProjectVolumeTrendsWidget = (
   {
     instanceKey,
     view,
@@ -33,7 +33,7 @@ export const ProjectThroughputTrendsWidget = (
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       view === 'primary' ?
-        <ProjectThroughputTrendsView
+        <ProjectVolumeTrendsView
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}
           measurementWindow={measurementWindow}
@@ -41,7 +41,7 @@ export const ProjectThroughputTrendsWidget = (
           view={view}
         />
         :
-        <ProjectThroughputTrendsDetailDashboard
+        <ProjectVolumeTrendsDetailDashboard
           instanceKey={instanceKey}
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}

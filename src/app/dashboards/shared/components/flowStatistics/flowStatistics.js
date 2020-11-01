@@ -56,9 +56,9 @@ export const ResponseTime = ({title, currentMeasurement, previousMeasurement, me
 );
 
 
-export const Throughput = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
+export const Volume = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
   <FlowStatistic
-    title={title || "Throughput"}
+    title={title || "Volume"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
@@ -646,9 +646,9 @@ export const LatencyCarousel = ({title, currentMeasurement, previousMeasurement,
   </ComponentCarousel>
 )
 
-export const ThroughputCarousel = ({title, currentMeasurement, previousMeasurement, specsOnly, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
+export const VolumeCarousel = ({title, currentMeasurement, previousMeasurement, specsOnly, target, targetPercentile, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel tickInterval={tickInterval}>
-    <Throughput
+    <Volume
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}
@@ -671,7 +671,7 @@ export const ThroughputCarousel = ({title, currentMeasurement, previousMeasureme
 
 export const WipCarousel = ({title, currentMeasurement, specsOnly, deltaThreshold, tickInterval = 3000}) => (
   <ComponentCarousel specsOnly={specsOnly} tickInterval={tickInterval}>
-    <Throughput
+    <Volume
       title={'Wip'}
       currentMeasurement={currentMeasurement}
       specsOnly={specsOnly}
