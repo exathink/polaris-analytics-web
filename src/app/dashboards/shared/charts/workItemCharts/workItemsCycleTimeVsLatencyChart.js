@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick, elide} from "../../../../helpers/utility";
+import {buildIndex, pick, elide, localNow} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getWorkItemDurations} from "./shared";
 
@@ -131,13 +131,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         align: 'left',
       },
       subtitle: {
-        text: `Cycle Time and Latency: ${intl.formatDate(Date.now(), {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
-        })} `,
+        text: `Cycle Time and Latency: ${localNow(intl)} `,
         align: 'left',
       },
       xAxis: {

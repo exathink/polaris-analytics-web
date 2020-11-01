@@ -1,5 +1,5 @@
 import {Chart, Highcharts, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick} from "../../../../helpers/utility";
+import {buildIndex, pick, localNow} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors} from "../../config";
@@ -74,7 +74,7 @@ export const WorkItemsEpicEffortChart = Chart({
         align: 'left',
       },
       subtitle: {
-        text: `${specsOnly ? '% Effort ' : '% Throughput '} by Epic`,
+        text: `${specsOnly ? '% Effort ' : '% Volume '} by Epic: ${localNow(intl)}`,
         align: 'left',
       },
       xAxis: {
