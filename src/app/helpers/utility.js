@@ -272,3 +272,13 @@ export function buildIndex(array, hashFn) {
       {}
     );
 }
+
+export function localNow(intl) {
+  return intl.formatDate(Date.now(), {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric'
+        })
+}
