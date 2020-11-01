@@ -100,12 +100,12 @@ export const FlowMixTrendsChart = Chart({
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay}, Throughput by Flow Type` : `% of ${metricDisplay} by Flow Type`,
+        text: showCounts ? `% of ${metricDisplay}, Volume by Flow Type` : `% of ${metricDisplay} by Flow Type`,
         align: alignTitle || 'center',
       },
       legend: {
         title: {
-          text: `${showCounts ? (specsOnly ? 'Spec Throughput' : 'Overall Throughput') : (specsOnly ? 'Spec Flow Types' : 'Flow Types')}`,
+          text: `${showCounts ? (specsOnly ? 'Spec Volume' : 'Overall Volume') : (specsOnly ? 'Spec Flow Types' : 'Flow Types')}`,
           style: {
             fontStyle: 'italic'
           }
@@ -143,7 +143,7 @@ export const FlowMixTrendsChart = Chart({
               minorGridLineWidth: 0,
               lineColor: 'transparent',
               title: {
-                text: `Throughput`
+                text: `Volume`
               },
               opposite: true
             }
@@ -157,7 +157,7 @@ export const FlowMixTrendsChart = Chart({
         formatter: function () {
           const flowType = this.point.series.name;
           const metric = specsOnly ? 'totalEffort' : 'workItemCount';
-          const metricDisplay = specsOnly ? 'Effort' : 'Throughput';
+          const metricDisplay = specsOnly ? 'Effort' : 'Volume';
           const value = this.point.flowMixItem[metric];
 
           const uom = specsOnly ? 'Dev-Days' : 'Items';
@@ -172,7 +172,7 @@ export const FlowMixTrendsChart = Chart({
           } : {
             header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
             body: [
-              [`Throughput: `, `${intl.formatNumber(this.point.y)}`],
+              [`Volume: `, `${intl.formatNumber(this.point.y)}`],
             ]
           })
         }

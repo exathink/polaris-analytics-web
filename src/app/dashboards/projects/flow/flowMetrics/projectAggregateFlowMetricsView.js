@@ -13,8 +13,8 @@ import {
   LatencyCarousel,
   LatestClosed,
   LeadTimeSLACarousel,
-  Throughput,
-  ThroughputCarousel,
+  Volume,
+  VolumeCarousel,
   TotalEffort,
 } from "../../../shared/components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../shared/components/componentCarousel/componentCarousel";
@@ -39,8 +39,7 @@ export const PerformanceSummaryView = (
     <React.Fragment>
 
       <VizItem w={0.20}>
-        <Throughput
-          title={'Closed'}
+        <Volume
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
@@ -109,8 +108,8 @@ export const ValueBoardSummaryView = (
     <div >
       <VizRow h={"50"}>
         <VizItem w={1/3}>
-          <Throughput
-            title={'Closed'}
+          <Volume
+
             currentMeasurement={current}
             previousMeasurement={previous}
             specsOnly={specsOnly}
@@ -188,7 +187,7 @@ export const CycleMetricsCarouselView = (
   return (
     <React.Fragment>
       <VizItem w={0.30}>
-        <ThroughputCarousel
+        <VolumeCarousel
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
@@ -314,7 +313,7 @@ export const AllMetricsDisplayView = (
       <div>
         <VizRow h={"100%"}>
           <VizItem w={0.30}>
-            <ThroughputCarousel
+            <VolumeCarousel
               currentMeasurement={current}
               previousMeasurement={previous}
               specsOnly={specsOnly}
