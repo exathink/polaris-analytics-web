@@ -22,6 +22,14 @@ const projectDeliveryCycleFlowMetricsMeta = {
     display: 'Delivery Latency',
     value: cycle => cycle.latency
   },
+  effort: {
+    display: 'Effort',
+    value: cycle => cycle.effort
+  },
+  authors: {
+    display: 'Authors',
+    value: cycle => cycle.authorCount
+  },
   backlogTime: {
     display: 'Backlog Time',
     value: cycle => cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0
@@ -29,7 +37,7 @@ const projectDeliveryCycleFlowMetricsMeta = {
 }
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({instanceKey, context, model, days, projectCycleMetrics, initialMetric, defectsOnly, specsOnly}) => {
-  const groupings = specsOnly ?  ['leadTime', 'cycleTime', 'latency', 'duration', 'backlogTime']: ['leadTime', 'cycleTime', 'backlogTime']
+  const groupings = specsOnly ?  ['leadTime', 'cycleTime', 'latency', 'duration', 'effort', 'authors', 'backlogTime']: ['leadTime', 'cycleTime', 'backlogTime']
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || 'leadTime');
   const [yAxisScale, setYAxisScale] = useState('logarithmic')
   const [showEpics, setShowEpics] = useState(false);

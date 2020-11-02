@@ -47,6 +47,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       'cycleTime',
       'latency',
       'duration',
+      'effort',
+      'authorCount'
     )
   );
   return (
