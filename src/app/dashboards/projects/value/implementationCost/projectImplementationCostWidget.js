@@ -33,11 +33,11 @@ export const ProjectImplementationCostWidget = (
     return null;
   }
 
-  const workItems = data.project.workItems.edges.map( edge => edge.node );
+  const workItemDeliveryCycles = data.project.workItemDeliveryCycles.edges.map( edge => edge.node );
 
   return (
     <ProjectImplementationCostView
-      workItems={workItems}
+      workItems={workItemDeliveryCycles}
       specsOnly={specsOnly}
       activeOnly={activeOnly}
       days={days}

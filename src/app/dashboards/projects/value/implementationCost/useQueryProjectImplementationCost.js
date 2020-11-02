@@ -2,7 +2,7 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectImplementationCost({instanceKey, activeOnly, specOnly, days, referenceString}) {
+export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(
@@ -13,7 +13,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
             $referenceString: String) {
             project(key: $projectKey, referenceString: $referenceString) {
                 id
-                workItems(
+                workItemDeliveryCycles(
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
                     specsOnly: $specsOnly,
@@ -21,7 +21,6 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                 ) {
                     edges {
                         node {
-                            id
                             name
                             key
                             epicName
@@ -37,7 +36,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
       variables: {
         projectKey: instanceKey,
         activeOnly: activeOnly,
-        specsOnly : specOnly,
+        specsOnly : specsOnly,
         days: days,
         referenceString: referenceString
       },

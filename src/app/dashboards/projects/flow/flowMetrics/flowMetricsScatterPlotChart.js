@@ -159,6 +159,8 @@ export const FlowMetricsScatterPlotChart = Chart({
           const cycleTime = metricsMeta['cycleTime'].value(this.point.cycle);
           const latency = metricsMeta['latency'].value(this.point.cycle);
           const duration = metricsMeta['duration'].value(this.point.cycle);
+          const effort = metricsMeta['effort'].value(this.point.cycle);
+          const authorCount = metricsMeta['authors'].value(this.point.cycle);
           const backlogTime = metricsMeta['backlogTime'].value(this.point.cycle);
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${this.point.cycle.displayId})`,
@@ -168,10 +170,13 @@ export const FlowMetricsScatterPlotChart = Chart({
               ['Lead Time: ', `${intl.formatNumber(leadTime)} days`],
               ['Backlog Time: ', backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : 'N/A'],
               ['Cycle Time: ', cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : 'N/A'],
-              ['Duration: ', specsOnly ? `${intl.formatNumber(duration)} days` : 'N/A'],
+
               ['Delivery Latency: ', specsOnly ? `${intl.formatNumber(latency)} days` : 'N/A'],
 
 
+              ['Duration: ', specsOnly ? `${intl.formatNumber(duration)} days` : 'N/A'],
+              ['Effort: ', specsOnly ? `${intl.formatNumber(effort)} dev-days` : 'N/A'],
+              ['Authors: ', specsOnly ? `${intl.formatNumber(authorCount)}` : 'N/A'],
 
             ]
           })
