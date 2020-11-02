@@ -14,30 +14,34 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
             closedWithinDays: $days,
             defectsOnly: $defectsOnly,
             specsOnly: $specsOnly,
-            interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics]
+            interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
           ) {
                edges {
                   node {
                       
                       name
                       key
-                      ... on WorkItemInfo {
-                        displayId
-                        workItemKey
-                        workItemType
-                        isBug
-                      }
-                      ... on DeliveryCycleInfo {
-                        startDate
-                        endDate
-                        
-                      }
-                      ... on CycleMetrics {
-                        leadTime
-                        cycleTime
-                        duration
-                        latency
-                      }
+                      
+                      displayId
+                      workItemKey
+                      workItemType
+                      isBug
+                    
+                    
+                      startDate
+                      endDate
+                      
+                    
+                      leadTime
+                      cycleTime
+                      latency
+                      
+                    
+                      effort
+                      duration
+                      authorCount
+                                              
+                      
                   }
                }
           }
