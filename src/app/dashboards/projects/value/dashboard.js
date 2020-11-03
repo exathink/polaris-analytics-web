@@ -135,7 +135,7 @@ export const dashboard = ({viewerContext}) => (
                     [
                       ({view}) => (
                         view !== 'detail' &&
-                        <span>{specsOnly ? '% of Effort' : '% of Items'}</span>
+                        <span>{specsOnly ? '% of Effort' : '% of Volume'}</span>
                       )
                     ]
                   }
