@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {WorkItemStateTypes} from "../../shared/config";
-import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "./pipeline";
-import {ProjectFlowMetricsWidget} from "./flowMetrics";
-import {ProjectDefectMetricsWidget} from "./defectMetrics";
+import {ProjectPipelineCycleTimeLatencyWidget, ProjectPipelineWidget} from "../shared/widgets/wip";
+import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {ProjectDefectMetricsWidget} from "../shared/widgets/defectMetrics";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -13,9 +13,9 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {ProjectPipelineFunnelWidget} from "./funnel";
-import {ProjectCapacityTrendsWidget} from "../trends/capacity";
-import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
+import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
+import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
+import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 

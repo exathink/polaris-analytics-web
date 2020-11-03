@@ -5,7 +5,7 @@ import {
   ProjectPipelineCycleTimeLatencyWidget,
   ProjectPipelineImplementationCostWidget,
   ProjectPipelineWidget
-} from "./pipeline";
+} from "../shared/widgets/wip";
 
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -13,9 +13,9 @@ import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widge
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {ProjectTraceabilityTrendsWidget} from "../trends/traceability";
-import {ProjectResponseTimeSLAWidget} from "./responseTimeSLA";
-import {ProjectFlowMetricsWidget} from "./flowMetrics";
+import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
+import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
+import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
 import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 
