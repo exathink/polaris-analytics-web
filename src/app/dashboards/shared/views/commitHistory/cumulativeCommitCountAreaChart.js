@@ -108,6 +108,11 @@ export const CumulativeCommitCountChart = Chart({
         }],
         legend: {
           enabled: false
+        },
+        plotOptions: {
+          series: {
+            turboThreshold: 2000
+          }
         }
       }
     }
