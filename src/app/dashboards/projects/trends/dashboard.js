@@ -1,16 +1,16 @@
 import React from 'react';
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {ProjectPredictabilityTrendsWidget} from "./predictability"
-import {ProjectVolumeTrendsWidget} from "./throughput"
-import {ProjectResponseTimeTrendsWidget} from "./responseTime"
-import {ProjectTraceabilityTrendsWidget} from "./traceability";
+import {ProjectPredictabilityTrendsWidget} from "../shared/widgets/predictability"
+import {ProjectVolumeTrendsWidget} from "../shared/widgets/throughput"
+import {ProjectResponseTimeTrendsWidget} from "../shared/widgets/responseTime"
+import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ProjectFlowMixTrendsWidget} from "./flowMix";
-import {ProjectCapacityTrendsWidget} from "./capacity";
+import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
+import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
 
 const dashboard_id = 'dashboards.trends.projects.dashboard.instance';
 const dashboard = ({viewerContext}) => (

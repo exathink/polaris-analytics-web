@@ -5,8 +5,8 @@ import {FormattedMessage} from 'react-intl';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
+import Pipeline from './pipeline/topic';
 import Flow from './flow/topic';
-import Value from './value/topic';
 import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
@@ -43,9 +43,9 @@ const context : Context = {
             topic: Flow
           },
           {
-            match: 'value',
+            match: 'pipeline',
             requiredFeatures: [PROJECTS_FLOWBOARD_20],
-            topic: Value
+            topic: Pipeline
           },
           {
 
