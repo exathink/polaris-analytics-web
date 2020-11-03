@@ -85,7 +85,7 @@ export const FlowMixTrendsChart = Chart({
       [];
     const series = [...work_item_count_series, ...flow_mix_series];
 
-    const metricDisplay = specsOnly ? 'Effort' : 'Volume';
+    const metricDisplay = specsOnly ? 'Capacity' : 'Volume';
 
     return {
       chart: {
@@ -100,7 +100,7 @@ export const FlowMixTrendsChart = Chart({
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay}, Volume by Flow Type` : `% of ${metricDisplay} by Flow Type`,
+        text: showCounts ? `% of ${metricDisplay} by Flow Type` : `% of ${metricDisplay} by Flow Type`,
         align: alignTitle || 'center',
       },
       legend: {
@@ -130,7 +130,7 @@ export const FlowMixTrendsChart = Chart({
           minorGridLineWidth: 0,
           lineColor: 'transparent',
           title: {
-            text: `${specsOnly ? '% Effort' : '% Items'}`
+            text: `${specsOnly ? '% Capacity' : '% Volume'}`
           }
         },
         // secondary y axis for work item count, show only if showCounts is enabled.
