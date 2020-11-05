@@ -7,7 +7,7 @@ export function useQueryProjectDefectMetricsSummary({instanceKey, days, targetPe
     gql`
            query projectDefectMetricsSummary($key: String!, $days: Int!, $targetPercentile: Float!, $referenceString: String!) {
             project(key: $key, 
-                    interfaces: [AggregateCycleMetrics, WorkItemStateTypeCounts], 
+                    interfaces: [AggregateCycleMetrics, WorkItemStateTypeAggregateMetrics], 
                     defectsOnly: true,
                     cycleMetricsTargetPercentile: $targetPercentile,
                     closedWithinDays: $days,
@@ -26,15 +26,15 @@ export function useQueryProjectDefectMetricsSummary({instanceKey, days, targetPe
                     workItemsInScope
                     targetPercentile
                 }
-                ... on WorkItemStateTypeCounts {
-                  workItemStateTypeCounts {
-                    backlog
-                    open
-                    wip
-                    complete
-                    closed
-                  }
+                
+                workItemStateTypeCounts {
+                  backlog
+                  open
+                  wip
+                  complete
+                  closed
                 }
+                
             }
            }
       `, {

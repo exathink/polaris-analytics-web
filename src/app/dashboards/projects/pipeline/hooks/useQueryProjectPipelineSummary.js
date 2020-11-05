@@ -8,7 +8,7 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
     gql`
      query projectPipelineSummary($key: String!, $defectsOnly: Boolean, $closedWithinDays: Int, $referenceString: String) {
       project(
-        key: $key, interfaces: [WorkItemStateTypeCounts],
+        key: $key, interfaces: [WorkItemStateTypeAggregateMetrics],
         defectsOnly: $defectsOnly, 
         closedWithinDays: $closedWithinDays, 
         referenceString: $referenceString) {
