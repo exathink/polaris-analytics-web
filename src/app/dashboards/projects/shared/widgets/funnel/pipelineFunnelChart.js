@@ -74,7 +74,7 @@ export const PipelineFunnelChart = Chart({
           return tooltipHtml({
               header: `Phase: ${this.point.name}`,
               body: [
-                [`Volume: `, ` ${intl.formatNumber(this.point.y)} items`],
+                [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Items'}`],
 
                 [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  Dev-Days`],
               ]
