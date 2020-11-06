@@ -1,4 +1,4 @@
-import {Chart} from "../../../../../framework/viz/charts";
+import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, pick} from "../../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
@@ -7,11 +7,11 @@ import {Highcharts} from "../../../../../framework/viz/charts/chartWrapper";
 require('highcharts/modules/funnel')(Highcharts);
 
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'specStateTypeCounts', 'grouping'),
+  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'specStateTypeCounts', 'totalEffortByStateType', 'grouping'),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItemStateTypeCounts, specStateTypeCounts, title, grouping, intl}) => {
+  getConfig: ({workItemStateTypeCounts, specStateTypeCounts, totalEffortByStateType, title, grouping, intl}) => {
 
     const selectedSummary = grouping === 'specs' ? specStateTypeCounts : workItemStateTypeCounts;
 
@@ -60,11 +60,28 @@ export const PipelineFunnelChart = Chart({
             name: WorkItemStateTypeDisplayName[stateType],
             y: selectedSummary[stateType] || 0,
             color: WorkItemStateTypeColor[stateType],
-
+            stateType: stateType
           })
         ),
         showInLegend: true
-      }]
+      }],
+      tooltip: {
+        useHTML: true,
+        followPointer: false,
+        hideDelay: 0,
+        formatter: function () {
+
+          return tooltipHtml({
+              header: `Phase: ${this.point.name}`,
+              body: [
+                [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Items'}`],
+
+                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  Dev-Days`],
+              ]
+            }
+          )
+        }
+      }
     }
   }
 });

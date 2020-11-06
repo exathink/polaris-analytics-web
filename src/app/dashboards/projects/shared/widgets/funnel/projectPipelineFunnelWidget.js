@@ -28,7 +28,7 @@ export const ProjectPipelineFunnelWidget = (
   )
   if (loading ) return <Loading/>;
   if (error) return null;
-  const {workItemStateTypeCounts, specStateTypeCounts} = data['project'];
+  const {workItemStateTypeCounts, specStateTypeCounts, totalEffortByStateType} = data['project'];
 
 
   return (
@@ -36,6 +36,7 @@ export const ProjectPipelineFunnelWidget = (
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
       specStateTypeCounts={specStateTypeCounts}
+      totalEffortByStateType={totalEffortByStateType}
       workItemScope={workItemScope || selectedGrouping}
       setWorkItemScope={setWorkItemScope || setSelectedGrouping}
       view={view}

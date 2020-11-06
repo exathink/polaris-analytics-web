@@ -8,7 +8,7 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
     gql`
      query projectPipelineSummary($key: String!, $defectsOnly: Boolean, $closedWithinDays: Int, $referenceString: String) {
       project(
-        key: $key, interfaces: [WorkItemStateTypeCounts],
+        key: $key, interfaces: [WorkItemStateTypeAggregateMetrics],
         defectsOnly: $defectsOnly, 
         closedWithinDays: $closedWithinDays, 
         referenceString: $referenceString) {
@@ -23,11 +23,19 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
           }
           specStateTypeCounts {
             backlog
-              open
-              wip
-              complete
-              closed
-              unmapped
+            open
+            wip
+            complete
+            closed
+            unmapped
+         }
+          totalEffortByStateType {
+            backlog
+            open
+            wip
+            complete
+            closed
+            unmapped
          }  
         }    
      }

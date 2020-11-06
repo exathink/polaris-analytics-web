@@ -8,6 +8,7 @@ export const ProjectPipelineFunnelView = (
   {
     workItemStateTypeCounts,
     specStateTypeCounts,
+    totalEffortByStateType,
     workItemScope,
     setWorkItemScope,
     view,
@@ -25,6 +26,8 @@ export const ProjectPipelineFunnelView = (
           <PipelineFunnelChart
             workItemStateTypeCounts={workItemStateTypeCounts}
             specStateTypeCounts={specStateTypeCounts}
+            totalEffortByStateType={totalEffortByStateType}
+
             title={' '}
             grouping={workItemScope}
           />
