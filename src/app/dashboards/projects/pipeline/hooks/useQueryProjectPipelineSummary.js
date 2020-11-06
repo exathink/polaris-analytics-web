@@ -23,11 +23,19 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
           }
           specStateTypeCounts {
             backlog
-              open
-              wip
-              complete
-              closed
-              unmapped
+            open
+            wip
+            complete
+            closed
+            unmapped
+         }
+          totalEffortByStateType {
+            backlog
+            open
+            wip
+            complete
+            closed
+            unmapped
          }  
         }    
      }
