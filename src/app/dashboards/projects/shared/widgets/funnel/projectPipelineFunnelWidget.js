@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineSummary} from "../../../pipeline/hooks/useQueryProjectPipelineSummary";
+import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {getLatest} from "../../../../../helpers/utility";
 

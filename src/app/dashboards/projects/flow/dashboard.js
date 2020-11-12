@@ -7,7 +7,7 @@ import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-import {useProjectWorkItemSourcesStateMappings} from "../pipeline/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";

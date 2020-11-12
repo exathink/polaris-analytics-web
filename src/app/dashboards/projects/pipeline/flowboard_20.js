@@ -16,7 +16,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
-import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
