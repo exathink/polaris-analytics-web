@@ -24,8 +24,9 @@ export const ProjectImplementationCostView = (
             activeOnly={activeOnly}
             days={days}
             title={title}
-            subtitile={subtitle}
+            subtitle={subtitle}
             view={view}
+
           />
         </VizItem>
       </VizRow>
