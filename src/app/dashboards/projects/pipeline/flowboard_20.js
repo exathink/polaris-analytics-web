@@ -16,6 +16,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {ProjectOpenPullRequestsWidget} from "./pullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 
@@ -181,11 +182,10 @@ export const dashboard = ({viewerContext}) => (
 
                   render={
                     ({view}) =>
-                      <ProjectPipelineImplementationCostWidget
+                      <ProjectOpenPullRequestsWidget
                         instanceKey={key}
                         view={view}
                         specsOnly={specsOnly}
-                        wipLimit={wipLimit}
                         workItemScope={workItemScope}
                         setWorkItemScope={setWorkItemScope}
                         context={context}
