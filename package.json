@@ -64,7 +64,8 @@
     "react-app-rewired": "^1.4.0",
     "react-test-renderer": "^16.4.1",
     "react-testing-library": "^4.1.5",
-    "source-map-explorer": "^1.6.0"
+    "source-map-explorer": "^1.6.0",
+    "prettier": "^2.1.2"
   },
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-app-rewired start",

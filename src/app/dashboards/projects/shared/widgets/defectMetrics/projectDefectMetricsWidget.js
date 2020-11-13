@@ -1,7 +1,7 @@
 import React from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
 
-import {useQueryProjectDefectMetricsSummary} from "../../../pipeline/hooks/useQueryProjectDefectsSummary";
+import {useQueryProjectDefectMetricsSummary} from "../../hooks/useQueryProjectDefectsSummary";
 import {ProjectDefectMetricsSummaryView} from "./projectDefectMetricsSummaryView";
 import {ProjectDefectMetricsDetailDashboard} from "./projectDefectMetricsDetailDashboard"
 

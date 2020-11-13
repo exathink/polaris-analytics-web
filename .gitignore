@@ -107,3 +107,6 @@ _node_modules
 scripts/bin
 
 **/__generated__
+
+
+.vscode

@@ -1,4 +1,4 @@
-import {useQueryProjectPipelineSummary} from "../../../pipeline/hooks/useQueryProjectPipelineSummary";
+import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
 import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectPipelinePhaseSummaryView} from "./projectPipelinePhaseSummaryView";
 import React from "react";

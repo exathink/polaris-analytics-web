@@ -1,25 +1,31 @@
-import React, {useState} from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
-import {WorkItemStateTypes} from "../../shared/config";
+import React, { useState } from "react";
+import {
+  Dashboard,
+  DashboardRow,
+  DashboardWidget,
+} from "../../../framework/viz/dashboard";
+import { WorkItemStateTypes } from "../../shared/config";
 import {
   ProjectPipelineCycleTimeLatencyWidget,
-  ProjectPipelineImplementationCostWidget,
-  ProjectPipelineWidget
+  ProjectPipelineWidget,
 } from "../shared/widgets/wip";
 
-import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionCommitsNavigatorWidget,
+  HeaderMetrics,
+} from "../../shared/widgets/accountHierarchy";
 
+import { withViewerContext } from "../../../framework/viewer/viewerContext";
 
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import { ProjectDashboard } from "../projectDashboard";
+import { ProjectTraceabilityTrendsWidget } from "../shared/widgets/traceability";
+import { ProjectResponseTimeSLAWidget } from "../shared/widgets/responseTimeSLA";
+import { ProjectFlowMetricsWidget } from "../shared/widgets/flowMetrics";
+import { ProjectOpenPullRequestsWidget } from "./pullRequests";
+import { useProjectWorkItemSourcesStateMappings } from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import { StateMappingIndex } from "./new_dashboard";
 
-import {ProjectDashboard} from "../projectDashboard";
-import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
-import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
-import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
-import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {StateMappingIndex} from "./new_dashboard";
-
-const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
+const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
 export const dashboard = ({viewerContext}) => (
     <ProjectDashboard
@@ -181,11 +187,10 @@ export const dashboard = ({viewerContext}) => (
 
                   render={
                     ({view}) =>
-                      <ProjectPipelineImplementationCostWidget
+                      <ProjectOpenPullRequestsWidget
                         instanceKey={key}
                         view={view}
                         specsOnly={specsOnly}
-                        wipLimit={wipLimit}
                         workItemScope={workItemScope}
                         setWorkItemScope={setWorkItemScope}
                         context={context}

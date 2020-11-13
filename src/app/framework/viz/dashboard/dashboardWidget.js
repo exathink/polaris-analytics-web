@@ -40,7 +40,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
           }
           {
             controls ?
-              <nav className={'menu title-control-container'} style={{...styles.controlContainer}}>
+              <nav className={'menu title-control-container'} style={{...(styles ? styles.controlContainer : {})}}>
                 <React.Fragment>
                   {
                     controls.reverse().map(

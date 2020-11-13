@@ -1,7 +1,7 @@
 import React from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
-import {useQueryProjectPipelineCycleMetrics} from "../../../pipeline/hooks/useQueryProjectPipelineCycleMetrics";
+import {useQueryProjectPipelineCycleMetrics} from "../../hooks/useQueryProjectPipelineCycleMetrics";
 import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
 import {getReferenceString} from "../../../../../helpers/utility";
 

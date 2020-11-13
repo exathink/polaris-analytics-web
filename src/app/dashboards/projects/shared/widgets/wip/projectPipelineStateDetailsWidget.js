@@ -1,8 +1,8 @@
 import React from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../../pipeline/hooks/useQueryProjectPipelineStateDetails";
+import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
 import {ProjectPipelineStateDetailsView} from "./projectPipelineStateDetailsView";
-import {useQueryProjectCycleMetrics} from "../../../pipeline/hooks/useQueryProjectCycleMetrics";
+import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectPipelineStateDetailsWidget = (

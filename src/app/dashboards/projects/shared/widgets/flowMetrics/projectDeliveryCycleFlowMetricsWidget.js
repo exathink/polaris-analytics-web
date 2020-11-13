@@ -2,8 +2,8 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {pick} from "../../../../../helpers/utility";
 import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
-import {useQueryProjectCycleMetrics} from "../../../pipeline/hooks/useQueryProjectCycleMetrics";
-import {useQueryProjectClosedDeliveryCycleDetail} from "../../../pipeline/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
+import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 export const ProjectDeliveryCycleFlowMetricsWidget = (
   {

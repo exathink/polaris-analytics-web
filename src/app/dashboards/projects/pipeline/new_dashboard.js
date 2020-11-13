@@ -12,7 +12,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 
-import {useProjectWorkItemSourcesStateMappings} from "./hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
