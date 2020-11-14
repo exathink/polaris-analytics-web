@@ -56,6 +56,8 @@ export const dashboard = ({ viewerContext }) => (
         responseTimeConfidenceTarget;
       const wipLimit = flowMetricsSettings.wipLimit || 20;
 
+      const measurementWindow = flowMetricsSettings.pipelineMeasurementWindow || 7;
+
       return (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h="12%">
@@ -63,11 +65,11 @@ export const dashboard = ({ viewerContext }) => (
               w={0.16}
               name="response-time-sla"
               title={"Cycle Time"}
-              subtitle={"Last 30 Days"}
+              subtitle={`Last ${measurementWindow} Days`}
               render={() => (
                 <ProjectResponseTimeSLAWidget
                   instanceKey={key}
-                  days={30}
+                  days={measurementWindow}
                   metric={"cycleTime"}
                   leadTimeTarget={leadTimeTarget}
                   cycleTimeTarget={cycleTimeTarget}
@@ -89,7 +91,7 @@ export const dashboard = ({ viewerContext }) => (
                   display={"flowboardSummary"}
                   latestCommit={latestCommit}
                   latestWorkItemEvent={latestWorkItemEvent}
-                  days={30}
+                  days={measurementWindow}
                   targetPercentile={responseTimeConfidenceTarget}
                   leadTimeTargetPercentile={leadTimeConfidenceTarget}
                   cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -106,8 +108,8 @@ export const dashboard = ({ viewerContext }) => (
             <DashboardWidget
               w={0.45}
               name="flow-metrics"
-              title={"Flow Metrics"}
-              subtitle={"Last 30 Days"}
+              title={"Closed"}
+              subtitle={`Last ${measurementWindow} days`}
               hideTitlesInDetailView={true}
               render={({ view }) => (
                 <ProjectFlowMetricsWidget
@@ -118,8 +120,8 @@ export const dashboard = ({ viewerContext }) => (
                   latestWorkItemEvent={latestWorkItemEvent}
                   stateMappingIndex={stateMappingIndex}
                   specsOnly={specsOnly}
-                  days={30}
-                  measurementWindow={30}
+                  days={measurementWindow}
+                  measurementWindow={measurementWindow}
                   targetPercentile={responseTimeConfidenceTarget}
                   leadTimeTargetPercentile={leadTimeConfidenceTarget}
                   cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -137,7 +139,7 @@ export const dashboard = ({ viewerContext }) => (
               render={({ view }) => (
                 <ProjectTraceabilityTrendsWidget
                   instanceKey={key}
-                  measurementWindow={30}
+                  measurementWindow={measurementWindow}
                   days={7}
                   samplingFrequency={7}
                   context={context}
