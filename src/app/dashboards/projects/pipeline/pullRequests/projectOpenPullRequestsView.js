@@ -32,14 +32,6 @@ export const ProjectOpenPullRequestsView = ({
           }
         }}
       />
-      {view === "primary" && (
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector
-            setWorkItemScope={setWorkItemScope}
-            workItemScope={workItemScope}
-          />
-        </Flex>
-      )}
     </VizItem>
   </VizRow>
 );
