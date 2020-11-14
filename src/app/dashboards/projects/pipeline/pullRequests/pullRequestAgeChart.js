@@ -12,12 +12,12 @@ function getDisplayName(pullRequest) {
 }
 
 function getSeries(pullRequests, specsOnly, intl, view) {
-  const pullRequestsByRepository = buildIndex(
+  const pullRequestsBySpecsNoSpecs = buildIndex(
     pullRequests,
     (pullRequest) => pullRequest.workItemsSummaries.length > 0?  'Specs' : 'No Specs'
   );
-  // one series per repository
-  return Object.keys(pullRequestsByRepository).map((type) => ({
+  // one series per type
+  return ['Specs', 'No Specs'].map((type) => ({
     key: `${type}`,
     id: `${type}`,
     name: `${type}`,
@@ -25,7 +25,7 @@ function getSeries(pullRequests, specsOnly, intl, view) {
     maxPointWidth: 30,
     minPointLength: 1,
     allowPointSelect: true,
-    data: pullRequestsByRepository[type].map((pullRequest) => ({
+    data: (pullRequestsBySpecsNoSpecs[type] || []).map((pullRequest) => ({
       name: `#${pullRequest.displayId}`,
       y: pullRequest.age,
       pullRequest: pullRequest,
