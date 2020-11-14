@@ -85,7 +85,7 @@ export const PullRequestAgeChart = Chart({
       },
       yAxis: {
         type: "logarithmic",
-
+        allowDecimals: false,
         title: {
           text: "Age in Days",
         },
