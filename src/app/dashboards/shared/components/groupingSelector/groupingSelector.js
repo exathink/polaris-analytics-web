@@ -4,7 +4,7 @@ import React from "react";
 
 export const GroupingSelector = ({label, groupings, initialValue, onGroupingChanged}) => (
   groupings &&
-  <Flex align={'center'}>
+  <Flex align={'center'} style={{zIndex: 1000}}>
     <Box pr={1} pt={"1px"}>
       {label || "Group By"}
     </Box>
