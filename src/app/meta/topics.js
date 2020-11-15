@@ -92,4 +92,10 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.user' defaultMessage="User"/>),
     icon: 'ion-person'
   },
+
+  tutorial: {
+    name: 'tutorial',
+    display: () => (<FormattedMessage id='topics.tutorial' defaultMessage="Tutorial"/>),
+    icon: 'ion-erlenmeyer-flask'
+  },
 };

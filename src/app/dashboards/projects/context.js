@@ -11,6 +11,7 @@ import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
 import Trends from "./trends/topic";
+import Tutorial from "./tutorial/topic";
 
 import {Contexts} from "../../meta/contexts";
 
@@ -63,6 +64,10 @@ const context : Context = {
           {
             match: 'history',
             topic: History
+          },
+          {
+            match: 'tutorial',
+            topic: Tutorial
           },
           {
             match: '',
