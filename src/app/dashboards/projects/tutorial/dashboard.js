@@ -5,6 +5,8 @@ import {
   DashboardWidget,
 } from "../../../framework/viz/dashboard";
 
+import {ProjectStateTypesWidget} from "./stateTypes";
+
 const dashboard_id = "dashboards.project.tutorial";
 
 export const dashboard = () => (
@@ -14,7 +16,7 @@ export const dashboard = () => (
         w={1 / 2}
         name={"types"}
         title={"State Type Chart"}
-        render={({ view }) => view === 'primary' ? 'Chart goes here' : 'Maximized Chart goes here'}
+        render={({ view }) => <ProjectStateTypesWidget view={view}/>}
         showDetail={true}
       />
       <DashboardWidget
