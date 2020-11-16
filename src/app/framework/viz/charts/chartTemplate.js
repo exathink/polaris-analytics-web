@@ -6,7 +6,8 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {buildIndex, pick, elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors} from "../../config";
+// uncomment this line and add the relative path to src/app/dashboards/shared/config.js
+// import {Colors} from "../../config";
 
 // Return an array of  HighChart series data structures from the
 // passed in props.
