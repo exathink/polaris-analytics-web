@@ -20,7 +20,7 @@ export const dashboard = () => (
               name={'types'}
               title={'State Type Chart'}
               render={({ view }) => {
-                return <ProjectStateTypesWidget instanceKey={key} view={view} />;
+                return <ProjectStateTypesWidget instanceKey={key} view={view} type={'funnel'} />;
               }}
               showDetail={true}
             />

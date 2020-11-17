@@ -3,7 +3,7 @@ import { Loading } from '../../../../components/graphql/loading';
 import { ProjectStateTypesView } from './projectStateTypesView';
 import { useQueryProjectStateTypes } from './useQueryProjectStateTypes';
 
-export const ProjectStateTypesWidget = ({ instanceKey, days, view }) => {
+export const ProjectStateTypesWidget = ({ instanceKey, days, view, type }) => {
   const { loading, error, data } = useQueryProjectStateTypes({
     instanceKey,
     closedWithinDays: days,
@@ -16,6 +16,7 @@ export const ProjectStateTypesWidget = ({ instanceKey, days, view }) => {
   return (
     <ProjectStateTypesView
       workItemStateTypeCounts={workItemStateTypeCounts}
+      type={type}
       view={view}
     />
   );

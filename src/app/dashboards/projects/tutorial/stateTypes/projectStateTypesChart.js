@@ -1,27 +1,32 @@
 import { Chart, tooltipHtml } from '../../../../framework/viz/charts';
 import { buildIndex, pick, elide } from '../../../../helpers/utility';
 import { DefaultSelectionEventHandler } from '../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler';
+import {Highcharts} from "../../../../framework/viz/charts/chartWrapper";
 
 import {
   Colors,
+  WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
 } from '../../../shared/config';
 
+require('highcharts/modules/funnel')(Highcharts);
 // Return an array of  HighChart series data structures from the
 // passed in props.
-function getSeries(workItemStateTypeCounts, intl, view) {
+function getSeries(workItemStateTypeCounts, intl, view, type) {
   console.log(Object.keys(workItemStateTypeCounts));
   return [
     {
       key: `stateTypes`,
       id: `stateTypes`,
       name: `stateTypes`,
-      type: 'column',
-      data: Object.keys(workItemStateTypeCounts)
+      type: type,
+      // its not the best way to handle this, for now lets keep this way for learning purpose
+      data: Object.keys(type='funnel' ? WorkItemStateTypeDisplayName: workItemStateTypeCounts)
         .map((stateType) => ({
           name: WorkItemStateTypeDisplayName[stateType],
           y: workItemStateTypeCounts[stateType],
+          color: WorkItemStateTypeColor[stateType],
           stateType: stateType,
         }))
         // sort in descending order (exercise1)
@@ -34,6 +39,7 @@ function getSeries(workItemStateTypeCounts, intl, view) {
             WorkItemStateTypeSortOrder[p1.stateType] -
             WorkItemStateTypeSortOrder[p2.stateType]
         ),
+        showInLegend: true
     },
   ];
 }
@@ -55,8 +61,8 @@ export const ProjectStateTypesChart = Chart({
   // you can use them in building the config.
 
   // trying demo example from highcharts.
-  getConfig: ({ workItemStateTypeCounts, title, subtitle, intl, view }) => {
-    const series = getSeries(workItemStateTypeCounts, intl, view);
+  getConfig: ({ workItemStateTypeCounts, title, subtitle, intl, view, type }) => {
+    const series = getSeries(workItemStateTypeCounts, intl, view, type);
     return {
       chart: {
         // some default options we include on all charts, but might want to
@@ -105,7 +111,19 @@ export const ProjectStateTypesChart = Chart({
       },
       series: [...series],
       plotOptions: {
-        series: {
+        // not the best way, for now keeping it for learning purpose
+        series: type = 'funnel' ? {
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b> ({point.y:,.0f})',
+            softConnector: true,
+            color: 'black'
+          },
+          center: ['45%', '50%'],
+          neckWidth: '25%',
+          neckHeight: '45%',
+          width: '80%'
+        }: {
           animation: false,
         },
       },
@@ -120,7 +138,7 @@ export const ProjectStateTypesChart = Chart({
         layout: 'vertical',
         verticalAlign: 'middle',
         itemMarginBottom: 3,
-        enabled: true,
+        enabled: false,
       },
     };
   },
