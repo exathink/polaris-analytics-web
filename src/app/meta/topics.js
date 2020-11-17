@@ -94,7 +94,7 @@ export const Topics = {
   },
   tutorial: {
     name: 'tutorial',
-    display: () => (<FormattedMessage id='topics.tutorial' defaultMessage="Santa box"/>),
+    display: () => (<FormattedMessage id='topics.tutorial' defaultMessage="Tutorial"/>),
     icon: 'ion-erlenmeyer-flask'
   }
 };
