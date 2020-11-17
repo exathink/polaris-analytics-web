@@ -3,15 +3,29 @@ This file is a template for creating new chart components. Not intended to be us
 use it as a guide on how to structure a new chart component file. Copy/Paste modify as needed.
  */
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick, elide} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors} from "../../../shared/config";
+import {Colors, WorkItemStateTypeDisplayName} from "../../../shared/config";
 
 // Return an array of  HighChart series data structures from the
 // passed in props.
-function getSeries(intl, view) {
-  return []
+function getSeries(workItemStateTypeCounts, intl, view) {
+  return [
+    {
+      key: `stateTypes`,
+      id: `stateTypes`,
+      name: `State Types`,
+      type: "column",
+
+      data: Object.keys(workItemStateTypeCounts).map(
+        stateType => ({
+          name: WorkItemStateTypeDisplayName[stateType],
+          y: workItemStateTypeCounts[stateType],
+          stateType: stateType
+        })
+      ),
+    },
+  ];
 }
 
 export const ProjectStateTypesChart = Chart({
@@ -24,43 +38,42 @@ export const ProjectStateTypesChart = Chart({
   // when the default selection handler calls its application callback, it calls this
   // mapper to map point objects into domain objects for the application. Attach domain objects to the series data
   // points and map them back here.
-  mapPoints: (points, _) => points.map(point => point),
+  mapPoints: (points, _) => points.map((point) => point),
 
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({title, subtitle, intl, view}) => {
-    const series = getSeries(intl, view);
+  getConfig: ({ workItemStateTypeCounts, title, subtitle, intl, view }) => {
+    const series = getSeries(workItemStateTypeCounts, intl, view);
     return {
       chart: {
         // some default options we include on all charts, but might want to
         // specialize in some cases.
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
-        panKey: 'shift',
-        zoomType: 'xy',
-
+        panKey: "shift",
+        zoomType: "xy",
       },
       title: {
-        text: title || 'Title',
-        align: 'left',
+        text: title || "Title",
+        align: "left",
       },
       subtitle: {
         text: subtitle || `Subtitle`,
-        align: 'left',
+        align: "left",
       },
       xAxis: {
-        type: 'linear',
+        type: "category",
 
         title: {
-          text: 'X'
-        }
+          text: "State Type",
+        },
       },
       yAxis: {
-        type: 'linear',
+        type: "linear",
 
         title: {
-          text: 'x'
+          text: "# Work Items",
         },
       },
 
@@ -71,36 +84,32 @@ export const ProjectStateTypesChart = Chart({
           // This is the standard way we display tool tips.
           // A header string followed by a two column table with name, value pairs.
           // The strings can be HTML.
+          const {stateType, y} = this.point;
           return tooltipHtml({
-            header: ``,
-            body: [
-              [``, ``],
-            ]
-          })
-        }
+            header: `State Type: ${WorkItemStateTypeDisplayName[stateType]}`,
+            body: [[`Number of Items: `, `${intl.formatNumber(y)}`]],
+          });
+        },
       },
-      series: [
-        ...series
-      ],
+      series: [...series],
       plotOptions: {
         series: {
-          animation: false
-        }
+          animation: false,
+        },
       },
       legend: {
         title: {
-          text: 'Legend',
+          text: "Legend",
           style: {
-            fontStyle: 'italic'
-          }
+            fontStyle: "italic",
+          },
         },
-        align: 'right',
-        layout: 'vertical',
-        verticalAlign: 'middle',
+        align: "right",
+        layout: "vertical",
+        verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: false
+        enabled: false,
       },
-    }
-  }
-
+    };
+  },
 });
