@@ -4,21 +4,19 @@ import {
   DashboardRow,
   DashboardWidget,
 } from '../../../framework/viz/dashboard';
+import { ProjectStateTypesWidget } from './stateTypes';
 
 const dashboard_id = 'dashboards.project.tutorial';
 
 export const dashboard = () => (
   <Dashboard dashboard={dashboard_id}>
-    <DashboardRow h={"30%"} title="Project Tutorial">
+    <DashboardRow h={'60%'} title="Project Tutorial">
       <DashboardWidget
         w={1 / 2}
         name={'types'}
         title={'State Type Chart'}
         render={({ view }) => {
-          if (view === 'primary') {
-            return <div>Chart goes here</div>;
-          }
-          return <div>Maximized chart goes here</div>;
+          return <ProjectStateTypesWidget view={view} />;
         }}
         showDetail={true}
       />
@@ -29,7 +27,7 @@ export const dashboard = () => (
         render={({ view }) => null}
       />
     </DashboardRow>
-    <DashboardRow h={"30%"} title="Star Widget">
+    <DashboardRow h={'30%'} title="Star Widget">
       <DashboardWidget
         w={1 / 2}
         name={'star'}
