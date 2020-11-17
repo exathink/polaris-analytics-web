@@ -2,12 +2,40 @@ import { Chart, tooltipHtml } from '../../../../framework/viz/charts';
 import { buildIndex, pick, elide } from '../../../../helpers/utility';
 import { DefaultSelectionEventHandler } from '../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler';
 
-import { Colors } from '../../../shared/config';
+import {
+  Colors,
+  WorkItemStateTypeDisplayName,
+  WorkItemStateTypeSortOrder,
+} from '../../../shared/config';
 
 // Return an array of  HighChart series data structures from the
 // passed in props.
-function getSeries(intl, view) {
-  return [];
+function getSeries(workItemStateTypeCounts, intl, view) {
+  console.log(Object.keys(workItemStateTypeCounts));
+  return [
+    {
+      key: `stateTypes`,
+      id: `stateTypes`,
+      name: `stateTypes`,
+      type: 'column',
+      data: Object.keys(workItemStateTypeCounts)
+        .map((stateType) => ({
+          name: WorkItemStateTypeDisplayName[stateType],
+          y: workItemStateTypeCounts[stateType],
+          stateType: stateType,
+        }))
+        // sort in descending order (exercise1)
+        // .sort(
+        //   (p1, p2) => p2.y - p1.y
+        // )
+        // sort in canonical order (exercise2)
+        .sort(
+          (p1, p2) =>
+            WorkItemStateTypeSortOrder[p1.stateType] -
+            WorkItemStateTypeSortOrder[p2.stateType]
+        ),
+    },
+  ];
 }
 
 export const ProjectStateTypesChart = Chart({
@@ -27,11 +55,16 @@ export const ProjectStateTypesChart = Chart({
   // you can use them in building the config.
 
   // trying demo example from highcharts.
-  getConfig: ({ title, subtitle, intl, view }) => {
-    const series = getSeries(intl, view);
+  getConfig: ({ workItemStateTypeCounts, title, subtitle, intl, view }) => {
+    const series = getSeries(workItemStateTypeCounts, intl, view);
     return {
       chart: {
-        type: 'bar',
+        // some default options we include on all charts, but might want to
+        // specialize in some cases.
+        backgroundColor: Colors.Chart.backgroundColor,
+        panning: true,
+        panKey: 'shift',
+        zoomType: 'xy',
       },
       title: {
         text: title || 'Title',
@@ -42,23 +75,40 @@ export const ProjectStateTypesChart = Chart({
         align: 'left',
       },
       xAxis: {
-        categories: ['Apples', 'Bananas', 'Oranges'],
+        type: 'category',
+
+        title: {
+          text: 'State Type',
+        },
       },
       yAxis: {
+        type: 'linear',
+
         title: {
-          text: 'Fruit eaten',
+          text: 'x',
         },
       },
-      series: [
-        {
-          name: 'Jane',
-          data: [1, 0, 4],
+
+      tooltip: {
+        useHTML: true,
+        hideDelay: 50,
+        formatter: function () {
+          // This is the standard way we display tool tips.
+          // A header string followed by a two column table with name, value pairs.
+          // The strings can be HTML.
+          const { stateType, y } = this.point;
+          return tooltipHtml({
+            header: `State Type: ${WorkItemStateTypeDisplayName[stateType]}`,
+            body: [[`Number of Items:`, `${intl.formatNumber(y)}`]],
+          });
         },
-        {
-          name: 'John',
-          data: [5, 7, 3],
+      },
+      series: [...series],
+      plotOptions: {
+        series: {
+          animation: false,
         },
-      ],
+      },
       legend: {
         title: {
           text: 'Legend',

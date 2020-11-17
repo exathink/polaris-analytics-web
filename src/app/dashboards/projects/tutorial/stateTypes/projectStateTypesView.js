@@ -3,29 +3,23 @@ import { VizRow, VizItem } from '../../../shared/containers/layout';
 import { ProjectStateTypesChart } from './projectStateTypesChart';
 
 // we can define multiple views here if required or at the widget level
-export const ProjectStateTypesView = ({ view }) => {
-  function getView() {
-    if (view === 'primary') {
-      return (
-        <ProjectStateTypesChart
-          view={view}
-          title={'Project State Types'}
-          subtitle={'All active items'}
-        />
-      );
-    } else {
-      return (
-        <ProjectStateTypesChart
-          view={view}
-          title={'Maximized Project State Types'}
-          subtitle={'Maximized All active items'}
-        />
-      );
-    }
-  }
+export const ProjectStateTypesView = ({ workItemStateTypeCounts, view }) => {
   return (
     <VizRow h={1}>
-      <VizItem w={1}>{getView()}</VizItem>
+      <VizItem w={1}>
+        <ProjectStateTypesChart
+          workItemStateTypeCounts={workItemStateTypeCounts}
+          view={view}
+          title={
+            view === 'primary'
+              ? 'Project State Types'
+              : 'Max Project State Types'
+          }
+          subtitle={
+            view === 'primary' ? 'All active items' : 'Max All active items'
+          }
+        />
+      </VizItem>
     </VizRow>
   );
 };
