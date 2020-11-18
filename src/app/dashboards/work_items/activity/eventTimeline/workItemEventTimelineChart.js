@@ -12,6 +12,56 @@ const workItemEventSymbol = {
   complete: "diamond",
   closed: "triangle-down",
 };
+
+// TODO: not sure about the standard colors we use
+const pullRequestStateTypeColor = {
+  created: "#c4ab49",
+  completed: "#7824b5",
+};
+
+function getPullRequestSeries(workItem) {
+  return workItem.workItemPullRequests
+    .map((timelineEvent) => {
+      // minimum of 1 and a maximum of two “events” from a single pull request
+      // basic assumption: createdAt will always be available if pullRequest is there
+      const createdAt = toMoment(timelineEvent.createdAt);
+      let eventType = "created";
+      const result = [
+        {
+          x: createdAt.valueOf(),
+          y: 2,
+          marker: {
+            symbol: "triangle",
+            radius: 4,
+          },
+          color: pullRequestStateTypeColor[eventType],
+          timelineEvent: timelineEvent,
+          workItem: workItem,
+        },
+      ];
+
+      // check for an existence of endDate
+      if (timelineEvent.endDate) {
+        const endDate = toMoment(timelineEvent.endDate);
+        eventType = "closed";
+        result.push({
+          x: endDate.valueOf(),
+          y: 2,
+          marker: {
+            symbol: "triangle-down",
+            radius: 4,
+          },
+          color: pullRequestStateTypeColor[eventType],
+          timelineEvent: timelineEvent,
+          workItem: workItem,
+        });
+      }
+
+      return result;
+    })
+    .flat();
+}
+
 export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
@@ -71,6 +121,8 @@ export const WorkItemEventsTimelineChart = Chart({
       }),
     ];
 
+    const pullRequestSeries = getPullRequestSeries(workItem);
+
     return {
       chart: {
         type: "scatter",
@@ -94,7 +146,7 @@ export const WorkItemEventsTimelineChart = Chart({
         title: {
           text: null,
         },
-        categories: ["Events", "Commits"],
+        categories: ["Events", "Commits", "Pull Requests"],
         reversed: true,
         labels: {
           align: "left",
@@ -106,7 +158,7 @@ export const WorkItemEventsTimelineChart = Chart({
         hideDelay: 50,
         formatter: function () {
           const event = this.point.timelineEvent;
-          if (event.eventDate != null) {
+          if (event["__typename"] === "WorkItemEvent") {
             const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]}`;
             const transition = `State: ${
               event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``
@@ -115,7 +167,7 @@ export const WorkItemEventsTimelineChart = Chart({
               header: `${header}<br/>${transition}`,
               body: [[`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`]],
             });
-          } else {
+          } else if (event["__typename"] === "Commit") {
             const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`;
             return tooltipHtml({
               header: `${commit}`,
@@ -123,6 +175,17 @@ export const WorkItemEventsTimelineChart = Chart({
                 [`Message: `, `${elide(event.commitMessage, 60)}`],
                 [`Author: `, `${event.author}`],
                 [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`],
+              ],
+            });
+          } else if (event["__typename"] === "PullRequest") {
+            const {repositoryName, displayId, name, age, state} = event;
+            const stateKey = state === "open" ? "Age: " : "Time to Review: "
+            return tooltipHtml({
+              header: `${repositoryName}:${displayId}`,
+              body: [
+                [`Title: `, name],
+                [`State: `, state],
+                [stateKey, `${intl.formatNumber(age)} Days`],
               ],
             });
           }
@@ -133,6 +196,14 @@ export const WorkItemEventsTimelineChart = Chart({
           name: "timeline",
           pointWidth: 20,
           data: series_data,
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+        {
+          // TODO: not sure about the naming convention for this.
+          name: "pullrequest-timeline",
+          pointWidth: 80,
+          data: pullRequestSeries,
           turboThreshold: 0,
           allowPointSelect: true,
         },
