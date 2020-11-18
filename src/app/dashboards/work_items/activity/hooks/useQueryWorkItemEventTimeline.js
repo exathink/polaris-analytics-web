@@ -45,6 +45,22 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
               }
             }
           }
+          pullRequests(interfaces: [BranchRef]) {
+            edges {
+              node {
+                id
+                name
+                key
+                displayId
+                state
+                age
+                createdAt
+                endDate
+                repositoryName
+                branchName
+              }
+            }
+          }
         }
       }
     `,
