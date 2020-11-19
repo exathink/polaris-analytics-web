@@ -13,53 +13,73 @@ const workItemEventSymbol = {
   closed: "triangle-down",
 };
 
-// TODO: not sure about the standard colors we use
-const pullRequestStateTypeColor = {
-  created: "#c4ab49",
-  completed: "#7824b5",
-};
-
-function getPullRequestSeries(workItem) {
-  return workItem.workItemPullRequests
-    .map((timelineEvent) => {
-      // minimum of 1 and a maximum of two “events” from a single pull request
-      // basic assumption: createdAt will always be available if pullRequest is there
-      const createdAt = toMoment(timelineEvent.createdAt);
-      let eventType = "created";
-      const result = [
-        {
-          x: createdAt.valueOf(),
-          y: 2,
-          marker: {
-            symbol: "triangle",
-            radius: 4,
-          },
-          color: pullRequestStateTypeColor[eventType],
-          timelineEvent: timelineEvent,
-          workItem: workItem,
+function getWorkItemEvents(workItem) {
+  return workItem.workItemEvents
+    .filter(
+      /* filter out backlog events for work items that are not in closed state */
+      (timelineEvent) => (workItem.stateType !== "closed" ? timelineEvent.newStateType !== "backlog" : true)
+    )
+    .map((timelineEvent, index) => {
+      const eventDate = toMoment(timelineEvent.eventDate);
+      const newStateType = timelineEvent.newStateType || "unmapped";
+      return {
+        x: eventDate.valueOf(),
+        y: 0,
+        z: 3,
+        marker: {
+          symbol: workItemEventSymbol[newStateType],
+          radius: 6,
         },
-      ];
+        color: WorkItemStateTypeColor[newStateType],
+        timelineEvent: timelineEvent,
+        workItem: workItem,
+        eventType: "WorkItemEvent",
+      };
+    });
+}
 
-      // check for an existence of endDate
-      if (timelineEvent.endDate) {
-        const endDate = toMoment(timelineEvent.endDate);
-        eventType = "closed";
-        result.push({
-          x: endDate.valueOf(),
+function getWorkItemCommitEvents(workItem) {
+  return workItem.workItemCommits.map((timelineEvent, index) => {
+    const eventDate = toMoment(timelineEvent.commitDate);
+    return {
+      x: eventDate.valueOf(),
+      y: 1,
+      z: 3,
+      marker: {
+        symbol: "circle",
+        radius: 4,
+      },
+      timelineEvent: timelineEvent,
+      workItem: workItem,
+      eventType: "Commit",
+    };
+  });
+}
+
+function getWorkItemPullRequestEvents(workItem) {
+  return workItem.workItemPullRequests.flatMap((pullRequest) => {
+    // minimum of 1 and a maximum of two “events” from a single pull request
+    // basic assumption: createdAt will always be available if pullRequest is there
+    const eventType = !pullRequest.endDate ? "open" : "closed";
+    return [pullRequest.createdAt, pullRequest.endDate]
+      // Filter out endDate if not available
+      .filter((date) => Boolean(date))
+      .map((date, index) => {
+        const _date = toMoment(date);
+        return {
+          x: _date.valueOf(),
           y: 2,
           marker: {
-            symbol: "triangle-down",
+            symbol: index === 0 ? "triangle" : "triangle-down",
             radius: 4,
           },
-          color: pullRequestStateTypeColor[eventType],
-          timelineEvent: timelineEvent,
+          color: Colors.PullRequestStateTypeColor[eventType],
+          timelineEvent: pullRequest,
           workItem: workItem,
-        });
-      }
-
-      return result;
-    })
-    .flat();
+          eventType: index === 0 ? "PullRequestCreated" : "PullRequestCompleted",
+        };
+      });
+  });
 }
 
 export const WorkItemEventsTimelineChart = Chart({
@@ -84,44 +104,10 @@ export const WorkItemEventsTimelineChart = Chart({
 
   getConfig: ({workItem, context, intl}) => {
     const series_data = [
-      ...workItem.workItemEvents
-        .filter(
-          /* filter out backlog events for work items that are not in closed state */
-          (timelineEvent) => (workItem.stateType !== "closed" ? timelineEvent.newStateType !== "backlog" : true)
-        )
-        .map((timelineEvent, index) => {
-          const eventDate = toMoment(timelineEvent.eventDate);
-          const newStateType = timelineEvent.newStateType || "unmapped";
-          return {
-            x: eventDate.valueOf(),
-            y: 0,
-            z: 3,
-            marker: {
-              symbol: workItemEventSymbol[newStateType],
-              radius: 6,
-            },
-            color: WorkItemStateTypeColor[newStateType],
-            timelineEvent: timelineEvent,
-            workItem: workItem,
-          };
-        }),
-      ...workItem.workItemCommits.map((timelineEvent, index) => {
-        const eventDate = toMoment(timelineEvent.commitDate);
-        return {
-          x: eventDate.valueOf(),
-          y: 1,
-          z: 3,
-          marker: {
-            symbol: "circle",
-            radius: 4,
-          },
-          timelineEvent: timelineEvent,
-          workItem: workItem,
-        };
-      }),
+      ...getWorkItemEvents(workItem),
+      ...getWorkItemCommitEvents(workItem),
+      ...getWorkItemPullRequestEvents(workItem),
     ];
-
-    const pullRequestSeries = getPullRequestSeries(workItem);
 
     return {
       chart: {
@@ -146,7 +132,7 @@ export const WorkItemEventsTimelineChart = Chart({
         title: {
           text: null,
         },
-        categories: ["Events", "Commits", "Pull Requests"],
+        categories: ["Events", "Commits", "Code Reviews"],
         reversed: true,
         labels: {
           align: "left",
@@ -157,38 +143,58 @@ export const WorkItemEventsTimelineChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const event = this.point.timelineEvent;
-          if (event["__typename"] === "WorkItemEvent") {
-            const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]}`;
-            const transition = `State: ${
-              event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``
-            } ${capitalizeFirstLetter(event.newState)} `;
-            return tooltipHtml({
-              header: `${header}<br/>${transition}`,
-              body: [[`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`]],
-            });
-          } else if (event["__typename"] === "Commit") {
-            const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`;
-            return tooltipHtml({
-              header: `${commit}`,
-              body: [
-                [`Message: `, `${elide(event.commitMessage, 60)}`],
-                [`Author: `, `${event.author}`],
-                [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`],
-              ],
-            });
-          } else if (event["__typename"] === "PullRequest") {
-            const {repositoryName, displayId, name, age, state} = event;
-            const stateKey = state === "open" ? "Age: " : "Time to Review: "
-            return tooltipHtml({
-              header: `${repositoryName}:${displayId}`,
-              body: [
-                [`Title: `, name],
-                [`State: `, state],
-                [stateKey, `${intl.formatNumber(age)} Days`],
-              ],
-            });
-          }
+          const {timelineEvent: event, eventType} = this.point;
+          const formatDate = (date) => `${formatDateTime(intl, toMoment(date))}`;
+
+          // make sure eventType has matching key in this object to get the formatter
+          const tooltipFormatters = {
+            WorkItemEvent: () => {
+              const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]}`;
+              const transition = `State: ${
+                event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``
+              } ${capitalizeFirstLetter(event.newState)} `;
+              return tooltipHtml({
+                header: `${header}<br/>${transition}`,
+                body: [[`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`]],
+              });
+            },
+            Commit: () => {
+              const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`;
+              return tooltipHtml({
+                header: `${commit}`,
+                body: [
+                  [`Message: `, `${elide(event.commitMessage, 60)}`],
+                  [`Author: `, `${event.author}`],
+                  [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`],
+                ],
+              });
+            },
+            PullRequestCreated: () => {
+              const {repositoryName, displayId, name, age, createdAt, endDate} = event;
+              const stateKey = endDate ? "Time to Review: " : "Age: ";
+              return tooltipHtml({
+                header: `${repositoryName}:${displayId}`,
+                body: [
+                  [`Title: `, name],
+                  [`Opened: `, formatDate(createdAt)],
+                  [stateKey, `${intl.formatNumber(age)} Days`],
+                ],
+              });
+            },
+            PullRequestCompleted: () => {
+              const {repositoryName, displayId, name, age, state, endDate} = event;
+              return tooltipHtml({
+                header: `${repositoryName}:${displayId}`,
+                body: [
+                  [`Title: `, name],
+                  [capitalizeFirstLetter(state), formatDate(endDate)],
+                  [`Time to Review: `, `${intl.formatNumber(age)} Days`],
+                ],
+              });
+            },
+          };
+
+          return tooltipFormatters[eventType]();
         },
       },
       series: [
@@ -196,14 +202,6 @@ export const WorkItemEventsTimelineChart = Chart({
           name: "timeline",
           pointWidth: 20,
           data: series_data,
-          turboThreshold: 0,
-          allowPointSelect: true,
-        },
-        {
-          // TODO: not sure about the naming convention for this.
-          name: "pullrequest-timeline",
-          pointWidth: 80,
-          data: pullRequestSeries,
           turboThreshold: 0,
           allowPointSelect: true,
         },
