@@ -1,8 +1,17 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, elide, pick, toMoment} from "../../../../helpers/utility";
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
-import {formatDateTime} from "../../../../i18n";
+import { Chart, tooltipHtml } from "../../../../framework/viz/charts";
+import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {
+  capitalizeFirstLetter,
+  elide,
+  pick,
+  toMoment,
+} from "../../../../helpers/utility";
+import {
+  Colors,
+  WorkItemStateTypeColor,
+  WorkItemStateTypeDisplayName,
+} from "../../../shared/config";
+import { formatDateTime } from "../../../../i18n";
 
 const workItemEventSymbol = {
   unmapped: "triangle",
@@ -56,29 +65,38 @@ function getWorkItemCommitEvents(workItem) {
   });
 }
 
+
 function getWorkItemPullRequestEvents(workItem) {
+  // we can get up to 2 points for a pull request, an opened point and optionally a closed/merged point
+  // so we do a flatMap of an array with up to 2 points to build the pull request series data
+  // from the list of pull requests.
   return workItem.workItemPullRequests.flatMap((pullRequest) => {
-    // minimum of 1 and a maximum of two “events” from a single pull request
-    // basic assumption: createdAt will always be available if pullRequest is there
-    const eventType = !pullRequest.endDate ? "open" : "closed";
-    return [pullRequest.createdAt, pullRequest.endDate]
-      // Filter out endDate if not available
-      .filter((date) => Boolean(date))
-      .map((date, index) => {
-        const _date = toMoment(date);
-        return {
-          x: _date.valueOf(),
-          y: 2,
-          marker: {
-            symbol: index === 0 ? "triangle" : "triangle-down",
-            radius: 4,
-          },
-          color: Colors.PullRequestStateType[eventType],
-          timelineEvent: pullRequest,
-          workItem: workItem,
-          eventType: index === 0 ? "PullRequestCreated" : "PullRequestCompleted",
-        };
-      });
+    return [
+      {
+        x: toMoment(pullRequest.createdAt).valueOf(),
+        y: 2,
+        marker: {
+          symbol: "triangle",
+          radius: 4,
+        },
+        color: Colors.PullRequestStateType["open"],
+        timelineEvent: pullRequest,
+        workItem: workItem,
+        eventType: "PullRequestCreated",
+      },
+      ...(pullRequest.endDate != null ? [{
+        x: toMoment(pullRequest.endDate).valueOf(),
+        y: 2,
+        marker: {
+          symbol: "triangle-down",
+          radius: 4,
+        },
+        color: Colors.PullRequestStateType["closed"],
+        timelineEvent: pullRequest,
+        workItem: workItem,
+        eventType: "PullRequestCompleted",
+      }] : []),
+    ];
   });
 }
 
@@ -102,7 +120,7 @@ export const WorkItemEventsTimelineChart = Chart({
             },
     })),
 
-  getConfig: ({workItem, context, intl}) => {
+  getConfig: ({ workItem, context, intl }) => {
     const series_data = [
       ...getWorkItemEvents(workItem),
       ...getWorkItemCommitEvents(workItem),
@@ -143,19 +161,29 @@ export const WorkItemEventsTimelineChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {timelineEvent: event, eventType} = this.point;
-          const formatDate = (date) => `${formatDateTime(intl, toMoment(date))}`;
+          const { timelineEvent: event, eventType } = this.point;
+          const formatDate = (date) =>
+            `${formatDateTime(intl, toMoment(date))}`;
 
           // make sure eventType has matching key in this object to get the formatter
           const tooltipFormatters = {
             WorkItemEvent: () => {
-              const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]}`;
+              const header = `Phase: ${
+                WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]
+              }`;
               const transition = `State: ${
-                event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``
+                event.previousState
+                  ? `${capitalizeFirstLetter(event.previousState)} -> `
+                  : ``
               } ${capitalizeFirstLetter(event.newState)} `;
               return tooltipHtml({
                 header: `${header}<br/>${transition}`,
-                body: [[`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`]],
+                body: [
+                  [
+                    `Date: `,
+                    `${formatDateTime(intl, toMoment(event.eventDate))}`,
+                  ],
+                ],
               });
             },
             Commit: () => {
@@ -165,12 +193,22 @@ export const WorkItemEventsTimelineChart = Chart({
                 body: [
                   [`Message: `, `${elide(event.commitMessage, 60)}`],
                   [`Author: `, `${event.author}`],
-                  [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`],
+                  [
+                    `Date: `,
+                    `${formatDateTime(intl, toMoment(event.commitDate))}`,
+                  ],
                 ],
               });
             },
             PullRequestCreated: () => {
-              const {repositoryName, displayId, name, age, createdAt, endDate} = event;
+              const {
+                repositoryName,
+                displayId,
+                name,
+                age,
+                createdAt,
+                endDate,
+              } = event;
               const stateKey = endDate ? "Time to Review: " : "Age: ";
               return tooltipHtml({
                 header: `${repositoryName}:${displayId}`,
@@ -182,7 +220,14 @@ export const WorkItemEventsTimelineChart = Chart({
               });
             },
             PullRequestCompleted: () => {
-              const {repositoryName, displayId, name, age, state, endDate} = event;
+              const {
+                repositoryName,
+                displayId,
+                name,
+                age,
+                state,
+                endDate,
+              } = event;
               return tooltipHtml({
                 header: `${repositoryName}:${displayId}`,
                 body: [
@@ -204,6 +249,7 @@ export const WorkItemEventsTimelineChart = Chart({
           data: series_data,
           turboThreshold: 0,
           allowPointSelect: true,
+          animation: false
         },
       ],
       legend: {
