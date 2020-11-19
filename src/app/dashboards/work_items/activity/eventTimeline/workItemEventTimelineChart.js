@@ -73,7 +73,7 @@ function getWorkItemPullRequestEvents(workItem) {
             symbol: index === 0 ? "triangle" : "triangle-down",
             radius: 4,
           },
-          color: Colors.PullRequestStateTypeColor[eventType],
+          color: Colors.PullRequestStateType[eventType],
           timelineEvent: pullRequest,
           workItem: workItem,
           eventType: index === 0 ? "PullRequestCreated" : "PullRequestCompleted",

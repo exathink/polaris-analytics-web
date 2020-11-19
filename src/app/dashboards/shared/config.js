@@ -15,7 +15,7 @@ export const Colors = {
     task: '#4445ec',
     default: '#8f9a8e'
   },
-  PullRequestStateTypeColor: {
+  PullRequestStateType: {
     open: "#c4ab49",
     closed: "#7824b5",
   },
