@@ -79,23 +79,30 @@ function getWorkItemPullRequestEvents(workItem) {
           symbol: "triangle",
           radius: 4,
         },
-        color: Colors.PullRequestStateType["open"],
+        color:
+          pullRequest.endDate != null
+            ? Colors.PullRequestStateType["open"]
+            : Colors.PullRequestStateType["closed"],
         timelineEvent: pullRequest,
         workItem: workItem,
         eventType: "PullRequestCreated",
       },
-      ...(pullRequest.endDate != null ? [{
-        x: toMoment(pullRequest.endDate).valueOf(),
-        y: 2,
-        marker: {
-          symbol: "triangle-down",
-          radius: 4,
-        },
-        color: Colors.PullRequestStateType["closed"],
-        timelineEvent: pullRequest,
-        workItem: workItem,
-        eventType: "PullRequestCompleted",
-      }] : []),
+      ...(pullRequest.endDate != null
+        ? [
+            {
+              x: toMoment(pullRequest.endDate).valueOf(),
+              y: 2,
+              marker: {
+                symbol: "triangle-down",
+                radius: 4,
+              },
+              color: Colors.PullRequestStateType["closed"],
+              timelineEvent: pullRequest,
+              workItem: workItem,
+              eventType: "PullRequestCompleted",
+            },
+          ]
+        : []),
     ];
   });
 }
