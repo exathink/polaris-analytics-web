@@ -232,13 +232,13 @@ export const WorkItemEventsTimelineChart = Chart({
                 createdAt,
                 endDate,
               } = event;
-              const stateKey = endDate ? "Time to Review: " : "Age: ";
+              const ageDisplayName = endDate ? "Time to Review: " : "Age: ";
               return tooltipHtml({
                 header: `${repositoryName}:${displayId}`,
                 body: [
                   [`Title: `, name],
                   [`Opened: `, formatDate(createdAt)],
-                  [stateKey, `${intl.formatNumber(age)} Days`],
+                  [ageDisplayName, `${intl.formatNumber(age)} Days`],
                 ],
               });
             },
