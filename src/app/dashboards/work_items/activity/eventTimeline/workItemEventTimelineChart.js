@@ -81,8 +81,8 @@ function getWorkItemPullRequestEvents(workItem) {
         },
         color:
           pullRequest.endDate != null
-            ? Colors.PullRequestStateType["open"]
-            : Colors.PullRequestStateType["closed"],
+            ? Colors.PullRequestStateType["closed"]
+            : Colors.PullRequestStateType["open"],
         timelineEvent: pullRequest,
         workItem: workItem,
         eventType: "PullRequestCreated",
