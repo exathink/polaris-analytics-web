@@ -3,6 +3,7 @@ import { VizItem, VizRow } from "../../../shared/containers/layout";
 import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSelector";
 import { PullRequestAgeChart } from "./pullRequestAgeChart";
 import { Flex } from "reflexbox";
+import { navigateToPullRequest } from "../../../shared/navigation/navigate";
 
 export const ProjectOpenPullRequestsView = ({
   pullRequests,
@@ -28,7 +29,7 @@ export const ProjectOpenPullRequestsView = ({
         view={view}
         onSelectionChange={(pullRequests) => {
           if (pullRequests.length === 1) {
-            window.open(pullRequests[0].webUrl, "_blank");
+            navigateToPullRequest(pullRequests[0].webUrl)
           }
         }}
       />

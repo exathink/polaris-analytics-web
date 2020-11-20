@@ -56,6 +56,7 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                 age
                 createdAt
                 endDate
+                webUrl
                 repositoryName
                 branchName
               }

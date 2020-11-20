@@ -81,8 +81,8 @@ function getWorkItemPullRequestEvents(workItem) {
         },
         color:
           pullRequest.endDate != null
-            ? Colors.PullRequestStateType["open"]
-            : Colors.PullRequestStateType["closed"],
+            ? Colors.PullRequestStateType["closed"]
+            : Colors.PullRequestStateType["open"],
         timelineEvent: pullRequest,
         workItem: workItem,
         eventType: "PullRequestCreated",
@@ -111,21 +111,37 @@ export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) =>
-    points.map((point) => ({
-      workItem: point.workItem,
-      event:
-        point.timelineEvent.eventDate != null
-          ? {
-              type: "event",
-              timelineEventId: point.timelineEventId,
-            }
-          : {
-              type: "commit",
-              name: point.timelineEvent.name,
-              key: point.timelineEvent.key,
-            },
-    })),
+  mapPoints: (points, _) => {
+    // keeping values as functions for lazy evaluation.
+    const events = {
+      WorkItemEvent: (point) => ({
+        type: "event",
+        timelineEventId: point.timelineEvent.id,
+      }),
+      Commit: (point) => ({
+        type: "commit",
+        name: point.timelineEvent.name,
+        key: point.timelineEvent.key,
+      }),
+      PullRequestCreated: (point) => ({
+        type: "pullRequest",
+        webUrl: point.timelineEvent.webUrl
+      }),
+      PullRequestCompleted: (point) => ({
+        type: "pullRequest",
+        webUrl: point.timelineEvent.webUrl
+      }),
+    };
+
+    return points.map((point) => {
+      const {eventType} = point;
+
+      return {
+        workItem: point.workItem,
+        event: events[eventType](point),
+      };
+    });
+  },
 
   getConfig: ({ workItem, context, intl }) => {
     const series_data = [
@@ -216,13 +232,13 @@ export const WorkItemEventsTimelineChart = Chart({
                 createdAt,
                 endDate,
               } = event;
-              const stateKey = endDate ? "Time to Review: " : "Age: ";
+              const ageDisplayName = endDate ? "Time to Review: " : "Age: ";
               return tooltipHtml({
                 header: `${repositoryName}:${displayId}`,
                 body: [
                   [`Title: `, name],
                   [`Opened: `, formatDate(createdAt)],
-                  [stateKey, `${intl.formatNumber(age)} Days`],
+                  [ageDisplayName, `${intl.formatNumber(age)} Days`],
                 ],
               });
             },
