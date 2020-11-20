@@ -2,6 +2,7 @@ import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemEventsTimelineChart} from './workItemEventTimelineChart'
 import Commits from '../../../commits/context'
+import { navigateToPullRequest } from '../../../shared/navigation/navigate';
 export const WorkItemEventTimelineView = (
   {
     workItem,
@@ -17,7 +18,7 @@ export const WorkItemEventTimelineView = (
         context.navigate(Commits, workItemEvent.event.name, workItemEvent.event.key);
       }
       if (workItemEvent.event.type === "pullRequest") {
-        window.open(workItemEvent.event.webUrl, "_blank");
+        navigateToPullRequest(workItemEvent.event.webUrl)
       }
     }
   }
