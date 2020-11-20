@@ -111,21 +111,37 @@ export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) =>
-    points.map((point) => ({
-      workItem: point.workItem,
-      event:
-        point.timelineEvent.eventDate != null
-          ? {
-              type: "event",
-              timelineEventId: point.timelineEventId,
-            }
-          : {
-              type: "commit",
-              name: point.timelineEvent.name,
-              key: point.timelineEvent.key,
-            },
-    })),
+  mapPoints: (points, _) => {
+    // keeping values as functions for lazy evaluation.
+    const events = {
+      WorkItemEvent: (point) => ({
+        type: "event",
+        timelineEventId: point.timelineEvent.id,
+      }),
+      Commit: (point) => ({
+        type: "commit",
+        name: point.timelineEvent.name,
+        key: point.timelineEvent.key,
+      }),
+      PullRequestCreated: (point) => ({
+        type: "pullRequest",
+        webUrl: point.timelineEvent.webUrl
+      }),
+      PullRequestCompleted: (point) => ({
+        type: "pullRequest",
+        webUrl: point.timelineEvent.webUrl
+      }),
+    };
+
+    return points.map((point) => {
+      const {eventType} = point;
+
+      return {
+        workItem: point.workItem,
+        event: events[eventType](point),
+      };
+    });
+  },
 
   getConfig: ({ workItem, context, intl }) => {
     const series_data = [
