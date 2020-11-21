@@ -11,7 +11,7 @@ import {
   WorkItemTypeSortOrder
 } from "../../../../shared/config";
 
-import {PlotLines} from "../../../pipeline/shared/chartParts";
+import {PlotLines} from "../../../wip/shared/chartParts";
 import {formatDateTime} from "../../../../../i18n";
 
 function mapColor(workItem) {
