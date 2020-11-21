@@ -7,24 +7,13 @@ import { navigateToPullRequest } from "../../../shared/navigation/navigate";
 
 export const ProjectOpenPullRequestsView = ({
   pullRequests,
-  workItemScope,
-  setWorkItemScope,
-  specsOnly,
+
   view,
 }) => (
   <VizRow h={1}>
     <VizItem w={1}>
-      {view === "detail" && (
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector
-            setWorkItemScope={setWorkItemScope}
-            workItemScope={workItemScope}
-          />
-        </Flex>
-      )}
       <PullRequestAgeChart
         pullRequests={pullRequests}
-        specsOnly={specsOnly}
         title={"Pending Code Reviews"}
         view={view}
         onSelectionChange={(pullRequests) => {

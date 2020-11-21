@@ -7,9 +7,6 @@ export const ProjectOpenPullRequestsWidget = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
-  workItemScope,
-  setWorkItemScope,
-  specsOnly,
   view,
   context,
   pollInterval,
@@ -29,9 +26,7 @@ export const ProjectOpenPullRequestsWidget = ({
     <ProjectOpenPullRequestsView
       pullRequests={pullRequests}
       view={view}
-      specsOnly={specsOnly}
-      workItemScope={workItemScope}
-      setWorkItemScope={setWorkItemScope}
+
     />
   );
 };
