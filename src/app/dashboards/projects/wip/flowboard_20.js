@@ -106,6 +106,21 @@ export const dashboard = ({ viewerContext }) => (
               hideTitlesInDetailView={true}
             />
             <DashboardWidget
+              w={0.2}
+              name={"code-reviews"}
+              title={"Code Reviews"}
+              render={({view}) => (
+                <ProjectOpenPullRequestsWidget
+                    instanceKey={key}
+                    view={view}
+                    context={context}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                  />
+              )}
+              showDetail={true}
+              />
+            <DashboardWidget
               w={0.45}
               name="flow-metrics"
               title={"Closed"}
@@ -127,27 +142,6 @@ export const dashboard = ({ viewerContext }) => (
                   cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                   leadTimeTarget={leadTimeTarget}
                   cycleTimeTarget={cycleTimeTarget}
-                />
-              )}
-              showDetail={true}
-            />
-            <DashboardWidget
-              w={0.12}
-              name="traceability"
-              title={"Traceability"}
-              hideTitlesInDetailView={"true"}
-              render={({ view }) => (
-                <ProjectTraceabilityTrendsWidget
-                  instanceKey={key}
-                  measurementWindow={measurementWindow}
-                  days={7}
-                  samplingFrequency={7}
-                  context={context}
-                  view={view}
-                  latestWorkItemEvent={latestWorkItemEvent}
-                  latestCommit={latestCommit}
-                  asStatistic={{ title: "Current" }}
-                  target={0.9}
                 />
               )}
               showDetail={true}
