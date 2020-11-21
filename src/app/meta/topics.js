@@ -5,12 +5,12 @@ export const Topics = {
   flow: {
     name: 'flow',
     display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow"/>),
-    icon: 'ion-ios-pulse-strong'
-  },
-  value: {
-    name: 'value',
-    display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
     icon: 'ion-ios-infinite-outline'
+  },
+  wip: {
+    name: 'wip',
+    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
+    icon: 'ion-ios-pulse-strong'
   },
   activity: {
     name: 'activity',
