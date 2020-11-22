@@ -2,6 +2,7 @@ import React from "react";
 import { Loading } from "../../../../components/graphql/loading";
 import { useQueryProjectPullRequests } from "../../shared/hooks/useQueryProjectPullRequests";
 import { ProjectOpenPullRequestsView } from "./projectOpenPullRequestsView";
+import {getReferenceString} from "../../../../helpers/utility";
 
 export const ProjectOpenPullRequestsWidget = ({
   instanceKey,
@@ -14,7 +15,7 @@ export const ProjectOpenPullRequestsWidget = ({
   const { loading, error, data } = useQueryProjectPullRequests({
     instanceKey,
     activeOnly: true,
-    referenceString: latestCommit,
+    referenceString: getReferenceString(latestCommit, latestWorkItemEvent)
   });
   if (loading) return <Loading />;
   if (error) return null;
@@ -26,7 +27,7 @@ export const ProjectOpenPullRequestsWidget = ({
     <ProjectOpenPullRequestsView
       pullRequests={pullRequests}
       view={view}
-
+      context={context}
     />
   );
 };

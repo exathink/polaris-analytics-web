@@ -32,6 +32,7 @@ export function useQueryProjectPullRequests({
                 webUrl
                 workItemsSummaries {
                   displayId
+                  key
                   state
                   stateType
                 }

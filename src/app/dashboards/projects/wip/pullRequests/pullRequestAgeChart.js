@@ -25,6 +25,8 @@ function getSeries(pullRequests, intl, view) {
     maxPointWidth: 30,
     minPointLength: 1,
     allowPointSelect: true,
+    visible: pullRequestsBySpecsNoSpecs[type] != null,
+    showInLegend: pullRequestsBySpecsNoSpecs[type] != null,
     data: (pullRequestsBySpecsNoSpecs[type] || []).map((pullRequest) => ({
       name: `#${pullRequest.displayId}`,
       y: pullRequest.age,
@@ -130,7 +132,9 @@ export const PullRequestAgeChart = Chart({
             fontStyle: "italic",
           },
         },
-
+        align: 'right',
+        layout: 'vertical',
+        verticalAlign: 'middle',
         itemMarginBottom: 3,
 
         enabled: true,
