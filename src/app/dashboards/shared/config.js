@@ -16,7 +16,7 @@ export const Colors = {
     default: '#8f9a8e'
   },
   PullRequestStateType: {
-    open: "#c4ab49",
+    open: "#46b518",
     closed: "#7824b5",
   },
   FlowType: {

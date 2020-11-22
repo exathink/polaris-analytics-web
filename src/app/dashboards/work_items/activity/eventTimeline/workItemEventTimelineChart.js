@@ -229,12 +229,13 @@ export const WorkItemEventsTimelineChart = Chart({
                 displayId,
                 name,
                 age,
+                state,
                 createdAt,
                 endDate,
               } = event;
               const ageDisplayName = endDate ? "Time to Review: " : "Age: ";
               return tooltipHtml({
-                header: `${repositoryName}:${displayId}`,
+                header: `Code Review: ${repositoryName}:${displayId}<br/> Status: ${capitalizeFirstLetter(state)}`,
                 body: [
                   [`Title: `, name],
                   [`Opened: `, formatDate(createdAt)],
@@ -252,7 +253,7 @@ export const WorkItemEventsTimelineChart = Chart({
                 endDate,
               } = event;
               return tooltipHtml({
-                header: `${repositoryName}:${displayId}`,
+                header: `Code Review: ${repositoryName}:${displayId}<br/> Status: ${capitalizeFirstLetter(state)}`,
                 body: [
                   [`Title: `, name],
                   [capitalizeFirstLetter(state), formatDate(endDate)],
