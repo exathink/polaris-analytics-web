@@ -62,7 +62,7 @@ export const dashboard = ({viewerContext}) => (
             />
 
             <DashboardWidget
-              w={0.25}
+              w={0.3}
               name="pipeline"
               title={"Work In Progress"}
               render={({view}) => (
@@ -101,7 +101,7 @@ export const dashboard = ({viewerContext}) => (
               showDetail={true}
             />
             <DashboardWidget
-              w={0.45}
+              w={0.4}
               name="flow-metrics"
               title={"Closed"}
               subtitle={`Last ${measurementWindow} days`}
