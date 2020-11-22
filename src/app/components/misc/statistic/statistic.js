@@ -23,4 +23,4 @@ export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=Tr
 }
 
 TrendIndicator.isPositive = (delta) => delta > 0;
-TrendIndicator.isNegative = (delta) => delta <= 0;
+TrendIndicator.isNegative = (delta) => delta < 0;

@@ -67,7 +67,7 @@ const CycleTimeAndLeadTimeSLA = (
                 previousValue={previous['cycleTimeConfidence'] * 100}
                 uom={'%'}
                 precision={2}
-                target={cycleTimeConfidenceTarget}
+                target={cycleTimeConfidenceTarget * 100}
                 good={TrendIndicator.isPositive}
 
               />,
@@ -81,8 +81,7 @@ const CycleTimeAndLeadTimeSLA = (
               <FlowStatistic
                 title={<span>{'% at Target'}</span>}
                 currentValue={current['leadTimeConfidence'] * 100}
-                previousMeasurement={previous['leadTimeConfidence'] * 100}
-                display={value => value * 100}
+                previousValue={previous['leadTimeConfidence'] * 100}
                 uom={'%'}
                 precision={2}
                 target={leadTimeConfidenceTarget}
@@ -140,7 +139,7 @@ const CycleTimeSLA = (
                 previousValue={previous['cycleTimeConfidence'] * 100}
                 uom={'%'}
                 precision={2}
-                target={cycleTimeTarget}
+                target={cycleTimeConfidenceTarget * 100}
                 good={TrendIndicator.isPositive}
 
               />
@@ -196,7 +195,7 @@ const LeadTimeSLA = (
                 previousValue={previous['leadTimeConfidence'] * 100}
                 uom={'%'}
                 precision={2}
-                target={leadTimeTarget}
+                target={leadTimeConfidenceTarget* 100}
                 good={TrendIndicator.isPositive}
 
               />
