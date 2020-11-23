@@ -1,0 +1,421 @@
+{
+  "data": {
+    "workItem": {
+      "id": "V29ya0l0ZW06NjVlMDE1ZmEtNGI5Mi00NTU2LWIwZmItOWYyNTcxMTAzNmM5",
+      "name": "Show Pull Requests on Work Item Timeline",
+      "displayId": "PO-357",
+      "workItemType": "story",
+      "state": "Code-Review-Needed",
+      "stateType": "wip",
+      "workItemEvents": {
+        "count": 3,
+        "edges": [
+          {
+            "node": {
+              "id": "V29ya0l0ZW1FdmVudDo2NWUwMTVmYS00YjkyLTQ1NTYtYjBmYi05ZjI1NzExMDM2Yzk6MA==",
+              "state": "Code-Review-Needed",
+              "eventDate": "2020-11-01T22:26:23.731000",
+              "previousState": null,
+              "previousStateType": null,
+              "newState": "created",
+              "newStateType": "backlog",
+              "__typename": "WorkItemEvent"
+            },
+            "__typename": "WorkItemEventsEdge"
+          },
+          {
+            "node": {
+              "id": "V29ya0l0ZW1FdmVudDo2NWUwMTVmYS00YjkyLTQ1NTYtYjBmYi05ZjI1NzExMDM2Yzk6MQ==",
+              "state": "Code-Review-Needed",
+              "eventDate": "2020-11-03T00:18:25.814000",
+              "previousState": "created",
+              "previousStateType": "backlog",
+              "newState": "In Progress",
+              "newStateType": "wip",
+              "__typename": "WorkItemEvent"
+            },
+            "__typename": "WorkItemEventsEdge"
+          },
+          {
+            "node": {
+              "id": "V29ya0l0ZW1FdmVudDo2NWUwMTVmYS00YjkyLTQ1NTYtYjBmYi05ZjI1NzExMDM2Yzk6Mg==",
+              "state": "Code-Review-Needed",
+              "eventDate": "2020-11-09T14:52:29.562000",
+              "previousState": "In Progress",
+              "previousStateType": "wip",
+              "newState": "Code-Review-Needed",
+              "newStateType": "wip",
+              "__typename": "WorkItemEvent"
+            },
+            "__typename": "WorkItemEventsEdge"
+          }
+        ],
+        "__typename": "WorkItemEventsConnection"
+      },
+      "commits": {
+        "count": 18,
+        "edges": [
+          {
+            "node": {
+              "name": "8f48c998",
+              "key": "ddd43e3e-6bd2-4896-a380-41b923188cd4:8f48c998fd4e686d7f15466bba04b1456d76386f",
+              "commitHash": "8f48c998fd4e686d7f15466bba04b1456d76386f",
+              "commitMessage": "Merge branch 'PO-357' into 'master'\n\nResolve PO-357\n\nCloses PO-357\n\nSee merge request polaris-services/polaris-vcs-service!11",
+              "commitDate": "2020-11-10T23:45:10",
+              "committer": "Krishna Kumar",
+              "author": "Krishna Kumar",
+              "authorDate": "2020-11-10T23:45:10",
+              "branch": "master",
+              "repository": "polaris-vcs-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "89ab2ef6",
+              "key": "35714c4a-e92e-4f41-9c34-f71181dc4375:89ab2ef6221169dc50a199ec9d0f63ebc105e713",
+              "commitHash": "89ab2ef6221169dc50a199ec9d0f63ebc105e713",
+              "commitMessage": "Merge branch 'PO-357' into 'master'\n\nAdded end_date and closed_at\n\nCloses PO-357\n\nSee merge request polaris-dbapi/polaris-repos-db!10",
+              "commitDate": "2020-11-10T23:44:12",
+              "committer": "Krishna Kumar",
+              "author": "Krishna Kumar",
+              "authorDate": "2020-11-10T23:44:12",
+              "branch": "master",
+              "repository": "polaris-repos-db",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "a801c7e2",
+              "key": "b9909691-d076-488e-a911-49596b711529:a801c7e2559f6d4eb333acfe156647c248ba38dc",
+              "commitHash": "a801c7e2559f6d4eb333acfe156647c248ba38dc",
+              "commitMessage": "Merge branch 'PO-357' into 'master'\n\nAdded closed_at field to pull request summary message\n\nCloses PO-357\n\nSee merge request polaris-common/polaris-messaging!10",
+              "commitDate": "2020-11-10T23:43:35",
+              "committer": "Krishna Kumar",
+              "author": "Krishna Kumar",
+              "authorDate": "2020-11-10T23:43:35",
+              "branch": "master",
+              "repository": "polaris-messaging",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "8d8adfb1",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:8d8adfb1cae55030e5d4e06c480da001c3c07ff6",
+              "commitHash": "8d8adfb1cae55030e5d4e06c480da001c3c07ff6",
+              "commitMessage": "Merge branch 'PO-357' into 'master'\n\nResolve PO-357\n\nCloses PO-357\n\nSee merge request polaris-services/polaris-analytics-service!125",
+              "commitDate": "2020-11-10T23:42:13",
+              "committer": "Krishna Kumar",
+              "author": "Krishna Kumar",
+              "authorDate": "2020-11-10T23:42:13",
+              "branch": "master",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "d0ef60d8",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:d0ef60d8cd27d28632a8bad91208bca198327bc6",
+              "commitHash": "d0ef60d8cd27d28632a8bad91208bca198327bc6",
+              "commitMessage": "Added tests for Pull request node and branchref interface\n",
+              "commitDate": "2020-11-09T14:44:39",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T14:44:39",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "ed4ab051",
+              "key": "35714c4a-e92e-4f41-9c34-f71181dc4375:ed4ab051bb2a7a864c5e19d9630a572e8aabea0d",
+              "commitHash": "ed4ab051bb2a7a864c5e19d9630a572e8aabea0d",
+              "commitMessage": "Migration query fix\n",
+              "commitDate": "2020-11-09T14:41:39",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T14:41:39",
+              "branch": "PO-357",
+              "repository": "polaris-repos-db",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "7740c06b",
+              "key": "ddd43e3e-6bd2-4896-a380-41b923188cd4:7740c06b4ebe56dd0cdd48ddc8a2674bfaa60e02",
+              "commitHash": "7740c06b4ebe56dd0cdd48ddc8a2674bfaa60e02",
+              "commitMessage": "Fixed tests\n",
+              "commitDate": "2020-11-09T12:03:26",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T12:03:26",
+              "branch": "PO-357",
+              "repository": "polaris-vcs-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "1d1207ae",
+              "key": "35714c4a-e92e-4f41-9c34-f71181dc4375:1d1207aebc55196d95d5f3fcec2d2221a7e9f1fb",
+              "commitHash": "1d1207aebc55196d95d5f3fcec2d2221a7e9f1fb",
+              "commitMessage": "Added end_date\n",
+              "commitDate": "2020-11-09T11:14:29",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T11:14:29",
+              "branch": "PO-357",
+              "repository": "polaris-repos-db",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "36d46276",
+              "key": "b9909691-d076-488e-a911-49596b711529:36d462768d685b956f5bc6a2acc650dfab493f4d",
+              "commitHash": "36d462768d685b956f5bc6a2acc650dfab493f4d",
+              "commitMessage": "Removed merged_at and passing only end_date in message\n",
+              "commitDate": "2020-11-09T11:14:12",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T11:14:12",
+              "branch": "PO-357",
+              "repository": "polaris-messaging",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "10985672",
+              "key": "ddd43e3e-6bd2-4896-a380-41b923188cd4:10985672d31badc4049d1050e1a8d8c61e5c3ad6",
+              "commitHash": "10985672d31badc4049d1050e1a8d8c61e5c3ad6",
+              "commitMessage": "Added end_date\n",
+              "commitDate": "2020-11-09T11:13:47",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T11:13:47",
+              "branch": "PO-357",
+              "repository": "polaris-vcs-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "d73b2390",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:d73b239012ef631b0cafe03f8d460e3dc3e9f455",
+              "commitHash": "d73b239012ef631b0cafe03f8d460e3dc3e9f455",
+              "commitMessage": "Pullrequest removed merged_at and added end_date\n",
+              "commitDate": "2020-11-09T11:13:12",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-09T11:13:12",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "b9980b4e",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:b9980b4e0d0c9b0e218ec3c7801649c3e9864a29",
+              "commitHash": "b9980b4e0d0c9b0e218ec3c7801649c3e9864a29",
+              "commitMessage": "Pull request closed_at imported from vcs service\n",
+              "commitDate": "2020-11-05T15:01:33",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-05T15:01:33",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "7a3d85c1",
+              "key": "ddd43e3e-6bd2-4896-a380-41b923188cd4:7a3d85c1ed065c3a6872f1de7caeea7407924536",
+              "commitHash": "7a3d85c1ed065c3a6872f1de7caeea7407924536",
+              "commitMessage": "Added closed at field for github pull request mapping from API\n",
+              "commitDate": "2020-11-05T15:00:05",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-05T15:00:05",
+              "branch": "PO-357",
+              "repository": "polaris-vcs-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "b2b33320",
+              "key": "b9909691-d076-488e-a911-49596b711529:b2b33320371b1db05991acb6d10c8a814da50be4",
+              "commitHash": "b2b33320371b1db05991acb6d10c8a814da50be4",
+              "commitMessage": "Added closed_at field to pull request summary message\n",
+              "commitDate": "2020-11-05T14:58:49",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-05T14:58:49",
+              "branch": "PO-357",
+              "repository": "polaris-messaging",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "341b03a7",
+              "key": "ddd43e3e-6bd2-4896-a380-41b923188cd4:341b03a74e1ffb7bded933edabf27b08f7e95612",
+              "commitHash": "341b03a74e1ffb7bded933edabf27b08f7e95612",
+              "commitMessage": "Added source_closed_at in mapping and sync functions\n",
+              "commitDate": "2020-11-05T13:50:17",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-05T13:50:17",
+              "branch": "PO-357",
+              "repository": "polaris-vcs-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "d6b688e5",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:d6b688e50b35b114e82a0e7b0e5f761ea0e7f9a6",
+              "commitHash": "d6b688e50b35b114e82a0e7b0e5f761ea0e7f9a6",
+              "commitMessage": "Added column closed_at to pull_request table\n",
+              "commitDate": "2020-11-04T11:41:01",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-04T11:41:01",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "7301b81e",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:7301b81e2337a90f31b5421a14750349ef2908ae",
+              "commitHash": "7301b81e2337a90f31b5421a14750349ef2908ae",
+              "commitMessage": "Added BrachRef interface to PullRequests\n",
+              "commitDate": "2020-11-04T11:19:55",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-04T11:19:55",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          },
+          {
+            "node": {
+              "name": "2e95a1dd",
+              "key": "f6b81d4f-bee5-44a8-9ebc-662157842839:2e95a1dd9963d65104c08d078782de75f5ee0092",
+              "commitHash": "2e95a1dd9963d65104c08d078782de75f5ee0092",
+              "commitMessage": "Added PullRequestInfo interface to WorkItemPullRequestNode\n",
+              "commitDate": "2020-11-03T14:27:27",
+              "committer": "Pragya Goyal",
+              "author": "Pragya Goyal",
+              "authorDate": "2020-11-03T14:27:27",
+              "branch": "PO-357",
+              "repository": "polaris-analytics-service",
+              "__typename": "Commit"
+            },
+            "__typename": "CommitsEdge"
+          }
+        ],
+        "__typename": "CommitsConnection"
+      },
+      "pullRequests": {
+        "edges": [
+          {
+            "node": {
+              "id": "UHVsbFJlcXVlc3Q6NWMzNzU5OTYtY2VlZi00MGQ4LTlkY2YtMmI3MWE3ODk3NWYw",
+              "name": "Added end_date and closed_at",
+              "key": "5c375996-ceef-40d8-9dcf-2b71a78975f0",
+              "displayId": "10",
+              "state": "merged",
+              "age": 1.48609416666667,
+              "createdAt": "2020-11-09T12:04:14.517000",
+              "endDate": "2020-11-10T23:44:13.505000",
+              "repositoryName": "polaris-repos-db",
+              "branchName": "PO-357",
+              "__typename": "PullRequest"
+            },
+            "__typename": "PullRequestsEdge"
+          },
+          {
+            "node": {
+              "id": "UHVsbFJlcXVlc3Q6YjU2YWEzOTMtN2M3Mi00NDRiLTlhZDItZGEzMmRlZTgxMWQ0",
+              "name": "Resolve PO-357",
+              "key": "b56aa393-7c72-444b-9ad2-da32dee811d4",
+              "displayId": "125",
+              "state": "merged",
+              "age": 5.36025982638889,
+              "createdAt": "2020-11-05T15:03:27.846000",
+              "endDate": "2020-11-10T23:42:14.964000",
+              "repositoryName": "polaris-analytics-service",
+              "branchName": "PO-357",
+              "__typename": "PullRequest"
+            },
+            "__typename": "PullRequestsEdge"
+          },
+          {
+            "node": {
+              "id": "UHVsbFJlcXVlc3Q6OWY2ZmY4OWMtMGRhYy00MTNlLTg0NzAtZWMzNmU2OWI3MGMz",
+              "name": "Resolve PO-357",
+              "key": "9f6ff89c-0dac-413e-8470-ec36e69b70c3",
+              "displayId": "11",
+              "state": "merged",
+              "age": 5.36438644675926,
+              "createdAt": "2020-11-05T15:00:27.749000",
+              "endDate": "2020-11-10T23:45:11.238000",
+              "repositoryName": "polaris-vcs-service",
+              "branchName": "PO-357",
+              "__typename": "PullRequest"
+            },
+            "__typename": "PullRequestsEdge"
+          },
+          {
+            "node": {
+              "id": "UHVsbFJlcXVlc3Q6ZDljODJlZDktY2Q1NC00NmZlLWJkYjEtMTg3NjI3NWNiMTA4",
+              "name": "Added closed_at field to pull request summary message",
+              "key": "d9c82ed9-cd54-46fe-bdb1-1876275cb108",
+              "displayId": "10",
+              "state": "merged",
+              "age": 5.36403539351852,
+              "createdAt": "2020-11-05T14:59:23.097000",
+              "endDate": "2020-11-10T23:43:36.218000",
+              "repositoryName": "polaris-messaging",
+              "branchName": "PO-357",
+              "__typename": "PullRequest"
+            },
+            "__typename": "PullRequestsEdge"
+          }
+        ],
+        "__typename": "PullRequestsConnection"
+      },
+      "__typename": "WorkItem"
+    }
+  }
+}

@@ -22,7 +22,7 @@ const workItemEventSymbol = {
   closed: "triangle-down",
 };
 
-function getWorkItemEvents(workItem) {
+export function getWorkItemEvents(workItem) {
   return workItem.workItemEvents
     .filter(
       /* filter out backlog events for work items that are not in closed state */
@@ -47,7 +47,7 @@ function getWorkItemEvents(workItem) {
     });
 }
 
-function getWorkItemCommitEvents(workItem) {
+export function getWorkItemCommitEvents(workItem) {
   return workItem.workItemCommits.map((timelineEvent, index) => {
     const eventDate = toMoment(timelineEvent.commitDate);
     return {
@@ -66,7 +66,7 @@ function getWorkItemCommitEvents(workItem) {
 }
 
 
-function getWorkItemPullRequestEvents(workItem) {
+export function getWorkItemPullRequestEvents(workItem) {
   // we can get up to 2 points for a pull request, an opened point and optionally a closed/merged point
   // so we do a flatMap of an array with up to 2 points to build the pull request series data
   // from the list of pull requests.
