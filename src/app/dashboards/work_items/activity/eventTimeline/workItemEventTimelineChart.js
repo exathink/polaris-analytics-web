@@ -1,18 +1,8 @@
-import { Chart, tooltipHtml } from "../../../../framework/viz/charts";
-import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {
-  capitalizeFirstLetter,
-  elide,
-  pick,
-  toMoment,
-  epoch
-} from "../../../../helpers/utility";
-import {
-  Colors,
-  WorkItemStateTypeColor,
-  WorkItemStateTypeDisplayName,
-} from "../../../shared/config";
-import { formatDateTime } from "../../../../i18n";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {capitalizeFirstLetter, elide, epoch, pick, toMoment} from "../../../../helpers/utility";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
+import {formatDateTime} from "../../../../i18n";
 
 const workItemEventSymbol = {
   unmapped: "triangle",
