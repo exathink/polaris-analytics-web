@@ -1,0 +1,6 @@
+{
+  "baseUrl": "http://polaris-services.exathink.localdev:3000",
+  "integrationFolder": "cypress/tests",
+  "viewportHeight": 1000,
+  "viewportWidth": 1280
+}
