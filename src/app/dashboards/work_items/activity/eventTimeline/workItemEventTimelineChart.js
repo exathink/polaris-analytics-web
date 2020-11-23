@@ -5,6 +5,7 @@ import {
   elide,
   pick,
   toMoment,
+  epoch
 } from "../../../../helpers/utility";
 import {
   Colors,
@@ -29,12 +30,12 @@ export function getWorkItemEvents(workItem) {
       (timelineEvent) => (workItem.stateType !== "closed" ? timelineEvent.newStateType !== "backlog" : true)
     )
     .map((timelineEvent, index) => {
-      const eventDate = toMoment(timelineEvent.eventDate);
+
       const newStateType = timelineEvent.newStateType || "unmapped";
       return {
-        x: eventDate.valueOf(),
+        x: epoch(timelineEvent.eventDate),
         y: 0,
-        z: 3,
+
         marker: {
           symbol: workItemEventSymbol[newStateType],
           radius: 6,
@@ -49,11 +50,11 @@ export function getWorkItemEvents(workItem) {
 
 export function getWorkItemCommitEvents(workItem) {
   return workItem.workItemCommits.map((timelineEvent, index) => {
-    const eventDate = toMoment(timelineEvent.commitDate);
+
     return {
-      x: eventDate.valueOf(),
+      x: epoch(timelineEvent.commitDate),
       y: 1,
-      z: 3,
+
       marker: {
         symbol: "circle",
         radius: 4,
@@ -73,7 +74,7 @@ export function getWorkItemPullRequestEvents(workItem) {
   return workItem.workItemPullRequests.flatMap((pullRequest) => {
     return [
       {
-        x: toMoment(pullRequest.createdAt).valueOf(),
+        x: epoch(pullRequest.createdAt),
         y: 2,
         marker: {
           symbol: "triangle",
@@ -90,7 +91,7 @@ export function getWorkItemPullRequestEvents(workItem) {
       ...(pullRequest.endDate != null
         ? [
             {
-              x: toMoment(pullRequest.endDate).valueOf(),
+              x: epoch(pullRequest.endDate),
               y: 2,
               marker: {
                 symbol: "triangle-down",
