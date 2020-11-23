@@ -2,5 +2,10 @@
   "baseUrl": "http://polaris-services.exathink.localdev:3000",
   "integrationFolder": "cypress/tests",
   "viewportHeight": 1000,
-  "viewportWidth": 1280
+  "viewportWidth": 1280,
+  "env": {
+    "authServiceUrl": "http://polaris-services.exathink.localdev:8000",
+    "username": "username",
+    "password": "password"
+  }
 }
