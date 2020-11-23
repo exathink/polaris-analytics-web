@@ -28,7 +28,7 @@
 Cypress.Commands.add("loginByCSRF", (csrfToken) => {
   cy.request({
     method: "POST",
-    url: "http://polaris-services.exathink.localdev:8000/login",
+    url: `${Cypress.env("authServiceUrl")}/login`,
     failOnStatusCode: false, // dont fail so we can make assertions
     form: true, // we are submitting a regular form body
     body: {
