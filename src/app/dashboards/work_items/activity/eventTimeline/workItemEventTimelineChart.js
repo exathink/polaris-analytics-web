@@ -98,6 +98,54 @@ export function getWorkItemPullRequestEvents(workItem) {
   });
 }
 
+// make sure eventType has matching key in this object to get the formatter
+export const tooltipFormatters = {
+  WorkItemEvent: ({timelineEvent: event}, intl) => {
+    const header = `Phase: ${WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]}`;
+    const transition = `State: ${
+      event.previousState ? `${capitalizeFirstLetter(event.previousState)} -> ` : ``
+    } ${capitalizeFirstLetter(event.newState)} `;
+    return tooltipHtml({
+      header: `${header}<br/>${transition}`,
+      body: [[`Date: `, `${formatDateTime(intl, toMoment(event.eventDate))}`]],
+    });
+  },
+  Commit: ({timelineEvent: event}, intl) => {
+    const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`;
+    return tooltipHtml({
+      header: `${commit}`,
+      body: [
+        [`Message: `, `${elide(event.commitMessage, 60)}`],
+        [`Author: `, `${event.author}`],
+        [`Date: `, `${formatDateTime(intl, toMoment(event.commitDate))}`],
+      ],
+    });
+  },
+  PullRequestCreated: ({timelineEvent: event}, intl) => {
+    const {repositoryName, displayId, name, age, createdAt, endDate} = event;
+    const stateKey = endDate ? "Time to Review: " : "Age: ";
+    return tooltipHtml({
+      header: `${repositoryName}:${displayId}`,
+      body: [
+        [`Title: `, name],
+        [`Opened: `, `${formatDateTime(intl, toMoment(createdAt))}`],
+        [stateKey, `${intl.formatNumber(age)} Days`],
+      ],
+    });
+  },
+  PullRequestCompleted: ({timelineEvent: event}, intl) => {
+    const {repositoryName, displayId, name, age, state, endDate} = event;
+    return tooltipHtml({
+      header: `${repositoryName}:${displayId}`,
+      body: [
+        [`Title: `, name],
+        [capitalizeFirstLetter(state), `${formatDateTime(intl, toMoment(endDate))}`],
+        [`Time to Review: `, `${intl.formatNumber(age)} Days`],
+      ],
+    });
+  },
+};
+
 export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
@@ -159,85 +207,7 @@ export const WorkItemEventsTimelineChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const { timelineEvent: event, eventType } = this.point;
-          const formatDate = (date) =>
-            `${formatDateTime(intl, toMoment(date))}`;
-
-          // make sure eventType has matching key in this object to get the formatter
-          const tooltipFormatters = {
-            WorkItemEvent: () => {
-              const header = `Phase: ${
-                WorkItemStateTypeDisplayName[event.newStateType || "unmapped"]
-              }`;
-              const transition = `State: ${
-                event.previousState
-                  ? `${capitalizeFirstLetter(event.previousState)} -> `
-                  : ``
-              } ${capitalizeFirstLetter(event.newState)} `;
-              return tooltipHtml({
-                header: `${header}<br/>${transition}`,
-                body: [
-                  [
-                    `Date: `,
-                    `${formatDateTime(intl, toMoment(event.eventDate))}`,
-                  ],
-                ],
-              });
-            },
-            Commit: () => {
-              const commit = `Commit: ${event.committer} committed to ${event.repository} on branch ${event.branch}`;
-              return tooltipHtml({
-                header: `${commit}`,
-                body: [
-                  [`Message: `, `${elide(event.commitMessage, 60)}`],
-                  [`Author: `, `${event.author}`],
-                  [
-                    `Date: `,
-                    `${formatDateTime(intl, toMoment(event.commitDate))}`,
-                  ],
-                ],
-              });
-            },
-            PullRequestCreated: () => {
-              const {
-                repositoryName,
-                displayId,
-                name,
-                age,
-                createdAt,
-                endDate,
-              } = event;
-              const stateKey = endDate ? "Time to Review: " : "Age: ";
-              return tooltipHtml({
-                header: `${repositoryName}:${displayId}`,
-                body: [
-                  [`Title: `, name],
-                  [`Opened: `, formatDate(createdAt)],
-                  [stateKey, `${intl.formatNumber(age)} Days`],
-                ],
-              });
-            },
-            PullRequestCompleted: () => {
-              const {
-                repositoryName,
-                displayId,
-                name,
-                age,
-                state,
-                endDate,
-              } = event;
-              return tooltipHtml({
-                header: `${repositoryName}:${displayId}`,
-                body: [
-                  [`Title: `, name],
-                  [capitalizeFirstLetter(state), formatDate(endDate)],
-                  [`Time to Review: `, `${intl.formatNumber(age)} Days`],
-                ],
-              });
-            },
-          };
-
-          return tooltipFormatters[eventType]();
+          return tooltipFormatters[this.point.eventType](this.point, intl);
         },
       },
       series: [

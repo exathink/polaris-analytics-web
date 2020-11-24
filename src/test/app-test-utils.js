@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from "@testing-library/react";
 import {AppProviders} from "./providers";
+import { IntlProvider } from 'react-intl';
 
 // custom render function specific to our app using render of testing-lib
 export function renderChart(ui) {
@@ -30,4 +31,16 @@ export function renderedChartConfig(chartComponent) {
 
 export function expectSetsAreEqual(arraya, arrayb) {
   expect(new Set(arraya)).toEqual(new Set(arrayb))
+}
+
+export function getIntl() {
+  // Create IntlProvider to retrieve React Intl context
+  const intlProvider = new IntlProvider(
+    {
+      locale: "en"
+    },
+    {}
+  );
+  const {intl} = intlProvider.getChildContext();
+  return intl;
 }

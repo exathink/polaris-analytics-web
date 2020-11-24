@@ -1,6 +1,6 @@
 import React from "react";
-import {expectSetsAreEqual, renderedChartConfig} from "../../../../../test/app-test-utils";
-import {WorkItemEventsTimelineChart} from "./workItemEventTimelineChart";
+import {expectSetsAreEqual, renderedChartConfig, getIntl} from "../../../../../test/app-test-utils";
+import {WorkItemEventsTimelineChart, tooltipFormatters} from "./workItemEventTimelineChart";
 import {Colors} from "../../../shared/config";
 import {epoch} from "../../../../helpers/utility";
 
@@ -323,6 +323,20 @@ describe("workItemEventTimelineChart", () => {
         [workItemWithCommits]
       );
     });
+
+    test("should render the tooltip for commit event point", () => {
+      const commitEvent = data[0];
+      const intl = getIntl();
+      const output = tooltipFormatters.Commit(commitEvent, intl);
+      // lightweight inline snapshot
+      expect(output).toMatchInlineSnapshot(`
+"<b>Commit: Krishna Kumar committed to polaris-vcs-service on branch master</b><br/><br/><table><tr><td>Message:  </td><td style=\\"text-align: right\\"><b>Merge branch 'PO-357' into 'master'
+
+Resolve PO-357
+
+Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"><b>Krishna Kumar</b></td></tr><tr><td>Date:  </td><td style=\\"text-align: right\\"><b>11/11/2020, 5:15 AM</b></td></tr></table>"
+`);
+    });
   });
 
   describe("workItems timeline", () => {
@@ -369,7 +383,7 @@ describe("workItemEventTimelineChart", () => {
             previousState: null,
             previousStateType: null,
             newState: "created",
-            newStateType: null // unmapped
+            newStateType: null, // unmapped
           },
         ],
       };
@@ -469,6 +483,16 @@ describe("workItemEventTimelineChart", () => {
       expectSetsAreEqual(
         data.map((point) => point.workItem),
         [workItemWithEvents]
+      );
+    });
+
+    test("should render the tooltip for workItem event point", () => {
+      const workItemEvent = data[0];
+      const intl = getIntl();
+      const output = tooltipFormatters.WorkItemEvent(workItemEvent, intl);
+      // lightweight inline snapshot
+      expect(output).toMatchInlineSnapshot(
+        `"<b>Phase: Build<br/>State: Created ->  In progress </b><br/><br/><table><tr><td>Date:  </td><td style=\\"text-align: right\\"><b>11/3/2020, 5:48 AM</b></td></tr></table>"`
       );
     });
   });
@@ -630,6 +654,26 @@ describe("workItemEventTimelineChart", () => {
       expectSetsAreEqual(
         data.map((point) => point.workItem),
         [workItemWithPullRequests]
+      );
+    });
+
+    test("should render the tooltip for creation event of the pull request point", () => {
+      const creationEventPoint = data.filter((point) => point.eventType === "PullRequestCreated")[0];
+      const intl = getIntl();
+      const output = tooltipFormatters.PullRequestCreated(creationEventPoint, intl);
+      // lightweight inline snapshot
+      expect(output).toMatchInlineSnapshot(
+        `"<b>polaris-repos-db:10</b><br/><br/><table><tr><td>Title:  </td><td style=\\"text-align: right\\"><b>Added end_date and closed_at</b></td></tr><tr><td>Opened:  </td><td style=\\"text-align: right\\"><b>11/9/2020, 5:34 PM</b></td></tr><tr><td>Time to Review:  </td><td style=\\"text-align: right\\"><b>1.486 Days</b></td></tr></table>"`
+      );
+    });
+
+    test("should render the tooltip for completion event of the pull request point", () => {
+      const completionEventPoint = data.filter((point) => point.eventType === "PullRequestCompleted")[0];
+      const intl = getIntl();
+      const output = tooltipFormatters.PullRequestCompleted(completionEventPoint, intl);
+      // lightweight inline snapshot
+      expect(output).toMatchInlineSnapshot(
+        `"<b>polaris-repos-db:10</b><br/><br/><table><tr><td>Title:  </td><td style=\\"text-align: right\\"><b>Added end_date and closed_at</b></td></tr><tr><td>Merged </td><td style=\\"text-align: right\\"><b>11/11/2020, 5:14 AM</b></td></tr><tr><td>Time to Review:  </td><td style=\\"text-align: right\\"><b>1.486 Days</b></td></tr></table>"`
       );
     });
   });
