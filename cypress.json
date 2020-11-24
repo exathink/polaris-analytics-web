@@ -5,7 +5,7 @@
   "viewportWidth": 1280,
   "env": {
     "authServiceUrl": "http://polaris-services.exathink.localdev:8000",
-    "username": "username",
-    "password": "password"
+    "username": "polaris-dev@exathink.com",
+    "password": "polaris"
   }
 }
