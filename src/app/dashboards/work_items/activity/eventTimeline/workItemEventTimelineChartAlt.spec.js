@@ -1,8 +1,21 @@
 import React from "react";
-import {expectSetsAreEqual, renderedChartConfig, getIntl} from "../../../../../test/app-test-utils";
-import {WorkItemEventsTimelineChart, tooltipFormatters} from "./workItemEventTimelineChart";
+import {expectSetsAreEqual, renderedChartConfig, renderedChart} from "../../../../../test/app-test-utils";
+import {WorkItemEventsTimelineChart} from "./workItemEventTimelineChart";
 import {Colors} from "../../../shared/config";
 import {epoch} from "../../../../helpers/utility";
+import {tooltipHtml as tooltipHtmlMock} from "../../../../framework/viz/charts";
+
+// mock tooltipHtml function of tooltip module
+jest.mock("../../../../framework/viz/charts/tooltip", () => {
+  return {
+    tooltipHtml: jest.fn((obj) => obj),
+  };
+});
+
+// clear mocks after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const workItemFixture = {
   id: "V29ya0l0ZW06NjVlMDE1ZmEtNGI5Mi00NTU2LWIwZmItOWYyNTcxMTAzNmM5",
@@ -324,17 +337,60 @@ describe("workItemEventTimelineChart", () => {
       );
     });
 
-    test("should render the tooltip for commit event point", () => {
-      const commitEvent = data[0];
-      const intl = getIntl();
-      const output = tooltipFormatters.Commit(commitEvent, intl);
-      // lightweight inline snapshot
-      expect(output).toMatchInlineSnapshot(`
-"<b>Commit: Krishna Kumar committed to polaris-vcs-service on branch master</b><br/><br/><table><tr><td>Message:  </td><td style=\\"text-align: right\\"><b>Merge branch 'PO-357' into 'master'
+    test("should render the tooltip for commit event point", async () => {
+      const {
+        series: [
+          {
+            points: [point],
+          },
+        ],
+      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />);
+
+      const {
+        tooltip: {formatter},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />);
+
+      // call the formatter in the context of point
+      formatter.bind({point: point})();
+
+      // check the first argument of first call
+      const actual = tooltipHtmlMock.mock.calls[0][0];
+
+      // const {timelineEvent} = point;
+      // const header = `Phase: ${WorkItemStateTypeDisplayName[timelineEvent.newStateType || "unmapped"]}`;
+      // const transition = `State: ${
+      //   timelineEvent.previousState ? `${capitalizeFirstLetter(timelineEvent.previousState)} -> ` : ``
+      // } ${capitalizeFirstLetter(timelineEvent.newState)} `;
+      // const expected = {
+      //   header: `${header}<br/>${transition}`,
+      //   body: [[`Date: `, `${formatDateTime(getIntl(), toMoment(timelineEvent.eventDate))}`]],
+      // };
+
+      // here inline snapshot makes sense instead of manually adding the same logic
+      // as this is not gonna change given the same point
+      // asserting as long as it receives this argument its fine.
+      expect(actual).toMatchInlineSnapshot(`
+Object {
+  "body": Array [
+    Array [
+      "Message: ",
+      "Merge branch 'PO-357' into 'master'
 
 Resolve PO-357
 
-Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"><b>Krishna Kumar</b></td></tr><tr><td>Date:  </td><td style=\\"text-align: right\\"><b>11/11/2020, 5:15 AM</b></td></tr></table>"
+Closes  ...",
+    ],
+    Array [
+      "Author: ",
+      "Krishna Kumar",
+    ],
+    Array [
+      "Date: ",
+      "11/11/2020, 5:15 AM",
+    ],
+  ],
+  "header": "Commit: Krishna Kumar committed to polaris-vcs-service on branch master",
+}
 `);
     });
   });
@@ -486,14 +542,36 @@ Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"
       );
     });
 
-    test("should render the tooltip for workItem event point", () => {
-      const workItemEvent = data[0];
-      const intl = getIntl();
-      const output = tooltipFormatters.WorkItemEvent(workItemEvent, intl);
-      // lightweight inline snapshot
-      expect(output).toMatchInlineSnapshot(
-        `"<b>Phase: Build<br/>State: Created ->  In progress </b><br/><br/><table><tr><td>Date:  </td><td style=\\"text-align: right\\"><b>11/3/2020, 5:48 AM</b></td></tr></table>"`
-      );
+    test("should render the tooltip for workItem event point", async () => {
+      const {
+        series: [
+          {
+            points: [point],
+          },
+        ],
+      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />);
+
+      const {
+        tooltip: {formatter},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />);
+
+      // call the formatter in the context of point
+      formatter.bind({point: point})();
+
+      // check the first argument of first call
+      const actual = tooltipHtmlMock.mock.calls[0][0];
+
+      expect(actual).toMatchInlineSnapshot(`
+Object {
+  "body": Array [
+    Array [
+      "Date: ",
+      "11/3/2020, 5:48 AM",
+    ],
+  ],
+  "header": "Phase: Build<br/>State: Created ->  In progress ",
+}
+`);
     });
   });
 
@@ -657,24 +735,125 @@ Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"
       );
     });
 
-    test("should render the tooltip for creation event of the pull request point", () => {
-      const creationEventPoint = data.filter((point) => point.eventType === "PullRequestCreated")[0];
-      const intl = getIntl();
-      const output = tooltipFormatters.PullRequestCreated(creationEventPoint, intl);
-      // lightweight inline snapshot
-      expect(output).toMatchInlineSnapshot(
-        `"<b>polaris-repos-db:10</b><br/><br/><table><tr><td>Title:  </td><td style=\\"text-align: right\\"><b>Added end_date and closed_at</b></td></tr><tr><td>Opened:  </td><td style=\\"text-align: right\\"><b>11/9/2020, 5:34 PM</b></td></tr><tr><td>Time to Review:  </td><td style=\\"text-align: right\\"><b>1.486 Days</b></td></tr></table>"`
-      );
+    test("should render the tooltip for creation event of the pull request point", async () => {
+      const workItemWithOpenPullRequests = {
+        ...workItemFixture,
+        workItemPullRequests: [
+          {
+            id: "UHVsbFJlcXVlc3Q6MmI1ZTdhMTktNjYwMC00MmIyLTkzYTctODA4OGYwYzQ3OGRk",
+            name: "Resolve PO-364",
+            key: "2b5e7a19-6600-42b2-93a7-8088f0c478dd",
+            displayId: "128",
+            state: "open",
+            age: 13.8181293821991,
+            createdAt: "2020-11-10T10:59:14.586000",
+            endDate: null,
+            repositoryName: "polaris-analytics-service",
+            branchName: "PO-364",
+          },
+        ],
+      };
+
+      const {
+        series: [
+          {
+            points: [point],
+          },
+        ],
+      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />);
+
+      const {
+        tooltip: {formatter},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />);
+
+      // call the formatter in the context of point
+      formatter.bind({point: point})();
+
+      // check the first argument of first call
+      const actual = tooltipHtmlMock.mock.calls[0][0];
+
+      expect(actual).toMatchInlineSnapshot(`
+Object {
+  "body": Array [
+    Array [
+      "Title: ",
+      "Resolve PO-364",
+    ],
+    Array [
+      "Opened: ",
+      "11/10/2020, 4:29 PM",
+    ],
+    Array [
+      "Age: ",
+      "13.818 Days",
+    ],
+  ],
+  "header": "polaris-analytics-service:128",
+}
+`);
     });
 
-    test("should render the tooltip for completion event of the pull request point", () => {
-      const completionEventPoint = data.filter((point) => point.eventType === "PullRequestCompleted")[0];
-      const intl = getIntl();
-      const output = tooltipFormatters.PullRequestCompleted(completionEventPoint, intl);
-      // lightweight inline snapshot
-      expect(output).toMatchInlineSnapshot(
-        `"<b>polaris-repos-db:10</b><br/><br/><table><tr><td>Title:  </td><td style=\\"text-align: right\\"><b>Added end_date and closed_at</b></td></tr><tr><td>Merged </td><td style=\\"text-align: right\\"><b>11/11/2020, 5:14 AM</b></td></tr><tr><td>Time to Review:  </td><td style=\\"text-align: right\\"><b>1.486 Days</b></td></tr></table>"`
+    test("should render the tooltip for completion event of the pull request point", async () => {
+      const workItemWithCompletedPullRequests = {
+        ...workItemFixture,
+        workItemPullRequests: [
+          {
+            id: "UHVsbFJlcXVlc3Q6ZDljODJlZDktY2Q1NC00NmZlLWJkYjEtMTg3NjI3NWNiMTA4",
+            name: "Added closed_at field to pull request summary message",
+            key: "d9c82ed9-cd54-46fe-bdb1-1876275cb108",
+            displayId: "10",
+            state: "merged",
+            age: 5.36403539351852,
+            createdAt: "2020-11-05T14:59:23.097000",
+            endDate: "2020-11-10T23:43:36.218000",
+            repositoryName: "polaris-messaging",
+            branchName: "PO-357",
+          },
+        ],
+      };
+
+      const {
+        series: [
+          {
+            // getting second point from the points array
+            points: [_, point],
+          },
+        ],
+      } = await renderedChart(
+        <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />
       );
+
+      const {
+        tooltip: {formatter},
+      } = renderedChartConfig(
+        <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />
+      );
+
+      // call the formatter in the context of point
+      formatter.bind({point: point})();
+
+      // check the first argument of first call
+      const actual = tooltipHtmlMock.mock.calls[0][0];
+
+      expect(actual).toMatchInlineSnapshot(`
+Object {
+  "body": Array [
+    Array [
+      "Title: ",
+      "Added closed_at field to pull request summary message",
+    ],
+    Array [
+      "Merged",
+      "11/11/2020, 5:13 AM",
+    ],
+    Array [
+      "Time to Review: ",
+      "5.364 Days",
+    ],
+  ],
+  "header": "polaris-messaging:10",
+}
+`);
     });
   });
 });

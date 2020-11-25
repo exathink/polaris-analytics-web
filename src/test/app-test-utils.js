@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from "@testing-library/react";
+import {render, waitFor} from "@testing-library/react";
 import {AppProviders} from "./providers";
 import { IntlProvider } from 'react-intl';
 
@@ -28,13 +28,15 @@ export function renderedChartConfig(chartComponent) {
   return configSpy.mock.results[0].value;
 }
 
-export function renderedChart(chartComponent) {
+export async function renderedChart(chartComponent) {
   const chartSpy = jest.fn((x) => x);
 
   render(React.cloneElement(chartComponent, {onChartUpdated: chartSpy}), {
     wrapper: AppProviders,
   });
 
+// it'll wait until the mock function has been called once.
+  await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1))
   return chartSpy.mock.results[0].value;
 }
 

@@ -13,7 +13,7 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       }
 
       componentDidMount() {
-        if(this.props.configSpy != null){
+        if(this.props.configSpy){
           this.props.configSpy(this.state.config)
         }
       }
