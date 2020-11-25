@@ -583,7 +583,7 @@ Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"
       );
     });
 
-    test("it sets the color(#c4ab49) of events for pull requests that are still open", () => {
+    test("it sets the color of events for pull requests that are still open", () => {
       const workItemWithOpenPullRequests = {
         ...workItemFixture,
         workItemPullRequests: [
@@ -608,11 +608,11 @@ Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"
 
       expectSetsAreEqual(
         data.map((point) => point.color),
-        ["#c4ab49"]
+        [Colors.PullRequestStateType["open"]]
       );
     });
 
-    test("it sets the color(#7824b5) of events for pull requests that are completed", () => {
+    test("it sets the color of events for pull requests that are completed", () => {
       const workItemWithCompletedPullRequests = {
         ...workItemFixture,
         workItemPullRequests: [
@@ -639,7 +639,7 @@ Closes  ...</b></td></tr><tr><td>Author:  </td><td style=\\"text-align: right\\"
 
       expectSetsAreEqual(
         data.map((point) => point.color),
-        ["#7824b5"]
+        [Colors.PullRequestStateType["closed"]]
       );
     });
 
