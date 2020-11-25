@@ -38,6 +38,9 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         if(this.state.eventHandler) {
           this.state.eventHandler.setChart(this)
         }
+        if(this.props.onChartUpdated) {
+          this.props.onChartUpdated(this.chart)
+        }
       }
 
       static getDerivedStateFromProps(nextProps, prevState) {
