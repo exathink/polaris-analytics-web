@@ -28,6 +28,15 @@ export function renderedChartConfig(chartComponent) {
   return configSpy.mock.results[0].value;
 }
 
+export function renderedChart(chartComponent) {
+  const chartSpy = jest.fn((x) => x);
+
+  render(React.cloneElement(chartComponent, {onChartUpdated: chartSpy}), {
+    wrapper: AppProviders,
+  });
+
+  return chartSpy.mock.results[0].value;
+}
 
 export function expectSetsAreEqual(arraya, arrayb) {
   expect(new Set(arraya)).toEqual(new Set(arrayb))
