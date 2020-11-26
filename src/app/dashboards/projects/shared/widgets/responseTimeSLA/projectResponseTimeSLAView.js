@@ -105,7 +105,7 @@ const CycleTimeSLA = ({
 }) => {
   const [current, previous] = responseTimeConfidenceTrends;
   const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
-  const tick = useGenerateTicks(2, 3000);
+
 
   return (
     <React.Fragment>
@@ -141,7 +141,7 @@ const CycleTimeSLA = ({
 const LeadTimeSLA = ({responseTimeConfidenceTrends, cycleMetricsTrends, leadTimeTarget, leadTimeConfidenceTarget}) => {
   const [current, previous] = responseTimeConfidenceTrends;
   const [currentCycleMetrics, previousCycleMetrics] = cycleMetricsTrends;
-  const tick = useGenerateTicks(2, 3000);
+
 
   return (
     <React.Fragment>
