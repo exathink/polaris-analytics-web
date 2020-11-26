@@ -12,6 +12,12 @@ export const Chart = (configProvider: ChartConfigProvider) => {
 
       }
 
+      componentDidMount() {
+        if(this.props.configSpy){
+          this.props.configSpy(this.state.config)
+        }
+      }
+
       static attachEvents(config, props) {
         if (configProvider.eventHandler) {
           return new configProvider.eventHandler(config, props);
@@ -31,6 +37,9 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         this.chart = chart;
         if(this.state.eventHandler) {
           this.state.eventHandler.setChart(this)
+        }
+        if(this.props.onChartUpdated) {
+          this.props.onChartUpdated(this.chart)
         }
       }
 
