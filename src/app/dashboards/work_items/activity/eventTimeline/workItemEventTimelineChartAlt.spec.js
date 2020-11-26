@@ -1,21 +1,22 @@
 import React from "react";
-import {expectSetsAreEqual, renderedChartConfig, renderedChart} from "../../../../../test/app-test-utils";
+import {
+  expectSetsAreEqual,
+  renderedChartConfig,
+  getTooltipUtil,
+  getIntl,
+} from "../../../../../test/app-test-utils";
 import {WorkItemEventsTimelineChart} from "./workItemEventTimelineChart";
 import {Colors} from "../../../shared/config";
-import {epoch} from "../../../../helpers/utility";
-import {tooltipHtml as tooltipHtmlMock} from "../../../../framework/viz/charts";
-
-// mock tooltipHtml function of tooltip module
-jest.mock("../../../../framework/viz/charts/tooltip", () => {
-  return {
-    tooltipHtml: jest.fn((obj) => obj),
-  };
-});
+import {elide, epoch, toMoment} from "../../../../helpers/utility";
+import { formatDateTime } from "../../../../i18n";
 
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
 });
+
+const intl = getIntl();
+const formatDate = (date) => `${formatDateTime(intl, toMoment(date))}`
 
 const workItemFixture = {
   id: "V29ya0l0ZW06NjVlMDE1ZmEtNGI5Mi00NTU2LWIwZmItOWYyNTcxMTAzNmM5",
@@ -291,16 +292,6 @@ describe("workItemEventTimelineChart", () => {
       workItemCommits: commitsFixture,
     };
 
-    const expectedChartConfig = {
-      ...fixedChartConfig,
-      series: [
-        {
-          ...fixedSeriesConfig,
-          data: [],
-        },
-      ],
-    };
-
     const {
       series: [{data}],
     } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />);
@@ -338,60 +329,20 @@ describe("workItemEventTimelineChart", () => {
     });
 
     test("should render the tooltip for commit event point", async () => {
-      const {
-        series: [
-          {
-            points: [point],
-          },
+      const [actual] = await getTooltipUtil(
+        <WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />,
+        (points) => [points[0]]
+      );
+
+      const [commit] = workItemWithCommits.workItemCommits;
+      expect(actual).toMatchObject({
+        header: expect.stringMatching(/^Commit:.*/),
+        body: [
+          ["Message: ", expect.stringMatching(elide(commit.commitMessage, 60))],
+          ["Author: ", expect.stringMatching(commit.author)],
+          ["Date: ", formatDate(commit.commitDate)],
         ],
-      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />);
-
-      const {
-        tooltip: {formatter},
-      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />);
-
-      // call the formatter in the context of point
-      formatter.bind({point: point})();
-
-      // check the first argument of first call
-      const actual = tooltipHtmlMock.mock.calls[0][0];
-
-      // const {timelineEvent} = point;
-      // const header = `Phase: ${WorkItemStateTypeDisplayName[timelineEvent.newStateType || "unmapped"]}`;
-      // const transition = `State: ${
-      //   timelineEvent.previousState ? `${capitalizeFirstLetter(timelineEvent.previousState)} -> ` : ``
-      // } ${capitalizeFirstLetter(timelineEvent.newState)} `;
-      // const expected = {
-      //   header: `${header}<br/>${transition}`,
-      //   body: [[`Date: `, `${formatDateTime(getIntl(), toMoment(timelineEvent.eventDate))}`]],
-      // };
-
-      // here inline snapshot makes sense instead of manually adding the same logic
-      // as this is not gonna change given the same point
-      // asserting as long as it receives this argument its fine.
-      expect(actual).toMatchInlineSnapshot(`
-Object {
-  "body": Array [
-    Array [
-      "Message: ",
-      "Merge branch 'PO-357' into 'master'
-
-Resolve PO-357
-
-Closes  ...",
-    ],
-    Array [
-      "Author: ",
-      "Krishna Kumar",
-    ],
-    Array [
-      "Date: ",
-      "11/11/2020, 5:15 AM",
-    ],
-  ],
-  "header": "Commit: Krishna Kumar committed to polaris-vcs-service on branch master",
-}
-`);
+      });
     });
   });
 
@@ -543,35 +494,16 @@ Closes  ...",
     });
 
     test("should render the tooltip for workItem event point", async () => {
-      const {
-        series: [
-          {
-            points: [point],
-          },
-        ],
-      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />);
+      const [actual] = await getTooltipUtil(
+        <WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />,
+        (points) => [points[0]]
+      );
 
-      const {
-        tooltip: {formatter},
-      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />);
-
-      // call the formatter in the context of point
-      formatter.bind({point: point})();
-
-      // check the first argument of first call
-      const actual = tooltipHtmlMock.mock.calls[0][0];
-
-      expect(actual).toMatchInlineSnapshot(`
-Object {
-  "body": Array [
-    Array [
-      "Date: ",
-      "11/3/2020, 5:48 AM",
-    ],
-  ],
-  "header": "Phase: Build<br/>State: Created ->  In progress ",
-}
-`);
+      const [workItem] = workItemWithEvents.workItemEvents
+      expect(actual).toMatchObject({
+        header: expect.stringMatching(/^Phase:.*/),
+        body: [["Date: ", formatDate(workItem.eventDate)]],
+      });
     });
   });
 
@@ -754,43 +686,21 @@ Object {
         ],
       };
 
-      const {
-        series: [
-          {
-            points: [point],
-          },
+      const [actual] = await getTooltipUtil(
+        <WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />,
+        (points) => [points[0]]
+      );
+
+      const [pullRequest] = workItemWithOpenPullRequests.workItemPullRequests;
+      expect(actual).toMatchObject({
+        header: `${pullRequest.repositoryName}:${pullRequest.displayId}`,
+        body: [
+          ["Title: ", pullRequest.name],
+          [`Opened: `, formatDate(pullRequest.createdAt)],
+          ["Age: ", `${intl.formatNumber(pullRequest.age)} Days`],
         ],
-      } = await renderedChart(<WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />);
+      });
 
-      const {
-        tooltip: {formatter},
-      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />);
-
-      // call the formatter in the context of point
-      formatter.bind({point: point})();
-
-      // check the first argument of first call
-      const actual = tooltipHtmlMock.mock.calls[0][0];
-
-      expect(actual).toMatchInlineSnapshot(`
-Object {
-  "body": Array [
-    Array [
-      "Title: ",
-      "Resolve PO-364",
-    ],
-    Array [
-      "Opened: ",
-      "11/10/2020, 4:29 PM",
-    ],
-    Array [
-      "Age: ",
-      "13.818 Days",
-    ],
-  ],
-  "header": "polaris-analytics-service:128",
-}
-`);
     });
 
     test("should render the tooltip for completion event of the pull request point", async () => {
@@ -812,48 +722,20 @@ Object {
         ],
       };
 
-      const {
-        series: [
-          {
-            // getting second point from the points array
-            points: [_, point],
-          },
+      const [_, actual] = await getTooltipUtil(
+        <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />,
+        (points) => [points[0], points[1]]
+      );
+
+      const [pullRequest] = workItemWithCompletedPullRequests.workItemPullRequests;
+      expect(actual).toMatchObject({
+        header: `${pullRequest.repositoryName}:${pullRequest.displayId}`,
+        body: [
+          ["Title: ", pullRequest.name],
+          [`Merged: `, formatDate(pullRequest.endDate)],
+          ["Time to Review: ", `${intl.formatNumber(pullRequest.age)} Days`],
         ],
-      } = await renderedChart(
-        <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />
-      );
-
-      const {
-        tooltip: {formatter},
-      } = renderedChartConfig(
-        <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />
-      );
-
-      // call the formatter in the context of point
-      formatter.bind({point: point})();
-
-      // check the first argument of first call
-      const actual = tooltipHtmlMock.mock.calls[0][0];
-
-      expect(actual).toMatchInlineSnapshot(`
-Object {
-  "body": Array [
-    Array [
-      "Title: ",
-      "Added closed_at field to pull request summary message",
-    ],
-    Array [
-      "Merged",
-      "11/11/2020, 5:13 AM",
-    ],
-    Array [
-      "Time to Review: ",
-      "5.364 Days",
-    ],
-  ],
-  "header": "polaris-messaging:10",
-}
-`);
+      });
     });
   });
 });

@@ -139,7 +139,7 @@ export const tooltipFormatters = {
       header: `${repositoryName}:${displayId}`,
       body: [
         [`Title: `, name],
-        [capitalizeFirstLetter(state), `${formatDateTime(intl, toMoment(endDate))}`],
+        [`${capitalizeFirstLetter(state)}: `, `${formatDateTime(intl, toMoment(endDate))}`],
         [`Time to Review: `, `${intl.formatNumber(age)} Days`],
       ],
     });
