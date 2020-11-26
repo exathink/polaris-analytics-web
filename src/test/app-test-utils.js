@@ -69,7 +69,7 @@ export function getIntl() {
  * 
  * @param {*} chartComponent
  * @param {*} mapper : points => points
- * @param {*} seriesIndex : index of the series of series arr from char config
+ * @param {*} seriesIndex : index of the series of series arr from chart config
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
 export async function getTooltipUtil(chartComponent, mapper, seriesIndex = 0) {
