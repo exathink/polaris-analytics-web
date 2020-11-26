@@ -285,3 +285,15 @@ export function localNow(intl) {
           minute: 'numeric'
         })
 }
+
+export function average( array, getValue) {
+  if (array != null && array.length > 0) {
+    return array.reduce(
+     (result, element) => result + getValue(element),
+      0
+    )/array.length
+  } else {
+    return 0;
+  }
+
+}

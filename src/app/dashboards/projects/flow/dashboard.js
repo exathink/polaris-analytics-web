@@ -64,7 +64,7 @@ export const dashboard = ({viewerContext}) => (
          }) => {
 
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
-          const [workItemScope, setWorkItemScope] = useState('specs');
+          const [workItemScope, setWorkItemScope] = useState('all');
           const specsOnly = workItemScope === 'specs';
           const {flowMetricsSettings} = settings;
           const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;

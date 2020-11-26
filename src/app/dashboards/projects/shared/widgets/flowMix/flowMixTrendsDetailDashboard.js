@@ -25,7 +25,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
   }
 ) => {
 
-  const [workItemScope, setWorkItemScope] = useState('specs');
+  const [workItemScope, setWorkItemScope] = useState('all');
   const specsOnly = workItemScope === 'specs';
 
   const [

@@ -11,7 +11,7 @@ function getDisplayName(pullRequest) {
     : `${pullRequest.repositoryName}#${pullRequest.displayId}`;
 }
 
-function getSeries(pullRequests, specsOnly, intl, view) {
+function getSeries(pullRequests, intl, view) {
   const pullRequestsBySpecsNoSpecs = buildIndex(
     pullRequests,
     (pullRequest) => pullRequest.workItemsSummaries.length > 0?  'Specs' : 'No Specs'
@@ -25,6 +25,8 @@ function getSeries(pullRequests, specsOnly, intl, view) {
     maxPointWidth: 30,
     minPointLength: 1,
     allowPointSelect: true,
+    visible: pullRequestsBySpecsNoSpecs[type] != null,
+    showInLegend: pullRequestsBySpecsNoSpecs[type] != null,
     data: (pullRequestsBySpecsNoSpecs[type] || []).map((pullRequest) => ({
       name: `#${pullRequest.displayId}`,
       y: pullRequest.age,
@@ -41,7 +43,7 @@ function getSeries(pullRequests, specsOnly, intl, view) {
 
 export const PullRequestAgeChart = Chart({
   // Update this function to choose which props will cause the chart config to be regenerated.
-  chartUpdateProps: (props) => pick(props, "pullRequests", "specsOnly"),
+  chartUpdateProps: (props) => pick(props, "pullRequests"),
 
   // Leave this as is unless you want to create a different selection handler than the default one.
   eventHandler: DefaultSelectionEventHandler,
@@ -51,13 +53,9 @@ export const PullRequestAgeChart = Chart({
   // points and map them back here.
   mapPoints: (points, _) => points.map(point => point.pullRequest),
 
-  getConfig: ({ pullRequests, specsOnly, title, subtitle, intl, view }) => {
-    const candidatePullRequests = specsOnly
-      ? pullRequests.filter(
-          (pullRequest) => pullRequest.workItemsSummaries.length > 0
-        )
-      : pullRequests;
-    const series = getSeries(candidatePullRequests, specsOnly, intl, view);
+  getConfig: ({ pullRequests,  title, subtitle, intl, view }) => {
+
+    const series = getSeries(pullRequests,intl, view);
     return {
       chart: {
         // some default options we include on all charts, but might want to
@@ -69,7 +67,7 @@ export const PullRequestAgeChart = Chart({
 
       },
       title: {
-        text: `${candidatePullRequests.length} ${title || "Code Reviews"}`,
+        text: `${pullRequests.length} ${title || "Code Reviews"}`,
         align: "left",
       },
       subtitle: {
@@ -134,10 +132,12 @@ export const PullRequestAgeChart = Chart({
             fontStyle: "italic",
           },
         },
-
+        align: 'right',
+        layout: 'vertical',
+        verticalAlign: 'middle',
         itemMarginBottom: 3,
-        // enable if needed
-        enabled: !specsOnly,
+
+        enabled: true,
       },
     };
   },

@@ -15,16 +15,16 @@ const colors = {
 
 export const FlowStatistic = ({title, currentMeasurement, previousMeasurement, metric, currentValue, previousValue, uom, good, target, precision, deltaThreshold, valueRender = value => value}) => {
 
-  const value = currentValue || (currentMeasurement && currentMeasurement[metric]);
-  const comp = previousValue || (previousMeasurement && previousMeasurement[metric]);
+  const value = currentValue != null ?  currentValue :  (currentMeasurement && currentMeasurement[metric]);
+  const comp = previousValue != null ? previousValue :  (previousMeasurement && previousMeasurement[metric]);
 
-  const color = target && value && good && !good(value - target) ? colors.bad : colors.good
+  const color = target && (value != null) && good && !good(value - target) ? colors.bad : colors.good
 
-
+  const renderedValue = valueRender(value);
   return (
     <Statistic
       title={title}
-      value={valueRender(value) || 'N/A'}
+      value={ renderedValue != null ? renderedValue : 'N/A'}
       precision={precision || 0}
       valueStyle={{color: color}}
       prefix={

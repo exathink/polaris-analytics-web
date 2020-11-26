@@ -1,59 +1,39 @@
-import React, { useState } from "react";
-import {
-  Dashboard,
-  DashboardRow,
-  DashboardWidget,
-} from "../../../framework/viz/dashboard";
-import { WorkItemStateTypes } from "../../shared/config";
+import React, {useState} from "react";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {WorkItemStateTypes} from "../../shared/config";
 import {
   ProjectPipelineCycleTimeLatencyWidget,
+  ProjectPipelineImplementationCostWidget,
   ProjectPipelineWidget,
 } from "../shared/widgets/wip";
 
-import {
-  DimensionCommitsNavigatorWidget,
-  HeaderMetrics,
-} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
-import { withViewerContext } from "../../../framework/viewer/viewerContext";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
-import { ProjectDashboard } from "../projectDashboard";
-import { ProjectTraceabilityTrendsWidget } from "../shared/widgets/traceability";
-import { ProjectResponseTimeSLAWidget } from "../shared/widgets/responseTimeSLA";
-import { ProjectFlowMetricsWidget } from "../shared/widgets/flowMetrics";
-import { ProjectOpenPullRequestsWidget } from "./pullRequests";
-import { ProjectPipelineImplementationCostWidget } from "../shared/widgets/wip";
-import { useProjectWorkItemSourcesStateMappings } from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import { StateMappingIndex } from "./new_dashboard";
-import { GroupingSelector } from "../../shared/components/groupingSelector/groupingSelector";
+import {ProjectDashboard} from "../projectDashboard";
+import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
+import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {ProjectOpenPullRequestsWidget} from "./pullRequests";
+import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {StateMappingIndex} from "./new_dashboard";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
-export const dashboard = ({ viewerContext }) => (
+export const dashboard = ({viewerContext}) => (
   <ProjectDashboard
     pollInterval={1000 * 60}
-    render={({
-      project: { key, latestWorkItemEvent, latestCommit, settings },
-      context,
-    }) => {
-      const stateMappingIndex = new StateMappingIndex(
-        useProjectWorkItemSourcesStateMappings(key)
-      );
+    render={({project: {key, latestWorkItemEvent, latestCommit, settings}, context}) => {
+      const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
       const [workItemScope, setWorkItemScope] = useState("specs");
-      const [engineeringTab, setEngineeringTab] = useState("cycleTime");
       const specsOnly = workItemScope === "specs";
 
-      const { flowMetricsSettings } = settings;
+      const {flowMetricsSettings} = settings;
       const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
       const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
-      const responseTimeConfidenceTarget =
-        flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
-      const leadTimeConfidenceTarget =
-        flowMetricsSettings.leadTimeConfidenceTarget ||
-        responseTimeConfidenceTarget;
-      const cycleTimeConfidenceTarget =
-        flowMetricsSettings.cycleTimeConfidenceTarget ||
-        responseTimeConfidenceTarget;
+      const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
+      const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
+      const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
       const wipLimit = flowMetricsSettings.wipLimit || 20;
 
       const measurementWindow = flowMetricsSettings.pipelineMeasurementWindow || 7;
@@ -82,10 +62,10 @@ export const dashboard = ({ viewerContext }) => (
             />
 
             <DashboardWidget
-              w={0.25}
+              w={0.3}
               name="pipeline"
               title={"Work In Progress"}
-              render={({ view }) => (
+              render={({view}) => (
                 <ProjectPipelineWidget
                   instanceKey={key}
                   display={"flowboardSummary"}
@@ -106,12 +86,27 @@ export const dashboard = ({ viewerContext }) => (
               hideTitlesInDetailView={true}
             />
             <DashboardWidget
-              w={0.45}
+              w={0.2}
+              name={"code-reviews"}
+              title={"Code Reviews"}
+              render={({view}) => (
+                <ProjectOpenPullRequestsWidget
+                  instanceKey={key}
+                  view={view}
+                  context={context}
+                  latestWorkItemEvent={latestWorkItemEvent}
+                  latestCommit={latestCommit}
+                />
+              )}
+              showDetail={true}
+            />
+            <DashboardWidget
+              w={0.4}
               name="flow-metrics"
               title={"Closed"}
               subtitle={`Last ${measurementWindow} days`}
               hideTitlesInDetailView={true}
-              render={({ view }) => (
+              render={({view}) => (
                 <ProjectFlowMetricsWidget
                   instanceKey={key}
                   view={view}
@@ -131,97 +126,34 @@ export const dashboard = ({ viewerContext }) => (
               )}
               showDetail={true}
             />
-            <DashboardWidget
-              w={0.12}
-              name="traceability"
-              title={"Traceability"}
-              hideTitlesInDetailView={"true"}
-              render={({ view }) => (
-                <ProjectTraceabilityTrendsWidget
-                  instanceKey={key}
-                  measurementWindow={measurementWindow}
-                  days={7}
-                  samplingFrequency={7}
-                  context={context}
-                  view={view}
-                  latestWorkItemEvent={latestWorkItemEvent}
-                  latestCommit={latestCommit}
-                  asStatistic={{ title: "Current" }}
-                  target={0.9}
-                />
-              )}
-              showDetail={true}
-            />
           </DashboardRow>
           <DashboardRow h="36%" title={" "}>
             <DashboardWidget
               w={1 / 3}
               name="engineering"
-              title={"Build"}
-              styles={{
-                controlContainer: {
-                  width: "53%",
-                },
-              }}
-              controls={[
-                () => (
-                  <GroupingSelector
-                    label={" "}
-                    groupings={[
-                      {
-                        key: "cycleTime",
-                        display: "Cycle Time",
-                      },
-                      {
-                        key: "codeReviews",
-                        display: "Code Reviews",
-                      },
-                    ]}
-                    initialValue={engineeringTab}
-                    onGroupingChanged={(selection) =>
-                      setEngineeringTab(selection)
-                    }
-                  />
-                ),
-              ]}
-              render={({ view }) =>
-                engineeringTab === "cycleTime" ? (
-                  <ProjectPipelineCycleTimeLatencyWidget
-                    instanceKey={key}
-                    view={view}
-                    stageName={"Engineering"}
-                    stateTypes={[
-                      WorkItemStateTypes.open,
-                      WorkItemStateTypes.build,
-                    ]}
-                    cycleTimeTarget={cycleTimeTarget}
-                    specsOnly={specsOnly}
-                    workItemScope={workItemScope}
-                    setWorkItemScope={setWorkItemScope}
-                    context={context}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    targetPercentile={cycleTimeConfidenceTarget}
-                  />
-                ) : (
-                  <ProjectOpenPullRequestsWidget
-                    instanceKey={key}
-                    view={view}
-                    specsOnly={specsOnly}
-                    workItemScope={workItemScope}
-                    setWorkItemScope={setWorkItemScope}
-                    context={context}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                  />
-                )
-              }
+
+              render={({view}) => (
+                <ProjectPipelineCycleTimeLatencyWidget
+                  instanceKey={key}
+                  view={view}
+                  stageName={"Engineering"}
+                  stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
+                  cycleTimeTarget={cycleTimeTarget}
+                  specsOnly={specsOnly}
+                  workItemScope={workItemScope}
+                  setWorkItemScope={setWorkItemScope}
+                  context={context}
+                  latestWorkItemEvent={latestWorkItemEvent}
+                  latestCommit={latestCommit}
+                  targetPercentile={cycleTimeConfidenceTarget}
+                />
+              )}
               showDetail={true}
             />
             <DashboardWidget
               w={1 / 3}
               name="pipeline-effort"
-              render={({ view }) => (
+              render={({view}) => (
                 <ProjectPipelineImplementationCostWidget
                   instanceKey={key}
                   view={view}
@@ -239,16 +171,7 @@ export const dashboard = ({ viewerContext }) => (
             <DashboardWidget
               w={1 / 3}
               name="delivery"
-              title={'Deliver'}
-              styles={{
-                controlContainer: {
-                  width: "50%",
-                },
-              }}
-              controls={[
-                () => '',
-              ]}
-              render={({ view }) => (
+              render={({view}) => (
                 <ProjectPipelineCycleTimeLatencyWidget
                   instanceKey={key}
                   view={view}
@@ -273,7 +196,7 @@ export const dashboard = ({ viewerContext }) => (
               title={"Latest Commits"}
               w={1}
               name="commits"
-              render={({ view }) => (
+              render={({view}) => (
                 <DimensionCommitsNavigatorWidget
                   dimension={"project"}
                   instanceKey={key}

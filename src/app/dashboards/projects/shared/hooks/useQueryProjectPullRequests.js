@@ -15,6 +15,7 @@ export function useQueryProjectPullRequests({
         $referenceString: String
       ) {
         project(key: $projectKey, referenceString: $referenceString) {
+          id
           pullRequests(
             interfaces: [BranchRef, WorkItemsSummaries]
             activeOnly: $activeOnly
@@ -32,6 +33,7 @@ export function useQueryProjectPullRequests({
                 webUrl
                 workItemsSummaries {
                   displayId
+                  key
                   state
                   stateType
                 }

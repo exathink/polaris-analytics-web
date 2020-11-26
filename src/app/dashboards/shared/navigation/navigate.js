@@ -24,3 +24,7 @@ export function navigateToContext(context, childContext, name, key) {
     }
   }
 }
+
+export function navigateToPullRequest(webUrl) {
+  window.open(webUrl, "_blank");
+}
