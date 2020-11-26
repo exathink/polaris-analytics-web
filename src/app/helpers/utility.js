@@ -152,6 +152,9 @@ export function toMoment(serverDate, as_date=false) {
   return as_date ? moment(serverDate) : moment(`${serverDate}Z`);
 }
 
+export function epoch(serverDate) {
+  return toMoment(serverDate).valueOf()
+}
 
 
 
