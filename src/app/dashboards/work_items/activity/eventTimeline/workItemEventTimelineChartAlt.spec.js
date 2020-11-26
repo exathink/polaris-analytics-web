@@ -3,20 +3,23 @@ import {
   expectSetsAreEqual,
   renderedChartConfig,
   getTooltipUtil,
-  getIntl,
-} from "../../../../../test/app-test-utils";
+} from "../../../../framework/viz/charts/chart-test-utils";
+
+import {
+  formatDate, formatNumber
+} from "../../../../../test/test-utils";
+
 import {WorkItemEventsTimelineChart} from "./workItemEventTimelineChart";
 import {Colors} from "../../../shared/config";
 import {elide, epoch, toMoment} from "../../../../helpers/utility";
-import { formatDateTime } from "../../../../i18n";
+
 
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-const intl = getIntl();
-const formatDate = (date) => `${formatDateTime(intl, toMoment(date))}`
+
 
 const workItemFixture = {
   id: "V29ya0l0ZW06NjVlMDE1ZmEtNGI5Mi00NTU2LWIwZmItOWYyNTcxMTAzNmM5",
@@ -697,7 +700,7 @@ describe("workItemEventTimelineChart", () => {
         body: [
           ["Title: ", pullRequest.name],
           [`Opened: `, formatDate(pullRequest.createdAt)],
-          ["Age: ", `${intl.formatNumber(pullRequest.age)} Days`],
+          ["Age: ", `${formatNumber(pullRequest.age)} Days`],
         ],
       });
 
@@ -733,7 +736,7 @@ describe("workItemEventTimelineChart", () => {
         body: [
           ["Title: ", pullRequest.name],
           [`Merged: `, formatDate(pullRequest.endDate)],
-          ["Time to Review: ", `${intl.formatNumber(pullRequest.age)} Days`],
+          ["Time to Review: ", `${formatNumber(pullRequest.age)} Days`],
         ],
       });
     });
