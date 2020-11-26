@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  expectSetsAreEqual,
   renderedChartConfig,
   getTooltipUtil,
 } from "../../../../framework/viz/charts/chart-test-utils";
 
 import {
+  expectSetsAreEqual,
   formatDate, formatNumber
 } from "../../../../../test/test-utils";
 

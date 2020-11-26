@@ -3,8 +3,6 @@ import {render, waitFor} from "@testing-library/react";
 import {AppProviders} from "../../../../test/providers";
 
 import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
-import {formatDateTime} from "../../../i18n";
-import {toMoment} from "../../../helpers/utility";
 // mock tooltipHtml function of tooltip module
 jest.mock("./tooltip", () => {
   return {
@@ -47,10 +45,6 @@ export async function renderedChart(chartComponent) {
   // it'll wait until the mock function has been called once.
   await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
   return chartSpy.mock.results[0].value;
-}
-
-export function expectSetsAreEqual(arraya, arrayb) {
-  expect(new Set(arraya)).toEqual(new Set(arrayb));
 }
 
 
