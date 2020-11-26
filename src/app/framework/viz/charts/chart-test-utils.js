@@ -1,10 +1,12 @@
 import React from "react";
 import {render, waitFor} from "@testing-library/react";
-import {AppProviders} from "./providers";
-import {IntlProvider} from "react-intl";
-import {tooltipHtml as tooltipHtmlMock} from "../app/framework/viz/charts/tooltip";
+import {AppProviders} from "../../../../test/providers";
+
+import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
+import {formatDateTime} from "../../../i18n";
+import {toMoment} from "../../../helpers/utility";
 // mock tooltipHtml function of tooltip module
-jest.mock("../app/framework/viz/charts/tooltip", () => {
+jest.mock("./tooltip", () => {
   return {
     tooltipHtml: jest.fn((obj) => obj),
   };
@@ -51,17 +53,7 @@ export function expectSetsAreEqual(arraya, arrayb) {
   expect(new Set(arraya)).toEqual(new Set(arrayb));
 }
 
-export function getIntl() {
-  // Create IntlProvider to retrieve React Intl context
-  const intlProvider = new IntlProvider(
-    {
-      locale: "en",
-    },
-    {}
-  );
-  const {intl} = intlProvider.getChildContext();
-  return intl;
-}
+
 
 /**
  * will return first argument of tooltipHtml function for all points 
@@ -73,12 +65,12 @@ export function getIntl() {
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
 export async function getTooltipUtil(chartComponent, mapper, seriesIndex = 0) {
-  const {series} = await renderedChart(React.cloneElement(chartComponent));
+  const {series} = await renderedChart(chartComponent);
   const {points} = series[seriesIndex];
 
   const {
     tooltip: {formatter},
-  } = renderedChartConfig(React.cloneElement(chartComponent));
+  } = renderedChartConfig(chartComponent);
 
   // get the points after applying mapper
   const _points = mapper(points);
@@ -91,3 +83,9 @@ export async function getTooltipUtil(chartComponent, mapper, seriesIndex = 0) {
     return tooltipHtmlMock.mock.calls[i][0];
   });
 }
+
+
+
+
+
+
