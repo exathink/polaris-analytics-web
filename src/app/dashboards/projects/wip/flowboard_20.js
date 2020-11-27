@@ -25,7 +25,7 @@ export const dashboard = ({viewerContext}) => (
     pollInterval={1000 * 60}
     render={({project: {key, latestWorkItemEvent, latestCommit, settings}, context}) => {
       const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
-      const [workItemScope, setWorkItemScope] = useState("specs");
+      const [workItemScope, setWorkItemScope] = useState("all");
       const specsOnly = workItemScope === "specs";
 
       const {flowMetricsSettings} = settings;
