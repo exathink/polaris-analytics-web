@@ -11,202 +11,197 @@ import {
   WorkItemTypeDisplayName,
 } from "../../config";
 
-
-function getSpecSeries(workItems, intl) {
+function getSpecSeries(workItems, view, intl) {
   // We group the work items for specs. These will always have non-zero effort.
-  const workItemsByStateType = buildIndex(workItems.filter(workItem => workItem.commitCount > 0), workItem => workItem.stateType);
-
-  return Object.keys(workItemsByStateType).sort(
-    (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
-  ).map(
-    stateType => (
-      {
-        type: 'packedbubble',
-        key: `${stateType}`,
-        id: `${stateType}`,
-        name: `${WorkItemStateTypeDisplayName[stateType]}`,
-        color: `${WorkItemStateTypeColor[stateType]}`,
-        allowPointSelect: true,
-        data: workItemsByStateType[stateType].map(
-          workItem => (
-            {
-              value: workItem.effort,
-              name: `elide(${WorkItemTypeDisplayName[workItem.workItemType]}: ${workItem.displayId}<br/>${workItem.name}, 7)`,
-              color: WorkItemStateTypeColor[stateType],
-              workItem: workItem
-            }
-          )
-        ),
-        layoutAlgorithm: {
-          parentNodeOptions: {
-            marker: {
-              fillColor: '#b8c3c3',
-              fillOpacity: 0.3
-            }
-          }
-        }
-      }
-    )
+  const workItemsByStateType = buildIndex(
+    workItems.filter((workItem) => workItem.commitCount > 0),
+    (workItem) => workItem.stateType
   );
+
+  return Object.keys(workItemsByStateType)
+    .sort((stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB])
+    .map((stateType) => ({
+      type: "column",
+      key: `${stateType}`,
+      id: `${stateType}`,
+      name: `${WorkItemStateTypeDisplayName[stateType]}`,
+      color: `${WorkItemStateTypeColor[stateType]}`,
+      allowPointSelect: true,
+      stacking: "normal",
+      data: workItemsByStateType[stateType].map((workItem) => ({
+        y: workItem.effort,
+        name: `${WorkItemStateTypeDisplayName[stateType]}`,
+        color: WorkItemStateTypeColor[stateType],
+        workItem: workItem,
+      })),
+      animation: false,
+      maxPointWidth: view === "detail" ? 150 : 50,
+      dataLabels: {
+        enabled: true,
+        inside: true,
+        filter: {
+          operator: ">=",
+          property: "percentage",
+          value: 10,
+        },
+        formatter: function () {
+          return this.point.percentage >= 30
+            ? `${this.point.workItem.displayId}<br/>${intl.formatNumber(this.point.y)} days`
+            : `${this.point.workItem.displayId}`;
+        },
+      },
+    }));
 }
 
-function getNonSpecSeries(workItems, intl) {
+function getNonSpecSeries(workItems, view, intl) {
   // All nospecs will be put into a single series.
 
-  const nonSpecs = workItems.filter(workItem => workItem.commitCount === null);
+  const nonSpecs = workItems.filter((workItem) => workItem.commitCount === null);
   return [
     {
-      type: 'packedbubble',
+      type: "column",
       key: `non-specs`,
       id: `non-specs`,
       name: `No Commits`,
 
       allowPointSelect: true,
-      data: nonSpecs.map(
-        workItem => (
-          {
-            value: 0.1,
-            name: `elide(${WorkItemTypeDisplayName[workItem.workItemType]}: ${workItem.displayId}<br/>${workItem.name}, 7)`,
-            color: WorkItemStateTypeColor[workItem.stateType],
-            workItem: workItem
-          }
+      stacking: "normal",
+      minPointWidth: 1,
+      data: nonSpecs
+        .sort(
+          (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
         )
-      ),
-      layoutAlgorithm: {
-        parentNodeOptions: {
-          marker: {
-            fillColor: '#b8c3c3',
-            fillOpacity: 0.3
-          }
-        }
-      },
+        .map((workItem) => ({
+          y: 0.1,
+          name: `No Commits`,
+          color: WorkItemStateTypeColor[workItem.stateType],
+          workItem: workItem,
+        })),
       dataLabels: {
-        enabled: true,
-        format: "",
-        parentNodeFormat: '{point.series.name}',
-      }
-    }
-  ]
+        enabled: view === "detail",
+        inside: true,
+        format: "{point.workItem.displayId}",
+        parentNodeFormat: "{point.series.name}",
+      },
+    },
+  ];
 }
 
-
 export const WorkItemsEffortChart = Chart({
-  chartUpdateProps: (props) => (
-    pick(props, 'workItems', 'stateTypes', 'specsOnly')
-  ),
+  chartUpdateProps: (props) => pick(props, "workItems", "stateTypes", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) => points.map(point => point.workItem),
+  mapPoints: (points, _) => points.map((point) => point.workItem),
 
   getConfig: ({workItems, stateTypes, specsOnly, wipLimit, intl, view}) => {
-
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
-      workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
+    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
+      stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
     );
 
     const totalEffort = workItemsWithAggregateDurations.reduce(
       (totalEffort, workItem) => totalEffort + workItem.effort,
       0
-    )
-
-
+    );
 
     const series = [
-      ...getSpecSeries(workItemsWithAggregateDurations, intl),
-      ...(!specsOnly ? getNonSpecSeries(workItemsWithAggregateDurations, intl) : [])
+      ...getSpecSeries(workItemsWithAggregateDurations, view, intl),
+      ...(!specsOnly ? getNonSpecSeries(workItemsWithAggregateDurations, view, intl) : []),
     ];
 
     return {
       chart: {
-
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
-        panKey: 'shift',
-        zoomType: 'xy',
-
+        panKey: "shift",
+        zoomType: "xy",
       },
       title: {
         text: `Total Wip Effort: ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} Dev-Days`,
-        align: 'left',
+        align: "left",
       },
       subtitle: {
         text: `${intl.formatDate(Date.now(), {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
         })} `,
-        align: 'left',
+        align: "left",
       },
+      xAxis: {
+        type: "category",
 
+        title: {
+          text: null,
+        },
+      },
+      yAxis: {
+        type: "linear",
+
+        title: {
+          text: "Effort in Dev-Days",
+        },
+      },
 
       tooltip: {
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType,  timeInStateDisplay, latestCommitDisplay, cycleTime, duration, effort, commitCount} = this.point.workItem;
+          const {
+            displayId,
+            workItemType,
+            name,
+            state,
+            stateType,
+            timeInStateDisplay,
+            latestCommitDisplay,
+            cycleTime,
+            duration,
+            effort,
+            commitCount,
+          } = this.point.workItem;
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
-            body: commitCount != null ? [
-              [`Effort`, `${intl.formatNumber(effort)} Dev-Days`],
-              [`-----------------`, ``],
-              [`Duration`, `${intl.formatNumber(duration)} days`],
-              [`Latest Commit`, `${latestCommitDisplay}`],
-              [`-----------------`, ``],
-              [`Current State:`, `${state}`],
-              [`Entered:`, `${timeInStateDisplay}`],
-              [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
-            ] : [
-              [`Phase:`, `${WorkItemStateTypeDisplayName[stateType]}`],
-              [`-----------------`, ``],
-              [`Current State:`, `${state}`],
-              [`Entered:`, `${timeInStateDisplay}`],
-              [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
-              [`-----------------`, ``],
-              [`Latest Commit`, `None`],
-            ]
-
-          })
-        }
+            body:
+              commitCount != null
+                ? [
+                    [`Effort`, `${intl.formatNumber(effort)} Dev-Days`],
+                    [`-----------------`, ``],
+                    [`Duration`, `${intl.formatNumber(duration)} days`],
+                    [`Latest Commit`, `${latestCommitDisplay}`],
+                    [`-----------------`, ``],
+                    [`Current State:`, `${state}`],
+                    [`Entered:`, `${timeInStateDisplay}`],
+                    [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
+                  ]
+                : [
+                    [`Effort`, `Unknown`],
+                    [`Phase:`, `${WorkItemStateTypeDisplayName[stateType]}`],
+                    [`-----------------`, ``],
+                    [`Current State:`, `${state}`],
+                    [`Entered:`, `${timeInStateDisplay}`],
+                    [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
+                    [`-----------------`, ``],
+                    [`Latest Commit`, `None`],
+                  ],
+          });
+        },
       },
       series: series,
-      plotOptions: {
-        packedbubble: {
-          layoutAlgorithm: {
-            enableSimulation: workItemsWithAggregateDurations.length > Math.min(wipLimit, 20),
-            parentNodeLimit: true,
-
-            splitSeries: true,
-            seriesInteraction: false
-          },
-          dataLabels: {
-            enabled: true,
-            align: 'center',
-            inside: true,
-            color: '#100808',
-            format: "{point.value:.1f}",
-            parentNodeFormat: '{point.series.name}',
-            verticalAlign: 'middle',
-            overflow: false,
-            crop: true
-          }
-        }
-      },
       legend: {
         title: {
-          text: specsOnly ? 'Specs' : 'Work Items',
+          text: specsOnly ? "Specs" : "Work Items",
           style: {
-            fontStyle: 'italic'
-          }
+            fontStyle: "italic",
+          },
         },
-        align: 'right',
-        layout: 'vertical',
-        verticalAlign: 'middle',
+        align: "right",
+        layout: "vertical",
+        verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: workItemsWithAggregateDurations.length > 0
-
+        enabled: workItemsWithAggregateDurations.length > 0,
       },
-    }
-  }
+    };
+  },
 });
