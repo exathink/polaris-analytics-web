@@ -73,7 +73,7 @@
     "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-app-rewired start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
-    "test": "react-app-rewired test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
     "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8300 ./src/config/graphql/workTrackingFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/vcsFragmentTypes.json",
