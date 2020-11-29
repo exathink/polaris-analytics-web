@@ -31,13 +31,6 @@
         # this runs the tests against the src image.
         - package test-package
 
-  push:
-    stage: push
-    tags:
-      - polaris-runner
-    script:
-      - package push
-
 
 
     
