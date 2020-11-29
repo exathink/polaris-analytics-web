@@ -6,14 +6,12 @@
   before_script:
     - export PATH=${CI_PROJECT_DIR}:${PATH}
     - echo "DOCKER_REGISTRY_TRUSTED_ENVIRONMENT=${DOCKER_REGISTRY_TRUSTED_ENVIRONMENT}"
-    - eval $(docker-machine env)
     - git submodule sync polaris-build
     - git submodule update --init --remote polaris-build
 
   stages:
     - build
     - test
-    - push
 
 
   build-package-image:
