@@ -92,11 +92,8 @@ export const WorkItemsEffortChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.workItem),
 
-  getConfig: ({workItems, stateTypes, specsOnly, wipLimit, intl, view}) => {
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
-      stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    );
-
+  getConfig: ({workItems, specsOnly,  intl, view}) => {
+    const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const totalEffort = workItemsWithAggregateDurations.reduce(
       (totalEffort, workItem) => totalEffort + workItem.effort,
       0

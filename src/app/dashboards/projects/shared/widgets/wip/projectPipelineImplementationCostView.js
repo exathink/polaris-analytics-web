@@ -7,9 +7,7 @@ import {Flex} from "reflexbox";
 
 export const ProjectPipelineImplementationCostView = (
   {
-    stageName,
     workItems,
-    wipLimit,
     specsOnly,
     workItemScope,
     setWorkItemScope,
@@ -33,10 +31,8 @@ export const ProjectPipelineImplementationCostView = (
           }
           <WorkItemsEffortChart
             view={view}
-
             specsOnly={specsOnly}
             workItems={workItems}
-            wipLimit={wipLimit}
             onSelectionChange={
               (workItems) => {
                 if (workItems.length === 1) {
