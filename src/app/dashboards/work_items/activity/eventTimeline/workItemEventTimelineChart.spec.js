@@ -1,7 +1,7 @@
 import React from "react";
 import {
   renderedChartConfig,
-  getTooltipUtil,
+  renderedTooltipConfig,
 } from "../../../../framework/viz/charts/chart-test-utils";
 
 import {
@@ -332,7 +332,7 @@ describe("workItemEventTimelineChart", () => {
     });
 
     test("should render the tooltip for commit event point", async () => {
-      const [actual] = await getTooltipUtil(
+      const [actual] = await renderedTooltipConfig(
         <WorkItemEventsTimelineChart workItem={workItemWithCommits} view={"primary"} />,
         (points) => [points[0]]
       );
@@ -497,7 +497,7 @@ describe("workItemEventTimelineChart", () => {
     });
 
     test("should render the tooltip for workItem event point", async () => {
-      const [actual] = await getTooltipUtil(
+      const [actual] = await renderedTooltipConfig(
         <WorkItemEventsTimelineChart workItem={workItemWithEvents} view={"primary"} />,
         (points) => [points[0]]
       );
@@ -689,7 +689,7 @@ describe("workItemEventTimelineChart", () => {
         ],
       };
 
-      const [actual] = await getTooltipUtil(
+      const [actual] = await renderedTooltipConfig(
         <WorkItemEventsTimelineChart workItem={workItemWithOpenPullRequests} view={"primary"} />,
         (points) => [points[0]]
       );
@@ -725,7 +725,7 @@ describe("workItemEventTimelineChart", () => {
         ],
       };
 
-      const [_, actual] = await getTooltipUtil(
+      const [_, actual] = await renderedTooltipConfig(
         <WorkItemEventsTimelineChart workItem={workItemWithCompletedPullRequests} view={"primary"} />,
         (points) => [points[0], points[1]]
       );

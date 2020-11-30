@@ -58,7 +58,7 @@ export async function renderedChart(chartComponent) {
  * @param {*} seriesIndex : index of the series of series arr from chart config
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
-export async function getTooltipUtil(chartComponent, mapper, seriesIndex = 0) {
+export async function renderedTooltipConfig(chartComponent, mapper, seriesIndex = 0) {
   const {series} = await renderedChart(chartComponent);
   const {points} = series[seriesIndex];
 
