@@ -1,0 +1,1 @@
+export {ProjectPullRequestTrendsWidget} from "./pullRequestTrendsWidget";
