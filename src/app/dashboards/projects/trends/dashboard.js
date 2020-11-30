@@ -144,6 +144,7 @@ const dashboard = ({viewerContext}) => (
                   samplingFrequency={7}
                   context={context}
                   view={view}
+                  latestCommit={latestCommit}
                 />
               )}
               showDetail={true}

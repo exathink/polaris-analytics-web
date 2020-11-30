@@ -2,7 +2,13 @@ import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectPullRequestMetricsTrends({instanceKey, days, measurementWindow, samplingFrequency}) {
+export function useQueryProjectPullRequestMetricsTrends({
+  instanceKey,
+  days,
+  measurementWindow,
+  samplingFrequency,
+  referenceString,
+}) {
   return useQuery(
     gql`
       query projectPullRequestMetricsTrends(
@@ -10,6 +16,7 @@ export function useQueryProjectPullRequestMetricsTrends({instanceKey, days, meas
         $days: Int!
         $measurementWindow: Int!
         $samplingFrequency: Int!
+        $referenceString: String
       ) {
         project(
           key: $key
@@ -20,6 +27,7 @@ export function useQueryProjectPullRequestMetricsTrends({instanceKey, days, meas
             samplingFrequency: $samplingFrequency
             metrics: [avg_age, max_age, total_closed]
           }
+          referenceString: $referenceString
         ) {
           pullRequestMetricsTrends {
             measurementDate
@@ -38,6 +46,7 @@ export function useQueryProjectPullRequestMetricsTrends({instanceKey, days, meas
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
+        referenceString: referenceString,
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval(),

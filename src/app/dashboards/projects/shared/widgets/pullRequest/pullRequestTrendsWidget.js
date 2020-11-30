@@ -12,12 +12,14 @@ export const ProjectPullRequestTrendsWidget = ({
   days,
   measurementWindow,
   samplingFrequency,
+  latestCommit,
 }) => {
   const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
     instanceKey: instanceKey,
     days: days,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
+    referenceString: latestCommit,
   });
 
   if (loading) return <Loading />;
@@ -39,6 +41,7 @@ export const ProjectPullRequestTrendsWidget = ({
       days={days}
       samplingFrequency={samplingFrequency}
       view={view}
+      latestCommit={latestCommit}
     />
   );
 };

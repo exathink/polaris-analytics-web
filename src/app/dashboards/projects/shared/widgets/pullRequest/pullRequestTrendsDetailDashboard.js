@@ -15,6 +15,7 @@ export const ProjectPullRequestTrendsDetailDashboard = ({
   days,
   measurementWindow,
   samplingFrequency,
+  latestCommit,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -44,6 +45,7 @@ export const ProjectPullRequestTrendsDetailDashboard = ({
               days={daysRange}
               measurementWindow={measurementWindowRange}
               samplingFrequency={frequencyRange}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={false}
