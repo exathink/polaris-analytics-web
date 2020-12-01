@@ -41,7 +41,6 @@ export const ProjectPipelineImplementationCostWidget = (
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         workItems={workItems}
-        wipLimit={wipLimit}
         view={view}
         context={context}
       />
