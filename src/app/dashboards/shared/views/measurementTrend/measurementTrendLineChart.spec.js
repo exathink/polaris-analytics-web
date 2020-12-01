@@ -217,7 +217,10 @@ describe("MeasureMentTrendLineChart", () => {
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
           return {
-            header: `${30} days ending ${i18nDate(intl, measurement.measurementDate)}`,
+            header: `${measurementFixture.measurementWindow} days ending ${i18nDate(
+              intl,
+              measurement.measurementDate
+            )}`,
             body: [
               ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
               ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
@@ -265,15 +268,15 @@ describe("MeasureMentTrendLineChart", () => {
         (points) => [points[0]]
       );
 
-      const firstPoint = pullRequestMeasurementsFixture.sort(
+      const firstMeasurementPoint = pullRequestMeasurementsFixture.sort(
         (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
       )[0];
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
         body: [
-          ["Code Reviews Completed: ", `${formatNumber(firstPoint.totalClosed)}`],
-          ["Avg Age: ", `${formatNumber(firstPoint.avgAge)} Days`],
-          ["Max Age: ", `${formatNumber(firstPoint.maxAge)} Days`],
+          ["Code Reviews Completed: ", `${formatNumber(firstMeasurementPoint.totalClosed)}`],
+          ["Avg Age: ", `${formatNumber(firstMeasurementPoint.avgAge)} Days`],
+          ["Max Age: ", `${formatNumber(firstMeasurementPoint.maxAge)} Days`],
         ],
       });
     });
