@@ -24,7 +24,7 @@ export const PullRequestTrendsChart = ({pullRequestMetricsTrends, measurementPer
           return {
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body: [
-              ["Code Reviewed Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
+              ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
               ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
               ["Max Age: ", `${intl.formatNumber(measurement.maxAge)} Days`],
             ],

@@ -219,7 +219,7 @@ describe("MeasureMentTrendLineChart", () => {
           return {
             header: `${30} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body: [
-              ["Code Reviewed Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
+              ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
               ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
               ["Max Age: ", `${intl.formatNumber(measurement.maxAge)} Days`],
             ],
@@ -271,7 +271,7 @@ describe("MeasureMentTrendLineChart", () => {
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
         body: [
-          ["Code Reviewed Completed: ", `${formatNumber(firstPoint.totalClosed)}`],
+          ["Code Reviews Completed: ", `${formatNumber(firstPoint.totalClosed)}`],
           ["Avg Age: ", `${formatNumber(firstPoint.avgAge)} Days`],
           ["Max Age: ", `${formatNumber(firstPoint.maxAge)} Days`],
         ],
