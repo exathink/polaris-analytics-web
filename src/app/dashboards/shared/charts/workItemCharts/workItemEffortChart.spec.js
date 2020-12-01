@@ -1,6 +1,10 @@
 import React from "react";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../config";
-import {renderedChartConfig, renderedDataLabels} from "../../../../framework/viz/charts/chart-test-utils";
+import {
+  renderedChartConfig,
+  renderedDataLabels,
+  renderedTooltipConfig,
+} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsEffortChart} from "./workItemsEffortChart";
 import {expectSetsAreEqual} from "../../../../../test/test-utils";
 
@@ -210,6 +214,21 @@ describe("workItemEffortChart", () => {
 
       expectSetsAreEqual(dataLabels, ["PO-302<br/>9 days", "PO-301<br/>6 days", "PO-300"]);
     });
+
+    test(" renders tooltips correctly", async () => {
+      const [{header, body}] = await renderedTooltipConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
+      expect(header).toBe("Story: PO-302<br/>Column chart for Wip Effort");
+      expect(body).toMatchObject([
+        ["Effort", "9 Dev-Days"],
+        ["-----------------", ""],
+        ["Duration", "0.001 days"],
+        ["Latest Commit", expect.stringMatching(/.* days ago/)],
+        ["-----------------", ""],
+        ["Current State:", "In Progress"],
+        ["Entered:", expect.stringMatching(/.* days ago/)],
+        ["Cycle Time:", expect.stringMatching(/.* days/)],
+      ]);
+    });
   });
 
   describe("when there are competed specs", () => {
@@ -283,18 +302,84 @@ describe("workItemEffortChart", () => {
     describe(" when in detail View ", () => {
       const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} view={"detail"} />);
       test("it enables data labels", () => {
-
         const [{dataLabels}] = chartConfig.series;
         expect(dataLabels.enabled).toBe(true);
       });
 
       test("it show displayIds as data labels", async () => {
         const dataLabels = await renderedDataLabels(<WorkItemsEffortChart workItems={testWorkItems} />);
-        expect(dataLabels).toMatchObject([
-          "PO-301",
-          "PO-300",
-          "PO-302"
-        ])
+        expect(dataLabels).toMatchObject(["PO-301", "PO-300", "PO-302"]);
+      });
+
+      test(" it renders tooltips correctly", async () => {
+        const [{header, body}] = await renderedTooltipConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
+        expect(header).toBe("Bug: PO-301<br/>Flow Board: Wip total/Epic total are not consistent");
+        expect(body).toMatchObject([
+          ["Effort", "Unknown"],
+          ["Phase:", "Open"],
+          ["-----------------", ""],
+          ["Current State:", "READY-FOR-DEVELOPMENT"],
+          ["Entered:", expect.stringMatching(/.* days ago/)],
+          ["Cycle Time:", expect.stringMatching(/.* days/)],
+          ["-----------------", ""],
+          ["Latest Commit", "None"],
+        ]);
+      });
+    });
+
+    describe("when specsOnly is true", () => {
+      const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} specsOnly={true} />);
+
+      test("it returns and empty series", () => {
+        expect(chartConfig.series).toMatchObject([]);
+      });
+    });
+  });
+
+  describe("when there are work items of all types", () => {
+    const testWorkItems = [
+      {
+        ...prototypeWorkItems[0],
+        stateType: "wip",
+      },
+      {
+        ...prototypeWorkItems[0],
+        stateType: "open",
+      },
+      {
+        ...prototypeWorkItems[0],
+        stateType: "complete",
+      },
+      // Spec in wip phase
+      prototypeWorkItems[1],
+      // Spec in complete phase
+      prototypeWorkItems[2],
+    ];
+
+    const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
+    const [wipSeries, completedSeries, noCommitSeries, ...rest] = chartConfig.series;
+
+    test("it returns one series per state type for specs and a single series for all work items without commits", () => {
+      expect(wipSeries).toBeDefined();
+      expect(completedSeries).toBeDefined();
+      expect(noCommitSeries).toBeDefined();
+      expect(rest).toMatchObject([]);
+    });
+
+    test("series have the correct number of data points", () => {
+      expect(wipSeries.data.length).toBe(1);
+      expect(completedSeries.data.length).toBe(1);
+      expect(noCommitSeries.data.length).toBe(3);
+    });
+
+    describe("when specsOnly is true", () => {
+      const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} specsOnly={true} />);
+      const [wipSeries, completedSeries, noCommitSeries] = chartConfig.series;
+
+      test("it does not include the no commit series", () => {
+        expect(wipSeries).toBeDefined();
+        expect(completedSeries).toBeDefined();
+        expect(noCommitSeries).toBeUndefined();
       });
     });
   });
