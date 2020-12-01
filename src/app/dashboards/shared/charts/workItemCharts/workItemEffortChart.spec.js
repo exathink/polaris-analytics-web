@@ -1,6 +1,6 @@
 import React from "react";
-import {Colors, WorkItemStateTypeColor} from "../../config";
-import {renderedChartConfig} from "../../../../framework/viz/charts/chart-test-utils";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../config";
+import {renderedChartConfig, renderedDataLabels} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsEffortChart} from "./workItemsEffortChart";
 import {expectSetsAreEqual} from "../../../../../test/test-utils";
 
@@ -8,7 +8,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const workItems = [
+const prototypeWorkItems = [
   {
     id: "V29ya0l0ZW06ZTg0ZTBlODgtZTEyZC00MzUwLThjZWItMDc5NGU2ZWExYWM3",
     name: "Flow Board: Wip total/Epic total are not consistent",
@@ -85,7 +85,7 @@ const workItems = [
       },
       currentDeliveryCycleDurations: [
         {
-          state: "ABANDONED",
+          state: "ACCEPTED",
           stateType: "complete",
           daysInState: null,
         },
@@ -95,11 +95,11 @@ const workItems = [
           daysInState: 1.5920833333333333,
         },
       ],
-      earliestCommit: null,
-      latestCommit: null,
-      commitCount: null,
-      effort: null,
-      duration: null,
+      earliestCommit: "2020-11-27T23:05:28",
+      latestCommit: "2020-11-27T23:06:29",
+      commitCount: 3,
+      effort: 1,
+      duration: 0.000706018518518518,
     },
   },
 ];
@@ -160,12 +160,13 @@ describe("workItemEffortChart", () => {
     });
   });
 
-  describe("when there are work items in progress", () => {
-    const wipWorkItem = workItems[1];
+  describe("when there are specs in progress", () => {
+    const wipWorkItem = prototypeWorkItems[1];
     // Replace effort value in the wip item with the specified values
-    const testWorkItems = [3, 6, 9].map((effort) => ({
+    const testWorkItems = [3, 6, 9].map((effort, index) => ({
       ...wipWorkItem,
       ...{
+        displayId: `PO-30${index}`,
         workItemStateDetails: {
           ...wipWorkItem.workItemStateDetails,
           effort: effort,
@@ -178,7 +179,7 @@ describe("workItemEffortChart", () => {
     test("it returns a chart with a single stacked column series with wip color", () => {
       const expectedSeries = {
         type: "column",
-        name: "Build",
+        name: WorkItemStateTypeDisplayName["wip"],
         stacking: "normal",
         color: WorkItemStateTypeColor["wip"],
       };
@@ -201,9 +202,101 @@ describe("workItemEffortChart", () => {
     });
 
     test("it sorts the points in descending order of effort", () => {
-      expect(series.data.map(point => point.y)).toMatchObject([9,6,3]);
+      expect(series.data.map((point) => point.y)).toMatchObject([9, 6, 3]);
     });
 
+    test("it renders point data labels with displayId and effort for points with more than 30% of effort and only displayId otherwise", async () => {
+      const dataLabels = await renderedDataLabels(<WorkItemsEffortChart workItems={testWorkItems} />);
 
+      expectSetsAreEqual(dataLabels, ["PO-302<br/>9 days", "PO-301<br/>6 days", "PO-300"]);
+    });
+  });
+
+  describe("when there are competed specs", () => {
+    const completedWorkItem = prototypeWorkItems[2];
+    // Replace effort value in the wip item with the specified values
+    const testWorkItems = [3, 6, 9].map((effort, index) => ({
+      ...completedWorkItem,
+      ...{
+        displayId: `PO-30${index}`,
+        workItemStateDetails: {
+          ...completedWorkItem.workItemStateDetails,
+          effort: effort,
+        },
+      },
+    }));
+
+    const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
+
+    test("it returns a chart with a single stacked column series with completed color", () => {
+      const expectedSeries = {
+        type: "column",
+        name: WorkItemStateTypeDisplayName["complete"],
+        stacking: "normal",
+        color: WorkItemStateTypeColor["complete"],
+      };
+      expect(chartConfig.series).toMatchObject([expectedSeries]);
+    });
+  });
+
+  describe("when there are work items with no commits", () => {
+    const noCommitsWorkItem = prototypeWorkItems[0];
+    // Include one work item with each possible state type
+    const testWorkItems = ["wip", "open", "complete"].map((stateType, index) => ({
+      ...noCommitsWorkItem,
+      ...{
+        stateType: stateType,
+        displayId: `PO-30${index}`,
+      },
+    }));
+
+    const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} view={"primary"} />);
+
+    test("it returns a chart with a single stacked column series ", () => {
+      const expectedSeries = {
+        type: "column",
+        name: "No Commits",
+        stacking: "normal",
+      };
+      expect(chartConfig.series).toMatchObject([expectedSeries]);
+    });
+
+    const [{data}] = chartConfig.series;
+
+    test("it returns points sorted in state type order", () => {
+      expect(data.map((point) => point.workItem.stateType)).toMatchObject(["open", "wip", "complete"]);
+    });
+
+    test("it returns points where the color is determined by its state type", () => {
+      expect(data.map((point) => point.color)).toMatchObject([
+        WorkItemStateTypeColor["open"],
+        WorkItemStateTypeColor["wip"],
+        WorkItemStateTypeColor["complete"],
+      ]);
+    });
+
+    test("it disables data labels in primary view", () => {
+      const [{dataLabels}] = chartConfig.series;
+      expect(dataLabels.enabled).toBe(false);
+    });
+
+    describe(" when in detail View ", () => {
+      const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} view={"detail"} />);
+      test("it enables data labels", () => {
+
+        const [{dataLabels}] = chartConfig.series;
+        expect(dataLabels.enabled).toBe(true);
+      });
+
+      test("it show displayIds as data labels", async () => {
+        const dataLabels = await renderedDataLabels(<WorkItemsEffortChart workItems={testWorkItems} />);
+        expect(dataLabels).toMatchObject([
+          "PO-301",
+          "PO-300",
+          "PO-302"
+        ])
+      });
+    });
   });
 });
+

@@ -72,8 +72,8 @@ function getNonSpecSeries(workItems, view, intl) {
           minPointWidth: 1,
           data: nonSpecs
             .sort(
-              (stateTypeA, stateTypeB) =>
-                WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
+              (workItemA, workItemB) =>
+                WorkItemStateTypeSortOrder[workItemA.stateType] - WorkItemStateTypeSortOrder[workItemB.stateType]
             )
             .map((workItem) => ({
               y: 0.1,
@@ -84,8 +84,9 @@ function getNonSpecSeries(workItems, view, intl) {
           dataLabels: {
             enabled: view === "detail",
             inside: true,
-            format: "{point.workItem.displayId}",
-            parentNodeFormat: "{point.series.name}",
+            formatter: function() {
+              return `${this.point.workItem.displayId}`
+            },
           },
         },
       ]
