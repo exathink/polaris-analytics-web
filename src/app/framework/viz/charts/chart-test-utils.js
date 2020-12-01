@@ -78,6 +78,34 @@ export async function renderedTooltipConfig(chartComponent, mapper, seriesIndex 
   });
 }
 
+/**
+ * will return result of calling the data labels formatter function for all points
+ * filtered by mapper in a single series identified by seriesIndex.
+ *
+ * @param {*} chartComponent
+ * @param {*} mapper : points => points
+ * @param {*} seriesIndex : index of the series of series arr from chart config
+ */
+// assuming number of series in a chart will always be limited, so using seriesIndex
+export async function renderedDataLabels(chartComponent, mapper= point => point, seriesIndex = 0) {
+  const config = renderedChartConfig(chartComponent);
+  const {formatter} = config.series[seriesIndex].dataLabels;
+  
+  expect(formatter).toBeDefined();
+
+  const {series} = await renderedChart(chartComponent);
+  const {points} = series[seriesIndex];
+  
+  // get the points after applying mapper
+  const testPoints = mapper(points);
+
+  // call the formatter only for the mapped points
+  return testPoints.map((point, i) => {
+    // call the formatter in the context of point
+    return formatter.bind({point: point})();
+  });
+}
+
 
 
 
