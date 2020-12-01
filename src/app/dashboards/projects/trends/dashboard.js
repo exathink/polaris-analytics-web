@@ -132,7 +132,7 @@ const dashboard = ({viewerContext}) => (
               showDetail={true}
             />
           </DashboardRow>
-          <DashboardRow h="30%" title={`Test Title`}>
+          <DashboardRow h="30%" title={``}>
             <DashboardWidget
               w={1 / 3}
               name="pull-request"
