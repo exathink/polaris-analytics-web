@@ -5,7 +5,7 @@ import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-util
 
 import {PullRequestsCompletedTrendsChart} from "./pullRequestsCompletedTrendsChart";
 import {Colors} from "../../../../shared/config";
-import {toMoment} from "../../../../../helpers/utility";
+import {epoch} from "../../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -161,8 +161,7 @@ describe("PullRequestsCompletedTrendsChart", () => {
       expectSetsAreEqual(
         data.map((point) => [point.x, point.y]),
         pullRequestsCompletedTrendsFixture.map((measurement) => {
-          const totalClosed = measurement["totalClosed"];
-          return [toMoment(measurement.measurementDate, true).valueOf(), totalClosed];
+          return [epoch(measurement.measurementDate, true), measurement.totalClosed];
         })
       );
     });
@@ -181,7 +180,7 @@ describe("PullRequestsCompletedTrendsChart", () => {
       );
 
       const firstCompletedPRPoint = pullRequestsCompletedTrendsFixture.sort(
-        (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
+        (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
       )[0];
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
