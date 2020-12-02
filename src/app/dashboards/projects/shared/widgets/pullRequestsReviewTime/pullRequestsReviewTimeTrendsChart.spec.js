@@ -147,7 +147,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
     });
   });
 
-  describe("pull requests ReviewTime trends chart", () => {
+  describe("pull requests review time trends chart", () => {
     const pullRequestsReviewTime = {
       ...commonMeasurementProps,
       pullRequestMetricsTrends: pullRequestsReviewTimeTrendsFixture,
@@ -173,8 +173,8 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
         expectSetsAreEqual(
           data.map((point) => [point.x, point.y]),
           pullRequestsReviewTimeTrendsFixture.map((measurement) => {
-            const age = measurement[key];
-            return [toMoment(measurement.measurementDate, true).valueOf(), age];
+            const metric = measurement[key];
+            return [toMoment(measurement.measurementDate, true).valueOf(), metric];
           })
         );
       });
@@ -193,14 +193,14 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
           index
         );
 
-        const firstMeasurementPoint = pullRequestsReviewTimeTrendsFixture.sort(
+        const firstReviewTimePoint = pullRequestsReviewTimeTrendsFixture.sort(
           (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
         )[0];
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
           body: [
-            [displayName, `${formatNumber(firstMeasurementPoint[key])} Days`],
-            ["Code Reviews Completed: ", `${formatNumber(firstMeasurementPoint.totalClosed)}`],
+            [displayName, `${formatNumber(firstReviewTimePoint[key])} Days`],
+            ["Code Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
           ],
         });
       });
