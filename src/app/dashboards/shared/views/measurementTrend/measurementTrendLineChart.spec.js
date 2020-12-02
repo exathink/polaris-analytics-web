@@ -5,7 +5,7 @@ import {expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
 
 import {MeasurementTrendLineChart} from "./measurementTrendLineChart";
 import {Colors} from "../../../shared/config";
-import {epoch, i18nNumber, i18nDate} from "../../../../helpers/utility";
+import {epoch, i18nDate} from "../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
