@@ -1,6 +1,7 @@
 import React from "react";
 import {render, waitFor} from "@testing-library/react";
 import {AppProviders} from "../../../../test/providers";
+import {SpyContext} from "./chartSpyContext";
 
 import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
 // mock tooltipHtml function of tooltip module
@@ -28,7 +29,7 @@ export function getChartConfig(configSpy) {
 export function renderedChartConfig(chartComponent) {
   const configSpy = jest.fn((x) => x);
 
-  render(React.cloneElement(chartComponent, {configSpy: configSpy}), {
+  render(<SpyContext.Provider value={{configSpy: configSpy}}>{chartComponent}</SpyContext.Provider>, {
     wrapper: AppProviders,
   });
 
@@ -38,7 +39,7 @@ export function renderedChartConfig(chartComponent) {
 export async function renderedChart(chartComponent) {
   const chartSpy = jest.fn((x) => x);
 
-  render(React.cloneElement(chartComponent, {onChartUpdated: chartSpy}), {
+  render(<SpyContext.Provider value={{onChartUpdated: chartSpy}}>{chartComponent}</SpyContext.Provider>, {
     wrapper: AppProviders,
   });
 
@@ -47,12 +48,10 @@ export async function renderedChart(chartComponent) {
   return chartSpy.mock.results[0].value;
 }
 
-
-
 /**
- * will return first argument of tooltipHtml function for all points 
+ * will return first argument of tooltipHtml function for all points
  * filtered by mapper in a single series identified by seriesIndex.
- * 
+ *
  * @param {*} chartComponent
  * @param {*} mapper : points => points
  * @param {*} seriesIndex : index of the series of series arr from chart config
@@ -77,9 +76,3 @@ export async function getTooltipUtil(chartComponent, mapper, seriesIndex = 0) {
     return tooltipHtmlMock.mock.calls[i][0];
   });
 }
-
-
-
-
-
-
