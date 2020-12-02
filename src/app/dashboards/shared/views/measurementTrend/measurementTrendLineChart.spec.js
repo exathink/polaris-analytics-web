@@ -56,7 +56,7 @@ const fixedChartConfig = {
 
 const fixedSeriesConfig = {};
 
-describe("MeasureMentTrendLineChart", () => {
+describe("MeasurementTrendLineChart", () => {
   describe("when there are no points and no config", () => {
     const emptyMeasurement = {
       ...measurementFixture,
@@ -148,6 +148,8 @@ describe("MeasureMentTrendLineChart", () => {
     });
   });
 
+  // This suite tests an actual configured chart. We are using
+  // the pull requests trends metrics as the example here.
   describe("pull request trends chart", () => {
     const pullRequestMeasurementsFixture = [
       {
