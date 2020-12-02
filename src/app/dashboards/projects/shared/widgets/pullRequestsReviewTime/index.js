@@ -1,0 +1,1 @@
+export {PullRequestsReviewTimeTrendsWidget} from "./pullRequestsReviewTimeTrendsWidget";

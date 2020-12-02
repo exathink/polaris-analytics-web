@@ -6,6 +6,7 @@ import {ProjectVolumeTrendsWidget} from "../shared/widgets/throughput";
 import {ProjectResponseTimeTrendsWidget} from "../shared/widgets/responseTime";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {PullRequestsCompletedTrendsWidget} from "../shared/widgets/pullRequestsCompleted";
+import {PullRequestsReviewTimeTrendsWidget} from "../shared/widgets/pullRequestsReviewTime";
 
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
@@ -148,6 +149,28 @@ const dashboard = ({viewerContext}) => (
                 />
               )}
               showDetail={true}
+            />
+            <DashboardWidget
+              w={1 / 3}
+              name="pullrequests-reviewtime"
+              render={({view}) => (
+                <PullRequestsReviewTimeTrendsWidget
+                  instanceKey={key}
+                  measurementWindow={30}
+                  days={45}
+                  samplingFrequency={7}
+                  context={context}
+                  view={view}
+                  latestCommit={latestCommit}
+                />
+              )}
+              showDetail={true}
+            />
+            <DashboardWidget
+              w={1 / 3}
+              render={({view}) => (
+                null
+              )}
             />
           </DashboardRow>
         </Dashboard>
