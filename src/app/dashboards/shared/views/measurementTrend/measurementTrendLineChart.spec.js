@@ -1,5 +1,5 @@
 import React from "react";
-import {renderedChartConfig, getTooltipUtil} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 
 import {expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
 
@@ -263,7 +263,7 @@ describe("MeasureMentTrendLineChart", () => {
     });
 
     test("should render the tooltip for point", async () => {
-      const [actual] = await getTooltipUtil(
+      const [actual] = await renderedTooltipConfig(
         <MeasurementTrendLineChart {...pullRequestMeasurement} view={"primary"} />,
         (points) => [points[0]]
       );
