@@ -12,12 +12,90 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const measurementsFixture = [
+  {
+    measurementDate: "2020-12-01",
+    measurementWindow: 30,
+    primaryKey: 1.31095732285237,
+    secondaryKey: 36,
+    tertiaryKey: 29,
+  },
+  {
+    measurementDate: "2020-11-24",
+    measurementWindow: 30,
+    primaryKey: 0.893518078421409,
+    secondaryKey: 41,
+    tertiaryKey: 27,
+  },
+  {
+    measurementDate: "2020-11-17",
+    measurementWindow: 30,
+    primaryKey: 1.1846755006529,
+    secondaryKey: 39,
+    tertiaryKey: 32,
+  },
+  {
+    measurementDate: "2020-11-10",
+    measurementWindow: 30,
+    primaryKey: 0.72456336961962,
+    secondaryKey: 37,
+    tertiaryKey: 37,
+  },
+  {
+    measurementDate: "2020-11-03",
+    measurementWindow: 30,
+    primaryKey: 0.705498012000488,
+    secondaryKey: 38,
+    tertiaryKey: 33,
+  },
+  {
+    measurementDate: "2020-10-27",
+    measurementWindow: 30,
+    primaryKey: 0.797267541473766,
+    secondaryKey: 36,
+    tertiaryKey: 49,
+  },
+  {
+    measurementDate: "2020-10-20",
+    measurementWindow: 30,
+    primaryKey: 1.07294166335979,
+    secondaryKey: 35,
+    tertiaryKey: 48,
+  },
+];
+
+const measurementConfig = {
+  title: "General Chart",
+  yAxisUom: "Days",
+  plotBands: {
+    metric: "secondaryKey",
+  },
+  yAxisNormalization: {
+    metric: "secondaryKey",
+    minScale: 0,
+    maxScale: 1.25,
+  },
+  tooltip: {
+    formatter: (measurement, seriesKey, intl) => {
+      const obj = {
+        primaryKey: ["First Series: ", `${formatNumber(measurement.primaryKey)} Days`],
+        secondaryKey: ["Second Series: ", `${formatNumber(measurement.secondaryKey)} Days`],
+        tertiaryKey: ["Third Series: ", `${formatNumber(measurement.tertiaryKey)} Days`],
+      };
+
+      return {
+        header: `${measurementFixture.measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
+        body: [obj[seriesKey]],
+      };
+    },
+  },
+};
+
 const measurementFixture = {
   measurementPeriod: 45,
   measurementWindow: 30,
 };
 
-const metricsFixture = [{key: "totalClosed", displayName: "Total Closed", visible: true, type: "spline"}];
 const commonChartProps = {
   animation: false,
   backgroundColor: Colors.Chart.backgroundColor,
@@ -61,7 +139,7 @@ describe("MeasureMentTrendLineChart", () => {
     const emptyMeasurement = {
       ...measurementFixture,
       measurements: [],
-      metrics: [...metricsFixture],
+      metrics: [{key: "primaryKey", displayName: "First Series", visible: true, type: "spline"}],
       config: {},
     };
 
@@ -93,9 +171,9 @@ describe("MeasureMentTrendLineChart", () => {
       const measurementWithTitle = {
         ...measurementFixture,
         measurements: [],
-        metrics: [...metricsFixture],
+        metrics: [{key: "primaryKey", displayName: "First Series", visible: true, type: "spline"}],
         config: {
-          title: "Code Reviews Completed",
+          title: "General Chart Title",
           subTitle: `45 day trend`,
         },
       };
@@ -121,10 +199,10 @@ describe("MeasureMentTrendLineChart", () => {
       const measurementWithUom = {
         ...measurementFixture,
         measurements: [],
-        metrics: [...metricsFixture],
+        metrics: [{key: "primaryKey", displayName: "First Series", visible: true, type: "spline"}],
         config: {
           xAxisUom: "datetime",
-          yAxisUom: "Code Reviews",
+          yAxisUom: "Days",
           legendText: "Specs",
         },
       };
@@ -148,93 +226,13 @@ describe("MeasureMentTrendLineChart", () => {
     });
   });
 
-  describe("pull request trends chart", () => {
-    const pullRequestMeasurementsFixture = [
-      {
-        measurementDate: "2020-12-01",
-        measurementWindow: 30,
-        avgAge: 1.31095732285237,
-        maxAge: 6.04251819444444,
-        totalClosed: 36,
-      },
-      {
-        measurementDate: "2020-11-24",
-        measurementWindow: 30,
-        avgAge: 0.893518078421409,
-        maxAge: 5.36438644675926,
-        totalClosed: 41,
-      },
-      {
-        measurementDate: "2020-11-17",
-        measurementWindow: 30,
-        avgAge: 1.1846755006529,
-        maxAge: 13.126145775463,
-        totalClosed: 39,
-      },
-      {
-        measurementDate: "2020-11-10",
-        measurementWindow: 30,
-        avgAge: 0.72456336961962,
-        maxAge: 13.126145775463,
-        totalClosed: 37,
-      },
-      {
-        measurementDate: "2020-11-03",
-        measurementWindow: 30,
-        avgAge: 0.705498012000488,
-        maxAge: 13.126145775463,
-        totalClosed: 38,
-      },
-      {
-        measurementDate: "2020-10-27",
-        measurementWindow: 30,
-        avgAge: 0.797267541473766,
-        maxAge: 13.126145775463,
-        totalClosed: 36,
-      },
-      {
-        measurementDate: "2020-10-20",
-        measurementWindow: 30,
-        avgAge: 1.07294166335979,
-        maxAge: 10.1607696759259,
-        totalClosed: 35,
-      },
-    ];
-    const pullRequestMetricsFixture = [
-      {key: "totalClosed", displayName: "Total Closed", visible: true, type: "spline"},
-    ];
-    const pullRequestConfig = {
-      title: "Code Reviews Completed",
-      yAxisUom: "Code Reviews",
-      plotBands: {
-        metric: "totalClosed",
-      },
-      yAxisNormalization: {
-        metric: "totalClosed",
-        minScale: 0,
-        maxScale: 1.25,
-      },
-      tooltip: {
-        formatter: (measurement, seriesKey, intl) => {
-          return {
-            header: `${measurementFixture.measurementWindow} days ending ${i18nDate(
-              intl,
-              measurement.measurementDate
-            )}`,
-            body: [
-              ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
-              ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
-              ["Max Age: ", `${intl.formatNumber(measurement.maxAge)} Days`],
-            ],
-          };
-        },
-      },
-    };
+  describe("measurement trends chart with one series", () => {
+    const singleMetricsFixture = {key: "primaryKey", displayName: "First Series", visible: true, type: "spline"};
     const pullRequestMeasurement = {
       ...measurementFixture,
-      measurements: pullRequestMeasurementsFixture,
-      metrics: pullRequestMetricsFixture,
-      config: pullRequestConfig,
+      measurements: measurementsFixture,
+      metrics: [singleMetricsFixture],
+      config: measurementConfig,
     };
 
     const {
@@ -242,15 +240,16 @@ describe("MeasureMentTrendLineChart", () => {
     } = renderedChartConfig(<MeasurementTrendLineChart {...pullRequestMeasurement} view={"primary"} />);
 
     test("it renders a chart with the correct numbers of data points ", () => {
-      expect(data).toHaveLength(pullRequestMeasurementsFixture.length);
+      expect(data).toHaveLength(measurementsFixture.length);
     });
 
-    test("it maps dates to the x axis and sets y to completed pull requests", () => {
+    test("it maps dates to the x axis and sets y to days", () => {
       expectSetsAreEqual(
         data.map((point) => [point.x, point.y]),
-        pullRequestMeasurementsFixture.map((measurement) => {
-          const totalClosed = measurement[pullRequestMetricsFixture[0].key];
-          return [toMoment(measurement.measurementDate, true).valueOf(), totalClosed];
+        measurementsFixture.map((measurement) => {
+          const yAxisVal = singleMetricsFixture.key;
+          const primaryKey = measurement[yAxisVal];
+          return [toMoment(measurement.measurementDate, true).valueOf(), primaryKey];
         })
       );
     });
@@ -258,7 +257,7 @@ describe("MeasureMentTrendLineChart", () => {
     test("it sets the reference to the measurement for each point ", () => {
       expectSetsAreEqual(
         data.map((point) => point.measurement),
-        pullRequestMeasurementsFixture
+        measurementsFixture
       );
     });
 
@@ -268,16 +267,77 @@ describe("MeasureMentTrendLineChart", () => {
         (points) => [points[0]]
       );
 
-      const firstMeasurementPoint = pullRequestMeasurementsFixture.sort(
+      const firstMeasurementPoint = measurementsFixture.sort(
         (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
       )[0];
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
-        body: [
-          ["Code Reviews Completed: ", `${formatNumber(firstMeasurementPoint.totalClosed)}`],
-          ["Avg Age: ", `${formatNumber(firstMeasurementPoint.avgAge)} Days`],
-          ["Max Age: ", `${formatNumber(firstMeasurementPoint.maxAge)} Days`],
-        ],
+        body: [["First Series: ", `${formatNumber(firstMeasurementPoint.primaryKey)} Days`]],
+      });
+    });
+  });
+
+  describe("measurement trends chart with multiple series", () => {
+    const metricsFixturewithMultipleSeries = [
+      {key: "primaryKey", displayName: "Primary Series", visible: true, type: "spline"},
+      {key: "secondaryKey", displayName: "Secondary Series", visible: true, type: "spline"},
+      {key: "tertiaryKey", displayName: "Tertiary Series", visible: true, type: "spline"},
+    ];
+    const pullRequestMeasurement = {
+      ...measurementFixture,
+      measurements: measurementsFixture,
+      metrics: metricsFixturewithMultipleSeries,
+      config: measurementConfig,
+    };
+
+    const {
+      series: [{data: firstSeriesData}, {data: secondSeriesData}, {data: tertiarySeriesData}],
+    } = renderedChartConfig(<MeasurementTrendLineChart {...pullRequestMeasurement} view={"primary"} />);
+
+    const cases = [
+      {metric: "primaryKey", data: firstSeriesData, displayName: "First Series: "},
+      {metric: "secondaryKey", data: secondSeriesData, displayName: "Second Series: "},
+      {metric: "tertiaryKey", data: tertiarySeriesData, displayName: "Third Series: "},
+    ];
+
+    // Generating test cases for similar usecases
+    cases.forEach(({metric, data, displayName}, index) => {
+      test(`it renders a chart with the correct numbers of data points for ${metric} series`, () => {
+        expect(data).toHaveLength(measurementsFixture.length);
+      });
+
+      test(`it maps dates to the x axis and sets y to days for ${metric} series`, () => {
+        expectSetsAreEqual(
+          data.map((point) => [point.x, point.y]),
+          measurementsFixture.map((measurement) => {
+            const yAxisKey = metricsFixturewithMultipleSeries[index].key;
+            const yAxisVal = measurement[yAxisKey];
+            return [toMoment(measurement.measurementDate, true).valueOf(), yAxisVal];
+          })
+        );
+      });
+
+      test(`it sets the reference to the measurement of each point for ${metric} series`, () => {
+        expectSetsAreEqual(
+          data.map((point) => point.measurement),
+          measurementsFixture
+        );
+      });
+
+      test(`should render the tooltip of point for ${metric} series`, async () => {
+        const [actual] = await renderedTooltipConfig(
+          <MeasurementTrendLineChart {...pullRequestMeasurement} view={"primary"} />,
+          (points) => [points[0]],
+          index
+        );
+
+        const firstMeasurementPoint = measurementsFixture.sort(
+          (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
+        )[0];
+        expect(actual).toMatchObject({
+          header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
+          body: [[displayName, `${formatNumber(firstMeasurementPoint[metric])} Days`]],
+        });
       });
     });
   });
