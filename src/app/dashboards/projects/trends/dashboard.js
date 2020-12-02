@@ -166,6 +166,12 @@ const dashboard = ({viewerContext}) => (
               )}
               showDetail={true}
             />
+            <DashboardWidget
+              w={1 / 3}
+              render={({view}) => (
+                null
+              )}
+            />
           </DashboardRow>
         </Dashboard>
       );
