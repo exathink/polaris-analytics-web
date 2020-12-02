@@ -4,8 +4,8 @@ import {MeasurementTrendLineChart} from "../../../../shared/views/measurementTre
 
 function getSelectedMetricDisplay(measurement, seriesKey, intl) {
   const seriesKeys = {
-    avgAge: ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
-    maxAge: ["Max Age: ", `${intl.formatNumber(measurement.maxAge)} Days`],
+    avgAge: ["Avg Time to Review: ", `${intl.formatNumber(measurement.avgAge)} Days`],
+    maxAge: ["Max Time to Review: ", `${intl.formatNumber(measurement.maxAge)} Days`],
   };
 
   return seriesKeys[seriesKey];
@@ -20,8 +20,8 @@ export const PullRequestsReviewTimeTrendsChart = ({
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
     metrics={[
-      {key: "maxAge", displayName: "Max Age", visible: true, type: "spline"},
-      {key: "avgAge", displayName: "Avg Age", visible: true, type: "spline"},
+      {key: "maxAge", displayName: "Max", visible: true, type: "spline"},
+      {key: "avgAge", displayName: "Avg", visible: true, type: "spline"},
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
@@ -29,12 +29,13 @@ export const PullRequestsReviewTimeTrendsChart = ({
       title: "Code Review Time",
       yAxisUom: "Days",
       plotBands: {
-        metric: "maxAge",
+        metric: "avgAge",
       },
+      legendText: "Review Time",
       yAxisNormalization: {
         metric: "maxAge",
         minScale: 0,
-        maxScale: 1.25,
+        maxScale: 1,
       },
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
