@@ -28,7 +28,9 @@ function getSpecSeries(workItems, view, intl) {
       color: `${WorkItemStateTypeColor[stateType]}`,
       allowPointSelect: true,
       stacking: "normal",
-      data: workItemsByStateType[stateType].map((workItem) => ({
+      data: workItemsByStateType[stateType].sort(
+        (workItemA, workItemB) => workItemB.effort - workItemA.effort
+      ).map((workItem) => ({
         y: workItem.effort,
         name: `${WorkItemStateTypeDisplayName[stateType]}`,
         color: WorkItemStateTypeColor[stateType],
@@ -57,34 +59,38 @@ function getNonSpecSeries(workItems, view, intl) {
   // All nospecs will be put into a single series.
 
   const nonSpecs = workItems.filter((workItem) => workItem.commitCount === null);
-  return [
-    {
-      type: "column",
-      key: `non-specs`,
-      id: `non-specs`,
-      name: `No Commits`,
-
-      allowPointSelect: true,
-      stacking: "normal",
-      minPointWidth: 1,
-      data: nonSpecs
-        .sort(
-          (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
-        )
-        .map((workItem) => ({
-          y: 0.1,
+  return nonSpecs.length > 0
+    ? [
+        {
+          type: "column",
+          key: `non-specs`,
+          id: `non-specs`,
           name: `No Commits`,
-          color: WorkItemStateTypeColor[workItem.stateType],
-          workItem: workItem,
-        })),
-      dataLabels: {
-        enabled: view === "detail",
-        inside: true,
-        format: "{point.workItem.displayId}",
-        parentNodeFormat: "{point.series.name}",
-      },
-    },
-  ];
+
+          allowPointSelect: true,
+          stacking: "normal",
+          minPointWidth: 1,
+          data: nonSpecs
+            .sort(
+              (workItemA, workItemB) =>
+                WorkItemStateTypeSortOrder[workItemA.stateType] - WorkItemStateTypeSortOrder[workItemB.stateType]
+            )
+            .map((workItem) => ({
+              y: 0.1,
+              name: `No Commits`,
+              color: WorkItemStateTypeColor[workItem.stateType],
+              workItem: workItem,
+            })),
+          dataLabels: {
+            enabled: view === "detail",
+            inside: true,
+            formatter: function() {
+              return `${this.point.workItem.displayId}`
+            },
+          },
+        },
+      ]
+    : [];
 }
 
 export const WorkItemsEffortChart = Chart({
@@ -92,11 +98,8 @@ export const WorkItemsEffortChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.workItem),
 
-  getConfig: ({workItems, stateTypes, specsOnly, wipLimit, intl, view}) => {
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
-      stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    );
-
+  getConfig: ({workItems, specsOnly,  intl, view}) => {
+    const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const totalEffort = workItemsWithAggregateDurations.reduce(
       (totalEffort, workItem) => totalEffort + workItem.effort,
       0
