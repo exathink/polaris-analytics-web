@@ -180,15 +180,15 @@ describe("PullRequestsCompletedTrendsChart", () => {
         (points) => [points[0]]
       );
 
-      const firstMeasurementPoint = pullRequestsCompletedTrendsFixture.sort(
+      const firstCompletedPRPoint = pullRequestsCompletedTrendsFixture.sort(
         (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
       )[0];
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
         body: [
-          ["Code Reviews Completed: ", `${formatNumber(firstMeasurementPoint.totalClosed)}`],
-          ["Avg Age: ", `${formatNumber(firstMeasurementPoint.avgAge)} Days`],
-          ["Max Age: ", `${formatNumber(firstMeasurementPoint.maxAge)} Days`],
+          ["Code Reviews Completed: ", `${formatNumber(firstCompletedPRPoint.totalClosed)}`],
+          ["Avg Age: ", `${formatNumber(firstCompletedPRPoint.avgAge)} Days`],
+          ["Max Age: ", `${formatNumber(firstCompletedPRPoint.maxAge)} Days`],
         ],
       });
     });
