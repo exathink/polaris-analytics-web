@@ -5,7 +5,7 @@ import {expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
 
 import {MeasurementTrendLineChart} from "./measurementTrendLineChart";
 import {Colors} from "../../../shared/config";
-import {toMoment, i18nNumber, i18nDate} from "../../../../helpers/utility";
+import {epoch, i18nNumber, i18nDate} from "../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -250,7 +250,7 @@ describe("MeasurementTrendLineChart", () => {
         measurementsFixture.map((measurement) => {
           const yAxisVal = singleMetricsFixture.key;
           const primaryKey = measurement[yAxisVal];
-          return [toMoment(measurement.measurementDate, true).valueOf(), primaryKey];
+          return [epoch(measurement.measurementDate, true), primaryKey];
         })
       );
     });
@@ -269,7 +269,7 @@ describe("MeasurementTrendLineChart", () => {
       );
 
       const firstMeasurementPoint = measurementsFixture.sort(
-        (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
+        (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
       )[0];
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
@@ -313,7 +313,7 @@ describe("MeasurementTrendLineChart", () => {
           measurementsFixture.map((measurement) => {
             const yAxisKey = metricsFixturewithMultipleSeries[index].key;
             const yAxisVal = measurement[yAxisKey];
-            return [toMoment(measurement.measurementDate, true).valueOf(), yAxisVal];
+            return [epoch(measurement.measurementDate, true), yAxisVal];
           })
         );
       });
@@ -333,7 +333,7 @@ describe("MeasurementTrendLineChart", () => {
         );
 
         const firstMeasurementPoint = measurementsFixture.sort(
-          (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
+          (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
         )[0];
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${measurementFixture.measurementWindow}`),
