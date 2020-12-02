@@ -2,9 +2,11 @@ import React from "react";
 import {ChartWrapper} from "./index";
 import type {ChartConfigProvider} from "./chartConfigProvider";
 import {injectIntl} from "react-intl";
+import {SpyContext} from "./chartSpyContext";
 
 export const Chart = (configProvider: ChartConfigProvider) => {
   return injectIntl(class _ extends React.Component {
+      static contextType = SpyContext;
 
       constructor(props) {
         super(props);
@@ -13,8 +15,8 @@ export const Chart = (configProvider: ChartConfigProvider) => {
       }
 
       componentDidMount() {
-        if(this.props.configSpy){
-          this.props.configSpy(this.state.config)
+        if(this.context && this.context.configSpy){
+          this.context.configSpy(this.state.config)
         }
       }
 
@@ -38,8 +40,8 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         if(this.state.eventHandler) {
           this.state.eventHandler.setChart(this)
         }
-        if(this.props.onChartUpdated) {
-          this.props.onChartUpdated(this.chart)
+        if(this.context && this.context.onChartUpdated) {
+          this.context.onChartUpdated(this.chart)
         }
       }
 

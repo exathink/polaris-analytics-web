@@ -1,0 +1,1 @@
+export {PullRequestsCompletedTrendsWidget} from "./pullRequestsCompletedTrendsWidget";
