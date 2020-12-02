@@ -158,35 +158,34 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
     } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"} />);
 
     const cases = [
-      {key: "maxAge", data: maxAgeData, displayName: "Max Age: "},
-      {key: "avgAge", data: avgAgeData, displayName: "Avg Age: "},
+      {metric: "maxAge", data: maxAgeData, displayName: "Max Age: "},
+      {metric: "avgAge", data: avgAgeData, displayName: "Avg Age: "},
     ];
 
     // Generating test cases for similar usecases
-    cases.forEach(({key, data, displayName}, index) => {
-
-      test(`it renders a chart with the correct number of data points for ${key} series`, () => {
+    cases.forEach(({metric, data, displayName}, index) => {
+      test(`it renders a chart with the correct number of data points for ${metric} series`, () => {
         expect(data).toHaveLength(pullRequestsReviewTimeTrendsFixture.length);
       });
 
-      test(`it maps dates to the x axis and sets y to Days for ${key} series`, () => {
+      test(`it maps dates to the x axis and sets y to Days for ${metric} series`, () => {
         expectSetsAreEqual(
           data.map((point) => [point.x, point.y]),
           pullRequestsReviewTimeTrendsFixture.map((measurement) => {
-            const metric = measurement[key];
-            return [toMoment(measurement.measurementDate, true).valueOf(), metric];
+            const metricValue = measurement[metric];
+            return [toMoment(measurement.measurementDate, true).valueOf(), metricValue];
           })
         );
       });
 
-      test(`it sets the reference to the measurement for each point for ${key} series`, () => {
+      test(`it sets the reference to the measurement for each point for ${metric} series`, () => {
         expectSetsAreEqual(
           data.map((point) => point.measurement),
           pullRequestsReviewTimeTrendsFixture
         );
       });
 
-      test(`should render the tooltip of point for ${key} series`, async () => {
+      test(`should render the tooltip of point for ${metric} series`, async () => {
         const [actual] = await renderedTooltipConfig(
           <PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"} />,
           (points) => [points[0]],
@@ -199,7 +198,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
           body: [
-            [displayName, `${formatNumber(firstReviewTimePoint[key])} Days`],
+            [displayName, `${formatNumber(firstReviewTimePoint[metric])} Days`],
             ["Code Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
           ],
         });
