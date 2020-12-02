@@ -1,11 +1,11 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 
-import {useQueryProjectPullRequestMetricsTrends} from "./useQueryProjectPullRequestMetricsTrends";
-import {ProjectPullRequestTrendsView} from "./pullRequestTrendsView";
-import {ProjectPullRequestTrendsDetailDashboard} from "./pullRequestTrendsDetailDashboard";
+import {useQueryProjectPullRequestMetricsTrends} from "../../hooks/useQueryProjectPullRequestMetricsTrends";
+import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView";
+import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
 
-export const ProjectPullRequestTrendsWidget = ({
+export const PullRequestsCompletedTrendsWidget = ({
   instanceKey,
   view,
   context,
@@ -27,14 +27,14 @@ export const ProjectPullRequestTrendsWidget = ({
   const {pullRequestMetricsTrends} = data["project"];
 
   return view === "primary" ? (
-    <ProjectPullRequestTrendsView
+    <PullRequestsCompletedTrendsView
       pullRequestMetricsTrends={pullRequestMetricsTrends}
       measurementWindow={measurementWindow}
       measurementPeriod={days}
       view={view}
     />
   ) : (
-    <ProjectPullRequestTrendsDetailDashboard
+    <PullRequestsCompletedTrendsDetailDashboard
       instanceKey={instanceKey}
       pullRequestMetricsTrends={pullRequestMetricsTrends}
       measurementWindow={measurementWindow}

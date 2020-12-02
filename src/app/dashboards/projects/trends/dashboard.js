@@ -5,7 +5,7 @@ import {ProjectPredictabilityTrendsWidget} from "../shared/widgets/predictabilit
 import {ProjectVolumeTrendsWidget} from "../shared/widgets/throughput";
 import {ProjectResponseTimeTrendsWidget} from "../shared/widgets/responseTime";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
-import {ProjectPullRequestTrendsWidget} from "../shared/widgets/pullRequest";
+import {PullRequestsCompletedTrendsWidget} from "../shared/widgets/pullRequestsCompleted";
 
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
@@ -135,9 +135,9 @@ const dashboard = ({viewerContext}) => (
           <DashboardRow h="30%" title={``}>
             <DashboardWidget
               w={1 / 3}
-              name="pull-request"
+              name="pullrequests-completed"
               render={({view}) => (
-                <ProjectPullRequestTrendsWidget
+                <PullRequestsCompletedTrendsWidget
                   instanceKey={key}
                   measurementWindow={30}
                   days={45}

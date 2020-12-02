@@ -1,8 +1,8 @@
 import React from "react";
-import {PullRequestTrendsChart} from "./pullRequestTrendsChart";
+import {PullRequestsCompletedTrendsChart} from "./pullRequestsCompletedTrendsChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 
-export const ProjectPullRequestTrendsView = ({
+export const PullRequestsCompletedTrendsView = ({
   pullRequestMetricsTrends,
   measurementPeriod,
   measurementWindow,
@@ -10,7 +10,7 @@ export const ProjectPullRequestTrendsView = ({
 }) => (
   <VizRow h={1}>
     <VizItem w={1}>
-      <PullRequestTrendsChart
+      <PullRequestsCompletedTrendsChart
         pullRequestMetricsTrends={pullRequestMetricsTrends}
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}

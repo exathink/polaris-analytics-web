@@ -2,7 +2,7 @@ import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../shared/views/measurementTrend/measurementTrendLineChart";
 
-export const PullRequestTrendsChart = ({pullRequestMetricsTrends, measurementPeriod, measurementWindow, view}) => (
+export const PullRequestsCompletedTrendsChart = ({pullRequestMetricsTrends, measurementPeriod, measurementWindow, view}) => (
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
     metrics={[{key: "totalClosed", displayName: "Total Closed", visible: true, type: "spline"}]}

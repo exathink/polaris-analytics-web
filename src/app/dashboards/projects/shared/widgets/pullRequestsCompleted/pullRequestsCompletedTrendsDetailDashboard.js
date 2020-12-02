@@ -1,14 +1,14 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectPullRequestTrendsWidget} from "./pullRequestTrendsWidget";
+import {PullRequestsCompletedTrendsWidget} from "./pullRequestsCompletedTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
 
-const dashboard_id = "dashboards.trends.projects.pullrequests.detail";
+const dashboard_id = "dashboards.trends.projects.pullrequests.completed.detail";
 
-export const ProjectPullRequestTrendsDetailDashboard = ({
+export const PullRequestsCompletedTrendsDetailDashboard = ({
   instanceKey,
   view,
   context,
@@ -39,7 +39,7 @@ export const ProjectPullRequestTrendsDetailDashboard = ({
           w={1}
           name="pr-metrics-summary-detailed"
           render={({view}) => (
-            <ProjectPullRequestTrendsWidget
+            <PullRequestsCompletedTrendsWidget
               instanceKey={instanceKey}
               view={view}
               days={daysRange}
