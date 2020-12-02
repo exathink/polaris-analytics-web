@@ -5,7 +5,7 @@ import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-util
 
 import {PullRequestsReviewTimeTrendsChart} from "./pullRequestsReviewTimeTrendsChart";
 import {Colors} from "../../../../shared/config";
-import {toMoment} from "../../../../../helpers/utility";
+import {epoch} from "../../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -147,62 +147,102 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
     });
   });
 
-  describe("pull requests review time trends chart", () => {
+  describe("review time trends chart", () => {
     const pullRequestsReviewTime = {
       ...commonMeasurementProps,
       pullRequestMetricsTrends: pullRequestsReviewTimeTrendsFixture,
     };
 
-    const {
-      series: [{data: maxAgeData}, {data: avgAgeData}],
-    } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"} />);
+    describe("test plot lines", () => {
+      const {
+        series: [{data: maxAgeData}, {data: avgAgeData}],
+      } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>);
 
-    const cases = [
-      {metric: "maxAge", data: maxAgeData, displayName: "Max Age: "},
-      {metric: "avgAge", data: avgAgeData, displayName: "Avg Age: "},
-    ];
+      const cases = [
+        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Review: "},
+        {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Review: "},
+      ];
+      // Generating test cases for similar usecases
+      cases.forEach(({metric, data, displayName}, index) => {
+        describe(`series ${metric}`, () => {
+          test(`it renders the correct number of data points`, () => {
+            expect(data).toHaveLength(pullRequestsReviewTimeTrendsFixture.length);
+          });
 
-    // Generating test cases for similar usecases
-    cases.forEach(({metric, data, displayName}, index) => {
-      test(`it renders a chart with the correct number of data points for ${metric} series`, () => {
-        expect(data).toHaveLength(pullRequestsReviewTimeTrendsFixture.length);
-      });
+          test(`it maps dates to the x axis and sets y to Days`, () => {
+            expectSetsAreEqual(
+              data.map((point) => [point.x, point.y]),
+              pullRequestsReviewTimeTrendsFixture.map((measurement) => {
+                const metricValue = measurement[metric];
+                return [epoch(measurement.measurementDate, true), metricValue];
+              })
+            );
+          });
 
-      test(`it maps dates to the x axis and sets y to Days for ${metric} series`, () => {
-        expectSetsAreEqual(
-          data.map((point) => [point.x, point.y]),
-          pullRequestsReviewTimeTrendsFixture.map((measurement) => {
-            const metricValue = measurement[metric];
-            return [toMoment(measurement.measurementDate, true).valueOf(), metricValue];
-          })
-        );
-      });
+          test(`it sets the reference to the measurement for each point`, () => {
+            expectSetsAreEqual(
+              data.map((point) => point.measurement),
+              pullRequestsReviewTimeTrendsFixture
+            );
+          });
 
-      test(`it sets the reference to the measurement for each point for ${metric} series`, () => {
-        expectSetsAreEqual(
-          data.map((point) => point.measurement),
-          pullRequestsReviewTimeTrendsFixture
-        );
-      });
+          test(`should render the tooltip of point`, async () => {
+            const [actual] = await renderedTooltipConfig(
+              <PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>,
+              (points) => [points[0]],
+              index
+            );
 
-      test(`should render the tooltip of point for ${metric} series`, async () => {
-        const [actual] = await renderedTooltipConfig(
-          <PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"} />,
-          (points) => [points[0]],
-          index
-        );
-
-        const firstReviewTimePoint = pullRequestsReviewTimeTrendsFixture.sort(
-          (m1, m2) => toMoment(m1.measurementDate, true).valueOf() - toMoment(m2.measurementDate, true).valueOf()
-        )[0];
-        expect(actual).toMatchObject({
-          header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
-          body: [
-            [displayName, `${formatNumber(firstReviewTimePoint[metric])} Days`],
-            ["Code Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
-          ],
+            const firstReviewTimePoint = pullRequestsReviewTimeTrendsFixture.sort(
+              (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+            )[0];
+            expect(actual).toMatchObject({
+              header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
+              body: [
+                [displayName, `${formatNumber(firstReviewTimePoint[metric])} Days`],
+                ["Code Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
+              ],
+            });
+          });
         });
       });
     });
+
+    const chartConfig = renderedChartConfig(
+        <PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>
+      );
+    describe("test series", () => {
+      test("line type is spline", () => {
+        expectSetsAreEqual(chartConfig.series.map((series) => [series.key, series.type]),
+          [
+            ["maxAge", "spline"],
+            ["avgAge", "spline"],
+          ]);
+      });
+
+      test("they are visible by default", () => {
+        expectSetsAreEqual(chartConfig.series.map((series) => [series.key, series.visible]),
+          [
+            ["maxAge", true],
+            ["avgAge", true],
+          ]);
+      });
+    });
+
+    describe("test plot bands", () => {
+      const {yAxis: {plotBands}} = chartConfig;
+      test('it has a single plot band on the y-axis', () => {
+        expect(plotBands.length).toBe(1)
+      })
+
+      test('it uses the min and max value of the avgAge series for the range of the plot bands', () => {
+        expect(plotBands).toMatchObject([
+          {
+            "to": 1.31095732285237,
+            "from": 0.705498012000488
+          }
+        ])
+      })
+    })
   });
 });
