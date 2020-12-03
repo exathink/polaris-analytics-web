@@ -9,7 +9,7 @@ export const Highcharts = require('highcharts/highstock');
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/xrange')(Highcharts);
 require('highcharts-custom-events')(Highcharts);
-
+require('highcharts/modules/draggable-points')(Highcharts);
 
 class ChartWrapper extends React.Component {
   constructor(props) {
