@@ -3,6 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {getLatest} from "../../../../../helpers/utility";
+import {ProjectPipelineDetailDashboard} from './projectPipelineDetailDashboard';
 
 export const ProjectPipelineFunnelWidget = (
   {
@@ -31,7 +32,7 @@ export const ProjectPipelineFunnelWidget = (
   const {workItemStateTypeCounts, specStateTypeCounts, totalEffortByStateType} = data['project'];
 
 
-  return (
+  return view === "primary" ? (
     <ProjectPipelineFunnelView
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
@@ -41,7 +42,18 @@ export const ProjectPipelineFunnelWidget = (
       setWorkItemScope={setWorkItemScope || setSelectedGrouping}
       view={view}
     />
-  )
+  ) : (
+    <ProjectPipelineDetailDashboard
+      instanceKey={instanceKey}
+      context={context}
+      workItemScope={workItemScope}
+      setWorkItemScope={setWorkItemScope}
+      latestWorkItemEvent={latestWorkItemEvent}
+      latestCommit={latestCommit}
+      days={30}
+      view={view}
+    />
+  );
 
 }
 
