@@ -8,6 +8,7 @@ export const ProjectOpenPullRequestsWidget = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
+  latestPullRequestEvent,
   view,
   context,
   pollInterval,
@@ -15,7 +16,7 @@ export const ProjectOpenPullRequestsWidget = ({
   const { loading, error, data } = useQueryProjectPullRequests({
     instanceKey,
     activeOnly: true,
-    referenceString: getReferenceString(latestCommit, latestWorkItemEvent)
+    referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent)
   });
   if (loading) return <Loading />;
   if (error) return null;
