@@ -10,21 +10,38 @@ export const Highcharts = require("highcharts/highstock");
 require("highcharts/modules/draggable-points")(Highcharts);
 
 function getSeries({stateMaps, allStateTypes}) {
-  const allStateTypeKeys = allStateTypes.map(x => x.key)
+  const allStateTypeKeys = allStateTypes.map((x) => x.key);
 
   return [
-    {
-      name: "UnMapped States",
-      type: "column",
-      data: stateMaps.map((item) => {
-        return {
-          name: item.state,
-          y: 1.2,
-          x: allStateTypeKeys.indexOf(item.stateType),
-          color: WorkItemStateTypeColor[item.stateType],
-        };
-      }),
-    },
+    // leaving the commented code here, till its finalized.
+    // {
+    //   name: "UnMapped States",
+    //   type: "column",
+    //   data: stateMaps.map((item) => {
+    //     return {
+    //       name: item.state,
+    //       y: 1.2,
+    //       x: allStateTypeKeys.indexOf(item.stateType),
+    //       color: WorkItemStateTypeColor[item.stateType],
+    //     };
+    //   }),
+    // },
+    
+    // creating a series for each item to resolve the stacking issue
+    ...stateMaps.map((item) => {
+      return {
+        name: item.state,
+        type: "column",
+        data: [
+          {
+            name: item.state,
+            y: 1.2,
+            x: allStateTypeKeys.indexOf(item.stateType),
+            color: WorkItemStateTypeColor[item.stateType],
+          },
+        ],
+      };
+    }),
     {
       name: "State Types",
       type: "column",
@@ -55,8 +72,8 @@ export const WorkItemStateTypeMapChart = Chart({
 
   getConfig: ({initialStateTypeMapping, setDraftState, title, subtitle, intl, view}) => {
     const series = getSeries(initialStateTypeMapping);
-    const allStateTypeKeys = initialStateTypeMapping.allStateTypes.map(x => x.key);
-    const allStateTypeDisplayValues = initialStateTypeMapping.allStateTypes.map(x => x.displayValue);
+    const allStateTypeKeys = initialStateTypeMapping.allStateTypes.map((x) => x.key);
+    const allStateTypeDisplayValues = initialStateTypeMapping.allStateTypes.map((x) => x.displayValue);
 
     return {
       chart: {
@@ -88,7 +105,8 @@ export const WorkItemStateTypeMapChart = Chart({
           point: {
             events: {
               drop: function (e) {
-                const currentMappingData = e.target.series.data.reduce((acc, p) => {
+                // this is workaround till we find better solution.
+                const currentMappingData = e.target.series.chart.series.filter(s => s.name!=="State Types").flatMap(s => s.data).reduce((acc, p) => {
                   acc[p.name] = p.category;
                   return acc;
                 }, {});
@@ -113,7 +131,7 @@ export const WorkItemStateTypeMapChart = Chart({
         },
       },
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       series: series,
     };
