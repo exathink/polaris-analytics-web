@@ -32,6 +32,7 @@ function getSeries({stateMaps, allStateTypes}) {
       return {
         name: item.state,
         type: "column",
+        showInLegend: false,
         data: [
           {
             name: item.state,
@@ -45,6 +46,7 @@ function getSeries({stateMaps, allStateTypes}) {
     {
       name: "State Types",
       type: "column",
+      showInLegend: false,
       data: allStateTypes.map(({key, displayValue}, index) => {
         return {
           name: displayValue,
