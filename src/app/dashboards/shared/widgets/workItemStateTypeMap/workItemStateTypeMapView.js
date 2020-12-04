@@ -1,5 +1,5 @@
 import React from "react";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../containers/layout";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 
 

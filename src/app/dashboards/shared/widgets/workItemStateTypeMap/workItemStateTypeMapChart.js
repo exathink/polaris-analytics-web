@@ -2,9 +2,9 @@
 This file is a template for creating new chart components. Not intended to be used directly,
 use it as a guide on how to structure a new chart component file. Copy/Paste modify as needed.
  */
-import {Chart} from "../../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {WorkItemStateTypeColor, Colors} from "../../../../shared/config";
+import {Chart} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {WorkItemStateTypeColor, Colors} from "../../config";
 
 export const Highcharts = require("highcharts/highstock");
 require("highcharts/modules/draggable-points")(Highcharts);
