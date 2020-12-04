@@ -14,7 +14,7 @@ function getSeries({stateMaps, allStateTypes}) {
 
   return [
     {
-      name: "Mapped States",
+      name: "UnMapped States",
       type: "column",
       data: stateMaps.map((item) => {
         return {
