@@ -1,7 +1,8 @@
 import React from "react";
 import {StateMapPackedBubbleView} from "./stateMapPackedBubbleView";
 
-const stateMap = {
+// get this mapping from api finally
+const initialStateTypeMapping = {
   workItemsSourceKey: "46694f4f-e003-4430-a7a7-e4f288f40d22",
   stateMaps: [
     {state: "created", stateType: "unmapped"},
@@ -19,13 +20,9 @@ const stateMap = {
     {state: "DEPLOYED-TO-STAGING", stateType: "unmapped"},
     {state: "RELEASED", stateType: "unmapped"},
     {state: "ROADMAP", stateType: "unmapped"},
-    {state: "Closed", stateType: "unmapped"},
-    {state: undefined, stateType: "backlog"},
-    {state: undefined, stateType: "wip"},
-    {state: undefined, stateType: "complete"},
-    {state: undefined, stateType: "open"},
-    {state: undefined, stateType: "closed"},
+    {state: "Closed", stateType: "unmapped"}
   ],
+  allStateTypes: ["unmapped", "backlog", "wip", "complete", "open", "closed"],
 };
 
 export const StateMapPackedBubbleWidget = ({
@@ -37,5 +34,5 @@ export const StateMapPackedBubbleWidget = ({
   context,
   pollInterval,
 }) => {
-  return <StateMapPackedBubbleView context={context} view={view} stateMap={stateMap} />;
+  return <StateMapPackedBubbleView initialStateTypeMapping={initialStateTypeMapping} context={context} view={view} />;
 };

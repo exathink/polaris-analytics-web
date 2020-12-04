@@ -20,7 +20,7 @@ export const ProjectPipelineDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow h={1} title={`Title`} subTitle={`SubTitle`}>
-        <DashboardWidget
+        {/* <DashboardWidget
           w={1 / 2}
           name="project-pipeline-detailed"
           render={({view}) => (
@@ -36,9 +36,9 @@ export const ProjectPipelineDetailDashboard = ({
             />
           )}
           showDetail={false}
-        />
+        /> */}
         <DashboardWidget
-          w={1 / 2}
+          w={1}
           name="project-pipeline-bubble"
           render={({view}) => {
             return (
