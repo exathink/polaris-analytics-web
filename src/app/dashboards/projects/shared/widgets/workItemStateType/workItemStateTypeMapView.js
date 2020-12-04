@@ -1,16 +1,16 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {StateMapPackedBubbleChart} from "./stateMapPackedBubbleChart";
+import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 
 
-export const StateMapPackedBubbleView = ({initialStateTypeMapping, view, context}) => {
+export const WorkItemStateTypeMapView = ({initialStateTypeMapping, view, context}) => {
   const [draftState, setDraftState] = React.useState({});
   // console.log(draftState); // this draftState captures all the changes.
   return (
     <VizRow h={"100%"}>
       <VizItem w={1}>
         <div style={{width: "100%", height: "100%"}}>
-          <StateMapPackedBubbleChart
+          <WorkItemStateTypeMapChart
             initialStateTypeMapping={initialStateTypeMapping}
             setDraftState={setDraftState}
             view={view}

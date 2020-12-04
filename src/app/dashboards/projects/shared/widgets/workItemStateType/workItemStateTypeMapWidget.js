@@ -1,5 +1,5 @@
 import React from "react";
-import {StateMapPackedBubbleView} from "./stateMapPackedBubbleView";
+import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 
 // get this mapping from api finally
 const initialStateTypeMapping = {
@@ -25,7 +25,7 @@ const initialStateTypeMapping = {
   allStateTypes: ["unmapped", "backlog", "wip", "complete", "open", "closed"],
 };
 
-export const StateMapPackedBubbleWidget = ({
+export const WorkItemStateTypeMapWidget = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
@@ -34,5 +34,5 @@ export const StateMapPackedBubbleWidget = ({
   context,
   pollInterval,
 }) => {
-  return <StateMapPackedBubbleView initialStateTypeMapping={initialStateTypeMapping} context={context} view={view} />;
+  return <WorkItemStateTypeMapView initialStateTypeMapping={initialStateTypeMapping} context={context} view={view} />;
 };
