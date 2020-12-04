@@ -10,6 +10,8 @@ export const Highcharts = require("highcharts/highstock");
 require("highcharts/modules/draggable-points")(Highcharts);
 
 function getSeries({stateMaps, allStateTypes}) {
+  const allStateTypeKeys = allStateTypes.map(x => x.key)
+
   return [
     {
       name: "Mapped States",
@@ -18,7 +20,7 @@ function getSeries({stateMaps, allStateTypes}) {
         return {
           name: item.state,
           y: 1.2,
-          x: allStateTypes.indexOf(item.stateType),
+          x: allStateTypeKeys.indexOf(item.stateType),
           color: WorkItemStateTypeColor[item.stateType],
         };
       }),
@@ -26,13 +28,13 @@ function getSeries({stateMaps, allStateTypes}) {
     {
       name: "State Types",
       type: "column",
-      data: allStateTypes.map((item, index) => {
+      data: allStateTypes.map(({key, displayValue}, index) => {
         return {
-          name: item,
+          name: displayValue,
           y: 1.2,
           x: index,
           pointWidth: 100,
-          color: WorkItemStateTypeColor[item],
+          color: WorkItemStateTypeColor[key],
           dragDrop: {
             draggableX: false,
             draggableY: false,
@@ -53,7 +55,9 @@ export const WorkItemStateTypeMapChart = Chart({
 
   getConfig: ({initialStateTypeMapping, setDraftState, title, subtitle, intl, view}) => {
     const series = getSeries(initialStateTypeMapping);
-    const {allStateTypes} = initialStateTypeMapping;
+    const allStateTypeKeys = initialStateTypeMapping.allStateTypes.map(x => x.key);
+    const allStateTypeDisplayValues = initialStateTypeMapping.allStateTypes.map(x => x.displayValue);
+
     return {
       chart: {
         animation: false,
@@ -62,7 +66,7 @@ export const WorkItemStateTypeMapChart = Chart({
         text: "Map UnMapped States",
       },
       xAxis: {
-        categories: allStateTypes,
+        categories: allStateTypeDisplayValues,
       },
       yAxis: {
         softMin: 0,
@@ -93,7 +97,7 @@ export const WorkItemStateTypeMapChart = Chart({
                 const newPointName = e.newPoints[this.id].point.name;
 
                 // update dropped point here
-                currentMappingData[newPointName] = allStateTypes[newCategoryIndex];
+                currentMappingData[newPointName] = allStateTypeKeys[newCategoryIndex];
                 setDraftState(currentMappingData);
               },
             },

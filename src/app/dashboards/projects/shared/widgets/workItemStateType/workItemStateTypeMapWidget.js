@@ -20,9 +20,16 @@ const initialStateTypeMapping = {
     {state: "DEPLOYED-TO-STAGING", stateType: "unmapped"},
     {state: "RELEASED", stateType: "unmapped"},
     {state: "ROADMAP", stateType: "unmapped"},
-    {state: "Closed", stateType: "unmapped"}
+    {state: "Closed", stateType: "unmapped"},
   ],
-  allStateTypes: ["unmapped", "backlog", "wip", "complete", "open", "closed"],
+  allStateTypes: [
+    {key: "unmapped", displayValue: "Unmapped"},
+    {key: "backlog", displayValue: "Define"},
+    {key: "wip", displayValue: "Build"},
+    {key: "complete", displayValue: "Deliver"},
+    {key: "open", displayValue: "Open"},
+    {key: "closed", displayValue: "Closed"},
+  ],
 };
 
 export const WorkItemStateTypeMapWidget = ({
