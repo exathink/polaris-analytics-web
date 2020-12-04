@@ -100,8 +100,8 @@ export const WorkItemStateTypeMapChart = Chart({
             draggableY: true,
             dragMinY: 0,
             dragMaxY: 20,
-            // dragMinX: 0,
-            // dragMaxX: 6,
+            dragMinX: 0,
+            dragMaxX: 5,
             liveRedraw: false,
           },
           point: {
