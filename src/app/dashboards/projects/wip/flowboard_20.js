@@ -23,7 +23,7 @@ const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 export const dashboard = ({viewerContext}) => (
   <ProjectDashboard
     pollInterval={1000 * 60}
-    render={({project: {key, latestWorkItemEvent, latestCommit, settings}, context}) => {
+    render={({project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings}, context}) => {
       const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
       const [workItemScope, setWorkItemScope] = useState("all");
       const specsOnly = workItemScope === "specs";
@@ -96,6 +96,7 @@ export const dashboard = ({viewerContext}) => (
                   context={context}
                   latestWorkItemEvent={latestWorkItemEvent}
                   latestCommit={latestCommit}
+                  latestPullRequestEvent={latestPullRequestEvent}
                 />
               )}
               showDetail={true}

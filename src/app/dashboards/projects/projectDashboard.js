@@ -28,7 +28,7 @@ class WithProject extends React.Component {
         query={
           gql`
             query with_project_instance($key: String!) {
-                project(key: $key, interfaces:[CommitSummary, WorkItemEventSpan]){
+                project(key: $key, interfaces:[CommitSummary, WorkItemEventSpan, PullRequestEventSpan]){
                     id
                     name
                     key
@@ -36,6 +36,7 @@ class WithProject extends React.Component {
                     latestCommit
                     commitCount
                     latestWorkItemEvent
+                    latestPullRequestEvent
                     settings {
                         flowMetricsSettings {
                             cycleTimeTarget
