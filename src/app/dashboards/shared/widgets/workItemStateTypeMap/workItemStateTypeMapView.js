@@ -85,7 +85,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
         <div className="workItemSourceLabel">Select WorkItems Source</div>
         <Select defaultValue={state.name} style={{width: 220}} onChange={handleChange}>
           {workItemSources.map((source) => (
-            <Option value={source.key}>{source.name}</Option>
+            <Option key={source.key} value={source.key}>{source.name}</Option>
           ))}
         </Select>
       </div>
