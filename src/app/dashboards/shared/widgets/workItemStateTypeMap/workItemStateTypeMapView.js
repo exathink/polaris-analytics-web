@@ -4,6 +4,7 @@ import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Button, Select} from "antd";
 import "./workItemStateType.css";
 import {updateProjectWorkItemSourceStateMaps} from "../../../projects/shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+
 const {Option} = Select;
 
 export const actionTypes = {
@@ -52,7 +53,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     const payload = [
       {
         workItemsSourceKey: state.key,
-        stateMaps: state.workItemStateMappings,
+        stateMaps: state.workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType})),
       },
     ];
 
