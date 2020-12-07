@@ -39,7 +39,7 @@ export function useProjectWorkItemSourcesStateMappings(instanceKey) {
   return data.project.workItemsSources.edges.map((edge) => edge.node.workItemStateMappings);
 }
 
-export function updateProjectWorkItemSourceStateMaps() {
+export function updateProjectWorkItemSourceStateMaps({onCompleted}) {
   return useMutation(
     gql`
       mutation updateWorkItemSourceStateMappings(
@@ -53,6 +53,7 @@ export function updateProjectWorkItemSourceStateMaps() {
           errorMessage
         }
       }
-    `
+    `,
+    {onCompleted}
   );
 }

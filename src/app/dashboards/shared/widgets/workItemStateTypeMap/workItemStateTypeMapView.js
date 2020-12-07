@@ -37,8 +37,14 @@ function workItemReducer(state, action) {
 }
 
 export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
-  const [mutate] = updateProjectWorkItemSourceStateMaps();
-  
+  const [mutate, {loading, error}] = updateProjectWorkItemSourceStateMaps({
+    onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
+      console.log(`Completed: success: ${success}`);
+      // use this to call a 'refresh callback from the parent so that the parent widget re-renders from the server
+      // and reloads the updated state map from the server.
+    },
+  });
+
   function getFreshWorkItemSources() {
     // as we are not modifying original workItemSources, get fresh copy every time
     return JSON.parse(JSON.stringify(workItemSources));
@@ -86,6 +92,13 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     );
   }
 
+  if (loading) {
+    // use this to render a loading widget in the view
+  }
+
+  if (error) {
+    // use this to render an error widget in the view.
+  }
   return (
     <VizRow h={"100%"}>
       <VizItem w={1}>
@@ -95,10 +108,11 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
             <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
               Save
             </Button>
-            <Button onClick={handleCancelClick} className={"workItemCancel"} >
+            <Button onClick={handleCancelClick} className={"workItemCancel"}>
               Cancel
             </Button>
           </div>
+
           <WorkItemStateTypeMapChart
             workItemStateMappings={state.workItemStateMappings}
             updateDraftState={dispatch}
