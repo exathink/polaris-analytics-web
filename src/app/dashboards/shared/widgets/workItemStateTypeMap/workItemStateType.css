@@ -1,0 +1,22 @@
+.workItemFlex{
+    display: flex;
+    align-items: center;
+}
+
+.workItemSave{
+    margin-left: auto;
+}
+
+.workItemCancel{
+  margin-right: 60px;
+  margin-left: 20px;
+}
+
+.my12{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.workItemSourceLabel{
+    margin-left: 5px;
+}
