@@ -2,6 +2,7 @@ import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 
 import {WorkItemStateTypeMapWidget} from "../../../../shared/widgets/workItemStateTypeMap";
+import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
@@ -19,8 +20,8 @@ export const ProjectPipelineDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow h={1} title={``} subTitle={``}>
-        {/* <DashboardWidget
-          w={1 / 2}
+        <DashboardWidget
+          w={1 / 3}
           name="project-pipeline-detailed"
           render={({view}) => (
             <ProjectPipelineFunnelWidget
@@ -35,9 +36,9 @@ export const ProjectPipelineDetailDashboard = ({
             />
           )}
           showDetail={false}
-        /> */}
+        />
         <DashboardWidget
-          w={1}
+          w={2/3}
           name="project-pipeline-bubble"
           render={({view}) => {
             return (
