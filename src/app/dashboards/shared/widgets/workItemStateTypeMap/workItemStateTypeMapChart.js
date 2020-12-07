@@ -1,8 +1,9 @@
 import {Chart, Highcharts} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {WorkItemStateTypeColor} from "../../config";
-import { actionTypes } from "./workItemStateTypeMapView";
+import {Colors, WorkItemStateTypeColor} from "../../config";
+import {actionTypes} from "./workItemStateTypeMapView";
 import {ALL_STATE_TYPES} from "./workItemStateTypeMapWidget";
+
 require("highcharts/modules/draggable-points")(Highcharts);
 
 function getAllStateTypeKeys() {
@@ -80,6 +81,7 @@ export const WorkItemStateTypeMapChart = Chart({
 
     return {
       chart: {
+        backgroundColor: Colors.Chart.backgroundColor,
         animation: false,
       },
       title: {
@@ -89,6 +91,7 @@ export const WorkItemStateTypeMapChart = Chart({
         categories: allStateTypeDisplayValues,
       },
       yAxis: {
+        visible: false,
         softMin: 0,
         softMax: 20,
       },
