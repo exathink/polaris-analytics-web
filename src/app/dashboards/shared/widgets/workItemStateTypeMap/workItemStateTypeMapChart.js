@@ -1,7 +1,3 @@
-/*
-This file is a template for creating new chart components. Not intended to be used directly,
-use it as a guide on how to structure a new chart component file. Copy/Paste modify as needed.
- */
 import {Chart, Highcharts} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {WorkItemStateTypeColor} from "../../config";

@@ -91,10 +91,10 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
         <div style={{width: "100%", height: "100%"}}>
           <div className="workItemFlex spacex12 my12">
             {selectDropdown()}
-            <Button onClick={handleSaveClick} className={"workItemSave"}>
+            <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
               Save
             </Button>
-            <Button onClick={handleCancelClick} className={"workItemCancel"}>
+            <Button onClick={handleCancelClick} className={"workItemCancel"} >
               Cancel
             </Button>
           </div>
