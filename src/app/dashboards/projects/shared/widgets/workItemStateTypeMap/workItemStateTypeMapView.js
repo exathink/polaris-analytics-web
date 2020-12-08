@@ -3,7 +3,7 @@ import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Alert, Button, Select} from "antd";
 import "./workItemStateType.css";
 import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
-import { logGraphQlError } from "../../../../../components/graphql/utils";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 const {Option} = Select;
 
@@ -11,6 +11,14 @@ export const actionTypes = {
   REPLACE_WORKITEM_SOURCE: "REPLACE_WORKITEM_SOURCE",
   UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE",
   CANCEL_EDIT_MODE: "CANCEL_EDIT_MODE",
+  MUTATION_SUCCESS: "MUTATION_SUCCESS"
+};
+
+// mini state machine to handle states for control
+const mode = {
+  INIT: "INIT",
+  EDITING: "EDITING",
+  SUCCESS: "SUCCESS",
 };
 
 function workItemReducer(state, action) {
@@ -24,8 +32,14 @@ function workItemReducer(state, action) {
     case actionTypes.CANCEL_EDIT_MODE: {
       return {
         ...state,
-        editMode: false,
+        mode: mode.INIT,
       };
+    }
+    case actionTypes.MUTATION_SUCCESS: {
+      return {
+        ...state,
+        mode: mode.SUCCESS
+      }
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
@@ -37,7 +51,7 @@ function workItemReducer(state, action) {
           }
           return item;
         }),
-        editMode: true,
+        mode: mode.EDITING,
       };
     }
     default: {
@@ -47,10 +61,10 @@ function workItemReducer(state, action) {
 }
 
 export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
-  const [mutate, {loading, error, called}] = updateProjectWorkItemSourceStateMaps({
+  const [mutate, {loading, error}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       console.log(`Completed: success: ${success}`);
-      dispatch({type: actionTypes.CANCEL_EDIT_MODE});
+      dispatch({type: actionTypes.MUTATION_SUCCESS});
       // use this to call a 'refresh callback from the parent so that the parent widget re-renders from the server
       // and reloads the updated state map from the server.
     },
@@ -58,7 +72,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
 
   // set first workitemsource as default
   const [workItemSource] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, editMode: false});
+  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
 
   function handleSaveClick(e) {
     // call the mutation function to update data from here
@@ -74,18 +88,18 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
   }
 
   // utilizing this trick to reset component (changing the key will remount the chart component with same props)
-  const [key, setKey] = React.useState(1);
+  const [resetComponentStateKey, setKey] = React.useState(1);
   // Reset state on cancel
   function handleCancelClick(e) {
     dispatch({type: actionTypes.CANCEL_EDIT_MODE});
-    const newKey = key === 1 ? 2 : 1;
+    const newKey = resetComponentStateKey === 1 ? 2 : 1;
     setKey(newKey);
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(key) {
     const workItemSource = workItemSources.find((x) => x.key === key);
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, editMode: false}});
+    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
   }
 
   function selectDropdown() {
@@ -111,9 +125,9 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
           Processing...
         </Button>
       );
-    } 
-    
-    if(state.editMode) {
+    }
+
+    if (state.mode === mode.EDITING) {
       return (
         <>
           <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
@@ -126,9 +140,16 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
       );
     }
 
-    // mutation has been called and there is no error which means success
-    if(called && !error){
-      return <Alert message="StateType Mappings Done Successfully." type="success" showIcon closable className="shiftRight"/>
+    if (state.mode === mode.SUCCESS) {
+      return (
+        <Alert
+          message="StateType Mappings Done Successfully."
+          type="success"
+          showIcon
+          closable
+          className="shiftRight"
+        />
+      );
     }
   }
 
@@ -146,7 +167,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
 
       <div className={"chartWrapper"}>
         <WorkItemStateTypeMapChart
-          key={key}
+          key={resetComponentStateKey}
           workItemSources={workItemSources}
           workItemSourceKey={state.key}
           updateDraftState={dispatch}
