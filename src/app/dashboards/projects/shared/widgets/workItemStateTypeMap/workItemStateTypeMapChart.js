@@ -91,10 +91,10 @@ export const WorkItemStateTypeMapChart = Chart({
         animation: false,
       },
       title: {
-        text: `Work Item State to Phase Map`,
+        text: `Value Stream Mapping`,
       },
       subtitle: {
-        text: `Drag a state to its desired phase to edit mapping`
+        text: `Drag a work item state to its desired phase to edit mapping.`
       },
       xAxis: {
         categories: allStateTypeDisplayValues,
