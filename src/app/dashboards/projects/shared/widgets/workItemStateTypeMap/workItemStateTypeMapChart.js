@@ -77,7 +77,7 @@ export const WorkItemStateTypeMapChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
 
   getConfig: ({workItemSources, workItemSourceKey, updateDraftState, title, subtitle, intl, view}) => {
-    const {workItemStateMappings} = workItemSources.find(x => x.key === workItemSourceKey);
+    const {name: workItemSourceName, workItemStateMappings} = workItemSources.find(x => x.key === workItemSourceKey);
     // cleanup workItemStateMappings
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
@@ -91,10 +91,17 @@ export const WorkItemStateTypeMapChart = Chart({
         animation: false,
       },
       title: {
-        text: "Map UnMapped States",
+        text: `Work Item State to Phase Map`,
+      },
+      subtitle: {
+        text: `Drag a state to its desired phase to edit mapping`
       },
       xAxis: {
         categories: allStateTypeDisplayValues,
+        title: {
+          text: 'Phase'
+        }
+
       },
       yAxis: {
         visible: false,
