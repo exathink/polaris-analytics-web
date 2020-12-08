@@ -10,13 +10,21 @@ const {Option} = Select;
 export const actionTypes = {
   REPLACE_WORKITEM_SOURCE: "REPLACE_WORKITEM_SOURCE",
   UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE",
+  CANCEL_EDIT_MODE: "CANCEL_EDIT_MODE",
 };
 
 function workItemReducer(state, action) {
   switch (action.type) {
     case actionTypes.REPLACE_WORKITEM_SOURCE: {
       return {
+        ...state,
         ...action.payload,
+      };
+    }
+    case actionTypes.CANCEL_EDIT_MODE: {
+      return {
+        ...state,
+        editMode: false,
       };
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
@@ -29,6 +37,7 @@ function workItemReducer(state, action) {
           }
           return item;
         }),
+        editMode: true,
       };
     }
     default: {
@@ -48,7 +57,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
 
   // set first workitemsource as default
   const [workItemSource] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, workItemSource);
+  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, editMode: false});
 
   function handleSaveClick(e) {
     // call the mutation function to update data from here
@@ -63,10 +72,11 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     mutate({variables: {projectKey: instanceKey, workItemsSourceStateMaps: payload}});
   }
 
-  // utilizing this trick to reset component (changing the key will remount the component with same props)
+  // utilizing this trick to reset component (changing the key will remount the chart component with same props)
   const [key, setKey] = React.useState(1);
   // Reset state on cancel
   function handleCancelClick(e) {
+    dispatch({type: actionTypes.CANCEL_EDIT_MODE});
     const newKey = key === 1 ? 2 : 1;
     setKey(newKey);
   }
@@ -105,12 +115,16 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
         <div style={{width: "100%", height: "100%"}}>
           <div className="workItemFlex spacex12 my12">
             {selectDropdown()}
-            <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
-              Save
-            </Button>
-            <Button onClick={handleCancelClick} className={"workItemCancel"}>
-              Cancel
-            </Button>
+            {state.editMode && (
+              <>
+                <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
+                  Save
+                </Button>
+                <Button onClick={handleCancelClick} className={"workItemCancel"}>
+                  Cancel
+                </Button>
+              </>
+            )}
           </div>
 
           <WorkItemStateTypeMapChart
