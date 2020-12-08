@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 
 import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
+import {ProjectPipelineStateDetailsWidget} from "../wip";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
@@ -19,7 +20,7 @@ export const ProjectPipelineDetailDashboard = ({
 }) => {
   return (
     <Dashboard dashboard={dashboard_id}>
-      <DashboardRow h={1} title={``} subTitle={``}>
+      <DashboardRow h={"50%"} title={``} subTitle={``}>
         <DashboardWidget
           w={1 / 3}
           name="project-pipeline-detailed"
@@ -52,6 +53,25 @@ export const ProjectPipelineDetailDashboard = ({
               />
             );
           }}
+        />
+      </DashboardRow>
+      <DashboardRow h={"50%"}>
+        <DashboardWidget
+          w={1}
+          name="project-pipeline-queues"
+          render={({view}) => (
+            <ProjectPipelineStateDetailsWidget
+              instanceKey={instanceKey}
+              context={context}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              days={30}
+              view={view}
+            />
+          )}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
