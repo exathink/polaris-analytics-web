@@ -1,8 +1,9 @@
 import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
-import {Button, Select} from "antd";
+import {Alert, Button, Select} from "antd";
 import "./workItemStateType.css";
 import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
+import { logGraphQlError } from "../../../../../components/graphql/utils";
 
 const {Option} = Select;
 
@@ -46,9 +47,10 @@ function workItemReducer(state, action) {
 }
 
 export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
-  const [mutate, {loading, error}] = updateProjectWorkItemSourceStateMaps({
+  const [mutate, {loading, error, called}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       console.log(`Completed: success: ${success}`);
+      dispatch({type: actionTypes.CANCEL_EDIT_MODE});
       // use this to call a 'refresh callback from the parent so that the parent widget re-renders from the server
       // and reloads the updated state map from the server.
     },
@@ -90,7 +92,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     return (
       <div>
         <div className="workItemSourceLabel">Select WorkItems Source</div>
-        <Select defaultValue={state.name} style={{width: 220}} onChange={handleChange}>
+        <Select defaultValue={state.name} style={{width: 200}} onChange={handleChange}>
           {workItemSources.map((source) => (
             <Option key={source.key} value={source.key}>
               {source.name}
@@ -101,30 +103,48 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     );
   }
 
-  if (loading) {
-    // use this to render a loading widget in the view
+  function getButtonElements() {
+    // when mutation is executing
+    if (loading) {
+      return (
+        <Button className={"shiftRight"} type="primary" loading>
+          Processing...
+        </Button>
+      );
+    } 
+    
+    if(state.editMode) {
+      return (
+        <>
+          <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
+            Save
+          </Button>
+          <Button onClick={handleCancelClick} className={"workItemCancel"} type="danger">
+            Cancel
+          </Button>
+        </>
+      );
+    }
+
+    // mutation has been called and there is no error which means success
+    if(called && !error){
+      return <Alert message="StateType Mappings Done Successfully." type="success" showIcon closable className="shiftRight"/>
+    }
   }
 
   if (error) {
-    // use this to render an error widget in the view.
+    logGraphQlError(".", error);
+    return null;
   }
+
   return (
     <div className="stateTypeWrapper">
-      <div className="controlsWrapper">
+      <div className={"controlsWrapper"}>
         {selectDropdown()}
-        {state.editMode && (
-          <>
-            <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
-              Save
-            </Button>
-            <Button onClick={handleCancelClick} className={"workItemCancel"}>
-              Cancel
-            </Button>
-          </>
-        )}
+        {getButtonElements()}
       </div>
 
-      <div className="chartWrapper">
+      <div className={"chartWrapper"}>
         <WorkItemStateTypeMapChart
           key={key}
           workItemSources={workItemSources}
