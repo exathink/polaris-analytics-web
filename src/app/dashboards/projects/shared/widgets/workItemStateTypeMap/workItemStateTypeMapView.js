@@ -71,9 +71,10 @@ function workItemReducer(state, action) {
 export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
   const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
-      console.log(`Completed: success: ${success}`);
-      dispatch({type: actionTypes.MUTATION_SUCCESS});
-      client.resetStore();
+      if(success) {
+        dispatch({type: actionTypes.MUTATION_SUCCESS});
+        client.resetStore();
+      }
     },
   });
 
