@@ -69,12 +69,11 @@ function workItemReducer(state, action) {
 }
 
 export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
-  const [mutate, {loading, error}] = updateProjectWorkItemSourceStateMaps({
+  const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       console.log(`Completed: success: ${success}`);
       dispatch({type: actionTypes.MUTATION_SUCCESS});
-      // use this to call a 'refresh callback from the parent so that the parent widget re-renders from the server
-      // and reloads the updated state map from the server.
+      client.resetStore();
     },
   });
 
