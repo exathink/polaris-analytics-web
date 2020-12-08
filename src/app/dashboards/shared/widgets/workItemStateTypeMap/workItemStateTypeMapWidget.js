@@ -2,6 +2,7 @@ import React from "react";
 import {useQueryProjectWorkItemsSourceStateMappings} from "../../../projects/shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import {Loading} from "../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../components/graphql/utils";
 
 // can also come from backend
 export const ALL_STATE_TYPES = [
@@ -24,9 +25,19 @@ export const WorkItemStateTypeMapWidget = ({
 }) => {
   const {loading, error, data} = useQueryProjectWorkItemsSourceStateMappings({instanceKey});
   if (loading) return <Loading />;
-  if (error) return "Boom";
+  if (error) {
+    logGraphQlError(".", error);
+    return null;
+  }
 
   const workItemSources = data["project"]["workItemsSources"]["edges"].map((e) => e.node);
 
-  return <WorkItemStateTypeMapView instanceKey={instanceKey} workItemSources={workItemSources} context={context} view={view} />;
+  return (
+    <WorkItemStateTypeMapView
+      instanceKey={instanceKey}
+      workItemSources={workItemSources}
+      context={context}
+      view={view}
+    />
+  );
 };
