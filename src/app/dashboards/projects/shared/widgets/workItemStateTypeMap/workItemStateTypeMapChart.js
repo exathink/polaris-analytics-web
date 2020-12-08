@@ -120,6 +120,10 @@ export const WorkItemStateTypeMapChart = Chart({
                 const newCategoryIndex = e.newPoint.x;
                 const newPointName = e.newPoints[this.id].point.name;
 
+                // moving to unmapped category from other categories is not allowed
+                if(newCategoryIndex === 0){
+                  return false;
+                }
                 // update dropped point here
                 const keyValuePair = {};
                 keyValuePair[newPointName] = allStateTypeKeys[newCategoryIndex];
