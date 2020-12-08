@@ -1,6 +1,6 @@
-import {Chart, Highcharts} from "../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, WorkItemStateTypeColor} from "../../config";
+import {Chart, Highcharts} from "../../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {Colors, WorkItemStateTypeColor} from "../../../../shared/config";
 import {actionTypes} from "./workItemStateTypeMapView";
 import {ALL_STATE_TYPES} from "./workItemStateTypeMapWidget";
 

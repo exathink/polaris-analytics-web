@@ -1,7 +1,7 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 
-import {WorkItemStateTypeMapWidget} from "../../../../shared/widgets/workItemStateTypeMap";
+import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 
 const dashboard_id = "dashboards.project.pipeline.detail";

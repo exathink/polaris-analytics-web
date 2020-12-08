@@ -1,9 +1,9 @@
 import React from "react";
-import {VizItem, VizRow} from "../../containers/layout";
+import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Button, Select} from "antd";
 import "./workItemStateType.css";
-import {updateProjectWorkItemSourceStateMaps} from "../../../projects/shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 
 const {Option} = Select;
 

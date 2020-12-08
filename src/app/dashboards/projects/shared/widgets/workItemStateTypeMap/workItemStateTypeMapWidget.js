@@ -1,8 +1,8 @@
 import React from "react";
-import {useQueryProjectWorkItemsSourceStateMappings} from "../../../projects/shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useQueryProjectWorkItemsSourceStateMappings} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
-import {Loading} from "../../../../components/graphql/loading";
-import {logGraphQlError} from "../../../../components/graphql/utils";
+import {Loading} from "../../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 // can also come from backend
 export const ALL_STATE_TYPES = [
