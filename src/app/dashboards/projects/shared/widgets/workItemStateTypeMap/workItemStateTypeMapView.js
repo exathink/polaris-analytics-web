@@ -9,8 +9,8 @@ const {Option} = Select;
 
 export const actionTypes = {
   REPLACE_WORKITEM_SOURCE: "REPLACE_WORKITEM_SOURCE",
-  UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE"
-}
+  UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE",
+};
 
 function workItemReducer(state, action) {
   switch (action.type) {
@@ -20,15 +20,16 @@ function workItemReducer(state, action) {
       };
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
-      // mutating in-place, as we don't want to rerender
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
-      state.workItemStateMappings.forEach((item) => {
+      const newState = {...state};
+      newState.workItemStateMappings = state.workItemStateMappings.map((item) => {
         if (item.state === key) {
-          item.stateType = value;
+          return {...item, stateType: value};
         }
+        return item;
       });
 
-      return state;
+      return newState;
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -45,13 +46,8 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     },
   });
 
-  function getFreshWorkItemSources() {
-    // as we are not modifying original workItemSources, get fresh copy every time
-    return JSON.parse(JSON.stringify(workItemSources));
-  }
-
   // set first workitemsource as default
-  const [workItemSource] = getFreshWorkItemSources();
+  const [workItemSource] = workItemSources;
   const [state, dispatch] = React.useReducer(workItemReducer, workItemSource);
 
   function handleSaveClick(e) {
@@ -69,13 +65,13 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
 
   // Reset state on cancel
   function handleCancelClick(e) {
-    const workItemSource = getFreshWorkItemSources().find((x) => x.key === state.key);
+    const workItemSource = workItemSources.find((x) => x.key === state.key);
     dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: workItemSource});
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(key) {
-    const workItemSource = getFreshWorkItemSources().find((x) => x.key === key);
+    const workItemSource = workItemSources.find((x) => x.key === key);
     dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: workItemSource});
   }
 
@@ -85,7 +81,9 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
         <div className="workItemSourceLabel">Select WorkItems Source</div>
         <Select defaultValue={state.name} style={{width: 220}} onChange={handleChange}>
           {workItemSources.map((source) => (
-            <Option key={source.key} value={source.key}>{source.name}</Option>
+            <Option key={source.key} value={source.key}>
+              {source.name}
+            </Option>
           ))}
         </Select>
       </div>
@@ -114,7 +112,8 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
           </div>
 
           <WorkItemStateTypeMapChart
-            workItemStateMappings={state.workItemStateMappings}
+            workItemSources={workItemSources}
+            workItemSourceKey={state.key}
             updateDraftState={dispatch}
             view={view}
             context={context}
