@@ -21,15 +21,15 @@ function workItemReducer(state, action) {
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
-      const newState = {...state};
-      newState.workItemStateMappings = state.workItemStateMappings.map((item) => {
-        if (item.state === key) {
-          return {...item, stateType: value};
-        }
-        return item;
-      });
-
-      return newState;
+      return {
+        ...state,
+        workItemStateMappings: state.workItemStateMappings.map((item) => {
+          if (item.state === key) {
+            return {...item, stateType: value};
+          }
+          return item;
+        }),
+      };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
