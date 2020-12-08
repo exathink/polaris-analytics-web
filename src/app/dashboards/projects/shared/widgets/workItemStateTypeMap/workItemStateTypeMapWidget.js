@@ -4,16 +4,6 @@ import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-// can also come from backend
-export const ALL_STATE_TYPES = [
-  {key: "unmapped", displayValue: "Unmapped"},
-  {key: "backlog", displayValue: "Define"},
-  {key: "wip", displayValue: "Build"},
-  {key: "complete", displayValue: "Deliver"},
-  {key: "open", displayValue: "Open"},
-  {key: "closed", displayValue: "Closed"},
-];
-
 export const WorkItemStateTypeMapWidget = ({
   instanceKey,
   latestWorkItemEvent,

@@ -1,13 +1,12 @@
 import {Chart, Highcharts} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, WorkItemStateTypeColor} from "../../../../shared/config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {actionTypes} from "./workItemStateTypeMapView";
-import {ALL_STATE_TYPES} from "./workItemStateTypeMapWidget";
 
 require("highcharts/modules/draggable-points")(Highcharts);
 
 function getAllStateTypeKeys() {
-  return ALL_STATE_TYPES.map((x) => x.key);
+  return Object.keys(WorkItemStateTypeDisplayName);
 }
 
 function getSeries(workItemStateMappings) {
@@ -34,7 +33,7 @@ function getSeries(workItemStateMappings) {
       name: "State Types",
       type: "column",
       showInLegend: false,
-      data: ALL_STATE_TYPES.map(({key, displayValue}, index) => {
+      data: Object.entries(WorkItemStateTypeDisplayName).map(([key, displayValue], index) => {
         return {
           name: displayValue,
           y: 1.2,
@@ -55,13 +54,19 @@ function getSeries(workItemStateMappings) {
 }
 
 function sanitizeStateMappings(workItemStateMappings) {
-  const allStateTypeKeys = getAllStateTypeKeys();
-  const [{key: unMappedKey}] = ALL_STATE_TYPES;
+  // removing unmapped from legal stateTypes
+  const {unmapped: _, ...legalStateTypes} = WorkItemStateTypeDisplayName;
+
+  const unMappedKey = "unmapped";
 
   return workItemStateMappings.map((x) => {
-    if (!allStateTypeKeys.includes(x.stateType)) {
+    if (x.stateType === null) {
       return {...x, stateType: unMappedKey};
+    } else if (legalStateTypes[x.stateType] === undefined) {
+      // we are here, means, x.stateType is not null and also its not one of legal state types
+      throw new Error(`${x.stateType} is not one of legal stateTypes.`);
     }
+
     return x;
   });
 }
@@ -77,7 +82,7 @@ export const WorkItemStateTypeMapChart = Chart({
     const series = getSeries(stateMappings);
 
     const allStateTypeKeys = getAllStateTypeKeys();
-    const allStateTypeDisplayValues = ALL_STATE_TYPES.map((x) => x.displayValue);
+    const allStateTypeDisplayValues = Object.values(WorkItemStateTypeDisplayName);
 
     return {
       chart: {
