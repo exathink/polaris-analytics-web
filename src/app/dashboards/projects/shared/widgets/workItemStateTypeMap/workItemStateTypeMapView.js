@@ -11,14 +11,16 @@ export const actionTypes = {
   REPLACE_WORKITEM_SOURCE: "REPLACE_WORKITEM_SOURCE",
   UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE",
   CANCEL_EDIT_MODE: "CANCEL_EDIT_MODE",
-  MUTATION_SUCCESS: "MUTATION_SUCCESS"
+  MUTATION_SUCCESS: "MUTATION_SUCCESS",
+  SHOW_UNMAPPED_ERROR: "SHOW_UNMAPPED_ERROR",
 };
 
-// mini state machine to handle states for control
+// mini state machine to handle states for button and alert controls
 const mode = {
   INIT: "INIT",
   EDITING: "EDITING",
   SUCCESS: "SUCCESS",
+  UNMAPPED_ERROR: "UNMAPPED_ERROR",
 };
 
 function workItemReducer(state, action) {
@@ -38,8 +40,14 @@ function workItemReducer(state, action) {
     case actionTypes.MUTATION_SUCCESS: {
       return {
         ...state,
-        mode: mode.SUCCESS
-      }
+        mode: mode.SUCCESS,
+      };
+    }
+    case actionTypes.SHOW_UNMAPPED_ERROR: {
+      return {
+        ...state,
+        mode: mode.UNMAPPED_ERROR,
+      };
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
@@ -75,6 +83,15 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
   const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
 
   function handleSaveClick(e) {
+    // show error if we have stateType values as null
+    const isAnyStateTypeUnmapped = state.workItemStateMappings.some((x) => x.stateType === null);
+    if (isAnyStateTypeUnmapped) {
+      dispatch({type: actionTypes.SHOW_UNMAPPED_ERROR});
+
+      // if we have error here, don't proceed further.
+      return;
+    }
+
     // call the mutation function to update data from here
     const payload = [
       {
@@ -136,6 +153,18 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
             Cancel
           </Button>
         </>
+      );
+    }
+
+    if (state.mode === mode.UNMAPPED_ERROR) {
+      return (
+        <Alert
+          message="Before saving your changes, please map all the states from unmapped stateType."
+          type="error"
+          showIcon
+          closable
+          className="shiftRight"
+        />
       );
     }
 
