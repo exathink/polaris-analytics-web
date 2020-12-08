@@ -63,10 +63,12 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     mutate({variables: {projectKey: instanceKey, workItemsSourceStateMaps: payload}});
   }
 
+  // utilizing this trick to reset component (changing the key will remount the component with same props)
+  const [key, setKey] = React.useState(1);
   // Reset state on cancel
   function handleCancelClick(e) {
-    const workItemSource = workItemSources.find((x) => x.key === state.key);
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: workItemSource});
+    const newKey = key === 1 ? 2 : 1;
+    setKey(newKey);
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
@@ -112,6 +114,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
           </div>
 
           <WorkItemStateTypeMapChart
+            key={key}
             workItemSources={workItemSources}
             workItemSourceKey={state.key}
             updateDraftState={dispatch}
