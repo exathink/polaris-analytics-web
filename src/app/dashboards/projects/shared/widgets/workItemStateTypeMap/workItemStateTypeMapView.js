@@ -1,5 +1,4 @@
 import React from "react";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Button, Select} from "antd";
 import "./workItemStateType.css";
@@ -110,34 +109,32 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     // use this to render an error widget in the view.
   }
   return (
-    <VizRow h={"100%"}>
-      <VizItem w={1}>
-        <div style={{width: "100%", height: "100%"}}>
-          <div className="workItemFlex spacex12 my12">
-            {selectDropdown()}
-            {state.editMode && (
-              <>
-                <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
-                  Save
-                </Button>
-                <Button onClick={handleCancelClick} className={"workItemCancel"}>
-                  Cancel
-                </Button>
-              </>
-            )}
-          </div>
+    <div className="stateTypeWrapper">
+      <div className="controlsWrapper">
+        {selectDropdown()}
+        {state.editMode && (
+          <>
+            <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
+              Save
+            </Button>
+            <Button onClick={handleCancelClick} className={"workItemCancel"}>
+              Cancel
+            </Button>
+          </>
+        )}
+      </div>
 
-          <WorkItemStateTypeMapChart
-            key={key}
-            workItemSources={workItemSources}
-            workItemSourceKey={state.key}
-            updateDraftState={dispatch}
-            view={view}
-            context={context}
-            title={" "}
-          />
-        </div>
-      </VizItem>
-    </VizRow>
+      <div className="chartWrapper">
+        <WorkItemStateTypeMapChart
+          key={key}
+          workItemSources={workItemSources}
+          workItemSourceKey={state.key}
+          updateDraftState={dispatch}
+          view={view}
+          context={context}
+          title={" "}
+        />
+      </div>
+    </div>
   );
 };
