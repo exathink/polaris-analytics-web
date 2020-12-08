@@ -84,7 +84,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(key) {
     const workItemSource = workItemSources.find((x) => x.key === key);
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: workItemSource});
+    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, editMode: false}});
   }
 
   function selectDropdown() {
