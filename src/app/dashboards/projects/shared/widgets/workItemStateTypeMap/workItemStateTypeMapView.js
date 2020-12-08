@@ -103,9 +103,8 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
   }
 
   function selectDropdown() {
-    return (
+    return workItemSources.length > 1 ? (
       <div>
-        <div className="workItemSourceLabel">Select WorkItems Source</div>
         <Select defaultValue={state.name} style={{width: 200}} onChange={handleChange}>
           {workItemSources.map((source) => (
             <Option key={source.key} value={source.key}>
@@ -114,7 +113,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
           ))}
         </Select>
       </div>
-    );
+    ) : null;
   }
 
   function getButtonElements() {
@@ -130,10 +129,10 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={"workItemSave"} type="primary">
+          <Button onClick={handleSaveClick} className={"workItemSave"} type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className={"workItemCancel"} type="danger">
+          <Button onClick={handleCancelClick} className={"workItemCancel"} type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -141,15 +140,7 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
     }
 
     if (state.mode === mode.SUCCESS) {
-      return (
-        <Alert
-          message="StateType Mappings Done Successfully."
-          type="success"
-          showIcon
-          closable
-          className="shiftRight"
-        />
-      );
+      return <Alert message="Mapping updated successfully." type="success" showIcon closable className="shiftRight" />;
     }
   }
 
