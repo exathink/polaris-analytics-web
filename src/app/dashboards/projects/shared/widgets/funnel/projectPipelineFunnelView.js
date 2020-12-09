@@ -7,7 +7,6 @@ import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 export const ProjectPipelineFunnelView = (
   {
     workItemStateTypeCounts,
-    specStateTypeCounts,
     totalEffortByStateType,
     workItemScope,
     setWorkItemScope,
@@ -25,9 +24,7 @@ export const ProjectPipelineFunnelView = (
 
           <PipelineFunnelChart
             workItemStateTypeCounts={workItemStateTypeCounts}
-            specStateTypeCounts={specStateTypeCounts}
             totalEffortByStateType={totalEffortByStateType}
-
             title={' '}
             grouping={workItemScope}
           />
