@@ -51,9 +51,10 @@ export async function renderedChart(chartComponent) {
 // mocks is mockApi response for MockedProvider
 export async function renderedWidget(widgetComponent, mocks) {
   const chartSpy = jest.fn((x) => x);
+  const configSpy = jest.fn((x) => x);
 
   const results = render(
-    <SpyContext.Provider value={{onChartUpdated: chartSpy}}>{widgetComponent}</SpyContext.Provider>,
+    <SpyContext.Provider value={{onChartUpdated: chartSpy, configSpy: configSpy}}>{widgetComponent}</SpyContext.Provider>,
     {
       wrapper: getAppProviders(mocks),
     }
@@ -61,7 +62,7 @@ export async function renderedWidget(widgetComponent, mocks) {
 
   // it'll wait until the mock function has been called once.
   await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
-  return {chartConfig: chartSpy.mock.results[0].value, ...results};
+  return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value, ...results};
 }
 
 
