@@ -1,7 +1,7 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
 
-import gql from 'graphql-tag';
-import {Query} from 'react-apollo';
 import {analytics_service} from '../../../../services/graphql';
 
 import {CompactTable} from "../../../../components/tables";

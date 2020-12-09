@@ -1,5 +1,5 @@
+import { Mutation } from "@apollo/client/react/components";
 import React from 'react';
-import {Mutation} from 'react-apollo';
 import {refetchQueries} from "./utils";
 
 import {TrackingReceiptMonitor} from "./trackingReceiptMonitor";

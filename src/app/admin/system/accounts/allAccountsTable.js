@@ -1,10 +1,11 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
+
 import React from 'react';
 
 import {Table} from 'antd';
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {Query} from 'react-apollo';
-import gql from 'graphql-tag';
 import {analytics_service} from '../../../services/graphql';
 import {withAntPagination} from "../../../components/graphql/withAntPagination";
 

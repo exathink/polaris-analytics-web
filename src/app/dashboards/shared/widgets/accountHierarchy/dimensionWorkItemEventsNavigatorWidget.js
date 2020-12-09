@@ -1,7 +1,7 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React, {useState} from 'react';
 
-import {Query} from 'react-apollo';
-import gql from 'graphql-tag';
 import {Loading} from "../../../../components/graphql/loading";
 import {getLatest, getReferenceString} from "../../../../helpers/utility";
 import {analytics_service} from '../../../../services/graphql/index'

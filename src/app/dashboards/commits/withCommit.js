@@ -1,8 +1,8 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
-import gql from "graphql-tag";
 import {Loading} from "../../components/graphql/loading";
-import {Query} from "react-apollo";
 
 
 export const WithCommit = ({commitKey, render}) => (

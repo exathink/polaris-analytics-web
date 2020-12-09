@@ -1,9 +1,9 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
-import gql from "graphql-tag";
 
 import Button from "../../../../../components/uielements/button";
 import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
-import {Query} from "react-apollo";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";

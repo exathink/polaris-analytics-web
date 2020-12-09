@@ -1,6 +1,6 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
-import {Query} from "react-apollo";
-import gql from "graphql-tag";
 
 import {Spin, Progress} from "antd";
 import {work_tracking_service} from "../../../../services/graphql/index";
