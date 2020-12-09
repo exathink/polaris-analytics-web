@@ -1,6 +1,6 @@
 import React from "react";
 import {render, waitFor} from "@testing-library/react";
-import {AppProviders} from "../../../../test/providers";
+import {AppProviders, getAppProviders} from "../../../../test/providers";
 import {SpyContext} from "./chartSpyContext";
 
 import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
@@ -47,6 +47,23 @@ export async function renderedChart(chartComponent) {
   await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
   return chartSpy.mock.results[0].value;
 }
+
+// mocks is mockApi response for MockedProvider
+export async function renderedWidget(widgetComponent, mocks) {
+  const chartSpy = jest.fn((x) => x);
+
+  const results = render(
+    <SpyContext.Provider value={{onChartUpdated: chartSpy}}>{widgetComponent}</SpyContext.Provider>,
+    {
+      wrapper: getAppProviders(mocks),
+    }
+  );
+
+  // it'll wait until the mock function has been called once.
+  await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
+  return {chartConfig: chartSpy.mock.results[0].value, ...results};
+}
+
 
 /**
  * will return first argument of tooltipHtml function for all points
