@@ -7,13 +7,13 @@ import {Highcharts} from "../../../../../framework/viz/charts/chartWrapper";
 require('highcharts/modules/funnel')(Highcharts);
 
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'specStateTypeCounts', 'totalEffortByStateType', 'grouping'),
+  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'totalEffortByStateType', 'grouping'),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItemStateTypeCounts, specStateTypeCounts, totalEffortByStateType, title, grouping, intl}) => {
+  getConfig: ({workItemStateTypeCounts, totalEffortByStateType, title, grouping, intl}) => {
 
-    const selectedSummary = grouping === 'specs' ? specStateTypeCounts : workItemStateTypeCounts;
+    const selectedSummary = workItemStateTypeCounts;
 
     return {
       chart: {

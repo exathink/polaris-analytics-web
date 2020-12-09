@@ -23,20 +23,19 @@ export const ProjectPipelineFunnelWidget = (
     {
       instanceKey,
       closedWithinDays: days,
+      specsOnly: selectedGrouping === 'specs',
       referenceString: getLatest(latestWorkItemEvent, latestCommit)
-
     }
   )
   if (loading ) return <Loading/>;
   if (error) return null;
-  const {workItemStateTypeCounts, specStateTypeCounts, totalEffortByStateType} = data['project'];
+  const {workItemStateTypeCounts, totalEffortByStateType} = data['project'];
 
 
   return view === "primary" ? (
     <ProjectPipelineFunnelView
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
-      specStateTypeCounts={specStateTypeCounts}
       totalEffortByStateType={totalEffortByStateType}
       workItemScope={workItemScope || selectedGrouping}
       setWorkItemScope={setWorkItemScope || setSelectedGrouping}
