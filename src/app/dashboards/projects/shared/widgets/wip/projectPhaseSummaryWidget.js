@@ -12,13 +12,17 @@ export const ProjectPhaseSummaryWidget = (
     view
   }
 ) => {
-  const {loading, error, data} = useQueryProjectPipelineSummary({instanceKey, referenceString: latestWorkItemEvent})
+  const {loading, error, data} = useQueryProjectPipelineSummary({
+    instanceKey,
+    specsOnly: specsOnly,
+    referenceString: latestWorkItemEvent
+  })
     if (loading ) return <Loading/>;
     if (error) return null;
-    const  {workItemStateTypeCounts, specStateTypeCounts} = data['project'];
+    const  {workItemStateTypeCounts} = data['project'];
     return (
       <ProjectPipelinePhaseSummaryView
-        model={specsOnly ? specStateTypeCounts : workItemStateTypeCounts}
+        model={workItemStateTypeCounts}
         stateMappingIndex={stateMappingIndex}
       />
     )

@@ -2,14 +2,15 @@ import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 
-export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly,  closedWithinDays}) {
+export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly, specsOnly, closedWithinDays}) {
   return useQuery(
     gql`
-     query projectPipelineSummary($key: String!, $defectsOnly: Boolean, $closedWithinDays: Int, $referenceString: String) {
+     query projectPipelineSummary($key: String!, $defectsOnly: Boolean, $closedWithinDays: Int, $specsOnly: Boolean, $referenceString: String) {
       project(
         key: $key, interfaces: [WorkItemStateTypeAggregateMetrics],
         defectsOnly: $defectsOnly, 
         closedWithinDays: $closedWithinDays, 
+        specsOnly: $specsOnly,
         referenceString: $referenceString) {
         
           workItemStateTypeCounts {
@@ -20,14 +21,6 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
             closed
             unmapped
           }
-          specStateTypeCounts {
-            backlog
-            open
-            wip
-            complete
-            closed
-            unmapped
-         }
           totalEffortByStateType {
             backlog
             open
@@ -45,7 +38,8 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
         key: instanceKey,
         referenceString: referenceString,
         defectsOnly: defectsOnly,
-        closedWithinDays: closedWithinDays
+        closedWithinDays: closedWithinDays,
+        specsOnly: specsOnly
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()

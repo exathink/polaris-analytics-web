@@ -77,7 +77,7 @@ export const WorkItemStateTypeMapChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
 
   getConfig: ({workItemSources, workItemSourceKey, updateDraftState, title, subtitle, intl, view}) => {
-    const {workItemStateMappings} = workItemSources.find(x => x.key === workItemSourceKey);
+    const {workItemStateMappings} = workItemSources.find((x) => x.key === workItemSourceKey);
     // cleanup workItemStateMappings
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
@@ -94,14 +94,13 @@ export const WorkItemStateTypeMapChart = Chart({
         text: `Value Stream Mapping`,
       },
       subtitle: {
-        text: `Drag a work item state to its desired phase to edit mapping.`
+        text: `Drag a work item state to its desired phase to edit mapping.`,
       },
       xAxis: {
         categories: allStateTypeDisplayValues,
         title: {
-          text: 'Phase'
-        }
-
+          text: "Phase",
+        },
       },
       yAxis: {
         visible: false,
@@ -127,8 +126,20 @@ export const WorkItemStateTypeMapChart = Chart({
                 const newCategoryIndex = e.newPoint.x;
                 const newPointName = e.newPoints[this.id].point.name;
 
+                // resize of state bar should not update parent draft state
+                // stops resize of state bar
+                if (newCategoryIndex === undefined) {
+                  return false;
+                }
+
+                const prevCategory = e.origin.points[this.id].point.x;
+                // dropping on the same stateType should not update parent draft state
+                if (newCategoryIndex === prevCategory) {
+                  return false;
+                }
+
                 // moving to unmapped category from other categories is not allowed
-                if(newCategoryIndex === 0){
+                if (newCategoryIndex === 0) {
                   return false;
                 }
                 // update dropped point here
