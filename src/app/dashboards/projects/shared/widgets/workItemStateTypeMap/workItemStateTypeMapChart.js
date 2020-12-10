@@ -152,6 +152,9 @@ export const WorkItemStateTypeMapChart = Chart({
         enabled: false,
       },
       series: series,
+      time: {
+        useUTC: false,
+      },
     };
   },
 });
