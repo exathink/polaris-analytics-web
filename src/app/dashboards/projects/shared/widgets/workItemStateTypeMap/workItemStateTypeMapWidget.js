@@ -16,12 +16,17 @@ export const WorkItemStateTypeMapWidget = ({
   const {loading, error, data} = useQueryProjectWorkItemsSourceStateMappings({instanceKey});
   if (loading) return <Loading />;
   if (error) {
-    logGraphQlError(".", error);
+    logGraphQlError("useQueryProjectWorkItemsSourceStateMappings", error);
     return null;
   }
 
   const workItemSources = data["project"]["workItemsSources"]["edges"].map((e) => e.node);
 
+  // handle empty workItemSources
+  if (workItemSources.length === 0) {
+    return null;
+  }
+  
   return (
     <WorkItemStateTypeMapView
       instanceKey={instanceKey}

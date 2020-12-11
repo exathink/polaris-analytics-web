@@ -1,8 +1,9 @@
 import React from "react";
 import {WorkItemStateTypeMapWidget} from "./workItemStateTypeMapWidget";
 import {GET_STATE_MAPPING_QUERY} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
-import '@testing-library/jest-dom/extend-expect'
-import {renderedWidget} from "../../../../../framework/viz/charts/chart-test-utils";
+import "@testing-library/jest-dom/extend-expect";
+import {renderComponentWithMockedProvider} from "../../../../../framework/viz/charts/chart-test-utils";
+import { waitFor } from "@testing-library/react";
 
 const mocks = [
   {
@@ -141,13 +142,52 @@ describe("WorkItemStateTypeMapWidget", () => {
       latestWorkItemEvent: "2020-12-05T13:51:14.261000",
       latestCommit: "2020-12-05T03:32:50",
       days: 30,
-      view: "primary",
+      view: "detail",
     };
 
-    const {getByText, chartConfig} = await renderedWidget(
+    const {getByText} = renderComponentWithMockedProvider(
       <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
       mocks
     );
+
+    await waitFor(() => getByText(/Value Stream Mapping/i));
     expect(getByText(/Value Stream Mapping/)).toBeInTheDocument();
   });
+
+  test('when there are no workItemSources', async () => {
+    const stateTypeWidgetPropsFixture = {
+      instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+      context: {},
+      latestWorkItemEvent: "2020-12-05T13:51:14.261000",
+      latestCommit: "2020-12-05T03:32:50",
+      days: 30,
+      view: "detail",
+    };
+
+    const mocksWithEmptyWorkItemSources = [
+      {
+        request: {
+          query: GET_STATE_MAPPING_QUERY,
+          variables: {
+            projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          },
+        },
+        result: {
+          data: {
+            project: {
+              workItemsSources: {
+                edges: [],
+              },
+            },
+          },
+        },
+      },
+    ];
+    const {queryByText} = await renderComponentWithMockedProvider(
+      <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
+      mocksWithEmptyWorkItemSources
+    );
+    await waitFor(() => queryByText(/Value Stream Mapping/i));
+    expect(queryByText(/Value Stream Mapping/)).not.toBeInTheDocument();
+  })
 });
