@@ -1,7 +1,7 @@
 import {Chart, Highcharts} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
-import {actionTypes} from "./workItemStateTypeMapView";
+import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
 
@@ -123,16 +123,17 @@ export const WorkItemStateTypeMapChart = Chart({
           point: {
             events: {
               drop: function (e) {
-                const newCategoryIndex = e.newPoint.x;
-                const newPointName = e.newPoints[this.id].point.name;
+                // 'this' here represents point being dragged.
+                const point = this;
 
+                const newCategoryIndex = e.newPoint.x;
                 // resize of state bar should not update parent draft state
                 // stops resize of state bar
                 if (newCategoryIndex === undefined) {
                   return false;
                 }
 
-                const prevCategory = e.origin.points[this.id].point.x;
+                const prevCategory = point.x;
                 // dropping on the same stateType should not update parent draft state
                 if (newCategoryIndex === prevCategory) {
                   return false;
@@ -144,7 +145,7 @@ export const WorkItemStateTypeMapChart = Chart({
                 }
                 // update dropped point here
                 const keyValuePair = {};
-                keyValuePair[newPointName] = allStateTypeKeys[newCategoryIndex];
+                keyValuePair[point.name] = allStateTypeKeys[newCategoryIndex];
                 updateDraftState({type: actionTypes.UPDATE_WORKITEM_SOURCE, payload: {keyValuePair}});
               },
             },

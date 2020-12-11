@@ -281,7 +281,6 @@ describe("WorkItemStateTypeMapChart", () => {
       const basePedestalSeries = series.find((s, i) => i === series.length - 1);
 
       test("it maps categories index to x axis and sets y to a fix value", () => {
-        debugger;
         expectSetsAreEqual(
           // each state bar is modelled as series with single point.
           basePedestalSeries.data.map((point) => [point.x, point.y]),
