@@ -1,4 +1,5 @@
 import React from "react";
+import "@testing-library/jest-dom/extend-expect";
 import {render, waitFor} from "@testing-library/react";
 import {AppProviders, getAppProviders} from "../../../../test/providers";
 import {SpyContext} from "./chartSpyContext";
@@ -48,13 +49,18 @@ export async function renderedChart(chartComponent) {
   return chartSpy.mock.results[0].value;
 }
 
-// mocks is mockApi response for MockedProvider
-export async function renderedWidget(widgetComponent, mocks) {
+/**
+ * 1. render with MockedProvider from apollo, useful to render components which are using hooks for calling apis
+ * 2. mocks is mockApi response for MockedProvider
+ * 3. this function spys on chart and config, so its important that it renders the whole tree till the Chart component.
+ *
+ */
+export async function renderWithMockedProvider(component, mocks) {
   const chartSpy = jest.fn((x) => x);
   const configSpy = jest.fn((x) => x);
 
   const results = render(
-    <SpyContext.Provider value={{onChartUpdated: chartSpy, configSpy: configSpy}}>{widgetComponent}</SpyContext.Provider>,
+    <SpyContext.Provider value={{onChartUpdated: chartSpy, configSpy: configSpy}}>{component}</SpyContext.Provider>,
     {
       wrapper: getAppProviders(mocks),
     }
@@ -65,6 +71,14 @@ export async function renderedWidget(widgetComponent, mocks) {
   return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value, ...results};
 }
 
+/**
+ *
+ * renders any component with MockedProvider from apollo
+ * without spys (needed if whole tree is not rendered till Chart component.)
+ */
+export function renderComponentWithMockedProvider(component, mocks) {
+  return render(component, {wrapper: getAppProviders(mocks)});
+}
 
 /**
  * will return first argument of tooltipHtml function for all points
@@ -75,7 +89,7 @@ export async function renderedWidget(widgetComponent, mocks) {
  * @param {*} seriesIndex : index of the series of series arr from chart config
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
-export async function renderedTooltipConfig(chartComponent, mapper= point => point, seriesIndex = 0) {
+export async function renderedTooltipConfig(chartComponent, mapper = (point) => point, seriesIndex = 0) {
   const {series} = await renderedChart(chartComponent);
   const {points} = series[seriesIndex];
 
@@ -104,15 +118,15 @@ export async function renderedTooltipConfig(chartComponent, mapper= point => poi
  * @param {*} seriesIndex : index of the series of series arr from chart config
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
-export async function renderedDataLabels(chartComponent, mapper= point => point, seriesIndex = 0) {
+export async function renderedDataLabels(chartComponent, mapper = (point) => point, seriesIndex = 0) {
   const config = renderedChartConfig(chartComponent);
   const {formatter} = config.series[seriesIndex].dataLabels;
-  
+
   expect(formatter).toBeDefined();
 
   const {series} = await renderedChart(chartComponent);
   const {points} = series[seriesIndex];
-  
+
   // get the points after applying mapper
   const testPoints = mapper(points);
 
@@ -122,9 +136,3 @@ export async function renderedDataLabels(chartComponent, mapper= point => point,
     return formatter.bind({point: point})();
   });
 }
-
-
-
-
-
-
