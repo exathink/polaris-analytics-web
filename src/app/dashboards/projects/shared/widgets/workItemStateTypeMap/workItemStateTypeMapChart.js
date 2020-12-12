@@ -1,6 +1,6 @@
 import {Chart, Highcharts} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {Colors, WorkItemStateTypes, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
@@ -54,14 +54,11 @@ function getSeries(workItemStateMappings) {
 }
 
 function sanitizeStateMappings(workItemStateMappings) {
-  // removing unmapped from legal stateTypes
-  const {unmapped: _, ...legalStateTypes} = WorkItemStateTypeDisplayName;
-
-  const unMappedKey = "unmapped";
+  const {...legalStateTypes} = WorkItemStateTypeDisplayName;
 
   return workItemStateMappings.map((x) => {
     if (x.stateType === null) {
-      return {...x, stateType: unMappedKey};
+      return {...x, stateType: "unmapped"};
     } else if (legalStateTypes[x.stateType] === undefined) {
       // we are here, means, x.stateType is not null and also its not one of legal state types
       throw new Error(`${x.stateType} is not one of legal stateTypes.`);
