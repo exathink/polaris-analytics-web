@@ -3,7 +3,7 @@ import {WorkItemStateTypeMapWidget} from "./workItemStateTypeMapWidget";
 import {GET_STATE_MAPPING_QUERY} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import "@testing-library/jest-dom/extend-expect";
 import {renderComponentWithMockedProvider} from "../../../../../framework/viz/charts/chart-test-utils";
-import { waitFor } from "@testing-library/react";
+import {screen} from "@testing-library/react";
 
 const mocks = [
   {
@@ -135,26 +135,7 @@ const mocks = [
 ];
 
 describe("WorkItemStateTypeMapWidget", () => {
-  test("renders widget without error", async () => {
-    const stateTypeWidgetPropsFixture = {
-      instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
-      context: {},
-      latestWorkItemEvent: "2020-12-05T13:51:14.261000",
-      latestCommit: "2020-12-05T03:32:50",
-      days: 30,
-      view: "detail",
-    };
-
-    const {getByText} = renderComponentWithMockedProvider(
-      <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
-      mocks
-    );
-
-    await waitFor(() => getByText(/Value Stream Mapping/i));
-    expect(getByText(/Value Stream Mapping/)).toBeInTheDocument();
-  });
-
-  test('when there are no workItemSources', async () => {
+  describe("when there are no workItemSources", async () => {
     const stateTypeWidgetPropsFixture = {
       instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
       context: {},
@@ -183,11 +164,64 @@ describe("WorkItemStateTypeMapWidget", () => {
         },
       },
     ];
-    const {queryByText} = await renderComponentWithMockedProvider(
-      <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
-      mocksWithEmptyWorkItemSources
-    );
-    await waitFor(() => queryByText(/Value Stream Mapping/i));
-    expect(queryByText(/Value Stream Mapping/)).not.toBeInTheDocument();
-  })
+
+    test('it renders no data', async () => {
+      renderComponentWithMockedProvider(
+        <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
+        mocksWithEmptyWorkItemSources
+      );
+
+      await screen.findByTestId("loading-spinner");
+      await screen.findByTestId("no-data");
+    })
+  });
+
+  describe("when there is one work item source", () => {
+    const stateTypeWidgetPropsFixture = {
+      instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+      context: {},
+      latestWorkItemEvent: "2020-12-05T13:51:14.261000",
+      latestCommit: "2020-12-05T03:32:50",
+      days: 30,
+      view: "detail",
+    };
+  });
+
+  describe("when there are multiple work item sources", () => {
+    const stateTypeWidgetPropsFixture = {
+      instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+      context: {},
+      latestWorkItemEvent: "2020-12-05T13:51:14.261000",
+      latestCommit: "2020-12-05T03:32:50",
+      days: 30,
+      view: "detail",
+    };
+
+    test("it shows a loading spinner", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      await screen.findByTestId("loading-spinner");
+    });
+
+    test("it shows the name of the first work item source in the dropdown title", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      const dropDown = await screen.findByRole("combobox");
+      expect(screen.getByText(/Polaris Platform/, dropDown)).toBeDefined();
+    });
+
+    test("it shows the chart title", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      await screen.findByText(/Value Stream Mapping/i);
+    });
+
+    test("it shows the chart sub title", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      await screen.findByText(/Drag/i);
+    });
+
+    test("it does not show the save/cancel button", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      const dropDown = await screen.findByRole("combobox");
+      expect(screen.queryByRole("button")).toBeNull();
+    });
+  });
 });
