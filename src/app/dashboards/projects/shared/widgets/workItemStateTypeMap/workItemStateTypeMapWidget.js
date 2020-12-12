@@ -22,17 +22,14 @@ export const WorkItemStateTypeMapWidget = ({
 
   const workItemSources = data["project"]["workItemsSources"]["edges"].map((e) => e.node);
 
-  // handle empty workItemSources
-  if (workItemSources.length === 0) {
-    return null;
-  }
-  
-  return (
+  return workItemSources.length > 0 ? (
     <WorkItemStateTypeMapView
       instanceKey={instanceKey}
       workItemSources={workItemSources}
       context={context}
       view={view}
     />
+  ) : (
+    <div data-testid="no-data">There are no work streams in this value stream</div>
   );
 };
