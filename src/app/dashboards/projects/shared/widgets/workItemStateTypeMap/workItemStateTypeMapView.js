@@ -120,7 +120,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   }
 
   return (
-    <div className="stateTypeWrapper">
+    <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
         {selectDropdown()}
         {getButtonElements()}
