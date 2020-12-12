@@ -3,7 +3,7 @@ import {WorkItemStateTypeMapWidget} from "./workItemStateTypeMapWidget";
 import {GET_STATE_MAPPING_QUERY} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import "@testing-library/jest-dom/extend-expect";
 import {renderComponentWithMockedProvider} from "../../../../../framework/viz/charts/chart-test-utils";
-import {screen} from "@testing-library/react";
+import {waitFor, screen} from "@testing-library/react";
 
 const mocks = [
   {
@@ -185,6 +185,96 @@ describe("WorkItemStateTypeMapWidget", () => {
       days: 30,
       view: "detail",
     };
+
+    const mockWithSingleWorkItemSource = [
+      {
+        request: {
+          query: GET_STATE_MAPPING_QUERY,
+          variables: {
+            projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          },
+        },
+        result: {
+          data: {
+            project: {
+              workItemsSources: {
+                edges: [
+                  {
+                    node: {
+                      key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+                      name: "Polaris",
+                      workItemStateMappings: [
+
+                        {
+                          state: "backlog",
+                          stateType: "backlog",
+                        },
+                        {
+                          state: "upnext",
+                          stateType: "open",
+                        },
+                        {
+                          state: "doing",
+                          stateType: "wip",
+                        },
+                        {
+                          state: "done",
+                          stateType: "complete",
+                        },
+                        {
+                          state: "released",
+                          stateType: "closed",
+                        },
+                        {
+                          state: "rejected",
+                          stateType: null,
+                        },
+                        {
+                          state: "blocked",
+                          stateType: "unmapped",
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    test("it shows a loading spinner", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mockWithSingleWorkItemSource);
+      await screen.findByTestId("loading-spinner");
+    });
+
+    test("it does not shows a dropdown to select work item sources", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mockWithSingleWorkItemSource);
+      // need to wait until the view has rendered to test that the combo box is NOT displayed. Otherwise
+      // it will pass trivially.
+      await screen.findByTestId("state-type-map-view");
+
+      expect(screen.queryByRole("combobox")).toBeNull();
+
+    });
+
+    test("it shows the chart title", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mockWithSingleWorkItemSource);
+      await screen.findByText(/Value Stream Mapping/i);
+    });
+
+    test("it shows the chart sub title", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mockWithSingleWorkItemSource);
+      await screen.findByText(/Drag/i);
+    });
+
+    test("it does not show the save/cancel button", async () => {
+      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mockWithSingleWorkItemSource);
+      await screen.findByTestId('state-type-map-view')
+      expect(screen.queryByRole("button")).toBeNull();
+    });
+
   });
 
   describe("when there are multiple work item sources", () => {
@@ -220,7 +310,8 @@ describe("WorkItemStateTypeMapWidget", () => {
 
     test("it does not show the save/cancel button", async () => {
       renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
-      const dropDown = await screen.findByRole("combobox");
+      // need to wait for the view to render to check the button is NOT rendered. Otherwise it will pass trivially
+      await screen.findByTestId('state-type-map-view')
       expect(screen.queryByRole("button")).toBeNull();
     });
   });
