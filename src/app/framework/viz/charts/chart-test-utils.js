@@ -5,6 +5,9 @@ import {AppProviders, getAppProviders} from "../../../../test/providers";
 import {SpyContext} from "./chartSpyContext";
 
 import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
+
+export const gqlUtils = require("./../../../components/graphql/utils")
+
 // mock tooltipHtml function of tooltip module
 jest.mock("./tooltip", () => {
   return {
