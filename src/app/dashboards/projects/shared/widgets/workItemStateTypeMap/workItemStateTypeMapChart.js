@@ -1,6 +1,6 @@
 import {Chart, Highcharts} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, WorkItemStateTypes, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
