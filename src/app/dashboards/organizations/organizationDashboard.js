@@ -1,11 +1,11 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
-import gql from "graphql-tag";
 import moment from 'moment';
 
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {Query} from "react-apollo";
 import ContributorsTopic from "./contributors/topic";
 
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";

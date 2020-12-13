@@ -1,6 +1,6 @@
+import { gql } from "@apollo/client";
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
-import gql from "graphql-tag";
 import ReactGA from 'react-ga';
 
 

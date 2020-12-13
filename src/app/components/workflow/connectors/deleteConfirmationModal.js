@@ -1,7 +1,6 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
-
-import {Query} from "react-apollo";
-import gql from "graphql-tag";
 
 import {Modal} from 'antd';
 import Button from "../../../../components/uielements/button";

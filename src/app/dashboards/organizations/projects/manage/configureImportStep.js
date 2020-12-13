@@ -1,8 +1,8 @@
+import {gql} from "@apollo/client";
+import {Query} from "@apollo/client/react/components"
 import React from 'react';
 
-import {Query} from "react-apollo";
 import {analytics_service} from "../../../../services/graphql";
-import gql from "graphql-tag";
 
 import {Radio} from "antd";
 

@@ -1,5 +1,5 @@
+import { ApolloProvider, gql } from "@apollo/client";
 import React from 'react';
-import {ApolloProvider} from 'react-apollo';
 
 import {SelectIntegrationStep} from "./selectIntegrationStep";
 import {SelectConnectorStep} from "./selectConnectorStep";
@@ -7,7 +7,6 @@ import {REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY, SelectProjectsStep} from "./
 import {ConfigureImportStep} from "./configureImportStep";
 import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
-import gql from "graphql-tag";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 

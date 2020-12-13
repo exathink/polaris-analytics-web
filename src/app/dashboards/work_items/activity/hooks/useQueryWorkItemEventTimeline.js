@@ -1,5 +1,4 @@
-import {useQuery} from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent, latestWorkItemCommit}) {

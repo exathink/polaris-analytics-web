@@ -1,7 +1,6 @@
+import {gql} from "@apollo/client";
+import {Mutation} from "@apollo/client/react/components"
 import React from 'react';
-
-import gql from "graphql-tag";
-import {Mutation} from "react-apollo";
 
 import AccountSetupForm from './accountSetupForm';
 import Box from '../../../../components/utility/box';

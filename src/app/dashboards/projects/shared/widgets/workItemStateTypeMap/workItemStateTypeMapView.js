@@ -4,74 +4,15 @@ import {Alert, Button, Select} from "antd";
 import "./workItemStateType.css";
 import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {workItemReducer} from "./workItemReducer";
+import {mode, actionTypes} from "./constants";
 
 const {Option} = Select;
 
-export const actionTypes = {
-  REPLACE_WORKITEM_SOURCE: "REPLACE_WORKITEM_SOURCE",
-  UPDATE_WORKITEM_SOURCE: "UPDATE_WORKITEM_SOURCE",
-  CANCEL_EDIT_MODE: "CANCEL_EDIT_MODE",
-  MUTATION_SUCCESS: "MUTATION_SUCCESS",
-  SHOW_UNMAPPED_ERROR: "SHOW_UNMAPPED_ERROR",
-};
-
-// mini state machine to handle states for button and alert controls
-const mode = {
-  INIT: "INIT",
-  EDITING: "EDITING",
-  SUCCESS: "SUCCESS",
-  UNMAPPED_ERROR: "UNMAPPED_ERROR",
-};
-
-function workItemReducer(state, action) {
-  switch (action.type) {
-    case actionTypes.REPLACE_WORKITEM_SOURCE: {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    }
-    case actionTypes.CANCEL_EDIT_MODE: {
-      return {
-        ...state,
-        mode: mode.INIT,
-      };
-    }
-    case actionTypes.MUTATION_SUCCESS: {
-      return {
-        ...state,
-        mode: mode.SUCCESS,
-      };
-    }
-    case actionTypes.SHOW_UNMAPPED_ERROR: {
-      return {
-        ...state,
-        mode: mode.UNMAPPED_ERROR,
-      };
-    }
-    case actionTypes.UPDATE_WORKITEM_SOURCE: {
-      const [[key, value]] = Object.entries(action.payload.keyValuePair);
-      return {
-        ...state,
-        workItemStateMappings: state.workItemStateMappings.map((item) => {
-          if (item.state === key) {
-            return {...item, stateType: value};
-          }
-          return item;
-        }),
-        mode: mode.EDITING,
-      };
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
-  }
-}
-
-export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, context}) => {
+export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context}) {
   const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
-      if(success) {
+      if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
       }
@@ -174,12 +115,12 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
   }
 
   if (error) {
-    logGraphQlError(".", error);
+    logGraphQlError("updateProjectWorkItemSourceStateMaps", error);
     return null;
   }
 
   return (
-    <div className="stateTypeWrapper">
+    <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
         {selectDropdown()}
         {getButtonElements()}
@@ -198,4 +139,4 @@ export const WorkItemStateTypeMapView = ({workItemSources, instanceKey, view, co
       </div>
     </div>
   );
-};
+}
