@@ -9,7 +9,7 @@ import {mode, actionTypes} from "./constants";
 
 const {Option} = Select;
 
-export function WorkItemStateTypeMapView({workItemSources, selectedIndex, instanceKey, view, context}) {
+export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context}) {
   const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       if (success) {
@@ -19,12 +19,10 @@ export function WorkItemStateTypeMapView({workItemSources, selectedIndex, instan
     },
   });
 
-  // set first workitemsource as default
-  // const [workItemSource] = workItemSources;
+
   const [state, dispatch] = React.useReducer(workItemReducer, {
     workItemSources: workItemSources,
-    selectedIndex: selectedIndex,
-    currentWorkItemSource: null,
+    selectedIndex: workItemSources.length > 0 ? 0 : null,
     mode: mode.INIT,
   });
 
@@ -138,6 +136,7 @@ export function WorkItemStateTypeMapView({workItemSources, selectedIndex, instan
     return null;
   }
 
+  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources[state.selectedIndex] : null;
   return (
     <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
@@ -149,8 +148,7 @@ export function WorkItemStateTypeMapView({workItemSources, selectedIndex, instan
       <div className={"chartWrapper"}>
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
-          workItemSources={workItemSources}
-          selectedIndex={state.selectedIndex}
+          workItemSource={currentWorkItemSource}
           updateDraftState={dispatch}
           view={view}
           context={context}

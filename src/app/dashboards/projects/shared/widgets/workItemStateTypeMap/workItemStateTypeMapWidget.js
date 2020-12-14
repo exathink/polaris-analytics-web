@@ -26,7 +26,6 @@ export const WorkItemStateTypeMapWidget = ({
     <WorkItemStateTypeMapView
       instanceKey={instanceKey}
       workItemSources={workItemSources}
-      selectedIndex = {workItemSources.length > 0 ? 0: null}
       context={context}
       view={view}
     />
