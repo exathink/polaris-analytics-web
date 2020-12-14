@@ -192,7 +192,7 @@ describe.only("WorkItemStateTypeMapView", () => {
       const {
         chartConfig: {series},
       } = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} selectedIndex={null} view="detail" />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" />
       );
 
       expect(series).toHaveLength(1);
@@ -200,7 +200,7 @@ describe.only("WorkItemStateTypeMapView", () => {
 
     test("renders appropriate message on ui to indicate the empty workItemSources", async () => {
       await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} selectedIndex={null} view="detail" />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" />
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
@@ -215,7 +215,6 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
-          selectedIndex={0}
           view="detail"
         />
       );
@@ -226,7 +225,6 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
-          selectedIndex={0}
         />
       );
 
@@ -240,7 +238,6 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
-          selectedIndex={0}
         />
       );
 
@@ -256,7 +253,7 @@ describe.only("WorkItemStateTypeMapView", () => {
           <WorkItemStateTypeMapView
             instanceKey={projectKey}
             workItemSources={workItemSourcesFixture}
-            selectedIndex={0}
+
           />,
           5, // dropping to closed category
           (points) => [points.find((p) => p.name === workItemState)]
@@ -273,7 +270,6 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-          selectedIndex={0}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.x === 5)]
@@ -309,7 +305,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-          selectedIndex={0}
+
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")]
@@ -327,7 +323,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-          selectedIndex={0}
+
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")]
@@ -352,7 +348,6 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-          selectedIndex={0}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")],

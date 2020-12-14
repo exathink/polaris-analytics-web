@@ -231,9 +231,7 @@ describe("WorkItemStateTypeMapChart", () => {
 
     const {series} = renderedChartConfig(
       <WorkItemStateTypeMapChart
-        workItemSources={workItemSourcesWithMultipleWorkItemMappings}
-        workItemSourceKey={workItemSourceKey}
-        selectedIndex={0}
+        workItemSource={workItemSourcesWithMultipleWorkItemMappings[0]}
         view="detail"
       />
     );
