@@ -73,9 +73,9 @@ export const WorkItemStateTypeMapChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({workItemSources, workItemSourceKey, updateDraftState, title, subtitle, intl, view}) => {
-    const {workItemStateMappings} = workItemSources.find((x) => x.key === workItemSourceKey);
-    // cleanup workItemStateMappings
+  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view}) => {
+
+    const workItemStateMappings = workItemSource ? workItemSource.workItemStateMappings : [];
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
 

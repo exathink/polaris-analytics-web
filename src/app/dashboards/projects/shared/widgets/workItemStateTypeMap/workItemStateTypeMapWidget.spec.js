@@ -175,7 +175,7 @@ describe("WorkItemStateTypeMapWidget", () => {
       );
 
       await screen.findByTestId("loading-spinner");
-      await screen.findByTestId("no-data");
+      await screen.findByText(/There are no work streams in this value stream/i);
     });
   });
 

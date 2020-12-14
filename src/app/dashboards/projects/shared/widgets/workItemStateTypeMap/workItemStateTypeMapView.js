@@ -19,13 +19,17 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     },
   });
 
-  // set first workitemsource as default
-  const [workItemSource] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
+
+  const [state, dispatch] = React.useReducer(workItemReducer, {
+    workItemSources: workItemSources,
+    selectedIndex: workItemSources.length > 0 ? 0 : null,
+    mode: mode.INIT,
+  });
 
   function handleSaveClick(e) {
+    const {workItemStateMappings, key} = state.currentWorkItemSource || state.workItemSources[state.selectedIndex];
     // show error if we have stateType values as null
-    const isAnyStateTypeUnmapped = state.workItemStateMappings.some((x) => x.stateType === null);
+    const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
       dispatch({type: actionTypes.SHOW_UNMAPPED_ERROR});
 
@@ -36,8 +40,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     // call the mutation function to update data from here
     const payload = [
       {
-        workItemsSourceKey: state.key,
-        stateMaps: state.workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType})),
+        workItemsSourceKey: key,
+        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType})),
       },
     ];
 
@@ -55,17 +59,16 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
-  function handleChange(key) {
-    const workItemSource = workItemSources.find((x) => x.key === key);
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
+  function handleChange(selectedIndex) {
+    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {selectedIndex: selectedIndex, mode: mode.INIT}});
   }
 
   function selectDropdown() {
     return workItemSources.length > 1 ? (
       <div>
-        <Select defaultValue={state.name} style={{width: 200}} onChange={handleChange}>
-          {workItemSources.map((source) => (
-            <Option key={source.key} value={source.key}>
+        <Select defaultValue={0} style={{width: 200}} onChange={handleChange}>
+          {workItemSources.map((source, index) => (
+            <Option key={index} value={index}>
               {source.name}
             </Option>
           ))}
@@ -74,6 +77,20 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     ) : null;
   }
 
+  function getEmptyAlert() {
+    if (state.mode === mode.INIT && workItemSources.length === 0) {
+      return (
+        <Alert
+          message="There are no work streams in this value stream"
+          type="warning"
+          showIcon
+          closable
+          className="noWorkItemResources"
+        />
+      );
+    }
+  }
+  
   function getButtonElements() {
     // when mutation is executing
     if (loading) {
@@ -119,9 +136,11 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     return null;
   }
 
+  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources[state.selectedIndex] : null;
   return (
     <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
+        {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
       </div>
@@ -129,8 +148,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       <div className={"chartWrapper"}>
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
-          workItemSources={workItemSources}
-          workItemSourceKey={state.key}
+          workItemSource={currentWorkItemSource}
           updateDraftState={dispatch}
           view={view}
           context={context}

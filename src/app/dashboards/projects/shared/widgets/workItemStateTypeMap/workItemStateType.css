@@ -24,7 +24,6 @@
 }
 
 .workItemCancel {
-
   margin-right: 95px;
   margin-left: 10px;
 }
@@ -34,4 +33,9 @@
 }
 
 .chartWrapper {
+}
+
+.noWorkItemResources {
+  left: 30%;
+  margin-top: 10%;
 }
