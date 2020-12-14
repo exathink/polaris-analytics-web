@@ -217,6 +217,7 @@ describe("WorkItemStateTypeMapChart", () => {
           <WorkItemStateTypeMapChart
             workItemSources={workItemSourcesWithEmptyWorkItemMappings}
             workItemSourceKey={"testKey"}
+            selectedIndex = {0}
             view="detail"
           />
         )
@@ -232,6 +233,7 @@ describe("WorkItemStateTypeMapChart", () => {
       <WorkItemStateTypeMapChart
         workItemSources={workItemSourcesWithMultipleWorkItemMappings}
         workItemSourceKey={workItemSourceKey}
+        selectedIndex={0}
         view="detail"
       />
     );

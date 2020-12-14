@@ -3,11 +3,26 @@ import {renderWithMockedProvider} from "../../../../../framework/viz/charts/char
 import {actionTypes} from "./constants";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import {workItemReducer as workItemReducerMock} from "./workItemReducer";
-import {waitFor} from "@testing-library/react";
+import {waitFor, screen, fireEvent} from "@testing-library/react";
+import {UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 
 jest.mock("./workItemReducer", () => {
   return {
-    workItemReducer: jest.fn((state, action) => state),
+    workItemReducer: jest.fn((state, action) => {
+      if (action.type === "UPDATE_WORKITEM_SOURCE") {
+        return {...state, mode: "EDITING"};
+      }
+
+      if (action.type === "CANCEL_EDIT_MODE") {
+        return {...state, mode: "INIT"};
+      }
+
+      if (action.type === "MUTATION_SUCCESS") {
+        return {...state, mode: "SUCCESS"};
+      }
+
+      return state;
+    }),
   };
 });
 
@@ -22,23 +37,22 @@ afterEach(() => {
  * @param {*} dropCategoryIndex: category index where point is to be dropped.
  * @param {*} mapper : points => points
  */
-async function renderedDropPointConfig(component, dropCategoryIndex, mapper = (point) => point) {
+async function renderedDragDropConfig(component, dropCategoryIndex, mapper = (point) => point, mocks = []) {
   const {
-    chart: {series},
-  } = await renderWithMockedProvider(component);
-  // get the points from single point series, filter out last series(pedestal series).
-  const points = series.filter((s, i, arr) => i !== arr.length - 1).map((s) => s.points[0]);
-
-  const {
-    plotOptions: {
-      series: {
-        point: {
-          events: {drop},
+    chartConfig: {
+      plotOptions: {
+        series: {
+          point: {
+            events: {drop},
+          },
         },
       },
     },
-  } = (await renderWithMockedProvider(component)).chartConfig;
+    chart: {series},
+  } = await renderWithMockedProvider(component, mocks);
 
+  // get the points from single point series, filter out last series(pedestal series).
+  const points = series.filter((s, i, arr) => i !== arr.length - 1).map((s) => s.points[0]);
   // get the points after applying mapper
   const _points = mapper(points);
 
@@ -50,8 +64,13 @@ async function renderedDropPointConfig(component, dropCategoryIndex, mapper = (p
       const eventWithNewPoint = {newPoint: {x: dropCategoryIndex}};
       // call the drop function in the context of point
       drop.bind(point)(eventWithNewPoint);
-      // return argurments(state, action) of workItemReducer
-      return [workItemReducerMock.mock.calls[i][0], workItemReducerMock.mock.calls[i][1]];
+
+      if (workItemReducerMock.mock.calls.length > 0) {
+        // return argurments(state, action) of workItemReducer
+        return [workItemReducerMock.mock.calls[i][0], workItemReducerMock.mock.calls[i][1]];
+      } else {
+        return [null, null];
+      }
     });
   });
 
@@ -168,8 +187,26 @@ const workItemSourcesFixture = [
 const projectKey = "41af8b92-51f6-4e88-9765-cc3dbea35e1a";
 
 describe.only("WorkItemStateTypeMapView", () => {
-  // empty workItemSources case has been handled at the widget level,
-  // here we can assume we will always have workItemSources.
+  describe("when there are no workItemSources", () => {
+    test("renders only the base pedestal series", async () => {
+      const {
+        chartConfig: {series},
+      } = await renderWithMockedProvider(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} selectedIndex={null} view="detail" />
+      );
+
+      expect(series).toHaveLength(1);
+    });
+
+    test("renders appropriate message on ui to indicate the empty workItemSources", async () => {
+      await renderWithMockedProvider(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} selectedIndex={null} view="detail" />
+      );
+
+      expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
+    });
+  });
+
   describe("when there are no mappings available for workItemSource", () => {
     const workItemSourcesWithEmptyMappings = workItemSourcesFixture.map((w) => ({...w, workItemStateMappings: []}));
 
@@ -178,6 +215,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
+          selectedIndex={0}
           view="detail"
         />
       );
@@ -185,10 +223,28 @@ describe.only("WorkItemStateTypeMapView", () => {
 
     it("renders first workItemSource as initial selected value for dropdown on the component", async () => {
       const {getByText} = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesWithEmptyMappings}
+          selectedIndex={0}
+        />
       );
 
-      expect(getByText(/Polaris Platform/i)).toBeInTheDocument();
+      expect(screen.getByText(/Polaris Platform/i)).toBeInTheDocument();
+    });
+
+    test("renders only the base pedestal series", async () => {
+      const {
+        chartConfig: {series},
+      } = await renderWithMockedProvider(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesWithEmptyMappings}
+          selectedIndex={0}
+        />
+      );
+
+      expect(series).toHaveLength(1);
     });
   });
 
@@ -196,10 +252,14 @@ describe.only("WorkItemStateTypeMapView", () => {
     const cases = ["unscheduled", "planned", "unstarted", "started", "delivered", "created", "finished"]; // closed is the drop target
     cases.forEach((workItemState) => {
       test(`it drags point with name ${workItemState} to target category closed`, async () => {
-        const [[_, action]] = await renderedDropPointConfig(
-          <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesFixture} />,
+        const [[_, action]] = await renderedDragDropConfig(
+          <WorkItemStateTypeMapView
+            instanceKey={projectKey}
+            workItemSources={workItemSourcesFixture}
+            selectedIndex={0}
+          />,
           5, // dropping to closed category
-          (points) => [points.find((p) => p.name === workItemState)] // point to be dragged should belong to different category.
+          (points) => [points.find((p) => p.name === workItemState)]
         );
 
         expect(action.type).toBe(actionTypes.UPDATE_WORKITEM_SOURCE);
@@ -207,5 +267,134 @@ describe.only("WorkItemStateTypeMapView", () => {
         expect(action.payload.keyValuePair).toMatchObject({[workItemState]: "closed"});
       });
     });
+
+    test("when point is dragged and dropped to the same target as the source, no action should be dispatched", async () => {
+      const [[_, action]] = await renderedDragDropConfig(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          selectedIndex={0}
+        />,
+        5, // dropping to closed category
+        (points) => [points.find((p) => p.x === 5)]
+      );
+
+      expect(action).toBe(null);
+    });
+  });
+
+  describe("save/cancel", () => {
+    const mocks = [
+      {
+        request: {
+          query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
+          variables: {
+            projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          },
+        },
+        result: {
+          data: {
+            updateProjectStateMaps: {
+              success: true,
+              errorMessage: null,
+              __typename: "UpdateProjectStateMaps",
+            },
+          },
+        },
+      },
+    ];
+
+    it("when work item state is dragged to a desired phase, save/cancel buttons should appear on the screen", async () => {
+      await renderedDragDropConfig(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          selectedIndex={0}
+        />,
+        5, // dropping to closed category
+        (points) => [points.find((p) => p.name === "unscheduled")]
+      );
+
+      const saveElement = screen.getByText(/save/i);
+      const cancelElement = screen.getByText(/cancel/i);
+
+      expect(saveElement).toBeInTheDocument();
+      expect(cancelElement).toBeInTheDocument();
+    });
+
+    it("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
+      await renderedDragDropConfig(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          selectedIndex={0}
+        />,
+        5, // dropping to closed category
+        (points) => [points.find((p) => p.name === "unscheduled")]
+      );
+
+      const saveElement = screen.getByText(/save/i);
+      const cancelElement = screen.getByText(/cancel/i);
+
+      // Before Cancel Button Click
+      expect(saveElement).toBeInTheDocument();
+      expect(cancelElement).toBeInTheDocument();
+
+      fireEvent.click(cancelElement);
+
+      // After Cancel Button Click
+      expect(saveElement).not.toBeInTheDocument();
+      expect(cancelElement).not.toBeInTheDocument();
+    });
+
+    it("when save button is clicked, button loading state should appear during the time mutation is executing.", async () => {
+      await renderedDragDropConfig(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          selectedIndex={0}
+        />,
+        5, // dropping to closed category
+        (points) => [points.find((p) => p.name === "unscheduled")],
+        mocks
+      );
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+      expect(screen.getByText(/Processing.../i)).toBeInTheDocument();
+    });
+
+    // still working on them.
+    // it("after mutation is success, shows appropriate message on screen", async () => {
+    //   await renderedDragDropConfig(
+    //     <WorkItemStateTypeMapView
+    //       instanceKey={projectKey}
+    //       workItemSources={workItemSourcesFixture}
+    //       selectedIndex={0}
+    //     />,
+    //     5, // dropping to closed category
+    //     (points) => [points.find((p) => p.name === "unscheduled")],
+    //     mocks
+    //   );
+
+    //   const saveElement = screen.getByText(/save/i);
+    //   fireEvent.click(saveElement);
+    //   expect(await screen.findByText(/success/i)).toBeInTheDocument();
+    // });
+
+    // it.skip("after mutation fails, shows appropriate message on screen", async () => {
+    //   const {
+    //     reducerArgs: [[_, action]],
+    //   } = await renderedDragDropConfig(
+    //     <WorkItemStateTypeMapView
+    //       instanceKey={projectKey}
+    //       workItemSources={workItemSourcesFixture}
+    //       selectedIndex={0}
+    //     />,
+    //     5, // dropping to closed category
+    //     (points) => [points.find((p) => p.name === "unscheduled")],
+    //     mocks
+    //   );
+    // });
   });
 });
