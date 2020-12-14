@@ -1,11 +1,22 @@
-import { actionTypes, mode } from "./constants";
+import {actionTypes, mode} from "./constants";
 
 export function workItemReducer(state, action) {
+  let {workItemSources, currentWorkItemSource, selectedIndex} = state;
+  if (selectedIndex === null) {
+    return state;
+  }
+
+  currentWorkItemSource = currentWorkItemSource || workItemSources[selectedIndex];
+  // const latest = state.currentWorkItemSource.workItemStateMappings || currentWorkItemSource.workItemStateMappings;
+
   switch (action.type) {
     case actionTypes.REPLACE_WORKITEM_SOURCE: {
+      const newWorkItemSource = workItemSources[action.payload.selectedIndex];
       return {
         ...state,
-        ...action.payload,
+        currentWorkItemSource: {...newWorkItemSource},
+        selectedIndex: action.payload.selectedIndex,
+        mode: action.payload.mode,
       };
     }
     case actionTypes.CANCEL_EDIT_MODE: {
@@ -28,14 +39,18 @@ export function workItemReducer(state, action) {
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
+      debugger;
       return {
         ...state,
-        workItemStateMappings: state.workItemStateMappings.map((item) => {
-          if (item.state === key) {
-            return {...item, stateType: value};
-          }
-          return item;
-        }),
+        currentWorkItemSource: {
+          ...currentWorkItemSource,
+          workItemStateMappings: currentWorkItemSource.workItemStateMappings.map((item) => {
+            if (item.state === key) {
+              return {...item, stateType: value};
+            }
+            return item;
+          }),
+        },
         mode: mode.EDITING,
       };
     }
