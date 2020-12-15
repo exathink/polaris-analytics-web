@@ -19,7 +19,6 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     },
   });
 
-
   const [state, dispatch] = React.useReducer(workItemReducer, {
     workItemSources: workItemSources,
     selectedIndex: workItemSources.length > 0 ? 0 : null,
@@ -66,7 +65,12 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   function selectDropdown() {
     return workItemSources.length > 1 ? (
       <div>
-        <Select defaultValue={0} style={{width: 200}} onChange={handleChange}>
+        <Select
+          defaultValue={0}
+          style={{width: 200}}
+          onChange={handleChange}
+          getPopupContainer={(node) => node.parentNode}
+        >
           {workItemSources.map((source, index) => (
             <Option key={index} value={index}>
               {source.name}
@@ -90,7 +94,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       );
     }
   }
-  
+
   function getButtonElements() {
     // when mutation is executing
     if (loading) {
