@@ -19,14 +19,15 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     },
   });
 
-  const [state, dispatch] = React.useReducer(workItemReducer, {
-    workItemSources: workItemSources,
-    selectedIndex: workItemSources.length > 0 ? 0 : null,
-    mode: mode.INIT,
-  });
+
+  // set first workitemsource as default
+  // handling empty workItemSources case by defaulting it to blank object
+  const [workItemSource = {}] = workItemSources;
+  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
+
 
   function handleSaveClick(e) {
-    const {workItemStateMappings, key} = state.currentWorkItemSource || state.workItemSources[state.selectedIndex];
+    const {workItemStateMappings, key} = state;
     // show error if we have stateType values as null
     const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
@@ -58,8 +59,9 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
-  function handleChange(selectedIndex) {
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {selectedIndex: selectedIndex, mode: mode.INIT}});
+  function handleChange(index) {
+    const workItemSource = workItemSources[index];
+    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
   }
 
   function selectDropdown() {
@@ -72,7 +74,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           getPopupContainer={(node) => node.parentNode}
         >
           {workItemSources.map((source, index) => (
-            <Option key={index} value={index}>
+            <Option key={source.key} value={index}>
               {source.name}
             </Option>
           ))}
@@ -140,7 +142,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     return null;
   }
 
-  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources[state.selectedIndex] : null;
+  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find(x => x.key === state.key) : null;
   return (
     <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
