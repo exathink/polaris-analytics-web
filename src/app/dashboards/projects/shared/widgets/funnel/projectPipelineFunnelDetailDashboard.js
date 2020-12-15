@@ -24,7 +24,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"45%"}
+        h={"50%"}
         title={``}
         subTitle={``}
         controls={[
@@ -72,7 +72,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
           }}
         />
       </DashboardRow>
-      <DashboardRow h={"45%"}>
+      <DashboardRow h={"48%"}>
         <DashboardWidget
           w={1}
           name="project-pipeline-queues"
