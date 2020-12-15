@@ -74,7 +74,6 @@ export const WorkItemStateTypeMapChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
 
   getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view}) => {
-
     const workItemStateMappings = workItemSource ? workItemSource.workItemStateMappings : [];
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
@@ -149,6 +148,11 @@ export const WorkItemStateTypeMapChart = Chart({
           },
           dataLabels: {
             enabled: true,
+            align: "center",
+            y: -2,
+            style: {
+              fontSize: "9px",
+            },
             format: "{point.name}",
           },
         },
