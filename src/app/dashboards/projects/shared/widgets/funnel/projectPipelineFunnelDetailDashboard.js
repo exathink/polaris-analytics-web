@@ -6,11 +6,10 @@ import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 import {ProjectPipelineStateDetailsWidget} from "../wip";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
-import {DaysRangeSlider} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
-export const ProjectPipelineDetailDashboard = ({
+export const ProjectPipelineFunnelDetailDashboard = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
@@ -25,23 +24,19 @@ export const ProjectPipelineDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"50%"}
+        h={"45%"}
         title={``}
         subTitle={``}
         controls={[
           () => (
             <div style={{minWidth: "300px"}}>
-              <Flex align={'center'}>
+              <Flex align={"center"}>
                 <Box pr={2} w={"100%"}>
-                  <WorkItemScopeSelector
-                    workItemScope={workItemScope}
-                    setWorkItemScope={setWorkItemScope}
-                  />
+                  <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
                 </Box>
               </Flex>
             </div>
-
-          )
+          ),
         ]}
       >
         <DashboardWidget
@@ -61,7 +56,7 @@ export const ProjectPipelineDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          w={2/3}
+          w={2 / 3}
           name="project-pipeline-bubble"
           render={({view}) => {
             return (
@@ -77,7 +72,7 @@ export const ProjectPipelineDetailDashboard = ({
           }}
         />
       </DashboardRow>
-      <DashboardRow h={"48%"}>
+      <DashboardRow h={"45%"}>
         <DashboardWidget
           w={1}
           name="project-pipeline-queues"
