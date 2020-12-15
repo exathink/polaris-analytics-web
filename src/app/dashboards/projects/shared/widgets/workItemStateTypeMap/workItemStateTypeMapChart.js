@@ -73,8 +73,7 @@ export const WorkItemStateTypeMapChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view}) => {
-
+  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view, viewerContext, organizationKey}) => {
     const workItemStateMappings = workItemSource ? workItemSource.workItemStateMappings : [];
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
@@ -82,6 +81,8 @@ export const WorkItemStateTypeMapChart = Chart({
     const allStateTypeKeys = getAllStateTypeKeys();
     const allStateTypeDisplayValues = Object.values(WorkItemStateTypeDisplayName);
 
+    const isOrgOwner = viewerContext.isOrganizationOwner(organizationKey);
+    
     return {
       chart: {
         backgroundColor: Colors.Chart.backgroundColor,
@@ -91,7 +92,7 @@ export const WorkItemStateTypeMapChart = Chart({
         text: `Value Stream Mapping`,
       },
       subtitle: {
-        text: `Drag a work item state to its desired phase to edit mapping.`,
+        text: isOrgOwner ? `Drag a work item state to its desired phase to edit mapping.` : ``,
       },
       xAxis: {
         categories: allStateTypeDisplayValues,
@@ -119,7 +120,18 @@ export const WorkItemStateTypeMapChart = Chart({
           },
           point: {
             events: {
+              drag: function (e) {
+                // not org owner, shouldn't be able to drag
+                if (!isOrgOwner) {
+                  return false;
+                }
+              },
               drop: function (e) {
+                // not org owner, shouldn't be able to drop
+                if (!isOrgOwner) {
+                  return false;
+                }
+
                 // 'this' here represents point being dragged.
                 const point = this;
 
