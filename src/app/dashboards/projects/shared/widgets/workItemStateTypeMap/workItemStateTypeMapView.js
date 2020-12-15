@@ -5,7 +5,7 @@ import "./workItemStateType.css";
 import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
-import {mode, actionTypes} from "./constants";
+import {actionTypes, mode} from "./constants";
 
 const {Option} = Select;
 
@@ -19,12 +19,10 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     },
   });
 
-
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
   const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
-
 
   function handleSaveClick(e) {
     const {workItemStateMappings, key} = state;
@@ -51,6 +49,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
   // utilizing this trick to reset component (changing the key will remount the chart component with same props)
   const [resetComponentStateKey, setKey] = React.useState(1);
+
   // Reset state on cancel
   function handleCancelClick(e) {
     dispatch({type: actionTypes.CANCEL_EDIT_MODE});
@@ -142,7 +141,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     return null;
   }
 
-  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find(x => x.key === state.key) : null;
+  const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   return (
     <div data-testid="state-type-map-view" className="stateTypeWrapper">
       <div className={"controlsWrapper"}>
