@@ -1,26 +1,44 @@
-import React from "react";
+import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 
 import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 import {ProjectPipelineStateDetailsWidget} from "../wip";
+import {Box, Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
-export const ProjectPipelineDetailDashboard = ({
+export const ProjectPipelineFunnelDetailDashboard = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
-  workItemScope,
-  setWorkItemScope,
   days,
   view,
   context,
   pollInterval,
 }) => {
+  const [workItemScope, setWorkItemScope] = useState('all');
+  const specsOnly = workItemScope === 'specs';
+
   return (
     <Dashboard dashboard={dashboard_id}>
-      <DashboardRow h={"50%"} title={``} subTitle={``}>
+      <DashboardRow
+        h={"45%"}
+        title={``}
+        subTitle={``}
+        controls={[
+          () => (
+            <div style={{minWidth: "300px"}}>
+              <Flex align={"center"}>
+                <Box pr={2} w={"100%"}>
+                  <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+                </Box>
+              </Flex>
+            </div>
+          ),
+        ]}
+      >
         <DashboardWidget
           w={1 / 3}
           name="project-pipeline-detailed"
@@ -29,7 +47,6 @@ export const ProjectPipelineDetailDashboard = ({
               instanceKey={instanceKey}
               context={context}
               workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               days={30}
@@ -39,7 +56,7 @@ export const ProjectPipelineDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          w={2/3}
+          w={2 / 3}
           name="project-pipeline-bubble"
           render={({view}) => {
             return (
@@ -55,7 +72,7 @@ export const ProjectPipelineDetailDashboard = ({
           }}
         />
       </DashboardRow>
-      <DashboardRow h={"50%"}>
+      <DashboardRow h={"45%"}>
         <DashboardWidget
           w={1}
           name="project-pipeline-queues"
@@ -63,8 +80,7 @@ export const ProjectPipelineDetailDashboard = ({
             <ProjectPipelineStateDetailsWidget
               instanceKey={instanceKey}
               context={context}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               days={30}
