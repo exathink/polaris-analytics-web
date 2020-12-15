@@ -18,12 +18,12 @@ export const ProjectPipelineFunnelWidget = (
     pollInterval
   }) => {
 
-  const [selectedGrouping, setSelectedGrouping] = useState(workItemScope || 'specs')
+
   const {loading, error, data} = useQueryProjectPipelineSummary(
     {
       instanceKey,
       closedWithinDays: days,
-      specsOnly: selectedGrouping === 'specs',
+      specsOnly: workItemScope === 'specs',
       referenceString: getLatest(latestWorkItemEvent, latestCommit)
     }
   )
@@ -37,16 +37,14 @@ export const ProjectPipelineFunnelWidget = (
       context={context}
       workItemStateTypeCounts={workItemStateTypeCounts}
       totalEffortByStateType={totalEffortByStateType}
-      workItemScope={workItemScope || selectedGrouping}
-      setWorkItemScope={setWorkItemScope || setSelectedGrouping}
+      workItemScope={workItemScope }
+      setWorkItemScope={setWorkItemScope}
       view={view}
     />
   ) : (
     <ProjectPipelineDetailDashboard
       instanceKey={instanceKey}
       context={context}
-      workItemScope={workItemScope}
-      setWorkItemScope={setWorkItemScope}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}
       days={30}
