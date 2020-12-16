@@ -13,7 +13,7 @@ export const ProjectPipelineFunnelView = ({
   context,
 }) => {
   return (
-    <VizRow h={"100%"}>
+    <VizRow h={"100%"} data-testid="project-pipeline-funnel-view">
       <VizItem w={1}>
         <div style={{width: "100%", height: "100%"}}>
           <PipelineFunnelChart
