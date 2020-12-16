@@ -48,6 +48,22 @@ export class SelectIntegrationStep extends React.Component {
               </Card>
             </Col>
           </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Card
+                bordered={true}
+                hoverable={true}
+                style={{width: 300, marginTop: 16}}
+                onClick={() => this.props.onConnectorTypeSelected("gitlab")}
+              >
+                <Meta
+                  avatar={<Avatar src="/images/third-party/gitlab-icon-rgb.svg" />}
+                  title="GitLab"
+                  description="Import Projects and Issues"
+                />
+              </Card>
+            </Col>
+          </Row>
         </div>
       </div>
     )

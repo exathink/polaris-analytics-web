@@ -161,6 +161,11 @@ export const WorkItemStateTypeMapChart = Chart({
           },
           dataLabels: {
             enabled: true,
+            align: "center",
+            y: -2,
+            style: {
+              fontSize: "9px",
+            },
             format: "{point.name}",
           },
         },

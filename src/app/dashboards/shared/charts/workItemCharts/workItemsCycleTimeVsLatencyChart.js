@@ -97,12 +97,12 @@ function getTitle(workItems, stageName, specsOnly) {
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems', 'stateTypes', 'stageName', 'groupByState', 'cycleTimeTarget', 'specsOnly')
+    pick(props, 'workItems', 'stateTypes', 'stageName', 'groupByState', 'cycleTimeTarget', 'specsOnly', 'tick')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, intl, view}) => {
+  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, tick, intl, view}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
