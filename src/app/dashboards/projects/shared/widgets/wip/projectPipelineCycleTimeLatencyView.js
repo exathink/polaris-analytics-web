@@ -4,6 +4,7 @@ import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workIt
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
 
 export const ProjectPipelineCycleTimeLatencyView = (
   {
@@ -20,7 +21,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     context
   }
 ) => {
-
+  const tick = useGenerateTicks(2, 60000);
   return (
     <VizRow h={1}>
       <VizItem w={1}>
@@ -42,6 +43,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
+          tick={tick}
           onSelectionChange={
             (workItems) => {
               if (workItems.length === 1) {
