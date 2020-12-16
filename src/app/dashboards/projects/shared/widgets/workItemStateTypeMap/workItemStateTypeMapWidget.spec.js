@@ -5,8 +5,118 @@ import "@testing-library/jest-dom/extend-expect";
 import {renderComponentWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql";
+import {gql} from "@apollo/client";
+import {ViewerContext} from "../../../../../framework/viewer/viewerContext";
 
+const VIEWER_INFO_QUERY = gql`
+  query viewer_info {
+    viewer {
+      key
+      ...ViewerInfoFields
+    }
+  }
+  ${ViewerContext.fragments.viewerInfoFields}
+`;
 
+const viewerMock = {
+  request: {
+    query: VIEWER_INFO_QUERY,
+  },
+  result: {
+    data: {
+      viewer: {
+        key: "54281e0f-c257-4c9c-aadb-bb3ac09574a6",
+        userName: null,
+        company: null,
+        firstName: "Polaris",
+        lastName: "Dev",
+        email: "polaris-dev@exathink.com",
+        systemRoles: [],
+        accountRoles: [
+          {
+            key: "24347f28-0020-4025-8801-dbc627f9415d",
+            name: "Polaris-Dev",
+            scopeKey: "24347f28-0020-4025-8801-dbc627f9415d",
+            role: "owner",
+          },
+        ],
+        organizationRoles: [
+          {
+            key: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+            name: "Polaris-Dev",
+            scopeKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+            role: "owner",
+          },
+        ],
+        accountKey: "24347f28-0020-4025-8801-dbc627f9415d",
+        account: {
+          id: "QWNjb3VudDoyNDM0N2YyOC0wMDIwLTQwMjUtODgwMS1kYmM2MjdmOTQxNWQ=",
+          key: "24347f28-0020-4025-8801-dbc627f9415d",
+          name: "Polaris-Dev",
+          featureFlags: {
+            edges: [
+              {
+                node: {
+                  name: "projects.alignment-trends-widgets",
+                  key: "678bdab9-cd37-4493-956c-2d107e0d4ff9",
+                  enabled: true,
+                },
+              },
+              {
+                node: {
+                  name: "projects.flowboard-2",
+                  key: "72b686e1-a8bd-4cf5-8218-fe9475841019",
+                  enabled: true,
+                },
+              },
+              {
+                node: {
+                  name: "dev.tutorials",
+                  key: "0da2d815-901f-4a5b-8a70-a0f5672e5e0f",
+                  enabled: true,
+                },
+              },
+            ],
+          },
+          organizations: {
+            count: 1,
+          },
+          projects: {
+            count: 2,
+          },
+          repositories: {
+            count: 31,
+          },
+        },
+        featureFlags: {
+          edges: [
+            {
+              node: {
+                name: "projects.alignment-trends-widgets",
+                key: "678bdab9-cd37-4493-956c-2d107e0d4ff9",
+                enabled: null,
+              },
+            },
+            {
+              node: {
+                name: "projects.flowboard-2",
+                key: "72b686e1-a8bd-4cf5-8218-fe9475841019",
+                enabled: null,
+              },
+            },
+            {
+              node: {
+                name: "dev.tutorials",
+                key: "0da2d815-901f-4a5b-8a70-a0f5672e5e0f",
+                enabled: null,
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+};
 
 const mocks = [
   {
@@ -19,6 +129,7 @@ const mocks = [
     result: {
       data: {
         project: {
+          organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
           workItemsSources: {
             edges: [
               {
@@ -135,6 +246,7 @@ const mocks = [
       },
     },
   },
+  viewerMock,
 ];
 
 describe("WorkItemStateTypeMapWidget", () => {
@@ -159,6 +271,7 @@ describe("WorkItemStateTypeMapWidget", () => {
         result: {
           data: {
             project: {
+              organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
               workItemsSources: {
                 edges: [],
               },
@@ -166,6 +279,7 @@ describe("WorkItemStateTypeMapWidget", () => {
           },
         },
       },
+      viewerMock,
     ];
 
     test("it renders no data", async () => {
@@ -200,6 +314,7 @@ describe("WorkItemStateTypeMapWidget", () => {
         result: {
           data: {
             project: {
+              organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
               workItemsSources: {
                 edges: [
                   {
@@ -244,6 +359,7 @@ describe("WorkItemStateTypeMapWidget", () => {
           },
         },
       },
+      viewerMock,
     ];
 
     test("it shows a loading spinner", async () => {
@@ -332,9 +448,6 @@ describe("WorkItemStateTypeMapWidget", () => {
   });
 
   describe("when there are errors", () => {
-
-
-
     // clear mocks after each test
     afterEach(() => {
       jest.clearAllMocks();
@@ -358,6 +471,7 @@ describe("WorkItemStateTypeMapWidget", () => {
         },
         error: new Error("A network error Occurred"),
       },
+      viewerMock,
     ];
 
     const mockGraphQlErrors = [
@@ -372,36 +486,35 @@ describe("WorkItemStateTypeMapWidget", () => {
           errors: [new GraphQLError("A GraphQL Error Occurred")],
         },
       },
+      viewerMock,
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      const logGraphQlError = jest.spyOn(gqlUtils, 'logGraphQlError');
+      const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
 
       renderComponentWithMockedProvider(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockNetworkError
       );
       await screen.findByTestId("loading-spinner");
-      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled())
+      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("state-type-map-view")).toBeNull();
 
-      logGraphQlError.mockRestore()
-
+      logGraphQlError.mockRestore();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      const logGraphQlError = jest.spyOn(gqlUtils, 'logGraphQlError');
+      const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
 
       renderComponentWithMockedProvider(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockGraphQlErrors
       );
       await screen.findByTestId("loading-spinner");
-      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled())
+      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("state-type-map-view")).toBeNull();
 
-      logGraphQlError.mockRestore()
-
+      logGraphQlError.mockRestore();
     });
   });
 });
