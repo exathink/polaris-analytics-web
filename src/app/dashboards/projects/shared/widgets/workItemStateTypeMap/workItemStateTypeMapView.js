@@ -9,7 +9,7 @@ import {actionTypes, mode} from "./constants";
 
 const {Option} = Select;
 
-export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, viewerContext, organizationKey}) {
+export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits}) {
   const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       if (success) {
@@ -157,8 +157,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           updateDraftState={dispatch}
           view={view}
           context={context}
-          viewerContext={viewerContext}
-          organizationKey={organizationKey}
+          enableEdits={enableEdits}
           title={" "}
         />
       </div>

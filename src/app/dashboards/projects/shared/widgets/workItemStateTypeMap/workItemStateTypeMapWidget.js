@@ -17,12 +17,14 @@ export const WorkItemStateTypeMapWidget = withViewerContext(
     const workItemSources = data["project"]["workItemsSources"]["edges"].map((e) => e.node);
     const organizationKey = data["project"]["organizationKey"];
 
+    // only enable edits for org owner
+    const enableEdits = viewerContext.isOrganizationOwner(organizationKey);
+
     return (
       <WorkItemStateTypeMapView
         instanceKey={instanceKey}
         workItemSources={workItemSources}
-        viewerContext={viewerContext}
-        organizationKey={organizationKey}
+        enableEdits={enableEdits}
         context={context}
         view={view}
       />
