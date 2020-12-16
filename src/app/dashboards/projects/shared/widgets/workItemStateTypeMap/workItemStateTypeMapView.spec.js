@@ -192,7 +192,7 @@ describe.only("WorkItemStateTypeMapView", () => {
       const {
         chartConfig: {series},
       } = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />
       );
 
       expect(series).toHaveLength(1);
@@ -200,7 +200,7 @@ describe.only("WorkItemStateTypeMapView", () => {
 
     test("renders appropriate message on ui to indicate the empty workItemSources", async () => {
       await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
@@ -216,16 +216,14 @@ describe.only("WorkItemStateTypeMapView", () => {
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
           view="detail"
+          enableEdits={true}
         />
       );
     });
 
     it("renders first workItemSource as initial selected value for dropdown on the component", async () => {
       const {getByText} = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView
-          instanceKey={projectKey}
-          workItemSources={workItemSourcesWithEmptyMappings}
-        />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
       );
 
       expect(screen.getByText(/Polaris Platform/i)).toBeInTheDocument();
@@ -235,10 +233,7 @@ describe.only("WorkItemStateTypeMapView", () => {
       const {
         chartConfig: {series},
       } = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView
-          instanceKey={projectKey}
-          workItemSources={workItemSourcesWithEmptyMappings}
-        />
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
       );
 
       expect(series).toHaveLength(1);
@@ -253,7 +248,7 @@ describe.only("WorkItemStateTypeMapView", () => {
           <WorkItemStateTypeMapView
             instanceKey={projectKey}
             workItemSources={workItemSourcesFixture}
-
+            enableEdits={true}
           />,
           5, // dropping to closed category
           (points) => [points.find((p) => p.name === workItemState)]
@@ -270,6 +265,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
+          enableEdits={true}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.x === 5)]
@@ -305,7 +301,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-
+          enableEdits={true}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")]
@@ -323,7 +319,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
-
+          enableEdits={true}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")]
@@ -348,6 +344,7 @@ describe.only("WorkItemStateTypeMapView", () => {
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesFixture}
+          enableEdits={true}
         />,
         5, // dropping to closed category
         (points) => [points.find((p) => p.name === "unscheduled")],
@@ -365,6 +362,7 @@ describe.only("WorkItemStateTypeMapView", () => {
     //     <WorkItemStateTypeMapView
     //       instanceKey={projectKey}
     //       workItemSources={workItemSourcesFixture}
+    //       enableEdits = {true};
     //       selectedIndex={0}
     //     />,
     //     5, // dropping to closed category
@@ -384,6 +382,7 @@ describe.only("WorkItemStateTypeMapView", () => {
     //     <WorkItemStateTypeMapView
     //       instanceKey={projectKey}
     //       workItemSources={workItemSourcesFixture}
+    //       enableEdits = {true};
     //       selectedIndex={0}
     //     />,
     //     5, // dropping to closed category
