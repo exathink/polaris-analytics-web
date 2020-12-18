@@ -1,6 +1,6 @@
 import React from "react";
-import {renderedChartConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual} from "../../../../../../test/test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
+import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
 import {Colors} from "../../../../shared/config";
 import {CapacityTrendsChart} from "./capacityTrendsChart";
 import {epoch} from "../../../../../helpers/utility";
@@ -9,6 +9,11 @@ import {epoch} from "../../../../../helpers/utility";
 afterEach(() => {
   jest.clearAllMocks();
 });
+
+const commonMeasurementProps = {
+  measurementPeriod: 45,
+  measurementWindow: 30,
+};
 
 const propsFixture = {
   capacityTrends: [
@@ -100,8 +105,7 @@ const propsFixture = {
       totalEffort: 36.6666666666667,
     },
   ],
-  measurementPeriod: 45,
-  measurementWindow: 30,
+  ...commonMeasurementProps,
   view: "primary",
   parentView: "primary",
 };
@@ -241,13 +245,42 @@ describe("CapacityTrendsChart", () => {
           expect(seriesFixture).toHaveLength(seriesData.data.length);
         });
 
-        test("it maps date to the x axis and sets y to a measurement value", () => {
+        test("it maps dates to the x axis and sets y to a measurement value", () => {
           expectSetsAreEqual(
             seriesData.data.map((point) => [point.x, point.y]),
             seriesFixture.map((measurement) => {
               return [epoch(measurement.measurementDate, true), measurement[trend.key]];
             })
           );
+        });
+
+        test("it sets the reference to the measurement for each point ", () => {
+          expectSetsAreEqual(
+            seriesData.data.map((point) => point.measurement),
+            seriesFixture.map((measurement) => measurement)
+          );
+        });
+
+        test("should render the tooltip for point", async () => {
+          const [actual] = await renderedTooltipConfig(
+            <CapacityTrendsChart {...propsFixture} />,
+            (points) => [points[0]],
+            index + 1
+          );
+
+          const firstPoint = propsFixture[trend.trend].sort(
+            (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+          )[0];
+          expect(actual).toMatchObject({
+            header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
+            body:
+              trend.displayName === "Total Capacity"
+                ? [
+                    [trend.displayName, `${formatNumber(firstPoint[trend.key])} Dev-Days`],
+                    ["Contributors", `${formatNumber(firstPoint.contributorCount)}`],
+                  ]
+                : [[``, `${formatNumber(firstPoint[trend.key])} Dev-Days`]],
+          });
         });
       });
     });
