@@ -215,10 +215,9 @@ describe("WorkItemStateTypeMapChart", () => {
       expect(
         renderedChartConfig(
           <WorkItemStateTypeMapChart
-            workItemSources={workItemSourcesWithEmptyWorkItemMappings}
-            workItemSourceKey={"testKey"}
-            selectedIndex = {0}
+            workItemSource={workItemSourcesWithEmptyWorkItemMappings[0]}
             view="detail"
+            enableEdits={true}
           />
         )
       ).toMatchObject(expectedChartConfig);
@@ -233,6 +232,7 @@ describe("WorkItemStateTypeMapChart", () => {
       <WorkItemStateTypeMapChart
         workItemSource={workItemSourcesWithMultipleWorkItemMappings[0]}
         view="detail"
+        enableEdits={true}
       />
     );
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import {IntlProvider} from "react-intl";
 import {MockedProvider} from "@apollo/client/testing";
 import AppLocale from "../app/i18n";
-import config, { getCurrentLanguage } from "../containers/LanguageSwitcher/config";
+import config, {getCurrentLanguage} from "../containers/LanguageSwitcher/config";
 
 export const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || "english").locale];
 

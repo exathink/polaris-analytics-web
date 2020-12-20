@@ -3,7 +3,8 @@ import {analytics_service} from "../../../../services/graphql";
 
 export const GET_STATE_MAPPING_QUERY = gql`
   query getProjectWorkItemSourceStateMappings($projectKey: String!) {
-    project(key: $projectKey) {
+    project(key: $projectKey, interfaces: [OrganizationRef]) {
+      organizationKey
       workItemsSources(interfaces: [WorkItemStateMappings]) {
         edges {
           node {

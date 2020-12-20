@@ -58,11 +58,11 @@ export async function renderedChart(chartComponent) {
  * 3. this function spys on chart and config, so its important that it renders the whole tree till the Chart component.
  *
  */
-export async function renderWithMockedProvider(component, mocks) {
+export async function renderWithMockedProvider(component, mocks=[]) {
   const chartSpy = jest.fn((x) => x);
   const configSpy = jest.fn((x) => x);
 
-  const results = render(
+  render(
     <SpyContext.Provider value={{onChartUpdated: chartSpy, configSpy: configSpy}}>{component}</SpyContext.Provider>,
     {
       wrapper: getAppProviders(mocks),
@@ -71,7 +71,7 @@ export async function renderWithMockedProvider(component, mocks) {
 
   // it'll wait until the mock function has been called once.
   await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
-  return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value, ...results};
+  return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value};
 }
 
 /**

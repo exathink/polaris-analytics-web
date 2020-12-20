@@ -73,7 +73,7 @@ export const WorkItemStateTypeMapChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view}) => {
+  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view, enableEdits}) => {
     const workItemStateMappings = workItemSource ? workItemSource.workItemStateMappings : [];
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
     const series = getSeries(stateMappings);
@@ -90,7 +90,7 @@ export const WorkItemStateTypeMapChart = Chart({
         text: `Value Stream Mapping`,
       },
       subtitle: {
-        text: `Drag a work item state to its desired phase to edit mapping.`,
+        text: enableEdits ? `Drag a work item state to its desired phase to edit mapping.` : ``,
       },
       xAxis: {
         categories: allStateTypeDisplayValues,
@@ -118,7 +118,18 @@ export const WorkItemStateTypeMapChart = Chart({
           },
           point: {
             events: {
+              drag: function (e) {
+                // not org owner, shouldn't be able to drag
+                if (!enableEdits) {
+                  return false;
+                }
+              },
               drop: function (e) {
+                // not org owner, shouldn't be able to drop
+                if (!enableEdits) {
+                  return false;
+                }
+
                 // 'this' here represents point being dragged.
                 const point = this;
 
