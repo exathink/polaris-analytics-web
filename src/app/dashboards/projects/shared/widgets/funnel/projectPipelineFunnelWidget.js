@@ -4,6 +4,7 @@ import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelin
 import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {getLatest} from "../../../../../helpers/utility";
 import {ProjectPipelineFunnelDetailDashboard} from "./projectPipelineFunnelDetailDashboard";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
@@ -23,7 +24,10 @@ export const ProjectPipelineFunnelWidget = ({
     referenceString: getLatest(latestWorkItemEvent, latestCommit),
   });
   if (loading) return <Loading />;
-  if (error) return null;
+  if (error) {
+    logGraphQlError("useQueryProjectPipelineSummary", error);
+    return null;
+  }
   const {workItemStateTypeCounts, totalEffortByStateType} = data["project"];
 
   return view === "primary" ? (
