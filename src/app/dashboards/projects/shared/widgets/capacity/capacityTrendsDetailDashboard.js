@@ -14,7 +14,7 @@ const dashboard_id = 'dashboards.trends.projects.capacity.detail';
 export const ProjectCapacityTrendsDetailDashboard = (
   {
     instanceKey,
-    view,
+    view: parentView,
     context,
     latestWorkItemEvent,
     latestCommit,
@@ -96,6 +96,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
               <ProjectCapacityTrendsWidget
                 instanceKey={instanceKey}
                 view={view}
+                parentView={parentView}
                 showAllTrends={true}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}

@@ -23,7 +23,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl}) => {
+  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl, parentView}) => {
 
     // One series per contributor
     let contributorDetailSeries = []
@@ -67,18 +67,23 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
         {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Baseline', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Total Capacity', visible: true, type: 'spline', color: '#0f49b1'},
-        {key: 'avgCommitDays', displayName: 'Avg Capacity', visible: true, type: 'spline', },
-
+        {key: 'totalCommitDays', displayName: 'Total Capacity', visible: true, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
 
     let cycleMetricsTrendsSeries = [];
-    if (showEffort) {
-      cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics([
-          {key: 'totalEffort', displayName: 'Total Effort', visible: true, type: 'areaspline', color: '#4c84ec'}
-        ],
+
+    if (parentView === "detail" && showEffort) {
+      cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
+        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: "areaspline", color: "#4c84ec"}],
+        cycleMetricsTrends
+      );
+    }
+
+    if (parentView === "primary") {
+      cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
+        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: "spline", color: "#4c84ec"}],
         cycleMetricsTrends
       );
     }
@@ -171,7 +176,8 @@ export const CapacityTrendsChart = (
     showEffort,
     measurementPeriod,
     measurementWindow,
-    view
+    view,
+    parentView
   }
 ) => (
 
@@ -182,7 +188,9 @@ export const CapacityTrendsChart = (
     showEffort,
     cycleMetricsTrends,
     measurementWindow,
-    measurementPeriod
+    measurementPeriod,
+    view,
+    parentView
   }} />
 
 

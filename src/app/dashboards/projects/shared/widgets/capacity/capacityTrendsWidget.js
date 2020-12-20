@@ -10,6 +10,7 @@ export const ProjectCapacityTrendsWidget = (
   {
     instanceKey,
     view,
+    parentView,
     context,
     showContributorDetail,
     showEffort,
@@ -48,13 +49,13 @@ export const ProjectCapacityTrendsWidget = (
         measurementPeriod={days}
         asStatistic={asStatistic}
         target={target}
-
+        parentView={parentView || view}
         view={view}
 
       />
       :
       <ProjectCapacityTrendsDetailDashboard
-        {...{instanceKey, days, measurementWindow, samplingFrequency, target}}
+        {...{instanceKey, days, measurementWindow, samplingFrequency, target, view}}
       />
   )
 }

@@ -25,9 +25,9 @@ const dashboard = ({viewerContext}) => (
             <DashboardRow h={"30%"} title={"Alignment"}>
               <DashboardWidget
                 w={1 / 3}
-                name="traceability"
+                name="capacity"
                 render={({view}) => (
-                  <ProjectTraceabilityTrendsWidget
+                  <ProjectCapacityTrendsWidget
                     instanceKey={key}
                     measurementWindow={30}
                     days={45}
@@ -36,6 +36,7 @@ const dashboard = ({viewerContext}) => (
                     view={view}
                     latestWorkItemEvent={latestWorkItemEvent}
                     latestCommit={latestCommit}
+                    target={0.9}
                   />
                 )}
                 showDetail={true}
@@ -62,9 +63,9 @@ const dashboard = ({viewerContext}) => (
               />
               <DashboardWidget
                 w={1 / 3}
-                name="capacity"
+                name="traceability"
                 render={({view}) => (
-                  <ProjectCapacityTrendsWidget
+                  <ProjectTraceabilityTrendsWidget
                     instanceKey={key}
                     measurementWindow={30}
                     days={45}
@@ -73,7 +74,6 @@ const dashboard = ({viewerContext}) => (
                     view={view}
                     latestWorkItemEvent={latestWorkItemEvent}
                     latestCommit={latestCommit}
-                    target={0.9}
                   />
                 )}
                 showDetail={true}
