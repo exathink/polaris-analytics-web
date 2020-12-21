@@ -11,7 +11,6 @@ import {
   useTrendsControlBarState,
 } from "../../../shared/components/trendingControlBar/trendingControlBar";
 
-
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
 export const ProjectPullRequestsDetailDashboard = ({
@@ -22,7 +21,7 @@ export const ProjectPullRequestsDetailDashboard = ({
   measurementWindow,
   samplingFrequency,
   latestCommit,
-  pullRequests
+  pullRequests,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -43,7 +42,7 @@ export const ProjectPullRequestsDetailDashboard = ({
         ])}
       >
         <DashboardWidget
-          w={1/2}
+          w={1 / 2}
           name="pr-metrics-summary-detailed"
           render={({view}) => (
             <PullRequestsCompletedTrendsWidget
@@ -58,7 +57,7 @@ export const ProjectPullRequestsDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          w={1/2}
+          w={1 / 2}
           name="pr-metrics-reviewtime-detailed"
           render={({view}) => (
             <PullRequestsReviewTimeTrendsWidget
@@ -73,7 +72,7 @@ export const ProjectPullRequestsDetailDashboard = ({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h={"66%"}>
+      <DashboardRow h={"55%"}>
         <DashboardWidget
           w={1}
           name="pr-pull-req-detailed"
