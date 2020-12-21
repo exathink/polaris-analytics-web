@@ -4,6 +4,11 @@ import {renderComponentWithMockedProvider} from "../../../../framework/viz/chart
 import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 
+// clear mocks after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 const mocks = [
   {
     request: {
