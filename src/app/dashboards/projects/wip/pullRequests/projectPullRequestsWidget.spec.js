@@ -46,6 +46,20 @@ const mocks = [
                   ],
                 },
               },
+              {
+                node: {
+                  id: "UHVsbFJlcXVlc3Q6NWEabcFjODAtY2I1Zi00ZGQzLThhYjYtOTI4NzZjZGU3YmZh",
+                  name: 'PO-398 "Testing"',
+                  key: "5a1d1c80-xyzf-4dd3-8ab6-92876cde7bfa",
+                  displayId: "119",
+                  state: "open",
+                  repositoryKey: "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+                  repositoryName: "polaris-analytics-web",
+                  age: 11.865918751713,
+                  webUrl: "https://gitlab.com/polaris-apps/polaris-analytics-web/-/merge_requests/119",
+                  workItemsSummaries: [],
+                },
+              }
             ],
           },
         },
@@ -62,9 +76,7 @@ const projectPullRequestsPropsFixture = {
   latestPullRequestEvent: "2020-12-09T21:28:26.745000",
 };
 
-const activeCodeReviews = mocks[0].result.data.project.pullRequests.edges
-  .map((x) => x.node)
-  .filter((x) => x.workItemsSummaries.length > 0);
+const activeCodeReviews = mocks[0].result.data.project.pullRequests.edges;
 
 describe("projectPullRequestsWidget", () => {
   describe("when there are no pull requests", () => {
