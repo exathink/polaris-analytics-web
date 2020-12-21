@@ -1,1 +1,1 @@
-export {ProjectOpenPullRequestsWidget} from "./projectOpenPullRequestsWidget"
+export {ProjectPullRequestsWidget} from "./projectPullRequestsWidget"
