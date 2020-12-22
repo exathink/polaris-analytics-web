@@ -96,7 +96,6 @@ export const ProjectCapacityTrendsDetailDashboard = (
               <ProjectCapacityTrendsWidget
                 instanceKey={instanceKey}
                 view={view}
-                parentView={parentView}
                 showAllTrends={true}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
@@ -105,6 +104,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
                 samplingFrequency={frequencyRange}
                 showContributorDetail={showContributorDetail}
                 showEffort={showEffort}
+                chartConfig={{totalEffortDisplayType: "areaspline"}}
               />
           }
           showDetail={false}

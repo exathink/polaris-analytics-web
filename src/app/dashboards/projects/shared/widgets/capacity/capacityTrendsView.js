@@ -50,7 +50,7 @@ export const ProjectCapacityTrendsView = (
     measurementWindow,
     asStatistic,
     view,
-    parentView,
+    chartConfig,
     target,
   }) => (
   asStatistic ?
@@ -71,7 +71,7 @@ export const ProjectCapacityTrendsView = (
             measurementWindow,
             target,
             view,
-            parentView
+            chartConfig
           }}
         />
       </VizItem>
