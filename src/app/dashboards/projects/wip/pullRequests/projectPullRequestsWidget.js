@@ -32,7 +32,7 @@ export const ProjectPullRequestsWidget = ({
         latestCommit={latestCommit}
         latestPullRequestEvent={latestPullRequestEvent}
         context={context}
-        days={7}
+        days={30}
         measurementWindow={1}
         samplingFrequency={1}
       />
