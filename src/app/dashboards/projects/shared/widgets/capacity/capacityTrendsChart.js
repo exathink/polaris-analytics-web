@@ -170,7 +170,7 @@ export const CapacityTrendsChart = (
     measurementPeriod,
     measurementWindow,
     view,
-    parentView
+    chartConfig
   }
 ) => (
 
@@ -183,7 +183,7 @@ export const CapacityTrendsChart = (
     measurementWindow,
     measurementPeriod,
     view,
-    parentView
+    chartConfig
   }} />
 
 

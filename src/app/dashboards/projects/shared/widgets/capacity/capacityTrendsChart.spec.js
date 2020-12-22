@@ -107,7 +107,8 @@ const propsFixture = {
   ],
   ...commonMeasurementProps,
   view: "primary",
-  parentView: "primary",
+  showEffort: true,
+  chartConfig: {totalEffortDisplayType: "spline"},
 };
 
 const commonChartProps = {
