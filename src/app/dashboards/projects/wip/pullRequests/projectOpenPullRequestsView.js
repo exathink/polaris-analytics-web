@@ -35,28 +35,34 @@ const ProjectOpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   </VizRow>
 );
 
-export const ProjectOpenPullRequestsView = ({pullRequests, view, context}) =>
-  view === "primary" ? (
-    <ProjectOpenPullRequestsStatsView pullRequests={pullRequests} view={view} />
-  ) : (
-    <VizRow h={1}>
-      <VizItem w={1}>
-        <PullRequestAgeChart
-          pullRequests={pullRequests}
-          title={"Pending Code Reviews"}
-          view={view}
-          onSelectionChange={(pullRequests) => {
-            if (pullRequests.length === 1) {
-              const pullRequest = pullRequests[0];
-              if (pullRequest.workItemsSummaries.length === 1) {
-                const workItem = pullRequest.workItemsSummaries[0];
-                context.navigate(WorkItems, workItem.displayId, workItem.key)
-              } else {
-                navigateToPullRequest(pullRequests[0].webUrl);
-              }
+const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
+  <VizRow h={1}>
+    <VizItem w={1}>
+      <PullRequestAgeChart
+        pullRequests={pullRequests}
+        title={"Pending Code Reviews"}
+        view={view}
+        onSelectionChange={(pullRequests) => {
+          if (pullRequests.length === 1) {
+            const pullRequest = pullRequests[0];
+            if (pullRequest.workItemsSummaries.length === 1) {
+              const workItem = pullRequest.workItemsSummaries[0];
+              context.navigate(WorkItems, workItem.displayId, workItem.key);
+            } else {
+              navigateToPullRequest(pullRequests[0].webUrl);
             }
-          }}
-        />
-      </VizItem>
-    </VizRow>
-  );
+          }
+        }}
+      />
+    </VizItem>
+  </VizRow>
+);
+
+
+export const ProjectOpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
+  if (asStatistic) {
+    return <ProjectOpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
+  }
+
+  return <ProjectPullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
+};

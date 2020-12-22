@@ -14,7 +14,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
-import {ProjectOpenPullRequestsWidget} from "./pullRequests";
+import {ProjectPullRequestsWidget} from "./pullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "./new_dashboard";
 
@@ -90,13 +90,14 @@ export const dashboard = ({viewerContext}) => (
               name={"code-reviews"}
               title={"Code Reviews"}
               render={({view}) => (
-                <ProjectOpenPullRequestsWidget
+                <ProjectPullRequestsWidget
                   instanceKey={key}
                   view={view}
                   context={context}
                   latestWorkItemEvent={latestWorkItemEvent}
                   latestCommit={latestCommit}
                   latestPullRequestEvent={latestPullRequestEvent}
+                  asStatistic={true}
                 />
               )}
               showDetail={true}

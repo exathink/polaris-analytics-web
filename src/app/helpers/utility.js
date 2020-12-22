@@ -193,9 +193,9 @@ export function getLatest(server_date_a , server_date_b) {
 }
 
 export function getReferenceString(server_date_a, server_date_b, server_date_c) {
-  const aValue = server_date_a ? moment(server_date_a).valueOf() : 0;
-  const bValue = server_date_b ? moment(server_date_b).valueOf() : 0;
-  const cValue = server_date_c ? moment(server_date_c).valueOf() : 0;
+  const aValue = server_date_a ? moment.utc(server_date_a).valueOf() : 0;
+  const bValue = server_date_b ? moment.utc(server_date_b).valueOf() : 0;
+  const cValue = server_date_c ? moment.utc(server_date_c).valueOf() : 0;
   return `${bValue}${aValue}${cValue}`
 }
 
