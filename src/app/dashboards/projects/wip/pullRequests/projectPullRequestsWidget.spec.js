@@ -3,6 +3,7 @@ import React from "react";
 import {renderComponentWithMockedProvider} from "../../../../framework/viz/charts/chart-test-utils";
 import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
+import "@testing-library/jest-dom/extend-expect";
 
 // clear mocks after each test
 afterEach(() => {
