@@ -5,15 +5,24 @@ import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullR
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 import "@testing-library/jest-dom/extend-expect";
 import {GraphQLError} from "graphql";
+import {getReferenceString} from "../../../../helpers/utility";
+
+const referenceDates = {
+  latestWorkItemEvent: "2020-12-09T22:31:01.244000",
+  latestCommit: "2020-12-09T22:30:42",
+  latestPullRequestEvent: "2020-12-09T21:28:26.745000"
+
+}
 
 const gqlRequest = {
   query: GET_PROJECT_PULL_REQUESTS,
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     activeOnly: true,
-    referenceString: "160753326124416075332420001607529506745",
+    referenceString: getReferenceString(referenceDates.latestCommit, referenceDates.latestWorkItemEvent, referenceDates.latestPullRequestEvent),
   },
 };
+
 
 const mocks = [
   {
@@ -72,9 +81,7 @@ const projectPullRequestsPropsFixture = {
   view: "primary",
   asStatistic: true,
   context: {},
-  latestWorkItemEvent: "2020-12-09T22:31:01.244000",
-  latestCommit: "2020-12-09T22:30:42",
-  latestPullRequestEvent: "2020-12-09T21:28:26.745000",
+  ...referenceDates
 };
 
 const activeCodeReviews = mocks[0].result.data.project.pullRequests.edges;
