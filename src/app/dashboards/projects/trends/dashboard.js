@@ -37,6 +37,8 @@ const dashboard = ({viewerContext}) => (
                     latestWorkItemEvent={latestWorkItemEvent}
                     latestCommit={latestCommit}
                     target={0.9}
+                    showEffort={true}
+                    chartConfig={{totalEffortDisplayType: "spline"}}
                   />
                 )}
                 showDetail={true}

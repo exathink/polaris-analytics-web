@@ -10,7 +10,6 @@ export const ProjectCapacityTrendsWidget = (
   {
     instanceKey,
     view,
-    parentView,
     context,
     showContributorDetail,
     showEffort,
@@ -22,7 +21,8 @@ export const ProjectCapacityTrendsWidget = (
     targetPercentile,
     target,
     asStatistic,
-    pollInterval
+    pollInterval,
+    chartConfig
   }) => {
 
   const {loading, error, data} = useQueryProjectCapacityTrends(
@@ -49,9 +49,8 @@ export const ProjectCapacityTrendsWidget = (
         measurementPeriod={days}
         asStatistic={asStatistic}
         target={target}
-        parentView={parentView || view}
+        chartConfig={chartConfig}
         view={view}
-
       />
       :
       <ProjectCapacityTrendsDetailDashboard

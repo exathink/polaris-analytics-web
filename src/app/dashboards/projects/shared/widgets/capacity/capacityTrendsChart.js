@@ -23,7 +23,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl, parentView}) => {
+  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl, chartConfig}) => {
 
     // One series per contributor
     let contributorDetailSeries = []
@@ -73,17 +73,10 @@ const CapacityTrendsWithContributorDetailChart = Chart({
     );
 
     let cycleMetricsTrendsSeries = [];
-
-    if (parentView === "detail" && showEffort) {
+    if (showEffort) {
+      const totalEffortChartType = chartConfig.totalEffortDisplayType || "spline"; // spline is default
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
-        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: "areaspline", color: "#4c84ec"}],
-        cycleMetricsTrends
-      );
-    }
-
-    if (parentView === "primary") {
-      cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
-        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: "spline", color: "#4c84ec"}],
+        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
         cycleMetricsTrends
       );
     }
