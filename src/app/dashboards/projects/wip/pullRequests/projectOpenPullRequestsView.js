@@ -59,10 +59,10 @@ const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
 );
 
 
-export const ProjectOpenPullRequestsView = ({pullRequests, view, asStatistic}) => {
+export const ProjectOpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
   if (asStatistic) {
     return <ProjectOpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
   }
 
-  return <ProjectPullRequestChartView pullRequests={pullRequests} view={view} />;
+  return <ProjectPullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
 };

@@ -70,6 +70,7 @@ const mocks = [
 const projectPullRequestsPropsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
+  asStatistic: true,
   context: {},
   latestWorkItemEvent: "2020-12-09T22:31:01.244000",
   latestCommit: "2020-12-09T22:30:42",
@@ -114,7 +115,7 @@ describe("projectPullRequestsWidget", () => {
     test("shows correct no of active pending reviews", async () => {
       renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/Pending/i);
+      screen.debug(await screen.findByText(/Pending/i))
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
     });
   });
