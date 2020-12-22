@@ -13,6 +13,7 @@ export const ProjectPullRequestsWidget = ({
   view,
   context,
   pollInterval,
+  asStatistic,
 }) => {
   const {loading, error, data} = useQueryProjectPullRequests({
     instanceKey,
@@ -34,10 +35,16 @@ export const ProjectPullRequestsWidget = ({
         days={7}
         measurementWindow={1}
         samplingFrequency={1}
-        pullRequests={pullRequests}
       />
     );
   } else {
-    return <ProjectOpenPullRequestsView pullRequests={pullRequests} view={view} context={context} />;
+    return (
+      <ProjectOpenPullRequestsView
+        pullRequests={pullRequests}
+        view={view}
+        context={context}
+        asStatistic={asStatistic}
+      />
+    );
   }
 };

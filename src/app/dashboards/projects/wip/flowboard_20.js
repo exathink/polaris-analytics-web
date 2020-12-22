@@ -97,6 +97,7 @@ export const dashboard = ({viewerContext}) => (
                   latestWorkItemEvent={latestWorkItemEvent}
                   latestCommit={latestCommit}
                   latestPullRequestEvent={latestPullRequestEvent}
+                  asStatistic={true}
                 />
               )}
               showDetail={true}

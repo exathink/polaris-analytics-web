@@ -2,14 +2,11 @@ import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 import {PullRequestsCompletedTrendsWidget} from "../../shared/widgets/pullRequestsCompleted";
 import {PullRequestsReviewTimeTrendsWidget} from "../../shared/widgets/pullRequestsReviewTime";
-import {VizItem, VizRow} from "../../../shared/containers/layout";
-import {PullRequestAgeChart} from "./pullRequestAgeChart";
-import {navigateToPullRequest} from "../../../shared/navigation/navigate";
-import WorkItems from "../../../work_items/context";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../shared/components/trendingControlBar/trendingControlBar";
+import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
@@ -21,7 +18,8 @@ export const ProjectPullRequestsDetailDashboard = ({
   measurementWindow,
   samplingFrequency,
   latestCommit,
-  pullRequests,
+  latestPullRequestEvent,
+  latestWorkItemEvent,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -77,26 +75,14 @@ export const ProjectPullRequestsDetailDashboard = ({
           w={1}
           name="pr-pull-req-detailed"
           render={({view}) => (
-            <VizRow h={1}>
-              <VizItem w={1}>
-                <PullRequestAgeChart
-                  pullRequests={pullRequests}
-                  title={"Pending Code Reviews"}
-                  view={view}
-                  onSelectionChange={(pullRequests) => {
-                    if (pullRequests.length === 1) {
-                      const pullRequest = pullRequests[0];
-                      if (pullRequest.workItemsSummaries.length === 1) {
-                        const workItem = pullRequest.workItemsSummaries[0];
-                        context.navigate(WorkItems, workItem.displayId, workItem.key);
-                      } else {
-                        navigateToPullRequest(pullRequests[0].webUrl);
-                      }
-                    }
-                  }}
-                />
-              </VizItem>
-            </VizRow>
+            <ProjectPullRequestsWidget
+              instanceKey={instanceKey}
+              view={view}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
+            />
           )}
           showDetail={false}
         />
