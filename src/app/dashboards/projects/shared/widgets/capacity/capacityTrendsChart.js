@@ -74,7 +74,10 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
     let cycleMetricsTrendsSeries = [];
     if (showEffort) {
-      const totalEffortChartType = chartConfig.totalEffortDisplayType || "spline"; // spline is default
+      let totalEffortChartType = "spline"; // spline is default
+      if (chartConfig && chartConfig.totalEffortDisplayType) {
+        totalEffortChartType = chartConfig.totalEffortDisplayType;
+      }
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
         [{key: "totalEffort", displayName: "Total Effort", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
         cycleMetricsTrends
