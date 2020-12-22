@@ -115,7 +115,7 @@ describe("projectPullRequestsWidget", () => {
     test("shows correct no of active pending reviews", async () => {
       renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
-      screen.debug(await screen.findByText(/Pending/i))
+      await screen.findByText(/Pending/i);
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
     });
   });
