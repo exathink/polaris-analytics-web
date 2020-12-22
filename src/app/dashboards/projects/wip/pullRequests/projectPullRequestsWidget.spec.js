@@ -1,25 +1,23 @@
-import {screen} from "@testing-library/react";
+import {screen, waitFor} from "@testing-library/react";
 import React from "react";
-import {renderComponentWithMockedProvider} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderComponentWithMockedProvider, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
 import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 import "@testing-library/jest-dom/extend-expect";
+import {GraphQLError} from "graphql";
 
-// clear mocks after each test
-afterEach(() => {
-  jest.clearAllMocks();
-});
+const gqlRequest = {
+  query: GET_PROJECT_PULL_REQUESTS,
+  variables: {
+    projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+    activeOnly: true,
+    referenceString: "160753326124416075332420001607529506745",
+  },
+};
 
 const mocks = [
   {
-    request: {
-      query: GET_PROJECT_PULL_REQUESTS,
-      variables: {
-        projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
-        activeOnly: true,
-        referenceString: "160753326124416075332420001607529506745",
-      },
-    },
+    request: gqlRequest,
     result: {
       data: {
         project: {
@@ -60,7 +58,7 @@ const mocks = [
                   webUrl: "https://gitlab.com/polaris-apps/polaris-analytics-web/-/merge_requests/119",
                   workItemsSummaries: [],
                 },
-              }
+              },
             ],
           },
         },
@@ -68,6 +66,7 @@ const mocks = [
     },
   },
 ];
+
 const projectPullRequestsPropsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
@@ -84,7 +83,7 @@ describe("projectPullRequestsWidget", () => {
   describe("when there are no pull requests", () => {
     const emptyMock = [
       {
-        request: mocks[0].request,
+        request: gqlRequest,
         result: {
           data: {
             project: {
@@ -102,8 +101,25 @@ describe("projectPullRequestsWidget", () => {
       renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
 
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/Pending/i);
+      await screen.findByText(/pending/i);
       expect((await screen.findAllByText(/0/i)).length).toBeGreaterThan(0);
+    });
+
+    test("renders stats chart in primary view without any error", async () => {
+      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
+      await screen.findByTestId("loading-spinner");
+      await screen.findByText(/pending/i);
+    });
+
+    test("renders pull request chart in primary view without any error", async () => {
+      const charViewProps = {
+        ...projectPullRequestsPropsFixture,
+        asStatistic: false,
+      };
+
+      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...charViewProps} />, emptyMock);
+      await screen.findByTestId("loading-spinner");
+      await screen.findByText(/pending/i);
     });
   });
 
@@ -116,8 +132,54 @@ describe("projectPullRequestsWidget", () => {
     test("shows correct no of active pending reviews", async () => {
       renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/Pending/i);
+      await screen.findByText(/pending/i);
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
+    });
+  });
+
+  describe("when there are errors", () => {
+    let logGraphQlError;
+    beforeEach(() => {
+      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
+    });
+    afterEach(() => {
+      logGraphQlError.mockRestore();
+    });
+
+    const mockNetworkError = [
+      {
+        request: gqlRequest,
+        error: new Error("A network error Occurred"),
+      },
+    ];
+
+    const mockGraphQlErrors = [
+      {
+        request: gqlRequest,
+        result: {
+          errors: [new GraphQLError("A GraphQL Error Occurred")],
+        },
+      },
+    ];
+
+    test("it renders nothing and logs the error when there is a network error", async () => {
+      renderComponentWithMockedProvider(
+        <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
+        mockNetworkError
+      );
+      await screen.findByTestId("loading-spinner");
+      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+      expect(screen.queryByText(/pending/i)).toBeNull();
+    });
+
+    test("it renders nothing and logs the error when there is a GraphQl error", async () => {
+      renderComponentWithMockedProvider(
+        <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
+        mockGraphQlErrors
+      );
+      await screen.findByTestId("loading-spinner");
+      await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+      expect(screen.queryByText(/pending/i)).toBeNull();
     });
   });
 });

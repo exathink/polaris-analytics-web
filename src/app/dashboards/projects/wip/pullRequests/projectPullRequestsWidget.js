@@ -4,6 +4,7 @@ import {useQueryProjectPullRequests} from "../../shared/hooks/useQueryProjectPul
 import {ProjectOpenPullRequestsView} from "./projectOpenPullRequestsView";
 import {getReferenceString} from "../../../../helpers/utility";
 import {ProjectPullRequestsDetailDashboard} from "./projectPullRequestsDetailDashboard";
+import {logGraphQlError} from "../../../../components/graphql/utils";
 
 export const ProjectPullRequestsWidget = ({
   instanceKey,
@@ -21,7 +22,10 @@ export const ProjectPullRequestsWidget = ({
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
   if (loading) return <Loading />;
-  if (error) return null;
+  if (error) {
+    logGraphQlError("useQueryProjectPullRequests", error);
+    return null;
+  }
   const pullRequests = data["project"]["pullRequests"]["edges"].map((edge) => edge.node);
 
   if (view === "detail") {
