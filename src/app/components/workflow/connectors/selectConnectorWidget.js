@@ -129,7 +129,7 @@ export const SelectConnectorWidget =
                   {
                     viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
                       <React.Fragment>
-                        < NewConnectorFormButton
+                        <NewConnectorFormButton
                           connectorType={connectorType}
                           title={`Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
                           onSubmit={
@@ -143,6 +143,7 @@ export const SelectConnectorWidget =
                                       accountKey: viewerContext.accountKey,
                                       organizationKey: organizationKey,
                                       baseUrl: urlMunge(connectorType, values.baseUrl),
+                                      atlassianConnectAppKey: values.atlassianConnectAppKey,
                                       apiKey: values.apiKey,
                                       githubAccessToken: values.githubAccessToken,
                                       githubOrganization: values.githubOrganization,

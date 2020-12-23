@@ -44,41 +44,18 @@ const AddConnectorForm = (
         </Row>
 
         {
-          connectorType === 'jira' ?
+          connectorType === 'jira' || connectorType === 'bitbucket' ?
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Jira Server URL">
-                  {getFieldDecorator('baseUrl', {
+                <Form.Item label="Atlassian Connect App Key">
+                  {getFieldDecorator('atlassianConnectAppKey', {
                     rules: [
-                      {required: true, message: 'Jira Server is required'}
+                      {required: true, message: 'Atlassian Connect App Key is required'}
                     ],
-                    initialValue: currentValue('baseUrl', null)
+                    initialValue: currentValue('atlassianConnectAppKey', null)
                   })(
                     <Input
-                      placeholder="the name of the Jira server where you installed the connector app"
-                      addonBefore="https://"
-                      addonAfter=".atlassian.net"
-                    />
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-            :
-            null
-        }
-        {
-          connectorType === 'bitbucket' ?
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item label="BitBucket Account Key">
-                  {getFieldDecorator('bbAccountKey', {
-                    rules: [
-                      {required: true, message: 'Bitbucket account key is required'}
-                    ],
-                    initialValue: currentValue('bbAccountKey', null)
-                  })(
-                    <Input
-                      placeholder="the key for the account where the app is installed"
+                      placeholder="The app key for the Polaris Flow Connector you just installed on your Atlassian Server"
                     />
                   )}
                 </Form.Item>
