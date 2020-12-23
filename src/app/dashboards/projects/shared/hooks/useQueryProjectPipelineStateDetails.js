@@ -1,14 +1,15 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, referenceString}) {
+export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, referenceString, closedWithinDays, activeOnly}) {
   return useQuery(
     gql`
-      query projectPipelineStateDetails($key: String!, $specsOnly: Boolean, $referenceString: String) {
+      query projectPipelineStateDetails($key: String!, $specsOnly: Boolean, $referenceString: String, $closedWithinDays: Int, $activeOnly: Boolean) {
         project(key: $key, referenceString: $referenceString) {
           id
           workItems(
-            activeOnly: true
+            activeOnly: $activeOnly
+            closedWithinDays: $closedWithinDays
             interfaces: [WorkItemStateDetails]
             specsOnly: $specsOnly
             referenceString: $referenceString
@@ -49,6 +50,8 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
         key: instanceKey,
         specsOnly: specsOnly,
         referenceString: referenceString,
+        closedWithinDays: closedWithinDays,
+        activeOnly: activeOnly
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval(),

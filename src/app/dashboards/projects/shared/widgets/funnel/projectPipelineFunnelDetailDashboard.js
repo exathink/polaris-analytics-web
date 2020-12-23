@@ -57,7 +57,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
         />
         <DashboardWidget
           w={2 / 3}
-          name="project-pipeline-bubble"
+          name="workitem-statetype-map"
           render={({view}) => {
             return (
               <WorkItemStateTypeMapWidget
@@ -65,7 +65,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
-                days={30}
+                days={days}
                 view={view}
               />
             );
@@ -83,7 +83,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              days={30}
+              days={days}
+              closedWithinDays={days}
               view={view}
             />
           )}

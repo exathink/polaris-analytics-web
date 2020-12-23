@@ -66,6 +66,7 @@ export const ProjectPipelineDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
               days={days}
+              activeOnly={true}
               targetPercentile={cycleTimeTargetPercentile}
             />
           )}

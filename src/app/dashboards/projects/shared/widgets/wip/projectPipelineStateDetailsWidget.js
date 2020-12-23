@@ -10,6 +10,8 @@ export const ProjectPipelineStateDetailsWidget = ({
   specsOnly,
   latestWorkItemEvent,
   days,
+  activeOnly,
+  closedWithinDays,
   targetPercentile,
   stateMappingIndex,
   view,
@@ -26,16 +28,23 @@ export const ProjectPipelineStateDetailsWidget = ({
     specsOnly,
     referenceString: latestWorkItemEvent,
   });
+
   if (cycleMetricsError) {
     logGraphQlError("ProjectPipelineStateDetailsWidget.cycleMetrics", cycleMetricsError);
     return null;
   }
 
+  const filterWorkItems = {
+    ...(activeOnly && {activeOnly: activeOnly}),
+    ...(closedWithinDays && {closedWithinDays: closedWithinDays}),
+  };
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
     referenceString: latestWorkItemEvent,
+    ...filterWorkItems,
   });
+
   if (cycleMetricsLoading || loading) return <Loading />;
   if (error) {
     logGraphQlError("ProjectPipelineStateDetailsWidget.pipelineStateDetails", error);

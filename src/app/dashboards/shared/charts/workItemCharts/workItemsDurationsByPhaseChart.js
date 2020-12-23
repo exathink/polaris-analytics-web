@@ -83,16 +83,20 @@ function getSeriesGroupedByState(workItems, stateType) {
   // series are sorted in ascending order of number of items in each state.
   return Object.keys(workItemsByState)
     .sort((stateA, stateB) => workItemsByState[stateA].length - workItemsByState[stateB].length)
-    .map((workItemState, index) => ({
-      name: capitalizeFirstLetter(workItemState),
-      color: assignWorkItemStateColor(stateType, index),
-      stacking: true,
-      maxPointWidth: 30,
-      minPointLength: 3,
-      allowPointSelect: true,
-      // Since each workItem can yield multiple points, we flatMap to give a valid series array
-      data: workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem)),
-    }));
+    .map((workItemState, index) => {
+      const workItemPoints = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
+
+      return {
+        name: `${capitalizeFirstLetter(workItemState)} (${workItemPoints.length})`,
+        color: assignWorkItemStateColor(stateType, index),
+        stacking: true,
+        maxPointWidth: 30,
+        minPointLength: 3,
+        allowPointSelect: true,
+        // Since each workItem can yield multiple points, we flatMap to give a valid series array
+        data: workItemPoints,
+      };
+    });
 }
 
 function getSeriesGroupedByWorkItemType(workItems, stateType) {
@@ -108,17 +112,21 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
   // series are sorted by standard work item type sort order.
   return Object.keys(workItemsByWorkItemType)
     .sort((typeA, typeB) => WorkItemTypeSortOrder[typeA] - WorkItemTypeSortOrder[typeB])
-    .map((workItemType) => ({
-      name: WorkItemTypeDisplayName[workItemType],
-      // default color for the series. points will override, but this shows on the legend.
-      color: WorkItemColorMap[workItemType],
-      stacking: true,
-      maxPointWidth: 30,
-      minPointLength: 3,
-      allowPointSelect: true,
-      // Since each workItem can yield multiple points, we flatMap to give a valid series array
-      data: workItemsByWorkItemType[workItemType].flatMap((workItem) => getDataPoints(workItem)),
-    }));
+    .map((workItemType) => {
+      const workItemPoints = workItemsByWorkItemType[workItemType].flatMap((workItem) => getDataPoints(workItem));
+
+      return {
+        name: `${WorkItemTypeDisplayName[workItemType]} (${workItemPoints.length})`,
+        // default color for the series. points will override, but this shows on the legend.
+        color: WorkItemColorMap[workItemType],
+        stacking: true,
+        maxPointWidth: 30,
+        minPointLength: 3,
+        allowPointSelect: true,
+        // Since each workItem can yield multiple points, we flatMap to give a valid series array
+        data: workItemPoints,
+      };
+    });
 }
 
 export const WorkItemsDurationsByPhaseChart = Chart({
