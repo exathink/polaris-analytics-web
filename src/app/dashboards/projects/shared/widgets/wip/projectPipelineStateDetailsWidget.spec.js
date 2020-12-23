@@ -231,14 +231,14 @@ describe("ProjectPipelineStateDetailsWidget", () => {
       renderComponentWithMockedProvider(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-      expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
+      expect(screen.queryByText(/work queue/i)).toBeNull();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       renderComponentWithMockedProvider(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-      expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
+      expect(screen.queryByText(/work queue/i)).toBeNull();
     });
   });
 });
