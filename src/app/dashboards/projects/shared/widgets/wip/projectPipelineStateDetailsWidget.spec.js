@@ -188,9 +188,14 @@ const mocks = [
 ];
 
 describe("ProjectPipelineStateDetailsWidget", () => {
-  test("when there are no workItems", () => {});
+  /**
+   * this particular widget renders ProjectPipelineStateDetailsView component 
+   * which in turn uses withNavigationContext consumer. 
+   * currently we are keeping these tests on hold which require Router as parent.
+   */
+  test("when there are multiple workItems", async () => {
 
-  test("when there are multiple workItems", () => {});
+  });
 
   describe("when there are errors", () => {
     let logGraphQlError;
