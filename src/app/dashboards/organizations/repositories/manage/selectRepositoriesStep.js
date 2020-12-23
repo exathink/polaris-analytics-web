@@ -125,7 +125,7 @@ export const SelectRepositoriesStep =
         const {testConnector} = testConnectorMutation;
         const {editConnector, editConnectorResult} = editConnectorMutation;
 
-        const {connectorType} = selectedConnector;
+
 
         return (
           <Query
@@ -195,8 +195,9 @@ export const SelectRepositoriesStep =
                                     editConnectorInput: {
                                       key: selectedConnector.key,
                                       name: values.name,
-                                      connectorType: connectorType,
+                                      connectorType: selectedConnectorType,
                                       apiKey: values.apiKey,
+                                      atlassianConnectAppKey: values.atlassianConnectAppKey,
                                       githubAccessToken: values.githubAccessToken,
                                       gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
                                     }

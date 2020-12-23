@@ -12,7 +12,7 @@ const EditConnectorForm = (
         }
     }
 ) => {
-    const {name, baseUrl} = connector;
+    const {name} = connector;
     return (
         <React.Fragment>
             <Row gutter={16}>
@@ -28,15 +28,15 @@ const EditConnectorForm = (
                 </Col>
             </Row>
             {
-                connectorType === 'atlassian' ?
+                connectorType === 'jira' || connectorType === 'bitbucket' ?
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item label="Atlassian Server URL">
-                                {getFieldDecorator('baseUrl', {
-                                    initialValue: currentValue('baseUrl', baseUrl)
+                            <Form.Item label="Atlassian App Key">
+                                {getFieldDecorator('atlassianConnectAppKey', {
+                                    initialValue: currentValue('atlassianConnectAppKey', null)
                                 })(
                                     <Input
-                                        disabled
+                                        placeholder="Updated App Key"
                                     />
                                 )}
                             </Form.Item>
