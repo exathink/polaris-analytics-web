@@ -82,26 +82,41 @@ const BitbucketConnectorInstructions = ({part}) => (
           Click upload and wait for the installation to complete successfully.
         </li>
         <li>
-          Make a note of the account key for the user under whose account you have installed the app.
-          You can find this from the url of the page on which you just finished installing the Polaris Flow Atlassian Connect App.
-          The url should be of the form
-          <em> https://bitbucket.org/account/user/{"{user-account-key}"}/addon-management</em>.
-          Make a note of the UUID that is between the curly braces in the url. We will need
-          this next, to complete the registration of the connector within Polaris Flow.
+          Make a note of the <em>app key</em> of the Polaris Flow Connector for Bitbucket that you just installed. You may
+          need to expand the entry for the app you installed in the Bitbucket UI to see this. You will need this app key in
+          the next step, where we associate this installation of the Atlassian Connect App with your Polaris account and organization
         </li>
         <li>
           Click Next below to proceed to the final step in the installation.
         </li>
       </ol>
+      <ul>
+        <li>
+          Note that you are free to install more than one Polaris Flow Connector for Bitbucket in the
+          same Bitbucket Workspace provided <em>they are registered to connectors in separate organizations in Polaris</em>.
+          </li>
+        <li>
+          If you install more than one Polaris Flow Connector for Bitbucket in the same Bitbucket Workspace, and attempt
+          to register this under the same organization in Polaris, the next step in this process will fail,
+          even if your installation on Bitbucket was successful.
+        </li>
+        <li>
+          Note also, that removing an existing Polaris Flow Connector for Bitbucket on your Bitbucket Workspace
+          will orphan any data you have imported under this connector in Polaris and make your Polaris connector inoperative.
+          Contact our support line if you need to migrate your Polaris connector
+          to a new installation of the Atlassian Connect App installed in the same workspace, while preserving existing historical
+          data imported under a previous connector.
+        </li>
+      </ul>
     </div>
     :
     part === 'setup' ?
       <div>
         <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
         <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
+          This step registers the app you installed on Bitbucket Cloud in Step 1, with your Polaris Flow account and
           associates it with your current
-          organization.
+          organization. The <b>Atlassian Connect App Key</b> is the value you were asked to save in the previous step.
         </p>
       </div>
       : null
