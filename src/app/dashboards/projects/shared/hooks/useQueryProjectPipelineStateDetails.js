@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, referenceString}) {
@@ -7,7 +7,12 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
       query projectPipelineStateDetails($key: String!, $specsOnly: Boolean, $referenceString: String) {
         project(key: $key, referenceString: $referenceString) {
           id
-          workItems (activeOnly: true, interfaces: [WorkItemStateDetails], specsOnly: $specsOnly, referenceString: $referenceString){
+          workItems(
+            activeOnly: true
+            interfaces: [WorkItemStateDetails]
+            specsOnly: $specsOnly
+            referenceString: $referenceString
+          ) {
             edges {
               node {
                 id
@@ -27,27 +32,26 @@ export function useQueryProjectPipelineStateDetails({instanceKey, specsOnly, ref
                     daysInState
                   }
                   earliestCommit
-                  latestCommit    
+                  latestCommit
                   commitCount
                   effort
                   duration
-                  
                 }
               }
             }
+          }
         }
-       }
-    }
-    `, {
+      }
+    `,
+    {
       service: analytics_service,
       variables: {
         key: instanceKey,
         specsOnly: specsOnly,
-        referenceString: referenceString
-
+        referenceString: referenceString,
       },
       errorPolicy: "all",
-      pollInterval: analytics_service.defaultPollInterval()
+      pollInterval: analytics_service.defaultPollInterval(),
     }
-  )
+  );
 }

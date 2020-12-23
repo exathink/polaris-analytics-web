@@ -18,8 +18,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   context,
   pollInterval,
 }) => {
-  const [workItemScope, setWorkItemScope] = useState('all');
-  const specsOnly = workItemScope === 'specs';
+  const [workItemScope, setWorkItemScope] = useState("all");
+  const specsOnly = workItemScope === "specs";
 
   return (
     <Dashboard dashboard={dashboard_id}>
