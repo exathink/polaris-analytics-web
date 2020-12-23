@@ -29,11 +29,6 @@ export const ProjectPipelineStateDetailsWidget = ({
     referenceString: latestWorkItemEvent,
   });
 
-  if (cycleMetricsError) {
-    logGraphQlError("ProjectPipelineStateDetailsWidget.cycleMetrics", cycleMetricsError);
-    return null;
-  }
-
   const filterWorkItems = {
     ...(activeOnly && {activeOnly: activeOnly}),
     ...(closedWithinDays && {closedWithinDays: closedWithinDays}),
@@ -44,6 +39,11 @@ export const ProjectPipelineStateDetailsWidget = ({
     referenceString: latestWorkItemEvent,
     ...filterWorkItems,
   });
+
+  if (cycleMetricsError) {
+    logGraphQlError("ProjectPipelineStateDetailsWidget.cycleMetrics", cycleMetricsError);
+    return null;
+  }
 
   if (cycleMetricsLoading || loading) return <Loading />;
   if (error) {
