@@ -28,6 +28,8 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
                 workItemType
                 isBug
 
+                state
+
                 startDate
                 endDate
 

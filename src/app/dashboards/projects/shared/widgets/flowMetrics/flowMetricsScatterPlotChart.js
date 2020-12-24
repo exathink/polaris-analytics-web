@@ -13,6 +13,7 @@ import {
 
 import {PlotLines} from "../../../../shared/charts/workItemCharts/chartParts";
 import {formatDateTime} from "../../../../../i18n";
+const METRICS = ["leadTime", "backlogTime", "cycleTime", "latency", "duration", "effort", "authors"];
 
 function mapColor(workItem) {
   if (!workItem.isBug) {
@@ -159,23 +160,31 @@ export const FlowMetricsScatterPlotChart = Chart({
           const effort = metricsMeta["effort"].value(this.point.cycle);
           const authorCount = metricsMeta["authors"].value(this.point.cycle);
           const backlogTime = metricsMeta["backlogTime"].value(this.point.cycle);
+
+          let beforeDivider = [[`Closed (${this.point.cycle.state}): `, `${formatDateTime(intl, this.point.x)}`]];
+          let afterDivider = [
+            ["Lead Time: ", `${intl.formatNumber(leadTime)} days`],
+            ["Backlog Time: ", backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : "N/A"],
+            ["Cycle Time: ", cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : "N/A"],
+
+            ["Delivery Latency: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
+
+            ["Duration: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
+            ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} dev-days` : "N/A"],
+            ["Authors: ", specsOnly ? `${intl.formatNumber(authorCount)}` : "N/A"],
+          ];
+
+          const indexOfSelectedMetric = METRICS.indexOf(selectedMetric);
+          beforeDivider = [...beforeDivider, afterDivider[indexOfSelectedMetric]];
+          afterDivider = afterDivider.filter((_, i) => i !== indexOfSelectedMetric);
+
+          const toolTipLines = [...beforeDivider, [`------`, ``], ...afterDivider];
+
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${
               this.point.cycle.displayId
             })`,
-            body: [
-              ["Closed: ", `${formatDateTime(intl, this.point.x)}`],
-              [`------`, ``],
-              ["Lead Time: ", `${intl.formatNumber(leadTime)} days`],
-              ["Backlog Time: ", backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : "N/A"],
-              ["Cycle Time: ", cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : "N/A"],
-
-              ["Delivery Latency: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
-
-              ["Duration: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
-              ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} dev-days` : "N/A"],
-              ["Authors: ", specsOnly ? `${intl.formatNumber(authorCount)}` : "N/A"],
-            ],
+            body: toolTipLines,
           });
         },
       },
