@@ -29,15 +29,12 @@ export const ProjectPipelineStateDetailsWidget = ({
     referenceString: latestWorkItemEvent,
   });
 
-  const filterWorkItems = {
-    ...(activeOnly && {activeOnly: activeOnly}),
-    ...(closedWithinDays && {closedWithinDays: closedWithinDays}),
-  };
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
+    activeOnly,
+    closedWithinDays,
     referenceString: latestWorkItemEvent,
-    ...filterWorkItems,
   });
 
   if (cycleMetricsError) {
