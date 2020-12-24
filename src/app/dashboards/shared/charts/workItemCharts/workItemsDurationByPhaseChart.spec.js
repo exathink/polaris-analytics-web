@@ -2,12 +2,14 @@ import React from "react";
 import {
   Colors,
   WorkItemStateTypeColor,
+  WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
+  WorkItemTypeDisplayName,
   WorkItemTypeSortOrder,
 } from "../../../shared/config";
 import {PlotLines} from "./chartParts";
-import {getIntl, expectSetsAreEqual} from "../../../../../test/test-utils";
-import {renderedChartConfig} from "../../../../framework/viz/charts/chart-test-utils";
+import {getIntl, expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsDurationsByPhaseChart} from "./workItemsDurationsByPhaseChart";
 
 // clear mocks after each test
@@ -767,6 +769,55 @@ describe("WorkItemsDurationsByPhaseChart", () => {
                 points.map((point) => [point.name])
               );
             });
+
+            test(`should render the tooltip of point`, async () => {
+              const [actual] = await renderedTooltipConfig(
+                <WorkItemsDurationsByPhaseChart
+                  workItems={workItemsFixture}
+                  projectCycleMetrics={projectCycleMetrics}
+                  title={"Work Queue:"}
+                  groupBy={"state"}
+                />,
+                (points) => [points[0]],
+                index
+              );
+
+              const firstPoint = points[0];
+              const {
+                displayId,
+                workItemType,
+                state,
+                stateType,
+                cycleTime,
+                timeInStateDisplay,
+                latestCommitDisplay,
+                duration,
+                latency,
+                workItemStateDetails,
+              } = firstPoint.workItem;
+
+              expect(actual).toMatchObject({
+                header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
+                body: firstPoint.priorState
+                  ? [
+                      [`Phase:`, `${WorkItemStateTypeDisplayName[firstPoint.stateType]}`],
+                      [`Time in Phase:`, expect.stringMatching(`days`)],
+                    ]
+                  : [
+                      [`Cycle Time:`, `${formatNumber(cycleTime)} days`],
+                      [`Current State:`, `${state}`],
+                      [`Entered:`, `${timeInStateDisplay}`],
+                      stateType !== "closed" ? [`Time in State:`, expect.stringMatching(`days`)] : ["", ""],
+                      workItemStateDetails.commitCount != null ? [`-----------------`, ``] : ["", ""],
+                      workItemStateDetails.commitCount != null
+                        ? [`Commits: `, `${formatNumber(workItemStateDetails.commitCount)}`]
+                        : ["", ""],
+                      latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
+                      duration != null ? [`Duration: `, `${formatNumber(duration)} days`] : ["", ""],
+                      latency != null ? [`Latency: `, `${formatNumber(latency)} days`] : ["", ""],
+                    ],
+              });
+            });
           });
         });
     });
@@ -841,6 +892,55 @@ describe("WorkItemsDurationsByPhaseChart", () => {
                 series[index].data.map((point) => [point.name]),
                 points.map((point) => [point.name])
               );
+            });
+
+            test(`should render the tooltip of point`, async () => {
+              const [actual] = await renderedTooltipConfig(
+                <WorkItemsDurationsByPhaseChart
+                  workItems={workItemsFixture}
+                  projectCycleMetrics={projectCycleMetrics}
+                  title={"Work Queue:"}
+                  groupBy={"type"}
+                />,
+                (points) => [points[0]],
+                index
+              );
+
+              const firstPoint = points[0];
+              const {
+                displayId,
+                workItemType,
+                state,
+                stateType,
+                cycleTime,
+                timeInStateDisplay,
+                latestCommitDisplay,
+                duration,
+                latency,
+                workItemStateDetails,
+              } = firstPoint.workItem;
+
+              expect(actual).toMatchObject({
+                header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
+                body: firstPoint.priorState
+                  ? [
+                      [`Phase:`, `${WorkItemStateTypeDisplayName[firstPoint.stateType]}`],
+                      [`Time in Phase:`, expect.stringMatching(`days`)],
+                    ]
+                  : [
+                      [`Cycle Time:`, `${formatNumber(cycleTime)} days`],
+                      [`Current State:`, `${state}`],
+                      [`Entered:`, `${timeInStateDisplay}`],
+                      stateType !== "closed" ? [`Time in State:`, expect.stringMatching(`days`)] : ["", ""],
+                      workItemStateDetails.commitCount != null ? [`-----------------`, ``] : ["", ""],
+                      workItemStateDetails.commitCount != null
+                        ? [`Commits: `, `${formatNumber(workItemStateDetails.commitCount)}`]
+                        : ["", ""],
+                      latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
+                      duration != null ? [`Duration: `, `${formatNumber(duration)} days`] : ["", ""],
+                      latency != null ? [`Latency: `, `${formatNumber(latency)} days`] : ["", ""],
+                    ],
+              });
             });
           });
         });
