@@ -702,7 +702,26 @@ describe("WorkItemsDurationsByPhaseChart", () => {
   // these tests are still in progress.
   describe("when there are multiple workItems", () => {
     // assertions for different series.
-    describe("by state", () => {
+    describe("workItems by state", () => {
+      test("it renders chart config", () => {
+        const expectedChartConfig = {
+          ...fixedChartConfig,
+          // renders 3 series when groupBy state
+          series: [fixedSeriesConfig, fixedSeriesConfig, fixedSeriesConfig],
+        };
+
+        expect(
+          renderedChartConfig(
+            <WorkItemsDurationsByPhaseChart
+              workItems={workItemsFixture}
+              projectCycleMetrics={projectCycleMetrics}
+              title={"Work Queue:"}
+              groupBy={"state"}
+            />
+          )
+        ).toMatchObject(expectedChartConfig);
+      });
+
       const workItemsByState = workItemsFixture.reduce((acc, item) => {
         if (acc[item.state]) {
           acc[item.state].push(item);
@@ -729,15 +748,55 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         .sort((stateA, stateB) => workItemsByState[stateA].length - workItemsByState[stateB].length)
         .forEach((workItemState, index) => {
           describe(`series ${workItemState}`, () => {
+            const points = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
+
             test(`it renders a chart with the correct number of data points`, () => {
-              const points = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
               expect(series[index].data).toHaveLength(points.length);
+            });
+
+            test("it sets correct value for y axis for each point", () => {
+              expectSetsAreEqual(
+                series[index].data.map((point) => [point.y]),
+                points.map((point) => [point.y])
+              );
+            });
+
+            test("it sets correct name for each point ", () => {
+              expectSetsAreEqual(
+                series[index].data.map((point) => [point.name]),
+                points.map((point) => [point.name])
+              );
             });
           });
         });
     });
 
-    describe("by type", () => {
+    describe("workItems by type", () => {
+      test("it renders chart config", () => {
+        const expectedChartConfig = {
+          ...fixedChartConfig,
+          legend: {
+            ...fixedChartConfig.legend,
+            title: {
+              ...fixedChartConfig.legend.title,
+              text: "Type",
+            },
+          },
+          series: [fixedSeriesConfig, fixedSeriesConfig, fixedSeriesConfig],
+        };
+
+        expect(
+          renderedChartConfig(
+            <WorkItemsDurationsByPhaseChart
+              workItems={workItemsFixture}
+              projectCycleMetrics={projectCycleMetrics}
+              title={"Work Queue:"}
+              groupBy={"type"}
+            />
+          )
+        ).toMatchObject(expectedChartConfig);
+      });
+
       const workItemsByType = workItemsFixture.reduce((acc, item) => {
         if (acc[item.workItemType]) {
           acc[item.workItemType].push(item);
@@ -764,9 +823,24 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         .sort((typeA, typeB) => WorkItemTypeSortOrder[typeA] - WorkItemTypeSortOrder[typeB])
         .forEach((workItemType, index) => {
           describe(`series ${workItemType}`, () => {
+            const points = workItemsByType[workItemType].flatMap((workItem) => getDataPoints(workItem));
+
             test(`it renders a chart with the correct number of data points`, () => {
-              const points = workItemsByType[workItemType].flatMap((workItem) => getDataPoints(workItem));
               expect(series[index].data).toHaveLength(points.length);
+            });
+
+            test("it sets correct value for y axis for each point", () => {
+              expectSetsAreEqual(
+                series[index].data.map((point) => [point.y]),
+                points.map((point) => [point.y])
+              );
+            });
+
+            test("it sets correct name for each point ", () => {
+              expectSetsAreEqual(
+                series[index].data.map((point) => [point.name]),
+                points.map((point) => [point.name])
+              );
             });
           });
         });
