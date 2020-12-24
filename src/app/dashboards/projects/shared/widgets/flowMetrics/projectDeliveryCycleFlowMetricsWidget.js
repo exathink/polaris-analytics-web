@@ -5,50 +5,57 @@ import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowM
 import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
-export const ProjectDeliveryCycleFlowMetricsWidget = (
-  {
+export const ProjectDeliveryCycleFlowMetricsWidget = ({
+  instanceKey,
+  specsOnly,
+  view,
+  context,
+  showAll,
+  latestWorkItemEvent,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  days,
+  defectsOnly,
+  stateMappingIndex,
+  pollInterval,
+}) => {
+  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics({
     instanceKey,
+    days,
+    targetPercentile: cycleTimeTargetPercentile,
+    referenceString: latestWorkItemEvent,
+    defectsOnly,
     specsOnly,
-    view,
-    context,
-    showAll,
-    latestWorkItemEvent,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
+  });
+
+  const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
+    instanceKey,
     days,
     defectsOnly,
-    stateMappingIndex,
-    pollInterval
-  }) => {
+    specsOnly,
+    referenceString: latestWorkItemEvent,
+  });
 
-  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics(
-    {instanceKey, days, targetPercentile: cycleTimeTargetPercentile, referenceString: latestWorkItemEvent, defectsOnly, specsOnly}
-  )
-
-  const { loading, error, data: projectDeliveryCycleData } = useQueryProjectClosedDeliveryCycleDetail(
-    {instanceKey, days, defectsOnly, specsOnly, referenceString: latestWorkItemEvent}
-  );
-
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return null;
   const projectCycleMetrics = projectCycleMetricsData ? projectCycleMetricsData.project : {};
-  const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map(
-    edge => pick(
+  const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
+    pick(
       edge.node,
-      'id',
-      'name',
-      'key',
-      'displayId',
-      'workItemKey',
-      'workItemType',
-      'startDate',
-      'endDate',
-      'leadTime',
-      'cycleTime',
-      'latency',
-      'duration',
-      'effort',
-      'authorCount'
+      "id",
+      "name",
+      "key",
+      "displayId",
+      "workItemKey",
+      "workItemType",
+      "startDate",
+      "endDate",
+      "leadTime",
+      "cycleTime",
+      "latency",
+      "duration",
+      "effort",
+      "authorCount"
     )
   );
   return (
@@ -62,5 +69,4 @@ export const ProjectDeliveryCycleFlowMetricsWidget = (
       specsOnly={specsOnly}
     />
   );
-}
-
+};
