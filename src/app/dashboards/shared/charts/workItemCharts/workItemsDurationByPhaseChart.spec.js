@@ -1,5 +1,10 @@
 import React from "react";
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
+import {
+  Colors,
+  WorkItemStateTypeColor,
+  WorkItemStateTypeSortOrder,
+  WorkItemTypeSortOrder,
+} from "../../../shared/config";
 import {PlotLines} from "./chartParts";
 import {getIntl, expectSetsAreEqual} from "../../../../../test/test-utils";
 import {renderedChartConfig} from "../../../../framework/viz/charts/chart-test-utils";
@@ -636,6 +641,41 @@ const fixedSeriesConfig = {
   allowPointSelect: true,
 };
 
+// utility method to be used in test only
+function getDataPoints(workItem) {
+  const priorStateDurations = workItem.workItemStateDetails.currentDeliveryCycleDurations.reduce((acc, item) => {
+    // we drop the record for the current state if it has no previous accumulated time.
+    if (item.daysInState != null) {
+      const stateType = item.stateType || "unmapped";
+      if (acc[stateType] != null) {
+        acc[stateType] = acc[stateType] + item.daysInState;
+      } else {
+        acc[stateType] = item.daysInState;
+      }
+    }
+    return acc;
+  }, {});
+  const workItemPoints = Object.keys(priorStateDurations)
+    .sort((stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB])
+    .filter((stateType) => (workItem.stateType !== "closed" ? stateType !== "backlog" : true))
+    .map((stateType) => ({
+      name: workItem.displayId,
+      y: priorStateDurations[stateType],
+      color: WorkItemStateTypeColor[stateType],
+      stateType: stateType,
+      priorState: true,
+      workItem: workItem,
+    }));
+  //finally push a point for the current work item state at the end
+  workItemPoints.push({
+    name: workItem.displayId,
+    y: workItem.stateType !== "closed" ? workItem.timeInState : 0,
+    priorState: false,
+    workItem: workItem,
+  });
+  return workItemPoints;
+}
+
 describe("WorkItemsDurationsByPhaseChart", () => {
   describe("when there are no workItems", () => {
     const emptyWorkItems = [];
@@ -660,18 +700,76 @@ describe("WorkItemsDurationsByPhaseChart", () => {
   });
 
   // these tests are still in progress.
-  describe.skip("when there are multiple workItems", () => {
-
-    const {series} = renderedChartConfig(
-      <WorkItemsDurationsByPhaseChart
-        workItems={workItemsFixture}
-        projectCycleMetrics={projectCycleMetrics}
-        title={"Work Queue:"}
-        groupBy={"state"}
-      />
-    );
-
+  describe("when there are multiple workItems", () => {
     // assertions for different series.
+    describe("by state", () => {
+      const workItemsByState = workItemsFixture.reduce((acc, item) => {
+        if (acc[item.state]) {
+          acc[item.state].push(item);
+        } else {
+          acc[item.state] = [item];
+        }
+        return acc;
+      }, {});
 
+      const {series} = renderedChartConfig(
+        <WorkItemsDurationsByPhaseChart
+          workItems={workItemsFixture}
+          projectCycleMetrics={projectCycleMetrics}
+          title={"Work Queue:"}
+          groupBy={"state"}
+        />
+      );
+
+      test("it creates correct number of series", () => {
+        expect(series).toHaveLength(Object.keys(workItemsByState).length);
+      });
+
+      Object.keys(workItemsByState)
+        .sort((stateA, stateB) => workItemsByState[stateA].length - workItemsByState[stateB].length)
+        .forEach((workItemState, index) => {
+          describe(`series ${workItemState}`, () => {
+            test(`it renders a chart with the correct number of data points`, () => {
+              const points = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
+              expect(series[index].data).toHaveLength(points.length);
+            });
+          });
+        });
+    });
+
+    describe("by type", () => {
+      const workItemsByType = workItemsFixture.reduce((acc, item) => {
+        if (acc[item.workItemType]) {
+          acc[item.workItemType].push(item);
+        } else {
+          acc[item.workItemType] = [item];
+        }
+        return acc;
+      }, {});
+
+      const {series} = renderedChartConfig(
+        <WorkItemsDurationsByPhaseChart
+          workItems={workItemsFixture}
+          projectCycleMetrics={projectCycleMetrics}
+          title={"Work Queue:"}
+          groupBy={"type"}
+        />
+      );
+
+      test("it creates correct number of series", () => {
+        expect(series).toHaveLength(Object.keys(workItemsByType).length);
+      });
+
+      Object.keys(workItemsByType)
+        .sort((typeA, typeB) => WorkItemTypeSortOrder[typeA] - WorkItemTypeSortOrder[typeB])
+        .forEach((workItemType, index) => {
+          describe(`series ${workItemType}`, () => {
+            test(`it renders a chart with the correct number of data points`, () => {
+              const points = workItemsByType[workItemType].flatMap((workItem) => getDataPoints(workItem));
+              expect(series[index].data).toHaveLength(points.length);
+            });
+          });
+        });
+    });
   });
 });
