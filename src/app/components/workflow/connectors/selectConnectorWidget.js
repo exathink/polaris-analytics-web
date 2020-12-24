@@ -14,15 +14,6 @@ import {CreateConnectorInstructions} from "./createConnectorInstructions";
 import './connectors.css'
 import {CREATE_CONNECTOR, DELETE_CONNECTOR} from "./mutations";
 
-
-function urlMunge(connectorType, url) {
-  if (connectorType === 'jira') {
-    return `${url.startsWith('https://') ? '' : 'https://'}${url}${url.endsWith('.atlassian.net') ? '' : '.atlassian.net'}`
-  }
-  return url;
-}
-
-
 const ALL_CONNECTORS_QUERY = gql`
     query getAccountConnectors($accountKey: String!, $organizationKey: String!, $connectorType: String!) {
         connectors (accountKey: $accountKey, organizationKey: $organizationKey , connectorType: $connectorType) {
@@ -142,7 +133,7 @@ export const SelectConnectorWidget =
                                       connectorType: connectorType,
                                       accountKey: viewerContext.accountKey,
                                       organizationKey: organizationKey,
-                                      baseUrl: urlMunge(connectorType, values.baseUrl),
+                                      baseUrl: values.baseUrl,
                                       atlassianConnectAppKey: values.atlassianConnectAppKey,
                                       apiKey: values.apiKey,
                                       githubAccessToken: values.githubAccessToken,

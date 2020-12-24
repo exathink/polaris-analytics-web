@@ -211,6 +211,7 @@ export const SelectProjectsStep =
                                       name: values.name,
                                       connectorType: connectorType,
                                       apiKey: values.apiKey,
+                                      atlassianConnectAppKey: values.atlassianConnectAppKey,
                                       githubAccessToken: values.githubAccessToken
                                     }
                                   }
