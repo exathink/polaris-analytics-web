@@ -1,5 +1,5 @@
 import React from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import {defineMessages, FormattedMessage} from 'react-intl.macro';
 
 
 const messages = defineMessages({

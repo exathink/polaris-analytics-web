@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl.macro';
 import FourZeroFour from "../../../containers/Page/404";
 import Activity from './activity/topic';
 import Contributors from './contributors/topic';

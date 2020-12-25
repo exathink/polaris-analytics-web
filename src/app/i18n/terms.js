@@ -1,4 +1,4 @@
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl.macro';
 
 export const Terms = defineMessages({
   'History': {id: 't.History', defaultMessage: 'History'},

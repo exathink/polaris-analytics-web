@@ -1,5 +1,6 @@
 import React from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
+import {FormattedMessage} from 'react-intl.macro';
 
 const InjectMessage = props => <FormattedMessage {...props} />;
 export default injectIntl(InjectMessage, {
