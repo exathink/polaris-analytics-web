@@ -144,9 +144,9 @@ export const SelectConnectorWidget =
                                       organizationKey: organizationKey,
                                       baseUrl: urlMunge(connectorType, values.baseUrl),
                                       apiKey: values.apiKey,
+                                      bitbucketPrincipalName: values.bitbucketPrincipalName,
                                       githubAccessToken: values.githubAccessToken,
                                       githubOrganization: values.githubOrganization,
-                                      bbAccountKey: values.bbAccountKey,
                                       gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
                                     }
                                   }
