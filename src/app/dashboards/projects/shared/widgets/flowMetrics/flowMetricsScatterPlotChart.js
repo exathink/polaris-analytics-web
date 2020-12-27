@@ -161,7 +161,10 @@ export const FlowMetricsScatterPlotChart = Chart({
           const authorCount = metricsMeta["authors"].value(this.point.cycle);
           const backlogTime = metricsMeta["backlogTime"].value(this.point.cycle);
 
-          let beforeDivider = [[`Closed (${this.point.cycle.state}): `, `${formatDateTime(intl, this.point.x)}`]];
+          let beforeDivider = [
+            [`Closed: `, `${formatDateTime(intl, this.point.x)}`],
+            [`State: `, `${this.point.cycle.state}`]
+          ];
           let afterDivider = [
             ["Lead Time: ", `${intl.formatNumber(leadTime)} days`],
             ["Backlog Time: ", backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : "N/A"],
