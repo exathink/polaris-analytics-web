@@ -11,6 +11,15 @@ import {
   WorkItemTypeDisplayName,
 } from "../../config";
 
+function isYAxisVisible(visibleSeries) {
+  if (visibleSeries.length === 1) {
+    const [{userOptions}] = visibleSeries;
+    if (userOptions.key === 'non-specs') {
+      return false;
+    }
+  }
+  return true;
+}
 function getSpecSeries(workItems, view, intl) {
   // We group the work items for specs. These will always have non-zero effort.
   const workItemsByStateType = buildIndex(
@@ -94,11 +103,11 @@ function getNonSpecSeries(workItems, view, intl) {
 }
 
 export const WorkItemsEffortChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItems", "stateTypes", "specsOnly"),
+  chartUpdateProps: (props) => pick(props, "workItems", "stateTypes", "specsOnly", "visibleSeries"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.workItem),
 
-  getConfig: ({workItems, specsOnly,  intl, view}) => {
+  getConfig: ({workItems, specsOnly,  intl, view, visibleSeries}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const totalEffort = workItemsWithAggregateDurations.reduce(
       (totalEffort, workItem) => totalEffort + workItem.effort,
@@ -140,7 +149,7 @@ export const WorkItemsEffortChart = Chart({
       },
       yAxis: {
         type: "linear",
-
+        visible: isYAxisVisible(visibleSeries),
         title: {
           text: "Effort in Dev-Days",
         },

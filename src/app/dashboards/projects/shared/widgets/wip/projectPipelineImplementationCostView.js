@@ -15,7 +15,7 @@ export const ProjectPipelineImplementationCostView = (
     context
   }
 ) => {
-
+  const [visibleSeries, setVisibleSeries] = React.useState([]);
   return (
     <VizRow h={1}>
       <VizItem w={1}>
@@ -33,10 +33,14 @@ export const ProjectPipelineImplementationCostView = (
             view={view}
             specsOnly={specsOnly}
             workItems={workItems}
+            visibleSeries={visibleSeries}
             onSelectionChange={
-              (workItems) => {
+              (workItems, options={}) => {
                 if (workItems.length === 1) {
                   context.navigate(WorkItems, workItems[0].displayId, workItems[0].key)
+                }
+                if (options.visibleSeries) {
+                  setVisibleSeries(options.visibleSeries)
                 }
               }
             }

@@ -175,7 +175,9 @@ export class DefaultSelectionEventHandler {
 
 
   onSelectionChange() {
-    this.chart.onSelectionChange(this.showSelected())
+    const series = this.getRawChart().series;
+    const visibleSeries = series ? series.filter((series) => series.visible): [];
+    this.chart.onSelectionChange(this.showSelected(), {visibleSeries})
   }
 
 }

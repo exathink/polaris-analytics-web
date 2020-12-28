@@ -60,10 +60,10 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         return null;
       }
 
-      onSelectionChange(selected) {
+      onSelectionChange(selected, options = {}) {
         if (this.props.onSelectionChange && configProvider.mapPoints) {
           if(selected) {
-            this.props.onSelectionChange(configProvider.mapPoints(selected, this.props));
+            this.props.onSelectionChange(configProvider.mapPoints(selected, this.props), options);
           } else {
             this.props.onSelectionChange(selected)
           }
