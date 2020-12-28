@@ -11,6 +11,7 @@ export const ProjectPipelineStateDetailsWidget = ({
   latestWorkItemEvent,
   days,
   activeOnly,
+  funnelView,
   closedWithinDays,
   targetPercentile,
   stateMappingIndex,
@@ -33,6 +34,7 @@ export const ProjectPipelineStateDetailsWidget = ({
     instanceKey,
     specsOnly,
     activeOnly,
+    funnelView,
     closedWithinDays,
     referenceString: latestWorkItemEvent,
   });
