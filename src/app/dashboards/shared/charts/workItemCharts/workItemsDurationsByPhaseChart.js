@@ -84,6 +84,7 @@ function getSeriesGroupedByState(workItems, stateType) {
   return Object.keys(workItemsByState)
     .sort((stateA, stateB) => workItemsByState[stateA].length - workItemsByState[stateB].length)
     .map((workItemState, index) => {
+      // Since each workItem can yield multiple points, we flatMap to give a valid series array
       const workItemPoints = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
 
       return {
@@ -93,7 +94,6 @@ function getSeriesGroupedByState(workItems, stateType) {
         maxPointWidth: 30,
         minPointLength: 3,
         allowPointSelect: true,
-        // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemPoints,
       };
     });
@@ -116,7 +116,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
       const workItemPoints = workItemsByWorkItemType[workItemType].flatMap((workItem) => getDataPoints(workItem));
 
       return {
-        name: `${WorkItemTypeDisplayName[workItemType]} (${workItemPoints.length})`,
+        name: `${WorkItemTypeDisplayName[workItemType]} (${workItemsByWorkItemType[workItemType].length})`,
         // default color for the series. points will override, but this shows on the legend.
         color: WorkItemColorMap[workItemType],
         stacking: true,
