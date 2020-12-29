@@ -87,7 +87,7 @@ function getSeriesGroupedByState(workItems, stateType) {
       const workItemPoints = workItemsByState[workItemState].flatMap((workItem) => getDataPoints(workItem));
 
       return {
-        name: `${capitalizeFirstLetter(workItemState)} (${workItemPoints.length})`,
+        name: `${capitalizeFirstLetter(workItemState)} (${workItemsByState[workItemState].length})`,
         color: assignWorkItemStateColor(stateType, index),
         stacking: true,
         maxPointWidth: 30,
