@@ -9,7 +9,7 @@ import {
 } from "../../../../shared/config";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import {Checkbox} from "antd";
+
 
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
@@ -35,16 +35,10 @@ const PipelineStateDetailsView = ({workItems, projectCycleMetrics, view, context
         (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
       ) || stateTypes[0]
     );
-    const [showEpics, setShowEpics] = useState(false);
     const [selectedGrouping, setSelectedGrouping] = useState("state");
 
     if (selectedStateType != null) {
-      /* if showEpics is false (the default) we filter out epics before rendering
-       *  otherwise we show all the work items*/
-      const candidateWorkItems = showEpics
-        ? workItemsByStateType[selectedStateType]
-        : workItemsByStateType[selectedStateType].filter((workItem) => workItem.workItemType !== "epic");
-      const epicsFiltered = candidateWorkItems.length !== workItemsByStateType[selectedStateType].length;
+      const candidateWorkItems =  workItemsByStateType[selectedStateType];
 
       return (
         <VizRow h={1}>
@@ -63,14 +57,6 @@ const PipelineStateDetailsView = ({workItems, projectCycleMetrics, view, context
                 initialValue={selectedStateType}
                 onGroupingChanged={setSelectedStateType}
               />
-              <Checkbox
-                /* if there are no epics filtered out we should not enable the checkbox*/
-                disabled={!showEpics && !epicsFiltered}
-                checked={showEpics}
-                onChange={(e) => setShowEpics(e.target.checked)}
-              >
-                Show Epics
-              </Checkbox>
               <GroupingSelector
                 label={"Group Work Items By"}
                 groupings={["state", "type"].map((grouping) => ({
