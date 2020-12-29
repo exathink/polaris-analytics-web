@@ -226,13 +226,10 @@ describe("WorkItemsDurationsByPhaseChart", () => {
 
         const {displayId, workItemType} = workItemFixture;
 
-        // as we sort the points based on standard sort-order.
-        const firstPointStateType = "backlog";
-
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
           body: [
-            [`Phase:`, `${WorkItemStateTypeDisplayName[firstPointStateType]}`],
+            [`Phase:`, `${WorkItemStateTypeDisplayName["backlog"]}`],
             [`Time in Phase:`, expect.stringMatching(`days`)],
           ],
         });
