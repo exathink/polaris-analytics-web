@@ -89,7 +89,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               view={view}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>
