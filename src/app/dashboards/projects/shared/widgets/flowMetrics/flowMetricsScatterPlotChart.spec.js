@@ -18,6 +18,37 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const metricsMeta = {
+  leadTime: {
+    display: "Lead Time",
+    value: (cycle) => cycle.leadTime,
+  },
+  cycleTime: {
+    display: "Cycle Time",
+    value: (cycle) => cycle.cycleTime,
+  },
+  duration: {
+    display: "Duration",
+    value: (cycle) => cycle.duration,
+  },
+  latency: {
+    display: "Delivery Latency",
+    value: (cycle) => cycle.latency,
+  },
+  effort: {
+    display: "Effort",
+    value: (cycle) => cycle.effort,
+  },
+  authors: {
+    display: "Authors",
+    value: (cycle) => cycle.authorCount,
+  },
+  backlogTime: {
+    display: "Backlog Time",
+    value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
+  },
+};
+
 // props fixture
 const propsFixture = {
   days: 30,
@@ -184,36 +215,7 @@ const propsFixture = {
     },
   ],
   selectedMetric: "leadTime",
-  metricsMeta: {
-    leadTime: {
-      display: "Lead Time",
-      value: (cycle) => cycle.leadTime,
-    },
-    cycleTime: {
-      display: "Cycle Time",
-      value: (cycle) => cycle.cycleTime,
-    },
-    duration: {
-      display: "Duration",
-      value: (cycle) => cycle.duration,
-    },
-    latency: {
-      display: "Delivery Latency",
-      value: (cycle) => cycle.latency,
-    },
-    effort: {
-      display: "Effort",
-      value: (cycle) => cycle.effort,
-    },
-    authors: {
-      display: "Authors",
-      value: (cycle) => cycle.authorCount,
-    },
-    backlogTime: {
-      display: "Backlog Time",
-      value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
-    },
-  },
+  metricsMeta,
   projectCycleMetrics: {
     minLeadTime: 0.06811342592592592,
     avgLeadTime: 3.4181550925925928,
@@ -311,6 +313,266 @@ function mapColor(workItem) {
   }
 }
 describe("FlowMetricsScatterPlotChart", () => {
+  describe("when selected metric is leadTime, view is normal", () => {
+    describe("when there are no workitems", () => {
+      const emptyPropsFixture = {
+        ...propsFixture,
+        model: [],
+      };
+
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta["leadTime"].display,
+        },
+        series: [],
+      };
+
+      test("it renders an empty chart config", () => {
+        expect(renderedChartConfig(<FlowMetricsScatterPlotChart {...emptyPropsFixture} />)).toMatchObject(
+          expectedChartConfig
+        );
+      });
+    });
+
+    describe("when there is a single workitem", () => {
+      const workItemFixture = {
+        name: "Funnel closed does not match Flow Metrics Closed",
+        key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+        displayId: "PO-396",
+        workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+        workItemType: "bug",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-02T00:37:17.095000",
+        endDate: "2020-12-09T22:06:08.221000",
+        leadTime: 7.895034722222222,
+        cycleTime: 7.894618055555555,
+        latency: 0.026180555555555554,
+        duration: 4.00299768518519,
+        effort: 1.16666666666667,
+        authorCount: 1,
+      };
+
+      const singlePropsFixture = {
+        ...propsFixture,
+        model: [workItemFixture],
+      };
+
+      const fixedSeriesConfig = {};
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta["leadTime"].display,
+        },
+        subtitle: {
+          text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+        },
+        series: [fixedSeriesConfig],
+      };
+
+      const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...singlePropsFixture} />);
+
+      test("it renders correct chart config", () => {
+        expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+      });
+
+      const {series} = renderedChartConfigValue;
+      test("should create single series", () => {
+        expect(series).toHaveLength(1);
+      });
+
+      const [{data}] = series;
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(data).toHaveLength(1);
+      });
+
+      test("it sets correct value for y axis for the point", () => {
+        expect(data[0].y).toEqual(workItemFixture.leadTime);
+      });
+
+      test("it sets the reference of workItemMetaData for each point ", () => {
+        expect(data[0].cycle).toEqual(workItemFixture);
+      });
+
+      test(`should render the tooltip of the point`, async () => {
+        const [actual] = await renderedTooltipConfig(
+          <FlowMetricsScatterPlotChart {...singlePropsFixture} />,
+          (points) => [points[0]],
+          0
+        );
+
+        const {
+          leadTime,
+          cycleTime,
+          latency,
+          authorCount,
+          workItemType,
+          name,
+          displayId,
+          endDate,
+          state,
+        } = workItemFixture;
+        const backlogTime = leadTime - cycleTime;
+        expect(actual).toMatchObject({
+          header: `${WorkItemTypeDisplayName[workItemType]}: ${name} (${displayId})`,
+          body: [
+            [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
+            [`State: `, `${state}`],
+            ["Lead Time: ", `${formatNumber(leadTime)} days`],
+            [`------`, ``],
+            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
+            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
+
+            ["Delivery Latency: ", `${formatNumber(latency)} days`],
+
+            ["Duration: ", expect.stringMatching(`days`)],
+            ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Authors: ", `${formatNumber(authorCount)}`],
+          ],
+        });
+      });
+    });
+
+    describe("when there are multiple workitems", () => {
+      const workItemFixtureForBug = {
+        name: "Funnel closed does not match Flow Metrics Closed",
+        key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+        displayId: "PO-396",
+        workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+        workItemType: "bug",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-02T00:37:17.095000",
+        endDate: "2020-12-09T22:06:08.221000",
+        leadTime: 7.895034722222222,
+        cycleTime: 7.894618055555555,
+        latency: 0.026180555555555554,
+        duration: 4.00299768518519,
+        effort: 1.16666666666667,
+        authorCount: 1,
+      };
+      const workItemFixtureForStory = {
+        name: "Refresh Open Pull Requests view when pull requests are updated. ",
+        key: "5bb46a5e-0dfd-41db-9dfc-b0e451aefd46:3590",
+        displayId: "PO-399",
+        workItemKey: "5bb46a5e-0dfd-41db-9dfc-b0e451aefd46",
+        workItemType: "story",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-03T22:18:11.793000",
+        endDate: "2020-12-05T03:42:01.684000",
+        leadTime: 1.2248842592592593,
+        cycleTime: 1.2246180555555557,
+        latency: 1.0530902777777778,
+        duration: 0.135092592592593,
+        effort: 1,
+        authorCount: 1,
+      };
+      const workItemFixtureForTask = {
+        name: "Setup web tests in CI environment",
+        key: "9eb7d2cb-05a0-406c-b66d-3c289766abf1:3581",
+        displayId: "PO-391",
+        workItemKey: "9eb7d2cb-05a0-406c-b66d-3c289766abf1",
+        workItemType: "task",
+        state: "Done",
+        startDate: "2020-11-28T04:11:00.554000",
+        endDate: "2020-11-29T16:21:18.853000",
+        leadTime: 1.5071527777777778,
+        cycleTime: null,
+        latency: 0.0002777777777777778,
+        duration: 0.570034722222222,
+        effort: 2,
+        authorCount: 1,
+      };
+      const multiplePropsFixture = {
+        ...propsFixture,
+        model: [workItemFixtureForBug, workItemFixtureForStory, workItemFixtureForTask],
+      };
+
+      const fixedSeriesConfig = {};
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta["leadTime"].display,
+        },
+        subtitle: {
+          text: expect.stringMatching(`3 Specs closed in the last 30 days`),
+        },
+        series: [fixedSeriesConfig, fixedSeriesConfig, fixedSeriesConfig],
+      };
+
+      const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...multiplePropsFixture} />);
+
+      test("it renders correct chart config", () => {
+        expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+      });
+
+      const {series} = renderedChartConfigValue;
+      test("should create correct number of series", () => {
+        expect(series).toHaveLength(3);
+      });
+
+      // get the points from all series
+      const data = series.flatMap((s) => s.data);
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(data).toHaveLength(3);
+      });
+
+      test("it sets correct value for y axis for each point", () => {
+        expectSetsAreEqual(
+          data.map((point) => point.y),
+          multiplePropsFixture.model.map((wifixture) => wifixture.leadTime)
+        );
+      });
+
+      test("it sets the reference of workItemMetaData for each point ", () => {
+        expect(data.map((point) => point.cycle)).toEqual(multiplePropsFixture.model.map((wifixture) => wifixture));
+      });
+
+      test(`should render the tooltip for point, when workItemType is story`, async () => {
+        const [actual] = await renderedTooltipConfig(
+          <FlowMetricsScatterPlotChart {...multiplePropsFixture} />,
+          (points) => [points[0]],
+          1 // this will return point from second series (which is story series)
+        );
+
+        const {
+          leadTime,
+          cycleTime,
+          latency,
+          authorCount,
+          workItemType,
+          name,
+          displayId,
+          endDate,
+          state,
+        } = workItemFixtureForStory;
+        const backlogTime = leadTime - cycleTime;
+        expect(actual).toMatchObject({
+          header: `${WorkItemTypeDisplayName[workItemType]}: ${name} (${displayId})`,
+          body: [
+            [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
+            [`State: `, `${state}`],
+            ["Lead Time: ", `${formatNumber(leadTime)} days`],
+            [`------`, ``],
+            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
+            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
+
+            ["Delivery Latency: ", `${formatNumber(latency)} days`],
+
+            ["Duration: ", expect.stringMatching(`days`)],
+            ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Authors: ", `${formatNumber(authorCount)}`],
+          ],
+        });
+      });
+    });
+  });
+
+  describe("when selected metric is cycle time, view is normal", () => {});
+
+  describe("when selected metric is Backlog Time, view is normal", () => {});
+
+  describe("when selected metric is Authors, view is outlier", () => {});
+
   describe("when there is no model data", () => {
     const emptyPropsFixture = {
       ...propsFixture,
