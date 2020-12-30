@@ -70,15 +70,15 @@ const AddConnectorForm = (
           connectorType === 'bitbucket' ?
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="BitBucket Account Key">
-                  {getFieldDecorator('bbAccountKey', {
+                <Form.Item label="BitBucket Workspace Identifier">
+                  {getFieldDecorator('bitbucketPrincipalName', {
                     rules: [
-                      {required: true, message: 'Bitbucket account key is required'}
+                      {required: true, message: 'Bitbucket workspace identifier is required'}
                     ],
-                    initialValue: currentValue('bbAccountKey', null)
+                    initialValue: currentValue('bitbucketPrincipalName', null)
                   })(
                     <Input
-                      placeholder="the key for the account where the app is installed"
+                      placeholder="the Workspace ID for the workspace where the connector was installed (see instructions)"
                     />
                   )}
                 </Form.Item>

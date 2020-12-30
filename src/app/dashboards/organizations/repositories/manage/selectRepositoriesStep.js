@@ -125,8 +125,6 @@ export const SelectRepositoriesStep =
         const {testConnector} = testConnectorMutation;
         const {editConnector, editConnectorResult} = editConnectorMutation;
 
-        const {connectorType} = selectedConnector;
-
         return (
           <Query
             client={vcs_service}
@@ -195,10 +193,11 @@ export const SelectRepositoriesStep =
                                     editConnectorInput: {
                                       key: selectedConnector.key,
                                       name: values.name,
-                                      connectorType: connectorType,
+                                      connectorType: selectedConnectorType,
                                       apiKey: values.apiKey,
                                       githubAccessToken: values.githubAccessToken,
-                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
+                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
+                                      bitbucketPrincipalName: values.bitbucketPrincipalName
                                     }
                                   }
                                 })

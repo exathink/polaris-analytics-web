@@ -52,60 +52,65 @@ const JiraConnectorInstructions = ({part}) => (
       : null
 );
 
-const BitbucketConnectorInstructions = ({part}) => (
-  part === 'instructions' ?
+const BitbucketConnectorInstructions = ({part}) =>
+  part === "instructions" ? (
     <div>
       <p>
         Polaris Flow provides the <b>Polaris Flow Connector for Bitbucket, </b> an
-        <em> Atlassian Connect </em> app that lets external applications connect securely
-        with Atlassian products. There
-        are two steps in connecting Polaris Flow to a Jira Server.
+        <em> Atlassian Connect </em> app that lets external applications connect securely with Atlassian products. There
+        are two steps in connecting Polaris Flow to repositories in Bitbucket Cloud.
       </p>
       <h3>Step 1. Install the Polaris Flow Connector for Bitbucket App in your Bitbucket Cloud account</h3>
-      <p>
-        You will need administrator privileges to do this.
-      </p>
-
+      <p>You will need administrator privileges to do this.</p>
 
       <ol>
-        <li>Login to your Bitbucket Cloud as an adminstrator and navigate to
-          Profile -> Bitbucket Settings -> Apps and Features -> Installed Apps.
+        <li>
+          Login to your Bitbucket Cloud account as an administrator and navigate to the workspace that contains the
+          repositories you want to connect to Polaris. This may be either your personal user workspace or a team workspace.
         </li>
         <li>
-          You should see an 'Install app from URL' link. Click on this link
-        </li>
-        <li>Use <em>https://polaris-services.exathink.com/vcs/atlassian_connect/descriptor</em> for
-          the
-          url.
+          Navigate to "Settings -> Installed Apps to see a list of the currently installed Atlassian Connect Apps.
         </li>
         <li>
-          Click upload and wait for the installation to complete successfully.
+          Click the "Enable Development Mode" checkbox. This step is necessary while the Polaris application is in
+          Private Beta. Once we have released the Polaris Connector through the Atlassian Marketplace this app will be
+          installed just like any other Atlassian Connect App. You should see an 'Install app from URL' link. Click on
+          this link
         </li>
         <li>
-          Make a note of the account key for the user under whose account you have installed the app.
-          You can find this from the url of the page on which you just finished installing the Polaris Flow Atlassian Connect App.
-          The url should be of the form
-          <em> https://bitbucket.org/account/user/{"{user-account-key}"}/addon-management</em>.
-          Make a note of the UUID that is between the curly braces in the url. We will need
-          this next, to complete the registration of the connector within Polaris Flow.
+          Use <em>https://polaris-services.exathink.com/vcs/atlassian_connect/descriptor</em> for the url.
         </li>
         <li>
-          Click Next below to proceed to the final step in the installation.
+          Click upload and wait for the installation to complete successfully. You will need to grant the permissions
+          that the install ask you to give for the installation to succeed.
         </li>
+        <li>
+          For the next step we need to give Polaris some information about the workspace in which this Atlassian Connect
+          App is installed.
+          <ul>
+            <li>If you installed the app in a Team workspace, then you need to make note of the workspace id which
+            can be found at "Settings -> General Settings -> Workspace ID" for the Workspace.
+            </li>
+            <li>
+              If you installed the app in your personal workspace, then you need to provide your users <em>display name </em>
+              ( <b>not</b> the workspace id or username ). This can be found from "Profile -> Personal Settings -> Name".
+            </li>
+          </ul>
+
+        </li>
+        <li>Click Next below to proceed to the final step in the installation.</li>
       </ol>
     </div>
-    :
-    part === 'setup' ?
-      <div>
-        <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
-        <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
-          associates it with your current
-          organization.
-        </p>
-      </div>
-      : null
-);
+  ) : part === "setup" ? (
+    <div>
+      <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
+      <p>
+        This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
+        associates it with your current organization. In this step you can give the connector a name, and also provide the
+        information to look up the Bitbucket Cloud workspace in which you installed the Atlassian Connect App.
+      </p>
+    </div>
+  ) : null;
 
 const GithubConnectorInstructions = ({part}) => (
   part === 'instructions' &&
