@@ -28,7 +28,7 @@ const EditConnectorForm = (
                 </Col>
             </Row>
             {
-                connectorType === 'atlassian' ?
+                connectorType === 'jira' ?
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item label="Atlassian Server URL">
@@ -38,6 +38,22 @@ const EditConnectorForm = (
                                     <Input
                                         disabled
                                     />
+                                )}
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    :
+                    null
+            }
+            {
+                connectorType === 'bitbucket' ?
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item label="Bitbucket Workspace">
+                                {getFieldDecorator('bitbucketPrincipalName', {
+                                    initialValue: currentValue('bitbucketPrincipalName')
+                                })(
+                                    <Input placeholder="Updated Bitbucket Workspace (optional)" />
                                 )}
                             </Form.Item>
                         </Col>

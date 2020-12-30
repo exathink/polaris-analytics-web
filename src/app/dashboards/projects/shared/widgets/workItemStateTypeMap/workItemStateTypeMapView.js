@@ -17,6 +17,9 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
         client.resetStore();
       }
     },
+    onError: (error) => {
+      logGraphQlError("updateProjectWorkItemSourceStateMaps", error);
+    }
   });
 
   // set first workitemsource as default

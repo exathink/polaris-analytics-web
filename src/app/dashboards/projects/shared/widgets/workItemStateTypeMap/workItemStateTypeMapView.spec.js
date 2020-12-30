@@ -1,29 +1,14 @@
 import React from "react";
-import {renderWithMockedProvider} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {actionTypes} from "./constants";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
-import {workItemReducer as workItemReducerMock} from "./workItemReducer";
+import * as workItemUtils from "./workItemReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
+import {GraphQLError} from "graphql";
 import {UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 
-jest.mock("./workItemReducer", () => {
-  return {
-    workItemReducer: jest.fn((state, action) => {
-      if (action.type === "UPDATE_WORKITEM_SOURCE") {
-        return {...state, mode: "EDITING"};
-      }
-
-      if (action.type === "CANCEL_EDIT_MODE") {
-        return {...state, mode: "INIT"};
-      }
-
-      if (action.type === "MUTATION_SUCCESS") {
-        return {...state, mode: "SUCCESS"};
-      }
-
-      return state;
-    }),
-  };
+beforeAll(() => {
+  jest.spyOn(workItemUtils, "workItemReducer");
 });
 
 // clear mocks after each test
@@ -65,9 +50,9 @@ async function renderedDragDropConfig(component, dropCategoryIndex, mapper = (po
       // call the drop function in the context of point
       drop.bind(point)(eventWithNewPoint);
 
-      if (workItemReducerMock.mock.calls.length > 0) {
+      if (workItemUtils.workItemReducer.mock.calls.length > 0) {
         // return argurments(state, action) of workItemReducer
-        return [workItemReducerMock.mock.calls[i][0], workItemReducerMock.mock.calls[i][1]];
+        return [workItemUtils.workItemReducer.mock.calls[i][0], workItemUtils.workItemReducer.mock.calls[i][1]];
       } else {
         return [null, null];
       }
@@ -186,7 +171,7 @@ const workItemSourcesFixture = [
 
 const projectKey = "41af8b92-51f6-4e88-9765-cc3dbea35e1a";
 
-describe.only("WorkItemStateTypeMapView", () => {
+describe("WorkItemStateTypeMapView", () => {
   describe("when there are no workItemSources", () => {
     test("renders only the base pedestal series", async () => {
       const {
@@ -221,8 +206,8 @@ describe.only("WorkItemStateTypeMapView", () => {
       );
     });
 
-    it("renders first workItemSource as initial selected value for dropdown on the component", async () => {
-      const {getByText} = await renderWithMockedProvider(
+    test("renders first workItemSource as initial selected value for dropdown on the component", async () => {
+      await renderWithMockedProvider(
         <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
       );
 
@@ -276,27 +261,43 @@ describe.only("WorkItemStateTypeMapView", () => {
   });
 
   describe("save/cancel", () => {
-    const mocks = [
-      {
-        request: {
-          query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
-          variables: {
-            projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+    const gqlMutationRequest = {
+      query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
+      variables: {
+        projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+        workItemsSourceStateMaps: [
+          {
+            workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+            stateMaps: [
+              {state: "accepted", stateType: "closed"},
+              {state: "planned", stateType: "complete"},
+              {state: "unscheduled", stateType: "open"},
+              {state: "unstarted", stateType: "closed"},
+              {state: "started", stateType: "open"},
+              {state: "delivered", stateType: "wip"},
+              {state: "created", stateType: "backlog"},
+              {state: "finished", stateType: "complete"},
+            ],
           },
-        },
+        ],
+      },
+    };
+
+    const updateWorkItemMappingMocks = [
+      {
+        request: gqlMutationRequest,
         result: {
           data: {
             updateProjectStateMaps: {
               success: true,
               errorMessage: null,
-              __typename: "UpdateProjectStateMaps",
             },
           },
         },
       },
     ];
 
-    it("when work item state is dragged to a desired phase, save/cancel buttons should appear on the screen", async () => {
+    test("when work item state is dragged to a desired phase, save/cancel buttons should appear on the screen", async () => {
       await renderedDragDropConfig(
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
@@ -314,7 +315,7 @@ describe.only("WorkItemStateTypeMapView", () => {
       expect(cancelElement).toBeInTheDocument();
     });
 
-    it("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
+    test("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
       await renderedDragDropConfig(
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
@@ -339,7 +340,7 @@ describe.only("WorkItemStateTypeMapView", () => {
       expect(cancelElement).not.toBeInTheDocument();
     });
 
-    it("when save button is clicked, button loading state should appear during the time mutation is executing.", async () => {
+    test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
       await renderedDragDropConfig(
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
@@ -347,48 +348,90 @@ describe.only("WorkItemStateTypeMapView", () => {
           enableEdits={true}
         />,
         5, // dropping to closed category
-        (points) => [points.find((p) => p.name === "unscheduled")],
-        mocks
+        (points) => [points.find((p) => p.name === "unstarted")],
+        updateWorkItemMappingMocks
       );
 
       const saveElement = screen.getByText(/save/i);
       fireEvent.click(saveElement);
-      expect(screen.getByText(/Processing.../i)).toBeInTheDocument();
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/success/i);
+      expect(successElement).toBeInTheDocument();
     });
 
-    // still working on them.
-    // it("after mutation is success, shows appropriate message on screen", async () => {
-    //   await renderedDragDropConfig(
-    //     <WorkItemStateTypeMapView
-    //       instanceKey={projectKey}
-    //       workItemSources={workItemSourcesFixture}
-    //       enableEdits = {true};
-    //       selectedIndex={0}
-    //     />,
-    //     5, // dropping to closed category
-    //     (points) => [points.find((p) => p.name === "unscheduled")],
-    //     mocks
-    //   );
+    describe("when there are errors", () => {
+      let logGraphQlError;
+      beforeEach(() => {
+        // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
+        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
+      });
+      afterEach(() => {
+        logGraphQlError.mockRestore();
+      });
 
-    //   const saveElement = screen.getByText(/save/i);
-    //   fireEvent.click(saveElement);
-    //   expect(await screen.findByText(/success/i)).toBeInTheDocument();
-    // });
+      const mockNetworkError = [
+        {
+          request: gqlMutationRequest,
+          error: new Error("A network error Occurred"),
+        },
+      ];
 
-    // it.skip("after mutation fails, shows appropriate message on screen", async () => {
-    //   const {
-    //     reducerArgs: [[_, action]],
-    //   } = await renderedDragDropConfig(
-    //     <WorkItemStateTypeMapView
-    //       instanceKey={projectKey}
-    //       workItemSources={workItemSourcesFixture}
-    //       enableEdits = {true};
-    //       selectedIndex={0}
-    //     />,
-    //     5, // dropping to closed category
-    //     (points) => [points.find((p) => p.name === "unscheduled")],
-    //     mocks
-    //   );
-    // });
+      const mockGraphQlErrors = [
+        {
+          request: gqlMutationRequest,
+          result: {
+            errors: [new GraphQLError("A GraphQL Error Occurred")],
+          },
+        },
+      ];
+      test("it renders nothing and logs the error when there is a network error", async () => {
+        await renderedDragDropConfig(
+          <WorkItemStateTypeMapView
+            instanceKey={projectKey}
+            workItemSources={workItemSourcesFixture}
+            enableEdits={true}
+          />,
+          5, // dropping to closed category
+          (points) => [points.find((p) => p.name === "unstarted")],
+          mockNetworkError
+        );
+        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        const saveElement = screen.getByText(/save/i);
+        fireEvent.click(saveElement);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        expect(screen.queryByTestId("state-type-map-view")).toBeNull();
+      });
+
+      test("it renders nothing and logs the error when there is a GraphQl error", async () => {
+        await renderedDragDropConfig(
+          <WorkItemStateTypeMapView
+            instanceKey={projectKey}
+            workItemSources={workItemSourcesFixture}
+            enableEdits={true}
+          />,
+          5, // dropping to closed category
+          (points) => [points.find((p) => p.name === "unstarted")],
+          mockGraphQlErrors
+        );
+
+        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        const saveElement = screen.getByText(/save/i);
+        fireEvent.click(saveElement);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        expect(screen.queryByTestId("state-type-map-view")).toBeNull();
+      });
+    });
   });
 });
