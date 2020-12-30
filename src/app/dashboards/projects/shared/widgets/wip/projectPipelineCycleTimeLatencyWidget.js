@@ -31,6 +31,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
+    activeOnly: true,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading) return <Loading/>;

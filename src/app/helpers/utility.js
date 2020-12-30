@@ -1,5 +1,5 @@
-import {Map} from 'immutable';
-import moment from 'moment';
+import {Map} from "immutable";
+import moment from "moment";
 import {notification} from "antd";
 import flowright from "lodash.flowright";
 
@@ -298,3 +298,4 @@ export function average( array, getValue) {
   }
 
 }
+

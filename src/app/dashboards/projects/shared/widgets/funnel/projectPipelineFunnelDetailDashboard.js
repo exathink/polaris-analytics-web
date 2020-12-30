@@ -18,8 +18,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   context,
   pollInterval,
 }) => {
-  const [workItemScope, setWorkItemScope] = useState('all');
-  const specsOnly = workItemScope === 'specs';
+  const [workItemScope, setWorkItemScope] = useState("all");
+  const specsOnly = workItemScope === "specs";
 
   return (
     <Dashboard dashboard={dashboard_id}>
@@ -49,7 +49,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               workItemScope={workItemScope}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              days={30}
+              days={days}
               view={view}
             />
           )}
@@ -57,7 +57,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
         />
         <DashboardWidget
           w={2 / 3}
-          name="project-pipeline-bubble"
+          name="workitem-statetype-map"
           render={({view}) => {
             return (
               <WorkItemStateTypeMapWidget
@@ -65,7 +65,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
-                days={30}
+                days={days}
                 view={view}
               />
             );
@@ -80,14 +80,16 @@ export const ProjectPipelineFunnelDetailDashboard = ({
             <ProjectPipelineStateDetailsWidget
               instanceKey={instanceKey}
               context={context}
+              funnelView={true}
               specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              days={30}
+              days={days}
+              closedWithinDays={days}
               view={view}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>

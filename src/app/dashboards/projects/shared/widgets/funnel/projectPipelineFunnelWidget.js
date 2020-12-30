@@ -45,11 +45,8 @@ export const ProjectPipelineFunnelWidget = ({
       context={context}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}
-      days={30}
+      days={days}
       view={view}
     />
   );
 };
-
-
-
