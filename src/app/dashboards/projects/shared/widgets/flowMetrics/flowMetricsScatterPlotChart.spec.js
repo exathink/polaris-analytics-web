@@ -5,11 +5,8 @@ import {epoch} from "../../../../../helpers/utility";
 import {
   Colors,
   Symbols,
-  WorkItemColorMap,
-  WorkItemSymbolMap,
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius,
-  WorkItemTypeSortOrder,
 } from "../../../../shared/config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
 
@@ -48,7 +45,21 @@ const metricsMeta = {
     value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
   },
 };
-
+const projectCycleMetrics = {
+  minLeadTime: 0.06811342592592592,
+  avgLeadTime: 3.4181550925925928,
+  maxLeadTime: 8.91712962962963,
+  minCycleTime: 1.2246180555555557,
+  avgCycleTime: 5.462317708333333,
+  maxCycleTime: 8.345,
+  percentileLeadTime: 8.67525462962963,
+  percentileCycleTime: 8.345,
+  targetPercentile: 0.9,
+  workItemsInScope: 10,
+  workItemsWithNullCycleTime: 6,
+  earliestClosedDate: "2020-11-29T16:21:18.853000",
+  latestClosedDate: "2020-12-09T22:06:08.221000",
+};
 // props fixture
 const propsFixture = {
   days: 30,
@@ -216,21 +227,7 @@ const propsFixture = {
   ],
   selectedMetric: "leadTime",
   metricsMeta,
-  projectCycleMetrics: {
-    minLeadTime: 0.06811342592592592,
-    avgLeadTime: 3.4181550925925928,
-    maxLeadTime: 8.91712962962963,
-    minCycleTime: 1.2246180555555557,
-    avgCycleTime: 5.462317708333333,
-    maxCycleTime: 8.345,
-    percentileLeadTime: 8.67525462962963,
-    percentileCycleTime: 8.345,
-    targetPercentile: 0.9,
-    workItemsInScope: 10,
-    workItemsWithNullCycleTime: 6,
-    earliestClosedDate: "2020-11-29T16:21:18.853000",
-    latestClosedDate: "2020-12-09T22:06:08.221000",
-  },
+  projectCycleMetrics,
   specsOnly: true,
   showEpics: false,
   yAxisScale: "logarithmic",
@@ -298,20 +295,7 @@ const fixedChartConfig = {
     useUTC: false,
   },
 };
-function mapSymbol(workItem) {
-  if (!workItem.isBug) {
-    return WorkItemSymbolMap[workItem.workItemType];
-  } else {
-    return Symbols.WorkItemType.bug;
-  }
-}
-function mapColor(workItem) {
-  if (!workItem.isBug) {
-    return WorkItemColorMap[workItem.workItemType];
-  } else {
-    return Colors.WorkItemType.bug;
-  }
-}
+
 describe("FlowMetricsScatterPlotChart", () => {
   describe("when selected metric is leadTime, view is normal", () => {
     describe("when there are no workitems", () => {
@@ -358,7 +342,18 @@ describe("FlowMetricsScatterPlotChart", () => {
         model: [workItemFixture],
       };
 
-      const fixedSeriesConfig = {};
+      const fixedSeriesConfig = {
+        key: workItemFixture.workItemType,
+        id: workItemFixture.workItemType,
+        name: WorkItemTypeDisplayName[workItemFixture.workItemType],
+        color: Colors.WorkItemType.bug,
+        marker: {
+          symbol: Symbols.WorkItemType.bug,
+          radius: WorkItemTypeScatterRadius[workItemFixture.workItemType],
+        },
+        turboThreshold: 0,
+        allowPointSelect: true,
+      };
       const expectedChartConfig = {
         ...fixedChartConfig,
         title: {
@@ -487,7 +482,44 @@ describe("FlowMetricsScatterPlotChart", () => {
         model: [workItemFixtureForBug, workItemFixtureForStory, workItemFixtureForTask],
       };
 
-      const fixedSeriesConfig = {};
+      const fixedSeriesConfig = [
+        {
+          key: workItemFixtureForBug.workItemType,
+          id: workItemFixtureForBug.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForBug.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForBug.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForBug.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForBug.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+        {
+          key: workItemFixtureForStory.workItemType,
+          id: workItemFixtureForStory.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForStory.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForStory.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForStory.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForStory.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+        {
+          key: workItemFixtureForTask.workItemType,
+          id: workItemFixtureForTask.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForTask.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForTask.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForTask.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForTask.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+      ];
       const expectedChartConfig = {
         ...fixedChartConfig,
         title: {
@@ -496,7 +528,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         subtitle: {
           text: expect.stringMatching(`3 Specs closed in the last 30 days`),
         },
-        series: [fixedSeriesConfig, fixedSeriesConfig, fixedSeriesConfig],
+        series: fixedSeriesConfig,
       };
 
       const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...multiplePropsFixture} />);
@@ -567,155 +599,242 @@ describe("FlowMetricsScatterPlotChart", () => {
     });
   });
 
-  describe("when selected metric is cycle time, view is normal", () => {});
+  describe("when selected metric is cycle time, view is normal", () => {
+    const selectedMetric = "cycleTime";
+
+    describe("when there are no workitems", () => {
+      const emptyPropsFixture = {
+        ...propsFixture,
+        selectedMetric,
+        model: [],
+      };
+
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta[selectedMetric].display,
+        },
+        series: [],
+      };
+
+      test("it renders an empty chart config", () => {
+        expect(renderedChartConfig(<FlowMetricsScatterPlotChart {...emptyPropsFixture} />)).toMatchObject(
+          expectedChartConfig
+        );
+      });
+    });
+
+    describe("when there is a single workitem", () => {
+      const workItemFixture = {
+        name: "Funnel closed does not match Flow Metrics Closed",
+        key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+        displayId: "PO-396",
+        workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+        workItemType: "bug",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-02T00:37:17.095000",
+        endDate: "2020-12-09T22:06:08.221000",
+        leadTime: 7.895034722222222,
+        cycleTime: 7.894618055555555,
+        latency: 0.026180555555555554,
+        duration: 4.00299768518519,
+        effort: 1.16666666666667,
+        authorCount: 1,
+      };
+
+      const singlePropsFixture = {
+        ...propsFixture,
+        selectedMetric,
+        model: [workItemFixture],
+      };
+
+      const fixedSeriesConfig = {
+        key: workItemFixture.workItemType,
+        id: workItemFixture.workItemType,
+        name: WorkItemTypeDisplayName[workItemFixture.workItemType],
+        color: Colors.WorkItemType.bug,
+        marker: {
+          symbol: Symbols.WorkItemType.bug,
+          radius: WorkItemTypeScatterRadius[workItemFixture.workItemType],
+        },
+        turboThreshold: 0,
+        allowPointSelect: true,
+      };
+
+      // ${singlePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta[selectedMetric].display,
+        },
+        subtitle: {
+          text: expect.stringContaining(
+            `1 Specs closed in the last 30 days (${singlePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
+          ),
+        },
+        series: [fixedSeriesConfig],
+      };
+
+      const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...singlePropsFixture} />);
+
+      test("it renders correct chart config", () => {
+        expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+      });
+
+      test(`should render the tooltip of the point`, async () => {
+        const [actual] = await renderedTooltipConfig(
+          <FlowMetricsScatterPlotChart {...singlePropsFixture} />,
+          (points) => [points[0]],
+          0
+        );
+
+        const {
+          leadTime,
+          cycleTime,
+          latency,
+          authorCount,
+          workItemType,
+          name,
+          displayId,
+          endDate,
+          state,
+        } = workItemFixture;
+        const backlogTime = leadTime - cycleTime;
+        expect(actual).toMatchObject({
+          header: `${WorkItemTypeDisplayName[workItemType]}: ${name} (${displayId})`,
+          body: [
+            [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
+            [`State: `, `${state}`],
+            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
+            [`------`, ``],
+            ["Lead Time: ", `${formatNumber(leadTime)} days`],
+            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
+            ["Delivery Latency: ", `${formatNumber(latency)} days`],
+            ["Duration: ", expect.stringMatching(`days`)],
+            ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Authors: ", `${formatNumber(authorCount)}`],
+          ],
+        });
+      });
+    });
+
+    describe("when there are multiple workitems", () => {
+      const workItemFixtureForBug = {
+        name: "Funnel closed does not match Flow Metrics Closed",
+        key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+        displayId: "PO-396",
+        workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+        workItemType: "bug",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-02T00:37:17.095000",
+        endDate: "2020-12-09T22:06:08.221000",
+        leadTime: 7.895034722222222,
+        cycleTime: 7.894618055555555,
+        latency: 0.026180555555555554,
+        duration: 4.00299768518519,
+        effort: 1.16666666666667,
+        authorCount: 1,
+      };
+      const workItemFixtureForStory = {
+        name: "Refresh Open Pull Requests view when pull requests are updated. ",
+        key: "5bb46a5e-0dfd-41db-9dfc-b0e451aefd46:3590",
+        displayId: "PO-399",
+        workItemKey: "5bb46a5e-0dfd-41db-9dfc-b0e451aefd46",
+        workItemType: "story",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-03T22:18:11.793000",
+        endDate: "2020-12-05T03:42:01.684000",
+        leadTime: 1.2248842592592593,
+        cycleTime: 1.2246180555555557,
+        latency: 1.0530902777777778,
+        duration: 0.135092592592593,
+        effort: 1,
+        authorCount: 1,
+      };
+      const workItemFixtureForTask = {
+        name: "Setup web tests in CI environment",
+        key: "9eb7d2cb-05a0-406c-b66d-3c289766abf1:3581",
+        displayId: "PO-391",
+        workItemKey: "9eb7d2cb-05a0-406c-b66d-3c289766abf1",
+        workItemType: "task",
+        state: "Done",
+        startDate: "2020-11-28T04:11:00.554000",
+        endDate: "2020-11-29T16:21:18.853000",
+        leadTime: 1.5071527777777778,
+        cycleTime: null,
+        latency: 0.0002777777777777778,
+        duration: 0.570034722222222,
+        effort: 2,
+        authorCount: 1,
+      };
+      const multiplePropsFixture = {
+        ...propsFixture,
+        selectedMetric,
+        model: [workItemFixtureForBug, workItemFixtureForStory, workItemFixtureForTask],
+      };
+
+      const fixedSeriesConfig = [
+        {
+          key: workItemFixtureForBug.workItemType,
+          id: workItemFixtureForBug.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForBug.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForBug.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForBug.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForBug.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+        {
+          key: workItemFixtureForStory.workItemType,
+          id: workItemFixtureForStory.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForStory.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForStory.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForStory.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForStory.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+        {
+          key: workItemFixtureForTask.workItemType,
+          id: workItemFixtureForTask.workItemType,
+          name: WorkItemTypeDisplayName[workItemFixtureForTask.workItemType],
+          color: Colors.WorkItemType[workItemFixtureForTask.workItemType],
+          marker: {
+            symbol: Symbols.WorkItemType[workItemFixtureForTask.workItemType],
+            radius: WorkItemTypeScatterRadius[workItemFixtureForTask.workItemType],
+          },
+          turboThreshold: 0,
+          allowPointSelect: true,
+        },
+      ];
+
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        title: {
+          text: metricsMeta[selectedMetric].display,
+        },
+        subtitle: {
+          text: expect.stringContaining(
+            `3 Specs closed in the last 30 days (${multiplePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
+          ),
+        },
+        series: fixedSeriesConfig,
+      };
+
+      const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...multiplePropsFixture} />);
+
+      test("it renders correct chart config", () => {
+        expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+      });
+    });
+  });
 
   describe("when selected metric is Backlog Time, view is normal", () => {});
 
   describe("when selected metric is Authors, view is outlier", () => {});
 
-  describe("when there is no model data", () => {
-    const emptyPropsFixture = {
-      ...propsFixture,
-      model: [],
-    };
-
-    const {metricsMeta, selectedMetric} = propsFixture;
-    const expectedChartConfig = {
-      ...fixedChartConfig,
-      title: {
-        text: metricsMeta[selectedMetric].display,
-      },
-      series: [],
-    };
-
-    test("it renders an empty chart config", () => {
-      expect(renderedChartConfig(<FlowMetricsScatterPlotChart {...emptyPropsFixture} />)).toMatchObject(
-        expectedChartConfig
-      );
-    });
-  });
-
-  describe("when there is model data", () => {
-    const {model, metricsMeta, selectedMetric} = propsFixture;
-    const deliveryCyclesByWorkItemType = model.reduce((groups, cycle) => {
-      if (groups[cycle.workItemType] != null) {
-        groups[cycle.workItemType].push(cycle);
-      } else {
-        groups[cycle.workItemType] = [cycle];
-      }
-      return groups;
-    }, {});
-
-    describe("when metrics are selected", () => {
-      const selectedMetrics = ["leadTime", "cycleTime", "latency", "duration", "effort", "authors", "backlogTime"];
-      selectedMetrics.forEach((selectedMetric) => {
-        test(`it renders chart config when selectedMetric is ${selectedMetric}`, () => {
-          const selectedMetricPropsFixture = {
-            ...propsFixture,
-            selectedMetric: selectedMetric,
-          };
-
-          const seriesData = Object.entries(deliveryCyclesByWorkItemType)
-            .sort((entryA, entryB) => WorkItemTypeSortOrder[entryA[0]] - WorkItemTypeSortOrder[entryB[0]])
-            .map(([workItemType, cycles]) => ({
-              key: workItemType,
-              id: workItemType,
-              name: WorkItemTypeDisplayName[workItemType],
-              color: mapColor(cycles[0]),
-              marker: {
-                symbol: mapSymbol(cycles[0]),
-                radius: WorkItemTypeScatterRadius[workItemType],
-              },
-              data: cycles.map((cycle) => ({
-                x: epoch(cycle.endDate),
-                y: metricsMeta[selectedMetric].value(cycle),
-                z: 1,
-                cycle: cycle,
-              })),
-              turboThreshold: 0,
-              allowPointSelect: true,
-            }));
-
-          const expectedChartConfig = {
-            ...fixedChartConfig,
-            title: {
-              text: metricsMeta[selectedMetric].display,
-            },
-            series: seriesData,
-          };
-          expect(renderedChartConfig(<FlowMetricsScatterPlotChart {...selectedMetricPropsFixture} />)).toMatchObject(
-            expectedChartConfig
-          );
-        });
-      });
-    });
-
-    describe("all series", () => {
-      const {series} = renderedChartConfig(<FlowMetricsScatterPlotChart {...propsFixture} />);
-      const cases = [
-        {name: "Bug", data: propsFixture.model.filter((x) => x.workItemType === "bug")},
-        {name: "Story", data: propsFixture.model.filter((x) => x.workItemType === "story")},
-        {name: "Task", data: propsFixture.model.filter((x) => x.workItemType === "task")},
-      ];
-      cases.forEach((item, index) => {
-        describe(`${item.name}`, () => {
-          const individualSeries = series[index];
-          test("renders a chart with the correct number of data points", () => {
-            expect(item.data).toHaveLength(individualSeries.data.length);
-          });
-
-          test("it maps dates to the x axis and sets y to be selected metric value", () => {
-            expectSetsAreEqual(
-              individualSeries.data.map((point) => [point.x, point.y]),
-              item.data.map((cycle) => {
-                return [epoch(cycle.endDate), metricsMeta[selectedMetric].value(cycle)];
-              })
-            );
-          });
-
-          test("it sets the reference to cycle for each point ", () => {
-            expectSetsAreEqual(
-              individualSeries.data.map((point) => point.cycle),
-              item.data.map((cycle) => cycle)
-            );
-          });
-
-          test("should render the tooltip for point", async () => {
-            const [actual] = await renderedTooltipConfig(
-              <FlowMetricsScatterPlotChart {...propsFixture} />,
-              (points) => [points[0]],
-              index
-            );
-            const firstPointCycle = item.data[0];
-
-            const leadTime = metricsMeta["leadTime"].value(firstPointCycle);
-            const cycleTime = metricsMeta["cycleTime"].value(firstPointCycle);
-            const latency = metricsMeta["latency"].value(firstPointCycle);
-            const authorCount = metricsMeta["authors"].value(firstPointCycle);
-            const backlogTime = metricsMeta["backlogTime"].value(firstPointCycle);
-
-            expect(actual).toMatchObject({
-              header: `${WorkItemTypeDisplayName[firstPointCycle.workItemType]}: ${firstPointCycle.name} (${
-                firstPointCycle.displayId
-              })`,
-              body: [
-                [`Closed: `, `${formatDateRaw(epoch(firstPointCycle.endDate))}`],
-                [`State: `, `${firstPointCycle.state}`],
-                ["Lead Time: ", `${formatNumber(leadTime)} days`],
-                [`------`, ``],
-                ["Backlog Time: ", backlogTime > 0 ? `${formatNumber(backlogTime)} days` : "N/A"],
-                ["Cycle Time: ", cycleTime > 0 ? `${formatNumber(cycleTime)} days` : "N/A"],
-
-                ["Delivery Latency: ", `${formatNumber(latency)} days`],
-
-                ["Duration: ", expect.stringMatching(`days`)],
-                ["Effort: ", expect.stringMatching(`dev-days`)],
-                ["Authors: ", `${formatNumber(authorCount)}`],
-              ],
-            });
-          });
-        });
-      });
-    });
-  });
 });
