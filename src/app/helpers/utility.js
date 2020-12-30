@@ -298,3 +298,7 @@ export function average( array, getValue) {
   }
 
 }
+
+export function getNDaysAgo(n) {
+  return moment().subtract(n, "days").utc().format('YYYY-MM-DDTHH:mm:ss');
+}

@@ -4,6 +4,7 @@ import {PlotLines} from "./chartParts";
 import {getIntl, expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsDurationsByPhaseChart} from "./workItemsDurationsByPhaseChart";
+import {getNDaysAgo} from "../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -115,7 +116,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
     });
 
     describe("when there is a single workItem", () => {
-      const workItemFixture = {
+      let workItemFixture = {
         id: "V29ya0l0ZW06NWViNjAxY2MtNmExZC00ODNkLWFkZDctNDE3YzMyMWU3MTA5",
         name: "Funnel closed does not match Flow Metrics Closed",
         key: "5eb601cc-6a1d-483d-add7-417c321e7109",
@@ -156,7 +157,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           duration: 4.00299768518519,
         },
       };
-      const workItemsFixture = [workItemFixture];
+      let workItemsFixture = [workItemFixture];
 
       test("should render correct chart config", () => {
         const seriesConfig = {
@@ -235,8 +236,42 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         });
       });
 
-      //FIXME
-      test.skip(`should render the tooltip of the current state point(last one)`, async () => {
+      test(`should render the tooltip of the current state point(last one)`, async () => {
+        const wiFixture = {
+          ...workItemFixture,
+          workItemStateDetails: {
+            ...workItemFixture.workItemStateDetails,
+            currentDeliveryCycleDurations: [
+              {
+                state: "In Progress",
+                stateType: "wip",
+                daysInState: 4,
+              },
+              {
+                state: "created",
+                stateType: "backlog",
+                daysInState: 1,
+              },
+              {
+                state: "DEPLOYED-TO-STAGING",
+                stateType: "closed",
+                daysInState: null,
+              },
+              {
+                state: "READY-FOR-DEVELOPMENT",
+                stateType: "open",
+                daysInState: 3,
+              },
+            ],
+            latestCommit: getNDaysAgo(20),
+            currentStateTransition: {
+              ...workItemFixture.workItemStateDetails.currentStateTransition,
+              eventDate: getNDaysAgo(10),
+            },
+          },
+        };
+        const workItemsFixture = [wiFixture];
+
         const [actual] = await renderedTooltipConfig(
           <WorkItemsDurationsByPhaseChart
             workItems={workItemsFixture}
@@ -255,9 +290,10 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           workItemStateDetails: {duration},
         } = workItemFixture;
 
-        const cycleTime = 27.583554224537036;
-        const latency = 19.68893616898148;
-        const timeInStateDisplay = "20 days ago";
+        // expected values
+        const cycleTime = 17; // 10(currentStateTransition.eventDate) + (priorStateDurations-backlog)(4+1+3-1)
+        const latency = 10;
+        const timeInStateDisplay = "10 days ago";
         const commitCount = 15;
         const latestCommitDisplay = "20 days ago";
         expect(actual).toMatchObject({
@@ -271,7 +307,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
             [`Commits: `, `${formatNumber(commitCount)}`],
             [`Latest Commit: `, `${latestCommitDisplay}`],
             [`Duration: `, `${formatNumber(duration)} days`],
-            [`Latency: `, `${intl.formatNumber(latency)} days`],
+            [`Latency: `, `${formatNumber(latency)} days`],
           ],
         });
       });
@@ -531,7 +567,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         stateType: "wip",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2020-12-08T22:24:26.088000",
+            eventDate: getNDaysAgo(32),
           },
           currentDeliveryCycleDurations: [
             {
@@ -563,7 +599,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         stateType: "wip",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2020-12-09T22:31:01.244000",
+            eventDate: getNDaysAgo(15),
           },
           currentDeliveryCycleDurations: [
             {
@@ -600,7 +636,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         stateType: "wip",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2020-12-09T15:36:46.408000",
+            eventDate: getNDaysAgo(22),
           },
           currentDeliveryCycleDurations: [
             {
@@ -676,9 +712,10 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           expect(storySeries.data).toHaveLength(1);
         });
 
-        //FIXME
-        test.skip("it sets correct value for y axis for each point", () => {
-
+        test("it sets correct value for y axis for each point", () => {
+          // for non-closed workItems, filter backlog and transition having daysInState to be null in(currentDeliveryCycleDurations).
+          // for this particular case we will only have single point(which is current workItemState)
+          expect(storySeries.data[0].y).toBeCloseTo(32, 2);
         });
 
         test("it sets correct name for each point", () => {
@@ -695,9 +732,11 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           expect(taskSeries.data).toHaveLength(3);
         });
 
-        //FIXME
-        test.skip("it sets correct value for y axis for each point", () => {
-
+        test("it sets correct value for y axis for each point", () => {
+          expectSetsAreEqual(
+            taskSeries.data.map((point) => point.y).map((x) => x.toFixed(2)),
+            [15, 22, 6.065995370370371].map((x) => x.toFixed(2))
+          );
         });
 
         test("it sets correct name for each point", () => {
