@@ -2,12 +2,7 @@ import React from "react";
 import {expectSetsAreEqual, formatDateRaw, formatNumber} from "../../../../../../test/test-utils";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
 import {epoch} from "../../../../../helpers/utility";
-import {
-  Colors,
-  Symbols,
-  WorkItemTypeDisplayName,
-  WorkItemTypeScatterRadius,
-} from "../../../../shared/config";
+import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../../../shared/config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
 
 // clear mocks after each test
@@ -297,7 +292,7 @@ const fixedChartConfig = {
 };
 
 describe("FlowMetricsScatterPlotChart", () => {
-  describe("when selected metric is leadTime, view is normal", () => {
+  describe("when selected metric is leadTime", () => {
     describe("when there are no workitems", () => {
       const emptyPropsFixture = {
         ...propsFixture,
@@ -599,7 +594,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     });
   });
 
-  describe("when selected metric is cycle time, view is normal", () => {
+  describe("when selected metric is cycle time", () => {
     const selectedMetric = "cycleTime";
 
     describe("when there are no workitems", () => {
@@ -661,7 +656,6 @@ describe("FlowMetricsScatterPlotChart", () => {
         allowPointSelect: true,
       };
 
-      // ${singlePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time
       const expectedChartConfig = {
         ...fixedChartConfig,
         title: {
@@ -833,8 +827,69 @@ describe("FlowMetricsScatterPlotChart", () => {
     });
   });
 
-  describe("when selected metric is Backlog Time, view is normal", () => {});
+  describe("when selected metric is Backlog Time", () => {
+    const selectedMetric = "backlogTime";
 
-  describe("when selected metric is Authors, view is outlier", () => {});
+    describe("when there is a single workitem", () => {
+      const workItemFixture = {
+        name: "Funnel closed does not match Flow Metrics Closed",
+        key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+        displayId: "PO-396",
+        workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+        workItemType: "bug",
+        state: "DEPLOYED-TO-STAGING",
+        startDate: "2020-12-02T00:37:17.095000",
+        endDate: "2020-12-09T22:06:08.221000",
+        leadTime: 7.895034722222222,
+        cycleTime: 7.894618055555555,
+        latency: 0.026180555555555554,
+        duration: 4.00299768518519,
+        effort: 1.16666666666667,
+        authorCount: 1,
+      };
+
+      const singlePropsFixture = {
+        ...propsFixture,
+        selectedMetric,
+        model: [workItemFixture],
+      };
+
+      test(`should render the tooltip of the point`, async () => {
+        const [actual] = await renderedTooltipConfig(
+          <FlowMetricsScatterPlotChart {...singlePropsFixture} />,
+          (points) => [points[0]],
+          0
+        );
+
+        const {
+          leadTime,
+          cycleTime,
+          latency,
+          authorCount,
+          workItemType,
+          name,
+          displayId,
+          endDate,
+          state,
+        } = workItemFixture;
+        const backlogTime = leadTime - cycleTime;
+        expect(actual).toMatchObject({
+          header: `${WorkItemTypeDisplayName[workItemType]}: ${name} (${displayId})`,
+          body: [
+            [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
+            [`State: `, `${state}`],
+            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
+            [`------`, ``],
+            ["Lead Time: ", `${formatNumber(leadTime)} days`],
+            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
+            ["Delivery Latency: ", `${formatNumber(latency)} days`],
+            ["Duration: ", expect.stringMatching(`days`)],
+            ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Authors: ", `${formatNumber(authorCount)}`],
+          ],
+        });
+      });
+    });
+  });
 
 });
