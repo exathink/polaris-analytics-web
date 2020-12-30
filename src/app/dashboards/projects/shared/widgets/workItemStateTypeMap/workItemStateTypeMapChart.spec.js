@@ -13,6 +13,10 @@ const workItemSourcesFixture = [
   {
     key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
     name: "Polaris Platform",
+    // Note: This fixture omits the mapping for the "created" state, which is
+    // removed by the component before display. This state is normally present in
+    // the mapping returned from the server, but it makes for a more intuitive test case to test for the removal
+    // separately, so we will setup the default fixture without this state mapped.
     workItemStateMappings: [
       {
         state: "accepted",
@@ -37,10 +41,6 @@ const workItemSourcesFixture = [
       {
         state: "delivered",
         stateType: "wip",
-      },
-      {
-        state: "created",
-        stateType: "backlog",
       },
       {
         state: "finished",
@@ -277,6 +277,63 @@ describe("WorkItemStateTypeMapChart", () => {
       });
     });
 
+    describe("when the input has a mapping for a created state", () => {
+      const workItemsSourceFixture = [
+        {
+          key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+          name: "Polaris Platform",
+          // Note: This fixture omits the mapping for the "created" state, which is
+          // removed by the component before display. This state is normally present in
+          // the mapping returned from the server, but it makes for a more intuitive test case to test for the removal
+          // separately, so we will setup the default fixture without this state mapped.
+          workItemStateMappings: [
+            {
+              state: "created",
+              stateType: "backlog",
+            },
+            {
+              state: "accepted",
+              stateType: "closed",
+            },
+            {
+              state: "planned",
+              stateType: "complete",
+            },
+            {
+              state: "unscheduled",
+              stateType: "backlog",
+            },
+            {
+              state: "unstarted",
+              stateType: "open",
+            },
+            {
+              state: "started",
+              stateType: "open",
+            },
+            {
+              state: "delivered",
+              stateType: "wip",
+            },
+            {
+              state: "finished",
+              stateType: "complete",
+            },
+          ],
+        },
+      ];
+      const {series} = renderedChartConfig(
+        <WorkItemStateTypeMapChart
+          workItemSource={workItemsSourceFixture[0]}
+          view="detail"
+          enableEdits={true}
+        />
+      );
+
+      test("it filters out the created state in the chart series", () => {
+        expect(series.find(s => s.name === 'created')).toBeUndefined()
+      });
+    });
     describe("base pedestal series", () => {
       const basePedestalSeries = series.find((s, i) => i === series.length - 1);
 
