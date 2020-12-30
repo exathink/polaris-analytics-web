@@ -1,10 +1,9 @@
 import React from "react";
 import {Colors, WorkItemStateTypeDisplayName, WorkItemTypeDisplayName} from "../../../shared/config";
 import {PlotLines} from "./chartParts";
-import {getIntl, expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
+import {getIntl, expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsDurationsByPhaseChart} from "./workItemsDurationsByPhaseChart";
-import {getNDaysAgo} from "../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {

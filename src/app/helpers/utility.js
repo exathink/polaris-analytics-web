@@ -1,5 +1,5 @@
-import {Map} from 'immutable';
-import moment from 'moment';
+import {Map} from "immutable";
+import moment from "moment";
 import {notification} from "antd";
 import flowright from "lodash.flowright";
 
@@ -299,6 +299,3 @@ export function average( array, getValue) {
 
 }
 
-export function getNDaysAgo(n) {
-  return moment().subtract(n, "days").utc().format('YYYY-MM-DDTHH:mm:ss');
-}
