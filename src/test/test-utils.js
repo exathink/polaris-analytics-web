@@ -24,6 +24,10 @@ export function formatDate(date) {
   return `${formatDateTime(intl, toMoment(date))}`
 }
 
+export function formatDateRaw(date) {
+  return `${formatDateTime(intl, date)}`
+}
+
 export function formatNumber(number) {
   return `${intl.formatNumber(number)}`
 }
