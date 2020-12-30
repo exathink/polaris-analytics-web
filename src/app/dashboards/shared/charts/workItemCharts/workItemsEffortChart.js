@@ -93,6 +93,16 @@ function getNonSpecSeries(workItems, view, intl) {
     : [];
 }
 
+function isYAxisVisible(series) {
+  if (series.length === 1) {
+    const [onlySeries] = series;
+    if (onlySeries.key === "non-specs") {
+      return false;
+    }
+  }
+  return true;
+}
+
 export const WorkItemsEffortChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "stateTypes", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
@@ -140,7 +150,7 @@ export const WorkItemsEffortChart = Chart({
       },
       yAxis: {
         type: "linear",
-
+        visible: isYAxisVisible(series),
         title: {
           text: "Effort in Dev-Days",
         },
