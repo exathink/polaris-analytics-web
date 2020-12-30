@@ -4,42 +4,14 @@ import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framewo
 import {epoch} from "../../../../../helpers/utility";
 import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../../../shared/config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
-
+import {projectDeliveryCycleFlowMetricsMeta} from './metricsMeta'
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-const metricsMeta = {
-  leadTime: {
-    display: "Lead Time",
-    value: (cycle) => cycle.leadTime,
-  },
-  cycleTime: {
-    display: "Cycle Time",
-    value: (cycle) => cycle.cycleTime,
-  },
-  duration: {
-    display: "Duration",
-    value: (cycle) => cycle.duration,
-  },
-  latency: {
-    display: "Delivery Latency",
-    value: (cycle) => cycle.latency,
-  },
-  effort: {
-    display: "Effort",
-    value: (cycle) => cycle.effort,
-  },
-  authors: {
-    display: "Authors",
-    value: (cycle) => cycle.authorCount,
-  },
-  backlogTime: {
-    display: "Backlog Time",
-    value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
-  },
-};
+const metricsMeta = projectDeliveryCycleFlowMetricsMeta;
+
 const projectCycleMetrics = {
   minLeadTime: 0.06811342592592592,
   avgLeadTime: 3.4181550925925928,
