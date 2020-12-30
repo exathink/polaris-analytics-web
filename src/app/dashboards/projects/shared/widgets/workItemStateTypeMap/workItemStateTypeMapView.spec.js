@@ -226,7 +226,7 @@ describe("WorkItemStateTypeMapView", () => {
   });
 
   describe("should drag work item state to its desired phase", () => {
-    const cases = ["unscheduled", "planned", "unstarted", "started", "delivered", "created", "finished"]; // closed is the drop target
+    const cases = ["unscheduled", "planned", "unstarted", "started", "delivered", "finished"]; // closed is the drop target
     cases.forEach((workItemState) => {
       test(`it drags point with name ${workItemState} to target category closed`, async () => {
         const [[_, action]] = await renderedDragDropConfig(
