@@ -6,6 +6,11 @@ import {ProjectPipelineImplementationCostWidget} from "./projectPipelineCycleImp
 import {PROJECT_PIPELINE_STATE_DETAILS} from "../../hooks/useQueryProjectPipelineStateDetails";
 import {getReferenceString} from "../../../../../helpers/utility";
 
+// clear mocks after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 const widgetPropsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   specsOnly: false,

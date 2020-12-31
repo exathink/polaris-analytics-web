@@ -342,7 +342,6 @@ describe("workItemEffortChart", () => {
       });
 
       test("its y axis is not visible in detail view", () => {
-        console.log(chartConfig.yAxis);
         expect(chartConfig.yAxis.visible).toBe(false);
       });
     });
