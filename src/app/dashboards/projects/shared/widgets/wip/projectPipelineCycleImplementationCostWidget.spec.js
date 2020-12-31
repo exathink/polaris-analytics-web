@@ -27,6 +27,7 @@ const gqlRequest = {
   variables: {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     specsOnly: false,
+    activeOnly: true,
     referenceString: getReferenceString(widgetPropsFixture.latestWorkItemEvent, widgetPropsFixture.latestCommit),
   },
 };
