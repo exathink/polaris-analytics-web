@@ -6,7 +6,7 @@ import {SpyContext} from "./chartSpyContext";
 
 import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
 
-export const gqlUtils = require("./../../../components/graphql/utils")
+export const gqlUtils = require("./../../../components/graphql/utils");
 
 // mock tooltipHtml function of tooltip module
 jest.mock("./tooltip", () => {
@@ -58,7 +58,7 @@ export async function renderedChart(chartComponent) {
  * 3. this function spys on chart and config, so its important that it renders the whole tree till the Chart component.
  *
  */
-export async function renderWithMockedProvider(component, mocks=[]) {
+export async function renderWithMockedProvider(component, mocks = []) {
   const chartSpy = jest.fn((x) => x);
   const configSpy = jest.fn((x) => x);
 
@@ -81,6 +81,11 @@ export async function renderWithMockedProvider(component, mocks=[]) {
  */
 export function renderComponentWithMockedProvider(component, mocks) {
   return render(component, {wrapper: getAppProviders(mocks)});
+}
+
+// render component with providers
+export function renderWithProviders(component) {
+  return render(component, {wrapper: AppProviders});
 }
 
 /**

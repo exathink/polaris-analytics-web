@@ -231,7 +231,7 @@ describe("workItemEffortChart", () => {
     });
   });
 
-  describe("when there are competed specs", () => {
+  describe("when there are completed specs", () => {
     const completedWorkItem = prototypeWorkItems[2];
     // Replace effort value in the wip item with the specified values
     const testWorkItems = [3, 6, 9].map((effort, index) => ({
@@ -255,6 +255,17 @@ describe("workItemEffortChart", () => {
         color: WorkItemStateTypeColor["complete"],
       };
       expect(chartConfig.series).toMatchObject([expectedSeries]);
+    });
+
+    test("its y axis is visible in primary view", () => {
+      expect(chartConfig.yAxis.visible).toBe(true);
+    });
+
+    describe(" when in detail View ", () => {
+      const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} view={"detail"} />);
+      test("its y axis is visible in detail view", () => {
+        expect(chartConfig.yAxis.visible).toBe(true);
+      });
     });
   });
 
@@ -299,6 +310,10 @@ describe("workItemEffortChart", () => {
       expect(dataLabels.enabled).toBe(false);
     });
 
+    test("its y axis is not visible in primary view", () => {
+      expect(chartConfig.yAxis.visible).toBe(false);
+    });
+
     describe(" when in detail View ", () => {
       const chartConfig = renderedChartConfig(<WorkItemsEffortChart workItems={testWorkItems} view={"detail"} />);
       test("it enables data labels", () => {
@@ -311,7 +326,7 @@ describe("workItemEffortChart", () => {
         expect(dataLabels).toMatchObject(["PO-301", "PO-300", "PO-302"]);
       });
 
-      test(" it renders tooltips correctly", async () => {
+      test("it renders tooltips correctly", async () => {
         const [{header, body}] = await renderedTooltipConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
         expect(header).toBe("Bug: PO-301<br/>Flow Board: Wip total/Epic total are not consistent");
         expect(body).toMatchObject([
@@ -324,6 +339,10 @@ describe("workItemEffortChart", () => {
           ["-----------------", ""],
           ["Latest Commit", "None"],
         ]);
+      });
+
+      test("its y axis is not visible in detail view", () => {
+        expect(chartConfig.yAxis.visible).toBe(false);
       });
     });
 
@@ -384,4 +403,3 @@ describe("workItemEffortChart", () => {
     });
   });
 });
-
