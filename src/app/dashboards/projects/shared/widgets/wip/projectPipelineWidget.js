@@ -24,21 +24,21 @@ export const ProjectPipelineWidget = (
     pollInterval
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
+  const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
+    {
+      instanceKey,
+      targetPercentile,
+      leadTimeTargetPercentile,
+      cycleTimeTargetPercentile,
+      specsOnly: limitToSpecsOnly,
+      referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
+    }
+  )
+  if (loading) return <Loading/>;
+  if (error) return null;
+  const pipelineCycleMetrics = data['project']['pipelineCycleMetrics'];
 
   if (view === 'primary') {
-    const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
-      {
-        instanceKey,
-        targetPercentile,
-        leadTimeTargetPercentile,
-        cycleTimeTargetPercentile,
-        specsOnly: limitToSpecsOnly,
-        referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-      }
-    )
-    if (loading) return <Loading/>;
-    if (error) return null;
-    const pipelineCycleMetrics = data['project']['pipelineCycleMetrics'];
     return (
       <ProjectPipelineSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}

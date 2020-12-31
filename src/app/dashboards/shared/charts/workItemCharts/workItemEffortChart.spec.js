@@ -222,10 +222,10 @@ describe("workItemEffortChart", () => {
         ["Effort", "9 Dev-Days"],
         ["-----------------", ""],
         ["Duration", "0.001 days"],
-        ["Latest Commit", expect.stringMatching(/.* ago/)],
+        ["Latest Commit", expect.stringMatching(/.*ago/)],
         ["-----------------", ""],
         ["Current State:", "In Progress"],
-        ["Entered:", expect.stringMatching(/.* ago/)],
+        ["Entered:", expect.stringMatching(/.*ago/)],
         ["Cycle Time:", expect.stringMatching(/.* days/)],
       ]);
     });

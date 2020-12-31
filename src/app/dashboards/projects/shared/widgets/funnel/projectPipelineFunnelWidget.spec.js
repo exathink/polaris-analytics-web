@@ -58,12 +58,15 @@ describe("ProjectPipelineFunnelWidget", () => {
     renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
   });
 
-  describe("when summary specs are not available", () => {
-    // still need to update these tests
-    test("edge case", () => {});
-  });
-
   describe("when there are errors", () => {
+    let logGraphQlError;
+    beforeEach(() => {
+      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
+    });
+    afterEach(() => {
+      logGraphQlError.mockRestore();
+    });
+
     const mockNetworkError = [
       {
         request: {
@@ -99,25 +102,17 @@ describe("ProjectPipelineFunnelWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
-
       renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
-
-      logGraphQlError.mockRestore();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
-
       renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
-
-      logGraphQlError.mockRestore();
     });
   });
 

@@ -56,16 +56,18 @@ function getSeries(workItemStateMappings) {
 function sanitizeStateMappings(workItemStateMappings) {
   const {...legalStateTypes} = WorkItemStateTypeDisplayName;
 
-  return workItemStateMappings.map((x) => {
-    if (x.stateType === null) {
-      return {...x, stateType: "unmapped"};
-    } else if (legalStateTypes[x.stateType] === undefined) {
-      // we are here, means, x.stateType is not null and also its not one of legal state types
-      throw new Error(`${x.stateType} is not one of legal stateTypes.`);
-    }
+  return workItemStateMappings
+    .filter((x) => x.state !== "created")
+    .map((x) => {
+      if (x.stateType === null) {
+        return {...x, stateType: "unmapped"};
+      } else if (legalStateTypes[x.stateType] === undefined) {
+        // we are here, means, x.stateType is not null and also its not one of legal state types
+        throw new Error(`${x.stateType} is not one of legal stateTypes.`);
+      }
 
-    return x;
-  });
+      return x;
+    });
 }
 
 export const WorkItemStateTypeMapChart = Chart({

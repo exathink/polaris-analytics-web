@@ -26,6 +26,7 @@ export const ProjectPipelineImplementationCostWidget = (
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
+    activeOnly: true,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading) return <Loading/>;
