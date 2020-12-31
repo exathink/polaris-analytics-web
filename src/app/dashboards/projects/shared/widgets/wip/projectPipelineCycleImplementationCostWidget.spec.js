@@ -77,78 +77,7 @@ const gqlMocks = [
                     duration: 2.23217592592593,
                   },
                 },
-              },
-              {
-                node: {
-                  id: "V29ya0l0ZW06MTNmOTgzNjEtOWRkNi00NWVhLWE4MzItOGRlYzBkOWFjZTU1",
-                  name: "State Type mapping widget implementation for workItems ",
-                  key: "13f98361-9dd6-45ea-a832-8dec0d9ace55",
-                  displayId: "PO-397",
-                  workItemType: "task",
-                  state: "Code-Review-Needed",
-                  stateType: "wip",
-                  workItemStateDetails: {
-                    currentStateTransition: {
-                      eventDate: "2020-12-09T15:36:46.408000",
-                    },
-                    currentDeliveryCycleDurations: [
-                      {
-                        state: "In Progress",
-                        stateType: "wip",
-                        daysInState: 6.065995370370371,
-                      },
-                      {
-                        state: "created",
-                        stateType: "backlog",
-                        daysInState: 0.019699074074074074,
-                      },
-                      {
-                        state: "Code-Review-Needed",
-                        stateType: "wip",
-                        daysInState: null,
-                      },
-                    ],
-                    earliestCommit: "2020-12-03T13:38:41",
-                    latestCommit: "2020-12-09T18:22:49",
-                    commitCount: 31,
-                    effort: 4.66666666666667,
-                    duration: 6.19731481481482,
-                  },
-                },
-              },
-              {
-                node: {
-                  id: "V29ya0l0ZW06MjVmYzIyN2QtMzBhZC00ZjQzLWI5ZTUtNTc2NTA3ZjM2MmUw",
-                  name: "Order work items sources by most recently updated when displaying state mappings. ",
-                  key: "25fc227d-30ad-4f43-b9e5-576507f362e0",
-                  displayId: "PO-405",
-                  workItemType: "story",
-                  state: "READY-FOR-DEVELOPMENT",
-                  stateType: "open",
-                  workItemStateDetails: {
-                    currentStateTransition: {
-                      eventDate: "2020-12-08T23:03:15.254000",
-                    },
-                    currentDeliveryCycleDurations: [
-                      {
-                        state: "READY-FOR-DEVELOPMENT",
-                        stateType: "open",
-                        daysInState: null,
-                      },
-                      {
-                        state: "created",
-                        stateType: "backlog",
-                        daysInState: 0.003171296296296296,
-                      },
-                    ],
-                    earliestCommit: null,
-                    latestCommit: null,
-                    commitCount: null,
-                    effort: null,
-                    duration: null,
-                  },
-                },
-              },
+              }
             ],
           },
         },
@@ -166,7 +95,9 @@ describe("ProjectPipelineImplementationCostWidget", () => {
 
     test("should render the widget with correct title", async () => {
       renderComponentWithMockedProvider(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
-      expect(await screen.findByText(/Total Wip Effort/i)).toBeInTheDocument();
+      await screen.findByTestId("loading-spinner");
+      const titleElement = await screen.findByText(/Total Wip Effort/i);
+      expect(titleElement).toBeInTheDocument();
     });
   });
 
