@@ -15,7 +15,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
       workItems(
         activeOnly: $activeOnly
         closedWithinDays: $closedWithinDays
-        interfaces: [WorkItemStateDetails]
+        interfaces: [WorkItemStateDetails, WorkItemsSourceRef]
         specsOnly: $specsOnly
         funnelView: $funnelView
         referenceString: $referenceString
@@ -29,6 +29,8 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
             workItemType
             state
             stateType
+            workItemsSourceKey
+            workItemsSourceName
             workItemStateDetails {
               currentStateTransition {
                 eventDate
