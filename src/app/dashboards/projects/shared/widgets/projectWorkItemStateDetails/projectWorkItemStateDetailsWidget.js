@@ -52,13 +52,11 @@ export const ProjectWorkItemStateDetailsWidget = ({
   const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
 
   return (
-    workItems.length > 0 && (
-      <ProjectWorkItemStateDetailsView
-        view={view}
-        context={context}
-        workItems={workItems}
-        projectCycleMetrics={projectCycleMetricsData ? projectCycleMetricsData.project : {}}
-      />
-    )
+    <ProjectWorkItemStateDetailsView
+      view={view}
+      context={context}
+      workItems={workItems}
+      projectCycleMetrics={projectCycleMetricsData ? projectCycleMetricsData.project : {}}
+    />
   );
 };

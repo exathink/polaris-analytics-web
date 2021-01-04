@@ -223,7 +223,9 @@ describe("WorkItemStateDetailsView", () => {
 
     test("when any other dropdown option is selected, workItems should be filtered based on that workItemSource", () => {});
 
-    test("on tab change the dropdown selection should not change", () => {});
+    test("when workItemState tabs change, the workItemSources dropdown selection should not change", () => {});
+
+    test("when groupBy tabs change, the workItemSources dropdown selection should not change", () => {});
   });
 
   describe("when there are errors", () => {});

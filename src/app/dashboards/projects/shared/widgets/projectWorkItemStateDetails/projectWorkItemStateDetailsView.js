@@ -12,7 +12,7 @@ import {Flex} from "reflexbox";
 
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
-import {Select} from "antd";
+import {Alert, Select} from "antd";
 const {Option} = Select;
 
 function getUniqWorkItemsSources(workItems) {
@@ -124,8 +124,22 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
         </VizItem>
       </VizRow>
     );
-  }else{
-    return null;
+  } else {
+    return uniqWorkItemsSources.length===0 && (
+      <VizRow h={1}>
+        <VizItem w={1}>
+          <Flex w={0.95} justify="space-between">
+            <Alert
+              message="There are no work streams in this value stream"
+              type="warning"
+              showIcon
+              closable
+              className="noWorkItemResources"
+            />
+          </Flex>
+        </VizItem>
+      </VizRow>
+    );
   }
 };
 export const ProjectWorkItemStateDetailsView = withNavigationContext(WorkItemStateDetailsView);
