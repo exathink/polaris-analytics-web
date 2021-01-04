@@ -1,39 +1,144 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import {render, waitFor} from "@testing-library/react";
-import {AppProviders, getAppProviders} from "../../../../test/providers";
-import {SpyContext} from "./chartSpyContext";
-
-import {tooltipHtml as tooltipHtmlMock} from "./tooltip";
+import {AppProviders, getAppProviders, getContextProviders, getMockContextProviders} from "../../../../test/providers";
+import * as tooltipUtil from "./tooltip";
+import {TestDataContext} from "./TestDataContext";
 
 export const gqlUtils = require("./../../../components/graphql/utils");
 
-// mock tooltipHtml function of tooltip module
-jest.mock("./tooltip", () => {
-  return {
-    tooltipHtml: jest.fn((obj) => obj),
-  };
-});
+// spy tooltipHtml function of tooltip module
+jest.spyOn(tooltipUtil, "tooltipHtml");
 
-// custom render function specific to our app using render of testing-lib
-export function renderChart(ui) {
-  const returnValue = {
-    ...render(ui, {
-      wrapper: AppProviders,
-    }),
-  };
-
-  return returnValue;
+function isObject(val) {
+  return val != null && typeof val === "object" && Array.isArray(val) === false;
 }
 
-export function getChartConfig(configSpy) {
-  return configSpy.mock.results[0].value;
+/**
+ * 1. render widget, view, chart components
+ * 2. also works with MockedProvider
+ * 3. can pass extra optional test data through context provider
+ * 4. 2nd and 3rd params are optional
+ * 5. params in order when all 3 are present: (component, mocks = [], options = {})
+ * 6. params in order when only 2 are present: (component, mocks/options), second arg could be either mocks or options
+ * 
+ * Eg usage:
+ * 
+ * i)  renderWithProviders(<Component {...props} />)
+ * 
+ * ii) renderWithProviders(<Component {...props} />, mocks)
+ * 
+ * iii)renderWithProviders(<Component {...props} />, options)
+ * 
+ * iv) renderWithProviders(<Component {...props}/>, mocks, options)
+ * 
+ * Example from app: 
+ * add testid to chart and chart points.
+ * 
+ * renderWithProviders(<Widget {...props} />, {
+ *    chartTestId: "test-chart",
+ *    pointOptions: {seriesIndex:0, mapper: points => [points[0], points[1]]}
+ * }); 
+ * 
+ */
+
+export function renderWithProviders(component, ...rest) {
+  const [secondArg, thirdArg] = rest;
+
+  function getProviders() {
+    if (rest.length === 0) {
+      // when (component), render with intl provider only.
+      return AppProviders;
+    }
+
+    if (rest.length === 1) {
+      if (Array.isArray(secondArg)) {
+        // when (component, mocks), render with MockedProvider
+        const mocks = secondArg;
+        return getAppProviders(mocks);
+      }
+
+      if (isObject(secondArg)) {
+        // when (component, options), render with ContextProvider
+        const options = secondArg;
+        return getContextProviders(options);
+      }
+    }
+
+    if (rest.length === 2) {
+      if (Array.isArray(secondArg) && isObject(thirdArg)) {
+        // when (component, mocks, options), render with both MockedProvider and ContextProvider
+        const [mocks, options] = [secondArg, thirdArg];
+        return getMockContextProviders(mocks, options);
+      }
+    }
+  }
+
+  return render(component, {
+    wrapper: getProviders(),
+  });
+}
+
+/**
+ * 1. render widget, view, chart components
+ * 2. also works with MockedProvider
+ * 3. can pass extra optional test data through context provider
+ * 4. 2nd and 3rd params are optional
+ * 5. params in order when all 3 are present: (component, mocks = [], options = {})
+ * 6. params in order when only 2 are present: (component, mocks/options), second arg could be either mocks or options
+ * 7. returns chart and chartConfig
+ */
+export async function renderWithProvidersGetChartAndConfig(component, ...rest) {
+  const chartSpy = jest.fn((x) => x);
+  const configSpy = jest.fn((x) => x);
+
+  const [secondArg, thirdArg] = rest;
+  function getOptions() {
+    if (rest.length === 0) {
+      // when (component)
+      return {};
+    }
+
+    if (rest.length === 1) {
+      if (Array.isArray(secondArg)) {
+        // when (component, mocks)
+        return {};
+      }
+
+      if (isObject(secondArg)) {
+        // when (component, options)
+        const options = secondArg;
+        return options;
+      }
+    }
+
+    if (rest.length === 2) {
+      if (Array.isArray(secondArg) && isObject(thirdArg)) {
+        const options = thirdArg;
+        return options;
+      }
+    }
+  }
+
+  function getMocks() {
+    return (rest.length === 1 || rest.length === 2) && Array.isArray(secondArg) ? [secondArg] : [];
+  }
+
+  const contextValue = {chartSpy, configSpy, ...getOptions()};
+  const restArgs = [...getMocks(), contextValue];
+
+  // don't need to capture render result, as we are using screen global to make the assertions.
+  renderWithProviders(component, ...restArgs);
+
+  // it'll wait until the mock function has been called once.
+  await waitFor(() => expect(chartSpy).toHaveBeenCalled());
+  return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value};
 }
 
 export function renderedChartConfig(chartComponent) {
   const configSpy = jest.fn((x) => x);
 
-  render(<SpyContext.Provider value={{configSpy: configSpy}}>{chartComponent}</SpyContext.Provider>, {
+  render(<TestDataContext.Provider value={{configSpy: configSpy}}>{chartComponent}</TestDataContext.Provider>, {
     wrapper: AppProviders,
   });
 
@@ -43,49 +148,13 @@ export function renderedChartConfig(chartComponent) {
 export async function renderedChart(chartComponent) {
   const chartSpy = jest.fn((x) => x);
 
-  render(<SpyContext.Provider value={{onChartUpdated: chartSpy}}>{chartComponent}</SpyContext.Provider>, {
+  render(<TestDataContext.Provider value={{onChartUpdated: chartSpy}}>{chartComponent}</TestDataContext.Provider>, {
     wrapper: AppProviders,
   });
 
   // it'll wait until the mock function has been called once.
   await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
   return chartSpy.mock.results[0].value;
-}
-
-/**
- * 1. render with MockedProvider from apollo, useful to render components which are using hooks for calling apis
- * 2. mocks is mockApi response for MockedProvider
- * 3. this function spys on chart and config, so its important that it renders the whole tree till the Chart component.
- *
- */
-export async function renderWithMockedProvider(component, mocks = []) {
-  const chartSpy = jest.fn((x) => x);
-  const configSpy = jest.fn((x) => x);
-
-  render(
-    <SpyContext.Provider value={{onChartUpdated: chartSpy, configSpy: configSpy}}>{component}</SpyContext.Provider>,
-    {
-      wrapper: getAppProviders(mocks),
-    }
-  );
-
-  // it'll wait until the mock function has been called once.
-  await waitFor(() => expect(chartSpy).toHaveBeenCalledTimes(1));
-  return {chart: chartSpy.mock.results[0].value, chartConfig: configSpy.mock.results[0].value};
-}
-
-/**
- *
- * renders any component with MockedProvider from apollo
- * without spys (needed if whole tree is not rendered till Chart component.)
- */
-export function renderComponentWithMockedProvider(component, mocks) {
-  return render(component, {wrapper: getAppProviders(mocks)});
-}
-
-// render component with providers
-export function renderWithProviders(component) {
-  return render(component, {wrapper: AppProviders});
 }
 
 /**
@@ -98,22 +167,23 @@ export function renderWithProviders(component) {
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
 export async function renderedTooltipConfig(chartComponent, mapper = (point) => point, seriesIndex = 0) {
-  const {series} = await renderedChart(chartComponent);
+  const {
+    chart: {series},
+    chartConfig: {
+      tooltip: {formatter},
+    },
+  } = await renderWithProvidersGetChartAndConfig(chartComponent);
   const {points} = series[seriesIndex];
 
-  const {
-    tooltip: {formatter},
-  } = renderedChartConfig(chartComponent);
-
   // get the points after applying mapper
-  const _points = mapper(points);
+  const testPoints = mapper(points);
 
   // call the formatter only for the mapped points
-  return _points.map((point, i) => {
+  return testPoints.map((point, i) => {
     // call the formatter in the context of point
     formatter.bind({point: point})();
     // first argument of the i-th call
-    return tooltipHtmlMock.mock.calls[i][0];
+    return tooltipUtil.tooltipHtml.mock.calls[i][0];
   });
 }
 
@@ -127,13 +197,15 @@ export async function renderedTooltipConfig(chartComponent, mapper = (point) => 
  */
 // assuming number of series in a chart will always be limited, so using seriesIndex
 export async function renderedDataLabels(chartComponent, mapper = (point) => point, seriesIndex = 0) {
-  const config = renderedChartConfig(chartComponent);
-  const {formatter} = config.series[seriesIndex].dataLabels;
+  const {
+    chart: {series: chartSeries},
+    chartConfig: {series: configSeries},
+  } = await renderWithProvidersGetChartAndConfig(chartComponent);
 
+  const {formatter} = configSeries[seriesIndex].dataLabels;
   expect(formatter).toBeDefined();
 
-  const {series} = await renderedChart(chartComponent);
-  const {points} = series[seriesIndex];
+  const {points} = chartSeries[seriesIndex];
 
   // get the points after applying mapper
   const testPoints = mapper(points);
@@ -142,5 +214,14 @@ export async function renderedDataLabels(chartComponent, mapper = (point) => poi
   return testPoints.map((point, i) => {
     // call the formatter in the context of point
     return formatter.bind({point: point})();
+  });
+}
+
+export function addIdsToChartPoints(chart, mapper=(points) => points, seriesIndex=0) {
+  const {points} = chart.series[seriesIndex];
+  const testPoints = mapper(points)
+  testPoints.forEach((point, pointIndex) => {
+    const pointGraphicElem = point.graphic.element;
+    pointGraphicElem.setAttribute("data-testid", `point-${pointIndex}`);
   });
 }
