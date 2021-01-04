@@ -200,7 +200,7 @@ describe("ProjectPipelineStateDetailsWidget", () => {
   describe("when there are errors", () => {
     let logGraphQlError;
     beforeEach(() => {
-      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
+      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
     });
     afterEach(() => {
       logGraphQlError.mockRestore();
