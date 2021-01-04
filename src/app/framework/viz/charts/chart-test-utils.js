@@ -148,7 +148,7 @@ export function renderedChartConfig(chartComponent) {
 export async function renderedChart(chartComponent) {
   const chartSpy = jest.fn((x) => x);
 
-  render(<TestDataContext.Provider value={{onChartUpdated: chartSpy}}>{chartComponent}</TestDataContext.Provider>, {
+  render(<TestDataContext.Provider value={{chartSpy: chartSpy}}>{chartComponent}</TestDataContext.Provider>, {
     wrapper: AppProviders,
   });
 
