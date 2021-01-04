@@ -1,4 +1,4 @@
-describe("PipelineStateDetailsView", () => {
+describe("WorkItemStateDetailsView", () => {
   describe("when there are no workItems", () => {});
 
   describe("when there are workItems", () => {

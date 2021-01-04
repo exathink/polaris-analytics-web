@@ -1,0 +1,1 @@
+export {ProjectWorkItemStateDetailsWidget} from "./projectWorkItemStateDetailsWidget";

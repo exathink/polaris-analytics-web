@@ -22,7 +22,7 @@ function getUniqWorkItemsSources(workItems) {
   });
 }
 
-const PipelineStateDetailsView = ({workItems, projectCycleMetrics, view, context}) => {
+const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqWorkItemsSources(workItems), [workItems]);
   const uniqWorkItemsSourcesWithDefault = [
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
@@ -128,4 +128,4 @@ const PipelineStateDetailsView = ({workItems, projectCycleMetrics, view, context
     return null;
   }
 };
-export const ProjectPipelineStateDetailsView = withNavigationContext(PipelineStateDetailsView);
+export const ProjectWorkItemStateDetailsView = withNavigationContext(WorkItemStateDetailsView);
