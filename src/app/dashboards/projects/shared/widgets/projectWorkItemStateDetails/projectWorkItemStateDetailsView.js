@@ -9,7 +9,7 @@ import {
 } from "../../../../shared/config";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-
+import "./projectWorkItemStateDetails.css";
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 import {Alert, Select} from "antd";
@@ -39,7 +39,7 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
 
   function selectDropdown() {
     return uniqWorkItemsSources.length > 1 ? (
-      <div data-testid="pipeline-state-details-view-dropdown">
+      <div data-testid="pipeline-state-details-view-dropdown" className="stateDetailsDropdown">
         <Select
           defaultValue={0}
           style={{width: 200}}
@@ -83,7 +83,7 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
     return (
       <VizRow h={1}>
         <VizItem w={1}>
-          <Flex w={0.95} justify="space-between">
+          <Flex w={0.95}>
             <GroupingSelector
               label={"Queue"}
               groupings={stateTypes.map((stateType) => ({
@@ -106,6 +106,7 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
               }))}
               initialValue={selectedGrouping}
               onGroupingChanged={setSelectedGrouping}
+              className={uniqWorkItemsSources.length<=1 ? "groupingSelectorShiftRight": ""}
             />
           </Flex>
           <WorkItemsDurationsByPhaseChart
