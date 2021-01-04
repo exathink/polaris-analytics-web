@@ -1,5 +1,9 @@
 import React from "react";
-import {renderWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {
+  renderWithProviders,
+  gqlUtils,
+  renderWithProvidersGetChartAndConfig,
+} from "../../../../../framework/viz/charts/chart-test-utils";
 import {actionTypes} from "./constants";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import * as workItemUtils from "./workItemReducer";
@@ -34,7 +38,7 @@ async function renderedDragDropConfig(component, dropCategoryIndex, mapper = (po
       },
     },
     chart: {series},
-  } = await renderWithMockedProvider(component, mocks);
+  } = await renderWithProvidersGetChartAndConfig(component, mocks);
 
   // get the points from single point series, filter out last series(pedestal series).
   const points = series.filter((s, i, arr) => i !== arr.length - 1).map((s) => s.points[0]);
@@ -176,16 +180,18 @@ describe("WorkItemStateTypeMapView", () => {
     test("renders only the base pedestal series", async () => {
       const {
         chartConfig: {series},
-      } = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />
+      } = await renderWithProvidersGetChartAndConfig(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />,
+        []
       );
 
       expect(series).toHaveLength(1);
     });
 
     test("renders appropriate message on ui to indicate the empty workItemSources", async () => {
-      await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />
+      await renderWithProviders(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />,
+        []
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
@@ -196,29 +202,34 @@ describe("WorkItemStateTypeMapView", () => {
     const workItemSourcesWithEmptyMappings = workItemSourcesFixture.map((w) => ({...w, workItemStateMappings: []}));
 
     test("it renders without an error", async () => {
-      await renderWithMockedProvider(
+      await renderWithProviders(
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
           workItemSources={workItemSourcesWithEmptyMappings}
           view="detail"
           enableEdits={true}
-        />
+        />,
+        []
       );
     });
 
     test("renders first workItemSource as initial selected value for dropdown on the component", async () => {
-      await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
+      await renderWithProviders(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />,
+        [],
+        {chartTestId: "state-type-map-chart"}
       );
-
+      // this assertion makes sure chart is rendered till this is successful.
+      expect(await screen.findByTestId("state-type-map-chart")).toBeInTheDocument();
       expect(screen.getByText(/Polaris Platform/i)).toBeInTheDocument();
     });
 
     test("renders only the base pedestal series", async () => {
       const {
         chartConfig: {series},
-      } = await renderWithMockedProvider(
-        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />
+      } = await renderWithProvidersGetChartAndConfig(
+        <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />,
+        []
       );
 
       expect(series).toHaveLength(1);

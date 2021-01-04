@@ -1,6 +1,6 @@
 import {screen, waitFor} from "@testing-library/react";
 import React from "react";
-import {renderComponentWithMockedProvider, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
 import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 import "@testing-library/jest-dom/extend-expect";
@@ -105,7 +105,7 @@ describe("projectPullRequestsWidget", () => {
     ];
 
     test("it renders no data", async () => {
-      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
+      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
 
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/pending/i);
@@ -113,7 +113,7 @@ describe("projectPullRequestsWidget", () => {
     });
 
     test("renders stats chart in primary view without any error", async () => {
-      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
+      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/pending/i);
     });
@@ -124,7 +124,7 @@ describe("projectPullRequestsWidget", () => {
         asStatistic: false,
       };
 
-      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...charViewProps} />, emptyMock);
+      renderWithProviders(<ProjectPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/pending/i);
     });
@@ -132,12 +132,12 @@ describe("projectPullRequestsWidget", () => {
 
   describe("when there are multiple pull requests", () => {
     test("shows a loading spinner", async () => {
-      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
+      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
     });
 
     test("shows correct no of active pending reviews", async () => {
-      renderComponentWithMockedProvider(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
+      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/pending/i);
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
@@ -170,7 +170,7 @@ describe("projectPullRequestsWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
         mockNetworkError
       );
@@ -180,7 +180,7 @@ describe("projectPullRequestsWidget", () => {
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
         mockGraphQlErrors
       );

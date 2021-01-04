@@ -1,6 +1,6 @@
 import React from "react";
 import {GraphQLError} from "graphql";
-import {renderComponentWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {PROJECT_PIPELINE_STATE_DETAILS} from "../../hooks/useQueryProjectPipelineStateDetails";
 import {PROJECT_AGGREGATE_CYCLE_METRICS} from "../../hooks/useQueryProjectCycleMetrics";
 import {ProjectPipelineStateDetailsWidget} from "./projectPipelineStateDetailsWidget";
@@ -233,14 +233,14 @@ describe("ProjectPipelineStateDetailsWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ProjectPipelineStateDetailsWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();
