@@ -52,7 +52,15 @@ export const dashboard = ({viewerContext}) => {
   }
 
   function getFlowMetricsSettingElements() {
-    return <div>Flow Metrics Settings</div>;
+    return (
+      <DashboardWidget
+        w={1}
+        name="flow-metrics-widget"
+        render={({view}) => {
+          return <div>Flow Metrics Settings</div>;
+        }}
+      />
+    );
   }
 
   return (

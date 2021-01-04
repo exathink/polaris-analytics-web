@@ -95,6 +95,6 @@ export const Topics = {
   configure: {
     name: 'configure',
     display: () => (<FormattedMessage id='topics.configure' defaultMessage="Configure"/>),
-    icon: 'ion-erlenmeyer-flask'
+    icon: 'ion-erlenmeyer-flask' //TODO: Need to change this icon
   }
 };
