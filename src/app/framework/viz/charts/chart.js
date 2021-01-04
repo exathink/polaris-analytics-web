@@ -3,7 +3,7 @@ import {ChartWrapper} from "./index";
 import type {ChartConfigProvider} from "./chartConfigProvider";
 import {injectIntl} from "react-intl";
 import {TestDataContext} from "./TestDataContext";
-import {addIdsToChartPoints} from "./chart-test-utils";
+import {addIdsToChartPoints} from "./addIdsToChart";
 
 export const Chart = (configProvider: ChartConfigProvider) => {
   return injectIntl(class _ extends React.Component {
