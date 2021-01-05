@@ -15,7 +15,7 @@ import Configure from "./configure/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-import {PROJECTS_FLOWBOARD_20} from "../../../config/featureFlags";
+import {PROJECTS_FLOWBOARD_20, VALUE_STREAM_CONFIG} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -67,6 +67,7 @@ const context : Context = {
           },
           {
             match: 'configure',
+            requiredFeatures: [VALUE_STREAM_CONFIG],
             topic: Configure
           },
           {
