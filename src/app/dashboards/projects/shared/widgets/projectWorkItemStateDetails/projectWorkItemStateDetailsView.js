@@ -10,20 +10,14 @@ import {
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./projectWorkItemStateDetails.css";
-import {capitalizeFirstLetter} from "../../../../../helpers/utility";
+import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 import {Alert, Select} from "antd";
 const {Option} = Select;
 
-function getUniqWorkItemsSources(workItems) {
-  return [...new Set(workItems.map((w) => w.workItemsSourceKey))].map((wiSourceKey) => {
-    const {workItemsSourceKey, workItemsSourceName} = workItems.find((wi) => wi.workItemsSourceKey === wiSourceKey);
-    return {workItemsSourceKey, workItemsSourceName};
-  });
-}
 
 const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context}) => {
-  const uniqWorkItemsSources = React.useMemo(() => getUniqWorkItemsSources(workItems), [workItems]);
+  const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, item => item.workItemsSourceKey), [workItems]);
   const uniqWorkItemsSourcesWithDefault = [
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
     ...uniqWorkItemsSources,
