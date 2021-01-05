@@ -10,11 +10,11 @@ import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
 function FLOWMETRICS_DEFAULT_SETTINGS() {
   const BASE_DEFAULTS = {
-    LEADTIME_TARGET_DEFAULT: 30,
+    LEAD_TIME_TARGET_DEFAULT: 30,
     CYCLE_TIME_TARGET_DEFAULT: 7,
     RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT: 1.0,
     WIP_LIMIT_DEFAULT: 20,
-    PIPELINEMEASUREMENTWINDOW_DEFAULT: 7,
+    PIPELINE_MEASUREMENT_WINDOW_DEFAULT: 7,
   };
   return {
     ...BASE_DEFAULTS,
@@ -36,13 +36,13 @@ function getFlowMetricsSettings({settings: {flowMetricsSettings = {}} = {}}) {
 
   const defaults = FLOWMETRICS_DEFAULT_SETTINGS();
   return {
-    leadTimeTarget: leadTimeTarget || defaults.LEADTIME_TARGET_DEFAULT,
+    leadTimeTarget: leadTimeTarget || defaults.LEAD_TIME_TARGET_DEFAULT,
     cycleTimeTarget: cycleTimeTarget || defaults.CYCLE_TIME_TARGET_DEFAULT,
     responseTimeConfidenceTarget: responseTimeConfidenceTarget || defaults.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
     leadTimeConfidenceTarget: leadTimeConfidenceTarget || defaults.LEAD_TIME_CONFIDENCE_TARGET_DEFAULT,
     cycleTimeConfidenceTarget: cycleTimeConfidenceTarget || defaults.CYCLE_TIME_CONFIDENCE_TARGET_DEFAULT,
     wipLimit: wipLimit || defaults.WIP_LIMIT_DEFAULT,
-    pipelineMeasurementWindow: pipelineMeasurementWindow || defaults.PIPELINEMEASUREMENTWINDOW_DEFAULT,
+    pipelineMeasurementWindow: pipelineMeasurementWindow || defaults.PIPELINE_MEASUREMENT_WINDOW_DEFAULT,
   };
 }
 
