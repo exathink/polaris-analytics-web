@@ -2,11 +2,12 @@ import React from "react";
 import {ChartWrapper} from "./index";
 import type {ChartConfigProvider} from "./chartConfigProvider";
 import {injectIntl} from "react-intl";
-import {SpyContext} from "./chartSpyContext";
+import {TestDataContext} from "./TestDataContext";
+import {addIdsToChartPoints} from "./addIdsToChart";
 
 export const Chart = (configProvider: ChartConfigProvider) => {
   return injectIntl(class _ extends React.Component {
-      static contextType = SpyContext;
+      static contextType = TestDataContext;
 
       constructor(props) {
         super(props);
@@ -40,8 +41,25 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         if(this.state.eventHandler) {
           this.state.eventHandler.setChart(this)
         }
-        if(this.context && this.context.onChartUpdated) {
-          this.context.onChartUpdated(this.chart)
+        // useful for tests
+        this.addTestUtilities(chart);
+      }
+
+      addTestUtilities(chart){
+        if (this.context && chart) {
+          if(this.context.chartSpy) {
+            this.context.chartSpy(chart)
+          }
+          // add testId to chart svg node.
+          if (this.context.chartTestId) {
+            // chart.getSVG() is not working, need to check
+            chart.container.firstChild.setAttribute("data-testid",this.context.chartTestId);
+          }
+          // add testIds to chart points, for a specific series, filtered by mapper.
+          if (this.context.pointOptions) {
+            const {mapper, seriesIndex} = this.context.pointOptions;
+            addIdsToChartPoints(chart, mapper, seriesIndex);
+          }
         }
       }
 
