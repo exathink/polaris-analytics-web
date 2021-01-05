@@ -14,7 +14,6 @@ import Trends from "./trends/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-import {PROJECTS_FLOWBOARD_20} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -40,7 +39,6 @@ const context : Context = {
         routes: [
           {
             match: 'wip',
-            requiredFeatures: [PROJECTS_FLOWBOARD_20],
             topic: Wip
           },
           {
