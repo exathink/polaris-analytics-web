@@ -34,6 +34,7 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
   function selectDropdown() {
     return uniqWorkItemsSources.length > 1 ? (
       <div data-testid="pipeline-state-details-view-dropdown" className="stateDetailsDropdown">
+        <span className="workStreamLabel">Workstream</span>
         <Select
           defaultValue={0}
           style={{width: 200}}
@@ -77,7 +78,7 @@ const WorkItemStateDetailsView = ({workItems, projectCycleMetrics, view, context
     return (
       <VizRow h={1}>
         <VizItem w={1}>
-          <Flex w={0.95}>
+          <Flex w={0.95} className="workItemStateDetailsControlWrapper">
             <GroupingSelector
               label={"Queue"}
               groupings={stateTypes.map((stateType) => ({
