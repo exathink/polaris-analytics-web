@@ -24,20 +24,20 @@ const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 export const dashboard = ({viewerContext}) => (
   <ProjectDashboard
     pollInterval={1000 * 60}
-    render={({project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings}, context}) => {
+    render={({project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults}, context}) => {
       const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
       const [workItemScope, setWorkItemScope] = useState("all");
       const specsOnly = workItemScope === "specs";
 
-      const {flowMetricsSettings} = settings;
-      const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
-      const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
-      const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
-      const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
-      const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
-      const wipLimit = flowMetricsSettings.wipLimit || 20;
-
-      const measurementWindow = flowMetricsSettings.pipelineMeasurementWindow || 7;
+      const {
+        leadTimeTarget,
+        cycleTimeTarget,
+        responseTimeConfidenceTarget,
+        leadTimeConfidenceTarget,
+        cycleTimeConfidenceTarget,
+        wipLimit,
+        pipelineMeasurementWindow: measurementWindow,
+      } = settingsWithDefaults;
 
       return (
         <Dashboard dashboard={`${dashboard_id}`}>

@@ -8,6 +8,44 @@ import {withNavigationContext} from "../../framework/navigation/components/withN
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
 
+function FLOWMETRICS_DEFAULT_SETTINGS() {
+  const BASE_DEFAULTS = {
+    LEADTIME_TARGET_DEFAULT: 30,
+    CYCLE_TIME_TARGET_DEFAULT: 7,
+    RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT: 1.0,
+    WIP_LIMIT_DEFAULT: 20,
+    PIPELINEMEASUREMENTWINDOW_DEFAULT: 7,
+  };
+  return {
+    ...BASE_DEFAULTS,
+    LEAD_TIME_CONFIDENCE_TARGET_DEFAULT: BASE_DEFAULTS.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
+    CYCLE_TIME_CONFIDENCE_TARGET_DEFAULT: BASE_DEFAULTS.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
+  };
+}
+
+function getFlowMetricsSettings({settings: {flowMetricsSettings = {}} = {}}) {
+  const {
+    leadTimeTarget,
+    cycleTimeTarget,
+    responseTimeConfidenceTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
+    wipLimit,
+    pipelineMeasurementWindow,
+  } = flowMetricsSettings;
+
+  const defaults = FLOWMETRICS_DEFAULT_SETTINGS();
+  return {
+    leadTimeTarget: leadTimeTarget || defaults.LEADTIME_TARGET_DEFAULT,
+    cycleTimeTarget: cycleTimeTarget || defaults.CYCLE_TIME_TARGET_DEFAULT,
+    responseTimeConfidenceTarget: responseTimeConfidenceTarget || defaults.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
+    leadTimeConfidenceTarget: leadTimeConfidenceTarget || defaults.LEAD_TIME_CONFIDENCE_TARGET_DEFAULT,
+    cycleTimeConfidenceTarget: cycleTimeConfidenceTarget || defaults.CYCLE_TIME_CONFIDENCE_TARGET_DEFAULT,
+    wipLimit: wipLimit || defaults.WIP_LIMIT_DEFAULT,
+    pipelineMeasurementWindow: pipelineMeasurementWindow || defaults.PIPELINEMEASUREMENTWINDOW_DEFAULT,
+  };
+}
+
 class WithProject extends React.Component {
 
   onDashboardMounted(project) {
@@ -60,12 +98,13 @@ class WithProject extends React.Component {
             if (loading) return <Loading/>;
             if (error) return null;
             const project = data.project;
+            const projectWithDefaultSettings = {...project, settingsWithDefaults: getFlowMetricsSettings(project)};
 
             return (
               <DashboardLifecycleManager
                 render={render}
                 context={context}
-                project={project}
+                project={projectWithDefaultSettings}
                 onMount={
                   () => this.onDashboardMounted(project)
                 }

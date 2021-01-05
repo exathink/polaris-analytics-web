@@ -27,7 +27,8 @@ export const dashboard = ({viewerContext}) => (
              key,
              latestWorkItemEvent,
              latestCommit,
-             settings
+             settings,
+             settingsWithDefaults
            },
            context
          }) => {
@@ -35,12 +36,14 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('all');
           const specsOnly = workItemScope === 'specs';
-          const {flowMetricsSettings} = settings;
-          const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
-          const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
-          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
-          const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
-          const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
+          
+          const {
+            leadTimeTarget,
+            cycleTimeTarget,
+            responseTimeConfidenceTarget,
+            leadTimeConfidenceTarget,
+            cycleTimeConfidenceTarget,
+          } = settingsWithDefaults;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>
