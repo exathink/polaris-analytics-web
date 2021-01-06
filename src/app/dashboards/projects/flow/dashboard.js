@@ -12,41 +12,10 @@ import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
 import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
+import {StateMappingIndex} from '../shared/stateMappingIndex';
 
 const dashboard_id = 'dashboards.activity.projects.newDashboard.instance';
 
-
-class StateMappingIndex {
-  constructor(stateMappings) {
-    this.stateMappings = stateMappings;
-    this.initIndex(stateMappings)
-  }
-
-  initIndex(stateMappings) {
-    if (stateMappings != null) {
-      this.index = {
-        backlog: 0,
-        open: 0,
-        wip: 0,
-        complete: 0,
-        closed: 0
-      }
-      for (let i = 0; i < stateMappings.length; i++) {
-        for (let j = 0; j < stateMappings[i].length; j++) {
-          this.index[stateMappings[i][j].stateType]++;
-        }
-      }
-    }
-  }
-
-  isValid() {
-    return this.index != null;
-  }
-
-  numInProcessStates() {
-    return this.index != null ? this.index.open + this.index.wip + this.index.complete : 0;
-  }
-}
 
 
 export const dashboard = ({viewerContext}) => (
@@ -58,7 +27,8 @@ export const dashboard = ({viewerContext}) => (
              key,
              latestWorkItemEvent,
              latestCommit,
-             settings
+             settings,
+             settingsWithDefaults
            },
            context
          }) => {
@@ -66,12 +36,14 @@ export const dashboard = ({viewerContext}) => (
           const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
           const [workItemScope, setWorkItemScope] = useState('all');
           const specsOnly = workItemScope === 'specs';
-          const {flowMetricsSettings} = settings;
-          const leadTimeTarget = flowMetricsSettings.leadTimeTarget || 30;
-          const cycleTimeTarget = flowMetricsSettings.cycleTimeTarget || 7;
-          const responseTimeConfidenceTarget = flowMetricsSettings.responseTimeConfidenceTarget || 1.0;
-          const leadTimeConfidenceTarget = flowMetricsSettings.leadTimeConfidenceTarget || responseTimeConfidenceTarget;
-          const cycleTimeConfidenceTarget = flowMetricsSettings.cycleTimeConfidenceTarget || responseTimeConfidenceTarget;
+          
+          const {
+            leadTimeTarget,
+            cycleTimeTarget,
+            responseTimeConfidenceTarget,
+            leadTimeConfidenceTarget,
+            cycleTimeConfidenceTarget,
+          } = settingsWithDefaults;
 
           return (
             <Dashboard dashboard={`${dashboard_id}`}>

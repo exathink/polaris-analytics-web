@@ -1,7 +1,7 @@
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql/error";
 import React from "react";
-import {renderComponentWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {PROJECT_PIPELINE_SUMMARY_QUERY} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 
@@ -55,13 +55,18 @@ const mocksFixture = [
 
 describe("ProjectPipelineFunnelWidget", () => {
   test("render projectPipelineFunnelWidget without an error", () => {
-    renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+    renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+  });
+
+  test("shows a loading spinner", async () => {
+    renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+    expect(await screen.findByTestId("loading-spinner")).toBeInTheDocument();
   });
 
   describe("when there are errors", () => {
     let logGraphQlError;
     beforeEach(() => {
-      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
+      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
     });
     afterEach(() => {
       logGraphQlError.mockRestore();
@@ -102,14 +107,14 @@ describe("ProjectPipelineFunnelWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByTestId("project-pipeline-funnel-view")).toBeNull();
@@ -118,12 +123,12 @@ describe("ProjectPipelineFunnelWidget", () => {
 
   describe("when summary specs are available", () => {
     test("it shows a loading spinner", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
     });
 
     test("should render default legend title", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       expect(await screen.findByText(/All Work Items/i)).toBeInTheDocument();
     });
 
@@ -143,11 +148,16 @@ describe("ProjectPipelineFunnelWidget", () => {
         },
       ];
 
-      renderComponentWithMockedProvider(
-        <ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />,
-        mocksFixtureForSpecs
-      );
-      expect(await screen.findByText(/Specs/i)).toBeInTheDocument();
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />, mocksFixtureForSpecs, {
+        chartTestId: "pipeline-funnel-chart",
+      });
+
+      // assert the chart existence (this also ensures chart is rendered)
+      await screen.findByTestId("pipeline-funnel-chart");
+
+      const specElements = await screen.findAllByText(/Specs/i);
+      // 2 ocurrences of specs, 1 on workItemScope selector, 1 on chart legend.
+      expect(specElements).toHaveLength(2);
     });
   });
 });

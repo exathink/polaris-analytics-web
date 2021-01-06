@@ -15,7 +15,7 @@ import Configure from "./configure/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-import {PROJECTS_FLOWBOARD_20, VALUE_STREAM_CONFIG} from "../../../config/featureFlags";
+import {VALUE_STREAM_CONFIG} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -41,7 +41,6 @@ const context : Context = {
         routes: [
           {
             match: 'wip',
-            requiredFeatures: [PROJECTS_FLOWBOARD_20],
             topic: Wip
           },
           {
