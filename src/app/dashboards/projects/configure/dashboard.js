@@ -1,5 +1,4 @@
 import React from "react";
-import {Box, Flex} from "reflexbox";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectDashboard} from "../projectDashboard";
