@@ -72,15 +72,7 @@ export const dashboard = ({viewerContext}) => {
             <DashboardRow
               h={"50%"}
               title={""}
-              controls={[
-                () => (
-                  <Flex alignItems="center" justifyItems="flex-start">
-                    <Box>
-                      <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />
-                    </Box>
-                  </Flex>
-                ),
-              ]}
+              controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
             >
               {configTab === "value-stream"
                 ? getValueStreamElements({instanceKey: key, latestWorkItemEvent, latestCommit, context, days: 30})
