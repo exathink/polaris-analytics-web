@@ -92,4 +92,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.user' defaultMessage="User"/>),
     icon: 'ion-person'
   },
+  configure: {
+    name: 'configure',
+    display: () => (<FormattedMessage id='topics.configure' defaultMessage="Configure"/>),
+    icon: 'ion-settings' //TODO: also this ion-ios-settings-strong
+  }
 };

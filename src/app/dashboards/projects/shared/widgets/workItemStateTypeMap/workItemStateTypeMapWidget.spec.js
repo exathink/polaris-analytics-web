@@ -2,7 +2,7 @@ import React from "react";
 import {WorkItemStateTypeMapWidget} from "./workItemStateTypeMapWidget";
 import {GET_STATE_MAPPING_QUERY} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import "@testing-library/jest-dom/extend-expect";
-import {renderComponentWithMockedProvider, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {gql} from "@apollo/client";
@@ -285,7 +285,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     ];
 
     test("it renders no data", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mocksWithEmptyWorkItemSources
       );
@@ -365,7 +365,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     ];
 
     test("it shows a loading spinner", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
@@ -373,7 +373,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     });
 
     test("it does not shows a dropdown to select work item sources", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
@@ -385,7 +385,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     });
 
     test("it shows the chart title", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
@@ -393,7 +393,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     });
 
     test("it shows the chart sub title", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
@@ -401,7 +401,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     });
 
     test("it does not show the save/cancel button", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
@@ -421,28 +421,28 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     };
 
     test("it shows a loading spinner", async () => {
-      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
     });
 
     test("it shows the name of the first work item source in the dropdown title", async () => {
-      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
       const dropDown = await screen.findByRole("combobox");
       expect(screen.getByText(/Polaris Platform/, dropDown)).toBeDefined();
     });
 
     test("it shows the chart title", async () => {
-      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
       await screen.findByText(/Value Stream Mapping/i);
     });
 
     test("it shows the chart sub title", async () => {
-      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
       await screen.findByText(/Drag/i);
     });
 
     test("it does not show the save/cancel button", async () => {
-      renderComponentWithMockedProvider(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
+      renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
       // need to wait for the view to render to check the button is NOT rendered. Otherwise it will pass trivially
       await screen.findByTestId("state-type-map-view");
       expect(screen.queryByRole("button")).toBeNull();
@@ -494,7 +494,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     test("it renders nothing and logs the error when there is a network error", async () => {
       const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
 
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockNetworkError
       );
@@ -508,7 +508,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       const logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError");
 
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockGraphQlErrors
       );

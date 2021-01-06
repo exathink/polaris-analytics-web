@@ -11,9 +11,11 @@ import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
 import Trends from "./trends/topic";
+import Configure from "./configure/topic";
 
 import {Contexts} from "../../meta/contexts";
 
+import {VALUE_STREAM_CONFIG} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -61,6 +63,11 @@ const context : Context = {
           {
             match: 'history',
             topic: History
+          },
+          {
+            match: 'configure',
+            requiredFeatures: [VALUE_STREAM_CONFIG],
+            topic: Configure
           },
           {
             match: '',
