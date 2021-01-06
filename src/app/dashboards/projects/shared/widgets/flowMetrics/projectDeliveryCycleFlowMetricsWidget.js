@@ -14,6 +14,10 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   latestWorkItemEvent,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
+  leadTimeTarget,
+  leadTimeConfidenceTarget,
+  cycleTimeTarget,
+  cycleTimeConfidenceTarget,
   days,
   defectsOnly,
   stateMappingIndex,
@@ -38,7 +42,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
 
   if (loading) return <Loading />;
   if (error) return null;
-  const projectCycleMetrics = projectCycleMetricsData ? projectCycleMetricsData.project : {};
+  const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
+  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {};
   const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
     pick(
       edge.node,

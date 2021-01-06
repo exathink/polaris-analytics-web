@@ -210,7 +210,9 @@ export const dashboard = ({viewerContext}) => (
                           leadTimeTargetPercentile={leadTimeConfidenceTarget}
                           cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                           leadTimeTarget={leadTimeTarget}
+                          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                           cycleTimeTarget={cycleTimeTarget}
+                          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                         />
                     }
                     showDetail={true}

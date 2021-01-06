@@ -21,8 +21,9 @@ export const ProjectFlowMetricsDetailDashboard = (
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     cycleTimeTarget,
+    cycleTimeConfidenceTarget,
     leadTimeTarget,
-
+    leadTimeConfidenceTarget
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
   const [workItemScope, setWorkItemScope] = useState('specs');
@@ -96,6 +97,10 @@ export const ProjectFlowMetricsDetailDashboard = (
                 days={daysRange}
                 leadTimeTargetPercentile={leadTimeTargetPercentile}
                 cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               />
           }
           showDetail={true}
