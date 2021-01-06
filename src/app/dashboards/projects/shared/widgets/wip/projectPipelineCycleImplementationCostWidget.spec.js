@@ -1,5 +1,5 @@
 import React from "react";
-import {gqlUtils, renderComponentWithMockedProvider} from "../../../../../framework/viz/charts/chart-test-utils";
+import {gqlUtils, renderWithProviders} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {ProjectPipelineImplementationCostWidget} from "./projectPipelineCycleImplementationCostWidget";
@@ -92,12 +92,12 @@ const gqlMocks = [
 describe("ProjectPipelineImplementationCostWidget", () => {
   describe("renders without any error", () => {
     test("it shows a loading spinner", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
+      renderWithProviders(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
       await screen.findByTestId("loading-spinner");
     });
 
     test("should render the widget with correct title", async () => {
-      renderComponentWithMockedProvider(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
+      renderWithProviders(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
       await screen.findByTestId("loading-spinner");
       const titleElement = await screen.findByText(/Total Wip Effort/i);
       expect(titleElement).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe("ProjectPipelineImplementationCostWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />,
         mockNetworkError
       );
@@ -141,7 +141,7 @@ describe("ProjectPipelineImplementationCostWidget", () => {
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderComponentWithMockedProvider(
+      renderWithProviders(
         <ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />,
         mockGraphQlErrors
       );
