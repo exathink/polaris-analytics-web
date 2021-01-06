@@ -299,3 +299,14 @@ export function average( array, getValue) {
 
 }
 
+
+/**
+ * returns unique items from the array based on uniqueness criterion
+ * @param {any[]} arr 
+ * @param {iteratee} iteratee - criterion by which uniqueness is computed
+ * @returns {any[]} array of unique items
+ */
+export function getUniqItems(arr, iteratee) {
+  return [...new Set(arr.map(iteratee))].map(uniqByPropVal => arr.find(item => iteratee(item) === uniqByPropVal))
+}
+

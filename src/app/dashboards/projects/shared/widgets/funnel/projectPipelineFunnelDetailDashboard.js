@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 
 import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
-import {ProjectPipelineStateDetailsWidget} from "../wip";
+import {ProjectWorkItemStateDetailsWidget} from "../projectWorkItemStateDetails";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 
@@ -77,7 +77,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
           w={1}
           name="project-pipeline-queues"
           render={({view}) => (
-            <ProjectPipelineStateDetailsWidget
+            <ProjectWorkItemStateDetailsWidget
               instanceKey={instanceKey}
               context={context}
               funnelView={true}
