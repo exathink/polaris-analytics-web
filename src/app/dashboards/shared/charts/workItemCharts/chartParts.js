@@ -46,7 +46,7 @@ export const PlotLines = {
     width: 1,
     zIndex: 10,
     label: {
-      text: `${percentileToText(aggregateCycleMetrics.cycleTimeConfidenceTarget)} Cycle Time Target = ${intl.formatNumber(aggregateCycleMetrics.cycleTimeTarget)} days`,
+      text: `${percentileToText(aggregateCycleMetrics.cycleTimeConfidenceTarget)} Cycle Time Target=${intl.formatNumber(aggregateCycleMetrics.cycleTimeTarget)} days`,
       align: align,
       verticalAlign: vAlign,
     }
