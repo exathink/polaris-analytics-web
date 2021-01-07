@@ -791,20 +791,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
-        plotLines: [
-          {
-            color: "blue",
-            value: 30,
-            dashStyle: "longdashdot",
-            width: 1,
-            zIndex: 10,
-            label: {
-              text: expect.stringMatching(`p90 Lead Time Target=30 days`),
-              align: "left",
-              verticalAlign: "top",
-            },
-          },
-        ],
+        plotLines: [],
       },
     };
 
