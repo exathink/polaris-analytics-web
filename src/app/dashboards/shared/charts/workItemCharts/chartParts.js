@@ -27,6 +27,30 @@ export const PlotLines = {
       }
     }
   ),
+  leadTimeTarget: (aggregateCycleMetrics, intl, align='left', vAlign='top') => ({
+    color: 'blue',
+    value: aggregateCycleMetrics.leadTimeTarget,
+    dashStyle: 'longdashdot',
+    width: 1,
+    zIndex: 10,
+    label: {
+      text: `${percentileToText(aggregateCycleMetrics.leadTimeConfidenceTarget)} Lead Time Target=${intl.formatNumber(aggregateCycleMetrics.leadTimeTarget)} days`,
+      align: align,
+      verticalAlign: vAlign,
+    }
+  }),
+  cycleTimeTarget: (aggregateCycleMetrics, intl, align='left', vAlign='top') => ({
+    color: 'orange',
+    value: aggregateCycleMetrics.cycleTimeTarget,
+    dashStyle: 'longdashdot',
+    width: 1,
+    zIndex: 10,
+    label: {
+      text: `${percentileToText(aggregateCycleMetrics.cycleTimeConfidenceTarget)} Cycle Time Target=${intl.formatNumber(aggregateCycleMetrics.cycleTimeTarget)} days`,
+      align: align,
+      verticalAlign: vAlign,
+    }
+  }),
   percentileCycleTime: (aggregateCycleMetrics, intl, align='left', vAlign='top') => (
     {
       color: 'orange',
@@ -65,7 +89,8 @@ export const PlotLines = {
         verticalAlign: vAlign,
       }
     }
-  )
+  ),
+
 
 
 }

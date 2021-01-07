@@ -4,7 +4,7 @@ import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framewo
 import {epoch} from "../../../../../helpers/utility";
 import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../../../shared/config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from './metricsMeta'
+import {projectDeliveryCycleFlowMetricsMeta} from "./metricsMeta";
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
@@ -26,11 +26,15 @@ const projectCycleMetrics = {
   workItemsWithNullCycleTime: 6,
   earliestClosedDate: "2020-11-29T16:21:18.853000",
   latestClosedDate: "2020-12-09T22:06:08.221000",
+  leadTimeTarget: 30,
+  cycleTimeTarget: 7,
+  leadTimeConfidenceTarget: 0.9,
+  cycleTimeConfidenceTarget: 0.9,
 };
 
 const propsFixture = {
   days: 30,
-  model: [],// override this in specific test. 
+  model: [], // override this in specific test.
   selectedMetric: "leadTime",
   metricsMeta,
   projectCycleMetrics,
@@ -104,6 +108,29 @@ const fixedChartConfig = {
 
 describe("FlowMetricsScatterPlotChart", () => {
   describe("when selected metric is leadTime", () => {
+    const fixedChartConfigWithLeadTime = {
+      ...fixedChartConfig,
+      title: {
+        text: metricsMeta["leadTime"].display,
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        plotLines: [
+          {
+            color: "blue",
+            value: 30,
+            dashStyle: "longdashdot",
+            width: 1,
+            zIndex: 10,
+            label: {
+              text: expect.stringMatching(`p90 Lead Time Target=30 days`),
+              align: "left",
+              verticalAlign: "top",
+            },
+          },
+        ],
+      },
+    };
     describe("when there are no workitems", () => {
       const emptyPropsFixture = {
         ...propsFixture,
@@ -111,10 +138,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       };
 
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta["leadTime"].display,
-        },
+        ...fixedChartConfigWithLeadTime,
         series: [],
       };
 
@@ -161,10 +185,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         allowPointSelect: true,
       };
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta["leadTime"].display,
-        },
+        ...fixedChartConfigWithLeadTime,
         subtitle: {
           text: expect.stringMatching(`1 Specs closed in the last 30 days`),
         },
@@ -327,10 +348,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         },
       ];
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta["leadTime"].display,
-        },
+        ...fixedChartConfigWithLeadTime,
         subtitle: {
           text: expect.stringMatching(`3 Specs closed in the last 30 days`),
         },
@@ -407,6 +425,29 @@ describe("FlowMetricsScatterPlotChart", () => {
 
   describe("when selected metric is cycle time", () => {
     const selectedMetric = "cycleTime";
+    const fixedChartConfigWithCycleTime = {
+      ...fixedChartConfig,
+      title: {
+        text: metricsMeta[selectedMetric].display,
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        plotLines: [
+          {
+            color: "orange",
+            value: 7,
+            dashStyle: "longdashdot",
+            width: 1,
+            zIndex: 10,
+            label: {
+              text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
+              align: "left",
+              verticalAlign: "top",
+            },
+          },
+        ],
+      },
+    };
 
     describe("when there are no workitems", () => {
       const emptyPropsFixture = {
@@ -416,10 +457,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       };
 
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta[selectedMetric].display,
-        },
+        ...fixedChartConfigWithCycleTime,
         series: [],
       };
 
@@ -468,10 +506,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       };
 
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta[selectedMetric].display,
-        },
+        ...fixedChartConfigWithCycleTime,
         subtitle: {
           text: expect.stringContaining(
             `1 Specs closed in the last 30 days (${singlePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
@@ -618,10 +653,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       ];
 
       const expectedChartConfig = {
-        ...fixedChartConfig,
-        title: {
-          text: metricsMeta[selectedMetric].display,
-        },
+        ...fixedChartConfigWithCycleTime,
         subtitle: {
           text: expect.stringContaining(
             `3 Specs closed in the last 30 days (${multiplePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
@@ -640,6 +672,29 @@ describe("FlowMetricsScatterPlotChart", () => {
 
   describe("when selected metric is Backlog Time", () => {
     const selectedMetric = "backlogTime";
+    const fixedChartConfigWithBacklogTime = {
+      ...fixedChartConfig,
+      title: {
+        text: metricsMeta[selectedMetric].display,
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        plotLines: [
+          {
+            color: "orange",
+            value: 7,
+            dashStyle: "longdashdot",
+            width: 1,
+            zIndex: 10,
+            label: {
+              text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
+              align: "left",
+              verticalAlign: "top",
+            },
+          },
+        ],
+      },
+    };
 
     describe("when there is a single workitem", () => {
       const workItemFixture = {
@@ -664,6 +719,30 @@ describe("FlowMetricsScatterPlotChart", () => {
         selectedMetric,
         model: [workItemFixture],
       };
+
+      const fixedSeriesConfig = {
+        key: workItemFixture.workItemType,
+        id: workItemFixture.workItemType,
+        name: WorkItemTypeDisplayName[workItemFixture.workItemType],
+        color: Colors.WorkItemType.bug,
+        marker: {
+          symbol: Symbols.WorkItemType.bug,
+          radius: WorkItemTypeScatterRadius[workItemFixture.workItemType],
+        },
+        turboThreshold: 0,
+        allowPointSelect: true,
+      };
+
+      const expectedChartConfig = {
+        ...fixedChartConfigWithBacklogTime,
+        series: [fixedSeriesConfig],
+      };
+
+      const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...singlePropsFixture} />);
+
+      test("it renders correct chart config", () => {
+        expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+      });
 
       test(`should render the tooltip of the point`, async () => {
         const [actual] = await renderedTooltipConfig(
@@ -703,4 +782,66 @@ describe("FlowMetricsScatterPlotChart", () => {
     });
   });
 
+  describe("when selected metric is Effort", () => {
+    const selectedMetric = "effort";
+    const fixedChartConfigWithEffort = {
+      ...fixedChartConfig,
+      title: {
+        text: metricsMeta[selectedMetric].display,
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        plotLines: [],
+      },
+    };
+
+    const workItemFixture = {
+      name: "Funnel closed does not match Flow Metrics Closed",
+      key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+      displayId: "PO-396",
+      workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+      workItemType: "bug",
+      state: "DEPLOYED-TO-STAGING",
+      startDate: getNDaysAgo(18),
+      endDate: getNDaysAgo(10),
+      leadTime: 7.895034722222222,
+      cycleTime: 7.894618055555555,
+      latency: 0.026180555555555554,
+      duration: 4.00299768518519,
+      effort: 1.16666666666667,
+      authorCount: 1,
+    };
+
+    const singlePropsFixture = {
+      ...propsFixture,
+      selectedMetric,
+      model: [workItemFixture],
+    };
+
+    const fixedSeriesConfig = {
+      key: workItemFixture.workItemType,
+      id: workItemFixture.workItemType,
+      name: WorkItemTypeDisplayName[workItemFixture.workItemType],
+      color: Colors.WorkItemType.bug,
+      marker: {
+        symbol: Symbols.WorkItemType.bug,
+        radius: WorkItemTypeScatterRadius[workItemFixture.workItemType],
+      },
+      turboThreshold: 0,
+      allowPointSelect: true,
+    };
+    const expectedChartConfig = {
+      ...fixedChartConfigWithEffort,
+      subtitle: {
+        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+      },
+      series: [fixedSeriesConfig],
+    };
+
+    const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...singlePropsFixture} />);
+
+    test("it renders correct chart config", () => {
+      expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+    });
+  });
 });

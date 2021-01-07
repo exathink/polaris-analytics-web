@@ -34,8 +34,18 @@ function mapSymbol(workItem) {
 function getMaxDays(deliveryCycles, projectCycleMetrics) {
   return deliveryCycles.reduce(
     (max, workItem) => (workItem.leadTime > max ? workItem.leadTime : max),
-    projectCycleMetrics.maxLeadTime || 0
+    projectCycleMetrics.leadTimeTarget || 0
   );
+}
+
+function getPlotLines(selectedMetric, projectCycleMetrics, intl) {
+  if (selectedMetric === "leadTime") {
+    return [PlotLines.leadTimeTarget(projectCycleMetrics, intl)];
+  } else if (selectedMetric === "effort") {
+    return [];
+  } else {
+    return [PlotLines.cycleTimeTarget(projectCycleMetrics, intl)];
+  }
 }
 
 export const FlowMetricsScatterPlotChart = Chart({
@@ -134,18 +144,8 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Days`,
         },
         max: getMaxDays(candidateCycles, projectCycleMetrics),
-        plotLines:
-          selectedMetric === "cycleTime"
-            ? [
-                PlotLines.maxCycleTime(projectCycleMetrics, intl),
-                PlotLines.percentileCycleTime(projectCycleMetrics, intl, "right"),
-                PlotLines.percentileLeadTime(projectCycleMetrics, intl, "right"),
-                PlotLines.maxLeadTime(projectCycleMetrics, intl),
-              ]
-            : [
-                PlotLines.maxLeadTime(projectCycleMetrics, intl),
-                PlotLines.percentileLeadTime(projectCycleMetrics, intl, "right"),
-              ],
+        softMin: 0,
+        plotLines: getPlotLines(selectedMetric, projectCycleMetrics, intl),
       },
       series: series,
       tooltip: {

@@ -19,7 +19,9 @@ export const ProjectFlowMetricsWidget = (
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     cycleTimeTarget,
+    cycleTimeConfidenceTarget,
     leadTimeTarget,
+    leadTimeConfidenceTarget,
     stateMappingIndex,
     pollInterval
   }) => {
@@ -66,7 +68,9 @@ export const ProjectFlowMetricsWidget = (
         leadTimeTargetPercentile={leadTimeTargetPercentile}
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         cycleTimeTarget={cycleTimeTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
         leadTimeTarget={leadTimeTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         stateMappingIndex={stateMappingIndex}
       />
     )
