@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {ProjectPhaseSummaryWidget} from "./projectPhaseSummaryWidget";
-import {ProjectWorkItemStateDetailsWidget} from "../projectWorkItemStateDetails";
+import {ProjectWorkItemQueuesDetailWidget} from "../projectWorkItemQueuesDetail";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 
@@ -58,7 +58,7 @@ export const ProjectPipelineDetailDashboard = ({
           w={1}
           name="project-pipeline-state-detail-view"
           render={({view}) => (
-            <ProjectWorkItemStateDetailsWidget
+            <ProjectWorkItemQueuesDetailWidget
               instanceKey={instanceKey}
               specsOnly={specsOnly}
               view={view}

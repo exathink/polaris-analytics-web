@@ -1,6 +1,5 @@
 import React from "react";
 import {Colors, WorkItemStateTypeDisplayName, WorkItemTypeDisplayName} from "../../../shared/config";
-import {PlotLines} from "./chartParts";
 import {getIntl, expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {WorkItemsDurationsByPhaseChart} from "./workItemsDurationsByPhaseChart";
@@ -24,6 +23,10 @@ const projectCycleMetrics = {
   workItemsWithNullCycleTime: 7,
   earliestClosedDate: "2020-11-25T22:44:17.124000",
   latestClosedDate: "2020-12-09T22:06:08.221000",
+  leadTimeConfidenceTarget: 0.9,
+  cycleTimeConfidenceTarget: 0.9,
+  leadTimeTarget: 30,
+  cycleTimeTarget: 7,
 };
 
 const commonChartProps = {
@@ -56,8 +59,30 @@ const fixedChartConfig = {
       text: "Days",
     },
     plotLines: [
-      PlotLines.avgCycleTime(projectCycleMetrics, intl, "left"),
-      PlotLines.percentileLeadTime(projectCycleMetrics, intl, "left"),
+      {
+        color: 'blue',
+        value: 30,
+        dashStyle: 'longdashdot',
+        width: 1,
+        zIndex: 10,
+        label: {
+          text: `p90 Lead Time Target=30 days`,
+          align: 'left',
+          verticalAlign: 'top',
+        }
+      },
+      {
+        color: 'orange',
+        value: 7,
+        dashStyle: 'longdashdot',
+        width: 1,
+        zIndex: 10,
+        label: {
+          text: `p90 Cycle Time Target=7 days`,
+          align: 'left',
+          verticalAlign: 'top',
+        }
+      }
     ],
   },
   tooltip: {

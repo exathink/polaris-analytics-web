@@ -234,6 +234,10 @@ export const dashboard = ({viewerContext}) => (
                         latestCommit={latestCommit}
                         days={30}
                         view={view}
+                        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                        leadTimeTarget={leadTimeTarget}
+                        cycleTimeTarget={cycleTimeTarget}
                       />
                   }
                   showDetail={true}

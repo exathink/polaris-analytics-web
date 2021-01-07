@@ -19,7 +19,7 @@ function getMaxDays(workItems, projectCycleMetrics) {
   return workItems.reduce(
     (max, workItem) =>
       workItem.timeInState + workItem.timeInPriorStates > max ? workItem.timeInState + workItem.timeInPriorStates : max,
-    (projectCycleMetrics && projectCycleMetrics.percentileLeadTime) || 0
+    (projectCycleMetrics && projectCycleMetrics.leadTimeTarget) || 0
   );
 }
 
@@ -165,14 +165,15 @@ export const WorkItemsDurationsByPhaseChart = Chart({
       yAxis: {
         type: "linear",
         max: getMaxDays(workItemsWithAggregateDurations, projectCycleMetrics),
+        softMin: 0,
         allowDecimals: false,
         title: {
           text: "Days",
         },
         plotLines: projectCycleMetrics
           ? [
-              PlotLines.avgCycleTime(projectCycleMetrics, intl, "left"),
-              PlotLines.percentileLeadTime(projectCycleMetrics, intl, "left"),
+              PlotLines.leadTimeTarget(projectCycleMetrics, intl),
+              PlotLines.cycleTimeTarget(projectCycleMetrics, intl),
             ]
           : [],
       },

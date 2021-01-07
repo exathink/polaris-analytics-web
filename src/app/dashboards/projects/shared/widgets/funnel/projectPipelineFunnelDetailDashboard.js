@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 
 import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
-import {ProjectWorkItemStateDetailsWidget} from "../projectWorkItemStateDetails";
+import {ProjectWorkItemQueuesDetailWidget} from "../projectWorkItemQueuesDetail";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 
@@ -17,6 +17,10 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   view,
   context,
   pollInterval,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  cycleTimeTarget,
 }) => {
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
@@ -77,7 +81,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
           w={1}
           name="project-pipeline-queues"
           render={({view}) => (
-            <ProjectWorkItemStateDetailsWidget
+            <ProjectWorkItemQueuesDetailWidget
               instanceKey={instanceKey}
               context={context}
               funnelView={true}
@@ -87,6 +91,10 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               days={days}
               closedWithinDays={days}
               view={view}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
             />
           )}
           showDetail={true}

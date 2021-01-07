@@ -1,11 +1,11 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
-import {ProjectWorkItemStateDetailsView} from "./projectWorkItemStateDetailsView";
+import {ProjectWorkItemQueuesDetailView} from "./projectWorkItemQueuesDetailView";
 import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectWorkItemStateDetailsWidget = ({
+export const ProjectWorkItemQueuesDetailWidget = ({
   instanceKey,
   specsOnly,
   latestWorkItemEvent,
@@ -17,6 +17,10 @@ export const ProjectWorkItemStateDetailsWidget = ({
   stateMappingIndex,
   view,
   context,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  cycleTimeTarget,
 }) => {
   const {
     loading: cycleMetricsLoading,
@@ -40,23 +44,24 @@ export const ProjectWorkItemStateDetailsWidget = ({
   });
 
   if (cycleMetricsError) {
-    logGraphQlError("ProjectWorkItemStateDetailsWidget.cycleMetrics", cycleMetricsError);
+    logGraphQlError("ProjectWorkItemQueuesDetailWidget.cycleMetrics", cycleMetricsError);
     return null;
   }
 
   if (cycleMetricsLoading || loading) return <Loading />;
   if (error) {
-    logGraphQlError("ProjectWorkItemStateDetailsWidget.pipelineStateDetails", error);
+    logGraphQlError("ProjectWorkItemQueuesDetailWidget.pipelineStateDetails", error);
     return null;
   }
   const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
-
+  const targetMetrics = {leadTimeConfidenceTarget, cycleTimeConfidenceTarget, leadTimeTarget, cycleTimeTarget};
+  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {};
   return (
-    <ProjectWorkItemStateDetailsView
+    <ProjectWorkItemQueuesDetailView
       view={view}
       context={context}
       workItems={workItems}
-      projectCycleMetrics={projectCycleMetricsData ? projectCycleMetricsData.project : {}}
+      projectCycleMetrics={projectCycleMetrics}
     />
   );
 };
