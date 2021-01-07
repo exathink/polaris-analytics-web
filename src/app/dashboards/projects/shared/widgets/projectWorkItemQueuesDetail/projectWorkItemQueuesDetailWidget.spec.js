@@ -3,7 +3,7 @@ import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {PROJECT_PIPELINE_STATE_DETAILS} from "../../hooks/useQueryProjectPipelineStateDetails";
 import {PROJECT_AGGREGATE_CYCLE_METRICS} from "../../hooks/useQueryProjectCycleMetrics";
-import {ProjectWorkItemStateDetailsWidget} from "./projectWorkItemStateDetailsWidget";
+import {ProjectWorkItemQueuesDetailWidget} from "./projectWorkItemQueuesDetailWidget";
 import {screen, waitFor} from "@testing-library/react";
 
 const propsFixture = {
@@ -69,7 +69,7 @@ const mocks = [
   },
 ];
 
-describe("ProjectWorkItemStateDetailsWidget", () => {
+describe("ProjectWorkItemQueuesDetailWidget", () => {
   /**
    * this particular widget renders ProjectPipelineStateDetailsView component 
    * which in turn uses withNavigationContext consumer. 
@@ -115,14 +115,14 @@ describe("ProjectWorkItemStateDetailsWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderWithProviders(<ProjectWorkItemStateDetailsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ProjectWorkItemQueuesDetailWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderWithProviders(<ProjectWorkItemStateDetailsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ProjectWorkItemQueuesDetailWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();
