@@ -38,6 +38,16 @@ function getMaxDays(deliveryCycles, projectCycleMetrics) {
   );
 }
 
+function getPlotLines(selectedMetric, projectCycleMetrics, intl) {
+  if (selectedMetric === "leadTime") {
+    return [PlotLines.leadTimeTarget(projectCycleMetrics, intl)];
+  } else if (selectedMetric === "effort") {
+    return [];
+  } else {
+    return [PlotLines.cycleTimeTarget(projectCycleMetrics, intl)];
+  }
+}
+
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
@@ -135,10 +145,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         },
         max: getMaxDays(candidateCycles, projectCycleMetrics),
         softMin: 0,
-        plotLines:
-          selectedMetric === "leadTime" || selectedMetric === "effort"
-            ? [PlotLines.leadTimeTarget(projectCycleMetrics, intl)]
-            : [PlotLines.cycleTimeTarget(projectCycleMetrics, intl)],
+        plotLines: getPlotLines(selectedMetric, projectCycleMetrics, intl),
       },
       series: series,
       tooltip: {
