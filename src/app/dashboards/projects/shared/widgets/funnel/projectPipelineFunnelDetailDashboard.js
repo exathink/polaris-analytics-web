@@ -17,6 +17,10 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   view,
   context,
   pollInterval,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  cycleTimeTarget,
 }) => {
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
@@ -87,6 +91,10 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               days={days}
               closedWithinDays={days}
               view={view}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
             />
           )}
           showDetail={true}

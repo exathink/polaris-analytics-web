@@ -17,6 +17,10 @@ export const ProjectWorkItemStateDetailsWidget = ({
   stateMappingIndex,
   view,
   context,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  cycleTimeTarget,
 }) => {
   const {
     loading: cycleMetricsLoading,
@@ -50,13 +54,14 @@ export const ProjectWorkItemStateDetailsWidget = ({
     return null;
   }
   const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
-
+  const targetMetrics = {leadTimeConfidenceTarget, cycleTimeConfidenceTarget, leadTimeTarget, cycleTimeTarget};
+  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {};
   return (
     <ProjectWorkItemStateDetailsView
       view={view}
       context={context}
       workItems={workItems}
-      projectCycleMetrics={projectCycleMetricsData ? projectCycleMetricsData.project : {}}
+      projectCycleMetrics={projectCycleMetrics}
     />
   );
 };

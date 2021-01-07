@@ -16,6 +16,10 @@ export const ProjectPipelineFunnelWidget = ({
   view,
   context,
   pollInterval,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  cycleTimeTarget,
 }) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
@@ -47,6 +51,10 @@ export const ProjectPipelineFunnelWidget = ({
       latestCommit={latestCommit}
       days={days}
       view={view}
+      leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+      cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+      leadTimeTarget={leadTimeTarget}
+      cycleTimeTarget={cycleTimeTarget}
     />
   );
 };
