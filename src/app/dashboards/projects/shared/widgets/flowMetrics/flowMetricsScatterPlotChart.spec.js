@@ -847,7 +847,7 @@ describe("FlowMetricsScatterPlotChart", () => {
 
   describe("when selected metric is Authors", () => {
     const selectedMetric = "authors";
-    const fixedChartConfigWithEffort = {
+    const fixedChartConfigWithAuthors = {
       ...fixedChartConfig,
       title: {
         text: metricsMeta[selectedMetric].display,
@@ -897,7 +897,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       allowPointSelect: true,
     };
     const expectedChartConfig = {
-      ...fixedChartConfigWithEffort,
+      ...fixedChartConfigWithAuthors,
       subtitle: {
         text: expect.stringMatching(`1 Specs closed in the last 30 days`),
       },
