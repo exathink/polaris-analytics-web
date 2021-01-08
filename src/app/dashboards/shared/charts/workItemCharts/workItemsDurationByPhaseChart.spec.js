@@ -64,7 +64,7 @@ const fixedChartConfig = {
         value: 30,
         dashStyle: 'longdashdot',
         width: 1,
-        zIndex: 10,
+        zIndex: 7,
         label: {
           text: `p90 Lead Time Target=30 days`,
           align: 'left',
@@ -76,7 +76,7 @@ const fixedChartConfig = {
         value: 7,
         dashStyle: 'longdashdot',
         width: 1,
-        zIndex: 10,
+        zIndex: 7,
         label: {
           text: `p90 Cycle Time Target=7 days`,
           align: 'left',
