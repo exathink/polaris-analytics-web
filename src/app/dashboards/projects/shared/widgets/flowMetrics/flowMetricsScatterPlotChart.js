@@ -41,7 +41,7 @@ function getMaxDays(deliveryCycles, projectCycleMetrics) {
 function getPlotLines(selectedMetric, projectCycleMetrics, intl) {
   if (selectedMetric === "leadTime") {
     return [PlotLines.leadTimeTarget(projectCycleMetrics, intl)];
-  } else if (selectedMetric === "effort") {
+  } else if (selectedMetric === "effort" || selectedMetric === "authors") {
     return [];
   } else {
     return [PlotLines.cycleTimeTarget(projectCycleMetrics, intl)];
@@ -141,7 +141,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         type: yAxisScale,
         id: "cycle-metric",
         title: {
-          text: `Days`,
+          text: selectedMetric === "authors" ? `Authors` : `Days`,
         },
         max: getMaxDays(candidateCycles, projectCycleMetrics),
         softMin: 0,
@@ -163,7 +163,7 @@ export const FlowMetricsScatterPlotChart = Chart({
 
           let beforeDivider = [
             [`Closed: `, `${formatDateTime(intl, this.point.x)}`],
-            [`State: `, `${this.point.cycle.state}`]
+            [`State: `, `${this.point.cycle.state}`],
           ];
           let afterDivider = [
             ["Lead Time: ", `${intl.formatNumber(leadTime)} days`],
