@@ -32,7 +32,7 @@ export const PlotLines = {
     value: aggregateCycleMetrics.leadTimeTarget,
     dashStyle: 'longdashdot',
     width: 1,
-    zIndex: 10,
+    zIndex: 7,// seems tooptip z-index is 8 (so keeping just below it, also we wanna keep it above chart point z-index)
     label: {
       text: `${percentileToText(aggregateCycleMetrics.leadTimeConfidenceTarget)} Lead Time Target=${intl.formatNumber(aggregateCycleMetrics.leadTimeTarget)} days`,
       align: align,
@@ -44,7 +44,7 @@ export const PlotLines = {
     value: aggregateCycleMetrics.cycleTimeTarget,
     dashStyle: 'longdashdot',
     width: 1,
-    zIndex: 10,
+    zIndex: 7,
     label: {
       text: `${percentileToText(aggregateCycleMetrics.cycleTimeConfidenceTarget)} Cycle Time Target=${intl.formatNumber(aggregateCycleMetrics.cycleTimeTarget)} days`,
       align: align,

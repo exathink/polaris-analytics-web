@@ -121,7 +121,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             value: 30,
             dashStyle: "longdashdot",
             width: 1,
-            zIndex: 10,
+            zIndex: 7,
             label: {
               text: expect.stringMatching(`p90 Lead Time Target=30 days`),
               align: "left",
@@ -438,7 +438,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             value: 7,
             dashStyle: "longdashdot",
             width: 1,
-            zIndex: 10,
+            zIndex: 7,
             label: {
               text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
               align: "left",
@@ -685,7 +685,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             value: 7,
             dashStyle: "longdashdot",
             width: 1,
-            zIndex: 10,
+            zIndex: 7,
             label: {
               text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
               align: "left",
@@ -832,6 +832,72 @@ describe("FlowMetricsScatterPlotChart", () => {
     };
     const expectedChartConfig = {
       ...fixedChartConfigWithEffort,
+      subtitle: {
+        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+      },
+      series: [fixedSeriesConfig],
+    };
+
+    const renderedChartConfigValue = renderedChartConfig(<FlowMetricsScatterPlotChart {...singlePropsFixture} />);
+
+    test("it renders correct chart config", () => {
+      expect(renderedChartConfigValue).toMatchObject(expectedChartConfig);
+    });
+  });
+
+  describe("when selected metric is Authors", () => {
+    const selectedMetric = "authors";
+    const fixedChartConfigWithAuthors = {
+      ...fixedChartConfig,
+      title: {
+        text: metricsMeta[selectedMetric].display,
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        title: {
+          text: "Authors",
+        },
+        plotLines: [],
+      },
+    };
+
+    const workItemFixture = {
+      name: "Funnel closed does not match Flow Metrics Closed",
+      key: "5eb601cc-6a1d-483d-add7-417c321e7109:3588",
+      displayId: "PO-396",
+      workItemKey: "5eb601cc-6a1d-483d-add7-417c321e7109",
+      workItemType: "bug",
+      state: "DEPLOYED-TO-STAGING",
+      startDate: getNDaysAgo(18),
+      endDate: getNDaysAgo(10),
+      leadTime: 7.895034722222222,
+      cycleTime: 7.894618055555555,
+      latency: 0.026180555555555554,
+      duration: 4.00299768518519,
+      effort: 1.16666666666667,
+      authorCount: 1,
+    };
+
+    const singlePropsFixture = {
+      ...propsFixture,
+      selectedMetric,
+      model: [workItemFixture],
+    };
+
+    const fixedSeriesConfig = {
+      key: workItemFixture.workItemType,
+      id: workItemFixture.workItemType,
+      name: WorkItemTypeDisplayName[workItemFixture.workItemType],
+      color: Colors.WorkItemType.bug,
+      marker: {
+        symbol: Symbols.WorkItemType.bug,
+        radius: WorkItemTypeScatterRadius[workItemFixture.workItemType],
+      },
+      turboThreshold: 0,
+      allowPointSelect: true,
+    };
+    const expectedChartConfig = {
+      ...fixedChartConfigWithAuthors,
       subtitle: {
         text: expect.stringMatching(`1 Specs closed in the last 30 days`),
       },

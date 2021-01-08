@@ -17,9 +17,6 @@ export const ProjectFlowMetricsDetailDashboard = (
     latestCommit,
     stateMappingIndex,
     days,
-
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
     cycleTimeTarget,
     cycleTimeConfidenceTarget,
     leadTimeTarget,
@@ -71,8 +68,8 @@ export const ProjectFlowMetricsDetailDashboard = (
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
                 measurementWindow={daysRange}
-                leadTimeTargetPercentile={leadTimeTargetPercentile}
-                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
               />
@@ -95,11 +92,9 @@ export const ProjectFlowMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                leadTimeTargetPercentile={leadTimeTargetPercentile}
-                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
                 leadTimeTarget={leadTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               />
           }
