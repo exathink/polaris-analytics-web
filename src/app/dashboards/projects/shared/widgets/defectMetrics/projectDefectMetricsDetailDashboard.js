@@ -12,8 +12,10 @@ export const ProjectDefectMetricsDetailDashboard = (
     latestWorkItemEvent,
     stateMappingIndex,
     days,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
     view,
     context
 
@@ -44,8 +46,10 @@ export const ProjectDefectMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                leadTimeTargetPercentile={leadTimeTargetPercentile}
-                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               />
           }
           showDetail={false}
@@ -65,8 +69,10 @@ export const ProjectDefectMetricsDetailDashboard = (
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={daysRange}
-                leadTimeTargetPercentile={leadTimeTargetPercentile}
-                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 defectsOnly={true}
               />
           }

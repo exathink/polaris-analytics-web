@@ -10,8 +10,10 @@ export const ProjectDefectMetricsWidget = (
     instanceKey,
     days,
     targetPercentile,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
     latestWorkItemEvent,
     stateMappingIndex,
     view,
@@ -19,16 +21,16 @@ export const ProjectDefectMetricsWidget = (
     showAll,
     pollInterval
   }) => {
+  const {loading, error, data: projectDefectMetrics} = useQueryProjectDefectMetricsSummary(
+    {instanceKey, days, targetPercentile: cycleTimeConfidenceTarget || targetPercentile, ...{referenceString: latestWorkItemEvent}}
+  );
+
+
+  if (loading) return <Loading/>;
+  if (error) return null;
+  const {...defectMetrics} = projectDefectMetrics['project'];
 
   if (view === 'primary') {
-    const {loading, error, data: projectDefectMetrics} = useQueryProjectDefectMetricsSummary(
-      {instanceKey, days, targetPercentile: cycleTimeTargetPercentile || targetPercentile, ...{referenceString: latestWorkItemEvent}}
-    );
-
-
-    if (loading) return <Loading/>;
-    if (error) return null;
-    const {...defectMetrics} = projectDefectMetrics['project'];
     return (
       <ProjectDefectMetricsSummaryView
         instanceKey={instanceKey}
@@ -42,12 +44,14 @@ export const ProjectDefectMetricsWidget = (
       <ProjectDefectMetricsDetailDashboard
         instanceKey={instanceKey}
         days={days}
-        leadTimeTargetPercentile={leadTimeTargetPercentile}
-        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         stateMappingIndex={stateMappingIndex}
         latestWorkItemEvent={latestWorkItemEvent}
         view={view}
         context={context}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeTarget={cycleTimeTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
       />
     )
   }
