@@ -1,0 +1,13 @@
+.targetControlBarWrapper{
+    display: flex;
+    align-items: center;
+}
+
+.targetSave{
+  margin: 5px;
+  margin-left: 50px;
+}
+
+.targetCancel{
+  margin: 5px;
+}
