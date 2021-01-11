@@ -19,7 +19,6 @@ export const ProjectFlowMetricsSettingView = ({
 }) => {
   const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
   const initialState = {
-    // configTab: CONFIG_TABS.VALUE_STREAM,
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
       target: projectCycleMetrics.leadTimeTarget,
