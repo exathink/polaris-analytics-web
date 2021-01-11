@@ -49,7 +49,7 @@ function getPlotLines(selectedMetric, projectCycleMetrics, intl) {
 }
 
 export const FlowMetricsScatterPlotChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly"),
+  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "projectCycleMetrics"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.cycle),
 

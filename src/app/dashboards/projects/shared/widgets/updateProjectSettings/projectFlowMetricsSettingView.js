@@ -55,6 +55,15 @@ export const ProjectFlowMetricsSettingView = ({
     });
   }, [leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget]);
 
+  // as we want to show updated targets on the chart before saving.
+  // sending this draft state to chart
+  const updatedProjectCycleMetrics = {
+    ...projectCycleMetrics,
+    leadTimeTarget: state.leadTime.target,
+    cycleTimeTarget: state.cycleTime.target,
+    leadTimeConfidenceTarget: state.leadTime.confidence,
+    cycleTimeConfidenceTarget: state.cycleTime.confidence
+  };
   return (
     <React.Fragment>
       <TargetControlBarSliders targetControlBarState={targetControlBarState} projectKey={instanceKey} />
@@ -74,7 +83,7 @@ export const ProjectFlowMetricsSettingView = ({
         model={model}
         selectedMetric={state.selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        projectCycleMetrics={projectCycleMetrics}
+        projectCycleMetrics={updatedProjectCycleMetrics}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}
