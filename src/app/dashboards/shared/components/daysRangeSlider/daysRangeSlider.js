@@ -35,3 +35,23 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
     </Box>
   </Flex>
 )
+
+export const ConfidenceRangeSlider = ({title = "Confidence", initialValue, setConfidenceRange, range}) => (
+  <Flex align={"center"}>
+    <Box pr={1} pt={"1px"}>
+      {title}
+    </Box>
+    <Box pr={2} w={"100%"}>
+      <Slider
+        defaultValue={initialValue || 0.9}
+        value={initialValue}
+        min={(range && range[0]) || 0}
+        max={(range && range[range.length - 1]) || 1.0}
+        marks={getMarks(range || [0, 0.5, 1.0])}
+        included={true}
+        step={0.01}
+        onChange={setConfidenceRange}
+      />
+    </Box>
+  </Flex>
+);
