@@ -1,6 +1,6 @@
-import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../../helpers/utility";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -9,10 +9,10 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius,
   WorkItemTypeSortOrder,
-} from "../../../../shared/config";
+} from "../../config";
 
-import {PlotLines} from "../../../../shared/charts/workItemCharts/chartParts";
-import {formatDateTime} from "../../../../../i18n";
+import {PlotLines} from "../workItemCharts/chartParts";
+import {formatDateTime} from "../../../../i18n";
 const METRICS = ["leadTime", "backlogTime", "cycleTime", "latency", "duration", "effort", "authors"];
 
 function mapColor(workItem) {

@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
-import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
+import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
 import WorkItems from "../../../../work_items/context";
 import {Checkbox} from "antd";
 import {Flex} from "reflexbox";
-import {projectDeliveryCycleFlowMetricsMeta} from "./metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,

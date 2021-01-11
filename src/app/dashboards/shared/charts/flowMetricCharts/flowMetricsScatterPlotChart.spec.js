@@ -1,10 +1,10 @@
 import React from "react";
-import {expectSetsAreEqual, formatDateRaw, formatNumber, getNDaysAgo} from "../../../../../../test/test-utils";
-import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {epoch} from "../../../../../helpers/utility";
-import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../../../shared/config";
+import {expectSetsAreEqual, formatDateRaw, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
+import {epoch} from "../../../../helpers/utility";
+import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from "./metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
