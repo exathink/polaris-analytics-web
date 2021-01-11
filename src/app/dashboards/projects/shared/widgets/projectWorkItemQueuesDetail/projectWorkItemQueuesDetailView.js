@@ -112,7 +112,7 @@ const WorkItemQueuesDetailView = ({workItems, projectCycleMetrics, view, context
             projectCycleMetrics={projectCycleMetrics}
             onSelectionChange={(workItems) => {
               console.log("Selection changed: workItems.length");
-              if (filteredWorkItemsBySource.length === 1) {
+              if (workItems.length === 1) {
                 context.navigate(WorkItems, workItems[0].displayId, workItems[0].key);
               }
             }}
