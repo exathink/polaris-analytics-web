@@ -17,7 +17,6 @@ export const ProjectFlowMetricsSettingWidget = ({
   cycleTimeConfidenceTarget,
   days,
   defectsOnly,
-  selectedMetricState,
 }) => {
   const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics({
     instanceKey,
@@ -70,7 +69,6 @@ export const ProjectFlowMetricsSettingWidget = ({
       projectCycleMetrics={projectCycleMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
-      selectedMetricState={selectedMetricState}
     />
   );
 };

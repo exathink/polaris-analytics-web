@@ -4,7 +4,9 @@ import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricC
 import WorkItems from "../../../../work_items/context";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
-import {METRICS, actionTypes} from "../../../configure/constants";
+import {METRICS, actionTypes, mode} from "../../../configure/constants";
+import {settingsReducer} from "../../../configure/settingsReducer";
+import { TargetControlBarWidget } from "./TargetControlBarWidget";
 
 export const ProjectFlowMetricsSettingView = ({
   instanceKey,
@@ -12,14 +14,54 @@ export const ProjectFlowMetricsSettingView = ({
   model,
   days,
   projectCycleMetrics,
-  selectedMetricState,
   defectsOnly,
   specsOnly,
 }) => {
   const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
-  const {selectedMetric, dispatch} = selectedMetricState;
+  const initialState = {
+    // configTab: CONFIG_TABS.VALUE_STREAM,
+    selectedMetric: METRICS.LEAD_TIME,
+    leadTime: {
+      target: projectCycleMetrics.leadTimeTarget,
+      confidence: projectCycleMetrics.leadTimeConfidenceTarget,
+      initialTarget: projectCycleMetrics.leadTimeTarget,
+      initialConfidence: projectCycleMetrics.leadTimeConfidenceTarget,
+      mode: mode.INIT,
+    },
+    cycleTime: {
+      target: projectCycleMetrics.cycleTimeTarget,
+      confidence: projectCycleMetrics.cycleTimeConfidenceTarget,
+      initialTarget: projectCycleMetrics.cycleTimeTarget,
+      initialConfidence: projectCycleMetrics.cycleTimeConfidenceTarget,
+      mode: mode.INIT,
+    },
+  };
+  const [state, dispatch] = React.useReducer(settingsReducer, initialState);
+
+  // state for sliders
+  const targetControlBarState = React.useMemo(
+    () => ({
+      leadTime: state.leadTime,
+      cycleTime: state.cycleTime,
+      selectedMetric: state.selectedMetric,
+      dispatch,
+    }),
+    [state.leadTime, state.cycleTime, state.selectedMetric, dispatch]
+  );
+
+  const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = projectCycleMetrics;
+  // after mutation is successful,we are invalidating active quries.
+  // we need to update default settings from api response, this useEffect will serve the purpose.
+  React.useEffect(() => {
+    dispatch({
+      type: actionTypes.UPDATE_DEFAULTS,
+      payload: {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget},
+    });
+  }, [leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget]);
+
   return (
     <React.Fragment>
+      <TargetControlBarWidget targetControlBarState={targetControlBarState} projectKey={instanceKey} />
       <Flex w={0.95} justify={"center"}>
         <GroupingSelector
           label={" "}
@@ -27,14 +69,14 @@ export const ProjectFlowMetricsSettingView = ({
             key: grouping,
             display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
           }))}
-          initialValue={selectedMetric}
+          initialValue={state.selectedMetric}
           onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
         />
       </Flex>
       <FlowMetricsScatterPlotChart
         days={days}
         model={model}
-        selectedMetric={selectedMetric}
+        selectedMetric={state.selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         projectCycleMetrics={projectCycleMetrics}
         defectsOnly={defectsOnly}
