@@ -4,9 +4,9 @@ import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricC
 import WorkItems from "../../../../work_items/context";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
-import {METRICS, actionTypes, mode} from "../../../configure/constants";
-import {settingsReducer} from "../../../configure/settingsReducer";
-import { TargetControlBarWidget } from "./TargetControlBarWidget";
+import {METRICS, actionTypes, mode} from "./constants";
+import {settingsReducer} from "./settingsReducer";
+import {TargetControlBarSliders} from "./TargetControlBarSliders";
 
 export const ProjectFlowMetricsSettingView = ({
   instanceKey,
@@ -39,15 +39,12 @@ export const ProjectFlowMetricsSettingView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
   // state for sliders
-  const targetControlBarState = React.useMemo(
-    () => ({
-      leadTime: state.leadTime,
-      cycleTime: state.cycleTime,
-      selectedMetric: state.selectedMetric,
-      dispatch,
-    }),
-    [state.leadTime, state.cycleTime, state.selectedMetric, dispatch]
-  );
+  const targetControlBarState = {
+    leadTime: state.leadTime,
+    cycleTime: state.cycleTime,
+    selectedMetric: state.selectedMetric,
+    dispatch,
+  };
 
   const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = projectCycleMetrics;
   // after mutation is successful,we are invalidating active quries.
@@ -61,7 +58,7 @@ export const ProjectFlowMetricsSettingView = ({
 
   return (
     <React.Fragment>
-      <TargetControlBarWidget targetControlBarState={targetControlBarState} projectKey={instanceKey} />
+      <TargetControlBarSliders targetControlBarState={targetControlBarState} projectKey={instanceKey} />
       <Flex w={0.95} justify={"center"}>
         <GroupingSelector
           label={" "}

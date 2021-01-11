@@ -9,11 +9,6 @@ export const actionTypes = {
   CLOSE_SUCCESS_MODAL: "CLOSE_SUCCESS_MODAL",
 };
 
-export const CONFIG_TABS = {
-  VALUE_STREAM: "value-stream",
-  FLOW_METRICS: "flow-metrics",
-};
-
 export const METRICS = {
   LEAD_TIME: "leadTime",
   CYCLE_TIME: "cycleTime",

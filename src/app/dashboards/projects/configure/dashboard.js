@@ -6,8 +6,12 @@ import {ConfigSelector} from "../shared/components/configSelector";
 import {ProjectFlowMetricsSettingWidget} from "../shared/widgets/updateProjectSettings/projectFlowMetricsSettingWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel/projectPipelineFunnelWidget";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
-import {CONFIG_TABS} from "./constants";
 const dashboard_id = "dashboards.project.configure";
+
+const CONFIG_TABS = {
+  VALUE_STREAM: "value-stream",
+  FLOW_METRICS: "flow-metrics",
+};
 
 function ConfigureDashboard({project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults}, context}) {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);

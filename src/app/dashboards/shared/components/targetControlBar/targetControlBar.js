@@ -1,4 +1,4 @@
-import {ConfidenceRangeSlider, DaysRangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
+import {ConfidenceRangeSlider, TargetRangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
 import React from "react";
 
 export function getTargetControlBar([
@@ -8,7 +8,7 @@ export function getTargetControlBar([
   return [
     () => (
       <div title="Target" style={{minWidth: "500px"}}>
-        <DaysRangeSlider
+        <TargetRangeSlider
           title="Target"
           initialDays={daysRange}
           setDaysRange={setDaysRange}

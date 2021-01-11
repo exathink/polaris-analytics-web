@@ -2,11 +2,11 @@ import React from "react";
 import {Alert, Button} from "antd";
 import {getTargetControlBar} from "../../../../shared/components/targetControlBar/targetControlBar";
 import {useProjectUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
-import "./TargetControlBarWidget.css";
+import "./TargetControlBarSliders.css";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {actionTypes, METRICS, mode} from "../../../configure/constants";
+import {actionTypes, METRICS, mode} from "./constants";
 
-export function TargetControlBarWidget({targetControlBarState, projectKey}) {
+export function TargetControlBarSliders({targetControlBarState, projectKey}) {
   const {leadTime, cycleTime, selectedMetric, dispatch} = targetControlBarState;
 
   const [mutate, {loading, error, client}] = useProjectUpdateSettings({
