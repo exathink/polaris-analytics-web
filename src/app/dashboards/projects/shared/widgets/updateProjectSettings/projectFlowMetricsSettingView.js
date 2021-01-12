@@ -1,7 +1,6 @@
 import React from "react";
 
 import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import WorkItems from "../../../../work_items/context";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
@@ -75,11 +74,6 @@ export const ProjectFlowMetricsSettingView = ({
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}
-        onSelectionChange={(workItems) => {
-          if (workItems.length === 1) {
-            context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
-          }
-        }}
       />
     </React.Fragment>
   );
