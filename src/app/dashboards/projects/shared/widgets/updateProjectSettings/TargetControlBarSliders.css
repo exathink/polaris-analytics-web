@@ -1,46 +1,58 @@
-.targetControlBarWrapper{
+.targetControlBarWrapper {
   padding: 10px;
   background: white;
 }
 
-.selectedMetricWrapper{
+.selectedMetricWrapper {
   background: white;
   margin-bottom: 20px;
 }
 
-.targetRangeSlider{
+.targetRangeSlider {
   flex-direction: column;
   justify-items: left;
+  width: 100%;
 }
 
-.confidenceRangeSlider{
+.confidenceRangeSlider {
   flex-direction: column;
   justify-items: left;
+  width: 100%;
 }
 
-.targetControlButtons{
+.targetControlButtons {
   height: 25px;
   margin-left: auto;
 }
 
-.sliderWrapper{
+.sliderWrapper {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.slider-bar{
+.slider-bar {
   width: 50%;
   border: 1px solid grey;
   padding: 5px;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
-.targetSave{
+.slider-bar:last-of-type {
+  margin-right: 0px;
+}
+
+.slider-bar .ant-input-number {
+  margin: 10px 0 0 0 !important;
+}
+
+.targetSave {
   margin-left: auto;
   margin-right: 10px;
 }
 
-.targetCancel{
+.targetCancel {
   margin-right: 20px;
 }
