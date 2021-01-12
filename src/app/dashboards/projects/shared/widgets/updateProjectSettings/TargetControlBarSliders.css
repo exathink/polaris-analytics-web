@@ -1,13 +1,46 @@
 .targetControlBarWrapper{
-    display: flex;
-    align-items: center;
+  padding: 10px;
+  background: white;
+}
+
+.selectedMetricWrapper{
+  background: white;
+  margin-bottom: 20px;
+}
+
+.targetRangeSlider{
+  flex-direction: column;
+  justify-items: left;
+}
+
+.confidenceRangeSlider{
+  flex-direction: column;
+  justify-items: left;
+}
+
+.targetControlButtons{
+  height: 25px;
+  margin-left: auto;
+}
+
+.sliderWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.slider-bar{
+  width: 50%;
+  border: 1px solid grey;
+  padding: 5px;
+  margin-right: 10px;
 }
 
 .targetSave{
-  margin: 5px;
-  margin-left: 50px;
+  margin-left: auto;
+  margin-right: 10px;
 }
 
 .targetCancel{
-  margin: 5px;
+  margin-right: 20px;
 }

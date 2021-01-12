@@ -91,7 +91,7 @@ function ConfigureDashboard({project: {key, latestWorkItemEvent, latestCommit, s
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
-        h={"5%"}
+        h={"1%"}
         title={""}
         controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
       ></DashboardRow>

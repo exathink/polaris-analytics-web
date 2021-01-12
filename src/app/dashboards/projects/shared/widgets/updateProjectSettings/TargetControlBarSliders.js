@@ -4,8 +4,12 @@ import {getTargetControlBar} from "../../../../shared/components/targetControlBa
 import {useProjectUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
 import "./TargetControlBarSliders.css";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
+import {Flex} from "reflexbox";
 import {actionTypes, METRICS, mode} from "./constants";
 
+const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 export function TargetControlBarSliders({targetControlBarState, projectKey}) {
   const {leadTime, cycleTime, selectedMetric, dispatch} = targetControlBarState;
 
@@ -89,6 +93,18 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
 
   return (
     <div className="targetControlBarWrapper">
+      <Flex w={1} className="selectedMetricWrapper">
+        <GroupingSelector
+          label={" "}
+          groupings={groupings.map((grouping) => ({
+            key: grouping,
+            display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
+          }))}
+          initialValue={selectedMetric}
+          onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
+        />
+        <div className="targetControlButtons">{getButtonElements()}</div>
+      </Flex>
       <div className="sliderWrapper">
         {getTargetControlBar([
           [target, (newTarget) => dispatch({type: actionTypes.UPDATE_TARGET, payload: newTarget})],
@@ -97,9 +113,10 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
             (newConfidence) => dispatch({type: actionTypes.UPDATE_CONFIDENCE, payload: newConfidence}),
             [0, 0.5, 1.0],
           ],
-        ]).map((bar) => bar())}
+        ]).map((bar) => (
+          <div className="slider-bar">{bar()}</div>
+        ))}
       </div>
-      {getButtonElements()}
     </div>
   );
 }

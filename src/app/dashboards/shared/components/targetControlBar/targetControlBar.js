@@ -7,24 +7,22 @@ export function getTargetControlBar([
 ]) {
   return [
     () => (
-      <div title="Target" style={{minWidth: "500px"}}>
-        <TargetRangeSlider
-          title="Target"
-          initialDays={daysRange}
-          setDaysRange={setDaysRange}
-          range={daysMarks || SIX_MONTHS}
-        />
-      </div>
+      <TargetRangeSlider
+        title="Target"
+        initialDays={daysRange}
+        setDaysRange={setDaysRange}
+        range={daysMarks || SIX_MONTHS}
+        className="targetRangeSlider"
+      />
     ),
     () => (
-      <div title="Confidence" style={{minWidth: "200px"}}>
-        <ConfidenceRangeSlider
-          title="Confidence"
-          initialValue={confidence}
-          setConfidenceRange={setConfidence}
-          range={confidenceMarks}
-        />
-      </div>
+      <ConfidenceRangeSlider
+        title="Confidence"
+        initialValue={confidence}
+        setConfidenceRange={setConfidence}
+        range={confidenceMarks}
+        className="confidenceRangeSlider"
+      />
     ),
   ];
 }

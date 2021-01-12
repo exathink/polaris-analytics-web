@@ -36,8 +36,8 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
   </Flex>
 )
 
-export const TargetRangeSlider = ({title='Days', initialDays, setDaysRange, range}) => (
-  <Flex align={'center'}>
+export const TargetRangeSlider = ({title='Days', initialDays, setDaysRange, range, className}) => (
+  <Flex align={'center'} className={className}>
     <Box pr={1} pt={"1px"}>
       {title}
     </Box>
@@ -55,8 +55,8 @@ export const TargetRangeSlider = ({title='Days', initialDays, setDaysRange, rang
   </Flex>
 )
 
-export const ConfidenceRangeSlider = ({title = "Confidence", initialValue, setConfidenceRange, range}) => (
-  <Flex align={"center"}>
+export const ConfidenceRangeSlider = ({title = "Confidence", initialValue, setConfidenceRange, range, className}) => (
+  <Flex align={"center"} className={className}>
     <Box pr={1} pt={"1px"}>
       {title}
     </Box>

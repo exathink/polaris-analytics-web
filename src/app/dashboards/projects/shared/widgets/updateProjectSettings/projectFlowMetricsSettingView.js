@@ -1,8 +1,7 @@
 import React from "react";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+
 import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
 import WorkItems from "../../../../work_items/context";
-import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
@@ -17,7 +16,6 @@ export const ProjectFlowMetricsSettingView = ({
   defectsOnly,
   specsOnly,
 }) => {
-  const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
   const initialState = {
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
@@ -68,17 +66,6 @@ export const ProjectFlowMetricsSettingView = ({
   return (
     <React.Fragment>
       <TargetControlBarSliders targetControlBarState={targetControlBarState} projectKey={instanceKey} />
-      <Flex w={0.95} justify={"center"}>
-        <GroupingSelector
-          label={" "}
-          groupings={groupings.map((grouping) => ({
-            key: grouping,
-            display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
-          }))}
-          initialValue={state.selectedMetric}
-          onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
-        />
-      </Flex>
       <FlowMetricsScatterPlotChart
         days={days}
         model={model}
