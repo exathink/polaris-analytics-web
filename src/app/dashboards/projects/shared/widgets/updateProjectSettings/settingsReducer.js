@@ -2,12 +2,6 @@ import {actionTypes, METRICS, mode} from "./constants";
 
 export function settingsReducer(state, action) {
   switch (action.type) {
-    case actionTypes.UPDATE_CONFIG_TAB: {
-      return {
-        ...state,
-        configTab: action.payload,
-      };
-    }
     case actionTypes.UPDATE_METRIC: {
       return {
         ...state,
