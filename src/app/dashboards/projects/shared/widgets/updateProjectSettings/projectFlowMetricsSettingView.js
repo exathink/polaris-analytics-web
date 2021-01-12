@@ -25,16 +25,16 @@ export const ProjectFlowMetricsSettingView = ({
       confidence: projectCycleMetrics.leadTimeConfidenceTarget,
       initialTarget: projectCycleMetrics.leadTimeTarget,
       initialConfidence: projectCycleMetrics.leadTimeConfidenceTarget,
-      mode: mode.INIT,
     },
     cycleTime: {
       target: projectCycleMetrics.cycleTimeTarget,
       confidence: projectCycleMetrics.cycleTimeConfidenceTarget,
       initialTarget: projectCycleMetrics.cycleTimeTarget,
       initialConfidence: projectCycleMetrics.cycleTimeConfidenceTarget,
-      mode: mode.INIT,
     },
+    mode: mode.INIT,
   };
+
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
   // state for sliders
@@ -42,6 +42,7 @@ export const ProjectFlowMetricsSettingView = ({
     leadTime: state.leadTime,
     cycleTime: state.cycleTime,
     selectedMetric: state.selectedMetric,
+    mode: state.mode,
     dispatch,
   };
 
@@ -62,7 +63,7 @@ export const ProjectFlowMetricsSettingView = ({
     leadTimeTarget: state.leadTime.target,
     cycleTimeTarget: state.cycleTime.target,
     leadTimeConfidenceTarget: state.leadTime.confidence,
-    cycleTimeConfidenceTarget: state.cycleTime.confidence
+    cycleTimeConfidenceTarget: state.cycleTime.confidence,
   };
   return (
     <React.Fragment>

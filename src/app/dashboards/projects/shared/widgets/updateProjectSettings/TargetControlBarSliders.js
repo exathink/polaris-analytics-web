@@ -25,18 +25,12 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
   const confidence = selectedMetric === METRICS.LEAD_TIME ? leadTime.confidence : cycleTime.confidence;
 
   function handleSaveClick() {
-    let payload;
-    if (selectedMetric === METRICS.LEAD_TIME) {
-      payload = {
-        leadTimeTarget: leadTime.target,
-        leadTimeConfidenceTarget: leadTime.confidence,
-      };
-    } else {
-      payload = {
-        cycleTimeTarget: cycleTime.target,
-        cycleTimeConfidenceTarget: cycleTime.confidence,
-      };
-    }
+    const payload = {
+      leadTimeTarget: leadTime.target,
+      leadTimeConfidenceTarget: leadTime.confidence,
+      cycleTimeTarget: cycleTime.target,
+      cycleTimeConfidenceTarget: cycleTime.confidence,
+    };
 
     // call mutation on save button click
     mutate({
@@ -48,7 +42,6 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
   }
 
   function handleCancelClick() {
-    // only resets for currently selected metric
     dispatch({type: actionTypes.RESET_SLIDERS});
   }
 
@@ -62,10 +55,7 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
       );
     }
 
-    if (
-      (selectedMetric === METRICS.LEAD_TIME && leadTime.mode === mode.EDITING) ||
-      (selectedMetric === METRICS.CYCLE_TIME && cycleTime.mode === mode.EDITING)
-    ) {
+    if (targetControlBarState.mode === mode.EDITING) {
       return (
         <>
           <Button onClick={handleSaveClick} className={"targetSave"} type="primary" size="small" shape="round">
@@ -78,34 +68,15 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
       );
     }
 
-    if (selectedMetric === METRICS.LEAD_TIME && leadTime.mode === mode.SUCCESS) {
+    if (targetControlBarState.mode === mode.SUCCESS) {
       return (
         <Alert
-          message="Settings updated successfully for leadTime."
+          message="Settings updated successfully."
           type="success"
           showIcon
           closable
           className="shiftRight"
-          onClose={() => {
-            debugger;
-            dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL});
-          }}
-        />
-      );
-    }
-
-    if (selectedMetric === METRICS.CYCLE_TIME && cycleTime.mode === mode.SUCCESS) {
-      return (
-        <Alert
-          message="Settings updated successfully for cycleTime."
-          type="success"
-          showIcon
-          closable
-          className="shiftRight"
-          onClose={() => {
-            debugger;
-            dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL});
-          }}
+          onClose={() => dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL})}
         />
       );
     }
