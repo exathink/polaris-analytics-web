@@ -114,7 +114,7 @@ export function TargetControlBarSliders({targetControlBarState, projectKey}) {
             [0, 0.5, 1.0],
           ],
         ]).map((bar) => (
-          <div className="slider-bar">{bar()}</div>
+          <div className={targetControlBarState.mode === mode.EDITING ? "slider-bar slider-bar-edit" : "slider-bar"}>{bar()}</div>
         ))}
       </div>
     </div>
