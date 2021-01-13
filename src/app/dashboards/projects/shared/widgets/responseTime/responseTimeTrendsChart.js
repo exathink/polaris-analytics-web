@@ -20,6 +20,21 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     case 'percentileEffort': {
       return [`${percentileToText(targetPercentile)} Effort: `, `${i18nNumber(intl, measurement.percentileEffort)} dev-days`]
     }
+    case 'avgCycleTime': {
+      return [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`]
+    }
+    case 'avgLeadTime': {
+      return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`]
+    }
+    case 'avgDuration': {
+      return [`Avg. Duration: `, `${i18nNumber(intl, measurement.avgDuration)} days`]
+    }
+    case 'avgLatency': {
+      return [`Avg. Delivery Latency: `, `${i18nNumber(intl, measurement.avgLatency)} days`]
+    }
+    case 'avgEffort': {
+      return [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`]
+    }
     default: {
       return ['', '']
     }
@@ -37,11 +52,11 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'percentileLeadTime', displayName: `${percentileToText(targetPercentile)} Lead Time`, visible: false, type: 'spline'},
-      {key: 'percentileCycleTime', displayName: `${percentileToText(targetPercentile)} Cycle Time`, visible: true, type:'spline'},
-      {key: 'percentileLatency', displayName: `${percentileToText(targetPercentile)} Delivery L..`, visible: false, type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'percentileDuration', displayName: `${percentileToText(targetPercentile)} Duration`, visible: false, type: 'areaspline', stacked: true},
-      {key: 'percentileEffort', displayName: `${percentileToText(targetPercentile)} Effort`, visible: false, type:'spline', color: '#0f49b1'},
+      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: false, type: 'spline'},
+      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: true, type:'spline'},
+      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: false, type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'avgDuration', displayName: `Avg. Duration`, visible: false, type: 'areaspline', stacked: true},
+      {key: 'avgEffort', displayName: `Avg. Effort`, visible: false, type:'spline', color: '#0f49b1'},
 
     ]}
     measurementPeriod={measurementPeriod}
@@ -52,7 +67,7 @@ export const ResponseTimeTrendsChart = (
       legendText: 'Specs',
       yAxisUom: 'Days',
       plotBands: {
-        metric: 'percentileCycleTime'
+        metric: 'avgCycleTime'
       },
 
       tooltip: {
