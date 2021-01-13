@@ -34,6 +34,15 @@ export const ProjectFlowMetricsSettingView = ({
     },
   });
 
+  // after mutation is successful,we are invalidating active quries.
+  // we need to update default settings from api response, this useEffect will serve the purpose.
+  React.useEffect(() => {
+    dispatch({
+      type: actionTypes.UPDATE_DEFAULTS,
+      payload: targetMetrics,
+    });
+  }, [...Object.values(targetMetrics)]);
+
   const initialState = {
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
@@ -52,22 +61,27 @@ export const ProjectFlowMetricsSettingView = ({
   };
 
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
+  const {leadTime, cycleTime, selectedMetric} = state;
 
-  // after mutation is successful,we are invalidating active quries.
-  // we need to update default settings from api response, this useEffect will serve the purpose.
-  React.useEffect(() => {
-    dispatch({
-      type: actionTypes.UPDATE_DEFAULTS,
-      payload: targetMetrics,
-    });
-  }, [...Object.values(targetMetrics)]);
+  // as we want to show updated targets on the chart before saving.
+  // sending this draft state to chart
+  const draftTargetMetrics = {
+    leadTimeTarget: leadTime.target,
+    cycleTimeTarget: cycleTime.target,
+    leadTimeConfidenceTarget: leadTime.confidence,
+    cycleTimeConfidenceTarget: cycleTime.confidence,
+  };
+
+  // slider state
+  const target = selectedMetric === METRICS.LEAD_TIME ? leadTime.target : cycleTime.target;
+  const confidence = selectedMetric === METRICS.LEAD_TIME ? leadTime.confidence : cycleTime.confidence;
 
   function handleSaveClick() {
     const payload = {
-      leadTimeTarget: state.leadTime.target,
-      leadTimeConfidenceTarget: state.leadTime.confidence,
-      cycleTimeTarget: state.cycleTime.target,
-      cycleTimeConfidenceTarget: state.cycleTime.confidence,
+      leadTimeTarget: leadTime.target,
+      leadTimeConfidenceTarget: leadTime.confidence,
+      cycleTimeTarget: cycleTime.target,
+      cycleTimeConfidenceTarget: cycleTime.confidence,
     };
 
     // call mutation on save button click
@@ -125,19 +139,6 @@ export const ProjectFlowMetricsSettingView = ({
     return null;
   }
 
-  // slider state
-  const target = state.selectedMetric === METRICS.LEAD_TIME ? state.leadTime.target : state.cycleTime.target;
-  const confidence =
-    state.selectedMetric === METRICS.LEAD_TIME ? state.leadTime.confidence : state.cycleTime.confidence;
-
-  // as we want to show updated targets on the chart before saving.
-  // sending this draft state to chart
-  const draftTargetMetrics = {
-    leadTimeTarget: state.leadTime.target,
-    cycleTimeTarget: state.cycleTime.target,
-    leadTimeConfidenceTarget: state.leadTime.confidence,
-    cycleTimeConfidenceTarget: state.cycleTime.confidence,
-  };
   return (
     <React.Fragment>
       <div className="targetControlBarWrapper">
@@ -148,7 +149,7 @@ export const ProjectFlowMetricsSettingView = ({
               key: grouping,
               display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
             }))}
-            initialValue={state.selectedMetric}
+            initialValue={selectedMetric}
             onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
           />
           <div className="targetControlButtons">{getButtonElements()}</div>
@@ -169,7 +170,7 @@ export const ProjectFlowMetricsSettingView = ({
       <FlowMetricsScatterPlotChart
         days={days}
         model={model}
-        selectedMetric={state.selectedMetric}
+        selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         targetMetrics={draftTargetMetrics}
         defectsOnly={defectsOnly}
