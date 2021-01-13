@@ -2,7 +2,6 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {pick} from "../../../../../helpers/utility";
 import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
-import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 export const ProjectFlowMetricsSettingWidget = ({
