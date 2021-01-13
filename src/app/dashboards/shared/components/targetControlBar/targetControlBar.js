@@ -6,6 +6,14 @@ export function getTargetControlBar([
   [daysRange, setDaysRange, daysMarks],
   [confidence, setConfidence, confidenceMarks],
 ]) {
+  // set defaults if none provided
+  const targetMarks = daysMarks || SIX_MONTHS;
+  const confMarks = confidenceMarks || [0, 0.5, 1]
+
+  // get min and max from range
+  const [targetMin, targetMax] = [Math.min(...targetMarks), Math.max(...targetMarks)];
+  const [confMin, confMax] = [Math.min(...confMarks), Math.max(...confMarks)];
+
   return [
     () => (
       <>
@@ -13,10 +21,16 @@ export function getTargetControlBar([
           title="Target"
           initialDays={daysRange}
           setDaysRange={setDaysRange}
-          range={daysMarks || SIX_MONTHS}
+          range={targetMarks}
           className="targetRangeSlider"
         />
-        <InputNumber min={1} max={180} style={{margin: "0 16px"}} value={daysRange} onChange={setDaysRange} />
+        <InputNumber
+          min={targetMin}
+          max={targetMax}
+          style={{margin: "0 16px"}}
+          value={daysRange}
+          onChange={setDaysRange}
+        />
       </>
     ),
     () => (
@@ -25,10 +39,17 @@ export function getTargetControlBar([
           title="Confidence"
           initialValue={confidence}
           setConfidenceRange={setConfidence}
-          range={confidenceMarks}
+          range={confMarks}
           className="confidenceRangeSlider"
         />
-        <InputNumber min={0} max={1.0} step={0.01} style={{margin: "0 16px"}} value={confidence} onChange={setConfidence} />
+        <InputNumber
+          min={confMin}
+          max={confMax}
+          step={0.01}
+          style={{margin: "0 16px"}}
+          value={confidence}
+          onChange={setConfidence}
+        />
       </>
     ),
   ];
