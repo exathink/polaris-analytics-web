@@ -4,7 +4,7 @@ import {i18nNumber, pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 import {getMetricRange} from "../../../shared/helpers/statsUtils";
 
-function getPlotBands(config, measurements, metrics, intl) {
+function getPlotBands(config, measurements, metrics, plotLinesY, intl) {
   if (config.plotBands) {
     const metricConfig = metrics.find(metric => metric.key === config.plotBands.metric);
     let range = getMetricRange(measurements, config.plotBands.metric)
@@ -50,7 +50,8 @@ function getPlotBands(config, measurements, metrics, intl) {
           },
           zIndex: 3,
 
-        }
+        },
+        ...(plotLinesY || [])
       ]
     }
   } else {
@@ -78,7 +79,7 @@ function getTooltip(config, intl) {
   }
 }
 
-function getYAxisRange(config, measurements) {
+function getYValuesRange(config, measurements) {
   if (config.yAxisNormalization) {
     if (config.yAxisNormalization.metric) {
       const {min, max} = getMetricRange(measurements, config.yAxisNormalization.metric)
@@ -98,6 +99,28 @@ function getYAxisRange(config, measurements) {
   }
   return {}
 }
+
+function getYAxisRange(plotLinesY, min, max) {
+  if (plotLinesY != null) {
+    // adjust the min and max values to include plotLines.
+    let minY = min || plotLinesY[0].value;
+    let maxY = max || plotLinesY[0].value;
+    for (let i= 0; i < plotLinesY.length; i++) {
+      if (plotLinesY[i].value < minY) {
+        minY = plotLinesY[i].value
+      }
+
+      if(plotLinesY[i].value > maxY) {
+        maxY = plotLinesY[i].value
+      }
+    }
+    return {min: minY, max: maxY}
+
+  } else {
+    return {min, max}
+  }
+}
+
 
 export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
   const series = metrics.map(
@@ -131,9 +154,13 @@ export const MeasurementTrendLineChart = Chart({
 
       const series = getMeasurementTrendSeriesForMetrics(metrics, measurements);
 
-      const {min: yAxisMin, max: yAxisMax} = getYAxisRange(config, measurements, metrics);
+      const {min, max} = getYValuesRange(config, measurements, metrics);
 
-      const plotBands = getPlotBands(config, measurements, metrics, intl);
+      const {plotLinesY} = config
+      const {min: yAxisMin, max: yAxisMax} = getYAxisRange(plotLinesY, min, max)
+
+      const plotBands = getPlotBands(config, measurements, metrics, plotLinesY, intl);
+
 
       const tooltip = getTooltip(config, intl);
 
@@ -177,10 +204,11 @@ export const MeasurementTrendLineChart = Chart({
           title: {
             text: config.yAxisUom
           },
-          min: yAxisMin,
-          max: yAxisMax,
+          softMin: yAxisMin,
+          softMax: yAxisMax,
           // interpolate plotbands
-          ...plotBands
+          ...plotBands,
+
         },
         // interpolate tooltip
         ...tooltip,
