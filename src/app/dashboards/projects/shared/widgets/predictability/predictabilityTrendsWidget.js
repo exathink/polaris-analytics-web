@@ -14,6 +14,7 @@ export const ProjectPredictabilityTrendsWidget = (
     days,
     measurementWindow,
     samplingFrequency,
+    cycleTimeTarget,
     targetPercentile,
     pollInterval
   }) => {
@@ -38,6 +39,8 @@ export const ProjectPredictabilityTrendsWidget = (
         targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        cycleTimeTarget={cycleTimeTarget}
+        view={view}
       />
     )
 }

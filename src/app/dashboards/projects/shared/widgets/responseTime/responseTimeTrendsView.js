@@ -5,6 +5,8 @@ import {VizItem, VizRow} from "../../../../shared/containers/layout";
 export const ProjectResponseTimeTrendsView = ({
     flowMetricsTrends,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
     measurementPeriod,
     measurementWindow,
     view
@@ -15,6 +17,8 @@ export const ProjectResponseTimeTrendsView = ({
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          leadTimeTarget={leadTimeTarget}
+          cycleTimeTarget={cycleTimeTarget}
           targetPercentile={targetPercentile}
           view={view}
         />

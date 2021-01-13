@@ -45,6 +45,8 @@ export const ResponseTimeTrendsChart = (
   {
     flowMetricsTrends,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
     measurementPeriod,
     measurementWindow,
     view
@@ -69,7 +71,32 @@ export const ResponseTimeTrendsChart = (
       plotBands: {
         metric: 'avgCycleTime'
       },
-
+      plotLinesY: [
+        {
+            color: "orange",
+            value: cycleTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: `T=${cycleTimeTarget}`,
+              align: 'right',
+              verticalAlign: 'middle',
+            },
+            zIndex: 5,
+          },
+        {
+            color: "blue",
+            value: leadTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: `TL=${leadTimeTarget}`,
+              align: 'right',
+              verticalAlign: 'middle',
+            },
+            zIndex: 5
+          },
+      ],
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
 

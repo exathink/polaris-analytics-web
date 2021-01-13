@@ -16,6 +16,8 @@ export const ProjectResponseTimeTrendsWidget = (
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
     pollInterval
   }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -37,6 +39,8 @@ export const ProjectResponseTimeTrendsWidget = (
       <ProjectResponseTimeTrendsView
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeTarget={cycleTimeTarget}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
         view={view}
@@ -48,6 +52,8 @@ export const ProjectResponseTimeTrendsWidget = (
         days={days}
         samplingFrequency={samplingFrequency}
         targetPercentile={targetPercentile}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeTarget={cycleTimeTarget}
         context={context}
         view={view}
         latestWorkItemEvent={latestWorkItemEvent}
