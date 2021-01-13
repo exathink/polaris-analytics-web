@@ -21,18 +21,18 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
         if (sliderMode === mode.EDITING) {
           if (selectedMetric === METRICS.LEAD_TIME) {
             if (leadTime.target !== leadTime.initialTarget && index === 0) {
-                className += " slider-bar-edit";
+              className += " slider-bar-edit";
             }
             if (leadTime.confidence !== leadTime.initialConfidence && index === 1) {
-                className += " slider-bar-edit";
+              className += " slider-bar-edit";
             }
           }
           if (selectedMetric === METRICS.CYCLE_TIME) {
             if (cycleTime.target !== cycleTime.initialTarget && index === 0) {
-                className += " slider-bar-edit";
+              className += " slider-bar-edit";
             }
             if (cycleTime.confidence !== cycleTime.initialConfidence && index === 1) {
-                className += " slider-bar-edit";
+              className += " slider-bar-edit";
             }
           }
         }
