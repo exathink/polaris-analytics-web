@@ -68,6 +68,8 @@ export const FlowMetricsScatterPlotChart = Chart({
     const candidateCycles =
       showEpics != null && !showEpics ? model.filter((cycle) => cycle.workItemType !== "epic") : model;
 
+    const workItemsWithNullCycleTime = candidateCycles.filter(x => !Boolean(x.cycleTime)).length;
+
     const deliveryCyclesByWorkItemType = candidateCycles.reduce((groups, cycle) => {
       if (groups[cycle.workItemType] != null) {
         groups[cycle.workItemType].push(cycle);
@@ -115,8 +117,8 @@ export const FlowMetricsScatterPlotChart = Chart({
             : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Work Items"} closed in the last ${days} days`;
           // When showing cycle time we also report total with no cycle time if they exist.
           // TODO: In targetMetric we don't have workItemsWithNullCycleTime, Need to fix this
-          return selectedMetric === "cycleTime" && targetMetrics.workItemsWithNullCycleTime > 0
-            ? `${subTitle} (${targetMetrics.workItemsWithNullCycleTime} with no cycle time)`
+          return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
+            ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
             : subTitle;
         })(),
       },
