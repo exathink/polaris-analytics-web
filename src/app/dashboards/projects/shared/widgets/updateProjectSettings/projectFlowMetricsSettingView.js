@@ -4,12 +4,13 @@ import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/me
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
 import {Alert, Button} from "antd";
-import {getTargetControlBar} from "../../../../shared/components/targetControlBar/targetControlBar";
 import {useProjectUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./projectFlowMetricsSetting.css";
+import {TargetSliders} from "./TargetSliders";
+
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
 export const ProjectFlowMetricsSettingView = ({
@@ -72,9 +73,7 @@ export const ProjectFlowMetricsSettingView = ({
     cycleTimeConfidenceTarget: cycleTime.confidence,
   };
 
-  // slider state
-  const target = selectedMetric === METRICS.LEAD_TIME ? leadTime.target : cycleTime.target;
-  const confidence = selectedMetric === METRICS.LEAD_TIME ? leadTime.confidence : cycleTime.confidence;
+  const sliderProps = {...state, dispatch};
 
   function handleSaveClick() {
     const payload = {
@@ -141,7 +140,7 @@ export const ProjectFlowMetricsSettingView = ({
 
   return (
     <React.Fragment>
-      <div className="targetControlBarWrapper">
+      <div className="flowMetricControlsWrapper">
         <Flex w={1} className="selectedMetricWrapper">
           <GroupingSelector
             label={" "}
@@ -154,18 +153,7 @@ export const ProjectFlowMetricsSettingView = ({
           />
           <div className="targetControlButtons">{getButtonElements()}</div>
         </Flex>
-        <div className="sliderWrapper">
-          {getTargetControlBar([
-            [target, (newTarget) => dispatch({type: actionTypes.UPDATE_TARGET, payload: newTarget})],
-            [
-              confidence,
-              (newConfidence) => dispatch({type: actionTypes.UPDATE_CONFIDENCE, payload: newConfidence}),
-              [0, 0.5, 1.0],
-            ],
-          ]).map((bar) => (
-            <div className={state.mode === mode.EDITING ? "slider-bar slider-bar-edit" : "slider-bar"}>{bar()}</div>
-          ))}
-        </div>
+        <TargetSliders {...sliderProps} />
       </div>
       <FlowMetricsScatterPlotChart
         days={days}

@@ -1,4 +1,4 @@
-.targetControlBarWrapper {
+.flowMetricControlsWrapper {
   padding: 10px;
   background: white;
 }
@@ -33,15 +33,15 @@
 
 .slider-bar {
   width: 50%;
-  border: 1px solid grey;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 5px;
   margin-right: 10px;
   display: flex;
   align-items: center;
 }
 
-.slider-bar-edit{
-  border: 2px solid rgb(192,132,252);
+.slider-bar-edit {
+  border: 1px solid rgb(0, 0, 0, 0.4);
 }
 .slider-bar:last-of-type {
   margin-right: 0px;
