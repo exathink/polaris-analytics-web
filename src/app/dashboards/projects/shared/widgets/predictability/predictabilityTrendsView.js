@@ -6,7 +6,9 @@ export const ProjectPredictabilityTrendsView = ({
     flowMetricsTrends,
     targetPercentile,
     measurementPeriod,
-    measurementWindow
+    measurementWindow,
+    cycleTimeTarget,
+    view,
   }) => (
     <VizRow h={1}>
       <VizItem w={1}>
@@ -15,6 +17,8 @@ export const ProjectPredictabilityTrendsView = ({
           targetPercentile={targetPercentile}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          cycleTimeTarget={cycleTimeTarget}
+          view={view}
         />
       </VizItem>
     </VizRow>
