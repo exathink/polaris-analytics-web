@@ -20,6 +20,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     days,
     measurementWindow,
     samplingFrequency,
+    leadTimeTarget,
+    cycleTimeTarget,
     targetPercentile,
     pollInterval
   }
@@ -62,6 +64,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
                 targetPercentile={targetPercentile}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
               />
           }
           showDetail={false}

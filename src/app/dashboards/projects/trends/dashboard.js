@@ -123,7 +123,9 @@ const dashboard = ({viewerContext}) => (
                     measurementWindow={30}
                     days={45}
                     samplingFrequency={7}
-                    targetPercentile={0.7}
+                    leadTimeTarget={leadTimeTarget}
+                    cycleTimeTarget={cycleTimeTarget}
+                    targetPercentile={cycleTimeConfidenceTarget}
                     context={context}
                     view={view}
                     latestWorkItemEvent={latestWorkItemEvent}
