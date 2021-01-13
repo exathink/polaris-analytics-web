@@ -31,10 +31,11 @@ function mapSymbol(workItem) {
   }
 }
 
-function getMaxDays(deliveryCycles, targetMetrics) {
+function getMaxDays(deliveryCycles, targetMetrics, selectedMetric) {
+  let metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
   return deliveryCycles.reduce(
-    (max, workItem) => (workItem.leadTime > max ? workItem.leadTime : max),
-    targetMetrics.leadTimeTarget || 0
+    (max, workItem) => ((workItem[metricProp] || 0) > max ? workItem[metricProp] : max),
+    targetMetrics[`${metricProp}Target`] || 0
   );
 }
 
@@ -146,7 +147,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         title: {
           text: selectedMetric === "authors" ? `Authors` : `Days`,
         },
-        max: getMaxDays(candidateCycles, targetMetrics),
+        max: getMaxDays(candidateCycles, targetMetrics, selectedMetric),
         softMin: 0,
         plotLines: getPlotLines(selectedMetric, targetMetrics, intl),
       },
