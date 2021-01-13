@@ -9,7 +9,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./projectFlowMetricsSetting.css";
-import {TargetSliders} from "./TargetSliders";
+import {TargetSliders} from "./targetSliders";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
