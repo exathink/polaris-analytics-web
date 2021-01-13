@@ -140,7 +140,7 @@ export const ProjectFlowMetricsSettingView = ({
 
   return (
     <React.Fragment>
-      <div className="flowMetricControlsWrapper">
+      <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
         <Flex w={1} className="selectedMetricWrapper">
           <GroupingSelector
             label={" "}

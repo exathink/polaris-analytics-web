@@ -3,6 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {pick} from "../../../../../helpers/utility";
 import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectFlowMetricsSettingWidget = ({
   instanceKey,
@@ -26,8 +27,10 @@ export const ProjectFlowMetricsSettingWidget = ({
   });
 
   if (loading) return <Loading />;
-  if (error) return null;
-
+  if (error) {
+    logGraphQlError("ProjectFlowMetricsSettingWidget.useQueryProjectClosedDeliveryCycleDetail", error);
+    return null;
+  }
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
   const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
     pick(
