@@ -2,7 +2,6 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {pick} from "../../../../../helpers/utility";
 import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
-import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 export const ProjectDeliveryCycleFlowMetricsWidget = ({
@@ -21,15 +20,6 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   stateMappingIndex,
   pollInterval,
 }) => {
-  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics({
-    instanceKey,
-    days,
-    targetPercentile: cycleTimeConfidenceTarget,
-    referenceString: latestWorkItemEvent,
-    defectsOnly,
-    specsOnly,
-  });
-
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     instanceKey,
     days,
@@ -41,7 +31,6 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   if (loading) return <Loading />;
   if (error) return null;
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
-  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {};
   const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
     pick(
       edge.node,
@@ -68,7 +57,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
       context={context}
       days={days}
       model={flowMetricsData}
-      projectCycleMetrics={projectCycleMetrics}
+      targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
     />

@@ -18,15 +18,6 @@ export const ProjectFlowMetricsSettingWidget = ({
   days,
   defectsOnly,
 }) => {
-  const {data: projectCycleMetricsData} = useQueryProjectCycleMetrics({
-    instanceKey,
-    days,
-    targetPercentile: cycleTimeConfidenceTarget,
-    referenceString: latestWorkItemEvent,
-    defectsOnly,
-    specsOnly,
-  });
-
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     instanceKey,
     days,
@@ -39,7 +30,6 @@ export const ProjectFlowMetricsSettingWidget = ({
   if (error) return null;
 
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
-  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {...targetMetrics};
   const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
     pick(
       edge.node,
@@ -66,7 +56,7 @@ export const ProjectFlowMetricsSettingWidget = ({
       context={context}
       days={days}
       model={flowMetricsData}
-      projectCycleMetrics={projectCycleMetrics}
+      targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
     />

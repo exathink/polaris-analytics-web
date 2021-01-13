@@ -17,7 +17,7 @@ export const ProjectFlowMetricsSettingView = ({
   context,
   model,
   days,
-  projectCycleMetrics,
+  targetMetrics,
   defectsOnly,
   specsOnly,
 }) => {
@@ -37,31 +37,30 @@ export const ProjectFlowMetricsSettingView = ({
   const initialState = {
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
-      target: projectCycleMetrics.leadTimeTarget,
-      confidence: projectCycleMetrics.leadTimeConfidenceTarget,
-      initialTarget: projectCycleMetrics.leadTimeTarget,
-      initialConfidence: projectCycleMetrics.leadTimeConfidenceTarget,
+      target: targetMetrics.leadTimeTarget,
+      confidence: targetMetrics.leadTimeConfidenceTarget,
+      initialTarget: targetMetrics.leadTimeTarget,
+      initialConfidence: targetMetrics.leadTimeConfidenceTarget,
     },
     cycleTime: {
-      target: projectCycleMetrics.cycleTimeTarget,
-      confidence: projectCycleMetrics.cycleTimeConfidenceTarget,
-      initialTarget: projectCycleMetrics.cycleTimeTarget,
-      initialConfidence: projectCycleMetrics.cycleTimeConfidenceTarget,
+      target: targetMetrics.cycleTimeTarget,
+      confidence: targetMetrics.cycleTimeConfidenceTarget,
+      initialTarget: targetMetrics.cycleTimeTarget,
+      initialConfidence: targetMetrics.cycleTimeConfidenceTarget,
     },
     mode: mode.INIT,
   };
 
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
-  const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = projectCycleMetrics;
   // after mutation is successful,we are invalidating active quries.
   // we need to update default settings from api response, this useEffect will serve the purpose.
   React.useEffect(() => {
     dispatch({
       type: actionTypes.UPDATE_DEFAULTS,
-      payload: {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget},
+      payload: targetMetrics,
     });
-  }, [leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget]);
+  }, [...Object.values(targetMetrics)]);
 
   function handleSaveClick() {
     const payload = {
@@ -133,8 +132,7 @@ export const ProjectFlowMetricsSettingView = ({
 
   // as we want to show updated targets on the chart before saving.
   // sending this draft state to chart
-  const updatedProjectCycleMetrics = {
-    ...projectCycleMetrics,
+  const draftTargetMetrics = {
     leadTimeTarget: state.leadTime.target,
     cycleTimeTarget: state.cycleTime.target,
     leadTimeConfidenceTarget: state.leadTime.confidence,
@@ -173,7 +171,7 @@ export const ProjectFlowMetricsSettingView = ({
         model={model}
         selectedMetric={state.selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        projectCycleMetrics={updatedProjectCycleMetrics}
+        targetMetrics={draftTargetMetrics}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}

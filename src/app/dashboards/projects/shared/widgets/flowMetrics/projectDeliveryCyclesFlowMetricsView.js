@@ -11,7 +11,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   context,
   model,
   days,
-  projectCycleMetrics,
+  targetMetrics,
   initialMetric,
   defectsOnly,
   specsOnly,
@@ -63,7 +63,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        projectCycleMetrics={projectCycleMetrics}
+        targetMetrics={targetMetrics}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         showEpics={showEpics}
