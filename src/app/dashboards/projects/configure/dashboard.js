@@ -2,16 +2,13 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ConfigSelector} from "./configSelector/configSelector";
+import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
 import {ProjectFlowMetricsSettingWidget} from "./updateProjectSettings/projectFlowMetricsSettingWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel/projectPipelineFunnelWidget";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 const dashboard_id = "dashboards.project.configure";
 
-const CONFIG_TABS = {
-  VALUE_STREAM: "value-stream",
-  FLOW_METRICS: "flow-metrics",
-};
+
 
 function ConfigureDashboard({project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults}, context}) {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
@@ -59,7 +56,7 @@ function ConfigureDashboard({project: {key, latestWorkItemEvent, latestCommit, s
   }
 
   function getFlowMetricsSettingElements() {
-    if (configTab === CONFIG_TABS.FLOW_METRICS) {
+    if (configTab === CONFIG_TABS.RESPONSE_TIME_SLA) {
       return (
         <DashboardRow h="90%">
           <DashboardWidget

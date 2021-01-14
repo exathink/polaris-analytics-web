@@ -1,5 +1,9 @@
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import React from "react";
+export const CONFIG_TABS = {
+  VALUE_STREAM: "value-stream",
+  RESPONSE_TIME_SLA: "response-time-sla",
+};
 
 export const ConfigSelector = (
   {
@@ -12,12 +16,12 @@ export const ConfigSelector = (
       [
 
         {
-          key: 'value-stream',
+          key: CONFIG_TABS.VALUE_STREAM,
           display: 'Value Stream Mapping'
         },
         {
-          key: 'flow-metrics',
-          display: 'Flow Metrics Settings'
+          key: CONFIG_TABS.RESPONSE_TIME_SLA,
+          display: 'Response Time SLA'
         },
       ]
     }
