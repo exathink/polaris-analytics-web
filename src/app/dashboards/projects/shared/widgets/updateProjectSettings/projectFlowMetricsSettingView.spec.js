@@ -9,7 +9,7 @@ import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
 beforeAll(() => {
   jest.spyOn(settings, "settingsReducer");
   // this is remove noise from console.
-  jest.spyOn(console, "log").mockImplementation(() => {})
+  jest.spyOn(console, "log").mockImplementation(() => {});
 });
 
 afterAll(() => {
@@ -116,8 +116,8 @@ describe("ProjectFlowMetricsSettingView", () => {
     describe("when there are no workItems", () => {
       const emptyPropsFixture = {
         ...propsFixture,
-        model: []
-      }
+        model: [],
+      };
       test("it renders correct title for Target and Confidence sliders", () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
@@ -146,13 +146,18 @@ describe("ProjectFlowMetricsSettingView", () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
         expect(await screen.findByText(/3 work items closed/i)).toBeInTheDocument();
       });
+
+      // TODO: need to see how to test this, tried few things which are not working.
+      test("when target slider value is updated, corresponding plotline is also updated", async () => {});
+
+      test("when confidence slider value is updated, corresponding plotline text is also updated", () => {});
     });
 
     describe("save/cancel", () => {
-      test("when sliders values are updated other than default, save/cancel buttons should appear on the screen", async () => {
+      test("when target slider value is updated other than default, save/cancel buttons should appear on the screen", async () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
 
-        // change the value of slider/inputNumber, so that save/canel appears
+        // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
         fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -160,10 +165,10 @@ describe("ProjectFlowMetricsSettingView", () => {
         expect(screen.queryByText(/cancel/i)).toBeInTheDocument();
       });
 
-      test("when sliders values are updated back to default, save/cancel buttons should disappear from the screen", async () => {
+      test("when target slider value is updated back to default, save/cancel buttons should disappear from the screen", async () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
 
-        // change the value of slider/inputNumber, so that save/canel appears
+        // change the value of slider/inputNumber, so that save/cancel appears
         let targetInputElement = await screen.findByTestId("target-range-input");
         fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -180,10 +185,41 @@ describe("ProjectFlowMetricsSettingView", () => {
         expect(screen.queryByText(/cancel/i)).not.toBeInTheDocument();
       });
 
+      test("when confidence slider value is updated other than default, save/cancel buttons should appear on the screen", async () => {
+        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+
+        // change the value of slider/inputNumber, so that save/cancel appears
+        const confidenceInputElement = await screen.findByTestId("confidence-range-input");
+        fireEvent.change(confidenceInputElement, {target: {value: 0.8}});
+
+        expect(screen.queryByText(/save/i)).toBeInTheDocument();
+        expect(screen.queryByText(/cancel/i)).toBeInTheDocument();
+      });
+
+      test("when confidence slider value is updated back to default, save/cancel buttons should disappear from the screen", async () => {
+        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+
+        // change the value of slider/inputNumber, so that save/cancel appears
+        let confidenceInputElement = await screen.findByTestId("confidence-range-input");
+        fireEvent.change(confidenceInputElement, {target: {value: 0.8}});
+
+        //before
+        expect(screen.queryByText(/save/i)).toBeInTheDocument();
+        expect(screen.queryByText(/cancel/i)).toBeInTheDocument();
+
+        // update slider input back to default, so that save/cancel disappears
+        confidenceInputElement = await screen.findByTestId("confidence-range-input");
+        fireEvent.change(confidenceInputElement, {target: {value: 0.9}});
+
+        //after
+        expect(screen.queryByText(/save/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/cancel/i)).not.toBeInTheDocument();
+      });
+
       test("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
 
-        // change the value of slider/inputNumber, so that save/canel appears
+        // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
         fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -204,7 +240,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
 
-        // change the value of slider/inputNumber, so that save/canel appears
+        // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
         fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -249,7 +285,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
           expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
 
-          // change the value of slider/inputNumber, so that save/canel appears
+          // change the value of slider/inputNumber, so that save/cancel appears
           const targetInputElement = await screen.findByTestId("target-range-input");
           fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -268,7 +304,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
           expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
 
-          // change the value of slider/inputNumber, so that save/canel appears
+          // change the value of slider/inputNumber, so that save/cancel appears
           const targetInputElement = await screen.findByTestId("target-range-input");
           fireEvent.change(targetInputElement, {target: {value: 45}});
 
@@ -307,7 +343,7 @@ describe("ProjectFlowMetricsSettingView", () => {
           // Here it should receive {type: UPDATE_METRIC} but not receiving.
           // expect(settings.settingsReducer).toHaveBeenCalled();
           console.log(settings.settingsReducer.mock.calls);
-         // screen.debug(screen.getByText(/1 with no cycle time/i));
+          // screen.debug(screen.getByText(/1 with no cycle time/i));
         });
       });
     });
