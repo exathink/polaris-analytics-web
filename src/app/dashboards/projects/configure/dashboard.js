@@ -2,7 +2,7 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ConfigSelector} from "../shared/components/configSelector";
+import {ConfigSelector} from "./configSelector/configSelector";
 import {ProjectFlowMetricsSettingWidget} from "./updateProjectSettings/projectFlowMetricsSettingWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel/projectPipelineFunnelWidget";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
