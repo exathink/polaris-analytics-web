@@ -1,11 +1,11 @@
 import React from "react";
 import {Loading} from "../../../../components/graphql/loading";
 import {pick} from "../../../../helpers/utility";
-import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
+import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
-export const ProjectFlowMetricsSettingWidget = ({
+export const ProjectResponseTimeSLASettingsWidget = ({
   instanceKey,
   specsOnly,
   view,
@@ -53,7 +53,7 @@ export const ProjectFlowMetricsSettingWidget = ({
     )
   );
   return (
-    <ProjectFlowMetricsSettingView
+    <ProjectResponseTimeSLASettingsView
       instanceKey={instanceKey}
       context={context}
       days={days}

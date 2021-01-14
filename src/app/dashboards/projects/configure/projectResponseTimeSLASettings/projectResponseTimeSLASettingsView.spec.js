@@ -4,7 +4,7 @@ import * as settings from "./settingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
-import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
+import {ProjectResponseTimeSLASettingsView} from "./projectFlowMetricsSettingView";
 
 beforeAll(() => {
   jest.spyOn(settings, "settingsReducer");
@@ -119,14 +119,14 @@ describe("ProjectFlowMetricsSettingView", () => {
         model: [],
       };
       test("it renders correct title for Target and Confidence sliders", () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
         expect(screen.queryByText(/Target/i)).toBeInTheDocument();
         expect(screen.queryByText(/Confidence/i)).toBeInTheDocument();
       });
 
       test("it renders default target and confidence values initially on the sliders", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
         const targetInput = await screen.findByTestId("target-range-input");
         expect(targetInput.value).toBe("30");
@@ -135,7 +135,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("it renders appropriate message on the chart", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
         await screen.findByText(/0 work items closed/i);
       });
@@ -143,7 +143,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
     describe("when there are workItems", () => {
       test("it renders appropriate message on the chart", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
         expect(await screen.findByText(/3 work items closed/i)).toBeInTheDocument();
       });
 
@@ -155,7 +155,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
     describe("save/cancel", () => {
       test("when target slider value is updated other than default, save/cancel buttons should appear on the screen", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
@@ -166,7 +166,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("when target slider value is updated back to default, save/cancel buttons should disappear from the screen", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         let targetInputElement = await screen.findByTestId("target-range-input");
@@ -186,7 +186,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("when confidence slider value is updated other than default, save/cancel buttons should appear on the screen", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         const confidenceInputElement = await screen.findByTestId("confidence-range-input");
@@ -197,7 +197,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("when confidence slider value is updated back to default, save/cancel buttons should disappear from the screen", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         let confidenceInputElement = await screen.findByTestId("confidence-range-input");
@@ -217,7 +217,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
@@ -238,7 +238,7 @@ describe("ProjectFlowMetricsSettingView", () => {
       });
 
       test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         const targetInputElement = await screen.findByTestId("target-range-input");
@@ -281,7 +281,7 @@ describe("ProjectFlowMetricsSettingView", () => {
           },
         ];
         test("it renders nothing and logs the error when there is a network error", async () => {
-          renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, mockNetworkError);
+          renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockNetworkError);
 
           expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
 
@@ -300,7 +300,7 @@ describe("ProjectFlowMetricsSettingView", () => {
         });
 
         test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-          renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, mockGraphQlErrors);
+          renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockGraphQlErrors);
 
           expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
 
@@ -325,7 +325,7 @@ describe("ProjectFlowMetricsSettingView", () => {
     describe("when there are workItems", () => {
       // TODO: seems below click event of metric tab is not firing because of ant design tab is not recieving event.
       test.skip("it renders correct title for Target and Confidence sliders", async () => {
-        renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         await waitFor(() => {
           // this receives {type: UPDATE_DEFAULTS}

@@ -3,8 +3,8 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
-import {ProjectFlowMetricsSettingWidget} from "./updateProjectSettings/projectFlowMetricsSettingWidget";
-import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel/projectPipelineFunnelWidget";
+import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
+import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 const dashboard_id = "dashboards.project.configure";
 
@@ -64,7 +64,7 @@ function ConfigureDashboard({project: {key, latestWorkItemEvent, latestCommit, s
             name="flow-metrics-setting-widget"
             render={({view}) => {
               return (
-                <ProjectFlowMetricsSettingWidget
+                <ProjectResponseTimeSLASettingsWidget
                   instanceKey={key}
                   view={view}
                   context={context}

@@ -8,12 +8,12 @@ import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdate
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectFlowMetricsSetting.css";
+import "./projectResponseTimeSLASettings.css";
 import {TargetSliders} from "./targetSliders";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
-export const ProjectFlowMetricsSettingView = ({
+export const ProjectResponseTimeSLASettingsView = ({
   instanceKey,
   context,
   model,
