@@ -1,10 +1,10 @@
 import React from "react";
 import {screen, waitFor} from "@testing-library/react";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {getNDaysAgo} from "../../../../../../test/test-utils"
+import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {getNDaysAgo} from "../../../../../test/test-utils"
 import {ProjectFlowMetricsSettingWidget} from "./projectFlowMetricsSettingWidget";
 import {GraphQLError} from "graphql";
-import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 beforeAll(() => {
   jest.spyOn(console, "log").mockImplementation(() => {})

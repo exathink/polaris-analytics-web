@@ -3,7 +3,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ConfigSelector} from "../shared/components/configSelector";
-import {ProjectFlowMetricsSettingWidget} from "../shared/widgets/updateProjectSettings/projectFlowMetricsSettingWidget";
+import {ProjectFlowMetricsSettingWidget} from "./updateProjectSettings/projectFlowMetricsSettingWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel/projectPipelineFunnelWidget";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 const dashboard_id = "dashboards.project.configure";

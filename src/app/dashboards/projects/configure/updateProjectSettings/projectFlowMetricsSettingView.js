@@ -1,12 +1,12 @@
 import React from "react";
-import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
+import {FlowMetricsScatterPlotChart} from "../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../shared/helpers/metricsMeta";
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
 import {Alert, Button} from "antd";
-import {useProjectUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../components/graphql/utils";
+import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./projectFlowMetricsSetting.css";
 import {TargetSliders} from "./targetSliders";

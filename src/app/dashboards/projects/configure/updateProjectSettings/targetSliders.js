@@ -1,5 +1,5 @@
 import React from "react";
-import {getTargetControlBar} from "../../../../shared/components/targetControlBar/targetControlBar";
+import {getTargetControlBar} from "../../../shared/components/targetControlBar/targetControlBar";
 import {actionTypes, METRICS, mode} from "./constants";
 
 export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: sliderMode, dispatch}) {
