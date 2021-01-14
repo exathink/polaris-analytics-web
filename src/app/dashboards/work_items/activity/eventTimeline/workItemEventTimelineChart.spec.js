@@ -31,6 +31,7 @@ const workItemFixture = {
   workItemCommits: [],
   workItemEvents: [],
   workItemPullRequests: [],
+  workItemDeliveryCycles: [],
 };
 
 const commitsFixture = [
@@ -264,6 +265,7 @@ describe("workItemEventTimelineChart", () => {
       workItemCommits: [],
       workItemEvents: [],
       workItemPullRequests: [],
+      workItemDeliveryCycles: [],
     };
 
     const expectedChartConfig = {
@@ -502,11 +504,108 @@ describe("workItemEventTimelineChart", () => {
         (points) => [points[0]]
       );
 
-      const [workItem] = workItemWithEvents.workItemEvents
+      const [workItem] = workItemWithEvents.workItemEvents;
       expect(actual).toMatchObject({
         header: expect.stringMatching(/^Phase:.*/),
         body: [["Date: ", formatDate(workItem.eventDate)]],
       });
+    });
+  });
+
+  describe("delivery cycle plotLines", () => {
+    test("it does not show delivery cycle plotLines if there are no closed delivery cycles", () => {
+      const activeWorkItem = {
+        ...workItemFixture,
+        workItemDeliveryCycles: [
+          {
+            endDate: null,
+            leadTime: null,
+            cycleTime: null,
+          },
+        ],
+      };
+      const {
+        xAxis: {plotLines},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={activeWorkItem} view={"primary"} />);
+      expect(plotLines).toEqual([]);
+    });
+
+    test("it shows delivery cycle plotLines if there is one closed delivery cycle without a cycle time", () => {
+      const endDate = "2020-11-09T14:52:29.562000";
+      const activeWorkItem = {
+        ...workItemFixture,
+        workItemDeliveryCycles: [
+          {
+            endDate: endDate,
+            leadTime: 2.36,
+            cycleTime: null,
+          },
+        ],
+      };
+      const {
+        xAxis: {plotLines},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={activeWorkItem} view={"primary"} />);
+      expect(plotLines).toMatchObject([
+        {
+          value: epoch(endDate)
+        }
+      ]);
+
+    });
+
+    test("it shows delivery cycle plotLine with a cycle time label if there is one closed delivery cycle with a cycle time", () => {
+      const endDate = "2020-11-09T14:52:29.562000";
+      const activeWorkItem = {
+        ...workItemFixture,
+        workItemDeliveryCycles: [
+          {
+            endDate: endDate,
+            leadTime: 2.36,
+            cycleTime: 1.0,
+          },
+        ],
+      };
+      const {
+        xAxis: {plotLines},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={activeWorkItem} view={"primary"} />);
+      expect(plotLines).toMatchObject([
+        {
+          value: epoch(endDate),
+          label: {
+            text: "C=1 days"
+          }
+        }
+      ]);
+
+    });
+
+    test("it shows a plotline for each closed delivery cycle", () => {
+
+      const activeWorkItem = {
+        ...workItemFixture,
+        workItemDeliveryCycles: [
+          {
+            endDate: "2020-11-09T14:52:29.562000",
+            leadTime: 2.36,
+            cycleTime: 1.0,
+          },
+          {
+            endDate: "2020-11-12T14:52:29.562000",
+            leadTime: 2.36,
+            cycleTime: 1.0,
+          },
+          {
+            endDate: null,
+            leadTime: null,
+            cycleTime: null,
+          },
+        ],
+      };
+      const {
+        xAxis: {plotLines},
+      } = renderedChartConfig(<WorkItemEventsTimelineChart workItem={activeWorkItem} view={"primary"} />);
+      expect(plotLines.length).toBe(2)
+
     });
   });
 
@@ -703,7 +802,6 @@ describe("workItemEventTimelineChart", () => {
           ["Age: ", `${formatNumber(pullRequest.age)} Days`],
         ],
       });
-
     });
 
     test("should render the tooltip for completion event of the pull request point", async () => {

@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, elide, epoch, pick, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, elide, epoch, percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
 
@@ -146,6 +146,25 @@ export const tooltipFormatters = {
   },
 };
 
+function getDeliveryCyclePlotLines(workItem, intl) {
+  const {workItemDeliveryCycles} = workItem;
+  return workItemDeliveryCycles.filter(
+    (deliveryCycle) => deliveryCycle.endDate != null
+  ).map(
+    (deliveryCycle) => ({
+      color: 'blue',
+      value: epoch(deliveryCycle.endDate),
+      dashStyle: 'solid',
+      width: 1,
+      label: {
+        text: deliveryCycle.cycleTime ? `C=${intl.formatNumber(deliveryCycle.cycleTime)} days` : ``,
+        align: 'right',
+        verticalAlign: 'bottom',
+      }
+    })
+  );
+}
+
 export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
@@ -164,11 +183,11 @@ export const WorkItemEventsTimelineChart = Chart({
       }),
       PullRequestCreated: (point) => ({
         type: "pullRequest",
-        webUrl: point.timelineEvent.webUrl
+        webUrl: point.timelineEvent.webUrl,
       }),
       PullRequestCompleted: (point) => ({
         type: "pullRequest",
-        webUrl: point.timelineEvent.webUrl
+        webUrl: point.timelineEvent.webUrl,
       }),
     };
 
@@ -182,7 +201,7 @@ export const WorkItemEventsTimelineChart = Chart({
     });
   },
 
-  getConfig: ({ workItem, context, intl }) => {
+  getConfig: ({workItem, context, intl}) => {
     const series_data = [
       ...getWorkItemEvents(workItem),
       ...getWorkItemCommitEvents(workItem),
@@ -206,6 +225,7 @@ export const WorkItemEventsTimelineChart = Chart({
         title: {
           text: null,
         },
+        plotLines: getDeliveryCyclePlotLines(workItem, intl)
       },
       yAxis: {
         id: "y-items",
@@ -233,7 +253,7 @@ export const WorkItemEventsTimelineChart = Chart({
           data: series_data,
           turboThreshold: 0,
           allowPointSelect: true,
-          animation: false
+          animation: false,
         },
       ],
       legend: {

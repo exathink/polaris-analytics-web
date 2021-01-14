@@ -61,6 +61,15 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
               }
             }
           }
+          workItemDeliveryCycles(interfaces: [DeliveryCycleInfo, CycleMetrics]) {
+              edges {
+                  node {
+                      endDate
+                      leadTime
+                      cycleTime
+                  }
+              }
+          }
         }
       }
     `,
