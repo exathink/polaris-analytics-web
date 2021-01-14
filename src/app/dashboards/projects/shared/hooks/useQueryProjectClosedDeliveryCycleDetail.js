@@ -1,62 +1,61 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString}) {
-  return useQuery(
-    gql`
-      query projectClosedDeliveryCycleDetail(
-        $key: String!
-        $referenceString: String
-        $days: Int
-        $defectsOnly: Boolean
-        $specsOnly: Boolean
+export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
+  query projectClosedDeliveryCycleDetail(
+    $key: String!
+    $referenceString: String
+    $days: Int
+    $defectsOnly: Boolean
+    $specsOnly: Boolean
+  ) {
+    project(key: $key, referenceString: $referenceString) {
+      workItemDeliveryCycles(
+        closedWithinDays: $days
+        defectsOnly: $defectsOnly
+        specsOnly: $specsOnly
+        interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
       ) {
-        project(key: $key, referenceString: $referenceString) {
-          workItemDeliveryCycles(
-            closedWithinDays: $days
-            defectsOnly: $defectsOnly
-            specsOnly: $specsOnly
-            interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
-          ) {
-            edges {
-              node {
-                name
-                key
+        edges {
+          node {
+            name
+            key
 
-                displayId
-                workItemKey
-                workItemType
-                isBug
+            displayId
+            workItemKey
+            workItemType
+            isBug
 
-                state
+            state
 
-                startDate
-                endDate
+            startDate
+            endDate
 
-                leadTime
-                cycleTime
-                latency
+            leadTime
+            cycleTime
+            latency
 
-                effort
-                duration
-                authorCount
-              }
-            }
+            effort
+            duration
+            authorCount
           }
         }
       }
-    `,
-    {
-      service: analytics_service,
-      variables: {
-        key: instanceKey,
-        days: days,
-        defectsOnly: defectsOnly,
-        specsOnly: specsOnly,
-        referenceString: referenceString,
-      },
-      errorPolicy: "all",
-      pollInterval: analytics_service.defaultPollInterval(),
     }
-  );
+  }
+`;
+
+export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString}) {
+  return useQuery(PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL, {
+    service: analytics_service,
+    variables: {
+      key: instanceKey,
+      days: days,
+      defectsOnly: defectsOnly,
+      specsOnly: specsOnly,
+      referenceString: referenceString,
+    },
+    errorPolicy: "all",
+    pollInterval: analytics_service.defaultPollInterval(),
+  });
 }

@@ -27,26 +27,26 @@ export const PlotLines = {
       }
     }
   ),
-  leadTimeTarget: (aggregateCycleMetrics, intl, align='left', vAlign='top') => ({
+  leadTimeTarget: (targetMetrics, intl, align='left', vAlign='top') => ({
     color: 'blue',
-    value: aggregateCycleMetrics.leadTimeTarget,
+    value: targetMetrics.leadTimeTarget,
     dashStyle: 'longdashdot',
     width: 1,
     zIndex: 7,// seems tooptip z-index is 8 (so keeping just below it, also we wanna keep it above chart point z-index)
     label: {
-      text: `${percentileToText(aggregateCycleMetrics.leadTimeConfidenceTarget)} Lead Time Target=${intl.formatNumber(aggregateCycleMetrics.leadTimeTarget)} days`,
+      text: `${percentileToText(targetMetrics.leadTimeConfidenceTarget)} Lead Time Target=${intl.formatNumber(targetMetrics.leadTimeTarget)} days`,
       align: align,
       verticalAlign: vAlign,
     }
   }),
-  cycleTimeTarget: (aggregateCycleMetrics, intl, align='left', vAlign='top') => ({
+  cycleTimeTarget: (targetMetrics, intl, align='left', vAlign='top') => ({
     color: 'orange',
-    value: aggregateCycleMetrics.cycleTimeTarget,
+    value: targetMetrics.cycleTimeTarget,
     dashStyle: 'longdashdot',
     width: 1,
     zIndex: 7,
     label: {
-      text: `${percentileToText(aggregateCycleMetrics.cycleTimeConfidenceTarget)} Cycle Time Target=${intl.formatNumber(aggregateCycleMetrics.cycleTimeTarget)} days`,
+      text: `${percentileToText(targetMetrics.cycleTimeConfidenceTarget)} Cycle Time Target=${intl.formatNumber(targetMetrics.cycleTimeTarget)} days`,
       align: align,
       verticalAlign: vAlign,
     }

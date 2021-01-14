@@ -1,0 +1,61 @@
+.flowMetricControlsWrapper {
+  padding: 10px;
+  background: white;
+}
+
+.selectedMetricWrapper {
+  background: white;
+  margin-bottom: 20px;
+}
+
+.targetRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}
+
+.confidenceRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}
+
+.targetControlButtons {
+  height: 25px;
+  margin-left: auto;
+}
+
+.sliderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.slider-bar {
+  width: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.slider-bar-edit {
+  border: 1px solid rgb(0, 0, 0, 0.4);
+}
+.slider-bar:last-of-type {
+  margin-right: 0px;
+}
+
+.slider-bar .ant-input-number {
+  margin: 10px 0 0 0 !important;
+}
+
+.targetSave {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.targetCancel {
+  margin-right: 20px;
+}

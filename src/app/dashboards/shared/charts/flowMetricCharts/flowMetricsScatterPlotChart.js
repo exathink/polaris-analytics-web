@@ -1,6 +1,6 @@
-import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../../helpers/utility";
+import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -9,10 +9,10 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius,
   WorkItemTypeSortOrder,
-} from "../../../../shared/config";
+} from "../../config";
 
-import {PlotLines} from "../../../../shared/charts/workItemCharts/chartParts";
-import {formatDateTime} from "../../../../../i18n";
+import {PlotLines} from "../workItemCharts/chartParts";
+import {formatDateTime} from "../../../../i18n";
 const METRICS = ["leadTime", "backlogTime", "cycleTime", "latency", "duration", "effort", "authors"];
 
 function mapColor(workItem) {
@@ -31,25 +31,26 @@ function mapSymbol(workItem) {
   }
 }
 
-function getMaxDays(deliveryCycles, projectCycleMetrics) {
+function getMaxDays(deliveryCycles, targetMetrics, selectedMetric) {
+  let metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
   return deliveryCycles.reduce(
-    (max, workItem) => (workItem.leadTime > max ? workItem.leadTime : max),
-    projectCycleMetrics.leadTimeTarget || 0
+    (max, workItem) => ((workItem[metricProp] || 0) > max ? workItem[metricProp] : max),
+    targetMetrics[`${metricProp}Target`] || 0
   );
 }
 
-function getPlotLines(selectedMetric, projectCycleMetrics, intl) {
+function getPlotLines(selectedMetric, targetMetrics, intl) {
   if (selectedMetric === "leadTime") {
-    return [PlotLines.leadTimeTarget(projectCycleMetrics, intl)];
+    return [PlotLines.leadTimeTarget(targetMetrics, intl)];
   } else if (selectedMetric === "effort" || selectedMetric === "authors") {
     return [];
   } else {
-    return [PlotLines.cycleTimeTarget(projectCycleMetrics, intl)];
+    return [PlotLines.cycleTimeTarget(targetMetrics, intl)];
   }
 }
 
 export const FlowMetricsScatterPlotChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly"),
+  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "targetMetrics"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.cycle),
 
@@ -58,7 +59,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     days,
     selectedMetric,
     metricsMeta,
-    projectCycleMetrics,
+    targetMetrics,
     defectsOnly,
     specsOnly,
     showEpics,
@@ -67,6 +68,8 @@ export const FlowMetricsScatterPlotChart = Chart({
   }) => {
     const candidateCycles =
       showEpics != null && !showEpics ? model.filter((cycle) => cycle.workItemType !== "epic") : model;
+
+    const workItemsWithNullCycleTime = candidateCycles.filter(x => !Boolean(x.cycleTime)).length;
 
     const deliveryCyclesByWorkItemType = candidateCycles.reduce((groups, cycle) => {
       if (groups[cycle.workItemType] != null) {
@@ -114,8 +117,9 @@ export const FlowMetricsScatterPlotChart = Chart({
             ? `${candidateCycles.length} Defects closed in the last ${days} days`
             : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Work Items"} closed in the last ${days} days`;
           // When showing cycle time we also report total with no cycle time if they exist.
-          return selectedMetric === "cycleTime" && projectCycleMetrics.workItemsWithNullCycleTime > 0
-            ? `${subTitle} (${projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
+          // TODO: In targetMetric we don't have workItemsWithNullCycleTime, Need to fix this
+          return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
+            ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
             : subTitle;
         })(),
       },
@@ -143,9 +147,9 @@ export const FlowMetricsScatterPlotChart = Chart({
         title: {
           text: selectedMetric === "authors" ? `Authors` : `Days`,
         },
-        max: getMaxDays(candidateCycles, projectCycleMetrics),
+        max: getMaxDays(candidateCycles, targetMetrics, selectedMetric),
         softMin: 0,
-        plotLines: getPlotLines(selectedMetric, projectCycleMetrics, intl),
+        plotLines: getPlotLines(selectedMetric, targetMetrics, intl),
       },
       series: series,
       tooltip: {

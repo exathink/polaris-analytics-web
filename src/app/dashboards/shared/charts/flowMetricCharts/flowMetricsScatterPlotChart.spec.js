@@ -1,10 +1,10 @@
 import React from "react";
-import {expectSetsAreEqual, formatDateRaw, formatNumber, getNDaysAgo} from "../../../../../../test/test-utils";
-import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {epoch} from "../../../../../helpers/utility";
-import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../../../shared/config";
+import {expectSetsAreEqual, formatDateRaw, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
+import {epoch} from "../../../../helpers/utility";
+import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from "./metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 // clear mocks after each test
 afterEach(() => {
   jest.clearAllMocks();
@@ -12,20 +12,7 @@ afterEach(() => {
 
 const metricsMeta = projectDeliveryCycleFlowMetricsMeta;
 
-const projectCycleMetrics = {
-  minLeadTime: 0.06811342592592592,
-  avgLeadTime: 3.4181550925925928,
-  maxLeadTime: 8.91712962962963,
-  minCycleTime: 1.2246180555555557,
-  avgCycleTime: 5.462317708333333,
-  maxCycleTime: 8.345,
-  percentileLeadTime: 8.67525462962963,
-  percentileCycleTime: 8.345,
-  targetPercentile: 0.9,
-  workItemsInScope: 10,
-  workItemsWithNullCycleTime: 6,
-  earliestClosedDate: "2020-11-29T16:21:18.853000",
-  latestClosedDate: "2020-12-09T22:06:08.221000",
+const targetMetrics = {
   leadTimeTarget: 30,
   cycleTimeTarget: 7,
   leadTimeConfidenceTarget: 0.9,
@@ -37,7 +24,7 @@ const propsFixture = {
   model: [], // override this in specific test.
   selectedMetric: "leadTime",
   metricsMeta,
-  projectCycleMetrics,
+  targetMetrics,
   specsOnly: true,
   showEpics: false,
   yAxisScale: "logarithmic",
@@ -509,7 +496,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         ...fixedChartConfigWithCycleTime,
         subtitle: {
           text: expect.stringContaining(
-            `1 Specs closed in the last 30 days (${singlePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
+            `1 Specs closed in the last 30 days`
           ),
         },
         series: [fixedSeriesConfig],
@@ -656,7 +643,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         ...fixedChartConfigWithCycleTime,
         subtitle: {
           text: expect.stringContaining(
-            `3 Specs closed in the last 30 days (${multiplePropsFixture.projectCycleMetrics.workItemsWithNullCycleTime} with no cycle time)`
+            `3 Specs closed in the last 30 days (1 with no cycle time)`
           ),
         },
         series: fixedSeriesConfig,

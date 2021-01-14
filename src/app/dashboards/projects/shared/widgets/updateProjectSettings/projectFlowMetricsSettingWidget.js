@@ -1,15 +1,15 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {pick} from "../../../../../helpers/utility";
-import {ProjectDeliveryCyclesFlowMetricsView} from "./projectDeliveryCyclesFlowMetricsView";
+import {ProjectFlowMetricsSettingView} from "./projectFlowMetricsSettingView";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectDeliveryCycleFlowMetricsWidget = ({
+export const ProjectFlowMetricsSettingWidget = ({
   instanceKey,
   specsOnly,
   view,
   context,
-  showAll,
   latestWorkItemEvent,
   leadTimeTarget,
   cycleTimeTarget,
@@ -17,8 +17,6 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   cycleTimeConfidenceTarget,
   days,
   defectsOnly,
-  stateMappingIndex,
-  pollInterval,
 }) => {
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     instanceKey,
@@ -29,7 +27,10 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   });
 
   if (loading) return <Loading />;
-  if (error) return null;
+  if (error) {
+    logGraphQlError("ProjectFlowMetricsSettingWidget.useQueryProjectClosedDeliveryCycleDetail", error);
+    return null;
+  }
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
   const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
     pick(
@@ -52,7 +53,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
     )
   );
   return (
-    <ProjectDeliveryCyclesFlowMetricsView
+    <ProjectFlowMetricsSettingView
       instanceKey={instanceKey}
       context={context}
       days={days}
