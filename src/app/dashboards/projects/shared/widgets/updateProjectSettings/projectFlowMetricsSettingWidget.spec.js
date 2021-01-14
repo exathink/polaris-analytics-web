@@ -1,6 +1,7 @@
 import React from "react";
 import {screen, waitFor} from "@testing-library/react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {getNDaysAgo} from "../../../../../../test/test-utils"
 import {ProjectFlowMetricsSettingWidget} from "./projectFlowMetricsSettingWidget";
 import {GraphQLError} from "graphql";
 import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
@@ -14,7 +15,7 @@ afterAll(() => {
 
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
-  latestWorkItemEvent: "2020-12-09T22:31:01.244000", //TODO(need to see if this might cause time relative issue)
+  latestWorkItemEvent: getNDaysAgo(35),
   days: 90,
   leadTimeTarget: 30,
   cycleTimeTarget: 7,
@@ -50,8 +51,8 @@ const mocks = [
                   workItemType: "bug",
                   isBug: true,
                   state: "DEPLOYED-TO-STAGING",
-                  startDate: "2020-12-02T00:37:17.095000",
-                  endDate: "2020-12-09T22:06:08.221000",
+                  startDate: getNDaysAgo(42),
+                  endDate: getNDaysAgo(35),
                   leadTime: 7.895034722222222,
                   cycleTime: 7.894618055555555,
                   latency: 0.026180555555555554,
@@ -69,8 +70,8 @@ const mocks = [
                   workItemType: "bug",
                   isBug: true,
                   state: "DEPLOYED-TO-STAGING",
-                  startDate: "2020-12-06T17:06:11.068000",
-                  endDate: "2020-12-06T18:44:16.755000",
+                  startDate: getNDaysAgo(39),
+                  endDate: getNDaysAgo(38),
                   leadTime: 0.06811342592592592,
                   cycleTime: null,
                   latency: 0.052569444444444446,
@@ -88,8 +89,8 @@ const mocks = [
                   workItemType: "task",
                   isBug: false,
                   state: "ROADMAP",
-                  startDate: "2020-11-03T14:42:25.847000",
-                  endDate: "2020-12-05T14:28:16.634000",
+                  startDate: getNDaysAgo(71),
+                  endDate: getNDaysAgo(39),
                   leadTime: 31.990162037037038,
                   cycleTime: 31.989745370370372,
                   latency: 0,
