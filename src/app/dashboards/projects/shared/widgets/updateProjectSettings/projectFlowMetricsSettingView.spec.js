@@ -323,7 +323,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
   describe("when cycleTime tab is selected", () => {
     describe("when there are workItems", () => {
-      // seems below click event of metric tab is not firing because of ant design tab is not recieving event.
+      // TODO: seems below click event of metric tab is not firing because of ant design tab is not recieving event.
       test.skip("it renders correct title for Target and Confidence sliders", async () => {
         renderWithProviders(<ProjectFlowMetricsSettingView {...propsFixture} />, projectUpdateSettingsMocks);
 
