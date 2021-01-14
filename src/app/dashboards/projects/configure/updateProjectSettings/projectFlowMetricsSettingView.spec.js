@@ -131,7 +131,7 @@ describe("ProjectFlowMetricsSettingView", () => {
         const targetInput = await screen.findByTestId("target-range-input");
         expect(targetInput.value).toBe("30");
         const confidenceInput = await screen.findByTestId("confidence-range-input");
-        expect(confidenceInput.value).toBe("0.90");
+        expect(confidenceInput.value).toBe("90");
       });
 
       test("it renders appropriate message on the chart", async () => {
@@ -209,7 +209,7 @@ describe("ProjectFlowMetricsSettingView", () => {
 
         // update slider input back to default, so that save/cancel disappears
         confidenceInputElement = await screen.findByTestId("confidence-range-input");
-        fireEvent.change(confidenceInputElement, {target: {value: 0.9}});
+        fireEvent.change(confidenceInputElement, {target: {value: 90}});
 
         //after
         expect(screen.queryByText(/save/i)).not.toBeInTheDocument();

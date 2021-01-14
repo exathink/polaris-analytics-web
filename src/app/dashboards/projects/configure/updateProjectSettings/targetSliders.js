@@ -14,7 +14,7 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
         [
           confidence,
           (newConfidence) => dispatch({type: actionTypes.UPDATE_CONFIDENCE, payload: newConfidence}),
-          [0, 0.5, 1.0],
+          [0, 50, 100],
         ],
       ]).map((bar, index) => {
         let className = "slider-bar";
