@@ -36,7 +36,7 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
             }
           }
         }
-        return <div className={className}>{bar()}</div>;
+        return <div className={className} key={index}>{bar()}</div>;
       })}
     </div>
   );

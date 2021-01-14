@@ -5,6 +5,13 @@ import {ProjectFlowMetricsSettingWidget} from "./projectFlowMetricsSettingWidget
 import {GraphQLError} from "graphql";
 import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
 
+beforeAll(() => {
+  jest.spyOn(console, "log").mockImplementation(() => {})
+});
+afterAll(() => {
+  console.log.mockRestore();
+});
+
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   latestWorkItemEvent: "2020-12-09T22:31:01.244000", //TODO(need to see if this might cause time relative issue)

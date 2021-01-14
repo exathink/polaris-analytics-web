@@ -30,6 +30,7 @@ export function getTargetControlBar([
           style={{margin: "0 16px"}}
           value={daysRange}
           onChange={setDaysRange}
+          data-testid="target-range-input"
         />
       </>
     ),
@@ -49,6 +50,7 @@ export function getTargetControlBar([
           style={{margin: "0 16px"}}
           value={confidence}
           onChange={setConfidence}
+          data-testid="confidence-range-input"
         />
       </>
     ),
