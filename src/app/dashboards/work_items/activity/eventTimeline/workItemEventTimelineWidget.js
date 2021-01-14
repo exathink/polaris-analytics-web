@@ -10,7 +10,8 @@ export function getWorkItem(data) {
     ...pick(data.workItem, "displayId", "workItemType", "state", "stateType"),
     workItemEvents: data.workItem.workItemEvents.edges.map((edge) => edge.node),
     workItemCommits: data.workItem.commits.edges.map((edge) => edge.node),
-    workItemPullRequests: data.workItem.pullRequests.edges.map(edge => edge.node)
+    workItemPullRequests: data.workItem.pullRequests.edges.map(edge => edge.node),
+    workItemDeliveryCycles: data.workItem.workItemDeliveryCycles.edges.map(edge => edge.node)
   };
   return workItem
 }
