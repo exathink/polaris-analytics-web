@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, elide, epoch, percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, elide, epoch, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
 

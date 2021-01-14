@@ -29,7 +29,6 @@ const dashboard = ({viewerContext}) => (
         const {
             leadTimeTarget,
             cycleTimeTarget,
-            leadTimeConfidenceTarget,
             cycleTimeConfidenceTarget,
           } = settingsWithDefaults;
 
