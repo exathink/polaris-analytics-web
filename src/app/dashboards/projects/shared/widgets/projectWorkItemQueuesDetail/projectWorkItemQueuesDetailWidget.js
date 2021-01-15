@@ -2,7 +2,6 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
 import {ProjectWorkItemQueuesDetailView} from "./projectWorkItemQueuesDetailView";
-import {useQueryProjectCycleMetrics} from "../../hooks/useQueryProjectCycleMetrics";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectWorkItemQueuesDetailWidget = ({
@@ -22,18 +21,6 @@ export const ProjectWorkItemQueuesDetailWidget = ({
   leadTimeTarget,
   cycleTimeTarget,
 }) => {
-  const {
-    loading: cycleMetricsLoading,
-    error: cycleMetricsError,
-    data: projectCycleMetricsData,
-  } = useQueryProjectCycleMetrics({
-    instanceKey,
-    days,
-    targetPercentile,
-    specsOnly,
-    referenceString: latestWorkItemEvent,
-  });
-
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
@@ -43,25 +30,20 @@ export const ProjectWorkItemQueuesDetailWidget = ({
     referenceString: latestWorkItemEvent,
   });
 
-  if (cycleMetricsError) {
-    logGraphQlError("ProjectWorkItemQueuesDetailWidget.cycleMetrics", cycleMetricsError);
-    return null;
-  }
-
-  if (cycleMetricsLoading || loading) return <Loading />;
+  if (loading) return <Loading />;
   if (error) {
     logGraphQlError("ProjectWorkItemQueuesDetailWidget.pipelineStateDetails", error);
     return null;
   }
   const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
-  const targetMetrics = {leadTimeConfidenceTarget, cycleTimeConfidenceTarget, leadTimeTarget, cycleTimeTarget};
-  const projectCycleMetrics = projectCycleMetricsData ? {...projectCycleMetricsData.project, ...targetMetrics} : {};
+  const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
+
   return (
     <ProjectWorkItemQueuesDetailView
       view={view}
       context={context}
       workItems={workItems}
-      projectCycleMetrics={projectCycleMetrics}
+      targetMetrics={targetMetrics}
     />
   );
 };

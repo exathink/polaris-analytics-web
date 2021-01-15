@@ -16,7 +16,7 @@ import {Alert, Select} from "antd";
 const {Option} = Select;
 
 
-const WorkItemQueuesDetailView = ({workItems, projectCycleMetrics, view, context}) => {
+const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, item => item.workItemsSourceKey), [workItems]);
   const uniqWorkItemsSourcesWithDefault = [
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
@@ -109,7 +109,7 @@ const WorkItemQueuesDetailView = ({workItems, projectCycleMetrics, view, context
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
             title={`Work Queue:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
-            projectCycleMetrics={projectCycleMetrics}
+            targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log("Selection changed: workItems.length");
               if (workItems.length === 1) {
