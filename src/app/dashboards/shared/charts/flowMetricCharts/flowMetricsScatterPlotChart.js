@@ -31,36 +31,44 @@ function mapSymbol(workItem) {
   }
 }
 
-function getMaxDays(deliveryCycles, metricTarget, selectedMetric) {
-  let metricProp = "leadTime";
-  if (metricTarget != null) {
-    metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
-  }
+function getMaxDays(deliveryCycles, metricTarget) {
+  // This function is used to normalize the y-axis across metrics so that
+  // it does not change drastically based on the values that are being displayed.
+  // For this purpose, we are using the larger of the max *lead time* and the metrics target
+  // as heuristic, because the max lead time is guaranteed to be larger than all the other values
+  // of the metrics, and we want to make sure that that y-axis is large enough to display either this
+  // value or the metricTarget value whichever is larger. So this function should not be
+  // taking into account what the selectedMetric is.
   return deliveryCycles.reduce(
-    (max, workItem) => ((workItem[metricProp] || 0) > max ? workItem[metricProp] : max),
+    (max, cycle) => ((cycle.leadTime|| 0) > max ? cycle.leadTime : max),
     metricTarget || 0
   );
 }
 
-function getTargetPlotLine(selectedMetric, metricTarget, targetConfidence, intl) {
-  // for authors and effort metrics we will not send target and confidence, so that we don't show plotlines for it.
-  if (metricTarget != null && targetConfidence != null) {
-    // defaulting to cycleTime since we are showing cycleTimeTarget plotline for few other metrics
-    const plotLineFunction = PlotLines[`${selectedMetric}`] || PlotLines.cycleTime;
-    return [plotLineFunction(metricTarget, targetConfidence, intl)];
+function getTargetPlotLine(selectedMetric, metricsMeta, metricTarget, targetConfidence, intl) {
+  const targetMetric = metricsMeta[selectedMetric].targetMetric;
+  if (metricTarget != null && targetMetric != null && PlotLines[targetMetric] != null) {
+    return [PlotLines[targetMetric](metricTarget, targetConfidence, intl)];
   } else {
     return [];
   }
 }
 
-function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl) {
-  if (candidateCycles.length > 0 && targetConfidence != null) {
-    const sorted = candidateCycles.sort((cycleA, cycleB) => cycleA[selectedMetric] - cycleB[selectedMetric]);
+function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, metricsMeta, intl) {
+  const selectedMetricDisplay = metricsMeta[selectedMetric].display;
+  const metricValue = metricsMeta[selectedMetric].value
+  const sorted = candidateCycles.filter(
+    cycle => metricValue(cycle) != null
+  ).sort(
+    (cycleA, cycleB) => metricValue(cycleA) - metricValue(cycleB)
+  );
+
+  if (sorted.length > 0 && targetConfidence != null) {
     let actualPosition = (sorted.length - 1) * targetConfidence;
     if (actualPosition % 1 > 0) {
       actualPosition = Math.min(Math.ceil(actualPosition), sorted.length - 1);
     }
-    const actual = sorted[actualPosition][selectedMetric];
+    const actual = metricValue(sorted[actualPosition]);
 
     return [
       {
@@ -69,7 +77,7 @@ function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfiden
         dashStyle: "longdashdot",
         width: 1,
         label: {
-          text: `${percentileToText(targetConfidence)} Actual=${intl.formatNumber(actual)} days`,
+          text: `${percentileToText(targetConfidence)} ${selectedMetricDisplay} Actual=${intl.formatNumber(actual)} days`,
           align: "right",
           verticalAlign: "middle",
         },
@@ -186,13 +194,13 @@ export const FlowMetricsScatterPlotChart = Chart({
         type: yAxisScale,
         id: "cycle-metric",
         title: {
-          text: selectedMetric === "authors" ? `Authors` : `Days`,
+          text: metricsMeta[selectedMetric].uom,
         },
-        max: getMaxDays(candidateCycles, metricTarget, selectedMetric),
+        max: getMaxDays(candidateCycles, metricTarget),
         softMin: 0,
         plotLines: [
-          ...getTargetPlotLine(selectedMetric, metricTarget, targetConfidence, intl),
-          ...getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl),
+          ...getTargetPlotLine(selectedMetric, metricsMeta, metricTarget, targetConfidence, intl),
+          ...getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, metricsMeta, intl),
         ],
       },
       series: series,

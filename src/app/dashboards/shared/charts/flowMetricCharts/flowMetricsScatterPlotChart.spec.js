@@ -728,13 +728,13 @@ describe("FlowMetricsScatterPlotChart", () => {
         ...fixedChartConfig.yAxis,
         plotLines: [
           {
-            color: "orange",
+            color: "blue",
             value: 7,
             dashStyle: "longdashdot",
             width: 1,
             zIndex: 7,
             label: {
-              text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
+              text: expect.stringContaining(`p90 Lead Time Target=7 days`),
               align: "left",
               verticalAlign: "top",
             },
@@ -903,6 +903,13 @@ describe("FlowMetricsScatterPlotChart", () => {
       ...fixedChartConfigWithEffort,
       subtitle: {
         text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        title: {
+          text: "Dev-Days",
+        },
+        plotLines: [],
       },
       series: [fixedSeriesConfig],
     };
