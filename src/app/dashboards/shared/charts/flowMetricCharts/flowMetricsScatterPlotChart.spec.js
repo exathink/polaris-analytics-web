@@ -12,19 +12,13 @@ afterEach(() => {
 
 const metricsMeta = projectDeliveryCycleFlowMetricsMeta;
 
-const targetMetrics = {
-  leadTimeTarget: 30,
-  cycleTimeTarget: 7,
-  leadTimeConfidenceTarget: 0.9,
-  cycleTimeConfidenceTarget: 0.9,
-};
-
 const propsFixture = {
   days: 30,
   model: [], // override this in specific test.
   selectedMetric: "leadTime",
   metricsMeta,
-  targetMetrics,
+  metricTarget: 30,
+  targetConfidence: 0.9,
   specsOnly: true,
   showEpics: false,
   yAxisScale: "logarithmic",
@@ -173,6 +167,22 @@ describe("FlowMetricsScatterPlotChart", () => {
       };
       const expectedChartConfig = {
         ...fixedChartConfigWithLeadTime,
+        yAxis: {
+          ...fixedChartConfigWithLeadTime.yAxis,
+          plotLines: [
+            ...fixedChartConfigWithLeadTime.yAxis.plotLines,
+            {
+              color: "green",
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: expect.stringContaining(`Actual=`),
+                align: "right",
+                verticalAlign: "middle",
+              },
+            },
+          ],
+        },
         subtitle: {
           text: expect.stringMatching(`1 Specs closed in the last 30 days`),
         },
@@ -336,6 +346,22 @@ describe("FlowMetricsScatterPlotChart", () => {
       ];
       const expectedChartConfig = {
         ...fixedChartConfigWithLeadTime,
+        yAxis: {
+          ...fixedChartConfigWithLeadTime.yAxis,
+          plotLines: [
+            ...fixedChartConfigWithLeadTime.yAxis.plotLines,
+            {
+              color: "green",
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: expect.stringContaining(`Actual=`),
+                align: "right",
+                verticalAlign: "middle",
+              },
+            },
+          ],
+        },
         subtitle: {
           text: expect.stringMatching(`3 Specs closed in the last 30 days`),
         },
@@ -439,6 +465,8 @@ describe("FlowMetricsScatterPlotChart", () => {
     describe("when there are no workitems", () => {
       const emptyPropsFixture = {
         ...propsFixture,
+        metricTarget: 7,
+        targetConfidence: 0.9,
         selectedMetric,
         model: [],
       };
@@ -475,6 +503,8 @@ describe("FlowMetricsScatterPlotChart", () => {
 
       const singlePropsFixture = {
         ...propsFixture,
+        metricTarget: 7,
+        targetConfidence: 0.9,
         selectedMetric,
         model: [workItemFixture],
       };
@@ -494,10 +524,24 @@ describe("FlowMetricsScatterPlotChart", () => {
 
       const expectedChartConfig = {
         ...fixedChartConfigWithCycleTime,
+        yAxis: {
+          ...fixedChartConfigWithCycleTime.yAxis,
+          plotLines: [
+            ...fixedChartConfigWithCycleTime.yAxis.plotLines,
+            {
+              color: "green",
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: expect.stringContaining(`Actual=`),
+                align: "right",
+                verticalAlign: "middle",
+              },
+            },
+          ],
+        },
         subtitle: {
-          text: expect.stringContaining(
-            `1 Specs closed in the last 30 days`
-          ),
+          text: expect.stringContaining(`1 Specs closed in the last 30 days`),
         },
         series: [fixedSeriesConfig],
       };
@@ -596,6 +640,8 @@ describe("FlowMetricsScatterPlotChart", () => {
       };
       const multiplePropsFixture = {
         ...propsFixture,
+        metricTarget: 7,
+        targetConfidence: 0.9,
         selectedMetric,
         model: [workItemFixtureForBug, workItemFixtureForStory, workItemFixtureForTask],
       };
@@ -641,10 +687,24 @@ describe("FlowMetricsScatterPlotChart", () => {
 
       const expectedChartConfig = {
         ...fixedChartConfigWithCycleTime,
+        yAxis: {
+          ...fixedChartConfigWithCycleTime.yAxis,
+          plotLines: [
+            ...fixedChartConfigWithCycleTime.yAxis.plotLines,
+            {
+              color: "green",
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: expect.stringContaining(`Actual=`),
+                align: "right",
+                verticalAlign: "middle",
+              },
+            },
+          ],
+        },
         subtitle: {
-          text: expect.stringContaining(
-            `3 Specs closed in the last 30 days (1 with no cycle time)`
-          ),
+          text: expect.stringContaining(`3 Specs closed in the last 30 days (1 with no cycle time)`),
         },
         series: fixedSeriesConfig,
       };
@@ -668,13 +728,13 @@ describe("FlowMetricsScatterPlotChart", () => {
         ...fixedChartConfig.yAxis,
         plotLines: [
           {
-            color: "orange",
+            color: "blue",
             value: 7,
             dashStyle: "longdashdot",
             width: 1,
             zIndex: 7,
             label: {
-              text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
+              text: expect.stringContaining(`p90 Lead Time Target=7 days`),
               align: "left",
               verticalAlign: "top",
             },
@@ -703,6 +763,9 @@ describe("FlowMetricsScatterPlotChart", () => {
 
       const singlePropsFixture = {
         ...propsFixture,
+        // for backlog tab we are sending cycleTime targets
+        metricTarget: 7,
+        targetConfidence: 0.9,
         selectedMetric,
         model: [workItemFixture],
       };
@@ -722,6 +785,22 @@ describe("FlowMetricsScatterPlotChart", () => {
 
       const expectedChartConfig = {
         ...fixedChartConfigWithBacklogTime,
+        yAxis: {
+          ...fixedChartConfigWithBacklogTime.yAxis,
+          plotLines: [
+            ...fixedChartConfigWithBacklogTime.yAxis.plotLines,
+            {
+              color: "green",
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: expect.stringContaining(`Actual=`),
+                align: "right",
+                verticalAlign: "middle",
+              },
+            },
+          ],
+        },
         series: [fixedSeriesConfig],
       };
 
@@ -801,6 +880,9 @@ describe("FlowMetricsScatterPlotChart", () => {
 
     const singlePropsFixture = {
       ...propsFixture,
+      // for effort tab we are sending null targets
+      metricTarget: null,
+      targetConfidence: null,
       selectedMetric,
       model: [workItemFixture],
     };
@@ -821,6 +903,13 @@ describe("FlowMetricsScatterPlotChart", () => {
       ...fixedChartConfigWithEffort,
       subtitle: {
         text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+      },
+      yAxis: {
+        ...fixedChartConfig.yAxis,
+        title: {
+          text: "Dev-Days",
+        },
+        plotLines: [],
       },
       series: [fixedSeriesConfig],
     };
@@ -867,6 +956,9 @@ describe("FlowMetricsScatterPlotChart", () => {
 
     const singlePropsFixture = {
       ...propsFixture,
+      // for authors tab we are sending null targets
+      metricTarget: null,
+      targetConfidence: null,
       selectedMetric,
       model: [workItemFixture],
     };

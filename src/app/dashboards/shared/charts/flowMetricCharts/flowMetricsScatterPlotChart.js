@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../helpers/utility";
+import {percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -31,26 +31,75 @@ function mapSymbol(workItem) {
   }
 }
 
-function getMaxDays(deliveryCycles, targetMetrics, selectedMetric) {
-  let metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
+function getMaxDays(deliveryCycles, metricTarget) {
+  // This function is used to normalize the y-axis across metrics so that
+  // it does not change drastically based on the values that are being displayed.
+  // For this purpose, we are using the larger of the max *lead time* and the metrics target
+  // as heuristic, because the max lead time is guaranteed to be larger than all the other values
+  // of the metrics, and we want to make sure that that y-axis is large enough to display either this
+  // value or the metricTarget value whichever is larger. So this function should not be
+  // taking into account what the selectedMetric is.
   return deliveryCycles.reduce(
-    (max, workItem) => ((workItem[metricProp] || 0) > max ? workItem[metricProp] : max),
-    targetMetrics[`${metricProp}Target`] || 0
+    (max, cycle) => ((cycle.leadTime|| 0) > max ? cycle.leadTime : max),
+    metricTarget || 0
   );
 }
 
-function getPlotLines(selectedMetric, targetMetrics, intl) {
-  if (selectedMetric === "leadTime") {
-    return [PlotLines.leadTimeTarget(targetMetrics, intl)];
-  } else if (selectedMetric === "effort" || selectedMetric === "authors") {
-    return [];
+function getTargetPlotLine(selectedMetric, metricsMeta, metricTarget, targetConfidence, intl) {
+  const targetMetric = metricsMeta[selectedMetric].targetMetric;
+  if (metricTarget != null && targetMetric != null && PlotLines[targetMetric] != null) {
+    return [PlotLines[targetMetric](metricTarget, targetConfidence, intl)];
   } else {
-    return [PlotLines.cycleTimeTarget(targetMetrics, intl)];
+    return [];
+  }
+}
+
+function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, metricsMeta, intl) {
+  const selectedMetricDisplay = metricsMeta[selectedMetric].display;
+  const metricValue = metricsMeta[selectedMetric].value
+  const sorted = candidateCycles.filter(
+    cycle => metricValue(cycle) != null
+  ).sort(
+    (cycleA, cycleB) => metricValue(cycleA) - metricValue(cycleB)
+  );
+
+  if (sorted.length > 0 && targetConfidence != null) {
+    let actualPosition = (sorted.length - 1) * targetConfidence;
+    if (actualPosition % 1 > 0) {
+      actualPosition = Math.min(Math.ceil(actualPosition), sorted.length - 1);
+    }
+    const actual = metricValue(sorted[actualPosition]);
+
+    return [
+      {
+        color: "green",
+        value: actual,
+        dashStyle: "longdashdot",
+        width: 1,
+        label: {
+          text: `${percentileToText(targetConfidence)} ${selectedMetricDisplay} Actual=${intl.formatNumber(actual)} days`,
+          align: "right",
+          verticalAlign: "middle",
+        },
+      },
+    ];
+  } else {
+    return [];
   }
 }
 
 export const FlowMetricsScatterPlotChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "targetMetrics"),
+  chartUpdateProps: (props) =>
+    pick(
+      props,
+      "model",
+      "selectedMetric",
+      "showEpics",
+      "yAxisScale",
+      "specsOnly",
+      "targetConfidence",
+      "metricTarget"
+    ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.cycle),
 
@@ -59,7 +108,8 @@ export const FlowMetricsScatterPlotChart = Chart({
     days,
     selectedMetric,
     metricsMeta,
-    targetMetrics,
+    metricTarget,
+    targetConfidence,
     defectsOnly,
     specsOnly,
     showEpics,
@@ -69,7 +119,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     const candidateCycles =
       showEpics != null && !showEpics ? model.filter((cycle) => cycle.workItemType !== "epic") : model;
 
-    const workItemsWithNullCycleTime = candidateCycles.filter(x => !Boolean(x.cycleTime)).length;
+    const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
     const deliveryCyclesByWorkItemType = candidateCycles.reduce((groups, cycle) => {
       if (groups[cycle.workItemType] != null) {
@@ -117,7 +167,6 @@ export const FlowMetricsScatterPlotChart = Chart({
             ? `${candidateCycles.length} Defects closed in the last ${days} days`
             : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Work Items"} closed in the last ${days} days`;
           // When showing cycle time we also report total with no cycle time if they exist.
-          // TODO: In targetMetric we don't have workItemsWithNullCycleTime, Need to fix this
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
             : subTitle;
@@ -145,11 +194,14 @@ export const FlowMetricsScatterPlotChart = Chart({
         type: yAxisScale,
         id: "cycle-metric",
         title: {
-          text: selectedMetric === "authors" ? `Authors` : `Days`,
+          text: metricsMeta[selectedMetric].uom,
         },
-        max: getMaxDays(candidateCycles, targetMetrics, selectedMetric),
+        max: getMaxDays(candidateCycles, metricTarget),
         softMin: 0,
-        plotLines: getPlotLines(selectedMetric, targetMetrics, intl),
+        plotLines: [
+          ...getTargetPlotLine(selectedMetric, metricsMeta, metricTarget, targetConfidence, intl),
+          ...getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, metricsMeta, intl),
+        ],
       },
       series: series,
       tooltip: {

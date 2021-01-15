@@ -1,10 +1,10 @@
 import React from "react";
 import {screen, waitFor} from "@testing-library/react";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {getNDaysAgo} from "../../../../../../test/test-utils"
-import {ProjectFlowMetricsSettingWidget} from "./projectFlowMetricsSettingWidget";
+import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {getNDaysAgo} from "../../../../../test/test-utils"
+import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettingsWidget";
 import {GraphQLError} from "graphql";
-import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 beforeAll(() => {
   jest.spyOn(console, "log").mockImplementation(() => {})
@@ -110,12 +110,12 @@ const mocks = [
 describe("ProjectFlowMetricsSettingWidget", () => {
   describe("should render the widget without any error", () => {
     test("renders without any error", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mocks);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mocks);
       expect(await screen.findByTestId("flowmetrics-setting-view")).toBeInTheDocument();
     });
 
     test("it shows loading spinner", () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mocks);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mocks);
       expect(screen.queryByTestId("loading-spinner")).toBeInTheDocument();
     });
   });
@@ -146,14 +146,14 @@ describe("ProjectFlowMetricsSettingWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(await screen.queryByTestId("flowmetrics-setting-view")).not.toBeInTheDocument();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(await screen.queryByTestId("flowmetrics-setting-view")).not.toBeInTheDocument();
@@ -177,27 +177,27 @@ describe("ProjectFlowMetricsSettingWidget", () => {
     ];
 
     test("it renders both target and confidence sliders", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, emptyMocksFixture);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, emptyMocksFixture);
       await screen.findByTestId("target-range-slider");
       await screen.findByTestId("confidence-range-slider");
     });
 
     test("renders appropriate message on the chart title when there are no workItems", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, emptyMocksFixture);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, emptyMocksFixture);
       await screen.findByText(/0 work items closed/i);
     });
   });
 
   describe("when there are workItems", () => {
     test("it renders both target and confidence sliders", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mocks);
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mocks);
       await screen.findByTestId("target-range-slider");
       await screen.findByTestId("confidence-range-slider");
     });
 
     // this ensures when widget is rendered its able to render till chart component(tests integration of widget view and chart)
     test("it renders chart", async () => {
-      renderWithProviders(<ProjectFlowMetricsSettingWidget {...propsFixture} />, mocks, {
+      renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, mocks, {
         chartTestId: "project-flowmetrics-chart",
       });
       await screen.findByTestId("project-flowmetrics-chart");

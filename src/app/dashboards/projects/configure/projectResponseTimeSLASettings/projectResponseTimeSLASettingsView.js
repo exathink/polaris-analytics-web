@@ -1,19 +1,19 @@
 import React from "react";
-import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
+import {FlowMetricsScatterPlotChart} from "../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../shared/helpers/metricsMeta";
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
 import {Alert, Button} from "antd";
-import {useProjectUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../components/graphql/utils";
+import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectFlowMetricsSetting.css";
+import "./projectResponseTimeSLASettings.css";
 import {TargetSliders} from "./targetSliders";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
-export const ProjectFlowMetricsSettingView = ({
+export const ProjectResponseTimeSLASettingsView = ({
   instanceKey,
   context,
   model,
@@ -64,14 +64,8 @@ export const ProjectFlowMetricsSettingView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
   const {leadTime, cycleTime, selectedMetric} = state;
 
-  // as we want to show updated targets on the chart before saving.
-  // sending this draft state to chart
-  const draftTargetMetrics = {
-    leadTimeTarget: leadTime.target,
-    cycleTimeTarget: cycleTime.target,
-    leadTimeConfidenceTarget: leadTime.confidence,
-    cycleTimeConfidenceTarget: cycleTime.confidence,
-  };
+  const metricTarget = selectedMetric === "leadTime" ? leadTime.target : cycleTime.target;
+  const targetConfidence = selectedMetric === 'leadTime' ? leadTime.confidence : cycleTime.confidence;
 
   const sliderProps = {...state, dispatch};
 
@@ -141,6 +135,7 @@ export const ProjectFlowMetricsSettingView = ({
   return (
     <React.Fragment>
       <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
+        <Flex w={1} justify={'center'}><span>Drag sliders to update response time target and confidence %</span></Flex>
         <Flex w={1} className="selectedMetricWrapper">
           <GroupingSelector
             label={" "}
@@ -160,7 +155,8 @@ export const ProjectFlowMetricsSettingView = ({
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        targetMetrics={draftTargetMetrics}
+        metricTarget={metricTarget}
+        targetConfidence={targetConfidence}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}

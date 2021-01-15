@@ -1,5 +1,5 @@
 import React from "react";
-import {getTargetControlBar} from "../../../../shared/components/targetControlBar/targetControlBar";
+import {getTargetControlBar} from "../../../shared/components/targetControlBar/targetControlBar";
 import {actionTypes, METRICS, mode} from "./constants";
 
 export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: sliderMode, dispatch}) {
@@ -14,7 +14,7 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
         [
           confidence,
           (newConfidence) => dispatch({type: actionTypes.UPDATE_CONFIDENCE, payload: newConfidence}),
-          [0, 0.5, 1.0],
+          [0, 50, 100],
         ],
       ]).map((bar, index) => {
         let className = "slider-bar";

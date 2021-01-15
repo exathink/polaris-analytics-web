@@ -65,10 +65,10 @@ export const ConfidenceRangeSlider = ({title = "Confidence", initialValue, setCo
         defaultValue={initialValue || 0.9}
         value={initialValue}
         min={(range && range[0]) || 0}
-        max={(range && range[range.length - 1]) || 1.0}
-        marks={getMarks(range || [0, 0.5, 1.0])}
+        max={(range && range[range.length - 1]) || 100}
+        marks={getMarks(range || [0, 50, 100])}
         included={true}
-        step={0.01}
+        step={1}
         onChange={setConfidenceRange}
       />
     </Box>

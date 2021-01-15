@@ -6,6 +6,8 @@ import {Checkbox} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 
+
+
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
@@ -22,6 +24,8 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || "leadTime");
   const [yAxisScale, setYAxisScale] = useState("logarithmic");
   const [showEpics, setShowEpics] = useState(false);
+
+  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
 
   return (
     <React.Fragment>
@@ -63,7 +67,8 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        targetMetrics={targetMetrics}
+        metricTarget={metricTarget}
+        targetConfidence={targetConfidence}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         showEpics={showEpics}
