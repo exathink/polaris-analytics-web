@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../helpers/utility";
+import {percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -39,7 +39,7 @@ function getMaxDays(deliveryCycles, targetMetrics, selectedMetric) {
   );
 }
 
-function getPlotLines(selectedMetric, targetMetrics, intl) {
+function getTargetPlotLine(selectedMetric, targetMetrics, intl) {
   if (selectedMetric === "leadTime") {
     return [PlotLines.leadTimeTarget(targetMetrics, intl)];
   } else if (selectedMetric === "effort" || selectedMetric === "authors") {
@@ -49,8 +49,36 @@ function getPlotLines(selectedMetric, targetMetrics, intl) {
   }
 }
 
+function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl) {
+  if (targetConfidence != null) {
+    const sorted = candidateCycles.sort((cycleA, cycleB) => cycleA[selectedMetric] - cycleB[selectedMetric]);
+    let actualPosition = (sorted.length - 1) * targetConfidence;
+    if (actualPosition % 1 > 0) {
+      actualPosition = Math.min(Math.ceil(actualPosition), sorted.length-1);
+    }
+    const actual = sorted[actualPosition][selectedMetric];
+
+    return [
+      {
+        color: "green",
+        value: actual,
+        dashStyle: "longdashdot",
+        width: 1,
+        label: {
+          text: `${percentileToText(targetConfidence)} Actual=${intl.formatNumber(actual)} days`,
+          align: "right",
+          verticalAlign: "middle",
+        },
+      },
+    ];
+  } else {
+    return [];
+  }
+}
+
 export const FlowMetricsScatterPlotChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "targetMetrics"),
+  chartUpdateProps: (props) =>
+    pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "targetMetrics", "targetConfidence"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.cycle),
 
@@ -60,6 +88,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     selectedMetric,
     metricsMeta,
     targetMetrics,
+    targetConfidence,
     defectsOnly,
     specsOnly,
     showEpics,
@@ -117,7 +146,6 @@ export const FlowMetricsScatterPlotChart = Chart({
             ? `${candidateCycles.length} Defects closed in the last ${days} days`
             : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Work Items"} closed in the last ${days} days`;
           // When showing cycle time we also report total with no cycle time if they exist.
-          // TODO: In targetMetric we don't have workItemsWithNullCycleTime, Need to fix this
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
             : subTitle;
@@ -149,7 +177,10 @@ export const FlowMetricsScatterPlotChart = Chart({
         },
         max: getMaxDays(candidateCycles, targetMetrics, selectedMetric),
         softMin: 0,
-        plotLines: getPlotLines(selectedMetric, targetMetrics, intl),
+        plotLines: [
+          ...getTargetPlotLine(selectedMetric, targetMetrics, intl),
+          ...getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl),
+        ],
       },
       series: series,
       tooltip: {

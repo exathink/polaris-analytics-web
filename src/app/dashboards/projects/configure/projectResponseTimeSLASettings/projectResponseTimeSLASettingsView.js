@@ -73,6 +73,8 @@ export const ProjectResponseTimeSLASettingsView = ({
     cycleTimeConfidenceTarget: cycleTime.confidence,
   };
 
+  const targetConfidence = selectedMetric === 'leadTime' ? leadTime.confidence : cycleTime.confidence;
+
   const sliderProps = {...state, dispatch};
 
   function handleSaveClick() {
@@ -141,6 +143,7 @@ export const ProjectResponseTimeSLASettingsView = ({
   return (
     <React.Fragment>
       <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
+        <Flex w={1} justify={'center'}><span>Drag sliders to update response time target and confidence %</span></Flex>
         <Flex w={1} className="selectedMetricWrapper">
           <GroupingSelector
             label={" "}
@@ -161,6 +164,7 @@ export const ProjectResponseTimeSLASettingsView = ({
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
         targetMetrics={draftTargetMetrics}
+        targetConfidence={targetConfidence}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}
