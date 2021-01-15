@@ -15,11 +15,11 @@ import {
   WorkItemTypeSortOrder,
 } from "../../config";
 
-function getMaxDays(workItems, projectCycleMetrics) {
+function getMaxDays(workItems, targetMetrics) {
   return workItems.reduce(
     (max, workItem) =>
       workItem.timeInState + workItem.timeInPriorStates > max ? workItem.timeInState + workItem.timeInPriorStates : max,
-    (projectCycleMetrics && projectCycleMetrics.leadTimeTarget) || 0
+    (targetMetrics && targetMetrics.leadTimeTarget) || 0
   );
 }
 
@@ -130,11 +130,11 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
 }
 
 export const WorkItemsDurationsByPhaseChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItems", "projectCycleMetrics", "groupBy", "stateType"),
+  chartUpdateProps: (props) => pick(props, "workItems", "targetMetrics", "groupBy", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.workItem),
 
-  getConfig: ({workItems, stateType, groupBy, projectCycleMetrics, singleWorkItemMode, title, shortTooltip, intl}) => {
+  getConfig: ({workItems, stateType, groupBy, targetMetrics, singleWorkItemMode, title, shortTooltip, intl}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
 
     let series = [];
@@ -164,16 +164,16 @@ export const WorkItemsDurationsByPhaseChart = Chart({
       },
       yAxis: {
         type: "linear",
-        max: getMaxDays(workItemsWithAggregateDurations, projectCycleMetrics),
+        max: getMaxDays(workItemsWithAggregateDurations, targetMetrics),
         softMin: 0,
         allowDecimals: false,
         title: {
           text: "Days",
         },
-        plotLines: projectCycleMetrics
+        plotLines: targetMetrics
           ? [
-              PlotLines.leadTimeTarget(projectCycleMetrics, intl),
-              PlotLines.cycleTimeTarget(projectCycleMetrics, intl),
+              PlotLines.leadTime(targetMetrics.leadTimeTarget, targetMetrics.leadTimeConfidenceTarget, intl),
+              PlotLines.cycleTime(targetMetrics.cycleTimeTarget, targetMetrics.cycleTimeConfidenceTarget, intl),
             ]
           : [],
       },

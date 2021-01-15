@@ -31,21 +31,25 @@ function mapSymbol(workItem) {
   }
 }
 
-function getMaxDays(deliveryCycles, targetMetrics, selectedMetric) {
-  let metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
+function getMaxDays(deliveryCycles, metricTarget, selectedMetric) {
+  let metricProp = "leadTime";
+  if (metricTarget != null) {
+    metricProp = selectedMetric === "leadTime" ? "leadTime" : "cycleTime";
+  }
   return deliveryCycles.reduce(
     (max, workItem) => ((workItem[metricProp] || 0) > max ? workItem[metricProp] : max),
-    targetMetrics[`${metricProp}Target`] || 0
+    metricTarget || 0
   );
 }
 
-function getTargetPlotLine(selectedMetric, targetMetrics, intl) {
-  if (selectedMetric === "leadTime") {
-    return [PlotLines.leadTimeTarget(targetMetrics, intl)];
-  } else if (selectedMetric === "effort" || selectedMetric === "authors") {
-    return [];
+function getTargetPlotLine(selectedMetric, metricTarget, targetConfidence, intl) {
+  // for authors and effort metrics we will not send target and confidence, so that we don't show plotlines for it.
+  if (metricTarget != null && targetConfidence != null) {
+    // defaulting to cycleTime since we are showing cycleTimeTarget plotline for few other metrics
+    const plotLineFunction = PlotLines[`${selectedMetric}`] || PlotLines.cycleTime;
+    return [plotLineFunction(metricTarget, targetConfidence, intl)];
   } else {
-    return [PlotLines.cycleTimeTarget(targetMetrics, intl)];
+    return [];
   }
 }
 
@@ -54,7 +58,7 @@ function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfiden
     const sorted = candidateCycles.sort((cycleA, cycleB) => cycleA[selectedMetric] - cycleB[selectedMetric]);
     let actualPosition = (sorted.length - 1) * targetConfidence;
     if (actualPosition % 1 > 0) {
-      actualPosition = Math.min(Math.ceil(actualPosition), sorted.length-1);
+      actualPosition = Math.min(Math.ceil(actualPosition), sorted.length - 1);
     }
     const actual = sorted[actualPosition][selectedMetric];
 
@@ -78,7 +82,16 @@ function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfiden
 
 export const FlowMetricsScatterPlotChart = Chart({
   chartUpdateProps: (props) =>
-    pick(props, "model", "selectedMetric", "showEpics", "yAxisScale", "specsOnly", "targetMetrics", "targetConfidence"),
+    pick(
+      props,
+      "model",
+      "selectedMetric",
+      "showEpics",
+      "yAxisScale",
+      "specsOnly",
+      "targetConfidence",
+      "metricTarget"
+    ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.cycle),
 
@@ -87,7 +100,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     days,
     selectedMetric,
     metricsMeta,
-    targetMetrics,
+    metricTarget,
     targetConfidence,
     defectsOnly,
     specsOnly,
@@ -98,7 +111,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     const candidateCycles =
       showEpics != null && !showEpics ? model.filter((cycle) => cycle.workItemType !== "epic") : model;
 
-    const workItemsWithNullCycleTime = candidateCycles.filter(x => !Boolean(x.cycleTime)).length;
+    const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
     const deliveryCyclesByWorkItemType = candidateCycles.reduce((groups, cycle) => {
       if (groups[cycle.workItemType] != null) {
@@ -175,10 +188,10 @@ export const FlowMetricsScatterPlotChart = Chart({
         title: {
           text: selectedMetric === "authors" ? `Authors` : `Days`,
         },
-        max: getMaxDays(candidateCycles, targetMetrics, selectedMetric),
+        max: getMaxDays(candidateCycles, metricTarget, selectedMetric),
         softMin: 0,
         plotLines: [
-          ...getTargetPlotLine(selectedMetric, targetMetrics, intl),
+          ...getTargetPlotLine(selectedMetric, metricTarget, targetConfidence, intl),
           ...getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl),
         ],
       },

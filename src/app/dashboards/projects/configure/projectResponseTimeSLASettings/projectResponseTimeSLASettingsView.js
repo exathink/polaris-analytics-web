@@ -64,15 +64,7 @@ export const ProjectResponseTimeSLASettingsView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
   const {leadTime, cycleTime, selectedMetric} = state;
 
-  // as we want to show updated targets on the chart before saving.
-  // sending this draft state to chart
-  const draftTargetMetrics = {
-    leadTimeTarget: leadTime.target,
-    cycleTimeTarget: cycleTime.target,
-    leadTimeConfidenceTarget: leadTime.confidence,
-    cycleTimeConfidenceTarget: cycleTime.confidence,
-  };
-
+  const metricTarget = selectedMetric === "leadTime" ? leadTime.target : cycleTime.target;
   const targetConfidence = selectedMetric === 'leadTime' ? leadTime.confidence : cycleTime.confidence;
 
   const sliderProps = {...state, dispatch};
@@ -163,7 +155,7 @@ export const ProjectResponseTimeSLASettingsView = ({
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        targetMetrics={draftTargetMetrics}
+        metricTarget={metricTarget}
         targetConfidence={targetConfidence}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}

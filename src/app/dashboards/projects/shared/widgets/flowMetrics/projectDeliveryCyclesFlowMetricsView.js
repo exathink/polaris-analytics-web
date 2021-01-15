@@ -23,6 +23,20 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   const [yAxisScale, setYAxisScale] = useState("logarithmic");
   const [showEpics, setShowEpics] = useState(false);
 
+  const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = targetMetrics;
+  let metricTarget;
+  let targetConfidence;
+  if (selectedMetric === "leadTime") {
+    metricTarget = leadTimeTarget;
+    targetConfidence = leadTimeConfidenceTarget;
+  } else if (selectedMetric === "effort" || selectedMetric === "authors") {
+    metricTarget = null;
+    targetConfidence = null;
+  } else {
+    metricTarget = cycleTimeTarget;
+    targetConfidence = cycleTimeConfidenceTarget;
+  }
+
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
@@ -63,7 +77,8 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         model={model}
         selectedMetric={selectedMetric}
         metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        targetMetrics={targetMetrics}
+        metricTarget={metricTarget}
+        targetConfidence={targetConfidence}
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         showEpics={showEpics}
