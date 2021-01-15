@@ -121,8 +121,8 @@ describe("ProjectFlowMetricsSettingView", () => {
       test("it renders correct title for Target and Confidence sliders", () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
-        expect(screen.queryByText(/Target/i)).toBeInTheDocument();
-        expect(screen.queryByText(/Confidence/i)).toBeInTheDocument();
+        expect(screen.queryAllByText(/Target/i).length).toBeGreaterThan(0);
+        expect(screen.queryAllByText(/Confidence/i).length).toBeGreaterThan(0);
       });
 
       test("it renders default target and confidence values initially on the sliders", async () => {
