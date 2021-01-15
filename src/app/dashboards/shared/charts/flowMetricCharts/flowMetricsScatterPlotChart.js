@@ -50,7 +50,7 @@ function getTargetPlotLine(selectedMetric, targetMetrics, intl) {
 }
 
 function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, intl) {
-  if (targetConfidence != null) {
+  if (candidateCycles.length > 0 && targetConfidence != null) {
     const sorted = candidateCycles.sort((cycleA, cycleB) => cycleA[selectedMetric] - cycleB[selectedMetric]);
     let actualPosition = (sorted.length - 1) * targetConfidence;
     if (actualPosition % 1 > 0) {
