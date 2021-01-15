@@ -9,20 +9,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const projectCycleMetrics = {
-  minLeadTime: 0.06811342592592592,
-  avgLeadTime: 7.36273509837963,
-  maxLeadTime: 31.990162037037038,
-  minCycleTime: 1.2246180555555557,
-  avgCycleTime: 11.050780606995884,
-  maxCycleTime: 31.989745370370372,
-  percentileLeadTime: 3.5138425925925927,
-  percentileCycleTime: 6.184398148148148,
-  targetPercentile: 0.5,
-  workItemsInScope: 16,
-  workItemsWithNullCycleTime: 7,
-  earliestClosedDate: "2020-11-25T22:44:17.124000",
-  latestClosedDate: "2020-12-09T22:06:08.221000",
+const targetMetrics = {
   leadTimeConfidenceTarget: 0.9,
   cycleTimeConfidenceTarget: 0.9,
   leadTimeTarget: 30,
@@ -130,7 +117,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           renderedChartConfig(
             <WorkItemsDurationsByPhaseChart
               workItems={emptyWorkItems}
-              projectCycleMetrics={projectCycleMetrics}
+              targetMetrics={targetMetrics}
               title={"Work Queue:"}
               groupBy={"state"}
             />
@@ -197,7 +184,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           renderedChartConfig(
             <WorkItemsDurationsByPhaseChart
               workItems={workItemsFixture}
-              projectCycleMetrics={projectCycleMetrics}
+              targetMetrics={targetMetrics}
               title={"Work Queue:"}
               groupBy={"state"}
             />
@@ -208,7 +195,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
       const {series} = renderedChartConfig(
         <WorkItemsDurationsByPhaseChart
           workItems={workItemsFixture}
-          projectCycleMetrics={projectCycleMetrics}
+          targetMetrics={targetMetrics}
           title={"Work Queue:"}
           groupBy={"state"}
         />
@@ -241,7 +228,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         const [actual] = await renderedTooltipConfig(
           <WorkItemsDurationsByPhaseChart
             workItems={workItemsFixture}
-            projectCycleMetrics={projectCycleMetrics}
+            targetMetrics={targetMetrics}
             title={"Work Queue:"}
             groupBy={"state"}
           />,
@@ -299,7 +286,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         const [actual] = await renderedTooltipConfig(
           <WorkItemsDurationsByPhaseChart
             workItems={workItemsFixture}
-            projectCycleMetrics={projectCycleMetrics}
+            targetMetrics={targetMetrics}
             title={"Work Queue:"}
             groupBy={"state"}
           />,
@@ -473,7 +460,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           renderedChartConfig(
             <WorkItemsDurationsByPhaseChart
               workItems={workItemsFixture}
-              projectCycleMetrics={projectCycleMetrics}
+              targetMetrics={targetMetrics}
               title={"Work Queue:"}
               groupBy={"state"}
             />
@@ -484,7 +471,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
       const {series} = renderedChartConfig(
         <WorkItemsDurationsByPhaseChart
           workItems={workItemsFixture}
-          projectCycleMetrics={projectCycleMetrics}
+          targetMetrics={targetMetrics}
           title={"Work Queue:"}
           groupBy={"state"}
         />
@@ -571,7 +558,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           renderedChartConfig(
             <WorkItemsDurationsByPhaseChart
               workItems={emptyWorkItems}
-              projectCycleMetrics={projectCycleMetrics}
+              targetMetrics={targetMetrics}
               title={"Work Queue:"}
               groupBy={"type"}
             />
@@ -708,7 +695,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           renderedChartConfig(
             <WorkItemsDurationsByPhaseChart
               workItems={workItemsFixture}
-              projectCycleMetrics={projectCycleMetrics}
+              targetMetrics={targetMetrics}
               title={"Work Queue:"}
               groupBy={"type"}
             />
@@ -719,7 +706,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
       const {series} = renderedChartConfig(
         <WorkItemsDurationsByPhaseChart
           workItems={workItemsFixture}
-          projectCycleMetrics={projectCycleMetrics}
+          targetMetrics={targetMetrics}
           title={"Work Queue:"}
           groupBy={"type"}
         />
