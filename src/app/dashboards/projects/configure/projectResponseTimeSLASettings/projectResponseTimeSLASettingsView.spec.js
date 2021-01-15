@@ -4,7 +4,7 @@ import * as settings from "./settingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
-import {ProjectResponseTimeSLASettingsView} from "./projectFlowMetricsSettingView";
+import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
 
 beforeAll(() => {
   jest.spyOn(settings, "settingsReducer");

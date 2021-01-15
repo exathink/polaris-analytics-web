@@ -2,7 +2,7 @@ import React from "react";
 import {screen, waitFor} from "@testing-library/react";
 import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
 import {getNDaysAgo} from "../../../../../test/test-utils"
-import {ProjectResponseTimeSLASettingWidget} from "./projectFlowMetricsSettingWidget";
+import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettingsWidget";
 import {GraphQLError} from "graphql";
 import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 
