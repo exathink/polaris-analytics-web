@@ -154,15 +154,19 @@ describe("ProjectFlowMetricsSettingView", () => {
 
       // This is specific test added for a bug in a slider.
       // because of the way javascript works for floating point precision. (0.57*100 = 56.99999999999999)
-      test('when confidence slider value is updated to be 57, it renders 57 on the inputNumber text box', () => {
+      test("when confidence slider value is updated, it renders correct number on the inputNumber text box", () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         // change the value of slider/inputNumber, so that save/cancel appears
         const confidenceInputElement = screen.getByTestId("confidence-range-input");
-        fireEvent.change(confidenceInputElement, {target: {value: 57}});
 
-        expect(confidenceInputElement.value).toBe("57");
-      })
+        // test against values from 0 to 100
+        const confVals = Array.from({length: 101}, (_, i) => i);
+        confVals.forEach((confVal) => {
+          fireEvent.change(confidenceInputElement, {target: {value: confVal}});
+          expect(confidenceInputElement.value).toBe(`${confVal}`);
+        });
+      });
     });
 
     describe("save/cancel", () => {
