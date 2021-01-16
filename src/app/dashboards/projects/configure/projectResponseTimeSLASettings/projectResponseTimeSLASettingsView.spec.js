@@ -151,6 +151,18 @@ describe("ProjectFlowMetricsSettingView", () => {
       test("when target slider value is updated, corresponding plotline is also updated", async () => {});
 
       test("when confidence slider value is updated, corresponding plotline text is also updated", () => {});
+
+      // This is specific test added for a bug in a slider.
+      // because of the way javascript works for floating point precision. (0.57*100 = 56.99999999999999)
+      test('when confidence slider value is updated to be 57, it renders 57 on the inputNumber text box', () => {
+        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
+
+        // change the value of slider/inputNumber, so that save/cancel appears
+        const confidenceInputElement = screen.getByTestId("confidence-range-input");
+        fireEvent.change(confidenceInputElement, {target: {value: 57}});
+
+        expect(confidenceInputElement.value).toBe("57");
+      })
     });
 
     describe("save/cancel", () => {
