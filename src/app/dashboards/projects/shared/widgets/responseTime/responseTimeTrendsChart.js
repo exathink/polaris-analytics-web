@@ -84,18 +84,6 @@ export const ResponseTimeTrendsChart = (
             },
             zIndex: 5,
           },
-        {
-            color: "blue",
-            value: leadTimeTarget,
-            dashStyle: "longdashdot",
-            width: 1,
-            label: {
-              text: `TL=${leadTimeTarget}`,
-              align: 'right',
-              verticalAlign: 'middle',
-            },
-            zIndex: 5
-          },
       ],
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
