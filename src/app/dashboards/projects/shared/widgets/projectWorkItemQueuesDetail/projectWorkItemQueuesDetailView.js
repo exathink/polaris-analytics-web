@@ -80,7 +80,7 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
         <VizItem w={1}>
           <Flex w={0.95} className="workItemStateDetailsControlWrapper">
             <GroupingSelector
-              label={"Queue"}
+              label={"Phase"}
               groupings={stateTypes.map((stateType) => ({
                 key: stateType,
                 display: WorkItemStateTypeDisplayName[stateType],
@@ -108,7 +108,7 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
             stateType={selectedStateType}
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
-            title={`Work Queue:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+            title={`Phase Details:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
             targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log("Selection changed: workItems.length");
