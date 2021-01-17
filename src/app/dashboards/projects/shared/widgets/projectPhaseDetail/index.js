@@ -1,0 +1,1 @@
+export {ProjectPhaseDetailWidget} from "./projectPhaseDetailWidget";

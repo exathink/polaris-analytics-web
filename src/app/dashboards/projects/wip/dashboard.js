@@ -140,7 +140,7 @@ export const dashboard = ({viewerContext}) => (
                   instanceKey={key}
                   view={view}
                   stageName={"Engineering"}
-                  stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.build]}
+                  stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
                   cycleTimeTarget={cycleTimeTarget}
                   specsOnly={specsOnly}
                   workItemScope={workItemScope}

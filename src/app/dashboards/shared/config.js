@@ -101,7 +101,7 @@ export const WorkItemTypeDisplayName = {
 export const WorkItemStateTypes = {
   backlog: 'backlog',
   open: 'open',
-  build: 'wip',
+  make: 'wip',
   deliver: 'complete',
   closed: 'closed'
 }
@@ -120,7 +120,7 @@ export const WorkItemStateTypeDisplayName = {
   unmapped: 'Unmapped',
   backlog: 'Define',
   open: 'Open',
-  wip: 'Build',
+  wip: 'Make',
   complete: 'Deliver',
   closed: 'Closed'
 }

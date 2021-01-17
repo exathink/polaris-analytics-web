@@ -9,14 +9,14 @@ import {
 } from "../../../../shared/config";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectWorkItemQueuesDetail.css";
+import "./projectPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 import {Alert, Select} from "antd";
 const {Option} = Select;
 
 
-const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => {
+const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, item => item.workItemsSourceKey), [workItems]);
   const uniqWorkItemsSourcesWithDefault = [
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
@@ -80,7 +80,7 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
         <VizItem w={1}>
           <Flex w={0.95} className="workItemStateDetailsControlWrapper">
             <GroupingSelector
-              label={"Queue"}
+              label={"Phase"}
               groupings={stateTypes.map((stateType) => ({
                 key: stateType,
                 display: WorkItemStateTypeDisplayName[stateType],
@@ -108,7 +108,7 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
             stateType={selectedStateType}
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
-            title={`Work Queue:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+            title={`Phase Details:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
             targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log("Selection changed: workItems.length");
@@ -138,4 +138,4 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
     );
   }
 };
-export const ProjectWorkItemQueuesDetailView = withNavigationContext(WorkItemQueuesDetailView);
+export const ProjectPhaseDetailView = withNavigationContext(PhaseDetailView);
