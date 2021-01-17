@@ -1,7 +1,7 @@
 import React from "react";
 import {screen} from "@testing-library/react";
 import {renderWithProviders} from "../../../../../framework/viz/charts/chart-test-utils";
-import {ProjectWorkItemQueuesDetailView} from "./projectWorkItemQueuesDetailView";
+import {ProjectPhaseDetailView} from "./projectPhaseDetailView";
 
 const propsFixture = {
   view: "primary",
@@ -202,7 +202,7 @@ const propsFixture = {
   },
 };
 
-describe("WorkItemQueuesDetailView", () => {
+describe("PhaseDetailView", () => {
   describe("when there are no workItems", () => {
     const emptyPropsFixture = {
       ...propsFixture,

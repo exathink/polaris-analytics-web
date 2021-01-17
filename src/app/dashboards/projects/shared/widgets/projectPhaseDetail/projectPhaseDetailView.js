@@ -9,14 +9,14 @@ import {
 } from "../../../../shared/config";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectWorkItemQueuesDetail.css";
+import "./projectPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 import {Alert, Select} from "antd";
 const {Option} = Select;
 
 
-const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => {
+const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, item => item.workItemsSourceKey), [workItems]);
   const uniqWorkItemsSourcesWithDefault = [
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
@@ -138,4 +138,4 @@ const WorkItemQueuesDetailView = ({workItems, targetMetrics, view, context}) => 
     );
   }
 };
-export const ProjectWorkItemQueuesDetailView = withNavigationContext(WorkItemQueuesDetailView);
+export const ProjectPhaseDetailView = withNavigationContext(PhaseDetailView);
