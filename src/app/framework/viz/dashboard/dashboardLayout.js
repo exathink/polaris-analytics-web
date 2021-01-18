@@ -5,12 +5,13 @@ import {Flex} from 'reflexbox';
 import {cloneChildrenWithProps, findFirstDescendant} from "../../../helpers/reactHelpers";
 
 import {Tabs} from "antd";
+import {useRouteMatch} from 'react-router-dom';
 
 const {TabPane} = Tabs;
 
-export class DashboardLayout extends React.Component {
-  render() {
-    const {children, itemSelected, match, ...rest} = this.props;
+export function DashboardLayout(props) {
+    const match = useRouteMatch();
+    const {children, itemSelected, ...rest} = props;
     if (itemSelected != null && itemSelected) {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
@@ -28,8 +29,6 @@ export class DashboardLayout extends React.Component {
         </div>
       );
     }
-  }
-
 }
 
 export const DashboardRow = ({children, h, title, subTitle, controls, align, ...rest}) => (
