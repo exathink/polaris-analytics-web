@@ -127,7 +127,6 @@ export function settingsReducer(state, action) {
           initialTarget: action.payload.cycleTimeTarget,
           initialConfidence: action.payload.cycleTimeConfidenceTarget,
         },
-        mode: mode.INIT,
       };
     }
     case actionTypes.CLOSE_SUCCESS_MODAL: {
