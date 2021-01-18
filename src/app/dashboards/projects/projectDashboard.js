@@ -8,13 +8,16 @@ import {withNavigationContext} from "../../framework/navigation/components/withN
 import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
 
 
-function FLOWMETRICS_DEFAULT_SETTINGS() {
+function PROJECT_DEFAULT_SETTINGS() {
   const BASE_DEFAULTS = {
     LEAD_TIME_TARGET_DEFAULT: 30,
     CYCLE_TIME_TARGET_DEFAULT: 7,
     RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT: 1.0,
     WIP_LIMIT_DEFAULT: 20,
     PIPELINE_MEASUREMENT_WINDOW_DEFAULT: 7,
+    WIP_ANALYSIS_PERIOD: 14,
+    FLOW_ANALYSIS_PERIOD: 30,
+    TRENDS_ANALYSIS_PERIOD: 45
   };
   return {
     ...BASE_DEFAULTS,
@@ -23,7 +26,7 @@ function FLOWMETRICS_DEFAULT_SETTINGS() {
   };
 }
 
-function getFlowMetricsSettings({settings: {flowMetricsSettings = {}} = {}}) {
+function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}} = {}}) {
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -34,7 +37,13 @@ function getFlowMetricsSettings({settings: {flowMetricsSettings = {}} = {}}) {
     pipelineMeasurementWindow,
   } = flowMetricsSettings;
 
-  const defaults = FLOWMETRICS_DEFAULT_SETTINGS();
+  const {
+    wipAnalysisPeriod,
+    flowAnalysisPeriod,
+    trendsAnalysisPeriod,
+  } = analysisPeriods
+
+  const defaults = PROJECT_DEFAULT_SETTINGS();
   return {
     leadTimeTarget: leadTimeTarget || defaults.LEAD_TIME_TARGET_DEFAULT,
     cycleTimeTarget: cycleTimeTarget || defaults.CYCLE_TIME_TARGET_DEFAULT,
@@ -43,6 +52,9 @@ function getFlowMetricsSettings({settings: {flowMetricsSettings = {}} = {}}) {
     cycleTimeConfidenceTarget: cycleTimeConfidenceTarget || defaults.CYCLE_TIME_CONFIDENCE_TARGET_DEFAULT,
     wipLimit: wipLimit || defaults.WIP_LIMIT_DEFAULT,
     pipelineMeasurementWindow: pipelineMeasurementWindow || defaults.PIPELINE_MEASUREMENT_WINDOW_DEFAULT,
+    wipAnalysisPeriod: wipAnalysisPeriod || defaults.WIP_ANALYSIS_PERIOD,
+    flowAnalysisPeriod: flowAnalysisPeriod || defaults.FLOW_ANALYSIS_PERIOD,
+    trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD
   };
 }
 
@@ -83,6 +95,11 @@ class WithProject extends React.Component {
                             leadTimeConfidenceTarget
                             cycleTimeConfidenceTarget
                         }
+                        analysisPeriods {
+                            wipAnalysisPeriod
+                            flowAnalysisPeriod
+                            trendsAnalysisPeriod
+                        }
                     }
                 }
             }
@@ -98,7 +115,7 @@ class WithProject extends React.Component {
             if (loading) return <Loading/>;
             if (error) return null;
             const project = data.project;
-            const projectWithDefaultSettings = {...project, settingsWithDefaults: getFlowMetricsSettings(project)};
+            const projectWithDefaultSettings = {...project, settingsWithDefaults: getProjectSettings(project)};
 
             return (
               <DashboardLifecycleManager
