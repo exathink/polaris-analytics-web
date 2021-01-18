@@ -73,9 +73,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
         )}
       />
       {
-        itemSelected && showDetail ?
-          React.createElement(render, {...{view: 'detail'},  ...rest})
-          : React.createElement(render, {...{view: 'primary'}, ...rest})
+        itemSelected && showDetail ? render({view: 'detail', ...rest}) : render({view: 'primary', ...rest})
       }
 
     </Flex>

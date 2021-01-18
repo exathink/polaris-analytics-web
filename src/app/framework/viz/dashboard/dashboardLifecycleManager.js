@@ -16,6 +16,6 @@ export class DashboardLifecycleManager extends React.Component {
       render,
       ...rest
     } = this.props;
-    return React.createElement(render, {...rest})
+    return render(rest);
   }
 }
