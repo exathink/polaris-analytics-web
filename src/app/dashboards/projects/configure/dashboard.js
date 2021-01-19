@@ -45,7 +45,8 @@ export function ValueStreamMappingDashboard() {
               />
               <DashboardWidget
                 w={1 / 3}
-                render={() => <ReactPlayer url={"https://youtu.be/CsZkhdVQztA"} />}
+                //render={() => <ReactPlayer url={"https://youtu.be/CsZkhdVQztA"} />}
+                render={() => <ReactPlayer url={"https://exathink.wistia.com/medias/axbmi0ttt9"} controls={true} />}
                 //render={() => <ReactPlayer url={"https://vimeo.com/501974487/080d487fcf"} playIcon={true} playing={false} controls={true}/>}
               />
             </DashboardRow>
