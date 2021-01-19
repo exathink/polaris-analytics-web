@@ -29,6 +29,7 @@
     "react-ga": "^3.1.2",
     "react-intl": "^2.3.0",
     "react-placeholder": "^3.0.1",
+    "react-player": "^2.7.2",
     "react-redux": "^7.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

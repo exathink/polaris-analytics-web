@@ -6,6 +6,7 @@ import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
+import ReactPlayer from "react-player";
 
 const dashboard_id = "dashboards.project.configure";
 
@@ -14,32 +15,51 @@ export function ValueStreamMappingDashboard() {
     <ProjectDashboard
       render={({project: {key}, context}) => {
         return (
-        <Dashboard>
-          <DashboardRow h={"50%"} title={" "}>
-            <DashboardWidget
-              w={1 / 3}
-              name="project-pipeline-detailed"
-              render={({view}) => (
-                <ProjectPipelineFunnelWidget
-                  instanceKey={key}
-                  context={context}
-                  workItemScope={"all"}
-                  days={30}
-                  view={view}
-                />
-              )}
-              showDetail={false}
-            />
-            <DashboardWidget
-              w={2 / 3}
-              name="workitem-statetype-map"
-              render={({view}) => {
-                return <WorkItemStateTypeMapWidget instanceKey={key} context={context} days={30} view={view} />;
-              }}
-            />
-          </DashboardRow>
-        </Dashboard>
-        )
+          <Dashboard>
+            <DashboardRow h={"45%"} title={" "}>
+              <DashboardWidget
+                w={1 / 3}
+                render={() => (
+                  <div>
+                    <h2>Value Stream Mapping</h2>
+                    <p>
+                      Lorem ipsum etc...Give a short intro to concepts and ask the user to watch a short setup video
+                    </p>
+                  </div>
+                )}
+              />
+
+              <DashboardWidget
+                w={1 / 3}
+                name="project-pipeline-detailed"
+                render={({view}) => (
+                  <ProjectPipelineFunnelWidget
+                    instanceKey={key}
+                    context={context}
+                    workItemScope={"all"}
+                    days={30}
+                    view={view}
+                  />
+                )}
+                showDetail={false}
+              />
+              <DashboardWidget
+                w={1 / 3}
+                render={() => <ReactPlayer url={"https://youtu.be/CsZkhdVQztA"} />}
+                //render={() => <ReactPlayer url={"https://vimeo.com/501974487/080d487fcf"} playIcon={true} playing={false} controls={true}/>}
+              />
+            </DashboardRow>
+            <DashboardRow h={"50%"}>
+              <DashboardWidget
+                w={1}
+                name="workitem-statetype-map"
+                render={({view}) => {
+                  return <WorkItemStateTypeMapWidget instanceKey={key} context={context} days={30} view={view} />;
+                }}
+              />
+            </DashboardRow>
+          </Dashboard>
+        );
       }}
     />
   );
