@@ -5,7 +5,7 @@ import "./videoPlayer.css";
 
 function getPlaySVG() {
   return (
-    <svg width="25" height="25" fill="none" viewBox="0 0 50 50">
+    <svg width="25" height="25" fill="none" viewBox="0 0 90 90">
       <circle
         class="text-gray-300 dark:text-gray-500"
         cx="25"
@@ -21,7 +21,7 @@ function getPlaySVG() {
 
 function getPauseSVG() {
   return (
-    <svg width="25" height="25" fill="none" viewBox="0 0 50 50">
+    <svg width="25" height="25" fill="none" viewBox="0 0 90 90">
       <circle
         class="text-gray-300 dark:text-gray-500"
         cx="25"
