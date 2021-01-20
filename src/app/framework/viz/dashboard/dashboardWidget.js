@@ -2,6 +2,7 @@ import React from "react";
 import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
 import {withRouter} from 'react-router';
+import {EmbedVideoPlayer, useVideo} from "../videoPlayer/videoPlayer";
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
   showDetail?
@@ -16,9 +17,15 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
 );
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, ...rest}) => {
+    const videoPlayerProps = useVideo({
+      enableVideo,
+      ...(videoConfig && videoConfig)
+    });
+
   return (
     <Flex column w={w} m={1} className="dashboard-item">
+      {videoConfig && <EmbedVideoPlayer {...videoPlayerProps} />}
       {
         title || subtitle || controls ?
         <div className={"dashboard-item-title-container"}>
