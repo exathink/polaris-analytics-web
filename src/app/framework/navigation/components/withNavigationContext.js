@@ -16,6 +16,8 @@ export const withNavigationContext = Component => (
             optionalTopics = {navigationContext.optionalTopics}
             setPolling = {navigationContext.setPolling}
             polling = {navigationContext.polling}
+            setEnableVideo = {navigationContext.setEnableVideo}
+            enableVideo = {navigationContext.enableVideo}
             setFullScreen = {navigationContext.setFullScreen}
             fullScreen = {navigationContext.fullScreen}
             {...props}

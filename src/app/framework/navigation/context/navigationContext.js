@@ -20,6 +20,8 @@ class NavigationContextProvider extends React.Component {
       showOptionalTopics: this.showOptionalTopics.bind(this),
       setPolling: this.setPolling.bind(this),
       polling: true,
+      enableVideo: true,
+      setEnableVideo: this.setEnableVideo.bind(this),
       fullScreen: false,
       setFullScreen: this.setFullScreen.bind(this),
     }
@@ -54,6 +56,13 @@ class NavigationContextProvider extends React.Component {
     this.setState({
       ...this.state,
       polling: polling
+    })
+  }
+
+  setEnableVideo(enableVideo){
+    this.setState({
+      ...this.state,
+      enableVideo: enableVideo
     })
   }
 

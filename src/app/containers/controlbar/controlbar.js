@@ -3,6 +3,7 @@ import NavigationControls from '../../framework/navigation/components/navigation
 import FullscreenBtn from '../../../components/buttons/FullscreenBtn';
 import {PollButton} from "../../../components/buttons/pollButton";
 import './controlbar.css';
+import {VideoButton} from '../../../components/buttons/videoButton';
 
 export const DashboardControlBar = () => (
     <div className='controlbar'>
@@ -14,6 +15,7 @@ export const DashboardControlBar = () => (
       <nav className='menu menu-right' style={{width: '33%'}}>
         <FullscreenBtn componentId="app-content-area"/>
         <PollButton/>
+        <VideoButton />
       </nav>
     </div>
 
