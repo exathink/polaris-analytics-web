@@ -19,14 +19,7 @@ export function ValueStreamMappingDashboard() {
             <DashboardWidget
               w={1 / 3}
               name="project-pipeline-detailed"
-              videoConfig={{
-                url: "https://vimeo.com/501974487/080d487fcf",
-                title: "State Mapping",
-                VideoDescription: () => (<>
-                  <h2>Value Stream Mapping</h2>
-                  <p> lorem ipsum </p>
-                </>)
-              }}
+              videoConfig={ProjectPipelineFunnelWidget.videoConfig}
               render={({view}) => (
                 <ProjectPipelineFunnelWidget
                   instanceKey={key}

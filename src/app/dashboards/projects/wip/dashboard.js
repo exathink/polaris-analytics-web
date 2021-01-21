@@ -65,6 +65,7 @@ function WipDashboard({
           w={0.3}
           name="pipeline"
           title={"Work In Progress"}
+          videoConfig={ProjectPipelineWidget.videoConfig}
           render={({view}) => (
             <ProjectPipelineWidget
               instanceKey={key}
@@ -133,6 +134,7 @@ function WipDashboard({
         <DashboardWidget
           w={1 / 3}
           name="engineering"
+          videoConfig={ProjectPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
             <ProjectPipelineCycleTimeLatencyWidget
               instanceKey={key}

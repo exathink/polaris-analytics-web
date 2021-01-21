@@ -57,3 +57,14 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
       />
   )
 }
+
+ProjectPipelineCycleTimeLatencyWidget.videoConfig = {
+  url: "https://vimeo.com/501974487/080d487fcf",
+  title: "Engineering",
+  VideoDescription: () => (
+    <>
+      <h2>Engineering</h2>
+      <p> lorem ipsum </p>
+    </>
+  ),
+};
