@@ -2,7 +2,9 @@ import React from 'react';
 import {findActiveContext} from "../context/contextPath";
 
 import {withRouter} from "react-router";
+import {withViewerContext} from "../../viewer/viewerContext";
 import {ContextStack} from './contextStack';
+import {VIDEO_GUIDANCE} from "../../../../config/featureFlags";
 
 const {Provider, Consumer} = React.createContext({});
 
@@ -11,6 +13,7 @@ const {Provider, Consumer} = React.createContext({});
 class NavigationContextProvider extends React.Component {
   constructor(props) {
     super(props);
+    const {viewerContext} = props;
     this.state = {
       location: null,
       contextStack: ContextStack.initContext(),
@@ -20,6 +23,8 @@ class NavigationContextProvider extends React.Component {
       showOptionalTopics: this.showOptionalTopics.bind(this),
       setPolling: this.setPolling.bind(this),
       polling: true,
+      enableVideo: viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE),
+      setEnableVideo: this.setEnableVideo.bind(this),
       fullScreen: false,
       setFullScreen: this.setFullScreen.bind(this),
     }
@@ -57,6 +62,13 @@ class NavigationContextProvider extends React.Component {
     })
   }
 
+  setEnableVideo(enableVideo){
+    this.setState({
+      ...this.state,
+      enableVideo: enableVideo
+    })
+  }
+
   setFullScreen(fullScreen){
     this.setState({
       ...this.state,
@@ -84,7 +96,7 @@ class NavigationContextProvider extends React.Component {
 
 
 export const NavigationContext = {
-  Provider: withRouter(NavigationContextProvider),
+  Provider: withViewerContext(withRouter(NavigationContextProvider)),
   Consumer: Consumer
 };
 

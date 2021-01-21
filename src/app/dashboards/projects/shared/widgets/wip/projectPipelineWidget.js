@@ -70,5 +70,14 @@ export const ProjectPipelineWidget = (
 
 }
 
-
+ProjectPipelineWidget.videoConfig = {
+  url: "https://vimeo.com/501974487/080d487fcf",
+  title: "WIP",
+  VideoDescription: () => (
+    <>
+      <h2>Work In Progress</h2>
+      <p> lorem ipsum </p>
+    </>
+  ),
+};
 
