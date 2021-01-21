@@ -41,7 +41,7 @@ const VIDEO_STATES = {
 };
 
 // custom hook to abstract video component state
-export function useVideo(options) {
+export function useVideo({enableVideo, url, title, VideoDescription} = {}) {
   const [playState, setPlayState] = React.useState(VIDEO_STATES.PAUSE);
   const [visible, setVisible] = React.useState(false);
 
@@ -64,14 +64,14 @@ export function useVideo(options) {
   }
 
   return {
-    enableVideo: options.enableVideo,
-    url: options.url,
-    title: options.title,
-    VideoDescription: options.VideoDescription,
+    enableVideo: enableVideo,
+    url: url,
+    title: title,
+    VideoDescription: VideoDescription,
     videoIcon: getIconSvg(),
+    handleVideoIconClick,
     visible,
     playState,
-    handleVideoIconClick,
     onClose,
     onPlay: () => setPlayState(VIDEO_STATES.PLAY),
     onPause: () => setPlayState(VIDEO_STATES.PAUSE),
@@ -79,36 +79,34 @@ export function useVideo(options) {
 }
 
 // currently we are using this player, we should be able to easily replace if required.
-export function VideoPlayer(props) {
+export function VideoPlayer({url, playState, onPlay, onPause}) {
   return (
     <ReactPlayer
       width="100%"
       height="100%"
-      url={props.url}
-      playing={props.playState === VIDEO_STATES.PLAY}
+      url={url}
+      playing={playState === VIDEO_STATES.PLAY}
       controls={true}
-      onPlay={props.onPlay}
-      onPause={props.onPause}
+      onPlay={onPlay}
+      onPause={onPause}
       // light={true} // pass image url here if we want to show different preview image
     />
   );
 }
 
-export function EmbedVideoPlayer(props) {
-  const {
-    enableVideo,
-    title = "Default Title",
-    visible,
-    onClose,
-    playState,
-    onPlay,
-    onPause,
-    url,
-    handleVideoIconClick,
-    videoIcon,
-    VideoDescription = () => null,
-  } = props;
-
+export function EmbedVideoPlayer({
+  enableVideo,
+  url,
+  title = "Default Title",
+  visible,
+  onClose,
+  onPlay,
+  onPause,
+  playState,
+  videoIcon,
+  handleVideoIconClick,
+  VideoDescription = () => null,
+}) {
   if (!enableVideo) {
     return null;
   }
