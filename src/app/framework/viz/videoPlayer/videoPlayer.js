@@ -91,7 +91,6 @@ export function VideoPlayer({url, playState, onPlay, onPause}) {
 }
 
 export function EmbedVideoPlayer({
-  enableVideo,
   // videoConfig Props
   url,
   title = "Default Title",
@@ -106,10 +105,6 @@ export function EmbedVideoPlayer({
   videoIcon,
   handleVideoIconClick,
 }) {
-  if (!enableVideo) {
-    return null;
-  }
-
   return (
     <>
       <span onClick={handleVideoIconClick} className="video-player-icon">

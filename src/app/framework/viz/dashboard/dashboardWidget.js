@@ -22,7 +22,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
 
   return (
     <Flex column w={w} m={1} className="dashboard-item">
-      {videoConfig && <EmbedVideoPlayer enableVideo={enableVideo} {...videoConfig} {...videoPlayerProps} />}
+      {enableVideo && videoConfig && <EmbedVideoPlayer {...videoConfig} {...videoPlayerProps} />}
       {
         title || subtitle || controls ?
         <div className={"dashboard-item-title-container"}>
