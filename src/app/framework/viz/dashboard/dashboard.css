@@ -110,3 +110,15 @@
 .dashboard-item .ant-tabs-content {
   height: 92%
 }
+
+.video-detail-view{
+  position: absolute;
+  top: 20px;
+  right: 73px;
+}
+
+.video-primary-view{
+  position: absolute;
+  top: 8px;
+  right: 25px;
+}

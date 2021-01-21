@@ -16,13 +16,24 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
     null
 );
 
+function getVideoClassNames(itemSelected, showDetail) {
+  let classes;
+  if (itemSelected) {
+    classes = "video-detail-view";
+  }
+  if (!itemSelected && showDetail) {
+    classes = "video-primary-view";
+  }
+
+  return classes;
+}
+
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, ...rest}) => {
   const videoPlayerProps = useVideo();
 
   return (
     <Flex column w={w} m={1} className="dashboard-item">
-      {enableVideo && videoConfig && <EmbedVideoPlayer {...videoConfig} {...videoPlayerProps} />}
       {
         title || subtitle || controls ?
         <div className={"dashboard-item-title-container"}>
@@ -70,6 +81,13 @@ export const DashboardWidget = withRouter(withNavigationContext(
         null
 
       }
+      {enableVideo && videoConfig && (
+        <EmbedVideoPlayer
+          className={getVideoClassNames(itemSelected, showDetail)}
+          {...videoConfig}
+          {...videoPlayerProps}
+        />
+      )}
       <WidgetMenu
         {...{itemSelected, showDetail}}
         onClick={() => (

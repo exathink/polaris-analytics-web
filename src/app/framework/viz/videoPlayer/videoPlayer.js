@@ -104,10 +104,12 @@ export function EmbedVideoPlayer({
   // state props for video icon
   videoIcon,
   handleVideoIconClick,
+  // styling props
+  className = "video-default-position"
 }) {
   return (
     <>
-      <span onClick={handleVideoIconClick} className="video-player-icon">
+      <span onClick={handleVideoIconClick} className={`video-player-icon ${className}`}>
         {videoIcon}
       </span>
       <Drawer width={720} title={title} onClose={onClose} visible={visible}>
