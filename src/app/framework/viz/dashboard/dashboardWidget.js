@@ -18,14 +18,11 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, ...rest}) => {
-    const videoPlayerProps = useVideo({
-      enableVideo,
-      ...(videoConfig && videoConfig)
-    });
+  const videoPlayerProps = useVideo();
 
   return (
     <Flex column w={w} m={1} className="dashboard-item">
-      {videoConfig && <EmbedVideoPlayer {...videoPlayerProps} />}
+      {videoConfig && <EmbedVideoPlayer enableVideo={enableVideo} {...videoConfig} {...videoPlayerProps} />}
       {
         title || subtitle || controls ?
         <div className={"dashboard-item-title-container"}>

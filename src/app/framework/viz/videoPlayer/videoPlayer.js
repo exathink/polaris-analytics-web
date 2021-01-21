@@ -41,7 +41,7 @@ const VIDEO_STATES = {
 };
 
 // custom hook to abstract video component state
-export function useVideo({enableVideo, url, title, VideoDescription} = {}) {
+export function useVideo() {
   const [playState, setPlayState] = React.useState(VIDEO_STATES.PAUSE);
   const [visible, setVisible] = React.useState(false);
 
@@ -64,10 +64,6 @@ export function useVideo({enableVideo, url, title, VideoDescription} = {}) {
   }
 
   return {
-    enableVideo: enableVideo,
-    url: url,
-    title: title,
-    VideoDescription: VideoDescription,
     videoIcon: getIconSvg(),
     handleVideoIconClick,
     visible,
@@ -96,16 +92,19 @@ export function VideoPlayer({url, playState, onPlay, onPause}) {
 
 export function EmbedVideoPlayer({
   enableVideo,
+  // videoConfig Props
   url,
   title = "Default Title",
+  VideoDescription = () => null,
+  // state props from hook
   visible,
   onClose,
   onPlay,
   onPause,
   playState,
+  // state props for video icon
   videoIcon,
   handleVideoIconClick,
-  VideoDescription = () => null,
 }) {
   if (!enableVideo) {
     return null;
