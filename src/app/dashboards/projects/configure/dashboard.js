@@ -6,6 +6,7 @@ import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
+import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 
 const dashboard_id = "dashboards.project.configure";
 
@@ -82,6 +83,37 @@ export function ResponseTimeSLASettingsDashboard() {
   );
 }
 
+export function AnalysisPeriodsDashboard() {
+  return (
+    <ProjectDashboard
+      render={({project: {key, settingsWithDefaults}, context}) => {
+        const {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod} = settingsWithDefaults;
+        return (
+        <Dashboard>
+          <DashboardRow h="94%">
+            <DashboardWidget
+              w={1}
+              name="analysis-periods-widget"
+              render={({view}) => {
+                return (
+                  <ProjectAnalysisPeriodsWidget
+                    instanceKey={key}
+                    wipAnalysisPeriod={wipAnalysisPeriod}
+                    flowAnalysisPeriod={flowAnalysisPeriod}
+                    trendsAnalysisPeriod={trendsAnalysisPeriod}
+                  />
+                );
+              }}
+              showDetail={false}
+            />
+          </DashboardRow>
+        </Dashboard>
+        );
+      }}
+    />
+  );
+}
+
 export default withViewerContext(({viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
 
@@ -96,6 +128,8 @@ export default withViewerContext(({viewerContext}) => {
           <ValueStreamMappingDashboard/>
         ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
           <ResponseTimeSLASettingsDashboard/>
+        ) : configTab === CONFIG_TABS.ANALYSIS_PERIODS ? (
+          <AnalysisPeriodsDashboard />
         ) : null}
       </DashboardRow>
     </Dashboard>

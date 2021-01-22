@@ -1,0 +1,20 @@
+.analysisSliderWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-around;
+}
+
+.analysis-slider-bar {
+  width: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.analysis-slider-bar-edit {
+  border: 1px solid rgb(0, 0, 0, 0.4);
+}
