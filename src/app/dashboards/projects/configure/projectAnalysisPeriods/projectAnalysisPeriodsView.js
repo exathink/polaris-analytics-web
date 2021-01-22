@@ -80,10 +80,10 @@ export const ProjectAnalysisPeriodsView = ({
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={"targetSave"} type="primary" size="small" shape="round">
+          <Button onClick={handleSaveClick} className="analysisSave" type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className={"targetCancel"} type="default" size="small" shape="round">
+          <Button onClick={handleCancelClick} className="analysisCancel" type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -111,12 +111,12 @@ export const ProjectAnalysisPeriodsView = ({
 
   return (
     <React.Fragment>
-      <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
+      <div className="analysisPeriodControlsWrapper" data-testid="analysis-periods-view">
         <Flex w={1} justify={"center"}>
           <span>Drag sliders to update analysis periods</span>
         </Flex>
-        <Flex w={1} className="selectedMetricWrapper">
-          <div className="targetControlButtons">{getButtonElements()}</div>
+        <Flex w={1} className="analysisPeriodsWrapper">
+          <div className="analysisPeriodsButtons">{getButtonElements()}</div>
         </Flex>
         <AnalysisPeriodsSliders {...sliderProps} />
       </div>

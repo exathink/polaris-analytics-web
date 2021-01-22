@@ -18,3 +18,27 @@
 .analysis-slider-bar-edit {
   border: 1px solid rgb(0, 0, 0, 0.4);
 }
+
+.analysisPeriodControlsWrapper {
+  padding: 10px;
+  background: white;
+}
+
+.analysisPeriodsButtons {
+  height: 25px;
+  margin-left: auto;
+}
+
+.analysisPeriodsWrapper {
+  background: white;
+  margin-bottom: 20px;
+}
+
+.analysisSave {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.analysisCancel {
+  margin-right: 20px;
+}

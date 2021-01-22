@@ -1,4 +1,3 @@
-import {Alert} from "antd";
 import React from "react";
 import {getAnalysisControlBar} from "../../../shared/components/analysisControlBar/analysisControlBar";
 import {actionTypes, mode} from "./constants";
