@@ -418,7 +418,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByTestId("state-type-map-view")).toBeNull();
+        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
@@ -441,7 +441,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByTestId("state-type-map-view")).toBeNull();
+        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
       });
     });
   });
