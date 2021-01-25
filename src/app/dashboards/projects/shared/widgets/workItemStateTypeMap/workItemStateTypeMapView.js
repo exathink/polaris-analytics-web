@@ -54,11 +54,14 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   // utilizing this trick to reset component (changing the key will remount the chart component with same props)
   const [resetComponentStateKey, setKey] = React.useState(1);
 
+  function resetState() {
+    const newKey = resetComponentStateKey === 1 ? 2 : 1;
+    setKey(newKey);
+  }
   // Reset state on cancel
   function handleCancelClick(e) {
     dispatch({type: actionTypes.CANCEL_EDIT_MODE});
-    const newKey = resetComponentStateKey === 1 ? 2 : 1;
-    setKey(newKey);
+    resetState();
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
@@ -136,7 +139,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
 
     if (state.mode === mode.FAILURE) {
-      return <Alert message={state.errorMessage} type="error" showIcon closable className="shiftRight" />;
+      return <Alert message={state.errorMessage} type="error" showIcon closable className="shiftRight" onClose={() => resetState()}/>;
     }
 
     if (state.mode === mode.SUCCESS) {
