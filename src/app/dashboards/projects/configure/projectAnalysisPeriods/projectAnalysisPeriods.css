@@ -12,17 +12,35 @@
   align-self: flex-start;
   grid-column: 2 / 3;
 }
+.analysisItemWrapper{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+.analysisPeriodTitle{
+  margin-left: 40%;
+}
+.analysisPeriodsButtons {
+  height: 25px;
+  margin-left: auto;
+}
 
 .analysis-slider-bar {
   display: flex;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  width: 60%;
+  flex: 0 0 40%;
 }
-.analysis-info-bar{
-
+.analysis-info{
+  padding: 16px;
+  margin-right: 16px;
+  text-align: justify;
+  line-height: 1.5rem;
+  border-left: 8px solid #8cc8ff;
+  background-color: rgba(25,118,210,.05);
 }
 .analysis-slider-bar-edit {
   border: 1px solid rgb(0, 0, 0, 0.4);
@@ -31,15 +49,6 @@
 .analysisPeriodTopBar{
   grid-column: 2 / 3;
   display: flex;
-  justify-content: space-between;
-}
-.analysisPeriodsButtons {
-  height: 25px;
-  margin-left: auto;
-}
-
-.analysisPeriodsWrapper {
-
 }
 
 .analysisSave {
@@ -47,18 +56,8 @@
   margin-right: 10px;
 }
 
-.analysisCancel {
-
-}
-
 .analysisRangeSlider {
   flex-direction: column;
   justify-items: left;
   width: 100%;
-}
-
-.analysisItemWrapper{
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
 }

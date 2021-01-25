@@ -1,15 +1,13 @@
 import {InputNumber} from "antd";
 import React from "react";
 import {TargetRangeSlider, TWO_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
-import {actionTypes, mode} from "./constants";
+import {actionTypes} from "./constants";
 
-const [wipInfo, flowInfo, trendsInfo] = ["Wip", "Flow", "Trends"];
 export function AnalysisPeriodsSliders({
   wipPeriod,
   flowPeriod,
   trendsPeriod,
   initialAnalysisPeriods,
-  mode: sliderMode,
   dispatch,
 }) {
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, TWO_MONTHS];
@@ -41,7 +39,7 @@ export function AnalysisPeriodsSliders({
   const analysisPeriodItems = [
     {
       id: "wipAnalysisPeriod",
-      title: "Wip Analysis Windo",
+      title: "Wip Analysis Window",
       period: wipPeriod,
       setPeriod: setWipRange,
       range: wipMarks,
@@ -54,7 +52,7 @@ export function AnalysisPeriodsSliders({
     },
     {
       id: "flowAnalysisPeriod",
-      title: "Flow Analysis Windo",
+      title: "Flow Analysis Window",
       period: flowPeriod,
       setPeriod: setFlowRange,
       range: flowMarks,
@@ -62,7 +60,7 @@ export function AnalysisPeriodsSliders({
       max: flowMax,
       className: flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? " analysis-slider-bar-edit" : "",
       info:
-        "The default analysis period to analyze flow metrics for value stream in Flow dashboard. This value must be larger than the Wip analysis window and typically is 2-4x the Wip analysis period.",
+        "The default analysis period to analyze flow metrics for value stream in Flow dashboard. This value must be larger than the Wip analysis window and typically is 2-4x the Wip analysis period.  This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Flow dashboard for all users.",
       dataTestId: "flow-range-input",
     },
     {
@@ -75,7 +73,7 @@ export function AnalysisPeriodsSliders({
       max: trendsMax,
       className: trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? " analysis-slider-bar-edit" : "",
       info:
-        "The default analysis period for showing longer terms trends fro the Value Stream in the trends dashboard. This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Flow dashboard for all users.",
+        "The default analysis period for showing longer term trends for the Value Stream in the trends dashboard. This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Trends dashboard for all users.",
       dataTestId: "trends-range-input",
     },
   ];
