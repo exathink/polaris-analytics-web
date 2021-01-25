@@ -15,6 +15,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
+      } else {
+        dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
     onError: (error) => {
