@@ -87,7 +87,7 @@ export function AnalysisPeriodsDashboard() {
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
-        const {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod} = settingsWithDefaults;
+        const {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod, cycleTimeTarget} = settingsWithDefaults;
         return (
         <Dashboard>
           <DashboardRow h="95%">
@@ -101,6 +101,7 @@ export function AnalysisPeriodsDashboard() {
                     wipAnalysisPeriod={wipAnalysisPeriod}
                     flowAnalysisPeriod={flowAnalysisPeriod}
                     trendsAnalysisPeriod={trendsAnalysisPeriod}
+                    cycleTimeTarget={cycleTimeTarget}
                   />
                 );
               }}

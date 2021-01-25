@@ -12,6 +12,7 @@ export const ProjectAnalysisPeriodsView = ({
   wipAnalysisPeriod,
   flowAnalysisPeriod,
   trendsAnalysisPeriod,
+  cycleTimeTarget
 }) => {
   // mutation to update project analysis periods
   const [mutate, {loading, error, client}] = useProjectUpdateSettings({
@@ -44,7 +45,7 @@ export const ProjectAnalysisPeriodsView = ({
   };
 
   const [state, dispatch] = React.useReducer(analysisPeriodsReducer, initialState);
-  const sliderProps = {...state, dispatch};
+  const sliderProps = {...state, cycleTimeTarget, dispatch};
 
   function handleSaveClick() {
     const payload = {

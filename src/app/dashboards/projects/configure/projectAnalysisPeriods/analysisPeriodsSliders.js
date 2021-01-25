@@ -3,12 +3,22 @@ import React from "react";
 import {TargetRangeSlider, TWO_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
 
-export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
+export function AnalysisPeriodsSliders({
+  wipPeriod,
+  flowPeriod,
+  trendsPeriod,
+  initialAnalysisPeriods,
+  cycleTimeTarget,
+  dispatch,
+}) {
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, TWO_MONTHS];
-  if (wipPeriod >= 1) {
+  if (cycleTimeTarget > 1) {
+    wipDaysMarks = [cycleTimeTarget, ...TWO_MONTHS.filter((x) => x > cycleTimeTarget)];
+  }
+  if (wipPeriod > 1) {
     flowDaysMarks = [wipPeriod, ...TWO_MONTHS.filter((x) => x > wipPeriod)];
   }
-  if (flowPeriod >= 1) {
+  if (flowPeriod > 1) {
     trendsDaysMarks = [flowPeriod, ...TWO_MONTHS.filter((x) => x > flowPeriod)];
   }
 
