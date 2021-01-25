@@ -3,13 +3,7 @@ import React from "react";
 import {TargetRangeSlider, TWO_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
 
-export function AnalysisPeriodsSliders({
-  wipPeriod,
-  flowPeriod,
-  trendsPeriod,
-  initialAnalysisPeriods,
-  dispatch,
-}) {
+export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, TWO_MONTHS];
   if (wipPeriod >= 1) {
     flowDaysMarks = [wipPeriod, ...TWO_MONTHS.filter((x) => x > wipPeriod)];
@@ -79,28 +73,31 @@ export function AnalysisPeriodsSliders({
   ];
 
   return (
-    <div className="analysisSliderWrapper">
+    <div className="analysisItemsWrapper">
       {analysisPeriodItems.map((item) => {
         return (
-          <div key={item.id} className="analysisItemWrapper">
-            <div className="analysis-info">{item.info}</div>
-            <div className={`analysis-slider-bar ${item.className}`}>
-              <TargetRangeSlider
-                title={item.title}
-                initialDays={item.period}
-                setDaysRange={item.setPeriod}
-                range={item.range}
-                className="analysisRangeSlider"
-              />
-              <InputNumber
-                min={item.min}
-                max={item.max}
-                style={{margin: "0 16px"}}
-                value={item.period}
-                onChange={item.setPeriod}
-                data-testid={item.dataTestId}
-              />
+          <div key={item.id} className={`analysisItemWrapper ${item.className}`}>
+            <div className="analysisTitleWrapper">
+              <div className="analysisTitle">{item.title}</div>
+              <div className="analysis-slider-bar">
+                <TargetRangeSlider
+                  title={" "}
+                  initialDays={item.period}
+                  setDaysRange={item.setPeriod}
+                  range={item.range}
+                  className="analysisRangeSlider"
+                />
+                <InputNumber
+                  min={item.min}
+                  max={item.max}
+                  style={{margin: "0 16px"}}
+                  value={item.period}
+                  onChange={item.setPeriod}
+                  data-testid={item.dataTestId}
+                />
+              </div>
             </div>
+            <div className="analysis-info">{item.info}</div>
           </div>
         );
       })}
