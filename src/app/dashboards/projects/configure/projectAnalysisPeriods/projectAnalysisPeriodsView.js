@@ -110,16 +110,12 @@ export const ProjectAnalysisPeriodsView = ({
   }
 
   return (
-    <React.Fragment>
-      <div className="analysisPeriodControlsWrapper" data-testid="analysis-periods-view">
-        <Flex w={1} justify={"center"}>
-          <span>Drag sliders to update analysis periods</span>
-        </Flex>
-        <Flex w={1} className="analysisPeriodsWrapper">
-          <div className="analysisPeriodsButtons">{getButtonElements()}</div>
-        </Flex>
-        <AnalysisPeriodsSliders {...sliderProps} />
+    <div className="analysisPeriodControlsWrapper" data-testid="analysis-periods-view">
+      <div className="analysisPeriodTopBar">
+        <span>Drag sliders to update analysis periods</span>
+        <div className="analysisPeriodsButtons">{getButtonElements()}</div>
       </div>
-    </React.Fragment>
+      <AnalysisPeriodsSliders {...sliderProps} />
+    </div>
   );
 };

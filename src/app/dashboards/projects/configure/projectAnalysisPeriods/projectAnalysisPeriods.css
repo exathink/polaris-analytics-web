@@ -1,37 +1,45 @@
-.analysisSliderWrapper {
-  display: flex;
-  flex-direction: column;
+.analysisPeriodControlsWrapper {
+  height: 75vh;
+  background: white;
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  grid-template-rows: 70px 1fr;
   align-items: center;
-  justify-items: center;
-  justify-content: space-around;
+  gap: 0.25rem;
+}
+
+.analysisSliderWrapper {
+  align-self: flex-start;
+  grid-column: 2 / 3;
 }
 
 .analysis-slider-bar {
-  width: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 5px;
-  margin-bottom: 50px;
   display: flex;
   align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 60%;
 }
+.analysis-info-bar{
 
+}
 .analysis-slider-bar-edit {
   border: 1px solid rgb(0, 0, 0, 0.4);
 }
 
-.analysisPeriodControlsWrapper {
-  padding: 10px;
-  background: white;
+.analysisPeriodTopBar{
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: space-between;
 }
-
 .analysisPeriodsButtons {
   height: 25px;
   margin-left: auto;
 }
 
 .analysisPeriodsWrapper {
-  background: white;
-  margin-bottom: 20px;
+
 }
 
 .analysisSave {
@@ -40,5 +48,17 @@
 }
 
 .analysisCancel {
-  margin-right: 20px;
+
+}
+
+.analysisRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}
+
+.analysisItemWrapper{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }

@@ -90,7 +90,7 @@ export function AnalysisPeriodsDashboard() {
         const {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod} = settingsWithDefaults;
         return (
         <Dashboard>
-          <DashboardRow h="94%">
+          <DashboardRow h="95%">
             <DashboardWidget
               w={1}
               name="analysis-periods-widget"
