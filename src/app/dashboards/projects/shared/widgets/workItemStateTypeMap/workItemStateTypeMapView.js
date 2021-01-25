@@ -10,7 +10,7 @@ import {actionTypes, mode} from "./constants";
 const {Option} = Select;
 
 export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits}) {
-  const [mutate, {loading, error, client}] = updateProjectWorkItemSourceStateMaps({
+  const [mutate, {loading, client}] = updateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
