@@ -4,7 +4,6 @@ import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
 import {Alert, Button} from "antd";
 import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
-import {Flex} from "reflexbox";
 import "./projectAnalysisPeriods.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 
