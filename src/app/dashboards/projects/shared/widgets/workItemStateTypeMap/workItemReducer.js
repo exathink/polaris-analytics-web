@@ -5,7 +5,7 @@ const isEmpty = (obj) => Object.keys(obj).length === 0;
 // 1. workItemSource properties (key, name, workItemStateMappings)
 // 2. mode
 export function workItemReducer(state, action) {
-  const {mode: _, ...workItemSource} = state;
+  const {mode: _, errorMessage: _error, ...workItemSource} = state;
   // handle empty workItemSource case.
   if (isEmpty(workItemSource)) {
     return state;
@@ -28,6 +28,13 @@ export function workItemReducer(state, action) {
       return {
         ...state,
         mode: mode.SUCCESS,
+      };
+    }
+    case actionTypes.MUTATION_FAILURE: {
+      return {
+        ...state,
+        mode: mode.FAILURE,
+        errorMessage: action.payload,
       };
     }
     case actionTypes.SHOW_UNMAPPED_ERROR: {

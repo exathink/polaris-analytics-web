@@ -18,14 +18,15 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       }
     },
     onError: (error) => {
-      logGraphQlError("updateProjectWorkItemSourceStateMaps", error);
-    }
+      logGraphQlError("WorkItemStateTypeMapView.updateProjectWorkItemSourceStateMaps", error);
+      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
+    },
   });
 
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT});
+  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT, errorMessage: ""});
 
   function handleSaveClick(e) {
     const {workItemStateMappings, key} = state;
@@ -134,14 +135,13 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       );
     }
 
+    if (state.mode === mode.FAILURE) {
+      return <Alert message={state.errorMessage} type="error" showIcon closable className="shiftRight" />;
+    }
+
     if (state.mode === mode.SUCCESS) {
       return <Alert message="Mapping updated successfully." type="success" showIcon closable className="shiftRight" />;
     }
-  }
-
-  if (error) {
-    logGraphQlError("updateProjectWorkItemSourceStateMaps", error);
-    return null;
   }
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
