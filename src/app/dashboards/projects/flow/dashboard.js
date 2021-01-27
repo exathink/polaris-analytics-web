@@ -27,6 +27,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     responseTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
+    flowAnalysisPeriod,
   } = settingsWithDefaults;
 
   return (
@@ -36,11 +37,11 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           w={0.2}
           name="response-time-sla"
           title={"Lead Time"}
-          subtitle={"30 Days"}
+          subtitle={`${flowAnalysisPeriod} Days`}
           render={() => (
             <ProjectResponseTimeSLAWidget
               instanceKey={key}
-              days={30}
+              days={flowAnalysisPeriod}
               metric={"leadTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -56,7 +57,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             w={0.19}
             name="defect-metrics"
             title={"Quality"}
-            subtitle={"30 Days"}
+            subtitle={`${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
             render={({view}) => (
               <ProjectDefectMetricsWidget
@@ -65,7 +66,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
-                days={30}
+                days={flowAnalysisPeriod}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
@@ -80,7 +81,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           w={0.37}
           name="alignment"
           title={"Flow Types"}
-          subtitle={"30 days"}
+          subtitle={`${flowAnalysisPeriod} Days`}
           styles={{
             controlContainer: {
               width: "27%",
@@ -90,7 +91,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={flowAnalysisPeriod}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -109,11 +110,11 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           w={0.2}
           name="team"
           title={"Team"}
-          subtitle={`30 days`}
+          subtitle={`${flowAnalysisPeriod} Days`}
           render={({view}) => (
             <ProjectCapacityTrendsWidget
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={flowAnalysisPeriod}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -131,12 +132,12 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           w={0.13}
           name="traceability"
           title={"Traceability"}
-          subtitle={"30 Days"}
+          subtitle={`${flowAnalysisPeriod} Days`}
           hideTitlesInDetailView={"true"}
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={flowAnalysisPeriod}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -157,7 +158,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             w={0.34}
             name="flow-metrics"
             title={`Closed `}
-            subtitle={"Last 30 days"}
+            subtitle={`Last ${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
             render={({view}) => (
               <ProjectFlowMetricsWidget
@@ -169,8 +170,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 specsOnly={specsOnly}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
-                days={30}
-                measurementWindow={30}
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
@@ -192,7 +193,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               setWorkItemScope={setWorkItemScope}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              days={30}
+              days={flowAnalysisPeriod}
               view={view}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
@@ -215,7 +216,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
-                days={30}
+                days={flowAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -236,7 +237,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectImplementationCostWidget
               instanceKey={key}
-              days={30}
+              days={flowAnalysisPeriod}
               specsOnly={specsOnly}
               view={view}
               latestCommit={latestCommit}
@@ -252,7 +253,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
               measurementWindow={7}
-              days={30}
+              days={flowAnalysisPeriod}
               samplingFrequency={7}
               context={context}
               view={view}

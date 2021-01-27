@@ -30,6 +30,7 @@ const dashboard = ({viewerContext}) => (
             leadTimeTarget,
             cycleTimeTarget,
             cycleTimeConfidenceTarget,
+            trendsAnalysisPeriod
           } = settingsWithDefaults;
 
         return (
@@ -43,7 +44,7 @@ const dashboard = ({viewerContext}) => (
                     <ProjectCapacityTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
-                      days={45}
+                      days={trendsAnalysisPeriod}
                       samplingFrequency={7}
                       context={context}
                       view={view}
@@ -64,7 +65,7 @@ const dashboard = ({viewerContext}) => (
                     <ProjectFlowMixTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
-                      days={45}
+                      days={trendsAnalysisPeriod}
                       samplingFrequency={7}
                       context={context}
                       view={view}
@@ -83,7 +84,7 @@ const dashboard = ({viewerContext}) => (
                     <ProjectTraceabilityTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
-                      days={45}
+                      days={trendsAnalysisPeriod}
                       samplingFrequency={7}
                       context={context}
                       view={view}
@@ -103,7 +104,7 @@ const dashboard = ({viewerContext}) => (
                   <ProjectVolumeTrendsWidget
                     instanceKey={key}
                     measurementWindow={30}
-                    days={45}
+                    days={trendsAnalysisPeriod}
                     samplingFrequency={7}
                     targetPercentile={0.7}
                     context={context}
@@ -120,7 +121,7 @@ const dashboard = ({viewerContext}) => (
                   <ProjectResponseTimeTrendsWidget
                     instanceKey={key}
                     measurementWindow={30}
-                    days={45}
+                    days={trendsAnalysisPeriod}
                     samplingFrequency={7}
                     leadTimeTarget={leadTimeTarget}
                     cycleTimeTarget={cycleTimeTarget}
@@ -139,7 +140,7 @@ const dashboard = ({viewerContext}) => (
                   <ProjectPredictabilityTrendsWidget
                     instanceKey={key}
                     measurementWindow={30}
-                    days={45}
+                    days={trendsAnalysisPeriod}
                     samplingFrequency={7}
                     cycleTimeTarget={cycleTimeTarget}
                     targetPercentile={cycleTimeConfidenceTarget}
