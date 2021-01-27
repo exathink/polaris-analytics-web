@@ -13,12 +13,10 @@
 }
 .analysisItemWrapper{
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 16px;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-left: 6px solid #8cc8ff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 .analysisPeriodTitle{
   margin-left: 40%;
@@ -27,34 +25,24 @@
   height: 25px;
   margin-left: auto;
 }
-.analysisTitleWrapper{
-  display: flex;
-  align-items: center;
-  background-color: white;
-  width: 100%;
-}
 
-.analysisTitle{
-  padding: 16px;
-  font-weight: bold;
-  font-size: 100;
-}
 .analysis-slider-bar {
   display: flex;
   align-items: center;
-  flex: 0 0 40%;
-  margin-left: auto;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex: 0 0 50%;
 }
 .analysis-info{
   padding: 16px;
-  margin-right: 16px;
+  margin-left: 16px;
   text-align: justify;
   line-height: 1.5rem;
+  border-left: 4px solid #8cc8ff;
+  background-color: rgba(25,118,210,.05);
 }
 .analysis-slider-bar-edit {
-  border-top: 1px solid rgb(0, 0, 0, 0.4);
-  border-bottom: 1px solid rgb(0, 0, 0, 0.4);
-  border-right: 1px solid rgb(0, 0, 0, 0.4);
+  border: 1px solid rgb(0, 0, 0, 0.4);
 }
 
 .analysisPeriodTopBar{

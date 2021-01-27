@@ -1,44 +1,21 @@
 import {InputNumber} from "antd";
 import React from "react";
-import {TargetRangeSlider, TWO_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
+import {TargetRangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
 
-export function AnalysisPeriodsSliders({
-  wipPeriod,
-  flowPeriod,
-  trendsPeriod,
-  initialAnalysisPeriods,
-  cycleTimeTarget,
-  dispatch,
-}) {
-  let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, TWO_MONTHS];
-  if (cycleTimeTarget > 1) {
-    wipDaysMarks = [cycleTimeTarget, ...TWO_MONTHS.filter((x) => x > cycleTimeTarget)];
-  }
-  if (wipPeriod > 1) {
-    flowDaysMarks = [wipPeriod, ...TWO_MONTHS.filter((x) => x > wipPeriod)];
-  }
-  if (flowPeriod > 1) {
-    trendsDaysMarks = [flowPeriod, ...TWO_MONTHS.filter((x) => x > flowPeriod)];
-  }
+export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
+  let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, THREE_MONTHS];
 
+  // get min and max from range
+  const [wipMin, wipMax] = [Math.min(...wipDaysMarks), Math.max(...wipDaysMarks)];
+  const [flowMin, flowMax] = [Math.min(...flowDaysMarks), Math.max(...flowDaysMarks)];
+  const [trendsMin, trendsMax] = [Math.min(...trendsDaysMarks), Math.max(...trendsDaysMarks)];
+  
   const [setWipRange, setFlowRange, setTrendsRange] = [
     (newPeriod) => dispatch({type: actionTypes.UPDATE_WIP_PERIOD, payload: newPeriod}),
     (newPeriod) => dispatch({type: actionTypes.UPDATE_FLOW_PERIOD, payload: newPeriod}),
     (newPeriod) => dispatch({type: actionTypes.UPDATE_TRENDS_PERIOD, payload: newPeriod}),
   ];
-
-  // set defaults if none provided
-  const [wipMarks, flowMarks, trendsMarks] = [
-    wipDaysMarks || TWO_MONTHS,
-    flowDaysMarks || TWO_MONTHS,
-    trendsDaysMarks || TWO_MONTHS,
-  ];
-
-  // get min and max from range
-  const [wipMin, wipMax] = [Math.min(...wipMarks), Math.max(...wipMarks)];
-  const [flowMin, flowMax] = [Math.min(...flowMarks), Math.max(...flowMarks)];
-  const [trendsMin, trendsMax] = [Math.min(...trendsMarks), Math.max(...trendsMarks)];
 
   const analysisPeriodItems = [
     {
@@ -46,7 +23,7 @@ export function AnalysisPeriodsSliders({
       title: "Wip Analysis Window",
       period: wipPeriod,
       setPeriod: setWipRange,
-      range: wipMarks,
+      range: wipDaysMarks,
       min: wipMin,
       max: wipMax,
       className: wipPeriod !== initialAnalysisPeriods.wipAnalysisPeriod ? " analysis-slider-bar-edit" : "",
@@ -59,7 +36,7 @@ export function AnalysisPeriodsSliders({
       title: "Flow Analysis Window",
       period: flowPeriod,
       setPeriod: setFlowRange,
-      range: flowMarks,
+      range: flowDaysMarks,
       min: flowMin,
       max: flowMax,
       className: flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? " analysis-slider-bar-edit" : "",
@@ -72,7 +49,7 @@ export function AnalysisPeriodsSliders({
       title: "Trends Analysis Window",
       period: trendsPeriod,
       setPeriod: setTrendsRange,
-      range: trendsMarks,
+      range: trendsDaysMarks,
       min: trendsMin,
       max: trendsMax,
       className: trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? " analysis-slider-bar-edit" : "",
@@ -86,26 +63,23 @@ export function AnalysisPeriodsSliders({
     <div className="analysisItemsWrapper">
       {analysisPeriodItems.map((item) => {
         return (
-          <div key={item.id} className={`analysisItemWrapper ${item.className}`}>
-            <div className="analysisTitleWrapper">
-              <div className="analysisTitle">{item.title}</div>
-              <div className="analysis-slider-bar">
-                <TargetRangeSlider
-                  title={" "}
-                  initialDays={item.period}
-                  setDaysRange={item.setPeriod}
-                  range={item.range}
-                  className="analysisRangeSlider"
-                />
-                <InputNumber
-                  min={item.min}
-                  max={item.max}
-                  style={{margin: "0 16px"}}
-                  value={item.period}
-                  onChange={item.setPeriod}
-                  data-testid={item.dataTestId}
-                />
-              </div>
+          <div key={item.id} className="analysisItemWrapper">
+            <div className={`analysis-slider-bar ${item.className}`}>
+              <TargetRangeSlider
+                title={item.title}
+                initialDays={item.period}
+                setDaysRange={item.setPeriod}
+                range={item.range}
+                className="analysisRangeSlider"
+              />
+              <InputNumber
+                min={item.min}
+                max={item.max}
+                style={{margin: "0 16px"}}
+                value={item.period}
+                onChange={item.setPeriod}
+                data-testid={item.dataTestId}
+              />
             </div>
             <div className="analysis-info">{item.info}</div>
           </div>

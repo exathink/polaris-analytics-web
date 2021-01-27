@@ -12,18 +12,32 @@ export const ProjectAnalysisPeriodsView = ({
   wipAnalysisPeriod,
   flowAnalysisPeriod,
   trendsAnalysisPeriod,
-  cycleTimeTarget
 }) => {
+  const initialState = {
+    wipPeriod: wipAnalysisPeriod,
+    flowPeriod: flowAnalysisPeriod,
+    trendsPeriod: trendsAnalysisPeriod,
+    initialAnalysisPeriods: {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod},
+    mode: mode.INIT,
+    errorMessage: "",
+  };
+
+  const [state, dispatch] = React.useReducer(analysisPeriodsReducer, initialState);
+  const sliderProps = {...state, dispatch};
+
   // mutation to update project analysis periods
-  const [mutate, {loading, error, client}] = useProjectUpdateSettings({
+  const [mutate, {loading, client}] = useProjectUpdateSettings({
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
+      } else {
+        dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
     onError: (error) => {
       logGraphQlError("ProjectAnalysisPeriodsView.useProjectUpdateSettings", error);
+      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
     },
   });
 
@@ -36,16 +50,6 @@ export const ProjectAnalysisPeriodsView = ({
     });
   }, [wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod]);
 
-  const initialState = {
-    wipPeriod: wipAnalysisPeriod,
-    flowPeriod: flowAnalysisPeriod,
-    trendsPeriod: trendsAnalysisPeriod,
-    initialAnalysisPeriods: {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod},
-    mode: mode.INIT,
-  };
-
-  const [state, dispatch] = React.useReducer(analysisPeriodsReducer, initialState);
-  const sliderProps = {...state, cycleTimeTarget, dispatch};
 
   function handleSaveClick() {
     const payload = {
@@ -102,11 +106,33 @@ export const ProjectAnalysisPeriodsView = ({
         />
       );
     }
-  }
 
-  if (error) {
-    logGraphQlError("ProjectAnalysisPeriodsView.useProjectUpdateSettings", error);
-    return null;
+    if (state.mode === mode.ALERT) {
+      return (
+        <Alert
+          message={state.errorMessage}
+          type="warning"
+          showIcon
+          closable
+          className="shiftRight"
+          onClose={() => dispatch({type: actionTypes.CLOSE_ALERT_MODAL})}
+        />
+      );
+    }
+
+    if (state.mode === mode.ERROR) {
+      return (
+        <Alert
+          message={state.errorMessage}
+          type="error"
+          showIcon
+          closable
+          className="shiftRight"
+          onClose={() => dispatch({type: actionTypes.RESET_SLIDERS})}
+        />
+      );
+    }
+
   }
 
   return (
