@@ -26,43 +26,53 @@ const propsFixture = {
   trendsAnalysisPeriod: 45,
 };
 
-const gqlMutationRequest = {
-  query: PROJECT_UPDATE_SETTINGS,
-  variables: {
-    projectKey: propsFixture.instanceKey,
-    analysisPeriods: {
-      wipAnalysisPeriod: propsFixture.wipAnalysisPeriod,
-      flowAnalysisPeriod: propsFixture.flowAnalysisPeriod,
-      trendsAnalysisPeriod: propsFixture.trendsAnalysisPeriod,
-    },
-  },
-};
-
-const projectUpdateSettingsMocks = [
-  {
-    request: gqlMutationRequest,
-    result: {
-      data: {
-        updateProjectSettings: {
-          success: true,
-          errorMessage: null,
-        },
-      },
-    },
-  },
-];
-
 describe("ProjectAnalysisPeriodsView", () => {
   describe("save/cancel", () => {
+    let logGraphQlError;
+    beforeEach(() => {
+      // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
+      logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
+    });
+
     const cases = [
-      {name: "wip", default: 7, newValue: 14, testId: "wip-range-input"},
-      {name: "flow", default: 30, newValue: 35, testId: "flow-range-input"},
-      {name: "trends", default: 45, newValue: 50, testId: "trends-range-input"},
+      {name: "wipAnalysisPeriod", default: 7, newValue: 14, testId: "wip-range-input"},
+      {name: "flowAnalysisPeriod", default: 30, newValue: 35, testId: "flow-range-input"},
+      {name: "trendsAnalysisPeriod", default: 45, newValue: 50, testId: "trends-range-input"},
     ];
     cases.forEach((analysisItem) => {
       describe(`${analysisItem.name}`, () => {
+        const analysisPeriods = {
+          wipAnalysisPeriod: propsFixture.wipAnalysisPeriod,
+          flowAnalysisPeriod: propsFixture.flowAnalysisPeriod,
+          trendsAnalysisPeriod: propsFixture.trendsAnalysisPeriod,
+        };
+        const mutationReq = {
+          query: PROJECT_UPDATE_SETTINGS,
+          variables: {
+            projectKey: propsFixture.instanceKey,
+            analysisPeriods: {
+              ...analysisPeriods,
+              [`${analysisItem.name}`]: analysisItem.newValue,
+            },
+          },
+        };
+
+        const settingsMocks = [
+          {
+            request: mutationReq,
+            result: {
+              data: {
+                updateProjectSettings: {
+                  success: true,
+                  errorMessage: null,
+                },
+              },
+            },
+          },
+        ];
+
         test("when analysis slider value is updated other than default, save/cancel buttons should appear on the screen", async () => {
-          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, projectUpdateSettingsMocks);
+          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, settingsMocks);
 
           // change the value of slider/inputNumber, so that save/cancel appears
           const inputElement = await screen.findByTestId(analysisItem.testId);
@@ -73,7 +83,7 @@ describe("ProjectAnalysisPeriodsView", () => {
         });
 
         test("when slider value is updated back to default, save/cancel buttons should disappear from the screen", async () => {
-          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, projectUpdateSettingsMocks);
+          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, settingsMocks);
 
           // change the value of slider/inputNumber, so that save/cancel appears
           let inputElement = await screen.findByTestId(analysisItem.testId);
@@ -93,7 +103,7 @@ describe("ProjectAnalysisPeriodsView", () => {
         });
 
         test("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
-          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, projectUpdateSettingsMocks);
+          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, settingsMocks);
 
           // change the value of slider/inputNumber, so that save/cancel appears
           const inputElement = await screen.findByTestId(analysisItem.testId);
@@ -114,7 +124,7 @@ describe("ProjectAnalysisPeriodsView", () => {
         });
 
         test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, projectUpdateSettingsMocks);
+          renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, settingsMocks);
 
           // change the value of slider/inputNumber, so that save/cancel appears
           const inputElement = await screen.findByTestId(analysisItem.testId);
@@ -130,71 +140,66 @@ describe("ProjectAnalysisPeriodsView", () => {
           const successElement = await screen.findByText(/Analysis Periods updated successfully/i);
           expect(successElement).toBeInTheDocument();
         });
-      });
-    });
 
-    describe("when there are errors", () => {
-      let logGraphQlError;
-      beforeEach(() => {
-        // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
-        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
-      });
+        describe("when there are errors", () => {
+          const mockNetworkError = [
+            {
+              request: mutationReq,
+              error: new Error("A network error Occurred"),
+            },
+          ];
 
-      const mockNetworkError = [
-        {
-          request: gqlMutationRequest,
-          error: new Error("A network error Occurred"),
-        },
-      ];
+          const mockGraphQlErrors = [
+            {
+              request: mutationReq,
+              result: {
+                errors: [new GraphQLError("A GraphQL Error Occurred")],
+              },
+            },
+          ];
 
-      const mockGraphQlErrors = [
-        {
-          request: gqlMutationRequest,
-          result: {
-            errors: [new GraphQLError("A GraphQL Error Occurred")],
-          },
-        },
-      ];
-      test("it renders nothing and logs the error when there is a network error", async () => {
-        renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, mockNetworkError);
+          test("it renders network error message and logs the error when there is a network error", async () => {
+            renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, mockNetworkError);
 
-        // change the value of slider/inputNumber, so that save/cancel appears
-        const inputElement = await screen.findByTestId("wip-range-input");
-        fireEvent.change(inputElement, {target: {value: 14}});
+            // change the value of slider/inputNumber, so that save/cancel appears
+            const inputElement = await screen.findByTestId(analysisItem.testId);
+            fireEvent.change(inputElement, {target: {value: analysisItem.newValue}});
 
-        // before
-        expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+            // before
+            expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
 
-        const saveElement = screen.getByText(/save/i);
-        fireEvent.click(saveElement);
+            const saveElement = screen.getByText(/save/i);
+            fireEvent.click(saveElement);
 
-        const inProgressElement = screen.getByText(/Processing.../i);
-        expect(inProgressElement).toBeInTheDocument();
+            const inProgressElement = screen.getByText(/Processing.../i);
+            expect(inProgressElement).toBeInTheDocument();
 
-        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        // after
-        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
-      });
+            await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+            // after
+            expect(screen.queryByText(/network error/i)).toBeInTheDocument();
+          });
 
-      test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-        renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, mockGraphQlErrors);
+          test("it renders graphql error message and logs the error when there is a GraphQl error", async () => {
+            renderWithProviders(<ProjectAnalysisPeriodsView {...propsFixture} />, mockGraphQlErrors);
 
-        // change the value of slider/inputNumber, so that save/cancel appears
-        const inputElement = await screen.findByTestId("wip-range-input");
-        fireEvent.change(inputElement, {target: {value: 14}});
+            // change the value of slider/inputNumber, so that save/cancel appears
+            const inputElement = await screen.findByTestId(analysisItem.testId);
+            fireEvent.change(inputElement, {target: {value: analysisItem.newValue}});
 
-        // before
-        expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+            // before
+            expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
 
-        const saveElement = screen.getByText(/save/i);
-        fireEvent.click(saveElement);
+            const saveElement = screen.getByText(/save/i);
+            fireEvent.click(saveElement);
 
-        const inProgressElement = screen.getByText(/Processing.../i);
-        expect(inProgressElement).toBeInTheDocument();
+            const inProgressElement = screen.getByText(/Processing.../i);
+            expect(inProgressElement).toBeInTheDocument();
 
-        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        // after
-        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+            await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+            // after
+            expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+          });
+        });
       });
     });
   });
