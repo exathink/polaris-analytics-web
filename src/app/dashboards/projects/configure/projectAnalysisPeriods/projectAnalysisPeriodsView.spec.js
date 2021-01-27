@@ -29,7 +29,7 @@ const propsFixture = {
 const gqlMutationRequest = {
   query: PROJECT_UPDATE_SETTINGS,
   variables: {
-    projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+    projectKey: propsFixture.instanceKey,
     analysisPeriods: {
       wipAnalysisPeriod: propsFixture.wipAnalysisPeriod,
       flowAnalysisPeriod: propsFixture.flowAnalysisPeriod,
@@ -127,20 +127,17 @@ describe("ProjectAnalysisPeriodsView", () => {
           expect(inProgressElement).toBeInTheDocument();
 
           // after brief time, success message should appear.
-          const successElement = await screen.findByText(/success/i);
+          const successElement = await screen.findByText(/Analysis Periods updated successfully/i);
           expect(successElement).toBeInTheDocument();
         });
       });
     });
 
-    describe.skip("when there are errors", () => {
+    describe("when there are errors", () => {
       let logGraphQlError;
       beforeEach(() => {
         // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
         logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
-      });
-      afterEach(() => {
-        logGraphQlError.mockRestore();
       });
 
       const mockNetworkError = [
@@ -166,7 +163,7 @@ describe("ProjectAnalysisPeriodsView", () => {
         fireEvent.change(inputElement, {target: {value: 14}});
 
         // before
-        // expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
 
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
@@ -187,7 +184,7 @@ describe("ProjectAnalysisPeriodsView", () => {
         fireEvent.change(inputElement, {target: {value: 14}});
 
         // before
-        // expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
 
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
