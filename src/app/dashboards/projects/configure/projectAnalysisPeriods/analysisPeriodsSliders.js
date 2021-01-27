@@ -12,9 +12,9 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
   const [trendsMin, trendsMax] = [Math.min(...trendsDaysMarks), Math.max(...trendsDaysMarks)];
   
   const [setWipRange, setFlowRange, setTrendsRange] = [
-    (newPeriod) => dispatch({type: actionTypes.UPDATE_WIP_PERIOD, payload: newPeriod}),
-    (newPeriod) => dispatch({type: actionTypes.UPDATE_FLOW_PERIOD, payload: newPeriod}),
-    (newPeriod) => dispatch({type: actionTypes.UPDATE_TRENDS_PERIOD, payload: newPeriod}),
+    (newPeriod) => dispatch({type: actionTypes.UPDATE_WIP_PERIOD, payload: Math.floor(newPeriod)}),
+    (newPeriod) => dispatch({type: actionTypes.UPDATE_FLOW_PERIOD, payload: Math.floor(newPeriod)}),
+    (newPeriod) => dispatch({type: actionTypes.UPDATE_TRENDS_PERIOD, payload: Math.floor(newPeriod)}),
   ];
 
   const analysisPeriodItems = [
