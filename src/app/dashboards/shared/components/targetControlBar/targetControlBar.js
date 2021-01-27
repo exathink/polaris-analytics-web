@@ -11,8 +11,8 @@ export function getTargetControlBar([
   const confMarks = confidenceMarks || [0, 50, 100];
 
   // get min and max from range
-  const [targetMin, targetMax] = [Math.min(...targetMarks), Math.max(...targetMarks)];
-  const [confMin, confMax] = [Math.min(...confMarks), Math.max(...confMarks)];
+  const [targetMin, targetMax] = [targetMarks[0], targetMarks[targetMarks.length - 1]];
+  const [confMin, confMax] = [confMarks[0], confMarks[confMarks.length - 1]];
 
   return [
     () => (
@@ -39,7 +39,7 @@ export function getTargetControlBar([
         <ConfidenceRangeSlider
           title="% Confidence"
           initialValue={+(confidence * 100).toFixed(2)}
-          setConfidenceRange={(value) => setConfidence(value / 100.0)}
+          setConfidenceRange={(value) => setConfidence(Math.floor(value) / 100.0)}
           range={confMarks}
           className="confidenceRangeSlider"
         />
@@ -49,7 +49,7 @@ export function getTargetControlBar([
           step={1}
           style={{margin: "0 16px"}}
           value={+(confidence * 100).toFixed(2)}
-          onChange={(value) => setConfidence(value / 100.0)}
+          onChange={(value) => setConfidence(Math.floor(value) / 100.0)}
           data-testid="confidence-range-input"
         />
       </>

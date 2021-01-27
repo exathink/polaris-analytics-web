@@ -10,7 +10,7 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
   return (
     <div className="sliderWrapper">
       {getTargetControlBar([
-        [target, (newTarget) => dispatch({type: actionTypes.UPDATE_TARGET, payload: newTarget})],
+        [target, (newTarget) => dispatch({type: actionTypes.UPDATE_TARGET, payload: Math.floor(newTarget)})],
         [
           confidence,
           (newConfidence) => dispatch({type: actionTypes.UPDATE_CONFIDENCE, payload: newConfidence}),

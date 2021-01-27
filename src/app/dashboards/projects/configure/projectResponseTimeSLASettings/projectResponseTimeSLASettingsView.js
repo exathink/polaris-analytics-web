@@ -43,7 +43,7 @@ export const ProjectResponseTimeSLASettingsView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
   // mutation to update project settings
-  const [mutate, {loading, error, client}] = useProjectUpdateSettings({
+  const [mutate, {loading, client}] = useProjectUpdateSettings({
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
