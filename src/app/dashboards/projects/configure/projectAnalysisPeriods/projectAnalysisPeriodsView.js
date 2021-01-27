@@ -32,6 +32,7 @@ export const ProjectAnalysisPeriodsView = ({
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
       } else {
+        logGraphQlError("ProjectAnalysisPeriodsView.useProjectUpdateSettings", errorMessage);
         dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
