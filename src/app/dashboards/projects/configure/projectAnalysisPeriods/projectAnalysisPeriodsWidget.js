@@ -6,7 +6,6 @@ export const ProjectAnalysisPeriodsWidget = ({
   wipAnalysisPeriod,
   flowAnalysisPeriod,
   trendsAnalysisPeriod,
-  cycleTimeTarget
 }) => {
   return (
     <ProjectAnalysisPeriodsView
@@ -14,7 +13,6 @@ export const ProjectAnalysisPeriodsWidget = ({
       wipAnalysisPeriod={wipAnalysisPeriod}
       flowAnalysisPeriod={flowAnalysisPeriod}
       trendsAnalysisPeriod={trendsAnalysisPeriod}
-      cycleTimeTarget={cycleTimeTarget}
     />
   );
 };
