@@ -110,6 +110,13 @@ export function settingsReducer(state, action) {
         mode: mode.SUCCESS,
       };
     }
+    case actionTypes.MUTATION_FAILURE: {
+      return {
+        ...state,
+        mode: mode.ERROR,
+        errorMessage: action.payload
+      };
+    }
     case actionTypes.UPDATE_DEFAULTS: {
       return {
         ...state,
