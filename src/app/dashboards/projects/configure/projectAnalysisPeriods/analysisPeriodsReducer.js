@@ -7,7 +7,7 @@ export function analysisPeriodsReducer(state, action) {
         return {
           ...state,
           mode: mode.ALERT,
-          errorMessage: "wip analysis period can not be greater than flowAnalysis period."
+          errorMessage: "wip analysis period can not be greater than flow analysis period."
         }
       }
 
@@ -27,14 +27,14 @@ export function analysisPeriodsReducer(state, action) {
         return {
           ...state,
           mode: mode.ALERT,
-          errorMessage: "flow analysis period can not be smaller than wipAnalysis period."
+          errorMessage: "flow analysis period can not be smaller than wip analysis period."
         }
       }
       if (action.payload > state.trendsPeriod) {
         return {
           ...state,
           mode: mode.ALERT,
-          errorMessage: "flow analysis period can not be greater than trendsAnalysis period."
+          errorMessage: "flow analysis period can not be greater than trends analysis period."
         }
       }
       return {
@@ -53,7 +53,7 @@ export function analysisPeriodsReducer(state, action) {
         return {
           ...state,
           mode: mode.ALERT,
-          errorMessage: "trends analysis period can not be smaller than flowAnalysis period."
+          errorMessage: "trends analysis period can not be smaller than flow analysis period."
         }
       }
       return {
