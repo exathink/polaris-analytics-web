@@ -140,7 +140,7 @@ export const ProjectAnalysisPeriodsView = ({
     <div className="analysisPeriodControlsWrapper" data-testid="analysis-periods-view">
       <div className="analysisPeriodTopBar">
         <div className="analysisPeriodTitle">Drag sliders to update analysis periods</div>
-        <div className="analysisPeriodsButtons">{getButtonElements()}</div>
+        <div className="analysisPeriodsButtons" data-testid="analysis-period-buttons">{getButtonElements()}</div>
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
     </div>
