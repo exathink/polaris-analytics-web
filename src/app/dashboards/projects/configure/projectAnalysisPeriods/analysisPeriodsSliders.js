@@ -7,9 +7,9 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, THREE_MONTHS];
 
   // get min and max from range
-  const [wipMin, wipMax] = [Math.min(...wipDaysMarks), Math.max(...wipDaysMarks)];
-  const [flowMin, flowMax] = [Math.min(...flowDaysMarks), Math.max(...flowDaysMarks)];
-  const [trendsMin, trendsMax] = [Math.min(...trendsDaysMarks), Math.max(...trendsDaysMarks)];
+  const [wipMin, wipMax] = [wipDaysMarks[0], wipDaysMarks[wipDaysMarks.length - 1]];
+  const [flowMin, flowMax] = [flowDaysMarks[0], flowDaysMarks[flowDaysMarks.length - 1]];
+  const [trendsMin, trendsMax] = [trendsDaysMarks[0], trendsDaysMarks[trendsDaysMarks.length - 1]];
   
   const [setWipRange, setFlowRange, setTrendsRange] = [
     (newPeriod) => dispatch({type: actionTypes.UPDATE_WIP_PERIOD, payload: Math.floor(newPeriod)}),
