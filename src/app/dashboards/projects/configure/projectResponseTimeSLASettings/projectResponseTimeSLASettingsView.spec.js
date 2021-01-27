@@ -296,7 +296,7 @@ describe("ProjectResponseTimeSLASettingsView", () => {
             },
           },
         ];
-        test("it renders nothing and logs the error when there is a network error", async () => {
+        test("it renders network error and logs the error when there is a network error", async () => {
           renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockNetworkError);
 
           // change the value of slider/inputNumber, so that save/cancel appears
@@ -318,7 +318,7 @@ describe("ProjectResponseTimeSLASettingsView", () => {
           expect(screen.queryByText(/network error/i)).toBeInTheDocument();
         });
 
-        test("it renders nothing and logs the error when there is a GraphQl error", async () => {
+        test("it renders graphql error and logs the error when there is a GraphQl error", async () => {
           renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockGraphQlErrors);
 
           // change the value of slider/inputNumber, so that save/cancel appears
