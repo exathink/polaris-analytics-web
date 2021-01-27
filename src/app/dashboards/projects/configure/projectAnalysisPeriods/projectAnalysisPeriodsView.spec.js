@@ -66,9 +66,9 @@ describe("ProjectAnalysisPeriodsView", () => {
     });
 
     const cases = [
-      {name: "wipAnalysisPeriod", default: 7, newValue: 14, testId: "wip-range-input"},
-      {name: "flowAnalysisPeriod", default: 30, newValue: 35, testId: "flow-range-input"},
-      {name: "trendsAnalysisPeriod", default: 45, newValue: 50, testId: "trends-range-input"},
+      {name: "wipAnalysisPeriod", default: propsFixture.wipAnalysisPeriod, newValue: 14, testId: "wip-range-input"},
+      {name: "flowAnalysisPeriod", default: propsFixture.flowAnalysisPeriod, newValue: 35, testId: "flow-range-input"},
+      {name: "trendsAnalysisPeriod", default: propsFixture.trendsAnalysisPeriod, newValue: 50, testId: "trends-range-input"},
     ];
     cases.forEach((analysisItem) => {
       describe(`${analysisItem.name}`, () => {
