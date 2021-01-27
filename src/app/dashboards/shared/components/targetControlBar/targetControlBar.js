@@ -1,4 +1,4 @@
-import {ConfidenceRangeSlider, TargetRangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
+import {ConfidenceRangeSlider, RangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
 import React from "react";
 import {InputNumber} from "antd";
 
@@ -17,7 +17,7 @@ export function getTargetControlBar([
   return [
     () => (
       <>
-        <TargetRangeSlider
+        <RangeSlider
           title="Target in Days"
           initialDays={daysRange}
           setDaysRange={setDaysRange}

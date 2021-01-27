@@ -38,7 +38,7 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
   </Flex>
 )
 
-export const TargetRangeSlider = ({title='Days', initialDays, setDaysRange, range, className}) => (
+export const RangeSlider = ({title='', initialDays, setDaysRange, range, className}) => (
   <Flex align={'center'} className={className} data-testid="target-range-slider">
     <Box pr={1} pt={"1px"}>
       {title}

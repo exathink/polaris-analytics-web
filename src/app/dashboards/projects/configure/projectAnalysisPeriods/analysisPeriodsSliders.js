@@ -1,6 +1,6 @@
 import {InputNumber} from "antd";
 import React from "react";
-import {TargetRangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
+import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
 
 export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
@@ -65,7 +65,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
         return (
           <div key={item.id} className="analysisItemWrapper">
             <div className={`analysis-slider-bar ${item.className}`}>
-              <TargetRangeSlider
+              <RangeSlider
                 title={item.title}
                 initialDays={item.period}
                 setDaysRange={item.setPeriod}
