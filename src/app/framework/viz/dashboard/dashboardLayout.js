@@ -6,12 +6,16 @@ import {cloneChildrenWithProps, findFirstDescendant} from "../../../helpers/reac
 
 import {Tabs} from "antd";
 import {useRouteMatch} from 'react-router-dom';
+import {withNavigationContext} from '../../navigation/components/withNavigationContext';
 
 const {TabPane} = Tabs;
 
-export function DashboardLayout(props) {
+export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, ...rest}) => {
+    React.useEffect(() => {
+      setActiveDashboardVideoConfig(dashboardVideoConfig);
+    }, []);
+
     const match = useRouteMatch();
-    const {children, itemSelected, ...rest} = props;
     if (itemSelected != null && itemSelected) {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
@@ -29,7 +33,7 @@ export function DashboardLayout(props) {
         </div>
       );
     }
-}
+});
 
 export const DashboardRow = ({children, h, title, subTitle, controls, align, ...rest}) => (
   <React.Fragment>
