@@ -1,0 +1,62 @@
+.analysisPeriodControlsWrapper {
+  background: white;
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  grid-template-rows: 50px 1fr;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.analysisItemsWrapper {
+  align-self: flex-start;
+  grid-column: 2 / 3;
+}
+.analysisItemWrapper{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+.analysisPeriodTitle{
+  margin-left: 40%;
+}
+.analysisPeriodsButtons {
+  height: 25px;
+  margin-left: auto;
+}
+
+.analysis-slider-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex: 0 0 50%;
+}
+.analysis-info{
+  padding: 16px;
+  margin-left: 16px;
+  text-align: justify;
+  line-height: 1.5rem;
+  border-left: 4px solid #8cc8ff;
+  background-color: rgba(25,118,210,.05);
+}
+.analysis-slider-bar-edit {
+  border: 1px solid rgb(0, 0, 0, 0.4);
+}
+
+.analysisPeriodTopBar{
+  grid-column: 2 / 3;
+  display: flex;
+}
+
+.analysisSave {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.analysisRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}

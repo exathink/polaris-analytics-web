@@ -4,6 +4,8 @@ import React from "react";
 
 export const SIXTY_DAYS = [1, 3, 7, 14, 30, 45, 60];
 export const SIX_MONTHS = [1, 7, 14, 30, 45, 60, 90, 180];
+export const TWO_MONTHS = [1, 7, 14, 30, 45, 60];
+export const THREE_MONTHS = [1, 7, 14, 30, 45, 60, 90];
 
 const getMarks = (marks) =>  marks.reduce(
   (result, mark) => {
@@ -36,7 +38,7 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
   </Flex>
 )
 
-export const TargetRangeSlider = ({title='Days', initialDays, setDaysRange, range, className}) => (
+export const RangeSlider = ({title='', initialDays, setDaysRange, range, className}) => (
   <Flex align={'center'} className={className} data-testid="target-range-slider">
     <Box pr={1} pt={"1px"}>
       {title}

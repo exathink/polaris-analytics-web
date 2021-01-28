@@ -35,7 +35,7 @@ function WipDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     wipLimit,
-    pipelineMeasurementWindow: measurementWindow,
+    wipAnalysisPeriod,
   } = settingsWithDefaults;
 
   return (
@@ -45,11 +45,11 @@ function WipDashboard({
           w={0.16}
           name="response-time-sla"
           title={"Cycle Time"}
-          subtitle={`Last ${measurementWindow} Days`}
+          subtitle={`Last ${wipAnalysisPeriod} Days`}
           render={() => (
             <ProjectResponseTimeSLAWidget
               instanceKey={key}
-              days={measurementWindow}
+              days={wipAnalysisPeriod}
               metric={"cycleTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -72,7 +72,7 @@ function WipDashboard({
               display={"flowboardSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              days={measurementWindow}
+              days={wipAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -107,7 +107,7 @@ function WipDashboard({
           w={0.4}
           name="flow-metrics"
           title={"Closed"}
-          subtitle={`Last ${measurementWindow} days`}
+          subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
             <ProjectFlowMetricsWidget
@@ -118,8 +118,8 @@ function WipDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
-              days={measurementWindow}
-              measurementWindow={measurementWindow}
+              days={wipAnalysisPeriod}
+              measurementWindow={wipAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
