@@ -25,6 +25,8 @@ class NavigationContextProvider extends React.Component {
       polling: true,
       enableVideo: viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE),
       setEnableVideo: this.setEnableVideo.bind(this),
+      activeDashboardVideoConfig: undefined,
+      setActiveDashboardVideoConfig: this.setActiveDashboardVideoConfig.bind(this),
       fullScreen: false,
       setFullScreen: this.setFullScreen.bind(this),
     }
@@ -69,6 +71,13 @@ class NavigationContextProvider extends React.Component {
     })
   }
 
+  setActiveDashboardVideoConfig(activeDashboardVideoConfig){
+    this.setState({
+      ...this.state,
+      activeDashboardVideoConfig: activeDashboardVideoConfig
+    })
+  }
+  
   setFullScreen(fullScreen){
     this.setState({
       ...this.state,
