@@ -20,6 +20,17 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
+WipDashboard.videoConfig = {
+  url: "https://vimeo.com/501974487/080d487fcf",
+  title: "WIP Dashboard",
+  VideoDescription: () => (
+    <>
+      <h2>Wip Dashboard</h2>
+      <p> lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+    </>
+  ),
+};
+
 function WipDashboard({
   project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
@@ -39,7 +50,7 @@ function WipDashboard({
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig}>
       <DashboardRow h="12%">
         <DashboardWidget
           w={0.16}

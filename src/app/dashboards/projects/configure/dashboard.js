@@ -8,13 +8,23 @@ import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 
 const dashboard_id = "dashboards.project.configure";
+ValueStreamMappingDashboard.videoConfig = {
+  url: "https://vimeo.com/501974487/080d487fcf",
+  title: "Configure Dashboard",
+  VideoDescription: () => (
+    <>
+      <h2>Configure Dashboard</h2>
+      <p> lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+    </>
+  ),
+};
 
 export function ValueStreamMappingDashboard() {
   return (
     <ProjectDashboard
       render={({project: {key}, context}) => {
         return (
-        <Dashboard>
+        <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
           <DashboardRow h={"50%"} title={" "}>
             <DashboardWidget
               w={1 / 3}
@@ -86,7 +96,7 @@ export default withViewerContext(({viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
       <DashboardRow
         h={"100%"}
         title={""}
