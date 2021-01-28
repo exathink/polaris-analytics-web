@@ -4,9 +4,9 @@ import {withViewerContext} from "../../app/framework/viewer/viewerContext";
 import {VIDEO_GUIDANCE} from "../../config/featureFlags";
 
 export const VideoButton = withViewerContext(
-  withNavigationContext(({viewerContext, enableVideo, setEnableVideo}) => {
+  withNavigationContext(({viewerContext, enableVideo, setEnableVideo, fullScreen}) => {
     const buttonClass = !enableVideo ? "toggleOff" : "";
-    return viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) ? (
+    return !fullScreen && viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) ? (
       <i
         title={`Video guidance ${enableVideo ? "enabled" : "disabled"} `}
         className={`menu-item ${buttonClass} ion ion-videocamera`}

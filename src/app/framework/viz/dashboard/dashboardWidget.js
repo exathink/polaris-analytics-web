@@ -29,7 +29,7 @@ function getVideoClassNames(itemSelected, showDetail) {
 }
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, fullScreen, ...rest}) => {
   const videoPlayerProps = useVideo();
 
   return (
@@ -81,7 +81,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
         null
 
       }
-      {enableVideo && videoConfig && (
+      {!fullScreen && enableVideo && videoConfig && (
         <EmbedVideoPlayer
           className={getVideoClassNames(itemSelected, showDetail)}
           {...videoConfig}
