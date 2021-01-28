@@ -111,7 +111,7 @@ const projectUpdateSettingsMocks = [
   },
 ];
 
-describe("ProjectFlowMetricsSettingView", () => {
+describe("ProjectResponseTimeSLASettingsView", () => {
   describe("when leadTime tab is selected", () => {
     describe("when there are no workItems", () => {
       const emptyPropsFixture = {
@@ -273,11 +273,11 @@ describe("ProjectFlowMetricsSettingView", () => {
 
       describe("when there are errors", () => {
         let logGraphQlError;
-        beforeEach(() => {
+        beforeAll(() => {
           // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
           logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
         });
-        afterEach(() => {
+        afterAll(() => {
           logGraphQlError.mockRestore();
         });
 
@@ -296,14 +296,16 @@ describe("ProjectFlowMetricsSettingView", () => {
             },
           },
         ];
-        test("it renders nothing and logs the error when there is a network error", async () => {
+        test("it renders network error and logs the error when there is a network error", async () => {
           renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockNetworkError);
 
-          expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
-
           // change the value of slider/inputNumber, so that save/cancel appears
           const targetInputElement = await screen.findByTestId("target-range-input");
           fireEvent.change(targetInputElement, {target: {value: 45}});
+
+          // before
+          await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
+          expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
 
           const saveElement = screen.getByText(/save/i);
           fireEvent.click(saveElement);
@@ -311,18 +313,21 @@ describe("ProjectFlowMetricsSettingView", () => {
           const inProgressElement = screen.getByText(/Processing.../i);
           expect(inProgressElement).toBeInTheDocument();
 
+          // after
           await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-          expect(screen.queryByTestId("flowmetrics-setting-view")).toBeNull();
+          expect(screen.queryByText(/network error/i)).toBeInTheDocument();
         });
 
-        test("it renders nothing and logs the error when there is a GraphQl error", async () => {
+        test("it renders graphql error and logs the error when there is a GraphQl error", async () => {
           renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, mockGraphQlErrors);
-
-          expect(screen.queryByTestId("flowmetrics-setting-view")).toBeInTheDocument();
 
           // change the value of slider/inputNumber, so that save/cancel appears
           const targetInputElement = await screen.findByTestId("target-range-input");
           fireEvent.change(targetInputElement, {target: {value: 45}});
+
+          // before
+          await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
+          expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
 
           const saveElement = screen.getByText(/save/i);
           fireEvent.click(saveElement);
@@ -330,8 +335,9 @@ describe("ProjectFlowMetricsSettingView", () => {
           const inProgressElement = screen.getByText(/Processing.../i);
           expect(inProgressElement).toBeInTheDocument();
 
+          // after
           await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-          expect(screen.queryByTestId("flowmetrics-setting-view")).toBeNull();
+          expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
         });
       });
     });

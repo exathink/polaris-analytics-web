@@ -22,28 +22,6 @@ export const ProjectResponseTimeSLASettingsView = ({
   defectsOnly,
   specsOnly,
 }) => {
-  // mutation to update project settings
-  const [mutate, {loading, error, client}] = useProjectUpdateSettings({
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
-      if (success) {
-        dispatch({type: actionTypes.MUTATION_SUCCESS});
-        client.resetStore();
-      }
-    },
-    onError: (error) => {
-      logGraphQlError("TargetControlBarWidget.useProjectUpdateSettings", error);
-    },
-  });
-
-  // after mutation is successful,we are invalidating active quries.
-  // we need to update default settings from api response, this useEffect will serve the purpose.
-  React.useEffect(() => {
-    dispatch({
-      type: actionTypes.UPDATE_DEFAULTS,
-      payload: targetMetrics,
-    });
-  }, [...Object.values(targetMetrics)]);
-
   const initialState = {
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
@@ -59,13 +37,41 @@ export const ProjectResponseTimeSLASettingsView = ({
       initialConfidence: targetMetrics.cycleTimeConfidenceTarget,
     },
     mode: mode.INIT,
+    errorMessage: "",
   };
 
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
+
+  // mutation to update project settings
+  const [mutate, {loading, client}] = useProjectUpdateSettings({
+    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+      if (success) {
+        dispatch({type: actionTypes.MUTATION_SUCCESS});
+        client.resetStore();
+      } else {
+        logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", errorMessage);
+        dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
+      }
+    },
+    onError: (error) => {
+      logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", error);
+      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
+    },
+  });
+
+  // after mutation is successful,we are invalidating active quries.
+  // we need to update default settings from api response, this useEffect will serve the purpose.
+  React.useEffect(() => {
+    dispatch({
+      type: actionTypes.UPDATE_DEFAULTS,
+      payload: targetMetrics,
+    });
+  }, [...Object.values(targetMetrics)]);
+
   const {leadTime, cycleTime, selectedMetric} = state;
 
   const metricTarget = selectedMetric === "leadTime" ? leadTime.target : cycleTime.target;
-  const targetConfidence = selectedMetric === 'leadTime' ? leadTime.confidence : cycleTime.confidence;
+  const targetConfidence = selectedMetric === "leadTime" ? leadTime.confidence : cycleTime.confidence;
 
   const sliderProps = {...state, dispatch};
 
@@ -113,6 +119,19 @@ export const ProjectResponseTimeSLASettingsView = ({
       );
     }
 
+    if (state.mode === mode.ERROR) {
+      return (
+        <Alert
+          message={state.errorMessage}
+          type="error"
+          showIcon
+          closable
+          className="shiftRight"
+          onClose={() => dispatch({type: actionTypes.RESET_SLIDERS})}
+        />
+      );
+    }
+
     if (state.mode === mode.SUCCESS) {
       return (
         <Alert
@@ -127,15 +146,12 @@ export const ProjectResponseTimeSLASettingsView = ({
     }
   }
 
-  if (error) {
-    logGraphQlError("TargetControlBarWidget.useProjectUpdateSettings", error);
-    return null;
-  }
-
   return (
     <React.Fragment>
       <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
-        <Flex w={1} justify={'center'}><span>Drag sliders to update response time target and confidence %</span></Flex>
+        <Flex w={1} justify={"center"}>
+          <span>Drag sliders to update response time target and confidence %</span>
+        </Flex>
         <Flex w={1} className="selectedMetricWrapper">
           <GroupingSelector
             label={" "}
