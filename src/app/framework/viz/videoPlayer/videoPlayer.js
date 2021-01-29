@@ -7,14 +7,13 @@ function getPlaySVG() {
   return (
     <svg width="25" height="25" fill="none" viewBox="0 0 90 90">
       <circle
-        class="text-gray-300 dark:text-gray-500"
-        cx="25"
-        cy="25"
+        cx="33"
+        cy="33"
         r="24"
         stroke="currentColor"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
-      <path d="M 15 10 v 28 L 39 24 Z" fill="currentColor" stroke="black" />
+      <path d="M 22 17 v 31 L 48 33 Z" fill="currentColor" stroke="black" />
     </svg>
   );
 }
@@ -23,14 +22,13 @@ function getPauseSVG() {
   return (
     <svg width="25" height="25" fill="none" viewBox="0 0 90 90">
       <circle
-        class="text-gray-300 dark:text-gray-500"
-        cx="25"
-        cy="25"
+        cx="33"
+        cy="33"
         r="24"
         stroke="currentColor"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
-      <path d="M18 16h4v18h-4V16zM28 16h4v18h-4z" fill="currentColor" />
+      <path d="M26 24h4v18h-4V24zM36 24h4v18h-4z" fill="currentColor" />
     </svg>
   );
 }
