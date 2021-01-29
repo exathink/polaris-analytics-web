@@ -30,6 +30,7 @@ export function getTargetControlBar([
           style={{margin: "0 16px"}}
           value={daysRange}
           onChange={setDaysRange}
+          type="number"
           data-testid="target-range-input"
         />
       </>
@@ -50,6 +51,7 @@ export function getTargetControlBar([
           style={{margin: "0 16px"}}
           value={+(confidence * 100).toFixed(2)}
           onChange={(value) => setConfidence(Math.floor(value) / 100.0)}
+          type="number"
           data-testid="confidence-range-input"
         />
       </>

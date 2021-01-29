@@ -79,6 +79,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
                 value={item.period}
                 onChange={item.setPeriod}
                 data-testid={item.dataTestId}
+                type="number"
               />
             </div>
             <div className="analysis-info">{item.info}</div>
