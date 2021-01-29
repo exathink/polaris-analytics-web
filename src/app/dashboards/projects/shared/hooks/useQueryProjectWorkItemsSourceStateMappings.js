@@ -51,6 +51,6 @@ export const UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS = gql`
     }
   }
 `;
-export function updateProjectWorkItemSourceStateMaps({onCompleted, onError}) {
+export function useUpdateProjectWorkItemSourceStateMaps({onCompleted, onError}) {
   return useMutation(UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS, {onCompleted, onError});
 }
