@@ -91,7 +91,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
+              measurementWindow={30}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -114,7 +114,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectCapacityTrendsWidget
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
+              measurementWindow={30}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -137,7 +137,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
+              measurementWindow={30}
               days={7}
               samplingFrequency={7}
               context={context}
@@ -171,7 +171,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
+                measurementWindow={30}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
