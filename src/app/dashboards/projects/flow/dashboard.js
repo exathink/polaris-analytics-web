@@ -171,7 +171,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 latestWorkItemEvent={latestWorkItemEvent}
                 stateMappingIndex={stateMappingIndex}
                 days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
+                measurementWindow={30}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}

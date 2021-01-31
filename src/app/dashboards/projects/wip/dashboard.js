@@ -46,6 +46,7 @@ function WipDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     wipLimit,
+    pipelineMeasurementWindow: measurementWindow,
     wipAnalysisPeriod,
   } = settingsWithDefaults;
 
@@ -130,7 +131,7 @@ function WipDashboard({
               stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
+              measurementWindow={measurementWindow}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
