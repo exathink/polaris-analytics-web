@@ -70,7 +70,6 @@ class WithProject extends React.Component {
       pollInterval,
       context,
       polling,
-      enableVideo
     } = this.props;
 
     return (
@@ -123,7 +122,6 @@ class WithProject extends React.Component {
                 render={render}
                 context={context}
                 project={projectWithDefaultSettings}
-                enableVideo={enableVideo}
                 onMount={
                   () => this.onDashboardMounted(project)
                 }

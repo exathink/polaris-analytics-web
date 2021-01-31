@@ -18,6 +18,8 @@ export const withNavigationContext = Component => (
             polling = {navigationContext.polling}
             setEnableVideo = {navigationContext.setEnableVideo}
             enableVideo = {navigationContext.enableVideo}
+            activeDashboardVideoConfig = {navigationContext.activeDashboardVideoConfig}
+            setActiveDashboardVideoConfig = {navigationContext.setActiveDashboardVideoConfig}
             setFullScreen = {navigationContext.setFullScreen}
             fullScreen = {navigationContext.fullScreen}
             {...props}
