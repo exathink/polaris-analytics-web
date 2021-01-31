@@ -2,7 +2,7 @@ import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Alert, Button, Select} from "antd";
 import "./workItemStateType.css";
-import {updateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
@@ -10,25 +10,26 @@ import {actionTypes, mode} from "./constants";
 const {Option} = Select;
 
 export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits}) {
-  const [mutate, {loading, client}] = updateProjectWorkItemSourceStateMaps({
+  // set first workitemsource as default
+  // handling empty workItemSources case by defaulting it to blank object
+  const [workItemSource = {}] = workItemSources;
+  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT, errorMessage: ""});
+
+  const [mutate, {loading, client}] = useUpdateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
       } else {
+        logGraphQlError("WorkItemStateTypeMapView.useUpdateProjectWorkItemSourceStateMaps", errorMessage);
         dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
     onError: (error) => {
-      logGraphQlError("WorkItemStateTypeMapView.updateProjectWorkItemSourceStateMaps", error);
+      logGraphQlError("WorkItemStateTypeMapView.useUpdateProjectWorkItemSourceStateMaps", error);
       dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
     },
   });
-
-  // set first workitemsource as default
-  // handling empty workItemSources case by defaulting it to blank object
-  const [workItemSource = {}] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT, errorMessage: ""});
 
   function handleSaveClick(e) {
     const {workItemStateMappings, key} = state;
