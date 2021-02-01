@@ -1,0 +1,37 @@
+.mergeContributorsWrapper {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-areas:
+    ". steps steps ."
+    ". stepContent stepContent ."
+    ". stepsNextAction stepsPrevAction .";
+  gap: 0.5rem;
+}
+
+.mergeContributorsStepsWrapper {
+  grid-area: steps;
+}
+
+.mergeContributorsStepsContent {
+  grid-area: stepContent;
+}
+.mergeContributorsNextAction {
+  grid-area: stepsNextAction;
+}
+
+.mergeContributorsPrevAction {
+  grid-area: stepsPrevAction;
+  justify-self: flex-end;
+}
+
+/* override completed steps color */
+.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: green;
+}
+
+.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #d9f9d9;
+  border-color: green;
+}
+

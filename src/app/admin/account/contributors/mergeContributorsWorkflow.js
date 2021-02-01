@@ -1,15 +1,55 @@
+import {Steps, Button} from "antd";
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import "./contributors.css";
 
-const dashboard_id = "dashboards.admin.account.merge-contributors";
+const {Step} = Steps;
 
-const mergeContributorsWorkflow = withViewerContext(({viewerContext}) => (
-  <Dashboard dashboard={`${dashboard_id}`}>
-    <DashboardRow h={"95%"}>
-      <DashboardWidget w={1} render={() => <div>Merge Contributors Workflow</div>} />
-    </DashboardRow>
-  </Dashboard>
-));
+const steps = [
+  {
+    title: "Select Aliases",
+    content: "Select Aliases",
+  },
+  {
+    title: "Merge Contributors",
+    content: "Select Contributor",
+  },
+  {
+    title: "Edit Contributors",
+    content: "Edit Contributor",
+  },
+];
 
-export default mergeContributorsWorkflow;
+export function MergeContributorsWorkflow() {
+  const [current, setCurrent] = React.useState(0);
+
+  const next = () => {
+    setCurrent(current + 1);
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+
+  return (
+    <div className="mergeContributorsWrapper">
+      <div className="mergeContributorsStepsWrapper">
+        <Steps current={current}>
+          {steps.map((item) => (
+            <Step key={item.title} title={item.title} />
+          ))}
+        </Steps>
+      </div>
+      <div className="mergeContributorsStepsContent">{steps[current].content}</div>
+      <div className="mergeContributorsNextAction">
+        <Button type="primary" onClick={() => next()} disabled={current === steps.length - 1}>
+          Next
+        </Button>
+      </div>
+      <div className="mergeContributorsPrevAction">
+        <Button style={{margin: "0 8px"}} onClick={() => prev()} disabled={current === 0}>
+          Previous
+        </Button>
+      </div>
+    </div>
+  );
+}
