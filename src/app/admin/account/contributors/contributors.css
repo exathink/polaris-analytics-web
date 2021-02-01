@@ -1,0 +1,21 @@
+.mergeContributorsWrapper {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  grid-template-areas:
+    ". steps ."
+    ". stepContent ."
+    ". stepsAction .";
+  gap: 0.5rem;
+}
+
+.mergeContributorsStepsWrapper {
+  grid-area: steps;
+}
+
+.mergeContributorsStepsContent {
+  grid-area: stepContent;
+}
+.mergeContributorsStepsAction {
+  grid-area: stepsAction;
+}
