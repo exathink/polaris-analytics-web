@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dashboard, DashboardRow} from '../../framework/viz/dashboard';
 import {ManageUsersDashboardWidget} from "./users/manageUsers";
-import {MergeContributorsWidget} from './contributors/mergeContributors';
+import {MergeContributorsWidget} from './contributors/mergeContributorsWidget';
 
 const dashboard_id = 'dashboards.admin.account';
 
