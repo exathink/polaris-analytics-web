@@ -4,7 +4,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 const dashboard_id = "dashboards.admin.account.merge-contributors";
 
-const mergeContributorsWorkflow = withViewerContext(({viewerContext}) => (
+const mergeContributors = withViewerContext(({viewerContext}) => (
   <Dashboard dashboard={`${dashboard_id}`}>
     <DashboardRow h={"95%"}>
       <DashboardWidget w={1} render={() => <div>Merge Contributors Workflow</div>} />
@@ -12,4 +12,4 @@ const mergeContributorsWorkflow = withViewerContext(({viewerContext}) => (
   </Dashboard>
 ));
 
-export default mergeContributorsWorkflow;
+export default mergeContributors;

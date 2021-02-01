@@ -7,7 +7,7 @@ const topic =  {
   routes: [
     {
       match: 'merge-contributors',
-      component: React.lazy(() => import('./contributors/mergeContributorsWorkflow'))
+      component: React.lazy(() => import('./contributors/mergeContributors'))
     },
     {
       match: '',
