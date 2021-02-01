@@ -25,4 +25,13 @@
   justify-self: flex-end;
 }
 
+/* override completed steps color */
+.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: green;
+}
+
+.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #d9f9d9;
+  border-color: green;
+}
 
