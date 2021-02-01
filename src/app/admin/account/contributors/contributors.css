@@ -1,11 +1,11 @@
 .mergeContributorsWrapper {
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 20px 1fr 20px;
+  grid-template-columns: 20px 1fr 1fr 20px;
   grid-template-areas:
-    ". steps ."
-    ". stepContent ."
-    ". stepsAction .";
+    ". steps steps ."
+    ". stepContent stepContent ."
+    ". stepsNextAction stepsPrevAction .";
   gap: 0.5rem;
 }
 
@@ -16,6 +16,13 @@
 .mergeContributorsStepsContent {
   grid-area: stepContent;
 }
-.mergeContributorsStepsAction {
-  grid-area: stepsAction;
+.mergeContributorsNextAction {
+  grid-area: stepsNextAction;
 }
+
+.mergeContributorsPrevAction {
+  grid-area: stepsPrevAction;
+  justify-self: flex-end;
+}
+
+

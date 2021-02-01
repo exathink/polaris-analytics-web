@@ -1,4 +1,4 @@
-import {Steps, message, Button} from "antd";
+import {Steps, Button} from "antd";
 import React from "react";
 import "./contributors.css";
 
@@ -19,7 +19,7 @@ const steps = [
   },
 ];
 
-export function MergeContributorsWorkflow({}) {
+export function MergeContributorsWorkflow() {
   const [current, setCurrent] = React.useState(0);
 
   const next = () => {
@@ -40,22 +40,15 @@ export function MergeContributorsWorkflow({}) {
         </Steps>
       </div>
       <div className="mergeContributorsStepsContent">{steps[current].content}</div>
-      <div className="mergeContributorsStepsAction">
-        {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
-            Next
-          </Button>
-        )}
-        {current === steps.length - 1 && (
-          <Button type="primary" onClick={() => message.success("Processing complete!")}>
-            Done
-          </Button>
-        )}
-        {current > 0 && (
-          <Button style={{margin: "0 8px"}} onClick={() => prev()}>
-            Previous
-          </Button>
-        )}
+      <div className="mergeContributorsNextAction">
+        <Button type="primary" onClick={() => next()} disabled={current === steps.length - 1}>
+          Next
+        </Button>
+      </div>
+      <div className="mergeContributorsPrevAction">
+        <Button style={{margin: "0 8px"}} onClick={() => prev()} disabled={current === 0}>
+          Previous
+        </Button>
       </div>
     </div>
   );
