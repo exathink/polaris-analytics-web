@@ -1,4 +1,5 @@
 .mergeContributorsWrapper {
+  background-color: white;
   margin-top: 0.5rem;
   display: grid;
   grid-template-columns: 20px 1fr 1fr 20px;
@@ -14,9 +15,11 @@
 }
 
 .mergeContributorsStepsContent {
+  min-height: 50vh;
   grid-area: stepContent;
 }
 .mergeContributorsNextAction {
+  padding-bottom: 16px;
   grid-area: stepsNextAction;
 }
 
@@ -25,13 +28,40 @@
   justify-self: flex-end;
 }
 
+.mergeContributorsLandingPage {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas:
+    ". contributorsSlider ."
+    "contributorsTable contributorsTable contributorsTable";
+}
+
+.mergeContributorsSlider {
+  min-height: 8rem;
+  grid-area: contributorsSlider;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mergeContributorsTableWrapper {
+  grid-area: contributorsTable;
+}
+
+.rangeSliderWrapper {
+  width: 90%;
+}
 /* override completed steps color */
-.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+.mergeContributorsStepsWrapper .ant-steps-item.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
   color: green;
 }
 
-.mergeContributorsStepsWrapper .ant-steps-item-finish .ant-steps-item-icon {
+.mergeContributorsStepsWrapper .ant-steps-item.ant-steps-item-finish .ant-steps-item-icon {
   background-color: #d9f9d9;
   border-color: green;
+}
+
+.mergeContributorsStepsWrapper .ant-steps-item-process .ant-steps-item-icon {
+  background-color: #1890ff;
 }
 

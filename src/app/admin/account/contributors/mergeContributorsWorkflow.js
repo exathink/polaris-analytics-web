@@ -1,21 +1,19 @@
 import {Steps, Button} from "antd";
 import React from "react";
 import "./contributors.css";
+import {EditContributorsPage} from "./editContributorsPage";
+import {MergeContributorsLandingPage} from "./landingPage";
 
 const {Step} = Steps;
 
 const steps = [
   {
-    title: "Select Aliases",
-    content: "Select Aliases",
-  },
-  {
     title: "Merge Contributors",
-    content: "Select Contributor",
+    content: <MergeContributorsLandingPage />,
   },
   {
     title: "Edit Contributors",
-    content: "Edit Contributor",
+    content: <EditContributorsPage />,
   },
 ];
 
