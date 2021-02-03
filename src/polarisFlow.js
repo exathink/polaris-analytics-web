@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { store} from './redux/store';
 import AllRoutes from './router';
 import { ThemeProvider } from 'styled-components';
-import { LocaleProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
 import themes from './config/themes';
 import AppLocale from './app/i18n';
@@ -22,7 +22,7 @@ const currentAppLocale =
 initGA();
 
 const PolarisFlowApp = () => (
-  <LocaleProvider locale={currentAppLocale.antd}>
+  <ConfigProvider locale={currentAppLocale.antd}>
     <IntlProvider
       locale={currentAppLocale.locale}
       messages={currentAppLocale.messages}
@@ -37,7 +37,7 @@ const PolarisFlowApp = () => (
         </AppHolder>
       </ThemeProvider>
     </IntlProvider>
-  </LocaleProvider>
+  </ConfigProvider>
 );
 export default PolarisFlowApp;
 export { AppLocale };
