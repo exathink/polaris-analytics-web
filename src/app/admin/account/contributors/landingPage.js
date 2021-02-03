@@ -1,37 +1,7 @@
 import React from "react";
 import {Table} from "antd";
 import {DaysRangeSlider, SIXTY_DAYS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    sorter: (a, b) => a.name.localeCompare(b.name),
-  },
-  {
-    title: "Alias",
-    dataIndex: "alias",
-    key: "alias",
-    width: "12%",
-    sorter: (a, b) => a.alias.localeCompare(b.alias),
-  },
-  {
-    title: "Latest Commit",
-    dataIndex: "latestCommit",
-    width: "30%",
-    key: "latestCommit",
-    // Should compare as dates - this is for prototype only
-    sorter: (a, b) => a.latestCommit.localeCompare(b.latestCommit),
-  },
-  {
-    title: "Total Commits",
-    dataIndex: "totalCommits",
-    width: "30%",
-    key: "totalCommits",
-    sorter: (a, b) => a.totalCommits.localeCompare(b.totalCommits),
-  },
-];
+import {useSearch} from "../../../components/tables/hooks";
 
 const data = [
   {
@@ -40,15 +10,14 @@ const data = [
     alias: "jb@brown.com",
     latestCommit: "01/21/2020 08:00:00",
     totalCommits: 233,
-    children: [
+    contributorAliases: [
       {
         key: 11,
         name: "John Brown",
         alias: "jb@brown.com",
-        age: 42,
-        totalCommits: 20,
         latestCommit: "01/21/2020 08:00:00",
-        address: "New York No. 2 Lake Park",
+        totalCommits: 20,
+        parent: 1,
       },
       {
         key: 12,
@@ -56,6 +25,7 @@ const data = [
         alias: "jb@brown.com",
         latestCommit: "01/21/2021 08:00:00",
         totalCommits: 2330,
+        parent: 1,
       },
       {
         key: 13,
@@ -63,6 +33,7 @@ const data = [
         alias: "local-macbook-2002",
         latestCommit: "01/21/2021 08:00:00",
         totalCommits: 10,
+        parent: 1,
       },
     ],
   },
@@ -86,26 +57,27 @@ const data = [
     alias: "bill@biweers.com",
     latestCommit: "01/21/2020 08:00:00",
     totalCommits: 233,
-    children: [
+    contributorAliases: [
       {
         key: 21,
         name: "Bill B",
         alias: "bill@bowers.com",
-        age: 22,
-        totalCommits: 20,
         latestCommit: "01/21/2020 08:00:00",
+        totalCommits: 20,
+        parent: 4,
       },
       {
-        key: 21,
+        key: 22,
         name: "Bill B",
         alias: "bill@gmail.com",
-        age: 22,
-        totalCommits: 20,
         latestCommit: "01/21/2020 08:00:00",
+        totalCommits: 20,
+        parent: 4,
       },
     ],
   },
 ];
+
 export function MergeContributorsLandingPage() {
   const [days, setDays] = React.useState(30);
 
@@ -117,7 +89,45 @@ export function MergeContributorsLandingPage() {
     onSelect: (record, selected, selectedRows) => {
       console.log(record, selected, selectedRows);
     },
+    getCheckboxProps: (record) => ({
+      disabled: record.parent != null, // Column configuration not to be checked
+      name: record.name,
+    }),
   };
+
+  const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "30%",
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      ...nameSearchState,
+    },
+    {
+      title: "Alias",
+      dataIndex: "alias",
+      key: "alias",
+      width: "30%",
+      sorter: (a, b) => a.alias.localeCompare(b.alias),
+      ...aliasSearchState,
+    },
+    {
+      title: "Latest Commit",
+      dataIndex: "latestCommit",
+      width: "20%",
+      key: "latestCommit",
+      sorter: (a, b) => a.latestCommit.localeCompare(b.latestCommit),
+    },
+    {
+      title: "Total Commits",
+      dataIndex: "totalCommits",
+      width: "20%",
+      key: "totalCommits",
+      sorter: (a, b) => a.totalCommits - b.totalCommits,
+    },
+  ];
 
   return (
     <div className="mergeContributorsLandingPage">
@@ -129,7 +139,13 @@ export function MergeContributorsLandingPage() {
         <div>Days Ago</div>
       </div>
       <div className="mergeContributorsTableWrapper">
-        <Table columns={columns} rowSelection={{...rowSelection}} dataSource={data} />
+        <Table
+          childrenColumnName="contributorAliases"
+          pagination={false}
+          columns={columns}
+          rowSelection={{...rowSelection}}
+          dataSource={data}
+        />
       </div>
     </div>
   );
