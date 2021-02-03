@@ -78,8 +78,14 @@ const data = [
   },
 ];
 
+function hasChildren(recordKey, data) {
+  const record = data.find((x) => x.key === recordKey);
+  return record != null ? record.contributorAliases != null : false;
+}
+
 export function MergeContributorsLandingPage() {
   const [days, setDays] = React.useState(30);
+  const [selectedRecords, setSelectedRecords] = React.useState([]);
 
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
@@ -87,12 +93,33 @@ export function MergeContributorsLandingPage() {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
     },
     onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
+      setSelectedRecords(selectedRows.map((x) => x.key));
     },
-    getCheckboxProps: (record) => ({
-      disabled: record.parent != null, // Column configuration not to be checked
-      name: record.name,
-    }),
+    getCheckboxProps: (record) => {
+      if (selectedRecords.length === 1) {
+        const [key] = selectedRecords;
+        const selectedRecord = data.find((x) => x.key === key);
+
+        if (selectedRecord.contributorAliases != null && hasChildren(record.key, data)) {
+          return {
+            disabled: record.key !== selectedRecord.key, // disable other records(except selected record with children) with children
+            name: record.name,
+          };
+        }
+      }
+
+      if (selectedRecords.length === 2) {
+        return {
+          disabled: selectedRecords.includes(record.key) === false,
+          name: record.name,
+        };
+      }
+
+      return {
+        disabled: record.parent != null, // disable all children records
+        name: record.name,
+      };
+    },
   };
 
   const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
