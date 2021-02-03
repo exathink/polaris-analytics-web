@@ -12,10 +12,10 @@ export default class ImageCell extends Component {
       ready: false,
     };
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.loadImage(this.props.src);
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.src !== this.props.src) {
       this.setState({ src: null });
       this.loadImage(nextProps.src);
