@@ -83,7 +83,7 @@ function hasChildren(recordKey, data) {
   return record != null ? record.contributorAliases != null : false;
 }
 
-export function MergeContributorsLandingPage() {
+export function SelectContributorsPage() {
   const [days, setDays] = React.useState(30);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
 
