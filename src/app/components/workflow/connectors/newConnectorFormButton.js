@@ -1,6 +1,8 @@
 import {createForm} from "../../forms/createForm";
 import React from "react";
-import {Col, Form, Input, Row} from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Input, Row } from "antd";
 import {CreateConnectorInstructions} from "./createConnectorInstructions";
 
 const PARTS = ['instructions', 'setup']

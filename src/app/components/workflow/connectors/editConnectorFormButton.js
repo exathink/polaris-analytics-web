@@ -1,5 +1,7 @@
 import React from "react";
-import {Col, Form, Input, Row, Icon} from "antd";
+import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Input, Row } from "antd";
 import {createForm} from "../../forms/createForm";
 
 const EditConnectorForm = (
@@ -110,5 +112,5 @@ export const EditConnectorFormButton = createForm(EditConnectorForm, {
     drawer: true,
     title: 'Edit Connector',
     buttonSize: 'small',
-    icon: <Icon type={'edit'}/>
+    icon: <LegacyIcon type={'edit'}/>
 });
