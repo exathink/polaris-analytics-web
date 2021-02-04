@@ -4,6 +4,7 @@ import {DimensionCommitsNavigatorWidget} from "../../widgets/accountHierarchy";
 import {VizRow} from "../../containers/layout";
 import moment from 'moment';
 import {Flex} from "reflexbox";
+import uniqueStyles from './commitHistory.module.css';
 
 const CumulativeCommitCountDetailPanels = (
   {
@@ -25,7 +26,7 @@ const CumulativeCommitCountDetailPanels = (
   return (
     <React.Fragment>
       <VizRow h={"93%"}>
-        <Flex column w={"30%"} h={1} className={'viz-item'}>
+        <Flex column w={"30%"} h={1} className={uniqueStyles['viz-item']}>
           <CumulativeCommitCountChart
             cumulativeCommitCounts={cumulativeCommitCounts}
             context={context}
@@ -35,7 +36,7 @@ const CumulativeCommitCountDetailPanels = (
           />
         </Flex>
 
-        <Flex column w={"70%"} h={1} className={'viz-item'}>
+        <Flex column w={"70%"} h={1} className={uniqueStyles['viz-item']}>
           <DimensionCommitsNavigatorWidget
             dimension={dimension}
             instanceKey={instanceKey}

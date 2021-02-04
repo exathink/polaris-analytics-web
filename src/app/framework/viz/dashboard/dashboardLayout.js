@@ -1,4 +1,4 @@
-import './dashboard.css';
+import uniqueStyles from './dashboard.module.css';
 import React from 'react';
 
 import {Flex} from 'reflexbox';
@@ -19,7 +19,7 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
     if (itemSelected != null && itemSelected) {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
-        <div className={"dashboard"}>
+        <div className={uniqueStyles["dashboard"]}>
           <DashboardRow h={"98%"}>
             {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
           </DashboardRow>
@@ -28,7 +28,7 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
       )
     } else {
       return (
-        <div className={"dashboard"}>
+        <div className={uniqueStyles["dashboard"]}>
           {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
         </div>
       );
@@ -39,16 +39,16 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, ...
   <React.Fragment>
     {
       title || controls ?
-        <div className={"dashboard-row-title-container"}>
+        <div className={uniqueStyles["dashboard-row-title-container"]}>
           {
             title ?
-              <nav className={'menu'} style={{width: '30%'}}>
-                <h3 className="dashboard-row-title">
+              <nav className={uniqueStyles['menu']} style={{width: '30%'}}>
+                <h3 className={uniqueStyles["dashboard-row-title"]}>
                   {title}
                 </h3>
                 {
                   subTitle &&
-                    <h4 className="dashboard-row-subtitle">
+                    <h4 className={uniqueStyles["dashboard-row-subtitle"]}>
                       {subTitle}
                     </h4>
                 }
@@ -58,14 +58,14 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, ...
           }
           {
             controls ?
-              <nav className={'menu title-control-container'} style={{width: '70%', paddingRight: '75px'}}>
+              <nav className={uniqueStyles['menu'] + " " + uniqueStyles["title-control-container"]} style={{width: '70%', paddingRight: '75px'}}>
                 <React.Fragment>
                   {
                     // Adding reverse here because we would like to the controls to laid
                     // out left to right in the same order that they appear in the array
                     controls.reverse().map(
                       (control, index) =>
-                        <div key={index} className={'title-control'}>
+                        <div key={index} className={uniqueStyles['title-control']}>
                           {React.createElement(control)}
                         </div>
                     )
@@ -80,7 +80,7 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, ...
         :
         null
     }
-    <Flex auto align={align || 'center'}  className="dashboard-row" style={{
+    <Flex auto align={align || 'center'}  className={uniqueStyles["dashboard-row"]} style={{
       height: h
     }}>
       {cloneChildrenWithProps(children, {...rest})}
@@ -90,7 +90,7 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, ...
 
 
 export const DashboardTabs = ({children, ...rest}) => (
-  <Tabs className={'dashboard-tabs'} animated={false} {...rest} >
+  <Tabs className={uniqueStyles['dashboard-tabs']} animated={false} {...rest} >
     {
       children
     }
@@ -98,7 +98,7 @@ export const DashboardTabs = ({children, ...rest}) => (
 )
 
 export const DashboardTabPane = ({children, ...rest}) => (
-  <TabPane className={'dashboard-tab-pane'} {...rest}>
+  <TabPane className={uniqueStyles['dashboard-tab-pane']} {...rest}>
     {
       children
     }

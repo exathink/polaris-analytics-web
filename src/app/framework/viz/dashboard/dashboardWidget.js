@@ -3,10 +3,11 @@ import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
 import {withRouter} from 'react-router';
 import {EmbedVideoPlayer, useVideo} from "../videoPlayer/videoPlayer";
+import uniqueStyles from './dashboard.module.css';
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
   showDetail?
-    <nav className="dashboard-item-menu">
+    <nav className={uniqueStyles["dashboard-item-menu"]}>
       <i
         className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
         title={"Show Details"}
@@ -19,10 +20,10 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
 function getVideoClassNames(itemSelected, showDetail) {
   let classes;
   if (itemSelected) {
-    classes = "video-detail-view";
+    classes = uniqueStyles["video-detail-view"];
   }
   if (!itemSelected && showDetail) {
-    classes = "video-primary-view";
+    classes = uniqueStyles["video-primary-view"];
   }
 
   return classes;
@@ -33,13 +34,13 @@ export const DashboardWidget = withRouter(withNavigationContext(
   const videoPlayerProps = useVideo();
 
   return (
-    <Flex column w={w} m={1} className="dashboard-item">
+    <Flex column w={w} m={1} className={uniqueStyles["dashboard-item"]}>
       {
         title || subtitle || controls ?
-        <div className={"dashboard-item-title-container"}>
+        <div className={uniqueStyles["dashboard-item-title-container"]}>
           {
             title && (!itemSelected || !hideTitlesInDetailView) ?
-              <h3 className="dashboard-item-title">
+              <h3 className={uniqueStyles["dashboard-item-title"]}>
                 {title}
               </h3>
               :
@@ -47,7 +48,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
           }
           {
             subtitle && (!itemSelected || !hideTitlesInDetailView) ?
-              <h5 className="dashboard-item-subtitle">
+              <h5 className={uniqueStyles["dashboard-item-subtitle"]}>
                 {subtitle}
               </h5>
               :
@@ -55,12 +56,12 @@ export const DashboardWidget = withRouter(withNavigationContext(
           }
           {
             controls ?
-              <nav className={'menu title-control-container'} style={{...(styles ? styles.controlContainer : {})}}>
+              <nav className={uniqueStyles["menu"] + " " + uniqueStyles["title-control-container"]} style={{...(styles ? styles.controlContainer : {})}}>
                 <React.Fragment>
                   {
                     controls.reverse().map(
                       (control, index)  =>
-                        <div key={index} className={'title-control'}>
+                        <div key={index} className={uniqueStyles["title-control"]}>
                           {
                             itemSelected && showDetail ?
                               React.createElement(control, {...{view: 'detail'}, ...rest})
