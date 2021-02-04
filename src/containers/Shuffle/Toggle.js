@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 
 const Toggle = ({ clickHandler, text, icon, active, large }) => {
   const buttonClass = classNames({
@@ -13,7 +13,7 @@ const Toggle = ({ clickHandler, text, icon, active, large }) => {
 
   return (
     <button className={`isoControlBtn ${buttonClass}`} onClick={clickHandler}>
-      <Icon type={iconClass} />
+      <LegacyIcon type={iconClass} />
       {text}
     </button>
   );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Input from '../uielements/input';
-import { Icon } from 'antd';
+import { CheckOutlined, EditOutlined } from '@ant-design/icons';
 
 export default class extends Component {
   state = {
@@ -35,12 +35,12 @@ export default class extends Component {
               onChange={this.handleChange}
               onPressEnter={this.check}
             />
-            <Icon type="check" className="isoEditIcon" onClick={this.check} />
+            <CheckOutlined className="isoEditIcon" onClick={this.check} />
           </div>
         ) : (
           <p className="isoDataWrapper">
             {value || ' '}
-            <Icon type="edit" className="isoEditIcon" onClick={this.edit} />
+            <EditOutlined className="isoEditIcon" onClick={this.edit} />
           </p>
         )}
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon} from "antd";
+import { DownloadOutlined } from '@ant-design/icons';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
@@ -27,7 +27,7 @@ export default () => (
               controls={[
                 () =>
                   <Button type="primary" onClick={() => context.go('.', 'new')}>
-                    <Icon type="download"/> Connect Repositories
+                    <DownloadOutlined /> Connect Repositories
                   </Button>
               ]}
             >

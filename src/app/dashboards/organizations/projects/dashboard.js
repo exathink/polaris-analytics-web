@@ -7,7 +7,7 @@ import {OrganizationDashboard} from "../organizationDashboard";
 import {ProjectsTableWidget} from "./manage/projectsTable";
 
 import Projects from "../../projects/context"
-import {Icon} from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import Button from "../../../../components/uielements/button";
 import {ProjectsDashboardSetup} from "./setup";
 
@@ -35,7 +35,7 @@ export default injectIntl(({intl}) => (
               controls={[
                 () =>
                   <Button type="primary" onClick={() => context.go('.', 'new')}>
-                    <Icon type="plus"/> {`New ${displaySingular(intl, Contexts.projects)}`}
+                    <PlusOutlined /> {`New ${displaySingular(intl, Contexts.projects)}`}
                   </Button>
               ]}
             >

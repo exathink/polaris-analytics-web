@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { CheckOutlined, EditOutlined } from '@ant-design/icons';
 import { Textarea as Input } from './uielements/input';
 
 export default class EditableComponent extends Component {
@@ -39,16 +39,12 @@ export default class EditableComponent extends Component {
               onChange={this.handleChange}
               onPressEnter={this.check}
             />
-            <Icon
-              type="check"
-              className="isoNoteEditIcon"
-              onClick={this.check}
-            />
+            <CheckOutlined className="isoNoteEditIcon" onClick={this.check} />
           </div>
         ) : (
           <p className="isoNoteTextWrapper" onClick={this.edit}>
             {value || ' '}
-            <Icon type="edit" className="isoNoteEditIcon" />
+            <EditOutlined className="isoNoteEditIcon" />
           </p>
         )}
       </div>

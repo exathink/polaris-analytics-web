@@ -3,6 +3,8 @@
   "version": "0.0.5",
   "private": true,
   "dependencies": {
+    "@ant-design/compatible": "^1.0.8",
+    "@ant-design/icons": "^4.4.0",
     "@apollo/client": "^3.3.4",
     "antd": "4.12.1",
     "antd-local-icon": "^0.1.3",
