@@ -2,126 +2,15 @@ import React from "react";
 import {Table} from "antd";
 import {DaysRangeSlider, SIXTY_DAYS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../components/tables/hooks";
-
-const data = [
-  {
-    key: 1,
-    name: "John Brown sr.",
-    alias: "jb@brown.com",
-    latestCommit: "01/21/2020 08:00:00",
-    totalCommits: 233,
-    contributorAliases: [
-      {
-        key: 11,
-        name: "John Brown",
-        alias: "jb@brown.com",
-        latestCommit: "01/21/2020 08:00:00",
-        totalCommits: 20,
-        parent: 1,
-      },
-      {
-        key: 12,
-        name: "John Brown Sr.",
-        alias: "jb@brown.com",
-        latestCommit: "01/21/2021 08:00:00",
-        totalCommits: 2330,
-        parent: 1,
-      },
-      {
-        key: 13,
-        name: "John Brown sr.",
-        alias: "local-macbook-2002",
-        latestCommit: "01/21/2021 08:00:00",
-        totalCommits: 10,
-        parent: 1,
-      },
-    ],
-  },
-  {
-    key: 2,
-    name: "Brown John III",
-    alias: "jb@brown.com",
-    latestCommit: "01/21/2018 08:00:00",
-    totalCommits: 10,
-  },
-  {
-    key: 3,
-    name: "Aman Mavai",
-    alias: "aman.mavai@gslab.com",
-    latestCommit: "01/21/2018 08:00:00",
-    totalCommits: 1240,
-  },
-  {
-    key: 4,
-    name: "Bill Bowers",
-    alias: "bill@biweers.com",
-    latestCommit: "01/21/2020 08:00:00",
-    totalCommits: 233,
-    contributorAliases: [
-      {
-        key: 21,
-        name: "Bill B",
-        alias: "bill@bowers.com",
-        latestCommit: "01/21/2020 08:00:00",
-        totalCommits: 20,
-        parent: 4,
-      },
-      {
-        key: 22,
-        name: "Bill B",
-        alias: "bill@gmail.com",
-        latestCommit: "01/21/2020 08:00:00",
-        totalCommits: 20,
-        parent: 4,
-      },
-    ],
-  },
-];
+import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
+import {Loading} from "../../../components/graphql/loading";
 
 function hasChildren(recordKey, data) {
   const record = data.find((x) => x.key === recordKey);
-  return record != null ? record.contributorAliases != null : false;
+  return record != null ? record.contributorAliasesInfo != null : false;
 }
 
-export function SelectContributorsPage() {
-  const [days, setDays] = React.useState(30);
-  const [selectedRecords, setSelectedRecords] = React.useState([]);
-
-  // rowSelection objects indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      setSelectedRecords(selectedRows.map((x) => x.key));
-    },
-    getCheckboxProps: (record) => {
-      if (selectedRecords.length === 1) {
-        const [key] = selectedRecords;
-        const selectedRecord = data.find((x) => x.key === key);
-
-        if (selectedRecord.contributorAliases != null && hasChildren(record.key, data)) {
-          return {
-            disabled: record.key !== selectedRecord.key, // disable other records(except selected record with children) with children
-            name: record.name,
-          };
-        }
-      }
-
-      if (selectedRecords.length === 2) {
-        return {
-          disabled: selectedRecords.includes(record.key) === false,
-          name: record.name,
-        };
-      }
-
-      return {
-        disabled: record.parent != null, // disable all children records
-        name: record.name,
-      };
-    },
-  };
-
+function useTableColumns() {
   const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
   const columns = [
     {
@@ -149,12 +38,91 @@ export function SelectContributorsPage() {
     },
     {
       title: "Total Commits",
-      dataIndex: "totalCommits",
+      dataIndex: "commitCount",
       width: "20%",
-      key: "totalCommits",
-      sorter: (a, b) => a.totalCommits - b.totalCommits,
+      key: "commitCount",
+      sorter: (a, b) => a.commitCount - b.commitCount,
     },
   ];
+  return columns;
+}
+
+function getTransformedData(data) {
+  return data["account"]["contributors"]["edges"]
+    .map((edge) => edge.node)
+    .map((node) => {
+      if (node.contributorAliasesInfo) {
+        if (node.contributorAliasesInfo.length > 1) {
+          const {alias} = node.contributorAliasesInfo.find((x) => x.key === node.key);
+          return {
+            ...node,
+            alias,
+            contributorAliasesInfo: node.contributorAliasesInfo
+              .filter((x) => x.key !== node.key)
+              .map((alias) => ({...alias, parent: node.key})),
+          };
+        } else {
+          const {
+            contributorAliasesInfo: [{alias}],
+            ...remainingNode
+          } = node;
+          return {...remainingNode, alias};
+        }
+      }
+      return node;
+    });
+}
+export function SelectContributorsPage() {
+  const [days, setDays] = React.useState(30);
+  const [selectedRecords, setSelectedRecords] = React.useState([]);
+  const columns = useTableColumns();
+
+  const {loading, error, data} = useQueryContributorAliasesInfo({
+    accountKey: "24347f28-0020-4025-8801-dbc627f9415d",
+    commitWithinDays: 50,
+  });
+
+  if (error) {
+    return null;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  // transform api response to array of contributors
+  const contributorsData = getTransformedData(data);
+
+  const rowSelection = {
+    onSelect: (record, selected, selectedRows) => {
+      setSelectedRecords(selectedRows.map((x) => x.key));
+    },
+    getCheckboxProps: (record) => {
+      if (selectedRecords.length === 1) {
+        const [key] = selectedRecords;
+        const selectedRecord = contributorsData.find((x) => x.key === key);
+
+        if (selectedRecord.contributorAliasesInfo != null && hasChildren(record.key, contributorsData)) {
+          return {
+            disabled: record.key !== selectedRecord.key, // disable other records(except selected record with children) with children
+            name: record.name,
+          };
+        }
+      }
+
+      if (selectedRecords.length === 2) {
+        return {
+          disabled: selectedRecords.includes(record.key) === false,
+          name: record.name,
+        };
+      }
+
+      return {
+        disabled: record.parent != null, // disable all children records
+        name: record.name,
+      };
+    },
+  };
 
   return (
     <div className="mergeContributorsLandingPage">
@@ -167,11 +135,11 @@ export function SelectContributorsPage() {
       </div>
       <div className="mergeContributorsTableWrapper">
         <Table
-          childrenColumnName="contributorAliases"
+          childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
           rowSelection={{...rowSelection}}
-          dataSource={data}
+          dataSource={contributorsData}
         />
       </div>
     </div>
