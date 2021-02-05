@@ -7,6 +7,7 @@ import {Loading} from "../../../components/graphql/loading";
 import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
+import styles from "./contributors.module.css";
 
 function hasChildren(recordKey, data) {
   const record = data.find((x) => x.key === recordKey);
@@ -130,10 +131,10 @@ export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
   };
 
   return (
-    <div className="mergeContributorsLandingPage">
-      <div className="mergeContributorsSlider">
+    <div className={styles.mergeContributorsLandingPage}>
+      <div className={styles.mergeContributorsSlider}>
         <div>Latest Contribution</div>
-        <div className="rangeSliderWrapper">
+        <div className={styles.rangeSliderWrapper}>
           <DaysRangeSlider
             title=""
             initialDays={commitWithinDays}
@@ -143,7 +144,7 @@ export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
         </div>
         <div>Days Ago</div>
       </div>
-      <div className="mergeContributorsTableWrapper">
+      <div className={styles.mergeContributorsTableWrapper}>
         <Table
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
