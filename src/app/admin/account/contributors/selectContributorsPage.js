@@ -1,6 +1,6 @@
 import React from "react";
 import {Table} from "antd";
-import {DaysRangeSlider, SIXTY_DAYS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
+import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {Loading} from "../../../components/graphql/loading";
@@ -59,7 +59,7 @@ function getTransformedData(data) {
             alias,
             contributorAliasesInfo: node.contributorAliasesInfo
               .filter((x) => x.key !== node.key)
-              .map((alias) => ({...alias, parent: node.key})),
+              .map((alias) => ({...alias, parent: node.key})),// adding parent property to all children
           };
         } else {
           const {
@@ -73,13 +73,13 @@ function getTransformedData(data) {
     });
 }
 export function SelectContributorsPage({accountKey}) {
-  const [days, setDays] = React.useState(30);
+  const [commitWithinDays, setCommitWithinDays] = React.useState(60);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const columns = useTableColumns();
 
-  const {loading, error, data, refetch} = useQueryContributorAliasesInfo({
+  const {loading, error, data} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
-    commitWithinDays: days,
+    commitWithinDays: commitWithinDays,
   });
 
   if (error) {
@@ -94,7 +94,7 @@ export function SelectContributorsPage({accountKey}) {
   const contributorsData = getTransformedData(data);
 
   const rowSelection = {
-    onSelect: (record, selected, selectedRows) => {
+    onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => x.key));
     },
     getCheckboxProps: (record) => {
@@ -129,7 +129,7 @@ export function SelectContributorsPage({accountKey}) {
       <div className="mergeContributorsSlider">
         <div>Latest Contribution</div>
         <div className="rangeSliderWrapper">
-          <DaysRangeSlider title="" initialDays={days} setDaysRange={setDays} range={SIXTY_DAYS} />
+          <DaysRangeSlider title="" initialDays={commitWithinDays} setDaysRange={setCommitWithinDays} range={THREE_MONTHS} />
         </div>
         <div>Days Ago</div>
       </div>
