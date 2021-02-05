@@ -13,6 +13,8 @@ function getRemoteBrowseUrl(workItem) {
       return workItem.url;
     case 'github':
       return workItem.url.replace('api.github.com/repos', 'github.com');
+    case 'gitlab':
+      return workItem.url;
     default:
       return null;
   }
