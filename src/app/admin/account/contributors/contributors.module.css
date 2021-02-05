@@ -5,7 +5,6 @@
   grid-template-columns: 20px 1fr 1fr 20px;
   grid-template-areas:
     ". steps steps ."
-    ". stepsNextAction stepsPrevAction ."
     ". stepContent stepContent .";
   gap: 0.5rem;
 }
@@ -41,13 +40,16 @@
 .mergeContributorsLandingPage {
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    ". contributorsSlider ."
-    "contributorsTable contributorsTable contributorsTable";
+    "stepsNextAction stepsPrevAction"
+    "contributorsSlider contributorsSlider"
+    "contributorsTable contributorsTable";
 }
 
 .mergeContributorsSlider {
+  justify-self: center;
+  min-width: 60%;
   min-height: 8rem;
   grid-area: contributorsSlider;
   display: flex;

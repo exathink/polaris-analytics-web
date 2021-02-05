@@ -7,6 +7,7 @@ import {Loading} from "../../../components/graphql/loading";
 import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./contributors.module.css";
 
 function hasChildren(recordKey, data) {
@@ -78,7 +79,7 @@ function getTransformedData(data, intl) {
     });
 }
 
-export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
+function SelectContributorsPage({viewerContext: {accountKey}, intl, renderActionButtons}) {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const columns = useTableColumns();
@@ -130,8 +131,25 @@ export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
     },
   };
 
+  function isNextButtonDisabled() {
+    if (selectedRecords.length === 1) {
+      const [key] = selectedRecords;
+      const selectedRecord = contributorsData.find((x) => x.key === key);
+      // if only selected record has children
+      if (selectedRecord.contributorAliasesInfo != null) {
+        return false;
+      }
+    }
+    if (selectedRecords.length === 2) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <div className={styles.mergeContributorsLandingPage}>
+      {renderActionButtons(isNextButtonDisabled())}
       <div className={styles.mergeContributorsSlider}>
         <div>Latest Contribution</div>
         <div className={styles.rangeSliderWrapper}>
@@ -155,4 +173,6 @@ export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
       </div>
     </div>
   );
-});
+}
+
+export default withViewerContext(injectIntl(SelectContributorsPage));
