@@ -5,6 +5,8 @@ import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {Loading} from "../../../components/graphql/loading";
 import {diff_in_dates} from "../../../helpers/utility";
+import {formatDateTime} from "../../../i18n/utils";
+import {injectIntl} from "react-intl";
 
 function hasChildren(recordKey, data) {
   const record = data.find((x) => x.key === recordKey);
@@ -48,7 +50,7 @@ function useTableColumns() {
   return columns;
 }
 
-function getTransformedData(data) {
+function getTransformedData(data, intl) {
   return data["account"]["contributors"]["edges"]
     .map((edge) => edge.node)
     .map((node) => {
@@ -57,23 +59,25 @@ function getTransformedData(data) {
           const {alias} = node.contributorAliasesInfo.find((x) => x.key === node.key);
           return {
             ...node,
+            latestCommit: formatDateTime(intl, node.latestCommit),
             alias,
             contributorAliasesInfo: node.contributorAliasesInfo
               .filter((x) => x.key !== node.key)
-              .map((alias) => ({...alias, parent: node.key})), // adding parent property to all children
+              .map((alias) => ({...alias, latestCommit: formatDateTime(intl, alias.latestCommit), parent: node.key})), // adding parent property to all children
           };
         } else {
           const {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, alias};
+          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias};
         }
       }
-      return node;
+      return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
     });
 }
-export function SelectContributorsPage({accountKey}) {
+
+export const SelectContributorsPage = injectIntl(({accountKey, intl}) => {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const columns = useTableColumns();
@@ -92,7 +96,7 @@ export function SelectContributorsPage({accountKey}) {
   }
 
   // transform api response to array of contributors
-  const contributorsData = getTransformedData(data);
+  const contributorsData = getTransformedData(data, intl);
 
   const rowSelection = {
     onSelect: (_record, _selected, selectedRows) => {
@@ -150,4 +154,4 @@ export function SelectContributorsPage({accountKey}) {
       </div>
     </div>
   );
-}
+});
