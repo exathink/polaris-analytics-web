@@ -8,6 +8,7 @@ const {Step} = Steps;
 
 export function MergeContributorsWorkflow() {
   const [current, setCurrent] = React.useState(0);
+  const selectedContributorsState = React.useState([]);
 
   const handleNextClick = () => {
     setCurrent(current + 1);
@@ -51,7 +52,7 @@ export function MergeContributorsWorkflow() {
   const steps = [
     {
       title: "Select Contributors",
-      content: <SelectContributorsPage renderActionButtons={renderActionButtons} />,
+      content: <SelectContributorsPage renderActionButtons={renderActionButtons} selectedContributorsState={selectedContributorsState} />,
     },
     {
       title: "Merge Contributors",

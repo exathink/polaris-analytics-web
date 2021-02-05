@@ -79,9 +79,9 @@ function getTransformedData(data, intl) {
     });
 }
 
-function SelectContributorsPage({viewerContext: {accountKey}, intl, renderActionButtons}) {
+function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedContributorsState, renderActionButtons}) {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
-  const [selectedRecords, setSelectedRecords] = React.useState([]);
+  const [selectedRecords, setSelectedRecords] = selectedContributorsState;
   const columns = useTableColumns();
 
   const {loading, error, data} = useQueryContributorAliasesInfo({
@@ -101,6 +101,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, renderAction
   const contributorsData = getTransformedData(data, intl);
 
   const rowSelection = {
+    selectedRowKeys: selectedRecords,
     onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => x.key));
     },
