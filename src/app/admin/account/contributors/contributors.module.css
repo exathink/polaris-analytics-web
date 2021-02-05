@@ -37,7 +37,7 @@
   font-weight: 500;
 }
 
-.mergeContributorsLandingPage {
+.selectContributorsLandingPage {
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
@@ -47,7 +47,7 @@
     "contributorsTable contributorsTable";
 }
 
-.mergeContributorsSlider {
+.selectContributorsSlider {
   justify-self: center;
   min-width: 60%;
   min-height: 8rem;
@@ -56,7 +56,7 @@
   align-items: center;
   justify-content: center;
 }
-.mergeContributorsTableWrapper {
+.selectContributorsTableWrapper {
   grid-area: contributorsTable;
 }
 
@@ -79,4 +79,12 @@
 .mergeContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
   background: #7824b5;
   border: #7824b5;
+}
+
+.mergeContributorsLandingPage {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+  "stepsNextAction stepsPrevAction"
 }

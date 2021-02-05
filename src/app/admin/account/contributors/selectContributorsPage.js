@@ -148,9 +148,9 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, renderAction
   }
 
   return (
-    <div className={styles.mergeContributorsLandingPage}>
+    <div className={styles.selectContributorsLandingPage}>
       {renderActionButtons(isNextButtonDisabled())}
-      <div className={styles.mergeContributorsSlider}>
+      <div className={styles.selectContributorsSlider}>
         <div>Latest Contribution</div>
         <div className={styles.rangeSliderWrapper}>
           <DaysRangeSlider
@@ -162,7 +162,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, renderAction
         </div>
         <div>Days Ago</div>
       </div>
-      <div className={styles.mergeContributorsTableWrapper}>
+      <div className={styles.selectContributorsTableWrapper}>
         <Table
           childrenColumnName="contributorAliasesInfo"
           pagination={false}

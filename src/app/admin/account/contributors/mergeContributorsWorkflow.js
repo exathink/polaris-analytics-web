@@ -1,7 +1,7 @@
 import {Steps, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {MergeContributorsPage} from "./mergeContributorsPage";
+import MergeContributorsPage from "./mergeContributorsPage";
 import SelectContributorsPage from "./selectContributorsPage";
 
 const {Step} = Steps;
@@ -47,7 +47,7 @@ export function MergeContributorsWorkflow() {
       </>
     );
   }
-  
+
   const steps = [
     {
       title: "Select Contributors",
