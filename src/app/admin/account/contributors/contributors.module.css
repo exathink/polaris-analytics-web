@@ -5,8 +5,8 @@
   grid-template-columns: 20px 1fr 1fr 20px;
   grid-template-areas:
     ". steps steps ."
-    ". stepContent stepContent ."
-    ". stepsNextAction stepsPrevAction .";
+    ". stepsNextAction stepsPrevAction ."
+    ". stepContent stepContent .";
   gap: 0.5rem;
 }
 
@@ -21,11 +21,21 @@
 .mergeContributorsNextAction {
   padding-bottom: 16px;
   grid-area: stepsNextAction;
+  justify-self: flex-end;
 }
 
 .mergeContributorsPrevAction {
   grid-area: stepsPrevAction;
-  justify-self: flex-end;
+  justify-self: flex-start;
+}
+
+.mergeContributorsButton {
+  background-color: rgb(120, 36, 181);
+  border-color: rgb(120, 36, 181);
+  color: white;
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
 }
 
 .mergeContributorsLandingPage {
@@ -52,15 +62,19 @@
   width: 90%;
 }
 /* override completed steps color */
-.mergeContributorsStepsWrapper .ant-steps-item.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
-  color: green;
+.mergeContributorsStepsWrapper
+  :global(.ant-steps-item):global(.ant-steps-item-finish)
+  :global(.ant-steps-item-icon)
+  > :global(.ant-steps-icon) {
+  color: #d4d4d4;
 }
 
-.mergeContributorsStepsWrapper .ant-steps-item.ant-steps-item-finish .ant-steps-item-icon {
-  background-color: #d9f9d9;
-  border-color: green;
+.mergeContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+  background-color: #7824b5;
+  border-color: #7824b5;
 }
 
-.mergeContributorsStepsWrapper .ant-steps-item-process .ant-steps-item-icon {
-  background-color: #1890ff;
+.mergeContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+  background: #7824b5;
+  border: #7824b5;
 }

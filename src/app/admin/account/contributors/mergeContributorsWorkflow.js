@@ -30,6 +30,8 @@ export function MergeContributorsWorkflow({accountKey}) {
 
   const steps = getSteps(accountKey);
 
+  const nextButtonDisabled = current === steps.length - 1;
+  const prevButtonDisabled = current === 0;
   return (
     <div className={styles.mergeContributorsWrapper}>
       <div className={styles.mergeContributorsStepsWrapper}>
@@ -39,17 +41,17 @@ export function MergeContributorsWorkflow({accountKey}) {
           ))}
         </Steps>
       </div>
-      <div className={styles.mergeContributorsStepsContent}>{steps[current].content}</div>
       <div className={styles.mergeContributorsNextAction}>
-        <Button type="primary" onClick={() => next()} disabled={current === steps.length - 1}>
+        <Button type="primary" className={styles.mergeContributorsButton} style={!nextButtonDisabled ? {backgroundColor: '#7824b5', borderColor: '#7824b5', color: 'white'} : {}} onClick={() => next()} disabled={nextButtonDisabled}>
           Next
         </Button>
       </div>
       <div className={styles.mergeContributorsPrevAction}>
-        <Button style={{margin: "0 8px"}} onClick={() => prev()} disabled={current === 0}>
+        <Button className={styles.mergeContributorsButton} style={!prevButtonDisabled ? {backgroundColor: '#7824b5', borderColor: '#7824b5', color: 'white'} : {}} onClick={() => prev()} disabled={prevButtonDisabled}>
           Previous
         </Button>
       </div>
+      <div className={styles.mergeContributorsStepsContent}>{steps[current].content}</div>
     </div>
   );
 }
