@@ -4,6 +4,7 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/componen
 import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {Loading} from "../../../components/graphql/loading";
+import {diff_in_dates} from "../../../helpers/utility";
 
 function hasChildren(recordKey, data) {
   const record = data.find((x) => x.key === recordKey);
@@ -34,7 +35,7 @@ function useTableColumns() {
       dataIndex: "latestCommit",
       width: "20%",
       key: "latestCommit",
-      sorter: (a, b) => a.latestCommit.localeCompare(b.latestCommit),
+      sorter: (a, b) => diff_in_dates(a.latestCommit, b.latestCommit),
     },
     {
       title: "Total Commits",
@@ -59,7 +60,7 @@ function getTransformedData(data) {
             alias,
             contributorAliasesInfo: node.contributorAliasesInfo
               .filter((x) => x.key !== node.key)
-              .map((alias) => ({...alias, parent: node.key})),// adding parent property to all children
+              .map((alias) => ({...alias, parent: node.key})), // adding parent property to all children
           };
         } else {
           const {
@@ -129,7 +130,12 @@ export function SelectContributorsPage({accountKey}) {
       <div className="mergeContributorsSlider">
         <div>Latest Contribution</div>
         <div className="rangeSliderWrapper">
-          <DaysRangeSlider title="" initialDays={commitWithinDays} setDaysRange={setCommitWithinDays} range={THREE_MONTHS} />
+          <DaysRangeSlider
+            title=""
+            initialDays={commitWithinDays}
+            setDaysRange={setCommitWithinDays}
+            range={THREE_MONTHS}
+          />
         </div>
         <div>Days Ago</div>
       </div>
