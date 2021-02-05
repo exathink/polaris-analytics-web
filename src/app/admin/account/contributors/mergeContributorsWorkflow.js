@@ -6,10 +6,10 @@ import {SelectContributorsPage} from "./selectContributorsPage";
 
 const {Step} = Steps;
 
-const steps = [
+const getSteps = (accountKey) => [
   {
     title: "Select Contributors",
-    content: <SelectContributorsPage />,
+    content: <SelectContributorsPage accountKey={accountKey}/>,
   },
   {
     title: "Merge Contributors",
@@ -17,7 +17,7 @@ const steps = [
   },
 ];
 
-export function MergeContributorsWorkflow() {
+export function MergeContributorsWorkflow({accountKey}) {
   const [current, setCurrent] = React.useState(0);
 
   const next = () => {
@@ -27,6 +27,8 @@ export function MergeContributorsWorkflow() {
   const prev = () => {
     setCurrent(current - 1);
   };
+
+  const steps = getSteps(accountKey);
 
   return (
     <div className="mergeContributorsWrapper">

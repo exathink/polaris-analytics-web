@@ -8,7 +8,7 @@ const dashboard_id = "dashboards.admin.account.merge-contributors";
 const mergeContributors = withViewerContext(({viewerContext}) => (
   <Dashboard dashboard={`${dashboard_id}`}>
     <DashboardRow h={"95%"}>
-      <DashboardWidget w={1} render={() => <MergeContributorsWorkflow />} />
+      <DashboardWidget w={1} render={() => <MergeContributorsWorkflow accountKey={viewerContext.accountKey} />} />
     </DashboardRow>
   </Dashboard>
 ));

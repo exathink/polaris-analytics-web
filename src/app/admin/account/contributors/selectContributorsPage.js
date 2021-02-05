@@ -72,14 +72,14 @@ function getTransformedData(data) {
       return node;
     });
 }
-export function SelectContributorsPage() {
+export function SelectContributorsPage({accountKey}) {
   const [days, setDays] = React.useState(30);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const columns = useTableColumns();
 
-  const {loading, error, data} = useQueryContributorAliasesInfo({
-    accountKey: "24347f28-0020-4025-8801-dbc627f9415d",
-    commitWithinDays: 50,
+  const {loading, error, data, refetch} = useQueryContributorAliasesInfo({
+    accountKey: accountKey,
+    commitWithinDays: days,
   });
 
   if (error) {
