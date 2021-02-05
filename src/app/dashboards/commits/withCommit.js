@@ -50,7 +50,7 @@ export const WithCommit = ({commitKey, render}) => (
           if (loading) return <Loading/>;
           if (error) return null;
           const commit = data.commit;
-          return React.createElement(render, {commit})
+          return render({commit})
         }
       }
     </Query>
