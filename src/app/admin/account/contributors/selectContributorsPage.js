@@ -79,6 +79,18 @@ function getTransformedData(data, intl) {
     });
 }
 
+function getOnlySelectedRecordWithChildren(selectedRecords, contributorsData) {
+  const recordsWithChildren = selectedRecords
+    .map((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
+    .filter((s) => s.contributorAliasesInfo != null);
+  
+  if (recordsWithChildren.length === 1) {
+    return recordsWithChildren[0];
+  } 
+
+  return null;
+}
+
 function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedContributorsState, renderActionButtons}) {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
   const [selectedRecords, setSelectedRecords] = selectedContributorsState;
@@ -106,23 +118,14 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
       setSelectedRecords(selectedRows.map((x) => x.key));
     },
     getCheckboxProps: (record) => {
-      if (selectedRecords.length === 1) {
-        const [key] = selectedRecords;
-        const selectedRecord = contributorsData.find((x) => x.key === key);
-
-        if (selectedRecord.contributorAliasesInfo != null && hasChildren(record.key, contributorsData)) {
+      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords, contributorsData);
+      if (onlySelectedRecordWithChildren != null) {
+        if (hasChildren(record.key, contributorsData)) {
           return {
-            disabled: record.key !== selectedRecord.key, // disable other records(except selected record with children) with children
+            disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
             name: record.name,
           };
         }
-      }
-
-      if (selectedRecords.length === 2) {
-        return {
-          disabled: selectedRecords.includes(record.key) === false,
-          name: record.name,
-        };
       }
 
       return {
@@ -141,7 +144,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         return false;
       }
     }
-    if (selectedRecords.length === 2) {
+    if (selectedRecords.length > 1) {
       return false;
     }
 
