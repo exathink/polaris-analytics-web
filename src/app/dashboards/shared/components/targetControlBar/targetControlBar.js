@@ -1,6 +1,7 @@
 import {ConfidenceRangeSlider, RangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
 import React from "react";
 import {InputNumber} from "antd";
+import styles from "./targetControlBar.module.css";
 
 export function getTargetControlBar([
   [daysRange, setDaysRange, daysMarks],
@@ -22,7 +23,7 @@ export function getTargetControlBar([
           initialDays={daysRange}
           setDaysRange={setDaysRange}
           range={targetMarks}
-          className="targetRangeSlider"
+          className={styles.targetRangeSlider}
         />
         <InputNumber
           min={targetMin}
@@ -42,7 +43,7 @@ export function getTargetControlBar([
           initialValue={+(confidence * 100).toFixed(2)}
           setConfidenceRange={(value) => setConfidence(Math.floor(value) / 100.0)}
           range={confMarks}
-          className="confidenceRangeSlider"
+          className={styles.confidenceRangeSlider}
         />
         <InputNumber
           min={confMin}
