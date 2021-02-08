@@ -3,7 +3,6 @@ import {Table} from "antd";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {Loading} from "../../../components/graphql/loading";
 import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
@@ -113,14 +112,10 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     return null;
   }
 
-  if (loading) {
-    return <Loading />;
-  }
-
   // transform api response to array of contributors
-  const contributorsData = getTransformedData(data, intl);
+  const contributorsData = !loading ? getTransformedData(data, intl) : [];
 
-  const rowSelection = {
+  const rowSelection = () => ({
     selectedRowKeys: selectedRecords,
     onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => x.key));
@@ -141,7 +136,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         name: record.name,
       };
     },
-  };
+  });
 
   function isNextButtonDisabled() {
     if (selectedRecords.length === 1) {
@@ -176,10 +171,11 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
+          loading={loading}
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...rowSelection}}
+          rowSelection={{...rowSelection()}}
           dataSource={contributorsData}
         />
       </div>
