@@ -7,6 +7,7 @@ import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 
@@ -163,7 +164,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     <div className={styles.selectContributorsLandingPage}>
       {renderActionButtons(isNextButtonDisabled())}
       <div className={styles.selectContributorsSlider}>
-        <div>Latest Contribution</div>
+        <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
           <DaysRangeSlider
             title=""
@@ -172,7 +173,14 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
             range={THREE_MONTHS}
           />
         </div>
-        <div>Days Ago</div>
+        <div>Days</div>
+        <div className={styles.activeContributors}>
+          <Statistic
+            title="Active Contributors"
+            value={contributorsData.size}
+            precision={0}
+          />
+        </div>
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
