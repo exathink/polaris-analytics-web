@@ -179,8 +179,6 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
             title="Active Contributors"
             value={contributorsData.size}
             precision={0}
-            valueStyle={{backgroundColor: ""}}
-            suffix={""}
           />
         </div>
       </div>
