@@ -1,5 +1,7 @@
 import React from "react";
-import {Col, Form, Input, Radio, Row} from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Input, Radio, Row } from "antd";
 import {createForm} from "../../../components/forms/createForm";
 
 const PARTS = ['company', 'organization', 'owner']

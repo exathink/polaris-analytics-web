@@ -1,6 +1,7 @@
 import React from "react";
 import {getTargetControlBar} from "../../../shared/components/targetControlBar/targetControlBar";
 import {actionTypes, METRICS, mode} from "./constants";
+import styles from "./projectResponseTimeSLASettings.module.css";
 
 export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: sliderMode, dispatch}) {
   // slider state
@@ -8,7 +9,7 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
   const confidence = selectedMetric === METRICS.LEAD_TIME ? leadTime.confidence : cycleTime.confidence;
 
   return (
-    <div className="sliderWrapper">
+    <div className={styles["sliderWrapper"]}>
       {getTargetControlBar([
         [target, (newTarget) => dispatch({type: actionTypes.UPDATE_TARGET, payload: Math.floor(newTarget)})],
         [
@@ -17,22 +18,22 @@ export function TargetSliders({leadTime, cycleTime, selectedMetric, mode: slider
           [0, 50, 100],
         ],
       ]).map((bar, index) => {
-        let className = "slider-bar";
+        let className = styles["slider-bar"];
         if (sliderMode === mode.EDITING) {
           if (selectedMetric === METRICS.LEAD_TIME) {
             if (leadTime.target !== leadTime.initialTarget && index === 0) {
-              className += " slider-bar-edit";
+              className += ` ${styles["slider-bar-edit"]}`;
             }
             if (leadTime.confidence !== leadTime.initialConfidence && index === 1) {
-              className += " slider-bar-edit";
+              className += ` ${styles["slider-bar-edit"]}`;
             }
           }
           if (selectedMetric === METRICS.CYCLE_TIME) {
             if (cycleTime.target !== cycleTime.initialTarget && index === 0) {
-              className += " slider-bar-edit";
+              className += ` ${styles["slider-bar-edit"]}`;
             }
             if (cycleTime.confidence !== cycleTime.initialConfidence && index === 1) {
-              className += " slider-bar-edit";
+              className += ` ${styles["slider-bar-edit"]}`;
             }
           }
         }

@@ -8,7 +8,7 @@ import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdate
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectResponseTimeSLASettings.css";
+import styles from "./projectResponseTimeSLASettings.module.css";
 import {TargetSliders} from "./targetSliders";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
@@ -100,7 +100,7 @@ export const ProjectResponseTimeSLASettingsView = ({
     // when mutation is executing
     if (loading) {
       return (
-        <Button className={"shiftRight"} type="primary" loading>
+        <Button className={styles["shiftRight"]} type="primary" loading>
           Processing...
         </Button>
       );
@@ -109,10 +109,10 @@ export const ProjectResponseTimeSLASettingsView = ({
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={"targetSave"} type="primary" size="small" shape="round">
+          <Button onClick={handleSaveClick} className={styles["targetSave"]} type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className={"targetCancel"} type="default" size="small" shape="round">
+          <Button onClick={handleCancelClick} className={styles["targetCancel"]} type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -126,7 +126,7 @@ export const ProjectResponseTimeSLASettingsView = ({
           type="error"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
           onClose={() => dispatch({type: actionTypes.RESET_SLIDERS})}
         />
       );
@@ -139,7 +139,7 @@ export const ProjectResponseTimeSLASettingsView = ({
           type="success"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
           onClose={() => dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL})}
         />
       );
@@ -148,11 +148,11 @@ export const ProjectResponseTimeSLASettingsView = ({
 
   return (
     <React.Fragment>
-      <div className="flowMetricControlsWrapper" data-testid="flowmetrics-setting-view">
+      <div className={styles["flowMetricControlsWrapper"]} data-testid="flowmetrics-setting-view">
         <Flex w={1} justify={"center"}>
           <span>Drag sliders to update response time target and confidence %</span>
         </Flex>
-        <Flex w={1} className="selectedMetricWrapper">
+        <Flex w={1} className={styles["selectedMetricWrapper"]}>
           <GroupingSelector
             label={" "}
             groupings={groupings.map((grouping) => ({
@@ -162,7 +162,7 @@ export const ProjectResponseTimeSLASettingsView = ({
             initialValue={selectedMetric}
             onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
           />
-          <div className="targetControlButtons">{getButtonElements()}</div>
+          <div className={styles["targetControlButtons"]}>{getButtonElements()}</div>
         </Flex>
         <TargetSliders {...sliderProps} />
       </div>

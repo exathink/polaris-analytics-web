@@ -12,7 +12,7 @@ export default function asyncComponent(importComponent, staticProps={}) {
         component: null
       };
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       Nprogress.start();
     }
     componentWillUnmount() {

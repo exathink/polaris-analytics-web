@@ -1,7 +1,7 @@
 import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Alert, Button, Select} from "antd";
-import "./workItemStateType.css";
+import styles from "./workItemStateType.module.css";
 import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
@@ -100,7 +100,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           type="warning"
           showIcon
           closable
-          className="noWorkItemResources"
+          className={styles["noWorkItemResources"]}
         />
       );
     }
@@ -110,7 +110,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     // when mutation is executing
     if (loading) {
       return (
-        <Button className={"shiftRight"} type="primary" loading>
+        <Button className={styles["shiftRight"]} type="primary" loading>
           Processing...
         </Button>
       );
@@ -119,10 +119,10 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={"workItemSave"} type="primary" size="small" shape="round">
+          <Button onClick={handleSaveClick} className={styles["workItemSave"]} type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className={"workItemCancel"} type="default" size="small" shape="round">
+          <Button onClick={handleCancelClick} className={styles["workItemCancel"]} type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -136,30 +136,30 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           type="error"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
         />
       );
     }
 
     if (state.mode === mode.FAILURE) {
-      return <Alert message={state.errorMessage} type="error" showIcon closable className="shiftRight" onClose={() => resetState()}/>;
+      return <Alert message={state.errorMessage} type="error" showIcon closable className={styles["shiftRight"]} onClose={() => resetState()}/>;
     }
 
     if (state.mode === mode.SUCCESS) {
-      return <Alert message="Mapping updated successfully." type="success" showIcon closable className="shiftRight" />;
+      return <Alert message="Mapping updated successfully." type="success" showIcon closable className={styles["shiftRight"]} />;
     }
   }
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   return (
-    <div data-testid="state-type-map-view" className="stateTypeWrapper">
-      <div className={"controlsWrapper"}>
+    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]}>
+      <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
       </div>
 
-      <div className={"chartWrapper"}>
+      <div className={styles["chartWrapper"]}>
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
           workItemSource={currentWorkItemSource}

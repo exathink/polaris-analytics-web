@@ -2,6 +2,7 @@ import {InputNumber} from "antd";
 import React from "react";
 import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
+import styles from "./projectAnalysisPeriods.module.css";
 
 export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, THREE_MONTHS];
@@ -26,7 +27,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       range: wipDaysMarks,
       min: wipMin,
       max: wipMax,
-      className: wipPeriod !== initialAnalysisPeriods.wipAnalysisPeriod ? " analysis-slider-bar-edit" : "",
+      className: wipPeriod !== initialAnalysisPeriods.wipAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
       info:
         "The analysis period to benchmark cycle time for work items in progress against recently closed items. The cycle time SLA as well as metrics for closed items in the Wip dashboard use this period by default. This value should be atleast as large as the cycle time SLA value. The value selected here becomes the default Wip analysis period for this value stream for all users.",
       dataTestId: "wip-range-input",
@@ -39,7 +40,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       range: flowDaysMarks,
       min: flowMin,
       max: flowMax,
-      className: flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? " analysis-slider-bar-edit" : "",
+      className: flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
       info:
         "The default analysis period to analyze flow metrics for value stream in Flow dashboard. This value must be larger than the Wip analysis window and typically is 2-4x the Wip analysis period.  This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Flow dashboard for all users.",
       dataTestId: "flow-range-input",
@@ -52,7 +53,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       range: trendsDaysMarks,
       min: trendsMin,
       max: trendsMax,
-      className: trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? " analysis-slider-bar-edit" : "",
+      className: trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
       info:
         "The default analysis period for showing longer term trends for the Value Stream in the trends dashboard. This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Trends dashboard for all users.",
       dataTestId: "trends-range-input",
@@ -60,17 +61,17 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
   ];
 
   return (
-    <div className="analysisItemsWrapper">
+    <div className={styles["analysisItemsWrapper"]}>
       {analysisPeriodItems.map((item) => {
         return (
-          <div key={item.id} className="analysisItemWrapper">
-            <div className={`analysis-slider-bar ${item.className}`}>
+          <div key={item.id} className={styles["analysisItemWrapper"]}>
+            <div className={`${styles["analysis-slider-bar"]} ${item.className}`}>
               <RangeSlider
                 title={item.title}
                 initialDays={item.period}
                 setDaysRange={item.setPeriod}
                 range={item.range}
-                className="analysisRangeSlider"
+                className={styles["analysisRangeSlider"]}
               />
               <InputNumber
                 min={item.min}
@@ -82,7 +83,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
                 type="number"
               />
             </div>
-            <div className="analysis-info">{item.info}</div>
+            <div className={styles["analysis-info"]}>{item.info}</div>
           </div>
         );
       })}

@@ -13,7 +13,7 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-
+import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -151,7 +151,7 @@ export const SelectRepositoriesStep =
                         <Button
                           type={'primary'}
                           size={'small'}
-                          icon={'download'}
+                          icon={<DownloadOutlined />}
                           onClick={
                             () => refetchRepositories({
                               variables: {
@@ -166,7 +166,7 @@ export const SelectRepositoriesStep =
                       <ButtonBarColumn span={8} alignButton={'right'}>
                         <Button
                           type={'primary'}
-                          icon={'check'}
+                          icon={<CheckOutlined />}
                           size={'small'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={

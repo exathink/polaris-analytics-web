@@ -13,7 +13,7 @@ import themes from '../config/themes/index';
 import {themeConfig} from '../config';
 import AppHolder from './commonStyle';
 import './global.css';
-import './framework/viz/dashboard/dashboard.css';
+// import './framework/viz/dashboard/dashboard.css';
 import LayoutWrapper from '../components/utility/layoutWrapper';
 import AppContext from './context';
 import {build_context_url_tree} from "./framework/navigation/context/helpers";

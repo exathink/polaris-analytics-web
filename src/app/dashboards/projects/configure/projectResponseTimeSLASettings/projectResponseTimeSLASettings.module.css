@@ -8,18 +8,6 @@
   margin-bottom: 20px;
 }
 
-.targetRangeSlider {
-  flex-direction: column;
-  justify-items: left;
-  width: 100%;
-}
-
-.confidenceRangeSlider {
-  flex-direction: column;
-  justify-items: left;
-  width: 100%;
-}
-
 .targetControlButtons {
   height: 25px;
   margin-left: auto;
@@ -47,7 +35,7 @@
   margin-right: 0px;
 }
 
-.slider-bar .ant-input-number {
+.slider-bar :global(.ant-input-number) {
   margin: 10px 0 0 0 !important;
 }
 
@@ -58,4 +46,9 @@
 
 .targetCancel {
   margin-right: 20px;
+}
+
+.shiftRight {
+  margin-left: auto;
+  margin-right: 90px;
 }

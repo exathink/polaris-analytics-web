@@ -4,7 +4,7 @@ import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
 import {Alert, Button} from "antd";
 import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
-import "./projectAnalysisPeriods.css";
+import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 
 export const ProjectAnalysisPeriodsView = ({
@@ -85,10 +85,10 @@ export const ProjectAnalysisPeriodsView = ({
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className="analysisSave" type="primary" size="small" shape="round">
+          <Button onClick={handleSaveClick} className={styles["analysisSave"]} type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className="analysisCancel" type="default" size="small" shape="round">
+          <Button onClick={handleCancelClick} type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -102,7 +102,7 @@ export const ProjectAnalysisPeriodsView = ({
           type="success"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
           onClose={() => dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL})}
         />
       );
@@ -115,7 +115,7 @@ export const ProjectAnalysisPeriodsView = ({
           type="warning"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
           onClose={() => dispatch({type: actionTypes.CLOSE_ALERT_MODAL})}
         />
       );
@@ -128,7 +128,7 @@ export const ProjectAnalysisPeriodsView = ({
           type="error"
           showIcon
           closable
-          className="shiftRight"
+          className={styles["shiftRight"]}
           onClose={() => dispatch({type: actionTypes.RESET_SLIDERS})}
         />
       );
@@ -137,10 +137,10 @@ export const ProjectAnalysisPeriodsView = ({
   }
 
   return (
-    <div className="analysisPeriodControlsWrapper" data-testid="analysis-periods-view">
-      <div className="analysisPeriodTopBar">
-        <div className="analysisPeriodTitle">Drag sliders to update analysis periods</div>
-        <div className="analysisPeriodsButtons" data-testid="analysis-period-buttons">{getButtonElements()}</div>
+    <div className={styles["analysisPeriodControlsWrapper"]} data-testid="analysis-periods-view">
+      <div className={styles["analysisPeriodTopBar"]}>
+        <div className={styles["analysisPeriodTitle"]}>Drag sliders to update analysis periods</div>
+        <div className={styles["analysisPeriodsButtons"]} data-testid="analysis-period-buttons">{getButtonElements()}</div>
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
     </div>

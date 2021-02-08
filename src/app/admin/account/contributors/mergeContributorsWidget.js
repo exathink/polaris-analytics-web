@@ -1,6 +1,7 @@
 import React from "react";
 import {DashboardWidget} from "../../../framework/viz/dashboard";
-import {Button, Icon} from "antd";
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from "antd";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 
 export const MergeContributorsWidget = withNavigationContext(({w, name, context}) => {
@@ -12,7 +13,7 @@ export const MergeContributorsWidget = withNavigationContext(({w, name, context}
       controls={[
         () => (
           <Button type="primary" onClick={() => context.go(".", "merge-contributors")}>
-            <Icon type="plus" /> {`Merge Contributors`}
+            <PlusOutlined /> {`Merge Contributors`}
           </Button>
         ),
       ]}

@@ -1,5 +1,7 @@
 import React from 'react';
-import {Col, Form, Input, Row} from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Input, Row } from "antd";
 import {EditableTable} from "../../../../components/forms/editableTable";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";

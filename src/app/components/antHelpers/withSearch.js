@@ -1,5 +1,6 @@
 import React from 'react';
-import {Input, Icon} from "antd";
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Input } from "antd";
 import './withSearch.css';
 
 const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
@@ -47,7 +48,7 @@ export const withSearch = (WrappedTableComponent, columns) => {
                 )
             },
             filterIcon: filtered => (
-                <Icon type={filtered ? "close" : "search"} style={{color: filtered ? '#1890ff' : undefined}} />
+                <LegacyIcon type={filtered ? "close" : "search"} style={{color: filtered ? '#1890ff' : undefined}} />
             ),
             onFilter: (value, record) =>
                 record[dataIndex]

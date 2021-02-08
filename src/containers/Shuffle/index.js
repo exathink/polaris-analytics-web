@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import shuffle from 'lodash/shuffle';
 import throttle from 'lodash/throttle';
@@ -26,7 +26,7 @@ class ListItem extends Component {
           </span>
         </div>
         <button className="isoDeleteBtn" onClick={this.props.clickHandler}>
-          <Icon type="close" />
+          <CloseOutlined />
         </button>
       </SingleCardWrapper>
     );

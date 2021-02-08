@@ -60,3 +60,8 @@
   justify-items: left;
   width: 100%;
 }
+
+.shiftRight {
+  margin-left: auto;
+  margin-right: 90px;
+}

@@ -1,5 +1,6 @@
 import React from "react";
-import {Card, Icon} from "antd";
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Card } from "antd";
 import './launcherCard.css';
 
 export const LauncherCard = ({onClick, title, description, cover, style, iconType}) => (
@@ -11,7 +12,7 @@ export const LauncherCard = ({onClick, title, description, cover, style, iconTyp
       title={title}
       cover={cover}
       style={style}
-      {...iconType ? {actions: [<Icon type={iconType}/>]} : {}}
+      {...iconType ? {actions: [<LegacyIcon type={iconType}/>]} : {}}
     >
       {
         description &&

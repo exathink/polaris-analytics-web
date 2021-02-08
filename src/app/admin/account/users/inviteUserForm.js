@@ -1,5 +1,7 @@
 import React from "react";
-import {Col, Form, Input, Row, Select} from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Input, Row, Select } from "antd";
 
 import {createForm} from "../../../components/forms/createForm";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";

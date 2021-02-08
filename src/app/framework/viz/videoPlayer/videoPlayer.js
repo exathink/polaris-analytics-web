@@ -1,7 +1,7 @@
 import React from "react";
 import {Drawer} from "antd";
 import ReactPlayer from "react-player";
-import "./videoPlayer.css";
+import styles from "./videoPlayer.module.css";
 
 function getPlaySVG() {
   return (
@@ -103,19 +103,19 @@ export function EmbedVideoPlayer({
   videoIcon,
   handleVideoIconClick,
   // styling props
-  className = "video-default-position"
+  className = styles["video-default-position"]
 }) {
   return (
     <>
-      <span onClick={handleVideoIconClick} className={`video-player-icon ${className}`}>
+      <span onClick={handleVideoIconClick} className={`${styles['video-player-icon']} ${className}`}>
         {videoIcon}
       </span>
       <Drawer width={720} title={title} onClose={onClose} visible={visible}>
-        <div className="video-player-wrapper">
-          <div className="video-player">
+        <div className={styles["video-player-wrapper"]}>
+          <div className={styles["video-player"]}>
             <VideoPlayer url={url} onPlay={onPlay} onPause={onPause} playState={playState} />
           </div>
-          <div className="description-wrapper">
+          <div className={styles["description-wrapper"]}>
             <VideoDescription />
           </div>
         </div>

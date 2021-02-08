@@ -1,6 +1,9 @@
 import React from "react";
 import Button from "../../../components/uielements/button";
-import {Drawer, Form, Icon, notification} from "antd";
+import { PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Drawer, notification } from "antd";
 import {display_error} from "../../helpers/utility";
 
 function withForm(FormFields, options) {
@@ -192,44 +195,42 @@ function withForm(FormFields, options) {
       // We want to override the submitted props to do field validation before submit.
       const {onSubmit, ...rest} = this.props;
       const disabled = this.props.enabled != null && !this.props.enabled
-      return (
-        drawer ?
-          <React.Fragment>
-            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
-              {drawerButtonIcon || noPlus || <Icon type="plus" />}{this.props.title || drawerButtonTitle}
-            </Button>
-            <Drawer
-              title={this.props.title || partProps.title || title}
-              width={720}
-              onClose={this.onClose.bind(this)}
-              visible={this.state.visible}
-            >
-              <FormBody
-                part={part}
-                partProps={partProps}
-                onSubmit={this.onSubmit.bind(this)}
-                onClose={this.onClose.bind(this)}
-                onNext={this.onNext.bind(this)}
-                onPrev={this.onPrev.bind(this)}
-                currentValue={this.currentValue.bind(this)}
-                {...rest}
-              />
-            </Drawer>
-          </React.Fragment>
-          :
-          <FormBody
-            part={this.state.index}
-            partProps={partProps}
-            onSubmit={this.onSubmit.bind(this)}
+      return drawer ?
+        <React.Fragment>
+          <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
+            {drawerButtonIcon || noPlus || <PlusOutlined />}{this.props.title || drawerButtonTitle}
+          </Button>
+          <Drawer
+            title={this.props.title || partProps.title || title}
+            width={720}
             onClose={this.onClose.bind(this)}
-            onNext={this.onNext.bind(this)}
-            onPrev={this.onPrev.bind(this)}
-            currentValue={this.currentValue.bind(this)}
-            {...rest}
-          />
-      )
+            visible={this.state.visible}
+          >
+            <FormBody
+              part={part}
+              partProps={partProps}
+              onSubmit={this.onSubmit.bind(this)}
+              onClose={this.onClose.bind(this)}
+              onNext={this.onNext.bind(this)}
+              onPrev={this.onPrev.bind(this)}
+              currentValue={this.currentValue.bind(this)}
+              {...rest}
+            />
+          </Drawer>
+        </React.Fragment>
+        :
+        <FormBody
+          part={this.state.index}
+          partProps={partProps}
+          onSubmit={this.onSubmit.bind(this)}
+          onClose={this.onClose.bind(this)}
+          onNext={this.onNext.bind(this)}
+          onPrev={this.onPrev.bind(this)}
+          currentValue={this.currentValue.bind(this)}
+          {...rest}
+        />;
     }
-  }
+  };
 }
 
 export const createForm = (FormFields, options) => Form.create(options)(withForm(FormFields, options))

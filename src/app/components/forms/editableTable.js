@@ -1,5 +1,7 @@
 import React from 'react';
-import { Input, Button, Form } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button } from 'antd';
 import {Table, CompactTable} from "../tables";
 
 const EditableContext = React.createContext();

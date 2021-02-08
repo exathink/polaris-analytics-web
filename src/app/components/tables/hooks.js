@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-
-import {Input, Icon} from 'antd';
+import { Input } from 'antd';
 import {Highlighter} from "../misc/highlighter";
+import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
 
 export function useSearch(dataIndex, onSearch=null) {
   const [searchText, setSearchText] = useState(null);
+  const searchInputElement = React.useRef();
 
   const handleSearch = (selectedKeys, confirm) => {
     confirm();
@@ -24,9 +25,7 @@ export function useSearch(dataIndex, onSearch=null) {
       return (
         <div style={{padding: 8}}>
           <Input
-            ref={node => {
-              searchProps.searchInput = node;
-            }}
+            ref={searchInputElement}
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
@@ -37,9 +36,13 @@ export function useSearch(dataIndex, onSearch=null) {
       );
     },
 
-    filterIcon: filtered => (
-      <Icon type={filtered ? "close" : "search"} style={{color: filtered ? '#1890ff' : undefined}}/>
-    ),
+    filterIcon: (filtered) => {
+      if (filtered) {
+        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters)}/>;
+      } else {
+        return <SearchOutlined />;
+      }
+    },
 
     onFilter: (value, record) =>
       record[dataIndex] &&
@@ -49,10 +52,8 @@ export function useSearch(dataIndex, onSearch=null) {
         .includes(value.toLowerCase()),
 
     onFilterDropdownVisibleChange: visible => {
-      if (searchText) {
-        handleReset(searchProps.clearFilters);
-      } else {
-        setTimeout(() => searchProps.searchInput && searchProps.searchInput.select());
+      if (visible) {     
+        setTimeout(() => searchInputElement.current && searchInputElement.current.select());
       }
     },
     render: text => (
@@ -65,7 +66,7 @@ export function useSearch(dataIndex, onSearch=null) {
 
     ),
   }
-  return searchProps
+  return searchProps;
 }
 
 

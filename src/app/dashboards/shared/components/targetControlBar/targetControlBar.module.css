@@ -1,0 +1,11 @@
+.targetRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}
+
+.confidenceRangeSlider {
+  flex-direction: column;
+  justify-items: left;
+  width: 100%;
+}
