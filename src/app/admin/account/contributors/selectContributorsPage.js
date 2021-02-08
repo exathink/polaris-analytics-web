@@ -164,7 +164,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     <div className={styles.selectContributorsLandingPage}>
       {renderActionButtons(isNextButtonDisabled())}
       <div className={styles.selectContributorsSlider}>
-        <div>Latest Contribution</div>
+        <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
           <DaysRangeSlider
             title=""
@@ -173,7 +173,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
             range={THREE_MONTHS}
           />
         </div>
-        <div>Days Ago</div>
+        <div>Days</div>
         <div className={styles.activeContributors}>
           <Statistic
             title="Active Contributors"
