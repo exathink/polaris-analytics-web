@@ -9,6 +9,7 @@ import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./contributors.module.css";
+import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 
 function hasChildren(recordKey, data) {
   const record = data.find((x) => x.key === recordKey);
@@ -58,14 +59,15 @@ function getTransformedData(data, intl) {
     .map((node) => {
       if (node.contributorAliasesInfo) {
         if (node.contributorAliasesInfo.length > 1) {
-          const {alias} = node.contributorAliasesInfo.find((x) => x.key === node.key);
           return {
             ...node,
+            key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
-            alias,
-            contributorAliasesInfo: node.contributorAliasesInfo
-              .filter((x) => x.key !== node.key)
-              .map((alias) => ({...alias, latestCommit: formatDateTime(intl, alias.latestCommit), parent: node.key})), // adding parent property to all children
+            contributorAliasesInfo: node.contributorAliasesInfo.map((alias) => ({
+              ...alias,
+              latestCommit: formatDateTime(intl, alias.latestCommit),
+              parent: node.key, // adding parent property to all children
+            })),
           };
         } else {
           const {
@@ -81,12 +83,13 @@ function getTransformedData(data, intl) {
 
 function getOnlySelectedRecordWithChildren(selectedRecords, contributorsData) {
   const recordsWithChildren = selectedRecords
+    .filter((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
     .map((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
     .filter((s) => s.contributorAliasesInfo != null);
-  
+
   if (recordsWithChildren.length === 1) {
     return recordsWithChildren[0];
-  } 
+  }
 
   return null;
 }
@@ -100,6 +103,11 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     accountKey: accountKey,
     commitWithinDays: commitWithinDays,
   });
+
+  useOnlyRunOnUpdate(() => {
+    // clear selected records whenever days range change.
+    setSelectedRecords([]);
+  }, [commitWithinDays]);
 
   if (error) {
     return null;
