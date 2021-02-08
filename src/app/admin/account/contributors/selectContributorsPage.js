@@ -10,6 +10,8 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 
+const VERTICAL_SCROLL_HEIGHT = 380;
+
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
   return record != null ? record.contributorAliasesInfo != null : false;
@@ -180,6 +182,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
           columns={columns}
           rowSelection={{...rowSelection(contributorsData)}}
           dataSource={[...contributorsData.values()]}
+          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
         />
       </div>
     </div>
