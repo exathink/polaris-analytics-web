@@ -3,15 +3,17 @@ import {Table} from "antd";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {Loading} from "../../../components/graphql/loading";
 import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
 import {injectIntl} from "react-intl";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./contributors.module.css";
+import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
+
+const VERTICAL_SCROLL_HEIGHT = 380;
 
 function hasChildren(recordKey, data) {
-  const record = data.find((x) => x.key === recordKey);
+  const record = data.get(recordKey);
   return record != null ? record.contributorAliasesInfo != null : false;
 }
 
@@ -53,19 +55,24 @@ function useTableColumns() {
 }
 
 function getTransformedData(data, intl) {
-  return data["account"]["contributors"]["edges"]
+  if (data == null) {
+    return new Map([]);
+  }
+
+  const kvArr = data["account"]["contributors"]["edges"]
     .map((edge) => edge.node)
     .map((node) => {
       if (node.contributorAliasesInfo) {
         if (node.contributorAliasesInfo.length > 1) {
-          const {alias} = node.contributorAliasesInfo.find((x) => x.key === node.key);
           return {
             ...node,
+            key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
-            alias,
-            contributorAliasesInfo: node.contributorAliasesInfo
-              .filter((x) => x.key !== node.key)
-              .map((alias) => ({...alias, latestCommit: formatDateTime(intl, alias.latestCommit), parent: node.key})), // adding parent property to all children
+            contributorAliasesInfo: node.contributorAliasesInfo.map((alias) => ({
+              ...alias,
+              latestCommit: formatDateTime(intl, alias.latestCommit),
+              parent: node.key, // adding parent property to all children
+            })),
           };
         } else {
           const {
@@ -76,17 +83,17 @@ function getTransformedData(data, intl) {
         }
       }
       return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
-    });
+    })
+    .map((node) => [node.key, node]);
+  return new Map(kvArr);
 }
 
-function getOnlySelectedRecordWithChildren(selectedRecords, contributorsData) {
-  const recordsWithChildren = selectedRecords
-    .map((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
-    .filter((s) => s.contributorAliasesInfo != null);
-  
+function getOnlySelectedRecordWithChildren(selectedRecords) {
+  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
+
   if (recordsWithChildren.length === 1) {
     return recordsWithChildren[0];
-  } 
+  }
 
   return null;
 }
@@ -101,26 +108,27 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     commitWithinDays: commitWithinDays,
   });
 
+  useOnlyRunOnUpdate(() => {
+    // clear selected records whenever days range change.
+    setSelectedRecords([]);
+  }, [commitWithinDays]);
+
   if (error) {
     return null;
   }
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  // transform api response to array of contributors
+  // transform api response to Map of contributors
   const contributorsData = getTransformedData(data, intl);
 
-  const rowSelection = {
-    selectedRowKeys: selectedRecords,
+  const rowSelection = (data) => ({
+    selectedRowKeys: selectedRecords.map((s) => s.key),
     onSelect: (_record, _selected, selectedRows) => {
-      setSelectedRecords(selectedRows.map((x) => x.key));
+      setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
     },
     getCheckboxProps: (record) => {
-      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords, contributorsData);
+      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
       if (onlySelectedRecordWithChildren != null) {
-        if (hasChildren(record.key, contributorsData)) {
+        if (hasChildren(record.key, data)) {
           return {
             disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
             name: record.name,
@@ -133,14 +141,14 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         name: record.name,
       };
     },
-  };
+  });
 
   function isNextButtonDisabled() {
     if (selectedRecords.length === 1) {
-      const [key] = selectedRecords;
-      const selectedRecord = contributorsData.find((x) => x.key === key);
+      const [{key}] = selectedRecords;
+      const selectedRecord = contributorsData.get(key);
       // if only selected record has children
-      if (selectedRecord.contributorAliasesInfo != null) {
+      if (selectedRecord && selectedRecord.contributorAliasesInfo != null) {
         return false;
       }
     }
@@ -168,11 +176,13 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
+          loading={loading}
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...rowSelection}}
-          dataSource={contributorsData}
+          rowSelection={{...rowSelection(contributorsData)}}
+          dataSource={[...contributorsData.values()]}
+          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
         />
       </div>
     </div>

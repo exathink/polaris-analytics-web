@@ -1,12 +1,13 @@
 import {Steps, Button} from "antd";
 import React from "react";
+import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import styles from "./contributors.module.css";
 import MergeContributorsPage from "./mergeContributorsPage";
 import SelectContributorsPage from "./selectContributorsPage";
 
 const {Step} = Steps;
 
-export function MergeContributorsWorkflow() {
+export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
   const [current, setCurrent] = React.useState(0);
   const selectedContributorsState = React.useState([]);
 
@@ -15,7 +16,7 @@ export function MergeContributorsWorkflow() {
   };
 
   const handlePrevClick = () => {
-    setCurrent(current - 1);
+    context.go("..");
   };
 
   function renderActionButtons(isNextButtonDisabled) {
@@ -42,7 +43,7 @@ export function MergeContributorsWorkflow() {
             onClick={handlePrevClick}
             disabled={prevButtonDisabled}
           >
-            Previous
+            Done
           </Button>
         </div>
       </>
@@ -52,7 +53,12 @@ export function MergeContributorsWorkflow() {
   const steps = [
     {
       title: "Select Contributors",
-      content: <SelectContributorsPage renderActionButtons={renderActionButtons} selectedContributorsState={selectedContributorsState} />,
+      content: (
+        <SelectContributorsPage
+          renderActionButtons={renderActionButtons}
+          selectedContributorsState={selectedContributorsState}
+        />
+      ),
     },
     {
       title: "Merge Contributors",
@@ -72,4 +78,4 @@ export function MergeContributorsWorkflow() {
       <div className={styles.mergeContributorsStepsContent}>{steps[current].content}</div>
     </div>
   );
-}
+});
