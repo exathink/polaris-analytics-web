@@ -11,7 +11,7 @@ import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 
 function hasChildren(recordKey, data) {
-  const record = data.find((x) => x.key === recordKey);
+  const record = data.get(recordKey);
   return record != null ? record.contributorAliasesInfo != null : false;
 }
 
@@ -53,7 +53,11 @@ function useTableColumns() {
 }
 
 function getTransformedData(data, intl) {
-  return data["account"]["contributors"]["edges"]
+  if (data == null) {
+    return new Map([]);
+  }
+
+  const kvArr = data["account"]["contributors"]["edges"]
     .map((edge) => edge.node)
     .map((node) => {
       if (node.contributorAliasesInfo) {
@@ -77,14 +81,13 @@ function getTransformedData(data, intl) {
         }
       }
       return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
-    });
+    })
+    .map((node) => [node.key, node]);
+  return new Map(kvArr);
 }
 
-function getOnlySelectedRecordWithChildren(selectedRecords, contributorsData) {
-  const recordsWithChildren = selectedRecords
-    .filter((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
-    .map((selectedRecord) => contributorsData.find((x) => x.key === selectedRecord))
-    .filter((s) => s.contributorAliasesInfo != null);
+function getOnlySelectedRecordWithChildren(selectedRecords) {
+  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
 
   if (recordsWithChildren.length === 1) {
     return recordsWithChildren[0];
@@ -112,18 +115,18 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     return null;
   }
 
-  // transform api response to array of contributors
-  const contributorsData = !loading ? getTransformedData(data, intl) : [];
+  // transform api response to Map of contributors
+  const contributorsData = getTransformedData(data, intl);
 
-  const rowSelection = () => ({
-    selectedRowKeys: selectedRecords,
+  const rowSelection = (data) => ({
+    selectedRowKeys: selectedRecords.map((s) => s.key),
     onSelect: (_record, _selected, selectedRows) => {
-      setSelectedRecords(selectedRows.map((x) => x.key));
+      setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
     },
     getCheckboxProps: (record) => {
-      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords, contributorsData);
+      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
       if (onlySelectedRecordWithChildren != null) {
-        if (hasChildren(record.key, contributorsData)) {
+        if (hasChildren(record.key, data)) {
           return {
             disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
             name: record.name,
@@ -140,10 +143,10 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
 
   function isNextButtonDisabled() {
     if (selectedRecords.length === 1) {
-      const [key] = selectedRecords;
-      const selectedRecord = contributorsData.find((x) => x.key === key);
+      const [{key}] = selectedRecords;
+      const selectedRecord = contributorsData.get(key);
       // if only selected record has children
-      if (selectedRecord.contributorAliasesInfo != null) {
+      if (selectedRecord && selectedRecord.contributorAliasesInfo != null) {
         return false;
       }
     }
@@ -175,8 +178,8 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...rowSelection()}}
-          dataSource={contributorsData}
+          rowSelection={{...rowSelection(contributorsData)}}
+          dataSource={[...contributorsData.values()]}
         />
       </div>
     </div>
