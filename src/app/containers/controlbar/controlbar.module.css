@@ -31,14 +31,14 @@
   color: #fff
 }
 
-.controlbar .menu-item.disabled {
+.controlbar .menu-item:global(.disabled) {
   vertical-align: text-top;
   margin: 10px;
   color: #979797;
   cursor: default;
 }
 
-.controlbar .menu-item.toggleOff {
+.controlbar .menu-item:global(.toggleOff) {
   vertical-align: text-top;
   margin: 10px;
   color: #979797;

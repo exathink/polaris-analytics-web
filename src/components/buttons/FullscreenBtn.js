@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import screenfull from 'screenfull';
 import {withNavigationContext} from "../../app/framework/navigation/components/withNavigationContext";
-
+import styles from "./buttons.module.css"
 class FullscreenBtn extends Component {
 
   componentDidUpdate() {
@@ -18,7 +18,7 @@ class FullscreenBtn extends Component {
     const {fullScreen, setFullScreen} = this.props;
     return (
       <i
-        className={'menu-item ion ion-android' + (fullScreen ? '-contract' : '-expand')}
+        className={styles["menu-item"]+ ' ion ion-android' + (fullScreen ? '-contract' : '-expand')}
         title={(fullScreen ? 'Exit' : 'Go') + ' Fullscreen' }
         onClick={() => {setFullScreen(!fullScreen)}}
       ></i>
