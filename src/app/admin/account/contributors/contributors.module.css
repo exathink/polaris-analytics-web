@@ -1,0 +1,96 @@
+.mergeContributorsWrapper {
+  background-color: white;
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-areas:
+    ". steps steps ."
+    ". stepContent stepContent .";
+  gap: 0.5rem;
+}
+
+.mergeContributorsStepsWrapper {
+  grid-area: steps;
+}
+
+.mergeContributorsStepsContent {
+  min-height: 50vh;
+  grid-area: stepContent;
+}
+.mergeContributorsNextAction {
+  padding-bottom: 16px;
+  grid-area: stepsNextAction;
+  justify-self: flex-end;
+}
+
+.mergeContributorsPrevAction {
+  grid-area: stepsPrevAction;
+  justify-self: flex-start;
+}
+
+.mergeContributorsButton {
+  background-color: rgb(120, 36, 181);
+  border-color: rgb(120, 36, 181);
+  color: white;
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
+}
+
+.selectContributorsLandingPage {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "stepsNextAction stepsPrevAction"
+    "contributorsSlider contributorsSlider"
+    "contributorsTable contributorsTable";
+}
+
+.selectContributorsSlider {
+  justify-self: center;
+  min-width: 60%;
+  min-height: 8rem;
+  grid-area: contributorsSlider;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.selectContributorsTableWrapper {
+  grid-area: contributorsTable;
+}
+
+.rangeSliderWrapper {
+  width: 90%;
+}
+/* override completed steps color */
+.mergeContributorsStepsWrapper
+  :global(.ant-steps-item):global(.ant-steps-item-finish)
+  :global(.ant-steps-item-icon)
+  > :global(.ant-steps-icon) {
+  color: #d4d4d4;
+}
+
+.mergeContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+  background-color: #7824b5;
+  border-color: #7824b5;
+}
+
+.mergeContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+  background: #7824b5;
+  border: #7824b5;
+}
+
+.mergeContributorsLandingPage {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "stepsNextAction stepsPrevAction";
+}
+
+.activeContributors {
+  margin-left: 30px;
+  padding: 8px;
+  width: 200px;
+  background-color: ghostwhite;
+}

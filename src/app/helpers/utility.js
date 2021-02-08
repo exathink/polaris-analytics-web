@@ -127,6 +127,13 @@ export function diff_in_days(date_a, date_b) {
   return span.days();
 }
 
+export function diff_in_dates(date_a, date_b) {
+  const moment_a = moment(date_a);
+  const moment_b = moment(date_b);
+  const span = moment.duration(moment_a.diff(moment_b));
+  return span;
+}
+
 export function elide(str, length) {
   return str.length < length ? str : `${str.substring(0, length)} ...`
 }

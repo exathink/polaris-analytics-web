@@ -1,55 +1,81 @@
 import {Steps, Button} from "antd";
 import React from "react";
-import "./contributors.css";
+import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
+import styles from "./contributors.module.css";
+import MergeContributorsPage from "./mergeContributorsPage";
+import SelectContributorsPage from "./selectContributorsPage";
 
 const {Step} = Steps;
 
-const steps = [
-  {
-    title: "Select Aliases",
-    content: "Select Aliases",
-  },
-  {
-    title: "Merge Contributors",
-    content: "Select Contributor",
-  },
-  {
-    title: "Edit Contributors",
-    content: "Edit Contributor",
-  },
-];
-
-export function MergeContributorsWorkflow() {
+export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
   const [current, setCurrent] = React.useState(0);
+  const selectedContributorsState = React.useState([]);
 
-  const next = () => {
+  const handleNextClick = () => {
     setCurrent(current + 1);
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
+  const handlePrevClick = () => {
+    context.go("..");
   };
 
+  function renderActionButtons(isNextButtonDisabled) {
+    const nextButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
+    const prevButtonDisabled = current === 0;
+
+    return (
+      <>
+        <div className={styles.mergeContributorsNextAction}>
+          <Button
+            type="primary"
+            className={styles.mergeContributorsButton}
+            style={!nextButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={handleNextClick}
+            disabled={nextButtonDisabled}
+          >
+            Next
+          </Button>
+        </div>
+        <div className={styles.mergeContributorsPrevAction}>
+          <Button
+            className={styles.mergeContributorsButton}
+            style={!prevButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={handlePrevClick}
+            disabled={prevButtonDisabled}
+          >
+            Done
+          </Button>
+        </div>
+      </>
+    );
+  }
+
+  const steps = [
+    {
+      title: "Select Contributors",
+      content: (
+        <SelectContributorsPage
+          renderActionButtons={renderActionButtons}
+          selectedContributorsState={selectedContributorsState}
+        />
+      ),
+    },
+    {
+      title: "Merge Contributors",
+      content: <MergeContributorsPage renderActionButtons={renderActionButtons} />,
+    },
+  ];
+
   return (
-    <div className="mergeContributorsWrapper">
-      <div className="mergeContributorsStepsWrapper">
+    <div className={styles.mergeContributorsWrapper}>
+      <div className={styles.mergeContributorsStepsWrapper}>
         <Steps current={current}>
           {steps.map((item) => (
             <Step key={item.title} title={item.title} />
           ))}
         </Steps>
       </div>
-      <div className="mergeContributorsStepsContent">{steps[current].content}</div>
-      <div className="mergeContributorsNextAction">
-        <Button type="primary" onClick={() => next()} disabled={current === steps.length - 1}>
-          Next
-        </Button>
-      </div>
-      <div className="mergeContributorsPrevAction">
-        <Button style={{margin: "0 8px"}} onClick={() => prev()} disabled={current === 0}>
-          Previous
-        </Button>
-      </div>
+      <div className={styles.mergeContributorsStepsContent}>{steps[current].content}</div>
     </div>
   );
-}
+});
