@@ -85,6 +85,12 @@
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-  "stepsNextAction stepsPrevAction"
+  grid-template-areas: "stepsNextAction stepsPrevAction";
+}
+
+.activeContributors {
+  margin-left: 30px;
+  padding: 8px;
+  width: 200px;
+  background-color: ghostwhite;
 }
