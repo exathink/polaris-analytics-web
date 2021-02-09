@@ -54,7 +54,7 @@ function useTableColumns() {
       sorter: (a, b) => a.commitCount - b.commitCount,
     },
     {
-      title: "Alias Count",
+      title: "Aliases",
       dataIndex: "alias_count",
       width: "16%",
       key: "alias_count",
@@ -192,6 +192,9 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         <div className={styles.activeContributors}>
           <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
+      </div>
+      <div className={styles.userMessage}>
+        Select one or more contributors to merge into a single contributor
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table

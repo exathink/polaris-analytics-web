@@ -25,7 +25,7 @@ function getTableColumns() {
       key: "latestCommit",
     },
     {
-      title: "Alias Count",
+      title: "Aliases",
       dataIndex: "alias_count",
       width: "20%",
       key: "alias_count",

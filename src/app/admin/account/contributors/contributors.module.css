@@ -44,6 +44,7 @@
   grid-template-areas:
     "stepsNextAction stepsPrevAction"
     "contributorsSlider contributorsSlider"
+    "userMessage userMessage"
     "contributorsTable contributorsTable";
 }
 
@@ -56,6 +57,12 @@
   align-items: center;
   justify-content: center;
 }
+.userMessage {
+  justify-self: center;
+  grid-area: userMessage;
+  color: grey;
+}
+
 .selectContributorsTableWrapper {
   grid-area: contributorsTable;
   margin-bottom: 20px;
