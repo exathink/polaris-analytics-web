@@ -10,8 +10,9 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
+import {logGraphQlError} from "../../../components/graphql/utils";
 
-const VERTICAL_SCROLL_HEIGHT = 380;
+const VERTICAL_SCROLL_HEIGHT = "50vh";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
@@ -25,7 +26,7 @@ function useTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: "25%",
       sorter: (a, b) => a.name.localeCompare(b.name),
       ...nameSearchState,
     },
@@ -33,23 +34,33 @@ function useTableColumns() {
       title: "Alias",
       dataIndex: "alias",
       key: "alias",
-      width: "30%",
+      width: "25%",
       sorter: (a, b) => a.alias.localeCompare(b.alias),
       ...aliasSearchState,
     },
     {
       title: "Latest Commit",
       dataIndex: "latestCommit",
-      width: "20%",
+      width: "17%",
       key: "latestCommit",
       sorter: (a, b) => diff_in_dates(a.latestCommit, b.latestCommit),
     },
     {
       title: "Total Commits",
       dataIndex: "commitCount",
-      width: "20%",
+      width: "17%",
       key: "commitCount",
+      align: "center",
       sorter: (a, b) => a.commitCount - b.commitCount,
+    },
+    {
+      title: "Alias Count",
+      dataIndex: "alias_count",
+      width: "16%",
+      key: "alias_count",
+      align: "center",
+      sorter: (a, b) => a.alias_count - b.alias_count,
+      defaultSortOrder: "ascend",
     },
   ];
   return columns;
@@ -69,6 +80,8 @@ function getTransformedData(data, intl) {
             ...node,
             key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
+            alias_count: node.contributorAliasesInfo.length - 1,
+            alias: "",
             contributorAliasesInfo: node.contributorAliasesInfo.map((alias) => ({
               ...alias,
               latestCommit: formatDateTime(intl, alias.latestCommit),
@@ -80,7 +93,7 @@ function getTransformedData(data, intl) {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias};
+          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0};
         }
       }
       return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
@@ -104,7 +117,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   const [selectedRecords, setSelectedRecords] = selectedContributorsState;
   const columns = useTableColumns();
 
-  const {loading, error, data} = useQueryContributorAliasesInfo({
+  const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
     commitWithinDays: commitWithinDays,
   });
@@ -115,13 +128,15 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   }, [commitWithinDays]);
 
   if (error) {
+    logGraphQlError("SelectContributorsPage.useQueryContributorAliasesInfo", error);
     return null;
   }
 
   // transform api response to Map of contributors
-  const contributorsData = getTransformedData(data, intl);
+  const contributorsData = getTransformedData(data || previousData, intl);
 
   const rowSelection = (data) => ({
+    hideSelectAll: true,
     selectedRowKeys: selectedRecords.map((s) => s.key),
     onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
@@ -175,22 +190,20 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         </div>
         <div>Days</div>
         <div className={styles.activeContributors}>
-          <Statistic
-            title="Active Contributors"
-            value={contributorsData.size}
-            precision={0}
-          />
+          <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
           loading={loading}
+          size="middle"
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
           rowSelection={{...rowSelection(contributorsData)}}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
+          showSorterTooltip={false}
         />
       </div>
     </div>
