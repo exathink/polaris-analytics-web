@@ -101,9 +101,9 @@
   opacity: 1;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .dashboard-item .ant-tabs-content {
   height: 92%;
