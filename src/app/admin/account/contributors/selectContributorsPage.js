@@ -25,7 +25,7 @@ function useTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: "25%",
       sorter: (a, b) => a.name.localeCompare(b.name),
       ...nameSearchState,
     },
@@ -33,23 +33,31 @@ function useTableColumns() {
       title: "Alias",
       dataIndex: "alias",
       key: "alias",
-      width: "30%",
+      width: "25%",
       sorter: (a, b) => a.alias.localeCompare(b.alias),
       ...aliasSearchState,
     },
     {
       title: "Latest Commit",
       dataIndex: "latestCommit",
-      width: "20%",
+      width: "17%",
       key: "latestCommit",
       sorter: (a, b) => diff_in_dates(a.latestCommit, b.latestCommit),
     },
     {
       title: "Total Commits",
       dataIndex: "commitCount",
-      width: "20%",
+      width: "17%",
       key: "commitCount",
       sorter: (a, b) => a.commitCount - b.commitCount,
+    },
+    {
+      title: "Alias Count",
+      dataIndex: "alias_count",
+      width: "16%",
+      key: "alias_count",
+      sorter: (a, b) => a.alias_count - b.alias_count,
+      defaultSortOrder: "descend"
     },
   ];
   return columns;
@@ -69,6 +77,7 @@ function getTransformedData(data, intl) {
             ...node,
             key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
+            alias_count: node.contributorAliasesInfo.length - 1,
             contributorAliasesInfo: node.contributorAliasesInfo.map((alias) => ({
               ...alias,
               latestCommit: formatDateTime(intl, alias.latestCommit),
@@ -80,7 +89,7 @@ function getTransformedData(data, intl) {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias};
+          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0};
         }
       }
       return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
