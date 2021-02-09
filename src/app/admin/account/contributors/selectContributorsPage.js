@@ -49,6 +49,7 @@ function useTableColumns() {
       dataIndex: "commitCount",
       width: "17%",
       key: "commitCount",
+      align: "center",
       sorter: (a, b) => a.commitCount - b.commitCount,
     },
     {
@@ -56,6 +57,7 @@ function useTableColumns() {
       dataIndex: "alias_count",
       width: "16%",
       key: "alias_count",
+      align: "center",
       sorter: (a, b) => a.alias_count - b.alias_count,
       defaultSortOrder: "descend"
     },
