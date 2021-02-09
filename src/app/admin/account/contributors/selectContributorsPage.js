@@ -12,7 +12,7 @@ import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
 
-const VERTICAL_SCROLL_HEIGHT = 380;
+const VERTICAL_SCROLL_HEIGHT = "50vh";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
@@ -60,7 +60,7 @@ function useTableColumns() {
       key: "alias_count",
       align: "center",
       sorter: (a, b) => a.alias_count - b.alias_count,
-      defaultSortOrder: "descend"
+      defaultSortOrder: "descend",
     },
   ];
   return columns;
@@ -189,16 +189,13 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
         </div>
         <div>Days</div>
         <div className={styles.activeContributors}>
-          <Statistic
-            title="Active Contributors"
-            value={contributorsData.size}
-            precision={0}
-          />
+          <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
       </div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
           loading={loading}
+          size="middle"
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
