@@ -81,6 +81,7 @@ function getTransformedData(data, intl) {
             key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
             alias_count: node.contributorAliasesInfo.length - 1,
+            alias: "",
             contributorAliasesInfo: node.contributorAliasesInfo.map((alias) => ({
               ...alias,
               latestCommit: formatDateTime(intl, alias.latestCommit),
