@@ -116,7 +116,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   const [selectedRecords, setSelectedRecords] = selectedContributorsState;
   const columns = useTableColumns();
 
-  const {loading, error, data} = useQueryContributorAliasesInfo({
+  const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
     commitWithinDays: commitWithinDays,
   });
@@ -132,7 +132,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   }
 
   // transform api response to Map of contributors
-  const contributorsData = getTransformedData(data, intl);
+  const contributorsData = getTransformedData(data || previousData, intl);
 
   const rowSelection = (data) => ({
     hideSelectAll: true,
