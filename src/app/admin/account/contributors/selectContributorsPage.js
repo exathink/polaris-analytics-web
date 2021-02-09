@@ -60,7 +60,7 @@ function useTableColumns() {
       key: "alias_count",
       align: "center",
       sorter: (a, b) => a.alias_count - b.alias_count,
-      defaultSortOrder: "descend",
+      defaultSortOrder: "ascend",
     },
   ];
   return columns;
@@ -203,6 +203,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
           rowSelection={{...rowSelection(contributorsData)}}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
+          showSorterTooltip={false}
         />
       </div>
     </div>

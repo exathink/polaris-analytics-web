@@ -109,6 +109,7 @@ export const MergeContributorsWidget = withNavigationContext(({w, name, context}
         ),
       ]}
       render={() => <MergeContributorsTopLevelTableWidget />}
+      showDetail={true}
     />
   );
 });
