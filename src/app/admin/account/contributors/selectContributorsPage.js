@@ -10,6 +10,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
+import {logGraphQlError} from "../../../components/graphql/utils";
 
 const VERTICAL_SCROLL_HEIGHT = 380;
 
@@ -126,6 +127,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   }, [commitWithinDays]);
 
   if (error) {
+    logGraphQlError("SelectContributorsPage.useQueryContributorAliasesInfo", error);
     return null;
   }
 
