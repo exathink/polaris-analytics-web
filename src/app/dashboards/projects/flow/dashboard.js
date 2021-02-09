@@ -10,7 +10,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
-import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
+import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 
@@ -112,7 +112,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           title={"Team"}
           subtitle={`${flowAnalysisPeriod} Days`}
           render={({view}) => (
-            <ProjectCapacityTrendsWidget
+            <ProjectEffortTrendsWidget
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={7}

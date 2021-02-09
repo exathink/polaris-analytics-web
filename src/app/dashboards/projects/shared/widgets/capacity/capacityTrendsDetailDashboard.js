@@ -5,7 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget";
+import {ProjectEffortTrendsWidget} from "./capacityTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {Checkbox} from "antd";
 
@@ -93,7 +93,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
           name="capacity-trends-detail"
           render={
             ({view}) =>
-              <ProjectCapacityTrendsWidget
+              <ProjectEffortTrendsWidget
                 instanceKey={instanceKey}
                 view={view}
                 showAllTrends={true}

@@ -10,7 +10,7 @@ import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
-import {ProjectCapacityTrendsWidget} from "../shared/widgets/capacity";
+import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 const dashboard = ({viewerContext}) => (
@@ -41,7 +41,7 @@ const dashboard = ({viewerContext}) => (
                   w={1 / 3}
                   name="capacity"
                   render={({view}) => (
-                    <ProjectCapacityTrendsWidget
+                    <ProjectEffortTrendsWidget
                       instanceKey={key}
                       measurementWindow={30}
                       days={trendsAnalysisPeriod}
