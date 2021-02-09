@@ -58,6 +58,7 @@
 }
 .selectContributorsTableWrapper {
   grid-area: contributorsTable;
+  margin-bottom: 20px;
 }
 
 .rangeSliderWrapper {
