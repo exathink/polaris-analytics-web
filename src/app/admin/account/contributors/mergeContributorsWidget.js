@@ -89,6 +89,7 @@ const MergeContributorsTopLevelTableWidget = withViewerContext(
           hideOnSinglePage: true,
         }}
         dataSource={contributorsData}
+        showSorterTooltip={false}
       />
     );
   })
