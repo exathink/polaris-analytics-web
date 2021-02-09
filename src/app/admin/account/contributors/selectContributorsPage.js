@@ -131,6 +131,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
   const contributorsData = getTransformedData(data, intl);
 
   const rowSelection = (data) => ({
+    hideSelectAll: true,
     selectedRowKeys: selectedRecords.map((s) => s.key),
     onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
