@@ -63,7 +63,7 @@ function getTransformedData(data, intl) {
     });
 }
 
-const MergeContributorsTopLevelTableWidget = withViewerContext(
+const AccountContributorsTable = withViewerContext(
   injectIntl(({viewerContext: {accountKey}, intl}) => {
 
     const {loading, error, data} = useQueryContributorAliasesInfo({
@@ -95,7 +95,7 @@ const MergeContributorsTopLevelTableWidget = withViewerContext(
   })
 );
 
-export const MergeContributorsWidget = withNavigationContext(({w, name, context}) => {
+export const AccountContributorsTableWidget = withNavigationContext(({w, name, context}) => {
   return (
     <DashboardWidget
       name={name}
@@ -108,7 +108,7 @@ export const MergeContributorsWidget = withNavigationContext(({w, name, context}
           </Button>
         ),
       ]}
-      render={() => <MergeContributorsTopLevelTableWidget />}
+      render={() => <AccountContributorsTable />}
       showDetail={true}
     />
   );
