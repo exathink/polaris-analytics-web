@@ -195,7 +195,7 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
       <div className={styles.selectContributorsTableWrapper}>
         <Table
           loading={loading}
-          size="middle"
+          size="small"
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}

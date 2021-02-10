@@ -83,10 +83,11 @@ function AccountContributorsTable({accountKey, intl}) {
   return (
     <div className={styles.accountContributorsTableWrapper}>
       <Table
-        size="middle"
+        size="small"
         columns={columns}
         pagination={{
           hideOnSinglePage: true,
+          defaultPageSize: 5
         }}
         dataSource={contributorsData}
         showSorterTooltip={false}
