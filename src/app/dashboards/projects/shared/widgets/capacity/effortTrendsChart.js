@@ -66,8 +66,8 @@ const CapacityTrendsWithContributorDetailChart = Chart({
     }
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
-        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Baseline', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Total Capacity', visible: true, type: 'spline', color: '#0f49b1'}
+        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: false, type: 'spline', color: '#8d9196'},
+        {key: 'totalCommitDays', displayName: '<span>Effort<sub>IN</sub></span>', visible: true, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
@@ -79,7 +79,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
         totalEffortChartType = chartConfig.totalEffortDisplayType;
       }
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
-        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
+        [{key: "totalEffort", displayName: "EffortOUT", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
         cycleMetricsTrends
       );
     }
@@ -93,7 +93,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Capacity Trends ${showContributorDetail ? ' by Contributor ' : ''}`
+        text: `Process Efficiency ${showContributorDetail ? ' by Contributor ' : ''}`
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
