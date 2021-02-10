@@ -64,7 +64,7 @@ function getTransformedData(data, intl) {
     });
 }
 
-function AccountContributorsTable({accountKey, intl}) {
+function AccountContributorsTable({accountKey, intl, view}) {
   const {loading, error, data} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
     commitWithinDays: 60,
@@ -83,11 +83,11 @@ function AccountContributorsTable({accountKey, intl}) {
   return (
     <div className={styles.accountContributorsTableWrapper}>
       <Table
-        size="small"
+        size="middle"
         columns={columns}
         pagination={{
           hideOnSinglePage: true,
-          defaultPageSize: 5
+          defaultPageSize: view === "detail" ? 10 : 5,
         }}
         dataSource={contributorsData}
         showSorterTooltip={false}
@@ -116,7 +116,7 @@ export const AccountContributorsTableWidget = withNavigationContext(
               </Button>
             ),
           ]}
-          render={() => <AccountContributorsTable accountKey={accountKey} intl={intl} />}
+          render={({view}) => <AccountContributorsTable accountKey={accountKey} intl={intl} view={view} />}
           showDetail={true}
           {...rest}
         />
