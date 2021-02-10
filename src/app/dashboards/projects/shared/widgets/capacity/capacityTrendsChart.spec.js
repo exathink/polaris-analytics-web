@@ -2,7 +2,7 @@ import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
 import {Colors} from "../../../../shared/config";
-import {CapacityTrendsChart} from "./capacityTrendsChart";
+import {EffortTrendsChart} from "./effortTrendsChart";
 import {epoch} from "../../../../../helpers/utility";
 
 // clear mocks after each test
@@ -165,7 +165,7 @@ describe("CapacityTrendsChart", () => {
     };
 
     test("it renders an empty chart config", () => {
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
 
     test("when there is no trends data for Total Capacity series but there is data for Total Effort Series", () => {
@@ -195,7 +195,7 @@ describe("CapacityTrendsChart", () => {
         ...fixedChartConfig,
         series: [{}, {}, cycleMetricsTrends], // as it renders three series, baseline, total capacity, total effort
       };
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
 
     test("when there is no trends data for Total Effort Series but there is data for Total Capacity series", () => {
@@ -225,12 +225,12 @@ describe("CapacityTrendsChart", () => {
         ...fixedChartConfig,
         series: [{}, capacityTrends, {}], // as it renders three series, baseline, total capacity, total effort
       };
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
   });
 
   describe("when there is data for all trend series", () => {
-    const {series} = renderedChartConfig(<CapacityTrendsChart {...propsFixture} />);
+    const {series} = renderedChartConfig(<EffortTrendsChart {...propsFixture} />);
 
     const trends = [
       {trend: "capacityTrends", displayName: "Total Capacity", key: "totalCommitDays"},
@@ -264,7 +264,7 @@ describe("CapacityTrendsChart", () => {
 
         test("should render the tooltip for point", async () => {
           const [actual] = await renderedTooltipConfig(
-            <CapacityTrendsChart {...propsFixture} />,
+            <EffortTrendsChart {...propsFixture} />,
             (points) => [points[0]],
             index + 1
           );

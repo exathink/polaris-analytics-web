@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlowStatistic, TotalCommitDays} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {CapacityTrendsChart} from "./capacityTrendsChart";
+import {EffortTrendsChart} from "./effortTrendsChart";
 
 export const ProjectCapacityTrendsStatsView = (
   {
@@ -60,7 +60,7 @@ export const ProjectCapacityTrendsView = (
     :
     <VizRow h={1}>
       <VizItem w={1}>
-        <CapacityTrendsChart
+        <EffortTrendsChart
           {...{
             capacityTrends,
             contributorDetail,

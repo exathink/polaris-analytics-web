@@ -18,7 +18,7 @@ function fteEquivalent(measurementWindow) {
 
 
 
-const CapacityTrendsWithContributorDetailChart = Chart({
+const EffortTrendsWithContributorDetailChart = Chart({
   chartUpdateProps: props => props,
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
@@ -67,7 +67,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
         {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: '<span>Effort<sub>IN</sub></span>', visible: true, type: 'spline', color: '#0f49b1'}
+        {key: 'totalCommitDays', displayName: 'EffortIN', visible: true, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
@@ -93,7 +93,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Process Efficiency ${showContributorDetail ? ' by Contributor ' : ''}`
+        text: `Effort Transfer ${showContributorDetail ? ' by Contributor ' : ''}`
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
@@ -129,22 +129,22 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
 
               ]
-            } : this.point.series.name === 'Total Capacity' ? {
-              header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'effortIN' ? {
+              header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Total Capacity`, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Total EffortIN`, `${intl.formatNumber(this.point.y)} Dev-Days`],
                 [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]
-            } : this.point.series.name === 'Total Effort' ?  {
-              header: `Total Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'effortOUT' ?  {
+              header: `Total EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
-            } : this.point.series.name === 'Avg Capacity' ? {
-              header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.key === 'avgEffort' ? {
+              header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Avg Capacity:`, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Avg EffortIN:`, `${intl.formatNumber(this.point.y)} Dev-Days`],
                 [`Contributors:`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             } : {
@@ -163,7 +163,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 });
 
 
-export const CapacityTrendsChart = (
+export const EffortTrendsChart = (
   {
     capacityTrends,
     contributorDetail,
@@ -177,7 +177,7 @@ export const CapacityTrendsChart = (
   }
 ) => (
 
-  <CapacityTrendsWithContributorDetailChart {...{
+  <EffortTrendsWithContributorDetailChart {...{
     capacityTrends,
     contributorDetail,
     showContributorDetail,
