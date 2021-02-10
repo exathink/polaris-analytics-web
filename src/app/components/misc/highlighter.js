@@ -1,8 +1,12 @@
 import React from 'react';
 
 export const Highlighter = ({highlightStyle, searchWords, textToHighlight}) => {
-    const splitText = textToHighlight.toLowerCase().split(searchWords.toLowerCase())
-    const foundText = textToHighlight.substr(textToHighlight.toLowerCase().indexOf(searchWords.toLowerCase()), searchWords.length)
+    const textToHighlightCopy = [...textToHighlight].join("");
+
+    const regex = new RegExp(searchWords, "i");
+    const splitText = textToHighlightCopy.split(regex);
+    const foundText = textToHighlight.substr(textToHighlightCopy.toLowerCase().indexOf(searchWords.toLowerCase()), searchWords.length);
+
     return (
         searchWords.length && splitText.length > 1
             ?
