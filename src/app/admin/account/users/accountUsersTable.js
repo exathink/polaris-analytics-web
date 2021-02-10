@@ -64,6 +64,7 @@ const AccountUsersPaginatedTable = (
         return (
           <Table
             dataSource={tableData}
+            size="middle"
             loading={loading}
             rowKey={record => record.id}
             pagination={{

@@ -53,7 +53,7 @@ export function useSearch(dataIndex, onSearch=null) {
 
     onFilterDropdownVisibleChange: visible => {
       if (visible) {     
-        setTimeout(() => searchInputElement.current && searchInputElement.current.select());
+        setTimeout(() => searchInputElement.current && searchInputElement.current.select(), 100);
       }
     },
     render: text => (

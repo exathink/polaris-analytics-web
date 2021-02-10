@@ -70,6 +70,7 @@ const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCurso
         return (
           <CompactTable
             dataSource={tableData}
+            size="small"
             loading={loading}
             rowKey={record => record.id}
             pagination={{

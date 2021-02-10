@@ -1,13 +1,12 @@
 import {Steps, Button} from "antd";
 import React from "react";
-import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import styles from "./contributors.module.css";
-import MergeContributorsPage from "./mergeContributorsPage";
-import SelectContributorsPage from "./selectContributorsPage";
+import {MergeContributorsPage} from "./mergeContributorsPage";
+import {SelectContributorsPage} from "./selectContributorsPage";
 
 const {Step} = Steps;
 
-export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
+export function MergeContributorsWorkflow({accountKey, context, intl}) {
   const [current, setCurrent] = React.useState(0);
   const selectedContributorsState = React.useState([]);
 
@@ -15,7 +14,7 @@ export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
     setCurrent(current + 1);
   };
 
-  const handlePrevClick = () => {
+  const handleDoneClick = () => {
     context.go("..");
   };
 
@@ -40,7 +39,7 @@ export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
           <Button
             className={styles.mergeContributorsButton}
             style={!prevButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
-            onClick={handlePrevClick}
+            onClick={handleDoneClick}
             disabled={prevButtonDisabled}
           >
             Done
@@ -50,19 +49,22 @@ export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
     );
   }
 
+  const pageComponentProps = {
+    accountKey,
+    context,
+    intl,
+    renderActionButtons,
+    selectedContributorsState,
+  };
+
   const steps = [
     {
       title: "Select Contributors",
-      content: (
-        <SelectContributorsPage
-          renderActionButtons={renderActionButtons}
-          selectedContributorsState={selectedContributorsState}
-        />
-      ),
+      content: <SelectContributorsPage {...pageComponentProps} />,
     },
     {
       title: "Merge Contributors",
-      content: <MergeContributorsPage renderActionButtons={renderActionButtons} />,
+      content: <MergeContributorsPage {...pageComponentProps} />,
     },
   ];
 
@@ -78,4 +80,4 @@ export const MergeContributorsWorkflow = withNavigationContext(({context}) => {
       <div className={styles.mergeContributorsStepsContent}>{steps[current].content}</div>
     </div>
   );
-});
+}

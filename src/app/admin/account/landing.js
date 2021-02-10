@@ -10,7 +10,7 @@ export default function AccountAdminDashboard() {
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h={"50%"}>
         <ManageUsersDashboardWidget w={1/2} name='users'/>
-        <AccountContributorsTableWidget w={1/2} name="merge-contributors"/>
+        <AccountContributorsTableWidget w={1/2} name="account-contributors"/>
       </DashboardRow>
     </Dashboard>
   )

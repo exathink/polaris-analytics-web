@@ -9,6 +9,7 @@ import {formatDateTime} from "../../../i18n/utils";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
+import styles from "./contributors.module.css";
 
 function getTableColumns() {
   return [
@@ -63,53 +64,63 @@ function getTransformedData(data, intl) {
     });
 }
 
-const AccountContributorsTable = withViewerContext(
-  injectIntl(({viewerContext: {accountKey}, intl}) => {
+function AccountContributorsTable({accountKey, intl, view}) {
+  const {loading, error, data} = useQueryContributorAliasesInfo({
+    accountKey: accountKey,
+    commitWithinDays: 60,
+  });
 
-    const {loading, error, data} = useQueryContributorAliasesInfo({
-      accountKey: accountKey,
-      commitWithinDays: 60,
-    });
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    logGraphQlError("MergeContributorsTopLevelWidget.useQueryContributorAliasesInfo", error);
+    return null;
+  }
 
-    if (loading) {
-      return <Loading />;
-    }
-    if (error) {
-      logGraphQlError("MergeContributorsTopLevelWidget.useQueryContributorAliasesInfo", error);
-      return null;
-    }
-
-    const contributorsData = getTransformedData(data, intl);
-    const columns = getTableColumns();
-    return (
+  const contributorsData = getTransformedData(data, intl);
+  const columns = getTableColumns();
+  return (
+    <div className={styles.accountContributorsTableWrapper}>
       <Table
         size="middle"
         columns={columns}
         pagination={{
           hideOnSinglePage: true,
+          defaultPageSize: view === "detail" ? 10 : 5,
         }}
         dataSource={contributorsData}
         showSorterTooltip={false}
       />
-    );
-  })
-);
-
-export const AccountContributorsTableWidget = withNavigationContext(({w, name, context}) => {
-  return (
-    <DashboardWidget
-      name={name}
-      w={w}
-      title="Contributors"
-      controls={[
-        () => (
-          <Button type="primary" onClick={() => context.go(".", "merge-contributors")}>
-            <PlusOutlined /> {`Merge Contributors`}
-          </Button>
-        ),
-      ]}
-      render={() => <AccountContributorsTable />}
-      showDetail={true}
-    />
+    </div>
   );
-});
+}
+
+export const AccountContributorsTableWidget = withNavigationContext(
+  withViewerContext(
+    injectIntl(({viewerContext: {accountKey}, context, intl, w, name, ...rest}) => {
+      return (
+        <DashboardWidget
+          name={name}
+          w={w}
+          title="Contributors"
+          controls={[
+            () => (
+              <Button
+                type="primary"
+                size="middle"
+                onClick={() => context.go(".", "merge-contributors")}
+                className={styles.mergeContributorAction}
+              >
+                <PlusOutlined /> {`Merge Contributors`}
+              </Button>
+            ),
+          ]}
+          render={({view}) => <AccountContributorsTable accountKey={accountKey} intl={intl} view={view} />}
+          showDetail={true}
+          {...rest}
+        />
+      );
+    })
+  )
+);

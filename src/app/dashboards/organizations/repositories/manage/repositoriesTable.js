@@ -61,6 +61,7 @@ const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, o
         return (
           <CompactTable
             dataSource={tableData}
+            size="small"
             loading={loading}
             rowKey={record => record.id}
             pagination={{
