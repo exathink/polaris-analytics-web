@@ -5,8 +5,6 @@ import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {diff_in_dates} from "../../../helpers/utility";
 import {formatDateTime} from "../../../i18n/utils";
-import {injectIntl} from "react-intl";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
@@ -112,7 +110,7 @@ function getOnlySelectedRecordWithChildren(selectedRecords) {
   return null;
 }
 
-function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedContributorsState, renderActionButtons}) {
+export function SelectContributorsPage({accountKey, intl, selectedContributorsState, renderActionButtons}) {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
   const [selectedRecords, setSelectedRecords] = selectedContributorsState;
   const columns = useTableColumns();
@@ -193,9 +191,7 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
           <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
       </div>
-      <div className={styles.userMessage}>
-        Select one or more contributors to merge into a single contributor
-      </div>
+      <div className={styles.userMessage}>Select one or more contributors to merge into a single contributor</div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
           loading={loading}
@@ -212,5 +208,3 @@ function SelectContributorsPage({viewerContext: {accountKey}, intl, selectedCont
     </div>
   );
 }
-
-export default withViewerContext(injectIntl(SelectContributorsPage));
