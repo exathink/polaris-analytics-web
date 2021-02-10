@@ -9,6 +9,7 @@ import {formatDateTime} from "../../../i18n/utils";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
+import styles from "./contributors.module.css";
 
 function getTableColumns() {
   return [
@@ -80,21 +81,23 @@ function AccountContributorsTable({accountKey, intl}) {
   const contributorsData = getTransformedData(data, intl);
   const columns = getTableColumns();
   return (
-    <Table
-      size="middle"
-      columns={columns}
-      pagination={{
-        hideOnSinglePage: true,
-      }}
-      dataSource={contributorsData}
-      showSorterTooltip={false}
-    />
+    <div className={styles.accountContributorsTableWrapper}>
+      <Table
+        size="middle"
+        columns={columns}
+        pagination={{
+          hideOnSinglePage: true,
+        }}
+        dataSource={contributorsData}
+        showSorterTooltip={false}
+      />
+    </div>
   );
 }
 
 export const AccountContributorsTableWidget = withNavigationContext(
   withViewerContext(
-    injectIntl(({viewerContext: {accountKey}, context, intl, w, name}) => {
+    injectIntl(({viewerContext: {accountKey}, context, intl, w, name, ...rest}) => {
       return (
         <DashboardWidget
           name={name}
@@ -102,13 +105,19 @@ export const AccountContributorsTableWidget = withNavigationContext(
           title="Contributors"
           controls={[
             () => (
-              <Button type="primary" onClick={() => context.go(".", "merge-contributors")}>
+              <Button
+                type="primary"
+                size="middle"
+                onClick={() => context.go(".", "merge-contributors")}
+                className={styles.mergeContributorAction}
+              >
                 <PlusOutlined /> {`Merge Contributors`}
               </Button>
             ),
           ]}
           render={() => <AccountContributorsTable accountKey={accountKey} intl={intl} />}
           showDetail={true}
+          {...rest}
         />
       );
     })

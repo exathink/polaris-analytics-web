@@ -102,3 +102,11 @@
   width: 200px;
   background-color: ghostwhite;
 }
+
+.mergeContributorAction {
+  margin-right: 30px;
+}
+
+.accountContributorsTableWrapper {
+  margin-top: 10px;
+}
