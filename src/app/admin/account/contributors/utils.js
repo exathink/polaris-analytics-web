@@ -64,7 +64,6 @@ export function useSelectContributorsTableColumns() {
       ...baseCols.alias_count,
       width: "16%",
       sorter: (a, b) => a.alias_count - b.alias_count,
-      defaultSortOrder: "ascend",
     },
   ];
   return columns;

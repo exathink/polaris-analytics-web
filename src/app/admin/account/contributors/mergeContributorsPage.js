@@ -4,7 +4,7 @@ import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns} from "./utils";
 
 function getTransformedData(selectedRecords) {
-  const kvArr = selectedRecords.map(x => {
+  const kvArr = selectedRecords.map((x) => {
     const {parent, ...rest} = x;
     return [x.key, rest];
   });
@@ -13,11 +13,16 @@ function getTransformedData(selectedRecords) {
 
 export function MergeContributorsPage({accountKey, intl, renderActionButtons, selectedContributorsState}) {
   const [initSelectedRecords] = selectedContributorsState;
+  const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
   // parent contributor in which to merge other contributors
   const parentContributor = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+  const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
+  function handleParentContributorChange(e) {
+    setParentContributorName(e.target.value);
+  }
 
-  const selectedRecordsWithoutChildren = initSelectedRecords.filter(x => x.contributorAliasesInfo == null);
+  const selectedRecordsWithoutChildren = initSelectedRecords.filter((x) => x.contributorAliasesInfo == null);
 
   // selection state for child contributors
   const contributorsState = React.useState(selectedRecordsWithoutChildren);
@@ -30,13 +35,17 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
       <div className={styles.parentContributor}>
         <div className={styles.contributor}>Contributor</div>
         <div className={styles.inputWrapper}>
-          <Input value={parentContributor.name} />
+          <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>
       </div>
       <div className={styles.excludeFromAnalysisWrapper}>
         <div className={styles.excludeFromAnalysis}>Exclude From Analysis:</div>
         <div className={styles.excludeFromAnalysisCheckbox}>
-          <Checkbox size="large" />
+          <Checkbox
+            size="large"
+            checked={excludeFromAnalysis}
+            onChange={() => setExcludeFromAnalysis(!excludeFromAnalysis)}
+          />
         </div>
         <div className={styles.excludeFromAnalysisSubtitle}>
           After merging, excluded contributors will not appear in Polaris metrics and are not billed
