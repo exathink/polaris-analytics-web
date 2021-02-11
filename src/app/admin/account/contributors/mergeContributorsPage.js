@@ -4,7 +4,7 @@ import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns} from "./utils";
 
 function getTransformedData(selectedRecords) {
-  const kvArr = selectedRecords.filter((x) => x.contributorAliasesInfo == null).map(x => {
+  const kvArr = selectedRecords.map(x => {
     const {parent, ...rest} = x;
     return [x.key, rest];
   });
@@ -13,11 +13,17 @@ function getTransformedData(selectedRecords) {
 
 export function MergeContributorsPage({accountKey, intl, renderActionButtons, selectedContributorsState}) {
   const [initSelectedRecords] = selectedContributorsState;
-  const contributorsState = React.useState(initSelectedRecords.filter(x => x.contributorAliasesInfo == null));
-  const columns = useMergeContributorsTableColumns();
 
+  // parent contributor in which to merge other contributors
   const parentContributor = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
-  const data = getTransformedData(initSelectedRecords);
+
+  const selectedRecordsWithoutChildren = initSelectedRecords.filter(x => x.contributorAliasesInfo == null);
+
+  // selection state for child contributors
+  const contributorsState = React.useState(selectedRecordsWithoutChildren);
+
+  const data = getTransformedData(selectedRecordsWithoutChildren);
+  const columns = useMergeContributorsTableColumns();
 
   return (
     <div className={styles.mergeContributorsLandingPage}>
