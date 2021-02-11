@@ -155,6 +155,8 @@
 }
 
 .mergeContributorTitle {
+  margin-top: 16px;
+  padding: 8px;
   align-self: flex-end;
   grid-area: mergeContributorTitle;
 }
