@@ -9,7 +9,13 @@ function getTransformedData(selectedRecords) {
 }
 
 function getParentContributor(initSelectedRecords) {
-  return initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+   const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+   // TODO update this logic
+   if (recordWithChildren == null) {
+     const placeHolderRecord = {key: "test", name: ""}
+     return placeHolderRecord;
+   }
+   return recordWithChildren
 }
 
 export function MergeContributorsPage({accountKey, intl, renderActionButtons, selectedContributorsState}) {
@@ -61,6 +67,7 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
           dataSource={[...data.values()]}
           columns={columns}
           rowSelection={{...getRowSelection(data, contributorsState)}}
+          showSorterTooltip={false}
         />
       </div>
       {renderActionButtons(false)}
