@@ -2,14 +2,13 @@ import React from "react";
 import {Table} from "antd";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {useSelectContributorsTableColumns, getRowSelection} from "./utils";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
 
-const VERTICAL_SCROLL_HEIGHT = "50vh";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);

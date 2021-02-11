@@ -1,6 +1,8 @@
 import {useSearch} from "../../../components/tables/hooks";
 import {diff_in_dates} from "../../../helpers/utility";
 
+export const VERTICAL_SCROLL_HEIGHT = "50vh";
+
 function getBaseColumns() {
   return {
     name: {

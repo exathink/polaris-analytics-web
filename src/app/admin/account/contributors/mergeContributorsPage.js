@@ -1,7 +1,7 @@
 import {Input, Checkbox, Table} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {getRowSelection, useMergeContributorsTableColumns} from "./utils";
+import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT} from "./utils";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -67,6 +67,8 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
           dataSource={[...data.values()]}
           columns={columns}
           rowSelection={{...getRowSelection(data, contributorsState)}}
+          pagination={false}
+          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
         />
       </div>
