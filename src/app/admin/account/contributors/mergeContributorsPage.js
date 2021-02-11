@@ -54,7 +54,7 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
       </div>
       <div
         className={styles.mergeContributorTitle}
-      >{`Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributor.name}`}</div>
+      >{`Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`}</div>
       <div className={styles.mergeContributorTable}>
         <Table
           size="small"
