@@ -120,43 +120,13 @@ export function getAccountContributorsTableColumns() {
   ];
 }
 
-function hasChildren(recordKey, data) {
-  const record = data.get(recordKey);
-  return record != null ? record.contributorAliasesInfo != null : false;
-}
-
-function getOnlySelectedRecordWithChildren(selectedRecords) {
-  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
-
-  if (recordsWithChildren.length === 1) {
-    return recordsWithChildren[0];
-  }
-
-  return null;
-}
-
-export function getRowSelection(data, [selectedRecords, setSelectedRecords]) {
+export function getRowSelection(data, [selectedRecords, setSelectedRecords], options = {}) {
   return {
     hideSelectAll: true,
     selectedRowKeys: selectedRecords.map((s) => s.key),
     onSelect: (_record, _selected, selectedRows) => {
       setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
     },
-    getCheckboxProps: (record) => {
-      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
-      if (onlySelectedRecordWithChildren != null) {
-        if (hasChildren(record.key, data)) {
-          return {
-            disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
-            name: record.name,
-          };
-        }
-      }
-
-      return {
-        disabled: record.parent != null, // disable all children records
-        name: record.name,
-      };
-    },
+    ...options,
   };
 }

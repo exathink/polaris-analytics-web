@@ -11,6 +11,21 @@ import {logGraphQlError} from "../../../components/graphql/utils";
 
 const VERTICAL_SCROLL_HEIGHT = "50vh";
 
+function hasChildren(recordKey, data) {
+  const record = data.get(recordKey);
+  return record != null ? record.contributorAliasesInfo != null : false;
+}
+
+function getOnlySelectedRecordWithChildren(selectedRecords) {
+  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
+
+  if (recordsWithChildren.length === 1) {
+    return recordsWithChildren[0];
+  }
+
+  return null;
+}
+
 function getTransformedData(data, intl) {
   if (data == null) {
     return new Map([]);
@@ -86,6 +101,23 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
     return true;
   }
 
+  function getCheckboxProps(record) {
+    const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
+    if (onlySelectedRecordWithChildren != null) {
+      if (hasChildren(record.key, contributorsData)) {
+        return {
+          disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
+          name: record.name,
+        };
+      }
+    }
+
+    return {
+      disabled: record.parent != null, // disable all children records
+      name: record.name,
+    };
+  }
+
   return (
     <div className={styles.selectContributorsLandingPage}>
       {renderActionButtons(isNextButtonDisabled())}
@@ -112,7 +144,7 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...getRowSelection(contributorsData, selectedContributorsState)}}
+          rowSelection={{...getRowSelection(contributorsData, selectedContributorsState, {getCheckboxProps})}}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
