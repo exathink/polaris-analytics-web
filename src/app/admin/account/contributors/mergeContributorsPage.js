@@ -4,11 +4,12 @@ import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns} from "./utils";
 
 function getTransformedData(selectedRecords) {
-  const kvArr = selectedRecords.map((x) => {
-    const {parent, ...rest} = x;
-    return [x.key, rest];
-  });
+  const kvArr = selectedRecords.map((x) => [x.key, x]);
   return new Map(kvArr);
+}
+
+function getParentContributor(initSelectedRecords) {
+  return initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
 }
 
 export function MergeContributorsPage({accountKey, intl, renderActionButtons, selectedContributorsState}) {
@@ -16,7 +17,7 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
   const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
   // parent contributor in which to merge other contributors
-  const parentContributor = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+  const parentContributor = getParentContributor(initSelectedRecords);
   const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
   function handleParentContributorChange(e) {
     setParentContributorName(e.target.value);
@@ -53,7 +54,7 @@ export function MergeContributorsPage({accountKey, intl, renderActionButtons, se
       </div>
       <div
         className={styles.mergeContributorTitle}
-      >{`Contributions from the ${data.length} contributors below will be merged into contributions from ${parentContributor.name}`}</div>
+      >{`Contributions from the ${data.size} contributors below will be merged into contributions from ${parentContributor.name}`}</div>
       <div className={styles.mergeContributorTable}>
         <Table
           size="small"
