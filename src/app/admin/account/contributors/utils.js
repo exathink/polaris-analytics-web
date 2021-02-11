@@ -75,24 +75,24 @@ export function useMergeContributorsTableColumns() {
   const columns = [
     {
       ...baseCols.name,
-      width: "25%",
+      width: "30%",
       sorter: (a, b) => a.name.localeCompare(b.name),
       ...nameSearchState,
     },
     {
       ...baseCols.alias,
-      width: "25%",
+      width: "30%",
       sorter: (a, b) => a.alias.localeCompare(b.alias),
       ...aliasSearchState,
     },
     {
       ...baseCols.latestCommit,
-      width: "17%",
+      width: "20%",
       sorter: (a, b) => diff_in_dates(a.latestCommit, b.latestCommit),
     },
     {
       ...baseCols.commitCount,
-      width: "17%",
+      width: "20%",
       sorter: (a, b) => a.commitCount - b.commitCount,
     },
   ];
