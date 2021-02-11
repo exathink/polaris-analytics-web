@@ -90,10 +90,16 @@
 }
 
 .mergeContributorsLandingPage {
+  margin-top: 16px;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "stepsNextAction stepsPrevAction";
+  grid-template-areas:
+    "parentContributor excludeFromAnalysis"
+    "mergeContributorTitle mergeContributorTitle"
+    "mergeContributorTable mergeContributorTable"
+    "actionButtons actionButtons"
+    "stepsNextAction stepsPrevAction";
 }
 
 .activeContributors {
@@ -109,4 +115,54 @@
 
 .accountContributorsTableWrapper {
   margin-top: 10px;
+}
+
+.parentContributor {
+  grid-area: parentContributor;
+  display: flex;
+  padding: 16px;
+}
+.contributor{
+  font-size:large;
+}
+.inputWrapper {
+  margin-left: 20px;
+}
+.excludeFromAnalysisWrapper {
+  padding: 16px;
+  grid-area: excludeFromAnalysis;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas:
+    "analysis checkbox"
+    "subtitle subtitle";
+}
+
+.excludeFromAnalysis {
+  grid-area: analysis;
+  font-size: large;
+}
+
+.excludeFromAnalysisCheckbox {
+  grid-area: checkbox;
+  width: 100px;
+  align-self: center;
+}
+
+.excludeFromAnalysisSubtitle {
+  grid-area: subtitle;
+  font-size: small;
+}
+
+.mergeContributorTitle {
+  align-self: flex-end;
+  grid-area: mergeContributorTitle;
+}
+
+.mergeContributorTable {
+  grid-area: mergeContributorTable;
+}
+
+.actionButtons {
+  grid-area: actionButtons;
 }
