@@ -2,13 +2,15 @@ import {Steps, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {MergeContributorsPage} from "./mergeContributorsPage";
+import {SelectParentContributorsPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
 
 const {Step} = Steps;
 
 export function MergeContributorsWorkflow({accountKey, context, intl}) {
   const [current, setCurrent] = React.useState(0);
-  const selectedContributorsState = React.useState([]);
+  const selectContributorsState = React.useState([]);
+  const selectParentContributorState = React.useState("");
 
   const handleNextClick = () => {
     setCurrent(current + 1);
@@ -54,10 +56,10 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     context,
     intl,
     renderActionButtons,
-    selectedContributorsState,
+    selectContributorsState,
   };
 
-  const steps = [
+  let steps = [
     {
       title: "Select Contributors",
       content: <SelectContributorsPage {...pageComponentProps} />,
@@ -67,6 +69,33 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
       content: <MergeContributorsPage {...pageComponentProps} />,
     },
   ];
+
+  if (selectContributorsState[0].every((x) => x.contributorAliasesInfo == null)) {
+    steps = [
+      {
+        title: "Select Contributors",
+        content: <SelectContributorsPage {...pageComponentProps} />,
+      },
+      {
+        title: "Select Parent Contributor",
+        content: (
+          <SelectParentContributorsPage
+            {...pageComponentProps}
+            selectParentContributorState={selectParentContributorState}
+          />
+        ),
+      },
+      {
+        title: "Merge Contributors",
+        content: (
+          <MergeContributorsPage
+            {...pageComponentProps}
+            selectedParentContributorKey={selectParentContributorState[0]}
+          />
+        ),
+      },
+    ];
+  }
 
   return (
     <div className={styles.mergeContributorsWrapper}>

@@ -3,7 +3,7 @@ import {diff_in_dates} from "../../../helpers/utility";
 
 export const VERTICAL_SCROLL_HEIGHT = "50vh";
 
-function getBaseColumns() {
+export function getBaseColumns() {
   return {
     name: {
       title: "Name",
@@ -33,6 +33,11 @@ function getBaseColumns() {
       align: "center",
       defaultSortOrder: "ascend",
     },
+    select_parent_contributor: {
+      title: "Select Parent Contributor",
+      dataIndex: "select_parent_contributor",
+      key: "select_parent_contributor",
+    }
   };
 }
 

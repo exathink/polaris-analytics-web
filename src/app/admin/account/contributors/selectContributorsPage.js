@@ -61,9 +61,9 @@ function getTransformedData(data, intl) {
   return new Map(kvArr);
 }
 
-export function SelectContributorsPage({accountKey, intl, selectedContributorsState, renderActionButtons}) {
+export function SelectContributorsPage({accountKey, intl, selectContributorsState, renderActionButtons}) {
   const [commitWithinDays, setCommitWithinDays] = React.useState(60);
-  const [selectedRecords, setSelectedRecords] = selectedContributorsState;
+  const [selectedRecords, setSelectedRecords] = selectContributorsState;
   const columns = useSelectContributorsTableColumns();
 
   const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
@@ -143,7 +143,7 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...getRowSelection(contributorsData, selectedContributorsState, {getCheckboxProps})}}
+          rowSelection={{...getRowSelection(contributorsData, selectContributorsState, {getCheckboxProps})}}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}

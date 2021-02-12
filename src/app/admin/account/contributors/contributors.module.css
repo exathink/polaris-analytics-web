@@ -168,3 +168,17 @@
 .actionButtons {
   grid-area: actionButtons;
 }
+
+.selectParentContributorLandingPage{
+  margin-top: 16px;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "selectParentContributorTable selectParentContributorTable"
+    "stepsNextAction stepsPrevAction";
+}
+
+.selectParentContributorTable{
+  grid-area: selectParentContributorTable;
+}

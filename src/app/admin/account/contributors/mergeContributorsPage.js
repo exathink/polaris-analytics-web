@@ -8,28 +8,34 @@ function getTransformedData(selectedRecords) {
   return new Map(kvArr);
 }
 
-function getParentContributor(initSelectedRecords) {
-   const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
-   // TODO update this logic
-   if (recordWithChildren == null) {
-     const placeHolderRecord = {key: "test", name: ""}
-     return placeHolderRecord;
-   }
-   return recordWithChildren
+function getParentContributor(initSelectedRecords, selectedParentContributorKey) {
+  const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+  if (recordWithChildren == null) {
+    return initSelectedRecords.find((x) => x.key === selectedParentContributorKey);
+  }
+  return recordWithChildren;
 }
 
-export function MergeContributorsPage({accountKey, intl, renderActionButtons, selectedContributorsState}) {
-  const [initSelectedRecords] = selectedContributorsState;
+export function MergeContributorsPage({
+  accountKey,
+  intl,
+  renderActionButtons,
+  selectContributorsState,
+  selectedParentContributorKey,
+}) {
+  const [initSelectedRecords] = selectContributorsState;
   const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
   // parent contributor in which to merge other contributors
-  const parentContributor = getParentContributor(initSelectedRecords);
+  const parentContributor = getParentContributor(initSelectedRecords, selectedParentContributorKey);
   const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
   function handleParentContributorChange(e) {
     setParentContributorName(e.target.value);
   }
 
-  const selectedRecordsWithoutChildren = initSelectedRecords.filter((x) => x.contributorAliasesInfo == null);
+  const selectedRecordsWithoutChildren = initSelectedRecords
+    .filter((x) => x.contributorAliasesInfo == null)
+    .filter((x) => x.key !== selectedParentContributorKey);
 
   // selection state for child contributors
   const contributorsState = React.useState(selectedRecordsWithoutChildren);
