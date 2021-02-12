@@ -42,10 +42,10 @@
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "selectContributorsNextAction selectContributorsDoneAction"
-    "contributorsSlider contributorsSlider"
-    "userMessage userMessage"
-    "contributorsTable contributorsTable";
+  "contributorsSlider contributorsSlider"
+  "userMessage userMessage"
+  "contributorsTable contributorsTable"
+  "selectContributorsNextAction selectContributorsDoneAction";
 }
 
 .selectContributorsSlider {
@@ -106,6 +106,7 @@
 .messageNotification{
   justify-self: flex-end;
   grid-area: message;
+  height: 3rem;
 }
 .mergeContributorsMergeAction {
   padding-bottom: 16px;

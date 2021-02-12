@@ -34,6 +34,9 @@ export function MergeContributorsPage({
     React.useState(""),
   ];
 
+  // This will remain true till the time timeout is executing.
+  const [timeOutExecuting, setTimeOutExecuting] = React.useState();
+
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributorForContributorAliases({
     onCompleted: ({updateContributorForContributorAliases: {updateStatus}}) => {
@@ -42,7 +45,9 @@ export function MergeContributorsPage({
         setSuccessMessage("Updated Successfully.");
         client.resetStore();
 
+        setTimeOutExecuting(true);
         setTimeout(() => {
+          setTimeOutExecuting(false);
           // if successful navigate to select contributors page after 1 sec
           moveToFirstStep();
         }, 500);
@@ -125,7 +130,7 @@ export function MergeContributorsPage({
         />
       </div>
       {renderActionButtons({
-        isNextButtonDisabled: contributorsState[0].length === 0 || loading,
+        isNextButtonDisabled: contributorsState[0].length === 0 || loading || timeOutExecuting === true,
         actionButtonHandler: handleMergeContributorClick,
       })}
     </div>
