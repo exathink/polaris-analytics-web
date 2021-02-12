@@ -37,6 +37,7 @@ function getTransformedData(data, intl) {
         if (node.contributorAliasesInfo.length > 1) {
           return {
             ...node,
+            keyBackup: node.key, // keeping key for backup for later use
             key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
             alias_count: node.contributorAliasesInfo.length - 1,
@@ -52,10 +53,10 @@ function getTransformedData(data, intl) {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0};
+          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0, keyBackup: node.key};
         }
       }
-      return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
+      return {...node, latestCommit: formatDateTime(intl, node.latestCommit), keyBackup: node.key};
     })
     .map((node) => [node.key, node]);
   return new Map(kvArr);

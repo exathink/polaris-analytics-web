@@ -26,7 +26,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
 
   const handleBackClick = () => {
     setCurrent(current - 1);
-  }
+  };
 
   const handleDoneClick = () => {
     context.go("..");
@@ -61,8 +61,8 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     );
   }
 
-  function actionButtonsForMergeContributors({isNextButtonDisabled}) {
-    const mergeButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
+  function actionButtonsForMergeContributors({isNextButtonDisabled, actionButtonHandler}) {
+    const mergeButtonDisabled = isNextButtonDisabled;
 
     return (
       <>
@@ -71,7 +71,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
             type="primary"
             className={styles.contributorsButton}
             style={!mergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
-            onClick={handleNextClick}
+            onClick={actionButtonHandler}
             disabled={mergeButtonDisabled}
           >
             Merge Contributors

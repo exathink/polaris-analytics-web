@@ -1,7 +1,9 @@
-import {Input, Checkbox, Table} from "antd";
+import {Input, Checkbox, Table, Alert} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT} from "./utils";
+import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
+import {logGraphQlError} from "../../../components/graphql/utils";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -10,6 +12,7 @@ function getTransformedData(selectedRecords) {
 
 export function MergeContributorsPage({
   accountKey,
+  context,
   intl,
   renderActionButtons,
   selectedRecordsWithoutChildren,
@@ -25,11 +28,57 @@ export function MergeContributorsPage({
   // selection state for records without children
   const contributorsState = React.useState(selectedRecordsWithoutChildren);
 
+  const [[errorMessage, setErrorMessage], [successMessage, setSuccessMessage]] = [
+    React.useState(""),
+    React.useState(""),
+  ];
+  
+  // mutation to update contributor
+  const [mutate, {loading, client}] = useUpdateContributorForContributorAliases({
+    onCompleted: ({updateContributorForContributorAliases: {updateStatus}}) => {
+      //  {success, contributorKey, message, exception}
+      if (updateStatus.success) {
+        setSuccessMessage("Updated Successfully.");
+        client.resetStore();
+
+        // if successful navigate to select contributors page
+        context.go(".", "merge-contributors");
+      } else {
+        logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", updateStatus.message);
+        setErrorMessage(updateStatus.message);
+      }
+    },
+    onError: (error) => {
+      logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", error);
+      setErrorMessage(error.message);
+    },
+  });
+
+  const handleMergeContributorClick = () => {
+    const updatedInfo = {
+      contributorName: parentContributorName,
+      excludedFromAnalysis: excludeFromAnalysis,
+      contributorAliasKeys: selectedRecordsWithoutChildren.map((x) => x.key),
+    };
+
+    // call mutation on save button click
+    mutate({
+      variables: {
+        contributorKey: parentContributor.keyBackup,
+        updatedInfo: updatedInfo,
+      },
+    });
+  };
+
   const data = getTransformedData(selectedRecordsWithoutChildren);
   const columns = useMergeContributorsTableColumns();
 
   return (
     <div className={styles.mergeContributorsLandingPage}>
+      <div className={styles.messageNotification}>
+        {errorMessage && <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")}/>}
+        {successMessage && <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage("")}/>}
+      </div>
       <div className={styles.parentContributor}>
         <div className={styles.contributor}>Contributor</div>
         <div className={styles.inputWrapper}>
@@ -63,7 +112,10 @@ export function MergeContributorsPage({
           showSorterTooltip={false}
         />
       </div>
-      {renderActionButtons({isNextButtonDisabled: false})}
+      {renderActionButtons({
+        isNextButtonDisabled: contributorsState[0].length === 0,
+        actionButtonHandler: handleMergeContributorClick,
+      })}
     </div>
   );
 }
