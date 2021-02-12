@@ -49,6 +49,10 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
   };
 
+  const moveToFirstStep = () => {
+    dispatch({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
+  }
+
   const handleDoneClick = () => {
     context.go("..");
   };
@@ -190,6 +194,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
           parentContributor={getParentContributor(selectedRecords, parentContributorKey)}
           selectedRecordsWithoutChildren={selectedRecordsWithoutChildren}
           renderActionButtons={actionButtonsForMergeContributors}
+          moveToFirstStep={moveToFirstStep}
         />
       ),
     },

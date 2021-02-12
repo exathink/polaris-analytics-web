@@ -15,6 +15,7 @@ export function MergeContributorsPage({
   context,
   intl,
   renderActionButtons,
+  moveToFirstStep,
   selectedRecordsWithoutChildren,
   parentContributor, // parent contributor in which to merge other contributors
 }) {
@@ -43,8 +44,8 @@ export function MergeContributorsPage({
 
         setTimeout(() => {
           // if successful navigate to select contributors page after 1 sec
-          context.go(".", "merge-contributors");
-        }, 1000);
+          moveToFirstStep();
+        }, 500);
       } else {
         logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", updateStatus.message);
         setErrorMessage(updateStatus.message);
