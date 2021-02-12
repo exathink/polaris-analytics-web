@@ -2,7 +2,7 @@ import {Steps, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {MergeContributorsPage} from "./mergeContributorsPage";
-import {SelectParentContributorsPage} from "./selectParentContributorPage";
+import {SelectParentContributorPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
 
 const {Step} = Steps;
@@ -59,16 +59,16 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     );
   }
 
+  const selectedRecordsWithoutChildren = selectedRecords
+    .filter((x) => x.contributorAliasesInfo == null)
+    .filter((x) => x.key !== parentContributorKey);
+
   const pageComponentProps = {
     accountKey,
     context,
     intl,
     renderActionButtons,
   };
-
-  const selectedRecordsWithoutChildren = selectedRecords
-    .filter((x) => x.contributorAliasesInfo == null)
-    .filter((x) => x.key !== parentContributorKey);
 
   let steps = [
     {
@@ -97,9 +97,10 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     const selectParentContributorStep = {
       title: "Select Parent Contributor",
       content: (
-        <SelectParentContributorsPage
+        <SelectParentContributorPage
           {...pageComponentProps}
           selectParentContributorState={[parentContributorKey, setParentContributorKey]}
+          selectedRecords={selectedRecords}
         />
       ),
     };

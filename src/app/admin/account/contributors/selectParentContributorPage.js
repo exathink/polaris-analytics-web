@@ -29,15 +29,15 @@ function getParentContributorRadioCol(selectParentContributorState) {
   };
 }
 
-export function SelectParentContributorsPage({
+export function SelectParentContributorPage({
   accountKey,
   intl,
   renderActionButtons,
-  selectContributorsState,
+  selectedRecords,
   selectParentContributorState,
 }) {
-  const [initSelectedRecords] = selectContributorsState;
-  const selectedRecordsWithoutChildren = initSelectedRecords;
+
+  const selectedRecordsWithoutChildren = selectedRecords;
   const data = getTransformedData(selectedRecordsWithoutChildren);
 
   const parentContributorRadioCol = getParentContributorRadioCol(selectParentContributorState);
