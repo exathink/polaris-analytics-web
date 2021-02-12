@@ -1,4 +1,4 @@
-import {Input, Checkbox, Table, Alert} from "antd";
+import {Input, Checkbox, Table, Alert, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT} from "./utils";
@@ -32,7 +32,7 @@ export function MergeContributorsPage({
     React.useState(""),
     React.useState(""),
   ];
-  
+
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributorForContributorAliases({
     onCompleted: ({updateContributorForContributorAliases: {updateStatus}}) => {
@@ -41,8 +41,10 @@ export function MergeContributorsPage({
         setSuccessMessage("Updated Successfully.");
         client.resetStore();
 
-        // if successful navigate to select contributors page
-        context.go(".", "merge-contributors");
+        setTimeout(() => {
+          // if successful navigate to select contributors page after 1 sec
+          context.go(".", "merge-contributors");
+        }, 1000);
       } else {
         logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", updateStatus.message);
         setErrorMessage(updateStatus.message);
@@ -76,8 +78,17 @@ export function MergeContributorsPage({
   return (
     <div className={styles.mergeContributorsLandingPage}>
       <div className={styles.messageNotification}>
-        {errorMessage && <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")}/>}
-        {successMessage && <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage("")}/>}
+        {errorMessage && (
+          <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")} />
+        )}
+        {successMessage && (
+          <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage("")} />
+        )}
+        {loading && (
+          <Button className={"shiftRight"} type="primary" loading>
+            Processing...
+          </Button>
+        )}
       </div>
       <div className={styles.parentContributor}>
         <div className={styles.contributor}>Contributor</div>
