@@ -4,6 +4,8 @@ import styles from "./contributors.module.css";
 import {MergeContributorsPage} from "./mergeContributorsPage";
 import {SelectParentContributorPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
+import {actionTypes} from "./constants";
+import {contributorsReducer} from "./contributorsReducer"
 
 const {Step} = Steps;
 
@@ -15,23 +17,43 @@ function getParentContributor(initSelectedRecords, parentContributorKey) {
   return recordWithChildren;
 }
 
+const initialState = {
+  commitWithinDays: 60,
+  current: 0,
+  selectedRecords: [],
+  parentContributorKey: "",
+};
+
 export function MergeContributorsWorkflow({accountKey, context, intl}) {
-  const sliderState = React.useState(60);
-  const [current, setCurrent] = React.useState(0);
-  const [selectedRecords, setSelectedRecords] = React.useState([]);
-  const [parentContributorKey, setParentContributorKey] = React.useState("");
+  const [state, dispatch] = React.useReducer(contributorsReducer, initialState);
+
+  const {commitWithinDays, current, selectedRecords, parentContributorKey} = state;
+
+  const setSelectedRecords = (records) => {
+    dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: records});
+  };
+
+  const setParentContributorKey = (parentKey) => {
+    dispatch({type: actionTypes.UPDATE_PARENT_CONTRIBUTOR_KEY, payload: parentKey});
+  };
+
+  const setCommitWithinDays = (days) => {
+    dispatch({type: actionTypes.UPDATE_DAYS, payload: days});
+  };
 
   const handleNextClick = () => {
-    setCurrent(current + 1);
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
   };
 
   const handleBackClick = () => {
-    setCurrent(current - 1);
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
   };
 
   const handleDoneClick = () => {
     context.go("..");
   };
+
+  const sliderState = [commitWithinDays, setCommitWithinDays];
 
   function actionButtonsForSelectContributorsPage({isNextButtonDisabled}) {
     const nextButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
