@@ -62,8 +62,8 @@ function getTransformedData(data, intl) {
   return new Map(kvArr);
 }
 
-export function SelectContributorsPage({accountKey, intl, selectContributorsState, renderActionButtons}) {
-  const [commitWithinDays, setCommitWithinDays] = React.useState(60);
+export function SelectContributorsPage({accountKey, intl, sliderState, selectContributorsState, renderActionButtons}) {
+  const [commitWithinDays, setCommitWithinDays] = sliderState;
   const [selectedRecords, setSelectedRecords] = selectContributorsState;
   const columns = useSelectContributorsTableColumns();
 

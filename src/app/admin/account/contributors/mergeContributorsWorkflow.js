@@ -16,6 +16,7 @@ function getParentContributor(initSelectedRecords, parentContributorKey) {
 }
 
 export function MergeContributorsWorkflow({accountKey, context, intl}) {
+  const sliderState = React.useState(60);
   const [current, setCurrent] = React.useState(0);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const [parentContributorKey, setParentContributorKey] = React.useState("");
@@ -153,6 +154,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
       content: (
         <SelectContributorsPage
           {...pageComponentProps}
+          sliderState={sliderState}
           selectContributorsState={[selectedRecords, setSelectedRecords]}
           renderActionButtons={actionButtonsForSelectContributorsPage}
         />

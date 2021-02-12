@@ -60,7 +60,7 @@ export function MergeContributorsPage({
     const updatedInfo = {
       contributorName: parentContributorName,
       excludedFromAnalysis: excludeFromAnalysis,
-      contributorAliasKeys: selectedRecordsWithoutChildren.map((x) => x.key),
+      contributorAliasKeys: contributorsState[0].map((x) => x.key),
     };
 
     // call mutation on save button click
@@ -124,7 +124,7 @@ export function MergeContributorsPage({
         />
       </div>
       {renderActionButtons({
-        isNextButtonDisabled: contributorsState[0].length === 0,
+        isNextButtonDisabled: contributorsState[0].length === 0 || loading,
         actionButtonHandler: handleMergeContributorClick,
       })}
     </div>
