@@ -99,8 +99,8 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     );
   }
 
-  function actionButtonsForSelectParentContributor({isNextButtonDisabled}) {
-    const nextButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
+  function actionButtonsForSelectParentContributor() {
+    const nextButtonDisabled = parentContributorKey.trim() === "";
 
     return (
       <>

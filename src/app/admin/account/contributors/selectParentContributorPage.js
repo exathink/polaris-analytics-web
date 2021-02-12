@@ -56,7 +56,7 @@ export function SelectParentContributorPage({
           showSorterTooltip={false}
         />
       </div>
-      {renderActionButtons({isNextButtonDisabled: false})}
+      {renderActionButtons()}
     </div>
   );
 }
