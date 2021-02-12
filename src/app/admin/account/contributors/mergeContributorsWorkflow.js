@@ -24,20 +24,23 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     setCurrent(current + 1);
   };
 
+  const handleBackClick = () => {
+    setCurrent(current - 1);
+  }
+
   const handleDoneClick = () => {
     context.go("..");
   };
 
-  function renderActionButtons(isNextButtonDisabled) {
+  function actionButtonsForSelectContributorsPage({isNextButtonDisabled}) {
     const nextButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
-    const prevButtonDisabled = current === 0;
 
     return (
       <>
-        <div className={styles.mergeContributorsNextAction}>
+        <div className={styles.selectContributorsNextAction}>
           <Button
             type="primary"
-            className={styles.mergeContributorsButton}
+            className={styles.contributorsButton}
             style={!nextButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
@@ -45,12 +48,87 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
             Next
           </Button>
         </div>
-        <div className={styles.mergeContributorsPrevAction}>
+        <div className={styles.selectContributorsDoneAction}>
           <Button
-            className={styles.mergeContributorsButton}
-            style={!prevButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
-            disabled={prevButtonDisabled}
+          >
+            Done
+          </Button>
+        </div>
+      </>
+    );
+  }
+
+  function actionButtonsForMergeContributors({isNextButtonDisabled}) {
+    const mergeButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
+
+    return (
+      <>
+        <div className={styles.mergeContributorsMergeAction}>
+          <Button
+            type="primary"
+            className={styles.contributorsButton}
+            style={!mergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={handleNextClick}
+            disabled={mergeButtonDisabled}
+          >
+            Merge Contributors
+          </Button>
+        </div>
+        <div className={styles.mergeContributorsBackAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleBackClick}
+          >
+            Back
+          </Button>
+        </div>
+        <div className={styles.mergeContributorsDoneAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleDoneClick}
+          >
+            Done
+          </Button>
+        </div>
+      </>
+    );
+  }
+
+  function actionButtonsForSelectParentContributor({isNextButtonDisabled}) {
+    const nextButtonDisabled = isNextButtonDisabled || current === steps.length - 1;
+
+    return (
+      <>
+        <div className={styles.parentContributorNextAction}>
+          <Button
+            type="primary"
+            className={styles.contributorsButton}
+            style={!nextButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={handleNextClick}
+            disabled={nextButtonDisabled}
+          >
+            Next
+          </Button>
+        </div>
+        <div className={styles.parentContributorBackAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleBackClick}
+          >
+            Back
+          </Button>
+        </div>
+        <div className={styles.parentContributorDoneAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleDoneClick}
           >
             Done
           </Button>
@@ -67,7 +145,6 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     accountKey,
     context,
     intl,
-    renderActionButtons,
   };
 
   let steps = [
@@ -77,6 +154,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
         <SelectContributorsPage
           {...pageComponentProps}
           selectContributorsState={[selectedRecords, setSelectedRecords]}
+          renderActionButtons={actionButtonsForSelectContributorsPage}
         />
       ),
     },
@@ -87,6 +165,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
           {...pageComponentProps}
           parentContributor={getParentContributor(selectedRecords, parentContributorKey)}
           selectedRecordsWithoutChildren={selectedRecordsWithoutChildren}
+          renderActionButtons={actionButtonsForMergeContributors}
         />
       ),
     },
@@ -101,6 +180,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
           {...pageComponentProps}
           selectParentContributorState={[parentContributorKey, setParentContributorKey]}
           selectedRecords={selectedRecords}
+          renderActionButtons={actionButtonsForSelectParentContributor}
         />
       ),
     };

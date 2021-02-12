@@ -63,7 +63,7 @@ export function MergeContributorsPage({
           showSorterTooltip={false}
         />
       </div>
-      {renderActionButtons(false)}
+      {renderActionButtons({isNextButtonDisabled: false})}
     </div>
   );
 }

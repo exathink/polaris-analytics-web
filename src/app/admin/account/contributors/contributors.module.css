@@ -17,18 +17,18 @@
   min-height: 50vh;
   grid-area: stepContent;
 }
-.mergeContributorsNextAction {
+.selectContributorsNextAction {
   padding-bottom: 16px;
-  grid-area: stepsNextAction;
+  grid-area: selectContributorsNextAction;
   justify-self: flex-end;
 }
 
-.mergeContributorsPrevAction {
-  grid-area: stepsPrevAction;
+.selectContributorsDoneAction {
+  grid-area: selectContributorsDoneAction;
   justify-self: flex-start;
 }
 
-.mergeContributorsButton {
+.contributorsButton {
   background-color: rgb(120, 36, 181);
   border-color: rgb(120, 36, 181);
   color: white;
@@ -42,7 +42,7 @@
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "stepsNextAction stepsPrevAction"
+    "selectContributorsNextAction selectContributorsDoneAction"
     "contributorsSlider contributorsSlider"
     "userMessage userMessage"
     "contributorsTable contributorsTable";
@@ -99,7 +99,19 @@
     "mergeContributorTitle mergeContributorTitle"
     "mergeContributorTable mergeContributorTable"
     "actionButtons actionButtons"
-    "stepsNextAction stepsPrevAction";
+    "mergeContributorsMergeAction mergeContributorsDoneAction";
+}
+
+.mergeContributorsMergeAction {
+  padding-bottom: 16px;
+  grid-area: mergeContributorsMergeAction;
+  justify-self: flex-end;
+}
+.mergeContributorsBackAction {
+}
+.mergeContributorsDoneAction {
+  grid-area: mergeContributorsDoneAction;
+  justify-self: flex-start;
 }
 
 .activeContributors {
@@ -177,9 +189,20 @@
   grid-template-areas:
     "selectParentContributorTitle selectParentContributorTitle"
     "selectParentContributorTable selectParentContributorTable"
-    "stepsNextAction stepsPrevAction";
+    "parentContributorNextAction parentContributorDoneAction";
 }
 
+.parentContributorNextAction {
+  padding-bottom: 16px;
+  grid-area: parentContributorNextAction;
+  justify-self: flex-end;
+}
+.parentContributorBackAction {
+}
+.parentContributorDoneAction {
+  grid-area: parentContributorDoneAction;
+  justify-self: flex-start;
+}
 .selectParentContributorTitle {
   grid-area: selectParentContributorTitle;
   margin-top: 3rem;

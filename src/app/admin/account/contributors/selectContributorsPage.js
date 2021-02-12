@@ -119,7 +119,7 @@ export function SelectContributorsPage({accountKey, intl, selectContributorsStat
 
   return (
     <div className={styles.selectContributorsLandingPage}>
-      {renderActionButtons(isNextButtonDisabled())}
+      {renderActionButtons({isNextButtonDisabled: isNextButtonDisabled()})}
       <div className={styles.selectContributorsSlider}>
         <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
