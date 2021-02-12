@@ -122,8 +122,8 @@
   display: flex;
   padding: 16px;
 }
-.contributor{
-  font-size:large;
+.contributor {
+  font-size: large;
 }
 .inputWrapper {
   margin-left: 20px;
@@ -169,16 +169,23 @@
   grid-area: actionButtons;
 }
 
-.selectParentContributorLandingPage{
+.selectParentContributorLandingPage {
   margin-top: 16px;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
+    "selectParentContributorTitle selectParentContributorTitle"
     "selectParentContributorTable selectParentContributorTable"
     "stepsNextAction stepsPrevAction";
 }
 
-.selectParentContributorTable{
+.selectParentContributorTitle {
+  grid-area: selectParentContributorTitle;
+  margin-top: 3rem;
+  font-size: large;
+}
+
+.selectParentContributorTable {
   grid-area: selectParentContributorTable;
 }

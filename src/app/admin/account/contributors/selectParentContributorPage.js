@@ -16,7 +16,7 @@ function getParentContributorRadioCol(selectParentContributorState) {
   }
   return {
     ...getBaseColumns().select_parent_contributor,
-    width: "17%",
+    width: "10%",
     align: "center",
     render: (text, record) => (
       <Radio
@@ -45,6 +45,7 @@ export function SelectParentContributorsPage({
 
   return (
     <div className={styles.selectParentContributorLandingPage}>
+      <div className={styles.selectParentContributorTitle}><h1>Select Parent Contributor</h1></div>
       <div className={styles.selectParentContributorTable}>
         <Table
           size="small"

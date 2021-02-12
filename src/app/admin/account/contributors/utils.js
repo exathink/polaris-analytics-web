@@ -34,7 +34,7 @@ export function getBaseColumns() {
       defaultSortOrder: "ascend",
     },
     select_parent_contributor: {
-      title: "Select Parent Contributor",
+      title: " ",
       dataIndex: "select_parent_contributor",
       key: "select_parent_contributor",
     }
