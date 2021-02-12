@@ -7,10 +7,18 @@ import {SelectContributorsPage} from "./selectContributorsPage";
 
 const {Step} = Steps;
 
+function getParentContributor(initSelectedRecords, parentContributorKey) {
+  const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+  if (recordWithChildren == null) {
+    return initSelectedRecords.find((x) => x.key === parentContributorKey);
+  }
+  return recordWithChildren;
+}
+
 export function MergeContributorsWorkflow({accountKey, context, intl}) {
   const [current, setCurrent] = React.useState(0);
-  const selectContributorsState = React.useState([]);
-  const selectParentContributorState = React.useState("");
+  const [selectedRecords, setSelectedRecords] = React.useState([]);
+  const [parentContributorKey, setParentContributorKey] = React.useState("");
 
   const handleNextClick = () => {
     setCurrent(current + 1);
@@ -56,45 +64,47 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     context,
     intl,
     renderActionButtons,
-    selectContributorsState,
   };
+
+  const selectedRecordsWithoutChildren = selectedRecords
+    .filter((x) => x.contributorAliasesInfo == null)
+    .filter((x) => x.key !== parentContributorKey);
 
   let steps = [
     {
       title: "Select Contributors",
-      content: <SelectContributorsPage {...pageComponentProps} />,
+      content: (
+        <SelectContributorsPage
+          {...pageComponentProps}
+          selectContributorsState={[selectedRecords, setSelectedRecords]}
+        />
+      ),
     },
     {
       title: "Merge Contributors",
-      content: <MergeContributorsPage {...pageComponentProps} />,
+      content: (
+        <MergeContributorsPage
+          {...pageComponentProps}
+          parentContributor={getParentContributor(selectedRecords, parentContributorKey)}
+          selectedRecordsWithoutChildren={selectedRecordsWithoutChildren}
+        />
+      ),
     },
   ];
 
-  if (selectContributorsState[0].every((x) => x.contributorAliasesInfo == null)) {
-    steps = [
-      {
-        title: "Select Contributors",
-        content: <SelectContributorsPage {...pageComponentProps} />,
-      },
-      {
-        title: "Select Parent Contributor",
-        content: (
-          <SelectParentContributorsPage
-            {...pageComponentProps}
-            selectParentContributorState={selectParentContributorState}
-          />
-        ),
-      },
-      {
-        title: "Merge Contributors",
-        content: (
-          <MergeContributorsPage
-            {...pageComponentProps}
-            selectedParentContributorKey={selectParentContributorState[0]}
-          />
-        ),
-      },
-    ];
+  if (selectedRecords.every((x) => x.contributorAliasesInfo == null)) {
+    const [selectContributorsStep, mergeContributorsStep] = steps;
+    const selectParentContributorStep = {
+      title: "Select Parent Contributor",
+      content: (
+        <SelectParentContributorsPage
+          {...pageComponentProps}
+          selectParentContributorState={[parentContributorKey, setParentContributorKey]}
+        />
+      ),
+    };
+
+    steps = [selectContributorsStep, selectParentContributorStep, mergeContributorsStep];
   }
 
   return (

@@ -8,36 +8,21 @@ function getTransformedData(selectedRecords) {
   return new Map(kvArr);
 }
 
-function getParentContributor(initSelectedRecords, selectedParentContributorKey) {
-  const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
-  if (recordWithChildren == null) {
-    return initSelectedRecords.find((x) => x.key === selectedParentContributorKey);
-  }
-  return recordWithChildren;
-}
-
 export function MergeContributorsPage({
   accountKey,
   intl,
   renderActionButtons,
-  selectContributorsState,
-  selectedParentContributorKey,
+  selectedRecordsWithoutChildren,
+  parentContributor, // parent contributor in which to merge other contributors
 }) {
-  const [initSelectedRecords] = selectContributorsState;
   const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
-  // parent contributor in which to merge other contributors
-  const parentContributor = getParentContributor(initSelectedRecords, selectedParentContributorKey);
   const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
   function handleParentContributorChange(e) {
     setParentContributorName(e.target.value);
   }
 
-  const selectedRecordsWithoutChildren = initSelectedRecords
-    .filter((x) => x.contributorAliasesInfo == null)
-    .filter((x) => x.key !== selectedParentContributorKey);
-
-  // selection state for child contributors
+  // selection state for records without children
   const contributorsState = React.useState(selectedRecordsWithoutChildren);
 
   const data = getTransformedData(selectedRecordsWithoutChildren);
