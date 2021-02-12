@@ -108,6 +108,7 @@
   justify-self: flex-end;
 }
 .mergeContributorsBackAction {
+  grid-area: mergeContributorsMergeAction;
 }
 .mergeContributorsDoneAction {
   grid-area: mergeContributorsDoneAction;
@@ -198,6 +199,7 @@
   justify-self: flex-end;
 }
 .parentContributorBackAction {
+  grid-area: parentContributorNextAction
 }
 .parentContributorDoneAction {
   grid-area: parentContributorDoneAction;
