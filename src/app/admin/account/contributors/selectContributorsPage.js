@@ -86,19 +86,7 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
   const contributorsData = getTransformedData(data || previousData, intl);
 
   function isNextButtonDisabled() {
-    if (selectedRecords.length === 1) {
-      const [{key}] = selectedRecords;
-      const selectedRecord = contributorsData.get(key);
-      // if only selected record has children
-      if (selectedRecord && selectedRecord.contributorAliasesInfo != null) {
-        return false;
-      }
-    }
-    if (selectedRecords.length > 1) {
-      return false;
-    }
-
-    return true;
+    return selectedRecords.length === 0;
   }
 
   function getCheckboxProps(record) {
