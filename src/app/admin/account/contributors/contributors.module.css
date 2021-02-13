@@ -17,18 +17,18 @@
   min-height: 50vh;
   grid-area: stepContent;
 }
-.mergeContributorsNextAction {
+.selectContributorsNextAction {
   padding-bottom: 16px;
-  grid-area: stepsNextAction;
+  grid-area: selectContributorsNextAction;
   justify-self: flex-end;
 }
 
-.mergeContributorsPrevAction {
-  grid-area: stepsPrevAction;
+.selectContributorsDoneAction {
+  grid-area: selectContributorsDoneAction;
   justify-self: flex-start;
 }
 
-.mergeContributorsButton {
+.contributorsButton {
   background-color: rgb(120, 36, 181);
   border-color: rgb(120, 36, 181);
   color: white;
@@ -42,10 +42,10 @@
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "stepsNextAction stepsPrevAction"
-    "contributorsSlider contributorsSlider"
-    "userMessage userMessage"
-    "contributorsTable contributorsTable";
+  "contributorsSlider contributorsSlider"
+  "userMessage userMessage"
+  "contributorsTable contributorsTable"
+  "selectContributorsNextAction selectContributorsDoneAction";
 }
 
 .selectContributorsSlider {
@@ -90,10 +90,35 @@
 }
 
 .mergeContributorsLandingPage {
+  margin-top: 16px;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "stepsNextAction stepsPrevAction";
+  grid-template-areas:
+    ". message"
+    "parentContributor excludeFromAnalysis"
+    "mergeContributorTitle mergeContributorTitle"
+    "mergeContributorTable mergeContributorTable"
+    "actionButtons actionButtons"
+    "mergeContributorsMergeAction mergeContributorsDoneAction";
+}
+
+.messageNotification{
+  justify-self: flex-end;
+  grid-area: message;
+  height: 3rem;
+}
+.mergeContributorsMergeAction {
+  padding-bottom: 16px;
+  grid-area: mergeContributorsMergeAction;
+  justify-self: flex-end;
+}
+.mergeContributorsBackAction {
+  grid-area: mergeContributorsMergeAction;
+}
+.mergeContributorsDoneAction {
+  grid-area: mergeContributorsDoneAction;
+  justify-self: flex-start;
 }
 
 .activeContributors {
@@ -109,4 +134,89 @@
 
 .accountContributorsTableWrapper {
   margin-top: 10px;
+}
+
+.parentContributor {
+  grid-area: parentContributor;
+  display: flex;
+  padding: 16px;
+}
+.contributor {
+  font-size: large;
+}
+.inputWrapper {
+  margin-left: 20px;
+}
+.excludeFromAnalysisWrapper {
+  padding: 16px;
+  grid-area: excludeFromAnalysis;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas:
+    "analysis checkbox"
+    "subtitle subtitle";
+}
+
+.excludeFromAnalysis {
+  grid-area: analysis;
+  font-size: large;
+}
+
+.excludeFromAnalysisCheckbox {
+  grid-area: checkbox;
+  width: 100px;
+  align-self: center;
+}
+
+.excludeFromAnalysisSubtitle {
+  grid-area: subtitle;
+  font-size: small;
+}
+
+.mergeContributorTitle {
+  margin-top: 16px;
+  padding: 8px;
+  align-self: flex-end;
+  grid-area: mergeContributorTitle;
+}
+
+.mergeContributorTable {
+  grid-area: mergeContributorTable;
+}
+
+.actionButtons {
+  grid-area: actionButtons;
+}
+
+.selectParentContributorLandingPage {
+  margin-top: 16px;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "selectParentContributorTitle selectParentContributorTitle"
+    "selectParentContributorTable selectParentContributorTable"
+    "parentContributorNextAction parentContributorDoneAction";
+}
+
+.parentContributorNextAction {
+  padding-bottom: 16px;
+  grid-area: parentContributorNextAction;
+  justify-self: flex-end;
+}
+.parentContributorBackAction {
+  grid-area: parentContributorNextAction
+}
+.parentContributorDoneAction {
+  grid-area: parentContributorDoneAction;
+  justify-self: flex-start;
+}
+.selectParentContributorTitle {
+  grid-area: selectParentContributorTitle;
+  margin-top: 3rem;
+  font-size: large;
+}
+
+.selectParentContributorTable {
+  grid-area: selectParentContributorTable;
 }

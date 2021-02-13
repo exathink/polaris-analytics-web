@@ -10,32 +10,7 @@ import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import styles from "./contributors.module.css";
-
-function getTableColumns() {
-  return [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "40%",
-    },
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommit",
-      width: "40%",
-      key: "latestCommit",
-    },
-    {
-      title: "Aliases",
-      dataIndex: "alias_count",
-      width: "20%",
-      key: "alias_count",
-      align: "center",
-      sorter: (a, b) => a.alias_count - b.alias_count,
-      defaultSortOrder: "descend",
-    },
-  ];
-}
+import {getAccountContributorsTableColumns} from "./utils";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -79,7 +54,7 @@ function AccountContributorsTable({accountKey, intl, view}) {
   }
 
   const contributorsData = getTransformedData(data, intl);
-  const columns = getTableColumns();
+  const columns = getAccountContributorsTableColumns();
   return (
     <div className={styles.accountContributorsTableWrapper}>
       <Table

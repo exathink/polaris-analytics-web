@@ -1,67 +1,28 @@
 import React from "react";
 import {Table} from "antd";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
-import {useSearch} from "../../../components/tables/hooks";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {diff_in_dates} from "../../../helpers/utility";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
 
-const VERTICAL_SCROLL_HEIGHT = "50vh";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
   return record != null ? record.contributorAliasesInfo != null : false;
 }
 
-function useTableColumns() {
-  const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "25%",
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      ...nameSearchState,
-    },
-    {
-      title: "Alias",
-      dataIndex: "alias",
-      key: "alias",
-      width: "25%",
-      sorter: (a, b) => a.alias.localeCompare(b.alias),
-      ...aliasSearchState,
-    },
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommit",
-      width: "17%",
-      key: "latestCommit",
-      sorter: (a, b) => diff_in_dates(a.latestCommit, b.latestCommit),
-    },
-    {
-      title: "Total Commits",
-      dataIndex: "commitCount",
-      width: "17%",
-      key: "commitCount",
-      align: "center",
-      sorter: (a, b) => a.commitCount - b.commitCount,
-    },
-    {
-      title: "Aliases",
-      dataIndex: "alias_count",
-      width: "16%",
-      key: "alias_count",
-      align: "center",
-      sorter: (a, b) => a.alias_count - b.alias_count,
-      defaultSortOrder: "ascend",
-    },
-  ];
-  return columns;
+function getOnlySelectedRecordWithChildren(selectedRecords) {
+  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
+
+  if (recordsWithChildren.length === 1) {
+    return recordsWithChildren[0];
+  }
+
+  return null;
 }
 
 function getTransformedData(data, intl) {
@@ -76,6 +37,7 @@ function getTransformedData(data, intl) {
         if (node.contributorAliasesInfo.length > 1) {
           return {
             ...node,
+            keyBackup: node.key, // keeping key for backup for later use
             key: node.id, // as top level contributor's key is same as one of its children, we are keeping contributor's id as key for top level
             latestCommit: formatDateTime(intl, node.latestCommit),
             alias_count: node.contributorAliasesInfo.length - 1,
@@ -91,29 +53,19 @@ function getTransformedData(data, intl) {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0};
+          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0, keyBackup: node.key};
         }
       }
-      return {...node, latestCommit: formatDateTime(intl, node.latestCommit)};
+      return {...node, latestCommit: formatDateTime(intl, node.latestCommit), keyBackup: node.key};
     })
     .map((node) => [node.key, node]);
   return new Map(kvArr);
 }
 
-function getOnlySelectedRecordWithChildren(selectedRecords) {
-  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
-
-  if (recordsWithChildren.length === 1) {
-    return recordsWithChildren[0];
-  }
-
-  return null;
-}
-
-export function SelectContributorsPage({accountKey, intl, selectedContributorsState, renderActionButtons}) {
-  const [commitWithinDays, setCommitWithinDays] = React.useState(60);
-  const [selectedRecords, setSelectedRecords] = selectedContributorsState;
-  const columns = useTableColumns();
+export function SelectContributorsPage({accountKey, intl, sliderState, selectContributorsState, renderActionButtons}) {
+  const [commitWithinDays, setCommitWithinDays] = sliderState;
+  const [selectedRecords, setSelectedRecords] = selectContributorsState;
+  const columns = useSelectContributorsTableColumns();
 
   const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
@@ -133,49 +85,30 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
   // transform api response to Map of contributors
   const contributorsData = getTransformedData(data || previousData, intl);
 
-  const rowSelection = (data) => ({
-    hideSelectAll: true,
-    selectedRowKeys: selectedRecords.map((s) => s.key),
-    onSelect: (_record, _selected, selectedRows) => {
-      setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
-    },
-    getCheckboxProps: (record) => {
-      const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
-      if (onlySelectedRecordWithChildren != null) {
-        if (hasChildren(record.key, data)) {
-          return {
-            disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
-            name: record.name,
-          };
-        }
-      }
-
-      return {
-        disabled: record.parent != null, // disable all children records
-        name: record.name,
-      };
-    },
-  });
-
   function isNextButtonDisabled() {
-    if (selectedRecords.length === 1) {
-      const [{key}] = selectedRecords;
-      const selectedRecord = contributorsData.get(key);
-      // if only selected record has children
-      if (selectedRecord && selectedRecord.contributorAliasesInfo != null) {
-        return false;
+    return selectedRecords.length === 0;
+  }
+
+  function getCheckboxProps(record) {
+    const onlySelectedRecordWithChildren = getOnlySelectedRecordWithChildren(selectedRecords);
+    if (onlySelectedRecordWithChildren != null) {
+      if (hasChildren(record.key, contributorsData)) {
+        return {
+          disabled: record.key !== onlySelectedRecordWithChildren.key, // disable other records(except selected record with children) with children
+          name: record.name,
+        };
       }
     }
-    if (selectedRecords.length > 1) {
-      return false;
-    }
 
-    return true;
+    return {
+      disabled: record.parent != null, // disable all children records
+      name: record.name,
+    };
   }
 
   return (
     <div className={styles.selectContributorsLandingPage}>
-      {renderActionButtons(isNextButtonDisabled())}
+      {renderActionButtons({isNextButtonDisabled: isNextButtonDisabled()})}
       <div className={styles.selectContributorsSlider}>
         <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
@@ -199,7 +132,7 @@ export function SelectContributorsPage({accountKey, intl, selectedContributorsSt
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...rowSelection(contributorsData)}}
+          rowSelection={{...getRowSelection(contributorsData, selectContributorsState, {getCheckboxProps})}}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
