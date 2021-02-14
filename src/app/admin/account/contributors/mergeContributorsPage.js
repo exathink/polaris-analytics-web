@@ -140,6 +140,24 @@ export function MergeContributorsPage({
   const data = getTransformedData(selectedRecordsWithoutChildren);
   const columns = useMergeContributorsTableColumns();
 
+  function getTable() {
+    if (data.size > 0) {
+      return (
+        <Table
+          size="small"
+          dataSource={[...data.values()]}
+          columns={columns}
+          rowSelection={{...getRowSelection(data, contributorsState)}}
+          pagination={false}
+          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
+          showSorterTooltip={false}
+        />
+      );
+    } else {
+      return null;
+    }
+  }
+
   return (
     <div className={styles.mergeContributorsLandingPage}>
       <div className={styles.messageNotification}>
@@ -177,17 +195,7 @@ export function MergeContributorsPage({
       <div
         className={styles.mergeContributorTitle}
       >{`Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`}</div>
-      <div className={styles.mergeContributorTable}>
-        <Table
-          size="small"
-          dataSource={[...data.values()]}
-          columns={columns}
-          rowSelection={{...getRowSelection(data, contributorsState)}}
-          pagination={false}
-          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
-          showSorterTooltip={false}
-        />
-      </div>
+      <div className={styles.mergeContributorTable}>{getTable()}</div>
       {renderActionButtons({
         isNextButtonDisabled: contributorsState[0].length === 0 || loading || timeOutExecuting === true,
         actionButtonHandler: handleMergeContributorClick,
