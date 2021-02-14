@@ -99,8 +99,8 @@ export function MergeContributorsPage({
     context.go("..");
   };
 
-  function renderActionButtons({isNextButtonDisabled, actionButtonHandler}) {
-    const mergeButtonDisabled = isNextButtonDisabled;
+  function renderActionButtons() {
+    const isMergeButtonDisabled = contributorsState[0].length === 0 || loading || timeOutExecuting === true;
 
     return (
       <>
@@ -108,9 +108,9 @@ export function MergeContributorsPage({
           <Button
             type="primary"
             className={styles.contributorsButton}
-            style={!mergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
-            onClick={actionButtonHandler}
-            disabled={mergeButtonDisabled}
+            style={!isMergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={handleMergeContributorClick}
+            disabled={isMergeButtonDisabled}
           >
             Merge Contributors
           </Button>
@@ -196,10 +196,7 @@ export function MergeContributorsPage({
         className={styles.mergeContributorTitle}
       >{`Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`}</div>
       <div className={styles.mergeContributorTable}>{getTable()}</div>
-      {renderActionButtons({
-        isNextButtonDisabled: contributorsState[0].length === 0 || loading || timeOutExecuting === true,
-        actionButtonHandler: handleMergeContributorClick,
-      })}
+      {renderActionButtons()}
     </div>
   );
 }

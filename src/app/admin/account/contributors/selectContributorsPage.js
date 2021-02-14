@@ -97,10 +97,6 @@ export function SelectContributorsPage({
   // transform api response to Map of contributors
   const contributorsData = getTransformedData(data || previousData, intl);
 
-  function isNextButtonDisabled() {
-    return selectedRecords.length === 0;
-  }
-
   const handleNextClick = () => {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
   };
@@ -109,8 +105,8 @@ export function SelectContributorsPage({
     context.go("..");
   };
 
-  function renderActionButtons({isNextButtonDisabled}) {
-    const nextButtonDisabled = isNextButtonDisabled;
+  function renderActionButtons() {
+    const nextButtonDisabled = selectedRecords.length === 0;
 
     return (
       <>
@@ -163,7 +159,7 @@ export function SelectContributorsPage({
   };
   return (
     <div className={styles.selectContributorsLandingPage}>
-      {renderActionButtons({isNextButtonDisabled: isNextButtonDisabled()})}
+      {renderActionButtons()}
       <div className={styles.selectContributorsSlider}>
         <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
