@@ -4,23 +4,38 @@ import styles from "./contributors.module.css";
 import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT} from "./utils";
 import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
+import {actionTypes} from "./constants";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
   return new Map(kvArr);
 }
 
+function getParentContributor(initSelectedRecords, parentContributorKey) {
+  const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
+  if (recordWithChildren == null) {
+    return initSelectedRecords.find((x) => x.key === parentContributorKey);
+  }
+  return recordWithChildren;
+}
+
 export function MergeContributorsPage({
   accountKey,
   context,
   intl,
-  renderActionButtons,
-  moveToFirstStep,
-  selectedRecordsWithoutChildren,
-  parentContributor, // parent contributor in which to merge other contributors
+  current,
+  selectedRecords,
+  parentContributorKey,
+  dispatch,
 }) {
+  const selectedRecordsWithoutChildren = selectedRecords
+    .filter((x) => x.contributorAliasesInfo == null)
+    .filter((x) => x.key !== parentContributorKey);
+
   const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
+  // parent contributor in which to merge other contributors
+  const parentContributor = getParentContributor(selectedRecords, parentContributorKey);
   const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
   function handleParentContributorChange(e) {
     setParentContributorName(e.target.value);
@@ -36,6 +51,10 @@ export function MergeContributorsPage({
 
   // This will remain true till the time timeout is executing.
   const [timeOutExecuting, setTimeOutExecuting] = React.useState();
+
+  const moveToFirstStep = () => {
+    dispatch({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
+  };
 
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributorForContributorAliases({
@@ -77,6 +96,52 @@ export function MergeContributorsPage({
       },
     });
   };
+
+  const handleBackClick = () => {
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
+  };
+
+  const handleDoneClick = () => {
+    context.go("..");
+  };
+
+  function renderActionButtons({isNextButtonDisabled, actionButtonHandler}) {
+    const mergeButtonDisabled = isNextButtonDisabled;
+
+    return (
+      <>
+        <div className={styles.mergeContributorsMergeAction}>
+          <Button
+            type="primary"
+            className={styles.contributorsButton}
+            style={!mergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            onClick={actionButtonHandler}
+            disabled={mergeButtonDisabled}
+          >
+            Merge Contributors
+          </Button>
+        </div>
+        <div className={styles.mergeContributorsBackAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleBackClick}
+          >
+            Back
+          </Button>
+        </div>
+        <div className={styles.mergeContributorsDoneAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleDoneClick}
+          >
+            Done
+          </Button>
+        </div>
+      </>
+    );
+  }
 
   const data = getTransformedData(selectedRecordsWithoutChildren);
   const columns = useMergeContributorsTableColumns();
