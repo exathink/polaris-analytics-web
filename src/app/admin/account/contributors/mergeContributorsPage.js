@@ -108,7 +108,7 @@ export function MergeContributorsPage({
           <Button
             type="primary"
             className={styles.contributorsButton}
-            style={!isMergeButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            style={isMergeButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleMergeContributorClick}
             disabled={isMergeButtonDisabled}
           >

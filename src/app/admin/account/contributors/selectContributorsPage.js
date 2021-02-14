@@ -114,7 +114,7 @@ export function SelectContributorsPage({
           <Button
             type="primary"
             className={styles.contributorsButton}
-            style={!nextButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
@@ -183,7 +183,9 @@ export function SelectContributorsPage({
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...getRowSelection(contributorsData, [selectedRecords, setSelectedRecords], {getCheckboxProps})}}
+          rowSelection={{
+            ...getRowSelection(contributorsData, [selectedRecords, setSelectedRecords], {getCheckboxProps}),
+          }}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}

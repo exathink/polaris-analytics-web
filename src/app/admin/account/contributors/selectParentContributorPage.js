@@ -63,7 +63,7 @@ export function SelectParentContributorPage({
           <Button
             type="primary"
             className={styles.contributorsButton}
-            style={!nextButtonDisabled ? {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"} : {}}
+            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
