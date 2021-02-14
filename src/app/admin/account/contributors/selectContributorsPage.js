@@ -1,6 +1,9 @@
 import React from "react";
 import {Table} from "antd";
-import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
+import {
+  DaysRangeSlider,
+  ONE_YEAR,
+} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
@@ -116,7 +119,7 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
             title=""
             initialDays={commitWithinDays}
             setDaysRange={setCommitWithinDays}
-            range={THREE_MONTHS}
+            range={ONE_YEAR}
           />
         </div>
         <div>Days</div>

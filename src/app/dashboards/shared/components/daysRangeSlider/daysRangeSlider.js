@@ -6,6 +6,7 @@ export const SIXTY_DAYS = [1, 3, 7, 14, 30, 45, 60];
 export const SIX_MONTHS = [1, 7, 14, 30, 45, 60, 90, 180];
 export const TWO_MONTHS = [1, 7, 14, 30, 45, 60];
 export const THREE_MONTHS = [1, 7, 14, 30, 45, 60, 90];
+export const ONE_YEAR = [30, 60, 90, 180, 365];
 
 const getMarks = (marks) =>  marks.reduce(
   (result, mark) => {
