@@ -5,6 +5,7 @@ import {MergeContributorsPage} from "./mergeContributorsPage";
 import {SelectParentContributorPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
 import {contributorsReducer} from "./contributorsReducer";
+import {withNoChildren} from "./utils";
 
 const {Step} = Steps;
 
@@ -37,7 +38,7 @@ export function MergeContributorsWorkflow({accountKey, context, intl}) {
     },
   ];
 
-  if (state.selectedRecords.every((x) => x.contributorAliasesInfo == null)) {
+  if (state.selectedRecords.length > 1 && state.selectedRecords.every(withNoChildren)) {
     const [selectContributorsStep, mergeContributorsStep] = steps;
     const selectParentContributorStep = {
       title: "Select Parent Contributor",

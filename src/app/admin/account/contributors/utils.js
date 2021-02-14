@@ -37,7 +37,7 @@ export function getBaseColumns() {
       title: " ",
       dataIndex: "select_parent_contributor",
       key: "select_parent_contributor",
-    }
+    },
   };
 }
 
@@ -136,3 +136,6 @@ export function getRowSelection(data, [selectedRecords, setSelectedRecords], opt
     ...options,
   };
 }
+
+export const withNoChildren = (x) => x.contributorAliasesInfo == null;
+export const withChildren = (x) => x.contributorAliasesInfo != null;

@@ -1,7 +1,7 @@
 import {Input, Checkbox, Table, Alert, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT} from "./utils";
+import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT, withNoChildren} from "./utils";
 import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
@@ -11,12 +11,8 @@ function getTransformedData(selectedRecords) {
   return new Map(kvArr);
 }
 
-function getParentContributor(initSelectedRecords, parentContributorKey) {
-  const recordWithChildren = initSelectedRecords.find((x) => x.contributorAliasesInfo != null);
-  if (recordWithChildren == null) {
-    return initSelectedRecords.find((x) => x.key === parentContributorKey);
-  }
-  return recordWithChildren;
+function getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey) {
+  return selectedRecords.filter(withNoChildren).filter((x) => x.key !== parentContributorKey);
 }
 
 export function MergeContributorsPage({
@@ -28,14 +24,12 @@ export function MergeContributorsPage({
   parentContributorKey,
   dispatch,
 }) {
-  const selectedRecordsWithoutChildren = selectedRecords
-    .filter((x) => x.contributorAliasesInfo == null)
-    .filter((x) => x.key !== parentContributorKey);
+  const selectedRecordsWithoutChildren = getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey);
 
   const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
 
   // parent contributor in which to merge other contributors
-  const parentContributor = getParentContributor(selectedRecords, parentContributorKey);
+  const parentContributor = selectedRecords.find((x) => x.key === parentContributorKey);
   const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
   function handleParentContributorChange(e) {
     setParentContributorName(e.target.value);
