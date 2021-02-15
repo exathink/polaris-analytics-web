@@ -1,7 +1,7 @@
 import {Input, Checkbox, Table, Alert, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {getRowSelection, useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, withNoChildren} from "./utils";
+import {getRowSelection, SCROLL_HEIGHT_UPDATE_CONTRIBUTORS, useUpdateContributorTableColumns, withNoChildren} from "./utils";
 import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
@@ -149,7 +149,7 @@ export function UpdateContributorPage({
           columns={columns}
           rowSelection={{...getRowSelection(data, [localRecords, setLocalRecords])}}
           pagination={false}
-          scroll={{y: VERTICAL_SCROLL_HEIGHT}}
+          scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
         />
       );

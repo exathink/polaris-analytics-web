@@ -39,7 +39,7 @@
 
 .selectContributorsLandingPage {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
   "contributorsSlider contributorsSlider"
@@ -51,7 +51,7 @@
 .selectContributorsSlider {
   justify-self: center;
   min-width: 60%;
-  min-height: 8rem;
+  min-height: 6rem;
   grid-area: contributorsSlider;
   display: flex;
   align-items: center;
@@ -92,7 +92,7 @@
 .updateContributorLandingPage {
   margin-top: 16px;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     ". message"
@@ -106,7 +106,6 @@
 .messageNotification{
   justify-self: flex-end;
   grid-area: message;
-  height: 3rem;
 }
 .updateContributorMergeAction {
   padding-bottom: 16px;
@@ -192,7 +191,7 @@
 .selectParentContributorLandingPage {
   margin-top: 16px;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "selectParentContributorTitle selectParentContributorTitle"
