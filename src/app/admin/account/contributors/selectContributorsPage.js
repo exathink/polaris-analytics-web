@@ -116,8 +116,7 @@ export function SelectContributorsPage({
         <div className={styles.selectContributorsNextAction}>
           <Button
             type="primary"
-            className={styles.contributorsButton}
-            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            className={styles.contributorsPrimaryButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >

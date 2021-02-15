@@ -37,6 +37,12 @@
   font-weight: 500;
 }
 
+.contributorsPrimaryButton {
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
+}
+
 .selectContributorsLandingPage {
   display: grid;
   gap: 0.2rem;
@@ -196,6 +202,7 @@
 
 .updateContributorTable {
   grid-area: updateContributorTable;
+  margin-bottom: 16px;
 }
 
 .actionButtons {
@@ -233,4 +240,5 @@
 
 .selectParentContributorTable {
   grid-area: selectParentContributorTable;
+  margin-bottom: 16px;
 }

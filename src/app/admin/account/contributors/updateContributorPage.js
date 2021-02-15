@@ -107,8 +107,7 @@ export function UpdateContributorPage({
         <div className={styles.updateContributorMergeAction}>
           <Button
             type="primary"
-            className={styles.contributorsButton}
-            style={isButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            className={styles.contributorsPrimaryButton}
             onClick={handleUpdateContributorClick}
             disabled={isButtonDisabled}
           >
