@@ -42,10 +42,10 @@
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-  "contributorsSlider contributorsSlider"
-  "userMessage userMessage"
-  "contributorsTable contributorsTable"
-  "selectContributorsNextAction selectContributorsDoneAction";
+    "contributorsSlider contributorsSlider"
+    "userMessage userMessage"
+    "contributorsTable contributorsTable"
+    "selectContributorsNextAction selectContributorsDoneAction";
 }
 
 .selectContributorsSlider {
@@ -103,7 +103,7 @@
     "updateContributorMergeAction updateContributorDoneAction";
 }
 
-.messageNotification{
+.messageNotification {
   justify-self: flex-end;
   grid-area: message;
 }
@@ -128,7 +128,19 @@
 }
 
 .updateContributorAction {
-  margin-right: 30px;
+  margin-right: 60px;
+  background-color: #4482ff;
+  border-color: #4482ff;
+}
+
+.updateContributorAction:global(.ant-btn) {
+  border-radius: 4px;
+}
+
+.updateContributorAction:hover {
+  background-color: #5896ff;
+  border-color: #5896ff;
+  color: #fff;
 }
 
 .accountContributorsTableWrapper {
@@ -205,7 +217,7 @@
   justify-self: flex-end;
 }
 .parentContributorBackAction {
-  grid-area: parentContributorNextAction
+  grid-area: parentContributorNextAction;
 }
 .parentContributorDoneAction {
   grid-area: parentContributorDoneAction;
