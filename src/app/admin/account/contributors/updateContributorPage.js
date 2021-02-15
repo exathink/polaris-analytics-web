@@ -26,7 +26,7 @@ export function UpdateContributorPage({
 }) {
   const selectedRecordsWithoutChildren = getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey);
 
-  const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState(false);
+  const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState();
 
   // parent contributor in which to merge other contributors
   const parentContributor = selectedRecords.find((x) => x.key === parentContributorKey);
