@@ -84,10 +84,10 @@ export const AccountContributorsTableWidget = withNavigationContext(
               <Button
                 type="primary"
                 size="middle"
-                onClick={() => context.go(".", "merge-contributors")}
-                className={styles.mergeContributorAction}
+                onClick={() => context.go(".", "update-contributor")}
+                className={styles.updateContributorAction}
               >
-                <PlusOutlined /> {`Merge Contributors`}
+                <PlusOutlined /> {`Update Contributor`}
               </Button>
             ),
           ]}
