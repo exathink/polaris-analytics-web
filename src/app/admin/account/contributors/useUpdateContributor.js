@@ -1,9 +1,9 @@
 import {useMutation, gql} from "@apollo/client";
 
-export const UPDATE_CONTRIBUTOR_FOR_CONTRIBUTOR_ALIASES = gql`
+export const UPDATE_CONTRIBUTOR = gql`
   mutation updateContributor($contributorKey: String!, $updatedInfo: ContributorUpdatedInfo!) {
-    updateContributorForContributorAliases(
-      contributorAliasMapping: {contributorKey: $contributorKey, updatedInfo: $updatedInfo}
+    updateContributor(
+      contributorInfo: {contributorKey: $contributorKey, updatedInfo: $updatedInfo}
     ) {
       updateStatus {
         success
@@ -14,6 +14,6 @@ export const UPDATE_CONTRIBUTOR_FOR_CONTRIBUTOR_ALIASES = gql`
     }
   }
 `;
-export function useUpdateContributorForContributorAliases({onCompleted, onError}) {
-  return useMutation(UPDATE_CONTRIBUTOR_FOR_CONTRIBUTOR_ALIASES, {onCompleted, onError});
+export function useUpdateContributor({onCompleted, onError}) {
+  return useMutation(UPDATE_CONTRIBUTOR, {onCompleted, onError});
 }

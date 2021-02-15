@@ -2,7 +2,7 @@ import {Input, Checkbox, Table, Alert, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {getRowSelection, SCROLL_HEIGHT_UPDATE_CONTRIBUTORS, useUpdateContributorTableColumns, withNoChildren} from "./utils";
-import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
+import {useUpdateContributor} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 
@@ -51,8 +51,8 @@ export function UpdateContributorPage({
   };
 
   // mutation to update contributor
-  const [mutate, {loading, client}] = useUpdateContributorForContributorAliases({
-    onCompleted: ({updateContributorForContributorAliases: {updateStatus}}) => {
+  const [mutate, {loading, client}] = useUpdateContributor({
+    onCompleted: ({updateContributor: {updateStatus}}) => {
       //  {success, contributorKey, message, exception}
       if (updateStatus.success) {
         setSuccessMessage("Updated Successfully.");
@@ -65,12 +65,12 @@ export function UpdateContributorPage({
           moveToFirstStep();
         }, 500);
       } else {
-        logGraphQlError("UpdateContributorPage.useUpdateContributorForContributorAliases", updateStatus.message);
+        logGraphQlError("UpdateContributorPage.useUpdateContributor", updateStatus.message);
         setErrorMessage(updateStatus.message);
       }
     },
     onError: (error) => {
-      logGraphQlError("UpdateContributorPage.useUpdateContributorForContributorAliases", error);
+      logGraphQlError("UpdateContributorPage.useUpdateContributor", error);
       setErrorMessage(error.message);
     },
   });
