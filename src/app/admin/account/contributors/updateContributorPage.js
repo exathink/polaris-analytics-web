@@ -36,7 +36,7 @@ export function UpdateContributorPage({
   }
 
   // selection state for records without children
-  const contributorsState = React.useState(selectedRecordsWithoutChildren);
+  const [localRecords, setLocalRecords] = React.useState(selectedRecordsWithoutChildren);
 
   const [[errorMessage, setErrorMessage], [successMessage, setSuccessMessage]] = [
     React.useState(""),
@@ -79,7 +79,7 @@ export function UpdateContributorPage({
     const updatedInfo = {
       contributorName: parentContributorName,
       excludedFromAnalysis: excludeFromAnalysis,
-      contributorAliasKeys: contributorsState[0].map((x) => x.key),
+      contributorAliasKeys: localRecords.map((x) => x.key),
     };
 
     // call mutation on save button click
@@ -100,7 +100,7 @@ export function UpdateContributorPage({
   };
 
   function renderActionButtons() {
-    const isButtonDisabled = contributorsState[0].length === 0 || loading || timeOutExecuting === true;
+    const isButtonDisabled = (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true;
 
     return (
       <>
@@ -147,7 +147,7 @@ export function UpdateContributorPage({
           size="small"
           dataSource={[...data.values()]}
           columns={columns}
-          rowSelection={{...getRowSelection(data, contributorsState)}}
+          rowSelection={{...getRowSelection(data, [localRecords, setLocalRecords])}}
           pagination={false}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
@@ -160,7 +160,7 @@ export function UpdateContributorPage({
 
   function getTitleText() {
     return data.size > 0
-      ? `Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`
+      ? `Contributions from the ${localRecords.length} contributors below will be merged into contributions from ${parentContributorName}`
       : null;
   }
 
