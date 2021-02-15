@@ -1,4 +1,4 @@
-.mergeContributorsWrapper {
+.manageContributorsWrapper {
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
@@ -9,11 +9,11 @@
   gap: 0.5rem;
 }
 
-.mergeContributorsStepsWrapper {
+.manageContributorsStepsWrapper {
   grid-area: steps;
 }
 
-.mergeContributorsStepsContent {
+.manageContributorsStepsContent {
   min-height: 50vh;
   grid-area: stepContent;
 }
@@ -37,21 +37,27 @@
   font-weight: 500;
 }
 
+.contributorsPrimaryButton {
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
+}
+
 .selectContributorsLandingPage {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-  "contributorsSlider contributorsSlider"
-  "userMessage userMessage"
-  "contributorsTable contributorsTable"
-  "selectContributorsNextAction selectContributorsDoneAction";
+    "contributorsSlider contributorsSlider"
+    "userMessage userMessage"
+    "contributorsTable contributorsTable"
+    "selectContributorsNextAction selectContributorsDoneAction";
 }
 
 .selectContributorsSlider {
   justify-self: center;
   min-width: 60%;
-  min-height: 8rem;
+  min-height: 6rem;
   grid-area: contributorsSlider;
   display: flex;
   align-items: center;
@@ -72,52 +78,51 @@
   width: 90%;
 }
 /* override completed steps color */
-.mergeContributorsStepsWrapper
+.manageContributorsStepsWrapper
   :global(.ant-steps-item):global(.ant-steps-item-finish)
   :global(.ant-steps-item-icon)
   > :global(.ant-steps-icon) {
   color: #d4d4d4;
 }
 
-.mergeContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+.manageContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
   background-color: #7824b5;
   border-color: #7824b5;
 }
 
-.mergeContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+.manageContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
   background: #7824b5;
   border: #7824b5;
 }
 
-.mergeContributorsLandingPage {
+.updateContributorLandingPage {
   margin-top: 16px;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    ". message"
     "parentContributor excludeFromAnalysis"
-    "mergeContributorTitle mergeContributorTitle"
-    "mergeContributorTable mergeContributorTable"
+    "updateContributorTitle updateContributorTitle"
+    "updateContributorTable updateContributorTable"
     "actionButtons actionButtons"
-    "mergeContributorsMergeAction mergeContributorsDoneAction";
+    "updateContributorMergeAction updateContributorDoneAction";
 }
 
-.messageNotification{
+.messageNotification {
   justify-self: flex-end;
-  grid-area: message;
-  height: 3rem;
+  grid-area: excludeFromAnalysis;
+  z-index: 2;
 }
-.mergeContributorsMergeAction {
+.updateContributorMergeAction {
   padding-bottom: 16px;
-  grid-area: mergeContributorsMergeAction;
+  grid-area: updateContributorMergeAction;
   justify-self: flex-end;
 }
-.mergeContributorsBackAction {
-  grid-area: mergeContributorsMergeAction;
+.updateContributorBackAction {
+  grid-area: updateContributorMergeAction;
 }
-.mergeContributorsDoneAction {
-  grid-area: mergeContributorsDoneAction;
+.updateContributorDoneAction {
+  grid-area: updateContributorDoneAction;
   justify-self: flex-start;
 }
 
@@ -128,8 +133,20 @@
   background-color: ghostwhite;
 }
 
-.mergeContributorAction {
-  margin-right: 30px;
+.manageContributorsAction {
+  margin-right: 60px;
+  background-color: #4482ff;
+  border-color: #4482ff;
+}
+
+.manageContributorsAction:global(.ant-btn) {
+  border-radius: 4px;
+}
+
+.manageContributorsAction:hover {
+  background-color: #5896ff;
+  border-color: #5896ff;
+  color: #fff;
 }
 
 .accountContributorsTableWrapper {
@@ -142,16 +159,16 @@
   padding: 16px;
 }
 .contributor {
-  font-size: large;
+  font-size: medium;
 }
 .inputWrapper {
-  margin-left: 20px;
+  margin-left: 16px;
 }
 .excludeFromAnalysisWrapper {
   padding: 16px;
   grid-area: excludeFromAnalysis;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
     "analysis checkbox"
     "subtitle subtitle";
@@ -159,29 +176,33 @@
 
 .excludeFromAnalysis {
   grid-area: analysis;
-  font-size: large;
+  font-size: medium;
 }
 
 .excludeFromAnalysisCheckbox {
   grid-area: checkbox;
   width: 100px;
+  margin-left: 16px;
   align-self: center;
 }
 
 .excludeFromAnalysisSubtitle {
   grid-area: subtitle;
   font-size: small;
+  color: grey;
 }
 
-.mergeContributorTitle {
+.updateContributorTitle {
   margin-top: 16px;
-  padding: 8px;
   align-self: flex-end;
-  grid-area: mergeContributorTitle;
+  grid-area: updateContributorTitle;
+  color: grey;
+  min-height: 1.5rem;
 }
 
-.mergeContributorTable {
-  grid-area: mergeContributorTable;
+.updateContributorTable {
+  grid-area: updateContributorTable;
+  margin-bottom: 16px;
 }
 
 .actionButtons {
@@ -191,7 +212,7 @@
 .selectParentContributorLandingPage {
   margin-top: 16px;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "selectParentContributorTitle selectParentContributorTitle"
@@ -205,7 +226,7 @@
   justify-self: flex-end;
 }
 .parentContributorBackAction {
-  grid-area: parentContributorNextAction
+  grid-area: parentContributorNextAction;
 }
 .parentContributorDoneAction {
   grid-area: parentContributorDoneAction;
@@ -219,4 +240,5 @@
 
 .selectParentContributorTable {
   grid-area: selectParentContributorTable;
+  margin-bottom: 16px;
 }

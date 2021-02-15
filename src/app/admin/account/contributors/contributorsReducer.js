@@ -1,4 +1,18 @@
 import {actionTypes} from "./constants";
+import {withChildren} from "./utils";
+
+function getParentContributorKey(selectedRecords) {
+  const recordWithChildren = selectedRecords.find(withChildren);
+  if (recordWithChildren == null) {
+    // inside this block only records with no children would be possible
+    if (selectedRecords.length === 1) {
+      return selectedRecords[0].key;
+    } else {
+      return "";
+    }
+  }
+  return recordWithChildren.key;
+}
 
 export function contributorsReducer(state, action) {
   switch (action.type) {
@@ -7,7 +21,7 @@ export function contributorsReducer(state, action) {
         ...state,
         commitWithinDays: action.payload,
         selectedRecords: [], // anytime we update slider, selected records should clear
-        parentContributorKey: "" // when selectedRecords are cleared, better to clear parentContributorKey as well
+        parentContributorKey: "", // when selectedRecords are cleared, better to clear parentContributorKey as well
       };
     }
     case actionTypes.UPDATE_CURRENT_STEP: {
@@ -21,19 +35,22 @@ export function contributorsReducer(state, action) {
         ...state,
         current: 0,
         selectedRecords: [], // after mutation success, selected records should clear
-        parentContributorKey: "" // when selectedRecords are cleared, better to clear parentContributorKey as well
+        parentContributorKey: "", // when selectedRecords are cleared, better to clear parentContributorKey as well
       };
     }
     case actionTypes.UPDATE_SELECTED_RECORDS: {
+      const parentContributorKey = getParentContributorKey(action.payload);
+
       return {
         ...state,
-        selectedRecords: action.payload
+        selectedRecords: action.payload,
+        parentContributorKey: parentContributorKey,
       };
     }
     case actionTypes.UPDATE_PARENT_CONTRIBUTOR_KEY: {
       return {
         ...state,
-        parentContributorKey: action.payload
+        parentContributorKey: action.payload,
       };
     }
     default: {

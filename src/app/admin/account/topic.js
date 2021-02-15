@@ -6,8 +6,8 @@ const topic =  {
   ...Topics.account,
   routes: [
     {
-      match: 'merge-contributors',
-      component: React.lazy(() => import('./contributors/mergeContributors'))
+      match: 'manage-contributors',
+      component: React.lazy(() => import('./contributors/manageContributors'))
     },
     {
       match: '',

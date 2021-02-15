@@ -1,17 +1,17 @@
 import React from "react";
-import {Table} from "antd";
+import {Table, Button} from "antd";
 import {
   DaysRangeSlider,
   ONE_YEAR,
 } from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT} from "./utils";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
-
+import {actionTypes} from "./constants";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
@@ -19,7 +19,7 @@ function hasChildren(recordKey, data) {
 }
 
 function getOnlySelectedRecordWithChildren(selectedRecords) {
-  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
+  const recordsWithChildren = selectedRecords.filter(withChildren);
 
   if (recordsWithChildren.length === 1) {
     return recordsWithChildren[0];
@@ -56,7 +56,13 @@ function getTransformedData(data, intl) {
             contributorAliasesInfo: [{alias}],
             ...remainingNode
           } = node;
-          return {...remainingNode, latestCommit: formatDateTime(intl, node.latestCommit), alias, alias_count: 0, keyBackup: node.key};
+          return {
+            ...remainingNode,
+            latestCommit: formatDateTime(intl, node.latestCommit),
+            alias,
+            alias_count: 0,
+            keyBackup: node.key,
+          };
         }
       }
       return {...node, latestCommit: formatDateTime(intl, node.latestCommit), keyBackup: node.key};
@@ -65,9 +71,15 @@ function getTransformedData(data, intl) {
   return new Map(kvArr);
 }
 
-export function SelectContributorsPage({accountKey, intl, sliderState, selectContributorsState, renderActionButtons}) {
-  const [commitWithinDays, setCommitWithinDays] = sliderState;
-  const [selectedRecords, setSelectedRecords] = selectContributorsState;
+export function SelectContributorsPage({
+  accountKey,
+  context,
+  intl,
+  commitWithinDays,
+  current,
+  selectedRecords,
+  dispatch,
+}) {
   const columns = useSelectContributorsTableColumns();
 
   const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
@@ -77,7 +89,7 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
 
   useOnlyRunOnUpdate(() => {
     // clear selected records whenever days range change.
-    setSelectedRecords([]);
+    dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: []});
   }, [commitWithinDays]);
 
   if (error) {
@@ -88,8 +100,40 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
   // transform api response to Map of contributors
   const contributorsData = getTransformedData(data || previousData, intl);
 
-  function isNextButtonDisabled() {
-    return selectedRecords.length === 0;
+  const handleNextClick = () => {
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
+  };
+
+  const handleDoneClick = () => {
+    context.go("..");
+  };
+
+  function renderActionButtons() {
+    const nextButtonDisabled = selectedRecords.length === 0;
+
+    return (
+      <>
+        <div className={styles.selectContributorsNextAction}>
+          <Button
+            type="primary"
+            className={styles.contributorsPrimaryButton}
+            onClick={handleNextClick}
+            disabled={nextButtonDisabled}
+          >
+            Next
+          </Button>
+        </div>
+        <div className={styles.selectContributorsDoneAction}>
+          <Button
+            className={styles.contributorsButton}
+            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleDoneClick}
+          >
+            Done
+          </Button>
+        </div>
+      </>
+    );
   }
 
   function getCheckboxProps(record) {
@@ -109,9 +153,15 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
     };
   }
 
+  const setCommitWithinDays = (days) => {
+    dispatch({type: actionTypes.UPDATE_DAYS, payload: days});
+  };
+  const setSelectedRecords = (records) => {
+    dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: records});
+  };
   return (
     <div className={styles.selectContributorsLandingPage}>
-      {renderActionButtons({isNextButtonDisabled: isNextButtonDisabled()})}
+      {renderActionButtons()}
       <div className={styles.selectContributorsSlider}>
         <div>Active Within</div>
         <div className={styles.rangeSliderWrapper}>
@@ -135,7 +185,9 @@ export function SelectContributorsPage({accountKey, intl, sliderState, selectCon
           childrenColumnName="contributorAliasesInfo"
           pagination={false}
           columns={columns}
-          rowSelection={{...getRowSelection(contributorsData, selectContributorsState, {getCheckboxProps})}}
+          rowSelection={{
+            ...getRowSelection(contributorsData, [selectedRecords, setSelectedRecords], {getCheckboxProps}),
+          }}
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}

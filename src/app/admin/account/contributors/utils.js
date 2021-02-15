@@ -1,7 +1,9 @@
 import {useSearch} from "../../../components/tables/hooks";
 import {diff_in_dates} from "../../../helpers/utility";
 
-export const VERTICAL_SCROLL_HEIGHT = "50vh";
+export const VERTICAL_SCROLL_HEIGHT = "45vh";
+export const SCROLL_HEIGHT_UPDATE_CONTRIBUTORS = "40vh";
+export const ACTIVE_WITHIN_DAYS = 30;
 
 export function getBaseColumns() {
   return {
@@ -37,7 +39,7 @@ export function getBaseColumns() {
       title: " ",
       dataIndex: "select_parent_contributor",
       key: "select_parent_contributor",
-    }
+    },
   };
 }
 
@@ -76,7 +78,7 @@ export function useSelectContributorsTableColumns() {
   return columns;
 }
 
-export function useMergeContributorsTableColumns() {
+export function useUpdateContributorTableColumns() {
   const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
   const baseCols = getBaseColumns();
   const columns = [
@@ -136,3 +138,6 @@ export function getRowSelection(data, [selectedRecords, setSelectedRecords], opt
     ...options,
   };
 }
+
+export const withNoChildren = (x) => x.contributorAliasesInfo == null;
+export const withChildren = (x) => x.contributorAliasesInfo != null;
