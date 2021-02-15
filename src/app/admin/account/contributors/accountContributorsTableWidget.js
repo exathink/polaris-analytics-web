@@ -10,7 +10,7 @@ import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import styles from "./contributors.module.css";
-import {getAccountContributorsTableColumns} from "./utils";
+import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "./utils";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -42,7 +42,7 @@ function getTransformedData(data, intl) {
 function AccountContributorsTable({accountKey, intl, view}) {
   const {loading, error, data} = useQueryContributorAliasesInfo({
     accountKey: accountKey,
-    commitWithinDays: 60,
+    commitWithinDays: ACTIVE_WITHIN_DAYS,
   });
 
   if (loading) {
@@ -79,6 +79,7 @@ export const AccountContributorsTableWidget = withNavigationContext(
           name={name}
           w={w}
           title="Contributors"
+          subtitle={`active within ${ACTIVE_WITHIN_DAYS} days`}
           controls={[
             () => (
               <Button

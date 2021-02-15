@@ -5,12 +5,12 @@ import {UpdateContributorPage} from "./updateContributorPage";
 import {SelectParentContributorPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
 import {contributorsReducer} from "./contributorsReducer";
-import {withNoChildren} from "./utils";
+import {ACTIVE_WITHIN_DAYS, withNoChildren} from "./utils";
 
 const {Step} = Steps;
 
 const initialState = {
-  commitWithinDays: 60,
+  commitWithinDays: ACTIVE_WITHIN_DAYS,
   current: 0,
   selectedRecords: [],
   parentContributorKey: "",

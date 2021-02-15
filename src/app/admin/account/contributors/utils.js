@@ -2,6 +2,7 @@ import {useSearch} from "../../../components/tables/hooks";
 import {diff_in_dates} from "../../../helpers/utility";
 
 export const VERTICAL_SCROLL_HEIGHT = "50vh";
+export const ACTIVE_WITHIN_DAYS = 30;
 
 export function getBaseColumns() {
   return {
