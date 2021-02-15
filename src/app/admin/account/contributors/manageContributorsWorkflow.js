@@ -50,15 +50,15 @@ export function ManageContributorsWorkflow({accountKey, context, intl}) {
 
   const {current} = state;
   return (
-    <div className={styles.updateContributorWrapper}>
-      <div className={styles.updateContributorStepsWrapper}>
+    <div className={styles.manageContributorsWrapper}>
+      <div className={styles.manageContributorsStepsWrapper}>
         <Steps current={current}>
           {steps.map((item) => (
             <Step key={item.title} title={item.title} />
           ))}
         </Steps>
       </div>
-      <div className={styles.updateContributorStepsContent}>{steps[current].content}</div>
+      <div className={styles.manageContributorsStepsContent}>{steps[current].content}</div>
     </div>
   );
 }
