@@ -94,7 +94,7 @@ export function SelectParentContributorPage({
   return (
     <div className={styles.selectParentContributorLandingPage}>
       <div className={styles.selectParentContributorTitle}>
-        <h1>Select Parent Contributor</h1>
+        <div className={styles.userMessage}>Select a contributor: The remaining contributors will be merged into this one.</div>
       </div>
       <div className={styles.selectParentContributorTable}>
         <Table

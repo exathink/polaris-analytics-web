@@ -194,7 +194,7 @@
 
 .updateContributorTitle {
   margin-top: 16px;
-  align-self: flex-end;
+  align-self: center;
   grid-area: updateContributorTitle;
   color: grey;
   min-height: 1.5rem;
@@ -235,7 +235,8 @@
 .selectParentContributorTitle {
   grid-area: selectParentContributorTitle;
   margin-top: 3rem;
-  font-size: large;
+  font-size: small;
+  justify-self: center;
 }
 
 .selectParentContributorTable {

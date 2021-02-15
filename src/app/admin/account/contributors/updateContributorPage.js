@@ -159,7 +159,7 @@ export function UpdateContributorPage({
 
   function getTitleText() {
     return data.size > 0 && localRecords.length > 0
-      ? `Contributions from the ${localRecords.length} contributors below will be merged into contributions from ${parentContributorName}`
+      ? `Contributions from the contributors below will be merged into contributions from ${parentContributorName}`
       : null;
   }
 
@@ -194,7 +194,7 @@ export function UpdateContributorPage({
           />
         </div>
         <div className={styles.excludeFromAnalysisSubtitle}>
-          After merging, excluded contributors will not appear in Polaris metrics and are not billed
+          Activity and metrics for excluded contributors will not appear in Polaris and you will not be billed for them.
         </div>
       </div>
       <div className={styles.updateContributorTitle}>{getTitleText()}</div>
