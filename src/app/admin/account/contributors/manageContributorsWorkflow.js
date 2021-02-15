@@ -41,7 +41,7 @@ export function ManageContributorsWorkflow({accountKey, context, intl}) {
   if (state.selectedRecords.length > 1 && state.selectedRecords.every(withNoChildren)) {
     const [selectContributorsStep, updateContributorStep] = steps;
     const selectParentContributorStep = {
-      title: "Select Parent Contributor",
+      title: "Select Merge Target",
       content: <SelectParentContributorPage {...pageComponentProps} />,
     };
 

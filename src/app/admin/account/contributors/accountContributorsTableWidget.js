@@ -79,7 +79,7 @@ export const AccountContributorsTableWidget = withNavigationContext(
           name={name}
           w={w}
           title="Contributors"
-          subtitle={`active within ${ACTIVE_WITHIN_DAYS} days`}
+          subtitle={`Last ${ACTIVE_WITHIN_DAYS} days`}
           controls={[
             () => (
               <Button
