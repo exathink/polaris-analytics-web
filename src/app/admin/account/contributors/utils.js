@@ -76,7 +76,7 @@ export function useSelectContributorsTableColumns() {
   return columns;
 }
 
-export function useMergeContributorsTableColumns() {
+export function useUpdateContributorTableColumns() {
   const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
   const baseCols = getBaseColumns();
   const columns = [

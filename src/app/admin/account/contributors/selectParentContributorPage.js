@@ -1,7 +1,7 @@
 import {Radio, Table, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns} from "./utils";
+import {useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns} from "./utils";
 import {actionTypes} from "./constants";
 
 function getTransformedData(selectedRecords) {
@@ -40,7 +40,7 @@ export function SelectParentContributorPage({
   const data = getTransformedData(selectedRecordsWithoutChildren);
 
   const parentContributorRadioCol = getParentContributorRadioCol([parentContributorKey, dispatch]);
-  const columns = [parentContributorRadioCol, ...useMergeContributorsTableColumns()];
+  const columns = [parentContributorRadioCol, ...useUpdateContributorTableColumns()];
 
   const handleNextClick = () => {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});

@@ -1,7 +1,7 @@
 import {Input, Checkbox, Table, Alert, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {getRowSelection, useMergeContributorsTableColumns, VERTICAL_SCROLL_HEIGHT, withNoChildren} from "./utils";
+import {getRowSelection, useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, withNoChildren} from "./utils";
 import {useUpdateContributorForContributorAliases} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
@@ -15,7 +15,7 @@ function getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey
   return selectedRecords.filter(withNoChildren).filter((x) => x.key !== parentContributorKey);
 }
 
-export function MergeContributorsPage({
+export function UpdateContributorPage({
   accountKey,
   context,
   intl,
@@ -65,17 +65,17 @@ export function MergeContributorsPage({
           moveToFirstStep();
         }, 500);
       } else {
-        logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", updateStatus.message);
+        logGraphQlError("UpdateContributorPage.useUpdateContributorForContributorAliases", updateStatus.message);
         setErrorMessage(updateStatus.message);
       }
     },
     onError: (error) => {
-      logGraphQlError("MergeContributorsWorkflow.useUpdateContributorForContributorAliases", error);
+      logGraphQlError("UpdateContributorPage.useUpdateContributorForContributorAliases", error);
       setErrorMessage(error.message);
     },
   });
 
-  const handleMergeContributorClick = () => {
+  function handleUpdateContributorClick() {
     const updatedInfo = {
       contributorName: parentContributorName,
       excludedFromAnalysis: excludeFromAnalysis,
@@ -89,7 +89,7 @@ export function MergeContributorsPage({
         updatedInfo: updatedInfo,
       },
     });
-  };
+  }
 
   const handleBackClick = () => {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
@@ -100,22 +100,22 @@ export function MergeContributorsPage({
   };
 
   function renderActionButtons() {
-    const isMergeButtonDisabled = contributorsState[0].length === 0 || loading || timeOutExecuting === true;
+    const isButtonDisabled = contributorsState[0].length === 0 || loading || timeOutExecuting === true;
 
     return (
       <>
-        <div className={styles.mergeContributorsMergeAction}>
+        <div className={styles.updateContributorMergeAction}>
           <Button
             type="primary"
             className={styles.contributorsButton}
-            style={isMergeButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            onClick={handleMergeContributorClick}
-            disabled={isMergeButtonDisabled}
+            style={isButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            onClick={handleUpdateContributorClick}
+            disabled={isButtonDisabled}
           >
-            Merge Contributors
+            Update Contributor
           </Button>
         </div>
-        <div className={styles.mergeContributorsBackAction}>
+        <div className={styles.updateContributorBackAction}>
           <Button
             className={styles.contributorsButton}
             style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
@@ -124,7 +124,7 @@ export function MergeContributorsPage({
             Back
           </Button>
         </div>
-        <div className={styles.mergeContributorsDoneAction}>
+        <div className={styles.updateContributorDoneAction}>
           <Button
             className={styles.contributorsButton}
             style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
@@ -138,7 +138,7 @@ export function MergeContributorsPage({
   }
 
   const data = getTransformedData(selectedRecordsWithoutChildren);
-  const columns = useMergeContributorsTableColumns();
+  const columns = useUpdateContributorTableColumns();
 
   function getTable() {
     if (data.size > 0) {
@@ -165,7 +165,7 @@ export function MergeContributorsPage({
   }
 
   return (
-    <div className={styles.mergeContributorsLandingPage}>
+    <div className={styles.updateContributorLandingPage}>
       <div className={styles.messageNotification}>
         {errorMessage && (
           <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")} />
@@ -198,8 +198,8 @@ export function MergeContributorsPage({
           After merging, excluded contributors will not appear in Polaris metrics and are not billed
         </div>
       </div>
-      <div className={styles.mergeContributorTitle}>{getTitleText()}</div>
-      <div className={styles.mergeContributorTable}>{getTable()}</div>
+      <div className={styles.updateContributorTitle}>{getTitleText()}</div>
+      <div className={styles.updateContributorTable}>{getTable()}</div>
       {renderActionButtons()}
     </div>
   );

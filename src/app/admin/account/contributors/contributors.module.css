@@ -1,4 +1,4 @@
-.mergeContributorsWrapper {
+.updateContributorWrapper {
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
@@ -9,11 +9,11 @@
   gap: 0.5rem;
 }
 
-.mergeContributorsStepsWrapper {
+.updateContributorStepsWrapper {
   grid-area: steps;
 }
 
-.mergeContributorsStepsContent {
+.updateContributorStepsContent {
   min-height: 50vh;
   grid-area: stepContent;
 }
@@ -72,24 +72,24 @@
   width: 90%;
 }
 /* override completed steps color */
-.mergeContributorsStepsWrapper
+.updateContributorStepsWrapper
   :global(.ant-steps-item):global(.ant-steps-item-finish)
   :global(.ant-steps-item-icon)
   > :global(.ant-steps-icon) {
   color: #d4d4d4;
 }
 
-.mergeContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+.updateContributorStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
   background-color: #7824b5;
   border-color: #7824b5;
 }
 
-.mergeContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+.updateContributorStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
   background: #7824b5;
   border: #7824b5;
 }
 
-.mergeContributorsLandingPage {
+.updateContributorLandingPage {
   margin-top: 16px;
   display: grid;
   gap: 0.5rem;
@@ -97,10 +97,10 @@
   grid-template-areas:
     ". message"
     "parentContributor excludeFromAnalysis"
-    "mergeContributorTitle mergeContributorTitle"
-    "mergeContributorTable mergeContributorTable"
+    "updateContributorTitle updateContributorTitle"
+    "updateContributorTable updateContributorTable"
     "actionButtons actionButtons"
-    "mergeContributorsMergeAction mergeContributorsDoneAction";
+    "updateContributorMergeAction updateContributorDoneAction";
 }
 
 .messageNotification{
@@ -108,16 +108,16 @@
   grid-area: message;
   height: 3rem;
 }
-.mergeContributorsMergeAction {
+.updateContributorMergeAction {
   padding-bottom: 16px;
-  grid-area: mergeContributorsMergeAction;
+  grid-area: updateContributorMergeAction;
   justify-self: flex-end;
 }
-.mergeContributorsBackAction {
-  grid-area: mergeContributorsMergeAction;
+.updateContributorBackAction {
+  grid-area: updateContributorMergeAction;
 }
-.mergeContributorsDoneAction {
-  grid-area: mergeContributorsDoneAction;
+.updateContributorDoneAction {
+  grid-area: updateContributorDoneAction;
   justify-self: flex-start;
 }
 
@@ -173,15 +173,15 @@
   font-size: small;
 }
 
-.mergeContributorTitle {
+.updateContributorTitle {
   margin-top: 16px;
   padding: 8px;
   align-self: flex-end;
-  grid-area: mergeContributorTitle;
+  grid-area: updateContributorTitle;
 }
 
-.mergeContributorTable {
-  grid-area: mergeContributorTable;
+.updateContributorTable {
+  grid-area: updateContributorTable;
 }
 
 .actionButtons {
