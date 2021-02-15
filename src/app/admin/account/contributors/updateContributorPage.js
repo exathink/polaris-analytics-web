@@ -180,7 +180,7 @@ export function UpdateContributorPage({
         )}
       </div>
       <div className={styles.parentContributor}>
-        <div className={styles.contributor}>Contributor</div>
+        <div className={styles.contributor}>Contributor:</div>
         <div className={styles.inputWrapper}>
           <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>

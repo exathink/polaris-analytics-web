@@ -145,13 +145,13 @@
   font-size: large;
 }
 .inputWrapper {
-  margin-left: 20px;
+  margin-left: 16px;
 }
 .excludeFromAnalysisWrapper {
   padding: 16px;
   grid-area: excludeFromAnalysis;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
     "analysis checkbox"
     "subtitle subtitle";
@@ -165,6 +165,7 @@
 .excludeFromAnalysisCheckbox {
   grid-area: checkbox;
   width: 100px;
+  margin-left: 16px;
   align-self: center;
 }
 
