@@ -1,7 +1,7 @@
 import {useMutation, gql} from "@apollo/client";
 
 export const UPDATE_CONTRIBUTOR = gql`
-  mutation updateContributor($contributorKey: String!, $updatedInfo: ContributorUpdatedInfo!) {
+  mutation update_contributor($contributorKey: String!, $updatedInfo: ContributorUpdatedInfo!) {
     updateContributor(
       contributorInfo: {contributorKey: $contributorKey, updatedInfo: $updatedInfo}
     ) {
