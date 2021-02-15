@@ -158,6 +158,12 @@ export function MergeContributorsPage({
     }
   }
 
+  function getTitleText() {
+    return data.size > 0
+      ? `Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`
+      : null;
+  }
+
   return (
     <div className={styles.mergeContributorsLandingPage}>
       <div className={styles.messageNotification}>
@@ -192,9 +198,7 @@ export function MergeContributorsPage({
           After merging, excluded contributors will not appear in Polaris metrics and are not billed
         </div>
       </div>
-      <div
-        className={styles.mergeContributorTitle}
-      >{`Contributions from the ${contributorsState[0].length} contributors below will be merged into contributions from ${parentContributorName}`}</div>
+      <div className={styles.mergeContributorTitle}>{getTitleText()}</div>
       <div className={styles.mergeContributorTable}>{getTable()}</div>
       {renderActionButtons()}
     </div>
