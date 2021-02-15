@@ -194,10 +194,10 @@
 
 .updateContributorTitle {
   margin-top: 16px;
-  padding: 8px;
   align-self: flex-end;
   grid-area: updateContributorTitle;
   color: grey;
+  min-height: 1.5rem;
 }
 
 .updateContributorTable {

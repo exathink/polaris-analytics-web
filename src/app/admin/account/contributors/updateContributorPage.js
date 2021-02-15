@@ -158,7 +158,7 @@ export function UpdateContributorPage({
   }
 
   function getTitleText() {
-    return data.size > 0
+    return data.size > 0 && localRecords.length > 0
       ? `Contributions from the ${localRecords.length} contributors below will be merged into contributions from ${parentContributorName}`
       : null;
   }
