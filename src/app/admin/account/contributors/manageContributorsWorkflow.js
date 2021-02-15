@@ -16,7 +16,7 @@ const initialState = {
   parentContributorKey: "",
 };
 
-export function UpdateContributorWorkflow({accountKey, context, intl}) {
+export function ManageContributorsWorkflow({accountKey, context, intl}) {
   const [state, dispatch] = React.useReducer(contributorsReducer, initialState);
 
   const pageComponentProps = {

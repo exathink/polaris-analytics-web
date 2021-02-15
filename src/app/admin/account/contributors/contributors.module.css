@@ -127,17 +127,17 @@
   background-color: ghostwhite;
 }
 
-.updateContributorAction {
+.manageContributorsAction {
   margin-right: 60px;
   background-color: #4482ff;
   border-color: #4482ff;
 }
 
-.updateContributorAction:global(.ant-btn) {
+.manageContributorsAction:global(.ant-btn) {
   border-radius: 4px;
 }
 
-.updateContributorAction:hover {
+.manageContributorsAction:hover {
   background-color: #5896ff;
   border-color: #5896ff;
   color: #fff;
