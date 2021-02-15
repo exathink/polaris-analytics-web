@@ -153,7 +153,7 @@
   padding: 16px;
 }
 .contributor {
-  font-size: large;
+  font-size: medium;
 }
 .inputWrapper {
   margin-left: 16px;
@@ -170,7 +170,7 @@
 
 .excludeFromAnalysis {
   grid-area: analysis;
-  font-size: large;
+  font-size: medium;
 }
 
 .excludeFromAnalysisCheckbox {
@@ -183,6 +183,7 @@
 .excludeFromAnalysisSubtitle {
   grid-area: subtitle;
   font-size: small;
+  color: grey;
 }
 
 .updateContributorTitle {
@@ -190,6 +191,7 @@
   padding: 8px;
   align-self: flex-end;
   grid-area: updateContributorTitle;
+  color: grey;
 }
 
 .updateContributorTable {
