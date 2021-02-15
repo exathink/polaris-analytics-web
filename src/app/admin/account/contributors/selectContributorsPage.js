@@ -2,7 +2,7 @@ import React from "react";
 import {Table, Button} from "antd";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT} from "./utils";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
@@ -16,7 +16,7 @@ function hasChildren(recordKey, data) {
 }
 
 function getOnlySelectedRecordWithChildren(selectedRecords) {
-  const recordsWithChildren = selectedRecords.filter((s) => s.contributorAliasesInfo != null);
+  const recordsWithChildren = selectedRecords.filter(withChildren);
 
   if (recordsWithChildren.length === 1) {
     return recordsWithChildren[0];
