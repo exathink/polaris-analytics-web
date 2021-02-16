@@ -180,8 +180,11 @@ export function UpdateContributorPage({
     return (
       (selectedRecordsWithoutChildren.length > 0 &&
         localRecords.length === 0 &&
-        initialState.parentContributorName === parentContributorName) ||
-      (selectedRecordsWithoutChildren.length === 0 && initialState.parentContributorName === parentContributorName)
+        initialState.parentContributorName === parentContributorName &&
+        initialState.excludeFromAnalysis === excludeFromAnalysis) ||
+      (selectedRecordsWithoutChildren.length === 0 &&
+        initialState.parentContributorName === parentContributorName &&
+        initialState.excludeFromAnalysis === excludeFromAnalysis)
     );
   }
 
