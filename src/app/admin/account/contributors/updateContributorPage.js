@@ -262,8 +262,12 @@ export function UpdateContributorPage({
 
   function getTitleText() {
     // unlink flow
-    if (isUnlinkFlow && unlinkedAliases.length > 0) {
-      return `${unlinkedAliases.length} contributors will be unlinked from ${parentContributorName}`;
+    if (isUnlinkFlow) {
+      if (unlinkedAliases.length > 0) {
+        const contributor = unlinkedAliases.length === 1 ? "contributor" : "contributors";
+        return `${unlinkedAliases.length} ${contributor} will be unlinked from ${parentContributorName}`;
+      }
+      return "Uncheck contributors below to unlink";
     }
 
     // other flows
