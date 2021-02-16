@@ -13,6 +13,7 @@ import {useUpdateContributor} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateContributorReducer} from "./updateContributorReducer";
+
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
   return new Map(kvArr);
