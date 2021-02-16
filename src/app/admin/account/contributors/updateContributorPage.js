@@ -63,6 +63,7 @@ function getToggleCol(unlinkAliasesState) {
 }
 
 const isUnlinked = (x) => !x.checked;
+const isLinked = (x) => x.checked;
 
 export function UpdateContributorPage({
   accountKey,
@@ -102,6 +103,7 @@ export function UpdateContributorPage({
   ] = React.useReducer(updateContributorReducer, initialState);
 
   const unlinkedAliases = unlinkAliases.filter(isUnlinked);
+  const linkedAliases = unlinkAliases.filter(isLinked);
 
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributor({
@@ -156,7 +158,15 @@ export function UpdateContributorPage({
 
   function renderActionButtons() {
     const isButtonDisabled =
-      (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true;
+      loading ||
+      timeOutExecuting === true ||
+      (selectedRecordsWithoutChildren.length > 0 &&
+        localRecords.length === 0 &&
+        initialState.parentContributorName === parentContributorName) ||
+      (selectedRecordsWithoutChildren.length === 0 && initialState.parentContributorName === parentContributorName) ||
+      (isUnlinkFlow &&
+        linkedAliases.length === initialUnlinkAliases.length &&
+        initialState.parentContributorName === parentContributorName);
 
     return (
       <>
