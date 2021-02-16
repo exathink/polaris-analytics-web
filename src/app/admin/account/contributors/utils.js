@@ -40,6 +40,11 @@ export function getBaseColumns() {
       dataIndex: "select_parent_contributor",
       key: "select_parent_contributor",
     },
+    unlink_alias_switch: {
+      title: " ",
+      dataIndex: "unlink_alias_switch",
+      key: "unlink_alias_switch"
+    }
   };
 }
 

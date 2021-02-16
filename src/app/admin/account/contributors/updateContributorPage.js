@@ -1,7 +1,14 @@
-import {Input, Checkbox, Table, Alert, Button} from "antd";
+import {Input, Checkbox, Table, Alert, Button, Switch} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {getRowSelection, SCROLL_HEIGHT_UPDATE_CONTRIBUTORS, useUpdateContributorTableColumns, withNoChildren} from "./utils";
+import {
+  getRowSelection,
+  SCROLL_HEIGHT_UPDATE_CONTRIBUTORS,
+  useUpdateContributorTableColumns,
+  withChildren,
+  withNoChildren,
+  getBaseColumns,
+} from "./utils";
 import {useUpdateContributor} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
@@ -13,6 +20,46 @@ function getTransformedData(selectedRecords) {
 
 function getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey) {
   return selectedRecords.filter(withNoChildren).filter((x) => x.key !== parentContributorKey);
+}
+
+function getUnlinkUtils(selectedRecords) {
+  const isUnlinkFlow = selectedRecords.length === 1 && selectedRecords.filter(withChildren).length === 1;
+  const allUnlinkAliases = isUnlinkFlow
+    ? selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
+    : [];
+  return {
+    isUnlinkFlow,
+    allUnlinkAliases,
+  };
+}
+
+function getToggleCol(unlinkAliasesState) {
+  const [unlinkAliases, updateUnlinkAliases] = unlinkAliasesState;
+
+  function handleChange({recordKey, checked}) {
+    const updatedRecords = unlinkAliases.map((x) => {
+      if (x.key === recordKey) {
+        return {...x, checked};
+      }
+      return {...x};
+    });
+
+    updateUnlinkAliases(updatedRecords);
+  }
+
+  return {
+    ...getBaseColumns().unlink_alias_switch,
+    width: "10%",
+    align: "center",
+    render: (text, record) => (
+      <Switch
+        checked={unlinkAliases.find((x) => x.key === record.key).checked}
+        onChange={(checked, e) => handleChange({recordKey: record.key, checked: checked})}
+        size="small"
+        className={styles.toggle}
+      />
+    ),
+  };
 }
 
 export function UpdateContributorPage({
@@ -75,11 +122,19 @@ export function UpdateContributorPage({
     },
   });
 
+  const {isUnlinkFlow, allUnlinkAliases} = getUnlinkUtils(selectedRecords);
+  const [unlinkAliases, updateUnlinkAliases] = React.useState(allUnlinkAliases.map((x) => ({...x, checked: true})));
+
+  const columns = useUpdateContributorTableColumns();
+  const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
+
   function handleUpdateContributorClick() {
     const updatedInfo = {
       contributorName: parentContributorName,
       excludedFromAnalysis: excludeFromAnalysis,
-      contributorAliasKeys: localRecords.map((x) => x.key),
+      contributorAliasKeys: localRecords.length > 0 ? localRecords.map((x) => x.key) : undefined,
+      unlinkContributorAliasKeys:
+        unlinkAliases.length > 0 ? unlinkAliases.filter((x) => !x.checked).map((x) => x.key) : undefined,
     };
 
     // call mutation on save button click
@@ -100,7 +155,8 @@ export function UpdateContributorPage({
   };
 
   function renderActionButtons() {
-    const isButtonDisabled = (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true;
+    const isButtonDisabled =
+      (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true || unlinkAliases.filter(x => x.checked).length === allUnlinkAliases.length;
 
     return (
       <>
@@ -137,9 +193,22 @@ export function UpdateContributorPage({
   }
 
   const data = getTransformedData(selectedRecordsWithoutChildren);
-  const columns = useUpdateContributorTableColumns();
-
   function getTable() {
+    if (isUnlinkFlow) {
+      const data = getTransformedData(
+        selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
+      );
+      return (
+        <Table
+          size="small"
+          dataSource={[...data.values()]}
+          columns={unlinkCols}
+          pagination={false}
+          scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
+          showSorterTooltip={false}
+        />
+      );
+    }
     if (data.size > 0) {
       return (
         <Table
@@ -158,9 +227,36 @@ export function UpdateContributorPage({
   }
 
   function getTitleText() {
+    if (isUnlinkFlow && unlinkAliases.filter((x) => !x.checked).length) {
+      return `${
+        unlinkAliases.filter((x) => !x.checked).length
+      } contributors will be unlinked from ${parentContributorName}`;
+    }
     return data.size > 0 && localRecords.length > 0
       ? `Contributions from the contributors below will be merged into contributions from ${parentContributorName}`
       : null;
+  }
+
+  function getExcludeFromAnalysis() {
+    if (isUnlinkFlow) {
+      return null;
+    }
+
+    return (
+      <>
+        <div className={styles.excludeFromAnalysis}>Exclude From Analysis:</div>
+        <div className={styles.excludeFromAnalysisCheckbox}>
+          <Checkbox
+            size="large"
+            checked={excludeFromAnalysis}
+            onChange={() => setExcludeFromAnalysis(!excludeFromAnalysis)}
+          />
+        </div>
+        <div className={styles.excludeFromAnalysisSubtitle}>
+          Activity and metrics for excluded contributors will not appear in Polaris and you will not be billed for them.
+        </div>
+      </>
+    );
   }
 
   return (
@@ -184,19 +280,7 @@ export function UpdateContributorPage({
           <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>
       </div>
-      <div className={styles.excludeFromAnalysisWrapper}>
-        <div className={styles.excludeFromAnalysis}>Exclude From Analysis:</div>
-        <div className={styles.excludeFromAnalysisCheckbox}>
-          <Checkbox
-            size="large"
-            checked={excludeFromAnalysis}
-            onChange={() => setExcludeFromAnalysis(!excludeFromAnalysis)}
-          />
-        </div>
-        <div className={styles.excludeFromAnalysisSubtitle}>
-          Activity and metrics for excluded contributors will not appear in Polaris and you will not be billed for them.
-        </div>
-      </div>
+      <div className={styles.excludeFromAnalysisWrapper}>{getExcludeFromAnalysis()}</div>
       <div className={styles.updateContributorTitle}>{getTitleText()}</div>
       <div className={styles.updateContributorTable}>{getTable()}</div>
       {renderActionButtons()}
