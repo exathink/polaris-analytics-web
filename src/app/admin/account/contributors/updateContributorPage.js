@@ -12,7 +12,7 @@ import {
 import {useUpdateContributor} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
-
+import {updateContributorReducer} from "./updateContributorReducer";
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
   return new Map(kvArr);
@@ -24,12 +24,12 @@ function getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey
 
 function getUnlinkUtils(selectedRecords) {
   const isUnlinkFlow = selectedRecords.length === 1 && selectedRecords.filter(withChildren).length === 1;
-  const allUnlinkAliases = isUnlinkFlow
+  const initialUnlinkAliases = isUnlinkFlow
     ? selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
     : [];
   return {
     isUnlinkFlow,
-    allUnlinkAliases,
+    initialUnlinkAliases,
   };
 }
 
@@ -69,64 +69,61 @@ export function UpdateContributorPage({
   current,
   selectedRecords,
   parentContributorKey,
-  dispatch,
+  dispatch: dispatchEvent,
 }) {
   const selectedRecordsWithoutChildren = getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey);
-
-  const [excludeFromAnalysis, setExcludeFromAnalysis] = React.useState();
-
   // parent contributor in which to merge other contributors
   const parentContributor = selectedRecords.find((x) => x.key === parentContributorKey);
-  const [parentContributorName, setParentContributorName] = React.useState(parentContributor.name);
-  function handleParentContributorChange(e) {
-    setParentContributorName(e.target.value);
-  }
+  const {isUnlinkFlow, initialUnlinkAliases} = getUnlinkUtils(selectedRecords);
 
-  // selection state for records without children
-  const [localRecords, setLocalRecords] = React.useState(selectedRecordsWithoutChildren);
-
-  const [[errorMessage, setErrorMessage], [successMessage, setSuccessMessage]] = [
-    React.useState(""),
-    React.useState(""),
-  ];
-
-  // This will remain true till the time timeout is executing.
-  const [timeOutExecuting, setTimeOutExecuting] = React.useState();
-
-  const moveToFirstStep = () => {
-    dispatch({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
+  const initialState = {
+    excludeFromAnalysis: undefined,
+    parentContributorName: parentContributor.name,
+    localRecords: selectedRecordsWithoutChildren,
+    errorMessage: "",
+    successMessage: "",
+    timeOutExecuting: undefined,
+    unlinkAliases: initialUnlinkAliases.map((x) => ({...x, checked: true})),
   };
+  
+  const [
+    {
+      excludeFromAnalysis,
+      parentContributorName,
+      localRecords, // selection state for records without children
+      errorMessage,
+      successMessage,
+      timeOutExecuting, // This will remain true till the time timeout is executing.
+      unlinkAliases,
+    },
+    dispatch,
+  ] = React.useReducer(updateContributorReducer, initialState);
 
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributor({
     onCompleted: ({updateContributor: {updateStatus}}) => {
       //  {success, contributorKey, message, exception}
       if (updateStatus.success) {
-        setSuccessMessage("Updated Successfully.");
+        dispatch({type: actionTypes.UPDATE_SUCCESS_MESSAGE, payload: "Updated Successfully."});
         client.resetStore();
 
-        setTimeOutExecuting(true);
+        dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
         setTimeout(() => {
-          setTimeOutExecuting(false);
-          // if successful navigate to select contributors page after 1 sec
-          moveToFirstStep();
+          dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: false});
+
+          // if successful navigate to select contributors page after 1 sec (moveToFirstStep)
+          dispatchEvent({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
         }, 500);
       } else {
         logGraphQlError("UpdateContributorPage.useUpdateContributor", updateStatus.message);
-        setErrorMessage(updateStatus.message);
+        dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateStatus.message});
       }
     },
     onError: (error) => {
       logGraphQlError("UpdateContributorPage.useUpdateContributor", error);
-      setErrorMessage(error.message);
+      dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: error.message});
     },
   });
-
-  const {isUnlinkFlow, allUnlinkAliases} = getUnlinkUtils(selectedRecords);
-  const [unlinkAliases, updateUnlinkAliases] = React.useState(allUnlinkAliases.map((x) => ({...x, checked: true})));
-
-  const columns = useUpdateContributorTableColumns();
-  const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
 
   function handleUpdateContributorClick() {
     const updatedInfo = {
@@ -147,7 +144,7 @@ export function UpdateContributorPage({
   }
 
   const handleBackClick = () => {
-    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
+    dispatchEvent({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
   };
 
   const handleDoneClick = () => {
@@ -156,7 +153,7 @@ export function UpdateContributorPage({
 
   function renderActionButtons() {
     const isButtonDisabled =
-      (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true || unlinkAliases.filter(x => x.checked).length === allUnlinkAliases.length;
+      (selectedRecordsWithoutChildren.length > 0 && localRecords.length === 0) || loading || timeOutExecuting === true;
 
     return (
       <>
@@ -192,16 +189,20 @@ export function UpdateContributorPage({
     );
   }
 
+  const columns = useUpdateContributorTableColumns();
   const data = getTransformedData(selectedRecordsWithoutChildren);
+
   function getTable() {
     if (isUnlinkFlow) {
-      const data = getTransformedData(
+      const updateUnlinkAliases = (ula) => dispatch({type: actionTypes.UPDATE_UNLINK_ALIASES, payload: ula});
+      const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
+      const unlinkData = getTransformedData(
         selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
       );
       return (
         <Table
           size="small"
-          dataSource={[...data.values()]}
+          dataSource={[...unlinkData.values()]}
           columns={unlinkCols}
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
@@ -210,6 +211,7 @@ export function UpdateContributorPage({
       );
     }
     if (data.size > 0) {
+      const setLocalRecords = (records) => dispatch({type: actionTypes.UPDATE_LOCAL_RECORDS, payload: records});
       return (
         <Table
           size="small"
@@ -249,7 +251,7 @@ export function UpdateContributorPage({
           <Checkbox
             size="large"
             checked={excludeFromAnalysis}
-            onChange={() => setExcludeFromAnalysis(!excludeFromAnalysis)}
+            onChange={() => dispatch({type: actionTypes.UPDATE_EXCLUDE_FROM_ANALYSIS, payload: !excludeFromAnalysis})}
           />
         </div>
         <div className={styles.excludeFromAnalysisSubtitle}>
@@ -259,14 +261,30 @@ export function UpdateContributorPage({
     );
   }
 
+  function handleParentContributorChange(e) {
+    dispatch({type: actionTypes.UPDATE_PARENT_CONTRIBUTOR_NAME, payload: e.target.value});
+  }
+
   return (
     <div className={styles.updateContributorLandingPage}>
       <div className={styles.messageNotification}>
         {errorMessage && (
-          <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")} />
+          <Alert
+            message={errorMessage}
+            type="error"
+            showIcon
+            closable
+            onClose={() => dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: ""})}
+          />
         )}
         {successMessage && (
-          <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage("")} />
+          <Alert
+            message={successMessage}
+            type="success"
+            showIcon
+            closable
+            onClose={() => dispatch({type: actionTypes.UPDATE_SUCCESS_MESSAGE, payload: ""})}
+          />
         )}
         {loading && (
           <Button className={"shiftRight"} type="primary" loading>
