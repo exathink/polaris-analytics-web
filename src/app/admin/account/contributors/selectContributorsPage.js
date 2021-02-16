@@ -87,11 +87,6 @@ export function SelectContributorsPage({
     commitWithinDays: commitWithinDays,
   });
 
-  useOnlyRunOnUpdate(() => {
-    // clear selected records whenever days range change.
-    dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: []});
-  }, [commitWithinDays]);
-
   if (error) {
     logGraphQlError("SelectContributorsPage.useQueryContributorAliasesInfo", error);
     return null;
