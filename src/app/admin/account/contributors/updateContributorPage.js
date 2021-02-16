@@ -27,9 +27,9 @@ function getUnlinkUtils(selectedRecords) {
   const isUnlinkFlow = selectedRecords.length === 1 && selectedRecords.filter(withChildren).length === 1;
 
   // all child records except the parent alias
-  const unlinkChildRecords = selectedRecords[0].contributorAliasesInfo.filter(
-    (x) => x.key !== selectedRecords[0].keyBackup
-  );
+  const unlinkChildRecords = isUnlinkFlow
+    ? selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
+    : [];
 
   const initialUnlinkAliases = isUnlinkFlow ? unlinkChildRecords : [];
   return {
