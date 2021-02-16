@@ -156,18 +156,30 @@ export function UpdateContributorPage({
     context.go("..");
   };
 
-  function renderActionButtons() {
-    const isButtonDisabled =
-      loading ||
-      timeOutExecuting === true ||
+  function isButtonDisabled() {
+    // all flows
+    if (loading || timeOutExecuting === true) {
+      return true;
+    }
+
+    // unlink flow
+    if (isUnlinkFlow) {
+      return (
+        linkedAliases.length === initialUnlinkAliases.length &&
+        initialState.parentContributorName === parentContributorName
+      );
+    }
+
+    // others
+    return (
       (selectedRecordsWithoutChildren.length > 0 &&
         localRecords.length === 0 &&
         initialState.parentContributorName === parentContributorName) ||
-      (selectedRecordsWithoutChildren.length === 0 && initialState.parentContributorName === parentContributorName) ||
-      (isUnlinkFlow &&
-        linkedAliases.length === initialUnlinkAliases.length &&
-        initialState.parentContributorName === parentContributorName);
+      (selectedRecordsWithoutChildren.length === 0 && initialState.parentContributorName === parentContributorName)
+    );
+  }
 
+  function renderActionButtons() {
     return (
       <>
         <div className={styles.updateContributorMergeAction}>
@@ -175,7 +187,7 @@ export function UpdateContributorPage({
             type="primary"
             className={styles.contributorsPrimaryButton}
             onClick={handleUpdateContributorClick}
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled()}
           >
             Update Contributor
           </Button>
