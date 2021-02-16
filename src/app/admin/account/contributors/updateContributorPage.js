@@ -25,12 +25,17 @@ function getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey
 
 function getUnlinkUtils(selectedRecords) {
   const isUnlinkFlow = selectedRecords.length === 1 && selectedRecords.filter(withChildren).length === 1;
-  const initialUnlinkAliases = isUnlinkFlow
-    ? selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
-    : [];
+
+  // all child records except the parent alias
+  const unlinkChildRecords = selectedRecords[0].contributorAliasesInfo.filter(
+    (x) => x.key !== selectedRecords[0].keyBackup
+  );
+
+  const initialUnlinkAliases = isUnlinkFlow ? unlinkChildRecords : [];
   return {
     isUnlinkFlow,
     initialUnlinkAliases,
+    unlinkChildRecords,
   };
 }
 
@@ -78,7 +83,7 @@ export function UpdateContributorPage({
   const selectedRecordsWithoutChildren = getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey);
   // parent contributor in which to merge other contributors
   const parentContributor = selectedRecords.find((x) => x.key === parentContributorKey);
-  const {isUnlinkFlow, initialUnlinkAliases} = getUnlinkUtils(selectedRecords);
+  const {isUnlinkFlow, initialUnlinkAliases, unlinkChildRecords} = getUnlinkUtils(selectedRecords);
 
   const initialState = {
     excludeFromAnalysis: undefined,
@@ -222,10 +227,7 @@ export function UpdateContributorPage({
     if (isUnlinkFlow) {
       const updateUnlinkAliases = (ula) => dispatch({type: actionTypes.UPDATE_UNLINK_ALIASES, payload: ula});
       const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
-      const unlinkData = getTransformedData(
-        // all child records except the parent alias
-        selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
-      );
+      const unlinkData = getTransformedData(unlinkChildRecords);
       return (
         <Table
           size="small"
