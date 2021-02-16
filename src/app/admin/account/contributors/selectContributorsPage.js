@@ -9,7 +9,6 @@ import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIG
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
-import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 
