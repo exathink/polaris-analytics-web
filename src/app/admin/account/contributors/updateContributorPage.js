@@ -62,6 +62,8 @@ function getToggleCol(unlinkAliasesState) {
   };
 }
 
+const isUnlinked = (x) => !x.checked;
+
 export function UpdateContributorPage({
   accountKey,
   context,
@@ -85,7 +87,7 @@ export function UpdateContributorPage({
     timeOutExecuting: undefined,
     unlinkAliases: initialUnlinkAliases.map((x) => ({...x, checked: true})),
   };
-  
+
   const [
     {
       excludeFromAnalysis,
@@ -98,6 +100,8 @@ export function UpdateContributorPage({
     },
     dispatch,
   ] = React.useReducer(updateContributorReducer, initialState);
+
+  const unlinkedAliases = unlinkAliases.filter(isUnlinked);
 
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributor({
@@ -130,8 +134,7 @@ export function UpdateContributorPage({
       contributorName: parentContributorName,
       excludedFromAnalysis: excludeFromAnalysis,
       contributorAliasKeys: localRecords.length > 0 ? localRecords.map((x) => x.key) : undefined,
-      unlinkContributorAliasKeys:
-        unlinkAliases.length > 0 ? unlinkAliases.filter((x) => !x.checked).map((x) => x.key) : undefined,
+      unlinkContributorAliasKeys: unlinkedAliases.length > 0 ? unlinkedAliases.map((x) => x.key) : undefined,
     };
 
     // call mutation on save button click
@@ -197,6 +200,7 @@ export function UpdateContributorPage({
       const updateUnlinkAliases = (ula) => dispatch({type: actionTypes.UPDATE_UNLINK_ALIASES, payload: ula});
       const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
       const unlinkData = getTransformedData(
+        // all child records except the parent alias
         selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
       );
       return (
@@ -229,11 +233,12 @@ export function UpdateContributorPage({
   }
 
   function getTitleText() {
-    if (isUnlinkFlow && unlinkAliases.filter((x) => !x.checked).length) {
-      return `${
-        unlinkAliases.filter((x) => !x.checked).length
-      } contributors will be unlinked from ${parentContributorName}`;
+    // unlink flow
+    if (isUnlinkFlow && unlinkedAliases.length > 0) {
+      return `${unlinkedAliases.length} contributors will be unlinked from ${parentContributorName}`;
     }
+
+    // other flows
     return data.size > 0 && localRecords.length > 0
       ? `Contributions from the contributors below will be merged into contributions from ${parentContributorName}`
       : null;
