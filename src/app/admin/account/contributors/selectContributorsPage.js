@@ -9,7 +9,6 @@ import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIG
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
-import {useOnlyRunOnUpdate} from "../../../helpers/hooksUtil";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 
@@ -87,11 +86,6 @@ export function SelectContributorsPage({
     commitWithinDays: commitWithinDays,
   });
 
-  useOnlyRunOnUpdate(() => {
-    // clear selected records whenever days range change.
-    dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: []});
-  }, [commitWithinDays]);
-
   if (error) {
     logGraphQlError("SelectContributorsPage.useQueryContributorAliasesInfo", error);
     return null;
@@ -116,7 +110,8 @@ export function SelectContributorsPage({
         <div className={styles.selectContributorsNextAction}>
           <Button
             type="primary"
-            className={styles.contributorsPrimaryButton}
+            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
+            className={styles.contributorsButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >

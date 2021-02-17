@@ -243,3 +243,7 @@
   grid-area: selectParentContributorTable;
   margin-bottom: 16px;
 }
+
+.toggle{
+  border-radius: 100px !important;
+}
