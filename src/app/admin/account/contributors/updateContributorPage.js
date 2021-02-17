@@ -267,7 +267,7 @@ export function UpdateContributorPage({
         const contributor = unlinkedAliases.length === 1 ? "contributor" : "contributors";
         return `${unlinkedAliases.length} ${contributor} will be unlinked from ${parentContributorName}`;
       }
-      return "Uncheck contributors below to unlink";
+      return `Click the toggle on the right to disconnect a contributor as an alias for ${parentContributorName}`;
     }
 
     // other flows
