@@ -168,7 +168,7 @@ export function SelectContributorsPage({
           />
         </div>
         <div>Days</div>
-        <div className={styles.activeContributors}>
+        <div className={styles.activeContributors} data-testid="active-contributors">
           <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
       </div>
@@ -186,6 +186,7 @@ export function SelectContributorsPage({
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
+          data-testid="select-contributors-table"
         />
       </div>
     </div>
