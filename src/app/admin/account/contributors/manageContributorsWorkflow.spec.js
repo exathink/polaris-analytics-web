@@ -4,11 +4,11 @@ import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {UPDATE_CONTRIBUTOR} from "./useUpdateContributor";
 import {GET_CONTRIBUTOR_ALIASES_INFO_QUERY} from "./useQueryContributorAliasesInfo";
 import {getNDaysAgo} from "../../../../test/test-utils";
-import {ManageContributorsWorkflow} from "./manageContributorsWorkflow";
+import {ManageContributorsWorkflow as ManageContributorsWorkflowWithoutIntl} from "./manageContributorsWorkflow";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 
-const ManageContributorsWorkflowWithIntl = injectIntl(ManageContributorsWorkflow);
+const ManageContributorsWorkflow = injectIntl(ManageContributorsWorkflowWithoutIntl);
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -172,7 +172,7 @@ describe("ManageContributorsWorkflow", () => {
       ];
 
       beforeEach(() => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
       })
 
       test("should not render title for table", () => {
@@ -223,7 +223,7 @@ describe("ManageContributorsWorkflow", () => {
       ];
 
       test("it renders nothing and logs the error when there is a network error", async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, mockNetworkError);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mockNetworkError);
         // before
         expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
@@ -232,7 +232,7 @@ describe("ManageContributorsWorkflow", () => {
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, mockGraphQlErrors);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mockGraphQlErrors);
         // before
         expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
@@ -244,7 +244,7 @@ describe("ManageContributorsWorkflow", () => {
     describe("when there is data for contributors", () => {
       // setup initial conditions for this flow
       beforeEach(async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
       });
 
       test("should render title for table", async () => {
@@ -430,7 +430,7 @@ describe("ManageContributorsWorkflow", () => {
     ];
     // setup initial conditions for this flow
     beforeEach(async () => {
-      renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, selectParentMocks);
+      renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, selectParentMocks);
 
       // before next button is disabled
       const nextButton = screen.getByRole("button", {name: /Next/i});
@@ -523,7 +523,7 @@ describe("ManageContributorsWorkflow", () => {
     describe("single non-parent contributor", () => {
       // setup initial conditions for this flow
       beforeEach(async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
 
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
@@ -590,7 +590,7 @@ describe("ManageContributorsWorkflow", () => {
     describe("unlink flow", () => {
       // setup initial conditions for unlink flow
       beforeEach(async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
 
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
@@ -683,7 +683,7 @@ describe("ManageContributorsWorkflow", () => {
 
     describe("regular update contributor flow", () => {
       beforeEach(async () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
 
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
