@@ -184,7 +184,7 @@ describe("ProjectFlowMetricsSettingWidget", () => {
 
     test("renders appropriate message on the chart title when there are no workItems", async () => {
       renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, emptyMocksFixture);
-      await screen.findByText(/0 work items closed/i);
+      await screen.findByText(/0 cards closed/i);
     });
   });
 

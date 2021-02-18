@@ -82,7 +82,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);
 
-      expect(await screen.findByText(/work items/i)).toBeInTheDocument();
+      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
     });
   });
 
@@ -120,7 +120,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);
 
-      expect(await screen.findByText(/work items/i)).toBeInTheDocument();
+      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
     });
   });
 });

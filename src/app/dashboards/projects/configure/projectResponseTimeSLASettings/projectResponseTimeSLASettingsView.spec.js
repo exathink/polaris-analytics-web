@@ -137,14 +137,14 @@ describe("ProjectResponseTimeSLASettingsView", () => {
       test("it renders appropriate message on the chart", async () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
 
-        await screen.findByText(/0 work items closed/i);
+        await screen.findByText(/0 cards closed/i);
       });
     });
 
     describe("when there are workItems", () => {
       test("it renders appropriate message on the chart", async () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
-        expect(await screen.findByText(/3 work items closed/i)).toBeInTheDocument();
+        expect(await screen.findByText(/3 cards closed/i)).toBeInTheDocument();
       });
 
       // TODO: need to see how to test this, tried few things which are not working.
