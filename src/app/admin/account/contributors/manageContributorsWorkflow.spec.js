@@ -171,28 +171,27 @@ describe("ManageContributorsWorkflow", () => {
         },
       ];
 
+      beforeEach(() => {
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
+      })
+
       test("should not render title for table", () => {
-        // TOBE Done
-        // renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
-        // expect(
-        //   screen.queryByText(/Select one or more contributors to merge into a single contributor/i)
-        // ).not.toBeInTheDocument();
+        expect(
+          screen.queryByText(/Select one or more contributors to merge into a single contributor/i)
+        ).not.toBeInTheDocument();
       });
 
       test("should render table with no records", () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const {getByText} = within(screen.queryByTestId("select-contributors-table"));
         getByText(/no data/i);
       });
 
       test("should render active contributors as zero", () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const {getByText} = within(screen.queryByTestId("active-contributors"));
         getByText(/0/i);
       });
 
       test("should render Next button as disabled", () => {
-        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const nextButton = screen.getByRole("button", {name: /Next/i});
         expect(nextButton).toBeDisabled();
       });
@@ -248,8 +247,8 @@ describe("ManageContributorsWorkflow", () => {
         renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
       });
 
-      test("should render title for table", () => {
-        screen.getByText(/Select one or more contributors to merge into a single contributor/i);
+      test("should render title for table", async () => {
+        await screen.findByText(/Select one or more contributors to merge into a single contributor/i);
       });
 
       test("should render slider with knob at mark 30", () => {
