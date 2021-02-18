@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {
@@ -6,32 +6,29 @@ import {
   AvgDuration,
   AvgLatency,
   CycleTimeCarousel,
+  EffortWIP,
   LatestCommit,
   PercentileCycleTime,
-  TotalEffort,
   Wip,
   WipCarousel,
-  WipWithLimit
+  WipWithLimit,
 } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
 import {ComponentCarousel} from "../../../../shared/components/componentCarousel/componentCarousel";
 
-const FlowBoardSummaryView = (
-  {
-    pipelineCycleMetrics,
-    specsOnly,
-    targetPercentile,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
-    leadTimeTarget,
-    cycleTimeTarget,
-    wipLimit,
-    viewerContext
-  }
-) => {
+const FlowBoardSummaryView = ({
+  pipelineCycleMetrics,
+  specsOnly,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  wipLimit,
+  viewerContext,
+}) => {
   return (
     <VizRow h={1}>
-
       <VizItem w={0.3}>
         <PercentileCycleTime
           currentMeasurement={pipelineCycleMetrics}
@@ -41,31 +38,24 @@ const FlowBoardSummaryView = (
       </VizItem>
       <VizItem w={0.3}>
         <ComponentCarousel tickInterval={2000}>
-          <AvgCycleTime
-            currentMeasurement={pipelineCycleMetrics}
-            target={cycleTimeTarget}
-          />
-          <AvgDuration
-            currentMeasurement={pipelineCycleMetrics}
-            target={cycleTimeTarget}
-          />
+          <AvgCycleTime currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
+          <AvgDuration currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
         </ComponentCarousel>
       </VizItem>
-      <VizItem w={0.3} style={{
-        paddingLeft: '40px',
-        borderLeftWidth: '1px',
-        borderLeftStyle: 'solid',
-        borderLeftColor: 'rgba(0,0,0,0.1)',
-      }}>
-        <WipWithLimit
-          currentMeasurement={pipelineCycleMetrics}
-          target={wipLimit}
-          specsOnly={specsOnly}
-        />
+      <VizItem
+        w={0.3}
+        style={{
+          paddingLeft: "40px",
+          borderLeftWidth: "1px",
+          borderLeftStyle: "solid",
+          borderLeftColor: "rgba(0,0,0,0.1)",
+        }}
+      >
+        <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </VizItem>
     </VizRow>
-  )
-}
+  );
+};
 
 const NonFlowBoard20View = (
   {
@@ -147,9 +137,8 @@ export const ValueBoardSummaryView = (
                 borderTopColor: 'rgba(0,0,0,0.1)'
               }}>
         <VizItem w={1 / 3}>
-          <TotalEffort
+          <EffortWIP
             currentMeasurement={current}
-
           />
         </VizItem>
         <VizItem w={1 / 3}>

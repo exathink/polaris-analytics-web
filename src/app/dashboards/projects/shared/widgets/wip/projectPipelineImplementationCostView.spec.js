@@ -62,7 +62,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       // both workitem scope and legend text as Specs
       const specsElem = await screen.findAllByText(/specs/i);
@@ -77,7 +77,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
       // asserting on the title of the chart first
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);
@@ -100,7 +100,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       // both workitem scope and legend text as Specs
       const specsElem = await screen.findAllByText(/specs/i);
@@ -115,7 +115,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
       // asserting on the title of the chart first
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);

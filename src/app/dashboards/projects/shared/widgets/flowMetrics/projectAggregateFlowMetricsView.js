@@ -15,7 +15,7 @@ import {
   LeadTimeSLACarousel,
   Volume,
   VolumeCarousel,
-  TotalEffort,
+  EffortOUT,
 } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../../shared/components/componentCarousel/componentCarousel";
 
@@ -46,7 +46,7 @@ export const PerformanceSummaryView = (
         />
       </VizItem>
       <VizItem w={0.25}>
-        <TotalEffort
+        <EffortOUT
           currentMeasurement={current}
           previousMeasurement={previous}
         />
@@ -143,7 +143,7 @@ export const ValueBoardSummaryView = (
                 borderTopColor: 'rgba(0,0,0,0.1)'
               }}>
         <VizItem w={1/3}>
-          <TotalEffort
+          <EffortOUT
             currentMeasurement={current}
             previousMeasurement={previous}
           />

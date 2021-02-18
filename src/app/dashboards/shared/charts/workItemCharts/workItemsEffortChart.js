@@ -128,7 +128,8 @@ export const WorkItemsEffortChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Total Wip Effort: ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} Dev-Days`,
+        useHTML: true,
+        text: `<span>Effort<sub>WIP</sub> : ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} Dev-Days</span>`,
         align: "left",
       },
       subtitle: {
