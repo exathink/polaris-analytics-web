@@ -277,8 +277,8 @@ describe("CapacityTrendsChart", () => {
             body:
               trend.displayName === "EffortIN"
                 ? [
-                    [`${trend.displayName}: `, `${formatNumber(firstPoint[trend.key])} Dev-Days`],
-                    ["Contributors: ", `${formatNumber(firstPoint.contributorCount)}`],
+                    [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])} Dev-Days`],
+                    [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
                 : [[``, `${formatNumber(firstPoint[trend.key])} Dev-Days`]],
           });
