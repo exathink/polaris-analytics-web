@@ -35,7 +35,7 @@ function getSeries(workItems, specsOnly, intl, view) {
       useHTML: true,
 
       formatter: function () {
-        return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${specsOnly ? `Dev-Days` : `Work Items`}</div>`;
+        return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
       }
     }
   }]
@@ -103,7 +103,7 @@ export const WorkItemsEpicEffortChart = Chart({
             header: `${name}`,
             body: [
               [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
-              [`Work Items`, `${workItems.length}`],
+              [`Cards`, `${workItems.length}`],
             ]
           })
         }

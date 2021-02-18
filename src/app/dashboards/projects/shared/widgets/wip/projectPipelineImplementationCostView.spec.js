@@ -69,7 +69,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       expect(specsElem).toHaveLength(2);
     });
 
-    test("when workitem scope 'all' is selected, have legend text as Work Items", async () => {
+    test("when workitem scope 'all' is selected, have legend text as Cards", async () => {
       const propsFixture = {
         ...viewPropsFixture,
         specsOnly: false,
@@ -107,7 +107,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       expect(specsElem).toHaveLength(2);
     });
 
-    test("when workitem scope 'all' is selected, have legend text as Work Items", async () => {
+    test("when workitem scope 'all' is selected, have legend text as Cards", async () => {
       const propsFixture = {
         ...viewPropsFixture,
         specsOnly: false,

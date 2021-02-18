@@ -62,7 +62,7 @@ export const Volume = ({title, currentMeasurement, previousMeasurement, target, 
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
-    uom={specsOnly ? 'Specs' : 'Items'}
+    uom={specsOnly ? 'Specs' : 'Cards'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
@@ -75,7 +75,7 @@ export const Wip = ({title, currentMeasurement, previousMeasurement, target, del
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'Specs' : 'Items'}
+        uom={specsOnly ? 'Specs' : 'Cards'}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
@@ -98,7 +98,7 @@ export const WipWithLimit = ({title, currentMeasurement, previousMeasurement, ta
       <FlowStatistic
         title={"Limit"}
         currentValue={target}
-        uom={'Items'}
+        uom={'Cards'}
       />
     </ComponentCarousel>
   )

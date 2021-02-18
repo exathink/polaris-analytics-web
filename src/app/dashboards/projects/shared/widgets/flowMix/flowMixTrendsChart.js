@@ -105,7 +105,7 @@ export const FlowMixTrendsChart = Chart({
       },
       legend: {
         title: {
-          text: `${showCounts ? (specsOnly ? 'Spec Volume' : 'Overall Volume') : (specsOnly ? 'Spec Value Types' : 'Value Types')}`,
+          text: `${showCounts ? (specsOnly ? 'Specs' : 'Cards') : 'Value Types'}`,
           style: {
             fontStyle: 'italic'
           }
@@ -160,7 +160,7 @@ export const FlowMixTrendsChart = Chart({
           const metricDisplay = specsOnly ? 'Effort' : 'Volume';
           const value = this.point.flowMixItem[metric];
 
-          const uom = specsOnly ? 'Dev-Days' : 'Items';
+          const uom = specsOnly ? 'Dev-Days' : 'Cards';
           return tooltipHtml(this.point.series.type === 'column' ? {
             header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Value Type: ${flowType}`,
             body: [

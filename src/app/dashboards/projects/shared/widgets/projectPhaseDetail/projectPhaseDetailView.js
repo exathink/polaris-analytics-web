@@ -94,7 +94,7 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
             />
             {selectDropdown()}
             <GroupingSelector
-              label={"Group Work Items By"}
+              label={"Group Cards By"}
               groupings={["state", "type"].map((grouping) => ({
                 key: grouping,
                 display: capitalizeFirstLetter(grouping),

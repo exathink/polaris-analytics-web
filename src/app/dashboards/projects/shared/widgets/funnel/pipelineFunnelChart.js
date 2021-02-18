@@ -40,7 +40,7 @@ export const PipelineFunnelChart = Chart({
       },
       legend: {
         title: {
-          text: grouping === 'specs' ? capitalizeFirstLetter(grouping): 'All Work Items',
+          text: grouping === 'specs' ? capitalizeFirstLetter(grouping): 'All Cards',
           style: {
             fontStyle: 'italic'
           }
@@ -52,7 +52,7 @@ export const PipelineFunnelChart = Chart({
         enabled: true
       },
       series: [{
-        name: grouping === 'specs' ? 'Specs' : 'Items',
+        name: grouping === 'specs' ? 'Specs' : 'Cards',
         data: Object.keys(WorkItemStateTypeDisplayName).filter(
           stateType => selectedSummary[stateType] != null
         ).map(
@@ -74,7 +74,7 @@ export const PipelineFunnelChart = Chart({
           return tooltipHtml({
               header: `Phase: ${this.point.name}`,
               body: [
-                [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Items'}`],
+                [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Cards'}`],
 
                 [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  Dev-Days`],
               ]

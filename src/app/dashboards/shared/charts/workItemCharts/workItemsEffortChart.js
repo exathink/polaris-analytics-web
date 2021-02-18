@@ -205,7 +205,7 @@ export const WorkItemsEffortChart = Chart({
       series: series,
       legend: {
         title: {
-          text: specsOnly ? "Specs" : "Work Items",
+          text: specsOnly ? "Specs" : "Cards",
           style: {
             fontStyle: "italic",
           },
