@@ -243,23 +243,40 @@ describe("ManageContributorsWorkflow", () => {
     });
 
     describe("when there is data for contributors", () => {
-      test("should render title for table", () => {
+      // setup initial conditions for this flow
+      beforeEach(async () => {
         renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+      });
+
+      test("should render title for table", () => {
         screen.getByText(/Select one or more contributors to merge into a single contributor/i);
       });
 
-      test("should render slider with knob at mark 30", () => {});
-
-      test("should render active contributors label and count correctly", async () => {
-        // TODO
-        // renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
-        // const {findByText} = within(screen.queryByTestId("active-contributors"))
-        // expect(await findByText(/0/i)).toBeInTheDocument();
+      test("should render slider with knob at mark 30", () => {
+        const daysRangeSlider = screen.getByRole("slider");
+        expect(daysRangeSlider).toBeInTheDocument();
+        expect(daysRangeSlider.getAttribute("aria-valuenow")).toBe("30");
       });
 
-      test("should render select contributors table with correct no of contributos", () => {});
+      test("should render active contributors label and count correctly", async () => {
+        const {findByText} = within(screen.getByTestId("active-contributors"));
+        expect(await findByText(/Active Contributors/i)).toBeInTheDocument();
+        expect(await findByText(/2/i)).toBeInTheDocument();
+      });
 
-      test("should render collapsible records for contributors, when there are more than 1 aliases under a contributor", () => {});
+      test("should render select contributors table with correct no of contributos", async () => {
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkBoxElements = await findAllByRole("checkbox");
+
+        expect(checkBoxElements).toHaveLength(2);
+      });
+
+      test("should render collapsible records for contributors, when there are more than 1 aliases under a contributor", async () => {
+        // const {findAllByRole} = within(screen.getByTestId("select-contributors-table"))
+        // const expandElements = await findAllByRole("button", {name: /Expand row/i});
+        // expect(expandElements[1]).toBeVisible()
+        // const collapsibleExpandElements = expandElements.filter(expandElement => expect(expandElement).toBeEnabled())
+      });
 
       test("when one collapsible record is selected, other collapsible records should be disabled for selection", () => {});
 
@@ -267,11 +284,48 @@ describe("ManageContributorsWorkflow", () => {
 
       test("all top level contributors should be enabled for selection", () => {});
 
-      test("when none of the records are selected, Next button should be disabled", () => {});
+      test("when any of the records is selected, Next button should be enabled", async () => {
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
 
-      test("when any of the records is selected, Next button should be enabled", () => {});
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+        const [first] = checkboxElements;
 
-      test("when Next button is clicked, it should move to UpdateContributor page", () => {});
+        // click checkbox for any record
+        fireEvent.click(first);
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+      });
+
+      test("when Next button is clicked, it should move to UpdateContributor page", async () => {
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
+
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+        const [first, second] = checkboxElements;
+
+        // click checkboxes for both records
+        fireEvent.click(first);
+        fireEvent.click(second);
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click next button
+        fireEvent.click(nextButton);
+
+        // assert we are on the update contributor page
+        await screen.findByText(
+          /Contributions from the contributors below will be merged into contributions from Krishna Kumar/i
+        );
+      });
     });
   });
 
