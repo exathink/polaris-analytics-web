@@ -276,13 +276,194 @@ describe("ManageContributorsWorkflow", () => {
   });
 
   describe("SelectParentContributorPage", () => {
-    test("should render correct title for selection table", () => {});
+    const selectParentMocks = [
+      {
+        request: gqlRequest,
+        result: {
+          data: {
+            account: {
+              contributors: {
+                edges: [
+                  {
+                    node: {
+                      id: "Q29udHJpYnV0b3I6MjJhODNmZjAtMDBhMS00NWUxLWJjZmUtNzQ1NDJhNjRjZWIx",
+                      key: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                      name: "Aman Mavai",
+                      earliestCommit: getNDaysAgo(35),
+                      latestCommit: getNDaysAgo(5),
+                      commitCount: 378,
+                      contributorAliasesInfo: [
+                        {
+                          key: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                          name: "Aman Mavai",
+                          alias: "aman.mavai@gslab.com",
+                          latestCommit: getNDaysAgo(5),
+                          earliestCommit: getNDaysAgo(35),
+                          commitCount: 378,
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    node: {
+                      id: "R39udHJpYnV0b3I6MjJhODNmZjAtMDBhMS00NWUxLWJjZmUtNzQ1NDJhNjRjZWIx",
+                      key: "33a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                      name: "Test Lname",
+                      earliestCommit: getNDaysAgo(35),
+                      latestCommit: getNDaysAgo(5),
+                      commitCount: 37,
+                      contributorAliasesInfo: [
+                        {
+                          key: "33a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                          name: "Test Lname",
+                          alias: "test.lname@gslab.com",
+                          latestCommit: getNDaysAgo(5),
+                          earliestCommit: getNDaysAgo(35),
+                          commitCount: 37,
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    node: {
+                      id: "Q29udHJpYnV0b3I6NGQ3YmI5MjUtZDhmMy00MTllLTg3YWItNmZkMDg3ZjY3MzRl",
+                      key: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                      name: "Krishna Kumar",
+                      earliestCommit: getNDaysAgo(1375),
+                      latestCommit: getNDaysAgo(4),
+                      commitCount: 7917,
+                      contributorAliasesInfo: [
+                        {
+                          key: "4ba4f636-b290-4602-be18-47187b9b6b5a",
+                          name: "krishnaku",
+                          alias: "kkumar@exathink.com",
+                          latestCommit: getNDaysAgo(180),
+                          earliestCommit: getNDaysAgo(1000),
+                          commitCount: 569,
+                        },
+                        {
+                          key: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                          name: "Krishna Kumar",
+                          alias: "kkumar@exathink.com",
+                          latestCommit: getNDaysAgo(4),
+                          earliestCommit: getNDaysAgo(1375),
+                          commitCount: 6944,
+                        },
+                        {
+                          key: "5b7eecb4-b0c2-4001-904d-542c28fd3204",
+                          name: "Pragya Goyal",
+                          alias: "pragya@64sqs.com",
+                          latestCommit: getNDaysAgo(5),
+                          earliestCommit: getNDaysAgo(365),
+                          commitCount: 397,
+                        },
+                        {
+                          key: "64814d00-e3e0-45b0-b4a2-f863c490dddd",
+                          name: "krishna",
+                          alias: "kkumar@exathink.com",
+                          latestCommit: getNDaysAgo(1544),
+                          earliestCommit: getNDaysAgo(1644),
+                          commitCount: 7,
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    ];
+    // setup initial conditions for this flow
+    beforeEach(async () => {
+      renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, selectParentMocks);
 
-    test("Next button is disabled initially", () => {});
+      // before next button is disabled
+      const nextButton = screen.getByRole("button", {name: /Next/i});
+      expect(nextButton).toBeDisabled();
 
-    test("After we have selected any record as merge target, Next button is enabled", () => {});
+      // find all checkbox elements
+      const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+      const checkboxElements = await findAllByRole("checkbox");
+      const [nonParentRecordCheckbox1, nonParentRecordCheckbox2] = checkboxElements;
 
-    test("should navigate to UpdateContributorPage, when Next button is clicked", () => {});
+      // click non-parent record checkboxes
+      fireEvent.click(nonParentRecordCheckbox1);
+      fireEvent.click(nonParentRecordCheckbox2);
+
+      // after next button is enabled
+      expect(nextButton).toBeEnabled();
+
+      // click on next button, will navigate to UpdateContributors Page.
+      fireEvent.click(nextButton);
+    });
+
+    test("should render correct title for selection table", async () => {
+      await screen.findByText(/Select a contributor: The remaining contributors will be merged into this one/i);
+    });
+
+    test("After we have selected any record as merge target, Next button is enabled", async () => {
+      const {findAllByRole} = within(await screen.findByTestId("select-parent-contributor"));
+      const mergeTargetElements = await findAllByRole("radio");
+      const [mergeTargetElement] = mergeTargetElements;
+
+      // before next button is disabled
+      const nextButton = screen.getByRole("button", {name: /Next/i});
+      expect(nextButton).toBeDisabled();
+
+      // click merge target record's radio button as parent contributor
+      fireEvent.click(mergeTargetElement);
+
+      expect(nextButton).toBeEnabled();
+    });
+
+    test("should navigate to UpdateContributorPage, when Next button is clicked", async () => {
+      const {findAllByRole} = within(await screen.findByTestId("select-parent-contributor"));
+      const mergeTargetElements = await findAllByRole("radio");
+      const [mergeTargetElement] = mergeTargetElements;
+
+      // before next button is disabled
+      const nextButton = screen.getByRole("button", {name: /Next/i});
+      expect(nextButton).toBeDisabled();
+
+      // click merge target record's radio button as parent contributor
+      fireEvent.click(mergeTargetElement);
+
+      expect(nextButton).toBeEnabled();
+
+      // click next button
+      fireEvent.click(nextButton);
+
+      // assert we are on the Update Contributor Page
+      await screen.findByText(
+        /Contributions from the contributors below will be merged into contributions from Aman Mavai/i
+      );
+    });
+
+    test("should navigate to UpdateContributorPage, with second contributor as merge target, when Next button is clicked", async () => {
+      const {findAllByRole} = within(await screen.findByTestId("select-parent-contributor"));
+      const mergeTargetElements = await findAllByRole("radio");
+      const [_, mergeTargetElement] = mergeTargetElements;
+
+      // before next button is disabled
+      const nextButton = screen.getByRole("button", {name: /Next/i});
+      expect(nextButton).toBeDisabled();
+
+      // click merge target record's radio button as parent contributor
+      fireEvent.click(mergeTargetElement);
+
+      expect(nextButton).toBeEnabled();
+
+      // click next button
+      fireEvent.click(nextButton);
+
+      // assert we are on the Update Contributor Page
+
+      await screen.findByText(
+        /Contributions from the contributors below will be merged into contributions from Test Lname/i
+      );
+    });
   });
 
   describe("UpdateContributorPage", () => {
@@ -322,7 +503,7 @@ describe("ManageContributorsWorkflow", () => {
         expect(excludeFromAnalsyisLabel).toBeInTheDocument();
         expect(excludeFromAnalsyisCheckbox).toBeInTheDocument();
       });
- 
+
       test("After we have edited Contributor textbox, UpdateContributor button is enabled", async () => {
         // before update contributor button is disabled
         const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
@@ -333,7 +514,6 @@ describe("ManageContributorsWorkflow", () => {
         fireEvent.change(contributorTextbox, {target: {value: "Krishna"}});
 
         expect(updateContributorButton).toBeEnabled();
-
       });
 
       test("After we have updated excludeFromAnalsyis checkbox, UpdateContributor button is enabled", async () => {
