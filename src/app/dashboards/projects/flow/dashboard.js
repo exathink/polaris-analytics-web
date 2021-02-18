@@ -80,14 +80,14 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           w={0.37}
           name="alignment"
-          title={"Flow Types"}
+          title={"Value Mix"}
           subtitle={`${flowAnalysisPeriod} Days`}
           styles={{
             controlContainer: {
               width: "27%",
             },
           }}
-          controls={[({view}) => view !== "detail" && <span>{specsOnly ? "% of Capacity" : "% of Volume"}</span>]}
+          controls={[({view}) => view !== "detail" && <span>{specsOnly ? "% of EffortOUT" : "% of Volume"}</span>]}
           render={({view}) => (
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
@@ -152,7 +152,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
       </DashboardRow>
 
-      <DashboardRow h={"28%"} title={"Flow Metrics"}>
+      <DashboardRow h={"28%"} title={"Flow"}>
         {stateMappingIndex.isValid() && (
           <DashboardWidget
             w={0.34}
@@ -230,7 +230,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         )}
       </DashboardRow>
 
-      <DashboardRow h={"49%"} title={"Flow Mix"}>
+      <DashboardRow h={"49%"} title={"Value"}>
         <DashboardWidget
           w={0.34}
           name="epic-flow-mix-closed"

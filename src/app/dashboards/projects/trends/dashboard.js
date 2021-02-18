@@ -96,7 +96,7 @@ const dashboard = ({viewerContext}) => (
                 />
               </DashboardRow>
             )}
-            <DashboardRow h="30%" title={`Flow Metrics`}>
+            <DashboardRow h="30%" title={`Flow`}>
               <DashboardWidget
                 w={1 / 3}
                 name="throughput"
