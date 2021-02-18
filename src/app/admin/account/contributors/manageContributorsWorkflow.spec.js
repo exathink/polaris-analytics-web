@@ -287,13 +287,69 @@ describe("ManageContributorsWorkflow", () => {
 
   describe("UpdateContributorPage", () => {
     describe("single non-parent contributor", () => {
-      test("should render Contributor textbox with parent contributor as its initial value", () => {});
+      // setup initial conditions for this flow
+      beforeEach(async () => {
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
 
-      test("should render exclude from analysis checkbox", () => {});
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
 
-      test("should render UpdateContributor button as disabled initially", () => {});
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+        const nonParentRecordCheckbox = checkboxElements[0];
 
-      test("After we have edited Contributor textbox or excludeFromAnalsyis checkbox, UpdateContributor button is enabled", () => {});
+        // click parent record checkbox
+        fireEvent.click(nonParentRecordCheckbox);
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click on next button, will navigate to UpdateContributors Page.
+        fireEvent.click(nextButton);
+      });
+
+      test("should render Contributor textbox with parent contributor as its initial value", async () => {
+        const contributorTextbox = await screen.findByRole("textbox");
+        expect(contributorTextbox.value).toBe("Aman Mavai");
+      });
+
+      test("should render exclude from analysis checkbox", async () => {
+        const {findByRole, findByText} = within(await screen.findByTestId("exclude-from-analysis"));
+        const excludeFromAnalsyisLabel = await findByText(/Exclude From Analysis/i);
+        const excludeFromAnalsyisCheckbox = await findByRole("checkbox");
+        expect(excludeFromAnalsyisLabel).toBeInTheDocument();
+        expect(excludeFromAnalsyisCheckbox).toBeInTheDocument();
+      });
+ 
+      test("After we have edited Contributor textbox, UpdateContributor button is enabled", async () => {
+        // before update contributor button is disabled
+        const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
+        expect(updateContributorButton).toBeDisabled();
+
+        const contributorTextbox = await screen.findByRole("textbox");
+        //update the textbox value
+        fireEvent.change(contributorTextbox, {target: {value: "Krishna"}});
+
+        expect(updateContributorButton).toBeEnabled();
+
+      });
+
+      test("After we have updated excludeFromAnalsyis checkbox, UpdateContributor button is enabled", async () => {
+        // before update contributor button is disabled
+        const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
+        expect(updateContributorButton).toBeDisabled();
+
+        const {findByRole} = within(await screen.findByTestId("exclude-from-analysis"));
+        const excludeFromAnalsyisCheckbox = await findByRole("checkbox");
+        expect(excludeFromAnalsyisCheckbox).toBeInTheDocument();
+
+        fireEvent.click(excludeFromAnalsyisCheckbox);
+
+        // after exclude from analysis checkbox is checked, update contributor button is enabled
+        expect(updateContributorButton).toBeEnabled();
+      });
 
       test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
@@ -387,7 +443,6 @@ describe("ManageContributorsWorkflow", () => {
 
         // after update contributor button is enabled
         expect(updateContributorButton).toBeEnabled();
-         
       });
 
       test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
