@@ -237,6 +237,7 @@ export function UpdateContributorPage({
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
+          data-testid="update-contributors-table"
         />
       );
     }
@@ -251,6 +252,7 @@ export function UpdateContributorPage({
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
+          data-testid="update-contributors-table"
         />
       );
     } else {
@@ -333,7 +335,7 @@ export function UpdateContributorPage({
           <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>
       </div>
-      <div className={styles.excludeFromAnalysisWrapper}>{getExcludeFromAnalysis()}</div>
+      <div className={styles.excludeFromAnalysisWrapper} data-testid="exclude-from-analysis">{getExcludeFromAnalysis()}</div>
       <div className={styles.updateContributorTitle}>{getTitleText()}</div>
       <div className={styles.updateContributorTable}>{getTable()}</div>
       {renderActionButtons()}

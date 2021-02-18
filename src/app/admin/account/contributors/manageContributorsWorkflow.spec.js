@@ -6,6 +6,9 @@ import {GET_CONTRIBUTOR_ALIASES_INFO_QUERY} from "./useQueryContributorAliasesIn
 import {getNDaysAgo} from "../../../../test/test-utils";
 import {ManageContributorsWorkflow} from "./manageContributorsWorkflow";
 import {GraphQLError} from "graphql/error";
+import {injectIntl} from "react-intl";
+
+const ManageContributorsWorkflowWithIntl = injectIntl(ManageContributorsWorkflow);
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -170,26 +173,26 @@ describe("ManageContributorsWorkflow", () => {
 
       test("should not render title for table", () => {
         // TOBE Done
-        // renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
+        // renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         // expect(
         //   screen.queryByText(/Select one or more contributors to merge into a single contributor/i)
         // ).not.toBeInTheDocument();
       });
 
       test("should render table with no records", () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const {getByText} = within(screen.queryByTestId("select-contributors-table"));
         getByText(/no data/i);
       });
 
       test("should render active contributors as zero", () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const {getByText} = within(screen.queryByTestId("active-contributors"));
         getByText(/0/i);
       });
 
       test("should render Next button as disabled", () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, emptyContributorsMocks);
         const nextButton = screen.getByRole("button", {name: /Next/i});
         expect(nextButton).toBeDisabled();
       });
@@ -221,7 +224,7 @@ describe("ManageContributorsWorkflow", () => {
       ];
 
       test("it renders nothing and logs the error when there is a network error", async () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mockNetworkError);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, mockNetworkError);
         // before
         expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
@@ -230,7 +233,7 @@ describe("ManageContributorsWorkflow", () => {
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mockGraphQlErrors);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, mockGraphQlErrors);
         // before
         expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
@@ -241,7 +244,7 @@ describe("ManageContributorsWorkflow", () => {
 
     describe("when there is data for contributors", () => {
       test("should render title for table", () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
         screen.getByText(/Select one or more contributors to merge into a single contributor/i);
       });
 
@@ -249,7 +252,7 @@ describe("ManageContributorsWorkflow", () => {
 
       test("should render active contributors label and count correctly", async () => {
         // TODO
-        // renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
+        // renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
         // const {findByText} = within(screen.queryByTestId("active-contributors"))
         // expect(await findByText(/0/i)).toBeInTheDocument();
       });
@@ -296,30 +299,171 @@ describe("ManageContributorsWorkflow", () => {
     });
 
     describe("unlink flow", () => {
-      test("should render correct title for the table", () => {});
-      test("should render Contributor textbox with parent contributor as its initial value", () => {});
-      test("should not render exclude from analysis checkbox", () => {});
-      test("should not render checkbox for any record in the table", () => {});
-      test("should render toggle for all records in the table", () => {});
-      test("should render all toggles as checked for all records in the table", () => {});
-      test("when a toggle is unchecked for a record, corresponding message for title changes", () => {});
-      test("should render UpdateContributor button as disabled initially", () => {});
-      test("when a toggle is unchecked for a record, UpdateContributor button is enabled", () => {});
+      // setup initial conditions for unlink flow
+      beforeEach(async () => {
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
+
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
+
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+        const parentRecordCheckbox = checkboxElements[1];
+
+        // click parent record checkbox
+        fireEvent.click(parentRecordCheckbox);
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click on next button, will navigate to UpdateContributors Page.
+        fireEvent.click(nextButton);
+      });
+
+      test("should render correct title for the table", async () => {
+        await screen.findByText(
+          /Click the toggle on the right to disconnect a contributor as an alias for Krishna Kumar/i
+        );
+      });
+
+      test("should render Contributor textbox with parent contributor as its initial value", async () => {
+        const contributorTextbox = await screen.findByRole("textbox");
+        expect(contributorTextbox.value).toBe("Krishna Kumar");
+      });
+
+      test("should not render exclude from analysis label and checkbox", async () => {
+        const {queryByRole, queryByText} = within(await screen.findByTestId("exclude-from-analysis"));
+        const excludeFromAnalsyisLabel = await queryByText(/Exclude From Analysis/i);
+        const excludeFromAnalsyisCheckbox = await queryByRole("checkbox");
+        expect(excludeFromAnalsyisLabel).not.toBeInTheDocument();
+        expect(excludeFromAnalsyisCheckbox).not.toBeInTheDocument();
+      });
+
+      test("should render all toggles as checked for all records in the table", async () => {
+        // find all checkbox toggle
+        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const toggleElements = await findAllByRole("switch");
+
+        expect(toggleElements).toHaveLength(3);
+        toggleElements.forEach((toggleElement) => expect(toggleElement.getAttribute("aria-checked")).toBe("true"));
+      });
+
+      test("when a toggle is unchecked for a record, corresponding message for title changes", async () => {
+        // find all toggle elements
+        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const toggleElements = await findAllByRole("switch");
+
+        expect(toggleElements).toHaveLength(3);
+        // before all are checked to be true
+        toggleElements.forEach((toggleElement) => expect(toggleElement.getAttribute("aria-checked")).toBe("true"));
+
+        const [first, second] = toggleElements;
+        fireEvent.click(first);
+        await screen.findByText(/1 contributor will be unlinked from Krishna Kumar/i);
+
+        fireEvent.click(second);
+        await screen.findByText(/2 contributors will be unlinked from Krishna Kumar/i);
+      });
+
+      test("when a toggle is unchecked for a record, UpdateContributor button is enabled", async () => {
+        // before update contributor button is disabled
+        const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
+        expect(updateContributorButton).toBeDisabled();
+
+        // find all toggle elements
+        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const toggleElements = await findAllByRole("switch");
+
+        expect(toggleElements).toHaveLength(3);
+        // before all are checked to be true
+        toggleElements.forEach((toggleElement) => expect(toggleElement.getAttribute("aria-checked")).toBe("true"));
+
+        // uncheck first toggle
+        const [first] = toggleElements;
+        fireEvent.click(first);
+        await screen.findByText(/1 contributor will be unlinked from Krishna Kumar/i);
+
+        // after update contributor button is enabled
+        expect(updateContributorButton).toBeEnabled();
+         
+      });
+
       test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
 
     describe("regular update contributor flow", () => {
-      test("should render correct title for the table", () => {});
+      beforeEach(async () => {
+        renderWithProviders(<ManageContributorsWorkflowWithIntl {...propsFixture} />, contributorAliasesMocks);
 
-      test("should render checkbox for all records in the table", () => {});
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
 
-      test("should render Contributor textbox with parent contributor as its initial value", () => {});
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
 
-      test("should render exclude from analysis checkbox", () => {});
+        // click all checkbox
+        checkboxElements.forEach((checkboxElement) => {
+          fireEvent.click(checkboxElement);
+        });
 
-      test("should render all non-parent contributors to be selected by default inside the table", () => {});
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
 
-      test("when all non-parent contributors are unchecked, Next button should be disabled, assuming textbox and checkbox are untouched", () => {});
+        // click on next button, will navigate to UpdateContributors Page.
+        fireEvent.click(nextButton);
+      });
+
+      test("should render correct title for the table", async () => {
+        await screen.findByText(
+          /Contributions from the contributors below will be merged into contributions from Krishna Kumar/i
+        );
+      });
+
+      test("should render Contributor textbox with parent contributor as its initial value", async () => {
+        const contributorTextbox = await screen.findByRole("textbox");
+        expect(contributorTextbox.value).toBe("Krishna Kumar");
+      });
+
+      test("should render exclude from analysis label and checkbox", async () => {
+        const {findByRole, findByText} = within(await screen.findByTestId("exclude-from-analysis"));
+        const excludeFromAnalsyisLabel = await findByText(/Exclude From Analysis/i);
+        const excludeFromAnalsyisCheckbox = await findByRole("checkbox");
+        expect(excludeFromAnalsyisLabel).toBeInTheDocument();
+        expect(excludeFromAnalsyisCheckbox).toBeInTheDocument();
+      });
+
+      test("should render all non-parent contributors to be selected by default inside the table", async () => {
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+
+        expect(checkboxElements).toHaveLength(1);
+        expect(checkboxElements[0].checked).toBe(true);
+      });
+
+      test("when all non-parent contributors are unchecked, Update Contributor button should be disabled, assuming textbox and checkbox are untouched", async () => {
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+
+        expect(checkboxElements).toHaveLength(1);
+        expect(checkboxElements[0].checked).toBe(true);
+
+        // before update contributor button is enabled
+        const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
+        expect(updateContributorButton).toBeEnabled();
+
+        // uncheck the checkbox
+        fireEvent.click(checkboxElements[0]);
+
+        // after update contributor button is disabled
+        expect(checkboxElements[0].checked).toBe(false);
+        expect(updateContributorButton).toBeDisabled();
+      });
 
       test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
