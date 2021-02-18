@@ -93,7 +93,7 @@ const EffortTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Effort Transfer ${showContributorDetail ? ' by Contributor ' : ''}`
+        text: `${showContributorDetail ? 'EffortIN by Contributor ' : 'Effort Throughput'}`
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
@@ -129,28 +129,22 @@ const EffortTrendsWithContributorDetailChart = Chart({
 
 
               ]
-            } : this.point.series.name === 'effortIN' ? {
+            } : this.point.series.name === 'EffortIN' ? {
               header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Total EffortIN`, `${intl.formatNumber(this.point.y)} Dev-Days`],
-                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`EffortIN: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]
-            } : this.point.series.name === 'effortOUT' ?  {
-              header: `Total EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'EffortOUT' ?  {
+              header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
-            } : this.point.series.key === 'avgEffort' ? {
-              header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
-              body: [
-                [`Avg EffortIN:`, `${intl.formatNumber(this.point.y)} Dev-Days`],
-                [`Contributors:`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
-              ]
-            } : {
+            }  : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Baseline: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Capacity: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
                 [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             }

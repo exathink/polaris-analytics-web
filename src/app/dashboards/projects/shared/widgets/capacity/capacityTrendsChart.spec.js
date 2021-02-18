@@ -124,7 +124,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: `Capacity Trends `,
+    text: `Effort Throughput`,
   },
   subtitle: {
     text: `45 day trend`,
@@ -178,7 +178,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalEffort",
         id: "totalEffort",
         type: "spline",
-        name: "Total Effort",
+        name: "EffortOUT",
         visible: true,
         data: propsFixture.cycleMetricsTrends
           .map((measurement) => ({
@@ -208,7 +208,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalCommitDays",
         id: "totalCommitDays",
         type: "spline",
-        name: "Total Capacity",
+        name: "EffortIN",
         visible: true,
         data: propsFixture.capacityTrends
           .map((measurement) => ({
@@ -233,8 +233,8 @@ describe("CapacityTrendsChart", () => {
     const {series} = renderedChartConfig(<EffortTrendsChart {...propsFixture} />);
 
     const trends = [
-      {trend: "capacityTrends", displayName: "Total Capacity", key: "totalCommitDays"},
-      {trend: "cycleMetricsTrends", displayName: "Total Effort", key: "totalEffort"},
+      {trend: "capacityTrends", displayName: "EffortIN", key: "totalCommitDays"},
+      {trend: "cycleMetricsTrends", displayName: "EffortOUT", key: "totalEffort"},
     ];
 
     trends.forEach((trend, index) => {
@@ -275,7 +275,7 @@ describe("CapacityTrendsChart", () => {
           expect(actual).toMatchObject({
             header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
             body:
-              trend.displayName === "Total Capacity"
+              trend.displayName === "EffortIN"
                 ? [
                     [trend.displayName, `${formatNumber(firstPoint[trend.key])} Dev-Days`],
                     ["Contributors", `${formatNumber(firstPoint.contributorCount)}`],
