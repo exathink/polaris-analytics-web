@@ -1,1 +1,1 @@
-export {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget"
+export {ProjectEffortTrendsWidget} from "./capacityTrendsWidget"

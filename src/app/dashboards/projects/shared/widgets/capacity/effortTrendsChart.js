@@ -18,7 +18,7 @@ function fteEquivalent(measurementWindow) {
 
 
 
-const CapacityTrendsWithContributorDetailChart = Chart({
+const EffortTrendsWithContributorDetailChart = Chart({
   chartUpdateProps: props => props,
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
@@ -66,8 +66,8 @@ const CapacityTrendsWithContributorDetailChart = Chart({
     }
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
-        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Baseline', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Total Capacity', visible: true, type: 'spline', color: '#0f49b1'}
+        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: false, type: 'spline', color: '#8d9196'},
+        {key: 'totalCommitDays', displayName: 'EffortIN', visible: true, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
@@ -79,7 +79,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
         totalEffortChartType = chartConfig.totalEffortDisplayType;
       }
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
-        [{key: "totalEffort", displayName: "Total Effort", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
+        [{key: "totalEffort", displayName: "EffortOUT", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
         cycleMetricsTrends
       );
     }
@@ -93,7 +93,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Capacity Trends ${showContributorDetail ? ' by Contributor ' : ''}`
+        text: `${showContributorDetail ? 'EffortIN by Contributor ' : 'Effort Throughput'}`
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
@@ -129,28 +129,22 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 
 
               ]
-            } : this.point.series.name === 'Total Capacity' ? {
-              header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'EffortIN' ? {
+              header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Total Capacity`, `${intl.formatNumber(this.point.y)} Dev-Days`],
-                [`Contributors`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`EffortIN: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]
-            } : this.point.series.name === 'Total Effort' ?  {
-              header: `Total Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'EffortOUT' ?  {
+              header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
               ]
-            } : this.point.series.name === 'Avg Capacity' ? {
+            }  : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Avg Capacity:`, `${intl.formatNumber(this.point.y)} Dev-Days`],
-                [`Contributors:`, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
-              ]
-            } : {
-              header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
-              body: [
-                [`Baseline: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Capacity: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
                 [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             }
@@ -163,7 +157,7 @@ const CapacityTrendsWithContributorDetailChart = Chart({
 });
 
 
-export const CapacityTrendsChart = (
+export const EffortTrendsChart = (
   {
     capacityTrends,
     contributorDetail,
@@ -177,7 +171,7 @@ export const CapacityTrendsChart = (
   }
 ) => (
 
-  <CapacityTrendsWithContributorDetailChart {...{
+  <EffortTrendsWithContributorDetailChart {...{
     capacityTrends,
     contributorDetail,
     showContributorDetail,

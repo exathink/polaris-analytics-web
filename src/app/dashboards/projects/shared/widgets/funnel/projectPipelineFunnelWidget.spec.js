@@ -129,7 +129,7 @@ describe("ProjectPipelineFunnelWidget", () => {
 
     test("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
-      expect(await screen.findByText(/All Work Items/i)).toBeInTheDocument();
+      expect(await screen.findByText(/All Cards/i)).toBeInTheDocument();
     });
 
     test("should render legend title as Specs when Specs workItemScope is selected", async () => {

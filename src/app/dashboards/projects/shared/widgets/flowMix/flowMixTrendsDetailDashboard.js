@@ -38,7 +38,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
     <Dashboard id={dashboard_id}>
       <DashboardRow
         h={0.5}
-        title={`Flow Mix Trends`}
+        title={`Value Mix Trends`}
         controls={[
           ...getTrendsControlBarControls(
             [

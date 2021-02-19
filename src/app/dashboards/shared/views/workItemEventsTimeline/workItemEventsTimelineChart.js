@@ -25,7 +25,7 @@ function getSubtitleText(before, startWindow, endWindow, latestEvent, days){
 }
 
 function getTitleText(totalWorkItems) {
-  return `${totalWorkItems} Active Work Items`
+  return `${totalWorkItems} Active Cards`
 }
 
 

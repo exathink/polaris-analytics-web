@@ -165,7 +165,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         text: (function () {
           const subTitle = defectsOnly
             ? `${candidateCycles.length} Defects closed in the last ${days} days`
-            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Work Items"} closed in the last ${days} days`;
+            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed in the last ${days} days`;
           // When showing cycle time we also report total with no cycle time if they exist.
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`

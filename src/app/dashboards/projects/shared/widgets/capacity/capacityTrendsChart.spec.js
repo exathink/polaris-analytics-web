@@ -2,7 +2,7 @@ import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
 import {Colors} from "../../../../shared/config";
-import {CapacityTrendsChart} from "./capacityTrendsChart";
+import {EffortTrendsChart} from "./effortTrendsChart";
 import {epoch} from "../../../../../helpers/utility";
 
 // clear mocks after each test
@@ -124,7 +124,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: `Capacity Trends `,
+    text: `Effort Throughput`,
   },
   subtitle: {
     text: `45 day trend`,
@@ -165,7 +165,7 @@ describe("CapacityTrendsChart", () => {
     };
 
     test("it renders an empty chart config", () => {
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
 
     test("when there is no trends data for Total Capacity series but there is data for Total Effort Series", () => {
@@ -178,7 +178,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalEffort",
         id: "totalEffort",
         type: "spline",
-        name: "Total Effort",
+        name: "EffortOUT",
         visible: true,
         data: propsFixture.cycleMetricsTrends
           .map((measurement) => ({
@@ -195,7 +195,7 @@ describe("CapacityTrendsChart", () => {
         ...fixedChartConfig,
         series: [{}, {}, cycleMetricsTrends], // as it renders three series, baseline, total capacity, total effort
       };
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
 
     test("when there is no trends data for Total Effort Series but there is data for Total Capacity series", () => {
@@ -208,7 +208,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalCommitDays",
         id: "totalCommitDays",
         type: "spline",
-        name: "Total Capacity",
+        name: "EffortIN",
         visible: true,
         data: propsFixture.capacityTrends
           .map((measurement) => ({
@@ -225,16 +225,16 @@ describe("CapacityTrendsChart", () => {
         ...fixedChartConfig,
         series: [{}, capacityTrends, {}], // as it renders three series, baseline, total capacity, total effort
       };
-      expect(renderedChartConfig(<CapacityTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<EffortTrendsChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
     });
   });
 
   describe("when there is data for all trend series", () => {
-    const {series} = renderedChartConfig(<CapacityTrendsChart {...propsFixture} />);
+    const {series} = renderedChartConfig(<EffortTrendsChart {...propsFixture} />);
 
     const trends = [
-      {trend: "capacityTrends", displayName: "Total Capacity", key: "totalCommitDays"},
-      {trend: "cycleMetricsTrends", displayName: "Total Effort", key: "totalEffort"},
+      {trend: "capacityTrends", displayName: "EffortIN", key: "totalCommitDays"},
+      {trend: "cycleMetricsTrends", displayName: "EffortOUT", key: "totalEffort"},
     ];
 
     trends.forEach((trend, index) => {
@@ -264,7 +264,7 @@ describe("CapacityTrendsChart", () => {
 
         test("should render the tooltip for point", async () => {
           const [actual] = await renderedTooltipConfig(
-            <CapacityTrendsChart {...propsFixture} />,
+            <EffortTrendsChart {...propsFixture} />,
             (points) => [points[0]],
             index + 1
           );
@@ -275,10 +275,10 @@ describe("CapacityTrendsChart", () => {
           expect(actual).toMatchObject({
             header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
             body:
-              trend.displayName === "Total Capacity"
+              trend.displayName === "EffortIN"
                 ? [
-                    [trend.displayName, `${formatNumber(firstPoint[trend.key])} Dev-Days`],
-                    ["Contributors", `${formatNumber(firstPoint.contributorCount)}`],
+                    [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])} Dev-Days`],
+                    [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
                 : [[``, `${formatNumber(firstPoint[trend.key])} Dev-Days`]],
           });

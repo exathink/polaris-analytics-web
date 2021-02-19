@@ -62,7 +62,7 @@ export const Volume = ({title, currentMeasurement, previousMeasurement, target, 
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
-    uom={specsOnly ? 'Specs' : 'Items'}
+    uom={specsOnly ? 'Specs' : 'Cards'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
@@ -75,7 +75,7 @@ export const Wip = ({title, currentMeasurement, previousMeasurement, target, del
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'Specs' : 'Items'}
+        uom={specsOnly ? 'Specs' : 'Cards'}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
@@ -98,7 +98,7 @@ export const WipWithLimit = ({title, currentMeasurement, previousMeasurement, ta
       <FlowStatistic
         title={"Limit"}
         currentValue={target}
-        uom={'Items'}
+        uom={'Cards'}
       />
     </ComponentCarousel>
   )
@@ -134,9 +134,9 @@ export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaTh
   />
 );
 
-export const TotalEffort = ({currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
+export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
   <FlowStatistic
-    title={<span>{'Effort'}<sup> {'Total'} </sup></span>}
+    title={title ||  <span>{'Effort'}<sup> {'Total'} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
@@ -408,17 +408,50 @@ export const MaxCommitDays = ({currentMeasurement, previousMeasurement, target, 
   />
 );
 
-export const TotalCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+export const TotalCommitDays = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <CommitDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalCommitDays'}
-    displayName={'Capacity'}
-    superScript={'Total'}
+    title={title}
     target={target}
     deltaThreshold={deltaThreshold}
   />
 );
+
+export const EffortIN = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'totalCommitDays'}
+    title={<span>{'Effort'}<sub>{'IN'}</sub></span>}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const EffortOUT = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'totalEffort'}
+    title={<span>{'Effort'}<sub>{'OUT'}</sub></span>}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const EffortWIP = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <CommitDays
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'totalEffort'}
+    title={<span>{'Effort'}<sub>{'WIP'}</sub></span>}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
 
 
 // ----------------
@@ -659,7 +692,7 @@ export const VolumeCarousel = ({title, currentMeasurement, previousMeasurement, 
     <LatestClosed
       currentMeasurement={currentMeasurement}
     />
-    <TotalEffort
+    <EffortOUT
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       target={target}

@@ -56,7 +56,7 @@ function getWorkItemSummaryText(commit) {
         (summary, item, index, workItemsSummaries) =>
           `${summary} ${item.displayId}${index < workItemsSummaries.length - 1 ? ', ' : '.'}`
         ,
-        "Work Items: "
+        "Cards: "
       )
 
     }

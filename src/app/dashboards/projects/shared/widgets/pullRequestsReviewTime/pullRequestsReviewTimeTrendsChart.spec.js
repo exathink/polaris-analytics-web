@@ -83,7 +83,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Code Review Time",
+    text: "Time to Close",
   },
   legend: {
     title: {
@@ -200,7 +200,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
               header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
               body: [
                 [displayName, `${formatNumber(firstReviewTimePoint[metric])} Days`],
-                ["Code Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
+                ["Requests Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
               ],
             });
           });

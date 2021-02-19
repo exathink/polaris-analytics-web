@@ -29,7 +29,7 @@ const PipelineSummaryView = (
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
-                suffix={"Work Items"}
+                suffix={"Cards"}
               />
             </VizItem>
             <VizItem>
@@ -39,7 +39,7 @@ const PipelineSummaryView = (
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
-                suffix={"Work Items"}
+                suffix={"Cards"}
               />
             </VizItem>
             <VizItem>
@@ -49,7 +49,7 @@ const PipelineSummaryView = (
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
-                suffix={"Work Items"}
+                suffix={"Cards"}
               />
             </VizItem>
             <VizItem>
@@ -59,7 +59,7 @@ const PipelineSummaryView = (
                 precision={0}
                 valueStyle={{color: '#3f8600'}}
 
-                suffix={"Work Items"}
+                suffix={"Cards"}
               />
             </VizItem>
             {
@@ -71,7 +71,7 @@ const PipelineSummaryView = (
                     precision={0}
                     valueStyle={{color: '#3f8600'}}
 
-                    suffix={"Work Items"}
+                    suffix={"Cards"}
                   />
                 </VizItem>
               : null

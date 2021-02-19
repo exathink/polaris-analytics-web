@@ -6,7 +6,7 @@ import {useQueryProjectCapacityTrends} from "./useQueryProjectCapacityTrends";
 import {ProjectCapacityTrendsView} from "./capacityTrendsView";
 import {ProjectCapacityTrendsDetailDashboard} from "./capacityTrendsDetailDashboard";
 
-export const ProjectCapacityTrendsWidget = (
+export const ProjectEffortTrendsWidget = (
   {
     instanceKey,
     view,

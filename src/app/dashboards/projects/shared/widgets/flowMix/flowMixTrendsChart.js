@@ -85,7 +85,7 @@ export const FlowMixTrendsChart = Chart({
       [];
     const series = [...work_item_count_series, ...flow_mix_series];
 
-    const metricDisplay = specsOnly ? 'Capacity' : 'Volume';
+    const metricDisplay = specsOnly ? 'EffortOUT' : 'Volume';
 
     return {
       chart: {
@@ -96,16 +96,16 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Flow Types: Last ${measurementPeriod} days`,
+        text: `Value Mix: Last ${measurementPeriod} days`,
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay} by Flow Type` : `% of ${metricDisplay} by Flow Type`,
+        text: showCounts ? `% of ${metricDisplay} by Value Type` : `% of ${metricDisplay} by Value Type`,
         align: alignTitle || 'center',
       },
       legend: {
         title: {
-          text: `${showCounts ? (specsOnly ? 'Spec Volume' : 'Overall Volume') : (specsOnly ? 'Spec Flow Types' : 'Flow Types')}`,
+          text: `${showCounts ? (specsOnly ? 'Specs' : 'Cards') : 'Value Types'}`,
           style: {
             fontStyle: 'italic'
           }
@@ -160,9 +160,9 @@ export const FlowMixTrendsChart = Chart({
           const metricDisplay = specsOnly ? 'Effort' : 'Volume';
           const value = this.point.flowMixItem[metric];
 
-          const uom = specsOnly ? 'Dev-Days' : 'Items';
+          const uom = specsOnly ? 'Dev-Days' : 'Cards';
           return tooltipHtml(this.point.series.type === 'column' ? {
-            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
+            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Value Type: ${flowType}`,
             body: [
               [`Percentage: `, `${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}%`],
               [`${metricDisplay}: `, `${intl.formatNumber(value)} ${uom}`],

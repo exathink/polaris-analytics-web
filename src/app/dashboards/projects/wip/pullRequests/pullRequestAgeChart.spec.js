@@ -55,7 +55,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: expect.stringMatching(`Code Reviews`),
+    text: expect.stringMatching(`Review Requests`),
     align: "left",
   },
   subtitle: {
@@ -180,7 +180,7 @@ describe("PullRequestAgeChart", () => {
             const firstPoint = fixture[0];
 
             expect(actual).toMatchObject({
-              header: expect.stringMatching(`Code Review:`),
+              header: expect.stringMatching(`Review Request:`),
               body: [
                 [
                   `Work Item(s): `,

@@ -118,7 +118,7 @@ export const ShowImportStateStep = (
                 >
                   <Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
                   <Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
-                  <Column title={"Work Items Imported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
+                  <Column title={"CardsImported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
                   <Column
                     title={"Import Status"}
                     dataIndex={"importState"}

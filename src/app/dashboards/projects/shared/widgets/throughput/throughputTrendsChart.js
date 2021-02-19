@@ -11,8 +11,8 @@ export const VolumeTrendsChart = ({
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: 'workItemsInScope', displayName: 'Total Closed', visible: view === 'detail', type: 'spline'},
-        {key: 'workItemsWithCommits', displayName: 'Specs Closed', visible: true, type: 'spline'},
+        {key: 'workItemsInScope', displayName: 'Cards', visible: view === 'detail', type: 'spline'},
+        {key: 'workItemsWithCommits', displayName: 'Specs', visible: true, type: 'spline'},
 
       ]}
       measurementPeriod={measurementPeriod}
@@ -20,7 +20,7 @@ export const VolumeTrendsChart = ({
 
       config={{
         title: 'Volume',
-        yAxisUom: 'Work Items',
+        yAxisUom: 'Cards',
         plotBands: {
           metric: 'workItemsWithCommits'
         },

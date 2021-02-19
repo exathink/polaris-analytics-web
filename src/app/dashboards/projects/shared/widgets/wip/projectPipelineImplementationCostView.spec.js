@@ -62,14 +62,14 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       // both workitem scope and legend text as Specs
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(2);
     });
 
-    test("when workitem scope 'all' is selected, have legend text as Work Items", async () => {
+    test("when workitem scope 'all' is selected, have legend text as Cards", async () => {
       const propsFixture = {
         ...viewPropsFixture,
         specsOnly: false,
@@ -77,12 +77,12 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
       // asserting on the title of the chart first
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);
 
-      expect(await screen.findByText(/work items/i)).toBeInTheDocument();
+      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
     });
   });
 
@@ -100,14 +100,14 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       // both workitem scope and legend text as Specs
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(2);
     });
 
-    test("when workitem scope 'all' is selected, have legend text as Work Items", async () => {
+    test("when workitem scope 'all' is selected, have legend text as Cards", async () => {
       const propsFixture = {
         ...viewPropsFixture,
         specsOnly: false,
@@ -115,12 +115,12 @@ describe("ProjectPipelineImplementationCostView", () => {
       };
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
       // asserting on the title of the chart first
-      await screen.findByText(/total wip effort/i);
+      await screen.findAllByText(/effort/i);
 
       const specsElem = await screen.findAllByText(/specs/i);
       expect(specsElem).toHaveLength(1);
 
-      expect(await screen.findByText(/work items/i)).toBeInTheDocument();
+      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
     });
   });
 });

@@ -67,7 +67,7 @@ export const PullRequestAgeChart = Chart({
 
       },
       title: {
-        text: `${pullRequests.length} ${title || "Code Reviews"}`,
+        text: `${pullRequests.length} ${title || "Review Requests"}`,
         align: "left",
       },
       subtitle: {
@@ -104,7 +104,7 @@ export const PullRequestAgeChart = Chart({
             workItemsSummaries,
           } = this.point.pullRequest;
           return tooltipHtml({
-            header: `Code Review: ${repositoryName}#${displayId}<br/> Title: ${name}`,
+            header: `Review Request: ${repositoryName}#${displayId}<br/> Title: ${name}`,
             body: [
               [
                 `Work Item(s): `,

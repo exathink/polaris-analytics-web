@@ -31,7 +31,7 @@ export const ProjectFlowMetricsDetailDashboard = (
     >
       <DashboardRow
         h={"20%"}
-        title={`${specsOnly? 'Specs' : 'Work Items' } Closed in Last ${daysRange} days`}
+        title={`${specsOnly? 'Specs' : 'Cards' } Closed in Last ${daysRange} days`}
         controls={[
           () => (
             <div style={{minWidth: "300px", padding: "15px"}}>

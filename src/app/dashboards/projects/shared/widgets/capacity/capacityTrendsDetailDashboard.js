@@ -5,7 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectCapacityTrendsWidget} from "./capacityTrendsWidget";
+import {ProjectEffortTrendsWidget} from "./capacityTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {Checkbox} from "antd";
 
@@ -43,8 +43,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
     >
       <DashboardRow
         h={1}
-        title={`Capacity Trends`}
-        subTitle={`Last ${daysRange} days`}
+        title={`Effort Trends`}
         controls={[
 
           ...getTrendsControlBarControls(
@@ -55,7 +54,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
             ]
           ),
           () => (
-            <div style={{padding: "10px", minWidth:'200px', marginLeft: '15px'}}>
+            <div style={{padding: "5px", minWidth:'160px', marginLeft: '10px'}}>
               <Flex align={'right'}>
                 <Box pr={2} w={"100%"}>
                   <Checkbox
@@ -70,15 +69,15 @@ export const ProjectCapacityTrendsDetailDashboard = (
             </div>
           ),
           () => (
-            <div style={{padding: "10px", minWidth:'150px'}}>
+            <div style={{padding: "5px", minWidth:'180px'}}>
               <Flex align={'right'}>
-                <Box pr={2} w={"100%"}>
+                <Box pr={1} w={"100%"}>
                   <Checkbox
                     enabled={true}
                     checked={showEffort}
                     onChange={e => setShowEffort(e.target.checked)}
                   >
-                    Show Effort
+                    Show EffortOUT
                   </Checkbox>
                 </Box>
               </Flex>
@@ -93,7 +92,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
           name="capacity-trends-detail"
           render={
             ({view}) =>
-              <ProjectCapacityTrendsWidget
+              <ProjectEffortTrendsWidget
                 instanceKey={instanceKey}
                 view={view}
                 showAllTrends={true}

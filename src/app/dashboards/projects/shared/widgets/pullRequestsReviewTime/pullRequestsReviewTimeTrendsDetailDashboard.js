@@ -27,7 +27,7 @@ export const PullRequestsReviewTimeTrendsDetailDashboard = ({
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={1}
-        title={`Code Review Trends`}
+        title={`Review Request Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={getTrendsControlBarControls([
           [daysRange, setDaysRange],

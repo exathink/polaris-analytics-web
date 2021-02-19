@@ -16,7 +16,7 @@ const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
       id="contexts.work_items.instance"
-      defaultMessage="Work Item: {instance}"
+      defaultMessage="Card: {instance}"
       values={{instance: instanceName}}/>
   )
 };
