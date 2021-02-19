@@ -109,6 +109,12 @@ export function UpdateContributorPage({
   const unlinkedAliases = unlinkAliases.filter(isUnlinked);
   const linkedAliases = unlinkAliases.filter(isLinked);
 
+  // clear timeout to avoid memory leaks
+  const timeOutRef = React.useRef();
+  React.useEffect(() => {
+    return () => clearTimeout(timeOutRef.current);
+  }, []);
+
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributor({
     onCompleted: ({updateContributor: {updateStatus}}) => {
@@ -118,10 +124,10 @@ export function UpdateContributorPage({
         client.resetStore();
 
         dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
-        setTimeout(() => {
+        timeOutRef.current = setTimeout(() => {
           dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: false});
 
-          // if successful navigate to select contributors page after 1 sec (moveToFirstStep)
+          // if successful navigate to select contributors page after 1/2 sec (moveToFirstStep)
           dispatchEvent({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
         }, 500);
       } else {
@@ -335,7 +341,9 @@ export function UpdateContributorPage({
           <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>
       </div>
-      <div className={styles.excludeFromAnalysisWrapper} data-testid="exclude-from-analysis">{getExcludeFromAnalysis()}</div>
+      <div className={styles.excludeFromAnalysisWrapper} data-testid="exclude-from-analysis">
+        {getExcludeFromAnalysis()}
+      </div>
       <div className={styles.updateContributorTitle}>{getTitleText()}</div>
       <div className={styles.updateContributorTable}>{getTable()}</div>
       {renderActionButtons()}
