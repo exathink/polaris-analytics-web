@@ -26,12 +26,12 @@ export const PullRequestsReviewTimeTrendsChart = ({
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
     config={{
-      title: "Code Review Time",
+      title: "Time to Close",
       yAxisUom: "Days",
       plotBands: {
         metric: "avgAge",
       },
-      legendText: "Review Time",
+      legendText: "Time to Close",
       yAxisNormalization: {
         metric: "maxAge",
         minScale: 0,
@@ -43,7 +43,7 @@ export const PullRequestsReviewTimeTrendsChart = ({
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body: [
               getSelectedMetricDisplay(measurement, seriesKey, intl),
-              ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
+              ["Requests Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
             ],
           };
         },

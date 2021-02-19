@@ -108,14 +108,14 @@ describe("projectPullRequestsWidget", () => {
       renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
 
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/pending/i);
+      await screen.findByText(/open/i);
       expect((await screen.findAllByText(/0/i)).length).toBeGreaterThan(0);
     });
 
     test("renders stats chart in primary view without any error", async () => {
       renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/pending/i);
+      await screen.findByText(/open/i);
     });
 
     test("renders pull request chart in primary view without any error", async () => {
@@ -126,7 +126,7 @@ describe("projectPullRequestsWidget", () => {
 
       renderWithProviders(<ProjectPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/pending/i);
+      await screen.findByText(/open/i);
     });
   });
 
@@ -139,7 +139,7 @@ describe("projectPullRequestsWidget", () => {
     test("shows correct no of active pending reviews", async () => {
       renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/pending/i);
+      await screen.findByText(/open/i);
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
     });
   });

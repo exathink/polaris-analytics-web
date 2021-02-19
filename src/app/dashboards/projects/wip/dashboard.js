@@ -101,7 +101,7 @@ function WipDashboard({
         <DashboardWidget
           w={0.2}
           name={"code-reviews"}
-          title={"Code Reviews"}
+          title={"Review Requests"}
           render={({view}) => (
             <ProjectPullRequestsWidget
               instanceKey={key}

@@ -48,7 +48,7 @@ export const ProjectPullRequestsDetailDashboard = ({
       </DashboardRow>
       <DashboardRow
         h={"33%"}
-        title={`Code Review Trends`}
+        title={`Review Request Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={getTrendsControlBarControls([
           [daysRange, setDaysRange],

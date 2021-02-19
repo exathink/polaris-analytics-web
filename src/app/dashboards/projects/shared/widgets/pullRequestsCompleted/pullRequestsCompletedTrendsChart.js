@@ -9,8 +9,8 @@ export const PullRequestsCompletedTrendsChart = ({pullRequestMetricsTrends, meas
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
     config={{
-      title: "Code Reviews Completed",
-      yAxisUom: "Code Reviews",
+      title: "Requests Completed",
+      yAxisUom: "Review Requests",
       plotBands: {
         metric: "totalClosed",
       },
@@ -24,7 +24,7 @@ export const PullRequestsCompletedTrendsChart = ({pullRequestMetricsTrends, meas
           return {
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body: [
-              ["Code Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
+              ["Requests Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
               ["Avg Age: ", `${intl.formatNumber(measurement.avgAge)} Days`],
               ["Max Age: ", `${intl.formatNumber(measurement.maxAge)} Days`],
             ],

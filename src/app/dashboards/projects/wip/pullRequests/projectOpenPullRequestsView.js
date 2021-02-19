@@ -11,7 +11,7 @@ const ProjectOpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   <VizRow h={1}>
     <VizItem w={1 / 2}>
       <FlowStatistic
-        title={title || <span>{"Pending"}</span>}
+        title={title || <span>{"Open"}</span>}
         currentValue={(pullRequests && pullRequests.length) || 0}
         good={TrendIndicator.isNegative}
       />
@@ -40,7 +40,7 @@ const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
     <VizItem w={1}>
       <PullRequestAgeChart
         pullRequests={pullRequests}
-        title={"Pending Code Reviews"}
+        title={"Open Requests"}
         view={view}
         onSelectionChange={(pullRequests) => {
           if (pullRequests.length === 1) {
