@@ -173,7 +173,7 @@ describe("ManageContributorsWorkflow", () => {
 
       beforeEach(() => {
         renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, emptyContributorsMocks);
-      })
+      });
 
       test("should not render title for table", () => {
         expect(
@@ -263,25 +263,12 @@ describe("ManageContributorsWorkflow", () => {
         expect(await findByText(/2/i)).toBeInTheDocument();
       });
 
-      test("should render select contributors table with correct no of contributos", async () => {
+      test("should render select contributors table with correct no of contributors", async () => {
         const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
         const checkBoxElements = await findAllByRole("checkbox");
 
         expect(checkBoxElements).toHaveLength(2);
       });
-
-      test("should render collapsible records for contributors, when there are more than 1 aliases under a contributor", async () => {
-        // const {findAllByRole} = within(screen.getByTestId("select-contributors-table"))
-        // const expandElements = await findAllByRole("button", {name: /Expand row/i});
-        // expect(expandElements[1]).toBeVisible()
-        // const collapsibleExpandElements = expandElements.filter(expandElement => expect(expandElement).toBeEnabled())
-      });
-
-      test("when one collapsible record is selected, other collapsible records should be disabled for selection", () => {});
-
-      test("all alias records under a collapsible contributor should be disabled for selection", () => {});
-
-      test("all top level contributors should be enabled for selection", () => {});
 
       test("when any of the records is selected, Next button should be enabled", async () => {
         // before next button is disabled
@@ -324,6 +311,153 @@ describe("ManageContributorsWorkflow", () => {
         await screen.findByText(
           /Contributions from the contributors below will be merged into contributions from Krishna Kumar/i
         );
+      });
+    });
+
+    describe("contributors disable behaviour", () => {
+      const selectContributorsMocks = [
+        {
+          request: gqlRequest,
+          result: {
+            data: {
+              account: {
+                contributors: {
+                  edges: [
+                    {
+                      node: {
+                        id: "Q29udHJpYnV0b3I6MjJhODNmZjAtMDBhMS00NWUxLWJjZmUtNzQ1NDJhNjRjZWIx",
+                        key: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                        name: "Aman Mavai",
+                        earliestCommit: getNDaysAgo(35),
+                        latestCommit: getNDaysAgo(5),
+                        commitCount: 378,
+                        contributorAliasesInfo: [
+                          {
+                            key: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                            name: "Aman Mavai",
+                            alias: "aman.mavai@gslab.com",
+                            latestCommit: getNDaysAgo(5),
+                            earliestCommit: getNDaysAgo(35),
+                            commitCount: 378,
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      node: {
+                        id: "R39udHJpYnV0b3I6MjJhODNmZjAtMDBhMS00NWUxLWJjZmUtNzQ1NDJhNjRjZWIx",
+                        key: "33a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                        name: "Test Lname",
+                        earliestCommit: getNDaysAgo(35),
+                        latestCommit: getNDaysAgo(5),
+                        commitCount: 37,
+                        contributorAliasesInfo: [
+                          {
+                            key: "33a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                            name: "Test Lname",
+                            alias: "test.lname@gslab.com",
+                            latestCommit: getNDaysAgo(5),
+                            earliestCommit: getNDaysAgo(35),
+                            commitCount: 37,
+                          },
+                          {
+                            key: "5e7bb925-d8f3-419e-87ab-6fd087f6734e",
+                            name: "Janvi Singh",
+                            alias: "janvi@exathink.com",
+                            latestCommit: getNDaysAgo(4),
+                            earliestCommit: getNDaysAgo(1375),
+                            commitCount: 564,
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      node: {
+                        id: "Q29udHJpYnV0b3I6NGQ3YmI5MjUtZDhmMy00MTllLTg3YWItNmZkMDg3ZjY3MzRl",
+                        key: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                        name: "Krishna Kumar",
+                        earliestCommit: getNDaysAgo(1375),
+                        latestCommit: getNDaysAgo(4),
+                        commitCount: 7917,
+                        contributorAliasesInfo: [
+                          {
+                            key: "4ba4f636-b290-4602-be18-47187b9b6b5a",
+                            name: "krishnaku",
+                            alias: "kkumar@exathink.com",
+                            latestCommit: getNDaysAgo(180),
+                            earliestCommit: getNDaysAgo(1000),
+                            commitCount: 569,
+                          },
+                          {
+                            key: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                            name: "Krishna Kumar",
+                            alias: "kkumar@exathink.com",
+                            latestCommit: getNDaysAgo(4),
+                            earliestCommit: getNDaysAgo(1375),
+                            commitCount: 6944,
+                          },
+                          {
+                            key: "5b7eecb4-b0c2-4001-904d-542c28fd3204",
+                            name: "Pragya Goyal",
+                            alias: "pragya@64sqs.com",
+                            latestCommit: getNDaysAgo(5),
+                            earliestCommit: getNDaysAgo(365),
+                            commitCount: 397,
+                          },
+                          {
+                            key: "64814d00-e3e0-45b0-b4a2-f863c490dddd",
+                            name: "krishna",
+                            alias: "kkumar@exathink.com",
+                            latestCommit: getNDaysAgo(1544),
+                            earliestCommit: getNDaysAgo(1644),
+                            commitCount: 7,
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      ];
+      beforeEach(() => {
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, selectContributorsMocks);
+      });
+
+      test("all alias records under a parent contributor should be disabled for selection", async () => {
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const expandElements = await findAllByRole("button", {name: /Expand row/i});
+        // click third element which is parent contributor
+        fireEvent.click(expandElements[2]);
+
+        const allCheckboxElements = await findAllByRole("checkbox");
+
+        // after third element all are child nodes
+        const [, , , ...childNodes] = allCheckboxElements;
+        childNodes.forEach((checkboxElement) => {
+          expect(checkboxElement).toBeDisabled();
+        });
+      });
+
+      test("when one parent contributor record is selected, other parent contributor records should be disabled for selection", async () => {
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+
+        const allCheckboxElements = await findAllByRole("checkbox");
+        expect(allCheckboxElements).toHaveLength(3);
+
+        // second and third elements are parent contributors, first is non-parent
+        const [, second, third] = allCheckboxElements;
+
+        // before
+        expect(third).toBeEnabled();
+
+        // click the second element's checkbox
+        fireEvent.click(second);
+
+        // after
+        expect(third).toBeDisabled();
       });
     });
   });
