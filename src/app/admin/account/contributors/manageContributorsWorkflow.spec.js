@@ -35,7 +35,7 @@ const gqlMutationRequest = {
     contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
     updatedInfo: {
       contributorName: "Krishna Kumar",
-      contributorAliasKeys: ["5b7eecb4-b0c2-4001-904d-542c28fd3204"],
+      contributorAliasKeys: ["22a83ff0-00a1-45e1-bcfe-74542a64ceb1"],
     },
   },
 };
@@ -888,6 +888,119 @@ describe("ManageContributorsWorkflow", () => {
       });
 
       test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
+    });
+
+    describe("when there are errors", () => {
+      let logGraphQlError;
+      beforeAll(() => {
+        // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
+        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
+      });
+      afterAll(() => {
+        logGraphQlError.mockRestore();
+      });
+
+
+      const mockNetworkError = [
+        {
+          request: gqlMutationRequest,
+          error: new Error("A network error Occurred"),
+        },
+      ];
+
+      const mockGraphQlErrors = [
+        {
+          request: gqlMutationRequest,
+          result: {
+            errors: [new GraphQLError("A GraphQL Error Occurred")],
+          },
+        },
+      ];
+
+      test("it renders network error message and logs the error when there is a network error", async () => {
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, [
+          ...contributorAliasesMocks,
+          ...mockNetworkError,
+        ]);
+
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
+
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+
+        // click all checkbox
+        checkboxElements.forEach((checkboxElement) => {
+          fireEvent.click(checkboxElement);
+        });
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click on next button, will navigate to UpdateContributors Page.
+        fireEvent.click(nextButton);
+
+        // find Update Contributor button
+        const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+
+        // before
+        expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+
+        // click update contributor button
+        fireEvent.click(updateContributorButton);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        
+        // after
+        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
+      });
+
+      test("it renders graphql error message and logs the error when there is a GraphQl error", async () => {
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, [
+          ...contributorAliasesMocks,
+          ...mockGraphQlErrors,
+        ]);
+
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
+
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const checkboxElements = await findAllByRole("checkbox");
+
+        // click all checkbox
+        checkboxElements.forEach((checkboxElement) => {
+          fireEvent.click(checkboxElement);
+        });
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click on next button, will navigate to UpdateContributors Page.
+        fireEvent.click(nextButton);
+
+        // find Update Contributor button
+        const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+
+        // before
+        expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+
+        // click update contributor button
+        fireEvent.click(updateContributorButton);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        // after
+        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+      });
     });
   });
 });
