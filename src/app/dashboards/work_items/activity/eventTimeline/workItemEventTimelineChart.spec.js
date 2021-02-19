@@ -232,7 +232,7 @@ const fixedChartConfig = {
     },
   },
   yAxis: {
-    categories: ["Events", "Commits", "Code Reviews"],
+    categories: ["Events", "Commits", "Review Requests"],
     reversed: true,
     title: {
       text: null,

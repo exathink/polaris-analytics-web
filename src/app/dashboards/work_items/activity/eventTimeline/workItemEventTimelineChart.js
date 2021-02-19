@@ -232,7 +232,7 @@ export const WorkItemEventsTimelineChart = Chart({
         title: {
           text: null,
         },
-        categories: ["Events", "Commits", "Code Reviews"],
+        categories: ["Events", "Commits", "Review Requests"],
         reversed: true,
         labels: {
           align: "left",
