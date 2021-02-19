@@ -49,7 +49,7 @@ export const Topics = {
   },
   work_item: {
     name: 'work_item',
-    display: () => (<FormattedMessage id='topics.work_item' defaultMessage="Work Item"/>),
+    display: () => (<FormattedMessage id='topics.work_item' defaultMessage="Card"/>),
     icon: 'ion-checkmark'
   },
   history: {

@@ -10,7 +10,7 @@ import {Tabs} from 'antd';
 const {TabPane} = Tabs;
 
 const workItemEventsTimelineGroupings = {
-  workItem: "Work Item",
+  workItem: "Card",
   event: "Event",
   type: "Type",
   source: "Source",

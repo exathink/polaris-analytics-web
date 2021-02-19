@@ -90,7 +90,7 @@ function getSeriesByState(workItems, view) {
 
 function getTitle(workItems, stageName, specsOnly) {
   const count = workItems.length;
-  const countDisplay = `${count} ${count === 1 ? specsOnly ? 'Spec' : 'Work Item' : specsOnly ? 'Specs' :'Cards'}`;
+  const countDisplay = `${count} ${count === 1 ? specsOnly ? 'Spec' : 'Card' : specsOnly ? 'Specs' :'Cards'}`;
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
 

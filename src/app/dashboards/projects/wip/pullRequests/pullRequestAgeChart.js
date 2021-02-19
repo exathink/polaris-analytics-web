@@ -107,7 +107,7 @@ export const PullRequestAgeChart = Chart({
             header: `Review Request: ${repositoryName}#${displayId}<br/> Title: ${name}`,
             body: [
               [
-                `Work Item(s): `,
+                `Card(s): `,
                 workItemsSummaries.length > 0
                   ? `${workItemsSummaries
                       .map((workItem) => workItem.displayId)
