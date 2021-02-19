@@ -37,7 +37,7 @@
   "contexts.repositories.display": "{quantity, plural, one {Repository} other {Repositories}}",
   "contexts.contributors.display": "{quantity, plural, one {Contributor} other {Contributors}}",
   "contexts.commits.display": "{quantity, plural, one {Commit} other {Commits}}",
-  "contexts.work_items.display": "{quantity, plural, one {Work Item} other {WorkItems}}",
+  "contexts.work_items.display": "{quantity, plural, one {Card} other {Cards}}",
   "contexts.oss": "Open Source",
   "topics.flow": "Flow",
   "topics.wip": "Wip",

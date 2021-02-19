@@ -36,7 +36,7 @@ const fixedChartConfig = {
     type: "category",
     visible: true,
     title: {
-      text: "Work Item",
+      text: "Card",
     },
   },
   yAxis: {

@@ -45,7 +45,7 @@ function getWorkItemSummaryText(commit) {
   let workItemsSummaryText = ""
   if (commit.workItemsSummaries != null) {
     if (commit.workItemsSummaries.length === 0) {
-      workItemsSummaryText = "Work Item: None"
+      workItemsSummaryText = "Card: None"
     } else if (commit.workItemsSummaries.length === 1) {
       const item = commit.workItemsSummaries[0]
       workItemsSummaryText = `${item.displayId}: ${elide(item.name, 50)}

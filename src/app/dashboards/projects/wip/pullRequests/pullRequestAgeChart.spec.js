@@ -183,7 +183,7 @@ describe("PullRequestAgeChart", () => {
               header: expect.stringMatching(`Review Request:`),
               body: [
                 [
-                  `Work Item(s): `,
+                  `Card(s): `,
                   firstPoint.workItemsSummaries.length > 0
                     ? `${firstPoint.workItemsSummaries.map((workItem) => workItem.displayId).join()}`
                     : "None",

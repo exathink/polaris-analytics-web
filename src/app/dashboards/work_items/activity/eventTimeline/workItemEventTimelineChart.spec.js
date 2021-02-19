@@ -23,7 +23,7 @@ afterEach(() => {
 
 const workItemFixture = {
   id: "V29ya0l0ZW06NjVlMDE1ZmEtNGI5Mi00NTU2LWIwZmItOWYyNTcxMTAzNmM5",
-  name: "Show Pull Requests on Work Item Timeline",
+  name: "Show Pull Requests on Card Timeline",
   displayId: "PO-357",
   workItemType: "story",
   state: "Code-Review-Needed",

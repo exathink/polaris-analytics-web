@@ -159,7 +159,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         type: "category",
         visible: !singleWorkItemMode,
         title: {
-          text: !singleWorkItemMode ? "Work Item" : null,
+          text: !singleWorkItemMode ? "Card" : null,
         },
       },
       yAxis: {
