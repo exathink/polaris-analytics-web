@@ -237,7 +237,7 @@ export function UpdateContributorPage({
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
-          data-testid="update-contributors-table"
+          data-testid="select-merge-target-table"
         />
       );
     }

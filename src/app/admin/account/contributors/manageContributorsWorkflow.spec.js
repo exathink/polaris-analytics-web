@@ -657,7 +657,7 @@ describe("ManageContributorsWorkflow", () => {
     describe("single non-parent contributor", () => {
       // setup initial conditions for this flow
       beforeEach(async () => {
-        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, contributorAliasesMocks);
+        renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mocks);
 
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
@@ -717,8 +717,6 @@ describe("ManageContributorsWorkflow", () => {
         // after exclude from analysis checkbox is checked, update contributor button is enabled
         expect(updateContributorButton).toBeEnabled();
       });
-
-      test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
 
     describe("unlink flow", () => {
@@ -766,7 +764,7 @@ describe("ManageContributorsWorkflow", () => {
 
       test("should render all toggles as checked for all records in the table", async () => {
         // find all checkbox toggle
-        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-merge-target-table"));
         const toggleElements = await findAllByRole("switch");
 
         expect(toggleElements).toHaveLength(3);
@@ -775,7 +773,7 @@ describe("ManageContributorsWorkflow", () => {
 
       test("when a toggle is unchecked for a record, corresponding message for title changes", async () => {
         // find all toggle elements
-        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-merge-target-table"));
         const toggleElements = await findAllByRole("switch");
 
         expect(toggleElements).toHaveLength(3);
@@ -796,7 +794,7 @@ describe("ManageContributorsWorkflow", () => {
         expect(updateContributorButton).toBeDisabled();
 
         // find all toggle elements
-        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-merge-target-table"));
         const toggleElements = await findAllByRole("switch");
 
         expect(toggleElements).toHaveLength(3);
@@ -811,8 +809,6 @@ describe("ManageContributorsWorkflow", () => {
         // after update contributor button is enabled
         expect(updateContributorButton).toBeEnabled();
       });
-
-      test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
 
     describe("regular update contributor flow", () => {
@@ -886,8 +882,6 @@ describe("ManageContributorsWorkflow", () => {
         expect(checkboxElements[0].checked).toBe(false);
         expect(updateContributorButton).toBeDisabled();
       });
-
-      test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that, then navigates to select contributors page", () => {});
     });
 
     describe("when there are errors", () => {
@@ -899,7 +893,6 @@ describe("ManageContributorsWorkflow", () => {
       afterAll(() => {
         logGraphQlError.mockRestore();
       });
-
 
       const mockNetworkError = [
         {
@@ -955,7 +948,7 @@ describe("ManageContributorsWorkflow", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        
+
         // after
         expect(screen.queryByText(/network error/i)).toBeInTheDocument();
       });
@@ -1000,6 +993,214 @@ describe("ManageContributorsWorkflow", () => {
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         // after
         expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+      });
+    });
+
+    describe("when there is success on update contributor action", () => {
+      describe("single non-parent contributor", () => {
+        const mutationReq = {
+          query: UPDATE_CONTRIBUTOR,
+          variables: {
+            contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+            updatedInfo: {
+              contributorName: "Aman Mavai New",
+            },
+          },
+        };
+
+        const singleNonParentMocks = [
+          {
+            request: mutationReq,
+            result: {
+              data: {
+                updateContributor: {
+                  updateStatus: {
+                    success: true,
+                    contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                    message: null,
+                    exception: null,
+                  },
+                },
+              },
+            },
+          },
+        ];
+        test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
+          renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, [
+            ...contributorAliasesMocks,
+            ...singleNonParentMocks,
+          ]);
+
+          // before next button is disabled
+          const nextButton = screen.getByRole("button", {name: /Next/i});
+          expect(nextButton).toBeDisabled();
+
+          // find all checkbox elements
+          const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+          const checkboxElements = await findAllByRole("checkbox");
+
+          // click first checkbox element
+          fireEvent.click(checkboxElements[0]);
+
+          // after next button is enabled
+          expect(nextButton).toBeEnabled();
+
+          // click on next button, will navigate to UpdateContributors Page.
+          fireEvent.click(nextButton);
+
+          // find Update Contributor button
+          const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+
+          expect(updateContributorButton).toBeDisabled();
+
+          const contributorTextbox = await screen.findByRole("textbox");
+          //update the textbox value
+          fireEvent.change(contributorTextbox, {target: {value: "Aman Mavai New"}});
+
+          expect(updateContributorButton).toBeEnabled();
+          // before
+          expect(screen.queryByText(/success/i)).not.toBeInTheDocument();
+
+          // click update contributor button
+          fireEvent.click(updateContributorButton);
+
+          // update contributor button is disabled till the time mutation is executing
+          expect(updateContributorButton).toBeDisabled();
+
+          const inProgressElement = screen.getByText(/Processing.../i);
+          expect(inProgressElement).toBeInTheDocument();
+
+          // after
+          expect(await screen.findByText(/success/i)).toBeInTheDocument();
+        });
+      });
+
+      describe("unlink flow", () => {
+        const mutationReq = {
+          query: UPDATE_CONTRIBUTOR,
+          variables: {
+            contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+            updatedInfo: {
+              contributorName: "Krishna Kumar",
+              unlinkContributorAliasKeys: ["4ba4f636-b290-4602-be18-47187b9b6b5a"],
+            },
+          },
+        };
+
+        const unlinkMocks = [
+          {
+            request: mutationReq,
+            result: {
+              data: {
+                updateContributor: {
+                  updateStatus: {
+                    success: true,
+                    contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                    message: null,
+                    exception: null,
+                  },
+                },
+              },
+            },
+          },
+        ];
+        test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
+          renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, [
+            ...contributorAliasesMocks,
+            ...unlinkMocks,
+          ]);
+
+          // before next button is disabled
+          const nextButton = screen.getByRole("button", {name: /Next/i});
+          expect(nextButton).toBeDisabled();
+
+          // find all checkbox elements
+          const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+          const checkboxElements = await findAllByRole("checkbox");
+          const parentRecordCheckbox = checkboxElements[1];
+
+          // click parent record checkbox
+          fireEvent.click(parentRecordCheckbox);
+
+          // after next button is enabled
+          expect(nextButton).toBeEnabled();
+
+          // click on next button, will navigate to Select Merge Target Page.
+          fireEvent.click(nextButton);
+
+          // find all toggle elements
+          const {findAllByRole: findAllByRoleMergeTarget} = within(screen.getByTestId("select-merge-target-table"));
+          const toggleElements = await findAllByRoleMergeTarget("switch");
+
+          expect(toggleElements).toHaveLength(3);
+          // before all are checked to be true
+          toggleElements.forEach((toggleElement) => expect(toggleElement.getAttribute("aria-checked")).toBe("true"));
+
+          const [first] = toggleElements;
+          fireEvent.click(first);
+          await screen.findByText(/1 contributor will be unlinked from Krishna Kumar/i);
+
+          // find Update Contributor button
+          const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+
+          // before
+          expect(screen.queryByText(/success/i)).not.toBeInTheDocument();
+
+          // click update contributor button
+          fireEvent.click(updateContributorButton);
+
+          // update contributor button is disabled till the time mutation is executing
+          expect(updateContributorButton).toBeDisabled();
+
+          const inProgressElement = screen.getByText(/Processing.../i);
+          expect(inProgressElement).toBeInTheDocument();
+
+          // after
+          expect(await screen.findByText(/success/i)).toBeInTheDocument();
+        });
+      });
+
+      describe("regular update contributor flow", () => {
+        test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
+          renderWithProviders(<ManageContributorsWorkflow {...propsFixture} />, mocks);
+
+          // before next button is disabled
+          const nextButton = screen.getByRole("button", {name: /Next/i});
+          expect(nextButton).toBeDisabled();
+
+          // find all checkbox elements
+          const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+          const checkboxElements = await findAllByRole("checkbox");
+
+          // click all checkbox
+          checkboxElements.forEach((checkboxElement) => {
+            fireEvent.click(checkboxElement);
+          });
+
+          // after next button is enabled
+          expect(nextButton).toBeEnabled();
+
+          // click on next button, will navigate to UpdateContributors Page.
+          fireEvent.click(nextButton);
+
+          // find Update Contributor button
+          const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+
+          // before
+          expect(screen.queryByText(/success/i)).not.toBeInTheDocument();
+
+          // click update contributor button
+          fireEvent.click(updateContributorButton);
+
+          // update contributor button is disabled till the time mutation is executing
+          expect(updateContributorButton).toBeDisabled();
+
+          const inProgressElement = screen.getByText(/Processing.../i);
+          expect(inProgressElement).toBeInTheDocument();
+
+          // after
+          expect(await screen.findByText(/success/i)).toBeInTheDocument();
+        });
       });
     });
   });
