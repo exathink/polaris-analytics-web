@@ -154,6 +154,15 @@ export function SelectContributorsPage({
   const setSelectedRecords = (records) => {
     dispatch({type: actionTypes.UPDATE_SELECTED_RECORDS, payload: records});
   };
+
+  function getTitle() {
+    if (contributorsData.size === 0) {
+      return null;
+    }
+
+    return "Select one or more contributors to merge into a single contributor"
+  }
+  
   return (
     <div className={styles.selectContributorsLandingPage}>
       {renderActionButtons()}
@@ -168,11 +177,11 @@ export function SelectContributorsPage({
           />
         </div>
         <div>Days</div>
-        <div className={styles.activeContributors}>
+        <div className={styles.activeContributors} data-testid="active-contributors">
           <Statistic title="Active Contributors" value={contributorsData.size} precision={0} />
         </div>
       </div>
-      <div className={styles.userMessage}>Select one or more contributors to merge into a single contributor</div>
+      <div className={styles.userMessage}>{getTitle()}</div>
       <div className={styles.selectContributorsTableWrapper}>
         <Table
           loading={loading}
@@ -186,6 +195,7 @@ export function SelectContributorsPage({
           dataSource={[...contributorsData.values()]}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
+          data-testid="select-contributors-table"
         />
       </div>
     </div>

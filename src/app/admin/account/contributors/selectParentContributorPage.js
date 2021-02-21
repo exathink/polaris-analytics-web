@@ -105,6 +105,7 @@ export function SelectParentContributorPage({
           pagination={false}
           scroll={{y: VERTICAL_SCROLL_HEIGHT}}
           showSorterTooltip={false}
+          data-testid="select-parent-contributor"
         />
       </div>
       {renderActionButtons()}
