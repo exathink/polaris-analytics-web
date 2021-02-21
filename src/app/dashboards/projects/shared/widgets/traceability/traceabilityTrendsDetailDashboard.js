@@ -65,7 +65,7 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
         <DashboardWidget
           w={1}
           name="commits"
-          title={"Commits Without Specs: Last 30 days"}
+          title={"Untraceable Commits: Last 30 days"}
           render={
             ({view}) =>
               <DimensionCommitsNavigatorWidget

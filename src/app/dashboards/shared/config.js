@@ -36,7 +36,7 @@ export const Colors = {
 };
 
 
-export const Untracked = 'No Spec';
+export const Untracked = 'Untraceable';
 
 export const WorkItemColorMap = {
   issue: Colors.WorkItemType.story,
