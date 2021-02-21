@@ -27,15 +27,13 @@ function getUnlinkUtils(selectedRecords) {
   const isUnlinkFlow = selectedRecords.length === 1 && selectedRecords.filter(withChildren).length === 1;
 
   // all child records except the parent alias
-  const unlinkChildRecords = isUnlinkFlow
+  const initialUnlinkAliases = isUnlinkFlow
     ? selectedRecords[0].contributorAliasesInfo.filter((x) => x.key !== selectedRecords[0].keyBackup)
     : [];
 
-  const initialUnlinkAliases = isUnlinkFlow ? unlinkChildRecords : [];
   return {
     isUnlinkFlow,
     initialUnlinkAliases,
-    unlinkChildRecords,
   };
 }
 
@@ -83,7 +81,7 @@ export function UpdateContributorPage({
   const selectedRecordsWithoutChildren = getSelectedRecordsWithoutChildren(selectedRecords, parentContributorKey);
   // parent contributor in which to merge other contributors
   const parentContributor = selectedRecords.find((x) => x.key === parentContributorKey);
-  const {isUnlinkFlow, initialUnlinkAliases, unlinkChildRecords} = getUnlinkUtils(selectedRecords);
+  const {isUnlinkFlow, initialUnlinkAliases} = getUnlinkUtils(selectedRecords);
 
   const initialState = {
     excludeFromAnalysis: undefined,
@@ -111,6 +109,12 @@ export function UpdateContributorPage({
   const unlinkedAliases = unlinkAliases.filter(isUnlinked);
   const linkedAliases = unlinkAliases.filter(isLinked);
 
+  // clear timeout to avoid memory leaks
+  const timeOutRef = React.useRef();
+  React.useEffect(() => {
+    return () => clearTimeout(timeOutRef.current);
+  }, []);
+
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateContributor({
     onCompleted: ({updateContributor: {updateStatus}}) => {
@@ -120,10 +124,10 @@ export function UpdateContributorPage({
         client.resetStore();
 
         dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
-        setTimeout(() => {
+        timeOutRef.current = setTimeout(() => {
           dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: false});
 
-          // if successful navigate to select contributors page after 1 sec (moveToFirstStep)
+          // if successful navigate to select contributors page after 1/2 sec (moveToFirstStep)
           dispatchEvent({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
         }, 500);
       } else {
@@ -230,7 +234,7 @@ export function UpdateContributorPage({
     if (isUnlinkFlow) {
       const updateUnlinkAliases = (ula) => dispatch({type: actionTypes.UPDATE_UNLINK_ALIASES, payload: ula});
       const unlinkCols = [...columns, getToggleCol([unlinkAliases, updateUnlinkAliases])];
-      const unlinkData = getTransformedData(unlinkChildRecords);
+      const unlinkData = getTransformedData(initialUnlinkAliases);
       return (
         <Table
           size="small"
@@ -239,6 +243,7 @@ export function UpdateContributorPage({
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
+          data-testid="select-merge-target-table"
         />
       );
     }
@@ -253,6 +258,7 @@ export function UpdateContributorPage({
           pagination={false}
           scroll={{y: SCROLL_HEIGHT_UPDATE_CONTRIBUTORS}}
           showSorterTooltip={false}
+          data-testid="update-contributors-table"
         />
       );
     } else {
@@ -335,7 +341,9 @@ export function UpdateContributorPage({
           <Input value={parentContributorName} onChange={handleParentContributorChange} />
         </div>
       </div>
-      <div className={styles.excludeFromAnalysisWrapper}>{getExcludeFromAnalysis()}</div>
+      <div className={styles.excludeFromAnalysisWrapper} data-testid="exclude-from-analysis">
+        {getExcludeFromAnalysis()}
+      </div>
       <div className={styles.updateContributorTitle}>{getTitleText()}</div>
       <div className={styles.updateContributorTable}>{getTable()}</div>
       {renderActionButtons()}
