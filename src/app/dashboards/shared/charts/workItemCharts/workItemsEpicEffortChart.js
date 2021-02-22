@@ -7,7 +7,7 @@ import {Colors} from "../../config";
 require('highcharts/modules/treemap')(Highcharts);
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'No Epic');
+  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'Uncategorized');
 
 
   return [{
@@ -70,7 +70,7 @@ export const WorkItemsEpicEffortChart = Chart({
 
       },
       title: {
-        text: title || `Epics: ${activeOnly ? 'Work In Progress' : ''}${days ? `Last ${days} days` : ''}`,
+        text: title || `Value Book: ${activeOnly ? 'Work In Progress' : ''}${days ? `Last ${days} days` : ''}`,
         align: 'left',
       },
       subtitle: {
