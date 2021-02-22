@@ -6,7 +6,7 @@ const siteConfig = {
   siteName: 'FLOW',
   siteIcon: 'ion ion-arrow-graph-up-right',
   homePath: '/app',
-  footerText: '©Exathink, LLC 2017-2020',
+  footerText: '©Exathink, LLC 2017-2021',
 };
 const themeConfig = {
   topbar: 'themedefault',
