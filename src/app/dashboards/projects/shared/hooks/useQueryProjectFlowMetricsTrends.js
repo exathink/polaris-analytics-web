@@ -12,7 +12,8 @@ export function useQueryProjectFlowMetricsTrends(
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     specsOnly,
-    referenceString
+    referenceString,
+    defectsOnly
   }) {
   return useQuery(
     gql`
@@ -26,6 +27,7 @@ export function useQueryProjectFlowMetricsTrends(
           $before: DateTime,
           $specsOnly: Boolean, 
           $referenceString: String, 
+          $defectsOnly: Boolean
           ) {
       project(
             key: $key, 
@@ -39,6 +41,7 @@ export function useQueryProjectFlowMetricsTrends(
               cycleTimeTargetPercentile: $cycleTimeTargetPercentile,
               durationTargetPercentile: $cycleTimeTargetPercentile,
               latencyTargetPercentile: $cycleTimeTargetPercentile,
+              defectsOnly: $defectsOnly,
               metrics: [
                 avg_lead_time, 
                 min_cycle_time,
@@ -112,7 +115,8 @@ export function useQueryProjectFlowMetricsTrends(
         leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
         cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile,
         referenceString: referenceString,
-        specsOnly: specsOnly
+        specsOnly: specsOnly,
+        defectsOnly: defectsOnly
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()
