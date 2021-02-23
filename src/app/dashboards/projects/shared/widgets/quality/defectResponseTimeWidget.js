@@ -33,9 +33,13 @@ export const DefectResponseTimeWidget = ({
 
   return (
     <DefectResponseTimeView
+      instanceKey={instanceKey}
       flowMetricsTrends={flowMetricsTrends}
       measurementWindow={measurementWindow}
       measurementPeriod={days}
+      samplingFrequency={samplingFrequency}
+      leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+      cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
       view={view}
     />
   );
