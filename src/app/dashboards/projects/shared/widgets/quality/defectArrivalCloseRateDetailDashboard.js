@@ -6,7 +6,7 @@ import {
   useTrendsControlBarState,
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
 
-const dashboard_id = "dashboards.trends.projects.quality.detail";
+const dashboard_id = "dashboards.trends.projects.arrivalclose.detail";
 
 export const DefectArrivalCloseRateDetailDashboard = ({
   instanceKey,
