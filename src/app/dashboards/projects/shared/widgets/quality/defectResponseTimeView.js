@@ -5,7 +5,6 @@ import {DefectResponseTimeDetailDashboard} from "./defectResponseTimeDetailDashb
 
 export const DefectResponseTimeView = ({
   instanceKey,
-  days,
   flowMetricsTrends,
   measurementPeriod,
   measurementWindow,
@@ -17,7 +16,7 @@ export const DefectResponseTimeView = ({
   if (view === "detail") {
     const props = {
       instanceKey,
-      days,
+      measurementPeriod,
       measurementWindow,
       samplingFrequency,
       leadTimeConfidenceTarget,

@@ -5,7 +5,6 @@ import {DefectArrivalCloseRateDetailDashboard} from "./defectArrivalCloseRateDet
 
 export const DefectArrivalCloseRateView = ({
   instanceKey,
-  days,
   flowRateTrends,
   measurementPeriod,
   measurementWindow,
@@ -15,7 +14,7 @@ export const DefectArrivalCloseRateView = ({
   if (view === "detail") {
     const props = {
       instanceKey,
-      days,
+      measurementPeriod,
       measurementWindow,
       samplingFrequency,
     };

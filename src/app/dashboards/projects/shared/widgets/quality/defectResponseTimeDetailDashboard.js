@@ -10,7 +10,7 @@ const dashboard_id = "dashboards.trends.projects.quality.detail";
 
 export const DefectResponseTimeDetailDashboard = ({
   instanceKey,
-  days,
+  measurementPeriod,
   measurementWindow,
   samplingFrequency,
   leadTimeConfidenceTarget,
@@ -20,7 +20,7 @@ export const DefectResponseTimeDetailDashboard = ({
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange],
-  ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
+  ] = useTrendsControlBarState(measurementPeriod, measurementWindow, samplingFrequency);
 
   return (
     <Dashboard dashboard={dashboard_id}>
