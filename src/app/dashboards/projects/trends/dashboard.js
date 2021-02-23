@@ -11,6 +11,7 @@ import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
+import {DefectResponseTimeWidget} from "../shared/widgets/quality";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 const dashboard = ({viewerContext}) => (
@@ -29,6 +30,7 @@ const dashboard = ({viewerContext}) => (
         const {
             leadTimeTarget,
             cycleTimeTarget,
+            leadTimeConfidenceTarget,
             cycleTimeConfidenceTarget,
             trendsAnalysisPeriod
           } = settingsWithDefaults;
@@ -147,6 +149,25 @@ const dashboard = ({viewerContext}) => (
                     context={context}
                     view={view}
                     latestWorkItemEvent={latestWorkItemEvent}
+                  />
+                )}
+                showDetail={true}
+              />
+            </DashboardRow>
+            <DashboardRow h="30%" title={`Quality`}>
+              <DashboardWidget
+                w={1 / 3}
+                name="defect-response-time"
+                render={({view}) => (
+                  <DefectResponseTimeWidget
+                    instanceKey={key}
+                    measurementWindow={30}
+                    days={trendsAnalysisPeriod}
+                    samplingFrequency={7}
+                    leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                    cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                    context={context}
+                    view={view}
                   />
                 )}
                 showDetail={true}
