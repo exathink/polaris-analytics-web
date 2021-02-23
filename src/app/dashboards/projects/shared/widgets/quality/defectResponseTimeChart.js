@@ -7,8 +7,8 @@ export const DefectResponseTimeChart = ({flowMetricsTrends, measurementPeriod, m
     <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: "avgLeadTime", displayName: "avgLeadTime", visible: true, type: "spline"},
-        {key: "avgCycleTime", displayName: "avgCycleTime", visible: true, type: "spline"},
+        {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline"},
+        {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline"},
       ]}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
