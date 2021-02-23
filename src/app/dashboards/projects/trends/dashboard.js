@@ -178,7 +178,7 @@ const dashboard = ({viewerContext}) => (
               )}
               showDetail={true}
             />
-            <DashboardWidget w={1 / 3} name="defect-rate" render={({view}) => null} showDetail={false} />
+            <DashboardWidget w={1 / 3} name="placeholder-widget" render={({view}) => null} showDetail={false} />
           </DashboardRow>
         </Dashboard>
       );
