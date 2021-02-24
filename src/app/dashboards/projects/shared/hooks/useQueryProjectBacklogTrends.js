@@ -1,7 +1,14 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectBacklogTrends({instanceKey, days, measurementWindow, samplingFrequency, defectsOnly}) {
+export function useQueryProjectBacklogTrends({
+  instanceKey,
+  days,
+  measurementWindow,
+  samplingFrequency,
+  defectsOnly,
+  specsOnly,
+}) {
   return useQuery(
     gql`
       query projectBacklogTrends(
@@ -10,6 +17,7 @@ export function useQueryProjectBacklogTrends({instanceKey, days, measurementWind
         $measurementWindow: Int!
         $samplingFrequency: Int!
         $defectsOnly: Boolean
+        $specsOnly: Boolean
       ) {
         project(
           key: $key
@@ -28,6 +36,7 @@ export function useQueryProjectBacklogTrends({instanceKey, days, measurementWind
               avg_backlog_size
             ]
             defectsOnly: $defectsOnly
+            specsOnly: $specsOnly
           }
         ) {
           backlogTrends {
@@ -52,6 +61,7 @@ export function useQueryProjectBacklogTrends({instanceKey, days, measurementWind
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         defectsOnly: defectsOnly,
+        specsOnly: specsOnly,
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval(),

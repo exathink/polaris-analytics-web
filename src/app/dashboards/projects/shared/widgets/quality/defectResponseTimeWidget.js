@@ -22,6 +22,7 @@ export const DefectResponseTimeWidget = ({
     leadTimeTargetPercentile: leadTimeConfidenceTarget,
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
     defectsOnly: true,
+    specsOnly: true,
   });
   if (loading) return <Loading />;
   if (error) {

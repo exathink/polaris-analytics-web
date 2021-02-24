@@ -8,7 +8,8 @@ export function useQueryProjectFlowRateTrends(
     measurementWindow,
     samplingFrequency,
     referenceString,
-    defectsOnly
+    defectsOnly,
+    specsOnly
   }) {
   return useQuery(
     gql`
@@ -19,6 +20,7 @@ export function useQueryProjectFlowRateTrends(
           $samplingFrequency: Int!,
           $referenceString: String, 
           $defectsOnly: Boolean
+          $specsOnly: Boolean
           ) {
       project(
             key: $key, 
@@ -32,6 +34,7 @@ export function useQueryProjectFlowRateTrends(
                 close_rate
               ],
               defectsOnly: $defectsOnly
+              specsOnly: $specsOnly
             },
             referenceString: $referenceString,
             ) {
@@ -52,7 +55,8 @@ export function useQueryProjectFlowRateTrends(
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         referenceString: referenceString,
-        defectsOnly: defectsOnly
+        defectsOnly: defectsOnly,
+        specsOnly: specsOnly
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()
