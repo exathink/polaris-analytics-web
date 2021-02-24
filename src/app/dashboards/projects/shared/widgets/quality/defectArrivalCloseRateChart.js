@@ -20,8 +20,8 @@ export const DefectArrivalCloseRateChart = ({flowRateTrends, measurementPeriod, 
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body:
               seriesKey === "arrivalRate"
-                ? [["Arrival Rate: ", `${i18nNumber(intl, measurement.arrivalRate)} Defects`]]
-                : [["Close Rate: ", `${i18nNumber(intl, measurement.closeRate)} Defects`]],
+                ? [["Defects Opened: ", `${i18nNumber(intl, measurement.arrivalRate)}`]]
+                : [["Defects Closed: ", `${i18nNumber(intl, measurement.closeRate)}`]],
           }),
         },
       }}

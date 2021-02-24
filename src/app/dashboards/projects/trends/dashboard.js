@@ -11,7 +11,7 @@ import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
-import {DefectArrivalCloseRateWidget, DefectResponseTimeWidget} from "../shared/widgets/quality";
+import {DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget, DefectResponseTimeWidget} from "../shared/widgets/quality";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 const dashboard = ({viewerContext}) => (
@@ -171,14 +171,25 @@ const dashboard = ({viewerContext}) => (
                   measurementWindow={30}
                   days={trendsAnalysisPeriod}
                   samplingFrequency={7}
-                  leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                  cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                   view={view}
                 />
               )}
               showDetail={true}
             />
-            <DashboardWidget w={1 / 3} name="placeholder-widget" render={({view}) => null} showDetail={false} />
+            <DashboardWidget
+              w={1 / 3}
+              name="backlog-trends-widget"
+              render={({view}) => (
+                <DefectBacklogTrendsWidget
+                  instanceKey={key}
+                  measurementWindow={30}
+                  days={trendsAnalysisPeriod}
+                  samplingFrequency={7}
+                  view={view}
+                />
+              )}
+              showDetail={true }
+            />
           </DashboardRow>
         </Dashboard>
       );
