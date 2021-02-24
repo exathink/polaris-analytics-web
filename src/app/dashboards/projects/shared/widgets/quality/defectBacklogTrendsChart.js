@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {percentileToText, pick, toMoment} from "../../../../../helpers/utility";
+import {pick, toMoment} from "../../../../../helpers/utility";
 import {Colors} from "../../../../shared/config";
 
 export const DefectBacklogTrendsChart = Chart({
@@ -79,7 +79,7 @@ export const DefectBacklogTrendsChart = Chart({
         id: "cycle-metric",
         title: {
           text: `Days`,
-        }
+        },
       },
       tooltip: {
         useHTML: true,
@@ -101,12 +101,8 @@ export const DefectBacklogTrendsChart = Chart({
                   ],
                 }
               : {
-                  header: `${measurementWindow} days ending ${intl.formatDate(
-                    this.point.x
-                  )}`,
-                  body: [
-                    [`Average: `, `${intl.formatNumber(this.point.measurement.avgBacklogSize)} days`],
-                  ],
+                  header: `${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+                  body: [[`Average: `, `${intl.formatNumber(this.point.measurement.avgBacklogSize)} days`]],
                 }
           );
         },
