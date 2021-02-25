@@ -12,7 +12,6 @@ export const DefectArrivalCloseRateWidget = ({instanceKey, view, days, measureme
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
     defectsOnly: true,
-    specsOnly: true,
   });
   if (loading) return <Loading />;
   if (error) {

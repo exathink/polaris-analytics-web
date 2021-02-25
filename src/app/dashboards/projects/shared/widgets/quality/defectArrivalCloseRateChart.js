@@ -9,27 +9,27 @@ function getSeries(flowRateTrends) {
       key: "arrivalRate",
       name: "Arrival Rate",
       color: Colors.DefectRate.arrival,
-      data: flowRateTrends.map((measurement) => ({
-        x: toMoment(measurement.measurementDate, true).valueOf(),
-        y: measurement.arrivalRate,
-        measurement: measurement,
-      })).sort(
-        (m1, m2) => m1.x - m2.x
-      ),
-      stacking: 'normal',
+      data: flowRateTrends
+        .map((measurement) => ({
+          x: toMoment(measurement.measurementDate, true).valueOf(),
+          y: measurement.arrivalRate,
+          measurement: measurement,
+        }))
+        .sort((m1, m2) => m1.x - m2.x),
+      stacking: "normal",
     },
     {
       key: "closeRate",
       name: "Close Rate",
       color: Colors.DefectRate.close,
-      data: flowRateTrends.map((measurement) => ({
-        x: toMoment(measurement.measurementDate, true).valueOf(),
-        y: -measurement.closeRate,
-        measurement: measurement,
-      })).sort(
-        (m1, m2) => m1.x - m2.x
-      ),
-      stacking: 'normal',
+      data: flowRateTrends
+        .map((measurement) => ({
+          x: toMoment(measurement.measurementDate, true).valueOf(),
+          y: -measurement.closeRate,
+          measurement: measurement,
+        }))
+        .sort((m1, m2) => m1.x - m2.x),
+      stacking: "normal",
     },
   ];
 }
@@ -40,6 +40,11 @@ export const DefectArrivalCloseRateChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({flowRateTrends, measurementPeriod, measurementWindow, view, intl}) => {
     const series = getSeries(flowRateTrends);
+    const [yAxisMin, yAxisMax] = [
+      -Math.max(...flowRateTrends.map((x) => x.closeRate)),
+      Math.max(...flowRateTrends.map((x) => x.arrivalRate)),
+    ];
+
     return {
       chart: {
         type: "column",
@@ -64,12 +69,14 @@ export const DefectArrivalCloseRateChart = Chart({
         type: "linear",
 
         title: {
-          text: "Specs",
+          text: "Cards",
         },
+        min: yAxisMin,
+        max: yAxisMax,
       },
       legend: {
         title: {
-          text: `Specs`,
+          text: ``,
           style: {
             fontStyle: "italic",
           },
