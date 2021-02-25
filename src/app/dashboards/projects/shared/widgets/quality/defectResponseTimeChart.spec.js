@@ -214,10 +214,21 @@ describe("DefectResponseTimeChart", () => {
       expect(series).toHaveLength(2);
     });
 
+    test("renders correct chart config", () => {
+      const expectedChartConfig = {
+        ...fixedChartConfig,
+        series: [
+          {key: "avgLeadTime", visible: true, type: "spline"},
+          {key: "avgCycleTime", visible: true, type: "spline"},
+        ],
+      };
+      expect(renderedChartConfig(<DefectResponseTimeChart {...propsFixture} />)).toMatchObject(expectedChartConfig);
+    });
+
     const {flowMetricsTrends} = propsFixture;
     const trends = [
-      {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline"},
-      {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline"},
+      {key: "avgLeadTime", displayName: "Avg. Lead Time"},
+      {key: "avgCycleTime", displayName: "Avg. Cycle Time"},
     ];
 
     trends.forEach((trend, index) => {
