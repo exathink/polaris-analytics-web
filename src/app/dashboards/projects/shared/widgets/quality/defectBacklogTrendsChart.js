@@ -8,7 +8,7 @@ export const DefectBacklogTrendsChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
   getConfig: ({backlogTrends, measurementWindow, measurementPeriod, intl}) => {
-    const boxPlotSeriesName = "Variability";
+    const boxPlotSeriesName = "Range";
 
     const series = [
       {
@@ -51,14 +51,14 @@ export const DefectBacklogTrendsChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: "Backlog",
+        text: "Defect Backlog",
       },
       subtitle: {
         text: `${measurementPeriod} day trend`,
       },
       legend: {
         title: {
-          text: `Backlog`,
+          text: `Backlog Size`,
           style: {
             fontStyle: "italic",
           },
@@ -78,7 +78,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "linear",
         id: "cycle-metric",
         title: {
-          text: `Days`,
+          text: `Cards`,
         },
       },
       tooltip: {
