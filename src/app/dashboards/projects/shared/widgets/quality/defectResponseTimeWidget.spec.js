@@ -160,7 +160,7 @@ const mocksFixture = [
 ];
 
 describe("DefectResponseTimeWidget", () => {
-  test("render DefectResponseTimeWidget without an error", () => {
+  test("renders without an error", () => {
     renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mocksFixture);
   });
 
