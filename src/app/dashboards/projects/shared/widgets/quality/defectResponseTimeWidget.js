@@ -13,6 +13,7 @@ export const DefectResponseTimeWidget = ({
   samplingFrequency,
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
+  cycleTimeTarget,
 }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends({
     instanceKey: instanceKey,
@@ -41,6 +42,7 @@ export const DefectResponseTimeWidget = ({
       samplingFrequency={samplingFrequency}
       leadTimeConfidenceTarget={leadTimeConfidenceTarget}
       cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+      cycleTimeTarget={cycleTimeTarget}
       view={view}
     />
   );

@@ -15,6 +15,7 @@ export const DefectResponseTimeDetailDashboard = ({
   samplingFrequency,
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
+  cycleTimeTarget,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -46,6 +47,7 @@ export const DefectResponseTimeDetailDashboard = ({
               samplingFrequency={frequencyRange}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
             />
           )}
           showDetail={false}

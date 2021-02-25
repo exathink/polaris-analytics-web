@@ -2,7 +2,13 @@ import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../shared/views/measurementTrend/measurementTrendLineChart";
 
-export const DefectResponseTimeChart = ({flowMetricsTrends, measurementPeriod, measurementWindow, view}) => {
+export const DefectResponseTimeChart = ({
+  flowMetricsTrends,
+  measurementPeriod,
+  measurementWindow,
+  cycleTimeTarget,
+  view,
+}) => {
   return (
     <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
@@ -16,6 +22,23 @@ export const DefectResponseTimeChart = ({flowMetricsTrends, measurementPeriod, m
         title: "Defect Response Time",
         yAxisUom: "Days",
         legendText: "Specs",
+        plotBands: {
+          metric: "avgCycleTime",
+        },
+        plotLinesY: [
+          {
+            color: "orange",
+            value: cycleTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: `T=${cycleTimeTarget}`,
+              align: "right",
+              verticalAlign: "middle",
+            },
+            zIndex: 5,
+          },
+        ],
         tooltip: {
           formatter: (measurement, seriesKey, intl) => ({
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,

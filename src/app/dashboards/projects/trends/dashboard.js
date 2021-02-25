@@ -171,6 +171,7 @@ const dashboard = ({viewerContext}) => (
                   samplingFrequency={7}
                   leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                   cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                  cycleTimeTarget={cycleTimeTarget}
                   view={view}
                 />
               )}

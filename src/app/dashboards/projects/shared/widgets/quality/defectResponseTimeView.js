@@ -11,6 +11,7 @@ export const DefectResponseTimeView = ({
   samplingFrequency,
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
+  cycleTimeTarget,
   view,
 }) => {
   if (view === "detail") {
@@ -21,6 +22,7 @@ export const DefectResponseTimeView = ({
       samplingFrequency,
       leadTimeConfidenceTarget,
       cycleTimeConfidenceTarget,
+      cycleTimeTarget,
     };
     return <DefectResponseTimeDetailDashboard {...props} />;
   }
@@ -32,6 +34,7 @@ export const DefectResponseTimeView = ({
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          cycleTimeTarget={cycleTimeTarget}
           view={view}
         />
       </VizItem>
