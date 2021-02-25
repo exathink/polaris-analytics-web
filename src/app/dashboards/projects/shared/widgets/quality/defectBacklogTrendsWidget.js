@@ -12,7 +12,6 @@ export const DefectBacklogTrendsWidget = ({instanceKey, view, days, measurementW
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
     defectsOnly: true,
-    specsOnly: true,
   });
   if (loading) return <Loading />;
   if (error) {
