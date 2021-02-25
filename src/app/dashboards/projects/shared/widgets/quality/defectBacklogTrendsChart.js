@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../../helpers/utility";
+import {pick, epoch} from "../../../../../helpers/utility";
 import {Colors} from "../../../../shared/config";
 
 export const DefectBacklogTrendsChart = Chart({
@@ -18,7 +18,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "line",
         data: backlogTrends
           .map((measurement) => ({
-            x: toMoment(measurement["measurementDate"], true).valueOf(),
+            x: epoch(measurement["measurementDate"]),
             y: measurement["avgBacklogSize"],
             measurement: measurement,
           }))
@@ -31,7 +31,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "boxplot",
         data: backlogTrends
           .map((measurement) => ({
-            x: toMoment(measurement["measurementDate"], true).valueOf(),
+            x: epoch(measurement["measurementDate"]),
             low: measurement["minBacklogSize"],
             q1: measurement["q1BacklogSize"],
             median: measurement["medianBacklogSize"],
