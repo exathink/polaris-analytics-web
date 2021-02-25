@@ -8,6 +8,7 @@ function getSeries(flowRateTrends) {
     {
       key: "arrivalRate",
       name: "Arrival Rate",
+      color: Colors.DefectRate.arrival,
       data: flowRateTrends.map((measurement) => ({
         x: toMoment(measurement.measurementDate, true).valueOf(),
         y: measurement.arrivalRate,
@@ -15,10 +16,12 @@ function getSeries(flowRateTrends) {
       })).sort(
         (m1, m2) => m1.x - m2.x
       ),
+      stacking: 'normal',
     },
     {
       key: "closeRate",
       name: "Close Rate",
+      color: Colors.DefectRate.close,
       data: flowRateTrends.map((measurement) => ({
         x: toMoment(measurement.measurementDate, true).valueOf(),
         y: -measurement.closeRate,
@@ -26,6 +29,7 @@ function getSeries(flowRateTrends) {
       })).sort(
         (m1, m2) => m1.x - m2.x
       ),
+      stacking: 'normal',
     },
   ];
 }
@@ -45,7 +49,7 @@ export const DefectArrivalCloseRateChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: "Arrival Rate/Close Rate",
+        text: "Defect Arrival/Close Rates",
       },
       subtitle: {
         text: `${measurementPeriod} day trend`,
@@ -60,12 +64,12 @@ export const DefectArrivalCloseRateChart = Chart({
         type: "linear",
 
         title: {
-          text: "Cards",
+          text: "Specs",
         },
       },
       legend: {
         title: {
-          text: ``,
+          text: `Specs`,
           style: {
             fontStyle: "italic",
           },
