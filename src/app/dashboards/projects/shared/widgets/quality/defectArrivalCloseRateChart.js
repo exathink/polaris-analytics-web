@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {i18nDate, i18nNumber, toMoment} from "../../../../../helpers/utility";
+import {i18nDate, i18nNumber, toMoment, pick} from "../../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../../shared/config";
 
@@ -35,7 +35,7 @@ function getSeries(flowRateTrends) {
 }
 
 export const DefectArrivalCloseRateChart = Chart({
-  chartUpdateProps: (props) => props,
+  chartUpdateProps: (props) => pick(props, "flowRateTrends", "measurementPeriod", "measurementWindow"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({flowRateTrends, measurementPeriod, measurementWindow, view, intl}) => {
