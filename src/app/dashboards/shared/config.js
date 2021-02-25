@@ -32,8 +32,8 @@ export const Colors = {
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'
   ],
   DefectRate: {
-    arrival: '#F87171',
-    close: "#34D399"
+    arrival: "#ea9c9c",
+    close: "#64de95"
   }
 };
 
