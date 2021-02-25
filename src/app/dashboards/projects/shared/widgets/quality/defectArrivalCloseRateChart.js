@@ -67,9 +67,14 @@ export const DefectArrivalCloseRateChart = Chart({
       },
       yAxis: {
         type: "linear",
-
+        allowDecimals: false,
         title: {
-          text: "Cards",
+          text: "Defects",
+        },
+        labels: {
+          formatter: function(){
+            return Math.abs(this.value);
+          },
         },
         min: yAxisMin,
         max: yAxisMax,
