@@ -1,6 +1,7 @@
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql/error";
 import React from "react";
+import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
 import {DefectResponseTimeWidget} from "./defectResponseTimeWidget";
@@ -37,7 +38,7 @@ const mocksFixture = [
         project: {
           cycleMetricsTrends: [
             {
-              measurementDate: "2021-02-25",
+              measurementDate: getNDaysAgo(1),
               avgLeadTime: 8.614592013888888,
               minCycleTime: null,
               q1CycleTime: null,
@@ -61,12 +62,12 @@ const mocksFixture = [
               workItemsWithNullCycleTime: 4,
               workItemsInScope: 4,
               workItemsWithCommits: 4,
-              earliestClosedDate: "2021-01-31T15:30:54.457000",
-              latestClosedDate: "2021-02-09T18:24:36.648000",
+              earliestClosedDate: getNDaysAgo(25),
+              latestClosedDate: getNDaysAgo(16),
               targetPercentile: null,
             },
             {
-              measurementDate: "2021-02-18",
+              measurementDate: getNDaysAgo(7),
               avgLeadTime: 8.614592013888888,
               minCycleTime: null,
               q1CycleTime: null,
@@ -90,8 +91,8 @@ const mocksFixture = [
               workItemsWithNullCycleTime: 4,
               workItemsInScope: 4,
               workItemsWithCommits: 4,
-              earliestClosedDate: "2021-01-31T15:30:54.457000",
-              latestClosedDate: "2021-02-09T18:24:36.648000",
+              earliestClosedDate: getNDaysAgo(25),
+              latestClosedDate: getNDaysAgo(16),
               targetPercentile: null,
             },
           ],

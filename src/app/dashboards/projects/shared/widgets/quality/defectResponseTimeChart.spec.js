@@ -1,6 +1,6 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
+import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../../test/test-utils";
 import {Colors} from "../../../../shared/config";
 import {DefectResponseTimeChart} from "./defectResponseTimeChart";
 import {epoch} from "../../../../../helpers/utility";
@@ -18,7 +18,7 @@ const commonMeasurementProps = {
 const propsFixture = {
   flowMetricsTrends: [
     {
-      measurementDate: "2021-02-25",
+      measurementDate: getNDaysAgo(1),
       avgLeadTime: 8.614592013888888,
       minCycleTime: null,
       q1CycleTime: null,
@@ -42,12 +42,12 @@ const propsFixture = {
       workItemsWithNullCycleTime: 4,
       workItemsInScope: 4,
       workItemsWithCommits: 4,
-      earliestClosedDate: "2021-01-31T15:30:54.457000",
-      latestClosedDate: "2021-02-09T18:24:36.648000",
+      earliestClosedDate: getNDaysAgo(25),
+      latestClosedDate: getNDaysAgo(16),
       targetPercentile: null,
     },
     {
-      measurementDate: "2021-02-18",
+      measurementDate: getNDaysAgo(7),
       avgLeadTime: 8.614592013888888,
       minCycleTime: null,
       q1CycleTime: null,
@@ -71,8 +71,8 @@ const propsFixture = {
       workItemsWithNullCycleTime: 4,
       workItemsInScope: 4,
       workItemsWithCommits: 4,
-      earliestClosedDate: "2021-01-31T15:30:54.457000",
-      latestClosedDate: "2021-02-09T18:24:36.648000",
+      earliestClosedDate: getNDaysAgo(25),
+      latestClosedDate: getNDaysAgo(16),
       targetPercentile: null,
     },
   ],
