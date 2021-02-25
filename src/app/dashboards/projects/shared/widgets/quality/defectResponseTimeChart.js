@@ -13,8 +13,9 @@ export const DefectResponseTimeChart = ({flowMetricsTrends, measurementPeriod, m
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
       config={{
-        title: "LeadTime/CycleTime",
-        yAxisUom: "days",
+        title: "Defect Response Time",
+        yAxisUom: "Days",
+        legendText: "Specs",
         tooltip: {
           formatter: (measurement, seriesKey, intl) => ({
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,

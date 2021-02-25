@@ -29,7 +29,7 @@ const dashboard = ({viewerContext}) => (
       return (
         <Dashboard dashboard={`${dashboard_id}`}>
           {viewerContext.isFeatureFlagActive(PROJECTS_ALIGNMENT_TRENDS_WIDGETS) && (
-            <DashboardRow h={"30%"} title={"Alignment"}>
+            <DashboardRow h={"28%"} title={"Alignment"}>
               <DashboardWidget
                 w={1 / 3}
                 name="capacity"
@@ -89,7 +89,7 @@ const dashboard = ({viewerContext}) => (
               />
             </DashboardRow>
           )}
-          <DashboardRow h="30%" title={`Flow`}>
+          <DashboardRow h="28%" title={`Flow`}>
             <DashboardWidget
               w={1 / 3}
               name="throughput"
@@ -145,7 +145,21 @@ const dashboard = ({viewerContext}) => (
               showDetail={true}
             />
           </DashboardRow>
-          <DashboardRow h="30%" title={`Quality`}>
+          <DashboardRow h="28%" title={`Quality`}>
+          <DashboardWidget
+              w={1 / 3}
+              name="defect-rate"
+              render={({view}) => (
+                <DefectArrivalCloseRateWidget
+                  instanceKey={key}
+                  measurementWindow={30}
+                  days={trendsAnalysisPeriod}
+                  samplingFrequency={7}
+                  view={view}
+                />
+              )}
+              showDetail={true}
+            />
             <DashboardWidget
               w={1 / 3}
               name="defect-response-time"
@@ -157,20 +171,6 @@ const dashboard = ({viewerContext}) => (
                   samplingFrequency={7}
                   leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                   cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                  view={view}
-                />
-              )}
-              showDetail={true}
-            />
-            <DashboardWidget
-              w={1 / 3}
-              name="defect-rate"
-              render={({view}) => (
-                <DefectArrivalCloseRateWidget
-                  instanceKey={key}
-                  measurementWindow={30}
-                  days={trendsAnalysisPeriod}
-                  samplingFrequency={7}
                   view={view}
                 />
               )}
