@@ -30,9 +30,11 @@ export const Colors = {
   },
   DefaultSeriesColors: ['#0d233a', '#2f7ed8', '#8bbc21', '#910000', '#1aadce',
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'
-  ]
-
-
+  ],
+  DefectRate: {
+    arrival: "#ea9c9c",
+    close: "#64de95"
+  }
 };
 
 
