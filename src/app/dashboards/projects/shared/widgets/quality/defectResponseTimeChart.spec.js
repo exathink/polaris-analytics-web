@@ -160,12 +160,12 @@ const fixedChartConfig = {
     title: {
       text: `Specs`,
       style: {
-        fontStyle: 'italic'
-      }
+        fontStyle: "italic",
+      },
     },
-    align: 'right',
-    layout: 'vertical',
-    verticalAlign: 'middle',
+    align: "right",
+    layout: "vertical",
+    verticalAlign: "middle",
     itemMarginBottom: 3,
   },
   xAxis: {
@@ -175,11 +175,11 @@ const fixedChartConfig = {
     },
   },
   yAxis: {
-    type: 'linear',
-    id: 'cycle-metric',
+    type: "linear",
+    id: "cycle-metric",
     title: {
-      text: "Days"
-    }
+      text: "Days",
+    },
   },
   tooltip: {
     useHTML: true,
@@ -201,25 +201,31 @@ describe("DefectResponseTimeChart", () => {
     };
 
     test("it renders an empty chart config", () => {
-      expect(renderedChartConfig(<DefectResponseTimeChart {...emptyPropsFixture} />)).toMatchObject(expectedChartConfig);
+      expect(renderedChartConfig(<DefectResponseTimeChart {...emptyPropsFixture} />)).toMatchObject(
+        expectedChartConfig
+      );
     });
-
   });
 
   describe("when there is data for all trend series", () => {
     const {series} = renderedChartConfig(<DefectResponseTimeChart {...propsFixture} />);
+
+    test("renders two series", () => {
+      expect(series).toHaveLength(2);
+    });
+
     const {flowMetricsTrends} = propsFixture;
     const trends = [
-        {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline"},
-        {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline"},
-      ]
+      {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline"},
+      {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline"},
+    ];
 
     trends.forEach((trend, index) => {
       describe(`${trend.displayName} series`, () => {
         const responseTimeSeries = series[index];
 
         test(`renders a chart with the correct number of data points`, () => {
-          expect(responseTimeSeries.data).toHaveLength(4);
+          expect(responseTimeSeries.data).toHaveLength(flowMetricsTrends.length);
         });
 
         test("it maps dates to the x axis and sets y to a measurement value", () => {
