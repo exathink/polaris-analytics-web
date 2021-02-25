@@ -78,7 +78,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "linear",
         id: "cycle-metric",
         title: {
-          text: `Cards`,
+          text: `Defects`,
         },
       },
       tooltip: {
