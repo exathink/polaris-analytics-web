@@ -93,16 +93,16 @@ export const DefectBacklogTrendsChart = Chart({
                     this.point.x
                   )}`,
                   body: [
-                    ["Maximum:  ", `${intl.formatNumber(this.point.measurement.maxBacklogSize)} days`],
-                    ["Upper Quartile: ", `${intl.formatNumber(this.point.measurement.q3BacklogSize)} days`],
-                    ["Median : ", `${intl.formatNumber(this.point.measurement.medianBacklogSize)} days`],
-                    ["Lower Quartile: ", `${intl.formatNumber(this.point.measurement.q1BacklogSize)} days`],
-                    ["Minimum: ", `${intl.formatNumber(this.point.measurement.minBacklogSize)} days`],
+                    ["Maximum:  ", `${intl.formatNumber(this.point.measurement.maxBacklogSize)} defects`],
+                    ["Upper Quartile: ", `${intl.formatNumber(this.point.measurement.q3BacklogSize)} defects`],
+                    ["Median : ", `${intl.formatNumber(this.point.measurement.medianBacklogSize)} defects`],
+                    ["Lower Quartile: ", `${intl.formatNumber(this.point.measurement.q1BacklogSize)} defects`],
+                    ["Minimum: ", `${intl.formatNumber(this.point.measurement.minBacklogSize)} defects`],
                   ],
                 }
               : {
-                  header: `${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
-                  body: [[`Average: `, `${intl.formatNumber(this.point.measurement.avgBacklogSize)} days`]],
+                  header: `${this.point.series.name}: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+                  body: [[`Defects: `, `${intl.formatNumber(this.point.measurement.avgBacklogSize)}`]],
                 }
           );
         },
