@@ -71,7 +71,7 @@ export const DefectBacklogTrendsChart = Chart({
       xAxis: {
         type: "datetime",
         title: {
-          text: `Date`,
+          text: `${measurementWindow} days ending`,
         },
       },
       yAxis: {
