@@ -26,7 +26,7 @@ const propsFixture = {
       q3CycleTime: null,
       percentileCycleTime: null,
       maxCycleTime: null,
-      avgCycleTime: null,
+      avgCycleTime: 3,
       percentileLeadTime: 15.663148148148148,
       maxLeadTime: 15.663148148148148,
       totalEffort: 1.28333333333333,
@@ -55,7 +55,7 @@ const propsFixture = {
       q3CycleTime: null,
       percentileCycleTime: null,
       maxCycleTime: null,
-      avgCycleTime: null,
+      avgCycleTime: 5,
       percentileLeadTime: 15.663148148148148,
       maxLeadTime: 15.663148148148148,
       totalEffort: 1.28333333333333,
@@ -77,6 +77,7 @@ const propsFixture = {
     },
   ],
   ...commonMeasurementProps,
+  cycleTimeTarget: 7,
 };
 
 const commonChartProps = {
@@ -86,6 +87,48 @@ const commonChartProps = {
   panning: true,
   panKey: "shift",
   zoomType: "xy",
+};
+
+const plotBandsConfig = {
+  plotBands: [
+    {
+      to: 5,
+      from: 3,
+    },
+  ],
+  plotLines: [
+    {
+      value: 5,
+      label: {
+        text: "Max: 5",
+        align: "left",
+        verticalAlign: "top",
+      },
+    },
+    {
+      value: 3,
+      label: {
+        text: "Min: 3",
+        align: "left",
+        verticalAlign: "bottom",
+        x: 15,
+        y: 15,
+      },
+      zIndex: 3,
+    },
+    {
+      color: "orange",
+      value: 7,
+      dashStyle: "longdashdot",
+      width: 1,
+      label: {
+        text: `T=${7}`,
+        align: "right",
+        verticalAlign: "middle",
+      },
+      zIndex: 5,
+    },
+  ],
 };
 
 const fixedChartConfig = {
@@ -168,53 +211,106 @@ describe("DefectResponseTimeChart", () => {
     });
 
     const {flowMetricsTrends} = propsFixture;
-    const trends = [
-      {key: "avgLeadTime", displayName: "Avg. Lead Time"},
-      {key: "avgCycleTime", displayName: "Avg. Cycle Time"},
-    ];
 
-    trends.forEach((trend, index) => {
-      describe(`${trend.displayName} series`, () => {
-        const responseTimeSeries = series[index];
+    describe(`Avg. Lead Time series`, () => {
+      const avgLeadTimeSeries = series[0];
 
-        test(`renders a chart with the correct number of data points`, () => {
-          expect(responseTimeSeries.data).toHaveLength(flowMetricsTrends.length);
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(avgLeadTimeSeries.data).toHaveLength(flowMetricsTrends.length);
+      });
+
+      test("it maps dates to the x axis and sets y to avg lead time", () => {
+        expectSetsAreEqual(
+          avgLeadTimeSeries.data.map((point) => [point.x, point.y]),
+          flowMetricsTrends.map((measurement) => {
+            return [epoch(measurement.measurementDate, true), measurement["avgLeadTime"]];
+          })
+        );
+      });
+
+      test("it sets the reference to the measurement for each point ", () => {
+        expectSetsAreEqual(
+          avgLeadTimeSeries.data.map((point) => point.measurement),
+          flowMetricsTrends.map((measurement) => measurement)
+        );
+      });
+
+      test("should render the tooltip for point", async () => {
+        const [actual] = await renderedTooltipConfig(
+          <DefectResponseTimeChart {...propsFixture} />,
+          (points) => [points[0]],
+          0
+        );
+
+        const [testPoint] = flowMetricsTrends.sort(
+          (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+        );
+        expect(actual).toMatchObject({
+          header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
+          body: [[expect.stringContaining("Avg Lead Time"), `${formatNumber(testPoint.avgLeadTime)} days`]],
         });
+      });
+    });
 
-        test("it maps dates to the x axis and sets y to a measurement value", () => {
-          expectSetsAreEqual(
-            responseTimeSeries.data.map((point) => [point.x, point.y]),
-            flowMetricsTrends.map((measurement) => {
-              return [epoch(measurement.measurementDate, true), measurement[trend.key]];
-            })
-          );
+    describe(`Avg. Cycle Time series`, () => {
+      const avgCycleTimeSeries = series[1];
+
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(avgCycleTimeSeries.data).toHaveLength(flowMetricsTrends.length);
+      });
+
+      test("it maps dates to the x axis and sets y to avg lead time", () => {
+        expectSetsAreEqual(
+          avgCycleTimeSeries.data.map((point) => [point.x, point.y]),
+          flowMetricsTrends.map((measurement) => {
+            return [epoch(measurement.measurementDate, true), measurement["avgCycleTime"]];
+          })
+        );
+      });
+
+      test("it sets the reference to the measurement for each point ", () => {
+        expectSetsAreEqual(
+          avgCycleTimeSeries.data.map((point) => point.measurement),
+          flowMetricsTrends.map((measurement) => measurement)
+        );
+      });
+
+      test("should render the tooltip for point", async () => {
+        const [actual] = await renderedTooltipConfig(
+          <DefectResponseTimeChart {...propsFixture} />,
+          (points) => [points[0]],
+          1
+        );
+
+        const [testPoint] = flowMetricsTrends.sort(
+          (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+        );
+        expect(actual).toMatchObject({
+          header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
+          body: [[expect.stringContaining("Avg Cycle Time"), `${formatNumber(testPoint.avgCycleTime)} days`]],
         });
+      });
+    });
 
-        test("it sets the reference to the measurement for each point ", () => {
-          expectSetsAreEqual(
-            responseTimeSeries.data.map((point) => point.measurement),
-            flowMetricsTrends.map((measurement) => measurement)
-          );
-        });
+    describe("test plot bands and plot lines", () => {
+      const {
+        yAxis: {plotBands, plotLines},
+      } = renderedChartConfig(<DefectResponseTimeChart {...propsFixture} />);
 
-        test("should render the tooltip for point", async () => {
-          const [actual] = await renderedTooltipConfig(
-            <DefectResponseTimeChart {...propsFixture} />,
-            (points) => [points[0]],
-            index
-          );
+      test("it has a single plot band on the y-axis", () => {
+        expect(plotBands.length).toBe(1);
+      });
 
-          const [testPoint] = flowMetricsTrends.sort(
-            (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
-          );
-          expect(actual).toMatchObject({
-            header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
-            body:
-              trend.key === "avgLeadTime"
-                ? [[expect.stringContaining("Avg Lead Time"), `${formatNumber(testPoint.avgLeadTime)} days`]]
-                : [[expect.stringContaining("Avg Cycle Time"), `${formatNumber(testPoint.avgCycleTime)} days`]],
-          });
-        });
+      test("it has a three plot lines on the y-axis", () => {
+        expect(plotLines.length).toBe(3);
+      });
+
+      test("it uses the min and max value of the avgCycleTime for the range of the plot bands", () => {
+        expect(plotBands).toMatchObject(plotBandsConfig.plotBands);
+      });
+
+      test("it uses the min and max value of the avgCycleTime for the range of the plot lines", () => {
+        expect(plotLines).toMatchObject(plotBandsConfig.plotLines);
       });
     });
   });
