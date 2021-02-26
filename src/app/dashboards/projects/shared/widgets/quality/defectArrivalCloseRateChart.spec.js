@@ -1,6 +1,6 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../../test/test-utils";
+import {expectSetsAreEqual, getNDaysAgo} from "../../../../../../test/test-utils";
 import {Colors} from "../../../../shared/config";
 import {DefectArrivalCloseRateChart} from "./defectArrivalCloseRateChart";
 import {epoch} from "../../../../../helpers/utility";
