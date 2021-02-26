@@ -141,55 +141,83 @@ describe("DefectArrivalCloseRateChart", () => {
     });
 
     const {flowRateTrends} = propsFixture;
-    const trends = [
-      {key: "arrivalRate", displayName: "Arrival Rate"},
-      {key: "closeRate", displayName: "Close Rate"},
-    ];
 
-    trends.forEach((trend, index) => {
-      describe(`${trend.displayName} series`, () => {
-        const arrivalCloseRateSeries = series[index];
+    describe(`Arrival Rate series`, () => {
+      const arrivalRateSeries = series[0];
 
-        test(`renders a chart with the correct number of data points`, () => {
-          expect(arrivalCloseRateSeries.data).toHaveLength(flowRateTrends.length);
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(arrivalRateSeries.data).toHaveLength(flowRateTrends.length);
+      });
+
+      test("it maps dates to the x axis and sets y to a measurement value", () => {
+        expectSetsAreEqual(
+          arrivalRateSeries.data.map((point) => [point.x, point.y]),
+          flowRateTrends.map((measurement) => {
+            return [epoch(measurement.measurementDate, true), measurement["arrivalRate"]];
+          })
+        );
+      });
+
+      test("it sets the reference to the measurement for each point ", () => {
+        expectSetsAreEqual(
+          arrivalRateSeries.data.map((point) => point.measurement),
+          flowRateTrends.map((measurement) => measurement)
+        );
+      });
+
+      test("should render the tooltip for point", async () => {
+        const [actual] = await renderedTooltipConfig(
+          <DefectArrivalCloseRateChart {...propsFixture} />,
+          (points) => [points[0]],
+          0
+        );
+
+        const [testPoint] = flowRateTrends.sort(
+          (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+        );
+        expect(actual).toMatchObject({
+          header: expect.stringContaining(`${commonMeasurementProps.measurementWindow}`),
+          body: [[expect.stringContaining("Defects Opened"), `${testPoint.arrivalRate}`]],
         });
+      });
+    });
 
-        test("it maps dates to the x axis and sets y to a measurement value", () => {
-          expectSetsAreEqual(
-            arrivalCloseRateSeries.data.map((point) => [point.x, point.y]),
-            flowRateTrends.map((measurement) => {
-              return [
-                epoch(measurement.measurementDate, true),
-                trend.key === "closeRate" ? -measurement[trend.key] : measurement[trend.key],
-              ];
-            })
-          );
-        });
+    describe(`Close Rate series`, () => {
+      const closeRateSeries = series[1];
 
-        test("it sets the reference to the measurement for each point ", () => {
-          expectSetsAreEqual(
-            arrivalCloseRateSeries.data.map((point) => point.measurement),
-            flowRateTrends.map((measurement) => measurement)
-          );
-        });
+      test(`renders a chart with the correct number of data points`, () => {
+        expect(closeRateSeries.data).toHaveLength(flowRateTrends.length);
+      });
 
-        test("should render the tooltip for point", async () => {
-          const [actual] = await renderedTooltipConfig(
-            <DefectArrivalCloseRateChart {...propsFixture} />,
-            (points) => [points[0]],
-            index
-          );
+      test("it maps dates to the x axis and sets y to a measurement value", () => {
+        expectSetsAreEqual(
+          closeRateSeries.data.map((point) => [point.x, point.y]),
+          flowRateTrends.map((measurement) => {
+            return [epoch(measurement.measurementDate, true), -measurement["closeRate"]];
+          })
+        );
+      });
 
-          const [testPoint] = flowRateTrends.sort(
-            (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
-          );
-          expect(actual).toMatchObject({
-            header: expect.stringContaining(`${commonMeasurementProps.measurementWindow}`),
-            body:
-              trend.key === "arrivalRate"
-                ? [[expect.stringContaining("Defects Opened"), `${testPoint.arrivalRate}`]]
-                : [[expect.stringContaining("Defects Closed"), `${testPoint.closeRate}`]],
-          });
+      test("it sets the reference to the measurement for each point ", () => {
+        expectSetsAreEqual(
+          closeRateSeries.data.map((point) => point.measurement),
+          flowRateTrends.map((measurement) => measurement)
+        );
+      });
+
+      test("should render the tooltip for point", async () => {
+        const [actual] = await renderedTooltipConfig(
+          <DefectArrivalCloseRateChart {...propsFixture} />,
+          (points) => [points[0]],
+          1
+        );
+
+        const [testPoint] = flowRateTrends.sort(
+          (m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true)
+        );
+        expect(actual).toMatchObject({
+          header: expect.stringContaining(`${commonMeasurementProps.measurementWindow}`),
+          body: [[expect.stringContaining("Defects Closed"), `${testPoint.closeRate}`]],
         });
       });
     });
