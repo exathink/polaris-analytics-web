@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {i18nDate, i18nNumber, toMoment, pick} from "../../../../../helpers/utility";
+import {i18nDate, i18nNumber, epoch, pick} from "../../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../../shared/config";
 
@@ -11,7 +11,7 @@ function getSeries(flowRateTrends) {
       color: Colors.DefectRate.arrival,
       data: flowRateTrends
         .map((measurement) => ({
-          x: toMoment(measurement.measurementDate, true).valueOf(),
+          x: epoch(measurement.measurementDate, true),
           y: measurement.arrivalRate,
           measurement: measurement,
         }))
@@ -24,7 +24,7 @@ function getSeries(flowRateTrends) {
       color: Colors.DefectRate.close,
       data: flowRateTrends
         .map((measurement) => ({
-          x: toMoment(measurement.measurementDate, true).valueOf(),
+          x: epoch(measurement.measurementDate, true),
           y: -measurement.closeRate,
           measurement: measurement,
         }))
@@ -93,7 +93,7 @@ export const DefectArrivalCloseRateChart = Chart({
       },
       tooltip: {
         useHTML: true,
-        hideDelay: 50,
+        hideDelay: 0,
         formatter: function () {
           return tooltipHtml({
             header: `${measurementWindow} days ending ${i18nDate(intl, this.point.measurement.measurementDate)}`,
