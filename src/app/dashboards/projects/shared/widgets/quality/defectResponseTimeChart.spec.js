@@ -26,7 +26,7 @@ const propsFixture = {
       q3CycleTime: null,
       percentileCycleTime: null,
       maxCycleTime: null,
-      avgCycleTime: null,
+      avgCycleTime: 3,
       percentileLeadTime: 15.663148148148148,
       maxLeadTime: 15.663148148148148,
       totalEffort: 1.28333333333333,
@@ -55,7 +55,7 @@ const propsFixture = {
       q3CycleTime: null,
       percentileCycleTime: null,
       maxCycleTime: null,
-      avgCycleTime: null,
+      avgCycleTime: 5,
       percentileLeadTime: 15.663148148148148,
       maxLeadTime: 15.663148148148148,
       totalEffort: 1.28333333333333,
@@ -77,6 +77,7 @@ const propsFixture = {
     },
   ],
   ...commonMeasurementProps,
+  cycleTimeTarget: 7,
 };
 
 const commonChartProps = {
@@ -86,6 +87,48 @@ const commonChartProps = {
   panning: true,
   panKey: "shift",
   zoomType: "xy",
+};
+
+const plotBandsConfig = {
+  plotBands: [
+    {
+      to: 5,
+      from: 3,
+    },
+  ],
+  plotLines: [
+    {
+      value: 5,
+      label: {
+        text: "Max: 5",
+        align: "left",
+        verticalAlign: "top",
+      },
+    },
+    {
+      value: 3,
+      label: {
+        text: "Min: 3",
+        align: "left",
+        verticalAlign: "bottom",
+        x: 15,
+        y: 15,
+      },
+      zIndex: 3,
+    },
+    {
+      color: "orange",
+      value: 7,
+      dashStyle: "longdashdot",
+      width: 1,
+      label: {
+        text: `T=${7}`,
+        align: "right",
+        verticalAlign: "middle",
+      },
+      zIndex: 5,
+    },
+  ],
 };
 
 const fixedChartConfig = {
@@ -246,6 +289,28 @@ describe("DefectResponseTimeChart", () => {
           header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
           body: [[expect.stringContaining("Avg Cycle Time"), `${formatNumber(testPoint.avgCycleTime)} days`]],
         });
+      });
+    });
+
+    describe("test plot bands and plot lines", () => {
+      const {
+        yAxis: {plotBands, plotLines},
+      } = renderedChartConfig(<DefectResponseTimeChart {...propsFixture} />);
+
+      test("it has a single plot band on the y-axis", () => {
+        expect(plotBands.length).toBe(1);
+      });
+
+      test("it has a three plot lines on the y-axis", () => {
+        expect(plotLines.length).toBe(3);
+      });
+
+      test("it uses the min and max value of the avgCycleTime for the range of the plot bands", () => {
+        expect(plotBands).toMatchObject(plotBandsConfig.plotBands);
+      });
+
+      test("it uses the min and max value of the avgCycleTime for the range of the plot lines", () => {
+        expect(plotLines).toMatchObject(plotBandsConfig.plotLines);
       });
     });
   });
