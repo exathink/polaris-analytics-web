@@ -53,7 +53,7 @@ export const CommitsTimelineRollupBarChart = Chart({
           text: null
         },
         xAxis: {
-          categories: [capitalizeFirstLetter(groupBy)],
+          categories: [groupBy !== 'workItem' ? capitalizeFirstLetter(groupBy) : 'Card'],
           visible: true,
           allowDecimals: false
         },
