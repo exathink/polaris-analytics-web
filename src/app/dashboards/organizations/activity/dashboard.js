@@ -122,8 +122,8 @@ export const dashboard = () => (
                       latestCommit={organization.latestCommit}
                       latestWorkItemEvent={organization.latestWorkItemEvent}
                       markLatest
-                      groupBy={'workItem'}
-                      groupings={['workItem','author', 'repository', 'branch']}
+                      groupBy={'author'}
+                      groupings={['author', 'workItem', 'repository', 'branch']}
                       showHeader
                       showTable
                     />
