@@ -43,6 +43,7 @@ export const Untracked = 'Untraceable';
 export const WorkItemColorMap = {
   issue: Colors.WorkItemType.story,
   story: Colors.WorkItemType.story,
+  enhancement: Colors.WorkItemType.story,
   bug: Colors.WorkItemType.bug,
   epic: Colors.WorkItemType.epic,
   task: Colors.WorkItemType.task,
@@ -53,6 +54,7 @@ export const WorkItemColorMap = {
 export const Symbols = {
   WorkItemType: {
     story: 'circle',
+    enhancement: 'circle',
     bug: 'circle',
     pullRequest: 'triangle-down',
     epic: 'diamond',
@@ -63,6 +65,7 @@ export const Symbols = {
 export const WorkItemSymbolMap = {
   issue: Symbols.WorkItemType.story,
   story: Symbols.WorkItemType.story,
+  enhancement: Symbols.WorkItemType.story,
   bug: Symbols.WorkItemType.bug,
   epic: Symbols.WorkItemType.epic,
   task: Symbols.WorkItemType.task,
@@ -74,6 +77,7 @@ export const WorkItemTypeSortOrder = {
   epic: 0,
   issue: 1,
   story: 1,
+  enhancement: 1,
   bug: 1,
   task: 2,
   subtask: 3,
@@ -84,6 +88,7 @@ export const WorkItemTypeScatterRadius = {
   epic: 8,
   issue: 5,
   story: 5,
+  enhancement: 5,
   bug: 5,
   task: 5,
   subtask: 3,
@@ -94,6 +99,7 @@ export const WorkItemTypeDisplayName = {
   epic: 'Epic',
   issue: 'Issue',
   story: 'Story',
+  enhancement: 'Enhancement',
   bug: 'Bug',
   task: 'Task',
   subtask: 'Subtask',
