@@ -55,6 +55,11 @@ class ViewerContextProvider extends React.Component {
     this.loadViewerInfo()
   }
 
+  // clear the cache and then rerender
+  async resetStore() {
+    analytics_service.resetStore().then(_ => this.forceUpdate());
+  }
+
   isAccountOwner() {
     return this.state.viewer.accountRoles.find(
       scopedRole =>
@@ -130,6 +135,7 @@ class ViewerContextProvider extends React.Component {
           viewer: this.state.viewer,
           accountKey: this.state.accountKey,
           refresh: this.refresh.bind(this),
+          resetStore: this.resetStore.bind(this),
           hasAccountRoles : this.hasAccountRoles.bind(this),
           hasSystemRoles: this.hasSystemRoles.bind(this),
           getViewerOrganizations: this.getViewerOrganizations.bind(this),

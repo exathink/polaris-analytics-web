@@ -5,6 +5,7 @@ import {PollButton} from "../../../components/buttons/pollButton";
 import styles from "./controlbar.module.css";
 import {VideoButton} from "../../../components/buttons/videoButton";
 import {DashboardLevelVideo} from "../../../components/buttons/DashboardLevelVideo";
+import {RefreshButton} from "../../../components/buttons/refreshButton";
 
 export const DashboardControlBar = () => {
   return (
@@ -15,6 +16,7 @@ export const DashboardControlBar = () => {
       <nav className={`${styles["menu"]} ${styles["menu-center"]}`} style={{width: "33%"}}></nav>
       <nav className={`${styles["menu"]} ${styles["menu-right"]}`} style={{width: "33%"}}>
         <FullscreenBtn componentId="app-content-area" />
+        <RefreshButton />
         <PollButton />
         <VideoButton />
         <DashboardLevelVideo />
