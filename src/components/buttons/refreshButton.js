@@ -5,6 +5,6 @@ import styles from "./buttons.module.css";
 
 export const RefreshButton = withViewerContext(({viewerContext: {resetStore}}) => {
   return (
-    <ReloadOutlined title="Refresh Page" className={`${styles["menu-item"]} ${styles.reload}`} onClick={resetStore} />
+    <ReloadOutlined title="Refresh Data"  className={`${styles["menu-item"]} ${styles.reload}`} onClick={resetStore} />
   );
 });
