@@ -35,11 +35,13 @@ export const ProjectPredictabilityTrendsWidget = (
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       <ProjectPredictabilityTrendsView
+        instanceKey={instanceKey}
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
         cycleTimeTarget={cycleTimeTarget}
+        samplingFrequency={samplingFrequency}
         view={view}
       />
     )
