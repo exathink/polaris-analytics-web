@@ -121,13 +121,13 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaThreshold, days}) => (
+export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaThreshold}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
-    valueRender={value => `${value}/${days}`}
+    valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}

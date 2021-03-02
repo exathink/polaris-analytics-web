@@ -30,7 +30,7 @@ export const PerformanceSummaryView = (
     leadTimeTarget,
     cycleTimeTarget,
     specsOnly,
-    days
+
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
@@ -59,7 +59,6 @@ export const PerformanceSummaryView = (
           <Cadence
             currentMeasurement={current}
             previousMeasurement={previous}
-            days={days}
           />
         </ComponentCarousel>
       </VizItem>
@@ -100,7 +99,7 @@ export const ValueBoardSummaryView = (
     leadTimeTarget,
     cycleTimeTarget,
     specsOnly,
-    days
+
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
@@ -124,7 +123,6 @@ export const ValueBoardSummaryView = (
             <Cadence
               currentMeasurement={current}
               previousMeasurement={previous}
-              days={days}
             />
           </ComponentCarousel>
         </VizItem>
@@ -384,8 +382,7 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
     cycleTimeTarget,
     specsOnly,
     display,
-    twoRows,
-    days
+    twoRows
   }
   ) => {
 
@@ -433,7 +430,6 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               specsOnly={specsOnly}
               twoRows={twoRows}
-              days={days}
             />
           </VizRow>
 
@@ -450,7 +446,6 @@ export const ProjectAggregateFlowMetricsView = withViewerContext((
               cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               specsOnly={specsOnly}
               twoRows={twoRows}
-              days={days}
             />
 
 
