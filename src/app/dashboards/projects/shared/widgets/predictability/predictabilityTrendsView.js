@@ -1,15 +1,32 @@
-import React from 'react';
-import {PredictabilityTrendsChart} from "./predictabilityTrendsChart"
+import React from "react";
+import {PredictabilityTrendsChart} from "./predictabilityTrendsChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {PredictabilityTrendsDetailDashboard} from "./predictabilityTrendsDetailDashboard";
 
 export const ProjectPredictabilityTrendsView = ({
-    flowMetricsTrends,
-    targetPercentile,
-    measurementPeriod,
-    measurementWindow,
-    cycleTimeTarget,
-    view,
-  }) => (
+  instanceKey,
+  flowMetricsTrends,
+  targetPercentile,
+  measurementPeriod,
+  measurementWindow,
+  cycleTimeTarget,
+  samplingFrequency,
+  view,
+}) => {
+  if (view === "detail") {
+    const props = {
+      instanceKey,
+      targetPercentile,
+      measurementPeriod,
+      measurementWindow,
+      cycleTimeTarget,
+      samplingFrequency,
+      view,
+    };
+    return <PredictabilityTrendsDetailDashboard {...props} />;
+  }
+
+  return (
     <VizRow h={1}>
       <VizItem w={1}>
         <PredictabilityTrendsChart
@@ -22,5 +39,5 @@ export const ProjectPredictabilityTrendsView = ({
         />
       </VizItem>
     </VizRow>
-)
-
+  );
+};
