@@ -30,7 +30,7 @@ export const ProjectFlowMetricsWidget = (
     cycleTimeTarget,
     leadTimeTargetPercentile: leadTimeConfidenceTarget,
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
-    days:7,
+    days: days,
     measurementWindow:measurementWindow,
     samplingFrequency: 7,
     specsOnly: limitToSpecsOnly,
