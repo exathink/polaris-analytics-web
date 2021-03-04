@@ -13,6 +13,7 @@ const {TabPane} = Tabs;
 export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, ...rest}) => {
     React.useEffect(() => {
       setActiveDashboardVideoConfig(dashboardVideoConfig);
+      // eslint-disable-next-line
     }, []);
 
     const match = useRouteMatch();

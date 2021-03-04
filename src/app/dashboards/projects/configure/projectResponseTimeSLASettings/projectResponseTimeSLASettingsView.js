@@ -66,7 +66,7 @@ export const ProjectResponseTimeSLASettingsView = ({
       type: actionTypes.UPDATE_DEFAULTS,
       payload: targetMetrics,
     });
-  }, [...Object.values(targetMetrics)]);
+  }, [targetMetrics]);
 
   const {leadTime, cycleTime, selectedMetric} = state;
 
