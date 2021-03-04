@@ -57,7 +57,6 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "babel-cli": "^6.26.0",
-    "babel-plugin-react-intl": "^2.4.0",
     "chance": "^1.0.13",
     "cypress": "^6.0.0",
     "fb-watchman": "^2.0.0",
