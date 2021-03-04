@@ -1,7 +1,6 @@
 import React from "react";
 import {WorkItemStateTypeMapWidget} from "./workItemStateTypeMapWidget";
 import {GET_STATE_MAPPING_QUERY} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
-import "@testing-library/jest-dom/extend-expect";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql";

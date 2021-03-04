@@ -3,7 +3,6 @@ import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
 import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
-import "@testing-library/jest-dom/extend-expect";
 import {GraphQLError} from "graphql";
 import {getReferenceString} from "../../../../helpers/utility";
 
