@@ -22,11 +22,11 @@
     "moment": "^2.21.0",
     "nprogress": "^0.2.0",
     "postcss-inline-rtl": "^0.9.8",
-    "react": "^16.9.0",
+    "react": "^17.0.1",
     "react-app-rewire-inline-import-graphql-ast": "^1.1.1",
     "react-automata": "^4.0.4",
     "react-custom-scrollbars": "^4.1.2",
-    "react-dom": "^16.9.0",
+    "react-dom": "^17.0.1",
     "react-flip-move": "^3.0.2",
     "react-ga": "^3.1.2",
     "react-intl": "^2.3.0",
@@ -35,7 +35,7 @@
     "react-redux": "^7.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "2.0.3",
+    "react-scripts": "4.0.3",
     "react-sidebar": "^2.3.2",
     "react-sizeme": "^2.6.12",
     "react-table": "^6.8.0",
@@ -62,19 +62,18 @@
     "cypress": "^6.0.0",
     "fb-watchman": "^2.0.0",
     "flow-bin": "^0.66.0",
-    "jest-environment-jsdom-sixteen": "^1.0.3",
     "prettier": "^2.1.2",
     "react-app-rewire-bundle-analyzer": "^1.0.1",
     "react-app-rewire-react-intl": "^2.4.0",
     "react-app-rewired": "^1.4.0",
     "react-test-renderer": "^16.4.1",
-    "source-map-explorer": "^1.6.0"
+    "source-map-explorer": "^2.5.2"
   },
   "scripts": {
-    "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-app-rewired start",
-    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
+    "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-scripts start",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-scripts build'",
     "build:staging": "REACT_APP_ENV=staging yarn build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
     "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8300 ./src/config/graphql/workTrackingFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/vcsFragmentTypes.json",
@@ -82,10 +81,25 @@
     "analyze": "source-map-explorer ./build/static/js/main.*",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "jest": {
+    "resetMocks": false
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
