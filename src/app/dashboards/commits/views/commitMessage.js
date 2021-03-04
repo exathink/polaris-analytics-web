@@ -34,7 +34,7 @@ export function commit_message_text_to_tree(text) {
                 ))
               }
               {
-                url ? <a href={url} target={"_blank"}>{url}</a> : null
+                url ? <a href={url} target={"_blank"} rel="noopener noreferrer">{url}</a> : null
               }
             </React.Fragment>
           ))
