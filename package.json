@@ -66,13 +66,14 @@
     "react-app-rewire-bundle-analyzer": "^1.0.1",
     "react-app-rewire-react-intl": "^2.4.0",
     "react-app-rewired": "^1.4.0",
+    "react-intl.macro": "^0.3.7",
     "react-test-renderer": "^16.4.1",
     "source-map-explorer": "^2.5.2"
   },
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader  && yarn build:fragment-types && react-scripts start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-scripts build'",
-    "build:staging": "REACT_APP_ENV=staging yarn build",
+    "build:staging": "REACT_APP_ENV=staging MESSAGE_DIR='./build/messages' yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:messages": "mkdir -p ./scripts/bin && ./node_modules/.bin/babel ./scripts/messages.js -o ./scripts/bin/messages.js --plugins=transform-runtime,transform-es2015-modules-commonjs && node ./scripts/bin/messages.js",
