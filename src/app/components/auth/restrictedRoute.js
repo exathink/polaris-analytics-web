@@ -12,7 +12,7 @@ export const authenticated = () => getSessionKey() && (timestamp() < getSessionE
 
 
 
-export default ({ component: Component, ...rest  }) => (
+const RestrictedRoute = ({ component: Component, ...rest  }) => (
   <Route
     {...rest}
 
@@ -30,3 +30,5 @@ export default ({ component: Component, ...rest  }) => (
     }
   />
 );
+
+export default RestrictedRoute;

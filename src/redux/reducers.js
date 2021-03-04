@@ -1,6 +1,8 @@
 import App from './app/reducer';
 
 
-export default {
+const AppContainer = {
     App
 };
+
+export default AppContainer;

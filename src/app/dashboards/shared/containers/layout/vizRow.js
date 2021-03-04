@@ -4,7 +4,7 @@ import uniqueStyles from './layout.module.css';
 import {cloneChildrenWithProps} from "../../../../helpers/reactHelpers";
 
 
-export default ({children, h, style,   ...rest}) => (
+const VizRow = ({children, h, style,   ...rest}) => (
   <Flex auto align='center' justify='space-evenly' className={uniqueStyles["viz-row"]} style={{
     height: h,
     ...style
@@ -12,3 +12,5 @@ export default ({children, h, style,   ...rest}) => (
     {cloneChildrenWithProps(children, {...rest})}
   </Flex>
 );
+
+export default VizRow;

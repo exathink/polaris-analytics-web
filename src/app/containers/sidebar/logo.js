@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { siteConfig } from '../../../config.js';
 
-export default ({ collapsed }) => {
+const Logo = ({ collapsed }) => {
   return (
     <div className="isoLogoWrapper">
       {collapsed ? (
@@ -21,3 +21,5 @@ export default ({ collapsed }) => {
     </div>
   );
 };
+
+export default Logo;

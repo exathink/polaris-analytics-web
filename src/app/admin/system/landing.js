@@ -3,7 +3,7 @@ import React from 'react';
 import {Dashboard, DashboardRow} from "../../framework/viz/dashboard";
 import AllAccounts from "./accounts/manageAccounts";
 
-export default () => (
+ const Landing =  () => (
   <Dashboard>
     <DashboardRow h={"30%"}>
       <AllAccounts
@@ -12,3 +12,5 @@ export default () => (
     </DashboardRow>
   </Dashboard>
 )
+
+export default Landing;

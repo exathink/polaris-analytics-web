@@ -19,7 +19,7 @@ history.listen((location) => {
   }
 );
 
-export default () => (
+const Routes = () => (
   <Router history={history}>
     <Switch>
       <Route
@@ -43,3 +43,5 @@ export default () => (
     </Switch>
   </Router>
 );
+
+export default Routes;
