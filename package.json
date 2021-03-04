@@ -9,7 +9,6 @@
     "antd": "4.12.1",
     "antd-local-icon": "^0.1.3",
     "axios": "^0.18.0",
-    "babel-plugin-import": "1.7.0",
     "classnames": "^2.2.5",
     "clone": "^2.1.1",
     "d64": "^1.0.0",
@@ -23,7 +22,6 @@
     "nprogress": "^0.2.0",
     "postcss-inline-rtl": "^0.9.8",
     "react": "^17.0.1",
-    "react-app-rewire-inline-import-graphql-ast": "^1.1.1",
     "react-automata": "^4.0.4",
     "react-custom-scrollbars": "^4.1.2",
     "react-dom": "^17.0.1",
@@ -62,11 +60,7 @@
     "fb-watchman": "^2.0.0",
     "flow-bin": "^0.66.0",
     "prettier": "^2.1.2",
-    "react-app-rewire-bundle-analyzer": "^1.0.1",
-    "react-app-rewire-react-intl": "^2.4.0",
-    "react-app-rewired": "^1.4.0",
     "react-intl.macro": "^0.3.7",
-    "react-test-renderer": "^16.4.1",
     "source-map-explorer": "^2.5.2"
   },
   "scripts": {
