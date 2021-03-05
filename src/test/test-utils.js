@@ -1,4 +1,4 @@
-import {IntlProvider} from "react-intl";
+import {createIntl, createIntlCache} from "react-intl";
 
 import {formatDateTime} from "../app/i18n";
 import {toMoment} from "../app/helpers/utility";
@@ -7,14 +7,16 @@ import moment from "moment";
 /* i18n Helpers */
 
 export function getIntl() {
-  // Create IntlProvider to retrieve React Intl context
-  const intlProvider = new IntlProvider(
+  const cache = createIntlCache();
+
+  const intl = createIntl(
     {
       locale: "en",
+      messages: {},
     },
-    {}
+    cache
   );
-  const {intl} = intlProvider.getChildContext();
+
   return intl;
 }
 
