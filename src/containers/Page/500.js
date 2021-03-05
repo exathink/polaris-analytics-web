@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from '../../image/rob.png';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 import FiveZeroZeroStyleWrapper from './500.style';
 
 export class FiveHundred extends React.Component {
@@ -10,17 +10,17 @@ export class FiveHundred extends React.Component {
       <FiveZeroZeroStyleWrapper className="iso500Page">
         <div className="iso500Content">
           <h1>
-            <IntlMessages id="page500.title" />
+            <FormattedMessage id="page500.title" />
           </h1>
           <h3>
-            <IntlMessages id="page500.subTitle" />
+            <FormattedMessage id="page500.subTitle" />
           </h3>
           <p>
-            <IntlMessages id="page500.description" />
+            <FormattedMessage id="page500.description" />
           </p>
           <button type="button">
             <Link to="/">
-              <IntlMessages id="page500.backButton" />
+              <FormattedMessage id="page500.backButton" />
             </Link>
           </button>
         </div>

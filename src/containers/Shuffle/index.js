@@ -6,7 +6,7 @@ import throttle from 'lodash/throttle';
 import articles from './config';
 import FlipMove from 'react-flip-move';
 import Toggle from './Toggle.js';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 import { SingleCardWrapper, SortableCardWrapper } from './shuffle.style';
 
 class ListItem extends Component {
@@ -145,13 +145,13 @@ class Shuffle extends Component {
           <div className="isoViewBtnGroup">
             <Toggle
               clickHandler={this.toggleList}
-              text={<IntlMessages id="toggle.list" />}
+              text={<FormattedMessage id="toggle.list" />}
               icon="bars"
               active={this.state.view === 'list'}
             />
             <Toggle
               clickHandler={this.toggleGrid}
-              text={<IntlMessages id="toggle.grid" />}
+              text={<FormattedMessage id="toggle.grid" />}
               icon="appstore"
               active={this.state.view === 'grid'}
             />
@@ -162,9 +162,9 @@ class Shuffle extends Component {
               clickHandler={this.toggleSort}
               text={
                 this.state.order === 'asc' ? (
-                  <IntlMessages id="toggle.ascending" />
+                  <FormattedMessage id="toggle.ascending" />
                 ) : (
-                  <IntlMessages id="toggle.descending" />
+                  <FormattedMessage id="toggle.descending" />
                 )
               }
               icon={this.state.order === 'asc' ? 'up' : 'down'}
@@ -172,13 +172,13 @@ class Shuffle extends Component {
             />
             <Toggle
               clickHandler={this.sortShuffle}
-              text={<IntlMessages id="toggle.shuffle" />}
+              text={<FormattedMessage id="toggle.shuffle" />}
               icon="shake"
               active={this.state.sortingMethod === 'shuffle'}
             />
             <Toggle
               clickHandler={this.sortRotate}
-              text={<IntlMessages id="toggle.rotate" />}
+              text={<FormattedMessage id="toggle.rotate" />}
               icon="reload"
               active={this.state.sortingMethod === 'rotate'}
             />
@@ -201,14 +201,14 @@ class Shuffle extends Component {
                 <Toggle
                   clickHandler={() =>
                     this.moveArticle('removedArticles', 'articles')}
-                  text={<IntlMessages id="toggle.addItem" />}
+                  text={<FormattedMessage id="toggle.addItem" />}
                   icon="plus"
                   active={this.state.removedArticles.length > 0}
                 />
                 <Toggle
                   clickHandler={() =>
                     this.moveArticle('articles', 'removedArticles')}
-                  text={<IntlMessages id="toggle.removeItem" />}
+                  text={<FormattedMessage id="toggle.removeItem" />}
                   icon="close"
                   active={this.state.articles.length > 0}
                 />

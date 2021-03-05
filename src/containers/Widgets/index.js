@@ -19,7 +19,7 @@ import * as rechartConfigs from '../Charts/recharts/config';
 import { StackedAreaChart } from '../Charts/recharts/charts/';
 import { GoogleChart } from '../Charts/googleChart/';
 import * as googleChartConfigs from '../Charts/googleChart/config';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 
 const tableDataList = clone(dataList);
 tableDataList.size = 5;
@@ -53,12 +53,12 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Report Widget */}
               <ReportsWidget
-                label={<IntlMessages id="widget.reportswidget.label" />}
-                details={<IntlMessages id="widget.reportswidget.details" />}
+                label={<FormattedMessage id="widget.reportswidget.label" />}
+                details={<FormattedMessage id="widget.reportswidget.details" />}
               >
                 <SingleProgressWidget
                   label={
-                    <IntlMessages id="widget.singleprogresswidget1.label" />
+                    <FormattedMessage id="widget.singleprogresswidget1.label" />
                   }
                   percent={70}
                   barHeight={7}
@@ -67,7 +67,7 @@ export default class IsoWidgets extends Component {
                 />
                 <SingleProgressWidget
                   label={
-                    <IntlMessages id="widget.singleprogresswidget2.label" />
+                    <FormattedMessage id="widget.singleprogresswidget2.label" />
                   }
                   percent={80}
                   barHeight={7}
@@ -76,7 +76,7 @@ export default class IsoWidgets extends Component {
                 />
                 <SingleProgressWidget
                   label={
-                    <IntlMessages id="widget.singleprogresswidget3.label" />
+                    <FormattedMessage id="widget.singleprogresswidget3.label" />
                   }
                   percent={40}
                   barHeight={7}
@@ -85,7 +85,7 @@ export default class IsoWidgets extends Component {
                 />
                 <SingleProgressWidget
                   label={
-                    <IntlMessages id="widget.singleprogresswidget4.label" />
+                    <FormattedMessage id="widget.singleprogresswidget4.label" />
                   }
                   percent={60}
                   barHeight={7}
@@ -114,8 +114,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sticker Widget */}
               <StickerWidget
-                number={<IntlMessages id="widget.stickerwidget1.number" />}
-                text={<IntlMessages id="widget.stickerwidget1.text" />}
+                number={<FormattedMessage id="widget.stickerwidget1.number" />}
+                text={<FormattedMessage id="widget.stickerwidget1.text" />}
                 icon="ion-email-unread"
                 fontColor="#ffffff"
                 bgColor="#7266BA"
@@ -127,8 +127,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sticker Widget */}
               <StickerWidget
-                number={<IntlMessages id="widget.stickerwidget1.number" />}
-                text={<IntlMessages id="widget.stickerwidget2.text" />}
+                number={<FormattedMessage id="widget.stickerwidget1.number" />}
+                text={<FormattedMessage id="widget.stickerwidget2.text" />}
                 icon="ion-android-camera"
                 fontColor="#ffffff"
                 bgColor="#42A5F6"
@@ -140,8 +140,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sticker Widget */}
               <StickerWidget
-                number={<IntlMessages id="widget.stickerwidget1.number" />}
-                text={<IntlMessages id="widget.stickerwidget3.text" />}
+                number={<FormattedMessage id="widget.stickerwidget1.number" />}
+                text={<FormattedMessage id="widget.stickerwidget3.text" />}
                 icon="ion-chatbubbles"
                 fontColor="#ffffff"
                 bgColor="#7ED320"
@@ -153,8 +153,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sticker Widget */}
               <StickerWidget
-                number={<IntlMessages id="widget.stickerwidget1.number" />}
-                text={<IntlMessages id="widget.stickerwidget4.text" />}
+                number={<FormattedMessage id="widget.stickerwidget1.number" />}
+                text={<FormattedMessage id="widget.stickerwidget4.text" />}
                 icon="ion-android-cart"
                 fontColor="#ffffff"
                 bgColor="#F75D81"
@@ -168,9 +168,9 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sale Widget */}
               <SaleWidget
-                label={<IntlMessages id="widget.salewidget1.label" />}
-                price={<IntlMessages id="widget.salewidget1.price" />}
-                details={<IntlMessages id="widget.salewidget1.details" />}
+                label={<FormattedMessage id="widget.salewidget1.label" />}
+                price={<FormattedMessage id="widget.salewidget1.price" />}
+                details={<FormattedMessage id="widget.salewidget1.details" />}
                 fontColor="#F75D81"
               />
             </IsoWidgetsWrapper>
@@ -180,9 +180,9 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sale Widget */}
               <SaleWidget
-                label={<IntlMessages id="widget.salewidget2.label" />}
-                price={<IntlMessages id="widget.salewidget2.price" />}
-                details={<IntlMessages id="widget.salewidget2.details" />}
+                label={<FormattedMessage id="widget.salewidget2.label" />}
+                price={<FormattedMessage id="widget.salewidget2.price" />}
+                details={<FormattedMessage id="widget.salewidget2.details" />}
                 fontColor="#F75D81"
               />
             </IsoWidgetsWrapper>
@@ -192,9 +192,9 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sale Widget */}
               <SaleWidget
-                label={<IntlMessages id="widget.salewidget3.label" />}
-                price={<IntlMessages id="widget.salewidget3.price" />}
-                details={<IntlMessages id="widget.salewidget3.details" />}
+                label={<FormattedMessage id="widget.salewidget3.label" />}
+                price={<FormattedMessage id="widget.salewidget3.price" />}
+                details={<FormattedMessage id="widget.salewidget3.details" />}
                 fontColor="#F75D81"
               />
             </IsoWidgetsWrapper>
@@ -204,9 +204,9 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Sale Widget */}
               <SaleWidget
-                label={<IntlMessages id="widget.salewidget4.label" />}
-                price={<IntlMessages id="widget.salewidget4.price" />}
-                details={<IntlMessages id="widget.salewidget4.details" />}
+                label={<FormattedMessage id="widget.salewidget4.label" />}
+                price={<FormattedMessage id="widget.salewidget4.price" />}
+                details={<FormattedMessage id="widget.salewidget4.details" />}
                 fontColor="#F75D81"
               />
             </IsoWidgetsWrapper>
@@ -220,8 +220,8 @@ export default class IsoWidgets extends Component {
               <CardWidget
                 icon="ion-android-chat"
                 iconcolor="#42A5F5"
-                number={<IntlMessages id="widget.cardwidget1.number" />}
-                text={<IntlMessages id="widget.cardwidget1.text" />}
+                number={<FormattedMessage id="widget.cardwidget1.number" />}
+                text={<FormattedMessage id="widget.cardwidget1.text" />}
               />
             </IsoWidgetsWrapper>
 
@@ -230,8 +230,8 @@ export default class IsoWidgets extends Component {
               <CardWidget
                 icon="ion-music-note"
                 iconcolor="#F75D81"
-                number={<IntlMessages id="widget.cardwidget2.number" />}
-                text={<IntlMessages id="widget.cardwidget2.text" />}
+                number={<FormattedMessage id="widget.cardwidget2.number" />}
+                text={<FormattedMessage id="widget.cardwidget2.text" />}
               />
             </IsoWidgetsWrapper>
 
@@ -240,8 +240,8 @@ export default class IsoWidgets extends Component {
               <CardWidget
                 icon="ion-trophy"
                 iconcolor="#FEAC01"
-                number={<IntlMessages id="widget.cardwidget3.number" />}
-                text={<IntlMessages id="widget.cardwidget3.text" />}
+                number={<FormattedMessage id="widget.cardwidget3.number" />}
+                text={<FormattedMessage id="widget.cardwidget3.text" />}
               />
             </IsoWidgetsWrapper>
           </Col>
@@ -250,8 +250,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper gutterBottom={20}>
               {/* Progress Widget */}
               <ProgressWidget
-                label={<IntlMessages id="widget.progresswidget1.label" />}
-                details={<IntlMessages id="widget.progresswidget1.details" />}
+                label={<FormattedMessage id="widget.progresswidget1.label" />}
+                details={<FormattedMessage id="widget.progresswidget1.details" />}
                 icon="ion-archive"
                 iconcolor="#4482FF"
                 percent={50}
@@ -263,8 +263,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper gutterBottom={20}>
               {/* Progress Widget */}
               <ProgressWidget
-                label={<IntlMessages id="widget.progresswidget2.label" />}
-                details={<IntlMessages id="widget.progresswidget2.details" />}
+                label={<FormattedMessage id="widget.progresswidget2.label" />}
+                details={<FormattedMessage id="widget.progresswidget2.details" />}
                 icon="ion-pie-graph"
                 iconcolor="#F75D81"
                 percent={80}
@@ -276,8 +276,8 @@ export default class IsoWidgets extends Component {
             <IsoWidgetsWrapper>
               {/* Progress Widget */}
               <ProgressWidget
-                label={<IntlMessages id="widget.progresswidget3.label" />}
-                details={<IntlMessages id="widget.progresswidget3.details" />}
+                label={<FormattedMessage id="widget.progresswidget3.label" />}
+                details={<FormattedMessage id="widget.progresswidget3.details" />}
                 icon="ion-android-download"
                 iconcolor="#494982"
                 percent={65}
@@ -343,10 +343,10 @@ export default class IsoWidgets extends Component {
                 style={{ height: '450px' }}
                 src={userpic}
                 alt="Jhon"
-                name={<IntlMessages id="widget.vcardwidget.name" />}
-                title={<IntlMessages id="widget.vcardwidget.title" />}
+                name={<FormattedMessage id="widget.vcardwidget.name" />}
+                title={<FormattedMessage id="widget.vcardwidget.title" />}
                 description={
-                  <IntlMessages id="widget.vcardwidget.description" />
+                  <FormattedMessage id="widget.vcardwidget.description" />
                 }
               >
                 <SocialWidget>
