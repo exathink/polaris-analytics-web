@@ -5,6 +5,62 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {Colors} from "../../config";
 
 require('highcharts/modules/treemap')(Highcharts);
+const colors = [ "#f3f4f6", "#22d3ee", "#06b6d4", "#f87171", "#34d399"]
+
+function getHierarchySeries(workItems, specsOnly, intl) {
+  const workItemPoints = workItems.map(w => {
+    return {
+      name: `${w.name}`,
+      value: Number(w.effort),
+      parent: w.epicKey
+    }
+  });
+
+  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'Uncategorized');
+
+  return [{
+    type: "treemap",
+    layoutAlgorithm: 'stripes',
+    alternateStartingDirection: true,
+    levels: [{
+        level: 1,
+        layoutAlgorithm: 'sliceAndDice',
+        dataLabels: {
+            enabled: true,
+            align: 'left',
+            verticalAlign: 'top',
+            style: {
+                fontSize: '15px',
+                fontWeight: 'bold',
+            }
+        }
+    }],
+    data: Object.keys(workItemsByEpic).map(
+      (epicName, i) => ({
+        id: workItemsByEpic[epicName][0].epicKey,
+        name: epicName,
+        value: workItemsByEpic[epicName].reduce(
+          (totalEffort, workItem) => totalEffort + workItem.effort,
+          0
+        ),
+        epic: {
+          name: epicName,
+          key: workItemsByEpic[epicName][0].epicKey
+        },
+        color: colors[i],
+        workItems: workItemsByEpic[epicName]
+      })
+    ).concat(workItemPoints),
+    dataLabels: {
+      enabled: true,
+      useHTML: true,
+
+      formatter: function () {
+        return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${`Dev-Days`}</div>`;
+      }
+    }
+  }]
+}
 
 function getSeries(workItems, specsOnly, intl, view) {
   const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'Uncategorized');
@@ -56,8 +112,13 @@ export const WorkItemsEpicEffortChart = Chart({
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view}) => {
-    const series = getSeries(workItems, specsOnly, intl, view);
+  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy}) => {
+    let series = [];
+    if (showHierarchy) {
+      series = getHierarchySeries(workItems, specsOnly, intl);
+    } else {
+      series = getSeries(workItems, specsOnly, intl, view);
+    }
 
     return {
       chart: {
@@ -99,6 +160,14 @@ export const WorkItemsEpicEffortChart = Chart({
         hideDelay: 50,
         formatter: function () {
           const {name, value, workItems} = this.point;
+          if (showHierarchy) {
+            return tooltipHtml({
+              header: `${name}`,
+              body: [
+                [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
+              ]
+            })
+          }
           return tooltipHtml({
             header: `${name}`,
             body: [

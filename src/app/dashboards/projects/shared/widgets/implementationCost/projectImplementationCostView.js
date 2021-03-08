@@ -26,7 +26,7 @@ export const ProjectImplementationCostView = (
             title={title}
             subtitle={subtitle}
             view={view}
-
+            showHierarchy={view === "detail"}
           />
         </VizItem>
       </VizRow>
