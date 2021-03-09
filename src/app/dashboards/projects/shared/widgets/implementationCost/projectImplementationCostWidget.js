@@ -17,7 +17,8 @@ export const ProjectImplementationCostWidget = (
     days,
     latestCommit,
     latestWorkItemEvent,
-    view
+    view,
+    showHierarchy
   }
 ) => {
   const {loading, error, data} = useQueryProjectImplementationCost({
@@ -44,6 +45,7 @@ export const ProjectImplementationCostWidget = (
       title={title}
       subtitle={subtitle}
       view={view}
+      showHierarchy={showHierarchy || view === "detail"}
       />
   )
 }

@@ -11,7 +11,8 @@ export const ProjectImplementationCostView = (
     activeOnly,
     title,
     subtitle,
-    view
+    view,
+    showHierarchy
   }
 ) => {
   return (
@@ -26,7 +27,7 @@ export const ProjectImplementationCostView = (
             title={title}
             subtitle={subtitle}
             view={view}
-            showHierarchy={view === "detail"}
+            showHierarchy={showHierarchy}
           />
         </VizItem>
       </VizRow>
