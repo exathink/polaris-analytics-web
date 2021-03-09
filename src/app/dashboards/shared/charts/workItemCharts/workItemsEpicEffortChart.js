@@ -6,7 +6,7 @@ import {Colors} from "../../config";
 
 require('highcharts/modules/treemap')(Highcharts);
 
-const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized"};
+const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "white"};
 const DEFAULT_EFFORT = 0.1;
 const TEXT_LIMIT = 37;
 
@@ -47,7 +47,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           level: 2,
           dataLabels: {
             enabled: true,
-            align: "right",
+            align: "left",
             verticalAlign: "bottom",
             allowOverlap: true,
             style: {
@@ -70,7 +70,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
             name: epicName,
             key: workItemsByEpic[epicName][0].epicKey,
           },
-          color: Colors.EpicEffortValueBook[i],
+          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : Colors.EpicEffortValueBook[i],
           workItems: workItemsByEpic[epicName],
         }))
         .concat(workItemPoints),
