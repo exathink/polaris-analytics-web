@@ -8,6 +8,7 @@ require('highcharts/modules/treemap')(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized"};
 const DEFAULT_EFFORT = 0.1;
+const TEXT_LIMIT = 37;
 
 function getHierarchySeries(workItems, specsOnly, intl) {
   const workItemPoints = workItems.map((w) => {
@@ -48,15 +49,21 @@ function getHierarchySeries(workItems, specsOnly, intl) {
             enabled: true,
             align: "right",
             verticalAlign: "bottom",
+            allowOverlap: true,
             style: {
               fontSize: "10px",
             },
+            formatter: function(){
+              const text = this.point.name.slice(0, TEXT_LIMIT);
+              const ending = this.point.name.length > TEXT_LIMIT ? "..." : "";
+              return text + ending;
+            }
           },
         },
       ],
       data: Object.keys(workItemsByEpic)
         .map((epicName, i) => ({
-          id: workItemsByEpic[epicName][0].epicKey || "uncategorized",
+          id: workItemsByEpic[epicName][0].epicKey || UNCATEGORIZED.key,
           name: epicName,
           value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
@@ -80,7 +87,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'Uncategorized');
+  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || UNCATEGORIZED.displayValue);
 
 
   return [{
