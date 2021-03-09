@@ -7,12 +7,13 @@ import {Colors} from "../../config";
 require('highcharts/modules/treemap')(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized"};
+const DEFAULT_EFFORT = 0.1;
 
 function getHierarchySeries(workItems, specsOnly, intl) {
   const workItemPoints = workItems.map((w) => {
     return {
-      name: `${w.name}`,
-      value: Number(w.effort),
+      name: w.name,
+      value: w.effort || DEFAULT_EFFORT,
       parent: w.epicKey || UNCATEGORIZED.key,
     };
   });
