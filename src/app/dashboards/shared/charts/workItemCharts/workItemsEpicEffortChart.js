@@ -47,7 +47,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           level: 2,
           dataLabels: {
             enabled: true,
-            align: "left",
+            align: "right",
             verticalAlign: "bottom",
             allowOverlap: true,
             style: {
