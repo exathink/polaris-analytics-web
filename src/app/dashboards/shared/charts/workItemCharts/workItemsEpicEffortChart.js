@@ -5,61 +5,77 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {Colors} from "../../config";
 
 require('highcharts/modules/treemap')(Highcharts);
-const colors = [ "#f3f4f6", "#22d3ee", "#06b6d4", "#f87171", "#34d399"]
+
+const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized"};
 
 function getHierarchySeries(workItems, specsOnly, intl) {
-  const workItemPoints = workItems.map(w => {
+  const workItemPoints = workItems.map((w) => {
     return {
       name: `${w.name}`,
       value: Number(w.effort),
-      parent: w.epicKey
-    }
+      parent: w.epicKey || UNCATEGORIZED.key,
+    };
   });
 
-  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || 'Uncategorized');
+  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicName || UNCATEGORIZED.displayValue);
 
-  return [{
-    type: "treemap",
-    layoutAlgorithm: 'stripes',
-    alternateStartingDirection: true,
-    levels: [{
-        level: 1,
-        layoutAlgorithm: 'sliceAndDice',
-        dataLabels: {
+  return [
+    {
+      type: "treemap",
+      layoutAlgorithm: "stripes",
+      alternateStartingDirection: true,
+      levels: [
+        {
+          level: 1,
+          layoutAlgorithm: "squarified",
+          dataLabels: {
             enabled: true,
-            align: 'left',
-            verticalAlign: 'top',
+            align: "center",
+            verticalAlign: "top",
             style: {
-                fontSize: '15px',
-                fontWeight: 'bold',
+              fontSize: "14px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${`Dev-Days`}</div>`;
             }
-        }
-    }],
-    data: Object.keys(workItemsByEpic).map(
-      (epicName, i) => ({
-        id: workItemsByEpic[epicName][0].epicKey,
-        name: epicName,
-        value: workItemsByEpic[epicName].reduce(
-          (totalEffort, workItem) => totalEffort + workItem.effort,
-          0
-        ),
-        epic: {
-          name: epicName,
-          key: workItemsByEpic[epicName][0].epicKey
+          },
         },
-        color: colors[i],
-        workItems: workItemsByEpic[epicName]
-      })
-    ).concat(workItemPoints),
-    dataLabels: {
-      enabled: true,
-      useHTML: true,
+        {
+          level: 2,
+          dataLabels: {
+            enabled: true,
+            align: "right",
+            verticalAlign: "bottom",
+            style: {
+              fontSize: "10px",
+            },
+          },
+        },
+      ],
+      data: Object.keys(workItemsByEpic)
+        .map((epicName, i) => ({
+          id: workItemsByEpic[epicName][0].epicKey || "uncategorized",
+          name: epicName,
+          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+          epic: {
+            name: epicName,
+            key: workItemsByEpic[epicName][0].epicKey,
+          },
+          color: Colors.EpicEffortValueBook[i],
+          workItems: workItemsByEpic[epicName],
+        }))
+        .concat(workItemPoints),
+      dataLabels: {
+        enabled: true,
+        useHTML: true,
 
-      formatter: function () {
-        return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${`Dev-Days`}</div>`;
-      }
-    }
-  }]
+        formatter: function () {
+          return `<div>${this.point.name}</div>`;
+        },
+      },
+    },
+  ];
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
