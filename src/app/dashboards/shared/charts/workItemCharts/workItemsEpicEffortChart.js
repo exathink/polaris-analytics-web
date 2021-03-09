@@ -16,6 +16,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       name: w.name,
       value: w.effort || DEFAULT_EFFORT,
       parent: w.epicKey || UNCATEGORIZED.key,
+      workItems: [w]
     };
   });
 
@@ -185,10 +186,11 @@ export const WorkItemsEpicEffortChart = Chart({
         formatter: function () {
           const {name, value, workItems} = this.point;
           if (showHierarchy) {
+            const effortVal = this.point.parent != null && workItems[0].effort == null ? null : value; 
             return tooltipHtml({
               header: `${name}`,
               body: [
-                [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
+                [`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`],
               ]
             })
           }
