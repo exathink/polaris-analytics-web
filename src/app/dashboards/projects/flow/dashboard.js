@@ -237,6 +237,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectImplementationCostWidget
               instanceKey={key}
+              context={context}
               days={flowAnalysisPeriod}
               specsOnly={specsOnly}
               view={view}

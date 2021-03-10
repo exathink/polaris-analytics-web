@@ -8,6 +8,7 @@ const dashboard_id = "dashboards.project.epic.flow.detail";
 
 export const ProjectImplementationCostDetailDashboard = ({
   instanceKey,
+  context,
   latestWorkItemEvent,
   latestCommit,
   activeOnly,
@@ -41,6 +42,7 @@ export const ProjectImplementationCostDetailDashboard = ({
           render={({view}) => (
             <ProjectImplementationCostWidget
               instanceKey={instanceKey}
+              context={context}
               days={days}
               specsOnly={specsOnly}
               activeOnly={activeOnly}

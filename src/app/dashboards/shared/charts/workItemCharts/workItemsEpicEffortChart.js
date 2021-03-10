@@ -27,6 +27,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       type: "treemap",
       layoutAlgorithm: "stripes",
       alternateStartingDirection: true,
+      allowPointSelect: true,
       levels: [
         {
           level: 1,
@@ -132,7 +133,7 @@ export const WorkItemsEpicEffortChart = Chart({
   // when the default selection handler calls its application callback, it calls this
   // mapper to map point objects into domain objects for the application. Attach domain objects to the series data
   // points and map them back here.
-  mapPoints: (points, _) => points.map((point) => point.workItem),
+  mapPoints: (points, _) => points.map((point) => point.workItems),
 
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that

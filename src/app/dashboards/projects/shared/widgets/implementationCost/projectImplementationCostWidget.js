@@ -18,6 +18,7 @@ export const ProjectImplementationCostWidget = (
     latestCommit,
     latestWorkItemEvent,
     view,
+    context,
     showHierarchy
   }
 ) => {
@@ -48,7 +49,8 @@ export const ProjectImplementationCostWidget = (
       title={title}
       subtitle={subtitle}
       view={view}
-      showHierarchy={showHierarchy || view === "detail"}
+      context={context}
+      showHierarchy={showHierarchy}
       />
   )
 }

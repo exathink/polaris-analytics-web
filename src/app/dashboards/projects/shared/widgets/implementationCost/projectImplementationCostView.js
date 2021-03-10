@@ -2,6 +2,7 @@ import React from "react";
 import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {ProjectImplementationCostDetailDashboard} from "./projectImplementationCostDetailDashboard";
+import WorkItems from "../../../../work_items/context";
 
 export const ProjectImplementationCostView = ({
   instanceKey,
@@ -13,11 +14,12 @@ export const ProjectImplementationCostView = ({
   activeOnly,
   title,
   subtitle,
+  context,
   view,
   showHierarchy,
 }) => {
   if (view === "detail") {
-    const props = {instanceKey, latestWorkItemEvent, latestCommit, activeOnly, days, view};
+    const props = {instanceKey, latestWorkItemEvent, latestCommit, activeOnly, days, view, context};
     return <ProjectImplementationCostDetailDashboard {...props} />;
   }
 
@@ -33,6 +35,11 @@ export const ProjectImplementationCostView = ({
           subtitle={subtitle}
           view={view}
           showHierarchy={showHierarchy}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              context.navigate(WorkItems, workItems[0][0].displayId, workItems[0][0].workItemKey);
+            }
+          }}
         />
       </VizItem>
     </VizRow>

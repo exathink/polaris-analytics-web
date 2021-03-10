@@ -22,6 +22,8 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                         node {
                             name
                             key
+                            workItemKey
+                            displayId
                             epicName
                             epicKey
                             effort
