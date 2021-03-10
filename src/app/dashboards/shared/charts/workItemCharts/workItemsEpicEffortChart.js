@@ -1,7 +1,7 @@
 import {Chart, Highcharts, tooltipHtml} from "../../../../framework/viz/charts";
 import {buildIndex, pick, localNow} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-
+import WorkItems from "../../../work_items/context";
 import {Colors} from "../../config";
 
 require("highcharts/modules/treemap")(Highcharts);
@@ -16,7 +16,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       name: w.name,
       value: w.effort || DEFAULT_EFFORT,
       parent: w.epicKey || UNCATEGORIZED.key,
-      workItems: [w],
+      workItem: w,
     };
   });
 
@@ -138,7 +138,7 @@ export const WorkItemsEpicEffortChart = Chart({
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy}) => {
+  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy, context}) => {
     let series = [];
     if (showHierarchy) {
       series = getHierarchySeries(workItems, specsOnly, intl);
@@ -180,13 +180,19 @@ export const WorkItemsEpicEffortChart = Chart({
 
       tooltip: {
         useHTML: true,
-        outside: false,
+        outside: true,
         hideDelay: 50,
         formatter: function () {
-          const {name, value, workItems, parent} = this.point;
+          const {name, value, workItems, workItem, parent} = this.point;
           if (showHierarchy) {
-            const effortVal = workItems.every((x) => x.effort == null) ? null : value;
-            const cards = parent == null ?[[`Cards`, `${workItems.length}`]] : [];
+            let effortVal = value;
+            let cards = [];
+            if (parent == null) {
+              cards = [[`Cards`, `${workItems.length}`]];
+            } else {
+              effortVal = workItem.effort == null ? null : workItem.effort;
+            }
+
             return tooltipHtml({
               header: `${name}`,
               body: [[`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`], ...cards],
@@ -205,6 +211,16 @@ export const WorkItemsEpicEffortChart = Chart({
       plotOptions: {
         series: {
           animation: false,
+          events: {
+            click: function (event) {
+              if (showHierarchy) {
+                const {workItem} = event.point;
+                if (event.point.node.childrenTotal === 0 && workItem != null) {
+                  context.navigate(WorkItems, workItem.displayId, workItem.workItemKey);
+                }
+              }
+            },
+          },
         },
         treemap: {},
         legend: {
