@@ -7,7 +7,7 @@ import {Colors} from "../../config";
 require('highcharts/modules/treemap')(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "white"};
-const DEFAULT_EFFORT = 0.1;
+const DEFAULT_EFFORT = 0.2;
 const TEXT_LIMIT = 37;
 
 function getHierarchySeries(workItems, specsOnly, intl) {
@@ -66,7 +66,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
         .map((epicName, i) => ({
           id: workItemsByEpic[epicName][0].epicKey || UNCATEGORIZED.key,
           name: epicName,
-          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0),
           epic: {
             name: epicName,
             key: workItemsByEpic[epicName][0].epicKey,
@@ -186,7 +186,7 @@ export const WorkItemsEpicEffortChart = Chart({
         formatter: function () {
           const {name, value, workItems} = this.point;
           if (showHierarchy) {
-            const effortVal = this.point.parent != null && workItems[0].effort == null ? null : value; 
+            const effortVal = workItems.every(x => x.effort == null) ? null : value; 
             return tooltipHtml({
               header: `${name}`,
               body: [
