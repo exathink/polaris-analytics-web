@@ -4,7 +4,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 
 import {Colors} from "../../config";
 
-require('highcharts/modules/treemap')(Highcharts);
+require("highcharts/modules/treemap")(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "white"};
 const DEFAULT_EFFORT = 0.2;
@@ -16,7 +16,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       name: w.name,
       value: w.effort || DEFAULT_EFFORT,
       parent: w.epicKey || UNCATEGORIZED.key,
-      workItems: [w]
+      workItems: [w],
     };
   });
 
@@ -40,8 +40,12 @@ function getHierarchySeries(workItems, specsOnly, intl) {
               fontWeight: "bold",
             },
             formatter: function () {
-              return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${`Dev-Days`}</div>`;
-            }
+              const {value, workItems} = this.point;
+              const dataLabelTitle = specsOnly ? value : workItems.length;
+              return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
+                maximumSignificantDigits: 2,
+              })} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
+            },
           },
         },
         {
@@ -54,11 +58,11 @@ function getHierarchySeries(workItems, specsOnly, intl) {
             style: {
               fontSize: "10px",
             },
-            formatter: function(){
+            formatter: function () {
               const text = this.point.name.slice(0, TEXT_LIMIT);
               const ending = this.point.name.length > TEXT_LIMIT ? "..." : "";
               return text + ending;
-            }
+            },
           },
         },
       ],
@@ -66,7 +70,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
         .map((epicName, i) => ({
           id: workItemsByEpic[epicName][0].epicKey || UNCATEGORIZED.key,
           name: epicName,
-          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0),
+          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
             name: epicName,
             key: workItemsByEpic[epicName][0].epicKey,
@@ -78,53 +82,49 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       dataLabels: {
         enabled: true,
         useHTML: true,
-
-        formatter: function () {
-          return `<div>${this.point.name}</div>`;
-        },
       },
     },
   ];
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, workItem => workItem.epicName || UNCATEGORIZED.displayValue);
+  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicName || UNCATEGORIZED.displayValue);
 
+  return [
+    {
+      type: "treemap",
+      layoutAlgorithm: "squarified",
+      name: "Closed",
+      //color: '#ddd6e2',
 
-  return [{
-    type: 'treemap',
-    layoutAlgorithm: 'squarified',
-    name: 'Closed',
-    //color: '#ddd6e2',
-
-    data: Object.keys(workItemsByEpic).map(
-      epicName => ({
+      data: Object.keys(workItemsByEpic).map((epicName) => ({
         name: epicName,
-        value: specsOnly ? workItemsByEpic[epicName].reduce(
-          (totalEffort, workItem) => totalEffort + workItem.effort,
-          0
-        ) : workItemsByEpic[epicName].length,
+        value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
-          key: workItemsByEpic[epicName][0].epicKey
+          key: workItemsByEpic[epicName][0].epicKey,
         },
-        workItems: workItemsByEpic[epicName]
-      })
-    ),
-    dataLabels: {
-      enabled: true,
-      useHTML: true,
+        workItems: workItemsByEpic[epicName],
+      })),
+      dataLabels: {
+        enabled: true,
+        useHTML: true,
 
-      formatter: function () {
-        return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(this.point.value, {maximumSignificantDigits: 2})} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
-      }
-    }
-  }]
+        formatter: function () {
+          const {value, workItems} = this.point;
+          const dataLabelTitle = specsOnly ? value : workItems.length;
+          return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
+            maximumSignificantDigits: 2,
+          })} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
+        },
+      },
+    },
+  ];
 }
 
 export const WorkItemsEpicEffortChart = Chart({
   // Update this function to choose which props will cause the chart config to be regenerated.
-  chartUpdateProps: (props) => pick(props, 'workItems', 'specsOnly', 'activeOnly', 'days', 'title', 'subtitle'),
+  chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "activeOnly", "days", "title", "subtitle"),
 
   // Leave this as is unless you want to create a different selection handler than the default one.
   eventHandler: DefaultSelectionEventHandler,
@@ -132,7 +132,7 @@ export const WorkItemsEpicEffortChart = Chart({
   // when the default selection handler calls its application callback, it calls this
   // mapper to map point objects into domain objects for the application. Attach domain objects to the series data
   // points and map them back here.
-  mapPoints: (points, _) => points.map(point => point.workItem),
+  mapPoints: (points, _) => points.map((point) => point.workItem),
 
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
@@ -151,80 +151,75 @@ export const WorkItemsEpicEffortChart = Chart({
         // specialize in some cases.
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
-        panKey: 'shift',
-        zoomType: 'xy',
-
+        panKey: "shift",
+        zoomType: "xy",
       },
       title: {
-        text: title || `Value Book: ${activeOnly ? 'Work In Progress' : ''}${days ? `Last ${days} days` : ''}`,
-        align: 'left',
+        text: title || `Value Book: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`,
+        align: "left",
       },
       subtitle: {
-        text: `${specsOnly ? '% EffortOUT ' : '% Volume '} by Epic: ${localNow(intl)}`,
-        align: 'left',
+        text: `${specsOnly ? "% EffortOUT " : "% Volume "} by Epic: ${localNow(intl)}`,
+        align: "left",
       },
       xAxis: {
-        type: 'linear',
+        type: "linear",
 
         title: {
-          text: 'X'
-        }
-      },
-      yAxis: {
-        type: 'linear',
-
-        title: {
-          text: 'x'
+          text: "X",
         },
       },
+      yAxis: {
+        type: "linear",
 
+        title: {
+          text: "x",
+        },
+      },
 
       tooltip: {
         useHTML: true,
         outside: true,
         hideDelay: 50,
         formatter: function () {
-          const {name, value, workItems} = this.point;
+          const {name, value, workItems, parent} = this.point;
           if (showHierarchy) {
-            const effortVal = workItems.every(x => x.effort == null) ? null : value; 
+            const effortVal = workItems.every((x) => x.effort == null) ? null : value;
+            const cards = parent == null ?[[`Cards`, `${workItems.length}`]] : [];
             return tooltipHtml({
               header: `${name}`,
-              body: [
-                [`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`],
-              ]
-            })
+              body: [[`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`], ...cards],
+            });
           }
           return tooltipHtml({
             header: `${name}`,
             body: [
               [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
               [`Cards`, `${workItems.length}`],
-            ]
-          })
-        }
+            ],
+          });
+        },
       },
-      series: [
-        ...series
-      ],
+      series: [...series],
       plotOptions: {
         series: {
-          animation: false
+          animation: false,
         },
         treemap: {},
         legend: {
           title: {
-            text: 'Legend',
+            text: "Legend",
             style: {
-              fontStyle: 'italic'
-            }
+              fontStyle: "italic",
+            },
           },
-          align: 'right',
-          layout: 'vertical',
-          verticalAlign: 'middle',
+          align: "right",
+          layout: "vertical",
+          verticalAlign: "middle",
           itemMarginBottom: 3,
-          enabled: false
+          enabled: false,
         },
-      }
-    }
-  }
+      },
+    };
+  },
 });
