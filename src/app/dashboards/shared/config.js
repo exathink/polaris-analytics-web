@@ -34,8 +34,7 @@ export const Colors = {
   DefectRate: {
     arrival: "#ea9c9c",
     close: "#64de95"
-  },
-  EpicEffortValueBook: ["#06b6d4", "#34d399", "#0d233a", "#2f7ed8", "#8bbc21", "#910000"]
+  }
 };
 
 

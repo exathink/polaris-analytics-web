@@ -71,7 +71,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
             name: epicName,
             key: workItemsByEpic[epicName][0].epicKey,
           },
-          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : Colors.EpicEffortValueBook[i],
+          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : Highcharts.getOptions().colors[i],
           workItems: workItemsByEpic[epicName],
         }))
         .concat(workItemPoints),
