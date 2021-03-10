@@ -38,6 +38,9 @@ export const ProjectImplementationCostWidget = (
 
   return (
     <ProjectImplementationCostView
+      instanceKey={instanceKey}
+      latestWorkItemEvent={latestWorkItemEvent}
+      latestCommit={latestCommit}
       workItems={workItemDeliveryCycles}
       specsOnly={specsOnly}
       activeOnly={activeOnly}
