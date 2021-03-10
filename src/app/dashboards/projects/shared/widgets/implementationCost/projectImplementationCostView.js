@@ -36,7 +36,7 @@ export const ProjectImplementationCostView = ({
           view={view}
           showHierarchy={showHierarchy}
           onSelectionChange={(workItems) => {
-            if (workItems.length === 1) {
+            if (workItems.length === 1 && workItems[0].length === 1) {
               context.navigate(WorkItems, workItems[0][0].displayId, workItems[0][0].workItemKey);
             }
           }}
