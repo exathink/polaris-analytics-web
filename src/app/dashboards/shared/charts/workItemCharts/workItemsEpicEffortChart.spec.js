@@ -145,7 +145,7 @@ describe("WorkItemsEpicEffortChart", () => {
           expect(workItemsByEpicSeries.data).toHaveLength(3);
         });
 
-        test("it maps epic names to the x axis and sets y to a consolidated effort value", () => {
+        test("it maps epic names and consolidated effort value to a tree map chart view", () => {
           expectSetsAreEqual(
             workItemsByEpicSeries.data.map((point) => [point.name, point.value]),
             [
@@ -264,7 +264,7 @@ describe("WorkItemsEpicEffortChart", () => {
           expect(workItemsByEpicSeries.data).toHaveLength(7);
         });
 
-        test("it maps epic names to the x axis and sets y to a consolidated effort value", () => {
+        test("it maps epic names and consolidated effort value to a tree map chart view", () => {
           expectSetsAreEqual(
             workItemsByEpicSeries.data.map((point) => [point.name, point.value]),
             [
