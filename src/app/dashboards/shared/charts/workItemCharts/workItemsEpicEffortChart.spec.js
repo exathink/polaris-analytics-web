@@ -1,9 +1,8 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
+import {expectSetsAreEqual} from "../../../../../test/test-utils";
 import {Colors} from "../../../shared/config";
 import {WorkItemsEpicEffortChart} from "./workItemsEpicEffortChart";
-import {epoch} from "../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -252,7 +251,9 @@ describe("WorkItemsEpicEffortChart", () => {
             },
           ],
         };
-        expect(renderedChartConfig(<WorkItemsEpicEffortChart {...propsFixtureForDetailView} />)).toMatchObject(expectedChartConfig);
+        expect(renderedChartConfig(<WorkItemsEpicEffortChart {...propsFixtureForDetailView} />)).toMatchObject(
+          expectedChartConfig
+        );
       });
 
       const {workItems} = propsFixtureForDetailView;
@@ -270,21 +271,21 @@ describe("WorkItemsEpicEffortChart", () => {
               ["Quality Trends", 1.5],
               ["Contributor Alias UI", 0.3],
               ["Misc UX", 2.8],
-              ...propsFixture.workItems.map(x => ([x.name, x.effort]))
+              ...propsFixtureForDetailView.workItems.map((x) => [x.name, x.effort]),
             ]
           );
         });
 
-        test("it sets the reference to the workItems for each point ", () => {
+        test("it sets the reference to the workItems or workItem domain object for each point ", () => {
           expectSetsAreEqual(
-            workItemsByEpicSeries.data.map((point) => point.workItems),
-            [[workItems[0], workItems[1]], [workItems[2]], [workItems[3]]]
+            workItemsByEpicSeries.data.map((point) => point.workItems || point.workItem),
+            [[workItems[0], workItems[1]], [workItems[2]], [workItems[3]], ...workItems.map((wi) => wi)]
           );
         });
 
         test("should render the tooltip for point", async () => {
           const props = {
-            ...propsFixture,
+            ...propsFixtureForDetailView,
             workItems: [
               {
                 name: "Defect Lead Time/ Cycle Time Trends",
@@ -308,16 +309,13 @@ describe("WorkItemsEpicEffortChart", () => {
           };
           const [actual] = await renderedTooltipConfig(
             <WorkItemsEpicEffortChart {...props} />,
-            (points) => [points[0]],
+            (points) => [points[1]],
             0
           );
 
           expect(actual).toMatchObject({
-            header: `Quality Trends`,
-            body: [
-              [`Effort`, `1.5 Dev-Days`],
-              [`Cards`, `2`],
-            ],
+            header: `Defect Lead Time/ Cycle Time Trends`,
+            body: [["Effort", "0.5 Dev-Days"]],
           });
         });
       });
