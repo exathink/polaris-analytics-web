@@ -6,7 +6,7 @@ import {Colors} from "../../config";
 
 require("highcharts/modules/treemap")(Highcharts);
 
-const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "white"};
+const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#f2f3f6"};
 const DEFAULT_EFFORT = 0.2;
 const TEXT_LIMIT = 37;
 
