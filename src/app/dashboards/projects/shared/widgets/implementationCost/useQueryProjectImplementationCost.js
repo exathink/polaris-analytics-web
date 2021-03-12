@@ -43,3 +43,54 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
     }
   )
 }
+
+export function useQueryImplementationCostTable({instanceKey, days, referenceString}) {
+  return useQuery(
+    gql`
+      query getProjectImplementationCost(
+        $projectKey: String!
+        $days: Int
+        $referenceString: String
+      ) {
+        project(key: $projectKey, referenceString: $referenceString) {
+          id
+          workItems(
+            interfaces: [ImplementationCost, EpicNodeRef, WorkItemProgress]
+            includeEpics: true
+            activeWithinDays: $days
+          ) {
+            edges {
+              node {
+                id
+                displayId
+                name
+                key
+                workItemType
+                epicName
+                epicKey
+                effort
+                duration
+                authorCount
+                budget
+                startDate
+                endDate
+                closed
+                lastUpdate
+                elapsed
+              }
+            }
+          }
+        }
+      }
+    `,
+    {
+      service: analytics_service,
+      variables: {
+        projectKey: instanceKey,
+        days: days,
+        referenceString: referenceString,
+      },
+      errorPolicy: "all",
+    }
+  );
+}
