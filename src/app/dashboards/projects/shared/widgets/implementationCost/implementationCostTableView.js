@@ -134,7 +134,7 @@ function getTransformedData(workItems, intl) {
   const workItemsByEpic = buildIndex(workItems, (wi) => wi.epicKey || "Uncategorized");
 
   return Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
-    const epicWorkItem = transformWorkItem(workItemsData.get(epicKey));
+    const epicWorkItem = transformWorkItem(workItemsData.get(epicKey) || workItemsData.get("Uncategorized"));
 
     const epicChildItems = epicWorkItems.map(transformWorkItem);
 
