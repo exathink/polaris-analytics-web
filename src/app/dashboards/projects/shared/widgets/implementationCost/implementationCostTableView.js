@@ -11,7 +11,7 @@ export function useImplementationCostTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "10%",
+      width: "12%",
     },
     {
       title: "Title",
@@ -81,32 +81,19 @@ export function useImplementationCostTableColumns() {
 
   return columns;
 }
+function getEpicKey(epicKey, workItemsData) {
+  if (epicKey == null || workItemsData.get(epicKey) == null) {
+    return null;
+  }
+  return epicKey;
+}
 
-function getTransformedData(workItems, intl) {
-  const transformWorkItem = (x) => {
-    if (x === undefined) {
-      debugger;
-    }
-    return {
-      key: x.key,
-      name: x.displayId,
-      title: x.name,
-      cards: 1,
-      type: x.workItemType,
-      budget: x.budget,
-      totalEffort: intl.formatNumber(x.effort, {maximumFractionDigits: 2}),
-      totalContributors: x.authorCount,
-      startDate: formatDateTime(intl, x.startDate),
-      endDate: formatDateTime(intl, x.endDate),
-      lastUpdate: formatDateTime(intl, x.lastUpdate),
-      elapsed: intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}),
-    };
-  };
-
-  const kvArr = workItems
+function getWorkItemsMap(workItems) {
+  const data = workItems
     .map((x) => [x.key, x])
     .concat([
       [
+        // add one more item as uncategorized in the domain data to represent Uncategorized category
         "Uncategorized",
         {
           id: "Uncategorized",
@@ -129,13 +116,32 @@ function getTransformedData(workItems, intl) {
       ],
     ]);
 
-  const workItemsData = new Map(kvArr);
+  return new Map(data);
+}
 
-  const workItemsByEpic = buildIndex(workItems, (wi) => wi.epicKey || "Uncategorized");
+function getTransformedData(workItems, intl) {
+  const transformWorkItem = (x) => {
+    return {
+      key: x.key,
+      name: x.displayId,
+      title: x.name,
+      cards: 1,
+      type: x.workItemType,
+      budget: x.budget,
+      totalEffort: intl.formatNumber(x.effort, {maximumFractionDigits: 2}),
+      totalContributors: x.authorCount,
+      startDate: formatDateTime(intl, x.startDate),
+      endDate: formatDateTime(intl, x.endDate),
+      lastUpdate: formatDateTime(intl, x.lastUpdate),
+      elapsed: intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}),
+    };
+  };
+
+  const workItemsMap = getWorkItemsMap(workItems);
+  const workItemsByEpic = buildIndex(workItems, (wi) => getEpicKey(wi.epicKey, workItemsMap) || "Uncategorized");
 
   return Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
-    const epicWorkItem = transformWorkItem(workItemsData.get(epicKey) || workItemsData.get("Uncategorized"));
-
+    const epicWorkItem = transformWorkItem(workItemsMap.get(epicKey));
     const epicChildItems = epicWorkItems.map(transformWorkItem);
 
     return {
