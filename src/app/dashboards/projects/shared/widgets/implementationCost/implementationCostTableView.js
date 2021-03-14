@@ -17,7 +17,7 @@ export function useImplementationCostTableColumns() {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      width: "25%",
+      width: "20%",
     },
     {
       title: "Type",
@@ -138,7 +138,8 @@ function getTransformedData(workItems, intl) {
   };
 
   const workItemsMap = getWorkItemsMap(workItems);
-  const workItemsByEpic = buildIndex(workItems, (wi) => getEpicKey(wi.epicKey, workItemsMap) || "Uncategorized");
+  const nonEpicWorkItems = workItems.filter(x => x.workItemType !== "epic");
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (wi) => getEpicKey(wi.epicKey, workItemsMap) || "Uncategorized");
 
   return Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
     const epicWorkItem = transformWorkItem(workItemsMap.get(epicKey));
