@@ -1,11 +1,33 @@
-import {Table} from "antd";
+import {InputNumber, Table} from "antd";
 import React from "react";
 import {buildIndex} from "../../../../../helpers/utility";
 import {formatDateTime} from "../../../../../i18n/utils";
 import styles from "./implementationCost.css";
 
+const UncategorizedKey = "Uncategorized";
+const UncategorizedEpic = {
+  id: UncategorizedKey,
+  displayId: UncategorizedKey,
+  name: UncategorizedKey,
+  key: UncategorizedKey,
+  workItemType: "epic",
+  epicName: UncategorizedKey,
+  epicKey: UncategorizedKey,
+  effort: null,
+  duration: null,
+  authorCount: null,
+  budget: null,
+  startDate: null,
+  endDate: null,
+  closed: false,
+  lastUpdate: null,
+  elapsed: null,
+};
+
 export function useImplementationCostTableColumns() {
   // const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
+  const [value, setValue] = React.useState();
+
   const columns = [
     {
       title: "Name",
@@ -39,6 +61,7 @@ export function useImplementationCostTableColumns() {
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
+          render: () => <InputNumber min={0} max={Infinity} value={value} onChange={setValue} type="number" />,
         },
         {
           title: "Actual",
@@ -81,45 +104,18 @@ export function useImplementationCostTableColumns() {
 
   return columns;
 }
-function getEpicKey(epicKey, workItemsData) {
-  if (epicKey == null || workItemsData.get(epicKey) == null) {
+function getEpicKey(epicKey, epicWorkItemsMap) {
+  if (epicKey == null || epicWorkItemsMap.get(epicKey) == null) {
     return null;
   }
   return epicKey;
 }
 
-function getWorkItemsMap(workItems) {
-  const data = workItems
-    .map((x) => [x.key, x])
-    .concat([
-      [
-        // add one more item as uncategorized in the domain data to represent Uncategorized category
-        "Uncategorized",
-        {
-          id: "Uncategorized",
-          displayId: "Uncategorized",
-          name: "Uncategorized",
-          key: "Uncategorized",
-          workItemType: "epic",
-          epicName: "Uncategorized",
-          epicKey: "Uncategorized",
-          effort: null,
-          duration: null,
-          authorCount: null,
-          budget: null,
-          startDate: null,
-          endDate: null,
-          closed: false,
-          lastUpdate: null,
-          elapsed: null,
-        },
-      ],
-    ]);
-
-  return new Map(data);
+function getEpicWorkItemsMap(epicWorkItems) {
+  return new Map(epicWorkItems.map((x) => [x.key, x]));
 }
 
-function getTransformedData(workItems, intl) {
+function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
   const transformWorkItem = (x) => {
     return {
       key: x.key,
@@ -137,12 +133,13 @@ function getTransformedData(workItems, intl) {
     };
   };
 
-  const workItemsMap = getWorkItemsMap(workItems);
-  const nonEpicWorkItems = workItems.filter(x => x.workItemType !== "epic");
-  const workItemsByEpic = buildIndex(nonEpicWorkItems, (wi) => getEpicKey(wi.epicKey, workItemsMap) || "Uncategorized");
+  const workItemsByEpic = buildIndex(
+    nonEpicWorkItems,
+    (wi) => getEpicKey(wi.epicKey, epicWorkItemsMap) || UncategorizedKey
+  );
 
   return Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
-    const epicWorkItem = transformWorkItem(workItemsMap.get(epicKey));
+    const epicWorkItem = transformWorkItem(epicWorkItemsMap.get(epicKey));
     const epicChildItems = epicWorkItems.map(transformWorkItem);
 
     return {
@@ -153,8 +150,14 @@ function getTransformedData(workItems, intl) {
   });
 }
 export function ImplementationCostTableView({workItems, days, view, intl, loading}) {
-  const columns = useImplementationCostTableColumns();
-  const dataSource = getTransformedData(workItems, intl);
+  const [epicWorkItems, nonEpicWorkItems] = [
+    workItems.filter((x) => x.workItemType === "epic").concat(UncategorizedEpic),
+    workItems.filter((x) => x.workItemType !== "epic"),
+  ];
+  const epicWorkItemsMap = getEpicWorkItemsMap(epicWorkItems);
+
+  const columns = useImplementationCostTableColumns(workItems);
+  const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   return (
     <div className={styles.implementationCostTableWrapper}>
