@@ -24,9 +24,19 @@ const UncategorizedEpic = {
   elapsed: null,
 };
 
-export function useImplementationCostTableColumns() {
+export function useImplementationCostTableColumns(workItems) {
   // const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
-  const [value, setValue] = React.useState();
+
+  const [budgetRecords, setBudgetRecords] = React.useState(() => {
+    const initialState = workItems.reduce((acc, item) => {
+      acc[item.key] = item.budget || 0;
+      return acc;
+    }, {});
+    return initialState;
+  });
+  function setValueForBudgetRecord(key, value) {
+    setBudgetRecords({...budgetRecords, [key]: value});
+  }
 
   const columns = [
     {
@@ -61,7 +71,18 @@ export function useImplementationCostTableColumns() {
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
-          render: () => <InputNumber min={0} max={Infinity} value={value} onChange={setValue} type="number" />,
+          render: (_text, record) => {
+            return (
+              <InputNumber
+                key={record.key}
+                min={0}
+                max={Infinity}
+                value={budgetRecords[record.key]}
+                onChange={(value) => setValueForBudgetRecord(record.key, value)}
+                type="number"
+              />
+            );
+          },
         },
         {
           title: "Actual",
@@ -156,7 +177,7 @@ export function ImplementationCostTableView({workItems, days, view, intl, loadin
   ];
   const epicWorkItemsMap = getEpicWorkItemsMap(epicWorkItems);
 
-  const columns = useImplementationCostTableColumns(workItems);
+  const columns = useImplementationCostTableColumns(workItems.concat(UncategorizedEpic));
   const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   return (
