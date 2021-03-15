@@ -2,7 +2,6 @@ import React from "react";
 
 import {useQueryImplementationCostTable} from "./useQueryProjectImplementationCost";
 import {getReferenceString} from "../../../../../helpers/utility";
-import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 import {ImplementationCostTableView} from "./implementationCostTableView";
@@ -17,26 +16,29 @@ export const ImplementationCostTableWidget = (
     intl
   }
 ) => {
-  const {loading, error, data} = useQueryImplementationCostTable({
+  const [commitWithinDays, setCommitWithinDays] = React.useState(days);
+  const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
-    days: days,
+    days: commitWithinDays,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
-  if (loading) return <Loading/>;
+
   if (error) {
     logGraphQlError('ImplementationCostTableWidget.useQueryImplementationCostTable', error);
     return null;
   }
 
-  const workItems = data.project.workItems.edges.map(edge => edge.node);
+  const queryData =  (data || previousData);
+  const workItems = queryData ? queryData.project.workItems.edges.map(edge => edge.node) : [];
 
   return (
     <ImplementationCostTableView
-      loading={loading}
+      instanceKey={instanceKey}
       workItems={workItems}
-      days={days}
-      view={view}
       intl={intl}
+      commitWithinDays={commitWithinDays}
+      setCommitWithinDays={setCommitWithinDays}
+      loading={loading}
       />
   )
 }

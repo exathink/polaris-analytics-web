@@ -1,57 +1,55 @@
-import { useQuery, gql } from "@apollo/client";
+import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
 export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, referenceString}) {
   return useQuery(
     gql`
-        query getProjectImplementationCost(
-            $projectKey: String!, 
-            $activeOnly: Boolean,
-            $specsOnly: Boolean,
-            $days: Int,
-            $referenceString: String) {
-            project(key: $projectKey, referenceString: $referenceString) {
-                id
-                workItemDeliveryCycles(
-                    interfaces: [ImplementationCost, EpicNodeRef],
-                    activeOnly: $activeOnly, 
-                    specsOnly: $specsOnly,
-                    closedWithinDays: $days
-                ) {
-                    edges {
-                        node {
-                            name
-                            key
-                            epicName
-                            epicKey
-                            effort
-                        }
-                    }
-                }
+      query getProjectImplementationCost(
+        $projectKey: String!
+        $activeOnly: Boolean
+        $specsOnly: Boolean
+        $days: Int
+        $referenceString: String
+      ) {
+        project(key: $projectKey, referenceString: $referenceString) {
+          id
+          workItemDeliveryCycles(
+            interfaces: [ImplementationCost, EpicNodeRef]
+            activeOnly: $activeOnly
+            specsOnly: $specsOnly
+            closedWithinDays: $days
+          ) {
+            edges {
+              node {
+                name
+                key
+                epicName
+                epicKey
+                effort
+              }
             }
-        }`,
+          }
+        }
+      }
+    `,
     {
       service: analytics_service,
       variables: {
         projectKey: instanceKey,
         activeOnly: activeOnly,
-        specsOnly : specsOnly,
+        specsOnly: specsOnly,
         days: days,
-        referenceString: referenceString
+        referenceString: referenceString,
       },
-      errorPolicy: "all"
+      errorPolicy: "all",
     }
-  )
+  );
 }
 
 export function useQueryImplementationCostTable({instanceKey, days, referenceString}) {
   return useQuery(
     gql`
-      query getProjectImplementationCost(
-        $projectKey: String!
-        $days: Int
-        $referenceString: String
-      ) {
+      query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceString: String) {
         project(key: $projectKey, referenceString: $referenceString) {
           id
           workItems(
@@ -93,4 +91,26 @@ export function useQueryImplementationCostTable({instanceKey, days, referenceStr
       errorPolicy: "all",
     }
   );
+}
+
+//  [{workItemKey: $workItemKey, budget: $budget}]
+export const UPDATE_PROJECT_WORKITEMS = gql`
+  mutation updateProjectWorkItems($projectKey: String!, $workItemsInfo: [WorkItemsInfo]!) {
+    updateProjectWorkItems(
+      updateProjectWorkItemsInput: {
+        projectKey: $projectKey
+        workItemsInfo: $workItemsInfo
+      }
+    ) {
+      updateStatus {
+        workItemsKeys
+        success
+        message
+        exception
+      }
+    }
+  }
+`;
+export function useUpdateProjectWorkItems({onCompleted, onError}) {
+  return useMutation(UPDATE_PROJECT_WORKITEMS, {onCompleted, onError});
 }

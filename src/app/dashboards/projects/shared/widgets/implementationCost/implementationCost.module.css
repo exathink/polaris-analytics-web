@@ -1,0 +1,41 @@
+.implementationCostTableWrapper {
+  background-color: white;
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 10px 1fr 1fr 10px;
+  grid-template-areas:
+    ". . message ."
+    ". slider slider ."
+    ". tableContent tableContent .";
+  gap: 0.5rem;
+}
+
+.messageNotification{
+    grid-area: message;
+    min-height: 3rem;
+    justify-self: flex-end;
+    display: flex;
+    align-items: flex-end;
+}
+
+.implementationCostTable{
+    grid-area: tableContent;
+}
+
+.implementationSave{
+  margin-right: 10px;
+}
+
+.implementationCostSlider{
+  grid-area: slider;
+  justify-self: center;
+  min-width: 60%;
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rangeSliderWrapper{
+  width: 90%;
+}
