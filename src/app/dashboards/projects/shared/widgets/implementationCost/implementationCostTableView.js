@@ -72,6 +72,9 @@ export function useImplementationCostTableColumns(workItems) {
           dataIndex: "budget",
           key: "budget",
           render: (_text, record) => {
+            if (record.key === UncategorizedKey) {
+              return null;
+            }
             return (
               <InputNumber
                 key={record.key}
