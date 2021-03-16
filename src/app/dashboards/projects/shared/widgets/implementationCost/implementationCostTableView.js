@@ -1,12 +1,13 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
-import {buildIndex} from "../../../../../helpers/utility";
+import {buildIndex, diff_in_dates} from "../../../../../helpers/utility";
 import {formatDateTime} from "../../../../../i18n/utils";
 import isEqual from "lodash/isEqual";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
+import {useSearch} from "../../../../../components/tables/hooks";
 
 const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
@@ -29,7 +30,7 @@ const UncategorizedEpic = {
 };
 
 export function useImplementationCostTableColumns([budgetRecords, setBudgetRecords]) {
-  // const [nameSearchState, aliasSearchState] = [useSearch("name"), useSearch("alias")];
+  const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     setBudgetRecords({
@@ -44,12 +45,16 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
       dataIndex: "name",
       key: "name",
       width: "12%",
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      ...nameSearchState,
     },
     {
       title: "Title",
       dataIndex: "title",
       key: "title",
       width: "20%",
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      ...titleSearchState,
     },
     {
       title: "Type",
@@ -62,6 +67,7 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
       dataIndex: "cards",
       key: "cards",
       width: "5%",
+      sorter: (a, b) => a.cards - b.cards,
     },
 
     {
@@ -71,6 +77,7 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
+          sorter: (a, b) => a.budget - b.budget,
           width: "10%",
           render: (_text, record) => {
             if (record.key === UncategorizedKey) {
@@ -92,12 +99,14 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
           title: "Actual",
           dataIndex: "totalEffort",
           key: "totalEffort",
+          sorter: (a, b) => a.totalEffort - b.totalEffort,
           width: "7%",
         },
         {
           title: "Contributors",
           dataIndex: "totalContributors",
           key: "totalContributors",
+          sorter: (a, b) => a.totalContributors - b.totalContributors,
           width: "9%",
         },
       ],
@@ -108,22 +117,26 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
         {
           title: "Started",
           dataIndex: "startDate",
-          key: "started",
+          key: "startDate",
+          sorter: (a, b) => diff_in_dates(a.startDate, b.startDate),
         },
         {
           title: "Ended",
           dataIndex: "endDate",
-          key: "started",
+          key: "endDate",
+          sorter: (a, b) => diff_in_dates(a.endDate, b.endDate),
         },
         {
-          title: "Last Update",
+          title: "Last Commit",
           dataIndex: "lastUpdate",
           key: "lastUpdate",
+          sorter: (a, b) => diff_in_dates(a.lastUpdate, b.lastUpdate),
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
+          sorter: (a, b) => a.elapsed - b.elapsed,
         },
       ],
     },
@@ -165,7 +178,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     (wi) => getEpicKey(wi.epicKey, epicWorkItemsMap) || UncategorizedKey
   );
 
-  return Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
+  const allEpics = Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
     const epicWorkItem = transformWorkItem(epicWorkItemsMap.get(epicKey));
     const epicChildItems = epicWorkItems.map(transformWorkItem);
 
@@ -175,6 +188,11 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       children: epicChildItems,
     };
   });
+
+  const UncatEpic = allEpics.filter((x) => x.key === UncategorizedKey);
+  const restEpics = allEpics.filter((x) => x.key !== UncategorizedKey);
+
+  return [...UncatEpic, ...restEpics];
 }
 export function ImplementationCostTableView({
   instanceKey,
