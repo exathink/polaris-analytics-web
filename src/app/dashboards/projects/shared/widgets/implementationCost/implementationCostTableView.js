@@ -199,8 +199,8 @@ export function ImplementationCostTableView({
   instanceKey,
   workItems,
   intl,
-  commitWithinDays,
-  setCommitWithinDays,
+  activeWithinDays,
+  setActiveWithinDays,
   loading,
 }) {
   const [epicWorkItems, nonEpicWorkItems] = [
@@ -314,8 +314,8 @@ export function ImplementationCostTableView({
         <div className={styles.rangeSliderWrapper}>
           <DaysRangeSlider
             title=""
-            initialDays={commitWithinDays}
-            setDaysRange={setCommitWithinDays}
+            initialDays={activeWithinDays}
+            setDaysRange={setActiveWithinDays}
             range={ONE_YEAR}
           />
         </div>

@@ -16,10 +16,10 @@ export const ImplementationCostTableWidget = (
     intl
   }
 ) => {
-  const [commitWithinDays, setCommitWithinDays] = React.useState(days);
+  const [activeWithinDays, setActiveWithinDays] = React.useState(days);
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
-    days: commitWithinDays,
+    days: activeWithinDays,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
 
@@ -36,8 +36,8 @@ export const ImplementationCostTableWidget = (
       instanceKey={instanceKey}
       workItems={workItems}
       intl={intl}
-      commitWithinDays={commitWithinDays}
-      setCommitWithinDays={setCommitWithinDays}
+      activeWithinDays={activeWithinDays}
+      setActiveWithinDays={setActiveWithinDays}
       loading={loading}
       />
   )
