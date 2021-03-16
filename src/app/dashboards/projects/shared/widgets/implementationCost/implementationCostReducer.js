@@ -20,11 +20,11 @@ export const mode = {
 export function implementationCostReducer(state, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BUDGET_RECORDS: {
-      const isEditingMode = !isEqual(state.budgetRecords, state.initialBudgetRecords);
+      const isEditingMode = !isEqual(action.payload, state.initialBudgetRecords);
       return {
         ...state,
         budgetRecords: action.payload,
-        mode: isEditingMode ? mode.EDITING : state.mode,
+        mode: isEditingMode ? mode.EDITING : mode.INIT,
       };
     }
     case actionTypes.MUTATION_SUCCESS: {
@@ -53,7 +53,8 @@ export function implementationCostReducer(state, action) {
       return {
         ...state,
         budgetRecords: action.payload,
-        initialBudgetRecords: action.payload
+        initialBudgetRecords: action.payload,
+        mode: mode.INIT
       };
     }
     case actionTypes.CLOSE_SUCCESS_MODAL: {
