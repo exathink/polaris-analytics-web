@@ -9,6 +9,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
 
+const mode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -35,7 +36,7 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     setBudgetRecords({
       ...budgetRecords,
-      [key]: {budget: value, mode: value !== initialBudgetValue ? "edit" : "initial"},
+      [key]: {budget: value, mode: value !== initialBudgetValue ? mode.EDIT : mode.INITIAL},
     });
   }
 
@@ -210,7 +211,7 @@ export function ImplementationCostTableView({
 
   const initialBudgetRecords = () => {
     const initialState = workItems.reduce((acc, item) => {
-      acc[item.key] = {budget: item.budget || 0, mode: "initial"};
+      acc[item.key] = {budget: item.budget || 0, mode: mode.INITIAL};
       return acc;
     }, {});
     return initialState;
@@ -252,7 +253,7 @@ export function ImplementationCostTableView({
 
   function handleSaveClick() {
     const workItemsInfoRecords = Object.entries(budgetRecords)
-      .filter(([key, value]) => key !== UncategorizedKey && value.mode === "edit") // only send edited records for save
+      .filter(([key, value]) => key !== UncategorizedKey && value.mode === mode.EDIT) // only send edited records for save
       .map(([key, value]) => ({workItemKey: key, budget: value.budget}));
 
     // call mutation on save button click
@@ -325,7 +326,6 @@ export function ImplementationCostTableView({
           loading={loading}
           size="small"
           pagination={false}
-          // childrenColumnName="contributorAliasesInfo"
           columns={columns}
           dataSource={dataSource}
           scroll={{y: "60vh"}}
