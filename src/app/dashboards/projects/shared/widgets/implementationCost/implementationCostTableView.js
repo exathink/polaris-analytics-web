@@ -166,9 +166,9 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       budget: x.budget,
       totalEffort: intl.formatNumber(x.effort, {maximumFractionDigits: 2}),
       totalContributors: x.authorCount,
-      startDate: formatDateTime(intl, x.startDate),
-      endDate: formatDateTime(intl, x.endDate),
-      lastUpdate: formatDateTime(intl, x.lastUpdate),
+      startDate: x.startDate ? formatDateTime(intl, x.startDate) : "",
+      endDate: x.endDate ? formatDateTime(intl, x.endDate) : "",
+      lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate): "",
       elapsed: intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}),
     };
   };
