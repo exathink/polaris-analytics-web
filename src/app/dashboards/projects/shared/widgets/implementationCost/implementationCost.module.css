@@ -31,7 +31,7 @@
   grid-area: slider;
   justify-self: center;
   min-width: 60%;
-  min-height: 6rem;
+  min-height: 5rem;
   display: flex;
   align-items: flex-start;
   justify-content: center;
