@@ -29,7 +29,7 @@ export const ProjectImplementationCostDetailDashboard = ({
             <div style={{minWidth: "300px"}}>
               <Flex align={"center"}>
                 <Box pr={2} w={"100%"}>
-                  <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+                  <WorkItemScopeSelector display={['Effort', 'Volume']} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
                 </Box>
               </Flex>
             </div>
