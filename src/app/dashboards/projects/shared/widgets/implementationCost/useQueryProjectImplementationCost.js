@@ -56,6 +56,7 @@ export function useQueryImplementationCostTable({instanceKey, days, referenceStr
             interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
             includeEpics: true
             activeWithinDays: $days
+            includeSubtasks: false
           ) {
             edges {
               node {
