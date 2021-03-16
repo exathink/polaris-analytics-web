@@ -25,7 +25,7 @@ export const Topics = {
   value: {
     name: 'value',
     display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
-    icon: 'ion-arrow-graph-up-right'
+    icon: 'ion-earth'
   },
   contributors: {
     name: 'contributors',
