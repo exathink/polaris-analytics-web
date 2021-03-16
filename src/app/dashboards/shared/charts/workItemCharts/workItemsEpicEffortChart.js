@@ -9,6 +9,8 @@ require("highcharts/modules/treemap")(Highcharts);
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#f2f3f6"};
 const DEFAULT_EFFORT = 0.2;
 const TEXT_LIMIT = 37;
+const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
+        '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
 function getHierarchySeries(workItems, specsOnly, intl) {
   const workItemPoints = workItems.map((w) => {
@@ -76,7 +78,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
             name: epicName,
             key: workItemsByEpic[epicName][0].epicKey,
           },
-          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : Highcharts.getOptions().colors[i],
+          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : colors[i % colors.length-1],
           workItems: workItemsByEpic[epicName],
         }))
         .concat(workItemPoints),
