@@ -53,7 +53,7 @@ export function useQueryImplementationCostTable({instanceKey, days, referenceStr
         project(key: $projectKey, referenceString: $referenceString) {
           id
           workItems(
-            interfaces: [ImplementationCost, EpicNodeRef, WorkItemProgress]
+            interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
             includeEpics: true
             activeWithinDays: $days
           ) {
@@ -96,12 +96,7 @@ export function useQueryImplementationCostTable({instanceKey, days, referenceStr
 //  [{workItemKey: $workItemKey, budget: $budget}]
 export const UPDATE_PROJECT_WORKITEMS = gql`
   mutation updateProjectWorkItems($projectKey: String!, $workItemsInfo: [WorkItemsInfo]!) {
-    updateProjectWorkItems(
-      updateProjectWorkItemsInput: {
-        projectKey: $projectKey
-        workItemsInfo: $workItemsInfo
-      }
-    ) {
+    updateProjectWorkItems(updateProjectWorkItemsInput: {projectKey: $projectKey, workItemsInfo: $workItemsInfo}) {
       updateStatus {
         workItemsKeys
         success
