@@ -89,7 +89,7 @@ export function useImplementationCostTableColumns([budgetRecords, setBudgetRecor
                 key={record.key}
                 min={0}
                 max={Infinity}
-                value={budgetRecords && budgetRecords[record.key] ? budgetRecords[record.key].budget : ""}
+                value={budgetRecords[record.key] != null ? budgetRecords[record.key].budget : ""}
                 onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
                 type="number"
               />
@@ -169,7 +169,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       totalContributors: x.authorCount,
       startDate: x.startDate ? formatDateTime(intl, x.startDate) : "",
       endDate: x.endDate ? formatDateTime(intl, x.endDate) : "",
-      lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate): "",
+      lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
       elapsed: intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}),
     };
   };
@@ -203,14 +203,17 @@ export function ImplementationCostTableView({
   setActiveWithinDays,
   loading,
 }) {
+  // add UncategorizedEpic
+  const newWorkItems = workItems.concat(UncategorizedEpic);
+
   const [epicWorkItems, nonEpicWorkItems] = [
-    workItems.filter((x) => x.workItemType === "epic").concat(UncategorizedEpic),
-    workItems.filter((x) => x.workItemType !== "epic"),
+    newWorkItems.filter((x) => x.workItemType === "epic"),
+    newWorkItems.filter((x) => x.workItemType !== "epic"),
   ];
   const epicWorkItemsMap = getEpicWorkItemsMap(epicWorkItems);
 
   const initialBudgetRecords = () => {
-    const initialState = workItems.reduce((acc, item) => {
+    const initialState = newWorkItems.reduce((acc, item) => {
       acc[item.key] = {budget: item.budget || 0, mode: mode.INITIAL};
       return acc;
     }, {});
@@ -323,6 +326,12 @@ export function ImplementationCostTableView({
       </div>
       <div className={styles.implementationCostTable}>
         <Table
+          rowClassName={(record, index) => {
+            if (budgetRecords[record.key] == null) {
+              return "";
+            }
+            return budgetRecords[record.key].mode === mode.EDIT ? "ant-table-row-selected" : "";
+          }}
           loading={loading}
           size="small"
           pagination={false}
