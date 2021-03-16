@@ -309,6 +309,16 @@ export function ImplementationCostTableView({
     }
   }
 
+  function getEditRecordsTitle() {
+    const editedRecords = Object.entries(budgetRecords).filter(
+      ([key, value]) => key !== UncategorizedKey && value.mode === mode.EDIT
+    );
+
+    if (editedRecords.length === 0) {
+      return null;
+    }
+    return <span>Budget Edited for Cards: {editedRecords.length}</span>;
+  }
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
@@ -324,6 +334,7 @@ export function ImplementationCostTableView({
         </div>
         <div>Days</div>
       </div>
+      <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <Table
           rowClassName={(record, index) => {
