@@ -54,7 +54,6 @@ export function implementationCostReducer(state, action) {
         ...state,
         budgetRecords: action.payload,
         initialBudgetRecords: action.payload,
-        mode: mode.INIT
       };
     }
     case actionTypes.CLOSE_SUCCESS_MODAL: {
