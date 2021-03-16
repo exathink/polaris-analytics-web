@@ -18,7 +18,8 @@ const JiraConnectorInstructions = ({part}) => (
 
       <ol>
         <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps -> Find New Apps.
-          Alternatively if you are on a newer version of the Jira UI, you can also navigate to the Find New Apps view on the Atlassia Marketplace
+          Alternatively if you are on a newer version of the Jira UI, you can also navigate to the Find New Apps view on the
+          Atlassian Marketplace
           from the top level Apps menu.
         </li>
         <li>
