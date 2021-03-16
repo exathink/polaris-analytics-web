@@ -2,14 +2,14 @@ import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
 import {buildIndex, diff_in_dates} from "../../../../../helpers/utility";
 import {formatDateTime} from "../../../../../i18n/utils";
-import isEqual from "lodash/isEqual";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
+import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
 
-const mode = {INITIAL: "INITIAL", EDIT: "EDIT"};
+const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -30,13 +30,16 @@ const UncategorizedEpic = {
   elapsed: null,
 };
 
-export function useImplementationCostTableColumns([budgetRecords, setBudgetRecords]) {
+export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
   const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
-    setBudgetRecords({
-      ...budgetRecords,
-      [key]: {budget: value, mode: value !== initialBudgetValue ? mode.EDIT : mode.INITIAL},
+    dispatch({
+      type: actionTypes.UPDATE_BUDGET_RECORDS,
+      payload: {
+        ...budgetRecords,
+        [key]: {budget: value, mode: value !== initialBudgetValue ? recordMode.EDIT : recordMode.INITIAL},
+      },
     });
   }
 
@@ -205,6 +208,23 @@ export function ImplementationCostTableView({
 }) {
   // add UncategorizedEpic
   const newWorkItems = workItems.concat(UncategorizedEpic);
+  const initialBudgetRecords = () => {
+    const initialState = newWorkItems.reduce((acc, item) => {
+      acc[item.key] = {budget: item.budget || 0, mode: recordMode.INITIAL};
+      return acc;
+    }, {});
+    return initialState;
+  };
+
+  const initialState = {
+    budgetRecords: initialBudgetRecords(),
+    initialBudgetRecords: initialBudgetRecords(),
+    mode: mode.INIT,
+    errorMessage: "",
+    successMessage: "",
+  };
+
+  const [state, dispatch] = React.useReducer(implementationCostReducer, initialState);
 
   const [epicWorkItems, nonEpicWorkItems] = [
     newWorkItems.filter((x) => x.workItemType === "epic"),
@@ -212,25 +232,12 @@ export function ImplementationCostTableView({
   ];
   const epicWorkItemsMap = getEpicWorkItemsMap(epicWorkItems);
 
-  const initialBudgetRecords = () => {
-    const initialState = newWorkItems.reduce((acc, item) => {
-      acc[item.key] = {budget: item.budget || 0, mode: mode.INITIAL};
-      return acc;
-    }, {});
-    return initialState;
-  };
-  const [budgetRecords, setBudgetRecords] = React.useState(initialBudgetRecords);
-  const [[errorMessage, setErrorMessage], [successMessage, setSuccessMessage]] = [
-    React.useState(""),
-    React.useState(""),
-  ];
-
   React.useEffect(() => {
     // reset state when workItems are changing
-    setBudgetRecords(initialBudgetRecords());
+    dispatch({type: actionTypes.UPDATE_DEFAULTS, payload: initialBudgetRecords()});
   }, [workItems]);
 
-  const columns = useImplementationCostTableColumns([budgetRecords, setBudgetRecords]);
+  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch]);
   const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   // mutation to update project analysis periods
@@ -241,22 +248,22 @@ export function ImplementationCostTableView({
       },
     }) => {
       if (success) {
-        setSuccessMessage("Updated Successfully.");
+        dispatch({type: actionTypes.MUTATION_SUCCESS, payload: "Updated Successfully."});
         client.resetStore();
       } else {
         logGraphQlError("ImplementationCostTableView.useUpdateProjectWorkItems", message);
-        setErrorMessage(message);
+        dispatch({type: actionTypes.MUTATION_FAILURE, payload: message});
       }
     },
     onError: (error) => {
       logGraphQlError("ImplementationCostTableView.useUpdateProjectWorkItems", error);
-      setErrorMessage(error);
+      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error});
     },
   });
 
   function handleSaveClick() {
-    const workItemsInfoRecords = Object.entries(budgetRecords)
-      .filter(([key, value]) => key !== UncategorizedKey && value.mode === mode.EDIT) // only send edited records for save
+    const workItemsInfoRecords = Object.entries(state.budgetRecords)
+      .filter(([key, value]) => key !== UncategorizedKey && value.mode === recordMode.EDIT) // only send edited records for save
       .map(([key, value]) => ({workItemKey: key, budget: value.budget}));
 
     // call mutation on save button click
@@ -269,7 +276,7 @@ export function ImplementationCostTableView({
   }
 
   function handleCancelClick() {
-    setBudgetRecords(initialBudgetRecords());
+    dispatch({type: actionTypes.RESET});
   }
 
   function getButtonsAndNotifications() {
@@ -280,16 +287,23 @@ export function ImplementationCostTableView({
         </Button>
       );
     }
-    if (errorMessage) {
-      return <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage("")} />;
+    if (state.mode === mode.ERROR) {
+      return <Alert message={state.errorMessage} type="error" showIcon closable onClose={() => dispatch({type: actionTypes.CLOSE_ERROR_MODAL})} />;
     }
 
-    if (successMessage) {
-      return <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage("")} />;
+    if (state.mode === mode.SUCCESS) {
+      return (
+        <Alert
+          message={state.successMessage}
+          type="success"
+          showIcon
+          closable
+          onClose={() => dispatch({type: actionTypes.CLOSE_SUCCESS_MODAL})}
+        />
+      );
     }
 
-    const isEditingMode = !isEqual(budgetRecords, initialBudgetRecords());
-    if (isEditingMode) {
+    if (state.mode === mode.EDITING) {
       return (
         <>
           <Button
@@ -310,8 +324,8 @@ export function ImplementationCostTableView({
   }
 
   function getEditRecordsTitle() {
-    const editedRecords = Object.entries(budgetRecords).filter(
-      ([key, value]) => key !== UncategorizedKey && value.mode === mode.EDIT
+    const editedRecords = Object.entries(state.budgetRecords).filter(
+      ([key, value]) => key !== UncategorizedKey && value.mode === recordMode.EDIT
     );
 
     if (editedRecords.length === 0) {
@@ -338,10 +352,10 @@ export function ImplementationCostTableView({
       <div className={styles.implementationCostTable}>
         <Table
           rowClassName={(record, index) => {
-            if (budgetRecords[record.key] == null) {
+            if (state.budgetRecords[record.key] == null) {
               return "";
             }
-            return budgetRecords[record.key].mode === mode.EDIT ? "ant-table-row-selected" : "";
+            return state.budgetRecords[record.key].mode === recordMode.EDIT ? "ant-table-row-selected" : "";
           }}
           loading={loading}
           size="small"
