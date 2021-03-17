@@ -19,15 +19,6 @@ const UncategorizedEpic = {
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
-  effort: null,
-  duration: null,
-  authorCount: null,
-  budget: null,
-  startDate: null,
-  endDate: null,
-  closed: false,
-  lastUpdate: null,
-  elapsed: null,
 };
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
@@ -167,13 +158,13 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       title: x.name,
       cards: 1,
       type: x.workItemType,
-      budget: x.budget,
-      totalEffort: intl.formatNumber(x.effort, {maximumFractionDigits: 2}),
+      budget: x.budget != null ? x.budget : 0,
+      totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
       totalContributors: x.authorCount,
       startDate: x.startDate ? formatDateTime(intl, x.startDate) : "",
       endDate: x.endDate ? formatDateTime(intl, x.endDate) : "",
       lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
-      elapsed: intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}),
+      elapsed: x.elapsed ? intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}) : "",
     };
   };
 
