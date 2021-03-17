@@ -124,13 +124,32 @@ describe("ImplementationCostTableWidget", () => {
     test("it renders nothing and logs the error when there is a network error", async () => {
       renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockNetworkError);
 
+      // before
+      expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
+
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+
+      // after
+      expect(screen.queryByTestId("implementation-cost-table")).not.toBeInTheDocument();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockGraphQlErrors);
 
+      // before
+      expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
+
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+
+      // after
+      expect(screen.queryByTestId("implementation-cost-table")).not.toBeInTheDocument();
     });
   });
+
+  describe('when there are no errors', () => {
+    test('renders widget without any error', () => {
+      renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mocks);
+      expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
+    })
+  })
 });
