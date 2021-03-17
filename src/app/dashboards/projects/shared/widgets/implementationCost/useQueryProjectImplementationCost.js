@@ -46,42 +46,44 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
   );
 }
 
-export function useQueryImplementationCostTable({instanceKey, days, referenceString}) {
-  return useQuery(
-    gql`
-      query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceString: String) {
-        project(key: $projectKey, referenceString: $referenceString) {
+export const GET_PROJECT_IMPLEMENTATION_COST_TABLE = gql`
+query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceString: String) {
+  project(key: $projectKey, referenceString: $referenceString) {
+    id
+    workItems(
+      interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
+      includeEpics: true
+      activeWithinDays: $days
+      includeSubtasks: false
+    ) {
+      edges {
+        node {
           id
-          workItems(
-            interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
-            includeEpics: true
-            activeWithinDays: $days
-            includeSubtasks: false
-          ) {
-            edges {
-              node {
-                id
-                displayId
-                name
-                key
-                workItemType
-                epicName
-                epicKey
-                effort
-                duration
-                authorCount
-                budget
-                startDate
-                endDate
-                closed
-                lastUpdate
-                elapsed
-              }
-            }
-          }
+          displayId
+          name
+          key
+          workItemType
+          epicName
+          epicKey
+          effort
+          duration
+          authorCount
+          budget
+          startDate
+          endDate
+          closed
+          lastUpdate
+          elapsed
         }
       }
-    `,
+    }
+  }
+}
+`;
+
+export function useQueryImplementationCostTable({instanceKey, days, referenceString}) {
+  return useQuery(
+    GET_PROJECT_IMPLEMENTATION_COST_TABLE,
     {
       service: analytics_service,
       variables: {
