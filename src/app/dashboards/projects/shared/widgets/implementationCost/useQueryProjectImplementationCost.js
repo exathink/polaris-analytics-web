@@ -32,8 +32,6 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                 }
             }
           }
-        }
-      }
     `,
     {
       service: analytics_service,
