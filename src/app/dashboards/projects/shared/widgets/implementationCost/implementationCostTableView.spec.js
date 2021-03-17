@@ -32,10 +32,7 @@ const gqlMutationRequest = {
   query: UPDATE_PROJECT_WORKITEMS,
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
-    workItemsInfo: [
-      {workItemKey: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122", budget: 90},
-      {workItemKey: "90f21323-1020-4783-abad-fb672d4a888b", budget: 45},
-    ],
+    workItemsInfo: [{workItemKey: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122", budget: 75}],
   },
 };
 
@@ -47,7 +44,7 @@ const updateWorkItemsMocks = [
         updateProjectWorkItems: {
           updateStatus: {
             success: true,
-            workItemsKeys: ["b3ff1c8a-749c-4c38-9dde-d5a7b2519122", "90f21323-1020-4783-abad-fb672d4a888b"],
+            workItemsKeys: ["b3ff1c8a-749c-4c38-9dde-d5a7b2519122"],
             message: null,
             exception: null,
           },
@@ -152,14 +149,14 @@ describe("ImplementationCostTableView", () => {
 
       fireEvent.click(screen.queryByText(/cancel/i));
 
-     // after
-     expect(screen.queryByText(/save/i)).not.toBeInTheDocument();
-     expect(screen.queryByText(/cancel/i)).not.toBeInTheDocument();
+      // after
+      expect(screen.queryByText(/save/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/cancel/i)).not.toBeInTheDocument();
     });
 
     test("when budget is updated for any record, edited title shows above the table", () => {
       renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
-      // before 
+      // before
       expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
 
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
@@ -168,6 +165,96 @@ describe("ImplementationCostTableView", () => {
 
       // after
       expect(screen.queryByText(/Budget Edited for Cards/i)).toBeInTheDocument();
+    });
+
+    test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
+      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+
+      // change the value of inputNumber, so that save/cancel appears
+      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const budgetTextBox = getByRole("spinbutton");
+      fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/Updated Successfully/i);
+      expect(successElement).toBeInTheDocument();
+    });
+
+    describe("when there are errors", () => {
+      let logGraphQlError;
+      beforeAll(() => {
+        // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
+        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
+      });
+      afterAll(() => {
+        logGraphQlError.mockRestore();
+      });
+
+      const mockNetworkError = [
+        {
+          request: gqlMutationRequest,
+          error: new Error("A network error Occurred"),
+        },
+      ];
+
+      const mockGraphQlErrors = [
+        {
+          request: gqlMutationRequest,
+          result: {
+            errors: [new GraphQLError("A GraphQL Error Occurred")],
+          },
+        },
+      ];
+
+      test("it renders network error message and logs the error when there is a network error", async () => {
+        renderWithProviders(<ImplementationCostTableView {...propsFixture} />, mockNetworkError);
+
+        // change the value of inputNumber, so that save/cancel appears
+        const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+        const budgetTextBox = getByRole("spinbutton");
+        fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+        // before
+        expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+
+        const saveElement = screen.getByText(/save/i);
+        fireEvent.click(saveElement);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        // after
+        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
+      });
+
+      test("it renders graphql error message and logs the error when there is a GraphQl error", async () => {
+        renderWithProviders(<ImplementationCostTableView {...propsFixture} />, mockGraphQlErrors);
+
+        // change the value of inputNumber, so that save/cancel appears
+        const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+        const budgetTextBox = getByRole("spinbutton");
+        fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+        // before
+        expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+
+        const saveElement = screen.getByText(/save/i);
+        fireEvent.click(saveElement);
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
+        // after
+        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+      });
     });
   });
 });

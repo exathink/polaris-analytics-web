@@ -248,7 +248,7 @@ export function ImplementationCostTableView({
     },
     onError: (error) => {
       logGraphQlError("ImplementationCostTableView.useUpdateProjectWorkItems", error);
-      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error});
+      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
     },
   });
 
