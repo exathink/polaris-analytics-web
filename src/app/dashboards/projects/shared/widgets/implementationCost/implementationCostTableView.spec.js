@@ -1,5 +1,5 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {UPDATE_PROJECT_WORKITEMS} from "./useQueryProjectImplementationCost";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
@@ -8,6 +8,20 @@ import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 
 const ImplementationCostTableView = injectIntl(ImplementationCostTableViewWithoutIntl);
+
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // Deprecated
+    removeListener: jest.fn(), // Deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 
 // clear mocks after each test
 afterEach(() => {
@@ -89,7 +103,71 @@ const propsFixture = {
 };
 
 describe("ImplementationCostTableView", () => {
-  describe("when there are no workItems", () => {});
+  describe("when there are no workItems", () => {
+    const emptyPropsFixture = {
+      ...propsFixture,
+      workItems: [],
+    };
 
-  describe("when there are workItems", () => {});
+    test("should render table with no records", () => {
+      renderWithProviders(<ImplementationCostTableView {...emptyPropsFixture} />, updateWorkItemsMocks);
+      const {getByText} = within(screen.queryByTestId("implementation-cost-table"));
+      getByText(/no data/i);
+    });
+  });
+
+  describe("when there are workItems", () => {
+    test("should render slider with knob at mark 30", () => {
+      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      const daysRangeSlider = screen.getByRole("slider");
+      expect(daysRangeSlider).toBeInTheDocument();
+      expect(daysRangeSlider.getAttribute("aria-valuenow")).toBe("30");
+    });
+
+    test("should render table with correct number of records", () => {
+      const {container} = renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      const tableRows = container.querySelectorAll(".ant-table-row");
+      expect([...tableRows]).toHaveLength(1);
+    });
+
+    test("when budget is updated for any record, save/cancel button should appear", () => {
+      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const budgetTextBox = getByRole("spinbutton");
+      fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+      expect(screen.getByText(/save/i)).toBeInTheDocument();
+      expect(screen.getByText(/cancel/i)).toBeInTheDocument();
+    });
+
+    test("when cancel button is clicked, save/cancel button should disappear", () => {
+      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const budgetTextBox = getByRole("spinbutton");
+      fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+      // before
+      expect(screen.queryByText(/save/i)).toBeInTheDocument();
+      expect(screen.queryByText(/cancel/i)).toBeInTheDocument();
+
+      fireEvent.click(screen.queryByText(/cancel/i));
+
+     // after
+     expect(screen.queryByText(/save/i)).not.toBeInTheDocument();
+     expect(screen.queryByText(/cancel/i)).not.toBeInTheDocument();
+    });
+
+    test("when budget is updated for any record, edited title shows above the table", () => {
+      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      // before 
+      expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
+
+      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const budgetTextBox = getByRole("spinbutton");
+      fireEvent.change(budgetTextBox, {target: {value: 75}});
+
+      // after
+      expect(screen.queryByText(/Budget Edited for Cards/i)).toBeInTheDocument();
+    });
+  });
 });
