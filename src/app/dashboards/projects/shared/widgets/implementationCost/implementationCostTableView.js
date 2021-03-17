@@ -1,7 +1,7 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
-import {buildIndex, diff_in_dates} from "../../../../../helpers/utility";
-import {formatDateTime} from "../../../../../i18n/utils";
+import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
+import {formatAsDate, formatDateTime} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
@@ -123,8 +123,8 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
         },
         {
           title: "Last Commit",
-          dataIndex: "lastUpdate",
-          key: "lastUpdate",
+          dataIndex: "lastUpdateDisplay",
+          key: "lastUpdateDisplay",
           sorter: (a, b) => diff_in_dates(a.lastUpdate, b.lastUpdate),
         },
         {
@@ -155,15 +155,16 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name,
+      title: x.name === 'Uncategorized' ? "" : x.name,
       cards: 1,
       type: x.workItemType,
       budget: x.budget != null ? x.budget : 0,
       totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
       totalContributors: x.authorCount,
-      startDate: x.startDate ? formatDateTime(intl, x.startDate) : "",
-      endDate: x.endDate ? formatDateTime(intl, x.endDate) : "",
+      startDate: x.startDate ? formatAsDate(intl, x.startDate) : "",
+      endDate: x.endDate ? formatAsDate(intl, x.endDate) : "",
       lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
+      lastUpdateDisplay: x.lastUpdate ? fromNow(x.lastUpdate): "",
       elapsed: x.elapsed ? intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}) : "",
     };
   };
