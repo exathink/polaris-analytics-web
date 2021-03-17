@@ -222,6 +222,7 @@ describe("ImplementationCostTableView", () => {
 
         // before
         expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+        await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
@@ -229,8 +230,8 @@ describe("ImplementationCostTableView", () => {
         const inProgressElement = screen.getByText(/Processing.../i);
         expect(inProgressElement).toBeInTheDocument();
 
-        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         // after
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         expect(screen.queryByText(/network error/i)).toBeInTheDocument();
       });
 
@@ -244,6 +245,7 @@ describe("ImplementationCostTableView", () => {
 
         // before
         expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+        await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
@@ -251,8 +253,8 @@ describe("ImplementationCostTableView", () => {
         const inProgressElement = screen.getByText(/Processing.../i);
         expect(inProgressElement).toBeInTheDocument();
 
-        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         // after
+        await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
       });
     });

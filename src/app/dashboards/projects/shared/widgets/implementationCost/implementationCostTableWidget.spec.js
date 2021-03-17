@@ -122,6 +122,8 @@ describe("ImplementationCostTableWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
+      await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
+
       renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockNetworkError);
 
       // before
@@ -134,6 +136,8 @@ describe("ImplementationCostTableWidget", () => {
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
+      await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
+      
       renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockGraphQlErrors);
 
       // before
