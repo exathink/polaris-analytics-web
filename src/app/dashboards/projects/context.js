@@ -49,13 +49,13 @@ const context : Context = {
             topic: Flow
           },
           {
+            match: 'value',
+            topic: Value
+          },
+          {
 
             match: 'trends',
             topic: Trends
-          },
-          {
-            match: 'value',
-            topic: Value
           },
           {
             match: 'repositories',
