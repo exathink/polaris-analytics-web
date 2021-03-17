@@ -29,3 +29,11 @@ export function formatDateTime(intl, datetime) {
     minute: 'numeric'
   })
 }
+
+export function formatAsDate(intl, datetime) {
+  return intl.formatDate(datetime, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  })
+}
