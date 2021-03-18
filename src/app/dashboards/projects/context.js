@@ -11,11 +11,12 @@ import Repositories from './repositories/topic';
 import Contributors from './contributors/topic';
 import History from './history/topic';
 import Trends from "./trends/topic";
+import Value from "./value/topic";
 import Configure from "./configure/topic";
 
 import {Contexts} from "../../meta/contexts";
 
-import {VALUE_STREAM_CONFIG} from "../../../config/featureFlags";
+import {VALUE_STREAM_CONFIG, VALUE_STREAM_VALUE_DASHBOARD} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -46,6 +47,11 @@ const context : Context = {
           {
             match: 'flow',
             topic: Flow
+          },
+          {
+            match: 'value',
+            requiredFeatures: [VALUE_STREAM_VALUE_DASHBOARD],
+            topic: Value
           },
           {
 

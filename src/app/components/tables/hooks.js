@@ -19,6 +19,15 @@ export function useSearch(dataIndex, onSearch=null) {
     onSearch && onSearch(null)
   };
 
+  const getDescendantValues = (record) => {
+    const values = [];
+    (function recurse(record) {
+      values.push(record[dataIndex].toString().toLowerCase());
+      record.children && record.children.forEach(recurse);
+    })(record);
+    return values;
+  }; 
+
   const searchProps = {
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => {
       searchProps.clearFilters = clearFilters;
@@ -44,12 +53,15 @@ export function useSearch(dataIndex, onSearch=null) {
       }
     },
 
-    onFilter: (value, record) =>
-      record[dataIndex] &&
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes(value.toLowerCase()),
+    onFilter: (value, record) => {
+      const recordName = record[dataIndex];
+      const searchLower = value.toLowerCase();
+      return (
+        recordName.toString().toLowerCase().includes(searchLower) ||
+        getDescendantValues(record).some((descValue) => descValue.includes(searchLower))
+      );
+    },
+    
 
     onFilterDropdownVisibleChange: visible => {
       if (visible) {     
