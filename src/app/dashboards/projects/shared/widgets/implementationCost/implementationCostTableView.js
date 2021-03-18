@@ -14,7 +14,7 @@ const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
   id: UncategorizedKey,
   displayId: UncategorizedKey,
-  name: UncategorizedKey,
+  name: "",
   key: UncategorizedKey,
   workItemType: "epic",
   epicName: UncategorizedKey,
@@ -155,7 +155,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name === 'Uncategorized' ? "" : x.name,
+      title: x.name,
       cards: 1,
       type: x.workItemType,
       budget: x.budget != null ? x.budget : 0,
