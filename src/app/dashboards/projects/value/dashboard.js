@@ -2,7 +2,7 @@ import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ImplementationCostTableWidget} from "../shared/widgets/implementationCost/implementationCostTableWidget";
+import {ImplementationCostTableWidget} from "../shared/widgets/implementationCost";
 import {injectIntl} from "react-intl";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
