@@ -158,7 +158,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       title: x.name,
       cards: 1,
       type: x.workItemType,
-      budget: x.budget != null ? x.budget : 0,
+      budget: x.budget != null ? x.budget : "",
       totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
       totalContributors: x.authorCount,
       startDate: x.startDate ? formatAsDate(intl, x.startDate) : "",
@@ -202,7 +202,7 @@ export function ImplementationCostTableView({
   const newWorkItems = workItems.concat(UncategorizedEpic);
   const initialBudgetRecords = () => {
     const initialState = newWorkItems.reduce((acc, item) => {
-      acc[item.key] = {budget: item.budget || 0, mode: recordMode.INITIAL};
+      acc[item.key] = {budget: item.budget != null ? item.budget : "", mode: recordMode.INITIAL};
       return acc;
     }, {});
     return initialState;
