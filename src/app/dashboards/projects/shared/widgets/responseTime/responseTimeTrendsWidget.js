@@ -18,6 +18,9 @@ export const ProjectResponseTimeTrendsWidget = (
     targetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
+    cycleTimeConfidenceTarget,
+    leadTimeConfidenceTarget,
+    setBefore,
     pollInterval
   }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -43,6 +46,12 @@ export const ProjectResponseTimeTrendsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        onSelectionChange={(workItems) => {
+          if (workItems.length === 1) {
+            const [{measurementDate}] = workItems;
+            setBefore(measurementDate);
+          }
+        }}
         view={view}
       />
       :
@@ -57,6 +66,8 @@ export const ProjectResponseTimeTrendsWidget = (
         context={context}
         view={view}
         latestWorkItemEvent={latestWorkItemEvent}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
       />
   )
 }

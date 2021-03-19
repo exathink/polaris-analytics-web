@@ -49,6 +49,7 @@ export const ResponseTimeTrendsChart = (
     cycleTimeTarget,
     measurementPeriod,
     measurementWindow,
+    onSelectionChange,
     view
   }) => (
   <MeasurementTrendLineChart
@@ -63,7 +64,7 @@ export const ResponseTimeTrendsChart = (
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
-
+    onSelectionChange={onSelectionChange}
     config={{
       title: 'Response Time',
       legendText: 'Specs',
