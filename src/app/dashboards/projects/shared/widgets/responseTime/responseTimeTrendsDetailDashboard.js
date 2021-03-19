@@ -5,6 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
+import {ProjectDeliveryCycleFlowMetricsWidget} from '../flowMetrics/projectDeliveryCycleFlowMetricsWidget';
 
 const dashboard_id = 'dashboards.trends.projects.response-time.detail';
 
@@ -22,11 +23,13 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     samplingFrequency,
     leadTimeTarget,
     cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
     targetPercentile,
     pollInterval
   }
 ) => {
-
+  const [before, setBefore] = React.useState();
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -38,7 +41,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
       dashboard={dashboard_id}
     >
       <DashboardRow
-        h={1}
+        h={"40%"}
         title={`Response Time Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
@@ -66,9 +69,34 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 targetPercentile={targetPercentile}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                setBefore={setBefore}
               />
           }
           showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
+          w={1}
+          h={"20%"}
+          name="flow-metrics-delivery-details"
+          render={({view}) => (
+            <ProjectDeliveryCycleFlowMetricsWidget
+              instanceKey={instanceKey}
+              specsOnly={true}
+              view={view}
+              context={context}
+              showAll={true}
+              latestWorkItemEvent={latestWorkItemEvent}
+              days={daysRange}
+              before={before}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+            />
+          )}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>
