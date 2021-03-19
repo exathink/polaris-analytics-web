@@ -130,6 +130,7 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
       type: metric.type,
       name: metric.displayName,
       visible: metric.visible,
+      allowPointSelect: true,
       data: measurements.map(
         measurement => ({
           x: toMoment(measurement.measurementDate, true).valueOf(),
@@ -149,7 +150,7 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
 export const MeasurementTrendLineChart = Chart({
     chartUpdateProps: props => pick(props, 'measurements', 'metrics', 'config', 'measurementWindow', 'measurementPeriod'),
     eventHandler: DefaultSelectionEventHandler,
-    mapPoints: (points, _) => points,
+    mapPoints: (points, _) => points.map(point => point.measurement),
     getConfig: ({measurements, metrics, measurementPeriod, measurementWindow, config, intl}) => {
 
       const series = getMeasurementTrendSeriesForMetrics(metrics, measurements);
