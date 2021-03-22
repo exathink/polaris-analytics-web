@@ -6,6 +6,7 @@ import {
   useTrendsControlBarState,
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
 import { ProjectDeliveryCycleFlowMetricsWidget } from "../flowMetrics/projectDeliveryCycleFlowMetricsWidget";
+import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = "dashboards.trends.projects.predictability.trends.detail";
 
@@ -61,7 +62,7 @@ export const PredictabilityTrendsDetailDashboard = ({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" title={before ? `Before Date: ${before} `: `Before Date: `}>
+      <DashboardRow h="60%" title={getFlowMetricsRowTitle(before)}>
         <DashboardWidget
           w={1}
           name="flow-metrics-delivery-details"
