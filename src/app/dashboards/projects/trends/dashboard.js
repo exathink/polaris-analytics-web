@@ -122,6 +122,10 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarge={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
             />
           )}
           showDetail={true}

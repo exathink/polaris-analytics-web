@@ -16,6 +16,11 @@ export const ProjectVolumeTrendsWidget = (
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
+    setBefore,
     pollInterval
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -39,6 +44,12 @@ export const ProjectVolumeTrendsWidget = (
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           view={view}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              const [{measurementDate}] = workItems;
+              setBefore(measurementDate);
+            }
+          }}
         />
         :
         <ProjectVolumeTrendsDetailDashboard
@@ -48,7 +59,10 @@ export const ProjectVolumeTrendsWidget = (
           measurementWindow={measurementWindow}
           days={days}
           samplingFrequency={samplingFrequency}
-
+          leadTimeTarget={leadTimeTarget}
+          cycleTimeTarget={cycleTimeTarget}
+          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
           view={view}
         />
     )
