@@ -4,6 +4,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
+import {getServerDate} from "../../../../../helpers/utility";
 
 export const ProjectResponseTimeTrendsWidget = (
   {
@@ -50,7 +51,7 @@ export const ProjectResponseTimeTrendsWidget = (
         onSelectionChange={(workItems) => {
           if (workItems.length === 1) {
             const [{measurementDate}] = workItems;
-            setBefore(measurementDate);
+            setBefore(getServerDate(measurementDate));
           }
         }}
         view={view}

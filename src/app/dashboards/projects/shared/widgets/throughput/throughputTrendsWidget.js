@@ -4,6 +4,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectVolumeTrendsView} from "./throughputTrendsView"
 import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
+import {getServerDate} from "../../../../../helpers/utility";
 
 export const ProjectVolumeTrendsWidget = (
   {
@@ -47,7 +48,7 @@ export const ProjectVolumeTrendsWidget = (
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
               const [{measurementDate}] = workItems;
-              setBefore(measurementDate);
+              setBefore(getServerDate(measurementDate));
             }
           }}
         />
