@@ -16,6 +16,7 @@ export const ProjectPredictabilityTrendsWidget = (
     samplingFrequency,
     cycleTimeTarget,
     targetPercentile,
+    setBefore,
     pollInterval
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -43,6 +44,14 @@ export const ProjectPredictabilityTrendsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         samplingFrequency={samplingFrequency}
         view={view}
+        context={context}
+        latestWorkItemEvent={latestWorkItemEvent}
+        onSelectionChange={(workItems) => {
+          if (workItems.length === 1) {
+            const [{measurementDate}] = workItems;
+            setBefore(measurementDate);
+          }
+        }}
       />
     )
 }

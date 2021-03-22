@@ -11,7 +11,10 @@ export const ProjectPredictabilityTrendsView = ({
   measurementWindow,
   cycleTimeTarget,
   samplingFrequency,
+  latestWorkItemEvent,
+  onSelectionChange,
   view,
+  context,
 }) => {
   if (view === "detail") {
     const props = {
@@ -21,7 +24,9 @@ export const ProjectPredictabilityTrendsView = ({
       measurementWindow,
       cycleTimeTarget,
       samplingFrequency,
+      latestWorkItemEvent,
       view,
+      context,
     };
     return <PredictabilityTrendsDetailDashboard {...props} />;
   }
@@ -36,6 +41,8 @@ export const ProjectPredictabilityTrendsView = ({
           measurementWindow={measurementWindow}
           cycleTimeTarget={cycleTimeTarget}
           view={view}
+          latestWorkItemEvent={latestWorkItemEvent}
+          onSelectionChange={onSelectionChange}
         />
       </VizItem>
     </VizRow>

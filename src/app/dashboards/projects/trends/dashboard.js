@@ -162,6 +162,9 @@ function TrendsDashboard({
               days={daysRange}
               samplingFrequency={7}
               cycleTimeTarget={cycleTimeTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
