@@ -97,7 +97,7 @@ export function formatDate(epoch, format) {
 }
 
 export function getServerDate(date) {
-  return formatDate(epoch(date, true), "YYYY-MM-DDTHH:mm:ss.SSSZ");
+  return moment(date, 'YYYY-MM-DD');
 }
 
 export function span(date_a, date_b) {
