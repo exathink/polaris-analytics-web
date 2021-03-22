@@ -95,7 +95,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>

@@ -82,7 +82,7 @@ export const PredictabilityTrendsDetailDashboard = ({
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
