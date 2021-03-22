@@ -17,6 +17,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   cycleTimeConfidenceTarget,
   days,
   before,
+  initialMetric,
   defectsOnly,
   stateMappingIndex,
   pollInterval,
@@ -62,6 +63,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
       targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
+      initialMetric={initialMetric}
     />
   );
 };

@@ -143,6 +143,7 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
+              defaultSeries={"cycleTime"}
             />
           )}
           showDetail={true}

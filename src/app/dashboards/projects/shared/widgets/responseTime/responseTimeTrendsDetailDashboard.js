@@ -26,7 +26,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     targetPercentile,
-    pollInterval
+    pollInterval,
+    defaultSeries
   }
 ) => {
   const [before, setBefore] = React.useState();
@@ -70,15 +71,15 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 setBefore={setBefore}
+                defaultSeries={defaultSeries}
               />
           }
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow>
+      <DashboardRow h="60%" title={before ? `Selected Date: ${before} `: ``}>
         <DashboardWidget
           w={1}
-          h={"20%"}
           name="flow-metrics-delivery-details"
           render={({view}) => (
             <ProjectDeliveryCycleFlowMetricsWidget
@@ -90,6 +91,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               before={before}
+              initialMetric={"cycleTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}

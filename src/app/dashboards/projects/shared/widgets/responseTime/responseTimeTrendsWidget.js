@@ -21,6 +21,7 @@ export const ProjectResponseTimeTrendsWidget = (
     cycleTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     setBefore,
+    defaultSeries,
     pollInterval
   }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -53,6 +54,7 @@ export const ProjectResponseTimeTrendsWidget = (
           }
         }}
         view={view}
+        defaultSeries={defaultSeries}
       />
       :
       <ProjectResponseTimeTrendsDetailDashboard
@@ -68,6 +70,7 @@ export const ProjectResponseTimeTrendsWidget = (
         latestWorkItemEvent={latestWorkItemEvent}
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        defaultSeries={defaultSeries}
       />
   )
 }

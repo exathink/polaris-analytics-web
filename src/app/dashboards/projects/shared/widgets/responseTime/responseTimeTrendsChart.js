@@ -50,16 +50,17 @@ export const ResponseTimeTrendsChart = (
     measurementPeriod,
     measurementWindow,
     onSelectionChange,
+    defaultSeries,
     view
   }) => (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: false, type: 'spline'},
-      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: true, type:'spline'},
-      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: false, type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'avgDuration', displayName: `Avg. Duration`, visible: false, type: 'areaspline', stacked: true},
-      {key: 'avgEffort', displayName: `Avg. Effort`, visible: false, type:'spline', color: '#0f49b1'},
+      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: defaultSeries==="leadTime", type: 'spline'},
+      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: defaultSeries==="cycleTime", type:'spline'},
+      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: defaultSeries==="latency", type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'avgDuration', displayName: `Avg. Duration`, visible: defaultSeries==="duration", type: 'areaspline', stacked: true},
+      {key: 'avgEffort', displayName: `Avg. Effort`, visible: defaultSeries==="effort", type:'spline', color: '#0f49b1'},
 
     ]}
     measurementPeriod={measurementPeriod}
