@@ -77,7 +77,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" title={before ? `Selected Date: ${before} `: ``}>
+      <DashboardRow h="60%" title={before ? `Before Date: ${before} `: `Before Date: `}>
         <DashboardWidget
           w={1}
           name="flow-metrics-delivery-details"
