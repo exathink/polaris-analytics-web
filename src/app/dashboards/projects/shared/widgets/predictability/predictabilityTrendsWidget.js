@@ -21,7 +21,6 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
     leadTimeConfidenceTarget,
     targetPercentile,
     setBefore,
-    setSeriesName,
     pollInterval
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -56,9 +55,8 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         latestWorkItemEvent={latestWorkItemEvent}
         onSelectionChange={(workItems) => {
           if (workItems.length === 1) {
-            const [{measurementDate, key}] = workItems;
+            const [{measurementDate}] = workItems;
             setBefore(getServerDate(measurementDate));
-            setSeriesName(key);
           }
         }}
       />
