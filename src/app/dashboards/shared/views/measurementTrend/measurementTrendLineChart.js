@@ -135,7 +135,7 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
         measurement => ({
           x: toMoment(measurement.measurementDate, true).valueOf(),
           y: metric.value ? metric.value(measurement) : measurement[metric.key],
-          measurement: measurement
+          measurement: {...measurement, key: metric.key}
         })
       ).sort(
         (m1, m2) => m1.x - m2.x

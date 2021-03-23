@@ -23,7 +23,7 @@ export const PredictabilityTrendsChart = Chart({
           .map((measurement) => ({
             x: toMoment(measurement["measurementDate"], true).valueOf(),
             y: measurement["percentileCycleTime"],
-            measurement: measurement,
+            measurement: {...measurement, key: "cycle_time_percentile"},
           }))
           .sort((m1, m2) => m1.x - m2.x),
       },
@@ -40,7 +40,7 @@ export const PredictabilityTrendsChart = Chart({
             median: measurement["medianCycleTime"],
             q3: measurement["q3CycleTime"],
             high: measurement["maxCycleTime"],
-            measurement: measurement,
+            measurement: {...measurement, key: "cycle_time_box"},
           }))
           .sort((m1, m2) => m1.x - m2.x),
       },
