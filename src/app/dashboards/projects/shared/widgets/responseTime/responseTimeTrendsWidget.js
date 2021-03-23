@@ -22,6 +22,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     cycleTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     setBefore,
+    setSeriesName,
     defaultSeries,
     pollInterval
   }) => {
@@ -50,8 +51,9 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
         measurementPeriod={days}
         onSelectionChange={(workItems) => {
           if (workItems.length === 1) {
-            const [{measurementDate}] = workItems;
+            const [{measurementDate, key}] = workItems;
             setBefore(getServerDate(measurementDate));
+            setSeriesName(key);
           }
         }}
         view={view}
