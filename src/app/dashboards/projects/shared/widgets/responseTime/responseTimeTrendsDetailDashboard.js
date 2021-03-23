@@ -10,6 +10,17 @@ import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = 'dashboards.trends.projects.response-time.detail';
 
+function getSeriesName(seriesName) {
+  const objMap = {
+    avgCycleTime: "cycleTime",
+    avgLeadTime: "leadTime",
+    avgLatency: "latency",
+    avgDuration: "duration",
+    avgEffort: "effort"
+  }
+
+  return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
+}
 
 export const ProjectResponseTimeTrendsDetailDashboard = (
   {
@@ -32,6 +43,9 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
   }
 ) => {
   const [before, setBefore] = React.useState();
+  const [seriesName, setSeriesName] = React.useState("cycleTime");
+  const selectedPointSeries = getSeriesName(seriesName);
+
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -72,6 +86,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 setBefore={setBefore}
+                setSeriesName={setSeriesName}
                 defaultSeries={defaultSeries}
               />
           }
@@ -92,7 +107,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               before={before}
-              initialMetric={"cycleTime"}
+              initialMetric={selectedPointSeries}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
