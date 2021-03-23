@@ -28,7 +28,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
 
   React.useEffect(() => {
-    setSelectedMetric(initialMetric);
+    initialMetric && setSelectedMetric(initialMetric);
   }, [initialMetric]);
 
   return (
