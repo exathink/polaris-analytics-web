@@ -6,7 +6,7 @@ import {ProjectVolumeTrendsView} from "./throughputTrendsView"
 import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 
-export const ProjectVolumeTrendsWidget = (
+export const ProjectVolumeTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -67,4 +67,4 @@ export const ProjectVolumeTrendsWidget = (
           view={view}
         />
     )
-}
+});

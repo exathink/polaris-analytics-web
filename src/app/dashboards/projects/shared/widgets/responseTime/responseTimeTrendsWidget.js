@@ -6,7 +6,7 @@ import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 
-export const ProjectResponseTimeTrendsWidget = (
+export const ProjectResponseTimeTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -74,4 +74,4 @@ export const ProjectResponseTimeTrendsWidget = (
         defaultSeries={defaultSeries}
       />
   )
-}
+});

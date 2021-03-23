@@ -5,7 +5,7 @@ import {getServerDate} from "../../../../../helpers/utility";
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectPredictabilityTrendsView} from "./predictabilityTrendsView"
 
-export const ProjectPredictabilityTrendsWidget = (
+export const ProjectPredictabilityTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -61,4 +61,4 @@ export const ProjectPredictabilityTrendsWidget = (
         }}
       />
     )
-}
+});
