@@ -182,7 +182,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
           test(`it sets the reference to the measurement for each point`, () => {
             expectSetsAreEqual(
               data.map((point) => point.measurement),
-              pullRequestsReviewTimeTrendsFixture
+              pullRequestsReviewTimeTrendsFixture.map(x => ({...x, key: metric}))
             );
           });
 

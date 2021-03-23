@@ -258,7 +258,7 @@ describe("CapacityTrendsChart", () => {
         test("it sets the reference to the measurement for each point ", () => {
           expectSetsAreEqual(
             seriesData.data.map((point) => point.measurement),
-            seriesFixture.map((measurement) => measurement)
+            seriesFixture.map((measurement) => ({...measurement, key: trend.key}))
           );
         });
 
