@@ -10,6 +10,14 @@ import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = 'dashboards.trends.projects.throughput.detail';
 
+function getSeriesName(seriesName) {
+  const objMap = {
+    workItemsInScope: "Cards",
+    workItemsWithCommits: "Specs",
+  }
+
+  return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
+}
 
 export const ProjectVolumeTrendsDetailDashboard = (
   {
@@ -31,6 +39,9 @@ export const ProjectVolumeTrendsDetailDashboard = (
   }
 ) => {
   const [before, setBefore] = React.useState();
+  const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
+  const selectedPointSeries = getSeriesName(seriesName);
+
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -65,6 +76,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
 
                 view={view}
                 setBefore={setBefore}
+                setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
@@ -82,14 +94,14 @@ export const ProjectVolumeTrendsDetailDashboard = (
           render={({view}) => (
             <ProjectDeliveryCycleFlowMetricsWidget
               instanceKey={instanceKey}
-              specsOnly={true}
+              specsOnly={selectedPointSeries === "Specs"}
               view={view}
               context={context}
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               before={before}
-              initialMetric={"cycleTime"}
+              initialMetric={"leadTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
