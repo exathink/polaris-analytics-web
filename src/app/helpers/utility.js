@@ -198,6 +198,26 @@ export const SORTER = {
 
     return stra.localeCompare(strb);
   },
+  string_title_compare: (stra, strb) => {
+    // these values are treated equal, so no need to sort these
+    if (stra === "" || strb === "") {
+      return 0;
+    }
+
+    if (stra == null && strb == null) {
+      return 0;
+    }
+
+    if (stra == null && strb != null) {
+      return 1;
+    }
+
+    if (stra != null && strb == null) {
+      return -1;
+    }
+
+    return stra.localeCompare(strb);
+  },
 };
 
 export function elide(str, length) {

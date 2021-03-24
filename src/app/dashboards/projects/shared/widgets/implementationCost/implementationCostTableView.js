@@ -67,7 +67,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "title",
       key: "title",
       width: "20%",
-      sorter: (a, b) => SORTER.string_compare(a.title, b.title),
+      sorter: (a, b) => SORTER.string_title_compare(a.title, b.title),
       ...titleSearchState,
     },
     {
