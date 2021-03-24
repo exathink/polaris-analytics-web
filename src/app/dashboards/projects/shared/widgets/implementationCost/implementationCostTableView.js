@@ -1,7 +1,7 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
 import {buildIndex, SORTER, fromNow} from "../../../../../helpers/utility";
-import {formatAsDate, formatDateTime} from "../../../../../i18n/utils";
+import {formatAsDate} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
@@ -197,7 +197,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       title: x.name != null && x.name !== UncategorizedKey ? x.name : "",
       cards: 1,
       type: x.workItemType,
-      budget: x.budget != null && x.budget !== UncategorizedKey ? x.budget : "",
+      budget: x.budget,
       totalEffort: getNumber(x.effort, intl),
       totalContributors: getNumber(x.authorCount, intl),
       startDate: getDate(x.startDate, intl),
