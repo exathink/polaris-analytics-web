@@ -186,7 +186,7 @@ export const WorkItemsEpicEffortChart = Chart({
 
       tooltip: {
         useHTML: true,
-        outside: true,
+        outside: false,
         hideDelay: 50,
         formatter: function () {
           const {name, value, workItems, workItem, parent} = this.point;
