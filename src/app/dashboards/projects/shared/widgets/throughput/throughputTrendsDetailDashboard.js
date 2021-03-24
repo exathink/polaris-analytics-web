@@ -87,7 +87,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" title={getFlowMetricsRowTitle(before)}>
+      <DashboardRow h="60%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
         <DashboardWidget
           w={1}
           name="flow-metrics-delivery-details"

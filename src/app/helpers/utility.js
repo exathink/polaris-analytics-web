@@ -97,6 +97,9 @@ export function formatDate(epoch, format) {
 }
 
 export function getServerDate(date) {
+  if (date == null) {
+    return moment.utc()
+  }
   return moment(date, 'YYYY-MM-DD');
 }
 
