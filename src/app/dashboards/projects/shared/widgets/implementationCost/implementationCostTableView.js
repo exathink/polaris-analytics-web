@@ -14,13 +14,23 @@ const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
   id: UncategorizedKey,
   displayId: UncategorizedKey,
-  name: "",
+  name: UncategorizedKey,
   key: UncategorizedKey,
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
   endDate: UncategorizedKey
 };
+
+function renderColumn(key) {
+  return (_text, record) => {
+    if (record.key === UncategorizedKey) {
+      return null;
+    }
+
+    return record[key];
+  };
+}
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
   const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
@@ -51,6 +61,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a.title, b.title),
       ...titleSearchState,
+      render: renderColumn("title")
     },
     {
       title: "Type",
@@ -97,6 +108,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           key: "totalEffort",
           sorter: (a, b) => SORTER.number_compare(a.totalEffort, b.totalEffort),
           width: "7%",
+          render: renderColumn("totalEffort")
         },
         {
           title: "Contributors",
@@ -104,6 +116,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           key: "totalContributors",
           sorter: (a, b) => SORTER.number_compare(a.totalContributors, b.totalContributors),
           width: "9%",
+          render: renderColumn("totalContributors")
         },
       ],
     },
@@ -115,24 +128,28 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           dataIndex: "startDate",
           key: "startDate",
           sorter: (a, b) => SORTER.date_compare(a.startDate, b.startDate),
+          render: renderColumn("startDate")
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
           sorter: (a, b) => SORTER.end_date_compare(a.endDate, b.endDate),
+          render: renderColumn("endDate")
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
           sorter: (a, b) => SORTER.date_compare(a.lastUpdate, b.lastUpdate),
+          render: renderColumn("lastUpdateDisplay")
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a.elapsed, b.elapsed),
+          render: renderColumn("elapsed")
         },
       ],
     },
@@ -151,6 +168,20 @@ function getEpicWorkItemsMap(epicWorkItems) {
   return new Map(epicWorkItems.map((x) => [x.key, x]));
 }
 
+const getNumber = (num, intl) => {
+  if (num != null && num !== UncategorizedKey) {
+    return intl.formatNumber(num, {maximumFractionDigits: 2})
+  }
+  return num;
+};
+
+const getDate = (date, intl) => {
+  if (date != null && date !== UncategorizedKey) {
+    return formatAsDate(intl, date);
+  }
+  return date; 
+};
+
 function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
   const transformWorkItem = (x) => {
     return {
@@ -160,13 +191,13 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       cards: 1,
       type: x.workItemType,
       budget: x.budget != null ? x.budget : "",
-      totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
-      totalContributors: x.authorCount,
-      startDate: x.startDate ? formatAsDate(intl, x.startDate) : "",
-      endDate: x.endDate === UncategorizedKey ? "": x.endDate != null ? formatAsDate(intl, x.endDate) : x.endDate,
-      lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
+      totalEffort: getNumber(x.effort, intl),
+      totalContributors: getNumber(x.authorCount, intl),
+      startDate: getDate(x.startDate, intl),
+      endDate: getDate(x.endDate, intl),
+      lastUpdate: getDate(x.lastUpdate, intl),
       lastUpdateDisplay: x.lastUpdate ? fromNow(x.lastUpdate): "",
-      elapsed: x.elapsed ? intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}) : "",
+      elapsed: getNumber(x.elapsed, intl),
     };
   };
 
