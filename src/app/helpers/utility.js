@@ -134,6 +134,80 @@ export function diff_in_dates(date_a, date_b) {
   return span;
 }
 
+const UncategorizedKey = "Uncategorized";
+export const SORTER = {
+  date_compare: (date_a, date_b) => {
+    // these values are treated equal, so no need to sort these
+    if (date_a == null || date_b == null || date_a === "" || date_b === "") {
+      return 0;
+    }
+
+    const moment_a = moment(date_a, "MM/DD/YYYY");
+    const moment_b = moment(date_b, "MM/DD/YYYY");
+    const span = moment.duration(moment_a.diff(moment_b));
+    return span["_milliseconds"];
+  },
+  end_date_compare: (date_a, date_b) => {
+    // these values are treated equal, so no need to sort these
+    if ((date_a == null && date_b == null) || (date_a === "" && date_b === "")) {
+      return 0;
+    }
+
+    if (date_a === "" || date_b === "") {
+      return 0;
+    }
+
+    if (date_a == null && date_b != null) {
+      return 1;
+    }
+
+    if (date_a != null && date_b == null) {
+      return -1;
+    }
+
+    const moment_a = moment(date_a, "MM/DD/YYYY");
+    const moment_b = moment(date_b, "MM/DD/YYYY");
+    const span = moment.duration(moment_a.diff(moment_b));
+    return span["_milliseconds"];
+  },
+  number_compare: (numa, numb) => {
+    // these values are treated equal, so no need to sort these
+    if ((numa == null && numb == null) || (numa === "" && numb === "")) {
+      return 0;
+    }
+
+    if ((numa == null || numa === "") && (numb != null || numb !== "")) {
+      return 1;
+    }
+
+    if ((numa != null || numa !== "") && (numb == null || numb === "")) {
+      return -1;
+    }
+
+    return numa - numb;
+  },
+  string_compare: (stra, strb) => {
+    // these values are treated equal, so no need to sort these
+    if (stra === UncategorizedKey || strb === UncategorizedKey) {
+      return 0;
+    }
+
+    if ((stra == null && strb == null) || (stra === "" && strb === "")) {
+      return 0;
+    }
+
+    if ((stra == null || stra === "") && (strb != null || strb !== "")) {
+      return 1;
+    }
+
+    if ((stra != null || stra !== "") && (strb == null || strb === "")) {
+      return -1;
+    }
+
+    return stra.localeCompare(strb);
+  },
+};
+
 export function elide(str, length) {
   return str.length < length ? str : `${str.substring(0, length)} ...`
 }

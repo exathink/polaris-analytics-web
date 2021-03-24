@@ -1,6 +1,6 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
-import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
+import {buildIndex, SORTER, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate, formatDateTime} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
@@ -19,6 +19,7 @@ const UncategorizedEpic = {
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
+  endDate: UncategorizedKey
 };
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
@@ -40,7 +41,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...nameSearchState,
     },
     {
@@ -48,7 +49,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "title",
       key: "title",
       width: "20%",
-      sorter: (a, b) => a.title.localeCompare(b.title),
+      sorter: (a, b) => SORTER.string_compare(a.title, b.title),
       ...titleSearchState,
     },
     {
@@ -62,7 +63,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "cards",
       key: "cards",
       width: "5%",
-      sorter: (a, b) => a.cards - b.cards,
+      sorter: (a, b) => SORTER.number_compare(a.cards, b.cards),
     },
 
     {
@@ -72,7 +73,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
-          sorter: (a, b) => a.budget - b.budget,
+          sorter: (a, b) => SORTER.number_compare(a.budget, b.budget),
           width: "10%",
           render: (_text, record) => {
             if (record.key === UncategorizedKey) {
@@ -94,14 +95,14 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Actual",
           dataIndex: "totalEffort",
           key: "totalEffort",
-          sorter: (a, b) => a.totalEffort - b.totalEffort,
+          sorter: (a, b) => SORTER.number_compare(a.totalEffort, b.totalEffort),
           width: "7%",
         },
         {
           title: "Contributors",
           dataIndex: "totalContributors",
           key: "totalContributors",
-          sorter: (a, b) => a.totalContributors - b.totalContributors,
+          sorter: (a, b) => SORTER.number_compare(a.totalContributors, b.totalContributors),
           width: "9%",
         },
       ],
@@ -113,25 +114,25 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Started",
           dataIndex: "startDate",
           key: "startDate",
-          sorter: (a, b) => diff_in_dates(a.startDate, b.startDate),
+          sorter: (a, b) => SORTER.date_compare(a.startDate, b.startDate),
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
-          sorter: (a, b) => diff_in_dates(a.endDate, b.endDate),
+          sorter: (a, b) => SORTER.end_date_compare(a.endDate, b.endDate),
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
-          sorter: (a, b) => diff_in_dates(a.lastUpdate, b.lastUpdate),
+          sorter: (a, b) => SORTER.date_compare(a.lastUpdate, b.lastUpdate),
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
-          sorter: (a, b) => a.elapsed - b.elapsed,
+          sorter: (a, b) => SORTER.number_compare(a.elapsed, b.elapsed),
         },
       ],
     },
@@ -162,7 +163,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
       totalContributors: x.authorCount,
       startDate: x.startDate ? formatAsDate(intl, x.startDate) : "",
-      endDate: x.endDate ? formatAsDate(intl, x.endDate) : "",
+      endDate: x.endDate === UncategorizedKey ? "": x.endDate != null ? formatAsDate(intl, x.endDate) : x.endDate,
       lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
       lastUpdateDisplay: x.lastUpdate ? fromNow(x.lastUpdate): "",
       elapsed: x.elapsed ? intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}) : "",
