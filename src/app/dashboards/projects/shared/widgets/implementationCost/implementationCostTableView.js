@@ -69,7 +69,6 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a.title, b.title),
       ...titleSearchState,
-      render: renderColumn("title")
     },
     {
       title: "Type",
@@ -195,7 +194,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name,
+      title: x.name != null && x.name !== UncategorizedKey ? x.name : "",
       cards: 1,
       type: x.workItemType,
       budget: x.budget != null && x.budget !== UncategorizedKey ? x.budget : "",
