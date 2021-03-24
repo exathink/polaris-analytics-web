@@ -137,23 +137,11 @@ export function diff_in_dates(date_a, date_b) {
 const UncategorizedKey = "Uncategorized";
 export const SORTER = {
   date_compare: (date_a, date_b) => {
-    // these values are treated equal, so no need to sort these
-    if (date_a == null || date_b == null || date_a === "" || date_b === "") {
+    if (date_a === UncategorizedKey || date_b === UncategorizedKey) {
       return 0;
     }
 
-    const moment_a = moment(date_a, "MM/DD/YYYY");
-    const moment_b = moment(date_b, "MM/DD/YYYY");
-    const span = moment.duration(moment_a.diff(moment_b));
-    return span["_milliseconds"];
-  },
-  end_date_compare: (date_a, date_b) => {
-    // these values are treated equal, so no need to sort these
-    if ((date_a == null && date_b == null) || (date_a === "" && date_b === "")) {
-      return 0;
-    }
-
-    if (date_a === "" || date_b === "") {
+    if (date_a == null && date_b == null) {
       return 0;
     }
 
@@ -171,16 +159,20 @@ export const SORTER = {
     return span["_milliseconds"];
   },
   number_compare: (numa, numb) => {
-    // these values are treated equal, so no need to sort these
-    if ((numa == null && numb == null) || (numa === "" && numb === "")) {
+    if (numa === UncategorizedKey || numb === UncategorizedKey) {
       return 0;
     }
 
-    if ((numa == null || numa === "") && (numb != null || numb !== "")) {
+    // these values are treated equal, so no need to sort these
+    if (numa == null && numb == null) {
+      return 0;
+    }
+
+    if (numa == null && numb != null) {
       return 1;
     }
 
-    if ((numa != null || numa !== "") && (numb == null || numb === "")) {
+    if (numa != null && numb == null) {
       return -1;
     }
 
@@ -192,15 +184,15 @@ export const SORTER = {
       return 0;
     }
 
-    if ((stra == null && strb == null) || (stra === "" && strb === "")) {
+    if (stra == null && strb == null) {
       return 0;
     }
 
-    if ((stra == null || stra === "") && (strb != null || strb !== "")) {
+    if (stra == null && strb != null) {
       return 1;
     }
 
-    if ((stra != null || stra !== "") && (strb == null || strb === "")) {
+    if (stra != null && strb == null) {
       return -1;
     }
 

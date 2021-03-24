@@ -19,7 +19,15 @@ const UncategorizedEpic = {
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
-  endDate: UncategorizedKey
+  endDate: UncategorizedKey,
+  effort: UncategorizedKey,
+  duration: UncategorizedKey,
+  authorCount: UncategorizedKey,
+  budget: UncategorizedKey,
+  startDate: UncategorizedKey,
+  closed: UncategorizedKey,
+  lastUpdate: UncategorizedKey,
+  elapsed: UncategorizedKey,
 };
 
 function renderColumn(key) {
@@ -134,7 +142,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
-          sorter: (a, b) => SORTER.end_date_compare(a.endDate, b.endDate),
+          sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
           render: renderColumn("endDate")
         },
         {
@@ -190,13 +198,13 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       title: x.name,
       cards: 1,
       type: x.workItemType,
-      budget: x.budget != null ? x.budget : "",
+      budget: x.budget != null && x.budget !== UncategorizedKey ? x.budget : "",
       totalEffort: getNumber(x.effort, intl),
       totalContributors: getNumber(x.authorCount, intl),
       startDate: getDate(x.startDate, intl),
       endDate: getDate(x.endDate, intl),
       lastUpdate: getDate(x.lastUpdate, intl),
-      lastUpdateDisplay: x.lastUpdate ? fromNow(x.lastUpdate): "",
+      lastUpdateDisplay: x.lastUpdate != null && x.lastUpdate !== UncategorizedKey ? fromNow(x.lastUpdate): x.lastUpdate,
       elapsed: getNumber(x.elapsed, intl),
     };
   };
