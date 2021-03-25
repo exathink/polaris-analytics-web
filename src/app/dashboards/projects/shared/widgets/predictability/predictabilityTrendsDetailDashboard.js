@@ -62,7 +62,7 @@ export const PredictabilityTrendsDetailDashboard = ({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
+      <DashboardRow h="45%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
         <DashboardWidget
           w={1}
           name="flow-metrics-delivery-details"
