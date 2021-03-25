@@ -49,8 +49,10 @@ export const ProjectVolumeTrendsWidget = React.memo((
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
               const [{measurementDate, key}] = workItems;
-              setBefore(getServerDate(measurementDate));
-              setSeriesName(key);
+              if (setBefore && setSeriesName) {
+                setBefore(getServerDate(measurementDate));
+                setSeriesName(key);
+              }
             }
           }}
         />

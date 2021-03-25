@@ -56,7 +56,9 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         onSelectionChange={(workItems) => {
           if (workItems.length === 1) {
             const [{measurementDate}] = workItems;
-            setBefore(getServerDate(measurementDate));
+            if (setBefore) {
+              setBefore(getServerDate(measurementDate));
+            }
           }
         }}
       />
