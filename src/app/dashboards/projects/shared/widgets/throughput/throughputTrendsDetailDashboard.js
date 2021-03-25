@@ -5,9 +5,19 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
+import {ProjectDeliveryCycleFlowMetricsWidget} from '../flowMetrics/projectDeliveryCycleFlowMetricsWidget';
+import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = 'dashboards.trends.projects.throughput.detail';
 
+function getSeriesName(seriesName) {
+  const objMap = {
+    workItemsInScope: "Cards",
+    workItemsWithCommits: "Specs",
+  }
+
+  return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
+}
 
 export const ProjectVolumeTrendsDetailDashboard = (
   {
@@ -21,9 +31,16 @@ export const ProjectVolumeTrendsDetailDashboard = (
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
     pollInterval
   }
 ) => {
+  const [before, setBefore] = React.useState();
+  const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
+  const selectedPointSeries = getSeriesName(seriesName);
 
   const [
     [daysRange, setDaysRange],
@@ -36,7 +53,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
       dashboard={dashboard_id}
     >
       <DashboardRow
-        h={1}
+        h={"40%"}
         title={`Volume Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
@@ -58,7 +75,8 @@ export const ProjectVolumeTrendsDetailDashboard = (
                 instanceKey={instanceKey}
 
                 view={view}
-
+                setBefore={setBefore}
+                setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
@@ -66,6 +84,30 @@ export const ProjectVolumeTrendsDetailDashboard = (
                 targetPercentile={targetPercentile}
               />
           }
+          showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow h="60%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
+        <DashboardWidget
+          w={1}
+          name="flow-metrics-delivery-details"
+          render={({view}) => (
+            <ProjectDeliveryCycleFlowMetricsWidget
+              instanceKey={instanceKey}
+              specsOnly={selectedPointSeries === "Specs"}
+              view={view}
+              context={context}
+              showAll={true}
+              latestWorkItemEvent={latestWorkItemEvent}
+              days={measurementWindowRange}
+              before={before}
+              initialMetric={"leadTime"}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+            />
+          )}
           showDetail={false}
         />
       </DashboardRow>

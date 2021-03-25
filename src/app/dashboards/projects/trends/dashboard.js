@@ -122,6 +122,10 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarge={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
             />
           )}
           showDetail={true}
@@ -137,10 +141,13 @@ function TrendsDashboard({
               samplingFrequency={7}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
+              defaultSeries={"cycleTime"}
             />
           )}
           showDetail={true}
@@ -155,6 +162,9 @@ function TrendsDashboard({
               days={daysRange}
               samplingFrequency={7}
               cycleTimeTarget={cycleTimeTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}

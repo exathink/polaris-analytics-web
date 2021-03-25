@@ -4,8 +4,9 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
+import {getServerDate} from "../../../../../helpers/utility";
 
-export const ProjectResponseTimeTrendsWidget = (
+export const ProjectResponseTimeTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -18,6 +19,11 @@ export const ProjectResponseTimeTrendsWidget = (
     targetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
+    cycleTimeConfidenceTarget,
+    leadTimeConfidenceTarget,
+    setBefore,
+    setSeriesName,
+    defaultSeries,
     pollInterval
   }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -43,7 +49,17 @@ export const ProjectResponseTimeTrendsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         measurementWindow={measurementWindow}
         measurementPeriod={days}
+        onSelectionChange={(workItems) => {
+          if (workItems.length === 1) {
+            const [{measurementDate, key}] = workItems;
+            if (setBefore && setSeriesName) {
+              setBefore(getServerDate(measurementDate));
+              setSeriesName(key);
+            }
+          }
+        }}
         view={view}
+        defaultSeries={defaultSeries}
       />
       :
       <ProjectResponseTimeTrendsDetailDashboard
@@ -57,6 +73,9 @@ export const ProjectResponseTimeTrendsWidget = (
         context={context}
         view={view}
         latestWorkItemEvent={latestWorkItemEvent}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        defaultSeries={defaultSeries}
       />
   )
-}
+});

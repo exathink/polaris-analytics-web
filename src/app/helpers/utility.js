@@ -96,6 +96,13 @@ export function formatDate(epoch, format) {
   return moment(epoch).format(format)
 }
 
+export function getServerDate(date) {
+  if (date == null) {
+    return moment.utc()
+  }
+  return moment(date, 'YYYY-MM-DD');
+}
+
 export function span(date_a, date_b) {
   return polarisTimestamp(date_a).diff(polarisTimestamp(date_b))
 }
