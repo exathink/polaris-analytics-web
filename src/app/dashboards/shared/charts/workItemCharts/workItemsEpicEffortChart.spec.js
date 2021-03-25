@@ -87,7 +87,7 @@ const fixedChartConfig = {
   },
   tooltip: {
     useHTML: true,
-    outside: true,
+    outside: false,
     hideDelay: 50,
   },
 };

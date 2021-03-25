@@ -8,6 +8,7 @@ require("highcharts/modules/treemap")(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#a2c0de"};
 const DEFAULT_EFFORT = 0.2;
+const EFFORT_LIMIT = 0.5;
 const TEXT_LIMIT = 37;
 const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
@@ -62,6 +63,9 @@ function getHierarchySeries(workItems, specsOnly, intl) {
               fontSize: "10px",
             },
             formatter: function () {
+              if (this.point.value < EFFORT_LIMIT) {
+                return "";
+              }
               const text = this.point.name.slice(0, TEXT_LIMIT);
               const ending = this.point.name.length > TEXT_LIMIT ? "..." : "";
               return text + ending;
@@ -182,7 +186,7 @@ export const WorkItemsEpicEffortChart = Chart({
 
       tooltip: {
         useHTML: true,
-        outside: true,
+        outside: false,
         hideDelay: 50,
         formatter: function () {
           const {name, value, workItems, workItem, parent} = this.point;
