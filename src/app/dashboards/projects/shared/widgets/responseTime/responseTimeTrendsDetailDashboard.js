@@ -50,7 +50,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
-  ] = useTrendsControlBarState(45, 30, 7);
+  ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
   return (
     <Dashboard
