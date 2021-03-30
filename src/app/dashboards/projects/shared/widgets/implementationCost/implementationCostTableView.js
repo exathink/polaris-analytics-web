@@ -1,6 +1,6 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
-import {buildIndex, SORTER, fromNow} from "../../../../../helpers/utility";
+import {buildIndex, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
@@ -8,6 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
+import moment from "moment";
 
 const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
@@ -28,6 +29,60 @@ const UncategorizedEpic = {
   closed: UncategorizedKey,
   lastUpdate: UncategorizedKey,
   elapsed: UncategorizedKey,
+};
+
+function edgeCaseCompare(a, b, propName) {
+  if (a.key === UncategorizedKey || b.key === UncategorizedKey) {
+    return 0;
+  }
+
+  const [firstVal, secondVal] = [a[propName], b[propName]];
+  if (firstVal == null && secondVal == null) {
+    return 0;
+  }
+
+  if (firstVal == null && secondVal != null) {
+    return 1;
+  }
+
+  if (firstVal != null && secondVal == null) {
+    return -1;
+  }
+
+  return null;
+}
+
+export const SORTER = {
+  date_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [date_a, date_b] = [a[propName], b[propName]];
+    const moment_a = moment(date_a, "MM/DD/YYYY");
+    const moment_b = moment(date_b, "MM/DD/YYYY");
+    const span = moment.duration(moment_a.diff(moment_b));
+    return span["_milliseconds"];
+  },
+  number_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [numa, numb] = [a[propName], b[propName]];
+    return numa - numb;
+  },
+  string_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [stra, strb] = [a[propName], b[propName]];
+    return stra.localeCompare(strb);
+  },
 };
 
 function renderColumn(key) {
@@ -59,7 +114,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
     },
     {
@@ -67,7 +122,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "title",
       key: "title",
       width: "20%",
-      sorter: (a, b) => SORTER.string_title_compare(a.title, b.title),
+      sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       ...titleSearchState,
     },
     {
@@ -81,7 +136,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "cards",
       key: "cards",
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.cards, b.cards),
+      sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
     },
 
     {
@@ -91,7 +146,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
-          sorter: (a, b) => SORTER.number_compare(a.budget, b.budget),
+          sorter: (a, b) => SORTER.number_compare(a, b, "budget"),
           width: "10%",
           render: (_text, record) => {
             if (record.key === UncategorizedKey) {
@@ -113,7 +168,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Actual",
           dataIndex: "totalEffort",
           key: "totalEffort",
-          sorter: (a, b) => SORTER.number_compare(a.totalEffort, b.totalEffort),
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
           render: renderColumn("totalEffort")
         },
@@ -121,7 +176,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Contributors",
           dataIndex: "totalContributors",
           key: "totalContributors",
-          sorter: (a, b) => SORTER.number_compare(a.totalContributors, b.totalContributors),
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalContributors"),
           width: "9%",
           render: renderColumn("totalContributors")
         },
@@ -134,28 +189,28 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Started",
           dataIndex: "startDate",
           key: "startDate",
-          sorter: (a, b) => SORTER.date_compare(a.startDate, b.startDate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "startDate"),
           render: renderColumn("startDate")
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
-          sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "endDate"),
           render: renderColumn("endDate")
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
-          sorter: (a, b) => SORTER.date_compare(a.lastUpdate, b.lastUpdate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "lastUpdate"),
           render: renderColumn("lastUpdateDisplay")
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
-          sorter: (a, b) => SORTER.number_compare(a.elapsed, b.elapsed),
+          sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
           render: renderColumn("elapsed")
         },
       ],
