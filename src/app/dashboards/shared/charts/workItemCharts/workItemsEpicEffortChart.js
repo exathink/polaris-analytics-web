@@ -102,7 +102,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicName || UNCATEGORIZED.displayValue);
+  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -111,15 +111,23 @@ function getSeries(workItems, specsOnly, intl, view) {
       name: "Closed",
       //color: '#ddd6e2',
 
-      data: Object.keys(workItemsByEpic).map((epicName) => ({
+      data: Object.keys(workItemsByEpic).map((epicKey) => {
+        let epicName;
+        if (epicKey === UNCATEGORIZED.key) {
+          epicName = UNCATEGORIZED.displayValue;
+        } else {
+          epicName = workItemsByEpic[epicKey][0].epicName;
+        }
+
+        return {
         name: epicName,
-        value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+        value: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
-          key: workItemsByEpic[epicName][0].epicKey,
+          key: epicKey,
         },
-        workItems: workItemsByEpic[epicName],
-      })),
+        workItems: workItemsByEpic[epicKey],
+      }}),
       dataLabels: {
         enabled: true,
         useHTML: true,
