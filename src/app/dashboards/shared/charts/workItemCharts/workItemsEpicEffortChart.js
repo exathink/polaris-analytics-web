@@ -13,6 +13,15 @@ const TEXT_LIMIT = 37;
 const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
+function getEpicEffortValue(epicWorkItems, specsOnly) {
+  if (specsOnly) {
+    return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0);
+  }
+
+  // add default effort for non-spec workItems with null/0 effort
+  return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0);
+}
+
 function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
 
@@ -87,7 +96,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           return {
           id: epicKey,
           name: epicName,
-          value: getEffortValue(workItemsByEpic[epicKey], specsOnly),
+          value: getEpicEffortValue(workItemsByEpic[epicKey], specsOnly),
           actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
             name: epicName,
@@ -103,15 +112,6 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       },
     },
   ];
-}
-
-function getEffortValue(epicWorkItems, specsOnly) {
-  if (specsOnly) {
-    return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0);
-  }
-
-  // add default effort for non-spec workItems with null/0 effort
-  return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0);
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
@@ -136,7 +136,7 @@ function getSeries(workItems, specsOnly, intl, view) {
 
         return {
         name: epicName,
-        value: getEffortValue(workItemsByEpic[epicKey], specsOnly),
+        value: getEpicEffortValue(workItemsByEpic[epicKey], specsOnly),
         actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
