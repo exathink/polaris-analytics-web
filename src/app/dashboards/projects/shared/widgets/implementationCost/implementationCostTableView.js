@@ -19,15 +19,6 @@ const UncategorizedEpic = {
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
-  endDate: UncategorizedKey,
-  effort: UncategorizedKey,
-  duration: UncategorizedKey,
-  authorCount: UncategorizedKey,
-  budget: UncategorizedKey,
-  startDate: UncategorizedKey,
-  closed: UncategorizedKey,
-  lastUpdate: UncategorizedKey,
-  elapsed: UncategorizedKey,
 };
 
 function edgeCaseCompare(a, b, propName) {
