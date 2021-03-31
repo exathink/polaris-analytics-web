@@ -19,7 +19,8 @@ function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
       return {
         name: w.name,
-        value: w.effort || DEFAULT_EFFORT,
+        value: specsOnly ? w.effort : (w.effort || DEFAULT_EFFORT),
+        actualValue: w.effort,
         parent: w.epicKey || UNCATEGORIZED.key,
         workItem: w,
       };
@@ -86,7 +87,8 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           return {
           id: epicKey,
           name: epicName,
-          value: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+          value: getEffortValue(workItemsByEpic[epicKey], specsOnly),
+          actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
             name: epicName,
             key: epicKey,
@@ -101,6 +103,15 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       },
     },
   ];
+}
+
+function getEffortValue(epicWorkItems, specsOnly) {
+  if (specsOnly) {
+    return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0);
+  }
+
+  // add default effort for non-spec workItems with null/0 effort
+  return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0);
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
@@ -125,7 +136,8 @@ function getSeries(workItems, specsOnly, intl, view) {
 
         return {
         name: epicName,
-        value: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+        value: getEffortValue(workItemsByEpic[epicKey], specsOnly),
+        actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
           key: epicKey,
@@ -208,14 +220,14 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, value, workItems, workItem, parent} = this.point;
+          const {name, actualValue, workItems, workItem, parent} = this.point;
           if (showHierarchy) {
-            let effortVal = value;
+            let effortVal = actualValue;
             let cards = [];
             if (parent == null) {
               cards = [[`Cards`, `${workItems.length}`]];
             } else {
-              effortVal = workItem.effort == null ? null : workItem.effort;
+              effortVal = workItem.effort;
             }
 
             return tooltipHtml({
@@ -226,7 +238,7 @@ export const WorkItemsEpicEffortChart = Chart({
           return tooltipHtml({
             header: `${name}`,
             body: [
-              [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
+              [`Effort`, `${intl.formatNumber(actualValue)} Dev-Days`],
               [`Cards`, `${workItems.length}`],
             ],
           });
