@@ -14,16 +14,18 @@ const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
 function getHierarchySeries(workItems, specsOnly, intl) {
-  const workItemPoints = workItems.map((w) => {
-    return {
-      name: w.name,
-      value: w.effort || DEFAULT_EFFORT,
-      parent: w.epicKey || UNCATEGORIZED.key,
-      workItem: w,
-    };
-  });
+  const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
 
-  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
+  const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
+      return {
+        name: w.name,
+        value: w.effort || DEFAULT_EFFORT,
+        parent: w.epicKey || UNCATEGORIZED.key,
+        workItem: w,
+      };
+    });
+
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -92,7 +94,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           color: epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.color : colors[i % colors.length-1],
           workItems: workItemsByEpic[epicKey],
         }
-      }).concat(workItemPoints),
+      }).concat(nonEpicWorkItemPoints),
       dataLabels: {
         enabled: true,
         useHTML: true,
@@ -102,7 +104,9 @@ function getHierarchySeries(workItems, specsOnly, intl) {
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
+  const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
+
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
