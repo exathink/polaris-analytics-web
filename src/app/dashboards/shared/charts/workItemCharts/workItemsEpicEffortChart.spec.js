@@ -2,7 +2,7 @@ import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual} from "../../../../../test/test-utils";
 import {Colors} from "../../../shared/config";
-import {WorkItemsEpicEffortChart} from "./workItemsEpicEffortChart";
+import {WorkItemsEpicEffortChart, DEFAULT_EFFORT} from "./workItemsEpicEffortChart";
 
 // clear mocks after each test
 afterEach(() => {
@@ -201,6 +201,40 @@ describe("WorkItemsEpicEffortChart", () => {
             ],
           });
         });
+
+        test("should render the tree map chart for epics having all items with effort equal to null", () => {
+          const props = {
+            ...propsFixture,
+            workItems: [
+              {
+                name: "Gitlab enhancement type displays as undefined on UI. ",
+                key: "0eef4d17-8882-4d5e-a32e-dab51ec8e869:4266",
+                workItemKey: "0eef4d17-8882-4d5e-a32e-dab51ec8e869",
+                workItemType: "bug",
+                displayId: "PO-548",
+                epicName: "Gitlab Work Tracking",
+                epicKey: "90f21323-1020-4783-abad-fb672d4a888b",
+                effort: null,
+              },
+              {
+                name: "Defect Lead Time/ Cycle Time Trends",
+                key: "7f7d0bdd-a862-4b81-a3f0-d3c1266762ce:4177",
+                workItemKey: "7f7d0bdd-a862-4b81-a3f0-d3c1266762ce",
+                displayId: "PO-494",
+                epicName: "Gitlab Work Tracking",
+                epicKey: "90f21323-1020-4783-abad-fb672d4a888b",
+                effort: null,
+              },
+            ],
+          };
+          const {series} = renderedChartConfig(<WorkItemsEpicEffortChart {...props} />);
+          const [{data}] = series;
+          expect(data).toHaveLength(1);
+
+          const pointWithNoEffort = data[0];
+          expect(pointWithNoEffort.value).toBe(DEFAULT_EFFORT*2);
+        });
+
       });
     });
 
@@ -317,6 +351,30 @@ describe("WorkItemsEpicEffortChart", () => {
             header: `Defect Lead Time/ Cycle Time Trends`,
             body: [["Effort", "0.5 Dev-Days"]],
           });
+        });
+
+        test("should render the tree map chart for epics having all items with effort equal to null", () => {
+          const props = {
+            ...propsFixtureForDetailView,
+            workItems: [
+              {
+                name: "Gitlab enhancement type displays as undefined on UI. ",
+                key: "0eef4d17-8882-4d5e-a32e-dab51ec8e869:4266",
+                workItemKey: "0eef4d17-8882-4d5e-a32e-dab51ec8e869",
+                workItemType: "bug",
+                displayId: "PO-548",
+                epicName: "Gitlab Work Tracking",
+                epicKey: "90f21323-1020-4783-abad-fb672d4a888b",
+                effort: null,
+              },
+            ],
+          };
+          const {series} = renderedChartConfig(<WorkItemsEpicEffortChart {...props} />);
+          const [{data}] = series;
+          expect(data).toHaveLength(2);
+
+          const pointWithNoEffort = data[1];
+          expect(pointWithNoEffort.value).toBe(DEFAULT_EFFORT);
         });
       });
     });
