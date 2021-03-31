@@ -220,19 +220,16 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, actualValue, workItems, workItem, parent} = this.point;
+          const {name, actualValue, workItems, parent} = this.point;
           if (showHierarchy) {
-            let effortVal = actualValue;
             let cards = [];
             if (parent == null) {
               cards = [[`Cards`, `${workItems.length}`]];
-            } else {
-              effortVal = workItem.effort;
             }
 
             return tooltipHtml({
               header: `${name}`,
-              body: [[`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`], ...cards],
+              body: [[`Effort`, `${intl.formatNumber(actualValue)} Dev-Days`], ...cards],
             });
           }
           return tooltipHtml({
