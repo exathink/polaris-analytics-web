@@ -1,6 +1,6 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
-import {buildIndex, fromNow} from "../../../../../helpers/utility";
+import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
@@ -8,7 +8,6 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
-import moment from "moment";
 
 const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
@@ -60,9 +59,7 @@ export const SORTER = {
     }
 
     const [date_a, date_b] = [a[propName], b[propName]];
-    const moment_a = moment(date_a, "MM/DD/YYYY");
-    const moment_b = moment(date_b, "MM/DD/YYYY");
-    const span = moment.duration(moment_a.diff(moment_b));
+    const span = diff_in_dates(date_a, date_b);
     return span["_milliseconds"];
   },
   number_compare: (a, b, propName) => {
