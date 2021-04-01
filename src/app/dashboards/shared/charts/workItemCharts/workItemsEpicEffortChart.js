@@ -13,13 +13,12 @@ const TEXT_LIMIT = 37;
 const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
-function getEpicEffortValue(epicWorkItems, specsOnly) {
+function getEpicPointValue(epicWorkItems, specsOnly) {
   if (specsOnly) {
     return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0);
   }
 
-  // add default effort for non-spec workItems with null/0 effort
-  return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + (workItem.effort || DEFAULT_EFFORT), 0);
+  return epicWorkItems.length;
 }
 
 function getHierarchySeries(workItems, specsOnly, intl) {
@@ -29,7 +28,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       return {
         name: w.name,
         value: specsOnly ? w.effort : (w.effort || DEFAULT_EFFORT),
-        actualValue: w.effort,
+        effortValue: w.effort,
         parent: w.epicKey || UNCATEGORIZED.key,
         workItem: w,
       };
@@ -96,8 +95,8 @@ function getHierarchySeries(workItems, specsOnly, intl) {
           return {
           id: epicKey,
           name: epicName,
-          value: getEpicEffortValue(workItemsByEpic[epicKey], specsOnly),
-          actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+          value: getEpicPointValue(workItemsByEpic[epicKey], specsOnly),
+          effortValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
             name: epicName,
             key: epicKey,
@@ -136,8 +135,8 @@ function getSeries(workItems, specsOnly, intl, view) {
 
         return {
         name: epicName,
-        value: getEpicEffortValue(workItemsByEpic[epicKey], specsOnly),
-        actualValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+        value: getEpicPointValue(workItemsByEpic[epicKey], specsOnly),
+        effortValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
           key: epicKey,
@@ -220,7 +219,7 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, actualValue, workItems, parent} = this.point;
+          const {name, effortValue, workItems, parent} = this.point;
           if (showHierarchy) {
             let cards = [];
             if (parent == null) {
@@ -229,13 +228,13 @@ export const WorkItemsEpicEffortChart = Chart({
 
             return tooltipHtml({
               header: `${name}`,
-              body: [[`Effort`, `${intl.formatNumber(actualValue)} Dev-Days`], ...cards],
+              body: [[`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`], ...cards],
             });
           }
           return tooltipHtml({
             header: `${name}`,
             body: [
-              [`Effort`, `${intl.formatNumber(actualValue)} Dev-Days`],
+              [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`],
               [`Cards`, `${workItems.length}`],
             ],
           });
