@@ -149,9 +149,9 @@ describe("WorkItemsEpicEffortChart", () => {
           expectSetsAreEqual(
             workItemsByEpicSeries.data.map((point) => [point.name, point.value]),
             [
-              ["Quality Trends", 1.5],
-              ["Contributor Alias UI", 0.3],
-              ["Misc UX", 2.8],
+              ["Quality Trends", 2],
+              ["Contributor Alias UI", 1],
+              ["Misc UX", 1],
             ]
           );
         });
@@ -232,7 +232,7 @@ describe("WorkItemsEpicEffortChart", () => {
           expect(data).toHaveLength(1);
 
           const pointWithNoEffort = data[0];
-          expect(pointWithNoEffort.value).toBe(DEFAULT_EFFORT*2);
+          expect(pointWithNoEffort.value).toBe(2);
         });
 
       });
@@ -302,9 +302,9 @@ describe("WorkItemsEpicEffortChart", () => {
           expectSetsAreEqual(
             workItemsByEpicSeries.data.map((point) => [point.name, point.value]),
             [
-              ["Quality Trends", 1.5],
-              ["Contributor Alias UI", 0.3],
-              ["Misc UX", 2.8],
+              ["Quality Trends", 2],
+              ["Contributor Alias UI", 1],
+              ["Misc UX", 1],
               ...propsFixtureForDetailView.workItems.map((x) => [x.name, x.effort]),
             ]
           );
