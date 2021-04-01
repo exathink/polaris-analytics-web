@@ -1,0 +1,67 @@
+.flowDashboard{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto 1fr auto 1.8fr;
+    gap: 0.5rem;
+    grid-template-areas: "leadTime quality valueMix valueMix team traceability"
+    "flowRow flowRow flowRow flowRow flowRow flowRow"
+    "closed closed funnel funnel wip wip"
+    "valueRow valueRow scopeSelector scopeSelector . ."
+    "valueBookClosed valueBookClosed valueMixChart valueMixChart valueBookWip valueBookWip"
+}
+
+.leadTime{
+    grid-area: leadTime;
+    padding: 0.25rem;
+}
+.quality{
+    grid-area: quality;
+    padding: 0.25rem;
+}
+.valueMix{
+    grid-area: valueMix;
+    padding: 0.25rem;
+}
+.team{
+    grid-area: team;
+    padding: 0.25rem;
+}
+.traceability{
+    grid-area: traceability;
+    padding: 0.25rem;
+}
+.flowRow{
+    grid-area: flowRow;
+    padding-left: 0.25rem;
+}
+.closed{
+    grid-area: closed;
+    padding: 0.25rem;
+}
+.funnel{
+    grid-area: funnel;
+    padding: 0.25rem;
+}
+.wip{
+    grid-area: wip;
+    padding: 0.25rem;
+}
+.scopeSelector{
+    grid-area: scopeSelector;
+}
+.valueRow{
+    grid-area: valueRow;
+    padding-left: 0.25rem;
+}
+.valueBookClosed{
+    grid-area: valueBookClosed;
+    padding: 0.25rem;
+}
+.valueMixChart{
+    grid-area: valueMixChart;
+    padding: 0.25rem;
+}
+.valueBookWip{
+    grid-area: valueBookWip;
+    padding: 0.25rem;
+}
