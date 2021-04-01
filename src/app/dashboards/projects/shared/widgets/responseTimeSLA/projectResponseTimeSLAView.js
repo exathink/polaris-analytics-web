@@ -146,7 +146,7 @@ const LeadTimeSLA = ({responseTimeConfidenceTrends, cycleMetricsTrends, leadTime
   return (
     <React.Fragment>
       <VizRow h={"100%"}>
-        <VizItem w={0.6}>
+        <VizItem w={0.5}>
           <FlowStatistic
             title={
               <span>
@@ -160,7 +160,7 @@ const LeadTimeSLA = ({responseTimeConfidenceTrends, cycleMetricsTrends, leadTime
             uom={"Days"}
           />
         </VizItem>
-        <VizItem w={0.4}>
+        <VizItem w={0.5}>
           <PercentileLeadTime
             title={"Actual"}
             currentMeasurement={currentCycleMetrics}
