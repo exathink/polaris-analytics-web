@@ -1,6 +1,5 @@
 import React from "react";
 import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {ProjectImplementationCostDetailDashboard} from "./projectImplementationCostDetailDashboard";
 
 export const ProjectImplementationCostView = ({
@@ -23,8 +22,6 @@ export const ProjectImplementationCostView = ({
   }
 
   return (
-    <VizRow h={1}>
-      <VizItem w={1}>
         <WorkItemsEpicEffortChart
           workItems={workItems}
           specsOnly={specsOnly}
@@ -36,7 +33,5 @@ export const ProjectImplementationCostView = ({
           showHierarchy={showHierarchy}
           context={context}
         />
-      </VizItem>
-    </VizRow>
   );
 };
