@@ -156,8 +156,7 @@ describe("ProjectPipelineFunnelWidget", () => {
       await screen.findByTestId("pipeline-funnel-chart");
 
       const specElements = await screen.findAllByText(/Specs/i);
-      // 2 ocurrences of specs, 1 on workItemScope selector, 1 on chart legend.
-      expect(specElements).toHaveLength(2);
+      expect(specElements).toHaveLength(1);
     });
   });
 });
