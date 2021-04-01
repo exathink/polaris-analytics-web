@@ -14,11 +14,9 @@ const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
 function getEpicPointValue(epicWorkItems, specsOnly) {
-  if (specsOnly) {
-    return epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0);
-  }
-
-  return epicWorkItems.length;
+  return specsOnly
+    ? epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0)
+    : epicWorkItems.length;
 }
 
 function getHierarchySeries(workItems, specsOnly, intl) {
@@ -27,7 +25,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
       return {
         name: w.name,
-        value: specsOnly ? w.effort : (w.effort || DEFAULT_EFFORT),
+        value: specsOnly ? w.effort : 1,
         effortValue: w.effort,
         parent: w.epicKey || UNCATEGORIZED.key,
         workItem: w,
@@ -86,12 +84,9 @@ function getHierarchySeries(workItems, specsOnly, intl) {
       ],
       data: Object.keys(workItemsByEpic)
         .map((epicKey, i) => {
-          let epicName;
-          if (epicKey === UNCATEGORIZED.key) {
-            epicName = UNCATEGORIZED.displayValue;
-          } else {
-            epicName = workItemsByEpic[epicKey][0].epicName
-          }
+          const epicName =
+            epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
+
           return {
           id: epicKey,
           name: epicName,
@@ -126,12 +121,8 @@ function getSeries(workItems, specsOnly, intl, view) {
       //color: '#ddd6e2',
 
       data: Object.keys(workItemsByEpic).map((epicKey) => {
-        let epicName;
-        if (epicKey === UNCATEGORIZED.key) {
-          epicName = UNCATEGORIZED.displayValue;
-        } else {
-          epicName = workItemsByEpic[epicKey][0].epicName;
-        }
+        const epicName =
+          epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
 
         return {
         name: epicName,
