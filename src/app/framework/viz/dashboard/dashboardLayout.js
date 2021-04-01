@@ -1,7 +1,7 @@
 import uniqueStyles from './dashboard.module.css';
 import React from 'react';
-
-import {Flex} from 'reflexbox';
+import classNames from "classnames";
+import {Flex} from "reflexbox";
 import {cloneChildrenWithProps, findFirstDescendant} from "../../../helpers/reactHelpers";
 
 import {Tabs} from "antd";
@@ -10,7 +10,7 @@ import {withNavigationContext} from '../../navigation/components/withNavigationC
 
 const {TabPane} = Tabs;
 
-export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, ...rest}) => {
+export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, className="", ...rest}) => {
     React.useEffect(() => {
       setActiveDashboardVideoConfig(dashboardVideoConfig);
     }, []);
@@ -28,65 +28,83 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
       )
     } else {
       return (
-        <div className={uniqueStyles["dashboard"]}>
+        <div className={classNames(uniqueStyles["dashboard"], className)}>
           {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
         </div>
       );
     }
 });
 
-export const DashboardRow = ({children, h, title, subTitle, controls, align, ...rest}) => (
-  <React.Fragment>
-    {
-      title || controls ?
-        <div className={uniqueStyles["dashboard-row-title-container"]}>
-          {
-            title ?
-              <nav className={uniqueStyles['menu']} style={{width: '30%'}}>
-                <h3 className={uniqueStyles["dashboard-row-title"]}>
-                  {title}
-                </h3>
-                {
-                  subTitle &&
-                    <h4 className={uniqueStyles["dashboard-row-subtitle"]}>
-                      {subTitle}
-                    </h4>
-                }
-              </nav>
-              :
-              null
-          }
-          {
-            controls ?
-              <nav className={uniqueStyles['menu'] + " " + uniqueStyles["title-control-container"]} style={{width: '70%', paddingRight: '75px'}}>
-                <React.Fragment>
-                  {
-                    // Adding reverse here because we would like to the controls to laid
-                    // out left to right in the same order that they appear in the array
-                    controls.reverse().map(
-                      (control, index) =>
-                        <div key={index} className={uniqueStyles['title-control']}>
-                          {React.createElement(control)}
-                        </div>
-                    )
-                  }
-                </React.Fragment>
-
-              </nav>
-              :
-              null
-          }
-        </div>
-        :
-        null
+export const DashboardRow = ({children, h, title, subTitle, controls, align, className = "", gridLayout, ...rest}) => {
+  function getDashboardRow() {
+    if (gridLayout) {
+      return cloneChildrenWithProps(children, {...rest});
+    } else {
+      return (
+        <Flex
+          auto
+          align={align || "center"}
+          className={uniqueStyles["dashboard-row"]}
+          style={{
+            height: h,
+          }}
+        >
+          {cloneChildrenWithProps(children, {...rest})}
+        </Flex>
+      );
     }
-    <Flex auto align={align || 'center'}  className={uniqueStyles["dashboard-row"]} style={{
-      height: h
-    }}>
-      {cloneChildrenWithProps(children, {...rest})}
-    </Flex>
-  </React.Fragment>
-);
+  }
+
+  function getTitle() {
+    if (title) {
+      return (
+        <nav className={uniqueStyles["menu"]} style={gridLayout ? {} : {width: "30%"}}>
+          <h3 className={uniqueStyles["dashboard-row-title"]}>{title}</h3>
+          {subTitle && <h4 className={uniqueStyles["dashboard-row-subtitle"]}>{subTitle}</h4>}
+        </nav>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  function getControls() {
+    if (controls) {
+      return (
+        <nav
+          className={uniqueStyles["menu"] + " " + uniqueStyles["title-control-container"]}
+          style={gridLayout ? {} : {width: "70%", paddingRight: "75px"}}
+        >
+          <React.Fragment>
+            {
+              // Adding reverse here because we would like to the controls to laid
+              // out left to right in the same order that they appear in the array
+              controls.reverse().map((control, index) => (
+                <div key={index} className={uniqueStyles["title-control"]}>
+                  {React.createElement(control)}
+                </div>
+              ))
+            }
+          </React.Fragment>
+        </nav>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  return (
+    <React.Fragment>
+      {title || controls ? (
+        <div className={classNames(uniqueStyles["dashboard-row-title-container"], className)}>
+          {getTitle()}
+          {getControls()}
+        </div>
+      ) : null}
+      {getDashboardRow()}
+    </React.Fragment>
+  );
+};
 
 
 export const DashboardTabs = ({children, ...rest}) => (
