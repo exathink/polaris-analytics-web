@@ -50,7 +50,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
-  ] = useTrendsControlBarState(45, 30, 7);
+  ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
   return (
     <Dashboard
@@ -93,7 +93,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
+      <DashboardRow h="45%" title={getFlowMetricsRowTitle(measurementWindowRange, before)}>
         <DashboardWidget
           w={1}
           name="flow-metrics-delivery-details"

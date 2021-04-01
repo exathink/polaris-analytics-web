@@ -69,6 +69,7 @@ export const ProjectVolumeTrendsWidget = React.memo((
           leadTimeConfidenceTarget={leadTimeConfidenceTarget}
           cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
           view={view}
+          context={context}
         />
     )
 });

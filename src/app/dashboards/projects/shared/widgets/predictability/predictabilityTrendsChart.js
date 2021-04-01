@@ -32,6 +32,7 @@ export const PredictabilityTrendsChart = Chart({
         id: "cycle_time_box",
         name: `${boxPlotSeriesName}`,
         type: "boxplot",
+        allowPointSelect: true,
         data: flowMetricsTrends
           .map((measurement) => ({
             x: toMoment(measurement["measurementDate"], true).valueOf(),
