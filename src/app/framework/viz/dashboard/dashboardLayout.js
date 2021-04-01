@@ -38,7 +38,7 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
 export const DashboardRow = ({children, h, title, subTitle, controls, align, className = "", gridLayout, ...rest}) => {
   function getDashboardRow() {
     if (gridLayout) {
-      return cloneChildrenWithProps(children, {...rest});
+      return cloneChildrenWithProps(children, {gridLayout: gridLayout, ...rest});
     } else {
       return (
         <Flex
