@@ -23,6 +23,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                             name
                             key
                             workItemKey
+                            workItemType
                             displayId
                             epicName
                             epicKey
