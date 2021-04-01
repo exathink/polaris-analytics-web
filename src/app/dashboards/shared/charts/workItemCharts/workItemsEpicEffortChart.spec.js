@@ -305,7 +305,7 @@ describe("WorkItemsEpicEffortChart", () => {
               ["Quality Trends", 2],
               ["Contributor Alias UI", 1],
               ["Misc UX", 1],
-              ...propsFixtureForDetailView.workItems.map((x) => [x.name, x.effort]),
+              ...propsFixtureForDetailView.workItems.map((x) => [x.name, 1]),
             ]
           );
         });
@@ -374,7 +374,7 @@ describe("WorkItemsEpicEffortChart", () => {
           expect(data).toHaveLength(2);
 
           const pointWithNoEffort = data[1];
-          expect(pointWithNoEffort.value).toBe(DEFAULT_EFFORT);
+          expect(pointWithNoEffort.value).toBe(1);
         });
       });
     });
