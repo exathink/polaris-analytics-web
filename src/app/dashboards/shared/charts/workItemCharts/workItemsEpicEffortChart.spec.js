@@ -2,7 +2,7 @@ import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual} from "../../../../../test/test-utils";
 import {Colors} from "../../../shared/config";
-import {WorkItemsEpicEffortChart, DEFAULT_EFFORT} from "./workItemsEpicEffortChart";
+import {WorkItemsEpicEffortChart} from "./workItemsEpicEffortChart";
 
 // clear mocks after each test
 afterEach(() => {
