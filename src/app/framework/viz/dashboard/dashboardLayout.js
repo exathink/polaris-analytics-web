@@ -59,7 +59,7 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, cla
     if (title) {
       return (
         <nav className={uniqueStyles["menu"]} style={gridLayout ? {} : {width: "30%"}}>
-          <h3 className={uniqueStyles["dashboard-row-title"]}>{title}</h3>
+          <h3 className={gridLayout ? uniqueStyles["dashboard-row-title-new"]: uniqueStyles["dashboard-row-title"]}>{title}</h3>
           {subTitle && <h4 className={uniqueStyles["dashboard-row-subtitle"]}>{subTitle}</h4>}
         </nav>
       );
