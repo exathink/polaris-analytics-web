@@ -99,8 +99,9 @@ export function formatDate(epoch, format) {
 export function getServerDate(date) {
   if (date == null) {
     return moment.utc()
+  } else {
+    return moment(date, 'YYYY-MM-DD').utc(true);
   }
-  return moment(date, 'YYYY-MM-DD');
 }
 
 export function span(date_a, date_b) {
