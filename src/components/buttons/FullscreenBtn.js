@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import screenfull from 'screenfull';
 import {withNavigationContext} from "../../app/framework/navigation/components/withNavigationContext";
-import {withViewerContext} from '../../app/framework/viewer/viewerContext';
 import styles from "./buttons.module.css"
 class FullscreenBtn extends Component {
 
   componentDidUpdate() {
-    const {fullScreen, componentId, viewerContext: {resetStore}} = this.props;
+    const {fullScreen, componentId} = this.props;
 
     if(fullScreen !== screenfull.isFullscreen) {
       screenfull.toggle(document.getElementById(componentId));
-      resetStore();
     }
 
   }
@@ -28,4 +26,4 @@ class FullscreenBtn extends Component {
   }
 }
 
-export default withViewerContext(withNavigationContext(FullscreenBtn));
+export default withNavigationContext(FullscreenBtn);
