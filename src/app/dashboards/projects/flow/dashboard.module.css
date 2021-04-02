@@ -1,7 +1,7 @@
 .flowDashboard{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto auto 25% auto 47%;
+    grid-template-rows: auto auto 1fr auto 1.9fr;
     gap: 0.5rem;
     grid-template-areas: "leadTime quality valueMix valueMix team traceability"
     "flowRow flowRow flowRow flowRow flowRow flowRow"
