@@ -1,7 +1,7 @@
 import {Alert, Button, InputNumber, Table} from "antd";
 import React from "react";
 import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
-import {formatAsDate, formatDateTime} from "../../../../../i18n/utils";
+import {formatAsDate} from "../../../../../i18n/utils";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
@@ -14,12 +14,74 @@ const UncategorizedKey = "Uncategorized";
 const UncategorizedEpic = {
   id: UncategorizedKey,
   displayId: UncategorizedKey,
-  name: "",
+  name: UncategorizedKey,
   key: UncategorizedKey,
   workItemType: "epic",
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
 };
+
+function edgeCaseCompare(a, b, propName) {
+  if (a.key === UncategorizedKey || b.key === UncategorizedKey) {
+    return 0;
+  }
+
+  const [firstVal, secondVal] = [a[propName], b[propName]];
+  if (firstVal == null && secondVal == null) {
+    return 0;
+  }
+
+  if (firstVal == null && secondVal != null) {
+    return 1;
+  }
+
+  if (firstVal != null && secondVal == null) {
+    return -1;
+  }
+
+  return null;
+}
+
+export const SORTER = {
+  date_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [date_a, date_b] = [a[propName], b[propName]];
+    const span = diff_in_dates(date_a, date_b);
+    return span["_milliseconds"];
+  },
+  number_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [numa, numb] = [a[propName], b[propName]];
+    return numa - numb;
+  },
+  string_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [stra, strb] = [a[propName], b[propName]];
+    return stra.localeCompare(strb);
+  },
+};
+
+function renderColumn(key) {
+  return (_text, record) => {
+    if (record.key === UncategorizedKey) {
+      return null;
+    }
+
+    return record[key];
+  };
+}
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
   const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
@@ -40,7 +102,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
     },
     {
@@ -48,7 +110,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "title",
       key: "title",
       width: "20%",
-      sorter: (a, b) => a.title.localeCompare(b.title),
+      sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       ...titleSearchState,
     },
     {
@@ -62,7 +124,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       dataIndex: "cards",
       key: "cards",
       width: "5%",
-      sorter: (a, b) => a.cards - b.cards,
+      sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
     },
 
     {
@@ -72,7 +134,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Budget",
           dataIndex: "budget",
           key: "budget",
-          sorter: (a, b) => a.budget - b.budget,
+          sorter: (a, b) => SORTER.number_compare(a, b, "budget"),
           width: "10%",
           render: (_text, record) => {
             if (record.key === UncategorizedKey) {
@@ -94,15 +156,17 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Actual",
           dataIndex: "totalEffort",
           key: "totalEffort",
-          sorter: (a, b) => a.totalEffort - b.totalEffort,
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
+          render: renderColumn("totalEffort")
         },
         {
           title: "Contributors",
           dataIndex: "totalContributors",
           key: "totalContributors",
-          sorter: (a, b) => a.totalContributors - b.totalContributors,
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalContributors"),
           width: "9%",
+          render: renderColumn("totalContributors")
         },
       ],
     },
@@ -113,25 +177,29 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
           title: "Started",
           dataIndex: "startDate",
           key: "startDate",
-          sorter: (a, b) => diff_in_dates(a.startDate, b.startDate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "startDate"),
+          render: renderColumn("startDate")
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
-          sorter: (a, b) => diff_in_dates(a.endDate, b.endDate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "endDate"),
+          render: renderColumn("endDate")
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
-          sorter: (a, b) => diff_in_dates(a.lastUpdate, b.lastUpdate),
+          sorter: (a, b) => SORTER.date_compare(a, b, "lastUpdate"),
+          render: renderColumn("lastUpdateDisplay")
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
-          sorter: (a, b) => a.elapsed - b.elapsed,
+          sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
+          render: renderColumn("elapsed")
         },
       ],
     },
@@ -150,22 +218,36 @@ function getEpicWorkItemsMap(epicWorkItems) {
   return new Map(epicWorkItems.map((x) => [x.key, x]));
 }
 
+const getNumber = (num, intl) => {
+  if (num != null && num !== UncategorizedKey) {
+    return intl.formatNumber(num, {maximumFractionDigits: 2})
+  }
+  return num;
+};
+
+const getDate = (date, intl) => {
+  if (date != null && date !== UncategorizedKey) {
+    return formatAsDate(intl, date);
+  }
+  return date; 
+};
+
 function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
   const transformWorkItem = (x) => {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name,
+      title: x.name != null && x.name !== UncategorizedKey ? x.name : "",
       cards: 1,
       type: x.workItemType,
-      budget: x.budget != null ? x.budget : "",
-      totalEffort: x.effort ? intl.formatNumber(x.effort, {maximumFractionDigits: 2}) : "",
-      totalContributors: x.authorCount,
-      startDate: x.startDate ? formatAsDate(intl, x.startDate) : "",
-      endDate: x.endDate ? formatAsDate(intl, x.endDate) : "",
-      lastUpdate: x.lastUpdate ? formatDateTime(intl, x.lastUpdate) : "",
-      lastUpdateDisplay: x.lastUpdate ? fromNow(x.lastUpdate): "",
-      elapsed: x.elapsed ? intl.formatNumber(x.elapsed, {maximumFractionDigits: 2}) : "",
+      budget: x.budget,
+      totalEffort: getNumber(x.effort, intl),
+      totalContributors: getNumber(x.authorCount, intl),
+      startDate: getDate(x.startDate, intl),
+      endDate: getDate(x.endDate, intl),
+      lastUpdate: getDate(x.lastUpdate, intl),
+      lastUpdateDisplay: x.lastUpdate != null && x.lastUpdate !== UncategorizedKey ? fromNow(x.lastUpdate): x.lastUpdate,
+      elapsed: getNumber(x.elapsed, intl),
     };
   };
 

@@ -7,23 +7,31 @@ import {Colors} from "../../config";
 require("highcharts/modules/treemap")(Highcharts);
 
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#a2c0de"};
-const DEFAULT_EFFORT = 0.2;
 const EFFORT_LIMIT = 0.5;
 const TEXT_LIMIT = 37;
 const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
-function getHierarchySeries(workItems, specsOnly, intl) {
-  const workItemPoints = workItems.map((w) => {
-    return {
-      name: w.name,
-      value: w.effort || DEFAULT_EFFORT,
-      parent: w.epicKey || UNCATEGORIZED.key,
-      workItem: w,
-    };
-  });
+function getEpicPointValue(epicWorkItems, specsOnly) {
+  return specsOnly
+    ? epicWorkItems.reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0)
+    : epicWorkItems.length;
+}
 
-  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicName || UNCATEGORIZED.displayValue);
+function getHierarchySeries(workItems, specsOnly, intl) {
+  const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
+
+  const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
+      return {
+        name: w.name,
+        value: specsOnly ? w.effort : 1,
+        effortValue: w.effort,
+        parent: w.epicKey || UNCATEGORIZED.key,
+        workItem: w,
+      };
+    });
+
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -74,18 +82,23 @@ function getHierarchySeries(workItems, specsOnly, intl) {
         },
       ],
       data: Object.keys(workItemsByEpic)
-        .map((epicName, i) => ({
-          id: workItemsByEpic[epicName][0].epicKey || UNCATEGORIZED.key,
+        .map((epicKey, i) => {
+          const epicName =
+            epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
+
+          return {
+          id: epicKey,
           name: epicName,
-          value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+          value: getEpicPointValue(workItemsByEpic[epicKey], specsOnly),
+          effortValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
           epic: {
             name: epicName,
-            key: workItemsByEpic[epicName][0].epicKey,
+            key: epicKey,
           },
-          color: epicName === UNCATEGORIZED.displayValue ? UNCATEGORIZED.color : colors[i % colors.length-1],
-          workItems: workItemsByEpic[epicName],
-        }))
-        .concat(workItemPoints),
+          color: epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.color : colors[i % colors.length-1],
+          workItems: workItemsByEpic[epicKey],
+        }
+      }).concat(nonEpicWorkItemPoints),
       dataLabels: {
         enabled: true,
         useHTML: true,
@@ -95,7 +108,9 @@ function getHierarchySeries(workItems, specsOnly, intl) {
 }
 
 function getSeries(workItems, specsOnly, intl, view) {
-  const workItemsByEpic = buildIndex(workItems, (workItem) => workItem.epicName || UNCATEGORIZED.displayValue);
+  const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
+
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -104,15 +119,20 @@ function getSeries(workItems, specsOnly, intl, view) {
       name: "Closed",
       //color: '#ddd6e2',
 
-      data: Object.keys(workItemsByEpic).map((epicName) => ({
+      data: Object.keys(workItemsByEpic).map((epicKey) => {
+        const epicName =
+          epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
+
+        return {
         name: epicName,
-        value: workItemsByEpic[epicName].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+        value: getEpicPointValue(workItemsByEpic[epicKey], specsOnly),
+        effortValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
         epic: {
           name: epicName,
-          key: workItemsByEpic[epicName][0].epicKey,
+          key: epicKey,
         },
-        workItems: workItemsByEpic[epicName],
-      })),
+        workItems: workItemsByEpic[epicKey],
+      }}),
       dataLabels: {
         enabled: true,
         useHTML: true,
@@ -189,25 +209,22 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, value, workItems, workItem, parent} = this.point;
+          const {name, effortValue, workItems, parent} = this.point;
           if (showHierarchy) {
-            let effortVal = value;
             let cards = [];
             if (parent == null) {
               cards = [[`Cards`, `${workItems.length}`]];
-            } else {
-              effortVal = workItem.effort == null ? null : workItem.effort;
             }
 
             return tooltipHtml({
               header: `${name}`,
-              body: [[`Effort`, `${intl.formatNumber(effortVal)} Dev-Days`], ...cards],
+              body: [[`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`], ...cards],
             });
           }
           return tooltipHtml({
             header: `${name}`,
             body: [
-              [`Effort`, `${intl.formatNumber(value)} Dev-Days`],
+              [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`],
               [`Cards`, `${workItems.length}`],
             ],
           });
