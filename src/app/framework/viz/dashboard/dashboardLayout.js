@@ -10,7 +10,7 @@ import {withNavigationContext} from '../../navigation/components/withNavigationC
 
 const {TabPane} = Tabs;
 
-export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, className="", ...rest}) => {
+export const DashboardLayout =  withNavigationContext(({children, itemSelected, dashboardVideoConfig, setActiveDashboardVideoConfig, className="", fullScreen,  ...rest}) => {
     React.useEffect(() => {
       setActiveDashboardVideoConfig(dashboardVideoConfig);
     }, []);
@@ -27,8 +27,9 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
 
       )
     } else {
+      const keyProp = rest.gridLayout ? {key: fullScreen} : {};
       return (
-        <div className={classNames(uniqueStyles["dashboard"], className)}>
+        <div className={classNames(uniqueStyles["dashboard"], className)} {...keyProp}>
           {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
         </div>
       );
