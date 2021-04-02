@@ -18,7 +18,7 @@ export function useQueryProjectTraceabilityTrends(
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
-          $before: DateTime,
+          $before: Date,
           $excludeMerges: Boolean,
           $referenceString: String, 
           ) {

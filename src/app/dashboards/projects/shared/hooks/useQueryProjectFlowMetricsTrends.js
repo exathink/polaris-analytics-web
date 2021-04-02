@@ -9,7 +9,7 @@ export const FLOW_METRICS_TRENDS_QUERY = gql`
     $samplingFrequency: Int!
     $leadTimeTargetPercentile: Float!
     $cycleTimeTargetPercentile: Float!
-    $before: DateTime
+    $before: Date
     $specsOnly: Boolean
     $referenceString: String
     $defectsOnly: Boolean
