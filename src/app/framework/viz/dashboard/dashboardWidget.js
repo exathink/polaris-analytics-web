@@ -4,6 +4,7 @@ import {withNavigationContext} from "../../navigation/components/withNavigationC
 import {withRouter} from 'react-router';
 import {EmbedVideoPlayer, useVideo} from "../videoPlayer/videoPlayer";
 import uniqueStyles from './dashboard.module.css';
+import classNames from "classnames";
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
   showDetail?
@@ -30,11 +31,11 @@ function getVideoClassNames(itemSelected, showDetail) {
 }
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, fullScreen, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, fullScreen, className="", gridLayout, ...rest}) => {
   const videoPlayerProps = useVideo();
-
+  const margin = gridLayout ? {}: {m: 1};
   return (
-    <Flex column w={w} m={1} className={uniqueStyles["dashboard-item"]}>
+    <Flex column w={w} {...margin} className={classNames(uniqueStyles["dashboard-item"], className)}>
       {
         title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
