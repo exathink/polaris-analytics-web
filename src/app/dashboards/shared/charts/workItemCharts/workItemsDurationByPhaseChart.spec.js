@@ -310,7 +310,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
           body: [
-            [`Cycle Time:`, `${formatNumber(cycleTime)} days`],
+            [`Cycle Time:`, expect.stringContaining("days")],
             [`Current State:`, `${state}`],
             [`Entered:`, `${timeInStateDisplay}`],
             ["", ""],
@@ -318,9 +318,12 @@ describe("WorkItemsDurationsByPhaseChart", () => {
             [`Commits: `, `${formatNumber(commitCount)}`],
             [`Latest Commit: `, `${latestCommitDisplay}`],
             [`Duration: `, `${formatNumber(duration)} days`],
-            [`Latency: `, `${formatNumber(latency)} days`],
+            [`Latency: `, expect.stringContaining("days")],
           ],
         });
+
+        expect(Number(actual.body[0][1].split(" ")[0])).toBeCloseTo(cycleTime, 0);
+        expect(Number(actual.body[8][1].split(" ")[0])).toBeCloseTo(latency, 0);
       });
     });
 
@@ -726,7 +729,9 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         test("it sets correct value for y axis for each point", () => {
           // for non-closed workItems, filter backlog and transition having daysInState to be null in(currentDeliveryCycleDurations).
           // for this particular case we will only have single point(which is current workItemState)
-          expect(storySeries.data[0].y).toBeCloseTo(32, 2);
+          
+          //a precision of 0 allows x to be anything from y - 0.5 to y + 0.5
+          expect(storySeries.data[0].y).toBeCloseTo(32, 0);
         });
 
         test("it sets correct name for each point", () => {
@@ -744,10 +749,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         });
 
         test("it sets correct value for y axis for each point", () => {
-          expectSetsAreEqual(
-            taskSeries.data.map((point) => point.y).map((x) => x.toFixed(2)),
-            [15, 22, 6.065995370370371].map((x) => x.toFixed(2))
-          );
+          [15, 6.065995370370371, 22].forEach((x, i) => expect(x).toBeCloseTo((taskSeries.data[i].y), 0));
         });
 
         test("it sets correct name for each point", () => {
