@@ -25,7 +25,7 @@ class ChartWrapper extends React.Component {
     const {height, width, minHeight, minWidth, size} = props;
     config.chart.height = height || minHeight ? Math.max(size.height, minHeight) : size.height;
     config.chart.width = width || minWidth ? Math.max(size.width, minWidth) : size.width;
-    if (config.tooltip) {
+    if (config.tooltip && config.tooltip.useHTML) {
       config.tooltip.padding = 1;
     }
     config.chart.style = {
