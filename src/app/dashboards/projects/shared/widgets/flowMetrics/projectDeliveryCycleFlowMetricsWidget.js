@@ -16,6 +16,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
   days,
+  before,
+  initialMetric,
   defectsOnly,
   stateMappingIndex,
   pollInterval,
@@ -25,6 +27,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
     days,
     defectsOnly,
     specsOnly,
+    before,
     referenceString: latestWorkItemEvent,
   });
 
@@ -60,6 +63,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
       targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
+      initialMetric={initialMetric}
     />
   );
 };

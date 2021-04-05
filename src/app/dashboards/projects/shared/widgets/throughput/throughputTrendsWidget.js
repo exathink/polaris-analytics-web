@@ -4,8 +4,9 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectVolumeTrendsView} from "./throughputTrendsView"
 import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
+import {getServerDate} from "../../../../../helpers/utility";
 
-export const ProjectVolumeTrendsWidget = (
+export const ProjectVolumeTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -16,6 +17,12 @@ export const ProjectVolumeTrendsWidget = (
     measurementWindow,
     samplingFrequency,
     targetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
+    setBefore,
+    setSeriesName,
     pollInterval
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -39,6 +46,15 @@ export const ProjectVolumeTrendsWidget = (
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           view={view}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              const [{measurementDate, key}] = workItems;
+              if (setBefore && setSeriesName) {
+                setBefore(getServerDate(measurementDate));
+                setSeriesName(key);
+              }
+            }
+          }}
         />
         :
         <ProjectVolumeTrendsDetailDashboard
@@ -48,8 +64,12 @@ export const ProjectVolumeTrendsWidget = (
           measurementWindow={measurementWindow}
           days={days}
           samplingFrequency={samplingFrequency}
-
+          leadTimeTarget={leadTimeTarget}
+          cycleTimeTarget={cycleTimeTarget}
+          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
           view={view}
+          context={context}
         />
     )
-}
+});

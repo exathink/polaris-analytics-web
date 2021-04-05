@@ -6,6 +6,7 @@ export const VolumeTrendsChart = ({
   flowMetricsTrends,
   measurementPeriod,
   measurementWindow,
+  onSelectionChange,
   view
 }) => (
   <MeasurementTrendLineChart
@@ -17,7 +18,7 @@ export const VolumeTrendsChart = ({
       ]}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
-
+      onSelectionChange={onSelectionChange}
       config={{
         title: 'Volume',
         yAxisUom: 'Cards',

@@ -27,6 +27,10 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
 
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
 
+  React.useEffect(() => {
+    initialMetric && setSelectedMetric(initialMetric);
+  }, [initialMetric]);
+
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
@@ -37,6 +41,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
             display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
           }))}
           initialValue={selectedMetric}
+          value={selectedMetric}
           onGroupingChanged={setSelectedMetric}
         />
         {!defectsOnly && (

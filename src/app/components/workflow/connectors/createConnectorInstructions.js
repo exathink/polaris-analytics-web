@@ -17,22 +17,16 @@ const JiraConnectorInstructions = ({part}) => (
 
 
       <ol>
-        <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps.
+        <li>Login to your Jira instance as an adminstrator and navigate to Jira Settings -> Apps -> Manage Apps -> Find New Apps.
+          Alternatively if you are on a newer version of the Jira UI, you can also navigate to the Find New Apps view on the
+          Atlassian Marketplace
+          from the top level Apps menu.
         </li>
         <li>
-          Click on Settings in the Manage Apps view, and enable private listings <em>and</em> development mode
-          checkboxes.
-          This is needed while the Polaris Flow app
-          is in private beta. Once the app is released on the Atlassian Marketplace this step will not be needed.
-          You should see an 'Upload App' link (you may need to refresh your page to see this link).
-        </li>
-        <li>Click on the 'Upload App' link</li>
-        <li>Use <em>https://polaris-services.exathink.com/work-tracking/atlassian_connect/descriptor</em> for
-          the
-          url.
+          Search for "exathink" in the search menu. This will bring up the Polaris Connector for Jira app.
         </li>
         <li>
-          Click upload and wait for the installation to complete successfully.
+          Click on the app icon and select "Get App" and wait for the installation to complete successfully.
         </li>
         <li>
           Click Next below to proceed to the final step in the installation.

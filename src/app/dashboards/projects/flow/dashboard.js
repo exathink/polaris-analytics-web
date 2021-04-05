@@ -13,6 +13,9 @@ import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
+import {Flex} from "reflexbox";
+import styles from "./dashboard.module.css";
+import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -31,11 +34,11 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          w={0.2}
           name="response-time-sla"
+          className={styles.leadTime}
           title={"Lead Time"}
           subtitle={`${flowAnalysisPeriod} Days`}
           render={() => (
@@ -54,8 +57,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
         {stateMappingIndex.isValid() && (
           <DashboardWidget
-            w={0.19}
             name="defect-metrics"
+            className={styles.quality}
             title={"Quality"}
             subtitle={`${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
@@ -78,8 +81,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         )}
 
         <DashboardWidget
-          w={0.37}
           name="alignment"
+          className={styles.valueMix}
           title={"Value Mix"}
           subtitle={`${flowAnalysisPeriod} Days`}
           styles={{
@@ -107,8 +110,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
 
         <DashboardWidget
-          w={0.2}
           name="team"
+          className={styles.team}
           title={"Team"}
           subtitle={`${flowAnalysisPeriod} Days`}
           render={({view}) => (
@@ -129,8 +132,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           hideTitlesInDetailView={true}
         />
         <DashboardWidget
-          w={0.13}
           name="traceability"
+          className={styles.traceability}
           title={"Traceability"}
           subtitle={`${flowAnalysisPeriod} Days`}
           hideTitlesInDetailView={"true"}
@@ -152,11 +155,11 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
       </DashboardRow>
 
-      <DashboardRow h={"28%"} title={"Flow"}>
+      <DashboardRow h={"28%"} title={"Flow"} className={styles.flowRow}>
         {stateMappingIndex.isValid() && (
           <DashboardWidget
-            w={0.34}
             name="flow-metrics"
+            className={styles.closed}
             title={`Closed `}
             subtitle={`Last ${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
@@ -183,8 +186,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           />
         )}
         <DashboardWidget
-          w={0.36}
           name="pipeline-funnel"
+          className={styles.funnel}
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -205,8 +208,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
         {stateMappingIndex.isValid() && (
           <DashboardWidget
-            w={0.29}
             name="wip"
+            className={styles.wip}
             title={"Work In Progress"}
             render={({view}) => (
               <ProjectPipelineWidget
@@ -229,14 +232,19 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           />
         )}
       </DashboardRow>
-
-      <DashboardRow h={"49%"} title={"Value"}>
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
+      <DashboardRow h={"49%"} title={"Value"} className={styles.valueRow}>
         <DashboardWidget
-          w={0.34}
           name="epic-flow-mix-closed"
+          className={styles.valueBookClosed}
           render={({view}) => (
             <ProjectImplementationCostWidget
               instanceKey={key}
+              context={context}
               days={flowAnalysisPeriod}
               specsOnly={specsOnly}
               view={view}
@@ -247,8 +255,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={true}
         />
         <DashboardWidget
-          w={0.36}
           name="flow-type-flow-mix"
+          className={styles.valueMixChart}
           render={({view}) => (
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
@@ -267,11 +275,12 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={true}
         />
         <DashboardWidget
-          w={0.29}
           name="epic-flow-mix-wip"
+          className={styles.valueBookWip}
           render={({view}) => (
             <ProjectImplementationCostWidget
               instanceKey={key}
+              context={context}
               specsOnly={specsOnly}
               activeOnly={true}
               view={view}

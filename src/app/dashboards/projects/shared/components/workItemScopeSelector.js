@@ -4,7 +4,8 @@ import React from "react";
 export const WorkItemScopeSelector = (
   {
     workItemScope,
-    setWorkItemScope
+    setWorkItemScope,
+    display
   }) => (
   <GroupingSelector
     label={'Show'}
@@ -13,11 +14,11 @@ export const WorkItemScopeSelector = (
 
         {
           key: 'specs',
-          display: 'Specs'
+          display: display ? display[0] : 'Specs'
         },
         {
           key: 'all',
-          display: 'All'
+          display: display ? display[1] : 'All'
         },
       ]
     }

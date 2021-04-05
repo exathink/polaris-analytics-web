@@ -1,10 +1,11 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
+import {getServerDate} from "../../../../../helpers/utility";
 
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
 import {ProjectPredictabilityTrendsView} from "./predictabilityTrendsView"
 
-export const ProjectPredictabilityTrendsWidget = (
+export const ProjectPredictabilityTrendsWidget = React.memo((
   {
     instanceKey,
     view,
@@ -15,7 +16,11 @@ export const ProjectPredictabilityTrendsWidget = (
     measurementWindow,
     samplingFrequency,
     cycleTimeTarget,
+    leadTimeTarget,
+    cycleTimeConfidenceTarget,
+    leadTimeConfidenceTarget,
     targetPercentile,
+    setBefore,
     pollInterval
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
@@ -41,8 +46,21 @@ export const ProjectPredictabilityTrendsWidget = (
         measurementWindow={measurementWindow}
         measurementPeriod={days}
         cycleTimeTarget={cycleTimeTarget}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         samplingFrequency={samplingFrequency}
         view={view}
+        context={context}
+        latestWorkItemEvent={latestWorkItemEvent}
+        onSelectionChange={(workItems) => {
+          if (workItems.length === 1) {
+            const [{measurementDate}] = workItems;
+            if (setBefore) {
+              setBefore(getServerDate(measurementDate));
+            }
+          }
+        }}
       />
     )
-}
+});

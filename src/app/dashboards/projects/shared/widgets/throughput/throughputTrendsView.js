@@ -7,6 +7,7 @@ export const ProjectVolumeTrendsView = ({
     targetPercentile,
     measurementPeriod,
     measurementWindow,
+    onSelectionChange,
     view
   }) => (
     <VizRow h={1}>
@@ -16,6 +17,7 @@ export const ProjectVolumeTrendsView = ({
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
           view={view}
+          onSelectionChange={onSelectionChange}
         />
       </VizItem>
     </VizRow>

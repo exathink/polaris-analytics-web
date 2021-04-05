@@ -231,7 +231,7 @@ describe("DefectResponseTimeChart", () => {
       test("it sets the reference to the measurement for each point ", () => {
         expectSetsAreEqual(
           avgLeadTimeSeries.data.map((point) => point.measurement),
-          flowMetricsTrends.map((measurement) => measurement)
+          flowMetricsTrends.map((measurement) => ({...measurement, key: "avgLeadTime"}))
         );
       });
 
@@ -271,7 +271,7 @@ describe("DefectResponseTimeChart", () => {
       test("it sets the reference to the measurement for each point ", () => {
         expectSetsAreEqual(
           avgCycleTimeSeries.data.map((point) => point.measurement),
-          flowMetricsTrends.map((measurement) => measurement)
+          flowMetricsTrends.map((measurement) => ({...measurement, key: "avgCycleTime"}))
         );
       });
 
