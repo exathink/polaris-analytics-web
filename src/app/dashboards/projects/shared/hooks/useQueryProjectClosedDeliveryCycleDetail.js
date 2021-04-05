@@ -6,7 +6,7 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
     $key: String!
     $referenceString: String
     $days: Int
-    $before: DateTime
+    $before: Date
     $defectsOnly: Boolean
     $specsOnly: Boolean
   ) {
