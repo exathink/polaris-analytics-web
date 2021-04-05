@@ -7,7 +7,7 @@ const tooltipContent = (content) => {
   )
 };
 
-export const tooltipHtml = ({header, body}) => (`<b>${header}</b><br/><br/><table>` + tooltipContent(body) + '</table>');
+export const tooltipHtml = ({header, body}) => (`<div style="padding: 7px; background-color: rgba(255, 255, 255, 0.9);"><b>${header}</b><br/><br/><table>` + tooltipContent(body) + '</table></div>');
 
 /** Functions to extract previous and next points from within a formatter callback */
 
