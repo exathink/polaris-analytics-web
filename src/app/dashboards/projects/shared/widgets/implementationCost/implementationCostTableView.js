@@ -89,12 +89,10 @@ function renderColumn(key) {
 function renderLinkColumn(_text, record) {
   if (record.type === "epic") {
     return _text;
+  } else {
+    // render link for non-epics
+    return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
   }
-  if (record.key === UncategorizedKey) {
-    return null;
-  }
-
-  return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
 }
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch], context) {
