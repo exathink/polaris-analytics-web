@@ -101,8 +101,8 @@ function renderLinkColumn(column) {
   };
 }
 
-export function useImplementationCostTableColumns([budgetRecords, dispatch], context) {
-  const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
+export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems) {
+  const nameSearchState = useSearch("name");
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     dispatch({
@@ -130,7 +130,8 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], con
       key: "title",
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
-      ...titleSearchState,
+      filters: epicWorkItems.map(b => ({text: b.name, value: b.name})),
+      onFilter: (value, record) => record.title.indexOf(value) === 0, 
       render: renderLinkColumn("title")
     },
     {
@@ -331,7 +332,7 @@ export function ImplementationCostTableView({
     dispatch({type: actionTypes.UPDATE_DEFAULTS, payload: initialBudgetRecords()});
   }, [workItems]);
 
-  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch]);
+  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems);
   const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   // mutation to update project analysis periods
