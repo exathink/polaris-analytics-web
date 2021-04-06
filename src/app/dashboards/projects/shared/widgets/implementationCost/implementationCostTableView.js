@@ -86,13 +86,19 @@ function renderColumn(key) {
   };
 }
 
-function renderLinkColumn(_text, record) {
-  if (record.type === "epic") {
-    return _text;
-  } else {
-    // render link for non-epics
-    return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
-  }
+function renderLinkColumn(column) {
+  return (_text, record) => {
+    if (record.type === "epic") {
+      if (column === "title" && record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return _text;
+      }
+    } else {
+      // render link for non-epics
+      return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
+    }
+  };
 }
 
 export function useImplementationCostTableColumns([budgetRecords, dispatch], context) {
@@ -116,7 +122,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], con
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
-      render: renderLinkColumn
+      render: renderLinkColumn("name")
     },
     {
       title: "Title",
@@ -125,7 +131,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], con
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       ...titleSearchState,
-      render: renderLinkColumn
+      render: renderLinkColumn("title")
     },
     {
       title: "Type",
@@ -251,7 +257,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name != null && x.name !== UncategorizedKey ? x.name : "",
+      title: x.name,
       cards: 1,
       type: x.workItemType,
       budget: x.budget,
