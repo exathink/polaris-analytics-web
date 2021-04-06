@@ -8,6 +8,9 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
+import WorkItems from "../../../../work_items/context";
+import {Link} from "react-router-dom";
+import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 
 const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
@@ -83,7 +86,18 @@ function renderColumn(key) {
   };
 }
 
-export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
+function renderLinkColumn(_text, record) {
+  if (record.type === "epic") {
+    return _text;
+  }
+  if (record.key === UncategorizedKey) {
+    return null;
+  }
+
+  return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
+}
+
+export function useImplementationCostTableColumns([budgetRecords, dispatch], context) {
   const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
@@ -104,6 +118,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
+      render: renderLinkColumn
     },
     {
       title: "Title",
@@ -112,6 +127,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       ...titleSearchState,
+      render: renderLinkColumn
     },
     {
       title: "Type",
