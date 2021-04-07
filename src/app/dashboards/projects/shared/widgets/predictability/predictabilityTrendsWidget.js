@@ -1,5 +1,6 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {getServerDate} from "../../../../../helpers/utility";
 
 import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
@@ -36,7 +37,10 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
       }
     );
     if (loading) return <Loading/>;
-    if (error) return null;
+    if (error) {
+      logGraphQlError('ProjectPredictabilityTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+      return null;
+    }
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       <ProjectPredictabilityTrendsView
