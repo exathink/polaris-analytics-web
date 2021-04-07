@@ -5,6 +5,7 @@ import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {ProjectPredictabilityTrendsWidget} from "./predictabilityTrendsWidget";
 import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {getServerDate} from "../../../../../helpers/utility";
 
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
@@ -41,7 +42,7 @@ const mocks = [
         project: {
           cycleMetricsTrends: [
             {
-              measurementDate: "2021-03-25",
+              measurementDate: getServerDate(getNDaysAgo(12)),
               avgLeadTime: 12.97279057017544,
               minCycleTime: 3.405196759259259,
               q1CycleTime: 4.403263888888889,
@@ -70,7 +71,7 @@ const mocks = [
               targetPercentile: null,
             },
             {
-              measurementDate: "2021-03-18",
+              measurementDate: getServerDate(getNDaysAgo(19)),
               avgLeadTime: 13.94028838734568,
               minCycleTime: 3.405196759259259,
               q1CycleTime: 4.5105208333333335,

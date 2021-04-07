@@ -18,7 +18,7 @@ const propsFixture = {
   cycleTimeTarget: 7,
   leadTimeConfidenceTarget: 0.8,
   cycleTimeConfidenceTarget: 0.9,
-  before: getServerDate("2020-03-03"),
+  before: getServerDate(getNDaysAgo(12)),
   days: 30,
   initialMetric: "cycleTime",
 };
