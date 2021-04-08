@@ -1,5 +1,7 @@
 import {DaysRangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
 import React, {useState} from "react";
+import {Radio, Checkbox} from "antd";
+import styles from "./trendingControlBar.module.css";
 
 export function useTrendsControlBarState(days, measurementWindow, samplingFrequency) {
   const [daysRange, setDaysRange] = useState(days);
@@ -55,4 +57,89 @@ export function getTrendsControlBarControls(
     ,
 
   ]
+}
+
+function getMeasurementWindowMarks(freq) {
+  if (freq === 1) {
+    return [1, 7, 30];
+  } else if (freq === 7) {
+    return [7, 30];
+  } else {
+    return null;
+  }
+}
+
+export function NewTrendsControlBarControls({
+  state: [
+    [daysRange, setDaysRange, daysMarks],
+    [measurementWindowRange, setMeasurementWindowRange, measurementWindowMarks],
+    [frequencyRange, setFrequencyRange, frequencyRangeMarks],
+    [rollingTrendsVisible, setRollingTrendsVisible],
+  ],
+}) {
+  const [ONE, SEVEN, THIRTY] = [1, 7, 30];
+  function getDays() {
+    return (
+      <div title="Days" className={styles.daysRange}>
+        <DaysRangeSlider
+          initialDays={daysRange}
+          setDaysRange={setDaysRange}
+          range={daysMarks || SIX_MONTHS}
+          className={styles.daySlider}
+        />
+      </div>
+    );
+  }
+
+  function getSamplingFrequency() {
+    return (
+      <div title="Sampling Frequency" className={styles.frequencyRange}>
+        <label>Frequency</label>
+        <Radio.Group
+          size="small"
+          onChange={(e) => {
+            if (e.target.value === THIRTY) {
+              setRollingTrendsVisible(false);
+            }
+            setFrequencyRange(e.target.value);
+            setMeasurementWindowRange(e.target.value);
+          }}
+          value={frequencyRange}
+          defaultValue={7}
+          className={styles.frequencyRadioGroup}
+        >
+          <Radio value={ONE}>Daily</Radio>
+          <Radio value={SEVEN}>Weekly</Radio>
+          <Radio value={THIRTY}>Monthly</Radio>
+        </Radio.Group>
+      </div>
+    );
+  }
+
+  function getWindow() {
+    return (
+      <div title="Window" className={styles.windowRange}>
+        {frequencyRange !== THIRTY && (
+          <Checkbox checked={rollingTrendsVisible} onChange={(e) => setRollingTrendsVisible(e.target.checked)}>
+            Show Rolling Trends
+          </Checkbox>
+        )}
+        {rollingTrendsVisible && frequencyRange !== THIRTY && (
+          <DaysRangeSlider
+            title={""}
+            initialDays={measurementWindowRange}
+            setDaysRange={setMeasurementWindowRange}
+            range={getMeasurementWindowMarks(frequencyRange)}
+          />
+        )}
+      </div>
+    );
+  }
+  return (
+    <div className={styles.trendingControlBarWrapper}>
+      {getDays()}
+      {getSamplingFrequency()}
+      {getWindow()}
+    </div>
+  );
 }

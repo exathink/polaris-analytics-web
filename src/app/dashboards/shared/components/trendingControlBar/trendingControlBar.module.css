@@ -1,0 +1,29 @@
+.trendingControlBarWrapper {
+  display: grid;
+  height: 5rem;
+  grid-template-columns: 400px 250px auto;
+  gap: 1rem;
+  grid-template-areas: "daysRange frequencyRange windowRange";
+}
+.daysRange {
+  grid-area: daysRange;
+}
+
+.frequencyRange {
+  grid-area: frequencyRange;
+  place-self: start center;
+}
+
+.windowRange {
+  grid-area: windowRange;
+  place-self: start center;
+}
+
+.daySlider {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.frequencyRadioGroup {
+  margin-top: 5px;
+}

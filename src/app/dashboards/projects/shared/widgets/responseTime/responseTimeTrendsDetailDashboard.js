@@ -2,7 +2,7 @@ import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {ProjectResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
 import {
-  getTrendsControlBarControls,
+  NewTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
 import {ProjectDeliveryCycleFlowMetricsWidget} from '../flowMetrics/projectDeliveryCycleFlowMetricsWidget';
@@ -51,45 +51,45 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
-
+  const [rollingTrendsVisible, setRollingTrendsVisible] = React.useState(false);
   return (
-    <Dashboard
-      dashboard={dashboard_id}
-    >
+    <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={"40%"}
         title={`Response Time Trends`}
         subTitle={`Last ${daysRange} days`}
-        controls={
-          getTrendsControlBarControls(
-            [
-              [daysRange, setDaysRange],
-              [measurementWindowRange, setMeasurementWindowRange],
-              [frequencyRange, setFrequencyRange]
-            ]
-          )
-        }
+        controls={[
+          () => (
+            <NewTrendsControlBarControls
+              state={[
+                [daysRange, setDaysRange],
+                [measurementWindowRange, setMeasurementWindowRange],
+                [frequencyRange, setFrequencyRange],
+                [rollingTrendsVisible, setRollingTrendsVisible],
+              ]}
+            />
+          ),
+        ]}
       >
         <DashboardWidget
           w={1}
           name="response-time-trends"
-          render={
-            ({view}) =>
-              <ProjectResponseTimeTrendsWidget
-                instanceKey={instanceKey}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                days={daysRange}
-                measurementWindow={measurementWindowRange}
-                samplingFrequency={frequencyRange}
-                targetPercentile={targetPercentile}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                setBefore={setBefore}
-                setSeriesName={setSeriesName}
-                defaultSeries={defaultSeries}
-              />
-          }
+          render={({view}) => (
+            <ProjectResponseTimeTrendsWidget
+              instanceKey={instanceKey}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              days={daysRange}
+              measurementWindow={measurementWindowRange}
+              samplingFrequency={frequencyRange}
+              targetPercentile={targetPercentile}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              setBefore={setBefore}
+              setSeriesName={setSeriesName}
+              defaultSeries={defaultSeries}
+            />
+          )}
           showDetail={false}
         />
       </DashboardRow>

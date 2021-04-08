@@ -22,8 +22,8 @@ const getMarks = (marks) =>  marks.reduce(
   {}
 );
 
-export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}) => (
-  <Flex align={'center'}>
+export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range, className=""}) => (
+  <Flex align={'center'} className={className}>
     <Box pr={1} pt={"1px"}>
       {title}
     </Box>
