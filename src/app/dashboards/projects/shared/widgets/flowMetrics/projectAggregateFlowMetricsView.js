@@ -34,7 +34,9 @@ export const PerformanceSummaryView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-
+  if (current == null || previous == null) {
+    return null;
+  }
   return (
     <React.Fragment>
 
@@ -103,7 +105,9 @@ export const ValueBoardSummaryView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-
+  if (current == null || previous == null) {
+    return null;
+  }
   return (
     <div >
       <VizRow h={"50"}>
@@ -183,7 +187,9 @@ export const CycleMetricsCarouselView = (
 ) => {
   const [current, previous] = cycleMetricsTrends;
   const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
-
+  if (current == null || previous == null) {
+    return null;
+  }
   return (
     <React.Fragment>
       <VizItem w={0.30}>
@@ -231,7 +237,9 @@ export const ImplementationMetricsCarouselView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-
+  if (current == null || previous == null) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -277,6 +285,11 @@ export const AllMetricsDisplayView = (
 ) => {
   const [current, previous] = cycleMetricsTrends;
   const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
+
+  if (current == null || previous == null) {
+    return null;
+  }
+
   return (
     twoRows ?
       <div>
