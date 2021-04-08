@@ -1,7 +1,7 @@
 .trendingControlBarWrapper {
   display: grid;
-  height: 5rem;
-  grid-template-columns: 1.7fr 1.2fr 1fr;
+  height: 6rem;
+  grid-template-columns: 2.5fr 0.5fr 1fr;
   gap: 1rem;
   grid-template-areas: "daysRange frequencyRange windowRange";
 }
