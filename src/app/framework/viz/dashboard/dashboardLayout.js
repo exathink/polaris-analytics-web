@@ -59,7 +59,7 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, cla
   function getTitle() {
     if (title) {
       return (
-        <nav className={uniqueStyles["menu"]} style={gridLayout ? {} : {width: "30%"}}>
+        <nav className={uniqueStyles["menu"]} style={gridLayout ? {} : {width: "20%"}}>
           <h3 className={gridLayout ? uniqueStyles["dashboard-row-title-new"]: uniqueStyles["dashboard-row-title"]}>{title}</h3>
           {subTitle && <h4 className={uniqueStyles["dashboard-row-subtitle"]}>{subTitle}</h4>}
         </nav>
@@ -74,7 +74,7 @@ export const DashboardRow = ({children, h, title, subTitle, controls, align, cla
       return (
         <nav
           className={uniqueStyles["menu"] + " " + uniqueStyles["title-control-container"]}
-          style={gridLayout ? {} : {width: "70%", paddingRight: "75px"}}
+          style={gridLayout ? {} : {width: "80%", paddingRight: "75px"}}
         >
           <React.Fragment>
             {
