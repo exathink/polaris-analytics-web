@@ -5,6 +5,7 @@ import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowM
 import {ProjectVolumeTrendsView} from "./throughputTrendsView"
 import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectVolumeTrendsWidget = React.memo((
   {
@@ -36,7 +37,10 @@ export const ProjectVolumeTrendsWidget = React.memo((
       }
     );
     if (loading) return <Loading/>;
-    if (error) return null;
+    if (error) {
+      logGraphQlError('ProjectPredictabilityTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+      return null;
+    }
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       view === 'primary' ?

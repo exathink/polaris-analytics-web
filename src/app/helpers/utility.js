@@ -96,9 +96,17 @@ export function formatDate(epoch, format) {
   return moment(epoch).format(format)
 }
 
+export function getTodayDate(format) {
+  if (format == null) {
+    return moment();
+  } else {
+    return moment().format(format);
+  }
+}
+
 export function getServerDate(date) {
   if (date == null) {
-    return moment().format("YYYY-MM-DD")
+    return null;
   } else {
     return moment(date).format("YYYY-MM-DD");
   }
