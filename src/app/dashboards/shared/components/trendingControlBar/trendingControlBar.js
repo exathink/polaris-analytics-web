@@ -120,11 +120,18 @@ export function NewTrendsControlBarControls({
   function getWindow() {
     return (
       <div title="Window" className={styles.windowRange}>
-        {frequencyRange !== THIRTY && (
-          <Checkbox checked={rollingTrendsVisible} onChange={(e) => setRollingTrendsVisible(e.target.checked)}>
-            Show Rolling Trends
-          </Checkbox>
-        )}
+        <label className={styles.smoothing}>Smoothing</label>
+        <Radio.Group
+          size="small"
+          disabled={frequencyRange === THIRTY}
+          onChange={(e) => {
+            setRollingTrendsVisible(e.target.value);
+          }}
+          value={rollingTrendsVisible}
+        >
+          <Radio value={true}>On</Radio>
+          <Radio value={false}>Off</Radio>
+        </Radio.Group>
         {rollingTrendsVisible && frequencyRange !== THIRTY && (
           <DaysRangeSlider
             title={""}
