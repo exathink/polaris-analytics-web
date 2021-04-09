@@ -155,7 +155,7 @@ describe("DefectBacklogTrendsChart", () => {
         expectSetsAreEqual(
           avgBacklogSeries.data.map((point) => [point.x, point.y]),
           backlogTrends.map((measurement) => {
-            return [epoch(measurement.measurementDate), measurement["avgBacklogSize"]];
+            return [epoch(measurement.measurementDate, true), measurement["avgBacklogSize"]];
           })
         );
       });
@@ -174,7 +174,7 @@ describe("DefectBacklogTrendsChart", () => {
           0
         );
 
-        const [testPoint] = backlogTrends.sort((m1, m2) => epoch(m1.measurementDate) - epoch(m2.measurementDate));
+        const [testPoint] = backlogTrends.sort((m1, m2) => epoch(m1.measurementDate, true) - epoch(m2.measurementDate, true));
         expect(actual).toMatchObject({
           header: expect.stringContaining(`${commonMeasurementProps.measurementWindow}`),
           body: [[expect.stringContaining("Defects"), `${testPoint.avgBacklogSize}`]],
@@ -194,7 +194,7 @@ describe("DefectBacklogTrendsChart", () => {
           rangeSeries.data.map((point) => [point.x, point.low, point.q1, point.median, point.q3, point.high]),
           backlogTrends.map((measurement) => {
             return [
-              epoch(measurement.measurementDate),
+              epoch(measurement.measurementDate, true),
               measurement["minBacklogSize"],
               measurement["q1BacklogSize"],
               measurement["medianBacklogSize"],
