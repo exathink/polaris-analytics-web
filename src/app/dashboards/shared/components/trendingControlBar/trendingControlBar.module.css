@@ -1,7 +1,7 @@
 .trendingControlBarWrapper {
   display: grid;
-  height: 4rem;
-  grid-template-columns: 2fr 1.2fr 1.2fr;
+  height: 5rem;
+  grid-template-columns: 2.5fr 0.5fr 1.2fr;
   gap: 1rem;
   grid-template-areas: "daysRange frequencyRange windowRange";
 }
@@ -18,7 +18,8 @@
 
 .windowRange {
   grid-area: windowRange;
-  justify-self: start;
+  justify-self: end;
+  margin-left: 30px;
 }
 
 .daySlider {
@@ -28,6 +29,9 @@
 
 .frequencyRadioGroup {
   margin-top: 5px;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
 }
 
 .commonRadioButton{
@@ -41,12 +45,13 @@
 .measurementWindowWrapper{
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  margin-top: 5px;
 }
 
 .windowRadioGroup{
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 5px;
 }
 

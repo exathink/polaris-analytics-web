@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Radio} from "antd";
 import styles from "./trendingControlBar.module.css";
 
-const [ONE, SEVEN, THIRTY] = [1, 7, 30];
+const [ONE, SEVEN, FOURTEEN, THIRTY] = [1, 7, 14, 30];
 
 export function useTrendsControlBarState(days, measurementWindow, samplingFrequency) {
   const [daysRange, setDaysRange] = useState(days);
@@ -66,7 +66,10 @@ function getMeasurementWindowMarks(freq) {
     return [{key: 3, displayValue: 3}, {key: 5, displayValue: 5}, {key: 7, displayValue: 7}];
   } else if (freq === SEVEN) {
     return [{key: 14, displayValue: 2}, {key: 28, displayValue: 4}, {key: 56, displayValue: 8}];
-  } else {
+  } else if(freq === FOURTEEN){
+    return [{key: 28, displayValue: 2}, {key: 42, displayValue: 3},  {key: 56, displayValue: 4}];
+  }
+  else {
     return [];
   }
 }
@@ -110,9 +113,10 @@ export function NewTrendsControlBarControls({
           defaultValue={7}
           className={styles.frequencyRadioGroup}
         >
-          <Radio.Button className={styles.commonRadioButton} value={ONE}>Daily</Radio.Button>
-          <Radio.Button className={styles.commonRadioButton} value={SEVEN}>Weekly</Radio.Button>
-          <Radio.Button className={styles.commonRadioButton} value={THIRTY}>Monthly</Radio.Button>
+          <Radio.Button value={ONE}>Daily</Radio.Button>
+          <Radio.Button value={SEVEN}>Weekly</Radio.Button>
+          <Radio.Button value={FOURTEEN}>BiWeekly</Radio.Button>
+          <Radio.Button value={THIRTY}>Monthly</Radio.Button>
         </Radio.Group>
       </div>
     );
@@ -155,7 +159,9 @@ export function NewTrendsControlBarControls({
                 );
               })}
             </Radio.Group>
-            <div className={styles.unitText}>{frequencyRange === ONE ? "Days" : "Weeks"} </div>
+            <div className={styles.unitText}>
+              {frequencyRange === ONE ? "Days" : frequencyRange === SEVEN ? "Weeks" : "Sprints"}
+            </div>
           </div>
         )}
       </div>
