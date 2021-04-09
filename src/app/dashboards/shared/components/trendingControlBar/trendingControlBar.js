@@ -63,7 +63,7 @@ function getMeasurementWindowMarks(freq) {
   if (freq === 1) {
     return [{key: 3, displayValue: 3}, {key: 5, displayValue: 5}, {key: 7, displayValue: 7}];
   } else if (freq === 7) {
-    return [{key: 14, displayValue: 2}, {key: 30, displayValue: 4}, {key: 60, displayValue: 8}];
+    return [{key: 14, displayValue: 2}, {key: 28, displayValue: 4}, {key: 56, displayValue: 8}];
   } else {
     return null;
   }

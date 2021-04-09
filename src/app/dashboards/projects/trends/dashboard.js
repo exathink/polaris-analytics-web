@@ -136,7 +136,7 @@ function TrendsDashboard({
           render={({view}) => (
             <ProjectResponseTimeTrendsWidget
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={28}
               days={daysRange}
               samplingFrequency={7}
               leadTimeTarget={leadTimeTarget}
