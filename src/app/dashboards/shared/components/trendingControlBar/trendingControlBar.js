@@ -94,8 +94,9 @@ export function NewTrendsControlBarControls({
   function getSamplingFrequency() {
     return (
       <div title="Sampling Frequency" className={styles.frequencyRange}>
-        <label>Frequency</label>
+        <label>Period</label>
         <Radio.Group
+          buttonStyle="solid"
           size="small"
           onChange={(e) => {
             if (e.target.value === THIRTY) {
@@ -108,9 +109,9 @@ export function NewTrendsControlBarControls({
           defaultValue={7}
           className={styles.frequencyRadioGroup}
         >
-          <Radio value={ONE}>Daily</Radio>
-          <Radio value={SEVEN}>Weekly</Radio>
-          <Radio value={THIRTY}>Monthly</Radio>
+          <Radio.Button className={styles.freqRadioButton} value={ONE}>Daily</Radio.Button>
+          <Radio.Button className={styles.freqRadioButton} value={SEVEN}>Weekly</Radio.Button>
+          <Radio.Button className={styles.freqRadioButton} value={THIRTY}>Monthly</Radio.Button>
         </Radio.Group>
       </div>
     );
