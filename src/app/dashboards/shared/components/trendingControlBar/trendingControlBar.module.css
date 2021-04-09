@@ -30,10 +30,26 @@
   margin-top: 5px;
 }
 
-.freqRadioButton{
+.commonRadioButton{
   margin-left: 5px;
 }
 
 .smoothing{
   margin-right: 10px;
+}
+
+.measurementWindowWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.windowRadioGroup{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+
+.unitText{
+  margin-left: 5px;
 }

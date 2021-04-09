@@ -1,6 +1,6 @@
 import {DaysRangeSlider, SIX_MONTHS} from "../daysRangeSlider/daysRangeSlider";
 import React, {useState} from "react";
-import {Radio, Checkbox} from "antd";
+import {Radio} from "antd";
 import styles from "./trendingControlBar.module.css";
 
 export function useTrendsControlBarState(days, measurementWindow, samplingFrequency) {
@@ -61,9 +61,9 @@ export function getTrendsControlBarControls(
 
 function getMeasurementWindowMarks(freq) {
   if (freq === 1) {
-    return [1, 7, 30];
+    return [{key: 3, displayValue: 3}, {key: 5, displayValue: 5}, {key: 7, displayValue: 7}];
   } else if (freq === 7) {
-    return [7, 30];
+    return [{key: 14, displayValue: 2}, {key: 30, displayValue: 4}, {key: 60, displayValue: 8}];
   } else {
     return null;
   }
@@ -109,9 +109,9 @@ export function NewTrendsControlBarControls({
           defaultValue={7}
           className={styles.frequencyRadioGroup}
         >
-          <Radio.Button className={styles.freqRadioButton} value={ONE}>Daily</Radio.Button>
-          <Radio.Button className={styles.freqRadioButton} value={SEVEN}>Weekly</Radio.Button>
-          <Radio.Button className={styles.freqRadioButton} value={THIRTY}>Monthly</Radio.Button>
+          <Radio.Button className={styles.commonRadioButton} value={ONE}>Daily</Radio.Button>
+          <Radio.Button className={styles.commonRadioButton} value={SEVEN}>Weekly</Radio.Button>
+          <Radio.Button className={styles.commonRadioButton} value={THIRTY}>Monthly</Radio.Button>
         </Radio.Group>
       </div>
     );
@@ -125,6 +125,9 @@ export function NewTrendsControlBarControls({
           size="small"
           disabled={frequencyRange === THIRTY}
           onChange={(e) => {
+            if (e.target.value === false) {
+              setMeasurementWindowRange(frequencyRange);
+            }
             setRollingTrendsVisible(e.target.value);
           }}
           value={rollingTrendsVisible}
@@ -133,12 +136,26 @@ export function NewTrendsControlBarControls({
           <Radio value={false}>Off</Radio>
         </Radio.Group>
         {rollingTrendsVisible && frequencyRange !== THIRTY && (
-          <DaysRangeSlider
-            title={""}
-            initialDays={measurementWindowRange}
-            setDaysRange={setMeasurementWindowRange}
-            range={getMeasurementWindowMarks(frequencyRange)}
-          />
+          <div className={styles.measurementWindowWrapper}>
+            <Radio.Group
+              buttonStyle="solid"
+              size="small"
+              onChange={(e) => {
+                setMeasurementWindowRange(e.target.value);
+              }}
+              value={measurementWindowRange}
+              className={styles.windowRadioGroup}
+            >
+              {getMeasurementWindowMarks(frequencyRange).map((x) => {
+                return (
+                  <Radio.Button key={x} className={styles.commonRadioButton} value={x.key}>
+                    {x.displayValue}
+                  </Radio.Button>
+                );
+              })}
+            </Radio.Group>
+            <div className={styles.unitText}>{frequencyRange === 1 ? "Days" : "Weeks"} </div>
+          </div>
         )}
       </div>
     );
