@@ -3,6 +3,8 @@ import React, {useState} from "react";
 import {Radio} from "antd";
 import styles from "./trendingControlBar.module.css";
 
+const [ONE, SEVEN, THIRTY] = [1, 7, 30];
+
 export function useTrendsControlBarState(days, measurementWindow, samplingFrequency) {
   const [daysRange, setDaysRange] = useState(days);
   const [measurementWindowRange, setMeasurementWindowRange] = useState(measurementWindow);
@@ -60,12 +62,12 @@ export function getTrendsControlBarControls(
 }
 
 function getMeasurementWindowMarks(freq) {
-  if (freq === 1) {
+  if (freq === ONE) {
     return [{key: 3, displayValue: 3}, {key: 5, displayValue: 5}, {key: 7, displayValue: 7}];
-  } else if (freq === 7) {
+  } else if (freq === SEVEN) {
     return [{key: 14, displayValue: 2}, {key: 28, displayValue: 4}, {key: 56, displayValue: 8}];
   } else {
-    return null;
+    return [];
   }
 }
 
@@ -77,7 +79,6 @@ export function NewTrendsControlBarControls({
     [rollingTrendsVisible, setRollingTrendsVisible],
   ],
 }) {
-  const [ONE, SEVEN, THIRTY] = [1, 7, 30];
   function getDays() {
     return (
       <div title="Days" className={styles.daysRange}>
@@ -154,7 +155,7 @@ export function NewTrendsControlBarControls({
                 );
               })}
             </Radio.Group>
-            <div className={styles.unitText}>{frequencyRange === 1 ? "Days" : "Weeks"} </div>
+            <div className={styles.unitText}>{frequencyRange === ONE ? "Days" : "Weeks"} </div>
           </div>
         )}
       </div>
