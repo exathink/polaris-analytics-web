@@ -51,7 +51,6 @@ describe("ProjectPipelineImplementationCostView", () => {
   describe("when in primary view", () => {
     test("renders component without any error", async () => {
       renderWithProviders(<ProjectPipelineImplementationCostView {...viewPropsFixture} view="primary" />);
-      expect(await screen.findByText(/show/i)).toBeInTheDocument();
     });
 
     test("when workitem scope 'specs' is selected, have legend text as Specs", async () => {
@@ -64,9 +63,8 @@ describe("ProjectPipelineImplementationCostView", () => {
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
       await screen.findAllByText(/effort/i);
 
-      // both workitem scope and legend text as Specs
       const specsElem = await screen.findAllByText(/specs/i);
-      expect(specsElem).toHaveLength(2);
+      expect(specsElem).toHaveLength(1);
     });
 
     test("when workitem scope 'all' is selected, have legend text as Cards", async () => {
@@ -78,9 +76,6 @@ describe("ProjectPipelineImplementationCostView", () => {
       renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
       // asserting on the title of the chart first
       await screen.findAllByText(/effort/i);
-
-      const specsElem = await screen.findAllByText(/specs/i);
-      expect(specsElem).toHaveLength(1);
 
       expect(await screen.findByText(/cards/i)).toBeInTheDocument();
     });
