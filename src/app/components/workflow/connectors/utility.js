@@ -3,6 +3,7 @@ const connectorTypeDisplayName = {
   'pivotal': 'Pivotal Tracker',
   'github' : 'Github',
   'gitlab' : 'Gitlab',
+  'trello' : 'Trello',
   'bitbucket': 'BitBucket'
 }
 

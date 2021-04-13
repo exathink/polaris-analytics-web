@@ -63,6 +63,18 @@ export class SelectIntegrationStep extends React.Component {
                 />
               </Card>
             </Col>
+            <Col span={8}>
+              <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
+                    onClick={() => this.props.onConnectorTypeSelected('trello')}>
+                <Meta
+                  avatar={
+                    <Avatar src="/images/third-party/trello.png"/>
+                  }
+                  title="Trello"
+                  description="Import Project Cards"
+                />
+              </Card>
+            </Col>
           </Row>
         </div>
       </div>

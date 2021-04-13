@@ -190,6 +190,38 @@ const GitlabConnectorInstructions = ({part}) => (
   </div>
 );
 
+const TrelloConnectorInstructions = ({part}) =>
+  part === "instructions" && (
+    <div>
+      <p>
+        The Polaris Flow Trello Connector uses the Trello Rest API to import boards metadata and cards. Each connector
+        is scoped to a specific Trello user.
+      </p>
+      <p>
+        You will need an api key and access token for the user to authenticate Polaris Flow with Trello. We recommend
+        that you use the api key and access token for a user who is either an owner or a member of all the projects that
+        you need to analyze in Polaris Flow.
+      </p>
+
+      <ol>
+        <li>Login to Trello as the user specified above,</li>
+        <li>
+          Visit <cite>https://trello.com/app-key</cite> to get your API key.
+        </li>
+        <li>
+          Generate a read only access token by redirecting the user to {" "}
+          <cite>
+            https://trello.com/1/authorize?expiration=never&amp;name=Polaris&amp;scope=read&amp;response_type=token&amp;key=APIKey
+          </cite>
+        </li>
+        <li>
+          Copy the personal access token displayed to the clipboard and enter it as the Personal access token in the
+          next step.
+        </li>
+      </ol>
+    </div>
+  );
+
 export const CreateConnectorInstructions = ({part, connectorType}) => {
   switch (connectorType) {
     case 'jira':
@@ -214,6 +246,10 @@ export const CreateConnectorInstructions = ({part, connectorType}) => {
     case 'gitlab':
       return(
         <GitlabConnectorInstructions part={part}/>
+      )
+    case 'trello':
+      return(
+        <TrelloConnectorInstructions part={part}/>
       )
     default:
       return `Unknown connector type: ${connectorType}`;

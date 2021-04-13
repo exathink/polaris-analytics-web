@@ -34,6 +34,8 @@ function getFetchProjectsButtonName(selectedConnector) {
       return 'Fetch Available Projects';
     case 'jira':
       return 'Fetch Available Projects';
+    case 'trello':
+      return 'Fetch Available Boards';
     default:
       return 'Fetch Available Projects';
   }
