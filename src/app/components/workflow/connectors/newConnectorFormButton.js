@@ -186,11 +186,11 @@ const AddConnectorForm = (
               <Row gutter={16}>
               <Col span={24}>
                 <Form.Item label="API Key">
-                  {getFieldDecorator('apiKey', {
+                  {getFieldDecorator('trelloApiKey', {
                     rules: [
                       {required: true, message: 'Api Key is required'}
                     ],
-                    initialValue: currentValue('apiKey', null)
+                    initialValue: currentValue('trelloApiKey', null)
                   })(<Input placeholder="API Key"/>)}
                 </Form.Item>
               </Col>
@@ -198,11 +198,11 @@ const AddConnectorForm = (
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item label="Personal Access Token">
-                    {getFieldDecorator('trelloPersonalAccessToken', {
+                    {getFieldDecorator('trelloAccessToken', {
                       rules: [
                         {required: true, message: 'Personal Access Token is required'}
                       ],
-                      initialValue: currentValue('trelloPersonalAccessToken', null)
+                      initialValue: currentValue('trelloAccessToken', null)
                     })(<Input placeholder="Personal Access Token"/>)}
                   </Form.Item>
                 </Col>
