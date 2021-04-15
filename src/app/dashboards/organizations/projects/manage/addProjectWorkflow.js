@@ -12,33 +12,36 @@ import {withNavigationContext} from "../../../../framework/navigation/components
 
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
 
+function getSteps({connectorType}) {
+  const steps = [
+    {
+      title: 'Select Provider',
+      content: SelectIntegrationStep,
+      showNext: false
+    },
+    {
+      title: 'Select Connector',
+      content: SelectConnectorStep,
+      showNext: false
+    },
+    {
+      title: connectorType === "trello" ? 'Select Boards' : 'Select Projects',
+      content: SelectProjectsStep,
+      showNext: true,
+      disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
+    },
+    {
+      title: 'Configure Import',
+      content: ConfigureImportStep,
+    },
+    {
+      title: connectorType === "trello" ? 'Import Boards' : 'Import Projects',
+      content: ShowImportStateStep
+    },
+  ];
 
-const steps = [
-  {
-    title: 'Select Provider',
-    content: SelectIntegrationStep,
-    showNext: false
-  },
-  {
-    title: 'Select Connector',
-    content: SelectConnectorStep,
-    showNext: false
-  },
-  {
-    title: 'Select Projects',
-    content: SelectProjectsStep,
-    showNext: true,
-    disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
-  },
-  {
-    title: 'Configure Import',
-    content: ConfigureImportStep,
-  },
-  {
-    title: 'Import Projects',
-    content: ShowImportStateStep
-  },
-];
+  return steps;
+}
 
 export const AddProjectWorkflow = withNavigationContext(
   class _AddProjectWorkflow extends React.Component {
@@ -167,7 +170,8 @@ export const AddProjectWorkflow = withNavigationContext(
     }
 
     render() {
-      const {current} = this.state;
+      const {current, selectedConnector: {connectorType}} = this.state;
+      const steps = getSteps({connectorType});
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
       const {organization, onDone} = this.props;
@@ -187,7 +191,7 @@ export const AddProjectWorkflow = withNavigationContext(
                   }
                   {current > 0 && (
                     <WorkflowActionButton onClick={() => this.prev()}>
-                      {current < 4 ? 'Back' : 'Import More Projects'}
+                      {current < 4 ? 'Back' :(connectorType === "trello" ? 'Import More Boards' : 'Import More Projects')}
                     </WorkflowActionButton>
                   )}
                   {currentStep.showNext && current < steps.length - 1 && (

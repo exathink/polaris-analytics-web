@@ -63,7 +63,7 @@ export const SelectImportMode = ({selectedProjects, importMode, onChange, organi
   )
 };
 
-export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => (
+export const SeparateModeImport = ({selectedProjects, handleSave, onImport, connectorType}) => (
   <React.Fragment>
     <div className={'selected-projects'}>
       <EditableTable
@@ -71,7 +71,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
         dataSource={selectedProjects}
         columns={[
           {
-            title: 'Remote project',
+            title: connectorType === "trello" ? 'Remote board': 'Remote project',
             dataIndex: 'name',
             width: '20%'
           },
@@ -81,7 +81,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport}) => 
             width: '40%'
           },
           {
-            title: 'Polaris Flow Project',
+            title: connectorType === "trello" ? 'Polaris Flow Board' : 'Polaris Flow Project',
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,
@@ -173,11 +173,12 @@ export class ConfigureImportStep extends React.Component {
 
   render() {
     const {importMode, importedProjectName} = this.state;
-    const {organizationKey, onProjectsSelected} = this.props;
+    const {organizationKey, onProjectsSelected, selectedConnector} = this.props;
     const selectedProjects = this.mapSelectedProjects(this.props.selectedProjects);
+    const {connectorType} = selectedConnector;
     return (
       <div className={'import-project'}>
-        <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? 'projects' : 'project'} selected for import</h3>
+        <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? (connectorType === "trello" ? 'boards' : 'projects') : (connectorType === "trello" ? 'board' : 'project')} selected for import</h3>
         {
           <SelectImportMode
             selectedProjects={selectedProjects}
@@ -195,6 +196,7 @@ export class ConfigureImportStep extends React.Component {
             handleSave={this.onSave.bind(this)}
             onProjectNameChanged={this.onProjectNameChanged.bind(this)}
             onProjectsSelected={onProjectsSelected}
+            connectorType={connectorType}
           />
         }
         {
@@ -206,6 +208,7 @@ export class ConfigureImportStep extends React.Component {
             selectedProjectKey={this.state.selectedProjectKey}
             onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
             onProjectsSelected={onProjectsSelected}
+            connectorType={connectorType}
           />
         }
         {
@@ -213,6 +216,7 @@ export class ConfigureImportStep extends React.Component {
           <SeparateModeImport
             selectedProjects={selectedProjects}
             handleSave={this.onSave.bind(this)}
+            connectorType={connectorType}
           />
         }
         <Button
@@ -221,7 +225,7 @@ export class ConfigureImportStep extends React.Component {
             () => this.doImport(importMode, selectedProjects)
           }
           disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
-        >Import {selectedProjects.length > 1 ? 'Projects' : 'Project'}</Button>
+        >Import {selectedProjects.length > 1 ? (connectorType === "trello" ? 'Boards' : 'Projects') : (connectorType === "trello" ? 'Board' :'Project')}</Button>
       </div>
     )
   }

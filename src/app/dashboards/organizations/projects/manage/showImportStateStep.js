@@ -52,6 +52,7 @@ export const ShowImportStateStep = (
     importedWorkItemsSourcesKeys
   }
 ) => {
+  const {connectorType} = selectedConnector;
   return (
     <Query
       client={work_tracking_service}
@@ -116,7 +117,7 @@ export const ShowImportStateStep = (
                     hideOnSinglePage: true
                   }}
                 >
-                  <Column title={"Remote Project"} dataIndex={"name"} key={"name"}/>
+                  <Column title={connectorType === "trello" ? "Remote Board" : "Remote Project"} dataIndex={"name"} key={"name"}/>
                   <Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
                   <Column title={"CardsImported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
                   <Column

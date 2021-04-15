@@ -51,7 +51,7 @@ const ProjectNameForm = (
     </Form>
   )
 }
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onProjectsSelected,  selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onProjectsSelected,  selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged, connectorType}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -78,7 +78,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             dataSource={selectedProjects}
             columns={[
               {
-                title: 'Remote project',
+                title: connectorType === "trello" ? 'Remote board' : 'Remote project',
                 dataIndex: 'name',
                 width: '30%'
               },

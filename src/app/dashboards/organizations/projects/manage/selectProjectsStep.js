@@ -89,7 +89,7 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
-const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsSelected}) => {
+const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsSelected, connectorType}) => {
   const {Column} = Table;
 
 
@@ -100,7 +100,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       loading={loading}
       rowKey={record => record.key}
       pagination={{
-        showTotal: total => `${total} Projects`,
+        showTotal: total => connectorType === "trello" ? `${total} Boards` : `${total} Projects`,
         defaultPageSize: 10,
         hideOnSinglePage: true,
         position: 'top'
@@ -108,7 +108,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
     >
       <Column
-        title={'Remote Project Name'}
+        title={connectorType === "trello" ? 'Remote Board Name' : 'Remote Project Name'}
         dataIndex={'name'}
         key={'name'}
         sorter={lexicographic('name')}
@@ -159,10 +159,25 @@ export const SelectProjectsStep =
                 if (!loading) {
                   workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(edge => edge.node);
                 }
+                function getTitle() {
+                  if (connectorType === "trello") {
+                    return <>Select boards to import from connector {selectedConnector.name}</>
+                  } else {
+                    return <>Select projects to import from connector {selectedConnector.name}</>
+                  }
+                }
+        
+                function getSubTitle() {
+                  if (connectorType === "trello") {
+                    return <>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} boards available`}</>
+                  } else {
+                    return <>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} projects available`}</>
+                  }
+                }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Select projects to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} projects available`} </h4>
+                    <h3>{getTitle()}</h3>
+                    <h4>{getSubTitle()}</h4>
                     <h5>{getServerUrl(selectedConnector)}</h5>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
@@ -234,9 +249,10 @@ export const SelectProjectsStep =
                           dataSource={workItemsSources}
                           selectedProjects={selectedProjects}
                           onProjectsSelected={onProjectsSelected}
+                          connectorType={connectorType}
                         />
                         :
-                        <NoData message={"No new projects to import"} />
+                        <NoData message={connectorType === "trello" ? "No new boards to import": "No new projects to import"} />
                     }
                   </div>
 
