@@ -71,7 +71,7 @@ export class SelectIntegrationStep extends React.Component {
                     <Avatar src="/images/third-party/trello.png"/>
                   }
                   title="Trello"
-                  description="Import Project Cards"
+                  description="Import Boards and Cards"
                 />
               </Card>
             </Col>
