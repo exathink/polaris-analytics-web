@@ -214,7 +214,9 @@ export const SelectProjectsStep =
                                       name: values.name,
                                       connectorType: connectorType,
                                       apiKey: values.apiKey,
-                                      githubAccessToken: values.githubAccessToken
+                                      githubAccessToken: values.githubAccessToken,
+                                      trelloAccessToken: values.trelloAccessToken,
+                                      trelloApiKey: values.trelloApiKey
                                     }
                                   }
                                 })

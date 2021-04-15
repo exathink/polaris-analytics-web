@@ -105,6 +105,31 @@ const EditConnectorForm = (
                     :
                     null
             }
+            {
+                connectorType === 'trello' ?
+                    <React.Fragment>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item label="API Key">
+                                {getFieldDecorator('trelloApiKey', {
+                                    initialValue: currentValue('trelloApiKey', null)
+                                })(<Input placeholder="New Api Key (optional)"/>)}
+                                </Form.Item>
+                            </Col>
+                        </Row>                        
+                        <Row gutter={16}>
+                            <Col span={24}>
+                            <Form.Item label="Personal Access Token">
+                                {getFieldDecorator('trelloAccessToken', {
+                                initialValue: currentValue('trelloAccessToken', null)
+                                })(<Input placeholder="New access token (optional)"/>)}
+                            </Form.Item>
+                            </Col>
+                        </Row>
+                    </React.Fragment>
+                    :
+                    null
+            }            
         </React.Fragment>
     )
 }
