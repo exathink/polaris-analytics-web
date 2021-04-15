@@ -206,17 +206,18 @@ const TrelloConnectorInstructions = ({part}) =>
       <ol>
         <li>Login to Trello as the user specified above,</li>
         <li>
-          Visit <cite>https://trello.com/app-key</cite> to get your API key.
+          Visit <cite className="urlText">https://trello.com/app-key</cite> to get your API key. You  may keep it handy to use in next step and later to create connector.
         </li>
         <li>
-          Generate a read only access token by redirecting the user to {" "}
-          <cite>
-            https://trello.com/1/authorize?expiration=never&amp;name=Polaris&amp;scope=read&amp;response_type=token&amp;key=APIKey
+        Generate a read only access token visiting the below URL. Make sure to replace &lt;APIKey&gt; with the key copied in step 1. 
+        This link will generate a read only access token, which will be used by this connector.<br/>
+
+          <cite className="urlText">
+            https://trello.com/1/authorize?expiration=never&amp;name=Polaris&amp;scope=read&amp;response_type=token&amp;key=&lt;APIKey&gt;
           </cite>
         </li>
         <li>
-          Copy the personal access token displayed to the clipboard and enter it as the Personal access token in the
-          next step.
+        Keep both API Key and Access Token generated in steps 2 and 3 ready to be provided on next page.
         </li>
       </ol>
     </div>
