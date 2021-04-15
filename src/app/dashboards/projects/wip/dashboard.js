@@ -6,7 +6,7 @@ import {
   ProjectPipelineImplementationCostWidget,
   ProjectPipelineWidget,
 } from "../shared/widgets/wip";
-
+import styles from "./dashboard.module.css";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
@@ -17,6 +17,8 @@ import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
 import {ProjectPullRequestsWidget} from "./pullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
+import {Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -50,11 +52,11 @@ function WipDashboard({
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig}>
+    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          w={0.16}
           name="response-time-sla"
+          className={styles.responseTimeSLA}
           title={"Cycle Time"}
           subtitle={`Last ${wipAnalysisPeriod} Days`}
           render={() => (
@@ -73,8 +75,8 @@ function WipDashboard({
         />
 
         <DashboardWidget
-          w={0.3}
           name="pipeline"
+          className={styles.pipeline}
           title={"Work In Progress"}
           videoConfig={ProjectPipelineWidget.videoConfig}
           render={({view}) => (
@@ -98,8 +100,8 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
         <DashboardWidget
-          w={0.2}
           name={"code-reviews"}
+          className={styles.codeReviews}
           title={"Review Requests"}
           render={({view}) => (
             <ProjectPullRequestsWidget
@@ -115,8 +117,8 @@ function WipDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          w={0.4}
           name="flow-metrics"
+          className={styles.flowMetrics}
           title={"Closed"}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -143,8 +145,8 @@ function WipDashboard({
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>
         <DashboardWidget
-          w={1 / 3}
           name="engineering"
+          className={styles.engineering}
           videoConfig={ProjectPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
             <ProjectPipelineCycleTimeLatencyWidget
@@ -165,8 +167,8 @@ function WipDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          w={1 / 3}
           name="pipeline-effort"
+          className={styles.pipelineEffort}    
           render={({view}) => (
             <ProjectPipelineImplementationCostWidget
               instanceKey={key}
@@ -183,8 +185,8 @@ function WipDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          w={1 / 3}
           name="delivery"
+          className={styles.delivery}
           render={({view}) => (
             <ProjectPipelineCycleTimeLatencyWidget
               instanceKey={key}
@@ -205,11 +207,15 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h={"50%"}>
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
+      <DashboardRow h={"50%"} title={"Latest Commits"} className={styles.latestCommitsTitle}>
         <DashboardWidget
-          title={"Latest Commits"}
-          w={1}
           name="commits"
+          className={styles.commits}
           render={({view}) => (
             <DimensionCommitsNavigatorWidget
               dimension={"project"}
