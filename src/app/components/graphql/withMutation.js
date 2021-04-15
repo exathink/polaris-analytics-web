@@ -9,7 +9,12 @@ export const withMutation = ({name, mutation, client, success, error, getTrackin
     return props => (
       <Mutation
         mutation={mutation}
-        onCompleted={data => success && success(data)}
+        onCompleted={data => {
+          if (success) {
+            success(data)
+            client && client.resetStore();
+          }
+        }}
         onError={err => error && error(err)}
         client={client}
         {...

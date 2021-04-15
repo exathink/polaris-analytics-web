@@ -15,6 +15,8 @@ import {EditConnectorFormButton} from "../../../../components/workflow/connector
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
 
+const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
+
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'pivotal':
@@ -131,7 +133,7 @@ export const SelectProjectsStep =
     withSubmissionCache,
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
     withMutation(TEST_CONNECTOR),
-    withMutation(EDIT_CONNECTOR, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
+    withMutation(EDIT_CONNECTOR_WITH_CLIENT, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
