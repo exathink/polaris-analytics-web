@@ -179,7 +179,7 @@ const AddConnectorForm = (
                         {required: false, message: 'Trello Host URL'}
                       ],
                       initialValue: currentValue('baseUrl', null)
-                    })(<Input placeholder="Defaults to https://trello.com"/>)}
+                    })(<Input placeholder="Defaults to https://api.trello.com"/>)}
                   </Form.Item>
                 </Col>
               </Row>
