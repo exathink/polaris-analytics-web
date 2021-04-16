@@ -1,7 +1,7 @@
 .wipDashboard{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr auto 1.25fr;
+    grid-template-rows: 13% 35.5% 4% 1fr;
     gap: 0.25rem 0.5rem;
     grid-template-areas: "responseTimeSLA pipeline pipeline codeReviews flowMetrics flowMetrics"
     "engineering engineering pipelineEffort pipelineEffort delivery delivery"
