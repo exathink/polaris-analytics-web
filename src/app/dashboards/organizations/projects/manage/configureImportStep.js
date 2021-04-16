@@ -10,6 +10,7 @@ import {EditableTable} from "../../../../components/forms/editableTable";
 import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
 const inputModeDescription = {
   single: 'Import as work stream(s) in a new Polaris Flow Value Stream',
@@ -71,7 +72,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport, conn
         dataSource={selectedProjects}
         columns={[
           {
-            title: connectorType === "trello" ? 'Remote board': 'Remote project',
+            title: `Remote ${getConnectorTypeProjectName(connectorType).toLowerCase()}`,
             dataIndex: 'name',
             width: '20%'
           },
@@ -81,7 +82,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport, conn
             width: '40%'
           },
           {
-            title: connectorType === "trello" ? 'Polaris Flow Board' : 'Polaris Flow Project',
+            title: `Polaris Flow ${getConnectorTypeProjectName(connectorType)}`,
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,
@@ -178,7 +179,7 @@ export class ConfigureImportStep extends React.Component {
     const {connectorType} = selectedConnector;
     return (
       <div className={'import-project'}>
-        <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? (connectorType === "trello" ? 'boards' : 'projects') : (connectorType === "trello" ? 'board' : 'project')} selected for import</h3>
+        <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true).toLowerCase() : getConnectorTypeProjectName(connectorType).toLowerCase()} selected for import</h3>
         {
           <SelectImportMode
             selectedProjects={selectedProjects}
@@ -225,7 +226,7 @@ export class ConfigureImportStep extends React.Component {
             () => this.doImport(importMode, selectedProjects)
           }
           disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
-        >Import {selectedProjects.length > 1 ? (connectorType === "trello" ? 'Boards' : 'Projects') : (connectorType === "trello" ? 'Board' :'Project')}</Button>
+          >Import {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true) : getConnectorTypeProjectName(connectorType)}</Button>
       </div>
     )
   }

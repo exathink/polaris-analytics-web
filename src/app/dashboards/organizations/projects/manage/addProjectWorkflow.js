@@ -11,6 +11,7 @@ import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
 function getSteps({connectorType}) {
   const steps = [
@@ -25,7 +26,7 @@ function getSteps({connectorType}) {
       showNext: false
     },
     {
-      title: connectorType === "trello" ? 'Select Boards' : 'Select Projects',
+      title: `Select ${getConnectorTypeProjectName(connectorType, true)}`,
       content: SelectProjectsStep,
       showNext: true,
       disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
@@ -35,7 +36,7 @@ function getSteps({connectorType}) {
       content: ConfigureImportStep,
     },
     {
-      title: connectorType === "trello" ? 'Import Boards' : 'Import Projects',
+      title: `Import ${getConnectorTypeProjectName(connectorType, true)}`,
       content: ShowImportStateStep
     },
   ];
@@ -191,7 +192,7 @@ export const AddProjectWorkflow = withNavigationContext(
                   }
                   {current > 0 && (
                     <WorkflowActionButton onClick={() => this.prev()}>
-                      {current < 4 ? 'Back' :(connectorType === "trello" ? 'Import More Boards' : 'Import More Projects')}
+                      {current < 4 ? 'Back' : `Import More ${getConnectorTypeProjectName(connectorType, true)}`}
                     </WorkflowActionButton>
                   )}
                   {currentStep.showNext && current < steps.length - 1 && (

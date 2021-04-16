@@ -14,6 +14,7 @@ import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
 
@@ -102,7 +103,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       loading={loading}
       rowKey={record => record.key}
       pagination={{
-        showTotal: total => connectorType === "trello" ? `${total} Boards` : `${total} Projects`,
+        showTotal: total => `${total} ${getConnectorTypeProjectName(connectorType, true)}`,
         defaultPageSize: 10,
         hideOnSinglePage: true,
         position: 'top'
@@ -110,7 +111,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
     >
       <Column
-        title={connectorType === "trello" ? 'Remote Board Name' : 'Remote Project Name'}
+        title={`Remote ${getConnectorTypeProjectName(connectorType)} Name`}
         dataIndex={'name'}
         key={'name'}
         sorter={lexicographic('name')}
@@ -161,25 +162,10 @@ export const SelectProjectsStep =
                 if (!loading) {
                   workItemsSources = data.workTrackingConnector.workItemsSources.edges.map(edge => edge.node);
                 }
-                function getTitle() {
-                  if (connectorType === "trello") {
-                    return <>Select boards to import from connector {selectedConnector.name}</>
-                  } else {
-                    return <>Select projects to import from connector {selectedConnector.name}</>
-                  }
-                }
-        
-                function getSubTitle() {
-                  if (connectorType === "trello") {
-                    return <>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} boards available`}</>
-                  } else {
-                    return <>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} projects available`}</>
-                  }
-                }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>{getTitle()}</h3>
-                    <h4>{getSubTitle()}</h4>
+                    <h3>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
                     <h5>{getServerUrl(selectedConnector)}</h5>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
@@ -254,7 +240,7 @@ export const SelectProjectsStep =
                           connectorType={connectorType}
                         />
                         :
-                        <NoData message={connectorType === "trello" ? "No new boards to import": "No new projects to import"} />
+                        <NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} />
                     }
                   </div>
 

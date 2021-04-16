@@ -6,6 +6,7 @@ import {EditableTable} from "../../../../components/forms/editableTable";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";
 import {useSelectionHandler} from "../../../../components/tables/hooks";
+import {getConnectorTypeProjectName} from '../../../../components/workflow/connectors/utility';
 
 const ProjectNameForm = (
   {
@@ -78,7 +79,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             dataSource={selectedProjects}
             columns={[
               {
-                title: connectorType === "trello" ? 'Remote board' : 'Remote project',
+                title: `Remote ${getConnectorTypeProjectName(connectorType).toLowerCase()}`,
                 dataIndex: 'name',
                 width: '30%'
               },

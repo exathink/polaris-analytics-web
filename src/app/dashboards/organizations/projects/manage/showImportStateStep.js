@@ -6,6 +6,7 @@ import {Spin, Progress} from "antd";
 import {work_tracking_service} from "../../../../services/graphql/index";
 import {CompactTable} from "../../../../components/tables";
 import {Loading} from "../../../../components/graphql/loading";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
 const {Column} = CompactTable;
 const importStateDisplayMap = {
@@ -117,7 +118,7 @@ export const ShowImportStateStep = (
                     hideOnSinglePage: true
                   }}
                 >
-                  <Column title={connectorType === "trello" ? "Remote Board" : "Remote Project"} dataIndex={"name"} key={"name"}/>
+                  <Column title={`Remote ${getConnectorTypeProjectName(connectorType)}`} dataIndex={"name"} key={"name"}/>
                   <Column title={"Import Days"} dataIndex={"importDays"} key={"importDays"}/>
                   <Column title={"CardsImported"} dataIndex={"workItemCount"} key={"workItemCount"}/>
                   <Column
