@@ -9,7 +9,7 @@ import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
@@ -44,7 +44,7 @@ function getSteps({connectorType}) {
   return steps;
 }
 
-export const AddProjectWorkflow = withNavigationContext(
+export const AddProjectWorkflow = withViewerContext(withNavigationContext(
   class _AddProjectWorkflow extends React.Component {
     constructor(props) {
       super(props);
@@ -213,10 +213,11 @@ export const AddProjectWorkflow = withNavigationContext(
               onImportConfigured: this.onImportConfigured.bind(this),
               importedProjectKeys: this.state.importedProjectKeys,
               importedWorkItemsSourcesKeys: this.state.importedWorkItemsSourcesKeys,
-              organizationKey: organization.key
+              organizationKey: organization.key,
+              viewerContext: this.props.viewerContext,
             }}
           />
         </ApolloProvider>
       );
     }
-  })
+  }))
