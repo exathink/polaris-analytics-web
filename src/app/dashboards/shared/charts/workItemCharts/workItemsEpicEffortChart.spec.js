@@ -349,7 +349,7 @@ describe("WorkItemsEpicEffortChart", () => {
 
           expect(actual).toMatchObject({
             header: `Defect Lead Time/ Cycle Time Trends`,
-            body: [["Effort", "0.5 Dev-Days"]],
+            body: [["Epic", expect.stringContaining("Quality Trends")], ["Effort", "0.5 Dev-Days"]],
           });
         });
 
