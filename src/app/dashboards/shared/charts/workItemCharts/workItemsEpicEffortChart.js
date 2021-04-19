@@ -20,6 +20,7 @@ function getEpicPointValue(epicWorkItems, specsOnly) {
 
 function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
       return {
@@ -27,11 +28,14 @@ function getHierarchySeries(workItems, specsOnly, intl) {
         value: specsOnly ? w.effort : 1,
         effortValue: w.effort,
         parent: w.epicKey || UNCATEGORIZED.key,
+        epicData: {
+          epicName: w.epicName || UNCATEGORIZED.displayValue,
+          epicVal: getEpicPointValue(workItemsByEpic[w.epicKey || UNCATEGORIZED.key], specsOnly)
+        },
         workItem: w,
       };
     });
 
-  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -52,11 +56,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
               fontWeight: "bold",
             },
             formatter: function () {
-              const {value, workItems} = this.point;
-              const dataLabelTitle = specsOnly ? value : workItems.length;
-              return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
-                maximumSignificantDigits: 2,
-              })} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
+              return "";
             },
           },
         },
@@ -209,16 +209,20 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, effortValue, workItems, parent} = this.point;
+          const {name, effortValue, workItems, epicData} = this.point;
           if (showHierarchy) {
-            let cards = [];
-            if (parent == null) {
-              cards = [[`Cards`, `${workItems.length}`]];
+            let epicArr = [];
+            if (epicData) {
+              const {epicName, epicVal} = epicData;
+              if (specsOnly) {
+                epicArr = [[`Epic`, `${epicName} (${intl.formatNumber(epicVal)} Dev-Days)`]];
+              } else {
+                epicArr = [[`Epic`, `${epicName} (${intl.formatNumber(epicVal)} Cards)`]];
+              }
             }
-
             return tooltipHtml({
               header: `${name}`,
-              body: [[`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`], ...cards],
+              body: [...epicArr, [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`]],
             });
           }
           return tooltipHtml({
