@@ -1,12 +1,13 @@
 import React from "react";
 import {Row, Col, Card, Avatar} from "antd";
+import {TRELLO_CONNECTOR} from "../../../../../config/featureFlags";
 
 const {Meta} = Card;
 
 export class SelectIntegrationStep extends React.Component {
-
-
   render() {
+    const {viewerContext} = this.props;
+
     return (
       <div className={'select-connector'}>
         <div style={{padding: '30px'}}>
@@ -63,18 +64,23 @@ export class SelectIntegrationStep extends React.Component {
                 />
               </Card>
             </Col>
-            <Col span={8}>
-              <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
-                    onClick={() => this.props.onConnectorTypeSelected('trello')}>
-                <Meta
-                  avatar={
-                    <Avatar src="/images/third-party/trello.png"/>
-                  }
-                  title="Trello"
-                  description="Import Boards and Cards"
-                />
-              </Card>
-            </Col>
+            {
+              viewerContext.isFeatureFlagActive(TRELLO_CONNECTOR) ?
+                <Col span={8}>
+                  <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
+                        onClick={() => this.props.onConnectorTypeSelected('trello')}>
+                    <Meta
+                      avatar={
+                        <Avatar src="/images/third-party/trello.png"/>
+                      }
+                      title="Trello"
+                      description="Import Boards and Cards"
+                    />
+                  </Card>
+                </Col>
+                :
+                null
+            }
           </Row>
         </div>
       </div>
