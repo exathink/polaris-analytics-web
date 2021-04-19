@@ -15,6 +15,8 @@ import {EditConnectorFormButton} from "../../../../components/workflow/connector
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
 
+const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: vcs_service};
+
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
     case 'github':
@@ -114,7 +116,7 @@ export const SelectRepositoriesStep =
     withSubmissionCache,
     withMutation(REFETCH_REPOSITORIES_MUTATION, [REFETCH_CONNECTOR_REPOSITORIES_QUERY]),
     withMutation(TEST_CONNECTOR),
-    withMutation(EDIT_CONNECTOR, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
+    withMutation(EDIT_CONNECTOR_WITH_CLIENT, [REFETCH_CONNECTOR_REPOSITORIES_QUERY])
   )(
     class _SelectRepositoriesStep extends React.Component {
       render() {

@@ -9,38 +9,42 @@ import {ShowImportStateStep} from "./showImportStateStep";
 import {work_tracking_service} from "../../../../services/graphql";
 import {refetchQueries} from "../../../../components/graphql/utils";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-
+import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 
+function getSteps({connectorType}) {
+  const steps = [
+    {
+      title: 'Select Provider',
+      content: SelectIntegrationStep,
+      showNext: false
+    },
+    {
+      title: 'Select Connector',
+      content: SelectConnectorStep,
+      showNext: false
+    },
+    {
+      title: `Select ${getConnectorTypeProjectName(connectorType, true)}`,
+      content: SelectProjectsStep,
+      showNext: true,
+      disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
+    },
+    {
+      title: 'Configure Import',
+      content: ConfigureImportStep,
+    },
+    {
+      title: `Import ${getConnectorTypeProjectName(connectorType, true)}`,
+      content: ShowImportStateStep
+    },
+  ];
 
-const steps = [
-  {
-    title: 'Select Provider',
-    content: SelectIntegrationStep,
-    showNext: false
-  },
-  {
-    title: 'Select Connector',
-    content: SelectConnectorStep,
-    showNext: false
-  },
-  {
-    title: 'Select Projects',
-    content: SelectProjectsStep,
-    showNext: true,
-    disableNextIf: ({selectedProjects}) => selectedProjects.length === 0
-  },
-  {
-    title: 'Configure Import',
-    content: ConfigureImportStep,
-  },
-  {
-    title: 'Import Projects',
-    content: ShowImportStateStep
-  },
-];
+  return steps;
+}
 
-export const AddProjectWorkflow = withNavigationContext(
+export const AddProjectWorkflow = withViewerContext(withNavigationContext(
   class _AddProjectWorkflow extends React.Component {
     constructor(props) {
       super(props);
@@ -167,7 +171,8 @@ export const AddProjectWorkflow = withNavigationContext(
     }
 
     render() {
-      const {current} = this.state;
+      const {current, selectedConnector: {connectorType}} = this.state;
+      const steps = getSteps({connectorType});
       const currentStep = steps[current];
       const disableNext = currentStep.disableNextIf && currentStep.disableNextIf(this.state);
       const {organization, onDone} = this.props;
@@ -187,7 +192,7 @@ export const AddProjectWorkflow = withNavigationContext(
                   }
                   {current > 0 && (
                     <WorkflowActionButton onClick={() => this.prev()}>
-                      {current < 4 ? 'Back' : 'Import More Projects'}
+                      {current < 4 ? 'Back' : `Import More ${getConnectorTypeProjectName(connectorType, true)}`}
                     </WorkflowActionButton>
                   )}
                   {currentStep.showNext && current < steps.length - 1 && (
@@ -208,10 +213,11 @@ export const AddProjectWorkflow = withNavigationContext(
               onImportConfigured: this.onImportConfigured.bind(this),
               importedProjectKeys: this.state.importedProjectKeys,
               importedWorkItemsSourcesKeys: this.state.importedWorkItemsSourcesKeys,
-              organizationKey: organization.key
+              organizationKey: organization.key,
+              viewerContext: this.props.viewerContext,
             }}
           />
         </ApolloProvider>
       );
     }
-  })
+  }))

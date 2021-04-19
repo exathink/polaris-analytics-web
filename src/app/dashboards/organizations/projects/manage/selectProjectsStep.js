@@ -14,6 +14,9 @@ import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+
+const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
 
 function getServerUrl(selectedConnector) {
   switch (selectedConnector.connectorType) {
@@ -34,6 +37,8 @@ function getFetchProjectsButtonName(selectedConnector) {
       return 'Fetch Available Projects';
     case 'jira':
       return 'Fetch Available Projects';
+    case 'trello':
+      return 'Fetch Available Boards';
     default:
       return 'Fetch Available Projects';
   }
@@ -87,7 +92,7 @@ export const REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY = {
   })
 };
 
-const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsSelected}) => {
+const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsSelected, connectorType}) => {
   const {Column} = Table;
 
 
@@ -98,7 +103,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       loading={loading}
       rowKey={record => record.key}
       pagination={{
-        showTotal: total => `${total} Projects`,
+        showTotal: total => `${total} ${getConnectorTypeProjectName(connectorType, true)}`,
         defaultPageSize: 10,
         hideOnSinglePage: true,
         position: 'top'
@@ -106,7 +111,7 @@ const SelectProjectsTable = ({loading, dataSource, selectedProjects, onProjectsS
       rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
     >
       <Column
-        title={'Remote Project Name'}
+        title={`Remote ${getConnectorTypeProjectName(connectorType)} Name`}
         dataIndex={'name'}
         key={'name'}
         sorter={lexicographic('name')}
@@ -129,7 +134,7 @@ export const SelectProjectsStep =
     withSubmissionCache,
     withMutation(REFETCH_PROJECTS_MUTATION, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY]),
     withMutation(TEST_CONNECTOR),
-    withMutation(EDIT_CONNECTOR, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
+    withMutation(EDIT_CONNECTOR_WITH_CLIENT, [REFETCH_CONNECTOR_WORK_ITEMS_SOURCES_QUERY])
   )(
     class _SelectProjectsStep extends React.Component {
       render() {
@@ -159,8 +164,8 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Select projects to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} projects available`} </h4>
+                    <h3>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
                     <h5>{getServerUrl(selectedConnector)}</h5>
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
@@ -212,7 +217,9 @@ export const SelectProjectsStep =
                                       name: values.name,
                                       connectorType: connectorType,
                                       apiKey: values.apiKey,
-                                      githubAccessToken: values.githubAccessToken
+                                      githubAccessToken: values.githubAccessToken,
+                                      trelloAccessToken: values.trelloAccessToken,
+                                      trelloApiKey: values.trelloApiKey
                                     }
                                   }
                                 })
@@ -230,9 +237,10 @@ export const SelectProjectsStep =
                           dataSource={workItemsSources}
                           selectedProjects={selectedProjects}
                           onProjectsSelected={onProjectsSelected}
+                          connectorType={connectorType}
                         />
                         :
-                        <NoData message={"No new projects to import"} />
+                        <NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} />
                     }
                   </div>
 

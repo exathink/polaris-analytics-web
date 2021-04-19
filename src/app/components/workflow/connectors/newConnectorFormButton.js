@@ -168,6 +168,49 @@ const AddConnectorForm = (
             :
             null
         }
+        {
+          connectorType === 'trello' ?
+            <React.Fragment>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Trello Host URL">
+                    {getFieldDecorator('baseUrl', {
+                      rules: [
+                        {required: false, message: 'Trello Host URL'}
+                      ],
+                      initialValue: currentValue('baseUrl', null)
+                    })(<Input placeholder="Defaults to https://api.trello.com"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item label="API Key">
+                  {getFieldDecorator('trelloApiKey', {
+                    rules: [
+                      {required: true, message: 'Api Key is required'}
+                    ],
+                    initialValue: currentValue('trelloApiKey', null)
+                  })(<Input placeholder="API Key"/>)}
+                </Form.Item>
+              </Col>
+            </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Personal Access Token">
+                    {getFieldDecorator('trelloAccessToken', {
+                      rules: [
+                        {required: true, message: 'Personal Access Token is required'}
+                      ],
+                      initialValue: currentValue('trelloAccessToken', null)
+                    })(<Input placeholder="Personal Access Token"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </React.Fragment>
+            :
+            null
+        }
       </React.Fragment>
   )
 }
