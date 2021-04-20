@@ -1,5 +1,5 @@
 import {Chart, Highcharts, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick, localNow} from "../../../../helpers/utility";
+import {buildIndex, pick, localNow, capitalizeFirstLetter} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import WorkItems from "../../../work_items/context";
 import {Colors} from "../../config";
@@ -209,20 +209,21 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, effortValue, workItems, epicData} = this.point;
+          const {name, effortValue, workItems, epicData, workItem} = this.point;
           if (showHierarchy) {
-            let epicArr = [];
+            let epicTitle = "";
             if (epicData) {
               const {epicName, epicVal} = epicData;
               if (specsOnly) {
-                epicArr = [[`Epic`, `${epicName} (${intl.formatNumber(epicVal)} Dev-Days)`]];
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Dev-Days)`;
               } else {
-                epicArr = [[`Epic`, `${epicName} (${intl.formatNumber(epicVal)} Cards)`]];
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Cards)`;
               }
             }
+            const workItemTitle = workItem ?[[capitalizeFirstLetter(workItem.workItemType), name]] : [];
             return tooltipHtml({
-              header: `${name}`,
-              body: [...epicArr, [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`]],
+              header: `${epicTitle}`,
+              body: [...workItemTitle, [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`]],
             });
           }
           return tooltipHtml({
