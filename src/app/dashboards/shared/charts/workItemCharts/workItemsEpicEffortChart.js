@@ -209,8 +209,12 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, effortValue, workItems, epicData, workItem} = this.point;
+          const {name, effortValue, workItems, epicData, workItem, parent} = this.point;
           if (showHierarchy) {
+            if (parent == null) {
+              return false;
+            }
+
             let epicTitle = "";
             if (epicData) {
               const {epicName, epicVal} = epicData;
