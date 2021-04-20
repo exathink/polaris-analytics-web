@@ -325,6 +325,7 @@ describe("WorkItemsEpicEffortChart", () => {
                 name: "Defect Lead Time/ Cycle Time Trends",
                 key: "7f7d0bdd-a862-4b81-a3f0-d3c1266762ce:4177",
                 workItemKey: "7f7d0bdd-a862-4b81-a3f0-d3c1266762ce",
+                workItemType: "story",
                 displayId: "PO-494",
                 epicName: "Quality Trends",
                 epicKey: "89285627-0dd9-4b5b-8800-740dc68d7428",
@@ -334,6 +335,7 @@ describe("WorkItemsEpicEffortChart", () => {
                 name: "Defect Arrival Close Rate - UI",
                 key: "eb5f494e-90f2-4685-a24b-da625a00931b:4265",
                 workItemKey: "eb5f494e-90f2-4685-a24b-da625a00931b",
+                workItemType: "story",
                 displayId: "PO-550",
                 epicName: "Quality Trends",
                 epicKey: "89285627-0dd9-4b5b-8800-740dc68d7428",
@@ -348,8 +350,8 @@ describe("WorkItemsEpicEffortChart", () => {
           );
 
           expect(actual).toMatchObject({
-            header: `Defect Lead Time/ Cycle Time Trends`,
-            body: [["Epic", expect.stringContaining("Quality Trends")], ["Effort", "0.5 Dev-Days"]],
+            header: expect.stringContaining("Quality Trends"),
+            body: [["Story", `Defect Lead Time/ Cycle Time Trends`], ["Effort", "0.5 Dev-Days"]],
           });
         });
 
