@@ -32,7 +32,7 @@ export const ProjectDefectMetricsSummaryView = (
         {
           !showAll ?
             <VizRow h={"80%"}>
-              <VizItem w={0.4}>
+              <VizItem w={0.45}>
                 <Statistic
                   title="Unresolved"
                   value={numOpenDefects || 0}
@@ -43,7 +43,7 @@ export const ProjectDefectMetricsSummaryView = (
                 />
               </VizItem>
 
-              <VizItem w={0.6}>
+              <VizItem w={0.55}>
                 <Statistic
                   title={<span>Lead Time <sup>{`${percentileToText(targetPercentile)}`}</sup> </span>}
                   value={percentileLeadTime || 0}
