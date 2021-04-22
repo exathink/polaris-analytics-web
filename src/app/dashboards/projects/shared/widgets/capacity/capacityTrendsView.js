@@ -16,7 +16,7 @@ export const ProjectCapacityTrendsStatsView = (
 
   return (
     <VizRow h={"100%"}>
-      <VizItem w={0.45}>
+      <VizItem w={0.40}>
         <FlowStatistic
           title={'Contributors'}
           currentMeasurement={current}
@@ -27,7 +27,7 @@ export const ProjectCapacityTrendsStatsView = (
           target={target}
         />
       </VizItem>
-      <VizItem w={0.55}>
+      <VizItem w={0.60}>
         <EffortIN
           currentMeasurement={current}
           previousMeasurement={previous}

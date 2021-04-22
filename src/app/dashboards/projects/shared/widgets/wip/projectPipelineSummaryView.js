@@ -15,6 +15,7 @@ import {
 } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
 import {ComponentCarousel} from "../../../../shared/components/componentCarousel/componentCarousel";
+import styles from "./wip.module.css";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -28,22 +29,22 @@ const FlowBoardSummaryView = ({
   viewerContext,
 }) => {
   return (
-    <VizRow h={1}>
-      <VizItem w={0.3}>
+    <div className={styles.boxWrapper}>
+      <div >
         <PercentileCycleTime
           currentMeasurement={pipelineCycleMetrics}
           targetPercentile={cycleTimeTargetPercentile}
           target={cycleTimeTarget}
         />
-      </VizItem>
-      <VizItem w={0.3}>
+      </div>
+      <div >
         <ComponentCarousel tickInterval={2000}>
           <AvgCycleTime currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
           <AvgDuration currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
         </ComponentCarousel>
-      </VizItem>
-      <VizItem
-        w={0.3}
+      </div>
+      <div
+        
         style={{
           paddingLeft: "40px",
           borderLeftWidth: "1px",
@@ -52,8 +53,8 @@ const FlowBoardSummaryView = ({
         }}
       >
         <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
-      </VizItem>
-    </VizRow>
+      </div>
+    </div>
   );
 };
 
