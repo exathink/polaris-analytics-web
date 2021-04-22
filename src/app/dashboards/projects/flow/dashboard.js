@@ -87,7 +87,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           subtitle={`${flowAnalysisPeriod} Days`}
           styles={{
             controlContainer: {
-              width: "27%",
+              width: "30%",
             },
           }}
           controls={[({view}) => view !== "detail" && <span>{specsOnly ? "% of EffortOUT" : "% of Volume"}</span>]}
