@@ -25,7 +25,7 @@ export const WorkItemRemoteLink = ({workItem}) => {
 
   return (
     remoteBrowseUrl ?
-      <a href={remoteBrowseUrl} target={"_blank"} title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}>
+      <a href={remoteBrowseUrl} target={"_blank"} rel="noopener noreferrer" title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}>
         <RowNoOverflow align={'center'}>
           <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
             {`${workItem.displayId}: ${elide(workItem.name, 250)}`}

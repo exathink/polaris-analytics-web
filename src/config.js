@@ -1,4 +1,4 @@
-export default {
+const Config =  {
   apiUrl: 'http://yoursite.com/api/',
 };
 
@@ -20,3 +20,4 @@ export {
   language,
   themeConfig
 };
+export default Config;

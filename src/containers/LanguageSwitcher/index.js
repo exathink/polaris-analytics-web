@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 import actions from '../../redux/languageSwitcher/actions';
 import config from './config';
 
@@ -12,7 +12,7 @@ class LanguageSwitcher extends Component {
     return (
       <div className="themeSwitchBlock">
         <h4>
-          <IntlMessages id="languageSwitcher.label" />
+          <FormattedMessage id="languageSwitcher.label" />
         </h4>
         <div className="themeSwitchBtnWrapper">
           {config.options.map(option => {

@@ -262,7 +262,7 @@ describe("ProjectAnalysisPeriodsView", () => {
 
       // update flow slider to be one less than wip slider
       fireEvent.change(flowInputElement, {target: {value: Number(wipInputElement.value) - 1}});
-
+      fireEvent.blur(flowInputElement);
       //after
       expect(flowInputElement.value).toBe("30");
       // save/cancel button should not appear
@@ -287,7 +287,8 @@ describe("ProjectAnalysisPeriodsView", () => {
 
       // update flow slider to be one less than wip slider
       fireEvent.change(flowInputElement, {target: {value: Number(wipInputElement.value) - 1}});
-
+      fireEvent.blur(flowInputElement);
+      
       const warningMessageElement = screen.queryByText(
         /flow analysis period can not be smaller than wip analysis period/i
       );

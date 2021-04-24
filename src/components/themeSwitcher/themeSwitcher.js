@@ -1,12 +1,12 @@
 import React from 'react';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 
 export default ({ config, changeTheme, selectedId }) => {
   const { id, label, options } = config;
   return (
     <div className="themeSwitchBlock">
       <h4>
-        <IntlMessages id={label} />
+        <FormattedMessage id={label} />
       </h4>
       <div className="themeSwitchBtnWrapper">
         {options.map(option => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl.macro';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 import {ContributorActivitySummaryWidget} from "../widgets/activitySummaryWidget";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";

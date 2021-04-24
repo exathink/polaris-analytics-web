@@ -12,7 +12,7 @@ import {RepositoriesDashboardSetup} from "./setup";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
-export default () => (
+const TopDashboard =  () => (
   <OrganizationDashboard
     pollInterval={60 * 1000}
     render={(
@@ -92,3 +92,5 @@ export default () => (
     )}
   />
 );
+
+export default TopDashboard;

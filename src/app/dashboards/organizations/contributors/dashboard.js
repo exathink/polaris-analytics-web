@@ -9,7 +9,7 @@ import {OrganizationDashboard} from '../organizationDashboard';
 
 const dashboard_id = 'dashboards.contributors.organization';
 
-export default () => (
+const TopDashboard = () => (
   <OrganizationDashboard
     pollInterval={60*1000}
     render ={
@@ -61,3 +61,5 @@ export default () => (
     }
     />
 );
+
+export default TopDashboard;

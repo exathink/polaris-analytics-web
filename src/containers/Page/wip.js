@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from '../../image/idea-execute.png';
-import IntlMessages from '../../components/utility/intlMessages';
+import {FormattedMessage} from 'react-intl';
 import WipStyleWrapper from './wip.style';
 
 export class Wip extends React.Component {
@@ -10,17 +10,17 @@ export class Wip extends React.Component {
       <WipStyleWrapper className="iso404Page">
         <div className="iso404Content">
           <h1>
-            <IntlMessages id="pageWip.title" />
+            <FormattedMessage id="pageWip.title" />
           </h1>
           <h3>
-            <IntlMessages id="pageWip.subTitle" />
+            <FormattedMessage id="pageWip.subTitle" />
           </h3>
           <p>
-            <IntlMessages id="pageWip.description" />
+            <FormattedMessage id="pageWip.description" />
           </p>
           <button type="button">
             <Link to="/">
-              <IntlMessages id="pageWip.backButton" />
+              <FormattedMessage id="pageWip.backButton" />
             </Link>
           </button>
         </div>

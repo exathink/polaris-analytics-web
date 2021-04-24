@@ -1,4 +1,4 @@
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl.macro';
 
 import {ACTIVITY_LEVELS, partitionByActivityLevel} from "../../../helpers/activityLevel";
 import {Chart, tooltipHtml} from '../../../../../framework/viz/charts/index';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LayoutContentWrapper } from './layoutWrapper.style';
 
-export default props => (
+const LayoutWrapper = props => (
   <LayoutContentWrapper
     className={
       props.className != null
@@ -13,3 +13,5 @@ export default props => (
     {props.children}
   </LayoutContentWrapper>
 );
+
+export default LayoutWrapper;

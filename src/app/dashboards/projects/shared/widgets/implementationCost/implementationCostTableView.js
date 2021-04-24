@@ -330,6 +330,7 @@ export function ImplementationCostTableView({
   React.useEffect(() => {
     // reset state when workItems are changing
     dispatch({type: actionTypes.UPDATE_DEFAULTS, payload: initialBudgetRecords()});
+    // eslint-disable-next-line
   }, [workItems]);
 
   const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems);

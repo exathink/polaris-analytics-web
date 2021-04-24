@@ -1,5 +1,5 @@
 import React from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import {defineMessages, FormattedMessage} from 'react-intl.macro';
 
 
 const messages = defineMessages({
@@ -54,7 +54,8 @@ export const Contexts = {
     display:
       (quantity = 0) => {
         return <FormattedMessage
-          {...messages.accounts}
+          id="contexts.accounts.display"
+          defaultMessage="{quantity, plural, one {Account} other {Accounts}}"
           values={{quantity: quantity}}
         />
       },
@@ -69,7 +70,8 @@ export const Contexts = {
     display:
       (quantity = 0) => {
         return <FormattedMessage
-          {...messages.organizations}
+          id="contexts.organizations.display"
+          defaultMessage="{quantity, plural, one {Organization} other {Organizations}}"
           values={{quantity: quantity}}
         />
       },
@@ -82,7 +84,8 @@ export const Contexts = {
     display:
         (quantity = 0) => {
           return <FormattedMessage
-            {...messages.projects}
+            id="contexts.projects.display"
+            defaultMessage="{quantity, plural, one {Value Stream} other {Value Streams}}"
             values={{quantity: quantity}}
         />
         },
@@ -95,7 +98,8 @@ export const Contexts = {
     display:
         (quantity = 0) => {
           return <FormattedMessage
-            {...messages.work_items}
+            id="contexts.work_items.display"
+            defaultMessage="{quantity, plural, one {Card} other {Cards}}"
             values={{quantity: quantity}}
         />
         },
@@ -108,7 +112,8 @@ export const Contexts = {
     display:
         function (quantity = 0) {
           return <FormattedMessage
-            {...messages.contributors}
+            id="contexts.contributors.display"
+            defaultMessage="{quantity, plural, one {Contributor} other {Contributors}}"
             values={{quantity: quantity}}
           />
         },
@@ -122,7 +127,8 @@ export const Contexts = {
     display:
         function (quantity = 0) {
           return <FormattedMessage
-            {...messages.repositories}
+            id="contexts.repositories.display"
+            defaultMessage="{quantity, plural, one {Repository} other {Repositories}}"
             values={{quantity: quantity}}
           />
         },
@@ -136,7 +142,8 @@ export const Contexts = {
     display:
         function (quantity = 0) {
           return <FormattedMessage
-            {...messages.commits}
+            id="contexts.commits.display"
+            defaultMessage="{quantity, plural, one {Commit} other {Commits}}"
             values={{quantity: quantity}}
           />
         },
@@ -150,7 +157,8 @@ export const Contexts = {
     display:
         function () {
           return <FormattedMessage
-            {...messages.oss}
+            id="contexts.oss"
+            defaultMessage="Open Source"
           />
         },
     icon: 'ion-ios-list',
@@ -162,7 +170,8 @@ export const Contexts = {
     display:
         function () {
           return <FormattedMessage
-            {...messages.settings}
+            id="contexts.settings"
+            defaultMessage="Settings"
           />
         },
     icon: 'ion-ios-cog',

@@ -2,7 +2,7 @@ import React from 'react';
 import {CardGrid} from "../../components/cardGrid";
 import {NavCard} from "../../components/cards";
 import {Contexts} from "../../meta";
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl.macro';
 import {isAdmin} from "../../helpers/utility";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
 import {AccountSetup} from "./accountSetup/accountSetup";
