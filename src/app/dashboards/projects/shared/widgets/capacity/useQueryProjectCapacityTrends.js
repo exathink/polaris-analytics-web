@@ -18,7 +18,7 @@ export function useQueryProjectCapacityTrends(
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
-          $before: DateTime,
+          $before: Date,
           $showContributorDetail: Boolean,
           $referenceString: String,
           ) {

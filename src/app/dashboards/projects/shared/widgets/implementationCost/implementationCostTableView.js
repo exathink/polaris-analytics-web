@@ -8,6 +8,9 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
+import WorkItems from "../../../../work_items/context";
+import {Link} from "react-router-dom";
+import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 
 const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
@@ -83,8 +86,23 @@ function renderColumn(key) {
   };
 }
 
-export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
-  const [nameSearchState, titleSearchState] = [useSearch("name"), useSearch("title")];
+function renderLinkColumn(column) {
+  return (_text, record) => {
+    if (record.type === "epic") {
+      if (column === "title" && record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return _text;
+      }
+    } else {
+      // render link for non-epics
+      return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
+    }
+  };
+}
+
+export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems) {
+  const nameSearchState = useSearch("name");
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     dispatch({
@@ -104,6 +122,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
+      render: renderLinkColumn("name")
     },
     {
       title: "Title",
@@ -111,7 +130,9 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch]) {
       key: "title",
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
-      ...titleSearchState,
+      filters: epicWorkItems.map(b => ({text: b.name, value: b.name})),
+      onFilter: (value, record) => record.title.indexOf(value) === 0, 
+      render: renderLinkColumn("title")
     },
     {
       title: "Type",
@@ -237,7 +258,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
     return {
       key: x.key,
       name: x.displayId,
-      title: x.name != null && x.name !== UncategorizedKey ? x.name : "",
+      title: x.name,
       cards: 1,
       type: x.workItemType,
       budget: x.budget,
@@ -312,7 +333,7 @@ export function ImplementationCostTableView({
     // eslint-disable-next-line
   }, [workItems]);
 
-  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch]);
+  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems);
   const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   // mutation to update project analysis periods

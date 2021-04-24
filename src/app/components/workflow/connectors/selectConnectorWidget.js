@@ -147,7 +147,9 @@ export const SelectConnectorWidget =
                                       bitbucketPrincipalName: values.bitbucketPrincipalName,
                                       githubAccessToken: values.githubAccessToken,
                                       githubOrganization: values.githubOrganization,
-                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken
+                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
+                                      trelloAccessToken: values.trelloAccessToken,
+                                      trelloApiKey: values.trelloApiKey
                                     }
                                   }
                                 })

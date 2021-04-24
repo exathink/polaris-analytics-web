@@ -190,6 +190,39 @@ const GitlabConnectorInstructions = ({part}) => (
   </div>
 );
 
+const TrelloConnectorInstructions = ({part}) =>
+  part === "instructions" && (
+    <div>
+      <p>
+        The Polaris Flow Trello Connector uses the Trello Rest API to import boards metadata and cards. Each connector
+        is scoped to a specific Trello user.
+      </p>
+      <p>
+        You will need an api key and access token for the user to authenticate Polaris Flow with Trello. We recommend
+        that you use the api key and access token for a user who is either an owner or a member of all the projects that
+        you need to analyze in Polaris Flow.
+      </p>
+
+      <ol>
+        <li>Login to Trello as the user specified above,</li>
+        <li>
+          Visit <cite className="urlText">https://trello.com/app-key</cite> to get your API key. You  may keep it handy to use in next step and later to create connector.
+        </li>
+        <li>
+        Generate a read only access token visiting the below URL. Make sure to replace &lt;APIKey&gt; with the key copied in step 1. 
+        This link will generate a read only access token, which will be used by this connector.<br/>
+
+          <cite className="urlText">
+            https://trello.com/1/authorize?expiration=never&amp;name=Polaris&amp;scope=read&amp;response_type=token&amp;key=&lt;APIKey&gt;
+          </cite>
+        </li>
+        <li>
+        Keep both API Key and Access Token generated in steps 2 and 3 ready to be provided on next page.
+        </li>
+      </ol>
+    </div>
+  );
+
 export const CreateConnectorInstructions = ({part, connectorType}) => {
   switch (connectorType) {
     case 'jira':
@@ -214,6 +247,10 @@ export const CreateConnectorInstructions = ({part, connectorType}) => {
     case 'gitlab':
       return(
         <GitlabConnectorInstructions part={part}/>
+      )
+    case 'trello':
+      return(
+        <TrelloConnectorInstructions part={part}/>
       )
     default:
       return `Unknown connector type: ${connectorType}`;

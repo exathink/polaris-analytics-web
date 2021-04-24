@@ -18,7 +18,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "line",
         data: backlogTrends
           .map((measurement) => ({
-            x: epoch(measurement["measurementDate"]),
+            x: epoch(measurement["measurementDate"], true),
             y: measurement["avgBacklogSize"],
             measurement: measurement,
           }))
@@ -31,7 +31,7 @@ export const DefectBacklogTrendsChart = Chart({
         type: "boxplot",
         data: backlogTrends
           .map((measurement) => ({
-            x: epoch(measurement["measurementDate"]),
+            x: epoch(measurement["measurementDate"], true),
             low: measurement["minBacklogSize"],
             q1: measurement["q1BacklogSize"],
             median: measurement["medianBacklogSize"],

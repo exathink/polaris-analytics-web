@@ -15,7 +15,7 @@ export const ProjectImplementationCostDetailDashboard = ({
   days,
   view,
 }) => {
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
 
   return (

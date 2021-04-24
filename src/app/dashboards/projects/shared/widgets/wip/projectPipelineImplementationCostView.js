@@ -41,15 +41,6 @@ export const ProjectPipelineImplementationCostView = (
               }
             }
           />
-          {
-            view === 'primary' &&
-            <Flex w={1} justify={'center'}>
-              <WorkItemScopeSelector
-                workItemScope={workItemScope}
-                setWorkItemScope={setWorkItemScope}
-              />
-            </Flex>
-          }
         </div>
       </VizItem>
     </VizRow>

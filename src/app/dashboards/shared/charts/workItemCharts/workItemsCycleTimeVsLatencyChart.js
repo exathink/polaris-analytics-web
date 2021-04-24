@@ -194,27 +194,33 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         formatter: function () {
           const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails} = this.point.workItem;
 
+          const remainingEntries =
+            view === "primary"
+              ? []
+              : [
+                  [`-----------------`, ``],
+                  [`Current State:`, `${state}`],
+                  [`Entered:`, `${timeInStateDisplay}`],
+
+                  stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
+
+                  [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
+                  workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
+                  duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  effort != null ? [`Effort`, `${intl.formatNumber(effort)} dev-days`] : ["", ""],
+                ];
+
           return tooltipHtml({
-            header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
+            header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
+              view === "primary" ? elide(name, 30) : name
+            }`,
             body: [
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
               [`Latency`, `${intl.formatNumber(latency)} days`],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ['', ''],
-              [`-----------------`, ``],
-              [`Current State:`, `${state}`],
-              [`Entered:`, `${timeInStateDisplay}`],
-
-              stateType !== 'closed' ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ['', ''],
-
-              [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-              workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
-              duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ['', ''],
-              effort != null ? [`Effort`, `${intl.formatNumber(effort)} dev-days`] : ['', ''],
-
-
-
-            ]
-          })
+              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
+              ...remainingEntries,
+            ],
+          });
         }
       },
       series: [

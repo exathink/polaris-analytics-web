@@ -1,5 +1,5 @@
-import {getServerDate} from "../../../../helpers/utility";
+import {formatDate, getTodayDate} from "../../../../helpers/utility";
 
-export function getFlowMetricsRowTitle(measurementWindow, before = getServerDate()) {
-  return before ? `${measurementWindow} days ending ${before.format("MM/DD/YYYY")} ` : ``;
+export function getFlowMetricsRowTitle(measurementWindow, before = getTodayDate()) {
+  return before ? `${measurementWindow} days ending ${formatDate(before, "MM/DD/YYYY")} ` : ``;
 }

@@ -5,6 +5,7 @@ import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowM
 import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectResponseTimeTrendsWidget = React.memo((
   {
@@ -38,7 +39,10 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     }
   );
   if (loading) return <Loading/>;
-  if (error) return null;
+  if (error) {
+    logGraphQlError('ProjectResponseTimeTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+    return null;
+  }
   const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
   return (
     view === 'primary' ?

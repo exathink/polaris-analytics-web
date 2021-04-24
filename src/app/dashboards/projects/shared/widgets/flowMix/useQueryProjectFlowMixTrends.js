@@ -18,7 +18,7 @@ export function useQueryProjectFlowMixTrends(
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
-          $before: DateTime,
+          $before: Date,
           $referenceString: String, 
           $specsOnly: Boolean,
           ) {

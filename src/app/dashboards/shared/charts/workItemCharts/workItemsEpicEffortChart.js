@@ -1,5 +1,5 @@
 import {Chart, Highcharts, tooltipHtml} from "../../../../framework/viz/charts";
-import {buildIndex, pick, localNow} from "../../../../helpers/utility";
+import {buildIndex, pick, localNow, capitalizeFirstLetter} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import WorkItems from "../../../work_items/context";
 import {Colors} from "../../config";
@@ -20,6 +20,7 @@ function getEpicPointValue(epicWorkItems, specsOnly) {
 
 function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
+  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
       return {
@@ -27,11 +28,14 @@ function getHierarchySeries(workItems, specsOnly, intl) {
         value: specsOnly ? w.effort : 1,
         effortValue: w.effort,
         parent: w.epicKey || UNCATEGORIZED.key,
+        epicData: {
+          epicName: w.epicName || UNCATEGORIZED.displayValue,
+          epicVal: getEpicPointValue(workItemsByEpic[w.epicKey || UNCATEGORIZED.key], specsOnly)
+        },
         workItem: w,
       };
     });
 
-  const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
 
   return [
     {
@@ -52,11 +56,7 @@ function getHierarchySeries(workItems, specsOnly, intl) {
               fontWeight: "bold",
             },
             formatter: function () {
-              const {value, workItems} = this.point;
-              const dataLabelTitle = specsOnly ? value : workItems.length;
-              return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
-                maximumSignificantDigits: 2,
-              })} ${specsOnly ? `Dev-Days` : `Cards`}</div>`;
+              return "";
             },
           },
         },
@@ -209,16 +209,25 @@ export const WorkItemsEpicEffortChart = Chart({
         outside: false,
         hideDelay: 50,
         formatter: function () {
-          const {name, effortValue, workItems, parent} = this.point;
+          const {name, effortValue, workItems, epicData, workItem, parent} = this.point;
           if (showHierarchy) {
-            let cards = [];
             if (parent == null) {
-              cards = [[`Cards`, `${workItems.length}`]];
+              return false;
             }
 
+            let epicTitle = "";
+            if (epicData) {
+              const {epicName, epicVal} = epicData;
+              if (specsOnly) {
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Dev-Days)`;
+              } else {
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Cards)`;
+              }
+            }
+            const workItemTitle = workItem ?[[capitalizeFirstLetter(workItem.workItemType), name]] : [];
             return tooltipHtml({
-              header: `${name}`,
-              body: [[`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`], ...cards],
+              header: `${epicTitle}`,
+              body: [...workItemTitle, [`Effort`, `${intl.formatNumber(effortValue)} Dev-Days`]],
             });
           }
           return tooltipHtml({

@@ -6,6 +6,7 @@ import {EditableTable} from "../../../../components/forms/editableTable";
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {OrganizationProjectSelectorWidget} from "../../../shared/widgets/organizations/organizationProjectSelectorWidget";
 import {useSelectionHandler} from "../../../../components/tables/hooks";
+import {getConnectorTypeProjectName} from '../../../../components/workflow/connectors/utility';
 
 const ProjectNameForm = (
   {
@@ -51,7 +52,7 @@ const ProjectNameForm = (
     </Form>
   )
 }
-export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onProjectsSelected,  selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged}) => {
+export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjects, onProjectsSelected,  selectedProjectKey, importedProjectName, importMode, organizationKey, onProjectNameChanged, onProjectSelectChanged, connectorType}) => {
   return (
     <React.Fragment>
       <div className={'selected-projects'}>
@@ -78,7 +79,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             dataSource={selectedProjects}
             columns={[
               {
-                title: 'Remote project',
+                title: `Remote ${getConnectorTypeProjectName(connectorType).toLowerCase()}`,
                 dataIndex: 'name',
                 width: '30%'
               },
