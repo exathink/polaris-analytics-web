@@ -112,3 +112,8 @@ scripts/bin
 .vscode
 .DS_Store
 .eslintcache
+
+# cypress
+cypress/videos
+cypress/screenshots
+cypress.env.json
