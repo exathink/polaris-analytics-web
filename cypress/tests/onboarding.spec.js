@@ -1,41 +1,49 @@
 /// <reference types="cypress" />
 
-describe('Onboarding flows', () => {
+describe("Onboarding flows", () => {
 
-    it('Import Board flow for Trello', () => {
-      const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
-      cy.loginByApi(username, password);
+  it("Import Board flow for Trello", () => {
+    cy.interceptGraphQl("createConnector");
 
-      cy.visit('/');
+    const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
+    cy.loginByApi(username, password);
 
-      // assume there is no existing connectors setup already
-      cy.contains("Connect Work Tracking System").click();
-      cy.contains("Connect Remote Projects").click();
+    cy.visit("/");
 
-      // Provider Specific
-      cy.contains("Trello").click();
-      cy.contains("Create Trello Connector").click();
+    // assume there is no existing connectors setup already
+    cy.contains(/Connect Work Tracking System/i).click();
+    cy.contains(/Connect Remote Projects/i).click();
 
-      cy.contains("Next").click();
+    // Provider Specific
+    cy.contains(/Trello/i).click();
+    cy.contains(/Create Trello Connector/i).click();
 
-      cy.get("input#name").type("Polaris Test");
+    cy.contains("Next").click();
 
-      const [trelloApiKey, trelloAccessToken] = [Cypress.env("trelloApiKey"), Cypress.env("trelloAccessToken")];
-      cy.get("input#trelloApiKey").type(trelloApiKey);
-      cy.get("input#trelloAccessToken").type(trelloAccessToken);
-      
-      cy.contains("Register").click();
+    cy.get("input#name").type("Polaris Test");
 
-      cy.get("button.ant-btn").contains(/select/i).click();
+    const [trelloApiKey, trelloAccessToken] = [Cypress.env("trelloApiKey"), Cypress.env("trelloAccessToken")];
+    cy.get("input#trelloApiKey").type(trelloApiKey);
+    cy.get("input#trelloAccessToken").type(trelloAccessToken);
 
-      cy.contains(/fetch available boards/i).click();
+    cy.contains(/Register/i).click();
 
-      cy.get("input[type=checkbox]").check()
+    cy.wait('@createConnector');
 
-      cy.contains("Next").click();
+    cy.get("button.ant-btn")
+      .contains(/select/i)
+      .click();
 
-      cy.get("button.ant-btn").contains(/Import Board/i).click();
+    cy.contains(/fetch available boards/i).click();
 
-      cy.get("button.ant-btn").contains(/done/i).click();
-    })
-  })
+    cy.get("input[type=checkbox]").check();
+
+    cy.contains(/Next/i).click();
+
+    cy.get("button.ant-btn")
+      .contains(/Import Board/i)
+      .click();
+
+    cy.get("button.ant-btn").contains(/done/i).click();
+  });
+});
