@@ -60,3 +60,11 @@ Cypress.Commands.add("loginByApi", (username, password) => {
       });
     });
 });
+
+Cypress.Commands.add("interceptGraphQl", (opName) => {
+  cy.intercept("POST", "/graphql", (req) => {
+    if (req.body?.operationName.includes(opName)) {
+      req.alias = opName;
+    }
+  });
+});
