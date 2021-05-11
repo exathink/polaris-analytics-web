@@ -4,6 +4,7 @@ describe("Onboarding flows", () => {
 
   it("Import Board flow for Trello", () => {
     cy.interceptGraphQl("createConnector");
+    cy.interceptGraphQl("getAccountConnectors");
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -29,6 +30,9 @@ describe("Onboarding flows", () => {
     cy.contains(/Register/i).click();
 
     cy.wait('@createConnector');
+    cy.wait('@getAccountConnectors');
+
+    cy.contains(/Polaris Test/i).should("be.visible");
 
     cy.get("button.ant-btn")
       .contains(/select/i)
