@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 
 describe("Onboarding flows", () => {
-
   it("Import Board flow for Trello", () => {
     cy.interceptGraphQl("createConnector");
     cy.interceptGraphQl("getAccountConnectors");
@@ -29,10 +28,11 @@ describe("Onboarding flows", () => {
 
     cy.contains(/Register/i).click();
 
-    cy.wait('@createConnector');
-    cy.wait('@getAccountConnectors');
+    cy.wait("@createConnector");
+    cy.wait("@getAccountConnectors");
 
-    cy.contains(/Polaris Test/i).should("be.visible");
+    cy.contains("Available Trello Connectors").should("be.visible");
+    cy.contains("Polaris Test").should("be.visible");
 
     cy.get("button.ant-btn")
       .contains(/select/i)
