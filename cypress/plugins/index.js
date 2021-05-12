@@ -16,6 +16,12 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  config.env.testusername = process.env.TEST_USERNAME;
+  config.env.testpassword = process.env.TEST_PASSWORD;
+
+  // trello creds
+  config.env.trelloApiKey = process.env.TRELLO_API_KEY;
+  config.env.trelloAccessToken = process.env.TRELLO_ACCESS_TOKEN;
+
+  return config;
 }
