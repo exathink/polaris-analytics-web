@@ -17,12 +17,12 @@ dotenv.config();
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  config.env.testusername = process.env.TEST_USERNAME;
-  config.env.testpassword = process.env.TEST_PASSWORD;
+  config.env.testusername = process.env.CYPRESS_TEST_USERNAME;
+  config.env.testpassword = process.env.CYPRESS_TEST_PASSWORD;
 
   // trello creds
-  config.env.trelloApiKey = process.env.TRELLO_API_KEY;
-  config.env.trelloAccessToken = process.env.TRELLO_ACCESS_TOKEN;
+  config.env.trelloApiKey = process.env.CYPRESS_TRELLO_API_KEY;
+  config.env.trelloAccessToken = process.env.CYPRESS_TRELLO_ACCESS_TOKEN;
 
   return config;
 }
