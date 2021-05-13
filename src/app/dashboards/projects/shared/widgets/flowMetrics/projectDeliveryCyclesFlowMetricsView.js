@@ -7,7 +7,7 @@ import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {useSearch} from "../../../../../components/tables/hooks";
 
-export function useFlowMetricsDetailTableColumns() {
+export function useFlowMetricsDetailTableColumns(workItemTypes) {
   const nameSearchState = useSearch("displayId", {isWorkItemLink: true});
   const titleSearchState = useSearch("name", {isWorkItemLink: true});
 
@@ -30,7 +30,7 @@ export function useFlowMetricsDetailTableColumns() {
       title: "Type",
       dataIndex: "workItemType",
       key: "workItemType",
-      filters: ["story", "task", "bug"].map(b => ({text: b, value: b})),
+      filters: workItemTypes.map(b => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
     },
@@ -39,48 +39,75 @@ export function useFlowMetricsDetailTableColumns() {
       dataIndex: "leadTime",
       key: "leadTime",
       width: "5%",
+      sorter: (a, b) => a.leadTime - b.leadTime,
     },
     {
       title: "Cycle Time",
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
+      sorter: (a, b) => a.cycleTime - b.cycleTime,
     },
     {
       title: "Delivery Latency",
-      dataIndex: "deliveryLatency",
-      key: "deliveryLatency",
+      dataIndex: "latency",
+      key: "latency",
       width: "5%",
+      sorter: (a, b) => a.latency - b.latency,
     },
     {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
       width: "5%",
+      sorter: (a, b) => a.duration - b.duration,
     },
     {
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
       width: "5%",
+      sorter: (a, b) => a.effort - b.effort,
     },
     {
       title: "Authors",
       dataIndex: "authorCount",
       key: "authorCount",
       width: "5%",
+      sorter: (a, b) => a.authorCount - b.authorCount,
     },
     {
       title: "Backlog Time",
-      dataIndex: "latency",
-      key: "latency",
+      dataIndex: "backlogTime",
+      key: "backlogTime",
       width: "5%",
+      sorter: (a, b) => a.backlogTime - b.backlogTime,
     },
   ];
 
   return columns;
 }
 
+const getNumber = (num, intl) => {
+    return intl.formatNumber(num, {maximumFractionDigits: 2})
+};
+
+function getTransformedData(data, intl) {
+  return data.map(item => {
+    debugger;
+    return {
+      ...item,
+      leadTime: getNumber(item.leadTime, intl),
+      cycleTime: getNumber(item.cycleTime, intl),
+      deliveryLatency: getNumber(item.deliveryLatency, intl),
+      duration: getNumber(item.duration, intl),
+      effort: getNumber(item.effort, intl),
+      authorCount: getNumber(item.authorCount, intl),
+      latency: getNumber(item.latency, intl),
+      backlogTime: getNumber(projectDeliveryCycleFlowMetricsMeta["backlogTime"].value(item), intl)
+    }
+  })
+}
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -91,6 +118,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   initialMetric,
   defectsOnly,
   specsOnly,
+  intl
 }) => {
   const groupings = specsOnly
     ? ["leadTime", "cycleTime", "latency", "duration", "effort", "authors", "backlogTime"]
@@ -105,8 +133,11 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
     initialMetric && setSelectedMetric(initialMetric);
   }, [initialMetric]);
 
-  const columns = useFlowMetricsDetailTableColumns();
-  const dataSource = model;
+  // get unique workItem types
+  const workItemTypes =  [...new Set(model.map(x => x.workItemType))]
+
+  const columns = useFlowMetricsDetailTableColumns(workItemTypes);
+  const dataSource = getTransformedData(model, intl);
 
   return (
     <React.Fragment>
@@ -148,34 +179,36 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
           />
         )}
       </Flex>
-{yAxisScale !== "table" ? <FlowMetricsScatterPlotChart
-        days={days}
-        model={model}
-        selectedMetric={selectedMetric}
-        metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        metricTarget={metricTarget}
-        targetConfidence={targetConfidence}
-        defectsOnly={defectsOnly}
-        specsOnly={specsOnly}
-        showEpics={showEpics}
-        yAxisScale={yAxisScale}
-        onSelectionChange={(workItems) => {
-          if (workItems.length === 1) {
-            context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
-          }
-        }}
-      /> :
-      <Table
-        loading={false}
-        size="small"
-        pagination={false}
-        columns={columns}
-        dataSource={dataSource}
-        scroll={{y: "60vh"}}
-        showSorterTooltip={false}
-        data-testid="flowmetrics-detail-table"
-        bordered={true}
-      />}
+      {yAxisScale !== "table" ? (
+        <FlowMetricsScatterPlotChart
+          days={days}
+          model={model}
+          selectedMetric={selectedMetric}
+          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+          metricTarget={metricTarget}
+          targetConfidence={targetConfidence}
+          defectsOnly={defectsOnly}
+          specsOnly={specsOnly}
+          showEpics={showEpics}
+          yAxisScale={yAxisScale}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
+            }
+          }}
+        />
+      ) : (
+        <Table
+          size="small"
+          pagination={false}
+          columns={columns}
+          dataSource={dataSource}
+          scroll={{y: "60vh"}}
+          showSorterTooltip={false}
+          data-testid="flowmetrics-detail-table"
+          bordered={true}
+        />
+      )}
     </React.Fragment>
   );
 };
