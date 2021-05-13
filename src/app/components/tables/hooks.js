@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import { Input } from 'antd';
 import {Highlighter} from "../misc/highlighter";
 import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
-import {url_for_instance} from "../../framework/navigation/context/helpers";
-import {Link} from "react-router-dom";
-import WorkItems from "../../dashboards/work_items/context";
-export function useSearch(dataIndex, {onSearch, isWorkItemLink} = {}) {
+
+export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   const [searchText, setSearchText] = useState(null);
   const searchInputElement = React.useRef();
 
@@ -71,18 +69,8 @@ export function useSearch(dataIndex, {onSearch, isWorkItemLink} = {}) {
       }
     },
     render: (text, record) => {
-      if (isWorkItemLink) {
-        return (
-          text && (
-            <Link to={`${url_for_instance(WorkItems, record.name, record.workItemKey)}`}>
-              <Highlighter
-                highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-                searchWords={searchText || ""}
-                textToHighlight={text.toString()}
-              />
-            </Link>
-          )
-        );
+      if (customRender) {
+        return text && customRender(text, record, searchText);
       }
       return (
         text && (

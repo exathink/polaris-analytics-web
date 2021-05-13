@@ -6,10 +6,27 @@ import {Checkbox, Table} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {useSearch} from "../../../../../components/tables/hooks";
+import {Link} from "react-router-dom";
+import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
+import {Highlighter} from "../../../../../components/misc/highlighter";
+
+function customRender(text, record, searchText) {
+  return (
+    text && (
+      <Link to={`${url_for_instance(WorkItems, record.name, record.workItemKey)}`}>
+        <Highlighter
+          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+          searchWords={searchText || ""}
+          textToHighlight={text.toString()}
+        />
+      </Link>
+    )
+  );
+}
 
 export function useFlowMetricsDetailTableColumns(workItemTypes) {
-  const nameSearchState = useSearch("displayId", {isWorkItemLink: true});
-  const titleSearchState = useSearch("name", {isWorkItemLink: true});
+  const nameSearchState = useSearch("displayId", {customRender});
+  const titleSearchState = useSearch("name", {customRender});
 
   const columns = [
     {
