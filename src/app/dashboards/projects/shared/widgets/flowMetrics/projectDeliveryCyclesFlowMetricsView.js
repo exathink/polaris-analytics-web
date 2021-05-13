@@ -31,7 +31,7 @@ const string_compare = (a, b, propName) => {
 
 export function useFlowMetricsDetailTableColumns(workItemTypes) {
   const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender});
+  const titleSearchState = useSearch("name");
 
   const columns = [
     {
