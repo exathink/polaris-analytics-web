@@ -24,6 +24,11 @@ function customRender(text, record, searchText) {
   );
 }
 
+const string_compare = (a, b, propName) => {
+  const [stra, strb] = [a[propName], b[propName]];
+  return stra.localeCompare(strb);
+}
+
 export function useFlowMetricsDetailTableColumns(workItemTypes) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender});
@@ -34,6 +39,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
+      sorter: (a, b) => string_compare(a, b, "displayId"),
       ...nameSearchState,
     },
     {
@@ -41,12 +47,14 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       dataIndex: "name",
       key: "name",
       width: "12%",
+      sorter: (a, b) => string_compare(a, b, "name"),
       ...titleSearchState
     },
     {
       title: "Type",
       dataIndex: "workItemType",
       key: "workItemType",
+      sorter: (a, b) => string_compare(a, b, "workItemType"),
       filters: workItemTypes.map(b => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
@@ -111,7 +119,6 @@ const getNumber = (num, intl) => {
 
 function getTransformedData(data, intl) {
   return data.map(item => {
-    debugger;
     return {
       ...item,
       leadTime: getNumber(item.leadTime, intl),
