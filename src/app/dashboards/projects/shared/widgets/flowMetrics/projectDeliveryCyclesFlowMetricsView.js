@@ -33,16 +33,19 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
-        <GroupingSelector
-          label={"Metric"}
-          groupings={groupings.map((grouping) => ({
-            key: grouping,
-            display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
-          }))}
-          initialValue={selectedMetric}
-          value={selectedMetric}
-          onGroupingChanged={setSelectedMetric}
-        />
+        {
+          yAxisScale !== 'table' && (
+            <GroupingSelector
+              label={"Metric"}
+              groupings={groupings.map((grouping) => ({
+                key: grouping,
+                display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
+              }))}
+              initialValue={selectedMetric}
+              value={selectedMetric}
+              onGroupingChanged={setSelectedMetric}
+            />)
+        }
         {!defectsOnly && (
           <Checkbox checked={showEpics} onChange={(e) => setShowEpics(e.target.checked)}>
             Show Epics
@@ -62,7 +65,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
               },
               {
                 key: "table",
-                display: "Table",
+                display: "Data",
               },
             ]}
             initialValue={"logarithmic"}
