@@ -6,6 +6,7 @@ import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
+import styles from "./flowMetrics.module.css";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -139,6 +140,7 @@ export const FlowMetricsDetailTable = injectIntl(({model, intl}) => {
 
   return (
     <Table
+      rowClassName={(record, index) => index % 2 === 0 ? styles.tableRowLight :  styles.tableRowDark}
       size="small"
       pagination={false}
       columns={columns}
