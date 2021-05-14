@@ -11,11 +11,18 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env.cypress" });
 /**
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  config.env.testusername = process.env.CYPRESS_TEST_USERNAME;
+  config.env.testpassword = process.env.CYPRESS_TEST_PASSWORD;
+
+  // trello creds
+  config.env.trelloApiKey = process.env.CYPRESS_TRELLO_API_KEY;
+  config.env.trelloAccessToken = process.env.CYPRESS_TRELLO_ACCESS_TOKEN;
+
+  return config;
 }

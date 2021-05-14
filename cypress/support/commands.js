@@ -25,7 +25,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("loginByCSRF", (csrfToken) => {
+Cypress.Commands.add("loginByCSRF", (csrfToken, username, password) => {
   cy.request({
     method: "POST",
     url: `${Cypress.env("authServiceUrl")}/login`,
@@ -33,15 +33,15 @@ Cypress.Commands.add("loginByCSRF", (csrfToken) => {
     form: true, // we are submitting a regular form body
     body: {
       // get username and password from environment variables
-      email: Cypress.env("username"),
-      password: Cypress.env("password"),
+      email: username,
+      password: password,
       csrf_token: csrfToken, // insert this as part of form body
       submit: "Login",
     },
   });
 });
 
-Cypress.Commands.add("loginByApi", () => {
+Cypress.Commands.add("loginByApi", (username, password) => {
   // if we cannot change our server code to make it easier
   // to parse out the CSRF token, we can simply use cy.request
   // to fetch the login page, and then parse the HTML contents
@@ -54,9 +54,17 @@ Cypress.Commands.add("loginByApi", () => {
       // thus enabling us to query into it easily
       const $html = Cypress.$(body);
       const csrf = $html.find("input[name=csrf_token]").val();
-      cy.loginByCSRF(csrf).then((resp) => {
+      cy.loginByCSRF(csrf, username, password).then((resp) => {
         expect(resp.status).to.eq(200);
         expect(Cypress.$(resp.body).filter("title").text()).to.eq("Polaris Flow");
       });
     });
+});
+
+Cypress.Commands.add("interceptGraphQl", (opName) => {
+  cy.intercept("POST", "/graphql", (req) => {
+    if (req.body?.operationName.includes(opName)) {
+      req.alias = opName;
+    }
+  });
 });
