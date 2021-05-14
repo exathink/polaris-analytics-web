@@ -5,8 +5,7 @@ import WorkItems from "../../../../work_items/context";
 import {Checkbox} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
-
-
+import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -34,16 +33,19 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
-        <GroupingSelector
-          label={"Metric"}
-          groupings={groupings.map((grouping) => ({
-            key: grouping,
-            display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
-          }))}
-          initialValue={selectedMetric}
-          value={selectedMetric}
-          onGroupingChanged={setSelectedMetric}
-        />
+        {
+          yAxisScale !== 'table' && (
+            <GroupingSelector
+              label={"Metric"}
+              groupings={groupings.map((grouping) => ({
+                key: grouping,
+                display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
+              }))}
+              initialValue={selectedMetric}
+              value={selectedMetric}
+              onGroupingChanged={setSelectedMetric}
+            />)
+        }
         {!defectsOnly && (
           <Checkbox checked={showEpics} onChange={(e) => setShowEpics(e.target.checked)}>
             Show Epics
@@ -61,29 +63,37 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
                 key: "linear",
                 display: "Outlier",
               },
+              {
+                key: "table",
+                display: "Data",
+              },
             ]}
             initialValue={"logarithmic"}
             onGroupingChanged={setYAxisScale}
           />
         )}
       </Flex>
-      <FlowMetricsScatterPlotChart
-        days={days}
-        model={model}
-        selectedMetric={selectedMetric}
-        metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-        metricTarget={metricTarget}
-        targetConfidence={targetConfidence}
-        defectsOnly={defectsOnly}
-        specsOnly={specsOnly}
-        showEpics={showEpics}
-        yAxisScale={yAxisScale}
-        onSelectionChange={(workItems) => {
-          if (workItems.length === 1) {
-            context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
-          }
-        }}
-      />
+      {yAxisScale !== "table" ? (
+        <FlowMetricsScatterPlotChart
+          days={days}
+          model={model}
+          selectedMetric={selectedMetric}
+          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+          metricTarget={metricTarget}
+          targetConfidence={targetConfidence}
+          defectsOnly={defectsOnly}
+          specsOnly={specsOnly}
+          showEpics={showEpics}
+          yAxisScale={yAxisScale}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
+            }
+          }}
+        />
+      ) : (
+        <FlowMetricsDetailTable model={model}/>
+      )}
     </React.Fragment>
   );
 };

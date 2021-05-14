@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import {Highlighter} from "../misc/highlighter";
 import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
 
-export function useSearch(dataIndex, onSearch=null) {
+export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   const [searchText, setSearchText] = useState(null);
   const searchInputElement = React.useRef();
 
@@ -68,15 +68,21 @@ export function useSearch(dataIndex, onSearch=null) {
         setTimeout(() => searchInputElement.current && searchInputElement.current.select(), 100);
       }
     },
-    render: text => (
-      text &&
-      <Highlighter
-        highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
-        searchWords={searchText || ''}
-        textToHighlight={text.toString()}
-      />
+    render: (text, record) => {
+      if (customRender) {
+        return text && customRender(text, record, searchText);
+      }
+      return (
+        text && (
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={text.toString()}
+          />
+        )
+      );
 
-    ),
+  },
   }
   return searchProps;
 }

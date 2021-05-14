@@ -11,6 +11,7 @@ import {implementationCostReducer, actionTypes, mode} from "./implementationCost
 import WorkItems from "../../../../work_items/context";
 import {Link} from "react-router-dom";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
+import {Highlighter} from "../../../../../components/misc/highlighter";
 
 const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 const UncategorizedKey = "Uncategorized";
@@ -101,8 +102,30 @@ function renderLinkColumn(column) {
   };
 }
 
+function customRender(text, record, searchText) {
+  if (record.type === "epic") {
+    return <Highlighter
+      highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+      searchWords={searchText || ""}
+      textToHighlight={text.toString()}
+    />;
+  }
+
+  return (
+    text && (
+      <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>
+        <Highlighter
+          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+          searchWords={searchText || ""}
+          textToHighlight={text.toString()}
+        />
+      </Link>
+    )
+  );
+}
+
 export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems) {
-  const nameSearchState = useSearch("name");
+  const nameSearchState = useSearch("name", {customRender});
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     dispatch({
@@ -122,7 +145,6 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
-      render: renderLinkColumn("name")
     },
     {
       title: "Title",
