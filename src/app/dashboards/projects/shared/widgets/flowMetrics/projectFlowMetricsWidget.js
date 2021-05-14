@@ -21,8 +21,7 @@ export const ProjectFlowMetricsWidget = (
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     stateMappingIndex,
-    pollInterval,
-    intl
+    pollInterval
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryProjectFlowMetrics({
@@ -70,7 +69,6 @@ export const ProjectFlowMetricsWidget = (
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
         stateMappingIndex={stateMappingIndex}
-        intl={intl}
       />
     )
   }

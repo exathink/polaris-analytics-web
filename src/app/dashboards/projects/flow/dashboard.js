@@ -16,11 +16,10 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import {injectIntl} from "react-intl";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
-function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context, intl}) {
+function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context}) {
   const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
@@ -181,7 +180,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 cycleTimeTarget={cycleTimeTarget}
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                intl={intl}
               />
             )}
             showDetail={true}
@@ -296,7 +294,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     </Dashboard>
   );
 }
-export const dashboard = ({viewerContext, intl}) => (
-  <ProjectDashboard pollInterval={1000 * 60} render={(props) => <FlowDashboard {...props} intl={intl} />} />
+export const dashboard = ({viewerContext}) => (
+  <ProjectDashboard pollInterval={1000 * 60} render={(props) => <FlowDashboard {...props} />} />
 );
-export default withViewerContext(injectIntl(dashboard));
+export default withViewerContext(dashboard);
