@@ -31,7 +31,7 @@ function getTransformedData(data, intl) {
 function customRender(text, record, searchText) {
   return (
     text && (
-      <Link to={`${url_for_instance(WorkItems, record.name, record.workItemKey)}`}>
+      <Link to={`${url_for_instance(WorkItems, record.displayId, record.workItemKey)}`}>
         <Highlighter
           highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
           searchWords={searchText || ""}
