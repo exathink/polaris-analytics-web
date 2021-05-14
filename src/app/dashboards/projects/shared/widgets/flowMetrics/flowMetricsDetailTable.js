@@ -78,6 +78,13 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       width: "5%",
     },
     {
+      title: "State",
+      dataIndex: "state",
+      key: "state",
+      sorter: (a, b) => string_compare(a, b, "state"),
+      width: "5%",
+    },
+    {
       title: "Lead Time",
       dataIndex: "leadTime",
       key: "leadTime",
