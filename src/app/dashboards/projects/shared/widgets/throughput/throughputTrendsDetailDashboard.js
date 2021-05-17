@@ -41,7 +41,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
   const [before, setBefore] = React.useState();
   const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
   const selectedPointSeries = getSeriesName(seriesName);
-
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -106,6 +106,8 @@ export const ProjectVolumeTrendsDetailDashboard = (
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              yAxisScale={yAxisScale}
+              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}

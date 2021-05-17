@@ -45,7 +45,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
   const [before, setBefore] = React.useState();
   const [seriesName, setSeriesName] = React.useState("cycleTime");
   const selectedPointSeries = getSeriesName(seriesName);
-
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -112,6 +112,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              yAxisScale={yAxisScale}
+              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}
