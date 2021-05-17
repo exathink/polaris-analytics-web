@@ -16,12 +16,13 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   initialMetric,
   defectsOnly,
   specsOnly,
+  yAxisScale,
+  setYAxisScale
 }) => {
   const groupings = specsOnly
     ? ["leadTime", "cycleTime", "latency", "duration", "effort", "authors", "backlogTime"]
     : ["leadTime", "cycleTime", "backlogTime"];
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || "leadTime");
-  const [yAxisScale, setYAxisScale] = useState("logarithmic");
   const [showEpics, setShowEpics] = useState(false);
 
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
@@ -54,6 +55,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         {!defectsOnly && (
           <GroupingSelector
             label={"View"}
+            value={yAxisScale}
             groupings={[
               {
                 key: "logarithmic",
