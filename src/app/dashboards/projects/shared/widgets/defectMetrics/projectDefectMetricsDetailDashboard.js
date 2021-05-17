@@ -21,6 +21,7 @@ export const ProjectDefectMetricsDetailDashboard = (
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
@@ -74,6 +75,8 @@ export const ProjectDefectMetricsDetailDashboard = (
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 defectsOnly={true}
+                yAxisScale={yAxisScale}
+                setYAxisScale={setYAxisScale}
               />
           }
           showDetail={true}

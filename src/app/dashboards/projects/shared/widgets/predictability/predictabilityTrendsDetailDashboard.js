@@ -25,7 +25,7 @@ export const PredictabilityTrendsDetailDashboard = ({
   context,
 }) => {
   const [before, setBefore] = React.useState();
-
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -81,6 +81,8 @@ export const PredictabilityTrendsDetailDashboard = ({
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              yAxisScale={yAxisScale}
+              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}

@@ -25,6 +25,7 @@ export const ProjectFlowMetricsDetailDashboard = (
   const [daysRange, setDaysRange] = useState(days || 30)
   const [workItemScope, setWorkItemScope] = useState('specs');
   const specsOnly = workItemScope === 'specs';
+  const [yAxisScale, setYAxisScale] = useState("logarithmic");
   return (
     <Dashboard
       dashboard={dashboard_id}
@@ -96,6 +97,8 @@ export const ProjectFlowMetricsDetailDashboard = (
                 cycleTimeTarget={cycleTimeTarget}
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                yAxisScale={yAxisScale}
+                setYAxisScale={setYAxisScale}
               />
           }
           showDetail={true}
