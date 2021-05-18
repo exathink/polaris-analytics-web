@@ -14,6 +14,10 @@ export function MeasurementSettingsView({instanceKey, includeInFlowMetrics, incl
     setWipInspectorFlag(e.target.checked);
   }
 
+  function handleUpdateSettingsClick() {
+    // add mutation related logic here
+  }
+
   return (
     <div className={styles.settingsViewWrapper}>
       <div className={styles.subtasks}>Subtasks</div>
@@ -27,7 +31,7 @@ export function MeasurementSettingsView({instanceKey, includeInFlowMetrics, incl
           Show in Wip Inspector
         </Checkbox>
       </div>
-      <Button type="primary" className={styles.updateSettingsButton} onClick={() => {}}>
+      <Button type="primary" className={styles.updateSettingsButton} onClick={handleUpdateSettingsClick}>
         Update Settings
       </Button>
     </div>
