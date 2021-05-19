@@ -20,7 +20,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
   const [mutate, {loading, client}] = useProjectUpdateSettings({
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
-        setStatus({status: STATUS.SUCCESS, message: "Updated Settings Successfully"});
+        setStatus({status: STATUS.SUCCESS, message: "Measurement settings updated successfully."});
         client.resetStore();
       } else {
         logGraphQlError("MeasurementSettingsView.useProjectUpdateSettings", errorMessage);
@@ -69,7 +69,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
     if (state.status === STATUS.SUCCESS) {
       return (
         <Alert
-          message="Measurement settings updated successfully."
+          message={state.message}
           type="success"
           showIcon
           closable
