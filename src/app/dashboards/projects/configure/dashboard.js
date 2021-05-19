@@ -129,6 +129,7 @@ export function MeasurementSettingsDashboard() {
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
+        const {includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
         return (
           <Dashboard>
             <DashboardRow h="95%">
@@ -139,8 +140,8 @@ export function MeasurementSettingsDashboard() {
                   return (
                     <MeasurementSettingsWidget
                       instanceKey={key}
-                      includeInFlowMetrics={true}
-                      includeInWipInspector={true}
+                      includeSubTasksFlowMetrics={includeSubTasksFlowMetrics}
+                      includeSubTasksWipInspector={includeSubTasksWipInspector}
                     />
                   );
                 }}
