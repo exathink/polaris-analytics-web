@@ -29,7 +29,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
     },
     onError: (error) => {
       logGraphQlError("MeasurementSettingsView.useProjectUpdateSettings", error);
-      setStatus({status: STATUS.FAILURE, message: error});
+      setStatus({status: STATUS.FAILURE, message: error.message});
     },
   });
 
