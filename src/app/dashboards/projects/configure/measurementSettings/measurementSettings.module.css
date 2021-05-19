@@ -1,29 +1,33 @@
-.settingsViewWrapper{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 12px;
-    width: 20rem;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    margin-top: 2rem;
+.settingsViewWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  margin-top: 2rem;
 }
 
-.subtasks{
-    padding: 5px;
+.subtasks {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.buttonElements {
+  margin-left: auto;
+}
+.includeInFlowMetrics {
+  padding: 5px;
 }
 
-.includeInFlowMetrics{
-    padding: 5px;
+.includeInWipInspector {
+  padding: 5px;
 }
 
-.includeInWipInspector{
-    padding: 5px;
-}
-
-.updateSettingsButton{
-    margin-top: 5rem;
-    width: 10rem;
+.updateSettingsButton {
+  margin-top: 5rem;
+  width: 10rem;
 }
