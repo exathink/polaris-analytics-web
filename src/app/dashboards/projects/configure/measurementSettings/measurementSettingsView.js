@@ -96,7 +96,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
   return (
     <div className={styles.settingsViewWrapper}>
       <div className={styles.subtasks}>
-        <div className={styles.subtasksTitle}>Subtasks</div>
+        <div className={styles.subtasksTitle}><h3>Subtasks</h3></div>
         <div className={styles.buttonElements}>{getButtonElements()}</div>
       </div>
       <div className={styles.includeInFlowMetrics}>
