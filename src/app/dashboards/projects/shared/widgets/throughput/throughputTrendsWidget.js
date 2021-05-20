@@ -75,6 +75,7 @@ export const ProjectVolumeTrendsWidget = React.memo((
           cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
           view={view}
           context={context}
+          includeSubTasks={includeSubTasks}
         />
     )
 });

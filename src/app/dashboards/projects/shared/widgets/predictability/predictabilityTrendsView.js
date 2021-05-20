@@ -18,6 +18,7 @@ export const ProjectPredictabilityTrendsView = ({
   onSelectionChange,
   view,
   context,
+  includeSubTasks
 }) => {
   if (view === "detail") {
     const props = {
@@ -33,6 +34,7 @@ export const ProjectPredictabilityTrendsView = ({
       latestWorkItemEvent,
       view,
       context,
+      includeSubTasks
     };
     return <PredictabilityTrendsDetailDashboard {...props} />;
   }

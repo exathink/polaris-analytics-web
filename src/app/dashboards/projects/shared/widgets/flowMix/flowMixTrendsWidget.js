@@ -63,6 +63,7 @@ export const ProjectFlowMixTrendsWidget = (
           latestWorkItemEvent={latestWorkItemEvent}
           specsOnly={specsOnly}
           chartOptions={chartOptions}
+          includeSubTasks={includeSubTasks}
           />
 
     )

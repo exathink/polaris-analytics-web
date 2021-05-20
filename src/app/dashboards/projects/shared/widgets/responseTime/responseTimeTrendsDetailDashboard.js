@@ -39,7 +39,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
     cycleTimeConfidenceTarget,
     targetPercentile,
     pollInterval,
-    defaultSeries
+    defaultSeries,
+    includeSubTasks
   }
 ) => {
   const [before, setBefore] = React.useState();
@@ -88,6 +89,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 defaultSeries={defaultSeries}
+                includeSubTasks={includeSubTasks}
               />
           }
           showDetail={false}
@@ -114,6 +116,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               yAxisScale={yAxisScale}
               setYAxisScale={setYAxisScale}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}

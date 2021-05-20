@@ -23,7 +23,8 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
   stateMappingIndex,
   pollInterval,
   yAxisScale,
-  setYAxisScale
+  setYAxisScale,
+  includeSubTasks,
 }) => {
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     instanceKey,
@@ -31,6 +32,7 @@ export const ProjectDeliveryCycleFlowMetricsWidget = ({
     defectsOnly,
     specsOnly,
     before,
+    includeSubTasks,
     referenceString: latestWorkItemEvent,
   });
 

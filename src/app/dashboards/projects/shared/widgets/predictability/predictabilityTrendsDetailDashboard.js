@@ -23,6 +23,7 @@ export const PredictabilityTrendsDetailDashboard = ({
   latestWorkItemEvent,
   view,
   context,
+  includeSubTasks
 }) => {
   const [before, setBefore] = React.useState();
   const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
@@ -57,6 +58,7 @@ export const PredictabilityTrendsDetailDashboard = ({
               targetPercentile={targetPercentile}
               view={view}
               setBefore={setBefore}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}
@@ -83,6 +85,7 @@ export const PredictabilityTrendsDetailDashboard = ({
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               yAxisScale={yAxisScale}
               setYAxisScale={setYAxisScale}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}

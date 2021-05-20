@@ -82,6 +82,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
         defaultSeries={defaultSeries}
+        includeSubTasks={includeSubTasks}
       />
   )
 });

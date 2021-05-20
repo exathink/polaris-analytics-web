@@ -58,6 +58,7 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         view={view}
         context={context}
         latestWorkItemEvent={latestWorkItemEvent}
+        includeSubTasks={includeSubTasks}
         onSelectionChange={(workItems) => {
           if (workItems.length === 1) {
             const [{measurementDate}] = workItems;
