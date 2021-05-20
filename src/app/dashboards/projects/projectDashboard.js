@@ -62,8 +62,8 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     wipAnalysisPeriod: wipAnalysisPeriod || defaults.WIP_ANALYSIS_PERIOD,
     flowAnalysisPeriod: flowAnalysisPeriod || defaults.FLOW_ANALYSIS_PERIOD,
     trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
-    includeSubTasksFlowMetrics: includeSubTasksFlowMetrics || defaults.INCLUDE_SUBTASKS_FLOW_METRICS,
-    includeSubTasksWipInspector: includeSubTasksWipInspector || defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR
+    includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector
   };
 }
 
