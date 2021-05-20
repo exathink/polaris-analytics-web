@@ -9,6 +9,7 @@ export function useQueryProjectFlowMixTrends(
     measurementWindow,
     samplingFrequency,
     specsOnly,
+    includeSubTasks,
     referenceString
   }) {
   return useQuery(
@@ -21,6 +22,7 @@ export function useQueryProjectFlowMixTrends(
           $before: Date,
           $referenceString: String, 
           $specsOnly: Boolean,
+          $includeSubTasks: Boolean
           ) {
       project(
             key: $key, 
@@ -31,6 +33,7 @@ export function useQueryProjectFlowMixTrends(
               measurementWindow: $measurementWindow,
               samplingFrequency: $samplingFrequency,
               specsOnly: $specsOnly,
+              includeSubTasks: $includeSubTasks
             },
             referenceString: $referenceString,
             ) {
@@ -54,7 +57,8 @@ export function useQueryProjectFlowMixTrends(
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
         specsOnly: specsOnly,
-        referenceString: referenceString,
+        includeSubTasks: includeSubTasks,
+        referenceString: referenceString
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval()

@@ -22,7 +22,8 @@ export const ProjectEffortTrendsWidget = (
     target,
     asStatistic,
     pollInterval,
-    chartConfig
+    chartConfig,
+    includeSubTasks
   }) => {
 
   const {loading, error, data} = useQueryProjectCapacityTrends(
@@ -32,6 +33,7 @@ export const ProjectEffortTrendsWidget = (
       measurementWindow: measurementWindow,
       samplingFrequency: samplingFrequency,
       showContributorDetail: showContributorDetail,
+      includeSubTasks: includeSubTasks
     }
   );
   if (loading) return <Loading/>;
