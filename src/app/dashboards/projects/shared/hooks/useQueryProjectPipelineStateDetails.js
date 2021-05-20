@@ -18,7 +18,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef]
         specsOnly: $specsOnly
-        includeSubtasks: $includeSubTasks
+        includeSubTasks: $includeSubTasks
         funnelView: $funnelView
         referenceString: $referenceString
       ) {
