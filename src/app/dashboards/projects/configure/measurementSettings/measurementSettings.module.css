@@ -20,6 +20,9 @@
   margin-left: auto;
   height: 2rem;
 }
+.measurementSave{
+  margin-right: 10px;
+}
 .includeInFlowMetrics {
   padding: 5px;
 }

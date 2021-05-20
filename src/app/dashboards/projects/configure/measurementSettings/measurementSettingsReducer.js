@@ -52,11 +52,11 @@ export function measurementSettingsReducer(state, action) {
     case actionTypes.UPDATE_DEFAULTS: {
       return {
         ...state,
-        flowMetricsFlag: action.payload.flowMetricsFlag,
-        wipInspectorFlag: action.payload.wipInspectorFlag,
+        flowMetricsFlag: action.payload.includeSubTasksFlowMetrics,
+        wipInspectorFlag: action.payload.includeSubTasksWipInspector,
         initialMeasurementSettings: {
-            includeSubTasksFlowMetrics: action.payload.flowMetricsFlag,
-            includeSubTasksWipInspector: action.payload.wipInspectorFlag,
+            includeSubTasksFlowMetrics: action.payload.includeSubTasksFlowMetrics,
+            includeSubTasksWipInspector: action.payload.includeSubTasksWipInspector,
         },
       };
     }
