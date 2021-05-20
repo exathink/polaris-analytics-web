@@ -25,7 +25,8 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     setBefore,
     setSeriesName,
     defaultSeries,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
     {
@@ -36,6 +37,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
       targetPercentile: targetPercentile,
       specsOnly: true,
       referenceString: latestWorkItemEvent,
+      includeSubTasks: includeSubTasks
     }
   );
   if (loading) return <Loading/>;

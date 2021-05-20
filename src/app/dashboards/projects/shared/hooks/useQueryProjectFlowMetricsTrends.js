@@ -13,6 +13,7 @@ export const FLOW_METRICS_TRENDS_QUERY = gql`
     $specsOnly: Boolean
     $referenceString: String
     $defectsOnly: Boolean
+    $includeSubTasks: Boolean
   ) {
     project(
       key: $key
@@ -27,6 +28,7 @@ export const FLOW_METRICS_TRENDS_QUERY = gql`
         durationTargetPercentile: $cycleTimeTargetPercentile
         latencyTargetPercentile: $cycleTimeTargetPercentile
         defectsOnly: $defectsOnly
+        includeSubTasks: $includeSubTasks
         metrics: [
           avg_lead_time
           min_cycle_time
@@ -101,6 +103,7 @@ export function useQueryProjectFlowMetricsTrends({
   specsOnly,
   referenceString,
   defectsOnly,
+  includeSubTasks
 }) {
   return useQuery(FLOW_METRICS_TRENDS_QUERY, {
     service: analytics_service,
@@ -116,6 +119,7 @@ export function useQueryProjectFlowMetricsTrends({
       referenceString: referenceString,
       specsOnly: specsOnly,
       defectsOnly: defectsOnly,
+      includeSubTasks: includeSubTasks
     },
     errorPolicy: "all",
     pollInterval: analytics_service.defaultPollInterval(),

@@ -22,7 +22,8 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
     leadTimeConfidenceTarget,
     targetPercentile,
     setBefore,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
       {
@@ -33,7 +34,7 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         samplingFrequency: samplingFrequency,
         targetPercentile: targetPercentile,
         referenceString: latestWorkItemEvent,
-
+        includeSubTasks: includeSubTasks
       }
     );
     if (loading) return <Loading/>;
