@@ -21,7 +21,8 @@ export const ProjectFlowMetricsWidget = (
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     stateMappingIndex,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryProjectFlowMetrics({
@@ -34,6 +35,7 @@ export const ProjectFlowMetricsWidget = (
     measurementWindow:measurementWindow,
     samplingFrequency: 7,
     specsOnly: limitToSpecsOnly,
+    includeSubTasks: includeSubTasks,
     referenceString: latestWorkItemEvent
   });
   if (loading) return <Loading/>;

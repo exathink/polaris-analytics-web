@@ -16,11 +16,12 @@ export const ProjectResponseTimeSLAWidget = (
     latestWorkItemEvent,
     metric,
     specsOnly,
+    includeSubTasks,
     pollInterval
   }) => {
 
   const {loading, error, data} = useQueryProjectResponseTimeSLA({
-    instanceKey, leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget, specsOnly,
+    instanceKey, leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget, specsOnly, includeSubTasks,
     days, referenceString: latestWorkItemEvent
   })
 

@@ -9,6 +9,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
     $closedWithinDays: Int
     $activeOnly: Boolean,
     $funnelView: Boolean,
+    $includeSubTasks: Boolean
   ) {
     project(key: $key, referenceString: $referenceString) {
       id
@@ -17,6 +18,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef]
         specsOnly: $specsOnly
+        includeSubtasks: $includeSubTasks
         funnelView: $funnelView
         referenceString: $referenceString
       ) {
@@ -60,6 +62,7 @@ export function useQueryProjectPipelineStateDetails({
   closedWithinDays,
   activeOnly,
   funnelView,
+  includeSubTasks
 }) {
   return useQuery(PROJECT_PIPELINE_STATE_DETAILS, {
     service: analytics_service,
@@ -69,7 +72,8 @@ export function useQueryProjectPipelineStateDetails({
       referenceString: referenceString,
       closedWithinDays: closedWithinDays,
       activeOnly: activeOnly,
-      funnelView: funnelView
+      funnelView: funnelView,
+      includeSubTasks: includeSubTasks
     },
     errorPolicy: "all",
     pollInterval: analytics_service.defaultPollInterval(),

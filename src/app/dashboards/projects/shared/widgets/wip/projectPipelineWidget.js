@@ -21,6 +21,7 @@ export const ProjectPipelineWidget = (
     wipLimit,
     view,
     context,
+    includeSubTasks,
     pollInterval
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
@@ -31,6 +32,7 @@ export const ProjectPipelineWidget = (
       leadTimeTargetPercentile,
       cycleTimeTargetPercentile,
       specsOnly: limitToSpecsOnly,
+      includeSubTasks: includeSubTasks,
       referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
     }
   )
