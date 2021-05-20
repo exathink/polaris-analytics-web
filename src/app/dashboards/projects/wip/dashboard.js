@@ -49,7 +49,8 @@ function WipDashboard({
     cycleTimeConfidenceTarget,
     wipLimit,
     wipAnalysisPeriod,
-    includeSubTasksWipInspector
+    includeSubTasksWipInspector,
+    includeSubTasksFlowMetrics
   } = settingsWithDefaults;
 
   return (
@@ -141,7 +142,7 @@ function WipDashboard({
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksWipInspector}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}

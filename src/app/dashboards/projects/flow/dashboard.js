@@ -31,7 +31,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     flowAnalysisPeriod,
-    includeSubTasksFlowMetrics
+    includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector
   } = settingsWithDefaults;
 
   return (
@@ -230,7 +231,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 view={view}
                 context={context}
-                includeSubTasks={includeSubTasksFlowMetrics}
+                includeSubTasks={includeSubTasksWipInspector}
               />
             )}
             showDetail={true}
