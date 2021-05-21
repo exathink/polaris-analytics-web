@@ -13,7 +13,7 @@ function ValueDashboard({
   viewerContext,
   intl
 }) {
-  // const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = settingsWithDefaults;
+  const {includeSubTasksFlowMetrics} = settingsWithDefaults;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
@@ -30,6 +30,7 @@ function ValueDashboard({
               context={context}
               view={view}
               intl={intl}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={false}
