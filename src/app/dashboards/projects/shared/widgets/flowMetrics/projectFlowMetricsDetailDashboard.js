@@ -20,7 +20,8 @@ export const ProjectFlowMetricsDetailDashboard = (
     cycleTimeTarget,
     cycleTimeConfidenceTarget,
     leadTimeTarget,
-    leadTimeConfidenceTarget
+    leadTimeConfidenceTarget,
+    includeSubTasks
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
   const [workItemScope, setWorkItemScope] = useState('specs');
@@ -73,6 +74,7 @@ export const ProjectFlowMetricsDetailDashboard = (
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                includeSubTasks={includeSubTasks}
               />
           }
           showDetail={false}
@@ -99,6 +101,7 @@ export const ProjectFlowMetricsDetailDashboard = (
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 yAxisScale={yAxisScale}
                 setYAxisScale={setYAxisScale}
+                includeSubTasks={includeSubTasks}
               />
           }
           showDetail={true}

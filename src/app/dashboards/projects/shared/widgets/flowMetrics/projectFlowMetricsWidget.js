@@ -71,6 +71,7 @@ export const ProjectFlowMetricsWidget = (
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
         stateMappingIndex={stateMappingIndex}
+        includeSubTasks={includeSubTasks}
       />
     )
   }
