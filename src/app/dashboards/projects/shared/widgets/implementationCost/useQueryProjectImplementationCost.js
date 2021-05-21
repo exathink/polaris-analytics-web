@@ -56,7 +56,7 @@ query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceS
       interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
       includeEpics: true
       activeWithinDays: $days
-      includeSubtasks: false
+      includeSubTasks: false
     ) {
       edges {
         node {
