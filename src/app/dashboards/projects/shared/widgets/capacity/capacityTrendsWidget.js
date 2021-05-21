@@ -56,7 +56,7 @@ export const ProjectEffortTrendsWidget = (
       />
       :
       <ProjectCapacityTrendsDetailDashboard
-        {...{instanceKey, days, measurementWindow, samplingFrequency, target, view}}
+        {...{instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks}}
       />
   )
 }
