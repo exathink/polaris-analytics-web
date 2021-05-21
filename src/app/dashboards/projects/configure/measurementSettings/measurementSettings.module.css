@@ -1,0 +1,40 @@
+.settingsViewWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  width: 30rem;
+  margin-right: auto;
+  background-color: white;
+  margin-top: 0.5rem;
+}
+
+.subtasks {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.buttonElements {
+  margin-left: auto;
+  height: 2rem;
+}
+.measurementSave{
+  margin-right: 10px;
+}
+.includeInFlowMetrics {
+  padding: 5px;
+}
+
+.includeInWipInspector {
+  padding: 5px;
+}
+
+.updateSettingsButton {
+  margin-top: 5rem;
+  width: 10rem;
+}
+
+.shiftRight {
+  margin-left: auto;
+}

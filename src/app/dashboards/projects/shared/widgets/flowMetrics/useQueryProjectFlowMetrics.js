@@ -5,7 +5,7 @@ import {analytics_service} from "../../../../../services/graphql";
 export function useQueryProjectFlowMetrics(
   {
     instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
-    cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, referenceString
+    cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, includeSubTasks, referenceString
   }
 ) {
   return useQuery(
@@ -20,6 +20,7 @@ export function useQueryProjectFlowMetrics(
             $cycleTimeTarget: Int!,
             $cycleTimeTargetPercentile: Float!,
             $specsOnly: Boolean,
+            $includeSubTasks: Boolean,
             $referenceString: String
 
         ) {
@@ -33,6 +34,7 @@ export function useQueryProjectFlowMetrics(
                     leadTimeTarget : $leadTimeTarget,
                     cycleTimeTarget: $cycleTimeTarget,
                     specsOnly: $specsOnly,
+                    includeSubTasks: $includeSubTasks
                 },
                 cycleMetricsTrendsArgs: {
                     days: $days,
@@ -43,6 +45,7 @@ export function useQueryProjectFlowMetrics(
                     durationTargetPercentile: $cycleTimeTargetPercentile,
                     latencyTargetPercentile: $cycleTimeTargetPercentile,
                     specsOnly: $specsOnly,
+                    includeSubTasks: $includeSubTasks,
                     metrics: [
                         avg_lead_time,
                         min_cycle_time,
@@ -128,6 +131,7 @@ export function useQueryProjectFlowMetrics(
         cycleTimeTarget: cycleTimeTarget,
         cycleTimeTargetPercentile: cycleTimeTargetPercentile,
         specsOnly: specsOnly,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString
       },
       errorPolicy: "all",

@@ -24,7 +24,8 @@ export const ProjectVolumeTrendsWidget = React.memo((
     cycleTimeConfidenceTarget,
     setBefore,
     setSeriesName,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
     const {loading, error, data} = useQueryProjectFlowMetricsTrends(
       {
@@ -32,8 +33,8 @@ export const ProjectVolumeTrendsWidget = React.memo((
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile
-
+        targetPercentile: targetPercentile,
+        includeSubTasks: includeSubTasks
       }
     );
     if (loading) return <Loading/>;
@@ -74,6 +75,7 @@ export const ProjectVolumeTrendsWidget = React.memo((
           cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
           view={view}
           context={context}
+          includeSubTasks={includeSubTasks}
         />
     )
 });

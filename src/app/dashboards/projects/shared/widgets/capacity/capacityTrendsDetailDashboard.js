@@ -24,7 +24,8 @@ export const ProjectCapacityTrendsDetailDashboard = (
     targetPercentile,
     target,
     asStatistic,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
 
   const [showContributorDetail, setShowContributorDetail] = useState(true);
@@ -104,6 +105,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
                 showContributorDetail={showContributorDetail}
                 showEffort={showEffort}
                 chartConfig={{totalEffortDisplayType: "areaspline"}}
+                includeSubTasks={includeSubTasks}
               />
           }
           showDetail={false}

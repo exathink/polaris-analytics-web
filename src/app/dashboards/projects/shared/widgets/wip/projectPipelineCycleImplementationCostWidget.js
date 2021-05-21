@@ -17,7 +17,8 @@ export const ProjectPipelineImplementationCostWidget = (
     latestWorkItemEvent,
     latestCommit,
     view,
-    context
+    context,
+    includeSubTasks,
   }
 ) => {
 
@@ -27,6 +28,7 @@ export const ProjectPipelineImplementationCostWidget = (
     instanceKey,
     specsOnly,
     activeOnly: true,
+    includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading) return <Loading/>;

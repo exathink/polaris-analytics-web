@@ -1,7 +1,7 @@
 import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, referenceString}) {
+export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(
@@ -9,6 +9,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
             $activeOnly: Boolean,
             $specsOnly: Boolean,
             $days: Int,
+            $includeSubTasks: Boolean,
             $referenceString: String) {
             project(key: $projectKey, referenceString: $referenceString) {
                 id
@@ -16,7 +17,8 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
                     specsOnly: $specsOnly,
-                    closedWithinDays: $days
+                    closedWithinDays: $days,
+                    includeSubTasks: $includeSubTasks
                 ) {
                     edges {
                         node {
@@ -41,6 +43,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
         activeOnly: activeOnly,
         specsOnly: specsOnly,
         days: days,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString,
       },
       errorPolicy: "all",
@@ -49,14 +52,14 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
 }
 
 export const GET_PROJECT_IMPLEMENTATION_COST_TABLE = gql`
-query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceString: String) {
+query getProjectImplementationCost($projectKey: String!, $days: Int, $includeSubTasks: Boolean, $referenceString: String) {
   project(key: $projectKey, referenceString: $referenceString) {
     id
     workItems(
       interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
       includeEpics: true
       activeWithinDays: $days
-      includeSubtasks: false
+      includeSubTasks: $includeSubTasks
     ) {
       edges {
         node {
@@ -83,7 +86,7 @@ query getProjectImplementationCost($projectKey: String!, $days: Int, $referenceS
 }
 `;
 
-export function useQueryImplementationCostTable({instanceKey, days, referenceString}) {
+export function useQueryImplementationCostTable({instanceKey, days, includeSubTasks, referenceString}) {
   return useQuery(
     GET_PROJECT_IMPLEMENTATION_COST_TABLE,
     {
@@ -91,6 +94,7 @@ export function useQueryImplementationCostTable({instanceKey, days, referenceStr
       variables: {
         projectKey: instanceKey,
         days: days,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString,
       },
       errorPolicy: "all",

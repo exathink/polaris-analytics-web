@@ -13,13 +13,15 @@ export const ImplementationCostTableWidget = (
     latestCommit,
     latestWorkItemEvent,
     view,
-    intl
+    intl,
+    includeSubTasks
   }
 ) => {
   const [activeWithinDays, setActiveWithinDays] = React.useState(days);
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
     days: activeWithinDays,
+    includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
 

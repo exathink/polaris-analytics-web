@@ -22,7 +22,8 @@ export const ProjectFlowMixTrendsWidget = (
     asStatistic,
     showCounts,
     chartOptions,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }) => {
 
     const {loading, error, data} = useQueryProjectFlowMixTrends(
@@ -31,7 +32,8 @@ export const ProjectFlowMixTrendsWidget = (
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        specsOnly: specsOnly != null? specsOnly : false
+        specsOnly: specsOnly != null? specsOnly : false,
+        includeSubTasks: includeSubTasks
       }
     );
     if (loading) return <Loading/>;
@@ -61,6 +63,7 @@ export const ProjectFlowMixTrendsWidget = (
           latestWorkItemEvent={latestWorkItemEvent}
           specsOnly={specsOnly}
           chartOptions={chartOptions}
+          includeSubTasks={includeSubTasks}
           />
 
     )

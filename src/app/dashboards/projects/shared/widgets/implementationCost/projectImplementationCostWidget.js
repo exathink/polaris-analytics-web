@@ -19,7 +19,8 @@ export const ProjectImplementationCostWidget = (
     latestWorkItemEvent,
     view,
     context,
-    showHierarchy
+    showHierarchy,
+    includeSubTasks
   }
 ) => {
   const {loading, error, data} = useQueryProjectImplementationCost({
@@ -27,6 +28,7 @@ export const ProjectImplementationCostWidget = (
     activeOnly,
     specsOnly,
     days: days,
+    includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading) return <Loading/>;
@@ -51,6 +53,7 @@ export const ProjectImplementationCostWidget = (
       view={view}
       context={context}
       showHierarchy={showHierarchy}
+      includeSubTasks={includeSubTasks}
       />
   )
 }

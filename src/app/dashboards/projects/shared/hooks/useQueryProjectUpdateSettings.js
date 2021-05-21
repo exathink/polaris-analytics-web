@@ -1,8 +1,8 @@
 import {useMutation, gql} from "@apollo/client";
 
 export const PROJECT_UPDATE_SETTINGS = gql`
-  mutation projectUpdateSettings($projectKey: String!, $flowMetricsSettings: FlowMetricsSettingsInput, $analysisPeriods: AnalysisPeriodsInput) {
-    updateProjectSettings(updateProjectSettingsInput: {key: $projectKey, flowMetricsSettings: $flowMetricsSettings, analysisPeriods: $analysisPeriods}) {
+  mutation projectUpdateSettings($projectKey: String!, $flowMetricsSettings: FlowMetricsSettingsInput, $analysisPeriods: AnalysisPeriodsInput, $wipInspectorSettings: WipInspectorSettingsInput) {
+    updateProjectSettings(updateProjectSettingsInput: {key: $projectKey, flowMetricsSettings: $flowMetricsSettings, analysisPeriods: $analysisPeriods, wipInspectorSettings: $wipInspectorSettings}) {
       success
       errorMessage
     }

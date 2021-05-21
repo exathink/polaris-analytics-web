@@ -35,7 +35,8 @@ export const ProjectVolumeTrendsDetailDashboard = (
     cycleTimeTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
-    pollInterval
+    pollInterval,
+    includeSubTasks
   }
 ) => {
   const [before, setBefore] = React.useState();
@@ -82,6 +83,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
                 targetPercentile={targetPercentile}
+                includeSubTasks={includeSubTasks}
               />
           }
           showDetail={false}
@@ -108,6 +110,7 @@ export const ProjectVolumeTrendsDetailDashboard = (
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               yAxisScale={yAxisScale}
               setYAxisScale={setYAxisScale}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}

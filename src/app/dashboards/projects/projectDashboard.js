@@ -17,7 +17,9 @@ function PROJECT_DEFAULT_SETTINGS() {
     PIPELINE_MEASUREMENT_WINDOW_DEFAULT: 7,
     WIP_ANALYSIS_PERIOD: 14,
     FLOW_ANALYSIS_PERIOD: 30,
-    TRENDS_ANALYSIS_PERIOD: 45
+    TRENDS_ANALYSIS_PERIOD: 45,
+    INCLUDE_SUBTASKS_FLOW_METRICS: false,
+    INCLUDE_SUBTASKS_WIP_INSPECTOR: true
   };
   return {
     ...BASE_DEFAULTS,
@@ -26,7 +28,7 @@ function PROJECT_DEFAULT_SETTINGS() {
   };
 }
 
-function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}} = {}}) {
+function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}, wipInspectorSettings = {}} = {}}) {
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -35,6 +37,7 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     cycleTimeConfidenceTarget,
     wipLimit,
     pipelineMeasurementWindow,
+    includeSubTasks: includeSubTasksFlowMetrics
   } = flowMetricsSettings;
 
   const {
@@ -42,6 +45,10 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     flowAnalysisPeriod,
     trendsAnalysisPeriod,
   } = analysisPeriods
+
+  const {
+    includeSubTasks: includeSubTasksWipInspector
+  } = wipInspectorSettings;
 
   const defaults = PROJECT_DEFAULT_SETTINGS();
   return {
@@ -54,7 +61,9 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     pipelineMeasurementWindow: pipelineMeasurementWindow || defaults.PIPELINE_MEASUREMENT_WINDOW_DEFAULT,
     wipAnalysisPeriod: wipAnalysisPeriod || defaults.WIP_ANALYSIS_PERIOD,
     flowAnalysisPeriod: flowAnalysisPeriod || defaults.FLOW_ANALYSIS_PERIOD,
-    trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD
+    trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
+    includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector
   };
 }
 
@@ -75,36 +84,38 @@ class WithProject extends React.Component {
     return (
       <Query
         client={analytics_service}
-        query={
-          gql`
-            query with_project_instance($key: String!) {
-                project(key: $key, interfaces:[CommitSummary, WorkItemEventSpan, PullRequestEventSpan]){
-                    id
-                    name
-                    key
-                    earliestCommit
-                    latestCommit
-                    commitCount
-                    latestWorkItemEvent
-                    latestPullRequestEvent
-                    settings {
-                        flowMetricsSettings {
-                            cycleTimeTarget
-                            leadTimeTarget
-                            responseTimeConfidenceTarget
-                            leadTimeConfidenceTarget
-                            cycleTimeConfidenceTarget
-                        }
-                        analysisPeriods {
-                            wipAnalysisPeriod
-                            flowAnalysisPeriod
-                            trendsAnalysisPeriod
-                        }
-                    }
+        query={gql`
+          query with_project_instance($key: String!) {
+            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan]) {
+              id
+              name
+              key
+              earliestCommit
+              latestCommit
+              commitCount
+              latestWorkItemEvent
+              latestPullRequestEvent
+              settings {
+                flowMetricsSettings {
+                  cycleTimeTarget
+                  leadTimeTarget
+                  responseTimeConfidenceTarget
+                  leadTimeConfidenceTarget
+                  cycleTimeConfidenceTarget
+                  includeSubTasks
                 }
+                analysisPeriods {
+                  wipAnalysisPeriod
+                  flowAnalysisPeriod
+                  trendsAnalysisPeriod
+                }
+                wipInspectorSettings {
+                  includeSubTasks
+                }
+              }
             }
-        `
-        }
+          }
+        `}
         variables={{
           key: context.getInstanceKey('project')
         }}

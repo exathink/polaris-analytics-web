@@ -9,6 +9,7 @@ export function useQueryProjectCapacityTrends(
     measurementWindow,
     samplingFrequency,
     showContributorDetail,
+    includeSubTasks,
     referenceString
   }) {
   return useQuery(
@@ -20,6 +21,7 @@ export function useQueryProjectCapacityTrends(
           $samplingFrequency: Int!,
           $before: Date,
           $showContributorDetail: Boolean,
+          $includeSubTasks: Boolean,
           $referenceString: String,
           ) {
       project(
@@ -37,6 +39,7 @@ export function useQueryProjectCapacityTrends(
                 days: $days,
                 measurementWindow: $measurementWindow,
                 samplingFrequency: $samplingFrequency,
+                includeSubTasks: $includeSubTasks
                 metrics: [
                     total_effort
                 ]
@@ -73,6 +76,7 @@ export function useQueryProjectCapacityTrends(
         showContributorDetail: showContributorDetail,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString,
       },
       errorPolicy: "all",

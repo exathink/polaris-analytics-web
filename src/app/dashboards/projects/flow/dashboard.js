@@ -31,6 +31,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     flowAnalysisPeriod,
+    includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector
   } = settingsWithDefaults;
 
   return (
@@ -52,6 +54,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               latestWorkItemEvent={latestWorkItemEvent}
               specsOnly={specsOnly}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
         />
@@ -103,6 +106,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestCommit={latestCommit}
               specsOnly={specsOnly}
               asStatistic={true}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           hideTitlesInDetailView={true}
@@ -126,6 +130,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestCommit={latestCommit}
               asStatistic={true}
               target={0.9}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -180,6 +185,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 cycleTimeTarget={cycleTimeTarget}
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                includeSubTasks={includeSubTasksFlowMetrics}
               />
             )}
             showDetail={true}
@@ -225,6 +231,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 view={view}
                 context={context}
+                includeSubTasks={includeSubTasksWipInspector}
               />
             )}
             showDetail={true}
@@ -250,6 +257,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -270,6 +278,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               specsOnly={specsOnly}
               showCounts={true}
               chartOptions={{alignTitle: "left"}}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -286,6 +295,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}

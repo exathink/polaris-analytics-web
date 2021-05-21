@@ -9,12 +9,14 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
     $before: Date
     $defectsOnly: Boolean
     $specsOnly: Boolean
+    $includeSubTasks: Boolean
   ) {
     project(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
         closedWithinDays: $days
         defectsOnly: $defectsOnly
         specsOnly: $specsOnly
+        includeSubTasks: $includeSubTasks
         before: $before
         interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
       ) {
@@ -47,7 +49,7 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
   }
 `;
 
-export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString, before}) {
+export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks}) {
   return useQuery(PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL, {
     service: analytics_service,
     variables: {
@@ -56,6 +58,7 @@ export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, def
       defectsOnly: defectsOnly,
       specsOnly: specsOnly,
       before: before,
+      includeSubTasks: includeSubTasks,
       referenceString: referenceString,
     },
     errorPolicy: "all",

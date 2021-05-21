@@ -21,7 +21,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
     view,
     latestWorkItemEvent,
     latestCommit,
-
+    includeSubTasks
   }
 ) => {
 
@@ -101,6 +101,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
                 specsOnly={specsOnly}
                 asStatistic={false}
                 showCounts={true}
+                includeSubTasks={includeSubTasks}
               />
 
           }

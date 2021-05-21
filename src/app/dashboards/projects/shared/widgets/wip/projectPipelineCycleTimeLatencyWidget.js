@@ -20,7 +20,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     latencyTarget,
     stageName,
     groupByState,
-
+    includeSubTasks,
     view,
     context
   }
@@ -32,6 +32,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     instanceKey,
     specsOnly,
     activeOnly: true,
+    includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
   if (loading) return <Loading/>;

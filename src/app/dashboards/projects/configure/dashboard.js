@@ -7,6 +7,7 @@ import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASett
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
+import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -124,6 +125,36 @@ export function AnalysisPeriodsDashboard() {
   );
 }
 
+export function MeasurementSettingsDashboard() {
+  return (
+    <ProjectDashboard
+      render={({project: {key, settingsWithDefaults}, context}) => {
+        const {includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
+        return (
+          <Dashboard>
+            <DashboardRow h="95%">
+              <DashboardWidget
+                w={1}
+                name="measurement-settings-widget"
+                render={({view}) => {
+                  return (
+                    <MeasurementSettingsWidget
+                      instanceKey={key}
+                      includeSubTasksFlowMetrics={includeSubTasksFlowMetrics}
+                      includeSubTasksWipInspector={includeSubTasksWipInspector}
+                    />
+                  );
+                }}
+                showDetail={false}
+              />
+            </DashboardRow>
+          </Dashboard>
+        );
+      }}
+    />
+  );
+}
+
 export default withViewerContext(({viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
 
@@ -135,11 +166,13 @@ export default withViewerContext(({viewerContext}) => {
         controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
       >
         {configTab === CONFIG_TABS.VALUE_STREAM ? (
-          <ValueStreamMappingDashboard/>
+          <ValueStreamMappingDashboard />
         ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
-          <ResponseTimeSLASettingsDashboard/>
+          <ResponseTimeSLASettingsDashboard />
         ) : configTab === CONFIG_TABS.ANALYSIS_PERIODS ? (
           <AnalysisPeriodsDashboard />
+        ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
+          <MeasurementSettingsDashboard />
         ) : null}
       </DashboardRow>
     </Dashboard>

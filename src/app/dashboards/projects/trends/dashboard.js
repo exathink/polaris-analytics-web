@@ -31,6 +31,7 @@ function TrendsDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     trendsAnalysisPeriod,
+    includeSubTasksFlowMetrics
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
@@ -65,6 +66,7 @@ function TrendsDashboard({
                 target={0.9}
                 showEffort={true}
                 chartConfig={{totalEffortDisplayType: "spline"}}
+                includeSubTasks={includeSubTasksFlowMetrics}
               />
             )}
             showDetail={true}
@@ -85,6 +87,7 @@ function TrendsDashboard({
                 latestCommit={latestCommit}
                 specsOnly={true}
                 asStatistic={false}
+                includeSubTasks={includeSubTasksFlowMetrics}
               />
             )}
             showDetail={true}
@@ -126,6 +129,7 @@ function TrendsDashboard({
               cycleTimeTarge={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -148,6 +152,7 @@ function TrendsDashboard({
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               defaultSeries={"cycleTime"}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -169,6 +174,7 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}

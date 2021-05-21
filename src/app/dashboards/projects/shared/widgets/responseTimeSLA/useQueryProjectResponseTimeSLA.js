@@ -4,7 +4,7 @@ import {analytics_service} from "../../../../../services/graphql";
 
 export function useQueryProjectResponseTimeSLA(
   {instanceKey, days, leadTimeTarget, leadTimeConfidenceTarget,
-    cycleTimeTarget, cycleTimeConfidenceTarget, specsOnly, referenceString}
+    cycleTimeTarget, cycleTimeConfidenceTarget, specsOnly, includeSubTasks, referenceString}
   ) {
   return useQuery(
     gql`
@@ -17,7 +17,7 @@ export function useQueryProjectResponseTimeSLA(
             $cycleTimeConfidenceTarget: Float!,
             $specsOnly: Boolean,
             $referenceString: String
-
+            $includeSubTasks: Boolean
         ) {
             project(
                 key: $key,
@@ -29,6 +29,7 @@ export function useQueryProjectResponseTimeSLA(
                     leadTimeTarget : $leadTimeTarget,
                     cycleTimeTarget: $cycleTimeTarget,
                     specsOnly: $specsOnly,
+                    includeSubTasks: $includeSubTasks
                 },
                 cycleMetricsTrendsArgs: {
                     days: 7,
@@ -37,6 +38,7 @@ export function useQueryProjectResponseTimeSLA(
                     leadTimeTargetPercentile: $leadTimeConfidenceTarget,
                     cycleTimeTargetPercentile: $cycleTimeConfidenceTarget,
                     specsOnly: $specsOnly,
+                    includeSubTasks: $includeSubTasks,
                     metrics: [
                         percentile_lead_time,
                         percentile_cycle_time
@@ -73,6 +75,7 @@ export function useQueryProjectResponseTimeSLA(
         cycleTimeTarget: cycleTimeTarget,
         cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
         specsOnly: specsOnly,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString
       },
       errorPolicy: "all",

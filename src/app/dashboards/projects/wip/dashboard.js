@@ -49,6 +49,8 @@ function WipDashboard({
     cycleTimeConfidenceTarget,
     wipLimit,
     wipAnalysisPeriod,
+    includeSubTasksWipInspector,
+    includeSubTasksFlowMetrics
   } = settingsWithDefaults;
 
   return (
@@ -70,6 +72,7 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               latestWorkItemEvent={latestWorkItemEvent}
               specsOnly={specsOnly}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
         />
@@ -94,6 +97,7 @@ function WipDashboard({
               view={view}
               specsOnly={specsOnly}
               context={context}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}
@@ -138,6 +142,7 @@ function WipDashboard({
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
@@ -162,6 +167,7 @@ function WipDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               targetPercentile={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}
@@ -180,6 +186,7 @@ function WipDashboard({
               context={context}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}
@@ -202,6 +209,7 @@ function WipDashboard({
               specsOnly={specsOnly}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}
