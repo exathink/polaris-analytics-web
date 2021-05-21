@@ -20,6 +20,7 @@ export const ProjectPhaseDetailWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
+  includeSubTasks
 }) => {
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
@@ -27,6 +28,7 @@ export const ProjectPhaseDetailWidget = ({
     activeOnly,
     funnelView,
     closedWithinDays,
+    includeSubTasks,
     referenceString: latestWorkItemEvent,
   });
 

@@ -66,6 +66,7 @@ export const ProjectPipelineWidget = (
         cycleTimeTargetPercentile={cycleTimeTargetPercentile}
         specsOnly={limitToSpecsOnly}
         context={context}
+        includeSubTasks={includeSubTasks}
       />
     )
   }

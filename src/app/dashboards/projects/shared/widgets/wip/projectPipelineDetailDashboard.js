@@ -16,6 +16,7 @@ export const ProjectPipelineDetailDashboard = ({
   targetPercentile,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
+  includeSubTasks
 }) => {
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
@@ -68,6 +69,7 @@ export const ProjectPipelineDetailDashboard = ({
               days={days}
               activeOnly={true}
               targetPercentile={cycleTimeTargetPercentile}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={true}
