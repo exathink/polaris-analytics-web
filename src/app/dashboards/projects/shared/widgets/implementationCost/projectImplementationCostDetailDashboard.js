@@ -14,6 +14,7 @@ export const ProjectImplementationCostDetailDashboard = ({
   activeOnly,
   days,
   view,
+  includeSubTasks
 }) => {
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
@@ -50,6 +51,7 @@ export const ProjectImplementationCostDetailDashboard = ({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               showHierarchy={true}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}

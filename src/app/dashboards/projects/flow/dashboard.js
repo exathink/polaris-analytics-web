@@ -257,6 +257,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}

@@ -15,9 +15,10 @@ export const ProjectImplementationCostView = ({
   context,
   view,
   showHierarchy,
+  includeSubTasks
 }) => {
   if (view === "detail") {
-    const props = {instanceKey, latestWorkItemEvent, latestCommit, activeOnly, days, view, context};
+    const props = {instanceKey, latestWorkItemEvent, latestCommit, activeOnly, days, view, context, includeSubTasks};
     return <ProjectImplementationCostDetailDashboard {...props} />;
   }
 

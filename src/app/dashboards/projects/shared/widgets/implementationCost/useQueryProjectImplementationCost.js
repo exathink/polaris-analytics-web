@@ -1,7 +1,7 @@
 import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, referenceString}) {
+export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(
@@ -9,6 +9,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
             $activeOnly: Boolean,
             $specsOnly: Boolean,
             $days: Int,
+            $includeSubTasks: Boolean,
             $referenceString: String) {
             project(key: $projectKey, referenceString: $referenceString) {
                 id
@@ -16,7 +17,8 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
                     specsOnly: $specsOnly,
-                    closedWithinDays: $days
+                    closedWithinDays: $days,
+                    includeSubTasks: $includeSubTasks
                 ) {
                     edges {
                         node {
@@ -41,6 +43,7 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
         activeOnly: activeOnly,
         specsOnly: specsOnly,
         days: days,
+        includeSubTasks: includeSubTasks,
         referenceString: referenceString,
       },
       errorPolicy: "all",
