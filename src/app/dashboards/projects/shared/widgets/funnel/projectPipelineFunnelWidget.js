@@ -26,6 +26,7 @@ export const ProjectPipelineFunnelWidget = ({
     instanceKey,
     closedWithinDays: days,
     specsOnly: workItemScope === "specs",
+    includeSubTasks,
     referenceString: getLatest(latestWorkItemEvent, latestCommit),
   });
   if (loading) return <Loading />;

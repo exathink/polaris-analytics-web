@@ -24,7 +24,7 @@ ValueStreamMappingDashboard.videoConfig = {
 export function ValueStreamMappingDashboard() {
   return (
     <ProjectDashboard
-      render={({project: {key}, context}) => {
+      render={({project: {key, settingsWithDefaults}, context}) => {
         return (
         <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
           <DashboardRow h={"50%"} title={" "}>
@@ -39,6 +39,7 @@ export function ValueStreamMappingDashboard() {
                   workItemScope={"all"}
                   days={30}
                   view={view}
+                  includeSubTasks={settingsWithDefaults.includeSubTasksFlowMetrics}
                 />
               )}
               showDetail={false}
