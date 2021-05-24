@@ -208,6 +208,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}

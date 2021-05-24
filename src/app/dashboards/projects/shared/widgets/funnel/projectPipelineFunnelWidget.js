@@ -20,6 +20,7 @@ export const ProjectPipelineFunnelWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
+  includeSubTasks
 }) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
@@ -55,6 +56,7 @@ export const ProjectPipelineFunnelWidget = ({
       cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
       leadTimeTarget={leadTimeTarget}
       cycleTimeTarget={cycleTimeTarget}
+      includeSubTasks={includeSubTasks}
     />
   );
 };

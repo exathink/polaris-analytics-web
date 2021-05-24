@@ -21,6 +21,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
+  includeSubTasks,
 }) => {
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
@@ -55,6 +56,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               latestCommit={latestCommit}
               days={days}
               view={view}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}
@@ -95,6 +97,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={true}
