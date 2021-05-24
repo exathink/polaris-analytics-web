@@ -1,18 +1,9 @@
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
-import * as measurements from "./measurementSettingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {MeasurementSettingsView} from "./measurementSettingsView";
-
-beforeAll(() => {
-  jest.spyOn(measurements, "measurementSettingsReducer");
-});
-
-afterAll(() => {
-  measurements.measurementSettingsReducer.mockRestore();
-});
 
 // clear mocks after each test
 afterEach(() => {
@@ -179,6 +170,7 @@ describe("MeasurementSettingsView", () => {
 
             // before
             expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
+            await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
             const saveElement = screen.getByText(/save/i);
             fireEvent.click(saveElement);
@@ -200,6 +192,7 @@ describe("MeasurementSettingsView", () => {
 
             // before
             expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
+            await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
             const saveElement = screen.getByText(/save/i);
             fireEvent.click(saveElement);
