@@ -20,11 +20,13 @@ export const ProjectPipelineFunnelWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
+  includeSubTasks
 }) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
     closedWithinDays: days,
     specsOnly: workItemScope === "specs",
+    includeSubTasks,
     referenceString: getLatest(latestWorkItemEvent, latestCommit),
   });
   if (loading) return <Loading />;
@@ -55,6 +57,7 @@ export const ProjectPipelineFunnelWidget = ({
       cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
       leadTimeTarget={leadTimeTarget}
       cycleTimeTarget={cycleTimeTarget}
+      includeSubTasks={includeSubTasks}
     />
   );
 };
