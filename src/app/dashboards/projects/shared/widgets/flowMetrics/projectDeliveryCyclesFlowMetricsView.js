@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import WorkItems from "../../../../work_items/context";
-import {Checkbox} from "antd";
+import {Checkbox, Drawer} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
+import {CardInspector} from "../../../../work_items/activity/dashboard";
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -26,6 +26,9 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   const [showEpics, setShowEpics] = useState(false);
 
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
+  
+  const [showPanel, setShowPanel] = React.useState(false);
+  const [workItemKey, setWorkItemKey] = React.useState();
 
   React.useEffect(() => {
     initialMetric && setSelectedMetric(initialMetric);
@@ -34,19 +37,18 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
-        {
-          yAxisScale !== 'table' && (
-            <GroupingSelector
-              label={"Metric"}
-              groupings={groupings.map((grouping) => ({
-                key: grouping,
-                display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
-              }))}
-              initialValue={selectedMetric}
-              value={selectedMetric}
-              onGroupingChanged={setSelectedMetric}
-            />)
-        }
+        {yAxisScale !== "table" && (
+          <GroupingSelector
+            label={"Metric"}
+            groupings={groupings.map((grouping) => ({
+              key: grouping,
+              display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
+            }))}
+            initialValue={selectedMetric}
+            value={selectedMetric}
+            onGroupingChanged={setSelectedMetric}
+          />
+        )}
         {!defectsOnly && (
           <Checkbox checked={showEpics} onChange={(e) => setShowEpics(e.target.checked)}>
             Show Epics
@@ -76,25 +78,40 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         )}
       </Flex>
       {yAxisScale !== "table" ? (
-        <FlowMetricsScatterPlotChart
-          days={days}
-          model={model}
-          selectedMetric={selectedMetric}
-          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-          metricTarget={metricTarget}
-          targetConfidence={targetConfidence}
-          defectsOnly={defectsOnly}
-          specsOnly={specsOnly}
-          showEpics={showEpics}
-          yAxisScale={yAxisScale}
-          onSelectionChange={(workItems) => {
-            if (workItems.length === 1) {
-              context.navigate(WorkItems, workItems[0].displayId, workItems[0].workItemKey);
-            }
-          }}
-        />
+        <React.Fragment>
+          <FlowMetricsScatterPlotChart
+            days={days}
+            model={model}
+            selectedMetric={selectedMetric}
+            metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+            metricTarget={metricTarget}
+            targetConfidence={targetConfidence}
+            defectsOnly={defectsOnly}
+            specsOnly={specsOnly}
+            showEpics={showEpics}
+            yAxisScale={yAxisScale}
+            onSelectionChange={(workItems) => {
+              if (workItems.length === 1) {
+                setShowPanel(true);
+                setWorkItemKey(workItems[0].workItemKey);
+              }
+            }}
+          />
+          {workItemKey && (
+            <Drawer
+              placement="top"
+              height={350}
+              closable={false}
+              onClose={() => setShowPanel(false)}
+              visible={showPanel}
+              key={workItemKey}
+            >
+              <CardInspector context={context} workItemKey={workItemKey} key={workItemKey}/>
+            </Drawer>
+          )}
+        </React.Fragment>
       ) : (
-        <FlowMetricsDetailTable model={model}/>
+        <FlowMetricsDetailTable model={model} />
       )}
     </React.Fragment>
   );
