@@ -104,9 +104,8 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
               closable={false}
               onClose={() => setShowPanel(false)}
               visible={showPanel}
-              key={workItemKey}
             >
-              <CardInspector context={context} workItemKey={workItemKey} key={workItemKey}/>
+              <CardInspector context={context} workItemKey={workItemKey}/>
             </Drawer>
           )}
         </React.Fragment>
