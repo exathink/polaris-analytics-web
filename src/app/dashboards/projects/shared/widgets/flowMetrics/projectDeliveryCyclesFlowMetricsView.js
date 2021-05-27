@@ -33,7 +33,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   React.useEffect(() => {
     initialMetric && setSelectedMetric(initialMetric);
   }, [initialMetric]);
-  debugger;
+
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
