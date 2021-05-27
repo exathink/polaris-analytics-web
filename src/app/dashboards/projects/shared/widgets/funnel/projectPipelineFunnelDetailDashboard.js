@@ -46,7 +46,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
       >
         <DashboardWidget
           w={1 / 3}
-          name="project-pipeline-detailed"
+          name="project-pipeline-funnel-detailed"
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={instanceKey}
@@ -59,7 +59,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               includeSubTasks={includeSubTasks}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           w={2 / 3}

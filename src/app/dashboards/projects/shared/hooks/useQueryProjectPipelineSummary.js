@@ -8,10 +8,16 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
     $closedWithinDays: Int
     $specsOnly: Boolean
     $referenceString: String
+    $includeSubTasksInClosedState: Boolean
+    $includeSubTasksInNonClosedState: Boolean  
   ) {
     project(
       key: $key
       interfaces: [FunnelViewAggregateMetrics]
+      funnelViewAggregateMetricsArgs: {
+          includeSubTasksInClosedState: $includeSubTasksInClosedState,
+          includeSubTasksInNonClosedState: $includeSubTasksInNonClosedState
+      }
       defectsOnly: $defectsOnly
       closedWithinDays: $closedWithinDays
       specsOnly: $specsOnly
@@ -37,7 +43,7 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
   }
 `;
 
-export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks}) {
+export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}}) {
   return useQuery(PROJECT_PIPELINE_SUMMARY_QUERY, {
       service: analytics_service,
       variables: {
@@ -45,7 +51,8 @@ export function useQueryProjectPipelineSummary({instanceKey, referenceString, de
         referenceString: referenceString,
         defectsOnly: defectsOnly,
         closedWithinDays: closedWithinDays,
-        includeSubTasks: includeSubTasks,
+        includeSubTasksInClosedState: includeSubTasksInClosedState,
+        includeSubTasksInNonClosedState: includeSubTasksInNonClosedState,
         specsOnly: specsOnly
       },
       errorPolicy: "all",
