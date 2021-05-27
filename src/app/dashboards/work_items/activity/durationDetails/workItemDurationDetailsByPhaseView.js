@@ -9,7 +9,7 @@ export const WorkItemDurationDetailsByPhaseView = (
   }
 ) => (
 
-    <VizRow h={1}>
+    <VizRow h={160}>
       <VizItem w={1}>
         <WorkItemsDurationsByPhaseChart
           workItems={[workItem]}

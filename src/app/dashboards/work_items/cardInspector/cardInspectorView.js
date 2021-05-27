@@ -6,23 +6,28 @@ import {WorkItemFlowMetricsWidget} from "../activity/flowMetrics/workItemFlowMet
 import {WorkItemImplementationCostWidget} from "../activity/implementationCosts/workItemImplementationCostWidget";
 import {WorkItemRemoteLink} from "../activity/views/workItemRemoteLink";
 import {WorkItemStateView} from "../activity/views/workItemStateView";
+import styles from "./cardInspector.module.css";
 
 const dashboard_id = "dashboards.work_items.work_item.card_inspector";
 export function CardInspectorView({workItem, context}) {
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
-      <DashboardRow h={"15%"}>
-        <DashboardWidget w={1} name="name" render={() => <WorkItemRemoteLink workItem={workItem} />} />
-      </DashboardRow>
-      <DashboardRow h={"25%"}>
+    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.cardInspectorDashboard}>
+      <DashboardRow>
         <DashboardWidget
-          w={1 / 3}
+          name="name"
+          className={styles.remoteLink}
+          render={() => <WorkItemRemoteLink workItem={workItem} />}
+        />
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
           name="header"
+          className={styles.workItemStateView}
           render={({view}) => <WorkItemStateView workItem={workItem} view={view} />}
         />
         <DashboardWidget
-          w={1 / 3}
           name="cycle-metrics"
+          className={styles.workItemFlowMetrics}
           render={({view}) => (
             <WorkItemFlowMetricsWidget
               instanceKey={workItem.key}
@@ -32,8 +37,8 @@ export function CardInspectorView({workItem, context}) {
           )}
         />
         <DashboardWidget
-          w={1 / 3}
           name="implementation-cost"
+          className={styles.workItemImplementationCost}
           render={({view}) => (
             <WorkItemImplementationCostWidget
               instanceKey={workItem.key}
@@ -43,10 +48,10 @@ export function CardInspectorView({workItem, context}) {
           )}
         />
       </DashboardRow>
-      <DashboardRow h={"60%"}>
+      <DashboardRow>
         <DashboardWidget
-          w={1 / 3}
           name="duration-detail-by-phase"
+          className={styles.workItemByPhase}
           render={({view}) => (
             <WorkItemDurationDetailsByPhaseWidget
               instanceKey={workItem.key}
@@ -57,8 +62,8 @@ export function CardInspectorView({workItem, context}) {
           showDetail={true}
         />
         <DashboardWidget
-          w={1 / 3}
           name="timeline"
+          className={styles.workItemEventTimeline}
           render={({view}) => (
             <WorkItemEventTimelineWidget
               instanceKey={workItem.key}
@@ -71,8 +76,8 @@ export function CardInspectorView({workItem, context}) {
           showDetail={true}
         />
         <DashboardWidget
-          w={1 / 3}
           name="duration-detail-by-state"
+          className={styles.workItemByState}
           render={({view}) => (
             <WorkItemDurationDetailsByStateWidget
               instanceKey={workItem.key}
