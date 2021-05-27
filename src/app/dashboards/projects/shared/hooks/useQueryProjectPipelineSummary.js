@@ -14,7 +14,7 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
     project(
       key: $key
       interfaces: [FunnelViewAggregateMetrics]
-      funnelViewAggregateMetricsArgs: {
+      funnelViewArgs: {
           includeSubTasksInClosedState: $includeSubTasksInClosedState,
           includeSubTasksInNonClosedState: $includeSubTasksInNonClosedState
       }
