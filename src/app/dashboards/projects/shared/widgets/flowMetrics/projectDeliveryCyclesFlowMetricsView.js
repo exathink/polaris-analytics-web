@@ -5,7 +5,7 @@ import {Checkbox, Drawer} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
-import {CardInspector} from "../../../../work_items/activity/dashboard";
+import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
 export const ProjectDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -105,7 +105,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
               onClose={() => setShowPanel(false)}
               visible={showPanel}
             >
-              <CardInspector context={context} workItemKey={workItemKey}/>
+              <CardInspectorWidget context={context} workItemKey={workItemKey}/>
             </Drawer>
           )}
         </React.Fragment>
