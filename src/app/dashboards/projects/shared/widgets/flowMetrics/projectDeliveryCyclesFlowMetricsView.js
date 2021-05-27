@@ -33,7 +33,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
   React.useEffect(() => {
     initialMetric && setSelectedMetric(initialMetric);
   }, [initialMetric]);
-
+  debugger;
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
@@ -78,39 +78,31 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         )}
       </Flex>
       {yAxisScale !== "table" ? (
-        <React.Fragment>
-          <FlowMetricsScatterPlotChart
-            days={days}
-            model={model}
-            selectedMetric={selectedMetric}
-            metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-            metricTarget={metricTarget}
-            targetConfidence={targetConfidence}
-            defectsOnly={defectsOnly}
-            specsOnly={specsOnly}
-            showEpics={showEpics}
-            yAxisScale={yAxisScale}
-            onSelectionChange={(workItems) => {
-              if (workItems.length === 1) {
-                setShowPanel(true);
-                setWorkItemKey(workItems[0].workItemKey);
-              }
-            }}
-          />
-          {workItemKey && (
-            <Drawer
-              placement="top"
-              height={350}
-              closable={false}
-              onClose={() => setShowPanel(false)}
-              visible={showPanel}
-            >
-              <CardInspectorWidget context={context} workItemKey={workItemKey}/>
-            </Drawer>
-          )}
-        </React.Fragment>
+        <FlowMetricsScatterPlotChart
+          days={days}
+          model={model}
+          selectedMetric={selectedMetric}
+          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+          metricTarget={metricTarget}
+          targetConfidence={targetConfidence}
+          defectsOnly={defectsOnly}
+          specsOnly={specsOnly}
+          showEpics={showEpics}
+          yAxisScale={yAxisScale}
+          onSelectionChange={(workItems) => {
+            if (workItems.length === 1) {
+              setShowPanel(true);
+              setWorkItemKey(workItems[0].workItemKey);
+            }
+          }}
+        />
       ) : (
-        <FlowMetricsDetailTable model={model} />
+        <FlowMetricsDetailTable model={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
+      )}
+      {workItemKey && (
+        <Drawer placement="top" height={350} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>
+          <CardInspectorWidget context={context} workItemKey={workItemKey} />
+        </Drawer>
       )}
     </React.Fragment>
   );
