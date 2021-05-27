@@ -7,16 +7,14 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
     $defectsOnly: Boolean
     $closedWithinDays: Int
     $specsOnly: Boolean
-    $includeSubTasks: Boolean
     $referenceString: String
   ) {
     project(
       key: $key
-      interfaces: [WorkItemStateTypeAggregateMetrics]
+      interfaces: [FunnelViewAggregateMetrics]
       defectsOnly: $defectsOnly
       closedWithinDays: $closedWithinDays
       specsOnly: $specsOnly
-      includeSubTasks: $includeSubTasks
       referenceString: $referenceString
     ) {
       workItemStateTypeCounts {
