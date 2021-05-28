@@ -2,8 +2,6 @@ import React from 'react';
 import WorkItems from "../../../../work_items/context";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
 
 export const ProjectPipelineCycleTimeLatencyView = (
@@ -15,8 +13,6 @@ export const ProjectPipelineCycleTimeLatencyView = (
     cycleTimeTarget,
     latencyTarget,
     specsOnly,
-    workItemScope,
-    setWorkItemScope,
     view,
     context
   }
@@ -25,15 +21,6 @@ export const ProjectPipelineCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        {
-            view === 'detail' &&
-            <Flex w={1} justify={'center'}>
-              <WorkItemScopeSelector
-                workItemScope={workItemScope}
-                setWorkItemScope={setWorkItemScope}
-              />
-            </Flex>
-        }
         <WorkItemsCycleTimeVsLatencyChart
           view={view}
           stageName={stageName}

@@ -4,6 +4,7 @@ import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPi
 import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {ProjectPipelineCycleTimeLatencyDetailDashboard} from "./projectPipelineCycleTimeLatencyDetailDashboard";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -17,6 +18,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     latestCommit,
     days,
     cycleTimeTarget,
+    targetPercentile,
     latencyTarget,
     stageName,
     groupByState,
@@ -42,7 +44,25 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
-  return (
+  if (view === "detail") {
+    return (
+      <ProjectPipelineCycleTimeLatencyDetailDashboard
+        instanceKey={instanceKey}
+        latestWorkItemEvent={latestWorkItemEvent}
+        latestCommit={latestCommit}
+        workItemScope={workItemScope}
+        setWorkItemScope={setWorkItemScope}
+        specsOnly={specsOnly}
+        days={days}
+        cycleTimeTarget={cycleTimeTarget}
+        targetPercentile={targetPercentile}
+        includeSubTasks={includeSubTasks}
+        view={view}
+        context={context}
+      />
+    );
+  } else {
+    return (
       <ProjectPipelineCycleTimeLatencyView
         stageName={stageName}
         specsOnly={specsOnly}
@@ -56,7 +76,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         view={view}
         context={context}
       />
-  )
+    );
+  }
 }
 
 ProjectPipelineCycleTimeLatencyWidget.videoConfig = {
