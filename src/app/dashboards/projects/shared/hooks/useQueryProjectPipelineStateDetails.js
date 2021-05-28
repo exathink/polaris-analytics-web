@@ -7,9 +7,10 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
     $specsOnly: Boolean
     $referenceString: String
     $closedWithinDays: Int
-    $activeOnly: Boolean,
-    $funnelView: Boolean,
-    $includeSubTasks: Boolean
+    $activeOnly: Boolean
+    $funnelView: Boolean
+    $includeSubTasksInClosedState: Boolean
+    $includeSubTasksInNonClosedState: Boolean
   ) {
     project(key: $key, referenceString: $referenceString) {
       id
@@ -18,8 +19,12 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef]
         specsOnly: $specsOnly
-        includeSubTasks: $includeSubTasks
+
         funnelView: $funnelView
+        funnelViewArgs: {
+          includeSubTasksInClosedState: $includeSubTasksInClosedState
+          includeSubTasksInNonClosedState: $includeSubTasksInNonClosedState
+        }
         referenceString: $referenceString
       ) {
         edges {
@@ -62,7 +67,7 @@ export function useQueryProjectPipelineStateDetails({
   closedWithinDays,
   activeOnly,
   funnelView,
-  includeSubTasks
+  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState},
 }) {
   return useQuery(PROJECT_PIPELINE_STATE_DETAILS, {
     service: analytics_service,
@@ -73,7 +78,8 @@ export function useQueryProjectPipelineStateDetails({
       closedWithinDays: closedWithinDays,
       activeOnly: activeOnly,
       funnelView: funnelView,
-      includeSubTasks: includeSubTasks
+      includeSubTasksInClosedState: includeSubTasksInClosedState,
+      includeSubTasksInNonClosedState: includeSubTasksInNonClosedState,
     },
     errorPolicy: "all",
     pollInterval: analytics_service.defaultPollInterval(),

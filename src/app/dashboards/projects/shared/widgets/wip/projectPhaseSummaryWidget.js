@@ -9,11 +9,13 @@ export const ProjectPhaseSummaryWidget = (
     specsOnly,
     latestWorkItemEvent,
     stateMappingIndex,
+    includeSubTasks,
     view
   }
 ) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
+    includeSubTasks,
     specsOnly: specsOnly,
     referenceString: latestWorkItemEvent
   })
