@@ -97,7 +97,7 @@ function WipDashboard({
               view={view}
               specsOnly={specsOnly}
               context={context}
-              includeSubTasks={{includeSubTasksInNonClosedState: includeSubTasksWipInspector}}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}

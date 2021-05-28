@@ -21,10 +21,9 @@ export const ProjectPipelineWidget = (
     wipLimit,
     view,
     context,
-    includeSubTasks: {includeSubTasksInNonClosedState},
+    includeSubTasks,
     pollInterval
   }) => {
-  const includeSubTasks = {includeSubTasksInNonClosedState}
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
     {
@@ -33,7 +32,7 @@ export const ProjectPipelineWidget = (
       leadTimeTargetPercentile,
       cycleTimeTargetPercentile,
       specsOnly: limitToSpecsOnly,
-      includeSubTasks: includeSubTasksInNonClosedState,
+      includeSubTasks: includeSubTasks,
       referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
     }
   )
