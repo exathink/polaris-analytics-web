@@ -20,9 +20,8 @@ export const ProjectPhaseDetailWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
-  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
+  includeSubTasks
 }) => {
-  const includeSubTasks = {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
     specsOnly,
