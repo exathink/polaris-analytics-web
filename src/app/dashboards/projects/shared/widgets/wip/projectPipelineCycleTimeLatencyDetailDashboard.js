@@ -4,7 +4,6 @@ import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectPipelineCycleTimeLatencyWidget} from "./projectPipelineCycleTimeLatencyWidget";
 import {WorkItemStateTypes} from "../../../../shared/config";
-import { FlowMetricsDetailTable } from "../flowMetrics/flowMetricsDetailTable";
 
 const dashboard_id = "dashboards.project.pipeline.cycle_time_latency.detail";
 
@@ -89,7 +88,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
         />
       </DashboardRow>
       <DashboardRow h="45%">
-        <DashboardWidget w={1} name="table-view" render={({view}) => <FlowMetricsDetailTable model={[]} />} />
+        <DashboardWidget w={1} name="table-view" render={({view}) => <span>Table View Widget to be added here</span>} />
       </DashboardRow>
     </Dashboard>
   );
