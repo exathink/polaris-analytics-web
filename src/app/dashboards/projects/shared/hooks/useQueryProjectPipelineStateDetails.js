@@ -9,6 +9,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
     $closedWithinDays: Int
     $activeOnly: Boolean
     $funnelView: Boolean
+    $includeSubTasks: Boolean
     $includeSubTasksInClosedState: Boolean
     $includeSubTasksInNonClosedState: Boolean
   ) {
@@ -19,7 +20,7 @@ export const PROJECT_PIPELINE_STATE_DETAILS = gql`
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef]
         specsOnly: $specsOnly
-
+        includeSubTasks: $includeSubTasks
         funnelView: $funnelView
         funnelViewArgs: {
           includeSubTasksInClosedState: $includeSubTasksInClosedState
@@ -67,21 +68,29 @@ export function useQueryProjectPipelineStateDetails({
   closedWithinDays,
   activeOnly,
   funnelView,
-  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState},
+  includeSubTasks,
 }) {
-  return useQuery(PROJECT_PIPELINE_STATE_DETAILS, {
-    service: analytics_service,
-    variables: {
-      key: instanceKey,
-      specsOnly: specsOnly,
-      referenceString: referenceString,
-      closedWithinDays: closedWithinDays,
-      activeOnly: activeOnly,
-      funnelView: funnelView,
-      includeSubTasksInClosedState: includeSubTasksInClosedState,
-      includeSubTasksInNonClosedState: includeSubTasksInNonClosedState,
-    },
-    errorPolicy: "all",
-    pollInterval: analytics_service.defaultPollInterval(),
-  });
+  // oddity here is to support the same api signature while allowing either
+  // a boolean value for includeSubtasks or a pair for the funnelView.
+  // Not ideal, but lets us keep the rest of the api relatively clean, so taking the
+  // hit here on this line.
+  const {includeSubTasksInNonClosedState, includeSubTasksInClosedState} =
+      funnelView ? includeSubTasks : {};
+
+    return useQuery(PROJECT_PIPELINE_STATE_DETAILS, {
+      service: analytics_service,
+      variables: {
+        key: instanceKey,
+        specsOnly: specsOnly,
+        referenceString: referenceString,
+        closedWithinDays: closedWithinDays,
+        activeOnly: activeOnly,
+        funnelView: funnelView,
+        includeSubTasks: includeSubTasks,
+        includeSubTasksInClosedState: includeSubTasksInClosedState,
+        includeSubTasksInNonClosedState: includeSubTasksInNonClosedState,
+      },
+      errorPolicy: "all",
+      pollInterval: analytics_service.defaultPollInterval(),
+    });
 }
