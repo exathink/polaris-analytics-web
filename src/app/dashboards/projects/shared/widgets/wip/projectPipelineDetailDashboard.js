@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectPhaseSummaryWidget} from "./projectPhaseSummaryWidget";
+import {ProjectPipelinePhaseSummaryWidget} from "./projectPipelinePhaseSummaryWidget";
 import {ProjectPhaseDetailWidget} from "../projectPhaseDetail";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
@@ -43,12 +43,13 @@ export const ProjectPipelineDetailDashboard = ({
           name="project-pipeline-summary-detail-view"
           subtitle={specsOnly ? `Active Specs by Phase` : `All Active Cards by Phase`}
           render={({view}) => (
-            <ProjectPhaseSummaryWidget
+            <ProjectPipelinePhaseSummaryWidget
               instanceKey={instanceKey}
               specsOnly={specsOnly}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
+              includeSubTasks={includeSubTasks}
             />
           )}
           showDetail={false}
