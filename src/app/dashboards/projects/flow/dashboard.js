@@ -208,7 +208,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
+              includeSubTasks={{includeSubTasksInClosedState: includeSubTasksFlowMetrics, includeSubTasksInNonClosedState: includeSubTasksWipInspector}}
             />
           )}
           showDetail={true}

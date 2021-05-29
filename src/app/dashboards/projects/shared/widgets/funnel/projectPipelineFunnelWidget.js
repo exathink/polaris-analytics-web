@@ -20,8 +20,9 @@ export const ProjectPipelineFunnelWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
-  includeSubTasks
+  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
 }) => {
+  const includeSubTasks = {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
     closedWithinDays: days,

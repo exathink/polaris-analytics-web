@@ -15,7 +15,11 @@ const propsFixture = {
   leadTimeTargetPercentile: 0.9,
   cycleTimeTargetPercentile: 0.9,
   activeOnly: true,
-  specsOnly: true
+  specsOnly: true,
+  includeSubTasks: {
+      includeSubTasksInNonClosedState: true,
+      includeSubTasksInClosedState: true
+    }
 };
 
 const gqlRequest1 = {
@@ -25,6 +29,7 @@ const gqlRequest1 = {
     specsOnly: true,
     referenceString: propsFixture.latestWorkItemEvent,
     activeOnly: propsFixture.activeOnly,
+
   },
 };
 

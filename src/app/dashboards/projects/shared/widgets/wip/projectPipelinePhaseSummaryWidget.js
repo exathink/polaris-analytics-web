@@ -3,17 +3,19 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectPipelinePhaseSummaryView} from "./projectPipelinePhaseSummaryView";
 import React from "react";
 
-export const ProjectPhaseSummaryWidget = (
+export const ProjectPipelinePhaseSummaryWidget = (
   {
     instanceKey,
     specsOnly,
     latestWorkItemEvent,
     stateMappingIndex,
+    includeSubTasks,
     view
   }
 ) => {
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
+    includeSubTasks: {includeSubTasksInNonClosedState: includeSubTasks},
     specsOnly: specsOnly,
     referenceString: latestWorkItemEvent
   })

@@ -39,7 +39,10 @@ export function ValueStreamMappingDashboard() {
                   workItemScope={"all"}
                   days={30}
                   view={view}
-                  includeSubTasks={settingsWithDefaults.includeSubTasksFlowMetrics}
+                  includeSubTasks={{
+                    includeSubTasksInClosedState: settingsWithDefaults.includeSubTasksFlowMetrics,
+                    includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector
+                  }}
                 />
               )}
               showDetail={false}
