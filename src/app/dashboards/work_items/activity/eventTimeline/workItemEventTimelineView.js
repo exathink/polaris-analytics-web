@@ -24,7 +24,7 @@ export const WorkItemEventTimelineView = (
   }
 
   return (
-    <VizRow h={1}>
+    <VizRow h={160}>
       <VizItem w={1}>
         <WorkItemEventsTimelineChart
           workItem={workItem}
