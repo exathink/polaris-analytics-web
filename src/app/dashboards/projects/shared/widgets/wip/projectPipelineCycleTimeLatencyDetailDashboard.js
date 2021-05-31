@@ -30,13 +30,11 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
         className={styles.workItemScope}
         controls={[
           () => (
-            <div style={{minWidth: "300px"}}>
-              <Flex align={"center"}>
-                <Box pr={2} w={"100%"}>
-                  <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-                </Box>
-              </Flex>
-            </div>
+            <Flex align={"center"}>
+              <Box w={"100%"}>
+                <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+              </Box>
+            </Flex>
           ),
         ]}
       >
