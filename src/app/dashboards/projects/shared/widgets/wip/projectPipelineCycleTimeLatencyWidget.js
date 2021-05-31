@@ -39,7 +39,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   })
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectPipelineStateDetailsWidget.pipelineStateDetails', error);
+    logGraphQlError('ProjectPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
     return null;
   }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
