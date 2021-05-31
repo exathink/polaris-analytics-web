@@ -9,20 +9,21 @@ function getCycleMetrics(workItem) {
   * a calc that only applies to the current delivery cycle
   * We are duplicating logic that is also done on the backend for closed cycles,
   * */
-  const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
-  let leadTime = 0;
-  let cycleTime = 0;
-  for(let i=0; i < durations.length; i++) {
-    leadTime = leadTime + durations[i].daysInState;
-    if (durations[i].stateType !== 'backlog') {
-      cycleTime = cycleTime + durations[i].daysInState;
+  if (workItem.stateType != 'closed') {
+    const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
+    let leadTime = 0;
+    let cycleTime = 0;
+    for (let i = 0; i < durations.length; i++) {
+      leadTime = leadTime + durations[i].daysInState;
+      if (durations[i].stateType !== 'backlog') {
+        cycleTime = cycleTime + durations[i].daysInState;
+      }
     }
-  }
-  const timeInCurrentState = daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate))
-  if (workItem.stateType !== 'closed') {
+    const timeInCurrentState = daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate))
     return [leadTime + timeInCurrentState, cycleTime + timeInCurrentState]
   } else {
-    return [leadTime, cycleTime]
+    // for closed work items we can get the correct cycle time from the back end.
+    return [workItem.workItemStateDetails.leadTime, workItem.workItemStateDetails.cycleTime]
   }
 }
 

@@ -16,6 +16,11 @@ export function useQueryWorkItemDurationDetail({instanceKey, referenceString}) {
               stateType
               ... on WorkItemStateDetails {
                 workItemStateDetails {
+                  startDate
+                  endDate
+                  closed
+                  leadTime
+                  cycleTime
                   currentStateTransition {
                     seqNo
                     newState

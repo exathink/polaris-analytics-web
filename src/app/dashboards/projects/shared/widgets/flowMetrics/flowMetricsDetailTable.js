@@ -143,19 +143,19 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       ...renderState
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
-      width: "5%",
-      sorter: (a, b) => a.duration - b.duration,
-      ...renderState
-    },
-    {
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
       width: "5%",
       sorter: (a, b) => a.effort - b.effort,
+      ...renderState
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
+      width: "5%",
+      sorter: (a, b) => a.duration - b.duration,
       ...renderState
     },
     {
