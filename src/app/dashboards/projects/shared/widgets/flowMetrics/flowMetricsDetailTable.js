@@ -1,4 +1,3 @@
-import {Table} from "antd";
 import {Link} from "react-router-dom";
 import WorkItems from "../../../../work_items/context";
 import {Highlighter} from "../../../../../components/misc/highlighter";
@@ -6,7 +5,7 @@ import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
-import styles from "./flowMetrics.module.css";
+import {BaseTableView} from "../../components/baseTableView";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -179,24 +178,15 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
   return columns;
 }
 
-export const FlowMetricsDetailTable = injectIntl(({model, intl, setShowPanel, setWorkItemKey}) => {
+
+export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey}) => {
   // get unique workItem types
-  const workItemTypes = [...new Set(model.map((x) => x.workItemType))];
+  const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
 
   const columns = useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey});
-  const dataSource = getTransformedData(model, intl);
+  const dataSource = getTransformedData(tableData, intl);
 
   return (
-    <Table
-      rowClassName={(record, index) => index % 2 === 0 ? styles.tableRowLight :  styles.tableRowDark}
-      size="small"
-      pagination={false}
-      columns={columns}
-      dataSource={dataSource}
-      scroll={{y: "60vh"}}
-      showSorterTooltip={false}
-      data-testid="flowmetrics-detail-table"
-      bordered={true}
-    />
+    <BaseTableView columns={columns} dataSource={dataSource} testId="flowmetrics-detail-table"/>
   );
 });

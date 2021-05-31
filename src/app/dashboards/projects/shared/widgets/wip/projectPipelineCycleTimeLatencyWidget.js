@@ -4,6 +4,7 @@ import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPi
 import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {ProjectPipelineCycleTimeLatencyDetailDashboard} from "./projectPipelineCycleTimeLatencyDetailDashboard";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -17,10 +18,12 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     latestCommit,
     days,
     cycleTimeTarget,
+    targetPercentile,
     latencyTarget,
     stageName,
     groupByState,
     includeSubTasks,
+    tooltipType,
     view,
     context
   }
@@ -37,12 +40,30 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   })
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectPipelineStateDetailsWidget.pipelineStateDetails', error);
+    logGraphQlError('ProjectPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
     return null;
   }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
-  return (
+  if (view === "detail") {
+    return (
+      <ProjectPipelineCycleTimeLatencyDetailDashboard
+        instanceKey={instanceKey}
+        latestWorkItemEvent={latestWorkItemEvent}
+        latestCommit={latestCommit}
+        workItemScope={workItemScope}
+        setWorkItemScope={setWorkItemScope}
+        specsOnly={specsOnly}
+        days={days}
+        cycleTimeTarget={cycleTimeTarget}
+        targetPercentile={targetPercentile}
+        includeSubTasks={includeSubTasks}
+        view={view}
+        context={context}
+      />
+    );
+  } else {
+    return (
       <ProjectPipelineCycleTimeLatencyView
         stageName={stageName}
         specsOnly={specsOnly}
@@ -53,10 +74,12 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         groupByState={groupByState}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
+        tooltipType={tooltipType}
         view={view}
         context={context}
       />
-  )
+    );
+  }
 }
 
 ProjectPipelineCycleTimeLatencyWidget.videoConfig = {

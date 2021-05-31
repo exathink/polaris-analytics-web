@@ -97,7 +97,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
           }}
         />
       ) : (
-        <FlowMetricsDetailTable model={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
+        <FlowMetricsDetailTable tableData={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
       )}
       {workItemKey && (
         <Drawer placement="top" height={350} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>

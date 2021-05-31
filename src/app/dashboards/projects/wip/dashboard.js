@@ -198,6 +198,7 @@ function WipDashboard({
             <ProjectPipelineCycleTimeLatencyWidget
               instanceKey={key}
               view={view}
+              tooltipType="small"
               stageName={"Delivery"}
               stateTypes={[WorkItemStateTypes.deliver]}
               groupByState={true}
