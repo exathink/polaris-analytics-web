@@ -5,8 +5,8 @@ import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
 import {BaseTableView} from "../../components/baseTableView";
-import {diff_in_dates} from "../../../../../helpers/utility";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {SORTER} from "../../helper/utils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -37,16 +37,6 @@ function customRender(text, record, searchText) {
   );
 }
 
-const string_compare = (a, b, propName) => {
-  const [stra, strb] = [a[propName], b[propName]];
-  return stra.localeCompare(strb);
-};
-
-const date_compare = (date_a, date_b) => {
-  const span = diff_in_dates(date_a, date_b);
-  return span["_milliseconds"];
-};
-
 export function useCycleTimeLatencyTableColumns({filters}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name");
@@ -57,7 +47,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
-      sorter: (a, b) => string_compare(a, b, "displayId"),
+      sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
       ...nameSearchState,
     },
     {
@@ -65,14 +55,14 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => string_compare(a, b, "name"),
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...titleSearchState,
     },
     {
       title: "Type",
       dataIndex: "workItemType",
       key: "workItemType",
-      sorter: (a, b) => string_compare(a, b, "workItemType"),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
@@ -81,7 +71,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       title: "Phase",
       dataIndex: "stateType",
       key: "stateType",
-      sorter: (a, b) => string_compare(a, b, "stateType"),
+      sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
       filters: filters.stateTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.stateType.indexOf(value) === 0,
       width: "5%",
@@ -91,7 +81,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       dataIndex: "state",
       key: "state",
       width: "5%",
-      sorter: (a, b) => string_compare(a, b, "state"),
+      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
     },
@@ -107,28 +97,28 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
-      sorter: (a, b) => a.cycleTime - b.cycleTime,
+      sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
     },
     {
       title: "Latency",
       dataIndex: "latency",
       key: "latency",
       width: "5%",
-      sorter: (a, b) => a.latency - b.latency,
+      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
     },
     {
       title: "Commits",
       dataIndex: "commitCount",
       key: "commitCount",
       width: "5%",
-      sorter: (a, b) => a.commitCount - b.commitCount,
+      sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
     },
     {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
       key: "latestCommitDisplay",
       width: "5%",
-      sorter: (a, b) => date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
+      sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
     },
   ];
 
