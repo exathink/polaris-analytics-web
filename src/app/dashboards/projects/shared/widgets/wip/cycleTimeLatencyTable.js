@@ -19,6 +19,7 @@ function getTransformedData(data, intl) {
       cycleTime: getNumber(item.cycleTime, intl),
       latency: getNumber(item.latency, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
+      latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate
     };
   });
 }
@@ -90,7 +91,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       dataIndex: "timeInStateDisplay",
       key: "timeInStateDisplay",
       width: "5%",
-      // sorter: (a, b) => a.timeInStateDisplay - b.timeInStateDisplay,
+      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
     },
     {
       title: "Cycle Time",
