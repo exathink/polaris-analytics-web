@@ -1,0 +1,26 @@
+.cycleTimeLatencyDashboard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 4% 45% 50%;
+    gap: 0.25rem 0.25rem;
+    grid-template-areas: "workItemScope workItemScope"
+    "engineering delivery"
+    "cycleTimeLatencyTable cycleTimeLatencyTable";
+}
+
+.engineering{
+  grid-area: engineering;
+}
+
+.delivery{
+  grid-area: delivery;
+}
+
+.cycleTimeLatencyTable{
+ grid-area: cycleTimeLatencyTable;
+}
+
+.workItemScope{
+    grid-area: workItemScope;
+    justify-content: center;
+}

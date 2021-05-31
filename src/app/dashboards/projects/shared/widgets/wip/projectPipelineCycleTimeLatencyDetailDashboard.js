@@ -5,7 +5,7 @@ import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectPipelineCycleTimeLatencyWidget} from "./projectPipelineCycleTimeLatencyWidget";
 import {WorkItemStateTypes} from "../../../../shared/config";
 import {CycleTimeLatencyTableWidget} from "./cycleTimeLatencyTableWidget";
-
+import styles from "./cycleTimeLatency.module.css";
 const dashboard_id = "dashboards.project.pipeline.cycle_time_latency.detail";
 
 export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
@@ -23,11 +23,11 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   context,
 }) => {
   return (
-    <Dashboard dashboard={dashboard_id}>
+    <Dashboard dashboard={dashboard_id} className={styles.cycleTimeLatencyDashboard} gridLayout={true}>
       <DashboardRow
-        h={"45%"}
         title={``}
         subTitle={``}
+        className={styles.workItemScope}
         controls={[
           () => (
             <div style={{minWidth: "300px"}}>
@@ -41,8 +41,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
         ]}
       >
         <DashboardWidget
-          w={1 / 2}
           name="engineering"
+          className={styles.engineering}
           render={({view}) => (
             <ProjectPipelineCycleTimeLatencyWidget
               instanceKey={instanceKey}
@@ -63,8 +63,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          w={1 / 2}
           name="delivery"
+          className={styles.delivery}
           render={({view}) => {
             return (
               <ProjectPipelineCycleTimeLatencyWidget
@@ -85,12 +85,13 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               />
             );
           }}
+          showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="45%">
+      <DashboardRow>
         <DashboardWidget
-          w={1}
           name="cycle-time-latency-table"
+          className={styles.cycleTimeLatencyTable}
           render={({view}) => (
             <CycleTimeLatencyTableWidget
               instanceKey={instanceKey}
