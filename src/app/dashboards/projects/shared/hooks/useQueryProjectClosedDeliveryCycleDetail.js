@@ -13,11 +13,12 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
   ) {
     project(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
+        closedBefore: $before
         closedWithinDays: $days
         defectsOnly: $defectsOnly
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
-        before: $before
+        
         interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
       ) {
         edges {
