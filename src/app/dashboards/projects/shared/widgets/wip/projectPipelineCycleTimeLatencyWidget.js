@@ -23,6 +23,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     stageName,
     groupByState,
     includeSubTasks,
+    tooltipType,
     view,
     context
   }
@@ -73,6 +74,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         groupByState={groupByState}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
+        tooltipType={tooltipType}
         view={view}
         context={context}
       />

@@ -56,6 +56,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               latestCommit={latestCommit}
               targetPercentile={targetPercentile}
               includeSubTasks={includeSubTasks}
+              tooltipType="big"
             />
           )}
           showDetail={false}
@@ -80,6 +81,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
                 workItemScope={workItemScope}
                 setWorkItemScope={setWorkItemScope}
                 includeSubTasks={includeSubTasks}
+                tooltipType="big"
               />
             );
           }}

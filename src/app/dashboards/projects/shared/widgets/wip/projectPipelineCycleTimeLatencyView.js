@@ -13,6 +13,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     cycleTimeTarget,
     latencyTarget,
     specsOnly,
+    tooltipType,
     view,
     context
   }
@@ -31,6 +32,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           tick={tick}
+          tooltipType={tooltipType}
           onSelectionChange={
             (workItems) => {
               if (workItems.length === 1) {

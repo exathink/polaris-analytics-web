@@ -1,7 +1,7 @@
 .cycleTimeLatencyDashboard{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 4% 45% 50%;
+    grid-template-rows: 4% 50% 45%;
     gap: 0.3rem 0.1rem;
     grid-template-areas: "workItemScope workItemScope"
     "engineering delivery"

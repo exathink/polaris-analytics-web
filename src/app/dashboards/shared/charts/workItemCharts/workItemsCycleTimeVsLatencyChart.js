@@ -102,7 +102,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
-  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, tick, intl, view}) => {
+  getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, tick, intl, view, tooltipType}) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
@@ -195,7 +195,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
           const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails} = this.point.workItem;
 
           const remainingEntries =
-            view === "primary"
+            tooltipType === "small"
               ? []
               : [
                   [`-----------------`, ``],
@@ -212,7 +212,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
-              view === "primary" ? elide(name, 30) : name
+              tooltipType === "small" ? elide(name, 30) : name
             }`,
             body: [
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
