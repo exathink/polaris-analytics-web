@@ -2,7 +2,7 @@ import React from "react";
 import {Table} from "antd";
 import styles from "./baseTableView.module.css";
 
-export function BaseTableView({columns, dataSource, testId, loading}) {
+export function BaseTableView({columns, dataSource, height, testId, loading}) {
   return (
     <Table
       rowClassName={(record, index) => (index % 2 === 0 ? styles.tableRowLight : styles.tableRowDark)}
@@ -10,7 +10,7 @@ export function BaseTableView({columns, dataSource, testId, loading}) {
       pagination={false}
       columns={columns}
       dataSource={dataSource}
-      scroll={{y: "60vh"}}
+      scroll={{y: height??"60vh"}}
       showSorterTooltip={false}
       loading={loading}
       data-testid={testId}
