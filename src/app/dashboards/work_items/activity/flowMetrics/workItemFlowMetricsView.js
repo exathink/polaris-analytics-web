@@ -9,7 +9,7 @@ function getCycleMetrics(workItem) {
   * a calc that only applies to the current delivery cycle
   * We are duplicating logic that is also done on the backend for closed cycles,
   * */
-  if (workItem.stateType != 'closed') {
+  if (workItem.stateType !== 'closed') {
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
     let leadTime = 0;
     let cycleTime = 0;
