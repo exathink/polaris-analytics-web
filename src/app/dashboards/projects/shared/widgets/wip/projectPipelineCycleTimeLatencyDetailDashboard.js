@@ -4,6 +4,7 @@ import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectPipelineCycleTimeLatencyWidget} from "./projectPipelineCycleTimeLatencyWidget";
 import {WorkItemStateTypes} from "../../../../shared/config";
+import {CycleTimeLatencyTableWidget} from "./cycleTimeLatencyTableWidget";
 
 const dashboard_id = "dashboards.project.pipeline.cycle_time_latency.detail";
 
@@ -21,11 +22,10 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   view,
   context,
 }) => {
-
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"50%"}
+        h={"45%"}
         title={``}
         subTitle={``}
         controls={[
@@ -88,7 +88,19 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
         />
       </DashboardRow>
       <DashboardRow h="45%">
-        <DashboardWidget w={1} name="table-view" render={({view}) => <span>Table View Widget to be added here</span>} />
+        <DashboardWidget
+          w={1}
+          name="cycle-time-latency-table"
+          render={({view}) => (
+            <CycleTimeLatencyTableWidget
+              instanceKey={instanceKey}
+              specsOnly={specsOnly}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              includeSubTasks={includeSubTasks}
+            />
+          )}
+        />
       </DashboardRow>
     </Dashboard>
   );
