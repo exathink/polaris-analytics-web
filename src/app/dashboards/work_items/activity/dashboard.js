@@ -8,11 +8,12 @@ import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
-import {WorkItemDurationDetailsWidget} from "./durationDetails/workItemDurationDetailsWidget";
+import {WorkItemDurationDetailsByPhaseWidget} from "./durationDetails/workItemDurationDetailsByPhaseWidget";
 import {WorkItemEventTimelineWidget} from "./eventTimeline/workItemEventTimelineWidget";
 import {WorkItemRemoteLink} from "./views/workItemRemoteLink";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 import {WorkItemImplementationCostWidget} from "./implementationCosts/workItemImplementationCostWidget";
+import {WorkItemDurationDetailsByStateWidget} from "./durationDetails/workItemDurationDetailsByStateWidget";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -84,11 +85,11 @@ export const dashboard =
               >
 
                 <DashboardWidget
-                  w={2/3}
-                  name="duration-detail"
+                  w={1/3}
+                  name="duration-detail-by-phase"
                   render={
                     ({view}) =>
-                      <WorkItemDurationDetailsWidget
+                      <WorkItemDurationDetailsByPhaseWidget
                         instanceKey={workItem.key}
                         latestWorkItemEvent={workItem.latestWorkItemEvent}
                         view={view}
@@ -110,6 +111,17 @@ export const dashboard =
                       />
                   }
                   showDetail={true}
+                />
+                <DashboardWidget
+                  w={1/3}
+                  name="duration-detail-by-state"
+                  render={({view}) => (
+                    <WorkItemDurationDetailsByStateWidget
+                      instanceKey={workItem.key}
+                      latestWorkItemEvent={workItem.latestWorkItemEvent}
+                      view={view}
+                    />
+                  )}
                 />
               </DashboardRow>
               <DashboardRow h={'55%'}>

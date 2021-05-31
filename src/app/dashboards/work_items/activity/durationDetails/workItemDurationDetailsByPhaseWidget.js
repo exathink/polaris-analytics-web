@@ -2,9 +2,9 @@ import React from 'react';
 import {Loading} from "../../../../components/graphql/loading";
 
 import {useQueryWorkItemDurationDetail} from "../hooks/useQueryWorkItemDurationDetail";
-import {WorkItemDurationDetailsView} from "./workItemDurationDetailsView";
+import {WorkItemDurationDetailsByPhaseView} from "./workItemDurationDetailsByPhaseView";
 
-export const WorkItemDurationDetailsWidget = (
+export const WorkItemDurationDetailsByPhaseWidget = (
   {
     instanceKey,
     latestWorkItemEvent,
@@ -20,7 +20,7 @@ export const WorkItemDurationDetailsWidget = (
   const workItem = data['workItem'];
 
   return (
-    <WorkItemDurationDetailsView
+    <WorkItemDurationDetailsByPhaseView
       workItem={workItem}
       view={view}
     />

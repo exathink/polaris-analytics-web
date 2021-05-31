@@ -41,15 +41,47 @@ function customRender(text, record, searchText) {
   );
 }
 
+function customTitleRender(setShowPanel, setWorkItemKey) {
+  return (text, record, searchText) => (
+    <span
+      onClick={() => {
+        setShowPanel(true);
+        setWorkItemKey(record.workItemKey);
+      }}
+      style={{cursor: "pointer"}}
+    >
+      <Highlighter
+        highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+        searchWords={searchText || ""}
+        textToHighlight={text.toString()}
+      />
+    </span>
+  );
+}
+
+function customColRender(setShowPanel, setWorkItemKey) {
+  return (text, record, searchText) => (
+    <span
+      onClick={() => {
+        setShowPanel(true);
+        setWorkItemKey(record.workItemKey);
+      }}
+      style={{cursor: "pointer"}}
+    >
+      {text}
+    </span>
+  );
+}
+
 const string_compare = (a, b, propName) => {
   const [stra, strb] = [a[propName], b[propName]];
   return stra.localeCompare(strb);
 };
 
-export function useFlowMetricsDetailTableColumns(workItemTypes) {
+export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey}) {
   const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name");
-
+  const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
+  const renderState = {render: customColRender(setShowPanel, setWorkItemKey)}
   const columns = [
     {
       title: "Name",
@@ -75,6 +107,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       filters: workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
+      ...renderState
     },
     {
       title: "State",
@@ -82,6 +115,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "state",
       sorter: (a, b) => string_compare(a, b, "state"),
       width: "5%",
+      ...renderState
     },
     {
       title: "Lead Time",
@@ -89,6 +123,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "leadTime",
       width: "5%",
       sorter: (a, b) => a.leadTime - b.leadTime,
+      ...renderState
     },
     {
       title: "Cycle Time",
@@ -96,6 +131,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "cycleTime",
       width: "5%",
       sorter: (a, b) => a.cycleTime - b.cycleTime,
+      ...renderState
     },
     {
       title: "Delivery Latency",
@@ -103,6 +139,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "latency",
       width: "5%",
       sorter: (a, b) => a.latency - b.latency,
+      ...renderState
     },
     {
       title: "Duration",
@@ -110,6 +147,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "duration",
       width: "5%",
       sorter: (a, b) => a.duration - b.duration,
+      ...renderState
     },
     {
       title: "Effort",
@@ -117,6 +155,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "effort",
       width: "5%",
       sorter: (a, b) => a.effort - b.effort,
+      ...renderState
     },
     {
       title: "Authors",
@@ -124,6 +163,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "authorCount",
       width: "5%",
       sorter: (a, b) => a.authorCount - b.authorCount,
+      ...renderState
     },
     {
       title: "Backlog Time",
@@ -131,17 +171,19 @@ export function useFlowMetricsDetailTableColumns(workItemTypes) {
       key: "backlogTime",
       width: "5%",
       sorter: (a, b) => a.backlogTime - b.backlogTime,
+      ...renderState
     },
   ];
 
   return columns;
 }
 
-export const FlowMetricsDetailTable = injectIntl(({tableData, intl}) => {
+
+export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
 
-  const columns = useFlowMetricsDetailTableColumns(workItemTypes);
+  const columns = useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey});
   const dataSource = getTransformedData(tableData, intl);
 
   return (

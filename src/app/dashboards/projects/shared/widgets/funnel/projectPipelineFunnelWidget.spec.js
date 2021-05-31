@@ -14,6 +14,7 @@ const propsFixture = {
   view: "primary",
   workItemScope: "all", // all or specs
   setWorkItemScope: setWorkItemScopeMock,
+  includeSubTasks: {includeSubTasksInClosedState: true, includeSubTasksInNonClosedState: true},
 };
 
 const mocksFixture = [
@@ -25,6 +26,8 @@ const mocksFixture = [
         closedWithinDays: 30,
         specsOnly: false,
         referenceString: "2020-12-09T22:31:01.244000",
+        includeSubTasksInClosedState: true,
+        includeSubTasksInNonClosedState: true,
         defectsOnly: undefined,
       },
     },
@@ -129,6 +132,7 @@ describe("ProjectPipelineFunnelWidget", () => {
 
     test("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
+      await screen.findByTestId("loading-spinner");
       expect(await screen.findByText(/All Cards/i)).toBeInTheDocument();
     });
 
