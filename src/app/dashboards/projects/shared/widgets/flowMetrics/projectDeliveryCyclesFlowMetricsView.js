@@ -94,7 +94,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
           }}
         />
       ) : (
-        <FlowMetricsDetailTable model={model}/>
+        <FlowMetricsDetailTable tableData={model}/>
       )}
     </React.Fragment>
   );
