@@ -41,6 +41,8 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                 authorDate
                 branch
                 repository
+                repositoryUrl
+                integrationType
               }
             }
           }

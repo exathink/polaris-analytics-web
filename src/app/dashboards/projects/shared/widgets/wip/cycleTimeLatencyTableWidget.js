@@ -11,6 +11,7 @@ export const CycleTimeLatencyTableWidget = ({
   latestWorkItemEvent,
   latestCommit,
   includeSubTasks,
+  drawerCallBacks
 }) => {
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
@@ -25,5 +26,7 @@ export const CycleTimeLatencyTableWidget = ({
     return null;
   }
   const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
-  return <CycleTimeLatencyTableView workItems={workItems} />;
+  return (
+    <CycleTimeLatencyTableView workItems={workItems} drawerCallBacks={drawerCallBacks} />
+  );
 };

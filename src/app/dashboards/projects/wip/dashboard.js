@@ -157,6 +157,7 @@ function WipDashboard({
             <ProjectPipelineCycleTimeLatencyWidget
               instanceKey={key}
               view={view}
+              tooltipType="small"
               stageName={"Engineering"}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
               cycleTimeTarget={cycleTimeTarget}

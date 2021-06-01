@@ -1,0 +1,46 @@
+.cardInspectorDashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 5% 13% 27% 45%;
+  gap: 0.5rem 0.5rem;
+  grid-template-areas:
+    "remoteLink remoteLink remoteLink remoteLink remoteLink remoteLink"
+    "workItemStateView workItemStateView workItemFlowMetrics workItemFlowMetrics workItemImplementationCost workItemImplementationCost"
+    "workItemByPhase workItemByPhase workItemEventTimeline workItemEventTimeline workItemByState workItemByState"
+    "commits commits commits commits commits commits";
+}
+
+.remoteLink {
+  grid-area: remoteLink;
+  padding: 0.25rem;
+}
+.workItemStateView {
+  grid-area: workItemStateView;
+  padding: 0.25rem;
+}
+.workItemFlowMetrics {
+  grid-area: workItemFlowMetrics;
+  padding: 0.25rem;
+}
+
+.workItemImplementationCost {
+  grid-area: workItemImplementationCost;
+  padding: 0.25rem;
+}
+.workItemByPhase {
+  grid-area: workItemByPhase;
+  padding: 0.25rem;
+}
+.workItemEventTimeline {
+  grid-area: workItemEventTimeline;
+  padding: 0.25rem;
+}
+.workItemByState {
+  grid-area: workItemByState;
+  padding: 0.25rem;
+}
+
+.commits {
+  grid-area: commits;
+  padding: 0.25rem;
+}

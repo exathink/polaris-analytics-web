@@ -1,8 +1,9 @@
 import React from 'react';
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemEventsTimelineChart} from './workItemEventTimelineChart'
-import Commits from '../../../commits/context'
-import { navigateToPullRequest } from '../../../shared/navigation/navigate';
+import {navigateToPullRequest, navigateToCommit} from "../../../shared/navigation/navigate";
+import {getCommitBrowseUrl} from "../../../shared/helpers/commitUtils";
+
 export const WorkItemEventTimelineView = (
   {
     workItem,
@@ -15,7 +16,11 @@ export const WorkItemEventTimelineView = (
     const workItemEvent = workItemEvents.length === 1 ? workItemEvents[0] : null;
     if (workItemEvent != null) {
       if (workItemEvent.event.type === "commit") {
-        context.navigate(Commits, workItemEvent.event.name, workItemEvent.event.key);
+        const {repositoryUrl, integrationType, commitHash} = workItemEvent.event;
+        if (repositoryUrl && commitHash) {
+          const [commitBrowseUrl] = getCommitBrowseUrl(repositoryUrl, integrationType, commitHash);
+          navigateToCommit(commitBrowseUrl);
+        }
       }
       if (workItemEvent.event.type === "pullRequest") {
         navigateToPullRequest(workItemEvent.event.webUrl)
