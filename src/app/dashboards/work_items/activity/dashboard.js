@@ -14,6 +14,7 @@ import {WorkItemRemoteLink} from "./views/workItemRemoteLink";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 import {WorkItemImplementationCostWidget} from "./implementationCosts/workItemImplementationCostWidget";
 import {WorkItemDurationDetailsByStateWidget} from "./durationDetails/workItemDurationDetailsByStateWidget";
+import styles from "./dashboard.module.css";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -28,11 +29,11 @@ export const dashboard =
            context
          }) => {
           return (
-            <Dashboard dashboard={`${dashboard_id}`}>
+            <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.cardInspectorDashboard}>
               <DashboardRow h={'5%'}>
                 <DashboardWidget
-                  w={1}
                   name="name"
+                  className={styles.remoteLink}
                   render={
                     () =>
                       <WorkItemRemoteLink workItem={workItem}/>
@@ -43,8 +44,8 @@ export const dashboard =
                 h={"12%"}
               >
                 <DashboardWidget
-                  w={1 / 3}
                   name="header"
+                  className={styles.workItemStateView}
                   render={
                     ({view}) =>
                       <WorkItemStateView
@@ -54,8 +55,8 @@ export const dashboard =
                   }
                 />
                 <DashboardWidget
-                  w={1 / 3}
                   name="cycle-metrics"
+                  className={styles.workItemFlowMetrics}
                   render={
                     ({view}) =>
                       <WorkItemFlowMetricsWidget
@@ -67,8 +68,8 @@ export const dashboard =
                   }
                 />
                 <DashboardWidget
-                  w={1 / 3}
                   name="implementation-cost"
+                  className={styles.workItemImplementationCost}
                   render={
                     ({view}) =>
                       <WorkItemImplementationCostWidget
@@ -85,8 +86,8 @@ export const dashboard =
               >
 
                 <DashboardWidget
-                  w={1/3}
                   name="duration-detail-by-phase"
+                  className={styles.workItemByPhase}
                   render={
                     ({view}) =>
                       <WorkItemDurationDetailsByPhaseWidget
@@ -98,8 +99,8 @@ export const dashboard =
                   showDetail={true}
                 />
                 <DashboardWidget
-                  w={1/3}
                   name="timeline"
+                  className={styles.workItemEventTimeline}
                   render={
                     ({view}) =>
                       <WorkItemEventTimelineWidget
@@ -113,8 +114,8 @@ export const dashboard =
                   showDetail={true}
                 />
                 <DashboardWidget
-                  w={1/3}
                   name="duration-detail-by-state"
+                  className={styles.workItemByState}
                   render={({view}) => (
                     <WorkItemDurationDetailsByStateWidget
                       instanceKey={workItem.key}
@@ -126,8 +127,8 @@ export const dashboard =
               </DashboardRow>
               <DashboardRow h={'55%'}>
                 <DashboardWidget
-                  w={1}
                   name="commits"
+                  className={styles.commits}
                   title={"Commit History"}
                   render={
                     ({view}) =>
