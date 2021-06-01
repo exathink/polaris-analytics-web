@@ -1,4 +1,5 @@
 import React from 'react';
+import WorkItems from "../../../../work_items/context";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
@@ -36,10 +37,14 @@ export const ProjectPipelineCycleTimeLatencyView = (
           onSelectionChange={
             (workItems) => {
               if (workItems.length === 1) {
-                const {setWorkItemKey, setShowPanel, setPlacement} = drawerCallBacks;
-                setPlacement("bottom");
-                setWorkItemKey(workItems[0].key);
-                setShowPanel(true);
+                if (drawerCallBacks) {
+                  const {setWorkItemKey, setShowPanel, setPlacement} = drawerCallBacks;
+                  setPlacement("bottom");
+                  setWorkItemKey(workItems[0].key);
+                  setShowPanel(true);
+                } else {
+                  context.navigate(WorkItems, workItems[0].displayId, workItems[0].key)
+                }
               }
             }
           }
