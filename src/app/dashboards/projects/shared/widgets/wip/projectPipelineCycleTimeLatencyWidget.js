@@ -25,7 +25,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     includeSubTasks,
     tooltipType,
     view,
-    context
+    context,
+    drawerCallBacks
   }
 ) => {
 
@@ -77,6 +78,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
+        drawerCallBacks={drawerCallBacks}
       />
     );
   }

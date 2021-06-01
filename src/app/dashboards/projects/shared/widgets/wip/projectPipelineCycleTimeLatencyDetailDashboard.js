@@ -6,6 +6,8 @@ import {ProjectPipelineCycleTimeLatencyWidget} from "./projectPipelineCycleTimeL
 import {WorkItemStateTypes} from "../../../../shared/config";
 import {CycleTimeLatencyTableWidget} from "./cycleTimeLatencyTableWidget";
 import styles from "./cycleTimeLatency.module.css";
+import {Drawer} from "antd";
+import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 const dashboard_id = "dashboards.project.pipeline.cycle_time_latency.detail";
 
 export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
@@ -22,6 +24,12 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   view,
   context,
 }) => {
+  const [showPanel, setShowPanel] = React.useState(false);
+  const [workItemKey, setWorkItemKey] = React.useState();
+  const [placement, setPlacement] = React.useState();
+
+  const drawerCallBacks = {setShowPanel, setWorkItemKey, setPlacement};
+
   return (
     <Dashboard dashboard={dashboard_id} className={styles.cycleTimeLatencyDashboard} gridLayout={true}>
       <DashboardRow
@@ -57,6 +65,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               targetPercentile={targetPercentile}
               includeSubTasks={includeSubTasks}
               tooltipType="big"
+              drawerCallBacks={drawerCallBacks}
             />
           )}
           showDetail={false}
@@ -82,6 +91,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
                 setWorkItemScope={setWorkItemScope}
                 includeSubTasks={includeSubTasks}
                 tooltipType="big"
+                drawerCallBacks={drawerCallBacks}
               />
             );
           }}
@@ -99,8 +109,30 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               includeSubTasks={includeSubTasks}
+              drawerCallBacks={drawerCallBacks}
             />
           )}
+        />
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
+          name="drawer-widget"
+          render={({view}) => {
+            return (
+              workItemKey && (
+                <Drawer
+                  placement={placement}
+                  height={350}
+                  closable={false}
+                  onClose={() => setShowPanel(false)}
+                  visible={showPanel}
+                  key={workItemKey}
+                >
+                  <CardInspectorWidget context={context} workItemKey={workItemKey} />
+                </Drawer>
+              )
+            );
+          }}
         />
       </DashboardRow>
     </Dashboard>
