@@ -28,3 +28,7 @@ export function navigateToContext(context, childContext, name, key) {
 export function navigateToPullRequest(webUrl) {
   window.open(webUrl, "_blank");
 }
+
+export function navigateToCommit(webUrl) {
+  window.open(webUrl, "_blank");
+}

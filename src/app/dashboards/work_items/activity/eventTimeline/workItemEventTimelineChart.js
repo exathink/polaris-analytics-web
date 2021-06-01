@@ -180,6 +180,9 @@ export const WorkItemEventsTimelineChart = Chart({
         type: "commit",
         name: point.timelineEvent.name,
         key: point.timelineEvent.key,
+        repositoryUrl: point.timelineEvent.repositoryUrl,
+        integrationType: point.timelineEvent.integrationType,
+        commitHash: point.timelineEvent.commitHash,
       }),
       PullRequestCreated: (point) => ({
         type: "pullRequest",
