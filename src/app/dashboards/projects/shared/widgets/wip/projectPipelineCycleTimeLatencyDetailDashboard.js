@@ -126,7 +126,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               workItemKey && (
                 <Drawer
                   placement={placement}
-                  height={350}
+                  height={355}
                   closable={false}
                   onClose={() => setShowPanel(false)}
                   visible={showPanel}

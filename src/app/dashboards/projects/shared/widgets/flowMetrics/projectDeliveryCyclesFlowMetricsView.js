@@ -100,7 +100,7 @@ export const ProjectDeliveryCyclesFlowMetricsView = ({
         <FlowMetricsDetailTable tableData={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
       )}
       {workItemKey && (
-        <Drawer placement="top" height={350} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>
+        <Drawer placement="top" height={355} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>
           <CardInspectorWidget context={context} workItemKey={workItemKey} />
         </Drawer>
       )}
