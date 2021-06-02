@@ -6,6 +6,7 @@ import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {ProjectPipelineCycleTimeLatencyDetailDashboard} from "./projectPipelineCycleTimeLatencyDetailDashboard";
 import {isObjectEmpty} from "../../helper/utils";
+import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -48,11 +49,12 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   }
   
   function applyFiltersTest(node) {
+    const newNode = {...node, stateType: WorkItemStateTypeDisplayName[node.stateType]};
     if (isObjectEmpty(appliedFilters)) {
       return true;
     } else {
       const entries = Object.entries(appliedFilters).filter(([_, filterVals]) => filterVals != null);
-      return entries.every(([filterKey, filterVals]) => filterVals.some(filterVal => node[filterKey].indexOf(filterVal) === 0));
+      return entries.every(([filterKey, filterVals]) => filterVals.some(filterVal => newNode[filterKey].indexOf(filterVal) === 0));
     }
   }
 
