@@ -16,7 +16,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
     tooltipType,
     view,
     context,
-    drawerCallBacks
+    callBacks
   }
 ) => {
   const tick = useGenerateTicks(2, 60000);
@@ -37,8 +37,8 @@ export const ProjectPipelineCycleTimeLatencyView = (
           onSelectionChange={
             (workItems) => {
               if (workItems.length === 1) {
-                if (drawerCallBacks) {
-                  const {setWorkItemKey, setShowPanel, setPlacement} = drawerCallBacks;
+                if (callBacks) {
+                  const {setWorkItemKey, setShowPanel, setPlacement} = callBacks;
                   setPlacement("bottom");
                   setWorkItemKey(workItems[0].key);
                   setShowPanel(true);

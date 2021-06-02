@@ -27,9 +27,9 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   const [showPanel, setShowPanel] = React.useState(false);
   const [workItemKey, setWorkItemKey] = React.useState();
   const [placement, setPlacement] = React.useState();
+  const [appliedFilters, setAppliedFilters] = React.useState({});
 
-  const drawerCallBacks = {setShowPanel, setWorkItemKey, setPlacement};
-
+  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
   return (
     <Dashboard dashboard={dashboard_id} className={styles.cycleTimeLatencyDashboard} gridLayout={true}>
       <DashboardRow
@@ -65,7 +65,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               targetPercentile={targetPercentile}
               includeSubTasks={includeSubTasks}
               tooltipType="big"
-              drawerCallBacks={drawerCallBacks}
+              callBacks={callBacks}
+              appliedFilters={appliedFilters}
             />
           )}
           showDetail={false}
@@ -91,7 +92,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
                 setWorkItemScope={setWorkItemScope}
                 includeSubTasks={includeSubTasks}
                 tooltipType="big"
-                drawerCallBacks={drawerCallBacks}
+                callBacks={callBacks}
+                appliedFilters={appliedFilters}
               />
             );
           }}
@@ -109,7 +111,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               includeSubTasks={includeSubTasks}
-              drawerCallBacks={drawerCallBacks}
+              callBacks={callBacks}
+              appliedFilters={appliedFilters}
             />
           )}
         />
@@ -117,6 +120,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
       <DashboardRow>
         <DashboardWidget
           name="drawer-widget"
+          className={styles.cardInspectorPanel}
           render={({view}) => {
             return (
               workItemKey && (

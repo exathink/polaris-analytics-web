@@ -5,6 +5,7 @@ import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLat
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {ProjectPipelineCycleTimeLatencyDetailDashboard} from "./projectPipelineCycleTimeLatencyDetailDashboard";
+import {isObjectEmpty} from "../../helper/utils";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -26,7 +27,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     tooltipType,
     view,
     context,
-    drawerCallBacks
+    callBacks,
+    appliedFilters = {}
   }
 ) => {
 
@@ -44,7 +46,17 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     logGraphQlError('ProjectPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
     return null;
   }
-  const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
+  
+  function applyFiltersTest(node) {
+    if (isObjectEmpty(appliedFilters)) {
+      return true;
+    } else {
+      const entries = Object.entries(appliedFilters).filter(([_, filterVals]) => filterVals != null);
+      return entries.every(([filterKey, filterVals]) => filterVals.some(filterVal => node[filterKey].indexOf(filterVal) === 0));
+    }
+  }
+
+  const workItems = data['project']['workItems']['edges'].map(edge => edge.node).filter(applyFiltersTest);
 
   if (view === "detail") {
     return (
@@ -78,7 +90,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
-        drawerCallBacks={drawerCallBacks}
+        callBacks={callBacks}
       />
     );
   }
