@@ -24,3 +24,7 @@
     grid-area: workItemScope;
     justify-content: center;
 }
+
+.cardInspectorPanel{
+  visibility: hidden;
+}

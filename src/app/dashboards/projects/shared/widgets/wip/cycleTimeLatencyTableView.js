@@ -2,12 +2,13 @@ import React from "react";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/shared";
 
-export const CycleTimeLatencyTableView = ({workItems, drawerCallBacks}) => {
+export const CycleTimeLatencyTableView = ({workItems, callBacks, appliedFilters}) => {
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
   return (
     <CycleTimeLatencyTable
       tableData={workItemsWithAggregateDurations}
-      drawerCallBacks={drawerCallBacks}
+      callBacks={callBacks}
+      appliedFilters={appliedFilters}
     />
   );
 };

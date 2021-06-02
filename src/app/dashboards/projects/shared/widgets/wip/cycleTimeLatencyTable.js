@@ -1,3 +1,4 @@
+import React from "react";
 import {Link} from "react-router-dom";
 import WorkItems from "../../../../work_items/context";
 import {Highlighter} from "../../../../../components/misc/highlighter";
@@ -72,10 +73,11 @@ function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
   );
 }
 
-export function useCycleTimeLatencyTableColumns({filters, drawerCallBacks}) {
+export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(drawerCallBacks)});
-  const renderState = {render: customColRender(drawerCallBacks)}
+  const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
+  const renderState = {render: customColRender(callBacks)}
+
   const columns = [
     {
       title: "Name",
@@ -98,6 +100,7 @@ export function useCycleTimeLatencyTableColumns({filters, drawerCallBacks}) {
       dataIndex: "workItemType",
       key: "workItemType",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+      filteredValue: appliedFilters.workItemType || null,
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
@@ -108,6 +111,7 @@ export function useCycleTimeLatencyTableColumns({filters, drawerCallBacks}) {
       dataIndex: "stateType",
       key: "stateType",
       sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
+      filteredValue: appliedFilters.stateType || null,
       filters: filters.stateTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.stateType.indexOf(value) === 0,
       width: "5%",
@@ -119,6 +123,7 @@ export function useCycleTimeLatencyTableColumns({filters, drawerCallBacks}) {
       key: "state",
       width: "5%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
+      filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...renderState
@@ -168,14 +173,19 @@ export function useCycleTimeLatencyTableColumns({filters, drawerCallBacks}) {
   return columns;
 }
 
-export const CycleTimeLatencyTable = injectIntl(({tableData, intl, drawerCallBacks}) => {
+export const CycleTimeLatencyTable = injectIntl(({tableData, intl, callBacks, appliedFilters}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
 
-  const columns = useCycleTimeLatencyTableColumns({filters: {workItemTypes, stateTypes, states}, drawerCallBacks});
+  const columns = useCycleTimeLatencyTableColumns({filters: {workItemTypes, stateTypes, states}, appliedFilters, callBacks});
   const dataSource = getTransformedData(tableData, intl);
 
-  return <BaseTableView columns={columns} dataSource={dataSource} testId="cycle-time-latency-table" height="40vh" />;
+  const handleChange = (pagination, filters, sorter) => {
+    callBacks.setAppliedFilters(filters);
+  };
+
+
+  return <BaseTableView columns={columns} dataSource={dataSource} testId="cycle-time-latency-table" height="40vh" onChange={handleChange} />;
 });

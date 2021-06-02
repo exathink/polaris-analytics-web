@@ -1,7 +1,7 @@
 .cardInspectorDashboard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 12% 25% 1fr;
+  grid-template-rows: 12% 30% 58%;
   gap: 0.5rem 0.5rem;
   grid-template-areas:
     "remoteLink remoteLink remoteLink remoteLink remoteLink remoteLink"
