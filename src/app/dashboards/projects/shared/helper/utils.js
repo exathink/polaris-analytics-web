@@ -16,3 +16,7 @@ export const SORTER = {
     return span["_milliseconds"];
   },
 };
+
+export function isObjectEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
