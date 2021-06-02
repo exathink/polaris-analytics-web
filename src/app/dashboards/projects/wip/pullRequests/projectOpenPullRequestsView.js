@@ -1,7 +1,7 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {PullRequestAgeChart} from "./pullRequestAgeChart";
-import {navigateToPullRequest} from "../../../shared/navigation/navigate";
+import {navigateToExternalURL} from "../../../shared/navigation/navigate";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
 import {average} from "../../../../helpers/utility";
@@ -49,7 +49,7 @@ const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
               const workItem = pullRequest.workItemsSummaries[0];
               context.navigate(WorkItems, workItem.displayId, workItem.key);
             } else {
-              navigateToPullRequest(pullRequests[0].webUrl);
+              navigateToExternalURL(pullRequests[0].webUrl);
             }
           }
         }}
