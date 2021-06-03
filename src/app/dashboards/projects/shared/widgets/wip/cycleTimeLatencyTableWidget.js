@@ -26,8 +26,8 @@ export const CycleTimeLatencyTableWidget = ({
     logGraphQlError("ProjectPipelineStateDetailsWidget.pipelineStateDetails", error);
     return null;
   }
-  const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
+
   return (
-    <CycleTimeLatencyTableView workItems={workItems} callBacks={callBacks} appliedFilters={appliedFilters}/>
+    <CycleTimeLatencyTableView data={data} callBacks={callBacks} appliedFilters={appliedFilters}/>
   );
 };

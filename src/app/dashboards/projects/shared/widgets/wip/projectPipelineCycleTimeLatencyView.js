@@ -19,17 +19,18 @@ export const ProjectPipelineCycleTimeLatencyView = (
     view,
     context,
     callBacks,
-    appliedFilters = {}
+    appliedFilters
   }
 ) => {
   const tick = useGenerateTicks(2, 60000);
 
   const applyFiltersTest = React.useCallback((node) => {
     const newNode = {...node, stateType: WorkItemStateTypeDisplayName[node.stateType]};
-    if (isObjectEmpty(appliedFilters)) {
+    const localAppliedFilters = appliedFilters || {};
+    if (isObjectEmpty(localAppliedFilters)) {
       return true;
     } else {
-      const entries = Object.entries(appliedFilters).filter(([_, filterVals]) => filterVals != null);
+      const entries = Object.entries(localAppliedFilters).filter(([_, filterVals]) => filterVals != null);
       return entries.every(([filterKey, filterVals]) =>
         filterVals.some((filterVal) => {
           const re = new RegExp(filterVal, "i");
@@ -37,7 +38,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
         })
       );
     }
-  }, [appliedFilters])
+  }, [appliedFilters]);
 
   const workItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
