@@ -62,7 +62,7 @@ export class DefaultSelectionEventHandler {
     if(this.selectionTriggers.zoom) {
       if (e.resetSelection) {
         this.zoom = null;
-        this.onSelectionChange()
+        // this.onSelectionChange()
       }
       else {
         if(this.zoomClearsSelections) {
@@ -114,7 +114,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesShow() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange()
+      // this.onSelectionChange()
     }
 
 
@@ -122,7 +122,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesHide() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange()
+      // this.onSelectionChange()
     }
   }
 
