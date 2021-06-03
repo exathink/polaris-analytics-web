@@ -10,6 +10,9 @@ import {Drawer} from "antd";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 const dashboard_id = "dashboards.project.pipeline.cycle_time_latency.detail";
 
+const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
+const deliveryStateTypes = [WorkItemStateTypes.deliver];
+
 export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   instanceKey,
   latestWorkItemEvent,
@@ -54,7 +57,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               instanceKey={instanceKey}
               view={view}
               stageName={"Engineering"}
-              stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              stateTypes={engineeringStateTypes}
               cycleTimeTarget={cycleTimeTarget}
               specsOnly={specsOnly}
               workItemScope={workItemScope}
@@ -80,7 +83,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
                 instanceKey={instanceKey}
                 view={view}
                 stageName={"Delivery"}
-                stateTypes={[WorkItemStateTypes.deliver]}
+                stateTypes={deliveryStateTypes}
                 groupByState={true}
                 cycleTimeTarget={cycleTimeTarget}
                 context={context}
