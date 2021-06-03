@@ -39,7 +39,10 @@ export const ProjectPipelineCycleTimeLatencyView = (
     }
   }, [appliedFilters])
 
-  const workItems = React.useMemo(() => data['project']['workItems']['edges'].map(edge => edge.node).filter(applyFiltersTest), [data, applyFiltersTest]);
+  const workItems = React.useMemo(() => {
+    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node).filter(applyFiltersTest);
+  }, [data, applyFiltersTest]);
 
   return (
     <VizRow h={1}>
