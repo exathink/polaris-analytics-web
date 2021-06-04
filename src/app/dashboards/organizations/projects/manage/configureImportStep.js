@@ -118,7 +118,8 @@ export class ConfigureImportStep extends React.Component {
     this.state = {
       importMode: 'single',
       importedProjectName: props.selectedProjects.length ? capitalizeFirstLetter(props.selectedProjects[0].name) : null,
-      selectedProjectKey: null
+      selectedProjectKey: null,
+      selectedProjects: this.mapSelectedProjects(this.props.selectedProjects)
     }
   }
 
@@ -151,6 +152,7 @@ export class ConfigureImportStep extends React.Component {
     editedProjects.splice(index, 1, {
       ...item,
       ...values,
+      importDays: Number(values.importDays)
     });
     this.setState({
       selectedProjects: editedProjects
@@ -223,7 +225,7 @@ export class ConfigureImportStep extends React.Component {
         <Button
           type={'primary'}
           onClick={
-            () => this.doImport(importMode, selectedProjects)
+            () => this.doImport(importMode, this.state.selectedProjects)
           }
           disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
           >Import {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true) : getConnectorTypeProjectName(connectorType)}</Button>
