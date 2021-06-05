@@ -63,30 +63,19 @@ const BitbucketConnectorInstructions = ({part}) =>
           repositories you want to connect to Polaris. This may be either your personal user workspace or a team workspace.
         </li>
         <li>
-          Navigate to "Settings -> Installed Apps to see a list of the currently installed Atlassian Connect Apps.
+          Navigate to "Settings -> Marketplace. Search for the Polaris Flow Connector for Bitbucket app
+          under the category "Integration". Click "Add" to install the app. You will need to grant the permissions
+          requested for the installation to succeed.
         </li>
         <li>
-          Click the "Enable Development Mode" checkbox. This step is necessary while the Polaris application is in
-          Private Beta. Once we have released the Polaris Connector through the Atlassian Marketplace this app will be
-          installed just like any other Atlassian Connect App. You should see an 'Install app from URL' link. Click on
-          this link
-        </li>
-        <li>
-          Use <em>https://polaris-services.exathink.com/vcs/atlassian_connect/descriptor</em> for the url.
-        </li>
-        <li>
-          Click upload and wait for the installation to complete successfully. You will need to grant the permissions
-          that the install ask you to give for the installation to succeed.
-        </li>
-        <li>
-          For the next step we need to give Polaris some information about the workspace in which this Atlassian Connect
-          App is installed.
+          Before moving to the next step, make a note of one of the following values. You will need it to identify the workspace where
+          you installed the app in the next step of the connector setup.
           <ul>
             <li>If you installed the app in a Team workspace, then you need to make note of the workspace id which
             can be found at "Settings -> General Settings -> Workspace ID" for the Workspace.
             </li>
             <li>
-              If you installed the app in your personal workspace, then you need to provide your users <em>display name </em>
+              If you installed the app in your personal workspace, then you need to make a note of your users <em>display name </em>
               ( <b>not</b> the workspace id or username ). This can be found from "Profile -> Personal Settings -> Name".
             </li>
           </ul>
