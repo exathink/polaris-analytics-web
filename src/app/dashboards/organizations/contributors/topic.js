@@ -4,7 +4,6 @@ import {Topics} from "../../../meta/topics";
 
 const topic =  {
   ...Topics.contributors,
-  optional: true,
   routes: [
     {
       match: '',
