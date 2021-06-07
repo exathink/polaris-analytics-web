@@ -56,13 +56,15 @@ export class DefaultSelectionEventHandler {
     return this.chart.chart;
   }
 
-
+  resetZoomSelection() {
+    this.zoom = null;
+    this.onSelectionChange();
+  }
 
   setZoom (e) {
     if(this.selectionTriggers.zoom) {
       if (e.resetSelection) {
-        this.zoom = null;
-        this.onSelectionChange()
+        this.resetZoomSelection();
       }
       else {
         if(this.zoomClearsSelections) {
