@@ -56,13 +56,15 @@ export class DefaultSelectionEventHandler {
     return this.chart.chart;
   }
 
-
+  resetZoomSelection() {
+    this.zoom = null;
+    this.onSelectionChange();
+  }
 
   setZoom (e) {
     if(this.selectionTriggers.zoom) {
       if (e.resetSelection) {
-        this.zoom = null;
-        // this.onSelectionChange()
+        this.resetZoomSelection();
       }
       else {
         if(this.zoomClearsSelections) {
@@ -114,7 +116,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesShow() {
     if(this.selectionTriggers.series) {
-      // this.onSelectionChange()
+      this.onSelectionChange()
     }
 
 
@@ -122,7 +124,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesHide() {
     if(this.selectionTriggers.series) {
-      // this.onSelectionChange()
+      this.onSelectionChange()
     }
   }
 
