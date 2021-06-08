@@ -8,12 +8,20 @@ import {injectIntl} from "react-intl";
 import {BaseTableView} from "../../components/baseTableView";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {SORTER} from "../../helper/utils";
+import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+
+const QuadrantColors = {
+  "green": "#2f9a32",
+  "yellow": "#c4ab49",
+  "orange": "#ffa500",
+  "red": "#b5111a"
+}
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
 };
 
-function getTransformedData(data, intl) {
+function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
   return data.map((item) => {
     return {
       ...item,
@@ -21,6 +29,7 @@ function getTransformedData(data, intl) {
       latency: getNumber(item.latency, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
+      quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget})
     };
   });
 }
@@ -106,7 +115,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
-      ...renderState
+      ...renderState,
     },
     {
       title: "Phase",
@@ -117,7 +126,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filters: filters.stateTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.stateType.indexOf(value) === 0,
       width: "5%",
-      ...renderState
+      ...renderState,
     },
     {
       title: "State",
@@ -128,7 +137,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
-      ...renderState
+      ...renderState,
     },
     {
       title: "Entered",
@@ -136,7 +145,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "timeInStateDisplay",
       width: "5%",
       sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      ...renderState
+      ...renderState,
     },
     {
       title: "Cycle Time",
@@ -144,7 +153,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "cycleTime",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...renderState
+      ...renderState,
     },
     {
       title: "Latency",
@@ -152,7 +161,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "latency",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
-      ...renderState
+      ...renderState,
     },
     {
       title: "Commits",
@@ -160,7 +169,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "commitCount",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
-      ...renderState
+      ...renderState,
     },
     {
       title: "Latest Commit",
@@ -168,21 +177,43 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "latestCommitDisplay",
       width: "5%",
       sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
-      ...renderState
+      ...renderState,
+    },
+    {
+      title: "Quadrant",
+      dataIndex: "quadrant",
+      key: "quadrant",
+      width: "5%",
+      filteredValue: appliedFilters.quadrant || null,
+      filters: filters.quadrants.map((b) => ({
+        text: (
+          <span style={{display: "inline-block", background: QuadrantColors[b], width: "30px", height: "14px"}}></span>
+        ),
+        value: b,
+      })),
+      onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
+      render: (text, record) => {
+        return {
+          props: {
+            style: {background: QuadrantColors[record.quadrant]},
+          }
+        };
+      },
     },
   ];
 
   return columns;
 }
 
-export const CycleTimeLatencyTable = injectIntl(({tableData, intl, callBacks, appliedFilters}) => {
+export const CycleTimeLatencyTable = injectIntl(({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
 
-  const columns = useCycleTimeLatencyTableColumns({filters: {workItemTypes, stateTypes, states}, appliedFilters, callBacks});
-  const dataSource = getTransformedData(tableData, intl);
+  const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
+  const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
+  const columns = useCycleTimeLatencyTableColumns({filters: {workItemTypes, stateTypes, states, quadrants}, appliedFilters, callBacks});
 
   const handleChange = (pagination, filters, sorter) => {
     callBacks.setAppliedFilters(filters);
