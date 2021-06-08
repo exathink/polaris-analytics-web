@@ -50,7 +50,8 @@ function WipDashboard({
     wipLimit,
     wipAnalysisPeriod,
     includeSubTasksWipInspector,
-    includeSubTasksFlowMetrics
+    includeSubTasksFlowMetrics,
+    latencyTarget
   } = settingsWithDefaults;
 
   return (
@@ -161,6 +162,7 @@ function WipDashboard({
               stageName={"Engineering"}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               specsOnly={specsOnly}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
@@ -204,6 +206,7 @@ function WipDashboard({
               stateTypes={[WorkItemStateTypes.deliver]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               context={context}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
