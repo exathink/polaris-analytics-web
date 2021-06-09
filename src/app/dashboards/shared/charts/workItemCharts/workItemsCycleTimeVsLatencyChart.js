@@ -219,12 +219,14 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
-              tooltipType === "small" ? elide(name, 30) : name
+              elide(name, 30) 
             }`,
             body: [
+              [`Current State:`, `${state}`],
+              [`-----------------`, ``],
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
               [`Latency`, `${intl.formatNumber(latency)} days`],
-              [`Current State:`, `${state}`],
+
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries,
             ],
