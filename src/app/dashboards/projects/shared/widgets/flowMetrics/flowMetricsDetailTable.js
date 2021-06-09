@@ -6,7 +6,7 @@ import {url_for_instance} from "../../../../../framework/navigation/context/help
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {BaseTableView} from "../../components/baseTableView";
-import {formatAsDate} from "../../../../../i18n";
+import {formatDateTime} from "../../../../../i18n";
 import {SORTER} from "../../helper/utils";
 
 const getNumber = (num, intl) => {
@@ -15,7 +15,7 @@ const getNumber = (num, intl) => {
 
 const getDate = (date, intl) => {
   if (date != null) {
-    return formatAsDate(intl, date);
+    return formatDateTime(intl, date);
   }
   return date; 
 };
