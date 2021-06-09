@@ -9,13 +9,14 @@ import {BaseTableView} from "../../components/baseTableView";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {SORTER} from "../../helper/utils";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {InfoCircleFilled} from "@ant-design/icons";
 
 const QuadrantColors = {
-  "green": "#2f9a32",
-  "yellow": "#c4ab49",
-  "orange": "#ffa500",
-  "red": "#b5111a"
-}
+  green: "#2f9a32",
+  yellow: "#c4ab49",
+  orange: "#ffa500",
+  red: "#b5111a",
+};
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -29,20 +30,38 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       latency: getNumber(item.latency, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
-      quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget})
+      quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
     };
   });
+}
+function getQuadrantIcon(quadrant) {
+  if (quadrant === "green") {
+    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="low cycleTime, low latency" style={{fontSize: "10px"}}/>;
+  }
+  if (quadrant === "yellow") {
+    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="low cycleTime, high latency" style={{fontSize: "10px"}} />;
+  }
+  if (quadrant === "orange") {
+    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="high cycleTime, low latency" style={{fontSize: "10px"}} />;
+  }
+  if (quadrant === "red") {
+    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="high cycleTime, high latency" style={{fontSize: "10px"}} />;
+  }
 }
 
 function customRender(text, record, searchText) {
   return (
     text && (
-      <Link to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}>
+      <Link
+        to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}
+        style={{color: QuadrantColors[record.quadrant]}}
+      >
         <Highlighter
           highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
           searchWords={searchText || ""}
           textToHighlight={text.toString()}
         />
+        <span style={{marginLeft: "12px"}}>{getQuadrantIcon(record.quadrant)}</span>
       </Link>
     )
   );
@@ -85,7 +104,7 @@ function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
-  const renderState = {render: customColRender(callBacks)}
+  const renderState = {render: customColRender(callBacks)};
 
   const columns = [
     {
@@ -179,46 +198,38 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
       ...renderState,
     },
-    {
-      title: "Quadrant",
-      dataIndex: "quadrant",
-      key: "quadrant",
-      width: "5%",
-      filteredValue: appliedFilters.quadrant || null,
-      filters: filters.quadrants.map((b) => ({
-        text: (
-          <span style={{display: "inline-block", background: QuadrantColors[b], width: "30px", height: "14px"}}></span>
-        ),
-        value: b,
-      })),
-      onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
-      render: (text, record) => {
-        return {
-          props: {
-            style: {background: QuadrantColors[record.quadrant]},
-          }
-        };
-      },
-    },
   ];
 
   return columns;
 }
 
-export const CycleTimeLatencyTable = injectIntl(({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget}) => {
-  // get unique workItem types
-  const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
-  const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
-  const states = [...new Set(tableData.map((x) => x.state))];
+export const CycleTimeLatencyTable = injectIntl(
+  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget}) => {
+    // get unique workItem types
+    const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
+    const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
+    const states = [...new Set(tableData.map((x) => x.state))];
 
-  const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
-  const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
-  const columns = useCycleTimeLatencyTableColumns({filters: {workItemTypes, stateTypes, states, quadrants}, appliedFilters, callBacks});
+    const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
+    const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
+    const columns = useCycleTimeLatencyTableColumns({
+      filters: {workItemTypes, stateTypes, states, quadrants},
+      appliedFilters,
+      callBacks,
+    });
 
-  const handleChange = (pagination, filters, sorter) => {
-    callBacks.setAppliedFilters(filters);
-  };
+    const handleChange = (pagination, filters, sorter) => {
+      callBacks.setAppliedFilters(filters);
+    };
 
-
-  return <BaseTableView columns={columns} dataSource={dataSource} testId="cycle-time-latency-table" height="40vh" onChange={handleChange} />;
-});
+    return (
+      <BaseTableView
+        columns={columns}
+        dataSource={dataSource}
+        testId="cycle-time-latency-table"
+        height="40vh"
+        onChange={handleChange}
+      />
+    );
+  }
+);
