@@ -224,6 +224,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
             body: [
               [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
               [`Latency`, `${intl.formatNumber(latency)} days`],
+              [`Current State:`, `${state}`],
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries,
             ],
