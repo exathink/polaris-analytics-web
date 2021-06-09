@@ -6,9 +6,18 @@ import {url_for_instance} from "../../../../../framework/navigation/context/help
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {BaseTableView} from "../../components/baseTableView";
+import {formatAsDate} from "../../../../../i18n";
+import {SORTER} from "../../helper/utils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
+};
+
+const getDate = (date, intl) => {
+  if (date != null) {
+    return formatAsDate(intl, date);
+  }
+  return date; 
 };
 
 function getTransformedData(data, intl) {
@@ -23,6 +32,7 @@ function getTransformedData(data, intl) {
       authorCount: getNumber(item.authorCount, intl),
       latency: getNumber(item.latency, intl),
       backlogTime: getNumber(projectDeliveryCycleFlowMetricsMeta["backlogTime"].value(item), intl),
+      endDate: getDate(item.endDate, intl)
     };
   });
 }
@@ -73,11 +83,6 @@ function customColRender(setShowPanel, setWorkItemKey) {
   );
 }
 
-const string_compare = (a, b, propName) => {
-  const [stra, strb] = [a[propName], b[propName]];
-  return stra.localeCompare(strb);
-};
-
 export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
@@ -88,7 +93,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
-      sorter: (a, b) => string_compare(a, b, "displayId"),
+      sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
       ...nameSearchState,
     },
     {
@@ -96,14 +101,14 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => string_compare(a, b, "name"),
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...titleSearchState,
     },
     {
       title: "Type",
       dataIndex: "workItemType",
       key: "workItemType",
-      sorter: (a, b) => string_compare(a, b, "workItemType"),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       filters: workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
@@ -113,7 +118,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       title: "State",
       dataIndex: "state",
       key: "state",
-      sorter: (a, b) => string_compare(a, b, "state"),
+      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       width: "5%",
       ...renderState
     },
@@ -171,6 +176,14 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       key: "backlogTime",
       width: "5%",
       sorter: (a, b) => a.backlogTime - b.backlogTime,
+      ...renderState
+    },
+    {
+      title: "Closed At",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: "5%",
+      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
       ...renderState
     },
   ];
