@@ -8,17 +8,15 @@ import {injectIntl} from "react-intl";
 import {BaseTableView} from "../../components/baseTableView";
 import {formatDateTime} from "../../../../../i18n";
 import {SORTER} from "../../helper/utils";
+import {toMoment} from "../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
 };
 
-const getDate = (date, intl) => {
-  if (date != null) {
-    return formatDateTime(intl, date);
-  }
-  return date; 
-};
+function getDate(date, intl) {
+  return formatDateTime(intl, toMoment(date));
+}
 
 function getTransformedData(data, intl) {
   return data.map((item) => {
@@ -32,7 +30,7 @@ function getTransformedData(data, intl) {
       authorCount: getNumber(item.authorCount, intl),
       latency: getNumber(item.latency, intl),
       backlogTime: getNumber(projectDeliveryCycleFlowMetricsMeta["backlogTime"].value(item), intl),
-      endDate: getDate(item.endDate, intl)
+      endDate: getDate(item.endDate, intl),
     };
   });
 }
