@@ -57,6 +57,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         specsOnly={specsOnly}
         days={days}
         cycleTimeTarget={cycleTimeTarget}
+        latencyTarget={latencyTarget}
         targetPercentile={targetPercentile}
         includeSubTasks={includeSubTasks}
         view={view}

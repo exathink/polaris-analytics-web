@@ -11,8 +11,10 @@ export const CycleTimeLatencyTableWidget = ({
   latestWorkItemEvent,
   latestCommit,
   includeSubTasks,
+  cycleTimeTarget,
+  latencyTarget,
   callBacks,
-  appliedFilters
+  appliedFilters,
 }) => {
   const {loading, error, data} = useQueryProjectPipelineStateDetails({
     instanceKey,
@@ -28,6 +30,12 @@ export const CycleTimeLatencyTableWidget = ({
   }
 
   return (
-    <CycleTimeLatencyTableView data={data} callBacks={callBacks} appliedFilters={appliedFilters}/>
+    <CycleTimeLatencyTableView
+      data={data}
+      callBacks={callBacks}
+      appliedFilters={appliedFilters}
+      cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
+    />
   );
 };

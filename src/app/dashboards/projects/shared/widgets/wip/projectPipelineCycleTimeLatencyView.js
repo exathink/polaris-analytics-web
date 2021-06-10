@@ -5,6 +5,8 @@ import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
 import {isObjectEmpty} from "../../helper/utils";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/shared";
 
 export const ProjectPipelineCycleTimeLatencyView = (
   {
@@ -25,7 +27,17 @@ export const ProjectPipelineCycleTimeLatencyView = (
   const tick = useGenerateTicks(2, 60000);
 
   const applyFiltersTest = React.useCallback((node) => {
-    const newNode = {...node, stateType: WorkItemStateTypeDisplayName[node.stateType]};
+    const [nodeWithAggrDurations] = getWorkItemDurations([node]);
+    const calculatedColumns = {
+      stateType: WorkItemStateTypeDisplayName[node.stateType],
+      quadrant: getQuadrantColor({
+        cycleTime: nodeWithAggrDurations.cycleTime,
+        latency: nodeWithAggrDurations.latency,
+        cycleTimeTarget,
+        latencyTarget,
+      }),
+    };
+    const newNode = {...node, ...calculatedColumns};
     const localAppliedFilters = appliedFilters || {};
     if (isObjectEmpty(localAppliedFilters)) {
       return true;
@@ -38,7 +50,7 @@ export const ProjectPipelineCycleTimeLatencyView = (
         })
       );
     }
-  }, [appliedFilters]);
+  }, [appliedFilters, cycleTimeTarget, latencyTarget]);
 
   const workItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];

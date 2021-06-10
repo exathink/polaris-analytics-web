@@ -22,6 +22,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
   specsOnly,
   days,
   cycleTimeTarget,
+  latencyTarget,
   targetPercentile,
   includeSubTasks,
   view,
@@ -59,6 +60,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               stageName={"Engineering"}
               stateTypes={engineeringStateTypes}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               specsOnly={specsOnly}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
@@ -86,6 +88,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
                 stateTypes={deliveryStateTypes}
                 groupByState={true}
                 cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
@@ -114,6 +117,8 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               includeSubTasks={includeSubTasks}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               callBacks={callBacks}
               appliedFilters={appliedFilters}
             />

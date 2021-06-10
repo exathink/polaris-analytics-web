@@ -25,6 +25,7 @@ function PROJECT_DEFAULT_SETTINGS() {
     ...BASE_DEFAULTS,
     LEAD_TIME_CONFIDENCE_TARGET_DEFAULT: BASE_DEFAULTS.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
     CYCLE_TIME_CONFIDENCE_TARGET_DEFAULT: BASE_DEFAULTS.RESPONSE_TIME_CONFIDENCE_TARGET_DEFAULT,
+    LATENCY_TARGET: BASE_DEFAULTS.CYCLE_TIME_TARGET_DEFAULT * 0.1
   };
 }
 
@@ -63,7 +64,8 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     flowAnalysisPeriod: flowAnalysisPeriod || defaults.FLOW_ANALYSIS_PERIOD,
     trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
     includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
-    includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector
+    includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector,
+    latencyTarget: defaults.LATENCY_TARGET
   };
 }
 
