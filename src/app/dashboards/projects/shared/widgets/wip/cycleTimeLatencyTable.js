@@ -61,7 +61,6 @@ function customRender(text, record, searchText) {
           searchWords={searchText || ""}
           textToHighlight={text.toString()}
         />
-        <span style={{marginLeft: "12px"}}>{getQuadrantIcon(record.quadrant)}</span>
       </Link>
     )
   );
@@ -101,10 +100,26 @@ function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
   );
 }
 
+function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
+  return (text, record, searchText) => (
+    <span
+      onClick={() => {
+        setPlacement("top");
+        setShowPanel(true);
+        setWorkItemKey(record.key);
+      }}
+      style={{color: QuadrantColors[record.quadrant], marginLeft: "9px", cursor: "pointer"}}
+    >
+      {getQuadrantIcon(record.quadrant)}
+    </span>
+  );
+}
+
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
   const renderState = {render: customColRender(callBacks)};
+  const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
 
   const columns = [
     {
@@ -115,6 +130,16 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filteredValue: appliedFilters.displayId || null,
       sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
       ...nameSearchState,
+    },
+    {
+      title: "",
+      dataIndex: "quadrant",
+      key: "quadrant",
+      width: "3%",
+      filteredValue: appliedFilters.quadrant || null,
+      filters: filters.quadrants.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
+      ...renderQuadrantState,
     },
     {
       title: "Title",
@@ -178,7 +203,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       title: "Latency",
       dataIndex: "latency",
       key: "latency",
-      width: "5%",
+      width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
       ...renderState,
     },
