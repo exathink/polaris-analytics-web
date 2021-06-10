@@ -18,6 +18,13 @@ const QuadrantColors = {
   red: "#b5111a",
 };
 
+const QuadrantNames = {
+  green: "Ok",
+  yellow: "Latency",
+  orange: "Cycle time",
+  red: "Critical",
+};
+
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
 };
@@ -36,16 +43,24 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
 }
 function getQuadrantIcon(quadrant) {
   if (quadrant === "green") {
-    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="low cycleTime, low latency" style={{fontSize: "10px"}}/>;
+    return (
+      <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
+    );
   }
   if (quadrant === "yellow") {
-    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="low cycleTime, high latency" style={{fontSize: "10px"}} />;
+    return (
+      <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
+    );
   }
   if (quadrant === "orange") {
-    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="high cycleTime, low latency" style={{fontSize: "10px"}} />;
+    return (
+      <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
+    );
   }
   if (quadrant === "red") {
-    return <InfoCircleFilled color={QuadrantColors[quadrant]} title="high cycleTime, high latency" style={{fontSize: "10px"}} />;
+    return (
+      <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
+    );
   }
 }
 
@@ -111,6 +126,8 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
       style={{color: QuadrantColors[record.quadrant], marginLeft: "9px", cursor: "pointer"}}
     >
       {getQuadrantIcon(record.quadrant)}
+      &nbsp;
+      {QuadrantNames[record.quadrant]}
     </span>
   );
 }
