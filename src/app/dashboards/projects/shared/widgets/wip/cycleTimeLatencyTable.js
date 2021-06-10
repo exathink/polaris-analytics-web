@@ -132,10 +132,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...nameSearchState,
     },
     {
-      title: "",
+      title: "Quadrant",
       dataIndex: "quadrant",
       key: "quadrant",
-      width: "3%",
+      width: "5%",
       filteredValue: appliedFilters.quadrant || null,
       filters: filters.quadrants.map((b) => ({
         text: <span style={{color: QuadrantColors[b]}}>{getQuadrantIcon(b)}</span>,
