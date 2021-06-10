@@ -155,7 +155,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       width: "5%",
       filteredValue: appliedFilters.quadrant || null,
       filters: filters.quadrants.map((b) => ({
-        text: <span style={{color: QuadrantColors[b]}}>{getQuadrantIcon(b)}</span>,
+        text: <span style={{color: QuadrantColors[b]}}>{getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}</span>,
         value: b,
       })),
       onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
