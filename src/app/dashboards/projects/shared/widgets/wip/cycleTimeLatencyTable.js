@@ -13,8 +13,8 @@ import {InfoCircleFilled} from "@ant-design/icons";
 
 const QuadrantColors = {
   green: "#2f9a32",
-  yellow: "#c4ab49",
-  orange: "#ffa500",
+  yellow: "#d4ae10",
+  orange: "#d08535",
   red: "#b5111a",
 };
 
