@@ -161,6 +161,7 @@ function WipDashboard({
               tooltipType="small"
               stageName={"Engineering"}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               specsOnly={specsOnly}

@@ -59,6 +59,7 @@ export const ProjectPipelineCycleTimeLatencyDetailDashboard = ({
               view={view}
               stageName={"Engineering"}
               stateTypes={engineeringStateTypes}
+              groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               specsOnly={specsOnly}
