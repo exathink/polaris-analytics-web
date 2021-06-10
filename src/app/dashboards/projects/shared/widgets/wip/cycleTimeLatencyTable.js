@@ -25,6 +25,13 @@ const QuadrantNames = {
   red: "Critical",
 };
 
+const QuadrantSort = {
+  green: 0,
+  yellow: 1,
+  orange: 2,
+  red: 3
+}
+
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
 };
@@ -154,7 +161,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "quadrant",
       width: "5%",
       filteredValue: appliedFilters.quadrant || null,
-      filters: filters.quadrants.map((b) => ({
+      filters: filters.quadrants.sort((a,b) => QuadrantSort[a] - QuadrantSort[b]).map((b) => ({
         text: <span style={{color: QuadrantColors[b]}}>{getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}</span>,
         value: b,
       })),
