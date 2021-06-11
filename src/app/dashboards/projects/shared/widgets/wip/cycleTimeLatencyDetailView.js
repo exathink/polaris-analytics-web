@@ -65,8 +65,12 @@ export const CycleTimeLatencyDetailView = ({
         const entries = Object.entries(localAppliedFilters).filter(([_, filterVals]) => filterVals != null);
         return entries.every(([filterKey, filterVals]) =>
           filterVals.some((filterVal) => {
-            const re = new RegExp(filterVal, "i");
-            return newNode[filterKey].indexOf(filterVal) === 0 || newNode[filterKey].match(re);
+            if (filterKey === "name" || filterKey === "displayId") {
+              const re = new RegExp(filterVal, "i");
+              return newNode[filterKey].match(re);
+            } else {
+              return newNode[filterKey].indexOf(filterVal) === 0;
+            }
           })
         );
       }
