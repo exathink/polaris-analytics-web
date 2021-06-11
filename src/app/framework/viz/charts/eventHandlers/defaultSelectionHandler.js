@@ -59,7 +59,7 @@ export class DefaultSelectionEventHandler {
 
   resetZoomSelection() {
     this.zoom = null;
-    this.onSelectionChange(EVENT_TYPES.ZOOM_SELECTION);
+    this.onSelectionChange(EVENT_TYPES.RESET_ZOOM_SELECTION);
   }
 
   setZoom (e) {
