@@ -9,7 +9,8 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 import {Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
-import { EVENT_TYPES } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {EVENT_TYPES} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -37,8 +38,15 @@ export const CycleTimeLatencyDetailView = ({
 
   const applyFiltersTest = React.useCallback(
     (node) => {
+      const [nodeWithAggrDurations] = getWorkItemDurations([node]);
       const calculatedColumns = {
-        stateType: WorkItemStateTypeDisplayName[node.stateType]
+        stateType: WorkItemStateTypeDisplayName[node.stateType],
+        quadrant: getQuadrantColor({
+          cycleTime: nodeWithAggrDurations.cycleTime,
+          latency: nodeWithAggrDurations.latency,
+          cycleTimeTarget,
+          latencyTarget,
+        }),
       };
       const newNode = {...node, ...calculatedColumns};
       const localAppliedFilters = appliedFilters || {};
@@ -54,13 +62,14 @@ export const CycleTimeLatencyDetailView = ({
         );
       }
     },
-    [appliedFilters]
+    [appliedFilters, cycleTimeTarget, latencyTarget]
   );
 
   const initialWorkItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data]);
+  const initialTableData = getWorkItemDurations(initialWorkItems);
 
   const workItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
@@ -84,7 +93,6 @@ export const CycleTimeLatencyDetailView = ({
     );
   }
 
-  const initialTableData = getWorkItemDurations(initialWorkItems);
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={styles.workItemScope}>
