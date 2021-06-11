@@ -15,6 +15,15 @@ import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
+const EmptyObj = {}; // using the module level global variable to keep the identity of object same
+function getSanitizedFilters(appliedFilters={}) {
+  const entries = Object.entries(appliedFilters).filter(([_, filterVals]) => filterVals != null);
+  if (entries.length === 0) {
+    return EmptyObj;
+  }
+  return appliedFilters;
+}
+
 export const CycleTimeLatencyDetailView = ({
   data,
   groupByState,
@@ -32,10 +41,11 @@ export const CycleTimeLatencyDetailView = ({
   const [showPanel, setShowPanel] = React.useState(false);
   const [workItemKey, setWorkItemKey] = React.useState();
   const [placement, setPlacement] = React.useState();
-  const [appliedFilters, setAppliedFilters] = React.useState({});
+  const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
+  const localAppliedFilters = getSanitizedFilters(appliedFilters);
   const applyFiltersTest = React.useCallback(
     (node) => {
       const [nodeWithAggrDurations] = getWorkItemDurations([node]);
@@ -49,7 +59,6 @@ export const CycleTimeLatencyDetailView = ({
         }),
       };
       const newNode = {...node, ...calculatedColumns};
-      const localAppliedFilters = appliedFilters || {};
       if (isObjectEmpty(localAppliedFilters)) {
         return true;
       } else {
@@ -62,7 +71,7 @@ export const CycleTimeLatencyDetailView = ({
         );
       }
     },
-    [appliedFilters, cycleTimeTarget, latencyTarget]
+    [localAppliedFilters, cycleTimeTarget, latencyTarget]
   );
 
   const initialWorkItems = React.useMemo(() => {
@@ -71,9 +80,14 @@ export const CycleTimeLatencyDetailView = ({
   }, [data]);
   const initialTableData = getWorkItemDurations(initialWorkItems);
 
-  const workItems = React.useMemo(() => {
+  const [workItems, engineeringItems, deliveryItems] = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node).filter(applyFiltersTest);
+    const filteredData = edges.map((edge) => edge.node).filter(applyFiltersTest);
+    const [engineeringItems, deliveryItems] = [
+      filteredData.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
+      filteredData.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
+    ];
+    return [filteredData, engineeringItems, deliveryItems];
   }, [data, applyFiltersTest]);
 
   function getCardInspectorPanel() {
