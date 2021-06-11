@@ -9,14 +9,14 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 import {Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
-import {EVENT_TYPES} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {EVENT_TYPES} from "../../../../../helpers/utility";
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
 const EmptyObj = {}; // using the module level global variable to keep the identity of object same
-function getSanitizedFilters(appliedFilters={}) {
+function getSanitizedFilters(appliedFilters = {}) {
   const entries = Object.entries(appliedFilters).filter(([_, filterVals]) => filterVals != null);
   if (entries.length === 0) {
     return EmptyObj;
@@ -74,20 +74,32 @@ export const CycleTimeLatencyDetailView = ({
     [localAppliedFilters, cycleTimeTarget, latencyTarget]
   );
 
-  const initialWorkItems = React.useMemo(() => {
+  const [initItems, engItems, delItems] = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data]);
-  const initialTableData = getWorkItemDurations(initialWorkItems);
-
-  const [workItems, engineeringItems, deliveryItems] = React.useMemo(() => {
-    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    const filteredData = edges.map((edge) => edge.node).filter(applyFiltersTest);
+    const initData = edges.map((edge) => edge.node);
     const [engineeringItems, deliveryItems] = [
-      filteredData.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
-      filteredData.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
+      initData.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
+      initData.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
     ];
-    return [filteredData, engineeringItems, deliveryItems];
+    return [initData, engineeringItems, deliveryItems];
+  }, [data]);
+
+  const [engineeringItems, setEngineeringItems] = React.useState(() => getWorkItemDurations(engItems));
+  const [deliveryItems, setDeliveryItems] = React.useState(() => getWorkItemDurations(delItems));
+
+  React.useEffect(() => {
+    const [engineeringItems, deliveryItems] = [
+      initItems.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
+      initItems.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
+    ];
+
+    setEngineeringItems(getWorkItemDurations(engineeringItems));
+    setDeliveryItems(getWorkItemDurations(deliveryItems));
+  }, [initItems])
+
+  const workItems = React.useMemo(() => {
+    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node).filter(applyFiltersTest);
   }, [data, applyFiltersTest]);
 
   function getCardInspectorPanel() {
@@ -130,6 +142,9 @@ export const CycleTimeLatencyDetailView = ({
               setWorkItemKey(items[0].key);
               setShowPanel(true);
             }
+            if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
+              setEngineeringItems(items);
+            }
           }}
         />
       </div>
@@ -151,12 +166,15 @@ export const CycleTimeLatencyDetailView = ({
               setWorkItemKey(items[0].key);
               setShowPanel(true);
             }
+            if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
+              setDeliveryItems(items);
+            }
           }}
         />
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
-          tableData={initialTableData}
+          tableData={engineeringItems.concat(deliveryItems)}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
