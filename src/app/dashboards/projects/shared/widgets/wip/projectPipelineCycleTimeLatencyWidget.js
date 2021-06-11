@@ -4,7 +4,7 @@ import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPi
 import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {ProjectPipelineCycleTimeLatencyDetailDashboard} from "./projectPipelineCycleTimeLatencyDetailDashboard";
+import {CycleTimeLatencyDetailView} from "./cycleTimeLatencyDetailView";
 
 
 export const ProjectPipelineCycleTimeLatencyWidget = (
@@ -26,8 +26,6 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     tooltipType,
     view,
     context,
-    callBacks,
-    appliedFilters
   }
 ) => {
 
@@ -48,18 +46,15 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   
   if (view === "detail") {
     return (
-      <ProjectPipelineCycleTimeLatencyDetailDashboard
-        instanceKey={instanceKey}
-        latestWorkItemEvent={latestWorkItemEvent}
-        latestCommit={latestCommit}
+      <CycleTimeLatencyDetailView
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         specsOnly={specsOnly}
-        days={days}
+        data={data}
+        groupByState={groupByState}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
-        targetPercentile={targetPercentile}
-        includeSubTasks={includeSubTasks}
+        tooltipType={tooltipType}
         view={view}
         context={context}
       />
@@ -72,7 +67,6 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         data={data}
-        appliedFilters={appliedFilters}
         stateTypes={stateTypes}
         groupByState={groupByState}
         cycleTimeTarget={cycleTimeTarget}
@@ -80,7 +74,6 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
-        callBacks={callBacks}
       />
     );
   }
