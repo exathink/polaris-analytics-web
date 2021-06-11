@@ -27,6 +27,37 @@ function getSanitizedFilters(appliedFilters = {}) {
   return appliedFilters;
 }
 
+// source of truth for table will be updated
+// 1. when workItemScope changes(specs/all), this in turn changes initWorkItems
+// 2. when we zoom on the chart
+function useTableFilteredWorkItems(initWorkItems) {
+  const [filteredWorkItems, setFilteredWorkItems] = React.useState(initWorkItems);
+
+  React.useEffect(() => {
+    setFilteredWorkItems(initWorkItems);
+  }, [initWorkItems]);
+
+  return [filteredWorkItems, setFilteredWorkItems];
+}
+
+// source of truth for chart will be updated
+// 1. when workItemScope changes(specs/all), this in turn changes initWorkItems
+// 2. when we filter on the table
+function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyFiltersTest) {
+  const [filteredWorkItems, setFilteredWorkItems] = React.useState(initWorkItems);
+
+  React.useEffect(() => {
+    setFilteredWorkItems(tableFilteredWorkItems.filter(applyFiltersTest));
+    // eslint-disable-next-line
+  }, [applyFiltersTest]);
+
+  React.useEffect(() => {
+    setFilteredWorkItems(initWorkItems);
+  }, [initWorkItems]);
+
+  return [filteredWorkItems, setFilteredWorkItems];
+}
+
 export const CycleTimeLatencyDetailView = ({
   data,
   groupByState,
@@ -81,33 +112,14 @@ export const CycleTimeLatencyDetailView = ({
     [localAppliedFilters, cycleTimeTarget, latencyTarget]
   );
 
-  const [initItems, engItems, delItems] = React.useMemo(() => {
+  const initWorkItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    const initData = edges.map((edge) => edge.node);
-    const [engineeringItems, deliveryItems] = [
-      initData.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
-      initData.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
-    ];
-    return [initData, engineeringItems, deliveryItems];
+    return edges.map((edge) => edge.node);
   }, [data]);
 
-  const [engineeringItems, setEngineeringItems] = React.useState(() => getWorkItemDurations(engItems));
-  const [deliveryItems, setDeliveryItems] = React.useState(() => getWorkItemDurations(delItems));
-
-  React.useEffect(() => {
-    const [engineeringItems, deliveryItems] = [
-      initItems.filter((x) => engineeringStateTypes.indexOf(x.stateType) !== -1),
-      initItems.filter((x) => deliveryStateTypes.indexOf(x.stateType) !== -1),
-    ];
-
-    setEngineeringItems(getWorkItemDurations(engineeringItems));
-    setDeliveryItems(getWorkItemDurations(deliveryItems));
-  }, [initItems])
-
-  const workItems = React.useMemo(() => {
-    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node).filter(applyFiltersTest);
-  }, [data, applyFiltersTest]);
+  // we maintain separate state for table and chart, using single source of truth (initWorkItems)
+  const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(initWorkItems, applyFiltersTest);
+  const [chartFilteredWorkItems] = useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyFiltersTest);
 
   function getCardInspectorPanel() {
     return (
@@ -126,6 +138,20 @@ export const CycleTimeLatencyDetailView = ({
     );
   }
 
+  function handleSelectionChange(items, eventType) {
+    if (eventType === EVENT_TYPES.POINT_CLICK) {
+      setPlacement("bottom");
+      setWorkItemKey(items[0].key);
+      setShowPanel(true);
+    }
+    if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
+      setTableFilteredWorkItems(items);
+    }
+    if (eventType === EVENT_TYPES.RESET_ZOOM_SELECTION) {
+      setTableFilteredWorkItems(chartFilteredWorkItems);
+    }
+  }
+
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={styles.workItemScope}>
@@ -136,23 +162,14 @@ export const CycleTimeLatencyDetailView = ({
           view={view}
           stageName={"Engineering"}
           specsOnly={specsOnly}
-          workItems={workItems}
+          workItems={chartFilteredWorkItems}
           stateTypes={engineeringStateTypes}
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           tick={tick}
           tooltipType={tooltipType}
-          onSelectionChange={(items, eventType) => {
-            if (eventType === EVENT_TYPES.POINT_CLICK) {
-              setPlacement("bottom");
-              setWorkItemKey(items[0].key);
-              setShowPanel(true);
-            }
-            if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
-              setEngineeringItems(items);
-            }
-          }}
+          onSelectionChange={handleSelectionChange}
         />
       </div>
       <div className={styles.delivery}>
@@ -160,28 +177,19 @@ export const CycleTimeLatencyDetailView = ({
           view={view}
           stageName={"Delivery"}
           specsOnly={specsOnly}
-          workItems={workItems}
+          workItems={chartFilteredWorkItems}
           stateTypes={deliveryStateTypes}
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           tick={tick}
           tooltipType={tooltipType}
-          onSelectionChange={(items, eventType) => {
-            if (eventType === EVENT_TYPES.POINT_CLICK) {
-              setPlacement("bottom");
-              setWorkItemKey(items[0].key);
-              setShowPanel(true);
-            }
-            if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
-              setDeliveryItems(items);
-            }
-          }}
+          onSelectionChange={handleSelectionChange}
         />
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
-          tableData={engineeringItems.concat(deliveryItems)}
+          tableData={getWorkItemDurations(tableFilteredWorkItems)}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
