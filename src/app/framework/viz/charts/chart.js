@@ -78,12 +78,12 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         return null;
       }
 
-      onSelectionChange(selected) {
+      onSelectionChange(selected, eventType) {
         if (this.props.onSelectionChange && configProvider.mapPoints) {
           if(selected) {
-            this.props.onSelectionChange(configProvider.mapPoints(selected, this.props));
+            this.props.onSelectionChange(configProvider.mapPoints(selected, this.props), eventType);
           } else {
-            this.props.onSelectionChange(selected)
+            this.props.onSelectionChange(selected, eventType)
           }
         }
       }
