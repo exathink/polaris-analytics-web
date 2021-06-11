@@ -12,6 +12,9 @@ import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../helpers/utility";
 
+// list of columns having search feature
+const SEARCH_COLUMNS = ["name", "displayId"];
+
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
@@ -65,7 +68,7 @@ export const CycleTimeLatencyDetailView = ({
         const entries = Object.entries(localAppliedFilters).filter(([_, filterVals]) => filterVals != null);
         return entries.every(([filterKey, filterVals]) =>
           filterVals.some((filterVal) => {
-            if (filterKey === "name" || filterKey === "displayId") {
+            if (SEARCH_COLUMNS.includes(filterKey)) {
               const re = new RegExp(filterVal, "i");
               return newNode[filterKey].match(re);
             } else {
