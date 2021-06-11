@@ -3,10 +3,7 @@ import WorkItems from "../../../../work_items/context";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
-import {isObjectEmpty} from "../../helper/utils";
-import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
-import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/shared";
+import {EVENT_TYPES} from "../../../../../helpers/utility";
 
 export const ProjectPipelineCycleTimeLatencyView = (
   {
@@ -20,42 +17,14 @@ export const ProjectPipelineCycleTimeLatencyView = (
     tooltipType,
     view,
     context,
-    callBacks,
-    appliedFilters
   }
 ) => {
   const tick = useGenerateTicks(2, 60000);
 
-  const applyFiltersTest = React.useCallback((node) => {
-    const [nodeWithAggrDurations] = getWorkItemDurations([node]);
-    const calculatedColumns = {
-      stateType: WorkItemStateTypeDisplayName[node.stateType],
-      quadrant: getQuadrantColor({
-        cycleTime: nodeWithAggrDurations.cycleTime,
-        latency: nodeWithAggrDurations.latency,
-        cycleTimeTarget,
-        latencyTarget,
-      }),
-    };
-    const newNode = {...node, ...calculatedColumns};
-    const localAppliedFilters = appliedFilters || {};
-    if (isObjectEmpty(localAppliedFilters)) {
-      return true;
-    } else {
-      const entries = Object.entries(localAppliedFilters).filter(([_, filterVals]) => filterVals != null);
-      return entries.every(([filterKey, filterVals]) =>
-        filterVals.some((filterVal) => {
-          const re = new RegExp(filterVal, "i");
-          return newNode[filterKey].indexOf(filterVal) === 0 || newNode[filterKey].match(re);
-        })
-      );
-    }
-  }, [appliedFilters, cycleTimeTarget, latencyTarget]);
-
   const workItems = React.useMemo(() => {
     const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node).filter(applyFiltersTest);
-  }, [data, applyFiltersTest]);
+    return edges.map((edge) => edge.node);
+  }, [data]);
 
   return (
     <VizRow h={1}>
@@ -71,23 +40,14 @@ export const ProjectPipelineCycleTimeLatencyView = (
           latencyTarget={latencyTarget}
           tick={tick}
           tooltipType={tooltipType}
-          onSelectionChange={
-            (workItems) => {
-              if (workItems.length === 1) {
-                if (callBacks) {
-                  const {setWorkItemKey, setShowPanel, setPlacement} = callBacks;
-                  setPlacement("bottom");
-                  setWorkItemKey(workItems[0].key);
-                  setShowPanel(true);
-                } else {
-                  context.navigate(WorkItems, workItems[0].displayId, workItems[0].key)
-                }
-              }
+          onSelectionChange={(workItems, eventType) => {
+            if (eventType === EVENT_TYPES.POINT_CLICK) {
+              context.navigate(WorkItems, workItems[0].displayId, workItems[0].key);
             }
-          }
+          }}
         />
       </VizItem>
     </VizRow>
-  )
+  );
 
 }
