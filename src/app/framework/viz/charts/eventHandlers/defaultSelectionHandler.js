@@ -1,10 +1,5 @@
 import set from 'lodash/set';
-export const EVENT_TYPES = {
-  POINT_CLICK: "POINT_CLICK",
-  SERIES_CLICK: "SERIES_CLICK",
-  ZOOM_SELECTION: "ZOOM_SELECTION",
-  DESELECT: "DESELECT"
-};
+import {EVENT_TYPES} from "../../../../helpers/utility";
 
 /***
  * Behavior Summary:

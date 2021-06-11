@@ -333,3 +333,9 @@ export function getUniqItems(arr, iteratee) {
   return [...new Set(arr.map(iteratee))].map(uniqByPropVal => arr.find(item => iteratee(item) === uniqByPropVal))
 }
 
+export const EVENT_TYPES = {
+  POINT_CLICK: "POINT_CLICK",
+  SERIES_CLICK: "SERIES_CLICK",
+  ZOOM_SELECTION: "ZOOM_SELECTION",
+  DESELECT: "DESELECT"
+};
