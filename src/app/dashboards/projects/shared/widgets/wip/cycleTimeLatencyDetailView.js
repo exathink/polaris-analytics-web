@@ -1,6 +1,5 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
 import {isObjectEmpty} from "../../helper/utils";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../shared/config";
 import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/shared";
@@ -70,8 +69,6 @@ export const CycleTimeLatencyDetailView = ({
   view,
   context,
 }) => {
-  const tick = useGenerateTicks(2, 60000);
-
   const [showPanel, setShowPanel] = React.useState(false);
   const [workItemKey, setWorkItemKey] = React.useState();
   const [placement, setPlacement] = React.useState();
@@ -167,7 +164,6 @@ export const CycleTimeLatencyDetailView = ({
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
-          tick={tick}
           tooltipType={tooltipType}
           onSelectionChange={handleSelectionChange}
         />
@@ -182,7 +178,6 @@ export const CycleTimeLatencyDetailView = ({
           groupByState={groupByState}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
-          tick={tick}
           tooltipType={tooltipType}
           onSelectionChange={handleSelectionChange}
         />
