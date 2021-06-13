@@ -1,4 +1,5 @@
 import set from 'lodash/set';
+import {EVENT_TYPES} from "../../../../helpers/utility";
 
 /***
  * Behavior Summary:
@@ -58,7 +59,7 @@ export class DefaultSelectionEventHandler {
 
   resetZoomSelection() {
     this.zoom = null;
-    this.onSelectionChange();
+    this.onSelectionChange(EVENT_TYPES.RESET_ZOOM_SELECTION);
   }
 
   setZoom (e) {
@@ -77,7 +78,7 @@ export class DefaultSelectionEventHandler {
           y_max: e.yAxis[0].max
         };
 
-        this.onSelectionChange();
+        this.onSelectionChange(EVENT_TYPES.ZOOM_SELECTION);
       }
     } else {
       if(this.zoomClearsSelections) {
@@ -98,14 +99,14 @@ export class DefaultSelectionEventHandler {
   }
   pointClicked(e) {
     this.selected = this.getSelectedPoints(e);
-    this.onSelectionChange();
+    this.onSelectionChange(EVENT_TYPES.POINT_CLICK);
   };
 
 
   deselect() {
     this.clearSelections();
     this.getRawChart().getSelectedPoints().forEach(point => point.select(false));
-    this.onSelectionChange()
+    this.onSelectionChange(EVENT_TYPES.DESELECT)
   }
 
   clearSelections() {
@@ -116,7 +117,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesShow() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange()
+      this.onSelectionChange(EVENT_TYPES.SERIES_CLICK)
     }
 
 
@@ -124,7 +125,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesHide() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange()
+      this.onSelectionChange(EVENT_TYPES.SERIES_CLICK)
     }
   }
 
@@ -176,8 +177,8 @@ export class DefaultSelectionEventHandler {
   }
 
 
-  onSelectionChange() {
-    this.chart.onSelectionChange(this.showSelected())
+  onSelectionChange(eventType) {
+    this.chart.onSelectionChange(this.showSelected(), eventType)
   }
 
 }

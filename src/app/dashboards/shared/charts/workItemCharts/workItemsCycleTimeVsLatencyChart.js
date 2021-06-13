@@ -14,12 +14,6 @@ import {
 } from "../../config";
 
 
-// custom selection handler
-class CycleTimeLatencyEventHandler extends DefaultSelectionEventHandler{
-  resetZoomSelection() {
-    this.zoom = null;
-  }
-}
 
 function getSeriesByStateType(workItems) {
   // We group the work items into series by state type.
@@ -106,7 +100,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'workItems', 'stateTypes', 'stageName', 'groupByState', 'cycleTimeTarget', 'specsOnly', 'tick')
   ),
-  eventHandler: CycleTimeLatencyEventHandler,
+  eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
 
   getConfig: ({workItems, stateTypes, groupByState, cycleTimeTarget, latencyTarget, stageName, specsOnly, tick, intl, view, tooltipType}) => {
