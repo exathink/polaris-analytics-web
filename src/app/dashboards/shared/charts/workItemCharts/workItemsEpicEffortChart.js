@@ -9,7 +9,7 @@ require("highcharts/modules/treemap")(Highcharts);
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#a2c0de"};
 const EFFORT_LIMIT = 0.5;
 const TEXT_LIMIT = 37;
-const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
+const colors = ['#2f7ed8', '#732855', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
 function getEpicPointValue(epicWorkItems, specsOnly) {
@@ -119,7 +119,7 @@ function getSeries(workItems, specsOnly, intl, view) {
       name: "Closed",
       //color: '#ddd6e2',
 
-      data: Object.keys(workItemsByEpic).map((epicKey) => {
+      data: Object.keys(workItemsByEpic).map((epicKey, i) => {
         const epicName =
           epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
 
@@ -131,6 +131,7 @@ function getSeries(workItems, specsOnly, intl, view) {
           name: epicName,
           key: epicKey,
         },
+        color: epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.color : colors[i % colors.length-1],
         workItems: workItemsByEpic[epicKey],
       }}),
       dataLabels: {
