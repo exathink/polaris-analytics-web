@@ -454,18 +454,6 @@ export function ImplementationCostTableView({
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
-      <div className={styles.implementationCostSlider}>
-        <div>Active Within</div>
-        <div className={styles.rangeSliderWrapper}>
-          <DaysRangeSlider
-            title=""
-            initialDays={activeWithinDays}
-            setDaysRange={setActiveWithinDays}
-            range={ONE_YEAR}
-          />
-        </div>
-        <div>Days</div>
-      </div>
       <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <Table

@@ -9,7 +9,8 @@ import {ImplementationCostTableView} from "./implementationCostTableView";
 export const ImplementationCostTableWidget = (
   {
     instanceKey,
-    days,
+    activeWithinDays,
+    setActiveWithinDays,
     latestCommit,
     latestWorkItemEvent,
     view,
@@ -17,7 +18,7 @@ export const ImplementationCostTableWidget = (
     includeSubTasks
   }
 ) => {
-  const [activeWithinDays, setActiveWithinDays] = React.useState(days);
+
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
     days: activeWithinDays,
