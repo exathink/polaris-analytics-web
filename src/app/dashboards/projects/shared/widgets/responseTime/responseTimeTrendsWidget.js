@@ -15,6 +15,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     showAll,
     latestWorkItemEvent,
     days,
+    specsOnly,
     measurementWindow,
     samplingFrequency,
     targetPercentile,
@@ -28,6 +29,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     pollInterval,
     includeSubTasks
   }) => {
+
   const {loading, error, data} = useQueryProjectFlowMetricsTrends(
     {
       instanceKey: instanceKey,
@@ -35,7 +37,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
       measurementWindow: measurementWindow,
       samplingFrequency: samplingFrequency,
       targetPercentile: targetPercentile,
-      specsOnly: true,
+      specsOnly: specsOnly != null ? specsOnly : true,
       referenceString: latestWorkItemEvent,
       includeSubTasks: includeSubTasks
     }
