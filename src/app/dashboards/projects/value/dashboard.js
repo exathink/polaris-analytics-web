@@ -82,6 +82,23 @@ function ValueDashboard({
           )}
           showDetail={true}
         />
+        <DashboardWidget
+          name="epic-flow-mix-wip"
+          className={styles.valueBookWip}
+          render={({view}) => (
+            <ProjectImplementationCostWidget
+              instanceKey={key}
+              context={context}
+              specsOnly={specsOnly}
+              activeOnly={true}
+              view={view}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={true}
+        />
       </DashboardRow>
       <DashboardRow h="39%">
         <DashboardWidget
