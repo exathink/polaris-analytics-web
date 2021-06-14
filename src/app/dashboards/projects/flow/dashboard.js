@@ -16,6 +16,9 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
+import { ProjectResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
+import { ProjectVolumeTrendsWidget } from "../shared/widgets/throughput";
+import { ProjectPredictabilityTrendsWidget } from "../shared/widgets/predictability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -245,19 +248,24 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
-      <DashboardRow h={"49%"} title={"Value"} className={styles.valueRow}>
+      <DashboardRow h={"49%"} title={"Trends"} className={styles.valueRow}>
         <DashboardWidget
           name="epic-flow-mix-closed"
           className={styles.valueBookClosed}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectVolumeTrendsWidget
               instanceKey={key}
-              context={context}
+              measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
-              specsOnly={specsOnly}
+              samplingFrequency={7}
+              targetPercentile={0.7}
+              context={context}
               view={view}
-              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarge={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
@@ -267,18 +275,21 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="flow-type-flow-mix"
           className={styles.valueMixChart}
           render={({view}) => (
-            <ProjectFlowMixTrendsWidget
+            <ProjectResponseTimeTrendsWidget
               instanceKey={key}
-              measurementWindow={7}
+              measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
               samplingFrequency={7}
+              specsOnly={specsOnly}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={specsOnly}
-              showCounts={true}
-              chartOptions={{alignTitle: "left"}}
+              defaultSeries={"cycleTime"}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
@@ -288,15 +299,20 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="epic-flow-mix-wip"
           className={styles.valueBookWip}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectPredictabilityTrendsWidget
               instanceKey={key}
+              measurementWindow={flowAnalysisPeriod}
+              days={flowAnalysisPeriod}
+              samplingFrequency={7}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
               context={context}
-              specsOnly={specsOnly}
-              activeOnly={true}
               view={view}
-              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksWipInspector}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
