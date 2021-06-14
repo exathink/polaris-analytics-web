@@ -151,7 +151,7 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={"cycleTime"}
+              defaultSeries={["cycleTime"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}

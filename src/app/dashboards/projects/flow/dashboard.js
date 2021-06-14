@@ -289,7 +289,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={"cycleTime"}
+              defaultSeries={["all"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}

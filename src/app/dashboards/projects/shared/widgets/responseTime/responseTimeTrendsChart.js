@@ -41,6 +41,10 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
 
   }
 }
+function isVisibleByDefault(defaultSeries, series) {
+  return defaultSeries.indexOf("all") != -1 || defaultSeries.indexOf(series) != -1;
+}
+
 export const ResponseTimeTrendsChart = (
   {
     flowMetricsTrends,
@@ -56,11 +60,11 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: defaultSeries==="leadTime", type: 'spline'},
-      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: defaultSeries==="cycleTime", type:'spline'},
-      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: defaultSeries==="latency", type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'avgDuration', displayName: `Avg. Duration`, visible: defaultSeries==="duration", type: 'areaspline', stacked: true},
-      {key: 'avgEffort', displayName: `Avg. Effort`, visible: defaultSeries==="effort", type:'spline', color: '#0f49b1'},
+      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
+      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
+      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
+      {key: 'avgDuration', displayName: `Avg. Duration`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
+      {key: 'avgEffort', displayName: `Avg. Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
 
     ]}
     measurementPeriod={measurementPeriod}
