@@ -2,8 +2,7 @@ import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ImplementationCostTableWidget, ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
-import {injectIntl} from "react-intl";
+import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import styles from "./dashboard.module.css";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
@@ -14,7 +13,6 @@ function ValueDashboard({
   project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
   viewerContext,
-  intl,
 }) {
   const {flowAnalysisPeriod, includeSubTasksFlowMetrics} = settingsWithDefaults;
 
@@ -96,26 +94,6 @@ function ValueDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h="39%">
-        <DashboardWidget
-          w={1}
-          name="implementation-cost-table-widget"
-          className={styles.valueBookTable}
-          render={({view}) => (
-            <ImplementationCostTableWidget
-              instanceKey={key}
-              activeWithinDays={activeWithinDays}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              context={context}
-              view={view}
-              intl={intl}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={false}
-        />
-      </DashboardRow>
     </Dashboard>
   );
 }
@@ -126,4 +104,4 @@ const dashboard = ({viewerContext, intl}) => (
     render={(props) => <ValueDashboard {...props} viewerContext={viewerContext} intl={intl} />}
   />
 );
-export default withViewerContext(injectIntl(dashboard));
+export default withViewerContext(dashboard);

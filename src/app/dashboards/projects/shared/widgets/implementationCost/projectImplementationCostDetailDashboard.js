@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectImplementationCostWidget} from "./projectImplementationCostWidget";
+import {ImplementationCostTableWidget} from "./implementationCostTableWidget";
 
 const dashboard_id = "dashboards.project.epic.flow.detail";
 
@@ -22,7 +23,7 @@ export const ProjectImplementationCostDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"90%"}
+        h={"50%"}
         title={``}
         subTitle={``}
         controls={[
@@ -51,6 +52,24 @@ export const ProjectImplementationCostDetailDashboard = ({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               showHierarchy={true}
+              includeSubTasks={includeSubTasks}
+            />
+          )}
+          showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow h="39%">
+        <DashboardWidget
+          w={1}
+          name="implementation-cost-table-widget"
+          render={({view}) => (
+            <ImplementationCostTableWidget
+              instanceKey={instanceKey}
+              activeWithinDays={days}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              context={context}
+              view={view}
               includeSubTasks={includeSubTasks}
             />
           )}

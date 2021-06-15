@@ -14,7 +14,6 @@ export const ImplementationCostTableWidget = (
     latestCommit,
     latestWorkItemEvent,
     view,
-    intl,
     includeSubTasks
   }
 ) => {
@@ -38,7 +37,6 @@ export const ImplementationCostTableWidget = (
     <ImplementationCostTableView
       instanceKey={instanceKey}
       workItems={workItems}
-      intl={intl}
       activeWithinDays={activeWithinDays}
       setActiveWithinDays={setActiveWithinDays}
       loading={loading}
