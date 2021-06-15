@@ -5,7 +5,8 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import styles from "./dashboard.module.css";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
-import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
@@ -14,30 +15,14 @@ function ValueDashboard({
   context,
   viewerContext,
 }) {
-  const {flowAnalysisPeriod, includeSubTasksFlowMetrics} = settingsWithDefaults;
+  const {flowAnalysisPeriod, includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
 
-  const specsOnly = true;
-  const [activeWithinDays, setActiveWithinDays] = React.useState(flowAnalysisPeriod);
+  const [workItemScope, setWorkItemScope] = React.useState("all");
+  const specsOnly = workItemScope === "specs";
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.valueDashboard} gridLayout={true}>
-      <DashboardRow
-        h={"50%"}
-        title={""}
-        className={styles.valueRow}
-        controls={[
-          () => (
-            <div style={{minWidth: "500px"}}>
-              <DaysRangeSlider
-                title={"Days"}
-                initialDays={activeWithinDays}
-                setDaysRange={setActiveWithinDays}
-                range={ONE_YEAR}
-              />
-            </div>
-          ),
-        ]}
-      >
+      <DashboardRow h={"50%"}>
         <DashboardWidget
           name="epic-flow-mix-closed"
           className={styles.valueBookClosed}
@@ -45,7 +30,7 @@ function ValueDashboard({
             <ProjectImplementationCostWidget
               instanceKey={key}
               context={context}
-              days={activeWithinDays}
+              days={flowAnalysisPeriod}
               specsOnly={specsOnly}
               view={view}
               latestCommit={latestCommit}
@@ -62,7 +47,7 @@ function ValueDashboard({
             <ProjectFlowMixTrendsWidget
               instanceKey={key}
               measurementWindow={7}
-              days={activeWithinDays}
+              days={flowAnalysisPeriod}
               samplingFrequency={7}
               context={context}
               view={view}
@@ -94,6 +79,11 @@ function ValueDashboard({
           showDetail={true}
         />
       </DashboardRow>
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
     </Dashboard>
   );
 }

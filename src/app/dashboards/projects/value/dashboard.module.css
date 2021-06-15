@@ -1,25 +1,26 @@
 .valueDashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 10% 45% 45%;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 45% 5%;
   gap: 0.5rem;
   grid-template-areas:
-    "valueRow valueRow"
-    "valueBookClosed valueMixChart";
+    "valueBookClosed valueMixChart valueBookWip"
+    "scopeSelector scopeSelector scopeSelector";
 }
 
 .scopeSelector {
   grid-area: scopeSelector;
-  align-self: flex-end;
-}
-.valueRow {
-  grid-area: valueRow;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
+
 .valueBookClosed {
   grid-area: valueBookClosed;
+  padding: 0.25rem;
+}
+.valueBookWip{
+  grid-area: valueBookWip;
   padding: 0.25rem;
 }
 .valueMixChart {
