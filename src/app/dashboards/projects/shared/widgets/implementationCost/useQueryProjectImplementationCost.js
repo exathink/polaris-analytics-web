@@ -52,12 +52,13 @@ export function useQueryProjectImplementationCost({instanceKey, activeOnly, spec
 }
 
 export const GET_PROJECT_IMPLEMENTATION_COST_TABLE = gql`
-query getProjectImplementationCost($projectKey: String!, $days: Int, $includeSubTasks: Boolean, $referenceString: String) {
+query getProjectImplementationCost($projectKey: String!, $days: Int, $includeSubTasks: Boolean, $referenceString: String, $specsOnly: Boolean) {
   project(key: $projectKey, referenceString: $referenceString) {
     id
     workItems(
       interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
       includeEpics: true
+      specsOnly: $specsOnly
       activeWithinDays: $days
       includeSubTasks: $includeSubTasks
     ) {
@@ -86,7 +87,7 @@ query getProjectImplementationCost($projectKey: String!, $days: Int, $includeSub
 }
 `;
 
-export function useQueryImplementationCostTable({instanceKey, days, includeSubTasks, referenceString}) {
+export function useQueryImplementationCostTable({instanceKey, days, specsOnly, includeSubTasks, referenceString}) {
   return useQuery(
     GET_PROJECT_IMPLEMENTATION_COST_TABLE,
     {
@@ -94,6 +95,7 @@ export function useQueryImplementationCostTable({instanceKey, days, includeSubTa
       variables: {
         projectKey: instanceKey,
         days: days,
+        specsOnly: specsOnly,
         includeSubTasks: includeSubTasks,
         referenceString: referenceString,
       },

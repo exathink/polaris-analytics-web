@@ -14,6 +14,7 @@ export const ImplementationCostTableWidget = (
     latestCommit,
     latestWorkItemEvent,
     view,
+    specsOnly,
     includeSubTasks
   }
 ) => {
@@ -21,6 +22,7 @@ export const ImplementationCostTableWidget = (
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
     days: activeWithinDays,
+    specsOnly: specsOnly,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
