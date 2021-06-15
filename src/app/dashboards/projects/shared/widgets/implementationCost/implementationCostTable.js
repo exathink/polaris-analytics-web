@@ -1,0 +1,331 @@
+import {Table, InputNumber} from "antd";
+import WorkItems from "../../../../work_items/context";
+import {Link} from "react-router-dom";
+import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
+import {Highlighter} from "../../../../../components/misc/highlighter";
+import {useSearch} from "../../../../../components/tables/hooks";
+import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
+import {formatAsDate} from "../../../../../i18n/utils";
+import {actionTypes} from "./implementationCostReducer";
+import {injectIntl} from "react-intl";
+
+export const UncategorizedKey = "Uncategorized";
+export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
+export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems) {
+  const nameSearchState = useSearch("name", {customRender});
+
+  function setValueForBudgetRecord(key, value, initialBudgetValue) {
+    dispatch({
+      type: actionTypes.UPDATE_BUDGET_RECORDS,
+      payload: {
+        ...budgetRecords,
+        [key]: {budget: value, mode: value !== initialBudgetValue ? recordMode.EDIT : recordMode.INITIAL},
+      },
+    });
+  }
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "12%",
+      sorter: (a, b) => SORTER.string_compare(a, b, "name"),
+      ...nameSearchState,
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      width: "20%",
+      sorter: (a, b) => SORTER.string_compare(a, b, "title"),
+      filters: epicWorkItems.map((b) => ({text: b.name, value: b.name})),
+      onFilter: (value, record) => record.title.indexOf(value) === 0,
+      render: renderLinkColumn("title"),
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      width: "5%",
+    },
+    {
+      title: "Cards",
+      dataIndex: "cards",
+      key: "cards",
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
+    },
+
+    {
+      title: "Implementation Cost (Dev-Days)",
+      children: [
+        {
+          title: "Budget",
+          dataIndex: "budget",
+          key: "budget",
+          sorter: (a, b) => SORTER.number_compare(a, b, "budget"),
+          width: "10%",
+          render: (_text, record) => {
+            if (record.key === UncategorizedKey) {
+              return null;
+            }
+            return (
+              <InputNumber
+                key={record.key}
+                min={0}
+                max={Infinity}
+                value={budgetRecords[record.key] != null ? budgetRecords[record.key].budget : ""}
+                onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
+                type="number"
+              />
+            );
+          },
+        },
+        {
+          title: "Actual",
+          dataIndex: "totalEffort",
+          key: "totalEffort",
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
+          width: "7%",
+          render: renderColumn("totalEffort"),
+        },
+        {
+          title: "Contributors",
+          dataIndex: "totalContributors",
+          key: "totalContributors",
+          sorter: (a, b) => SORTER.number_compare(a, b, "totalContributors"),
+          width: "9%",
+          render: renderColumn("totalContributors"),
+        },
+      ],
+    },
+    {
+      title: "Progress",
+      children: [
+        {
+          title: "Started",
+          dataIndex: "startDate",
+          key: "startDate",
+          sorter: (a, b) => SORTER.date_compare(a, b, "startDate"),
+          render: renderColumn("startDate"),
+        },
+        {
+          title: "Ended",
+          dataIndex: "endDate",
+          key: "endDate",
+          sorter: (a, b) => SORTER.date_compare(a, b, "endDate"),
+          render: renderColumn("endDate"),
+        },
+        {
+          title: "Last Commit",
+          dataIndex: "lastUpdateDisplay",
+          key: "lastUpdateDisplay",
+          sorter: (a, b) => SORTER.date_compare(a, b, "lastUpdate"),
+          render: renderColumn("lastUpdateDisplay"),
+        },
+        {
+          title: "Elapsed (Days)",
+          dataIndex: "elapsed",
+          key: "elapsed",
+          sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
+          render: renderColumn("elapsed"),
+        },
+      ],
+    },
+  ];
+
+  return columns;
+}
+
+function edgeCaseCompare(a, b, propName) {
+  if (a.key === UncategorizedKey || b.key === UncategorizedKey) {
+    return 0;
+  }
+
+  const [firstVal, secondVal] = [a[propName], b[propName]];
+  if (firstVal == null && secondVal == null) {
+    return 0;
+  }
+
+  if (firstVal == null && secondVal != null) {
+    return 1;
+  }
+
+  if (firstVal != null && secondVal == null) {
+    return -1;
+  }
+
+  return null;
+}
+
+export const SORTER = {
+  date_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [date_a, date_b] = [a[propName], b[propName]];
+    const span = diff_in_dates(date_a, date_b);
+    return span["_milliseconds"];
+  },
+  number_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [numa, numb] = [a[propName], b[propName]];
+    return numa - numb;
+  },
+  string_compare: (a, b, propName) => {
+    const compareRes = edgeCaseCompare(a, b, propName);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
+    const [stra, strb] = [a[propName], b[propName]];
+    return stra.localeCompare(strb);
+  },
+};
+
+function renderColumn(key) {
+  return (_text, record) => {
+    if (record.key === UncategorizedKey) {
+      return null;
+    }
+
+    return record[key];
+  };
+}
+
+function renderLinkColumn(column) {
+  return (_text, record) => {
+    if (record.type === "epic") {
+      if (column === "title" && record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return _text;
+      }
+    } else {
+      // render link for non-epics
+      return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
+    }
+  };
+}
+
+function customRender(text, record, searchText) {
+  if (record.type === "epic") {
+    return (
+      <Highlighter
+        highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+        searchWords={searchText || ""}
+        textToHighlight={text.toString()}
+      />
+    );
+  }
+
+  return (
+    text && (
+      <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>
+        <Highlighter
+          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+          searchWords={searchText || ""}
+          textToHighlight={text.toString()}
+        />
+      </Link>
+    )
+  );
+}
+
+function getEpicKey(epicKey, epicWorkItemsMap) {
+  if (epicKey == null || epicWorkItemsMap.get(epicKey) == null) {
+    return null;
+  }
+  return epicKey;
+}
+
+export function getEpicWorkItemsMap(epicWorkItems) {
+  return new Map(epicWorkItems.map((x) => [x.key, x]));
+}
+
+const getNumber = (num, intl) => {
+  if (num != null && num !== UncategorizedKey) {
+    return intl.formatNumber(num, {maximumFractionDigits: 2});
+  }
+  return num;
+};
+
+const getDate = (date, intl) => {
+  if (date != null && date !== UncategorizedKey) {
+    return formatAsDate(intl, date);
+  }
+  return date;
+};
+
+function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
+  const transformWorkItem = (x) => {
+    return {
+      key: x.key,
+      name: x.displayId,
+      title: x.name,
+      cards: 1,
+      type: x.workItemType,
+      budget: x.budget,
+      totalEffort: getNumber(x.effort, intl),
+      totalContributors: getNumber(x.authorCount, intl),
+      startDate: getDate(x.startDate, intl),
+      endDate: getDate(x.endDate, intl),
+      lastUpdate: getDate(x.lastUpdate, intl),
+      lastUpdateDisplay:
+        x.lastUpdate != null && x.lastUpdate !== UncategorizedKey ? fromNow(x.lastUpdate) : x.lastUpdate,
+      elapsed: getNumber(x.elapsed, intl),
+    };
+  };
+
+  const workItemsByEpic = buildIndex(
+    nonEpicWorkItems,
+    (wi) => getEpicKey(wi.epicKey, epicWorkItemsMap) || UncategorizedKey
+  );
+
+  const allEpics = Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
+    const epicWorkItem = transformWorkItem(epicWorkItemsMap.get(epicKey));
+    const epicChildItems = epicWorkItems.map(transformWorkItem);
+
+    return {
+      ...epicWorkItem,
+      cards: epicChildItems.length,
+      children: epicChildItems,
+    };
+  });
+
+  const UncatEpic = allEpics.filter((x) => x.key === UncategorizedKey);
+  const restEpics = allEpics.filter((x) => x.key !== UncategorizedKey);
+
+  return [...UncatEpic, ...restEpics];
+}
+
+export const ImplementationCostTable = injectIntl(({tableData, columns, loading, intl, rowClassName}) => {
+  const [epicWorkItems, nonEpicWorkItems] = [
+    tableData.filter((x) => x.workItemType === "epic"),
+    tableData.filter((x) => x.workItemType !== "epic"),
+  ];
+  const epicWorkItemsMap = getEpicWorkItemsMap(epicWorkItems);
+  const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
+
+  return (
+    <Table
+      rowClassName={rowClassName}
+      loading={loading}
+      size="small"
+      pagination={false}
+      columns={columns}
+      dataSource={dataSource}
+      scroll={{y: "60vh"}}
+      showSorterTooltip={false}
+      data-testid="implementation-cost-table"
+      bordered={true}
+    />
+  );
+});
