@@ -4,6 +4,7 @@ import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectImplementationCostWidget} from "./projectImplementationCostWidget";
 import {ImplementationCostTableWidget} from "./implementationCostTableWidget";
+import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = "dashboards.project.epic.flow.detail";
 
@@ -15,10 +16,11 @@ export const ProjectImplementationCostDetailDashboard = ({
   activeOnly,
   days,
   view,
-  includeSubTasks
+  includeSubTasks,
 }) => {
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
+  const [activeWithinDays, setActiveWithinDays] = React.useState(days);
 
   return (
     <Dashboard dashboard={dashboard_id}>
@@ -31,9 +33,24 @@ export const ProjectImplementationCostDetailDashboard = ({
             <div style={{minWidth: "300px"}}>
               <Flex align={"center"}>
                 <Box pr={2} w={"100%"}>
-                  <WorkItemScopeSelector display={['Effort', 'Volume']} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+                  <WorkItemScopeSelector
+                    display={["Specs", "All"]}
+                    workItemScope={workItemScope}
+                    setWorkItemScope={setWorkItemScope}
+                  />
                 </Box>
               </Flex>
+            </div>
+          ),
+
+          () => (
+            <div style={{minWidth: "500px"}}>
+              <DaysRangeSlider
+                title={"Days"}
+                initialDays={activeWithinDays}
+                setDaysRange={setActiveWithinDays}
+                range={ONE_YEAR}
+              />
             </div>
           ),
         ]}
@@ -45,13 +62,12 @@ export const ProjectImplementationCostDetailDashboard = ({
             <ProjectImplementationCostWidget
               instanceKey={instanceKey}
               context={context}
-              days={days}
+              days={activeWithinDays}
               specsOnly={specsOnly}
               activeOnly={activeOnly}
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              showHierarchy={true}
               includeSubTasks={includeSubTasks}
             />
           )}
@@ -65,12 +81,13 @@ export const ProjectImplementationCostDetailDashboard = ({
           render={({view}) => (
             <ImplementationCostTableWidget
               instanceKey={instanceKey}
-              activeWithinDays={days}
+              activeWithinDays={activeWithinDays}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               context={context}
               view={view}
               includeSubTasks={includeSubTasks}
+              specsOnly={specsOnly}
             />
           )}
           showDetail={false}
