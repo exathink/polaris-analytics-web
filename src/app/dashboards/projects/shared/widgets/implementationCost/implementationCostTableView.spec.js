@@ -114,13 +114,6 @@ describe("ImplementationCostTableView", () => {
   });
 
   describe("when there are workItems", () => {
-    test("should render slider with knob at mark 30", () => {
-      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
-      const daysRangeSlider = screen.getByRole("slider");
-      expect(daysRangeSlider).toBeInTheDocument();
-      expect(daysRangeSlider.getAttribute("aria-valuenow")).toBe("30");
-    });
-
     test("should render table with correct number of records", () => {
       const {container} = renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
       const tableRows = container.querySelectorAll(".ant-table-row");
