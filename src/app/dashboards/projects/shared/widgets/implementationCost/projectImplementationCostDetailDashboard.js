@@ -22,39 +22,41 @@ export const ProjectImplementationCostDetailDashboard = ({
   const specsOnly = workItemScope === "specs";
   const [activeWithinDays, setActiveWithinDays] = React.useState(days);
 
+  const sliderControl = activeOnly
+    ? []
+    : [
+        () => (
+          <div style={{minWidth: "500px"}}>
+            <DaysRangeSlider
+              title={"Days"}
+              initialDays={activeWithinDays}
+              setDaysRange={setActiveWithinDays}
+              range={ONE_YEAR}
+            />
+          </div>
+        ),
+      ];
+
+  const controls = [
+    () => (
+      <div style={{minWidth: "300px"}}>
+        <Flex align={"center"}>
+          <Box pr={2} w={"100%"}>
+            <WorkItemScopeSelector
+              display={["Specs", "All"]}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+            />
+          </Box>
+        </Flex>
+      </div>
+    ),
+    ...sliderControl,
+  ];
+
   return (
     <Dashboard dashboard={dashboard_id}>
-      <DashboardRow
-        h={"50%"}
-        title={``}
-        subTitle={``}
-        controls={[
-          () => (
-            <div style={{minWidth: "300px"}}>
-              <Flex align={"center"}>
-                <Box pr={2} w={"100%"}>
-                  <WorkItemScopeSelector
-                    display={["Specs", "All"]}
-                    workItemScope={workItemScope}
-                    setWorkItemScope={setWorkItemScope}
-                  />
-                </Box>
-              </Flex>
-            </div>
-          ),
-
-          () => (
-            <div style={{minWidth: "500px"}}>
-              <DaysRangeSlider
-                title={"Days"}
-                initialDays={activeWithinDays}
-                setDaysRange={setActiveWithinDays}
-                range={ONE_YEAR}
-              />
-            </div>
-          ),
-        ]}
-      >
+      <DashboardRow h={"50%"} title={``} subTitle={``} controls={controls}>
         <DashboardWidget
           w={1}
           name="epic-flow-mix-detailed"
