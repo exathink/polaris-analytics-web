@@ -5,45 +5,69 @@
   grid-template-columns: 10px 1fr 1fr 10px;
   grid-template-areas:
     ". . message ."
-    ". slider slider ."
     ". editRecordsTitle editRecordsTitle ."
     ". tableContent tableContent .";
   gap: 0.2rem;
 }
 
-.messageNotification{
-    grid-area: message;
-    min-height: 2rem;
-    justify-self: flex-end;
-    display: flex;
-    align-items: flex-end;
+.messageNotification {
+  grid-area: message;
+  min-height: 2rem;
+  justify-self: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
 
-.implementationCostTable{
-    grid-area: tableContent;
-    margin-bottom: 20px;
+.implementationCostTable {
+  grid-area: tableContent;
+  margin-bottom: 20px;
 }
 
-.implementationSave{
+.implementationSave {
   margin-right: 10px;
 }
 
-.implementationCostSlider{
-  grid-area: slider;
-  justify-self: center;
-  min-width: 60%;
-  min-height: 4rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.editRecordsTitle{
+.editRecordsTitle {
   grid-area: editRecordsTitle;
   justify-self: center;
   min-height: 20px;
   margin-bottom: 10px;
 }
-.rangeSliderWrapper{
+.rangeSliderWrapper {
   width: 90%;
+}
+
+/* ProjectImplementationCostDetailDashboard */
+
+.valueDetailDashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 7% 45% 45%;
+  grid-template-areas:
+    ".  daysRangeSlider scopeSelector"
+    "valueBookChart valueBookChart valueBookChart"
+    "valueBookTable valueBookTable valueBookTable";
+}
+
+.daysRangeSlider {
+  grid-area: daysRangeSlider;
+  padding: 0.25rem;
+  margin-left: 1rem;
+}
+
+.scopeSelector {
+  grid-area: scopeSelector;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.valueBookChart {
+  grid-area: valueBookChart;
+  padding: 0.25rem;
+}
+
+.valueBookTable {
+  grid-area: valueBookTable;
+  padding: 0.25rem;
 }
