@@ -9,8 +9,8 @@ import {ImplementationCostTableView} from "./implementationCostTableView";
 export const ImplementationCostTableWidget = (
   {
     instanceKey,
-    activeWithinDays,
-    setActiveWithinDays,
+    closedWithinDays,
+    activeOnly,
     latestCommit,
     latestWorkItemEvent,
     view,
@@ -21,7 +21,8 @@ export const ImplementationCostTableWidget = (
 
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
-    days: activeWithinDays,
+    closedWithinDays: closedWithinDays,
+    activeOnly: activeOnly,
     specsOnly: specsOnly,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
@@ -39,8 +40,6 @@ export const ImplementationCostTableWidget = (
     <ImplementationCostTableView
       instanceKey={instanceKey}
       workItems={workItems}
-      activeWithinDays={activeWithinDays}
-      setActiveWithinDays={setActiveWithinDays}
       loading={loading}
       />
   )

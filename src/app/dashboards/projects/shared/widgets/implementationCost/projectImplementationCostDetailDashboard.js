@@ -20,7 +20,7 @@ export const ProjectImplementationCostDetailDashboard = ({
 }) => {
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
-  const [activeWithinDays, setActiveWithinDays] = React.useState(days);
+  const [closedWithinDays, setClosedWithinDays] = React.useState(days);
 
   return (
     <Dashboard dashboard={dashboard_id} className={styles.valueDetailDashboard} gridLayout={true}>
@@ -28,8 +28,8 @@ export const ProjectImplementationCostDetailDashboard = ({
         <div className={styles.daysRangeSlider}>
           <DaysRangeSlider
             title={"Days"}
-            initialDays={activeWithinDays}
-            setDaysRange={setActiveWithinDays}
+            initialDays={closedWithinDays}
+            setDaysRange={setClosedWithinDays}
             range={ONE_YEAR}
           />
         </div>
@@ -47,7 +47,7 @@ export const ProjectImplementationCostDetailDashboard = ({
             <ProjectImplementationCostWidget
               instanceKey={instanceKey}
               context={context}
-              days={activeWithinDays}
+              days={closedWithinDays}
               specsOnly={specsOnly}
               activeOnly={activeOnly}
               view={view}
@@ -66,13 +66,14 @@ export const ProjectImplementationCostDetailDashboard = ({
           render={({view}) => (
             <ImplementationCostTableWidget
               instanceKey={instanceKey}
-              activeWithinDays={activeWithinDays}
+              closedWithinDays={closedWithinDays}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               context={context}
               view={view}
               includeSubTasks={includeSubTasks}
               specsOnly={specsOnly}
+              activeOnly={activeOnly}
             />
           )}
           showDetail={false}
