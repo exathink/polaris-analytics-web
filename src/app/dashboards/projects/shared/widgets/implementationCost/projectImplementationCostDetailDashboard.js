@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {Box, Flex} from "reflexbox";
+import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {ProjectImplementationCostWidget} from "./projectImplementationCostWidget";
 import {ImplementationCostTableWidget} from "./implementationCostTableWidget";

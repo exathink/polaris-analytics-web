@@ -3,7 +3,6 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {WorkItemStateTypes} from "../../shared/config";
 import {
   ProjectPipelineCycleTimeLatencyWidget,
-  ProjectPipelineImplementationCostWidget,
   ProjectPipelineWidget,
 } from "../shared/widgets/wip";
 import styles from "./dashboard.module.css";

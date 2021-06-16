@@ -11,7 +11,6 @@ import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryPr
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
-import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";

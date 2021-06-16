@@ -42,7 +42,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
   }
 }
 function isVisibleByDefault(defaultSeries, series) {
-  return defaultSeries.indexOf("all") != -1 || defaultSeries.indexOf(series) != -1;
+  return defaultSeries.indexOf("all") !== -1 || defaultSeries.indexOf(series) !== -1;
 }
 
 export const ResponseTimeTrendsChart = (
