@@ -117,6 +117,7 @@ function getSeries(workItems, specsOnly, intl, view) {
       type: "treemap",
       layoutAlgorithm: "squarified",
       name: "Closed",
+      allowPointSelect: true,
       //color: '#ddd6e2',
 
       data: Object.keys(workItemsByEpic).map((epicKey, i) => {
