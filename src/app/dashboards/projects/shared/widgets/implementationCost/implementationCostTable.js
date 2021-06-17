@@ -265,6 +265,11 @@ const getDate = (date, intl) => {
 };
 
 function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
+  const workItemsByEpic = buildIndex(
+    nonEpicWorkItems,
+    (wi) => getEpicKey(wi.epicKey, epicWorkItemsMap) || UncategorizedKey
+  );
+
   const transformWorkItem = (x) => {
     return {
       key: x.key,
@@ -273,7 +278,13 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       cards: 1,
       type: x.workItemType,
       budget: x.budget,
-      totalEffort: getNumber(x.effort, intl),
+      totalEffort:
+        x.workItemType !== "epic"
+          ? getNumber(x.effort, intl)
+          : getNumber(
+              workItemsByEpic[x.key].reduce((acc, item) => acc + item.effort, 0),
+              intl
+            ),
       totalContributors: getNumber(x.authorCount, intl),
       startDate: getDate(x.startDate, intl),
       endDate: getDate(x.endDate, intl),
@@ -283,11 +294,6 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
       elapsed: getNumber(x.elapsed, intl),
     };
   };
-
-  const workItemsByEpic = buildIndex(
-    nonEpicWorkItems,
-    (wi) => getEpicKey(wi.epicKey, epicWorkItemsMap) || UncategorizedKey
-  );
 
   const allEpics = Object.entries(workItemsByEpic).map(([epicKey, epicWorkItems]) => {
     const epicWorkItem = transformWorkItem(epicWorkItemsMap.get(epicKey));
