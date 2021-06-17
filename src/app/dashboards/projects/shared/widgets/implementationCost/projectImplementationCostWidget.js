@@ -7,37 +7,38 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 import {ProjectImplementationCostView} from "./projectImplementationCostView";
 
-export const ProjectImplementationCostWidget = (
-  {
-    instanceKey,
-    activeOnly,
-    specsOnly,
-    title,
-    subtitle,
-    days,
-    latestCommit,
-    latestWorkItemEvent,
-    view,
-    context,
-    showHierarchy,
-    includeSubTasks
-  }
-) => {
+export const ProjectImplementationCostWidget = ({
+  instanceKey,
+  activeOnly,
+  specsOnly,
+  title,
+  subtitle,
+  days,
+  latestCommit,
+  latestWorkItemEvent,
+  view,
+  context,
+  showHierarchy,
+  includeSubTasks,
+  workItemScope,
+  setWorkItemScope,
+  setClosedWithinDays
+}) => {
   const {loading, error, data} = useQueryProjectImplementationCost({
     instanceKey,
     activeOnly,
     specsOnly,
     days: days,
     includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
-  if (loading) return <Loading/>;
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+  });
+  if (loading) return <Loading />;
   if (error) {
-    logGraphQlError('ProjectPipelineImplementationCostWidget.pipelineStateDetails', error);
+    logGraphQlError("ProjectPipelineImplementationCostWidget.pipelineStateDetails", error);
     return null;
   }
 
-  const workItemDeliveryCycles = data.project.workItemDeliveryCycles.edges.map( edge => edge.node );
+  const workItemDeliveryCycles = data.project.workItemDeliveryCycles.edges.map((edge) => edge.node);
 
   return (
     <ProjectImplementationCostView
@@ -54,7 +55,9 @@ export const ProjectImplementationCostWidget = (
       context={context}
       showHierarchy={showHierarchy}
       includeSubTasks={includeSubTasks}
-      />
-  )
-}
-
+      workItemScope={workItemScope}
+      setWorkItemScope={setWorkItemScope}
+      setClosedWithinDays={setClosedWithinDays}
+    />
+  );
+};

@@ -19,7 +19,7 @@ function ValueDashboard({
 
   const [workItemScope, setWorkItemScope] = React.useState("all");
   const specsOnly = workItemScope === "specs";
-
+  const [closedWithinDays, setClosedWithinDays] = React.useState(flowAnalysisPeriod);
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.valueDashboard} gridLayout={true}>
       <DashboardRow h={"50%"}>
@@ -30,12 +30,15 @@ function ValueDashboard({
             <ProjectImplementationCostWidget
               instanceKey={key}
               context={context}
-              days={flowAnalysisPeriod}
+              days={closedWithinDays}
               specsOnly={specsOnly}
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasksFlowMetrics}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              setClosedWithinDays={setClosedWithinDays}
             />
           )}
           showDetail={true}
@@ -74,6 +77,8 @@ function ValueDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasksWipInspector}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           )}
           showDetail={true}

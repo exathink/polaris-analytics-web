@@ -216,6 +216,8 @@ function WipDashboard({
 
               latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasksWipInspector}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           )}
           showDetail={true}
