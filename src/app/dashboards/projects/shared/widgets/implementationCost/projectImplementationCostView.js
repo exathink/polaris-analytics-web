@@ -1,6 +1,6 @@
 import React from "react";
 import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
-import {ImplementationCostTableWidget} from "./implementationCostTableWidget";
+import {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";
 
 export const ProjectImplementationCostView = ({
   instanceKey,
@@ -22,7 +22,7 @@ export const ProjectImplementationCostView = ({
 }) => {
   if (view === "detail") {
     return (
-      <ImplementationCostTableWidget
+      <ImplementationCostDetailWidget
         instanceKey={instanceKey}
         context={context}
         view={view}

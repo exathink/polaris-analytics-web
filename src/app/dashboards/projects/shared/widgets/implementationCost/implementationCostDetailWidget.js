@@ -4,9 +4,9 @@ import {useQueryImplementationCostTable} from "./useQueryProjectImplementationCo
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-import {ImplementationCostTableView} from "./implementationCostTableView";
+import {ImplementationCostDetailView} from "./implementationCostDetailView";
 
-export const ImplementationCostTableWidget = ({
+export const ImplementationCostDetailWidget = ({
   instanceKey,
   closedWithinDays,
   activeOnly,
@@ -31,7 +31,7 @@ export const ImplementationCostTableWidget = ({
   });
 
   if (error) {
-    logGraphQlError("ImplementationCostTableWidget.useQueryImplementationCostTable", error);
+    logGraphQlError("ImplementationCostDetailWidget.useQueryImplementationCostTable", error);
     return null;
   }
 
@@ -39,7 +39,7 @@ export const ImplementationCostTableWidget = ({
   const workItems = queryData ? queryData.project.workItems.edges.map((edge) => edge.node) : [];
 
   return (
-    <ImplementationCostTableView
+    <ImplementationCostDetailView
       instanceKey={instanceKey}
       workItems={workItems}
       loading={loading}

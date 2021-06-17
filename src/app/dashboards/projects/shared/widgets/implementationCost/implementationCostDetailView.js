@@ -24,7 +24,7 @@ const UncategorizedEpic = {
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
 };
-export function ImplementationCostTableView({
+export function ImplementationCostDetailView({
   instanceKey,
   workItems,
   loading,
