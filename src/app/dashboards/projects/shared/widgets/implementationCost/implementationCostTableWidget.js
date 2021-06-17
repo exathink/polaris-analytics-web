@@ -6,42 +6,51 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 import {ImplementationCostTableView} from "./implementationCostTableView";
 
-export const ImplementationCostTableWidget = (
-  {
-    instanceKey,
-    closedWithinDays,
-    activeOnly,
-    latestCommit,
-    latestWorkItemEvent,
-    view,
-    specsOnly,
-    includeSubTasks
-  }
-) => {
-
+export const ImplementationCostTableWidget = ({
+  instanceKey,
+  closedWithinDays,
+  activeOnly,
+  latestCommit,
+  latestWorkItemEvent,
+  view,
+  specsOnly,
+  includeSubTasks,
+  epicChartData,
+  context,
+  workItemScope,
+  setWorkItemScope,
+  setClosedWithinDays,
+}) => {
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
     closedWithinDays: closedWithinDays,
     activeOnly: activeOnly,
     specsOnly: specsOnly,
     includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+  });
 
   if (error) {
-    logGraphQlError('ImplementationCostTableWidget.useQueryImplementationCostTable', error);
+    logGraphQlError("ImplementationCostTableWidget.useQueryImplementationCostTable", error);
     return null;
   }
 
-  const queryData =  (data || previousData);
-  const workItems = queryData ? queryData.project.workItems.edges.map(edge => edge.node) : [];
+  const queryData = data || previousData;
+  const workItems = queryData ? queryData.project.workItems.edges.map((edge) => edge.node) : [];
 
   return (
     <ImplementationCostTableView
       instanceKey={instanceKey}
       workItems={workItems}
       loading={loading}
-      />
-  )
-}
-
+      epicChartData={epicChartData}
+      activeOnly={activeOnly}
+      specsOnly={specsOnly}
+      days={closedWithinDays}
+      context={context}
+      workItemScope={workItemScope}
+      setWorkItemScope={setWorkItemScope}
+      setClosedWithinDays={setClosedWithinDays}
+    />
+  );
+};

@@ -10,6 +10,10 @@ import {
   UncategorizedKey,
   useImplementationCostTableColumns,
 } from "./implementationCostTable";
+import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
+import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
+import {Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -20,7 +24,22 @@ const UncategorizedEpic = {
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
 };
-export function ImplementationCostTableView({instanceKey, workItems, loading}) {
+export function ImplementationCostTableView({
+  instanceKey,
+  workItems,
+  loading,
+  activeOnly,
+  specsOnly,
+  days,
+  title,
+  subtitle,
+  view,
+  context,
+  workItemScope,
+  setWorkItemScope,
+  setClosedWithinDays,
+  epicChartData
+}) {
   // add UncategorizedEpic
   const newWorkItems = workItems.concat(UncategorizedEpic);
   const initialBudgetRecords = () => {
@@ -162,6 +181,33 @@ export function ImplementationCostTableView({instanceKey, workItems, loading}) {
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
+      {!activeOnly && (
+        <div className={styles.daysRangeSlider}>
+          <DaysRangeSlider
+            title={"Days"}
+            initialDays={days}
+            setDaysRange={setClosedWithinDays}
+            range={ONE_YEAR}
+          />
+        </div>
+      )}
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
+      <div className={styles.epicEffortChart}>
+        <WorkItemsEpicEffortChart
+          workItems={epicChartData}
+          specsOnly={specsOnly}
+          activeOnly={activeOnly}
+          days={days}
+          title={title}
+          subtitle={subtitle}
+          view={view}
+          context={context}
+        />
+      </div>
       <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <ImplementationCostTable

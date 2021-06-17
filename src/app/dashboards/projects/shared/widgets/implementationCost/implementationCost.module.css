@@ -1,21 +1,23 @@
 .implementationCostTableWrapper {
+  height: 100%;
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 10px 1fr 1fr 10px;
+  grid-template-columns: 1.5fr 1fr 1fr 0.3fr;
+  grid-template-rows: 3% 5% 40% 50%;
   grid-template-areas:
-    ". . message ."
-    ". editRecordsTitle editRecordsTitle ."
-    ". tableContent tableContent .";
-  gap: 0.2rem;
+    "daysRangeSlider scopeSelector message ."
+    ". . editRecordsTitle ."
+    "epicEffortChart epicEffortChart epicEffortChart epicEffortChart"
+    "tableContent tableContent tableContent tableContent";
 }
 
 .messageNotification {
   grid-area: message;
   min-height: 2rem;
-  justify-self: flex-end;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .implementationCostTable {
@@ -29,24 +31,18 @@
 
 .editRecordsTitle {
   grid-area: editRecordsTitle;
-  justify-self: center;
   min-height: 20px;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 .rangeSliderWrapper {
   width: 90%;
 }
-
-/* ProjectImplementationCostDetailDashboard */
-
-.valueDetailDashboard {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 7% 45% 45%;
-  grid-template-areas:
-    ".  daysRangeSlider scopeSelector"
-    "valueBookChart valueBookChart valueBookChart"
-    "valueBookTable valueBookTable valueBookTable";
+.epicEffortChart{
+  grid-area: epicEffortChart;
+  padding: 0.25rem;
 }
 
 .daysRangeSlider {
@@ -60,14 +56,5 @@
   padding: 0.25rem;
   display: flex;
   align-items: center;
-}
-
-.valueBookChart {
-  grid-area: valueBookChart;
-  padding: 0.25rem;
-}
-
-.valueBookTable {
-  grid-area: valueBookTable;
-  padding: 0.25rem;
+  margin-top: 15px;
 }
