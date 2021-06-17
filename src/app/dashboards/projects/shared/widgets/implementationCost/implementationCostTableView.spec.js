@@ -3,11 +3,11 @@ import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {UPDATE_PROJECT_WORKITEMS} from "./useQueryProjectImplementationCost";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {ImplementationCostTableView as ImplementationCostTableViewWithoutIntl} from "./implementationCostTableView";
+import {ImplementationCostDetailView as ImplementationCostDetailViewWithoutIntl} from "./implementationCostDetailView";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 
-const ImplementationCostTableView = injectIntl(ImplementationCostTableViewWithoutIntl);
+const ImplementationCostDetailView = injectIntl(ImplementationCostDetailViewWithoutIntl);
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -99,7 +99,7 @@ const propsFixture = {
   loading: false,
 };
 
-describe("ImplementationCostTableView", () => {
+describe("ImplementationCostDetailView", () => {
   describe("when there are no workItems", () => {
     const emptyPropsFixture = {
       ...propsFixture,
@@ -107,7 +107,7 @@ describe("ImplementationCostTableView", () => {
     };
 
     test("should render table with no records", () => {
-      renderWithProviders(<ImplementationCostTableView {...emptyPropsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ImplementationCostDetailView {...emptyPropsFixture} />, updateWorkItemsMocks);
       const {getByText} = within(screen.queryByTestId("implementation-cost-table"));
       getByText(/no data/i);
     });
@@ -115,13 +115,13 @@ describe("ImplementationCostTableView", () => {
 
   describe("when there are workItems", () => {
     test("should render table with correct number of records", () => {
-      const {container} = renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      const {container} = renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
       const tableRows = container.querySelectorAll(".ant-table-row");
       expect([...tableRows]).toHaveLength(1);
     });
 
     test("when budget is updated for any record, save/cancel button should appear", () => {
-      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
       const budgetTextBox = getByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
@@ -131,7 +131,7 @@ describe("ImplementationCostTableView", () => {
     });
 
     test("when cancel button is clicked, save/cancel button should disappear", () => {
-      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
       const budgetTextBox = getByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
@@ -148,7 +148,7 @@ describe("ImplementationCostTableView", () => {
     });
 
     test("when budget is updated for any record, edited title shows above the table", () => {
-      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
       // before
       expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
 
@@ -161,7 +161,7 @@ describe("ImplementationCostTableView", () => {
     });
 
     test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-      renderWithProviders(<ImplementationCostTableView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
 
       // change the value of inputNumber, so that save/cancel appears
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
@@ -206,7 +206,7 @@ describe("ImplementationCostTableView", () => {
       ];
 
       test("it renders network error message and logs the error when there is a network error", async () => {
-        renderWithProviders(<ImplementationCostTableView {...propsFixture} />, mockNetworkError);
+        renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, mockNetworkError);
 
         // change the value of inputNumber, so that save/cancel appears
         const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
@@ -229,7 +229,7 @@ describe("ImplementationCostTableView", () => {
       });
 
       test("it renders graphql error message and logs the error when there is a GraphQl error", async () => {
-        renderWithProviders(<ImplementationCostTableView {...propsFixture} />, mockGraphQlErrors);
+        renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, mockGraphQlErrors);
 
         // change the value of inputNumber, so that save/cancel appears
         const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));

@@ -4,7 +4,7 @@
   margin-top: 0.5rem;
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 0.3fr;
-  grid-template-rows: 3% 5% 40% 50%;
+  grid-template-rows: 2% 5% 43% 50%;
   grid-template-areas:
     "daysRangeSlider scopeSelector message ."
     ". . editRecordsTitle ."
