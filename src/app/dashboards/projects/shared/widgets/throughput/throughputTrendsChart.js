@@ -12,7 +12,7 @@ export const VolumeTrendsChart = ({
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: 'workItemsInScope', displayName: 'Cards', visible: view === 'detail', type: 'spline'},
+        {key: 'workItemsInScope', displayName: 'Cards', visible: true, type: 'spline'},
         {key: 'workItemsWithCommits', displayName: 'Specs', visible: true, type: 'spline'},
 
       ]}
