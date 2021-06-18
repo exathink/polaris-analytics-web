@@ -67,6 +67,7 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
           }
         }}
         view={view}
+        specsOnly={specsOnly}
         defaultSeries={defaultSeries}
       />
       :

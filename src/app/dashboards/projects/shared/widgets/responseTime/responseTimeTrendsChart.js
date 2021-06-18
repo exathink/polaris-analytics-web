@@ -55,6 +55,7 @@ export const ResponseTimeTrendsChart = (
     measurementWindow,
     onSelectionChange,
     defaultSeries,
+    specsOnly,
     view
   }) => (
   <MeasurementTrendLineChart
@@ -72,7 +73,7 @@ export const ResponseTimeTrendsChart = (
     onSelectionChange={onSelectionChange}
     config={{
       title: 'Response Time',
-      legendText: 'Specs',
+      legendText: specsOnly != null && !specsOnly ? 'All Cards' : 'Specs',
       yAxisUom: 'Days',
       plotBands: {
         metric: 'avgCycleTime'
