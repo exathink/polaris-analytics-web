@@ -249,7 +249,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
       </div>
       <DashboardRow h={"49%"} title={"Trends"} className={styles.valueRow}>
         <DashboardWidget
-          name="epic-flow-mix-closed"
+          name="volume-trends"
           className={styles.valueBookClosed}
           render={({view}) => (
             <ProjectVolumeTrendsWidget
@@ -271,7 +271,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={true}
         />
         <DashboardWidget
-          name="flow-type-flow-mix"
+          name="response-time-trends"
           className={styles.valueMixChart}
           render={({view}) => (
             <ProjectResponseTimeTrendsWidget
@@ -295,13 +295,14 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={true}
         />
         <DashboardWidget
-          name="epic-flow-mix-wip"
+          name="predictability-trends"
           className={styles.valueBookWip}
           render={({view}) => (
             <ProjectPredictabilityTrendsWidget
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
+              specsOnly={specsOnly}
               samplingFrequency={7}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeTarget={leadTimeTarget}
