@@ -56,54 +56,66 @@ const updateWorkItemsMocks = [
 
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
-  workItems: [
-    {
-      id: "V29ya0l0ZW06NDczYWM4ZTAtMGQwZC00ZDcyLTg5MmQtODhjYmExMDEzZjI4",
-      displayId: "PO-556",
-      name: "Commit Timeline enhancements",
-      key: "473ac8e0-0d0d-4d72-892d-88cba1013f28",
-      workItemType: "story",
-      epicName: "Misc UX",
-      epicKey: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122",
-      effort: null,
-      duration: null,
-      authorCount: 0,
-      budget: 14,
-      startDate: getNDaysAgo(20),
-      endDate: null,
-      closed: false,
-      lastUpdate: null,
-      elapsed: 17.5561982505556,
+  data: {
+    project: {
+      workItems: {
+        edges: [
+          {
+            node: {
+              id: "V29ya0l0ZW06NDczYWM4ZTAtMGQwZC00ZDcyLTg5MmQtODhjYmExMDEzZjI4",
+              displayId: "PO-556",
+              name: "Commit Timeline enhancements",
+              key: "473ac8e0-0d0d-4d72-892d-88cba1013f28",
+              workItemType: "story",
+              epicName: "Misc UX",
+              epicKey: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122",
+              effort: null,
+              duration: null,
+              authorCount: 0,
+              budget: 14,
+              startDate: getNDaysAgo(20),
+              endDate: null,
+              closed: false,
+              lastUpdate: null,
+              elapsed: 17.5561982505556,
+            },
+          },
+          {
+            node: {
+              id: "V29ya0l0ZW06YjNmZjFjOGEtNzQ5Yy00YzM4LTlkZGUtZDVhN2IyNTE5MTIy",
+              displayId: "PO-427",
+              name: "Misc UX",
+              key: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122",
+              workItemType: "epic",
+              epicName: null,
+              epicKey: null,
+              effort: 16.3333333333333,
+              duration: 68.7149421296296,
+              authorCount: 2,
+              budget: 70,
+              startDate: getNDaysAgo(100),
+              endDate: null,
+              closed: false,
+              lastUpdate: getNDaysAgo(22),
+              elapsed: 107.324104477315,
+            },
+          },
+        ],
+      },
     },
-    {
-      id: "V29ya0l0ZW06YjNmZjFjOGEtNzQ5Yy00YzM4LTlkZGUtZDVhN2IyNTE5MTIy",
-      displayId: "PO-427",
-      name: "Misc UX",
-      key: "b3ff1c8a-749c-4c38-9dde-d5a7b2519122",
-      workItemType: "epic",
-      epicName: null,
-      epicKey: null,
-      effort: 16.3333333333333,
-      duration: 68.7149421296296,
-      authorCount: 2,
-      budget: 70,
-      startDate: getNDaysAgo(100),
-      endDate: null,
-      closed: false,
-      lastUpdate: getNDaysAgo(22),
-      elapsed: 107.324104477315,
-    },
-  ],
+  },
   activeWithinDays: 30,
   setActiveWithinDays: jest.fn(),
   loading: false,
+  specsOnly: false,
+  epicChartData: []
 };
 
 describe("ImplementationCostDetailView", () => {
   describe("when there are no workItems", () => {
     const emptyPropsFixture = {
       ...propsFixture,
-      workItems: [],
+      data: {project: {workItems: {edges: []}}}
     };
 
     test("should render table with no records", () => {
