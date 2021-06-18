@@ -5,10 +5,10 @@ import {Colors} from "../../../../shared/config";
 
 
 export const PredictabilityTrendsChart = Chart({
-  chartUpdateProps: (props) => pick(props, "flowMetricsTrends", "measurementPeriod", "measurementWindow"),
+  chartUpdateProps: (props) => pick(props, "flowMetricsTrends", "measurementPeriod", "measurementWindow", 'specsOnly'),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.measurement),
-  getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, targetPercentile, cycleTimeTarget, view, intl}) => {
+  getConfig: ({flowMetricsTrends, measurementWindow, measurementPeriod, targetPercentile, cycleTimeTarget, view, specsOnly, intl}) => {
     const boxPlotSeriesName = "Variability";
     const lineSeriesName = `${percentileToText(targetPercentile)}`;
 
@@ -62,7 +62,7 @@ export const PredictabilityTrendsChart = Chart({
       },
       legend: {
         title: {
-          text: `Spec Cycle Time`,
+          text: specsOnly != null && !specsOnly? `Cycle Time` : `Spec Cycle Time`,
           style: {
             fontStyle: "italic",
           },

@@ -1,49 +1,64 @@
 .implementationCostTableWrapper {
+  height: 100%;
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 10px 1fr 1fr 10px;
+  grid-template-columns: 1.5fr 1fr 1fr 0.3fr;
+  grid-template-rows: 2% 5% 43% 50%;
   grid-template-areas:
-    ". . message ."
-    ". slider slider ."
-    ". editRecordsTitle editRecordsTitle ."
-    ". tableContent tableContent .";
-  gap: 0.2rem;
+    "daysRangeSlider scopeSelector message ."
+    ". . editRecordsTitle ."
+    "epicEffortChart epicEffortChart epicEffortChart epicEffortChart"
+    "tableContent tableContent tableContent tableContent";
 }
 
-.messageNotification{
-    grid-area: message;
-    min-height: 2rem;
-    justify-self: flex-end;
-    display: flex;
-    align-items: flex-end;
+.messageNotification {
+  grid-area: message;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.implementationCostTable{
-    grid-area: tableContent;
-    margin-bottom: 20px;
+.implementationCostTable {
+  grid-area: tableContent;
+  margin-bottom: 20px;
 }
 
-.implementationSave{
+.implementationSave {
   margin-right: 10px;
 }
 
-.implementationCostSlider{
-  grid-area: slider;
-  justify-self: center;
-  min-width: 60%;
-  min-height: 4rem;
+.editRecordsTitle {
+  grid-area: editRecordsTitle;
+  min-height: 20px;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.rangeSliderWrapper {
+  width: 90%;
+}
+.epicEffortChart{
+  grid-area: epicEffortChart;
+  padding: 0.25rem;
 }
 
-.editRecordsTitle{
-  grid-area: editRecordsTitle;
-  justify-self: center;
-  min-height: 20px;
-  margin-bottom: 10px;
+.daysRangeSlider {
+  grid-area: daysRangeSlider;
+  padding: 0.25rem;
+  margin-left: 1rem;
 }
-.rangeSliderWrapper{
-  width: 90%;
+
+.scopeSelector {
+  grid-area: scopeSelector;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.cardInspectorPanel{
+  visibility: hidden;
 }

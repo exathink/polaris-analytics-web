@@ -1,6 +1,6 @@
 import React from "react";
 import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
-import {ProjectImplementationCostDetailDashboard} from "./projectImplementationCostDetailDashboard";
+import {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";
 
 export const ProjectImplementationCostView = ({
   instanceKey,
@@ -15,24 +15,42 @@ export const ProjectImplementationCostView = ({
   context,
   view,
   showHierarchy,
-  includeSubTasks
+  includeSubTasks,
+  workItemScope,
+  setWorkItemScope,
+  setClosedWithinDays,
 }) => {
   if (view === "detail") {
-    const props = {instanceKey, latestWorkItemEvent, latestCommit, activeOnly, days, view, context, includeSubTasks};
-    return <ProjectImplementationCostDetailDashboard {...props} />;
+    return (
+      <ImplementationCostDetailWidget
+        instanceKey={instanceKey}
+        context={context}
+        view={view}
+        closedWithinDays={days}
+        latestCommit={latestCommit}
+        latestWorkItemEvent={latestWorkItemEvent}
+        includeSubTasks={includeSubTasks}
+        specsOnly={specsOnly}
+        activeOnly={activeOnly}
+        epicChartData={workItems}
+        workItemScope={workItemScope}
+        setWorkItemScope={setWorkItemScope}
+        setClosedWithinDays={setClosedWithinDays}
+      />
+    );
   }
 
   return (
-        <WorkItemsEpicEffortChart
-          workItems={workItems}
-          specsOnly={specsOnly}
-          activeOnly={activeOnly}
-          days={days}
-          title={title}
-          subtitle={subtitle}
-          view={view}
-          showHierarchy={showHierarchy}
-          context={context}
-        />
+    <WorkItemsEpicEffortChart
+      workItems={workItems}
+      specsOnly={specsOnly}
+      activeOnly={activeOnly}
+      days={days}
+      title={title}
+      subtitle={subtitle}
+      view={view}
+      showHierarchy={showHierarchy}
+      context={context}
+    />
   );
 };

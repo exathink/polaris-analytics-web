@@ -18,6 +18,7 @@ export const ProjectPredictabilityTrendsView = ({
   onSelectionChange,
   view,
   context,
+  specsOnly,
   includeSubTasks
 }) => {
   if (view === "detail") {
@@ -49,6 +50,7 @@ export const ProjectPredictabilityTrendsView = ({
           measurementWindow={measurementWindow}
           cycleTimeTarget={cycleTimeTarget}
           view={view}
+          specsOnly={specsOnly}
           latestWorkItemEvent={latestWorkItemEvent}
           onSelectionChange={onSelectionChange}
         />

@@ -21,6 +21,7 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
     cycleTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     targetPercentile,
+    specsOnly,
     setBefore,
     pollInterval,
     includeSubTasks
@@ -30,7 +31,7 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         instanceKey: instanceKey,
         days: days,
         measurementWindow: measurementWindow,
-        specsOnly: true,
+        specsOnly: specsOnly != null ? specsOnly : true,
         samplingFrequency: samplingFrequency,
         targetPercentile: targetPercentile,
         referenceString: latestWorkItemEvent,
@@ -56,6 +57,7 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         samplingFrequency={samplingFrequency}
         view={view}
+        specsOnly={specsOnly}
         context={context}
         latestWorkItemEvent={latestWorkItemEvent}
         includeSubTasks={includeSubTasks}

@@ -1,2 +1,2 @@
 export {ProjectImplementationCostWidget} from "./projectImplementationCostWidget";
-export {ImplementationCostTableWidget} from "./implementationCostTableWidget";
+export {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";

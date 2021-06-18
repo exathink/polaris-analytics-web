@@ -11,6 +11,7 @@ export const ProjectResponseTimeTrendsView = ({
     measurementWindow,
     onSelectionChange,
     defaultSeries,
+    specsOnly,
     view
   }) => (
     <VizRow h={1}>
@@ -24,6 +25,7 @@ export const ProjectResponseTimeTrendsView = ({
           targetPercentile={targetPercentile}
           onSelectionChange={onSelectionChange}
           defaultSeries={defaultSeries}
+          specsOnly={specsOnly}
           view={view}
         />
       </VizItem>

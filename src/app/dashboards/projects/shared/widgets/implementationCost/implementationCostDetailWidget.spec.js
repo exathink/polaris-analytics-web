@@ -2,7 +2,7 @@ import React from "react";
 import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {GET_PROJECT_IMPLEMENTATION_COST_TABLE} from "./useQueryProjectImplementationCost";
-import {ImplementationCostTableWidget} from "./implementationCostTableWidget";
+import {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";
 import {screen, waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {getReferenceString} from "../../../../../helpers/utility";
@@ -95,7 +95,7 @@ const mocks = [
   },
 ];
 
-describe("ImplementationCostTableWidget", () => {
+describe("ImplementationCostDetailWidget", () => {
   describe("when there are errors", () => {
     let logGraphQlError;
     beforeEach(() => {
@@ -124,7 +124,7 @@ describe("ImplementationCostTableWidget", () => {
     test("it renders nothing and logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mockNetworkError);
 
       // before
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe("ImplementationCostTableWidget", () => {
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
       
-      renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mockGraphQlErrors);
 
       // before
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
@@ -152,7 +152,7 @@ describe("ImplementationCostTableWidget", () => {
 
   describe('when there are no errors', () => {
     test('renders widget without any error', () => {
-      renderWithProviders(<ImplementationCostTableWidget {...propsFixture} />, mocks);
+      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mocks);
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
     })
   })

@@ -3,7 +3,6 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {WorkItemStateTypes} from "../../shared/config";
 import {
   ProjectPipelineCycleTimeLatencyWidget,
-  ProjectPipelineImplementationCostWidget,
   ProjectPipelineWidget,
 } from "../shared/widgets/wip";
 import styles from "./dashboard.module.css";
@@ -19,6 +18,7 @@ import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryPr
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
+import { ProjectImplementationCostWidget } from "../shared/widgets/implementationCost";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -176,25 +176,7 @@ function WipDashboard({
           )}
           showDetail={true}
         />
-        <DashboardWidget
-          name="pipeline-effort"
-          className={styles.pipelineEffort}    
-          render={({view}) => (
-            <ProjectPipelineImplementationCostWidget
-              instanceKey={key}
-              view={view}
-              specsOnly={specsOnly}
-              wipLimit={wipLimit}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-          showDetail={true}
-        />
+
         <DashboardWidget
           name="delivery"
           className={styles.delivery}
@@ -216,6 +198,26 @@ function WipDashboard({
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="epic-flow-mix-wip"
+          className={styles.pipelineEffort}
+          render={({ view }) => (
+            <ProjectImplementationCostWidget
+              instanceKey={key}
+              context={context}
+              specsOnly={specsOnly}
+              activeOnly={true}
+              view={view}
+              latestCommit={latestCommit}
+
+              latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksWipInspector}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           )}
           showDetail={true}

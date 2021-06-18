@@ -9,7 +9,7 @@ require("highcharts/modules/treemap")(Highcharts);
 const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#a2c0de"};
 const EFFORT_LIMIT = 0.5;
 const TEXT_LIMIT = 37;
-const colors = ['#2f7ed8', '#286673', '#8bbc21', '#964b4b', '#1aadce',
+const colors = ['#2f7ed8', '#732855', '#8bbc21', '#964b4b', '#1aadce',
         '#926dbf', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
 
 function getEpicPointValue(epicWorkItems, specsOnly) {
@@ -117,9 +117,10 @@ function getSeries(workItems, specsOnly, intl, view) {
       type: "treemap",
       layoutAlgorithm: "squarified",
       name: "Closed",
+      allowPointSelect: true,
       //color: '#ddd6e2',
 
-      data: Object.keys(workItemsByEpic).map((epicKey) => {
+      data: Object.keys(workItemsByEpic).map((epicKey, i) => {
         const epicName =
           epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.displayValue : workItemsByEpic[epicKey][0].epicName;
 
@@ -131,6 +132,7 @@ function getSeries(workItems, specsOnly, intl, view) {
           name: epicName,
           key: epicKey,
         },
+        color: epicKey === UNCATEGORIZED.key ? UNCATEGORIZED.color : colors[i % colors.length-1],
         workItems: workItemsByEpic[epicKey],
       }}),
       dataLabels: {
@@ -164,7 +166,7 @@ export const WorkItemsEpicEffortChart = Chart({
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy, context}) => {
+  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy, context, setChartPoints}) => {
     let series = [];
     if (showHierarchy) {
       series = getHierarchySeries(workItems, specsOnly, intl);
@@ -250,6 +252,11 @@ export const WorkItemsEpicEffortChart = Chart({
                 if (event.point.node.childrenTotal === 0 && workItem != null) {
                   context.navigate(WorkItems, workItem.displayId, workItem.workItemKey);
                 }
+              } else {
+                const {workItems, epic} = event.point;
+                // split the key by colon if key belongs to deliveryCycles, to get workItemKey
+                const workItemKeys = workItems.map(x => x.key.split(":")[0]).concat(epic.key);
+                setChartPoints(workItemKeys);
               }
             },
           },

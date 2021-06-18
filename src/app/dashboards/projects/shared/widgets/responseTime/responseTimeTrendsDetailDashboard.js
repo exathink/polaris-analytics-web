@@ -88,7 +88,7 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
                 cycleTimeTarget={cycleTimeTarget}
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
-                defaultSeries={defaultSeries}
+                defaultSeries={["all"]}
                 includeSubTasks={includeSubTasks}
               />
           }

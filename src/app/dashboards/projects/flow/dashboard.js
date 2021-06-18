@@ -11,11 +11,13 @@ import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryPr
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
-import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
+import { ProjectResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
+import { ProjectVolumeTrendsWidget } from "../shared/widgets/throughput";
+import { ProjectPredictabilityTrendsWidget } from "../shared/widgets/predictability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -245,58 +247,72 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
-      <DashboardRow h={"49%"} title={"Value"} className={styles.valueRow}>
+      <DashboardRow h={"49%"} title={"Trends"} className={styles.valueRow}>
         <DashboardWidget
-          name="epic-flow-mix-closed"
+          name="volume-trends"
           className={styles.valueBookClosed}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectVolumeTrendsWidget
               instanceKey={key}
-              context={context}
-              days={flowAnalysisPeriod}
-              specsOnly={specsOnly}
-              view={view}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          name="flow-type-flow-mix"
-          className={styles.valueMixChart}
-          render={({view}) => (
-            <ProjectFlowMixTrendsWidget
-              instanceKey={key}
-              measurementWindow={7}
+              measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
               samplingFrequency={7}
+              targetPercentile={0.7}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={specsOnly}
-              showCounts={true}
-              chartOptions={{alignTitle: "left"}}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarge={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
         />
         <DashboardWidget
-          name="epic-flow-mix-wip"
+          name="response-time-trends"
+          className={styles.valueMixChart}
+          render={({view}) => (
+            <ProjectResponseTimeTrendsWidget
+              instanceKey={key}
+              measurementWindow={flowAnalysisPeriod}
+              days={flowAnalysisPeriod}
+              samplingFrequency={7}
+              specsOnly={specsOnly}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              defaultSeries={["all"]}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="predictability-trends"
           className={styles.valueBookWip}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectPredictabilityTrendsWidget
               instanceKey={key}
-              context={context}
+              measurementWindow={flowAnalysisPeriod}
+              days={flowAnalysisPeriod}
               specsOnly={specsOnly}
-              activeOnly={true}
+              samplingFrequency={7}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
+              context={context}
               view={view}
-              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksWipInspector}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
           showDetail={true}
