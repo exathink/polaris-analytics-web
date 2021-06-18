@@ -27,7 +27,7 @@ const UncategorizedEpic = {
 };
 export function ImplementationCostDetailView({
   instanceKey,
-  workItems,
+  data,
   loading,
   activeOnly,
   specsOnly,
@@ -41,6 +41,10 @@ export function ImplementationCostDetailView({
   setClosedWithinDays,
   epicChartData
 }) {
+  const workItems = React.useMemo(() => {
+    return data ? data.project.workItems.edges.map((edge) => edge.node) : []
+  }, [data]);
+
   // add UncategorizedEpic
   const newWorkItems = workItems.concat(UncategorizedEpic);
   const initialBudgetRecords = () => {

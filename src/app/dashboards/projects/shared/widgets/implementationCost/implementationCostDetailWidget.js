@@ -36,12 +36,11 @@ export const ImplementationCostDetailWidget = ({
   }
 
   const queryData = data || previousData;
-  const workItems = queryData ? queryData.project.workItems.edges.map((edge) => edge.node) : [];
 
   return (
     <ImplementationCostDetailView
       instanceKey={instanceKey}
-      workItems={workItems}
+      data={queryData}
       loading={loading}
       epicChartData={epicChartData}
       activeOnly={activeOnly}
