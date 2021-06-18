@@ -41,7 +41,7 @@ function ValueDashboard({
               setClosedWithinDays={setClosedWithinDays}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="flow-type-flow-mix"
@@ -81,7 +81,7 @@ function ValueDashboard({
               setWorkItemScope={setWorkItemScope}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
       <div className={styles.scopeSelector}>
