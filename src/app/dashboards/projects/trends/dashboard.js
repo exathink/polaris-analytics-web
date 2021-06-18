@@ -126,7 +126,7 @@ function TrendsDashboard({
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               leadTimeTarget={leadTimeTarget}
-              cycleTimeTarge={cycleTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
@@ -151,7 +151,7 @@ function TrendsDashboard({
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["cycleTime"]}
+              defaultSeries={["leadTime", "cycleTime"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
