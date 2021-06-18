@@ -58,3 +58,7 @@
   align-items: center;
   margin-top: 15px;
 }
+
+.cardInspectorPanel{
+  visibility: hidden;
+}

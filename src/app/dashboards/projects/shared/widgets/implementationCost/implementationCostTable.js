@@ -11,8 +11,10 @@ import {injectIntl} from "react-intl";
 
 export const UncategorizedKey = "Uncategorized";
 export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
-export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems) {
+export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems, callBacks) {
   const nameSearchState = useSearch("name", {customRender});
+  const renderState = {render: customColRender(callBacks)};
+  const unCatRenderState = {render: unCatColRender(callBacks)};
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
     dispatch({
@@ -41,13 +43,14 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       filters: epicWorkItems.map((b) => ({text: b.name, value: b.name})),
       onFilter: (value, record) => record.title.indexOf(value) === 0,
-      render: renderLinkColumn("title"),
+      ...renderState
     },
     {
       title: "Type",
       dataIndex: "type",
       key: "type",
       width: "5%",
+      ...unCatRenderState
     },
     {
       title: "Cards",
@@ -55,6 +58,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       key: "cards",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
+      ...unCatRenderState
     },
 
     {
@@ -88,7 +92,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalEffort",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
-          render: renderColumn("totalEffort"),
+          ...renderState
         },
         {
           title: "Contributors",
@@ -96,7 +100,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalContributors",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalContributors"),
           width: "9%",
-          render: renderColumn("totalContributors"),
+          ...renderState
         },
       ],
     },
@@ -108,28 +112,28 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           dataIndex: "startDate",
           key: "startDate",
           sorter: (a, b) => SORTER.date_compare(a, b, "startDate"),
-          render: renderColumn("startDate"),
+          ...renderState
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
           sorter: (a, b) => SORTER.date_compare(a, b, "endDate"),
-          render: renderColumn("endDate"),
+          ...renderState
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
           sorter: (a, b) => SORTER.date_compare(a, b, "lastUpdate"),
-          render: renderColumn("lastUpdateDisplay"),
+          ...renderState
         },
         {
           title: "Elapsed (Days)",
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
-          render: renderColumn("elapsed"),
+          ...renderState
         },
       ],
     },
@@ -190,31 +194,6 @@ export const SORTER = {
   },
 };
 
-function renderColumn(key) {
-  return (_text, record) => {
-    if (record.key === UncategorizedKey) {
-      return null;
-    }
-
-    return record[key];
-  };
-}
-
-function renderLinkColumn(column) {
-  return (_text, record) => {
-    if (record.type === "epic") {
-      if (column === "title" && record.key === UncategorizedKey) {
-        return null;
-      } else {
-        return _text;
-      }
-    } else {
-      // render link for non-epics
-      return <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>{_text}</Link>;
-    }
-  };
-}
-
 function customRender(text, record, searchText) {
   if (record.type === "epic") {
     return (
@@ -237,6 +216,48 @@ function customRender(text, record, searchText) {
       </Link>
     )
   );
+}
+
+function customColRender({setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) => {
+    if (record.type === "epic") {
+      if (record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return text;
+      }
+    }
+    return (
+      <span
+        onClick={() => {
+          setShowPanel(true);
+          setWorkItemKey(record.key);
+        }}
+        style={{cursor: "pointer"}}
+      >
+        {text}
+      </span>
+    );
+  };
+}
+
+function unCatColRender({setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) => {
+    if (record.type === "epic") {
+      return text;
+    }
+    return (
+      <span
+        onClick={() => {
+          setShowPanel(true);
+          setWorkItemKey(record.key);
+        }}
+        style={{cursor: "pointer"}}
+      >
+        {text}
+      </span>
+    );
+  };
 }
 
 function getEpicKey(epicKey, epicWorkItemsMap) {

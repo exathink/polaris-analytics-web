@@ -1,4 +1,4 @@
-import {Alert, Button} from "antd";
+import {Alert, Button, Drawer} from "antd";
 import React from "react";
 import styles from "./implementationCost.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
@@ -14,6 +14,7 @@ import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts
 import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -70,7 +71,10 @@ export function ImplementationCostDetailView({
   }, [workItems]);
 
   const epicWorkItems = newWorkItems.filter((x) => x.workItemType === "epic");
-  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems);
+
+  const [showPanel, setShowPanel] = React.useState(false);
+  const [workItemKey, setWorkItemKey] = React.useState();
+  const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems, {setShowPanel, setWorkItemKey});
 
   // mutation to update project analysis periods
   const [mutate, {loading: mutationLoading, client}] = useUpdateProjectWorkItems({
@@ -186,6 +190,23 @@ export function ImplementationCostDetailView({
     return chartPoints.length > 0 ? filteredChartPoints : newWorkItems;
   }
 
+  function getCardInspectorPanel() {
+    return (
+      workItemKey && (
+        <Drawer
+          placement="top"
+          height={355}
+          closable={false}
+          onClose={() => setShowPanel(false)}
+          visible={showPanel}
+          key={workItemKey}
+        >
+          <CardInspectorWidget context={context} workItemKey={workItemKey} />
+        </Drawer>
+      )
+    );
+  }
+
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
@@ -226,6 +247,7 @@ export function ImplementationCostDetailView({
           rowClassName={getRowClassName}
         />
       </div>
+      <div className={styles.cardInspectorPanel}>{getCardInspectorPanel()}</div>
     </div>
   );
 }
