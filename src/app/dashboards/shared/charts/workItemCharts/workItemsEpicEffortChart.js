@@ -166,7 +166,7 @@ export const WorkItemsEpicEffortChart = Chart({
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy, context}) => {
+  getConfig: ({workItems, specsOnly, activeOnly, days, title, subtitle, intl, view, showHierarchy, context, setChartPoints}) => {
     let series = [];
     if (showHierarchy) {
       series = getHierarchySeries(workItems, specsOnly, intl);
@@ -252,6 +252,11 @@ export const WorkItemsEpicEffortChart = Chart({
                 if (event.point.node.childrenTotal === 0 && workItem != null) {
                   context.navigate(WorkItems, workItem.displayId, workItem.workItemKey);
                 }
+              } else {
+                const {workItems, epic} = event.point;
+                // split the key by colon if key belongs to deliveryCycles, to get workItemKey
+                const workItemKeys = workItems.map(x => x.key.split(":")[0]).concat(epic.key);
+                setChartPoints(workItemKeys);
               }
             },
           },

@@ -59,10 +59,13 @@ export function ImplementationCostDetailView({
   };
 
   const [state, dispatch] = React.useReducer(implementationCostReducer, initialState);
+  const [chartPoints, setChartPoints] = React.useState([]);
 
   React.useEffect(() => {
     // reset state when workItems are changing
     dispatch({type: actionTypes.UPDATE_DEFAULTS, payload: initialBudgetRecords()});
+    // reset chart points when workItems are changing
+    setChartPoints([]);
     // eslint-disable-next-line
   }, [workItems]);
 
@@ -178,6 +181,11 @@ export function ImplementationCostDetailView({
     return state.budgetRecords[record.key].mode === recordMode.EDIT ? "ant-table-row-selected" : "";
   };
 
+  function getTableData() {
+    const filteredChartPoints = chartPoints.map(key => workItems.find(x => x.key === key)).filter(Boolean).concat(UncategorizedEpic);
+    return chartPoints.length > 0 ? filteredChartPoints : newWorkItems;
+  }
+
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
@@ -206,13 +214,14 @@ export function ImplementationCostDetailView({
           subtitle={subtitle}
           view={view}
           context={context}
+          setChartPoints={setChartPoints}
         />
       </div>
       <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <ImplementationCostTable
           columns={columns}
-          tableData={newWorkItems}
+          tableData={getTableData()}
           loading={loading}
           rowClassName={getRowClassName}
         />
