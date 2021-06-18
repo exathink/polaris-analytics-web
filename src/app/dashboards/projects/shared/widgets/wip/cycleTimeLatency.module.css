@@ -1,30 +1,33 @@
-.cycleTimeLatencyDashboard{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 4% 50% 45%;
-    gap: 0.3rem 0.1rem;
-    grid-template-areas: "workItemScope workItemScope"
+.cycleTimeLatencyDashboard {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 4% 50% 45%;
+  gap: 0.5rem 0.5rem;
+  grid-template-areas:
+    "workItemScope workItemScope"
     "engineering delivery"
     "cycleTimeLatencyTable cycleTimeLatencyTable";
 }
 
-.engineering{
+.engineering {
   grid-area: engineering;
 }
 
-.delivery{
+.delivery {
   grid-area: delivery;
 }
 
-.cycleTimeLatencyTable{
- grid-area: cycleTimeLatencyTable;
+.cycleTimeLatencyTable {
+  grid-area: cycleTimeLatencyTable;
 }
 
-.workItemScope{
-    grid-area: workItemScope;
-    justify-content: center;
+.workItemScope {
+  grid-area: workItemScope;
+  justify-content: center;
+  display: flex;
 }
 
-.cardInspectorPanel{
+.cardInspectorPanel {
   visibility: hidden;
 }
