@@ -10,6 +10,7 @@ import Work from './work/topic';
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
+import { SYSTEM_TEAMS } from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -45,6 +46,7 @@ const context = {
           {
 
             match: 'contributors',
+            requiredFeatures: [SYSTEM_TEAMS],
             topic: Contributors,
 
           },
