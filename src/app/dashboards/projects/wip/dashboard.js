@@ -20,7 +20,7 @@ import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 import { ProjectImplementationCostWidget } from "../shared/widgets/implementationCost";
 
-import {VALUE_STREAM_VALUE_DASHBOARD} from "../../../../config/featureFlags";
+
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
