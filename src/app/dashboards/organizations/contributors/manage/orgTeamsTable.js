@@ -7,31 +7,31 @@ export function useOrgTeamsTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "10%"
+      width: "15%"
     },
     {
       title: "Contributors",
       dataIndex: "contributors",
       key: "contributors",
-      width: "5%",
+      width: "10%",
     },
     {
       title: "Value Streams",
       dataIndex: "project",
       key: "project",
-      width: "12%",
+      width: "10%",
     },
     {
       title: "Last Commit",
       dataIndex: "latestCommit",
       key: "latestCommit",
-      width: "10%",
+      width: "15%",
     },
     {
       title: "Last Project Activity",
       dataIndex: "lastProjectActivity",
       key: "lastProjectActivity",
-      width: "10%",
+      width: "15%",
     },
     {
       title: "",
