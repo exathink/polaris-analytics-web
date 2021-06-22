@@ -38,3 +38,36 @@ export function useQueryContributorAliasesInfo({accountKey, commitWithinDays}) {
     errorPolicy: "all",
   });
 }
+
+
+// Organization
+
+export const GET_ORGANIZATION_TEAMS_INFO_QUERY = gql`
+  query getOrganizationTeamsInfo($organizationKey: String!, $commitWithinDays: Int) {
+    organization(key: $organizationKey) {
+      contributors(interfaces: [CommitSummary], commitWithinDays: $commitWithinDays) {
+        edges {
+          node {
+            id
+            key
+            name
+            earliestCommit
+            latestCommit
+            commitCount
+          }
+        }
+      }
+    }
+  }
+`;
+
+export function useQueryOrganizationTeamsInfo({organizationKey, commitWithinDays}) {
+  return useQuery(GET_ORGANIZATION_TEAMS_INFO_QUERY, {
+    service: analytics_service,
+    variables: {
+      organizationKey: organizationKey,
+      commitWithinDays: commitWithinDays
+    },
+    errorPolicy: "all",
+  });
+}
