@@ -6,6 +6,10 @@ const topic =  {
   ...Topics.contributors,
   routes: [
     {
+      match: 'manage-teams',
+      component: React.lazy(() => import('./manage/manageTeams'))
+    },
+    {
       match: '',
       component: React.lazy(() => import('./dashboard'))
     }
