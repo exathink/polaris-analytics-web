@@ -5,7 +5,7 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
-import {BaseTableView} from "../../../../../components/tables/tableUtils";
+import {StripeTable} from "../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {SORTER} from "../../helper/utils";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
@@ -275,7 +275,7 @@ export const CycleTimeLatencyTable = injectIntl(
     };
 
     return (
-      <BaseTableView
+      <StripeTable
         columns={columns}
         dataSource={dataSource}
         testId="cycle-time-latency-table"

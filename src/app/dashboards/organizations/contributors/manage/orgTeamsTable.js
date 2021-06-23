@@ -1,5 +1,5 @@
 import React from "react";
-import {BaseTableView} from "../../../../components/tables/tableUtils";
+import {BaseTable} from "../../../../components/tables/tableUtils";
 
 export function useOrgTeamsTableColumns() {
   const columns = [
@@ -46,5 +46,5 @@ export function useOrgTeamsTableColumns() {
 
 export function OrgTeamsTable({tableData}) {
   const columns = useOrgTeamsTableColumns();
-  return <BaseTableView columns={columns} dataSource={tableData} />;
+  return <BaseTable columns={columns} dataSource={tableData} />;
 }
