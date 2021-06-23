@@ -6,7 +6,7 @@ const DEFAULTS = {
   PAGE_SIZE: 7
 };
 
-export function StripeTable({columns, dataSource, height, testId, loading, onChange}) {
+export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
     <Table
       rowClassName={(record, index) => (index % 2 === 0 ? styles.tableRowLight : styles.tableRowDark)}
@@ -20,11 +20,12 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
       data-testid={testId}
       bordered={true}
       onChange={onChange}
+      {...tableProps}
     />
   );
 }
 
-export function BaseTable({columns, dataSource, height, testId, loading, onChange}) {
+export function BaseTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
     <Table
       size="small"
@@ -36,11 +37,12 @@ export function BaseTable({columns, dataSource, height, testId, loading, onChang
       loading={loading}
       data-testid={testId}
       onChange={onChange}
+      {...tableProps}
     />
   );
 }
 
-export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options={}}) {
+export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options={}, ...tableProps}) {
   const {showTotal, pageSize} = options;
 
   return (
@@ -59,6 +61,7 @@ export function PaginatedTable({columns, dataSource, height, testId, loading, on
       loading={loading}
       data-testid={testId}
       onChange={onChange}
+      {...tableProps}
     />
   );
 }
