@@ -6,6 +6,7 @@ import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProje
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
+import {useResetComponentState} from "../../helper/hooks";
 
 const {Option} = Select;
 
@@ -55,12 +56,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   }
 
   // utilizing this trick to reset component (changing the key will remount the chart component with same props)
-  const [resetComponentStateKey, setKey] = React.useState(1);
+  const [resetComponentStateKey, resetState] = useResetComponentState();
 
-  function resetState() {
-    const newKey = resetComponentStateKey === 1 ? 2 : 1;
-    setKey(newKey);
-  }
   // Reset state on cancel
   function handleCancelClick(e) {
     dispatch({type: actionTypes.CANCEL_EDIT_MODE});

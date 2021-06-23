@@ -6,10 +6,11 @@ import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/sha
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
-import {Drawer} from "antd";
+import {Button, Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../helpers/utility";
+import {useResetComponentState} from "../../helper/hooks";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId"];
@@ -118,6 +119,8 @@ export const CycleTimeLatencyDetailView = ({
   const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(initWorkItems, applyFiltersTest);
   const [chartFilteredWorkItems] = useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyFiltersTest);
 
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+
   function getCardInspectorPanel() {
     return (
       workItemKey && (
@@ -149,13 +152,31 @@ export const CycleTimeLatencyDetailView = ({
     }
   }
 
+  function handleResetAll() {
+    // reset table component state
+    setTableFilteredWorkItems(initWorkItems);
+    setAppliedFilters(EmptyObj);
+
+    // reset chart components state
+    resetComponentState();
+  }
+
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
+      <div className={styles.resetAllButton}>
+        {(tableFilteredWorkItems.length < initWorkItems.length ||
+          chartFilteredWorkItems.length < initWorkItems.length) && (
+          <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
+            Clear Filters
+          </Button>
+        )}
+      </div>
       <div className={styles.engineering}>
         <WorkItemsCycleTimeVsLatencyChart
+          key={resetComponentStateKey}
           view={view}
           stageName={"Engineering"}
           specsOnly={specsOnly}
@@ -170,6 +191,7 @@ export const CycleTimeLatencyDetailView = ({
       </div>
       <div className={styles.delivery}>
         <WorkItemsCycleTimeVsLatencyChart
+          key={resetComponentStateKey}
           view={view}
           stageName={"Delivery"}
           specsOnly={specsOnly}

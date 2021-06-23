@@ -1,13 +1,13 @@
 .cycleTimeLatencyDashboard {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 4% 50% 45%;
   gap: 0.5rem 0.5rem;
   grid-template-areas:
-    "workItemScope workItemScope"
-    "engineering delivery"
-    "cycleTimeLatencyTable cycleTimeLatencyTable";
+    ". workItemScope workItemScope resetAll"
+    "engineering engineering delivery delivery"
+    "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
 }
 
 .engineering {
@@ -30,4 +30,16 @@
 
 .cardInspectorPanel {
   visibility: hidden;
+}
+
+.resetAllButton {
+  grid-area: resetAll;
+  justify-self: center;
+  align-self: flex-end;
+}
+
+.resetAll{
+  font-size: 12px;
+  color: #333333;
+  border-radius: 2px !important;
 }
