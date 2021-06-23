@@ -7,7 +7,7 @@ const topic =  {
   routes: [
     {
       match: 'manage-teams',
-      component: React.lazy(() => import('./manage/manageTeams'))
+      component: React.lazy(() => import('./teams/manage/manageTeams'))
     },
     {
       match: '',

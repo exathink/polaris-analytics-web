@@ -1,7 +1,7 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
+import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 
 const dashboard_id = "dashboards.contributors.manage.manage-teams";
 

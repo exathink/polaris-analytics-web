@@ -6,7 +6,7 @@ import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
-import {OrgTeamsTableWidget} from "./manage/orgTeamsTableWidget";
+import {OrgTeamsTableWidget} from "./teams/orgTeamsTableWidget";
 import Button from "../../../../components/uielements/button";
 
 const dashboard_id = 'dashboards.contributors.organization';
