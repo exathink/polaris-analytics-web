@@ -1,5 +1,6 @@
 import React from "react";
 import {BaseTable} from "../../../../components/tables/tableUtils";
+import Button from "../../../../../components/uielements/button";
 
 export function useOrgTeamsTableColumns() {
   const columns = [
@@ -37,7 +38,11 @@ export function useOrgTeamsTableColumns() {
       title: "",
       key: "actions",
       width: "10%",
-      render: () => <div></div>,
+      render: (text, record) => (
+        <Button type={"primary"} size={"small"}>
+          Select
+        </Button>
+      ),
     },
   ];
 
