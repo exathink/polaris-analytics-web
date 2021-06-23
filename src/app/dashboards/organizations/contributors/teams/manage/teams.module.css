@@ -1,0 +1,75 @@
+.manageTeamsWrapper {
+    background-color: white;
+    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: 20px 1fr 1fr 20px;
+    grid-template-areas:
+      ". steps steps ."
+      ". stepContent stepContent .";
+    gap: 0.5rem;
+  }
+  
+  .manageTeamsStepsWrapper {
+    grid-area: steps;
+  }
+  
+  .manageTeamsStepsContent {
+    min-height: 50vh;
+    grid-area: stepContent;
+  }
+
+  /* 
+  SelectTeamMembersPage
+  */
+
+.selectTeamMembersPage {
+    display: grid;
+    gap: 0.2rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "teamMembersSlider teamMembersSlider"
+      "userMessage userMessage"
+      "teamMembersTable teamMembersTable"
+      "selectTeamMembersNextAction selectTeamMembersDoneAction";
+  }
+  
+  .selectTeamMembersSlider {
+    justify-self: center;
+    min-width: 60%;
+    min-height: 6rem;
+    grid-area: teamMembersSlider;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .userMessage {
+    justify-self: center;
+    grid-area: userMessage;
+    color: grey;
+  }
+  
+  .selectTeamMembersTableWrapper {
+    grid-area: teamMembersTable;
+    margin-bottom: 20px;
+  }
+  
+  .rangeSliderWrapper {
+    width: 90%;
+  }
+  .selectTeamMembersNextAction {
+    padding-bottom: 16px;
+    grid-area: selectTeamMembersNextAction;
+    justify-self: flex-end;
+  }
+  
+  .selectTeamMembersDoneAction {
+    grid-area: selectTeamMembersDoneAction;
+    justify-self: flex-start;
+  }
+
+  .activeContributors {
+    margin-left: 30px;
+    padding: 8px;
+    width: 200px;
+    background-color: ghostwhite;
+  }
