@@ -170,7 +170,7 @@ export const CycleTimeLatencyDetailView = ({
         {(tableFilteredWorkItems.length < initWorkItems.length ||
           chartFilteredWorkItems.length < initWorkItems.length) && (
           <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
-            Reset All
+            Clear Filters
           </Button>
         )}
       </div>
