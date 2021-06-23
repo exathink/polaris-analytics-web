@@ -43,17 +43,14 @@ export function useQueryContributorAliasesInfo({accountKey, commitWithinDays}) {
 // Organization
 
 export const GET_ORGANIZATION_TEAMS_INFO_QUERY = gql`
-  query getOrganizationTeamsInfo($organizationKey: String!, $commitWithinDays: Int) {
+  query getOrganizationTeamsInfo($organizationKey: String!) {
     organization(key: $organizationKey) {
-      contributors(interfaces: [CommitSummary], commitWithinDays: $commitWithinDays) {
+      teams {
         edges {
           node {
-            id
-            key
             name
-            earliestCommit
-            latestCommit
-            commitCount
+            key
+            contributorCount
           }
         }
       }
@@ -61,12 +58,11 @@ export const GET_ORGANIZATION_TEAMS_INFO_QUERY = gql`
   }
 `;
 
-export function useQueryOrganizationTeamsInfo({organizationKey, commitWithinDays}) {
+export function useQueryOrganizationTeamsInfo({organizationKey}) {
   return useQuery(GET_ORGANIZATION_TEAMS_INFO_QUERY, {
     service: analytics_service,
     variables: {
       organizationKey: organizationKey,
-      commitWithinDays: commitWithinDays
     },
     errorPolicy: "all",
   });

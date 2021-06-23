@@ -7,9 +7,8 @@ import {OrgTeamsTableView} from "./orgTeamsTableView";
 export function OrgTeamsTableWidget({organizationKey}) {
   const {loading, error, data} = useQueryOrganizationTeamsInfo({
     organizationKey,
-    commitWithinDays: 30,
   });
-  
+
   if (loading) return <Loading />;
   if (error) {
     logGraphQlError("OrgTeamsTableWidget.useQueryOrganizationTeamsInfo", error);

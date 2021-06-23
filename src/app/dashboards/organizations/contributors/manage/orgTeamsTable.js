@@ -1,5 +1,5 @@
 import React from "react";
-import {BaseTableView} from "../../../projects/shared/components/baseTableView";
+import {BaseTableView} from "../../../../components/tables/tableUtils";
 
 export function useOrgTeamsTableColumns() {
   const columns = [
@@ -7,12 +7,12 @@ export function useOrgTeamsTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "15%"
+      width: "15%",
     },
     {
       title: "Contributors",
-      dataIndex: "contributors",
-      key: "contributors",
+      dataIndex: "contributorCount",
+      key: "contributorCount",
       width: "10%",
     },
     {
@@ -37,15 +37,14 @@ export function useOrgTeamsTableColumns() {
       title: "",
       key: "actions",
       width: "10%",
-      render: () => <div></div>
-    }
+      render: () => <div></div>,
+    },
   ];
 
   return columns;
 }
 
 export function OrgTeamsTable({tableData}) {
-
   const columns = useOrgTeamsTableColumns();
-  return <BaseTableView columns={columns} dataSource={[]} />;
+  return <BaseTableView columns={columns} dataSource={tableData} />;
 }
