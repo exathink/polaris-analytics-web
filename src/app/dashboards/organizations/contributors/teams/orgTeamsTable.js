@@ -1,5 +1,5 @@
 import React from "react";
-import {BaseTable} from "../../../../components/tables/tableUtils";
+import {PaginatedTable} from "../../../../components/tables/tableUtils";
 import Button from "../../../../../components/uielements/button";
 
 export function useOrgTeamsTableColumns() {
@@ -51,5 +51,7 @@ export function useOrgTeamsTableColumns() {
 
 export function OrgTeamsTable({tableData}) {
   const columns = useOrgTeamsTableColumns();
-  return <BaseTable columns={columns} dataSource={tableData} />;
+
+  const paginationOptions = {showTotal: total => `${total} Teams`};
+  return <PaginatedTable columns={columns} dataSource={tableData} options={paginationOptions}/>;
 }
