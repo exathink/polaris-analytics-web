@@ -5,7 +5,7 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
-import {BaseTableView} from "../../components/baseTableView";
+import {BaseTableView} from "../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {SORTER} from "../../helper/utils";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";

@@ -1,6 +1,6 @@
 import React from "react";
 import {Table} from "antd";
-import styles from "./baseTableView.module.css";
+import styles from "./tableUtils.module.css";
 
 export function BaseTableView({columns, dataSource, height, testId, loading, onChange}) {
   return (
