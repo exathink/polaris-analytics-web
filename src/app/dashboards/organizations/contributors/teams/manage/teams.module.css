@@ -73,3 +73,62 @@
     width: 200px;
     background-color: ghostwhite;
   }
+
+  /* Update Teams Page */
+  .updateTeamsPage {
+    margin-top: 16px;
+    display: grid;
+    gap: 0.2rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "updateTeamsTitle updateTeamsTitle"
+      "updateTeamsTable updateTeamsTable"
+      "actionButtons actionButtons"
+      "updateTeamsAction updateTeamsDoneAction";
+  }
+  
+  .messageNotification {
+    justify-self: flex-end;
+    grid-area: excludeFromAnalysis;
+    z-index: 2;
+  }
+  .updateTeamsAction {
+    padding-bottom: 16px;
+    grid-area: updateTeamsAction;
+    justify-self: flex-end;
+  }
+  .updateTeamsBackAction {
+    grid-area: updateTeamsAction;
+  }
+  .updateTeamsDoneAction {
+    grid-area: updateTeamsDoneAction;
+    justify-self: flex-start;
+  }
+
+  .updateTeamsTitle {
+    margin-top: 16px;
+    align-self: center;
+    grid-area: updateTeamsTitle;
+    color: grey;
+    min-height: 1.5rem;
+  }
+  
+  .updateTeamsTable {
+    grid-area: updateTeamsTable;
+    margin-bottom: 16px;
+  }
+
+  .contributorsButton {
+    background-color: rgb(120, 36, 181);
+    border-color: rgb(120, 36, 181);
+    color: white;
+    margin: 1px;
+    min-width: 85px;
+    font-weight: 500;
+  }
+  
+  .contributorsPrimaryButton {
+    margin: 1px;
+    min-width: 85px;
+    font-weight: 500;
+  }
