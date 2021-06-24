@@ -88,17 +88,20 @@
     "updateTeamsAction updateTeamsDoneAction";
 }
 
-.selectTeam{
+.selectTeam {
   grid-area: selectTeam;
   min-height: 5rem;
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
 
-.selectTeamLabel{
-  margin-bottom: 5px;
+.selectTeamLabel {
+  margin-right: 5px;
 }
 
+.newTeam {
+  margin-left: 20px;
+}
 .messageNotification {
   justify-self: flex-end;
   grid-area: messageNotification;

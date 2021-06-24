@@ -1,4 +1,4 @@
-import {Alert, Button, Select} from "antd";
+import {Alert, Button, Input, Select} from "antd";
 import React from "react";
 import styles from "./teams.module.css";
 import {useUpdateTeams} from "./useUpdateTeams";
@@ -7,17 +7,19 @@ import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {getRowSelection, UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
 import {useQueryOrganizationTeamsInfo} from "../../../../../admin/account/contributors/useQueryContributorAliasesInfo";
+import {PlusCircleOutlined} from "@ant-design/icons";
 
 const {Option} = Select;
 
-function getTransformedData(selectedRecords) {
-  const kvArr = selectedRecords.map((x) => [x.key, x]);
+function getTransformedData(selectedRecords, targetTeam) {
+  const kvArr = selectedRecords.map((x) => [x.key, {...x, targetTeam: targetTeam.name}]);
   return new Map(kvArr);
 }
 
 export function UpdateTeamsPage({organizationKey, context, intl, current, selectedRecords, dispatch: dispatchEvent}) {
   const initialState = {
     localRecords: selectedRecords,
+    targetTeam: {},
     errorMessage: "",
     successMessage: "",
     timeOutExecuting: undefined,
@@ -26,6 +28,7 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
   const [
     {
       localRecords,
+      targetTeam,
       errorMessage,
       successMessage,
       timeOutExecuting, // This will remain true till the time timeout is executing.
@@ -136,7 +139,7 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
   }
 
   const columns = useUpdateTeamsColumns();
-  const data = getTransformedData(selectedRecords);
+  const data = getTransformedData(selectedRecords, targetTeam);
   const setLocalRecords = (records) => dispatch({type: actionTypes.UPDATE_LOCAL_RECORDS, payload: records});
 
   function getTitleText() {
@@ -145,32 +148,43 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
 
   function selectTeamDropdown() {
     const edges = teamsData?.["organization"]?.["teams"]?.["edges"] ?? [];
-    const teamsList = edges.map((edge) => edge.node);
+
+    const newTeamOption = {key: "newTeam", name: "New Team"};
+    const teamsList = edges.map((edge) => edge.node).concat(newTeamOption);
     const optionElements = teamsList.map((t, index) => (
       <Option key={t.key} value={index}>
-        {t.name}
+        {index === teamsList.length - 1 && <PlusCircleOutlined style={{color: "green"}} />} {t.name}
       </Option>
     ));
 
-    function handleChange(index) {
-
+    function handleDropdownChange(index) {
+      const selectedTeam = teamsList[index];
+      dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: selectedTeam});
     }
+
+    function handleNewTeamChange(e) {
+      dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: {key: "newTeam", name: e.target.value}});
+    }
+
+    const newTeamElement = targetTeam.key === "newTeam" && (
+      <Input value={targetTeam.name ?? ""} onChange={handleNewTeamChange} />
+    );
     return (
       <>
-      <div className={styles.selectTeamLabel}>
-        Select Team
-      </div>
-      <Select
-        defaultValue={0}
-        style={{width: 200}}
-        onChange={handleChange}
-        getPopupContainer={(node) => node.parentNode}
-      >
-        {optionElements}
-      </Select>
+        <div className={styles.selectTeamLabel}>Select Team</div>
+        <Select
+          defaultValue={0}
+          style={{width: 200}}
+          onChange={handleDropdownChange}
+          getPopupContainer={(node) => node.parentNode}
+        >
+          {optionElements}
+        </Select>
+        <div className={styles.newTeam}>{newTeamElement}</div>
       </>
     );
   }
+
   return (
     <div className={styles.updateTeamsPage}>
       <div className={styles.selectTeam}>{selectTeamDropdown()}</div>

@@ -26,6 +26,12 @@ export function updateTeamsReducer(state, action) {
         timeOutExecuting: action.payload,
       };
     }
+    case actionTypes.UPDATE_TARGET_TEAM: {
+      return {
+        ...state,
+        targetTeam: action.payload,
+      };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
