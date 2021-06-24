@@ -4,10 +4,12 @@ import styles from "./teams.module.css";
 import {UpdateTeamsPage} from "./updateTeamsPage";
 import {SelectTeamMembersPage} from "./selectTeamMembersPage";
 import {teamsReducer} from "./teamsReducer";
+import {ACTIVE_WITHIN_DAYS} from "./selectTeamMembersTable";
 
 const {Step} = Steps;
 
 const initialState = {
+  commitWithinDays: ACTIVE_WITHIN_DAYS,
   current: 0,
   selectedRecords: [],
 };
@@ -23,7 +25,7 @@ export function ManageTeamsWorkflow({organizationKey, context, intl}) {
     dispatch,
   };
 
-  let steps = [
+  const steps = [
     {
       title: "Select Team Members",
       content: <SelectTeamMembersPage {...pageComponentProps} />,

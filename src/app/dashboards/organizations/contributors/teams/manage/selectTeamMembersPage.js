@@ -19,9 +19,7 @@ function getTransformedData(data, intl) {
     .map((node) => {
       return {
         ...node,
-        keyBackup: node.key, // keeping key for backup for later use
         latestCommit: formatDateTime(intl, node.latestCommit),
-        alias_count: node.contributorAliasesInfo ? node.contributorAliasesInfo.length - 1 : 0,
       };
     })
     .map((node) => [node.key, node]);
