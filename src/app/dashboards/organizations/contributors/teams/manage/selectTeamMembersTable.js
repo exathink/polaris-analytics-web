@@ -3,9 +3,17 @@ import {StripeTable} from "../../../../../components/tables/tableUtils";
 import {diff_in_dates} from "../../../../../helpers/utility";
 
 export const ACTIVE_WITHIN_DAYS = 30;
+const DEFAULT_TEAM = "Unassigned";
+
+function customTeamNameRender(text, record, searchText) {
+  return text ?? DEFAULT_TEAM;
+}
 
 export function useSelectTeamMembersColumns() {
-  const [nameSearchState, teamNameSearchState] = [useSearch("name"), useSearch("teamName")];
+  const [nameSearchState, teamNameSearchState] = [
+    useSearch("name"),
+    useSearch("teamName", {customRender: customTeamNameRender}),
+  ];
   const columns = [
     {
       title: "Name",
@@ -36,12 +44,21 @@ export function useSelectTeamMembersColumns() {
       key: "commitCount",
       width: "20%",
       sorter: (a, b) => a.commitCount - b.commitCount,
-    }
+    },
   ];
   return columns;
 }
 export function SelectTeamMembersTable({tableData, columns, loading, testId, rowSelection}) {
-  return <StripeTable dataSource={tableData} columns={columns} loading={loading} testId={testId} height="45vh" rowSelection={rowSelection}/>;
+  return (
+    <StripeTable
+      dataSource={tableData}
+      columns={columns}
+      loading={loading}
+      testId={testId}
+      height="45vh"
+      rowSelection={rowSelection}
+    />
+  );
 }
 
 export function getRowSelection(data, [selectedRecords, setSelectedRecords], options = {}) {

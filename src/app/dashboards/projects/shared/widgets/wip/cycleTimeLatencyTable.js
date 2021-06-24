@@ -89,7 +89,7 @@ function customRender(text, record, searchText) {
 }
 
 function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setPlacement("top");
@@ -108,7 +108,7 @@ function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
 }
 
 function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setPlacement("top");

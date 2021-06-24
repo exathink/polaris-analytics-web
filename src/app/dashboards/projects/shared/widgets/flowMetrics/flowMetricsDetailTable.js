@@ -50,7 +50,7 @@ function customRender(text, record, searchText) {
 }
 
 function customTitleRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setShowPanel(true);
@@ -68,7 +68,7 @@ function customTitleRender(setShowPanel, setWorkItemKey) {
 }
 
 function customColRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setShowPanel(true);

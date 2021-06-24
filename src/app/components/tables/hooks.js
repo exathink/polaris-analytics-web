@@ -70,7 +70,7 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
     },
     render: (text, record) => {
       if (customRender) {
-        return text && customRender(text, record, searchText);
+        return customRender(text, record, searchText);
       }
       return (
         text && (
