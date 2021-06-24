@@ -1,4 +1,4 @@
-import {Alert, Button} from "antd";
+import {Alert, Button, Select} from "antd";
 import React from "react";
 import styles from "./teams.module.css";
 import {useUpdateTeams} from "./useUpdateTeams";
@@ -6,6 +6,9 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {getRowSelection, UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
+import {useQueryOrganizationTeamsInfo} from "../../../../../admin/account/contributors/useQueryContributorAliasesInfo";
+
+const {Option} = Select;
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -35,6 +38,10 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
   React.useEffect(() => {
     return () => clearTimeout(timeOutRef.current);
   }, []);
+
+  const {data: teamsData, error} = useQueryOrganizationTeamsInfo({
+    organizationKey,
+  });
 
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateTeams({
@@ -136,8 +143,37 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
     return "Update Target team for below contributors";
   }
 
+  function selectTeamDropdown() {
+    const edges = teamsData?.["organization"]?.["teams"]?.["edges"] ?? [];
+    const teamsList = edges.map((edge) => edge.node);
+    const optionElements = teamsList.map((t, index) => (
+      <Option key={t.key} value={index}>
+        {t.name}
+      </Option>
+    ));
+
+    function handleChange(index) {
+
+    }
+    return (
+      <>
+      <div className={styles.selectTeamLabel}>
+        Select Team
+      </div>
+      <Select
+        defaultValue={0}
+        style={{width: 200}}
+        onChange={handleChange}
+        getPopupContainer={(node) => node.parentNode}
+      >
+        {optionElements}
+      </Select>
+      </>
+    );
+  }
   return (
     <div className={styles.updateTeamsPage}>
+      <div className={styles.selectTeam}>{selectTeamDropdown()}</div>
       <div className={styles.messageNotification}>
         {errorMessage && (
           <Alert
