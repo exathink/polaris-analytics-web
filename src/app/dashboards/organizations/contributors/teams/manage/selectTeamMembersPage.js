@@ -25,7 +25,6 @@ function getTransformedData(data, intl) {
       };
     })
     .map((node) => [node.key, node]);
-    debugger;
   return new Map(kvArr);
 }
 
@@ -138,7 +137,7 @@ export function SelectTeamMembersPage({
           loading={loading}
           testId="select-team-members-table"
           rowSelection={{
-            ...getRowSelection(teamsData.values(), [selectedRecords, setSelectedRecords], {getCheckboxProps}),
+            ...getRowSelection(teamsData, [selectedRecords, setSelectedRecords], {getCheckboxProps}),
           }}
         />
       </div>

@@ -19,7 +19,7 @@ export function useSelectTeamMembersColumns() {
       title: "Current Team",
       dataIndex: "teamName",
       key: "teamName",
-      width: "20%",
+      width: "25%",
       sorter: (a, b) => a.teamName.localeCompare(b.teamName),
       ...teamNameSearchState,
     },
