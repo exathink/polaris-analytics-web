@@ -149,28 +149,18 @@ export function UpdateTeamsPage({
     return "Update Target team for below contributors";
   }
 
-  const newTeamOption = {key: "newTeam", name: "New Team"};
-  const allTeams = teamsList.concat(newTeamOption);
-
   function selectTeamDropdown() {
-    const optionElements = allTeams.map((t, index) => (
+    const optionElements = teamsList.map((t, index) => (
       <Option key={t.key} value={index}>
         {index === teamsList.length && <PlusCircleOutlined style={{color: "green"}} />} {t.name}
       </Option>
     ));
 
     function handleDropdownChange(index) {
-      const selectedTeam = allTeams[index];
+      const selectedTeam = teamsList[index];
       dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: selectedTeam});
     }
 
-    function handleNewTeamChange(e) {
-      dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: {key: "newTeam", name: e.target.value}});
-    }
-
-    const newTeamElement = targetTeam.key === "newTeam" && (
-      <Input value={targetTeam.name ?? ""} onChange={handleNewTeamChange} />
-    );
     return (
       <>
         <div className={styles.selectTeamLabel}>Select Team</div>
@@ -182,7 +172,6 @@ export function UpdateTeamsPage({
         >
           {optionElements}
         </Select>
-        <div className={styles.newTeam}>{newTeamElement}</div>
       </>
     );
   }

@@ -99,9 +99,6 @@
   margin-right: 5px;
 }
 
-.newTeam {
-  margin-left: 20px;
-}
 .messageNotification {
   justify-self: flex-end;
   grid-area: messageNotification;
