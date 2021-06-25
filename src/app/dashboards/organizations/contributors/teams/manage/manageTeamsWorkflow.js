@@ -48,7 +48,7 @@ export function ManageTeamsWorkflow({organizationKey, context, intl}) {
     },
     {
       title: "Update Teams",
-      content: <UpdateTeamsPage {...pageComponentProps} teamsList={teamsList}/>,
+      content: <UpdateTeamsPage {...pageComponentProps} teamsList={teamsList} />,
     },
   ];
 

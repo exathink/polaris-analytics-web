@@ -36,9 +36,8 @@ export function useUpdateTeamsColumns() {
       key: "targetTeam",
       width: "25%",
       render: (text, record) => {
-
         return text;
-      }
+      },
     },
   ];
   return columns;

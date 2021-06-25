@@ -23,7 +23,6 @@ export function teamsReducer(state, action) {
       };
     }
     case actionTypes.UPDATE_SELECTED_RECORDS: {
-
       return {
         ...state,
         selectedRecords: action.payload,

@@ -144,3 +144,21 @@
   min-width: 85px;
   font-weight: 500;
 }
+
+/* override completed steps color */
+.manageTeamsStepsWrapper
+  :global(.ant-steps-item):global(.ant-steps-item-finish)
+  :global(.ant-steps-item-icon)
+  > :global(.ant-steps-icon) {
+  color: #d4d4d4;
+}
+
+.manageTeamsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+  background-color: #7824b5;
+  border-color: #7824b5;
+}
+
+.manageTeamsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+  background: #7824b5;
+  border: #7824b5;
+}
