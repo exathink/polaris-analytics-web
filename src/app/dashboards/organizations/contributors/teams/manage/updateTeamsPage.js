@@ -96,7 +96,7 @@ export function UpdateTeamsPage({
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    context.go("..", "contributors");
   };
 
   function isButtonDisabled() {

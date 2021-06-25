@@ -55,7 +55,7 @@ export function SelectTeamMembersPage({
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    context.go("..", "contributors");
   };
 
   function renderActionButtons() {
