@@ -1,9 +1,10 @@
 import React from "react";
 import {Table} from "antd";
 import styles from "./tableUtils.module.css";
+import {diff_in_dates} from "../../helpers/utility";
 
 const DEFAULTS = {
-  PAGE_SIZE: 7
+  PAGE_SIZE: 7,
 };
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
@@ -42,7 +43,7 @@ export function BaseTable({columns, dataSource, height, testId, loading, onChang
   );
 }
 
-export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options={}, ...tableProps}) {
+export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options = {}, ...tableProps}) {
   const {showTotal, pageSize} = options;
 
   return (
@@ -65,3 +66,17 @@ export function PaginatedTable({columns, dataSource, height, testId, loading, on
     />
   );
 }
+
+// sorting utilities to be used for table columns
+export const SORTER = {
+  number_compare: (numa, numb) => {
+    return numa - numb;
+  },
+  string_compare: (stra, strb) => {
+    return stra.localeCompare(strb);
+  },
+  date_compare: (date_a, date_b) => {
+    const span = diff_in_dates(date_a, date_b);
+    return span["_milliseconds"];
+  },
+};
