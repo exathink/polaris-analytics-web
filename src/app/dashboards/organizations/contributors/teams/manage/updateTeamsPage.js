@@ -101,7 +101,7 @@ export function UpdateTeamsPage({
 
   function isButtonDisabled() {
     // all flows
-    if (loading || timeOutExecuting === true) {
+    if (loading || timeOutExecuting === true || localRecords.length === 0) {
       return true;
     }
   }
