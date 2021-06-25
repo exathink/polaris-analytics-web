@@ -1,4 +1,4 @@
-import {Alert, Button, Input, Select} from "antd";
+import {Alert, Button, Select} from "antd";
 import React from "react";
 import styles from "./teams.module.css";
 import {useUpdateTeams} from "./useUpdateTeams";
@@ -61,16 +61,16 @@ export function UpdateTeamsPage({
         timeOutRef.current = setTimeout(() => {
           dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: false});
 
-          // if successful navigate to select contributors page after 1/2 sec (moveToFirstStep)
+          // if successful navigate to select team members page after 1/2 sec
           dispatchEvent({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
         }, 500);
       } else {
-        logGraphQlError("UpdateContributorPage.useUpdateContributor", updateContributorTeamAssignments.errorMessage);
+        logGraphQlError("UpdateTeamsPage.useUpdateTeams", updateContributorTeamAssignments.errorMessage);
         dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateContributorTeamAssignments.errorMessage});
       }
     },
     onError: (error) => {
-      logGraphQlError("UpdateContributorPage.useUpdateContributor", error);
+      logGraphQlError("UpdateTeamsPage.useUpdateTeams", error);
       dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: error.message});
     },
   });
