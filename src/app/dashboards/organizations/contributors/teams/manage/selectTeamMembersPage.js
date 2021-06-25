@@ -4,10 +4,11 @@ import {DaysRangeSlider, ONE_YEAR} from "../../../../../dashboards/shared/compon
 import styles from "./teams.module.css";
 import {actionTypes} from "./constants";
 import {useQueryOrganizationContributors} from "./useQueryOrganizationContributors";
-import {getRowSelection, SelectTeamMembersTable, useSelectTeamMembersColumns} from "./selectTeamMembersTable";
+import {SelectTeamMembersTable, useSelectTeamMembersColumns} from "./selectTeamMembersTable";
 import {Statistic} from "../../../../../components/misc/statistic/statistic";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {formatDateTime} from "../../../../../i18n/utils";
+import {getRowSelection} from "../utils";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -102,13 +103,6 @@ export function SelectTeamMembersPage({
     return "Select one or more contributors to add to a new or existing team.";
   }
 
-  function getCheckboxProps(record) {
-    return {
-      disabled: false,
-      name: record.name,
-    };
-  }
-
   return (
     <div className={styles.selectTeamMembersPage}>
       {renderActionButtons()}
@@ -135,7 +129,7 @@ export function SelectTeamMembersPage({
           loading={loading}
           testId="select-team-members-table"
           rowSelection={{
-            ...getRowSelection(teamsData, [selectedRecords, setSelectedRecords], {getCheckboxProps}),
+            ...getRowSelection(teamsData, [selectedRecords, setSelectedRecords]),
           }}
         />
       </div>

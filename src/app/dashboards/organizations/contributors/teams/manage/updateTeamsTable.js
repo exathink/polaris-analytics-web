@@ -1,7 +1,6 @@
 import {useSearch} from "../../../../../components/tables/hooks";
-import {StripeTable} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 
-export const ACTIVE_WITHIN_DAYS = 30;
 const DEFAULT_TEAM = "Unassigned";
 
 function customTeamNameRender(text, record, searchText) {
@@ -19,7 +18,7 @@ export function useUpdateTeamsColumns() {
       dataIndex: "name",
       key: "name",
       width: "40%",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...nameSearchState,
     },
     {
@@ -27,7 +26,7 @@ export function useUpdateTeamsColumns() {
       dataIndex: "teamName",
       key: "teamName",
       width: "25%",
-      sorter: (a, b) => a.teamName.localeCompare(b.teamName),
+      sorter: (a, b) => SORTER.string_compare(a.teamName, b.teamName),
       ...teamNameSearchState,
     },
     {
@@ -53,15 +52,4 @@ export function UpdateTeamsTable({tableData, columns, loading, testId, rowSelect
       rowSelection={rowSelection}
     />
   );
-}
-
-export function getRowSelection(data, [selectedRecords, setSelectedRecords], options = {}) {
-  return {
-    hideSelectAll: true,
-    selectedRowKeys: selectedRecords.map((s) => s.key),
-    onSelect: (_record, _selected, selectedRows) => {
-      setSelectedRecords(selectedRows.map((x) => data.get(x.key)));
-    },
-    ...options,
-  };
 }

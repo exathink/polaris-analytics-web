@@ -5,9 +5,8 @@ import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
-import {StripeTable} from "../../../../../components/tables/tableUtils";
+import {StripeTable, SORTER} from "../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../i18n";
-import {SORTER} from "../../helper/utils";
 import {toMoment} from "../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {

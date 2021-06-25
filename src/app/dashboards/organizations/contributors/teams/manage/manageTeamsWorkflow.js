@@ -4,10 +4,10 @@ import styles from "./teams.module.css";
 import {UpdateTeamsPage} from "./updateTeamsPage";
 import {SelectTeamMembersPage} from "./selectTeamMembersPage";
 import {teamsReducer} from "./teamsReducer";
-import {ACTIVE_WITHIN_DAYS} from "./selectTeamMembersTable";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
 import {Loading} from "../../../../../components/graphql/loading";
+import {ACTIVE_WITHIN_DAYS} from "../utils";
 
 const {Step} = Steps;
 

@@ -5,8 +5,9 @@ import {useUpdateTeams} from "./useUpdateTeams";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
-import {getRowSelection, UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
+import {UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
 import {PlusCircleOutlined} from "@ant-design/icons";
+import {getRowSelection} from "../utils";
 
 const {Option} = Select;
 
