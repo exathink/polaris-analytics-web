@@ -7,6 +7,11 @@ const DEFAULTS = {
   PAGE_SIZE: 7,
 };
 
+export const TABLE_HEIGHTS = {
+  FOURTY_FIVE: "45vh",
+  SIXTY: "60vh"
+}
+
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
     <Table
@@ -15,7 +20,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
       pagination={false}
       columns={columns}
       dataSource={dataSource}
-      scroll={{y: height ?? "60vh"}}
+      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
       showSorterTooltip={false}
       loading={loading}
       data-testid={testId}
@@ -33,7 +38,7 @@ export function BaseTable({columns, dataSource, height, testId, loading, onChang
       pagination={false}
       columns={columns}
       dataSource={dataSource}
-      scroll={{y: height ?? "60vh"}}
+      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
       showSorterTooltip={false}
       loading={loading}
       data-testid={testId}
@@ -57,7 +62,7 @@ export function PaginatedTable({columns, dataSource, height, testId, loading, on
       }}
       columns={columns}
       dataSource={dataSource}
-      scroll={{y: height ?? "60vh"}}
+      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
       showSorterTooltip={false}
       loading={loading}
       data-testid={testId}

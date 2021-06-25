@@ -1,5 +1,5 @@
 import {useSearch} from "../../../../../components/tables/hooks";
-import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 
 const DEFAULT_TEAM = "Unassigned";
 
@@ -48,7 +48,7 @@ export function UpdateTeamsTable({tableData, columns, loading, testId, rowSelect
       columns={columns}
       loading={loading}
       testId={testId}
-      height="45vh"
+      height={TABLE_HEIGHTS.FOURTY_FIVE}
       rowSelection={rowSelection}
     />
   );
