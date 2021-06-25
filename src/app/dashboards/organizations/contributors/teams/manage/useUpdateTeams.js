@@ -8,11 +8,9 @@ export const UPDATE_TEAMS = gql`
         contributorTeamAssignments: $contributorTeamAssignments
       }
     ) {
-      updateStatus {
-        success
-        errorMessage
-        updateCount
-      }
+      success
+      errorMessage
+      updateCount
     }
   }
 `;

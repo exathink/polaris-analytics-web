@@ -7,7 +7,6 @@ import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {getRowSelection, UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
 import {PlusCircleOutlined} from "@ant-design/icons";
-import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
 
 const {Option} = Select;
 
@@ -16,10 +15,19 @@ function getTransformedData(selectedRecords, targetTeam) {
   return new Map(kvArr);
 }
 
-export function UpdateTeamsPage({organizationKey, context, intl, current, selectedRecords, dispatch: dispatchEvent}) {
+export function UpdateTeamsPage({
+  organizationKey,
+  context,
+  intl,
+  current,
+  selectedRecords,
+  dispatch: dispatchEvent,
+  teamsList,
+}) {
+  const [defaultTeam = {}] = teamsList;
   const initialState = {
     localRecords: selectedRecords,
-    targetTeam: {},
+    targetTeam: defaultTeam,
     errorMessage: "",
     successMessage: "",
     timeOutExecuting: undefined,
@@ -42,15 +50,10 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
     return () => clearTimeout(timeOutRef.current);
   }, []);
 
-  const {data: teamsData, error} = useQueryOrganizationTeams({
-    organizationKey,
-  });
-
   // mutation to update contributor
   const [mutate, {loading, client}] = useUpdateTeams({
-    onCompleted: ({updateStatus}) => {
-      //  {success, contributorKey, message, exception}
-      if (updateStatus.success) {
+    onCompleted: ({updateContributorTeamAssignments}) => {
+      if (updateContributorTeamAssignments.success) {
         dispatch({type: actionTypes.UPDATE_SUCCESS_MESSAGE, payload: "Updated Successfully."});
         client.resetStore();
 
@@ -62,8 +65,8 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
           dispatchEvent({type: actionTypes.NAVIGATE_AFTER_SUCCESS});
         }, 500);
       } else {
-        logGraphQlError("UpdateContributorPage.useUpdateContributor", updateStatus.message);
-        dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateStatus.message});
+        logGraphQlError("UpdateContributorPage.useUpdateContributor", updateContributorTeamAssignments.errorMessage);
+        dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateContributorTeamAssignments.errorMessage});
       }
     },
     onError: (error) => {
@@ -76,7 +79,7 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
     const payload = localRecords.map((l) => {
       return {
         contributorKey: l.key,
-        newTeamKey: "newTeamKey",
+        newTeamKey: targetTeam.key,
       };
     });
     // call mutation on save button click
@@ -146,19 +149,18 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
     return "Update Target team for below contributors";
   }
 
-  function selectTeamDropdown() {
-    const edges = teamsData?.["organization"]?.["teams"]?.["edges"] ?? [];
+  const newTeamOption = {key: "newTeam", name: "New Team"};
+  const allTeams = teamsList.concat(newTeamOption);
 
-    const newTeamOption = {key: "newTeam", name: "New Team"};
-    const teamsList = edges.map((edge) => edge.node).concat(newTeamOption);
-    const optionElements = teamsList.map((t, index) => (
+  function selectTeamDropdown() {
+    const optionElements = allTeams.map((t, index) => (
       <Option key={t.key} value={index}>
-        {index === teamsList.length - 1 && <PlusCircleOutlined style={{color: "green"}} />} {t.name}
+        {index === teamsList.length && <PlusCircleOutlined style={{color: "green"}} />} {t.name}
       </Option>
     ));
 
     function handleDropdownChange(index) {
-      const selectedTeam = teamsList[index];
+      const selectedTeam = allTeams[index];
       dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: selectedTeam});
     }
 
