@@ -6,8 +6,8 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {getRowSelection, UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
-import {useQueryOrganizationTeamsInfo} from "../../../../../admin/account/contributors/useQueryContributorAliasesInfo";
 import {PlusCircleOutlined} from "@ant-design/icons";
+import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
 
 const {Option} = Select;
 
@@ -42,7 +42,7 @@ export function UpdateTeamsPage({organizationKey, context, intl, current, select
     return () => clearTimeout(timeOutRef.current);
   }, []);
 
-  const {data: teamsData, error} = useQueryOrganizationTeamsInfo({
+  const {data: teamsData, error} = useQueryOrganizationTeams({
     organizationKey,
   });
 

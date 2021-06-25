@@ -39,31 +39,3 @@ export function useQueryContributorAliasesInfo({accountKey, commitWithinDays}) {
   });
 }
 
-
-// Organization
-
-export const GET_ORGANIZATION_TEAMS_INFO_QUERY = gql`
-  query getOrganizationTeamsInfo($organizationKey: String!) {
-    organization(key: $organizationKey) {
-      teams {
-        edges {
-          node {
-            name
-            key
-            contributorCount
-          }
-        }
-      }
-    }
-  }
-`;
-
-export function useQueryOrganizationTeamsInfo({organizationKey}) {
-  return useQuery(GET_ORGANIZATION_TEAMS_INFO_QUERY, {
-    service: analytics_service,
-    variables: {
-      organizationKey: organizationKey,
-    },
-    errorPolicy: "all",
-  });
-}
