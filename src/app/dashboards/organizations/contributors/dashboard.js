@@ -69,7 +69,7 @@ const TopDashboard = () => (
             showDetail={true}
           />
         </DashboardRow>
-        <DashboardRow h={"68%"}>
+        <DashboardRow h={"68%"} title={"Teams"}>
           <DashboardWidget
             w={1}
             name={``}

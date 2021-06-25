@@ -99,7 +99,7 @@ export function SelectTeamMembersPage({
       return null;
     }
 
-    return "Select one or more contributors to add or move to a team";
+    return "Select one or more contributors to add to a new or existing team.";
   }
 
   function getCheckboxProps(record) {
@@ -127,7 +127,7 @@ export function SelectTeamMembersPage({
           <Statistic title="Active Contributors" value={teamsData.size} precision={0} />
         </div>
       </div>
-      <div className={styles.userMessage}>{getTitle()}</div>
+      <div className={styles.userMessage}><span>{getTitle()}</span></div>
       <div className={styles.selectTeamMembersTableWrapper}>
         <SelectTeamMembersTable
           tableData={[...teamsData.values()]}
