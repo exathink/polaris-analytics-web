@@ -1,0 +1,164 @@
+.manageTeamsWrapper {
+  background-color: white;
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-areas:
+    ". steps steps ."
+    ". stepContent stepContent .";
+  gap: 0.5rem;
+}
+
+.manageTeamsStepsWrapper {
+  grid-area: steps;
+}
+
+.manageTeamsStepsContent {
+  min-height: 50vh;
+  grid-area: stepContent;
+}
+
+/* 
+  SelectTeamMembersPage
+  */
+
+.selectTeamMembersPage {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "teamMembersSlider teamMembersSlider"
+    "userMessage userMessage"
+    "teamMembersTable teamMembersTable"
+    "selectTeamMembersNextAction selectTeamMembersDoneAction";
+}
+
+.selectTeamMembersSlider {
+  justify-self: center;
+  min-width: 60%;
+  min-height: 6rem;
+  grid-area: teamMembersSlider;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userMessage {
+  justify-self: center;
+  grid-area: userMessage;
+  color: grey;
+}
+
+.selectTeamMembersTableWrapper {
+  grid-area: teamMembersTable;
+  margin-bottom: 20px;
+}
+
+.rangeSliderWrapper {
+  width: 90%;
+}
+.selectTeamMembersNextAction {
+  padding-bottom: 16px;
+  grid-area: selectTeamMembersNextAction;
+  justify-self: flex-end;
+}
+
+.selectTeamMembersDoneAction {
+  grid-area: selectTeamMembersDoneAction;
+  justify-self: flex-start;
+}
+
+.activeContributors {
+  margin-left: 30px;
+  padding: 8px;
+  width: 200px;
+  background-color: ghostwhite;
+}
+
+/* Update Teams Page */
+.updateTeamsPage {
+  margin-top: 16px;
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "selectTeam messageNotification"
+    "updateTeamsTitle updateTeamsTitle"
+    "updateTeamsTable updateTeamsTable"
+    "actionButtons actionButtons"
+    "updateTeamsAction updateTeamsDoneAction";
+}
+
+.selectTeam {
+  grid-area: selectTeam;
+  min-height: 5rem;
+  display: flex;
+  align-items: center;
+}
+
+.selectTeamLabel {
+  margin-right: 5px;
+}
+
+.messageNotification {
+  justify-self: flex-end;
+  grid-area: messageNotification;
+  z-index: 2;
+}
+.updateTeamsAction {
+  padding-bottom: 16px;
+  grid-area: updateTeamsAction;
+  justify-self: flex-end;
+}
+.updateTeamsBackAction {
+  grid-area: updateTeamsAction;
+}
+.updateTeamsDoneAction {
+  grid-area: updateTeamsDoneAction;
+  justify-self: flex-start;
+}
+
+.updateTeamsTitle {
+  margin-top: 16px;
+  align-self: center;
+  grid-area: updateTeamsTitle;
+  color: grey;
+  min-height: 1.5rem;
+}
+
+.updateTeamsTable {
+  grid-area: updateTeamsTable;
+  margin-bottom: 16px;
+}
+
+.contributorsButton {
+  background-color: rgb(120, 36, 181);
+  border-color: rgb(120, 36, 181);
+  color: white;
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
+}
+
+.contributorsPrimaryButton {
+  margin: 1px;
+  min-width: 85px;
+  font-weight: 500;
+}
+
+/* override completed steps color */
+.manageTeamsStepsWrapper
+  :global(.ant-steps-item):global(.ant-steps-item-finish)
+  :global(.ant-steps-item-icon)
+  > :global(.ant-steps-icon) {
+  color: #d4d4d4;
+}
+
+.manageTeamsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
+  background-color: #7824b5;
+  border-color: #7824b5;
+}
+
+.manageTeamsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
+  background: #7824b5;
+  border: #7824b5;
+}

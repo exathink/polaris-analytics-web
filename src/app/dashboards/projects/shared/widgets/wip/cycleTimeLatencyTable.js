@@ -5,9 +5,8 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
-import {BaseTableView} from "../../components/baseTableView";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
-import {SORTER} from "../../helper/utils";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 
@@ -89,7 +88,7 @@ function customRender(text, record, searchText) {
 }
 
 function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setPlacement("top");
@@ -108,7 +107,7 @@ function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
 }
 
 function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setPlacement("top");
@@ -275,7 +274,7 @@ export const CycleTimeLatencyTable = injectIntl(
     };
 
     return (
-      <BaseTableView
+      <StripeTable
         columns={columns}
         dataSource={dataSource}
         testId="cycle-time-latency-table"

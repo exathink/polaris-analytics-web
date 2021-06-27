@@ -38,3 +38,4 @@ export function useQueryContributorAliasesInfo({accountKey, commitWithinDays}) {
     errorPolicy: "all",
   });
 }
+

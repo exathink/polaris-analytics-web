@@ -5,9 +5,8 @@ import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
 import {injectIntl} from "react-intl";
-import {BaseTableView} from "../../components/baseTableView";
+import {StripeTable, SORTER} from "../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../i18n";
-import {SORTER} from "../../helper/utils";
 import {toMoment} from "../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {
@@ -50,7 +49,7 @@ function customRender(text, record, searchText) {
 }
 
 function customTitleRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setShowPanel(true);
@@ -68,7 +67,7 @@ function customTitleRender(setShowPanel, setWorkItemKey) {
 }
 
 function customColRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => (
+  return (text, record, searchText) => text && (
     <span
       onClick={() => {
         setShowPanel(true);
@@ -198,6 +197,6 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   const dataSource = getTransformedData(tableData, intl);
 
   return (
-    <BaseTableView columns={columns} dataSource={dataSource} testId="flowmetrics-detail-table"/>
+    <StripeTable columns={columns} dataSource={dataSource} testId="flowmetrics-detail-table"/>
   );
 });

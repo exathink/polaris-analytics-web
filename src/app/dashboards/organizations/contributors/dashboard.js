@@ -6,6 +6,8 @@ import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {OrganizationDashboard} from '../organizationDashboard';
+import {OrgTeamsTableWidget} from "./teams/orgTeamsTableWidget";
+import Button from "../../../../components/uielements/button";
 
 const dashboard_id = 'dashboards.contributors.organization';
 
@@ -17,7 +19,17 @@ const TopDashboard = () => (
       <Dashboard
         dashboard={`${dashboard_id}`}
       >
-        <DashboardRow h='22%' title={Contexts.contributors.display()}>
+        <DashboardRow
+          h="22%"
+          title={Contexts.contributors.display()}
+          controls={[
+            () => (
+              <Button type="primary" onClick={() => context.go(".", "manage-teams")}>
+                Manage Teams
+              </Button>
+            ),
+          ]}
+        >
           <DashboardWidget
             w={1 / 2}
             name="contributors-activity-profile"
@@ -55,6 +67,14 @@ const TopDashboard = () => (
                 />
             }
             showDetail={true}
+          />
+        </DashboardRow>
+        <DashboardRow h={"68%"} title={"Teams"}>
+          <DashboardWidget
+            w={1}
+            name={``}
+            render={({view}) => <OrgTeamsTableWidget organizationKey={organization.key} />}
+            showDetail={false}
           />
         </DashboardRow>
       </Dashboard>

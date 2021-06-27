@@ -196,7 +196,7 @@ export const SORTER = {
 
 function customRender(text, record, searchText) {
   if (record.type === "epic") {
-    return (
+    return text && (
       <Highlighter
         highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
         searchWords={searchText || ""}
@@ -227,7 +227,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
         return text;
       }
     }
-    return (
+    return text && (
       <span
         onClick={() => {
           setShowPanel(true);
@@ -246,7 +246,7 @@ function unCatColRender({setShowPanel, setWorkItemKey}) {
     if (record.type === "epic") {
       return text;
     }
-    return (
+    return text && (
       <span
         onClick={() => {
           setShowPanel(true);
