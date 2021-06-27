@@ -4,7 +4,7 @@ import {analytics_service} from "../../../../services/graphql";
 export const GET_ORGANIZATION_TEAMS_QUERY = gql`
   query getOrganizationTeamsInfo($organizationKey: String!) {
     organization(key: $organizationKey) {
-      teams {
+      teams (interfaces: [ContributorCount]){
         edges {
           node {
             name
