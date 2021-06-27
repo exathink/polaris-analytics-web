@@ -12,6 +12,8 @@ import Projects from "../../projects/context";
 import Repositories from "../../repositories/context";
 import Contributors from "../../contributors/context";
 import {ActivityDashboardSetup} from "./setup";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 const messages = {
@@ -19,8 +21,10 @@ const messages = {
 };
 
 
-export const dashboard = () => (
-  <OrganizationDashboard
+export const dashboard = ({viewerContext}) => {
+  const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
+  return (
+    <OrganizationDashboard
     pollInterval={60 * 1000}
     render={
       ({organization, context}) =>
@@ -122,8 +126,12 @@ export const dashboard = () => (
                       latestCommit={organization.latestCommit}
                       latestWorkItemEvent={organization.latestWorkItemEvent}
                       markLatest
-                      groupBy={'author'}
-                      groupings={['author', 'workItem', 'repository', 'branch']}
+                      groupBy={teamsActive ? 'team' : 'author'}
+                      groupings={
+                        teamsActive ?
+                          ['team', 'author', 'workItem', 'repository'] :
+                          ['author', 'workItem', 'repository']
+                      }
                       showHeader
                       showTable
                     />
@@ -136,5 +144,5 @@ export const dashboard = () => (
           <ActivityDashboardSetup organization={organization} context={context}/>
     }
   />
-);
-export default dashboard;
+)};
+export default withViewerContext(dashboard);

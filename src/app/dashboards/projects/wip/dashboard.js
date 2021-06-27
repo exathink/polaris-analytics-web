@@ -19,7 +19,7 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 import { ProjectImplementationCostWidget } from "../shared/widgets/implementationCost";
-
+import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
@@ -38,11 +38,12 @@ WipDashboard.videoConfig = {
 function WipDashboard({
   project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
+  viewerContext
 }) {
   const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
-
+  const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -244,8 +245,14 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               headerMetric={HeaderMetrics.latestCommit}
-              groupBy={"author"}
-              groupings={["author", "workItem",  "repository", "branch"]}
+              groupBy={teamsActive ? "team" : 'workItem'}
+              groupings={
+                teamsActive ?
+                  ["team", "author", "workItem",  "repository"]
+                  :
+                  ["author", "workItem",  "repository", "branch"]
+
+              }
               showHeader
               showTable
             />
@@ -256,5 +263,5 @@ function WipDashboard({
     </Dashboard>
   );
 }
-export const dashboard = ({viewerContext}) => <ProjectDashboard pollInterval={1000 * 60} render={props => <WipDashboard {...props}/>} />;
+export const dashboard = ({viewerContext}) => <ProjectDashboard pollInterval={1000 * 60} render={props => <WipDashboard viewerContext={viewerContext}  {...props}/>} />;
 export default withViewerContext(dashboard);
