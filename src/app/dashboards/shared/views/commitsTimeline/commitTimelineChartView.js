@@ -15,7 +15,8 @@ const commitTimelineGroupings = {
   repository: "Repository",
   workItem: "Spec",
   author: "Author",
-  branch: "Branch"
+  branch: "Branch",
+  team: "Team"
 }
 
 export const HeaderMetrics = {
@@ -37,9 +38,15 @@ export class CommitTimelineViewModel {
 
 
   initCategorySelector(groupBy) {
-    if (groupBy !== 'workItem') {
+    if (['repository', 'author', 'branch'].indexOf(groupBy) !== -1) {
       return (commit) => [commit[groupBy]]
-    } else {
+    } else if (groupBy === 'team') {
+      return (commit) => [
+        commit.authorTeamName || 'Unassigned',
+        commit.committerTeamName || 'Unassigned'
+      ]
+    }
+    else{
       return (commit) =>
         commit.workItemsSummaries.length > 0 ?
           commit.workItemsSummaries.map(
