@@ -69,7 +69,7 @@ export const DimensionCommitsNavigatorWidget = (
                         days: $days, 
                         before: $before, 
                         first: $latest, 
-                        interfaces:[WorkItemsSummaries], 
+                        interfaces:[WorkItemsSummaries, CommitTeamNodeRefs], 
                         referenceDate: $referenceDate,
                         nospecsOnly: $nospecsOnly
                     ) {
@@ -104,6 +104,10 @@ export const DimensionCommitsNavigatorWidget = (
                                     stateType
                                     state
                                 }
+                                authorTeamKey
+                                authorTeamName
+                                committerTeamKey
+                                committerTeamName
 
                             }
                         }
