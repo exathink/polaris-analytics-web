@@ -8,6 +8,7 @@ import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHie
 import {OrganizationDashboard} from '../organizationDashboard';
 import {OrgTeamsTableWidget} from "./teams/orgTeamsTableWidget";
 import Button from "../../../../components/uielements/button";
+import {CreateNewTeamWidget} from "./teams/createNewTeam";
 
 const dashboard_id = 'dashboards.contributors.organization';
 
@@ -69,7 +70,9 @@ const TopDashboard = () => (
             showDetail={true}
           />
         </DashboardRow>
-        <DashboardRow h={"68%"} title={"Teams"}>
+        <DashboardRow h={"68%"} 
+             title={"Teams"}             
+             controls={[() => <CreateNewTeamWidget organizationKey={organization.key} />]}>
           <DashboardWidget
             w={1}
             name={``}
