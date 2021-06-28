@@ -5,6 +5,10 @@ export const CREATE_TEAM = gql`
     createTeam(createTeamInput: {organizationKey: $organizationKey, name: $name}) {
       success
       errorMessage
+      team {
+        id
+        name
+      }
     }
   }
 `;

@@ -6,6 +6,7 @@ import {Col, Input, Row} from "antd";
 import {createForm} from "../../../../components/forms/createForm";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {useCreateTeam} from "./useCreateTeam";
+import {openNotification, display_error} from "../../../../helpers/utility";
 
 const CreateNewTeam = ({currentValue, onSubmit, form: {getFieldDecorator}}) => {
   return (
@@ -34,7 +35,12 @@ export const CreateNewTeamWidget = withSubmissionCache(
   ({submissionCache: {submit, lastSubmission}, organizationKey}) => {
     const [mutate, {loading, client, error}] = useCreateTeam({
       onCompleted: ({createTeam}) => {
-        client.resetStore();
+        if (createTeam.success) {
+          client.resetStore();
+          openNotification("success", `Team ${createTeam.team.name} Created`);
+        } else {
+          openNotification("error", `${display_error(createTeam.errorMessage)}`);
+        }
       },
       onError: (error) => {},
     });

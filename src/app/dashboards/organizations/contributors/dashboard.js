@@ -23,13 +23,6 @@ const TopDashboard = () => (
         <DashboardRow
           h="22%"
           title={Contexts.contributors.display()}
-          controls={[
-            () => (
-              <Button type="primary" onClick={() => context.go(".", "manage-teams")}>
-                Manage Teams
-              </Button>
-            ),
-          ]}
         >
           <DashboardWidget
             w={1 / 2}
@@ -70,9 +63,18 @@ const TopDashboard = () => (
             showDetail={true}
           />
         </DashboardRow>
-        <DashboardRow h={"68%"} 
-             title={"Teams"}             
-             controls={[() => <CreateNewTeamWidget organizationKey={organization.key} />]}>
+        <DashboardRow
+          h={"68%"}
+          title={"Teams"}
+          controls={[
+            () => <CreateNewTeamWidget organizationKey={organization.key} />,
+            () => (
+              <Button type="primary" onClick={() => context.go(".", "manage-teams")} style={{marginLeft: "10px"}}>
+                Manage Teams
+              </Button>
+            ),
+          ]}
+        >
           <DashboardWidget
             w={1}
             name={``}
