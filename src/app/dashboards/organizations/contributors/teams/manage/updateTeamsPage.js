@@ -76,7 +76,7 @@ export function UpdateTeamsPage({
     },
   });
 
-  function handleUpdateContributorClick() {
+  function handleUpdateTeamClick() {
     const payload = localRecords.map((l) => {
       return {
         contributorKey: l.key,
@@ -114,7 +114,7 @@ export function UpdateTeamsPage({
           <Button
             type="primary"
             className={styles.contributorsPrimaryButton}
-            onClick={handleUpdateContributorClick}
+            onClick={handleUpdateTeamClick}
             disabled={isButtonDisabled()}
           >
             Update Team
