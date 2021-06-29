@@ -146,3 +146,8 @@ export function getRowSelection(data, [selectedRecords, setSelectedRecords], opt
 
 export const withNoChildren = (x) => x.contributorAliasesInfo == null;
 export const withChildren = (x) => x.contributorAliasesInfo != null;
+
+export const NavigateOnDoneHandlers = (context) => ({
+  account: () => context.go(".."),
+  organization: () => context.go("..", "contributors")
+})

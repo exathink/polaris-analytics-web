@@ -5,7 +5,7 @@ import {
   ONE_YEAR,
 } from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren} from "./utils";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren, NavigateOnDoneHandlers} from "./utils";
 import {formatDateTime} from "../../../i18n/utils";
 import {Statistic} from "../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
@@ -101,7 +101,7 @@ export function SelectContributorsPage({
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    NavigateOnDoneHandlers(context)[dimension]();
   };
 
   function renderActionButtons() {

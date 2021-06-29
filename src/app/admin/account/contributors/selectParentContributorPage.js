@@ -1,7 +1,7 @@
 import {Radio, Table, Button} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
-import {useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns} from "./utils";
+import {useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns, NavigateOnDoneHandlers} from "./utils";
 import {actionTypes} from "./constants";
 
 function getTransformedData(selectedRecords) {
@@ -28,7 +28,7 @@ function getParentContributorRadioCol(selectParentContributorState) {
 }
 
 export function SelectParentContributorPage({
-  accountKey,
+  dimension,
   context,
   intl,
   current,
@@ -51,7 +51,7 @@ export function SelectParentContributorPage({
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    NavigateOnDoneHandlers(context)[dimension]();
   };
 
   function renderActionButtons() {
