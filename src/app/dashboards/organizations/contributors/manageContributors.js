@@ -1,14 +1,14 @@
 import React from "react";
 import {injectIntl} from "react-intl";
+import {ManageContributorsWorkflow} from "../../../admin/account/contributors/manageContributorsWorkflow";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ManageContributorsWorkflow} from "./manageContributorsWorkflow";
 
-const dashboard_id = "dashboards.admin.account.manage-contributors";
+const dashboard_id = "dashboards.organizations.contributors.manage-contributors";
 
-function ManageContributors({viewerContext: {accountKey}, context, intl}) {
-  const props = {dimension: "account", instanceKey: accountKey, context, intl};
+function ManageContributors({context, intl}) {
+  const organizationKey = context.getInstanceKey("organization");
+  const props = {dimension: "organization", instanceKey: organizationKey, context, intl};
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h={"95%"}>
@@ -18,4 +18,4 @@ function ManageContributors({viewerContext: {accountKey}, context, intl}) {
   );
 }
 
-export default withViewerContext(withNavigationContext(injectIntl(ManageContributors)));
+export default withNavigationContext(injectIntl(ManageContributors));

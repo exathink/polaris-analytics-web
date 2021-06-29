@@ -70,7 +70,6 @@ const isUnlinked = (x) => !x.checked;
 const isLinked = (x) => x.checked;
 
 export function UpdateContributorPage({
-  accountKey,
   context,
   intl,
   current,

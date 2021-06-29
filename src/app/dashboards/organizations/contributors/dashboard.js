@@ -23,6 +23,11 @@ const TopDashboard = () => (
         <DashboardRow
           h="22%"
           title={Contexts.contributors.display()}
+          controls={[() => (
+              <Button type="primary" onClick={() => context.go(".", "manage-contributors")} style={{marginLeft: "10px"}}>
+                Manage Contributors
+              </Button>
+            )]}
         >
           <DashboardWidget
             w={1 / 2}

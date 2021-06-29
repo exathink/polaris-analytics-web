@@ -27,12 +27,12 @@ function getOnlySelectedRecordWithChildren(selectedRecords) {
   return null;
 }
 
-function getTransformedData(data, intl) {
+function getTransformedData(data, dimension, intl) {
   if (data == null) {
     return new Map([]);
   }
 
-  const kvArr = data["account"]["contributors"]["edges"]
+  const kvArr = data[dimension]["contributors"]["edges"]
     .map((edge) => edge.node)
     .map((node) => {
       if (node.contributorAliasesInfo) {
@@ -71,7 +71,8 @@ function getTransformedData(data, intl) {
 }
 
 export function SelectContributorsPage({
-  accountKey,
+  dimension,
+  instanceKey,
   context,
   intl,
   commitWithinDays,
@@ -82,7 +83,8 @@ export function SelectContributorsPage({
   const columns = useSelectContributorsTableColumns();
 
   const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
-    accountKey: accountKey,
+    dimension,
+    instanceKey,
     commitWithinDays: commitWithinDays,
   });
 
@@ -92,7 +94,7 @@ export function SelectContributorsPage({
   }
 
   // transform api response to Map of contributors
-  const contributorsData = getTransformedData(data || previousData, intl);
+  const contributorsData = getTransformedData(data || previousData, dimension, intl);
 
   const handleNextClick = () => {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});

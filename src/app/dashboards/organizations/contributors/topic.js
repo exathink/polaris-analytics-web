@@ -10,6 +10,10 @@ const topic =  {
       component: React.lazy(() => import('./teams/manage/manageTeams'))
     },
     {
+      match: 'manage-contributors',
+      component: React.lazy(() => import('./manageContributors'))
+    },
+    {
       match: '',
       component: React.lazy(() => import('./dashboard'))
     }

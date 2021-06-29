@@ -39,9 +39,10 @@ function getTransformedData(data, intl) {
     });
 }
 
-function AccountContributorsTable({accountKey, intl, view}) {
+function AccountContributorsTable({dimension, instanceKey, intl, view}) {
   const {loading, error, data} = useQueryContributorAliasesInfo({
-    accountKey: accountKey,
+    dimension,
+    instanceKey,
     commitWithinDays: ACTIVE_WITHIN_DAYS,
   });
 
@@ -92,7 +93,7 @@ export const AccountContributorsTableWidget = withNavigationContext(
               </Button>
             ),
           ]}
-          render={({view}) => <AccountContributorsTable accountKey={accountKey} intl={intl} view={view} />}
+          render={({view}) => <AccountContributorsTable dimension="account" instanceKey={accountKey} intl={intl} view={view} />}
           showDetail={true}
           {...rest}
         />
