@@ -1,0 +1,39 @@
+.organizationDashboard {
+    padding: 0.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 6% 22% 6% 65%;
+    grid-template-areas:
+      "manageContributorRow manageContributorRow"
+      "activityProfile activeContributors"
+      "teamsRow teamsRow"
+      "orgTeamsTable orgTeamsTable";
+    gap: 0.5rem;
+  }
+
+  .manageContributorRow{
+    grid-area: manageContributorRow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .activityProfile{
+    grid-area: activityProfile;
+  }
+
+  .activeContributors{
+    grid-area: activeContributors;
+  }
+
+  .teamsRow{
+    grid-area: teamsRow;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5px;
+  }
+
+  .orgTeamsTable{
+    grid-area: orgTeamsTable;
+  }

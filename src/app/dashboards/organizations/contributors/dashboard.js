@@ -9,6 +9,7 @@ import {OrganizationDashboard} from '../organizationDashboard';
 import {OrgTeamsTableWidget} from "./teams/orgTeamsTableWidget";
 import Button from "../../../../components/uielements/button";
 import {CreateNewTeamWidget} from "./teams/createNewTeam";
+import styles from "./dashboard.module.css";
 
 const dashboard_id = 'dashboards.contributors.organization';
 
@@ -19,10 +20,13 @@ const TopDashboard = () => (
       ({organization, context}) =>
       <Dashboard
         dashboard={`${dashboard_id}`}
+        className={styles.organizationDashboard}
+        gridLayout={true}
       >
         <DashboardRow
           h="22%"
           title={Contexts.contributors.display()}
+          className={styles.manageContributorRow}
           controls={[() => (
               <Button type="primary" onClick={() => context.go(".", "manage-contributors")} style={{marginLeft: "10px"}}>
                 Manage Contributors
@@ -30,8 +34,9 @@ const TopDashboard = () => (
             )]}
         >
           <DashboardWidget
-            w={1 / 2}
+            className={styles.activityProfile}
             name="contributors-activity-profile"
+
             render={
               ({view}) =>
                 <DimensionContributorActivityProfileWidget
@@ -49,7 +54,7 @@ const TopDashboard = () => (
             showDetail={true}
           />
           <DashboardWidget
-            w={1 / 2}
+            className={styles.activeContributors}
             name="most-active-contributors"
             render={
               ({view}) =>
@@ -71,6 +76,7 @@ const TopDashboard = () => (
         <DashboardRow
           h={"68%"}
           title={"Teams"}
+          className={styles.teamsRow}
           controls={[
             () => <CreateNewTeamWidget organizationKey={organization.key} />,
             () => (
@@ -83,6 +89,7 @@ const TopDashboard = () => (
           <DashboardWidget
             w={1}
             name={``}
+            className={styles.orgTeamsTable}
             render={({view}) => <OrgTeamsTableWidget organizationKey={organization.key} />}
             showDetail={false}
           />
