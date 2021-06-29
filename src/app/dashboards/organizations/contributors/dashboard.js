@@ -8,6 +8,8 @@ import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHie
 import {OrganizationDashboard} from '../organizationDashboard';
 import {OrgTeamsTableWidget} from "./teams/orgTeamsTableWidget";
 import Button from "../../../../components/uielements/button";
+import {CreateNewTeamWidget} from "./teams/createNewTeam";
+import styles from "./dashboard.module.css";
 
 const dashboard_id = 'dashboards.contributors.organization';
 
@@ -18,21 +20,30 @@ const TopDashboard = () => (
       ({organization, context}) =>
       <Dashboard
         dashboard={`${dashboard_id}`}
+        className={styles.organizationDashboard}
+        gridLayout={true}
       >
         <DashboardRow
           h="22%"
           title={Contexts.contributors.display()}
+          className={styles.manageContributorRow}
           controls={[
+            () => <CreateNewTeamWidget organizationKey={organization.key} />,
             () => (
-              <Button type="primary" onClick={() => context.go(".", "manage-teams")}>
-                Manage Teams
+              <Button type="primary" onClick={() => context.go(".", "manage-teams")} style={{marginLeft: "10px"}}>
+                Manage Team Assignments
               </Button>
             ),
-          ]}
+            () => (
+              <Button type="primary" onClick={() => context.go(".", "manage-contributors")} style={{marginLeft: "10px"}}>
+                Manage Aliases
+              </Button>
+            )]}
         >
           <DashboardWidget
-            w={1 / 2}
+            className={styles.activityProfile}
             name="contributors-activity-profile"
+
             render={
               ({view}) =>
                 <DimensionContributorActivityProfileWidget
@@ -50,7 +61,7 @@ const TopDashboard = () => (
             showDetail={true}
           />
           <DashboardWidget
-            w={1 / 2}
+            className={styles.activeContributors}
             name="most-active-contributors"
             render={
               ({view}) =>
@@ -69,10 +80,18 @@ const TopDashboard = () => (
             showDetail={true}
           />
         </DashboardRow>
-        <DashboardRow h={"68%"} title={"Teams"}>
+        <DashboardRow
+          h={"68%"}
+          title={"Teams"}
+          className={styles.teamsRow}
+          controls={[
+
+          ]}
+        >
           <DashboardWidget
             w={1}
             name={``}
+            className={styles.orgTeamsTable}
             render={({view}) => <OrgTeamsTableWidget organizationKey={organization.key} />}
             showDetail={false}
           />

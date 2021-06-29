@@ -8,9 +8,9 @@ import {injectIntl} from "react-intl";
 import {formatDateTime} from "../../../i18n/utils";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
-import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import styles from "./contributors.module.css";
-import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "./utils";
+import {useQueryContributorAliasesInfo} from "../../../dashboards/shared/widgets/contributors/manageAliases/useQueryContributorAliasesInfo";
+import styles from "../../../dashboards/shared/widgets/contributors/manageAliases/contributors.module.css";
+import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "../../../dashboards/shared/widgets/contributors/manageAliases/utils";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -39,9 +39,10 @@ function getTransformedData(data, intl) {
     });
 }
 
-function AccountContributorsTable({accountKey, intl, view}) {
+function AccountContributorsTable({dimension, instanceKey, intl, view}) {
   const {loading, error, data} = useQueryContributorAliasesInfo({
-    accountKey: accountKey,
+    dimension,
+    instanceKey,
     commitWithinDays: ACTIVE_WITHIN_DAYS,
   });
 
@@ -92,7 +93,7 @@ export const AccountContributorsTableWidget = withNavigationContext(
               </Button>
             ),
           ]}
-          render={({view}) => <AccountContributorsTable accountKey={accountKey} intl={intl} view={view} />}
+          render={({view}) => <AccountContributorsTable dimension="account" instanceKey={accountKey} intl={intl} view={view} />}
           showDetail={true}
           {...rest}
         />

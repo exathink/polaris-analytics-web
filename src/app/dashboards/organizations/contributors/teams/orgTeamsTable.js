@@ -1,13 +1,17 @@
 import React from "react";
-import {PaginatedTable} from "../../../../components/tables/tableUtils";
+import {useSearch} from "../../../../components/tables/hooks";
+import {StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 
 export function useOrgTeamsTableColumns() {
+  const nameSearchState = useSearch("name");
+
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       width: "15%",
+      ...nameSearchState
     },
     {
       title: "Contributors",
@@ -29,6 +33,5 @@ export function useOrgTeamsTableColumns() {
 export function OrgTeamsTable({tableData}) {
   const columns = useOrgTeamsTableColumns();
 
-  const paginationOptions = {showTotal: total => `${total} Teams`};
-  return <PaginatedTable columns={columns} dataSource={tableData} options={paginationOptions}/>;
+  return <StripeTable columns={columns} dataSource={tableData} height={TABLE_HEIGHTS.FOURTY_FIVE} />;
 }

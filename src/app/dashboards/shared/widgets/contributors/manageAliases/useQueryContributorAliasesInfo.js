@@ -1,9 +1,9 @@
 import {useQuery, gql} from "@apollo/client";
-import {analytics_service} from "../../../services/graphql";
+import {analytics_service} from "../../../../../services/graphql";
 
-export const GET_CONTRIBUTOR_ALIASES_INFO_QUERY = gql`
-  query getContributorAliasesInfo($accountKey: String!, $commitWithinDays: Int) {
-    account(key: $accountKey) {
+export const GET_CONTRIBUTOR_ALIASES_INFO_QUERY = (dimension) => gql`
+  query getContributorAliasesInfo($key: String!, $commitWithinDays: Int) {
+    ${dimension}(key: $key) {
       contributors(interfaces: [CommitSummary, ContributorAliasesInfo], commitWithinDays: $commitWithinDays) {
         edges {
           node {
@@ -28,14 +28,13 @@ export const GET_CONTRIBUTOR_ALIASES_INFO_QUERY = gql`
   }
 `;
 
-export function useQueryContributorAliasesInfo({accountKey, commitWithinDays}) {
-  return useQuery(GET_CONTRIBUTOR_ALIASES_INFO_QUERY, {
+export function useQueryContributorAliasesInfo({dimension, instanceKey, commitWithinDays}) {
+  return useQuery(GET_CONTRIBUTOR_ALIASES_INFO_QUERY(dimension), {
     service: analytics_service,
     variables: {
-      accountKey: accountKey,
-      commitWithinDays: commitWithinDays
+      key: instanceKey,
+      commitWithinDays: commitWithinDays,
     },
     errorPolicy: "all",
   });
 }
-

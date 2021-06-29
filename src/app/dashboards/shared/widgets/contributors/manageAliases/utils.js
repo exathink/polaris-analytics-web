@@ -1,5 +1,6 @@
-import {useSearch} from "../../../components/tables/hooks";
-import {diff_in_dates} from "../../../helpers/utility";
+import {useSearch} from "../../../../../components/tables/hooks";
+
+import {diff_in_dates} from "../../../../../helpers/utility.js"
 
 export const VERTICAL_SCROLL_HEIGHT = "45vh";
 export const SCROLL_HEIGHT_UPDATE_CONTRIBUTORS = "40vh";
@@ -146,3 +147,8 @@ export function getRowSelection(data, [selectedRecords, setSelectedRecords], opt
 
 export const withNoChildren = (x) => x.contributorAliasesInfo == null;
 export const withChildren = (x) => x.contributorAliasesInfo != null;
+
+export const NavigateOnDoneHandlers = (context) => ({
+  account: () => context.go(".."),
+  organization: () => context.go("..", "contributors")
+})

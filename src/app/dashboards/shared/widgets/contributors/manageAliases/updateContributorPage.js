@@ -8,9 +8,10 @@ import {
   withChildren,
   withNoChildren,
   getBaseColumns,
+  NavigateOnDoneHandlers,
 } from "./utils";
 import {useUpdateContributor} from "./useUpdateContributor";
-import {logGraphQlError} from "../../../components/graphql/utils";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateContributorReducer} from "./updateContributorReducer";
 
@@ -70,7 +71,7 @@ const isUnlinked = (x) => !x.checked;
 const isLinked = (x) => x.checked;
 
 export function UpdateContributorPage({
-  accountKey,
+  dimension,
   context,
   intl,
   current,
@@ -163,7 +164,7 @@ export function UpdateContributorPage({
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    NavigateOnDoneHandlers(context)[dimension]();
   };
 
   function isButtonDisabled() {

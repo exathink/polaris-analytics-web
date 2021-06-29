@@ -3,13 +3,13 @@ import {Table, Button} from "antd";
 import {
   DaysRangeSlider,
   ONE_YEAR,
-} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
+} from "../../../components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren} from "./utils";
-import {formatDateTime} from "../../../i18n/utils";
-import {Statistic} from "../../../components/misc/statistic/statistic";
+import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren, NavigateOnDoneHandlers} from "./utils";
+import {formatDateTime} from "../../../../../i18n/utils";
+import {Statistic} from "../../../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
-import {logGraphQlError} from "../../../components/graphql/utils";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 
 function hasChildren(recordKey, data) {
@@ -27,12 +27,12 @@ function getOnlySelectedRecordWithChildren(selectedRecords) {
   return null;
 }
 
-function getTransformedData(data, intl) {
+function getTransformedData(data, dimension, intl) {
   if (data == null) {
     return new Map([]);
   }
 
-  const kvArr = data["account"]["contributors"]["edges"]
+  const kvArr = data[dimension]["contributors"]["edges"]
     .map((edge) => edge.node)
     .map((node) => {
       if (node.contributorAliasesInfo) {
@@ -71,7 +71,8 @@ function getTransformedData(data, intl) {
 }
 
 export function SelectContributorsPage({
-  accountKey,
+  dimension,
+  instanceKey,
   context,
   intl,
   commitWithinDays,
@@ -82,7 +83,8 @@ export function SelectContributorsPage({
   const columns = useSelectContributorsTableColumns();
 
   const {loading, error, data, previousData} = useQueryContributorAliasesInfo({
-    accountKey: accountKey,
+    dimension,
+    instanceKey,
     commitWithinDays: commitWithinDays,
   });
 
@@ -92,14 +94,14 @@ export function SelectContributorsPage({
   }
 
   // transform api response to Map of contributors
-  const contributorsData = getTransformedData(data || previousData, intl);
+  const contributorsData = getTransformedData(data || previousData, dimension, intl);
 
   const handleNextClick = () => {
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
   };
 
   const handleDoneClick = () => {
-    context.go("..");
+    NavigateOnDoneHandlers(context)[dimension]();
   };
 
   function renderActionButtons() {
