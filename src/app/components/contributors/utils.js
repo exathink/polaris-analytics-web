@@ -1,5 +1,5 @@
-import {useSearch} from "../../../components/tables/hooks";
-import {diff_in_dates} from "../../../helpers/utility";
+import {useSearch} from "../tables/hooks";
+import {diff_in_dates} from "../../helpers/utility";
 
 export const VERTICAL_SCROLL_HEIGHT = "45vh";
 export const SCROLL_HEIGHT_UPDATE_CONTRIBUTORS = "40vh";

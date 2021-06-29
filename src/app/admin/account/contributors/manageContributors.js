@@ -3,7 +3,7 @@ import {injectIntl} from "react-intl";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ManageContributorsWorkflow} from "./manageContributorsWorkflow";
+import {ManageContributorsWorkflow} from "../../../components/contributors/manageContributorsWorkflow";
 
 const dashboard_id = "dashboards.admin.account.manage-contributors";
 

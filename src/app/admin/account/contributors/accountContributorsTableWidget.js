@@ -8,9 +8,9 @@ import {injectIntl} from "react-intl";
 import {formatDateTime} from "../../../i18n/utils";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {Loading} from "../../../components/graphql/loading";
-import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
-import styles from "./contributors.module.css";
-import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "./utils";
+import {useQueryContributorAliasesInfo} from "../../../components/contributors/useQueryContributorAliasesInfo";
+import styles from "../../../components/contributors/contributors.module.css";
+import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "../../../components/contributors/utils";
 
 function getTransformedData(data, intl) {
   if (data == null) {

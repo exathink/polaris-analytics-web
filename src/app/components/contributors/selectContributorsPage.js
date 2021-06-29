@@ -3,13 +3,13 @@ import {Table, Button} from "antd";
 import {
   DaysRangeSlider,
   ONE_YEAR,
-} from "../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
+} from "../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import {useQueryContributorAliasesInfo} from "./useQueryContributorAliasesInfo";
 import {useSelectContributorsTableColumns, getRowSelection, VERTICAL_SCROLL_HEIGHT, withChildren, NavigateOnDoneHandlers} from "./utils";
-import {formatDateTime} from "../../../i18n/utils";
-import {Statistic} from "../../../components/misc/statistic/statistic";
+import {formatDateTime} from "../../i18n/utils";
+import {Statistic} from "../misc/statistic/statistic";
 import styles from "./contributors.module.css";
-import {logGraphQlError} from "../../../components/graphql/utils";
+import {logGraphQlError} from "../graphql/utils";
 import {actionTypes} from "./constants";
 
 function hasChildren(recordKey, data) {

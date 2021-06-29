@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {ManageContributorsWorkflow} from "../../../admin/account/contributors/manageContributorsWorkflow";
+import {ManageContributorsWorkflow} from "../../../components/contributors/manageContributorsWorkflow";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 
