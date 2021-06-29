@@ -27,9 +27,16 @@ const TopDashboard = () => (
           h="22%"
           title={Contexts.contributors.display()}
           className={styles.manageContributorRow}
-          controls={[() => (
+          controls={[
+            () => <CreateNewTeamWidget organizationKey={organization.key} />,
+            () => (
+              <Button type="primary" onClick={() => context.go(".", "manage-teams")} style={{marginLeft: "10px"}}>
+                Manage Team Assignments
+              </Button>
+            ),
+            () => (
               <Button type="primary" onClick={() => context.go(".", "manage-contributors")} style={{marginLeft: "10px"}}>
-                Manage Contributors
+                Manage Aliases
               </Button>
             )]}
         >
@@ -78,12 +85,7 @@ const TopDashboard = () => (
           title={"Teams"}
           className={styles.teamsRow}
           controls={[
-            () => <CreateNewTeamWidget organizationKey={organization.key} />,
-            () => (
-              <Button type="primary" onClick={() => context.go(".", "manage-teams")} style={{marginLeft: "10px"}}>
-                Manage Teams
-              </Button>
-            ),
+
           ]}
         >
           <DashboardWidget

@@ -27,7 +27,7 @@ const CreateNewTeam = ({currentValue, onSubmit, form: {getFieldDecorator}}) => {
 
 const CreateNewTeamForm = createForm(CreateNewTeam, {
   drawer: true,
-  title: "Create New Team",
+  title: "New Team",
   submitTitle: "Create",
 });
 
