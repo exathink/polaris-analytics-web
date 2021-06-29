@@ -29,7 +29,6 @@ export const GET_CONTRIBUTOR_ALIASES_INFO_QUERY = (dimension) => gql`
 `;
 
 export function useQueryContributorAliasesInfo({dimension, instanceKey, commitWithinDays}) {
-  debugger;
   return useQuery(GET_CONTRIBUTOR_ALIASES_INFO_QUERY(dimension), {
     service: analytics_service,
     variables: {

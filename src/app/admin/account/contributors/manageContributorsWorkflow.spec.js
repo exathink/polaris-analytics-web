@@ -59,9 +59,9 @@ const updateContributorMocks = [
 ];
 
 const gqlRequest = {
-  query: GET_CONTRIBUTOR_ALIASES_INFO_QUERY,
+  query: GET_CONTRIBUTOR_ALIASES_INFO_QUERY("account"),
   variables: {
-    accountKey: "24347f28-0020-4025-8801-dbc627f9415d",
+    key: "24347f28-0020-4025-8801-dbc627f9415d",
     commitWithinDays: 30,
   },
 };
@@ -149,7 +149,8 @@ const contributorAliasesMocks = [
 const mocks = [...contributorAliasesMocks, ...updateContributorMocks];
 
 const propsFixture = {
-  accountKey: "24347f28-0020-4025-8801-dbc627f9415d",
+  dimension: "account",
+  instanceKey: "24347f28-0020-4025-8801-dbc627f9415d",
   context: {go: jest.fn()},
 };
 
