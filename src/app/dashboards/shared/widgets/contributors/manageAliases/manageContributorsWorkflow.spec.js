@@ -4,7 +4,7 @@ import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {UPDATE_CONTRIBUTOR} from "./useUpdateContributor";
 import {GET_CONTRIBUTOR_ALIASES_INFO_QUERY} from "./useQueryContributorAliasesInfo";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {DimensionManageContributorsWorkflow as ManageContributorsWorkflowWithoutIntl} from "./manageContributorsWorkflow";
+import {DimensionManageContributorsWorkflow as ManageContributorsWorkflowWithoutIntl} from "./dimensionManageContributorsWorkflow";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 
