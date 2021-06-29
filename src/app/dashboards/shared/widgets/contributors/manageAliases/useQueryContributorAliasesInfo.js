@@ -1,5 +1,5 @@
 import {useQuery, gql} from "@apollo/client";
-import {analytics_service} from "../../services/graphql";
+import {analytics_service} from "../../../../../services/graphql";
 
 export const GET_CONTRIBUTOR_ALIASES_INFO_QUERY = (dimension) => gql`
   query getContributorAliasesInfo($key: String!, $commitWithinDays: Int) {

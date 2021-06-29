@@ -1,10 +1,10 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {UPDATE_CONTRIBUTOR} from "./useUpdateContributor";
 import {GET_CONTRIBUTOR_ALIASES_INFO_QUERY} from "./useQueryContributorAliasesInfo";
-import {getNDaysAgo} from "../../../test/test-utils";
-import {ManageContributorsWorkflow as ManageContributorsWorkflowWithoutIntl} from "./manageContributorsWorkflow";
+import {getNDaysAgo} from "../../../../../../test/test-utils";
+import {DimensionManageContributorsWorkflow as ManageContributorsWorkflowWithoutIntl} from "./manageContributorsWorkflow";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 

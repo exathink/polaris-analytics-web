@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {ManageContributorsWorkflow} from "../../../components/contributors/manageContributorsWorkflow";
+import {DimensionManageContributorsWorkflow} from "../../shared/widgets/contributors/manageAliases/dimensionManageContributorsWorkflow";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 
@@ -12,7 +12,7 @@ function ManageContributors({context, intl}) {
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h={"95%"}>
-        <DashboardWidget w={1} render={() => <ManageContributorsWorkflow {...props} />} />
+        <DashboardWidget w={1} render={() => <DimensionManageContributorsWorkflow {...props} />} />
       </DashboardRow>
     </Dashboard>
   );

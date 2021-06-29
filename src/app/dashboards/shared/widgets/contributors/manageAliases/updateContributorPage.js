@@ -11,7 +11,7 @@ import {
   NavigateOnDoneHandlers,
 } from "./utils";
 import {useUpdateContributor} from "./useUpdateContributor";
-import {logGraphQlError} from "../graphql/utils";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateContributorReducer} from "./updateContributorReducer";
 
