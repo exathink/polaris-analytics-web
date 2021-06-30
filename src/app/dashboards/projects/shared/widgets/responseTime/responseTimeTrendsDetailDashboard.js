@@ -22,7 +22,7 @@ function getSeriesName(seriesName) {
   return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
 }
 
-export const ProjectResponseTimeTrendsDetailDashboard = (
+export const ResponseTimeTrendsDetailDashboard = (
   {
 
     instanceKey,

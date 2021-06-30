@@ -4,7 +4,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {getServerDate} from "../../../../../helpers/utility";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
-import {ProjectPredictabilityTrendsView} from "./predictabilityTrendsView"
+import {PredictabilityTrendsView} from "./predictabilityTrendsView"
 
 export const DimensionPredictabilityTrendsWidget = React.memo((
   {
@@ -47,7 +47,7 @@ export const DimensionPredictabilityTrendsWidget = React.memo((
     }
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
-      <ProjectPredictabilityTrendsView
+      <PredictabilityTrendsView
         instanceKey={instanceKey}
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}

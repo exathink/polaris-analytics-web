@@ -2,8 +2,8 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
-import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
-import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
+import {ResponseTimeTrendsView} from "./responseTimeTrendsView"
+import {ResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
@@ -52,7 +52,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
   const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
   return (
     view === 'primary' ?
-      <ProjectResponseTimeTrendsView
+      <ResponseTimeTrendsView
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}
         leadTimeTarget={leadTimeTarget}
@@ -73,7 +73,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
         defaultSeries={defaultSeries}
       />
       :
-      <ProjectResponseTimeTrendsDetailDashboard
+      <ResponseTimeTrendsDetailDashboard
         instanceKey={instanceKey}
         measurementWindow={measurementWindow}
         days={days}

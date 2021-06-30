@@ -19,7 +19,7 @@ function getSeriesName(seriesName) {
   return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
 }
 
-export const ProjectVolumeTrendsDetailDashboard = (
+export const VolumeTrendsDetailDashboard = (
   {
 
     instanceKey,

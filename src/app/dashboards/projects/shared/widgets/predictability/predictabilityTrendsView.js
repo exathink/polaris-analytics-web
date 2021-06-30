@@ -3,7 +3,7 @@ import {PredictabilityTrendsChart} from "./predictabilityTrendsChart";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {PredictabilityTrendsDetailDashboard} from "./predictabilityTrendsDetailDashboard";
 
-export const ProjectPredictabilityTrendsView = ({
+export const PredictabilityTrendsView = ({
   instanceKey,
   flowMetricsTrends,
   targetPercentile,

@@ -3,7 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {VolumeTrendsView} from "./volumeTrendsView"
-import {ProjectVolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
+import {VolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
@@ -65,7 +65,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
           }}
         />
         :
-        <ProjectVolumeTrendsDetailDashboard
+        <VolumeTrendsDetailDashboard
           instanceKey={instanceKey}
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}

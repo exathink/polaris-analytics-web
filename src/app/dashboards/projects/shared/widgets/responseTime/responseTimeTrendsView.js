@@ -2,7 +2,7 @@ import React from 'react';
 import {ResponseTimeTrendsChart} from "./responseTimeTrendsChart"
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 
-export const ProjectResponseTimeTrendsView = ({
+export const ResponseTimeTrendsView = ({
     flowMetricsTrends,
     targetPercentile,
     leadTimeTarget,

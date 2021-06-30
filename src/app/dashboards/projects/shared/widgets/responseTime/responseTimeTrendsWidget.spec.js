@@ -136,7 +136,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -144,7 +144,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -152,7 +152,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mocks);
     });
   });
 });
