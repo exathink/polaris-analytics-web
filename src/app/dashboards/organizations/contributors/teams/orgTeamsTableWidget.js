@@ -15,5 +15,5 @@ export function OrgTeamsTableWidget({organizationKey}) {
     return null;
   }
 
-  return <OrgTeamsTableView data={data} />;
+  return <OrgTeamsTableView data={data} organizationKey={organizationKey}/>;
 }

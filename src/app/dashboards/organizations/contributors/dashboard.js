@@ -93,17 +93,14 @@ const TopDashboard = () => (
         </DashboardRow>
         <DashboardRow
           h={"68%"}
-          title={organization.teams.count === 0 ? "" : "Teams"}
+          title={"Teams"}
           className={styles.teamsRow}
-          controls={
-            organization.teams.count === 0 ? [() => <CreateNewTeamWidget organizationKey={organization.key} />] : []
-          }
         >
           <DashboardWidget
             w={1}
             name={``}
             className={styles.orgTeamsTable}
-            render={({view}) => organization.teams.count > 0 ? <OrgTeamsTableWidget organizationKey={organization.key} /> : null}
+            render={({view}) => <OrgTeamsTableWidget organizationKey={organization.key} />}
             showDetail={false}
           />
         </DashboardRow>
