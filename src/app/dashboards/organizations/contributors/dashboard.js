@@ -35,10 +35,21 @@ const TopDashboard = () => (
               </Button>
             ),
             () => (
-              <Button type="primary" onClick={() => context.go(".", "manage-contributors")} style={{marginLeft: "10px"}}>
+              <Button
+                type="primary"
+                onClick={() => context.go(".", "manage-contributors")}
+                style={{marginLeft: "10px"}}
+              >
                 Manage Aliases
               </Button>
-            )]}
+            ),
+          ].filter((_, index) => {
+            if (organization.teams.count === 0) {
+              return index === 2;
+            } else {
+              return index >= 0;
+            }
+          })}
         >
           <DashboardWidget
             className={styles.activityProfile}
@@ -82,17 +93,17 @@ const TopDashboard = () => (
         </DashboardRow>
         <DashboardRow
           h={"68%"}
-          title={"Teams"}
+          title={organization.teams.count === 0 ? "" : "Teams"}
           className={styles.teamsRow}
-          controls={[
-
-          ]}
+          controls={
+            organization.teams.count === 0 ? [() => <CreateNewTeamWidget organizationKey={organization.key} />] : []
+          }
         >
           <DashboardWidget
             w={1}
             name={``}
             className={styles.orgTeamsTable}
-            render={({view}) => <OrgTeamsTableWidget organizationKey={organization.key} />}
+            render={({view}) => organization.teams.count > 0 ? <OrgTeamsTableWidget organizationKey={organization.key} /> : null}
             showDetail={false}
           />
         </DashboardRow>
