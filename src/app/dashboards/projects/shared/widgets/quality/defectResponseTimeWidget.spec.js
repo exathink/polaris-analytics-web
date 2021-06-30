@@ -7,6 +7,7 @@ import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetric
 import {DefectResponseTimeWidget} from "./defectResponseTimeWidget";
 
 const propsFixture = {
+  dimension: 'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
   days: 45,
@@ -17,7 +18,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: getFlowMetricsTrendsQuery,
+  query: getFlowMetricsTrendsQuery('project'),
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
