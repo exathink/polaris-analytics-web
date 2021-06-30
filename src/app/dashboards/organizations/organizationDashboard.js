@@ -62,6 +62,9 @@ class WithOrganization extends React.Component {
                     workItemsSourceCount
                     earliestWorkItemEvent
                     latestWorkItemEvent
+                    teams {
+                      count
+                    }
                 }
             }
         `}

@@ -1,6 +1,7 @@
 import React from "react";
 import {useSearch} from "../../../../components/tables/hooks";
 import {StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {CreateNewTeamWidget} from "./createNewTeam";
 
 export function useOrgTeamsTableColumns() {
   const nameSearchState = useSearch("name");
@@ -11,7 +12,7 @@ export function useOrgTeamsTableColumns() {
       dataIndex: "name",
       key: "name",
       width: "15%",
-      ...nameSearchState
+      ...nameSearchState,
     },
     {
       title: "Contributors",
@@ -30,8 +31,12 @@ export function useOrgTeamsTableColumns() {
   return columns;
 }
 
-export function OrgTeamsTable({tableData}) {
+export function OrgTeamsTable({tableData, organizationKey}) {
   const columns = useOrgTeamsTableColumns();
 
-  return <StripeTable columns={columns} dataSource={tableData} height={TABLE_HEIGHTS.FOURTY_FIVE} />;
+  const locale = {
+    emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
+  };
+
+  return <StripeTable columns={columns} dataSource={tableData} height={TABLE_HEIGHTS.FOURTY_FIVE} locale={locale} />;
 }
