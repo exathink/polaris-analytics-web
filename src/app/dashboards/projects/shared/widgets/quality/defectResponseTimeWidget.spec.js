@@ -3,7 +3,7 @@ import {GraphQLError} from "graphql/error";
 import React from "react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {DefectResponseTimeWidget} from "./defectResponseTimeWidget";
 
 const propsFixture = {
@@ -17,7 +17,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: FLOW_METRICS_TRENDS_QUERY,
+  query: getFlowMetricsTrendsQuery,
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,

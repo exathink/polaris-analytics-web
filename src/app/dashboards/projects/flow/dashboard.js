@@ -15,9 +15,9 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
-import { ProjectVolumeTrendsWidget } from "../shared/widgets/throughput";
-import { ProjectPredictabilityTrendsWidget } from "../shared/widgets/predictability";
+import { DimensionResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
+import { DimensionVolumeTrendsWidget } from "../shared/widgets/volume";
+import { DimensionPredictabilityTrendsWidget } from "../shared/widgets/predictability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -252,7 +252,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="volume-trends"
           className={styles.valueBookClosed}
           render={({view}) => (
-            <ProjectVolumeTrendsWidget
+            <DimensionVolumeTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
@@ -274,7 +275,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="response-time-trends"
           className={styles.valueMixChart}
           render={({view}) => (
-            <ProjectResponseTimeTrendsWidget
+            <DimensionResponseTimeTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
@@ -298,7 +300,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="predictability-trends"
           className={styles.valueBookWip}
           render={({view}) => (
-            <ProjectPredictabilityTrendsWidget
+            <DimensionPredictabilityTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}

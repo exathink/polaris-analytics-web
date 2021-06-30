@@ -1,6 +1,6 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectPredictabilityTrendsWidget} from "./predictabilityTrendsWidget";
+import {DimensionPredictabilityTrendsWidget} from "./dimensionPredictabilityTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
@@ -49,7 +49,8 @@ export const PredictabilityTrendsDetailDashboard = ({
           w={1}
           name="predictability-trends-detailed"
           render={({view}) => (
-            <ProjectPredictabilityTrendsWidget
+            <DimensionPredictabilityTrendsWidget
+              dimension={'project'}
               instanceKey={instanceKey}
               measurementWindow={measurementWindowRange}
               days={daysRange}

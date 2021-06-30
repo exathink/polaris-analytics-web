@@ -1,7 +1,7 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export const FLOW_METRICS_TRENDS_QUERY = gql`
+export const getFlowMetricsTrendsQuery = (dimension) => gql`
   query projectFlowMetricsTrends(
     $key: String!
     $days: Int!
@@ -15,7 +15,7 @@ export const FLOW_METRICS_TRENDS_QUERY = gql`
     $defectsOnly: Boolean
     $includeSubTasks: Boolean
   ) {
-    project(
+    ${dimension}(
       key: $key
       interfaces: [CycleMetricsTrends]
       cycleMetricsTrendsArgs: {
@@ -91,7 +91,8 @@ export const FLOW_METRICS_TRENDS_QUERY = gql`
   }
 `;
 
-export function useQueryProjectFlowMetricsTrends({
+export function useQueryDimensionFlowMetricsTrends({
+  dimension,
   instanceKey,
   before,
   days,
@@ -105,7 +106,7 @@ export function useQueryProjectFlowMetricsTrends({
   defectsOnly,
   includeSubTasks
 }) {
-  return useQuery(FLOW_METRICS_TRENDS_QUERY, {
+  return useQuery(getFlowMetricsTrendsQuery(dimension), {
     service: analytics_service,
     variables: {
       key: instanceKey,

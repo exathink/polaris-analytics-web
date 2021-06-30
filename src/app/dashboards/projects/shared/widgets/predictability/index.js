@@ -1,1 +1,1 @@
-export {ProjectPredictabilityTrendsWidget} from "./predictabilityTrendsWidget"
+export {DimensionPredictabilityTrendsWidget} from "./dimensionPredictabilityTrendsWidget"

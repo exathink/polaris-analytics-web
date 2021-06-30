@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectVolumeTrendsWidget} from "./throughputTrendsWidget";
+import {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
@@ -72,9 +72,9 @@ export const ProjectVolumeTrendsDetailDashboard = (
           name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
-              <ProjectVolumeTrendsWidget
+              <DimensionVolumeTrendsWidget
+                dimension={'project'}
                 instanceKey={instanceKey}
-
                 view={view}
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}

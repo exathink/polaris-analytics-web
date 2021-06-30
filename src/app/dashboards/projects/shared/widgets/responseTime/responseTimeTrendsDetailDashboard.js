@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
+import {DimensionResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
@@ -76,7 +76,8 @@ export const ProjectResponseTimeTrendsDetailDashboard = (
           name="response-time-trends"
           render={
             ({view}) =>
-              <ProjectResponseTimeTrendsWidget
+              <DimensionResponseTimeTrendsWidget
+                dimension={'project'}
                 instanceKey={instanceKey}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}

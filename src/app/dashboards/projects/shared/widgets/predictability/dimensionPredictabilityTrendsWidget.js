@@ -3,11 +3,12 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {getServerDate} from "../../../../../helpers/utility";
 
-import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
+import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {ProjectPredictabilityTrendsView} from "./predictabilityTrendsView"
 
-export const ProjectPredictabilityTrendsWidget = React.memo((
+export const DimensionPredictabilityTrendsWidget = React.memo((
   {
+    dimension,
     instanceKey,
     view,
     context,
@@ -26,21 +27,22 @@ export const ProjectPredictabilityTrendsWidget = React.memo((
     pollInterval,
     includeSubTasks
   }) => {
-    const {loading, error, data} = useQueryProjectFlowMetricsTrends(
+    const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
-        instanceKey: instanceKey,
-        days: days,
-        measurementWindow: measurementWindow,
+        dimension,
+        instanceKey,
+        days,
+        measurementWindow,
+        samplingFrequency,
+        targetPercentile,
         specsOnly: specsOnly != null ? specsOnly : true,
-        samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile,
         referenceString: latestWorkItemEvent,
         includeSubTasks: includeSubTasks
       }
     );
     if (loading) return <Loading/>;
     if (error) {
-      logGraphQlError('ProjectPredictabilityTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+      logGraphQlError('DimensionPredictabilityTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
       return null;
     }
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];

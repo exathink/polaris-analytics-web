@@ -3,8 +3,8 @@ import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {ProjectPredictabilityTrendsWidget} from "./predictabilityTrendsWidget";
-import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {DimensionPredictabilityTrendsWidget} from "./predictabilityTrendsWidget";
+import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {getServerDate} from "../../../../../helpers/utility";
 
 const propsFixture = {
@@ -22,7 +22,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: FLOW_METRICS_TRENDS_QUERY,
+  query: getFlowMetricsTrendsQuery,
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
@@ -135,7 +135,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectPredictabilityTrendsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -143,7 +143,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectPredictabilityTrendsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -151,7 +151,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<ProjectPredictabilityTrendsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mocks);
     });
   });
 });

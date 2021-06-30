@@ -40,6 +40,7 @@ export const DefectResponseTimeDetailDashboard = ({
           name="defect-response-time-detailed"
           render={({view}) => (
             <DefectResponseTimeWidget
+              dimension={'project'}
               instanceKey={instanceKey}
               view={view}
               days={daysRange}

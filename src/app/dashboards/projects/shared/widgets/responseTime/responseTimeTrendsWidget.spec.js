@@ -3,8 +3,8 @@ import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {ProjectResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
-import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {DimensionResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
+import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {getServerDate} from "../../../../../helpers/utility";
 
 const propsFixture = {
@@ -23,7 +23,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: FLOW_METRICS_TRENDS_QUERY,
+  query: getFlowMetricsTrendsQuery,
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
@@ -136,7 +136,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectResponseTimeTrendsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -144,7 +144,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectResponseTimeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -152,7 +152,7 @@ describe("ProjectResponseTimeTrendsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<ProjectResponseTimeTrendsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<dimensionResponseTimeTrendsWidget {...propsFixture} />, mocks);
     });
   });
 });

@@ -1,14 +1,16 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 
-import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
-import {ProjectVolumeTrendsView} from "./throughputTrendsView"
-import {ProjectVolumeTrendsDetailDashboard} from "./throughputTrendsDetailDashboard";
+import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
+import {VolumeTrendsView} from "./volumeTrendsView"
+import {ProjectVolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectVolumeTrendsWidget = React.memo((
+
+export const DimensionVolumeTrendsWidget = React.memo((
   {
+    dimension,
     instanceKey,
     view,
     context,
@@ -27,25 +29,26 @@ export const ProjectVolumeTrendsWidget = React.memo((
     pollInterval,
     includeSubTasks
   }) => {
-    const {loading, error, data} = useQueryProjectFlowMetricsTrends(
+    const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
-        instanceKey: instanceKey,
-        days: days,
-        measurementWindow: measurementWindow,
-        samplingFrequency: samplingFrequency,
-        targetPercentile: targetPercentile,
-        includeSubTasks: includeSubTasks
+        dimension,
+        instanceKey,
+        days,
+        measurementWindow,
+        samplingFrequency,
+        targetPercentile,
+        includeSubTasks
       }
     );
     if (loading) return <Loading/>;
     if (error) {
-      logGraphQlError('ProjectPredictabilityTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+      logGraphQlError('DimensionPredictabilityTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
       return null;
     }
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       view === 'primary' ?
-        <ProjectVolumeTrendsView
+        <VolumeTrendsView
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}
           measurementWindow={measurementWindow}

@@ -1,14 +1,15 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 
-import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends"
+import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {ProjectResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ProjectResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
 import {getServerDate} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectResponseTimeTrendsWidget = React.memo((
+export const DimensionResponseTimeTrendsWidget = React.memo((
   {
+    dimension,
     instanceKey,
     view,
     context,
@@ -30,21 +31,22 @@ export const ProjectResponseTimeTrendsWidget = React.memo((
     includeSubTasks
   }) => {
 
-  const {loading, error, data} = useQueryProjectFlowMetricsTrends(
+  const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
     {
-      instanceKey: instanceKey,
-      days: days,
-      measurementWindow: measurementWindow,
-      samplingFrequency: samplingFrequency,
-      targetPercentile: targetPercentile,
+      dimension,
+      instanceKey,
+      days,
+      measurementWindow,
+      samplingFrequency,
+      targetPercentile,
       specsOnly: specsOnly != null ? specsOnly : true,
       referenceString: latestWorkItemEvent,
-      includeSubTasks: includeSubTasks
+      includeSubTasks
     }
   );
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectResponseTimeTrendsWidget.useQueryProjectFlowMetricsTrends', error);
+    logGraphQlError('DimensionResponseTimeTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
     return null;
   }
   const {cycleMetricsTrends: flowMetricsTrends} = data['project'];

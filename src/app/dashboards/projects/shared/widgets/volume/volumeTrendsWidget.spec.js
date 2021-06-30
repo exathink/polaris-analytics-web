@@ -3,8 +3,8 @@ import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {ProjectVolumeTrendsWidget} from "./throughputTrendsWidget";
-import {FLOW_METRICS_TRENDS_QUERY} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget";
+import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {getServerDate} from "../../../../../helpers/utility";
 
 const propsFixture = {
@@ -21,7 +21,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: FLOW_METRICS_TRENDS_QUERY,
+  query: getFlowMetricsTrendsQuery('project'),
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
@@ -132,7 +132,7 @@ describe("ProjectVolumeTrendsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectVolumeTrendsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionVolumeTrendsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -140,7 +140,7 @@ describe("ProjectVolumeTrendsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectVolumeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionVolumeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -148,7 +148,7 @@ describe("ProjectVolumeTrendsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<ProjectVolumeTrendsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<DimensionVolumeTrendsWidget {...propsFixture} />, mocks);
     });
   });
 });

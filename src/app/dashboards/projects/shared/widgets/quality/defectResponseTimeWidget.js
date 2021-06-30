@@ -2,10 +2,11 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-import {useQueryProjectFlowMetricsTrends} from "../../hooks/useQueryProjectFlowMetricsTrends";
+import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {DefectResponseTimeView} from "./defectResponseTimeView";
 
 export const DefectResponseTimeWidget = ({
+  dimension,
   instanceKey,
   view,
   days,
@@ -15,11 +16,12 @@ export const DefectResponseTimeWidget = ({
   cycleTimeConfidenceTarget,
   cycleTimeTarget,
 }) => {
-  const {loading, error, data} = useQueryProjectFlowMetricsTrends({
-    instanceKey: instanceKey,
-    days: days,
-    measurementWindow: measurementWindow,
-    samplingFrequency: samplingFrequency,
+  const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
+    dimension,
+    instanceKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
     leadTimeTargetPercentile: leadTimeConfidenceTarget,
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
     defectsOnly: true,
@@ -27,7 +29,7 @@ export const DefectResponseTimeWidget = ({
   });
   if (loading) return <Loading />;
   if (error) {
-    logGraphQlError("DefectResponseTimeWidget.useQueryProjectFlowMetricsTrends", error);
+    logGraphQlError("DefectResponseTimeWidget.useQueryDimensionFlowMetricsTrends", error);
     return null;
   }
 
