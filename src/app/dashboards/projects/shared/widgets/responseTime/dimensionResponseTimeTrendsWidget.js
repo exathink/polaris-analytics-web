@@ -74,6 +74,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
       />
       :
       <ResponseTimeTrendsDetailDashboard
+        dimension={dimension}
         instanceKey={instanceKey}
         measurementWindow={measurementWindow}
         days={days}

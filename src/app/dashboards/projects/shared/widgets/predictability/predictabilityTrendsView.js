@@ -4,6 +4,7 @@ import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {PredictabilityTrendsDetailDashboard} from "./predictabilityTrendsDetailDashboard";
 
 export const PredictabilityTrendsView = ({
+  dimension,
   instanceKey,
   flowMetricsTrends,
   targetPercentile,
@@ -23,6 +24,7 @@ export const PredictabilityTrendsView = ({
 }) => {
   if (view === "detail") {
     const props = {
+      dimension,
       instanceKey,
       targetPercentile,
       measurementPeriod,

@@ -21,7 +21,7 @@ function getSeriesName(seriesName) {
 
 export const VolumeTrendsDetailDashboard = (
   {
-
+    dimension,
     instanceKey,
     view,
     context,
@@ -73,7 +73,7 @@ export const VolumeTrendsDetailDashboard = (
           render={
             ({view}) =>
               <DimensionVolumeTrendsWidget
-                dimension={'project'}
+                dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
                 setBefore={setBefore}

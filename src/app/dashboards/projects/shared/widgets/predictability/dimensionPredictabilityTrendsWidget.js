@@ -48,6 +48,7 @@ export const DimensionPredictabilityTrendsWidget = React.memo((
     const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
     return (
       <PredictabilityTrendsView
+        dimension={dimension}
         instanceKey={instanceKey}
         flowMetricsTrends={flowMetricsTrends}
         targetPercentile={targetPercentile}

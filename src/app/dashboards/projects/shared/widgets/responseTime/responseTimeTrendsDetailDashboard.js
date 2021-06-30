@@ -24,7 +24,7 @@ function getSeriesName(seriesName) {
 
 export const ResponseTimeTrendsDetailDashboard = (
   {
-
+    dimension,
     instanceKey,
     view,
     context,
@@ -77,7 +77,7 @@ export const ResponseTimeTrendsDetailDashboard = (
           render={
             ({view}) =>
               <DimensionResponseTimeTrendsWidget
-                dimension={'project'}
+                dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}

@@ -66,6 +66,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
         />
         :
         <VolumeTrendsDetailDashboard
+          dimension={dimension}
           instanceKey={instanceKey}
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}
