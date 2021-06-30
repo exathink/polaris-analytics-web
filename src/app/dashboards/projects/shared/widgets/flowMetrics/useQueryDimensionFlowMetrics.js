@@ -2,7 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
 
-export function useQueryProjectFlowMetrics(
+export function useQueryDimensionFlowMetrics(
   {
     dimension, instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
     cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, includeSubTasks, referenceString

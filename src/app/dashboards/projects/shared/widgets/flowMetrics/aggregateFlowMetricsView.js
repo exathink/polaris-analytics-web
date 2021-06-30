@@ -384,7 +384,7 @@ export const AllMetricsDisplayView = (
   )
 };
 
-export const ProjectAggregateFlowMetricsView = withViewerContext((
+export const AggregateFlowMetricsView = withViewerContext((
   {
 
     cycleMetricsTrends,

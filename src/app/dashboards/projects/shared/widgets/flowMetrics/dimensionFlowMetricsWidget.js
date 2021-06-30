@@ -1,8 +1,8 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView";
+import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
 import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
-import {useQueryProjectFlowMetrics} from "./useQueryProjectFlowMetrics";
+import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
 
 export const DimensionFlowMetricsWidget = (
   {
@@ -26,7 +26,7 @@ export const DimensionFlowMetricsWidget = (
     includeSubTasks
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const {loading, error, data} = useQueryProjectFlowMetrics({
+  const {loading, error, data} = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
     leadTimeTarget,
@@ -46,7 +46,7 @@ export const DimensionFlowMetricsWidget = (
   
   if (view === 'primary') {
     return (
-      <ProjectAggregateFlowMetricsView
+      <AggregateFlowMetricsView
         instanceKey={instanceKey}
         display={display}
         twoRows={twoRows}
