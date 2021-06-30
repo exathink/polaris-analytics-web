@@ -3,7 +3,7 @@ import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {DimensionPredictabilityTrendsWidget} from "./predictabilityTrendsWidget";
+import {DimensionPredictabilityTrendsWidget} from "./dimensionPredictabilityTrendsWidget";
 import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {getServerDate} from "../../../../../helpers/utility";
 
@@ -22,7 +22,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: getFlowMetricsTrendsQuery,
+  query: getFlowMetricsTrendsQuery('project'),
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,

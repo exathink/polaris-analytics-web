@@ -1,1 +1,1 @@
-export {DimensionResponseTimeTrendsWidget} from "./responseTimeTrendsWidget"
+export {DimensionResponseTimeTrendsWidget} from "./dimensionResponseTimeTrendsWidget"

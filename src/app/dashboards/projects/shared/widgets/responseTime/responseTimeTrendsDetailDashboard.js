@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {DimensionResponseTimeTrendsWidget} from "./responseTimeTrendsWidget";
+import {DimensionResponseTimeTrendsWidget} from "./dimensionResponseTimeTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
