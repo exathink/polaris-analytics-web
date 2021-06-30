@@ -4,13 +4,13 @@ import {analytics_service} from "../../../../../services/graphql";
 
 export function useQueryProjectFlowMetrics(
   {
-    instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
+    dimension, instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
     cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, includeSubTasks, referenceString
   }
 ) {
   return useQuery(
     gql`
-        query projectFlowMetrics(
+        query ${dimension}FlowMetrics(
             $key: String!,
             $days: Int!,
             $measurementWindow: Int!,
@@ -24,7 +24,7 @@ export function useQueryProjectFlowMetrics(
             $referenceString: String
 
         ) {
-            project(
+            ${dimension}(
                 key: $key,
                 interfaces: [ResponseTimeConfidenceTrends, CycleMetricsTrends],
                 responseTimeConfidenceTrendsArgs: {

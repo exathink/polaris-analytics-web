@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectFlowMetricsWidget} from "./projectFlowMetricsWidget";
+import {DimensionFlowMetricsWidget} from "./dimensionFlowMetricsWidget";
 import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowMetricsWidget";
 import {DaysRangeSlider} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
@@ -9,8 +9,9 @@ import {Box, Flex} from "reflexbox";
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
 
 
-export const ProjectFlowMetricsDetailDashboard = (
+export const DimensionFlowMetricsDetailDashboard = (
   {
+    dimension,
     instanceKey,
     context,
     latestWorkItemEvent,
@@ -61,7 +62,8 @@ export const ProjectFlowMetricsDetailDashboard = (
           name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
-              <ProjectFlowMetricsWidget
+              <DimensionFlowMetricsWidget
+                dimension={dimension}
                 instanceKey={instanceKey}
                 specsOnly={specsOnly}
                 display={'all'}

@@ -12,7 +12,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
-import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {DimensionFlowMetricsWidget} from "../shared/widgets/flowMetrics";
 import {ProjectPullRequestsWidget} from "./pullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
@@ -131,7 +131,8 @@ function WipDashboard({
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
-            <ProjectFlowMetricsWidget
+            <DimensionFlowMetricsWidget
+              dimension={'project'}
               instanceKey={key}
               view={view}
               display={"performanceSummary"}

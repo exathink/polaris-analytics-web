@@ -1,11 +1,12 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectAggregateFlowMetricsView} from "./projectAggregateFlowMetricsView";
-import {ProjectFlowMetricsDetailDashboard} from "./projectFlowMetricsDetailDashboard";
+import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
 import {useQueryProjectFlowMetrics} from "./useQueryProjectFlowMetrics";
 
-export const ProjectFlowMetricsWidget = (
+export const DimensionFlowMetricsWidget = (
   {
+    dimension,
     instanceKey,
     specsOnly,
     view,
@@ -26,6 +27,7 @@ export const ProjectFlowMetricsWidget = (
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryProjectFlowMetrics({
+    dimension,
     instanceKey,
     leadTimeTarget,
     cycleTimeTarget,
@@ -59,7 +61,8 @@ export const ProjectFlowMetricsWidget = (
     )
   } else {
     return (
-      <ProjectFlowMetricsDetailDashboard
+      <DimensionFlowMetricsDetailDashboard
+        dimension={dimension}
         instanceKey={instanceKey}
         specsOnly={limitToSpecsOnly}
         view={view}

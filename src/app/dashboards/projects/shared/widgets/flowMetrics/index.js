@@ -1,1 +1,1 @@
-export {ProjectFlowMetricsWidget} from './projectFlowMetricsWidget'
+export {DimensionFlowMetricsWidget} from './dimensionFlowMetricsWidget'

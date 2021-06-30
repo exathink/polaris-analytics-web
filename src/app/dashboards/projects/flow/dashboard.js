@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectPipelineWidget} from "../shared/widgets/wip";
-import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {DimensionFlowMetricsWidget} from "../shared/widgets/flowMetrics";
 import {ProjectDefectMetricsWidget} from "../shared/widgets/defectMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
@@ -171,7 +171,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             subtitle={`Last ${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
             render={({view}) => (
-              <ProjectFlowMetricsWidget
+              <DimensionFlowMetricsWidget
+                dimension={'project'}
                 instanceKey={key}
                 view={view}
                 display={"valueBoardSummary"}
