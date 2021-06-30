@@ -2,7 +2,7 @@ import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export const getFlowMetricsTrendsQuery = (dimension) => gql`
-  query projectFlowMetricsTrends(
+  query ${dimension}FlowMetricsTrends(
     $key: String!
     $days: Int!
     $measurementWindow: Int!
