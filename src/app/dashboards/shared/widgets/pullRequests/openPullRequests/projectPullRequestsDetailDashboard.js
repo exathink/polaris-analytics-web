@@ -1,7 +1,7 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {PullRequestsCompletedTrendsWidget} from "../../../../projects/shared/widgets/pullRequestsCompleted";
-import {PullRequestsReviewTimeTrendsWidget} from "../../../../projects/shared/widgets/pullRequestsReviewTime";
+import {PullRequestsCompletedTrendsWidget} from "../trends/pullRequestsCompleted";
+import {PullRequestsReviewTimeTrendsWidget} from "../trends/pullRequestsReviewTime";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,

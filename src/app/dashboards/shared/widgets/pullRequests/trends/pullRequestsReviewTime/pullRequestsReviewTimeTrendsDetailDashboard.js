@@ -1,10 +1,10 @@
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {PullRequestsReviewTimeTrendsWidget} from "./pullRequestsReviewTimeTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
+} from "../../../../components/trendingControlBar/trendingControlBar";
 
 const dashboard_id = "dashboards.trends.projects.pullrequests.reviewtime.detail";
 

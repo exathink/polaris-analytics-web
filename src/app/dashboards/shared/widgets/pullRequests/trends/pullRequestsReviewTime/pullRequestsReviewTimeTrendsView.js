@@ -1,6 +1,6 @@
 import React from "react";
 import {PullRequestsReviewTimeTrendsChart} from "./pullRequestsReviewTimeTrendsChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../../containers/layout";
 
 export const PullRequestsReviewTimeTrendsView = ({
   pullRequestMetricsTrends,

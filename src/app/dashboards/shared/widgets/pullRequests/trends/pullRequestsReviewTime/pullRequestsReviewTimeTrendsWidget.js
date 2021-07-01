@@ -1,7 +1,7 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
+import {Loading} from "../../../../../../components/graphql/loading";
 
-import {useQueryProjectPullRequestMetricsTrends} from "../../hooks/useQueryProjectPullRequestMetricsTrends";
+import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
 import {PullRequestsReviewTimeTrendsView} from "./pullRequestsReviewTimeTrendsView";
 import {PullRequestsReviewTimeTrendsDetailDashboard} from "./pullRequestsReviewTimeTrendsDetailDashboard";
 

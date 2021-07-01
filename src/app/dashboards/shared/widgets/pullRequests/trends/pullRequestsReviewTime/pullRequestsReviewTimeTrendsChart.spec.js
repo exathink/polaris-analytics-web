@@ -1,11 +1,11 @@
 import React from "react";
-import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../../../framework/viz/charts/chart-test-utils";
 
-import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
+import {expectSetsAreEqual, formatNumber} from "../../../../../../../test/test-utils";
 
 import {PullRequestsReviewTimeTrendsChart} from "./pullRequestsReviewTimeTrendsChart";
-import {Colors} from "../../../../shared/config";
-import {epoch} from "../../../../../helpers/utility";
+import {Colors} from "../../../../config";
+import {epoch} from "../../../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
