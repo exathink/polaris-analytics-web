@@ -1,8 +1,10 @@
 import React from "react";
 import {useSearch} from "../../../../components/tables/hooks";
 import {StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
+import Button from "../../../../../components/uielements/button";
 import {CreateNewTeamWidget} from "./createNewTeam";
-
+import {TeamLink} from "../../../shared/navigation/teamLink";
 export function useOrgTeamsTableColumns() {
   const nameSearchState = useSearch("name");
 
@@ -24,7 +26,23 @@ export function useOrgTeamsTableColumns() {
       title: "Last Commit",
       dataIndex: "latestCommit",
       key: "latestCommit",
-      width: "15%",
+      width: "20%",
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      key: "actions",
+      width: "4%",
+      align: "right",
+      render: (name, record) => (
+        <ButtonBar>
+          <TeamLink teamName={record.name} teamKey={record.key}>
+            <Button type={"primary"} size={"small"}>
+              Select
+            </Button>
+          </TeamLink>
+        </ButtonBar>
+      ),
     },
   ];
 

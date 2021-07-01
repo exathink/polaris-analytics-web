@@ -1,5 +1,6 @@
 import Contributors from "../../contributors/context";
 import Repositories from "../../repositories/context";
+import Teams from "../../teams/context";
 import WorkItems from "../../work_items/context";
 
 
@@ -17,6 +18,10 @@ export function navigateToContext(context, childContext, name, key) {
     }
     case 'workItem': {
       context.navigate(WorkItems, name, key)
+      break;
+    }
+    case 'team': {
+      context.navigate(Teams, name, key)
       break;
     }
     default: {

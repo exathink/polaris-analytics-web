@@ -60,7 +60,11 @@ export class CommitTimelineViewModel {
   initCategoryReverseMapper(groupBy) {
     if (groupBy !== 'workItem') {
       return (commits, category) => {
-        const commit = commits.find(commit => commit[groupBy] === category);
+        let commit;
+        commit = commits.find(commit => commit[groupBy] === category);
+        if (groupBy === "team") {
+          commit = commits.find(commit => commit["authorTeamName"] === category);
+        }
         if (commit) {
           switch (groupBy) {
             case 'author': {
@@ -69,6 +73,9 @@ export class CommitTimelineViewModel {
             }
             case 'repository': {
               return [commit.repository, commit.repositoryKey]
+            }
+            case 'team': {
+              return [commit.authorTeamName, commit.authorTeamKey]
             }
             default: {
               break

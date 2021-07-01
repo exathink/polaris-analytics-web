@@ -15,6 +15,10 @@ const messages = defineMessages({
     id: 'contexts.projects.display',
     defaultMessage: "{quantity, plural, one {Value Stream} other {Value Streams}}"
   },
+  teams: {
+    id: 'contexts.teams.display',
+    defaultMessage: "{quantity, plural, one {Team} other {Teams}}"
+  },
   work_items: {
     id: 'contexts.work_items.display',
     defaultMessage: "{quantity, plural, one {Card} other {Cards}}"
@@ -86,6 +90,20 @@ export const Contexts = {
           return <FormattedMessage
             id="contexts.projects.display"
             defaultMessage="{quantity, plural, one {Value Stream} other {Value Streams}}"
+            values={{quantity: quantity}}
+        />
+        },
+    icon: 'ion-folder',
+    color: '#356eb2'
+  },
+  teams: {
+    name: 'teams',
+    message: messages.teams,
+    display:
+        (quantity = 0) => {
+          return <FormattedMessage
+            id="contexts.teams.display"
+            defaultMessage="{quantity, plural, one {Team} other {Teams}}"
             values={{quantity: quantity}}
         />
         },
