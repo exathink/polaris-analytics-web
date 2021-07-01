@@ -1,9 +1,9 @@
 import React from 'react';
-import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {useQueryProjectPipelineStateDetails} from "../../../../../projects/shared/hooks/useQueryProjectPipelineStateDetails";
 import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
-import {getReferenceString} from "../../../../../helpers/utility";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {getReferenceString} from "../../../../../../helpers/utility";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {CycleTimeLatencyDetailView} from "./cycleTimeLatencyDetailView";
 
 

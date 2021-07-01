@@ -1,16 +1,16 @@
 import React from "react";
-import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {isObjectEmpty} from "../../helper/utils";
-import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../shared/config";
-import {getWorkItemDurations} from "../../../../shared/charts/workItemCharts/shared";
+import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
+import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
+import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
+import {getWorkItemDurations} from "../../../../charts/workItemCharts/shared";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 import {Button, Drawer} from "antd";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
-import {EVENT_TYPES} from "../../../../../helpers/utility";
-import {useResetComponentState} from "../../helper/hooks";
+import {EVENT_TYPES} from "../../../../../../helpers/utility";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId"];

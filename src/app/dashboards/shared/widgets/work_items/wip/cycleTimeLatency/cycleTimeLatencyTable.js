@@ -1,12 +1,12 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import WorkItems from "../../../../work_items/context";
-import {Highlighter} from "../../../../../components/misc/highlighter";
-import {useSearch} from "../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
+import WorkItems from "../../../../../work_items/context";
+import {Highlighter} from "../../../../../../components/misc/highlighter";
+import {useSearch} from "../../../../../../components/tables/hooks";
+import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
-import {WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
+import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 

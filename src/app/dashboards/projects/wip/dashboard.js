@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {WorkItemStateTypes} from "../../shared/config";
 import {
-  ProjectPipelineCycleTimeLatencyWidget,
   ProjectPipelineWidget,
 } from "../shared/widgets/wip";
 import styles from "./dashboard.module.css";
@@ -13,6 +12,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
+import {ProjectPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
 import {ProjectPullRequestsWidget} from "./pullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";

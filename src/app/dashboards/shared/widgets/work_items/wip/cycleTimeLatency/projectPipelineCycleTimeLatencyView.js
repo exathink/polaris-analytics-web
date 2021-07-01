@@ -1,9 +1,9 @@
 import React from 'react';
-import WorkItems from "../../../../work_items/context";
-import {WorkItemsCycleTimeVsLatencyChart} from "../../../../shared/charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {useGenerateTicks} from "../../../../shared/hooks/useGenerateTicks";
-import {EVENT_TYPES} from "../../../../../helpers/utility";
+import WorkItems from "../../../../../work_items/context";
+import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
+import {VizItem, VizRow} from "../../../../containers/layout";
+import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
+import {EVENT_TYPES} from "../../../../../../helpers/utility";
 
 export const ProjectPipelineCycleTimeLatencyView = (
   {
