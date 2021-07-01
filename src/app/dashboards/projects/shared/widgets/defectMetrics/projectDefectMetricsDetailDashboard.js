@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {ProjectDefectMetricsWidget} from "./projectDefectMetricsWidget";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {DaysRangeSlider} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = 'dashboards.activity.projects.defectMetrics.detail';

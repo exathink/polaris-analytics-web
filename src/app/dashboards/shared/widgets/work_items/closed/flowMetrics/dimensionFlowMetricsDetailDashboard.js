@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {DimensionFlowMetricsWidget} from "./dimensionFlowMetricsWidget";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleFlowMetricsWidget";
-import {DaysRangeSlider} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {DaysRangeSlider} from "../../../../components/daysRangeSlider/daysRangeSlider";
+import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
 import {Box, Flex} from "reflexbox";
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';

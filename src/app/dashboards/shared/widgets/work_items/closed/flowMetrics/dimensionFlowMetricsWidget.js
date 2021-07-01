@@ -1,5 +1,5 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
+import {Loading} from "../../../../../../components/graphql/loading";
 import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
 import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
 import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";

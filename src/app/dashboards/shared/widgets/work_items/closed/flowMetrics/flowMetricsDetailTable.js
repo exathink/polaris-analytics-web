@@ -1,13 +1,13 @@
 import {Link} from "react-router-dom";
-import WorkItems from "../../../../work_items/context";
-import {Highlighter} from "../../../../../components/misc/highlighter";
-import {useSearch} from "../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
+import WorkItems from "../../../../../work_items/context";
+import {Highlighter} from "../../../../../../components/misc/highlighter";
+import {useSearch} from "../../../../../../components/tables/hooks";
+import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
-import {StripeTable, SORTER} from "../../../../../components/tables/tableUtils";
-import {formatDateTime} from "../../../../../i18n";
-import {toMoment} from "../../../../../helpers/utility";
+import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
+import {formatDateTime} from "../../../../../../i18n";
+import {toMoment} from "../../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});

@@ -1,5 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
-import {analytics_service} from "../../../../../services/graphql";
+import {analytics_service} from "../../../../../../services/graphql";
 
 
 export function useQueryDimensionFlowMetrics(

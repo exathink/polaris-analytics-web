@@ -5,7 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
-import { DimensionDeliveryCycleFlowMetricsWidget } from "../../../../../projects/shared/widgets/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import { DimensionDeliveryCycleFlowMetricsWidget } from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {getFlowMetricsRowTitle} from "../../../../../projects/shared/helper/utils";
 
 const dashboard_id = "dashboards.trends.projects.predictability.trends.detail";

@@ -1,10 +1,10 @@
 import React from "react";
 import {GraphQLError} from "graphql";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
-import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {getServerDate} from "../../../../../helpers/utility";
-import {queryDimensionClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {getNDaysAgo} from "../../../../../../../test/test-utils";
+import {getServerDate} from "../../../../../../helpers/utility";
+import {queryDimensionClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleFlowMetricsWidget";
 
 

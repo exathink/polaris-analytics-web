@@ -1,9 +1,9 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
-import {pick} from "../../../../../helpers/utility";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {pick} from "../../../../../../helpers/utility";
 import {DimensionDeliveryCyclesFlowMetricsView} from "./dimensionDeliveryCyclesFlowMetricsView";
-import {useQueryProjectClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 export const DimensionDeliveryCycleFlowMetricsWidget = ({
   dimension,

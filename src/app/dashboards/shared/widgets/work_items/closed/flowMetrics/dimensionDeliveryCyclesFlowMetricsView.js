@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
-import {FlowMetricsScatterPlotChart} from "../../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
+import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
+import {FlowMetricsScatterPlotChart} from "../../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
 import {Checkbox, Drawer} from "antd";
 import {Flex} from "reflexbox";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
-import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,

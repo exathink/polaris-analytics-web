@@ -1,6 +1,6 @@
 import React from "react";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
+import {VizItem, VizRow} from "../../../../containers/layout";
+import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 
 import {
   AvgCycleTime,
@@ -16,8 +16,8 @@ import {
   Volume,
   VolumeCarousel,
   EffortOUT,
-} from "../../../../shared/components/flowStatistics/flowStatistics";
-import {ComponentCarousel} from "../../../../shared/components/componentCarousel/componentCarousel";
+} from "../../../../components/flowStatistics/flowStatistics";
+import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
 
 
 export const PerformanceSummaryView = (

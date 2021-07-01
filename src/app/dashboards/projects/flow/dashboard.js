@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectPipelineWidget} from "../shared/widgets/wip";
-import {DimensionFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {ProjectDefectMetricsWidget} from "../shared/widgets/defectMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
