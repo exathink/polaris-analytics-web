@@ -5,12 +5,13 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import { ProjectDeliveryCycleFlowMetricsWidget } from "../flowMetrics/projectDeliveryCycleFlowMetricsWidget";
+import { DimensionDeliveryCycleFlowMetricsWidget } from "../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = "dashboards.trends.projects.predictability.trends.detail";
 
 export const PredictabilityTrendsDetailDashboard = ({
+  dimension,
   instanceKey,
   targetPercentile,
   measurementPeriod,
@@ -70,7 +71,8 @@ export const PredictabilityTrendsDetailDashboard = ({
           w={1}
           name="flow-metrics-delivery-details"
           render={({view}) => (
-            <ProjectDeliveryCycleFlowMetricsWidget
+            <DimensionDeliveryCycleFlowMetricsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               specsOnly={true}
               view={view}

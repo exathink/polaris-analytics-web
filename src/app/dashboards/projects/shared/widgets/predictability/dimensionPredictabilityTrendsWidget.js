@@ -45,7 +45,7 @@ export const DimensionPredictabilityTrendsWidget = React.memo((
       logGraphQlError('DimensionPredictabilityTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
       return null;
     }
-    const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
+    const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
     return (
       <PredictabilityTrendsView
         dimension={dimension}

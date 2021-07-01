@@ -49,7 +49,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
     logGraphQlError('DimensionResponseTimeTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
     return null;
   }
-  const {cycleMetricsTrends: flowMetricsTrends} = data['project'];
+  const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
   return (
     view === 'primary' ?
       <ResponseTimeTrendsView

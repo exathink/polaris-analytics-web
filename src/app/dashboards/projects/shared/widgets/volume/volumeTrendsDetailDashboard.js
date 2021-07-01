@@ -5,7 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectDeliveryCycleFlowMetricsWidget} from '../flowMetrics/projectDeliveryCycleFlowMetricsWidget';
+import {DimensionDeliveryCycleFlowMetricsWidget} from '../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget';
 import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = 'dashboards.trends.projects.throughput.detail';
@@ -94,7 +94,8 @@ export const VolumeTrendsDetailDashboard = (
           w={1}
           name="flow-metrics-delivery-details"
           render={({view}) => (
-            <ProjectDeliveryCycleFlowMetricsWidget
+            <DimensionDeliveryCycleFlowMetricsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               specsOnly={selectedPointSeries === "Specs"}
               view={view}

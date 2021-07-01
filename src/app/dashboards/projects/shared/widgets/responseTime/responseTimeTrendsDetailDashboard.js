@@ -5,7 +5,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectDeliveryCycleFlowMetricsWidget} from '../flowMetrics/projectDeliveryCycleFlowMetricsWidget';
+import {DimensionDeliveryCycleFlowMetricsWidget} from '../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget';
 import {getFlowMetricsRowTitle} from "../../helper/utils";
 
 const dashboard_id = 'dashboards.trends.projects.response-time.detail';
@@ -101,7 +101,8 @@ export const ResponseTimeTrendsDetailDashboard = (
           w={1}
           name="flow-metrics-delivery-details"
           render={({view}) => (
-            <ProjectDeliveryCycleFlowMetricsWidget
+            <DimensionDeliveryCycleFlowMetricsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               specsOnly={true}
               view={view}
