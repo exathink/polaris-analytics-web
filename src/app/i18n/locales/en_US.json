@@ -34,6 +34,7 @@
   "contexts.accounts.display": "{quantity, plural, one {Account} other {Accounts}}",
   "contexts.organizations.display": "{quantity, plural, one {Organization} other {Organizations}}",
   "contexts.projects.display": "{quantity, plural, one {Value Stream} other {Value Streams}}",
+  "contexts.teams.display": "{quantity, plural, one {Team} other {Teams}}",
   "contexts.repositories.display": "{quantity, plural, one {Repository} other {Repositories}}",
   "contexts.contributors.display": "{quantity, plural, one {Contributor} other {Contributors}}",
   "contexts.commits.display": "{quantity, plural, one {Commit} other {Commits}}",
