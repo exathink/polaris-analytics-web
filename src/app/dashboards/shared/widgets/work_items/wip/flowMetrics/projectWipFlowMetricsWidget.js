@@ -1,11 +1,11 @@
 import React from 'react';
-import {Loading} from "../../../../../components/graphql/loading";
-import {ProjectPipelineDetailDashboard} from "./projectPipelineDetailDashboard"
-import {useQueryProjectPipelineCycleMetrics} from "../../hooks/useQueryProjectPipelineCycleMetrics";
-import {ProjectPipelineSummaryView} from "./projectPipelineSummaryView";
-import {getReferenceString} from "../../../../../helpers/utility";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {ProjectWipFlowMetricsDetailDashboard} from "./projectWipFlowMetricsDetailDashboard"
+import {useQueryProjectPipelineCycleMetrics} from "../../../../../projects/shared/hooks/useQueryProjectPipelineCycleMetrics";
+import {ProjectWipFlowMetricsSummaryView} from "./projectWipFlowMetricsSummaryView";
+import {getReferenceString} from "../../../../../../helpers/utility";
 
-export const ProjectPipelineWidget = (
+export const ProjectWipFlowMetricsWidget = (
   {
     instanceKey,
     display,
@@ -42,7 +42,7 @@ export const ProjectPipelineWidget = (
 
   if (view === 'primary') {
     return (
-      <ProjectPipelineSummaryView
+      <ProjectWipFlowMetricsSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
         display={display}
         latestCommit={latestCommit}
@@ -56,7 +56,7 @@ export const ProjectPipelineWidget = (
     )
   } else {
     return (
-      <ProjectPipelineDetailDashboard
+      <ProjectWipFlowMetricsDetailDashboard
         instanceKey={instanceKey}
         latestWorkItemEvent={latestWorkItemEvent}
         stateMappingIndex={stateMappingIndex}
@@ -73,7 +73,7 @@ export const ProjectPipelineWidget = (
 
 }
 
-ProjectPipelineWidget.videoConfig = {
+ProjectWipFlowMetricsWidget.videoConfig = {
   url: "https://vimeo.com/501974487/080d487fcf",
   title: "WIP",
   VideoDescription: () => (

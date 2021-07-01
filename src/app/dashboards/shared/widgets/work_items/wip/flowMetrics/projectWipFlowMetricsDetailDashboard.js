@@ -1,13 +1,13 @@
 import React, {useState} from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectPipelinePhaseSummaryWidget} from "./projectPipelinePhaseSummaryWidget";
-import {ProjectPhaseDetailWidget} from "../projectPhaseDetail";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
+import {ProjectPipelinePhaseSummaryWidget} from "../../../../../projects/shared/widgets/wip/projectPipelinePhaseSummaryWidget";
+import {ProjectPhaseDetailWidget} from "../../../../../projects/shared/widgets/projectPhaseDetail";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 
-export const ProjectPipelineDetailDashboard = ({
+export const ProjectWipFlowMetricsDetailDashboard = ({
   instanceKey,
   context,
   latestWorkItemEvent,

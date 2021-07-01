@@ -1,6 +1,6 @@
 import React from "react";
-import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {withNavigationContext} from "../../../../../../framework/navigation/components/withNavigationContext";
+import {VizItem, VizRow} from "../../../../containers/layout";
 import {
   AvgCycleTime,
   AvgDuration,
@@ -12,10 +12,10 @@ import {
   Wip,
   WipCarousel,
   WipWithLimit,
-} from "../../../../shared/components/flowStatistics/flowStatistics";
-import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
-import {ComponentCarousel} from "../../../../shared/components/componentCarousel/componentCarousel";
-import styles from "./wip.module.css";
+} from "../../../../components/flowStatistics/flowStatistics";
+import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
+import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
+import styles from "../../../../../projects/shared/widgets/wip/wip.module.css";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -236,7 +236,7 @@ const PipelineSummaryView = withViewerContext((
 });
 
 
-export const ProjectPipelineSummaryView = withNavigationContext(PipelineSummaryView);
+export const ProjectWipFlowMetricsSummaryView = withNavigationContext(PipelineSummaryView);
 
 
 
