@@ -1,8 +1,8 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
-  query projectClosedDeliveryCycleDetail(
+export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
+  query ${dimension}ClosedDeliveryCycleDetail(
     $key: String!
     $referenceString: String
     $days: Int
@@ -11,7 +11,7 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
     $specsOnly: Boolean
     $includeSubTasks: Boolean
   ) {
-    project(key: $key, referenceString: $referenceString) {
+    ${dimension}(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
         closedBefore: $before
         closedWithinDays: $days
@@ -50,8 +50,8 @@ export const PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL = gql`
   }
 `;
 
-export function useQueryProjectClosedDeliveryCycleDetail({instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks}) {
-  return useQuery(PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL, {
+export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks}) {
+  return useQuery(queryDimensionClosedDeliveryCycleDetail(dimension), {
     service: analytics_service,
     variables: {
       key: instanceKey,
