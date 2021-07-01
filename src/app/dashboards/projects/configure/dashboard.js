@@ -76,6 +76,7 @@ export function ResponseTimeSLASettingsDashboard() {
               render={({view}) => {
                 return (
                   <ProjectResponseTimeSLASettingsWidget
+                    dimension={'project'}
                     instanceKey={key}
                     view={view}
                     context={context}

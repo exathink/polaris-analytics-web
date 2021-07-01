@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {ProjectFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
-import {ProjectTraceabilityTrendsWidget} from "../traceability";
+import {ProjectTraceabilityTrendsWidget} from "../../../../shared/widgets/commits/traceability";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState

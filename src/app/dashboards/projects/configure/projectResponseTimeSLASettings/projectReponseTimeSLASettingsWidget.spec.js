@@ -4,7 +4,7 @@ import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/ch
 import {getNDaysAgo} from "../../../../../test/test-utils"
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettingsWidget";
 import {GraphQLError} from "graphql";
-import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {queryDimensionClosedDeliveryCycleDetail} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 
 beforeAll(() => {
   jest.spyOn(console, "log").mockImplementation(() => {})
@@ -14,6 +14,7 @@ afterAll(() => {
 });
 
 const propsFixture = {
+  dimension: 'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   latestWorkItemEvent: getNDaysAgo(35),
   days: 90,
@@ -25,7 +26,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL,
+  query: queryDimensionClosedDeliveryCycleDetail('project'),
   variables: {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     days: 90,

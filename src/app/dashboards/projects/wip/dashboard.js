@@ -1,10 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {WorkItemStateTypes} from "../../shared/config";
-import {
-  ProjectPipelineCycleTimeLatencyWidget,
-  ProjectPipelineWidget,
-} from "../shared/widgets/wip";
 import styles from "./dashboard.module.css";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 
@@ -12,13 +8,14 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
-import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
-import {ProjectPullRequestsWidget} from "./pullRequests";
+import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
+import {ProjectPipelineCycleTimeLatencyWidget, ProjectWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {ProjectPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectImplementationCostWidget } from "../shared/widgets/implementationCost";
+import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 
@@ -85,9 +82,9 @@ function WipDashboard({
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
-          videoConfig={ProjectPipelineWidget.videoConfig}
+          videoConfig={ProjectWipFlowMetricsWidget.videoConfig}
           render={({view}) => (
-            <ProjectPipelineWidget
+            <ProjectWipFlowMetricsWidget
               instanceKey={key}
               display={"flowboardSummary"}
               latestCommit={latestCommit}
@@ -131,7 +128,8 @@ function WipDashboard({
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
-            <ProjectFlowMetricsWidget
+            <DimensionFlowMetricsWidget
+              dimension={'project'}
               instanceKey={key}
               view={view}
               display={"performanceSummary"}
@@ -209,7 +207,7 @@ function WipDashboard({
           name="epic-flow-mix-wip"
           className={styles.pipelineEffort}
           render={({ view }) => (
-            <ProjectImplementationCostWidget
+            <ProjectValueBookWidget
               instanceKey={key}
               context={context}
               specsOnly={specsOnly}

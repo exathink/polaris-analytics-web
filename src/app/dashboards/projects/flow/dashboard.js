@@ -1,23 +1,23 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ProjectPipelineWidget} from "../shared/widgets/wip";
-import {ProjectFlowMetricsWidget} from "../shared/widgets/flowMetrics";
+import {ProjectWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {ProjectDefectMetricsWidget} from "../shared/widgets/defectMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
+import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
-import { ProjectVolumeTrendsWidget } from "../shared/widgets/throughput";
-import { ProjectPredictabilityTrendsWidget } from "../shared/widgets/predictability";
+import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
+import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
+import { DimensionPredictabilityTrendsWidget } from "../../shared/widgets/work_items/trends/predictability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -171,7 +171,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             subtitle={`Last ${flowAnalysisPeriod} Days`}
             hideTitlesInDetailView={true}
             render={({view}) => (
-              <ProjectFlowMetricsWidget
+              <DimensionFlowMetricsWidget
+                dimension={'project'}
                 instanceKey={key}
                 view={view}
                 display={"valueBoardSummary"}
@@ -221,7 +222,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             className={styles.wip}
             title={"Work In Progress"}
             render={({view}) => (
-              <ProjectPipelineWidget
+              <ProjectWipFlowMetricsWidget
                 instanceKey={key}
                 display={"valueBoardSummary"}
                 specsOnly={specsOnly}
@@ -252,7 +253,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="volume-trends"
           className={styles.valueBookClosed}
           render={({view}) => (
-            <ProjectVolumeTrendsWidget
+            <DimensionVolumeTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
@@ -274,7 +276,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="response-time-trends"
           className={styles.valueMixChart}
           render={({view}) => (
-            <ProjectResponseTimeTrendsWidget
+            <DimensionResponseTimeTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
@@ -298,7 +301,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="predictability-trends"
           className={styles.valueBookWip}
           render={({view}) => (
-            <ProjectPredictabilityTrendsWidget
+            <DimensionPredictabilityTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}

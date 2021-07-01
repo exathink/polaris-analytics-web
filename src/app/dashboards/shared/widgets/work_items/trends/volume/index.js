@@ -1,0 +1,1 @@
+export {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget"
