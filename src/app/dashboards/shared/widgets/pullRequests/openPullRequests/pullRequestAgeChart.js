@@ -1,7 +1,7 @@
-import { Chart, tooltipHtml } from "../../../../framework/viz/charts";
-import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { buildIndex, localNow, pick } from "../../../../helpers/utility";
-import { Colors } from "../../../shared/config";
+import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
+import { DefaultSelectionEventHandler } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import { buildIndex, localNow, pick } from "../../../../../helpers/utility";
+import { Colors } from "../../../config";
 
 function getDisplayName(pullRequest) {
   const [workItem, ...moreWorkItems] = pullRequest.workItemsSummaries;

@@ -1,10 +1,10 @@
 import {screen, waitFor} from "@testing-library/react";
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
-import {GET_PROJECT_PULL_REQUESTS} from "../../shared/hooks/useQueryProjectPullRequests";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {GET_PROJECT_PULL_REQUESTS} from "../../../../projects/shared/hooks/useQueryProjectPullRequests";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 import {GraphQLError} from "graphql";
-import {getReferenceString} from "../../../../helpers/utility";
+import {getReferenceString} from "../../../../../helpers/utility";
 
 const referenceDates = {
   latestWorkItemEvent: "2020-12-09T22:31:01.244000",

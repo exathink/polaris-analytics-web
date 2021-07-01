@@ -1,11 +1,11 @@
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {PullRequestsCompletedTrendsWidget} from "../../shared/widgets/pullRequestsCompleted";
-import {PullRequestsReviewTimeTrendsWidget} from "../../shared/widgets/pullRequestsReviewTime";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {PullRequestsCompletedTrendsWidget} from "../../../../projects/shared/widgets/pullRequestsCompleted";
+import {PullRequestsReviewTimeTrendsWidget} from "../../../../projects/shared/widgets/pullRequestsReviewTime";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
-} from "../../../shared/components/trendingControlBar/trendingControlBar";
+} from "../../../components/trendingControlBar/trendingControlBar";
 import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";

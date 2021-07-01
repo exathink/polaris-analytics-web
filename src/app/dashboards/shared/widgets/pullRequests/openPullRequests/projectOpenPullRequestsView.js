@@ -1,11 +1,11 @@
 import React from "react";
-import {VizItem, VizRow} from "../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../containers/layout";
 import {PullRequestAgeChart} from "./pullRequestAgeChart";
-import {navigateToExternalURL} from "../../../shared/navigation/navigate";
-import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
-import {FlowStatistic} from "../../../shared/components/flowStatistics/flowStatistics";
-import {average} from "../../../../helpers/utility";
-import WorkItems from "../../../work_items/context";
+import {navigateToExternalURL} from "../../../navigation/navigate";
+import {TrendIndicator} from "../../../../../components/misc/statistic/statistic";
+import {FlowStatistic} from "../../../components/flowStatistics/flowStatistics";
+import {average} from "../../../../../helpers/utility";
+import WorkItems from "../../../../work_items/context";
 
 const ProjectOpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   <VizRow h={1}>

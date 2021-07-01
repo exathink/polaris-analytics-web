@@ -1,10 +1,10 @@
 import React from "react";
-import {Loading} from "../../../../components/graphql/loading";
-import {useQueryProjectPullRequests} from "../../shared/hooks/useQueryProjectPullRequests";
+import {Loading} from "../../../../../components/graphql/loading";
+import {useQueryProjectPullRequests} from "../../../../projects/shared/hooks/useQueryProjectPullRequests";
 import {ProjectOpenPullRequestsView} from "./projectOpenPullRequestsView";
-import {getReferenceString} from "../../../../helpers/utility";
+import {getReferenceString} from "../../../../../helpers/utility";
 import {ProjectPullRequestsDetailDashboard} from "./projectPullRequestsDetailDashboard";
-import {logGraphQlError} from "../../../../components/graphql/utils";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectPullRequestsWidget = ({
   instanceKey,

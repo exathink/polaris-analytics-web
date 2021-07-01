@@ -1,7 +1,7 @@
 import React from "react";
-import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
-import {Colors} from "../../../shared/config";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
+import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
+import {Colors} from "../../../config";
 import {PullRequestAgeChart} from "./pullRequestAgeChart";
 
 // clear mocks after each test
