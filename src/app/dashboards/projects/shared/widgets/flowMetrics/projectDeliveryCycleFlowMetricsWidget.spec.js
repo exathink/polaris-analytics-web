@@ -4,11 +4,12 @@ import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts
 import {waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {getServerDate} from "../../../../../helpers/utility";
-import {PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
-import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowMetricsWidget";
+import {queryDimensionClosedDeliveryCycleDetail} from "../../hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleFlowMetricsWidget";
 
 
 const propsFixture = {
+  dimension: 'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   specsOnly: true,
   view: "primary",
@@ -24,7 +25,7 @@ const propsFixture = {
 };
 
 const gqlRequest = {
-  query: PROJECT_CLOSED_DELIVERY_CYCLE_DETAIL,
+  query: queryDimensionClosedDeliveryCycleDetail('project'),
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
@@ -117,7 +118,7 @@ describe("ProjectDeliveryCycleFlowMetricsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectDeliveryCycleFlowMetricsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionDeliveryCycleFlowMetricsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -125,7 +126,7 @@ describe("ProjectDeliveryCycleFlowMetricsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ProjectDeliveryCycleFlowMetricsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionDeliveryCycleFlowMetricsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -133,7 +134,7 @@ describe("ProjectDeliveryCycleFlowMetricsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<ProjectDeliveryCycleFlowMetricsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<DimensionDeliveryCycleFlowMetricsWidget {...propsFixture} />, mocks);
     });
   });
 });

@@ -7,7 +7,7 @@ import {projectDeliveryCycleFlowMetricsMeta} from "../../../../shared/helpers/me
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
-export const ProjectDeliveryCyclesFlowMetricsView = ({
+export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
   model,

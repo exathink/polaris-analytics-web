@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DimensionFlowMetricsWidget} from "./dimensionFlowMetricsWidget";
-import {ProjectDeliveryCycleFlowMetricsWidget} from "./projectDeliveryCycleFlowMetricsWidget";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleFlowMetricsWidget";
 import {DaysRangeSlider} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
 import {Box, Flex} from "reflexbox";
@@ -88,7 +88,8 @@ export const DimensionFlowMetricsDetailDashboard = (
           name="cycle-metrics-delivery-details"
           render={
             ({view}) =>
-              <ProjectDeliveryCycleFlowMetricsWidget
+              <DimensionDeliveryCycleFlowMetricsWidget
+                dimension={dimension}
                 instanceKey={instanceKey}
                 specsOnly={specsOnly}
                 view={view}
