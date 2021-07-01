@@ -6,6 +6,7 @@ import {useQueryProjectClosedDeliveryCycleDetail} from "../../shared/hooks/useQu
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
 export const ProjectResponseTimeSLASettingsWidget = ({
+  dimension,
   instanceKey,
   specsOnly,
   view,
@@ -19,6 +20,7 @@ export const ProjectResponseTimeSLASettingsWidget = ({
   defectsOnly,
 }) => {
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
+    dimension,
     instanceKey,
     days,
     defectsOnly,
@@ -32,7 +34,7 @@ export const ProjectResponseTimeSLASettingsWidget = ({
     return null;
   }
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
-  const flowMetricsData = projectDeliveryCycleData.project.workItemDeliveryCycles.edges.map((edge) =>
+  const flowMetricsData = projectDeliveryCycleData[dimension].workItemDeliveryCycles.edges.map((edge) =>
     pick(
       edge.node,
       "id",
