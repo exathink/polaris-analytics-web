@@ -1,6 +1,7 @@
 import Organizations from "./organizations/context";
 import type {Context} from "../framework/navigation/context/context";
 import Projects from "./projects/context";
+import Teams from "./teams/context";
 import Accounts from "./accounts/context";
 import Repositories from "./repositories/context";
 import Contributors from "./contributors/context";
@@ -21,6 +22,10 @@ const context: Context = {
     {
       match: 'value-streams',
       context: Projects,
+    },
+    {
+      match: 'teams',
+      context: Teams,
     },
     {
       match: 'repositories',
