@@ -8,7 +8,7 @@ import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
+import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {StateMappingIndex} from "../shared/stateMappingIndex";

@@ -4,7 +4,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {DimensionPredictabilityTrendsWidget} from "../../shared/widgets/work_items/trends/predictability";
 import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
 import {DimensionResponseTimeTrendsWidget, DimensionDefectResponseTimeWidget} from "../../shared/widgets/work_items/trends/responseTime";
-import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
+import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
 
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 

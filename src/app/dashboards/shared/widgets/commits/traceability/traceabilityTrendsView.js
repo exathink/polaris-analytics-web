@@ -1,8 +1,8 @@
 import React from 'react';
 import {TraceabilityTrendsChart} from "./traceabilityTrendsChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../containers/layout";
 
-import {Traceability, TraceabilityTarget} from "../../../../shared/components/flowStatistics/flowStatistics";
+import {Traceability, TraceabilityTarget} from "../../../components/flowStatistics/flowStatistics";
 
 
 const TraceabilityStatisticView = (

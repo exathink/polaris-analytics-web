@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {Box, Flex} from "reflexbox";
 import {Checkbox} from "antd";
 import {ProjectTraceabilityTrendsWidget} from "./traceabilityTrendsWidget";
-import {DimensionCommitsNavigatorWidget} from "../../../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget} from "../../accountHierarchy";
 
 const dashboard_id = 'dashboards.projects.trends.traceability.detail';
 
