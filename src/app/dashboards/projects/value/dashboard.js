@@ -2,7 +2,7 @@ import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ProjectImplementationCostWidget} from "../shared/widgets/implementationCost";
+import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import styles from "./dashboard.module.css";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {Flex} from "reflexbox";
@@ -27,7 +27,7 @@ function ValueDashboard({
           name="epic-flow-mix-closed"
           className={styles.valueBookClosed}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectValueBookWidget
               instanceKey={key}
               context={context}
               days={closedWithinDays}
@@ -68,7 +68,7 @@ function ValueDashboard({
           name="epic-flow-mix-wip"
           className={styles.valueBookWip}
           render={({view}) => (
-            <ProjectImplementationCostWidget
+            <ProjectValueBookWidget
               instanceKey={key}
               context={context}
               specsOnly={specsOnly}

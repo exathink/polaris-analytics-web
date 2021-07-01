@@ -1,19 +1,19 @@
 import {Alert, Button, Drawer} from "antd";
 import React from "react";
-import styles from "./implementationCost.module.css";
-import {useUpdateProjectWorkItems} from "./useQueryProjectImplementationCost";
+import styles from "./valueBook.module.css";
+import {useUpdateProjectWorkItems} from "./useQueryProjectEpicEffort";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {implementationCostReducer, actionTypes, mode} from "./implementationCostReducer";
+import {valueBookDetailViewReducer, actionTypes, mode} from "./valueBookDetailViewReducer";
 import {
   recordMode,
-  ImplementationCostTable,
+  EpicEffortTable,
   UncategorizedKey,
   useImplementationCostTableColumns,
-} from "./implementationCostTable";
-import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
-import {DaysRangeSlider, ONE_YEAR} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
+} from "./epicEffortTable";
+import {WorkItemsEpicEffortChart} from "../../../charts/workItemCharts/workItemsEpicEffortChart";
+import {DaysRangeSlider, ONE_YEAR} from "../../../components/daysRangeSlider/daysRangeSlider";
 import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../projects/shared/components/workItemScopeSelector";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
 const UncategorizedEpic = {
@@ -25,7 +25,7 @@ const UncategorizedEpic = {
   epicName: UncategorizedKey,
   epicKey: UncategorizedKey,
 };
-export function ImplementationCostDetailView({
+export function ValueBookDetailView({
   instanceKey,
   data,
   loading,
@@ -63,7 +63,7 @@ export function ImplementationCostDetailView({
     successMessage: "",
   };
 
-  const [state, dispatch] = React.useReducer(implementationCostReducer, initialState);
+  const [state, dispatch] = React.useReducer(valueBookDetailViewReducer, initialState);
   const [chartPoints, setChartPoints] = React.useState([]);
 
   React.useEffect(() => {
@@ -244,7 +244,7 @@ export function ImplementationCostDetailView({
       </div>
       <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
-        <ImplementationCostTable
+        <EpicEffortTable
           columns={columns}
           tableData={getTableData()}
           loading={loading}

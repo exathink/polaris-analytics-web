@@ -1,7 +1,7 @@
 import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectImplementationCost({instanceKey, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
+export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(

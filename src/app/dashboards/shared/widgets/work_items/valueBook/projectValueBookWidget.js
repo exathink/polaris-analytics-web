@@ -1,13 +1,13 @@
 import React from "react";
 
-import {useQueryProjectImplementationCost} from "./useQueryProjectImplementationCost";
+import {useQueryProjectEpicEffort} from "./useQueryProjectEpicEffort";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-import {ProjectImplementationCostView} from "./projectImplementationCostView";
+import {ProjectValueBookView} from "./projectValueBookView";
 
-export const ProjectImplementationCostWidget = ({
+export const ProjectValueBookWidget = ({
   instanceKey,
   activeOnly,
   specsOnly,
@@ -24,7 +24,7 @@ export const ProjectImplementationCostWidget = ({
   setWorkItemScope,
   setClosedWithinDays
 }) => {
-  const {loading, error, data} = useQueryProjectImplementationCost({
+  const {loading, error, data} = useQueryProjectEpicEffort({
     instanceKey,
     activeOnly,
     specsOnly,
@@ -41,7 +41,7 @@ export const ProjectImplementationCostWidget = ({
   const workItemDeliveryCycles = data.project.workItemDeliveryCycles.edges.map((edge) => edge.node);
 
   return (
-    <ProjectImplementationCostView
+    <ProjectValueBookView
       instanceKey={instanceKey}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}

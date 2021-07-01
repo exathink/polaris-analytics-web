@@ -15,7 +15,7 @@ import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryPr
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectImplementationCostWidget } from "../shared/widgets/implementationCost";
+import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 
@@ -207,7 +207,7 @@ function WipDashboard({
           name="epic-flow-mix-wip"
           className={styles.pipelineEffort}
           render={({ view }) => (
-            <ProjectImplementationCostWidget
+            <ProjectValueBookWidget
               instanceKey={key}
               context={context}
               specsOnly={specsOnly}

@@ -17,7 +17,7 @@ export const mode = {
   ERROR: "ERROR",
 };
 
-export function implementationCostReducer(state, action) {
+export function valueBookDetailViewReducer(state, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BUDGET_RECORDS: {
       const isEditingMode = !isEqual(action.payload, state.initialBudgetRecords);

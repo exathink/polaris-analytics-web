@@ -1,8 +1,8 @@
 import React from "react";
 import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {GET_PROJECT_IMPLEMENTATION_COST_TABLE} from "./useQueryProjectImplementationCost";
-import {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";
+import {GET_PROJECT_IMPLEMENTATION_COST_TABLE} from "./useQueryProjectEpicEffort";
+import {ValueBookDetailWidget} from "./valueBookDetailWidget";
 import {screen, waitFor} from "@testing-library/react";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {getReferenceString} from "../../../../../helpers/utility";
@@ -124,7 +124,7 @@ describe("ImplementationCostDetailWidget", () => {
     test("it renders nothing and logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<ValueBookDetailWidget {...propsFixture} />, mockNetworkError);
 
       // before
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe("ImplementationCostDetailWidget", () => {
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
       
-      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<ValueBookDetailWidget {...propsFixture} />, mockGraphQlErrors);
 
       // before
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
@@ -152,7 +152,7 @@ describe("ImplementationCostDetailWidget", () => {
 
   describe('when there are no errors', () => {
     test('renders widget without any error', () => {
-      renderWithProviders(<ImplementationCostDetailWidget {...propsFixture} />, mocks);
+      renderWithProviders(<ValueBookDetailWidget {...propsFixture} />, mocks);
       expect(screen.queryByTestId("implementation-cost-table")).toBeInTheDocument();
     })
   })

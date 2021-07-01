@@ -1,12 +1,12 @@
 import React from "react";
 
-import {useQueryImplementationCostTable} from "./useQueryProjectImplementationCost";
+import {useQueryImplementationCostTable} from "./useQueryProjectEpicEffort";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-import {ImplementationCostDetailView} from "./implementationCostDetailView";
+import {ValueBookDetailView} from "./valueBookDetailView";
 
-export const ImplementationCostDetailWidget = ({
+export const ValueBookDetailWidget = ({
   instanceKey,
   closedWithinDays,
   activeOnly,
@@ -31,14 +31,14 @@ export const ImplementationCostDetailWidget = ({
   });
 
   if (error) {
-    logGraphQlError("ImplementationCostDetailWidget.useQueryImplementationCostTable", error);
+    logGraphQlError("ValueBookDetailWidget.useQueryImplementationCostTable", error);
     return null;
   }
 
   const queryData = data || previousData;
 
   return (
-    <ImplementationCostDetailView
+    <ValueBookDetailView
       instanceKey={instanceKey}
       data={queryData}
       loading={loading}

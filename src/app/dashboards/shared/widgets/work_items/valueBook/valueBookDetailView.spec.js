@@ -1,13 +1,13 @@
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
-import {UPDATE_PROJECT_WORKITEMS} from "./useQueryProjectImplementationCost";
+import {UPDATE_PROJECT_WORKITEMS} from "./useQueryProjectEpicEffort";
 import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {ImplementationCostDetailView as ImplementationCostDetailViewWithoutIntl} from "./implementationCostDetailView";
+import {ValueBookDetailView as ValueBookDetailViewWithoutIntl} from "./valueBookDetailView";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
 
-const ImplementationCostDetailView = injectIntl(ImplementationCostDetailViewWithoutIntl);
+const ValueBookDetailView = injectIntl(ValueBookDetailViewWithoutIntl);
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -111,7 +111,7 @@ const propsFixture = {
   epicChartData: []
 };
 
-describe("ImplementationCostDetailView", () => {
+describe("ValueBookDetailView", () => {
   describe("when there are no workItems", () => {
     const emptyPropsFixture = {
       ...propsFixture,
@@ -119,7 +119,7 @@ describe("ImplementationCostDetailView", () => {
     };
 
     test("should render table with no records", () => {
-      renderWithProviders(<ImplementationCostDetailView {...emptyPropsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ValueBookDetailView {...emptyPropsFixture} />, updateWorkItemsMocks);
       const {getByText} = within(screen.queryByTestId("implementation-cost-table"));
       getByText(/no data/i);
     });
@@ -127,13 +127,13 @@ describe("ImplementationCostDetailView", () => {
 
   describe("when there are workItems", () => {
     test("should render table with correct number of records", () => {
-      const {container} = renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
+      const {container} = renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       const tableRows = container.querySelectorAll(".ant-table-row");
       expect([...tableRows]).toHaveLength(1);
     });
 
     test("when budget is updated for any record, save/cancel button should appear", () => {
-      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
       const budgetTextBox = getByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
@@ -143,7 +143,7 @@ describe("ImplementationCostDetailView", () => {
     });
 
     test("when cancel button is clicked, save/cancel button should disappear", () => {
-      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
       const budgetTextBox = getByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
@@ -160,7 +160,7 @@ describe("ImplementationCostDetailView", () => {
     });
 
     test("when budget is updated for any record, edited title shows above the table", () => {
-      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       // before
       expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
 
@@ -173,7 +173,7 @@ describe("ImplementationCostDetailView", () => {
     });
 
     test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-      renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, updateWorkItemsMocks);
+      renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
 
       // change the value of inputNumber, so that save/cancel appears
       const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
@@ -218,7 +218,7 @@ describe("ImplementationCostDetailView", () => {
       ];
 
       test("it renders network error message and logs the error when there is a network error", async () => {
-        renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, mockNetworkError);
+        renderWithProviders(<ValueBookDetailView {...propsFixture} />, mockNetworkError);
 
         // change the value of inputNumber, so that save/cancel appears
         const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
@@ -241,7 +241,7 @@ describe("ImplementationCostDetailView", () => {
       });
 
       test("it renders graphql error message and logs the error when there is a GraphQl error", async () => {
-        renderWithProviders(<ImplementationCostDetailView {...propsFixture} />, mockGraphQlErrors);
+        renderWithProviders(<ValueBookDetailView {...propsFixture} />, mockGraphQlErrors);
 
         // change the value of inputNumber, so that save/cancel appears
         const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));

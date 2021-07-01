@@ -1,8 +1,8 @@
 import React from "react";
-import {WorkItemsEpicEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEpicEffortChart";
-import {ImplementationCostDetailWidget} from "./implementationCostDetailWidget";
+import {WorkItemsEpicEffortChart} from "../../../charts/workItemCharts/workItemsEpicEffortChart";
+import {ValueBookDetailWidget} from "./valueBookDetailWidget";
 
-export const ProjectImplementationCostView = ({
+export const ProjectValueBookView = ({
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
@@ -22,7 +22,7 @@ export const ProjectImplementationCostView = ({
 }) => {
   if (view === "detail") {
     return (
-      <ImplementationCostDetailWidget
+      <ValueBookDetailWidget
         instanceKey={instanceKey}
         context={context}
         view={view}

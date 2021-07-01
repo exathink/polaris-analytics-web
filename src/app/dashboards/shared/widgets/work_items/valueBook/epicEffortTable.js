@@ -6,7 +6,7 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
-import {actionTypes} from "./implementationCostReducer";
+import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
 
 export const UncategorizedKey = "Uncategorized";
@@ -333,7 +333,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
   return [...UncatEpic, ...restEpics];
 }
 
-export const ImplementationCostTable = injectIntl(({tableData, columns, loading, intl, rowClassName}) => {
+export const EpicEffortTable = injectIntl(({tableData, columns, loading, intl, rowClassName}) => {
   const [epicWorkItems, nonEpicWorkItems] = [
     tableData.filter((x) => x.workItemType === "epic"),
     tableData.filter((x) => x.workItemType !== "epic"),
