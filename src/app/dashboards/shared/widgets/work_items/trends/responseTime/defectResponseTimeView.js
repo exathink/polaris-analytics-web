@@ -1,6 +1,6 @@
 import React from "react";
 import {DefectResponseTimeChart} from "./defectResponseTimeChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../../containers/layout";
 import {DefectResponseTimeDetailDashboard} from "./defectResponseTimeDetailDashboard";
 
 export const DefectResponseTimeView = ({

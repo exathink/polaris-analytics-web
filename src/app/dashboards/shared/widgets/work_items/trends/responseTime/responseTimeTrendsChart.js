@@ -1,6 +1,6 @@
 import React from 'react';
-import {i18nDate, i18nNumber, percentileToText} from "../../../../../helpers/utility";
-import {MeasurementTrendLineChart} from "../../../../shared/views/measurementTrend/measurementTrendLineChart";
+import {i18nDate, i18nNumber, percentileToText} from "../../../../../../helpers/utility";
+import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
 
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {

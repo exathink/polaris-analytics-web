@@ -1,12 +1,12 @@
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {DimensionPredictabilityTrendsWidget} from "./dimensionPredictabilityTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import { DimensionDeliveryCycleFlowMetricsWidget } from "../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {getFlowMetricsRowTitle} from "../../helper/utils";
+} from "../../../../components/trendingControlBar/trendingControlBar";
+import { DimensionDeliveryCycleFlowMetricsWidget } from "../../../../../projects/shared/widgets/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {getFlowMetricsRowTitle} from "../../../../../projects/shared/helper/utils";
 
 const dashboard_id = "dashboards.trends.projects.predictability.trends.detail";
 

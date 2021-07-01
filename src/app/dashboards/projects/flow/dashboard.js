@@ -15,9 +15,9 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { DimensionResponseTimeTrendsWidget } from "../shared/widgets/responseTime";
-import { DimensionVolumeTrendsWidget } from "../shared/widgets/volume";
-import { DimensionPredictabilityTrendsWidget } from "../shared/widgets/predictability";
+import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
+import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
+import { DimensionPredictabilityTrendsWidget } from "../../shared/widgets/work_items/trends/predictability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 

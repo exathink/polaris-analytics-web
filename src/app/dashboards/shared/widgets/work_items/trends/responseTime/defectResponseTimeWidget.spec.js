@@ -1,10 +1,10 @@
 import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql/error";
 import React from "react";
-import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {getNDaysAgo} from "../../../../../../../test/test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
-import {DefectResponseTimeWidget} from "./defectResponseTimeWidget";
+import {DimensionDefectResponseTimeWidget} from "./dimensionDefectResponseTimeWidget";
 
 const propsFixture = {
   dimension: 'project',
@@ -105,11 +105,11 @@ const mocksFixture = [
 
 describe("DefectResponseTimeWidget", () => {
   test("renders without an error", () => {
-    renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mocksFixture);
+    renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mocksFixture);
   });
 
   test("shows a loading spinner", async () => {
-    renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mocksFixture);
+    renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mocksFixture);
     expect(await screen.findByTestId("loading-spinner")).toBeInTheDocument();
   });
 
@@ -139,13 +139,13 @@ describe("DefectResponseTimeWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -153,12 +153,12 @@ describe("DefectResponseTimeWidget", () => {
 
   describe("when there is series data", () => {
     test("should render correct chart title", async () => {
-      renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mocksFixture);
+      renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mocksFixture);
       expect(await screen.findByText(/Defect Response Time/i)).toBeInTheDocument();
     });
 
     test("makes sure chart is rendered from widget, with correct legend title", async () => {
-      renderWithProviders(<DefectResponseTimeWidget {...propsFixture} />, mocksFixture, {
+      renderWithProviders(<DimensionDefectResponseTimeWidget {...propsFixture} />, mocksFixture, {
         chartTestId: "defect-response-chart",
       });
 

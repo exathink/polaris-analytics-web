@@ -1,6 +1,6 @@
 import React from 'react';
-import {i18nDate, i18nNumber} from "../../../../../helpers/utility";
-import {MeasurementTrendLineChart} from "../../../../shared/views/measurementTrend/measurementTrendLineChart";
+import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
+import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
 
 export const VolumeTrendsChart = ({
   flowMetricsTrends,

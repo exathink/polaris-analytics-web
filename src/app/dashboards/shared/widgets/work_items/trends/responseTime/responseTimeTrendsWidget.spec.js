@@ -1,24 +1,25 @@
 import React from "react";
 import {GraphQLError} from "graphql";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
-import {getNDaysAgo} from "../../../../../../test/test-utils";
-import {DimensionPredictabilityTrendsWidget} from "./dimensionPredictabilityTrendsWidget";
+import {getNDaysAgo} from "../../../../../../../test/test-utils";
+import {DimensionResponseTimeTrendsWidget} from "./dimensionResponseTimeTrendsWidget";
 import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
-import {getServerDate} from "../../../../../helpers/utility";
+import {getServerDate} from "../../../../../../helpers/utility";
 
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
-  latestWorkItemEvent: getNDaysAgo(21),
+  latestWorkItemEvent: getNDaysAgo(9),
   days: 45,
   measurementWindow: 30,
   samplingFrequency: 7,
   targetPercentile: 0.9,
-  cycleTimeTarget: 7,
   leadTimeTarget: 14,
-  leadTimeConfidenceTarget: 0.8,
+  cycleTimeTarget: 7,
   cycleTimeConfidenceTarget: 0.9,
+  leadTimeConfidenceTarget: 0.8,
+  defaultSeries: "cycleTime",
 };
 
 const gqlRequest = {
@@ -26,11 +27,11 @@ const gqlRequest = {
   variables: {
     key: propsFixture.instanceKey,
     days: propsFixture.days,
-    specsOnly: true,
+    specsOnly: propsFixture.specsOnly,
+    before: propsFixture.before,
+    referenceString: propsFixture.latestWorkItemEvent,
     measurementWindow: propsFixture.measurementWindow,
     samplingFrequency: propsFixture.samplingFrequency,
-    targetPercentile: propsFixture.targetPercentile,
-    referenceString: propsFixture.latestWorkItemEvent
   },
 };
 
@@ -106,7 +107,7 @@ const mocks = [
   },
 ];
 
-describe("ProjectPredictabilityTrendsWidget", () => {
+describe("ProjectResponseTimeTrendsWidget", () => {
   describe("when there are errors", () => {
     let logGraphQlError;
     beforeEach(() => {
@@ -135,7 +136,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
     test("it logs the error when there is a network error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mockNetworkError);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -143,7 +144,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
     test("it logs the error when there is a GraphQl error", async () => {
       await waitFor(() => expect(logGraphQlError).not.toHaveBeenCalled());
 
-      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mockGraphQlErrors);
 
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
     });
@@ -151,7 +152,7 @@ describe("ProjectPredictabilityTrendsWidget", () => {
 
   describe("when there are no errors", () => {
     test("renders widget without any error", () => {
-      renderWithProviders(<DimensionPredictabilityTrendsWidget {...propsFixture} />, mocks);
+      renderWithProviders(<DimensionResponseTimeTrendsWidget {...propsFixture} />, mocks);
     });
   });
 });

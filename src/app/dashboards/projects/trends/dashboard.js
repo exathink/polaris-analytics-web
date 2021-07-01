@@ -1,9 +1,9 @@
 import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {DimensionPredictabilityTrendsWidget} from "../shared/widgets/predictability";
-import {DimensionVolumeTrendsWidget} from "../shared/widgets/volume";
-import {DimensionResponseTimeTrendsWidget} from "../shared/widgets/responseTime";
+import {DimensionPredictabilityTrendsWidget} from "../../shared/widgets/work_items/trends/predictability";
+import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
+import {DimensionResponseTimeTrendsWidget, DimensionDefectResponseTimeWidget} from "../../shared/widgets/work_items/trends/responseTime";
 import {ProjectTraceabilityTrendsWidget} from "../shared/widgets/traceability";
 
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
@@ -14,7 +14,6 @@ import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {
   DefectArrivalCloseRateWidget,
   DefectBacklogTrendsWidget,
-  DefectResponseTimeWidget,
 } from "../shared/widgets/quality";
 import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 
@@ -202,7 +201,7 @@ function TrendsDashboard({
           w={1 / 3}
           name="defect-response-time"
           render={({view}) => (
-            <DefectResponseTimeWidget
+            <DimensionDefectResponseTimeWidget
               dimension={'project'}
               instanceKey={key}
               measurementWindow={30}

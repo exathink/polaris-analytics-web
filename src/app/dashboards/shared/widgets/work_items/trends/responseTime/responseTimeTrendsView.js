@@ -1,6 +1,6 @@
 import React from 'react';
 import {ResponseTimeTrendsChart} from "./responseTimeTrendsChart"
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../../containers/layout";
 
 export const ResponseTimeTrendsView = ({
     flowMetricsTrends,

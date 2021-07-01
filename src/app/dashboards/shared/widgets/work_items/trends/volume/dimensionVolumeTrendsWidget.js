@@ -1,11 +1,11 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
+import {Loading} from "../../../../../../components/graphql/loading";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {VolumeTrendsView} from "./volumeTrendsView"
 import {VolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
-import {getServerDate} from "../../../../../helpers/utility";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {getServerDate} from "../../../../../../helpers/utility";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 
 export const DimensionVolumeTrendsWidget = React.memo((

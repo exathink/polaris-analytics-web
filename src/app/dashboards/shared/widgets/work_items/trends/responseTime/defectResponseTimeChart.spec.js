@@ -1,9 +1,9 @@
 import React from "react";
-import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
-import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../../test/test-utils";
-import {Colors} from "../../../../shared/config";
+import {renderedChartConfig, renderedTooltipConfig} from "../../../../../../framework/viz/charts/chart-test-utils";
+import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../../../test/test-utils";
+import {Colors} from "../../../../config";
 import {DefectResponseTimeChart} from "./defectResponseTimeChart";
-import {epoch} from "../../../../../helpers/utility";
+import {epoch} from "../../../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {

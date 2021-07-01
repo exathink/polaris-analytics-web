@@ -1,6 +1,6 @@
 import React from "react";
 import {PredictabilityTrendsChart} from "./predictabilityTrendsChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../../containers/layout";
 import {PredictabilityTrendsDetailDashboard} from "./predictabilityTrendsDetailDashboard";
 
 export const PredictabilityTrendsView = ({

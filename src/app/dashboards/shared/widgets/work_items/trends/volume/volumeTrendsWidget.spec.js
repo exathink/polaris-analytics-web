@@ -1,11 +1,11 @@
 import React from "react";
 import {GraphQLError} from "graphql";
-import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor} from "@testing-library/react";
-import {getNDaysAgo} from "../../../../../../test/test-utils";
+import {getNDaysAgo} from "../../../../../../../test/test-utils";
 import {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget";
 import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
-import {getServerDate} from "../../../../../helpers/utility";
+import {getServerDate} from "../../../../../../helpers/utility";
 
 const propsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",

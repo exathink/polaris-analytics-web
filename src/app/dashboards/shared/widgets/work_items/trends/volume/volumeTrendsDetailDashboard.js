@@ -1,28 +1,25 @@
 import React from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {DimensionResponseTimeTrendsWidget} from "./dimensionResponseTimeTrendsWidget";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
+import {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {DimensionDeliveryCycleFlowMetricsWidget} from '../flowMetrics/dimensionDeliveryCycleFlowMetricsWidget';
-import {getFlowMetricsRowTitle} from "../../helper/utils";
+} from "../../../../components/trendingControlBar/trendingControlBar";
+import {DimensionDeliveryCycleFlowMetricsWidget} from '../../../../../projects/shared/widgets/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget';
+import {getFlowMetricsRowTitle} from "../../../../../projects/shared/helper/utils";
 
-const dashboard_id = 'dashboards.trends.projects.response-time.detail';
+const dashboard_id = 'dashboards.trends.projects.throughput.detail';
 
 function getSeriesName(seriesName) {
   const objMap = {
-    avgCycleTime: "cycleTime",
-    avgLeadTime: "leadTime",
-    avgLatency: "latency",
-    avgDuration: "duration",
-    avgEffort: "effort"
+    workItemsInScope: "Cards",
+    workItemsWithCommits: "Specs",
   }
 
   return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
 }
 
-export const ResponseTimeTrendsDetailDashboard = (
+export const VolumeTrendsDetailDashboard = (
   {
     dimension,
     instanceKey,
@@ -33,18 +30,17 @@ export const ResponseTimeTrendsDetailDashboard = (
     days,
     measurementWindow,
     samplingFrequency,
+    targetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
-    targetPercentile,
     pollInterval,
-    defaultSeries,
     includeSubTasks
   }
 ) => {
   const [before, setBefore] = React.useState();
-  const [seriesName, setSeriesName] = React.useState("cycleTime");
+  const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   const [
@@ -59,7 +55,7 @@ export const ResponseTimeTrendsDetailDashboard = (
     >
       <DashboardRow
         h={"40%"}
-        title={`Response Time Trends`}
+        title={`Volume Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
           getTrendsControlBarControls(
@@ -73,23 +69,20 @@ export const ResponseTimeTrendsDetailDashboard = (
       >
         <DashboardWidget
           w={1}
-          name="response-time-trends"
+          name="cycle-metrics-summary-detailed"
           render={
             ({view}) =>
-              <DimensionResponseTimeTrendsWidget
+              <DimensionVolumeTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
+                setBefore={setBefore}
+                setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
                 targetPercentile={targetPercentile}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                setBefore={setBefore}
-                setSeriesName={setSeriesName}
-                defaultSeries={["all"]}
                 includeSubTasks={includeSubTasks}
               />
           }
@@ -104,14 +97,14 @@ export const ResponseTimeTrendsDetailDashboard = (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
               instanceKey={instanceKey}
-              specsOnly={true}
+              specsOnly={selectedPointSeries === "Specs"}
               view={view}
               context={context}
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={measurementWindowRange}
               before={before}
-              initialMetric={selectedPointSeries}
+              initialMetric={"leadTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}

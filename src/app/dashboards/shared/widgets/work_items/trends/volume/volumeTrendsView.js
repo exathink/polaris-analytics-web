@@ -1,6 +1,6 @@
 import React from 'react';
 import {VolumeTrendsChart} from "./volumeTrendsChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {VizItem, VizRow} from "../../../../containers/layout";
 
 export const VolumeTrendsView = ({
     flowMetricsTrends,

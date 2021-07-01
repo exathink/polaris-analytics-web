@@ -1,7 +1,7 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {getServerDate} from "../../../../../helpers/utility";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import {getServerDate} from "../../../../../../helpers/utility";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {PredictabilityTrendsView} from "./predictabilityTrendsView"

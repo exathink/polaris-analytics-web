@@ -1,11 +1,11 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {DefectResponseTimeView} from "./defectResponseTimeView";
 
-export const DefectResponseTimeWidget = ({
+export const DimensionDefectResponseTimeWidget = ({
   dimension,
   instanceKey,
   view,
@@ -29,11 +29,11 @@ export const DefectResponseTimeWidget = ({
   });
   if (loading) return <Loading />;
   if (error) {
-    logGraphQlError("DefectResponseTimeWidget.useQueryDimensionFlowMetricsTrends", error);
+    logGraphQlError("DimensionDefectResponseTimeWidget.useQueryDimensionFlowMetricsTrends", error);
     return null;
   }
 
-  const {cycleMetricsTrends: flowMetricsTrends} = data["project"];
+  const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
   return (
     <DefectResponseTimeView

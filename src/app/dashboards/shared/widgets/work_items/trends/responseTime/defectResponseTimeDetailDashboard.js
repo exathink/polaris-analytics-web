@@ -1,10 +1,10 @@
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {DefectResponseTimeWidget} from "./defectResponseTimeWidget";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
+import {DimensionDefectResponseTimeWidget} from "./dimensionDefectResponseTimeWidget";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
+} from "../../../../components/trendingControlBar/trendingControlBar";
 
 const dashboard_id = "dashboards.trends.projects.quality.detail";
 
@@ -39,7 +39,7 @@ export const DefectResponseTimeDetailDashboard = ({
           w={1}
           name="defect-response-time-detailed"
           render={({view}) => (
-            <DefectResponseTimeWidget
+            <DimensionDefectResponseTimeWidget
               dimension={'project'}
               instanceKey={instanceKey}
               view={view}

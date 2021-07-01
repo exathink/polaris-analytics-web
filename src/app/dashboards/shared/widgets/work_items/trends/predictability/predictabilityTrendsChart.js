@@ -1,7 +1,7 @@
-import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {percentileToText, pick, toMoment} from "../../../../../helpers/utility";
-import {Colors} from "../../../../shared/config";
+import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
+import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {percentileToText, pick, toMoment} from "../../../../../../helpers/utility";
+import {Colors} from "../../../../config";
 
 
 export const PredictabilityTrendsChart = Chart({
