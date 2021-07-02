@@ -21,7 +21,6 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   before,
   initialMetric,
   defectsOnly,
-  stateMappingIndex,
   pollInterval,
   yAxisScale,
   setYAxisScale,

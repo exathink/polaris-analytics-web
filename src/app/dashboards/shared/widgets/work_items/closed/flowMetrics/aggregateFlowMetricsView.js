@@ -7,12 +7,10 @@ import {
   AvgDuration,
   AvgLatency,
   Cadence,
-  CycleTimeSLACarousel,
   DurationCarousel,
   EffortCarousel,
   LatencyCarousel,
   LatestClosed,
-  LeadTimeSLACarousel,
   Volume,
   VolumeCarousel,
   EffortOUT,
@@ -24,7 +22,6 @@ export const PerformanceSummaryView = (
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -95,7 +92,6 @@ export const ValueBoardSummaryView = (
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -176,7 +172,7 @@ export const CycleMetricsCarouselView = (
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
+
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -186,7 +182,6 @@ export const CycleMetricsCarouselView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-  const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
   if (current == null || previous == null) {
     return null;
   }
@@ -199,26 +194,6 @@ export const CycleMetricsCarouselView = (
           specsOnly={specsOnly}
         />
       </VizItem>
-      <VizItem w={0.35}>
-        <CycleTimeSLACarousel
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          currentConfidence={currentConfidence}
-          previousConfidence={previousConfidence}
-          targetPercentile={cycleTimeTargetPercentile}
-          target={cycleTimeTarget}
-        />
-      </VizItem>
-      <VizItem w={0.40}>
-        <LeadTimeSLACarousel
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          currentConfidence={currentConfidence}
-          previousConfidence={previousConfidence}
-          targetPercentile={leadTimeTargetPercentile}
-          target={leadTimeTarget}
-        />
-      </VizItem>
     </React.Fragment>
   )
 };
@@ -227,7 +202,6 @@ export const ImplementationMetricsCarouselView = (
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -273,7 +247,6 @@ export const AllMetricsDisplayView = (
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -284,7 +257,7 @@ export const AllMetricsDisplayView = (
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
-  const [currentConfidence, previousConfidence] = responseTimeConfidenceTrends;
+
 
   if (current == null || previous == null) {
     return null;
@@ -296,7 +269,7 @@ export const AllMetricsDisplayView = (
         <VizRow h={"50"}>
           <CycleMetricsCarouselView
             cycleMetricsTrends={cycleMetricsTrends}
-            responseTimeConfidenceTrends={responseTimeConfidenceTrends}
+
             leadTimeTargetPercentile={leadTimeTargetPercentile}
             cycleTimeTargetPercentile={cycleTimeTargetPercentile}
             leadTimeTarget={leadTimeTarget}
@@ -313,7 +286,6 @@ export const AllMetricsDisplayView = (
                 }}>
           <ImplementationMetricsCarouselView
             cycleMetricsTrends={cycleMetricsTrends}
-            responseTimeConfidenceTrends={responseTimeConfidenceTrends}
             leadTimeTargetPercentile={leadTimeTargetPercentile}
             cycleTimeTargetPercentile={cycleTimeTargetPercentile}
             leadTimeTarget={leadTimeTarget}
@@ -332,26 +304,7 @@ export const AllMetricsDisplayView = (
               specsOnly={specsOnly}
             />
           </VizItem>
-          <VizItem w={0.35}>
-            <CycleTimeSLACarousel
-              currentMeasurement={current}
-              previousMeasurement={previous}
-              currentConfidence={currentConfidence}
-              previousConfidence={previousConfidence}
-              targetPercentile={cycleTimeTargetPercentile}
-              target={cycleTimeTarget}
-            />
-          </VizItem>
-          <VizItem w={0.40}>
-            <LeadTimeSLACarousel
-              currentMeasurement={current}
-              previousMeasurement={previous}
-              currentConfidence={currentConfidence}
-              previousConfidence={previousConfidence}
-              targetPercentile={leadTimeTargetPercentile}
-              target={leadTimeTarget}
-            />
-          </VizItem>
+
           <VizItem w={0.45} style={{
             paddingLeft: '100px',
             borderLeftWidth: '1px',
@@ -388,7 +341,6 @@ export const AggregateFlowMetricsView = withViewerContext((
   {
 
     cycleMetricsTrends,
-    responseTimeConfidenceTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
     leadTimeTarget,
@@ -406,7 +358,7 @@ export const AggregateFlowMetricsView = withViewerContext((
           <VizRow h={1}>
             <CycleMetricsCarouselView
               cycleMetricsTrends={cycleMetricsTrends}
-              responseTimeConfidenceTrends={responseTimeConfidenceTrends}
+
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeTargetPercentile={leadTimeTargetPercentile}
@@ -421,7 +373,7 @@ export const AggregateFlowMetricsView = withViewerContext((
           <VizRow h={1}>
             <ImplementationMetricsCarouselView
               cycleMetricsTrends={cycleMetricsTrends}
-              responseTimeConfidenceTrends={responseTimeConfidenceTrends}
+
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeTargetPercentile={leadTimeTargetPercentile}
@@ -436,7 +388,6 @@ export const AggregateFlowMetricsView = withViewerContext((
           <VizRow h={1}>
             <PerformanceSummaryView
               cycleMetricsTrends={cycleMetricsTrends}
-              responseTimeConfidenceTrends={responseTimeConfidenceTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeTargetPercentile={leadTimeTargetPercentile}
@@ -452,7 +403,6 @@ export const AggregateFlowMetricsView = withViewerContext((
 
             <ValueBoardSummaryView
               cycleMetricsTrends={cycleMetricsTrends}
-              responseTimeConfidenceTrends={responseTimeConfidenceTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeTargetPercentile={leadTimeTargetPercentile}
@@ -460,14 +410,11 @@ export const AggregateFlowMetricsView = withViewerContext((
               specsOnly={specsOnly}
               twoRows={twoRows}
             />
-
-
         )
       case 'all':
         return (
           <AllMetricsDisplayView
             cycleMetricsTrends={cycleMetricsTrends}
-            responseTimeConfidenceTrends={responseTimeConfidenceTrends}
             leadTimeTarget={leadTimeTarget}
             cycleTimeTarget={cycleTimeTarget}
             leadTimeTargetPercentile={leadTimeTargetPercentile}

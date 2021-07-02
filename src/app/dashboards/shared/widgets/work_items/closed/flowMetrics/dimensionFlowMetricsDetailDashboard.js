@@ -16,7 +16,7 @@ export const DimensionFlowMetricsDetailDashboard = (
     context,
     latestWorkItemEvent,
     latestCommit,
-    stateMappingIndex,
+
     days,
     cycleTimeTarget,
     cycleTimeConfidenceTarget,
@@ -69,7 +69,7 @@ export const DimensionFlowMetricsDetailDashboard = (
                 display={'all'}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
-                stateMappingIndex={stateMappingIndex}
+
                 days={daysRange}
                 measurementWindow={daysRange}
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
@@ -96,7 +96,7 @@ export const DimensionFlowMetricsDetailDashboard = (
                 context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
-                stateMappingIndex={stateMappingIndex}
+
                 days={daysRange}
                 leadTimeTarget={leadTimeTarget}
                 cycleTimeTarget={cycleTimeTarget}
