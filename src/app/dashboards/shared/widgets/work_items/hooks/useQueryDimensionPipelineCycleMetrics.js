@@ -1,10 +1,10 @@
 import { useQuery, gql } from "@apollo/client";
-import {analytics_service} from "../../../../services/graphql";
+import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPercentile, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, includeSubTasks, referenceString}) {
+export function useQueryDimensionPipelineCycleMetrics({dimension, instanceKey, days, targetPercentile, leadTimeTargetPercentile, cycleTimeTargetPercentile, specsOnly, defectsOnly, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
-     query projectPipelineCycleMetrics(
+     query ${dimension}PipelineCycleMetrics(
          $key: String!, 
          $referenceString: String, 
          $leadTimeTargetPercentile: Float,
@@ -12,7 +12,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
          $specsOnly: Boolean, 
          $includeSubTasks: Boolean,
          $defectsOnly : Boolean) {
-      project(
+      ${dimension}(
             key: $key, 
             interfaces: [PipelineCycleMetrics],
             pipelineCycleMetricsArgs: {
@@ -79,6 +79,7 @@ export function useQueryProjectPipelineCycleMetrics({instanceKey, days, targetPe
     {
       service: analytics_service,
       variables: {
+        dimension: dimension,
         key: instanceKey,
         leadTimeTargetPercentile: leadTimeTargetPercentile || targetPercentile,
         cycleTimeTargetPercentile: cycleTimeTargetPercentile || targetPercentile,
