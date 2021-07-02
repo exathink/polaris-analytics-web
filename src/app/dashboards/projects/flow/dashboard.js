@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ProjectWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {ProjectDefectMetricsWidget} from "../shared/widgets/defectMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
@@ -222,7 +222,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             className={styles.wip}
             title={"Work In Progress"}
             render={({view}) => (
-              <ProjectWipFlowMetricsWidget
+              <DimensionWipFlowMetricsWidget
+                dimension={"project"}
                 instanceKey={key}
                 display={"valueBoardSummary"}
                 specsOnly={specsOnly}

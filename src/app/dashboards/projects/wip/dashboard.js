@@ -9,7 +9,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {ProjectPipelineCycleTimeLatencyWidget, ProjectWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {ProjectPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
 import {ProjectPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
@@ -82,9 +82,10 @@ function WipDashboard({
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
-          videoConfig={ProjectWipFlowMetricsWidget.videoConfig}
+          videoConfig={DimensionWipFlowMetricsWidget.videoConfig}
           render={({view}) => (
-            <ProjectWipFlowMetricsWidget
+            <DimensionWipFlowMetricsWidget
+              dimension={'project'}
               instanceKey={key}
               display={"flowboardSummary"}
               latestCommit={latestCommit}
