@@ -3,6 +3,8 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {TeamDashboard} from "../teamDashboard";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import styles from "../../projects/wip/dashboard.module.css";
+import { DimensionCommitsNavigatorWidget, HeaderMetrics } from "../../shared/widgets/accountHierarchy";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -42,7 +44,7 @@ function WipDashboard({
         <DashboardWidget
           name="flow-metrics"
           title={"Flow"}
-          w={1 / 3}
+          w={1}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
@@ -61,6 +63,42 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+      </DashboardRow>
+      <DashboardRow h="30%" title={"TBD"}>
+        <DashboardWidget
+          name="flow-metrics"
+          title={"Flow"}
+          w={1}
+          subtitle={`Last ${wipAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => null}
+          showDetail={true}
+        />
+      </DashboardRow>
+      <DashboardRow h={"50%"} title={"Latest Commits"}>
+        <DashboardWidget
+          name="commits"
+          w={1}
+          render={({view}) => (
+            <DimensionCommitsNavigatorWidget
+              dimension={"team"}
+              instanceKey={key}
+              context={context}
+              view={view}
+              days={1}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              headerMetric={HeaderMetrics.latestCommit}
+              groupBy={'author'}
+              groupings={
+                  ["author", "workItem",  "repository", "branch"]
+              }
+              showHeader
+              showTable
             />
           )}
           showDetail={true}
