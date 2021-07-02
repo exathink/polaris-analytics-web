@@ -107,7 +107,7 @@ export const Contexts = {
             values={{quantity: quantity}}
         />
         },
-    icon: 'ion-folder',
+    icon: 'ion-ios-people',
     color: '#356eb2'
   },
   work_items: {
