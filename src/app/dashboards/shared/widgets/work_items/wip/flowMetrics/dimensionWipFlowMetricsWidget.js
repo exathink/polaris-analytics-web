@@ -1,12 +1,13 @@
 import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
 import {ProjectWipFlowMetricsDetailDashboard} from "./projectWipFlowMetricsDetailDashboard"
-import {useQueryProjectPipelineCycleMetrics} from "../../../../../projects/shared/hooks/useQueryProjectPipelineCycleMetrics";
+import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
 import {ProjectWipFlowMetricsSummaryView} from "./projectWipFlowMetricsSummaryView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 
-export const ProjectWipFlowMetricsWidget = (
+export const DimensionWipFlowMetricsWidget = (
   {
+    dimension,
     instanceKey,
     display,
     specsOnly,
@@ -25,8 +26,9 @@ export const ProjectWipFlowMetricsWidget = (
     pollInterval
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const {loading, error, data} = useQueryProjectPipelineCycleMetrics(
+  const {loading, error, data} = useQueryDimensionPipelineCycleMetrics(
     {
+      dimension,
       instanceKey,
       targetPercentile,
       leadTimeTargetPercentile,
@@ -38,7 +40,7 @@ export const ProjectWipFlowMetricsWidget = (
   )
   if (loading) return <Loading/>;
   if (error) return null;
-  const pipelineCycleMetrics = data['project']['pipelineCycleMetrics'];
+  const pipelineCycleMetrics = data[dimension]['pipelineCycleMetrics'];
 
   if (view === 'primary') {
     return (
@@ -73,7 +75,7 @@ export const ProjectWipFlowMetricsWidget = (
 
 }
 
-ProjectWipFlowMetricsWidget.videoConfig = {
+DimensionWipFlowMetricsWidget.videoConfig = {
   url: "https://vimeo.com/501974487/080d487fcf",
   title: "WIP",
   VideoDescription: () => (

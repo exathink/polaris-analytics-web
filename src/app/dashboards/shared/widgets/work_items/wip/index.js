@@ -1,2 +1,2 @@
 export {ProjectPipelineCycleTimeLatencyWidget} from "./cycleTimeLatency/projectPipelineCycleTimeLatencyWidget"
-export {ProjectWipFlowMetricsWidget} from "./flowMetrics/projectWipFlowMetricsWidget"
+export {DimensionWipFlowMetricsWidget} from "./flowMetrics/dimensionWipFlowMetricsWidget"
