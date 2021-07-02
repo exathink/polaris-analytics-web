@@ -12,6 +12,18 @@ export const dashboard = () => (
   <TeamDashboard
     pollInterval={60 * 1000}
     render={({team, context}) => {
+      const {
+        leadTimeTarget,
+        cycleTimeTarget,
+        responseTimeConfidenceTarget,
+        leadTimeConfidenceTarget,
+        cycleTimeConfidenceTarget,
+        wipLimit,
+        wipAnalysisPeriod,
+        includeSubTasksWipInspector,
+        includeSubTasksFlowMetrics,
+        latencyTarget,
+      } = team.settingsWithDefaults;
       return (
         <Dashboard dashboard={`${dashboard_id}`}>
           <DashboardRow h="15%">
