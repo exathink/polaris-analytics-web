@@ -103,7 +103,7 @@ function WipDashboard({
       <DashboardRow h="30%" title={"TBD"}>
         <DashboardWidget
           name="engineering"
-          w={1}
+          w={1/3}
           className={styles.engineering}
           videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
@@ -114,6 +114,42 @@ function WipDashboard({
               tooltipType="small"
               stageName={"Engineering"}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              targetPercentile={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="code-reviews"
+          w={1/3}
+          className={styles.engineering}
+          render={({view}) => (
+            null
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="delivery"
+          w={1/3}
+          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
+          render={({view}) => (
+            <DimensionPipelineCycleTimeLatencyWidget
+              dimension={'team'}
+              instanceKey={key}
+              view={view}
+              tooltipType="small"
+              stageName={"Delivery"}
+              stateTypes={[WorkItemStateTypes.complete]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
