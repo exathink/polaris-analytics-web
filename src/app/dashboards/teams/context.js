@@ -8,6 +8,7 @@ import Wip from './wip/topic';
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
+import Trends from "./trends/topic";
 
 
 const messages = {
@@ -32,6 +33,11 @@ const context : Context = {
           {
             match: 'wip',
             topic: Wip
+          },
+          {
+
+            match: 'trends',
+            topic: Trends
           },
           {
             match: '',
