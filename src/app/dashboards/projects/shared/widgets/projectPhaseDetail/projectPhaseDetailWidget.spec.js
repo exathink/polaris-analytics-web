@@ -1,7 +1,7 @@
 import React from "react";
 import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {PROJECT_PIPELINE_STATE_DETAILS} from "../../hooks/useQueryProjectPipelineStateDetails";
+import {dimensionPipelineStateDetailsQuery} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 import {PROJECT_AGGREGATE_CYCLE_METRICS} from "../../hooks/useQueryProjectCycleMetrics";
 import {ProjectPhaseDetailWidget} from "./projectPhaseDetailWidget";
 import {screen, waitFor} from "@testing-library/react";
@@ -23,7 +23,7 @@ const propsFixture = {
 };
 
 const gqlRequest1 = {
-  query: PROJECT_PIPELINE_STATE_DETAILS,
+  query: dimensionPipelineStateDetailsQuery,
   variables: {
     key: propsFixture.instanceKey,
     specsOnly: true,

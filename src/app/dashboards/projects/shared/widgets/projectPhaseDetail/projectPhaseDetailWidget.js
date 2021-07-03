@@ -1,6 +1,6 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
+import {useQueryDimensionPipelineStateDetails} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 import {ProjectPhaseDetailView} from "./projectPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
@@ -22,7 +22,7 @@ export const ProjectPhaseDetailWidget = ({
   cycleTimeTarget,
   includeSubTasks
 }) => {
-  const {loading, error, data} = useQueryProjectPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     instanceKey,
     specsOnly,
     activeOnly,
