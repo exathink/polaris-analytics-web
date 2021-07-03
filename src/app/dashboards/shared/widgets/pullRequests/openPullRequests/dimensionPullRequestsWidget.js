@@ -1,12 +1,13 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPullRequests} from "../../../../projects/shared/hooks/useQueryProjectPullRequests";
-import {ProjectOpenPullRequestsView} from "./projectOpenPullRequestsView";
+import {useQueryDimensionPullRequests} from "../hooks/useQueryDimensionPullRequests";
+import {OpenPullRequestsView} from "./openPullRequestsView";
 import {getReferenceString} from "../../../../../helpers/utility";
-import {ProjectPullRequestsDetailDashboard} from "./projectPullRequestsDetailDashboard";
+import {DimensionPullRequestsDetailDashboard} from "./dimensionPullRequestsDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectPullRequestsWidget = ({
+export const DimensionPullRequestsWidget = ({
+  dimension,
   instanceKey,
   latestWorkItemEvent,
   latestCommit,
@@ -16,7 +17,8 @@ export const ProjectPullRequestsWidget = ({
   pollInterval,
   asStatistic,
 }) => {
-  const {loading, error, data} = useQueryProjectPullRequests({
+  const {loading, error, data} = useQueryDimensionPullRequests({
+    dimension,
     instanceKey,
     activeOnly: true,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
@@ -26,11 +28,12 @@ export const ProjectPullRequestsWidget = ({
     logGraphQlError("useQueryProjectPullRequests", error);
     return null;
   }
-  const pullRequests = data["project"]["pullRequests"]["edges"].map((edge) => edge.node);
+  const pullRequests = data[dimension]["pullRequests"]["edges"].map((edge) => edge.node);
 
   if (view === "detail") {
     return (
-      <ProjectPullRequestsDetailDashboard
+      <DimensionPullRequestsDetailDashboard
+        dimension={dimension}
         instanceKey={instanceKey}
         latestWorkItemEvent={latestWorkItemEvent}
         latestCommit={latestCommit}
@@ -43,7 +46,7 @@ export const ProjectPullRequestsWidget = ({
     );
   } else {
     return (
-      <ProjectOpenPullRequestsView
+      <OpenPullRequestsView
         pullRequests={pullRequests}
         view={view}
         context={context}

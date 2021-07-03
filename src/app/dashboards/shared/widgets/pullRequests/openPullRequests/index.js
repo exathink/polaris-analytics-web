@@ -1,1 +1,1 @@
-export {ProjectPullRequestsWidget} from "./projectPullRequestsWidget"
+export {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget"

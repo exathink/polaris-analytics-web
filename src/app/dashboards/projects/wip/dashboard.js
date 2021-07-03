@@ -10,7 +10,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
-import {ProjectPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
+import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
@@ -110,7 +110,8 @@ function WipDashboard({
           className={styles.codeReviews}
           title={"Review Requests"}
           render={({view}) => (
-            <ProjectPullRequestsWidget
+            <DimensionPullRequestsWidget
+              dimension={'project'}
               instanceKey={key}
               view={view}
               context={context}
