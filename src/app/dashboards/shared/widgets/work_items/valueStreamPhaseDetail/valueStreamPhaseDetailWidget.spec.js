@@ -1,12 +1,13 @@
 import React from "react";
 import {GraphQLError} from "graphql";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {dimensionPipelineStateDetailsQuery} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
-import {PROJECT_AGGREGATE_CYCLE_METRICS} from "../../hooks/useQueryProjectCycleMetrics";
-import {ProjectPhaseDetailWidget} from "./projectPhaseDetailWidget";
+import {dimensionPipelineStateDetailsQuery} from "../hooks/useQueryDimensionPipelineStateDetails";
+import {PROJECT_AGGREGATE_CYCLE_METRICS} from "../../../../projects/shared/hooks/useQueryProjectCycleMetrics";
+import {DimensionValueStreamPhaseDetailWidget} from "./dimensionValueStreamPhaseDetailWidget";
 import {screen, waitFor} from "@testing-library/react";
 
 const propsFixture = {
+  dimension:'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   context: {},
   latestWorkItemEvent: "2020-12-09T22:31:01.244000",
@@ -23,7 +24,7 @@ const propsFixture = {
 };
 
 const gqlRequest1 = {
-  query: dimensionPipelineStateDetailsQuery,
+  query: dimensionPipelineStateDetailsQuery('project'),
   variables: {
     key: propsFixture.instanceKey,
     specsOnly: true,
@@ -120,14 +121,14 @@ describe("ProjectPhaseDetailWidget", () => {
     ];
 
     test("it renders nothing and logs the error when there is a network error", async () => {
-      renderWithProviders(<ProjectPhaseDetailWidget {...propsFixture} />, mockNetworkError);
+      renderWithProviders(<DimensionValueStreamPhaseDetailWidget {...propsFixture} />, mockNetworkError);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();
     });
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
-      renderWithProviders(<ProjectPhaseDetailWidget {...propsFixture} />, mockGraphQlErrors);
+      renderWithProviders(<DimensionValueStreamPhaseDetailWidget {...propsFixture} />, mockGraphQlErrors);
       await screen.findByTestId("loading-spinner");
       await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
       expect(screen.queryByText(/work queue/i)).toBeNull();

@@ -1,10 +1,11 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryDimensionPipelineStateDetails} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
-import {ProjectPhaseDetailView} from "./projectPhaseDetailView";
+import {useQueryDimensionPipelineStateDetails} from "../hooks/useQueryDimensionPipelineStateDetails";
+import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectPhaseDetailWidget = ({
+export const DimensionValueStreamPhaseDetailWidget = ({
+  dimension,
   instanceKey,
   specsOnly,
   latestWorkItemEvent,
@@ -23,6 +24,7 @@ export const ProjectPhaseDetailWidget = ({
   includeSubTasks
 }) => {
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+    dimension,
     instanceKey,
     specsOnly,
     activeOnly,
@@ -34,14 +36,14 @@ export const ProjectPhaseDetailWidget = ({
 
   if (loading) return <Loading />;
   if (error) {
-    logGraphQlError("ProjectPhaseDetailWidget.pipelineStateDetails", error);
+    logGraphQlError("DimensionValueStreamPhaseDetailWidget.pipelineStateDetails", error);
     return null;
   }
-  const workItems = data["project"]["workItems"]["edges"].map((edge) => edge.node);
+  const workItems = data[dimension]["workItems"]["edges"].map((edge) => edge.node);
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
 
   return (
-    <ProjectPhaseDetailView
+    <ValueStreamPhaseDetailView
       view={view}
       context={context}
       workItems={workItems}
