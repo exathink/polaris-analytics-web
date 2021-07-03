@@ -10,6 +10,7 @@ import {
   DimensionPipelineCycleTimeLatencyWidget
 } from "../../shared/widgets/work_items/wip";
 import { WorkItemStateTypes } from "../../shared/config";
+import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -29,7 +30,7 @@ function WipDashboard({
   context,
   viewerContext
 }) {
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
   const {
     leadTimeTarget,
@@ -48,7 +49,7 @@ function WipDashboard({
       <DashboardRow h="15%">
         <DashboardWidget
           name="flow-metrics"
-          title={"Closed"}
+          title={"Flow Metrics"}
           w={1/2}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -100,7 +101,7 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
       </DashboardRow>
-      <DashboardRow h="30%" title={"TBD"}>
+      <DashboardRow h="30%" title={"Latency & Delays"}>
         <DashboardWidget
           name="engineering"
           w={1/3}
@@ -130,11 +131,20 @@ function WipDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          name="code-reviews"
+          name={"code-reviews"}
           w={1/3}
-          className={styles.engineering}
+          className={styles.codeReviews}
           render={({view}) => (
-            null
+            <DimensionPullRequestsWidget
+              dimension={'team'}
+              instanceKey={key}
+              view={view}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
+              asStatistic={false}
+            />
           )}
           showDetail={true}
         />
