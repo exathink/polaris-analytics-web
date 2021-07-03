@@ -47,32 +47,7 @@ function WipDashboard({
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h="15%">
-        <DashboardWidget
-          name="flow-metrics"
-          title={"Flow Metrics"}
-          w={1/2}
-          subtitle={`Last ${wipAnalysisPeriod} days`}
-          hideTitlesInDetailView={true}
-          render={({ view }) => (
-            <DimensionFlowMetricsWidget
-              dimension={"team"}
-              instanceKey={key}
-              view={view}
-              display={"performanceSummary"}
-              context={context}
-              specsOnly={specsOnly}
-              days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
+
         <DashboardWidget
           name="pipeline"
           w={1/2}
@@ -99,6 +74,32 @@ function WipDashboard({
           )}
           showDetail={false}
           hideTitlesInDetailView={true}
+        />
+        <DashboardWidget
+          name="flow-metrics"
+          title={"Flow Metrics"}
+          w={1/2}
+          subtitle={`Last ${wipAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"team"}
+              instanceKey={key}
+              view={view}
+              display={"performanceSummary"}
+              context={context}
+              specsOnly={specsOnly}
+              days={wipAnalysisPeriod}
+              measurementWindow={wipAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h="30%" title={"Latency & Delays"}>
