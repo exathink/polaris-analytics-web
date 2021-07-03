@@ -44,7 +44,7 @@ function WipDashboard({
       <DashboardRow h="15%">
         <DashboardWidget
           name="flow-metrics"
-          title={"Flow"}
+          title={"Closed"}
           w={1/2}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -92,7 +92,7 @@ function WipDashboard({
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={true}
+          showDetail={false}
           hideTitlesInDetailView={true}
         />
       </DashboardRow>
