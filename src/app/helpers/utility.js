@@ -247,7 +247,7 @@ export function lexicographic(field) {
 }
 
 export function percentileToText(percentile) {
-    return `p${Math.round(percentile*100)}`
+    return percentile === 1.0 ? `Max` : `p${Math.round(percentile*100)}`
 }
 
 export function pick(o, ...fields) {
