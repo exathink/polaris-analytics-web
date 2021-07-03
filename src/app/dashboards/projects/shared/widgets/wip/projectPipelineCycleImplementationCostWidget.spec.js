@@ -3,7 +3,7 @@ import {gqlUtils, renderWithProviders} from "../../../../../framework/viz/charts
 import {waitFor, screen} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {ProjectPipelineImplementationCostWidget} from "./projectPipelineCycleImplementationCostWidget";
-import {PROJECT_PIPELINE_STATE_DETAILS} from "../../hooks/useQueryProjectPipelineStateDetails";
+import {dimensionPipelineStateDetailsQuery} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 import {getReferenceString} from "../../../../../helpers/utility";
 
 // clear mocks after each test
@@ -23,7 +23,7 @@ const widgetPropsFixture = {
 };
 
 const gqlRequest = {
-  query: PROJECT_PIPELINE_STATE_DETAILS,
+  query: dimensionPipelineStateDetailsQuery,
   variables: {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     specsOnly: false,

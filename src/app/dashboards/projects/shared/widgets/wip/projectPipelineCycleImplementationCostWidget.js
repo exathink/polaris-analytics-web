@@ -1,6 +1,6 @@
 import React from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
+import {useQueryDimensionPipelineStateDetails} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 import {ProjectPipelineImplementationCostView} from "./projectPipelineImplementationCostView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
@@ -24,7 +24,7 @@ export const ProjectPipelineImplementationCostWidget = (
 
 
 
-  const {loading, error, data} = useQueryProjectPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     instanceKey,
     specsOnly,
     activeOnly: true,

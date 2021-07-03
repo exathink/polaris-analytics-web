@@ -5,8 +5,9 @@ import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 
-export const ProjectPipelineCycleTimeLatencyView = (
+export const DimensionCycleTimeLatencyView = (
   {
+    dimension,
     stageName,
     data,
     stateTypes,
@@ -22,9 +23,9 @@ export const ProjectPipelineCycleTimeLatencyView = (
   const tick = useGenerateTicks(2, 60000);
 
   const workItems = React.useMemo(() => {
-    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
-  }, [data]);
+  }, [data, dimension]);
 
   return (
     <VizRow h={1}>

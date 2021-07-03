@@ -9,7 +9,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {ProjectPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {DimensionPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
 import {ProjectPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
@@ -155,9 +155,10 @@ function WipDashboard({
         <DashboardWidget
           name="engineering"
           className={styles.engineering}
-          videoConfig={ProjectPipelineCycleTimeLatencyWidget.videoConfig}
+          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
-            <ProjectPipelineCycleTimeLatencyWidget
+            <DimensionPipelineCycleTimeLatencyWidget
+              dimension={"project"}
               instanceKey={key}
               view={view}
               tooltipType="small"
@@ -179,31 +180,7 @@ function WipDashboard({
           showDetail={true}
         />
 
-        <DashboardWidget
-          name="delivery"
-          className={styles.delivery}
-          render={({view}) => (
-            <ProjectPipelineCycleTimeLatencyWidget
-              instanceKey={key}
-              view={view}
-              tooltipType="small"
-              stageName={"Delivery"}
-              stateTypes={[WorkItemStateTypes.deliver]}
-              groupByState={true}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              targetPercentile={cycleTimeConfidenceTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-          showDetail={true}
-        />
+
         <DashboardWidget
           name="epic-flow-mix-wip"
           className={styles.pipelineEffort}
@@ -223,6 +200,33 @@ function WipDashboard({
             />
           )}
           showDetail={false}
+        />
+
+        <DashboardWidget
+          name="delivery"
+          className={styles.delivery}
+          render={({view}) => (
+            <DimensionPipelineCycleTimeLatencyWidget
+              dimension={"project"}
+              instanceKey={key}
+              view={view}
+              tooltipType="small"
+              stageName={"Delivery"}
+              stateTypes={[WorkItemStateTypes.deliver]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              targetPercentile={cycleTimeConfidenceTarget}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={true}
         />
       </DashboardRow>
       <div className={styles.scopeSelector}>
