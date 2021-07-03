@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {WorkItemsDurationsByPhaseChart} from "../../../../shared/charts/workItemCharts/workItemsDurationsByPhaseChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
+import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
+import {VizItem, VizRow} from "../../../containers/layout";
 import {
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
-} from "../../../../shared/config";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+} from "../../../config";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
-import "./projectPhaseDetail.css";
+import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 import {Alert, Select} from "antd";
@@ -138,4 +138,4 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
     );
   }
 };
-export const ProjectPhaseDetailView = withNavigationContext(PhaseDetailView);
+export const ValueStreamPhaseDetailView = withNavigationContext(PhaseDetailView);
