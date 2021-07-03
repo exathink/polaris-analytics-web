@@ -5,7 +5,11 @@ import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "../../projects/wip/dashboard.module.css";
 import { DimensionCommitsNavigatorWidget, HeaderMetrics } from "../../shared/widgets/accountHierarchy";
-import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip";
+import {
+  DimensionWipFlowMetricsWidget,
+  DimensionPipelineCycleTimeLatencyWidget
+} from "../../shared/widgets/work_items/wip";
+import { WorkItemStateTypes } from "../../shared/config";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -98,12 +102,31 @@ function WipDashboard({
       </DashboardRow>
       <DashboardRow h="30%" title={"TBD"}>
         <DashboardWidget
-          name="flow-metrics"
-          title={"Flow"}
+          name="engineering"
           w={1}
-          subtitle={`Last ${wipAnalysisPeriod} days`}
-          hideTitlesInDetailView={true}
-          render={({ view }) => null}
+          className={styles.engineering}
+          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
+          render={({view}) => (
+            <DimensionPipelineCycleTimeLatencyWidget
+              dimension={'team'}
+              instanceKey={key}
+              view={view}
+              tooltipType="small"
+              stageName={"Engineering"}
+              stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              targetPercentile={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
           showDetail={true}
         />
       </DashboardRow>
