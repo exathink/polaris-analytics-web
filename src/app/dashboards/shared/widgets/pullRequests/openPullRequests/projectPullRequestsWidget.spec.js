@@ -1,8 +1,8 @@
 import {screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {GET_PROJECT_PULL_REQUESTS} from "../../../../projects/shared/hooks/useQueryProjectPullRequests";
-import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
+import {getProjectPullRequests} from "../hooks/useQueryDimensionPullRequests";
+import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 import {GraphQLError} from "graphql";
 import {getReferenceString} from "../../../../../helpers/utility";
 
@@ -14,7 +14,7 @@ const referenceDates = {
 }
 
 const gqlRequest = {
-  query: GET_PROJECT_PULL_REQUESTS,
+  query: getProjectPullRequests,
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     activeOnly: true,
@@ -104,7 +104,7 @@ describe("projectPullRequestsWidget", () => {
     ];
 
     test("it renders no data", async () => {
-      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
+      renderWithProviders(<DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
 
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/open/i);
@@ -112,7 +112,7 @@ describe("projectPullRequestsWidget", () => {
     });
 
     test("renders stats chart in primary view without any error", async () => {
-      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
+      renderWithProviders(<DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />, emptyMock);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/open/i);
     });
@@ -123,7 +123,7 @@ describe("projectPullRequestsWidget", () => {
         asStatistic: false,
       };
 
-      renderWithProviders(<ProjectPullRequestsWidget {...charViewProps} />, emptyMock);
+      renderWithProviders(<DimensionPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/open/i);
     });
@@ -131,12 +131,12 @@ describe("projectPullRequestsWidget", () => {
 
   describe("when there are multiple pull requests", () => {
     test("shows a loading spinner", async () => {
-      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
+      renderWithProviders(<DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
     });
 
     test("shows correct no of active pending reviews", async () => {
-      renderWithProviders(<ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
+      renderWithProviders(<DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />, mocks);
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/open/i);
       expect(await screen.findByText(activeCodeReviews.length)).toBeInTheDocument();
@@ -170,7 +170,7 @@ describe("projectPullRequestsWidget", () => {
 
     test("it renders nothing and logs the error when there is a network error", async () => {
       renderWithProviders(
-        <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
+        <DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />,
         mockNetworkError
       );
       await screen.findByTestId("loading-spinner");
@@ -180,7 +180,7 @@ describe("projectPullRequestsWidget", () => {
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       renderWithProviders(
-        <ProjectPullRequestsWidget {...projectPullRequestsPropsFixture} />,
+        <DimensionPullRequestsWidget {...projectPullRequestsPropsFixture} />,
         mockGraphQlErrors
       );
       await screen.findByTestId("loading-spinner");

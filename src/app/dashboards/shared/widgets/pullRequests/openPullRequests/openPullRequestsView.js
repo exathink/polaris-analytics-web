@@ -7,7 +7,7 @@ import {FlowStatistic} from "../../../components/flowStatistics/flowStatistics";
 import {average} from "../../../../../helpers/utility";
 import WorkItems from "../../../../work_items/context";
 
-const ProjectOpenPullRequestsStatsView = ({title, pullRequests, view}) => (
+const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   <VizRow h={1}>
     <VizItem w={1 / 2}>
       <FlowStatistic
@@ -35,12 +35,12 @@ const ProjectOpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   </VizRow>
 );
 
-const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
+const PullRequestChartView = ({pullRequests, view, context}) => (
   <VizRow h={1}>
     <VizItem w={1}>
       <PullRequestAgeChart
         pullRequests={pullRequests}
-        title={"Open Requests"}
+        title={pullRequests.length === 1 ? "Open Code Review" : "Open Code Reviews"}
         view={view}
         onSelectionChange={(pullRequests) => {
           if (pullRequests.length === 1) {
@@ -59,10 +59,10 @@ const ProjectPullRequestChartView = ({pullRequests, view, context}) => (
 );
 
 
-export const ProjectOpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
+export const OpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
   if (asStatistic) {
-    return <ProjectOpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
+    return <OpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
   }
 
-  return <ProjectPullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
+  return <PullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
 };

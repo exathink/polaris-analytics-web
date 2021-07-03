@@ -1,13 +1,13 @@
 import {useQuery, gql} from "@apollo/client";
-import {analytics_service} from "../../../../services/graphql";
+import {analytics_service} from "../../../../../services/graphql";
 
-export const GET_PROJECT_PULL_REQUESTS = gql`
-query getProjectPullRequests(
+export const getProjectPullRequests = (dimension) => gql`
+query ${dimension}PullRequests(
   $projectKey: String!
   $activeOnly: Boolean
   $referenceString: String
 ) {
-  project(key: $projectKey, referenceString: $referenceString) {
+  ${dimension}(key: $projectKey, referenceString: $referenceString) {
     id
     pullRequests(
       interfaces: [BranchRef, WorkItemsSummaries]
@@ -37,8 +37,8 @@ query getProjectPullRequests(
 }
 `;
 
-export function useQueryProjectPullRequests({instanceKey, activeOnly, referenceString}) {
-  return useQuery(GET_PROJECT_PULL_REQUESTS, {
+export function useQueryDimensionPullRequests({dimension, instanceKey, activeOnly, referenceString}) {
+  return useQuery(getProjectPullRequests(dimension), {
     service: analytics_service,
     variables: {
       projectKey: instanceKey,
