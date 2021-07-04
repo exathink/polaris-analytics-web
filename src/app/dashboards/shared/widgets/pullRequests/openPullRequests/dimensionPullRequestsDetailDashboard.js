@@ -6,11 +6,12 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../components/trendingControlBar/trendingControlBar";
-import {ProjectPullRequestsWidget} from "./projectPullRequestsWidget";
+import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
-export const ProjectPullRequestsDetailDashboard = ({
+export const DimensionPullRequestsDetailDashboard = ({
+  dimension,
   instanceKey,
   view,
   context,
@@ -34,7 +35,8 @@ export const ProjectPullRequestsDetailDashboard = ({
           w={1}
           name="pr-pull-req-detailed"
           render={({view}) => (
-            <ProjectPullRequestsWidget
+            <DimensionPullRequestsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               view={view}
               context={context}

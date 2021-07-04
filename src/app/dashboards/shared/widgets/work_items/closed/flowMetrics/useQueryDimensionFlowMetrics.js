@@ -15,9 +15,7 @@ export function useQueryDimensionFlowMetrics(
             $days: Int!,
             $measurementWindow: Int!,
             $samplingFrequency: Int!,
-            $leadTimeTarget: Int!,
             $leadTimeTargetPercentile: Float!,
-            $cycleTimeTarget: Int!,
             $cycleTimeTargetPercentile: Float!,
             $specsOnly: Boolean,
             $includeSubTasks: Boolean,
@@ -26,16 +24,7 @@ export function useQueryDimensionFlowMetrics(
         ) {
             ${dimension}(
                 key: $key,
-                interfaces: [ResponseTimeConfidenceTrends, CycleMetricsTrends],
-                responseTimeConfidenceTrendsArgs: {
-                    days: $days,
-                    measurementWindow: $measurementWindow,
-                    samplingFrequency: $samplingFrequency,
-                    leadTimeTarget : $leadTimeTarget,
-                    cycleTimeTarget: $cycleTimeTarget,
-                    specsOnly: $specsOnly,
-                    includeSubTasks: $includeSubTasks
-                },
+                interfaces: [CycleMetricsTrends],
                 cycleMetricsTrendsArgs: {
                     days: $days,
                     measurementWindow: $measurementWindow,
@@ -77,14 +66,6 @@ export function useQueryDimensionFlowMetrics(
                 referenceString: $referenceString
 
             ) {
-
-                responseTimeConfidenceTrends {
-                    measurementDate
-                    leadTimeTarget
-                    leadTimeConfidence
-                    cycleTimeTarget
-                    cycleTimeConfidence
-                }
                 cycleMetricsTrends {
                     measurementDate
                     measurementWindow
@@ -126,9 +107,9 @@ export function useQueryDimensionFlowMetrics(
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,
-        leadTimeTarget: leadTimeTarget,
+
         leadTimeTargetPercentile: leadTimeTargetPercentile,
-        cycleTimeTarget: cycleTimeTarget,
+
         cycleTimeTargetPercentile: cycleTimeTargetPercentile,
         specsOnly: specsOnly,
         includeSubTasks: includeSubTasks,

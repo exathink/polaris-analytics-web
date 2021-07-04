@@ -8,7 +8,7 @@ import {
 import { DimensionDeliveryCycleFlowMetricsWidget } from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {getFlowMetricsRowTitle} from "../../../../../projects/shared/helper/utils";
 
-const dashboard_id = "dashboards.trends.projects.predictability.trends.detail";
+const dashboard_id = "dashboards.trends.predictability.trends.detail";
 
 export const PredictabilityTrendsDetailDashboard = ({
   dimension,
@@ -51,7 +51,7 @@ export const PredictabilityTrendsDetailDashboard = ({
           name="predictability-trends-detailed"
           render={({view}) => (
             <DimensionPredictabilityTrendsWidget
-              dimension={'project'}
+              dimension={dimension}
               instanceKey={instanceKey}
               measurementWindow={measurementWindowRange}
               days={daysRange}

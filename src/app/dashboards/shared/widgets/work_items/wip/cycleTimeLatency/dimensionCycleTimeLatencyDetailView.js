@@ -58,7 +58,8 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
-export const CycleTimeLatencyDetailView = ({
+export const DimensionCycleTimeLatencyDetailView = ({
+  dimension,
   data,
   groupByState,
   cycleTimeTarget,
@@ -111,9 +112,9 @@ export const CycleTimeLatencyDetailView = ({
   );
 
   const initWorkItems = React.useMemo(() => {
-    const edges = data?.["project"]?.["workItems"]?.["edges"] ?? [];
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
-  }, [data]);
+  }, [data, dimension]);
 
   // we maintain separate state for table and chart, using single source of truth (initWorkItems)
   const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(initWorkItems, applyFiltersTest);

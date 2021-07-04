@@ -1,46 +1,37 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {WorkItemStateTypes} from "../../shared/config";
-import styles from "./dashboard.module.css";
-import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
-
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
-
-import {ProjectDashboard} from "../projectDashboard";
-import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
+import {TeamDashboard} from "../teamDashboard";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import styles from "../../projects/wip/dashboard.module.css";
+import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
+import {
+  DimensionPipelineCycleTimeLatencyWidget,
+  DimensionWipFlowMetricsWidget,
+} from "../../shared/widgets/work_items/wip";
+import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
-import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {StateMappingIndex} from "../shared/stateMappingIndex";
-import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
-import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
+
+const dashboard_id = "dashboards.activity.teams.instance";
 
 
-const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
-
-WipDashboard.videoConfig = {
-  url: "https://vimeo.com/501974487/080d487fcf",
-  title: "WIP Dashboard",
-  VideoDescription: () => (
-    <>
-      <h2>Wip Dashboard</h2>
-      <p> lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-    </>
-  ),
-};
+export const dashboard = (
+  {viewerContext}
+) =>
+  <TeamDashboard
+    pollInterval={1000 * 60}
+    render={
+      props => <WipDashboard viewerContext={viewerContext}  {...props}/>
+    }
+  />;
 
 function WipDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
+  team: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
   viewerContext
 }) {
-  const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
-  const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -53,39 +44,18 @@ function WipDashboard({
     includeSubTasksFlowMetrics,
     latencyTarget
   } = settingsWithDefaults;
-
   return (
-    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
-      <DashboardRow h="12%">
-        <DashboardWidget
-          name="response-time-sla"
-          className={styles.responseTimeSLA}
-          title={"Cycle Time"}
-          subtitle={`Last ${wipAnalysisPeriod} Days`}
-          render={() => (
-            <ProjectResponseTimeSLAWidget
-              instanceKey={key}
-              days={wipAnalysisPeriod}
-              metric={"cycleTime"}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              latestWorkItemEvent={latestWorkItemEvent}
-              specsOnly={specsOnly}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-        />
+    <Dashboard dashboard={`${dashboard_id}`}>
+      <DashboardRow h="15%">
 
         <DashboardWidget
           name="pipeline"
-          className={styles.pipeline}
+          w={1/2}
           title={"Work In Progress"}
           videoConfig={DimensionWipFlowMetricsWidget.videoConfig}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
-              dimension={'project'}
+              dimension={'team'}
               instanceKey={key}
               display={"flowboardSummary"}
               latestCommit={latestCommit}
@@ -106,38 +76,18 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
         <DashboardWidget
-          name={"code-reviews"}
-          className={styles.codeReviews}
-          title={"Review Requests"}
-          render={({view}) => (
-            <DimensionPullRequestsWidget
-              dimension={'project'}
-              instanceKey={key}
-              view={view}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              latestPullRequestEvent={latestPullRequestEvent}
-              asStatistic={true}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
           name="flow-metrics"
-          className={styles.flowMetrics}
-          title={"Closed"}
+          title={"Flow Metrics"}
+          w={1/2}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          render={({view}) => (
+          render={({ view }) => (
             <DimensionFlowMetricsWidget
-              dimension={'project'}
+              dimension={"team"}
               instanceKey={key}
               view={view}
               display={"performanceSummary"}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
@@ -152,14 +102,15 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h="36%" title={" "}>
+      <DashboardRow h="30%" title={"Latency & Delays"}>
         <DashboardWidget
           name="engineering"
+          w={1/3}
           className={styles.engineering}
           videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={"project"}
+              dimension={'team'}
               instanceKey={key}
               view={view}
               tooltipType="small"
@@ -180,68 +131,59 @@ function WipDashboard({
           )}
           showDetail={true}
         />
-
-
         <DashboardWidget
-          name="epic-flow-mix-wip"
-          className={styles.pipelineEffort}
-          render={({ view }) => (
-            <ProjectValueBookWidget
+          name={"code-reviews"}
+          w={1/3}
+          className={styles.codeReviews}
+          render={({view}) => (
+            <DimensionPullRequestsWidget
+              dimension={'team'}
               instanceKey={key}
-              context={context}
-              specsOnly={specsOnly}
-              activeOnly={true}
               view={view}
-              latestCommit={latestCommit}
-
+              context={context}
               latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksWipInspector}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
+              asStatistic={false}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
-
         <DashboardWidget
           name="delivery"
-          className={styles.delivery}
+          w={1/3}
+          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={"project"}
+              dimension={'team'}
               instanceKey={key}
               view={view}
               tooltipType="small"
               stageName={"Delivery"}
-              stateTypes={[WorkItemStateTypes.deliver]}
+              stateTypes={[WorkItemStateTypes.complete]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
               context={context}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               targetPercentile={cycleTimeConfidenceTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
           showDetail={true}
         />
       </DashboardRow>
-      <div className={styles.scopeSelector}>
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
-      </div>
-      <DashboardRow h={"50%"} title={"Latest Commits"} className={styles.latestCommitsTitle}>
+      <DashboardRow h={"50%"} title={"Latest Commits"}>
         <DashboardWidget
           name="commits"
-          className={styles.commits}
+          w={1}
           render={({view}) => (
             <DimensionCommitsNavigatorWidget
-              dimension={"project"}
+              dimension={"team"}
               instanceKey={key}
               context={context}
               view={view}
@@ -249,13 +191,9 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               headerMetric={HeaderMetrics.latestCommit}
-              groupBy={teamsActive ? "team" : 'workItem'}
+              groupBy={'author'}
               groupings={
-                teamsActive ?
-                  ["team", "author", "workItem",  "repository"]
-                  :
                   ["author", "workItem",  "repository", "branch"]
-
               }
               showHeader
               showTable
@@ -267,5 +205,6 @@ function WipDashboard({
     </Dashboard>
   );
 }
-export const dashboard = ({viewerContext}) => <ProjectDashboard pollInterval={1000 * 60} render={props => <WipDashboard viewerContext={viewerContext}  {...props}/>} />;
-export default withViewerContext(dashboard);
+
+export default withViewerContext(dashboard)
+

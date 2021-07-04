@@ -1,11 +1,11 @@
 import React from 'react';
-import WorkItems from "../../../../work_items/context";
-import {WorkItemsEffortChart} from "../../../../shared/charts/workItemCharts/workItemsEffortChart";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import WorkItems from "../../../../../work_items/context";
+import {WorkItemsEffortChart} from "../../../../charts/workItemCharts/workItemsEffortChart";
+import {VizItem, VizRow} from "../../../../containers/layout";
+import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
 import {Flex} from "reflexbox";
 
-export const ProjectPipelineImplementationCostView = (
+export const DimensionWipEffortView = (
   {
     workItems,
     specsOnly,

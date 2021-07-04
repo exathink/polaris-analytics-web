@@ -1,13 +1,14 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {ProjectPipelinePhaseSummaryWidget} from "../../../../../projects/shared/widgets/wip/projectPipelinePhaseSummaryWidget";
-import {ProjectPhaseDetailWidget} from "../../../../../projects/shared/widgets/projectPhaseDetail";
+import {DimensionValueStreamPhaseDetailWidget} from "../../valueStreamPhaseDetail";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
 
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 
-export const ProjectWipFlowMetricsDetailDashboard = ({
+export const DimensionWipFlowMetricsDetailDashboard = ({
+  dimension,
   instanceKey,
   context,
   latestWorkItemEvent,
@@ -60,7 +61,8 @@ export const ProjectWipFlowMetricsDetailDashboard = ({
           w={1}
           name="project-pipeline-state-detail-view"
           render={({view}) => (
-            <ProjectPhaseDetailWidget
+            <DimensionValueStreamPhaseDetailWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               specsOnly={specsOnly}
               view={view}

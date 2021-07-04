@@ -1,14 +1,15 @@
 import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../../../../projects/shared/hooks/useQueryProjectPipelineStateDetails";
-import {ProjectPipelineCycleTimeLatencyView} from "./projectPipelineCycleTimeLatencyView";
+import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
-import {CycleTimeLatencyDetailView} from "./cycleTimeLatencyDetailView";
+import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
 
 
-export const ProjectPipelineCycleTimeLatencyWidget = (
+export const DimensionPipelineCycleTimeLatencyWidget = (
   {
+    dimension,
     instanceKey,
     specsOnly,
     workItemScope,
@@ -31,7 +32,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
 
 
 
-  const {loading, error, data} = useQueryProjectPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+    dimension,
     instanceKey,
     specsOnly,
     activeOnly: true,
@@ -40,13 +42,16 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   })
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
+    logGraphQlError('DimensionPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
     return null;
   }
-  
+
+
+
   if (view === "detail") {
     return (
-      <CycleTimeLatencyDetailView
+      <DimensionCycleTimeLatencyDetailView
+        dimension={dimension}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         specsOnly={specsOnly}
@@ -61,7 +66,8 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
     );
   } else {
     return (
-      <ProjectPipelineCycleTimeLatencyView
+      <DimensionCycleTimeLatencyView
+        dimension={dimension}
         stageName={stageName}
         specsOnly={specsOnly}
         workItemScope={workItemScope}
@@ -79,7 +85,7 @@ export const ProjectPipelineCycleTimeLatencyWidget = (
   }
 }
 
-ProjectPipelineCycleTimeLatencyWidget.videoConfig = {
+DimensionPipelineCycleTimeLatencyWidget.videoConfig = {
   url: "https://vimeo.com/501974487/080d487fcf",
   title: "Engineering",
   VideoDescription: () => (

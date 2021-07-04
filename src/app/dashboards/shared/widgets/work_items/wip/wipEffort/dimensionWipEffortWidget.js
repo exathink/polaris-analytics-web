@@ -1,13 +1,14 @@
 import React from 'react';
-import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineStateDetails} from "../../hooks/useQueryProjectPipelineStateDetails";
-import {ProjectPipelineImplementationCostView} from "./projectPipelineImplementationCostView";
-import {getReferenceString} from "../../../../../helpers/utility";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {DimensionWipEffortView} from "./dimensionWipEffortView";
+import {getReferenceString} from "../../../../../../helpers/utility";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 
-export const ProjectPipelineImplementationCostWidget = (
+export const DimensionWipEffortWidget = (
   {
+    dimension,
     instanceKey,
     specsOnly,
     wipLimit,
@@ -24,7 +25,8 @@ export const ProjectPipelineImplementationCostWidget = (
 
 
 
-  const {loading, error, data} = useQueryProjectPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+    dimension,
     instanceKey,
     specsOnly,
     activeOnly: true,
@@ -33,13 +35,13 @@ export const ProjectPipelineImplementationCostWidget = (
   })
   if (loading) return <Loading/>;
   if (error) {
-    logGraphQlError('ProjectPipelineImplementationCostWidget.pipelineStateDetails', error);
+    logGraphQlError('DimensionWipEffortWidget.pipelineStateDetails', error);
     return null;
   }
   const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
 
   return (
-      <ProjectPipelineImplementationCostView
+      <DimensionWipEffortView
         specsOnly={specsOnly}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
