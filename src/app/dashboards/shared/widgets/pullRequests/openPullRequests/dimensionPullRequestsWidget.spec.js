@@ -14,7 +14,7 @@ const referenceDates = {
 }
 
 const gqlRequest = {
-  query: getProjectPullRequests,
+  query: getProjectPullRequests('project'),
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     activeOnly: true,
@@ -76,6 +76,7 @@ const mocks = [
 ];
 
 const projectPullRequestsPropsFixture = {
+  dimension: 'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
   asStatistic: true,
