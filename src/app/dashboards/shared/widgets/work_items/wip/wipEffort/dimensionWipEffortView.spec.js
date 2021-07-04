@@ -1,7 +1,7 @@
 import React from "react";
 import {screen} from "@testing-library/react";
-import {ProjectPipelineImplementationCostView} from "./projectPipelineImplementationCostView";
-import {renderWithProviders} from "../../../../../framework/viz/charts/chart-test-utils";
+import {DimensionWipEffortView} from "./dimensionWipEffortView";
+import {renderWithProviders} from "../../../../../../framework/viz/charts/chart-test-utils";
 
 describe("ProjectPipelineImplementationCostView", () => {
   let viewPropsFixture = {
@@ -50,7 +50,7 @@ describe("ProjectPipelineImplementationCostView", () => {
 
   describe("when in primary view", () => {
     test("renders component without any error", async () => {
-      renderWithProviders(<ProjectPipelineImplementationCostView {...viewPropsFixture} view="primary" />);
+      renderWithProviders(<DimensionWipEffortView {...viewPropsFixture} view="primary" />);
     });
 
     test("when workitem scope 'specs' is selected, have legend text as Specs", async () => {
@@ -59,7 +59,7 @@ describe("ProjectPipelineImplementationCostView", () => {
         specsOnly: true,
         workItemScope: "specs",
       };
-      renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
+      renderWithProviders(<DimensionWipEffortView {...propsFixture} view="primary"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
       await screen.findAllByText(/effort/i);
 
@@ -73,7 +73,7 @@ describe("ProjectPipelineImplementationCostView", () => {
         specsOnly: false,
         workItemScope: "all",
       };
-      renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="primary"/>);
+      renderWithProviders(<DimensionWipEffortView {...propsFixture} view="primary"/>);
       // asserting on the title of the chart first
       await screen.findAllByText(/effort/i);
 
@@ -83,7 +83,7 @@ describe("ProjectPipelineImplementationCostView", () => {
 
   describe("when in detail view", () => {
     test("renders component without any error", async () => {
-      renderWithProviders(<ProjectPipelineImplementationCostView {...viewPropsFixture} view="detail"/>);
+      renderWithProviders(<DimensionWipEffortView {...viewPropsFixture} view="detail"/>);
       expect(await screen.findByText(/show/i)).toBeInTheDocument();
     });
 
@@ -93,7 +93,7 @@ describe("ProjectPipelineImplementationCostView", () => {
         specsOnly: true,
         workItemScope: "specs",
       };
-      renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
+      renderWithProviders(<DimensionWipEffortView {...propsFixture} view="detail"/>);
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
       await screen.findAllByText(/effort/i);
 
@@ -108,7 +108,7 @@ describe("ProjectPipelineImplementationCostView", () => {
         specsOnly: false,
         workItemScope: "all",
       };
-      renderWithProviders(<ProjectPipelineImplementationCostView {...propsFixture} view="detail"/>);
+      renderWithProviders(<DimensionWipEffortView {...propsFixture} view="detail"/>);
       // asserting on the title of the chart first
       await screen.findAllByText(/effort/i);
 
