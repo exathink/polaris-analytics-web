@@ -8,6 +8,7 @@ import {WorkItemScopeSelector} from "../../../../../projects/shared/components/w
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 
 export const ProjectWipFlowMetricsDetailDashboard = ({
+  dimension,
   instanceKey,
   context,
   latestWorkItemEvent,
@@ -61,7 +62,7 @@ export const ProjectWipFlowMetricsDetailDashboard = ({
           name="project-pipeline-state-detail-view"
           render={({view}) => (
             <DimensionValueStreamPhaseDetailWidget
-              dimension={'project'}
+              dimension={dimension}
               instanceKey={instanceKey}
               specsOnly={specsOnly}
               view={view}
