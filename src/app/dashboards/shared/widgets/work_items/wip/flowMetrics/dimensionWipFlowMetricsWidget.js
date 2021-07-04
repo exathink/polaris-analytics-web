@@ -59,6 +59,7 @@ export const DimensionWipFlowMetricsWidget = (
   } else {
     return (
       <ProjectWipFlowMetricsDetailDashboard
+        dimension={dimension}
         instanceKey={instanceKey}
         latestWorkItemEvent={latestWorkItemEvent}
         stateMappingIndex={stateMappingIndex}
