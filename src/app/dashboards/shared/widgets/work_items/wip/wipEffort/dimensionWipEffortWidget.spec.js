@@ -1,10 +1,10 @@
 import React from "react";
-import {gqlUtils, renderWithProviders} from "../../../../../framework/viz/charts/chart-test-utils";
+import {gqlUtils, renderWithProviders} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {ProjectPipelineImplementationCostWidget} from "./projectPipelineCycleImplementationCostWidget";
-import {dimensionPipelineStateDetailsQuery} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
-import {getReferenceString} from "../../../../../helpers/utility";
+import {DimensionWipEffortWidget} from "./projectPipelineCycleImplementationCostWidget";
+import {dimensionPipelineStateDetailsQuery} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {getReferenceString} from "../../../../../../helpers/utility";
 
 // clear mocks after each test
 afterEach(() => {
@@ -12,6 +12,7 @@ afterEach(() => {
 });
 
 const widgetPropsFixture = {
+  dimension: 'project',
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   specsOnly: false,
   wipLimit: 20,
@@ -23,7 +24,7 @@ const widgetPropsFixture = {
 };
 
 const gqlRequest = {
-  query: dimensionPipelineStateDetailsQuery,
+  query: dimensionPipelineStateDetailsQuery('project'),
   variables: {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     specsOnly: false,
@@ -92,12 +93,12 @@ const gqlMocks = [
 describe("ProjectPipelineImplementationCostWidget", () => {
   describe("renders without any error", () => {
     test("it shows a loading spinner", async () => {
-      renderWithProviders(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
+      renderWithProviders(<DimensionWipEffortWidget {...widgetPropsFixture} />, gqlMocks);
       await screen.findByTestId("loading-spinner");
     });
 
     test("should render the widget with correct title", async () => {
-      renderWithProviders(<ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />, gqlMocks);
+      renderWithProviders(<DimensionWipEffortWidget {...widgetPropsFixture} />, gqlMocks);
       await screen.findByTestId("loading-spinner");
       await screen.findAllByText(/effort/i);
 
@@ -132,7 +133,7 @@ describe("ProjectPipelineImplementationCostWidget", () => {
 
     test("it renders nothing and logs the error when there is a network error", async () => {
       renderWithProviders(
-        <ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />,
+        <DimensionWipEffortWidget {...widgetPropsFixture} />,
         mockNetworkError
       );
 
@@ -142,7 +143,7 @@ describe("ProjectPipelineImplementationCostWidget", () => {
 
     test("it renders nothing and logs the error when there is a GraphQl error", async () => {
       renderWithProviders(
-        <ProjectPipelineImplementationCostWidget {...widgetPropsFixture} />,
+        <DimensionWipEffortWidget {...widgetPropsFixture} />,
         mockGraphQlErrors
       );
 
