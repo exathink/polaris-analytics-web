@@ -7,7 +7,7 @@ import {WorkItemScopeSelector} from "../../../../../projects/shared/components/w
 
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 
-export const ProjectWipFlowMetricsDetailDashboard = ({
+export const DimensionWipFlowMetricsDetailDashboard = ({
   dimension,
   instanceKey,
   context,
