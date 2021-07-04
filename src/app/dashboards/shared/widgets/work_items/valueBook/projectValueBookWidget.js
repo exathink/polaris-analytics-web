@@ -34,7 +34,7 @@ export const ProjectValueBookWidget = ({
   });
   if (loading) return <Loading />;
   if (error) {
-    logGraphQlError("ProjectPipelineImplementationCostWidget.pipelineStateDetails", error);
+    logGraphQlError("DimensionValueBookWidget.queryProjectEpicEffort", error);
     return null;
   }
 
