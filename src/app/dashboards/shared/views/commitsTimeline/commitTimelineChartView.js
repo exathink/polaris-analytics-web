@@ -38,22 +38,17 @@ export class CommitTimelineViewModel {
 
 
   initCategorySelector(groupBy) {
-    if (['repository', 'author', 'branch'].indexOf(groupBy) !== -1) {
-      return (commit) => [commit[groupBy]]
-    } else if (groupBy === 'team') {
-      return (commit) => [
-        commit.authorTeamName || 'Unassigned',
-        commit.committerTeamName || 'Unassigned'
-      ]
-    }
-    else{
+    if (["repository", "author"].indexOf(groupBy) !== -1) {
+      return (commit) => [commit[groupBy]];
+    } else if (groupBy === "team") {
+      return (commit) => [commit.authorTeamName || "Unassigned", commit.committerTeamName || "Unassigned"];
+    } else if (groupBy === "branch") {
+      return (commit) => [`${commit.repository}/${commit.branch}`];
+    } else {
       return (commit) =>
-        commit.workItemsSummaries.length > 0 ?
-          commit.workItemsSummaries.map(
-            workItem =>
-              `${workItem.displayId}: ${workItem.name}`
-          )
-          : [Untracked]
+        commit.workItemsSummaries.length > 0
+          ? commit.workItemsSummaries.map((workItem) => `${workItem.displayId}: ${workItem.name}`)
+          : [Untracked];
     }
   }
 
