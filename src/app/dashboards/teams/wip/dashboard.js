@@ -72,7 +72,7 @@ function WipDashboard({
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={false}
+          showDetail={true}
           hideTitlesInDetailView={true}
         />
         <DashboardWidget
