@@ -1,8 +1,8 @@
 import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
-import {ProjectWipFlowMetricsDetailDashboard} from "./projectWipFlowMetricsDetailDashboard"
+import {DimensionWipFlowMetricsDetailDashboard} from "./dimensionWipFlowMetricsDetailDashboard"
 import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
-import {ProjectWipFlowMetricsSummaryView} from "./projectWipFlowMetricsSummaryView";
+import {WipFlowMetricsSummaryView} from "./wipFlowMetricsSummaryView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 
 export const DimensionWipFlowMetricsWidget = (
@@ -44,7 +44,7 @@ export const DimensionWipFlowMetricsWidget = (
 
   if (view === 'primary') {
     return (
-      <ProjectWipFlowMetricsSummaryView
+      <WipFlowMetricsSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
         display={display}
         latestCommit={latestCommit}
@@ -58,7 +58,7 @@ export const DimensionWipFlowMetricsWidget = (
     )
   } else {
     return (
-      <ProjectWipFlowMetricsDetailDashboard
+      <DimensionWipFlowMetricsDetailDashboard
         dimension={dimension}
         instanceKey={instanceKey}
         latestWorkItemEvent={latestWorkItemEvent}

@@ -236,7 +236,7 @@ const PipelineSummaryView = withViewerContext((
 });
 
 
-export const ProjectWipFlowMetricsSummaryView = withNavigationContext(PipelineSummaryView);
+export const WipFlowMetricsSummaryView = withNavigationContext(PipelineSummaryView);
 
 
 
