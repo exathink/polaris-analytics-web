@@ -2,7 +2,7 @@ import React from "react";
 import {gqlUtils, renderWithProviders} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {DimensionWipEffortWidget} from "./projectPipelineCycleImplementationCostWidget";
+import {DimensionWipEffortWidget} from "./dimensionWipEffortWidget";
 import {dimensionPipelineStateDetailsQuery} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {getReferenceString} from "../../../../../../helpers/utility";
 
