@@ -4,17 +4,12 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {DimensionPredictabilityTrendsWidget} from "../../shared/widgets/work_items/trends/predictability";
 import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
 import {
-  DimensionResponseTimeTrendsWidget,
   DimensionDefectResponseTimeWidget,
+  DimensionResponseTimeTrendsWidget,
 } from "../../shared/widgets/work_items/trends/responseTime";
-import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
-
-import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-
-import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
-import { DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget } from "../../projects/shared/widgets/quality";
+import { DaysRangeSlider, ONE_YEAR } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -43,7 +38,15 @@ function TrendsDashboard({
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`}
+      controls={[
+            () => (
+              <div style={{minWidth: "500px"}}>
+                <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={ONE_YEAR}/>
+              </div>
+            ),
+          ]}
+    >
       <DashboardRow h="50%" title={`Flow`}>
         <DashboardWidget
           w={1 / 3}

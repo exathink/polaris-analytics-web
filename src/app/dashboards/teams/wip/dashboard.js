@@ -4,13 +4,13 @@ import {TeamDashboard} from "../teamDashboard";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "../../projects/wip/dashboard.module.css";
-import { DimensionCommitsNavigatorWidget, HeaderMetrics } from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {
+  DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget,
-  DimensionPipelineCycleTimeLatencyWidget
 } from "../../shared/widgets/work_items/wip";
-import { WorkItemStateTypes } from "../../shared/config";
-import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
+import {WorkItemStateTypes} from "../../shared/config";
+import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
