@@ -1,6 +1,6 @@
 .valueDashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 33% 32.5% 33%;
   grid-template-rows: 47% 2%;
   gap: 0.5rem;
   grid-template-areas:
