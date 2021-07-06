@@ -186,7 +186,7 @@ describe("ManageTeamsWorkflow", () => {
       });
     });
 
-    describe.skip("when there are errors", () => {
+    describe("when there are errors", () => {
       let logGraphQlError;
       beforeEach(() => {
         logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
@@ -214,30 +214,30 @@ describe("ManageTeamsWorkflow", () => {
       test("it renders nothing and logs the error when there is a network error", async () => {
         renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, mockNetworkError);
         // before
-        expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
+        expect(screen.queryByTestId("select-team-members-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         // after
-        expect(screen.queryByTestId("select-contributors-table")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("select-team-members-table")).not.toBeInTheDocument();
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
         renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, mockGraphQlErrors);
         // before
-        expect(screen.queryByTestId("select-contributors-table")).toBeInTheDocument();
+        expect(screen.queryByTestId("select-team-members-table")).toBeInTheDocument();
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
         // after
-        expect(screen.queryByTestId("select-contributors-table")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("select-team-members-table")).not.toBeInTheDocument();
       });
     });
 
-    describe.skip("when there is data for contributors", () => {
+    describe("when there is data for contributors", () => {
       // setup initial conditions for this flow
       beforeEach(async () => {
         renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, contributorMocks);
       });
 
       test("should render title for table", async () => {
-        await screen.findByText(/Select one or more contributors to merge into a single contributor/i);
+        await screen.findByText(/Select one or more contributors to add to a new or existing team/i);
       });
 
       test("should render slider with knob at mark 30", () => {
@@ -249,14 +249,14 @@ describe("ManageTeamsWorkflow", () => {
       test("should render active contributors label and count correctly", async () => {
         const {findByText} = within(screen.getByTestId("active-contributors"));
         expect(await findByText(/Active Contributors/i)).toBeInTheDocument();
-        expect(await findByText(/2/i)).toBeInTheDocument();
+        expect(await findByText(/3/i)).toBeInTheDocument();
       });
 
-      test("should render select contributors table with correct no of contributors", async () => {
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+      test("should render table with correct no of contributors", async () => {
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkBoxElements = await findAllByRole("checkbox");
 
-        expect(checkBoxElements).toHaveLength(2);
+        expect(checkBoxElements).toHaveLength(3);
       });
 
       test("when any of the records is selected, Next button should be enabled", async () => {
@@ -265,7 +265,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeDisabled();
 
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkboxElements = await findAllByRole("checkbox");
         const [first] = checkboxElements;
 
@@ -282,7 +282,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeDisabled();
 
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkboxElements = await findAllByRole("checkbox");
         const [first, second] = checkboxElements;
 
@@ -298,7 +298,7 @@ describe("ManageTeamsWorkflow", () => {
 
         // assert we are on the update contributor page
         await screen.findByText(
-          /Contributions from the contributors below will be merged into contributions from Krishna Kumar/i
+          /Update target team for below contributors/i
         );
       });
     });
