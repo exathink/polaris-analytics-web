@@ -42,6 +42,10 @@ const gqlMutationRequest = {
         contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
         newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
       },
+      {
+        contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+        newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
+      },
     ],
   },
 };
@@ -92,8 +96,8 @@ const contributorMocks = [
                 node: {
                   name: "Krishna Kumar",
                   key: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
-                  teamName: "Team Theta",
-                  teamKey: "540444dd-c045-41ed-a017-0b3326620901",
+                  teamName: "Team Alpha",
+                  teamKey: "f3bd6f1d-5c6a-41d2-81de-dfce5e794580",
                   earliestCommit: getNDaysAgo(255),
                   latestCommit: getNDaysAgo(9),
                   commitCount: 7881,
@@ -276,7 +280,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeEnabled();
       });
 
-      test("when Next button is clicked, it should move to UpdateContributor page", async () => {
+      test("when Next button is clicked, it should move to UpdateTeams page", async () => {
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
         expect(nextButton).toBeDisabled();
@@ -296,15 +300,13 @@ describe("ManageTeamsWorkflow", () => {
         // click next button
         fireEvent.click(nextButton);
 
-        // assert we are on the update contributor page
-        await screen.findByText(
-          /Update target team for below contributors/i
-        );
+        // assert we are on the update teams page
+        await screen.findByText(/Update target team for below contributors/i);
       });
     });
   });
 
-  describe.skip("UpdateTeamsPage", () => {
+  describe("UpdateTeamsPage", () => {
     describe("regular update contributor flow", () => {
       beforeEach(async () => {
         renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, contributorMocks);
@@ -314,7 +316,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeDisabled();
 
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkboxElements = await findAllByRole("checkbox");
 
         // click all checkbox
@@ -325,56 +327,47 @@ describe("ManageTeamsWorkflow", () => {
         // after next button is enabled
         expect(nextButton).toBeEnabled();
 
-        // click on next button, will navigate to UpdateContributors Page.
+        // click on next button, will navigate to UpdateTeams Page.
         fireEvent.click(nextButton);
       });
 
       test("should render correct title for the table", async () => {
-        await screen.findByText(
-          /Contributions from the contributors below will be merged into contributions from Krishna Kumar/i
-        );
+        await screen.findByText(/Update target team for below contributors/i);
       });
 
-      test("should render Contributor textbox with parent contributor as its initial value", async () => {
-        const contributorTextbox = await screen.findByRole("textbox");
-        expect(contributorTextbox.value).toBe("Krishna Kumar");
-      });
-
-      test("should render exclude from analysis label and checkbox", async () => {
-        const {findByRole, findByText} = within(await screen.findByTestId("exclude-from-analysis"));
-        const excludeFromAnalsyisLabel = await findByText(/Exclude From Analysis/i);
-        const excludeFromAnalsyisCheckbox = await findByRole("checkbox");
-        expect(excludeFromAnalsyisLabel).toBeInTheDocument();
-        expect(excludeFromAnalsyisCheckbox).toBeInTheDocument();
-      });
-
-      test("should render all non-parent contributors to be selected by default inside the table", async () => {
+      test("should render all selected contributors from previous page to be selected by default", async () => {
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("update-teams-table"));
         const checkboxElements = await findAllByRole("checkbox");
 
-        expect(checkboxElements).toHaveLength(1);
-        expect(checkboxElements[0].checked).toBe(true);
+        expect(checkboxElements).toHaveLength(3);
+        checkboxElements.forEach((checkboxElement) => {
+          expect(checkboxElement.checked).toBe(true);
+        });
       });
 
-      test("when all non-parent contributors are unchecked, Update Contributor button should be disabled, assuming textbox and checkbox are untouched", async () => {
+      test("when all the contributors are unchecked, Update Team button should be disabled", async () => {
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("update-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("update-teams-table"));
         const checkboxElements = await findAllByRole("checkbox");
 
-        expect(checkboxElements).toHaveLength(1);
-        expect(checkboxElements[0].checked).toBe(true);
+        expect(checkboxElements).toHaveLength(3);
+        checkboxElements.forEach((checkboxElement) => {
+          expect(checkboxElement.checked).toBe(true);
+        });
 
-        // before update contributor button is enabled
-        const updateContributorButton = screen.getByRole("button", {name: /Update Contributor/i});
-        expect(updateContributorButton).toBeEnabled();
+        // before update team button is enabled
+        const updateTeamsButton = screen.getByRole("button", {name: /Update Team/i});
+        expect(updateTeamsButton).toBeEnabled();
 
         // uncheck the checkbox
-        fireEvent.click(checkboxElements[0]);
+        checkboxElements.forEach((checkboxElement) => {
+          fireEvent.click(checkboxElement);
+        });
 
-        // after update contributor button is disabled
+        // after update team button is disabled
         expect(checkboxElements[0].checked).toBe(false);
-        expect(updateContributorButton).toBeDisabled();
+        expect(updateTeamsButton).toBeDisabled();
       });
     });
 
@@ -412,7 +405,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeDisabled();
 
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkboxElements = await findAllByRole("checkbox");
 
         // click all checkbox
@@ -423,17 +416,17 @@ describe("ManageTeamsWorkflow", () => {
         // after next button is enabled
         expect(nextButton).toBeEnabled();
 
-        // click on next button, will navigate to UpdateContributors Page.
+        // click on next button, will navigate to UpdateTeams Page.
         fireEvent.click(nextButton);
 
-        // find Update Contributor button
-        const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+        // find Update Team button
+        const updateTeamButton = await screen.findByRole("button", {name: /Update Team/i});
 
         // before
         expect(screen.queryByText(/network error/i)).not.toBeInTheDocument();
 
-        // click update contributor button
-        fireEvent.click(updateContributorButton);
+        // click update team button
+        fireEvent.click(updateTeamButton);
 
         const inProgressElement = screen.getByText(/Processing.../i);
         expect(inProgressElement).toBeInTheDocument();
@@ -452,7 +445,7 @@ describe("ManageTeamsWorkflow", () => {
         expect(nextButton).toBeDisabled();
 
         // find all checkbox elements
-        const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
         const checkboxElements = await findAllByRole("checkbox");
 
         // click all checkbox
@@ -463,17 +456,17 @@ describe("ManageTeamsWorkflow", () => {
         // after next button is enabled
         expect(nextButton).toBeEnabled();
 
-        // click on next button, will navigate to UpdateContributors Page.
+        // click on next button, will navigate to UpdateTeams Page.
         fireEvent.click(nextButton);
 
-        // find Update Contributor button
-        const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
+        // find Update Team button
+        const updateTeamButton = await screen.findByRole("button", {name: /Update Team/i});
 
         // before
         expect(screen.queryByText(/graphql error/i)).not.toBeInTheDocument();
 
         // click update contributor button
-        fireEvent.click(updateContributorButton);
+        fireEvent.click(updateTeamButton);
 
         const inProgressElement = screen.getByText(/Processing.../i);
         expect(inProgressElement).toBeInTheDocument();
@@ -484,48 +477,46 @@ describe("ManageTeamsWorkflow", () => {
       });
     });
 
-    describe("when there is success on update contributor action", () => {
-      describe("regular update contributor flow", () => {
-        test("when UpdateContributor button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
-          renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, mocks);
+    describe("when there is success on update team action", () => {
+      test("when Update Team button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
+        renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, mocks);
 
-          // before next button is disabled
-          const nextButton = screen.getByRole("button", {name: /Next/i});
-          expect(nextButton).toBeDisabled();
+        // before next button is disabled
+        const nextButton = screen.getByRole("button", {name: /Next/i});
+        expect(nextButton).toBeDisabled();
 
-          // find all checkbox elements
-          const {findAllByRole} = within(screen.getByTestId("select-contributors-table"));
-          const checkboxElements = await findAllByRole("checkbox");
+        // find all checkbox elements
+        const {findAllByRole} = within(screen.getByTestId("select-team-members-table"));
+        const checkboxElements = await findAllByRole("checkbox");
 
-          // click all checkbox
-          checkboxElements.forEach((checkboxElement) => {
-            fireEvent.click(checkboxElement);
-          });
-
-          // after next button is enabled
-          expect(nextButton).toBeEnabled();
-
-          // click on next button, will navigate to UpdateContributors Page.
-          fireEvent.click(nextButton);
-
-          // find Update Contributor button
-          const updateContributorButton = await screen.findByRole("button", {name: /Update Contributor/i});
-
-          // before
-          expect(screen.queryByText(/success/i)).not.toBeInTheDocument();
-
-          // click update contributor button
-          fireEvent.click(updateContributorButton);
-
-          // update contributor button is disabled till the time mutation is executing
-          expect(updateContributorButton).toBeDisabled();
-
-          const inProgressElement = screen.getByText(/Processing.../i);
-          expect(inProgressElement).toBeInTheDocument();
-
-          // after
-          expect(await screen.findByText(/success/i)).toBeInTheDocument();
+        // click all checkbox
+        checkboxElements.forEach((checkboxElement) => {
+          fireEvent.click(checkboxElement);
         });
+
+        // after next button is enabled
+        expect(nextButton).toBeEnabled();
+
+        // click on next button, will navigate to UpdateTeams Page.
+        fireEvent.click(nextButton);
+
+        // find Update Team button
+        const updateTeamButton = await screen.findByRole("button", {name: /Update Team/i});
+
+        // before
+        expect(screen.queryByText(/success/i)).not.toBeInTheDocument();
+
+        // click update contributor button
+        fireEvent.click(updateTeamButton);
+
+        // update team button is disabled till the time mutation is executing
+        expect(updateTeamButton).toBeDisabled();
+
+        const inProgressElement = screen.getByText(/Processing.../i);
+        expect(inProgressElement).toBeInTheDocument();
+
+        // after
+        expect(await screen.findByText(/success/i)).toBeInTheDocument();
       });
     });
   });
