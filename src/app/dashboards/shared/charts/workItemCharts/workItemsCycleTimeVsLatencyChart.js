@@ -95,6 +95,11 @@ function getTitle(workItems, stageName, specsOnly) {
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
 
+function getTeamEntry(teamNodeRefs) {
+  const temp = teamNodeRefs.map((team) => team.teamName).filter((_, i) => i<=2).join(", ");
+  const teamsString = teamNodeRefs.length > 2 ? `${temp}...`: temp;
+  return teamNodeRefs.length > 0 ? ["Team:", teamsString] : [];
+}
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
@@ -193,7 +198,9 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails} = this.point.workItem;
+          const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails, teamNodeRefs} = this.point.workItem;          
+          
+          const teamEntry = getTeamEntry(teamNodeRefs);
 
           const remainingEntries =
             tooltipType === "small"
@@ -223,6 +230,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries,
+              ...teamEntry
             ],
           });
         }
