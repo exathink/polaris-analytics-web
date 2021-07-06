@@ -96,8 +96,8 @@ function getTitle(workItems, stageName, specsOnly) {
 }
 
 function getTeamEntry(teamNodeRefs) {
-  const temp = teamNodeRefs.map((team) => team.teamName).filter((_, i) => i<=2).join(", ");
-  const teamsString = teamNodeRefs.length > 2 ? `${temp}...`: temp;
+  const temp = teamNodeRefs.map((team) => team.teamName).filter((_, i) => i<2).join(", ");
+  const teamsString = teamNodeRefs.length > 2 ? `${temp}, ...`: temp;
   return teamNodeRefs.length > 0 ? [["Team:", teamsString]] : [];
 }
 
