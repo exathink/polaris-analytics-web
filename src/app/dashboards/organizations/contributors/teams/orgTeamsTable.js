@@ -5,6 +5,8 @@ import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {CreateNewTeamWidget} from "./createNewTeam";
 import {TeamLink} from "../../../shared/navigation/teamLink";
+import {fromNow} from "../../../../helpers/utility";
+
 export function useOrgTeamsTableColumns() {
   const nameSearchState = useSearch("name");
 
@@ -27,6 +29,9 @@ export function useOrgTeamsTableColumns() {
       dataIndex: "latestCommit",
       key: "latestCommit",
       width: "20%",
+      render: (name, record) => (
+        fromNow(record.latestCommit)
+      )
     },
     {
       title: "",
