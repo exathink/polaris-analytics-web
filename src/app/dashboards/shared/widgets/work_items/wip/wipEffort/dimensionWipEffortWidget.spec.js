@@ -51,6 +51,7 @@ const gqlMocks = [
                   workItemType: "task",
                   workItemsSourceKey: "46694f4f-e003-4430-a7a7-e4f288f40d22",
                   workItemsSourceName: "Polaris",
+                  teamNodeRefs: [],
                   state: "In Progress",
                   stateType: "wip",
                   workItemStateDetails: {

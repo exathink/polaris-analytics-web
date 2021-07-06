@@ -7,7 +7,7 @@ import {url_for_instance} from "../../../../../../framework/navigation/context/h
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor, joinTeams} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 
 const QuadrantColors = {
@@ -28,8 +28,8 @@ const QuadrantSort = {
   green: 0,
   yellow: 1,
   orange: 2,
-  red: 3
-}
+  red: 3,
+};
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -44,6 +44,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
+      teams: joinTeams(item),
     };
   });
 }
@@ -88,37 +89,39 @@ function customRender(text, record, searchText) {
 }
 
 function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => text && (
-    <span
-      onClick={() => {
-        setPlacement("top");
-        setShowPanel(true);
-        setWorkItemKey(record.key);
-      }}
-      style={{cursor: "pointer"}}
-    >
-      <Highlighter
-        highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-        searchWords={searchText || ""}
-        textToHighlight={text.toString()}
-      />
-    </span>
-  );
+  return (text, record, searchText) =>
+    text && (
+      <span
+        onClick={() => {
+          setPlacement("top");
+          setShowPanel(true);
+          setWorkItemKey(record.key);
+        }}
+        style={{cursor: "pointer"}}
+      >
+        <Highlighter
+          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+          searchWords={searchText || ""}
+          textToHighlight={text.toString()}
+        />
+      </span>
+    );
 }
 
 function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => text && (
-    <span
-      onClick={() => {
-        setPlacement("top");
-        setShowPanel(true);
-        setWorkItemKey(record.key);
-      }}
-      style={{cursor: "pointer"}}
-    >
-      {text}
-    </span>
-  );
+  return (text, record, searchText) =>
+    text && (
+      <span
+        onClick={() => {
+          setPlacement("top");
+          setShowPanel(true);
+          setWorkItemKey(record.key);
+        }}
+        style={{cursor: "pointer"}}
+      >
+        {text}
+      </span>
+    );
 }
 
 function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
@@ -138,11 +141,31 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
   );
 }
 
+function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
+  return (text, record, searchText) => {
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setPlacement("top");
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }}
+          style={{cursor: "pointer"}}
+        >
+          {record.teamNodeRefs.length > 1 ? "multiple" : text}
+        </span>
+      )
+    );
+  };
+}
+
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
   const renderState = {render: customColRender(callBacks)};
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
+  const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
   const columns = [
     {
@@ -160,10 +183,16 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "quadrant",
       width: "5%",
       filteredValue: appliedFilters.quadrant || null,
-      filters: filters.quadrants.sort((a,b) => QuadrantSort[a] - QuadrantSort[b]).map((b) => ({
-        text: <span style={{color: QuadrantColors[b]}}>{getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}</span>,
-        value: b,
-      })),
+      filters: filters.quadrants
+        .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
+        .map((b) => ({
+          text: (
+            <span style={{color: QuadrantColors[b]}}>
+              {getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}
+            </span>
+          ),
+          value: b,
+        })),
       onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
       ...renderQuadrantState,
     },
@@ -186,6 +215,16 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
       ...renderState,
+    },
+    {
+      title: "Team",
+      dataIndex: "teams",
+      key: "teams",
+      filteredValue: appliedFilters.teams || null,
+      filters: filters.teams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
+      width: "5%",
+      ...renderTeamsCol,
     },
     {
       title: "Phase",
@@ -260,11 +299,12 @@ export const CycleTimeLatencyTable = injectIntl(
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
     const states = [...new Set(tableData.map((x) => x.state))];
+    const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columns = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, states, quadrants},
+      filters: {workItemTypes, stateTypes, states, quadrants, teams},
       appliedFilters,
       callBacks,
     });

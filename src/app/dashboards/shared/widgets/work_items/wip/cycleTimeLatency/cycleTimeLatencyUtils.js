@@ -15,3 +15,10 @@ export const getQuadrantColor = ({cycleTime, latency, cycleTimeTarget, latencyTa
     return "red";
   }
 };
+
+export const joinTeams = (node) => {
+  return node.teamNodeRefs
+    .map((t) => t.teamName)
+    .sort()
+    .join(", ");
+};

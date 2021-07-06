@@ -8,12 +8,12 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 import {Button, Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor, joinTeams} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 
 // list of columns having search feature
-const SEARCH_COLUMNS = ["name", "displayId"];
+const SEARCH_COLUMNS = ["name", "displayId", "teams"];
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -90,6 +90,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           cycleTimeTarget,
           latencyTarget,
         }),
+        teams: joinTeams(node)
       };
       const newNode = {...node, ...calculatedColumns};
       if (isObjectEmpty(localAppliedFilters)) {
