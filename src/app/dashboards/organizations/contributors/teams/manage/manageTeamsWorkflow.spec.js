@@ -29,6 +29,14 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const gqlRequest = {
+  query: GET_ORGANIZATION_CONTRIBUTORS_QUERY,
+  variables: {
+    key: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+    commitWithinDays: 30,
+  },
+};
+
 const gqlMutationRequest = {
   query: UPDATE_TEAMS,
   variables: {
@@ -47,29 +55,6 @@ const gqlMutationRequest = {
         newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
       },
     ],
-  },
-};
-
-const updateContributorMocks = [
-  {
-    request: gqlMutationRequest,
-    result: {
-      data: {
-        updateContributorTeamAssignments: {
-          success: true,
-          errorMessage: null,
-          updateCount: 2,
-        },
-      },
-    },
-  },
-];
-
-const gqlRequest = {
-  query: GET_ORGANIZATION_CONTRIBUTORS_QUERY,
-  variables: {
-    key: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
-    commitWithinDays: 30,
   },
 };
 
@@ -121,8 +106,6 @@ const contributorMocks = [
     },
   },
 ];
-
-const mocks = [...contributorMocks, ...updateContributorMocks];
 
 const propsFixture = {
   organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
@@ -307,7 +290,7 @@ describe("ManageTeamsWorkflow", () => {
   });
 
   describe("UpdateTeamsPage", () => {
-    describe("regular update contributor flow", () => {
+    describe("regular update teams flow", () => {
       beforeEach(async () => {
         renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, contributorMocks);
 
@@ -479,7 +462,46 @@ describe("ManageTeamsWorkflow", () => {
 
     describe("when there is success on update team action", () => {
       test("when Update Team button is clicked, it remains disabled till the time mutation is executing, shows success message after that", async () => {
-        renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, mocks);
+        const mutationReq = {
+          query: UPDATE_TEAMS,
+          variables: {
+            organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+            // as we have selected team bravo below, make sure to pass same team key here
+            contributorTeamAssignments: [
+              {
+                contributorKey: "5b7eecb4-b0c2-4001-904d-542c28fd3204",
+                newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+              },
+              {
+                contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+              },
+              {
+                contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+              },
+            ],
+          },
+        };
+
+        const updateContributorMocks = [
+          {
+            request: mutationReq,
+            result: {
+              data: {
+                updateContributorTeamAssignments: {
+                  success: true,
+                  errorMessage: null,
+                  updateCount: 2,
+                },
+              },
+            },
+          },
+        ];
+
+        const customMocks = [...contributorMocks, ...updateContributorMocks];
+
+        renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, customMocks);
 
         // before next button is disabled
         const nextButton = screen.getByRole("button", {name: /Next/i});
@@ -499,6 +521,15 @@ describe("ManageTeamsWorkflow", () => {
 
         // click on next button, will navigate to UpdateTeams Page.
         fireEvent.click(nextButton);
+
+        // Select Target Team (By Default First Team from the dropdown is selected)
+        const selectContainer = screen.getByTestId("update-teams-select");
+        const {getByRole, getByText} = within(selectContainer);
+        const selectElement = getByRole("combobox");
+
+        // select team bravo
+        fireEvent.mouseDown(selectElement);
+        fireEvent.click(getByText(/team bravo/i));
 
         // find Update Team button
         const updateTeamButton = await screen.findByRole("button", {name: /Update Team/i});

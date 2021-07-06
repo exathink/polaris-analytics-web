@@ -170,6 +170,7 @@ export function UpdateTeamsPage({
           style={{width: 200}}
           onChange={handleDropdownChange}
           getPopupContainer={(node) => node.parentNode}
+          data-testid="update-teams-select"
         >
           {optionElements}
         </Select>
