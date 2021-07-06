@@ -201,6 +201,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
           const {displayId, workItemType, name, state, stateType, timeInStateDisplay, latestCommitDisplay, cycleTime, duration, latency, effort, workItemStateDetails, teamNodeRefs} = this.point.workItem;          
           
           const teamEntry = getTeamEntry(teamNodeRefs);
+          const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry[0][1]}<br/>` : "";
 
           const remainingEntries =
             tooltipType === "small"
@@ -219,7 +220,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 ];
 
           return tooltipHtml({
-            header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
+            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
               elide(name, 30) 
             }`,
             body: [
@@ -230,7 +231,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries,
-              ...teamEntry
+
             ],
           });
         }
