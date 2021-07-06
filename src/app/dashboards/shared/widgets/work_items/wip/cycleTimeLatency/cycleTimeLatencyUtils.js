@@ -16,10 +16,9 @@ export const getQuadrantColor = ({cycleTime, latency, cycleTimeTarget, latencyTa
   }
 };
 
-export const getTeam = (node) => {
-  return node.teamNodeRefs.length > 0
-    ? node.teamNodeRefs.length > 1
-      ? "multiple"
-      : node.teamNodeRefs[0].teamName
-    : "Unassigned";
+export const joinTeams = (node) => {
+  return node.teamNodeRefs
+    .map((t) => t.teamName)
+    .sort()
+    .join(", ");
 };
