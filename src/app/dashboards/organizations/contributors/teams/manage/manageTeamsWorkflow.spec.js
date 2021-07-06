@@ -7,7 +7,6 @@ import {getNDaysAgo} from "../../../../../../test/test-utils";
 import {ManageTeamsWorkflow as ManageTeamsWorkflowWithoutIntl} from "./manageTeamsWorkflow";
 import {GraphQLError} from "graphql/error";
 import {injectIntl} from "react-intl";
-import {GET_ORGANIZATION_TEAMS_QUERY} from "../useQueryOrganizationTeams";
 
 const ManageTeamsWorkflow = injectIntl(ManageTeamsWorkflowWithoutIntl);
 
@@ -70,13 +69,6 @@ const gqlRequest = {
   },
 };
 
-const gqlRequest2 = {
-  query: GET_ORGANIZATION_TEAMS_QUERY,
-  variables: {
-    organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
-  },
-};
-
 const contributorMocks = [
   {
     request: gqlRequest,
@@ -130,61 +122,46 @@ const mocks = [...contributorMocks, ...updateContributorMocks];
 
 const propsFixture = {
   organizationKey: "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+  teamsList: [
+    {
+      name: "Team Theta",
+      key: "540444dd-c045-41ed-a017-0b3326620901",
+      contributorCount: 2,
+    },
+    {
+      name: "Team Alpha",
+      key: "f3bd6f1d-5c6a-41d2-81de-dfce5e794580",
+      contributorCount: null,
+    },
+    {
+      name: "Team Bravo",
+      key: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+      contributorCount: 1,
+    },
+  ],
   context: {go: jest.fn()},
 };
 
 describe("ManageTeamsWorkflow", () => {
   describe("SelectTeamMembersPage", () => {
     describe("when there is no data for contributors", () => {
-      const emptyContributorsMocks = {
-        request: gqlRequest,
-        result: {
-          data: {
-            organization: {
-              contributors: {
-                edges: [],
+      const emptyContributorsMocks = [
+        {
+          request: gqlRequest,
+          result: {
+            data: {
+              organization: {
+                contributors: {
+                  edges: [],
+                },
               },
             },
           },
         },
-      };
+      ];
 
-      const emptyTeamsMocks = {
-        request: gqlRequest2,
-        result: {
-          organization: {
-            teams: {
-              edges: [
-                {
-                  node: {
-                    name: "Team Theta",
-                    key: "540444dd-c045-41ed-a017-0b3326620901",
-                    contributorCount: 2,
-                  },
-                },
-                {
-                  node: {
-                    name: "Team Alpha",
-                    key: "f3bd6f1d-5c6a-41d2-81de-dfce5e794580",
-                    contributorCount: null,
-                  },
-                },
-                {
-                  node: {
-                    name: "Team Bravo",
-                    key: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
-                    contributorCount: 1,
-                  },
-                },
-              ],
-            },
-          },
-        },
-      };
-
-      const emptyMocks = [emptyTeamsMocks, emptyContributorsMocks];
       beforeEach(() => {
-        renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, emptyMocks);
+        renderWithProviders(<ManageTeamsWorkflow {...propsFixture} />, emptyContributorsMocks);
       });
 
       test("should not render title for table", () => {
