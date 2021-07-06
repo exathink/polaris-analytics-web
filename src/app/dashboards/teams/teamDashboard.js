@@ -81,11 +81,14 @@ class WithTeam extends React.Component {
         client={analytics_service}
         query={gql`
           query with_team_instance($key: String!) {
-            team(key: $key, interfaces: [ContributorCount]) {
+            team(key: $key, interfaces: [ContributorCount, CommitSummary]) {
               id
               name
               key
               contributorCount
+              earliestCommit
+              latestCommit
+              commitCount
             }
           }
         `}
