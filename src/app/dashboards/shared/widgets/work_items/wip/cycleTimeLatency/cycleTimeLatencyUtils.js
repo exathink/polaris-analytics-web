@@ -20,6 +20,6 @@ export const getTeam = (node) => {
   return node.teamNodeRefs.length > 0
     ? node.teamNodeRefs.length > 1
       ? "multiple"
-      : node.teamNodeRefs[0]
+      : node.teamNodeRefs[0].teamName
     : "Unassigned";
 };
