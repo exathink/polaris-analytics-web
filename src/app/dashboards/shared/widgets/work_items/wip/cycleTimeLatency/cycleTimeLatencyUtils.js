@@ -15,3 +15,11 @@ export const getQuadrantColor = ({cycleTime, latency, cycleTimeTarget, latencyTa
     return "red";
   }
 };
+
+export const getTeam = (node) => {
+  return node.teamNodeRefs.length > 0
+    ? node.teamNodeRefs.length > 1
+      ? "multiple"
+      : node.teamNodeRefs[0]
+    : "Unassigned";
+};

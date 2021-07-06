@@ -7,7 +7,7 @@ import {url_for_instance} from "../../../../../../framework/navigation/context/h
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor, getTeam} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 
 const QuadrantColors = {
@@ -44,6 +44,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
+      teams: getTeam(item)
     };
   });
 }
@@ -188,6 +189,16 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderState,
     },
     {
+      title: "Team",
+      dataIndex: "teams",
+      key: "teams",
+      filteredValue: appliedFilters.teams || null,
+      filters: filters.teams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.teams.indexOf(value) === 0,
+      width: "5%",
+      ...renderState,
+    },
+    {
       title: "Phase",
       dataIndex: "stateType",
       key: "stateType",
@@ -263,8 +274,9 @@ export const CycleTimeLatencyTable = injectIntl(
 
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
+    const teams = [...new Set(dataSource.map(x => x.teams))];
     const columns = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, states, quadrants},
+      filters: {workItemTypes, stateTypes, states, quadrants, teams},
       appliedFilters,
       callBacks,
     });

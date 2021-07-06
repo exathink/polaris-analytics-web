@@ -8,7 +8,7 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 import {Button, Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor, getTeam} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 
@@ -90,6 +90,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           cycleTimeTarget,
           latencyTarget,
         }),
+        teams: getTeam(node)
       };
       const newNode = {...node, ...calculatedColumns};
       if (isObjectEmpty(localAppliedFilters)) {
