@@ -34,7 +34,7 @@ export const WorkItemFlowMetricsView = ({workItem, context, view}) => {
       <VizRow h={"100%"}>
         <VizItem w={1 / 2}>
           <Statistic
-            title={<span>Lead Time {workItem.stateType !== 'closed' && <sup>{`Min`}</sup>} </span>}
+            title={<span>Lead Time {workItem.stateType !== 'closed' && <sup>{`Current`}</sup>} </span>}
             value={leadTime || 0}
             precision={1}
             valueStyle={{color: '#3f8600'}}
@@ -44,7 +44,7 @@ export const WorkItemFlowMetricsView = ({workItem, context, view}) => {
         </VizItem>
         <VizItem w={1 / 2}>
           <Statistic
-            title={<span>Cycle Time {workItem.stateType !== 'closed' && <sup>{`Min`}</sup>} </span>}
+            title={<span>{workItem.stateType !== 'closed'? 'Age' : 'Cycle Time' } </span>}
             value={cycleTime || 0}
             precision={1}
             valueStyle={{color: '#3f8600'}}
