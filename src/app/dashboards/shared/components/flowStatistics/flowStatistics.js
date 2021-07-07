@@ -383,22 +383,22 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 //  Commit Days
 // ----
 
-export const CommitDays = ({title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
+export const ActiveDays = ({title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
-    uom={'Dev-Days'}
-    precision={1}
+
+
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
   />
 );
 
-export const AvgCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+export const AvgActiveDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgCommitDays'}
@@ -409,8 +409,8 @@ export const AvgCommitDays = ({currentMeasurement, previousMeasurement, target, 
   />
 );
 
-export const MinCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+export const MinActiveDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'minCommitDays'}
@@ -421,8 +421,8 @@ export const MinCommitDays = ({currentMeasurement, previousMeasurement, target, 
   />
 );
 
-export const MaxCommitDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+export const MaxActiveDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'maxCommitDays'}
@@ -433,30 +433,21 @@ export const MaxCommitDays = ({currentMeasurement, previousMeasurement, target, 
   />
 );
 
-export const TotalCommitDays = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalCommitDays'}
-    title={title}
+    title={title || 'Active Days'}
     target={target}
     deltaThreshold={deltaThreshold}
   />
 );
 
-export const EffortIN = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
-    currentMeasurement={currentMeasurement}
-    previousMeasurement={previousMeasurement}
-    metric={'totalCommitDays'}
-    title={<span>{'Effort'}<sub>{'IN'}</sub></span>}
-    target={target}
-    deltaThreshold={deltaThreshold}
-  />
-);
+
 
 export const EffortOUT = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
@@ -467,7 +458,7 @@ export const EffortOUT = ({currentMeasurement, previousMeasurement, target, delt
 );
 
 export const EffortWIP = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
-  <CommitDays
+  <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
@@ -787,25 +778,25 @@ export const TraceabilityCarousel = ({title, current, previous, target, deltaThr
 
 export const CommitDaysCarousel = ({current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
   <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
-    <TotalCommitDays
+    <TotalActiveDays
       currentMeasurement={current}
       previousMeasurement={previous}
       target={target}
       deltaThreshold={deltaThreshold}
     />
-    <AvgCommitDays
+    <avgActiveDays
       currentMeasurement={current}
       previousMeasurement={previous}
       target={target}
       deltaThreshold={deltaThreshold}
     />
-    <MaxCommitDays
+    <MaxActiveDays
       currentMeasurement={current}
       previousMeasurement={previous}
       target={target}
       deltaThreshold={deltaThreshold}
     />
-    <MinCommitDays
+    <MinActiveDays
       currentMeasurement={current}
       previousMeasurement={previous}
       target={target}

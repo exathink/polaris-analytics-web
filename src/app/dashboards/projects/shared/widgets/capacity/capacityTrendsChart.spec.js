@@ -208,7 +208,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalCommitDays",
         id: "totalCommitDays",
         type: "spline",
-        name: "EffortIN",
+        name: "Active Days",
         visible: true,
         data: propsFixture.capacityTrends
           .map((measurement) => ({
@@ -233,7 +233,7 @@ describe("CapacityTrendsChart", () => {
     const {series} = renderedChartConfig(<EffortTrendsChart {...propsFixture} />);
 
     const trends = [
-      {trend: "capacityTrends", displayName: "EffortIN", key: "totalCommitDays"},
+      {trend: "capacityTrends", displayName: "Active Days", key: "totalCommitDays"},
       {trend: "cycleMetricsTrends", displayName: "EffortOUT", key: "totalEffort"},
     ];
 
@@ -275,7 +275,7 @@ describe("CapacityTrendsChart", () => {
           expect(actual).toMatchObject({
             header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
             body:
-              trend.displayName === "EffortIN"
+              trend.displayName === "Active Days"
                 ? [
                     [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])} Dev-Days`],
                     [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
