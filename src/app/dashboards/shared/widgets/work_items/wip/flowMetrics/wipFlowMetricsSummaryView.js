@@ -2,19 +2,19 @@ import React from "react";
 import {withNavigationContext} from "../../../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {
-  AvgCycleTime,
+  AvgAge,
   AvgDuration,
   AvgLatency,
   CycleTimeCarousel,
   EffortWIP,
   LatestCommit,
-  PercentileCycleTime,
+  PercentileAge,
   Wip,
   WipCarousel,
   WipWithLimit,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
-import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
+
 import styles from "../../../../../projects/shared/widgets/wip/wip.module.css";
 
 const FlowBoardSummaryView = ({
@@ -30,21 +30,17 @@ const FlowBoardSummaryView = ({
 }) => {
   return (
     <div className={styles.boxWrapper}>
-      <div >
-        <PercentileCycleTime
+      <div>
+        <PercentileAge
           currentMeasurement={pipelineCycleMetrics}
           targetPercentile={cycleTimeTargetPercentile}
           target={cycleTimeTarget}
         />
       </div>
-      <div >
-        <ComponentCarousel tickInterval={2000}>
-          <AvgCycleTime currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
-          <AvgDuration currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
-        </ComponentCarousel>
+      <div>
+        <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
       </div>
       <div
-        
         style={{
           paddingLeft: "40px",
           borderLeftWidth: "1px",
@@ -118,7 +114,7 @@ export const ValueBoardSummaryView = (
           />
         </VizItem>
         <VizItem w={1 / 3}>
-          <AvgCycleTime
+          <AvgAge
             currentMeasurement={current}
 
             target={cycleTimeTarget}

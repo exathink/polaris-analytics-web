@@ -292,6 +292,18 @@ export const AvgCycleTime = ({currentMeasurement, previousMeasurement, target, d
   />
 );
 
+export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  <ResponseTime
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'avgCycleTime'}
+    displayName={'Age'}
+    superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
 export const MaxCycleTime = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -311,6 +323,19 @@ export const PercentileCycleTime = ({title, currentMeasurement, previousMeasurem
     previousMeasurement={previousMeasurement}
     metric={'percentileCycleTime'}
     displayName={'Cycle Time'}
+    superScript={percentileToText(targetPercentile)}
+    target={target}
+    deltaThreshold={deltaThreshold}
+  />
+);
+
+export const PercentileAge = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
+  <ResponseTime
+    title={title}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'percentileCycleTime'}
+    displayName={'Age'}
     superScript={percentileToText(targetPercentile)}
     target={target}
     deltaThreshold={deltaThreshold}
