@@ -2,8 +2,11 @@ import React from "react";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 
+
 import {
+  AvgLeadTime,
   AvgCycleTime,
+  AvgEffort,
   AvgDuration,
   AvgLatency,
   Cadence,
@@ -76,7 +79,7 @@ export const PerformanceSummaryView = (
 
           />
           <AvgLatency
-            title={'Delivery Latency '}
+            title={'Time to Deliver '}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -157,7 +160,86 @@ export const ValueBoardSummaryView = (
         </VizItem>
         <VizItem w={1/3}>
           <AvgLatency
-            title={'Delivery Latency'}
+            title={'Time to Deliver'}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+      </VizRow>
+    </div>
+  )
+};
+
+
+export const ResponseTimeDetailView = (
+  {
+
+    cycleMetricsTrends,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    specsOnly,
+
+  }
+) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <div >
+      <VizRow h={"50"}>
+        <VizItem w={1/3}>
+
+          <AvgLeadTime
+            asCard={true}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={2/3}>
+          <AvgCycleTime
+            asCard={true}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+      </VizRow>
+      <VizRow h={"50%"}
+              style={{
+                paddingTop: '20px',
+                borderTop: '1px',
+                borderTopStyle: 'solid',
+                borderTopColor: 'rgba(0,0,0,0.1)'
+              }}>
+
+        <VizItem w={1/3}>
+          <AvgDuration
+            asCard={true}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1/3}>
+          {}
+        </VizItem>
+         <VizItem w={1/3}>
+          <AvgEffort
+            asCard={true}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1/3}>
+          <AvgLatency
+            asCard={true}
+            title={'Time to Deliver'}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -233,7 +315,7 @@ export const ImplementationMetricsCarouselView = (
       </VizItem>
       <VizItem w={0.40}>
         <LatencyCarousel
-          title={'Delivery Latency'}
+          title={'Time to Deliver'}
           currentMeasurement={current}
           previousMeasurement={previous}
           targetPercentile={cycleTimeTargetPercentile}
@@ -326,7 +408,7 @@ export const AllMetricsDisplayView = (
           </VizItem>
           <VizItem w={0.4}>
             <LatencyCarousel
-              title={'Delivery Latency'}
+              title={'Time to Deliver'}
               currentMeasurement={current}
               previousMeasurement={previous}
               targetPercentile={cycleTimeTargetPercentile}
@@ -402,6 +484,18 @@ export const AggregateFlowMetricsView = withViewerContext((
         return (
 
             <ValueBoardSummaryView
+              cycleMetricsTrends={cycleMetricsTrends}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTargetPercentile={leadTimeTargetPercentile}
+              cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+              specsOnly={specsOnly}
+              twoRows={twoRows}
+            />
+        )
+      case 'responseTimeDetail':
+        return (
+            <ResponseTimeDetailView
               cycleMetricsTrends={cycleMetricsTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
