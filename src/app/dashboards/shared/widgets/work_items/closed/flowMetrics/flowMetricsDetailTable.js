@@ -8,6 +8,7 @@ import {injectIntl} from "react-intl";
 import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../../i18n";
 import {toMoment} from "../../../../../../helpers/utility";
+import {joinTeams} from "../../../../helpers/teamUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -30,6 +31,7 @@ function getTransformedData(data, intl) {
       latency: getNumber(item.latency, intl),
       backlogTime: getNumber(projectDeliveryCycleFlowMetricsMeta["backlogTime"].value(item), intl),
       endDate: getDate(item.endDate, intl),
+      teams: joinTeams(item),
     };
   });
 }
@@ -80,10 +82,29 @@ function customColRender(setShowPanel, setWorkItemKey) {
   );
 }
 
-export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey}) {
+function renderTeamsCol(setShowPanel, setWorkItemKey) {
+  return (text, record, searchText) => {
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setShowPanel(true);
+            setWorkItemKey(record.workItemKey);
+          }}
+          style={{cursor: "pointer"}}
+        >
+          {record.teamNodeRefs.length > 1 ? "multiple" : text}
+        </span>
+      )
+    );
+  };
+}
+
+export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
   const renderState = {render: customColRender(setShowPanel, setWorkItemKey)}
+  const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
   const columns = [
     {
       title: "Name",
@@ -106,7 +127,7 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       dataIndex: "workItemType",
       key: "workItemType",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      filters: workItemTypes.map((b) => ({text: b, value: b})),
+      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       width: "5%",
       ...renderState
@@ -118,6 +139,15 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       width: "5%",
       ...renderState
+    },
+    {
+      title: "Team",
+      dataIndex: "teams",
+      key: "teams",
+      filters: filters.teams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
+      width: "5%",
+      ...renderTeamsColState,
     },
     {
       title: "Lead Time",
@@ -192,8 +222,9 @@ export function useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, s
 export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
+  const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
-  const columns = useFlowMetricsDetailTableColumns(workItemTypes, {setShowPanel, setWorkItemKey});
+  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams}, {setShowPanel, setWorkItemKey});
   const dataSource = getTransformedData(tableData, intl);
 
   return (
