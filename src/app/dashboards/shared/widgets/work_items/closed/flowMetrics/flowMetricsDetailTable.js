@@ -93,7 +93,7 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
           }}
           style={{cursor: "pointer"}}
         >
-          {record.teamNodeRefs.length > 1 ? "multiple" : text}
+          {record.teamNodeRefs.length > 1 ? "Multiple" : text}
         </span>
       )
     );
