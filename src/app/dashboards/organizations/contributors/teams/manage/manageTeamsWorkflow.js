@@ -4,9 +4,6 @@ import styles from "./teams.module.css";
 import {UpdateTeamsPage} from "./updateTeamsPage";
 import {SelectTeamMembersPage} from "./selectTeamMembersPage";
 import {teamsReducer} from "./teamsReducer";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
-import {Loading} from "../../../../../components/graphql/loading";
 import {ACTIVE_WITHIN_DAYS} from "../utils";
 
 const {Step} = Steps;
@@ -17,21 +14,8 @@ const initialState = {
   selectedRecords: [],
 };
 
-export function ManageTeamsWorkflow({organizationKey, context, intl}) {
+export function ManageTeamsWorkflow({organizationKey, teamsList, context, intl}) {
   const [state, dispatch] = React.useReducer(teamsReducer, initialState);
-
-  const {loading, error, data} = useQueryOrganizationTeams({
-    organizationKey,
-  });
-
-  if (loading) return <Loading />;
-  if (error) {
-    logGraphQlError("ManageTeamsWorkflow.useQueryOrganizationTeams", error);
-    return null;
-  }
-
-  const edges = data?.["organization"]?.["teams"]?.["edges"] ?? [];
-  const teamsList = edges.map((edge) => edge.node);
 
   const pageComponentProps = {
     organizationKey,
