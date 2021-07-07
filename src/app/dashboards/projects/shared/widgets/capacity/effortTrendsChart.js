@@ -67,7 +67,7 @@ const EffortTrendsWithContributorDetailChart = Chart({
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
         {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'EffortIN', visible: true, type: 'spline', color: '#0f49b1'}
+        {key: 'totalCommitDays', displayName: 'Active Days', visible: true, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
@@ -93,7 +93,7 @@ const EffortTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${showContributorDetail ? 'EffortIN by Contributor ' : 'Effort Throughput'}`
+        text: `${showContributorDetail ? 'Active Days by Contributor ' : 'Effort Throughput'}`
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
@@ -125,14 +125,14 @@ const EffortTrendsWithContributorDetailChart = Chart({
           return tooltipHtml(this.point.series.type === 'column' ? {
               header: `Contributor: ${this.point.measurement.contributorName}<br/>${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Commit Days:`, `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}% )`],
+                [`Active Days:`, `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}% )`],
 
 
               ]
-            } : this.point.series.name === 'EffortIN' ? {
-              header: `EffortIN: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === 'Active Days' ? {
+              header: `Active Days: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`EffortIN: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Active Days: `, `${intl.formatNumber(this.point.y)}`],
                 [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
 
               ]

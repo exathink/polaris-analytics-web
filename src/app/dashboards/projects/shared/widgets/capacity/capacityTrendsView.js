@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlowStatistic, EffortIN} from "../../../../shared/components/flowStatistics/flowStatistics";
+import {FlowStatistic, TotalActiveDays} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../../shared/containers/layout";
 import {EffortTrendsChart} from "./effortTrendsChart";
 
@@ -28,7 +28,7 @@ export const ProjectCapacityTrendsStatsView = (
         />
       </VizItem>
       <VizItem w={0.60}>
-        <EffortIN
+        <TotalActiveDays
           currentMeasurement={current}
           previousMeasurement={previous}
           target={target}
