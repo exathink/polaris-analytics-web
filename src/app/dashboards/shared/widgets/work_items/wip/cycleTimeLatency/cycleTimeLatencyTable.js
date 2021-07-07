@@ -7,8 +7,9 @@ import {url_for_instance} from "../../../../../../framework/navigation/context/h
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrantColor, joinTeams} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
+import {joinTeams} from "../../../../helpers/teamUtils";
 
 const QuadrantColors = {
   green: "#2f9a32",
