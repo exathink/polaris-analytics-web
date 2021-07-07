@@ -19,7 +19,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
         
-        interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost]
+        interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost, TeamNodeRefs]
       ) {
         edges {
           node {
@@ -36,6 +36,11 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             startDate
             endDate
 
+            teamNodeRefs {
+              teamName
+              teamKey
+            }
+            
             leadTime
             cycleTime
             latency
