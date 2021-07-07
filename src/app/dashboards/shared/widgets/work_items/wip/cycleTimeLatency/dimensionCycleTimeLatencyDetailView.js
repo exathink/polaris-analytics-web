@@ -8,9 +8,10 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 import {Button, Drawer} from "antd";
 import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
-import {getQuadrantColor, joinTeams} from "./cycleTimeLatencyUtils";
+import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {joinTeams} from "../../../../helpers/teamUtils";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -90,7 +91,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           cycleTimeTarget,
           latencyTarget,
         }),
-        teams: joinTeams(node)
+        teams: joinTeams(node),
       };
       const newNode = {...node, ...calculatedColumns};
       if (isObjectEmpty(localAppliedFilters)) {
@@ -118,7 +119,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }, [data, dimension]);
 
   // we maintain separate state for table and chart, using single source of truth (initWorkItems)
-  const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(initWorkItems, applyFiltersTest);
+  const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(
+    initWorkItems,
+    applyFiltersTest
+  );
   const [chartFilteredWorkItems] = useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyFiltersTest);
 
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();

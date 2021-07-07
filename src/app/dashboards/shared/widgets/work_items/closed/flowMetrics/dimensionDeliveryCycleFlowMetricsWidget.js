@@ -60,7 +60,8 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       "latency",
       "duration",
       "effort",
-      "authorCount"
+      "authorCount",
+      "teamNodeRefs"
     )
   );
   return (
