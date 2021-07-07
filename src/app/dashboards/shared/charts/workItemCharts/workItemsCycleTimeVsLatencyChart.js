@@ -137,7 +137,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         align: 'left',
       },
       subtitle: {
-        text: `Cycle Time and Latency: ${localNow(intl)} `,
+        text: `Age vs Latency: ${localNow(intl)} `,
         align: 'left',
       },
       xAxis: {
@@ -153,7 +153,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
           },
         },
         title: {
-          text: 'Cycle Time in Days'
+          text: 'Age in Days'
         },
         plotLines: cycleTimeTarget ? [
           {
