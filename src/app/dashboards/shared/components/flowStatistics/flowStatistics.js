@@ -209,7 +209,7 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
 
 export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
   <FlowStatistic
-    title={<span>{'Development Effort'}<sup> {'Avg'} </sup></span>}
+    title={<span>{'Implementation  Effort'}<sup> {'Avg'} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgEffort'}
@@ -261,7 +261,7 @@ export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, sh
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgDuration'}
-    displayName={'Development Time'}
+    displayName={'Implementation Time'}
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
