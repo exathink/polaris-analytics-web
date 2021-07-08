@@ -1,7 +1,7 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
-
+import styles from "./flowMetrics.module.css";
 
 import {
   AvgLeadTime,
@@ -189,65 +189,45 @@ export const ResponseTimeDetailView = (
     return null;
   }
   return (
-    <div >
-      <VizRow h={"50"}>
-        <VizItem w={1/3}>
-
-          <AvgLeadTime
-            asCard={true}
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-          />
-        </VizItem>
-        <VizItem w={2/3}>
-          <AvgCycleTime
-            asCard={true}
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-          />
-        </VizItem>
-      </VizRow>
-      <VizRow h={"50%"}
-              style={{
-                paddingTop: '20px',
-                borderTop: '1px',
-                borderTopStyle: 'solid',
-                borderTopColor: 'rgba(0,0,0,0.1)'
-              }}>
-
-        <VizItem w={1/3}>
-          <AvgDuration
-            asCard={true}
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-          />
-        </VizItem>
-        <VizItem w={1/3}>
-          {}
-        </VizItem>
-         <VizItem w={1/3}>
-          <AvgEffort
-            asCard={true}
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-          />
-        </VizItem>
-        <VizItem w={1/3}>
-          <AvgLatency
-            asCard={true}
-            title={'Time to Deliver'}
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-          />
-        </VizItem>
-      </VizRow>
+    <div className={styles.responseTimeDetailWrapper}>
+      <div className={styles.leadTime}>
+        <AvgLeadTime
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.cycleTime}>
+        <AvgCycleTime
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.implement}>
+        <AvgDuration
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.effort}>
+        <AvgEffort asCard={true} currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+      </div>
+      <div className={styles.deliver}>
+        <AvgLatency
+          asCard={true}
+          title={"Time to Deliver"}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
     </div>
-  )
+  );
 };
 
 export const CycleMetricsCarouselView = (
