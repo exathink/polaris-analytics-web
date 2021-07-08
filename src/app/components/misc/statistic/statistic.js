@@ -39,7 +39,7 @@ export const TrendIndicatorNew = ({firstValue, secondValue, good, deltaThreshold
 
     return (
       <div className={delta > 0 ? "positiveIndicator" : "negativeIndicator"}>
-        {icon} <span>{delta.toFixed(2)}%</span>
+        {icon} <span>{Math.abs(delta.toFixed(2))}%</span>
       </div>
     );
   }
