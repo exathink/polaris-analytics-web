@@ -83,7 +83,7 @@ function TrendsDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="49%" >
+      <DashboardRow h="46%" title={"7 Day Detail"}>
         <DashboardWidget
           w={1}
           name="cycle-time"
