@@ -9,7 +9,7 @@ import {
 } from "../../shared/widgets/work_items/trends/responseTime";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "../../projects/flow/dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 
@@ -36,19 +36,20 @@ function TrendsDashboard({
     cycleTimeConfidenceTarget,
     responseTimeConfidenceTarget,
     trendsAnalysisPeriod,
+    wipAnalysisPeriod,
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
+  const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
-        h="60%"
+        h="45%"
         controls={[
           () => (
             <div style={{minWidth: "500px"}}>
-              <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={ONE_YEAR} />
+              <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
             </div>
           ),
         ]}
@@ -82,7 +83,7 @@ function TrendsDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="40%" >
+      <DashboardRow h="49%" >
         <DashboardWidget
           w={1}
           name="cycle-time"
