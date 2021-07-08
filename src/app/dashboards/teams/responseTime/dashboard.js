@@ -20,12 +20,14 @@ const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 const dashboard = ({viewerContext}) => (
   <TeamDashboard
     pollInterval={1000 * 60}
-    render={(props) => <TrendsDashboard {...props} viewerContext={viewerContext} />}
+    render={({team, ...rest}) => <DimensionResponseTimeDashboard dimension={'team'} dimensionData={team} {...rest} viewerContext={viewerContext} />}
   />
 );
 
-function TrendsDashboard({
-  team: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
+
+function DimensionResponseTimeDashboard({
+  dimension,
+  dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
   viewerContext,
 }) {
