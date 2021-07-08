@@ -56,9 +56,8 @@ function TrendsDashboard({
         <DashboardWidget
           w={1}
           name="flow-metrics"
-          className={styles.closed}
           title={`Response Time`}
-          subtitle={`Last ${trendsAnalysisPeriod} Days`}
+          subtitle={`Last ${daysRange} Days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
             <DimensionFlowMetricsWidget
@@ -71,7 +70,7 @@ function TrendsDashboard({
               specsOnly={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
-              measurementWindow={30}
+              measurementWindow={daysRange}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -91,7 +90,7 @@ function TrendsDashboard({
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={7}
               days={daysRange}
               samplingFrequency={7}
               leadTimeTarget={leadTimeTarget}
