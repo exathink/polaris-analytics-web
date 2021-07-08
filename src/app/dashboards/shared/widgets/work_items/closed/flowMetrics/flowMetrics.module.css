@@ -4,9 +4,9 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: "leadTime . . ."
-    "leadTime cycleTime . ."
-    "leadTime cycleTime . ."
     "leadTime cycleTime implement ."
+    "leadTime cycleTime implement ."
+    "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver";
     gap: 0.5rem;
     /* align-items: flex-end; */
