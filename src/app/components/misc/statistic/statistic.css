@@ -39,11 +39,16 @@
     padding-right: 0.5rem;
   }
   
-  .negativeIndicator {
-    background-color: rgba(250, 209, 229, 1);
-    font-weight: 500;
-    color: rgba(95, 6, 70, 1);
-    border-radius: 1.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
+.negativeIndicator {
+background-color: rgba(250, 209, 229, 1);
+font-weight: 500;
+color: rgba(95, 6, 70, 1);
+border-radius: 1.5rem;
+padding-left: 0.5rem;
+padding-right: 0.5rem;
+}
+
+.comparisonWindow {
+    font-size:1vh
+}
+

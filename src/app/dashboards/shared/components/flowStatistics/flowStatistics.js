@@ -73,9 +73,11 @@ export const FlowStatistic = ({
           secondValue={comp}
           good={good}
           deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+          measurementWindow={currentMeasurement.measurementWindow}
         />
       }
       info={info}
+
     />
   ) : (
     <Statistic
@@ -114,7 +116,7 @@ export const ResponseTime = ({title, info, asCard, currentMeasurement, previousM
 );
 
 
-export const Volume = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => (
+export const Volume = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => (
   <FlowStatistic
     title={title || "Volume"}
     currentMeasurement={currentMeasurement}
@@ -124,6 +126,7 @@ export const Volume = ({title, currentMeasurement, previousMeasurement, target, 
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
+    measurementWindow={measurementWindow}
   />
 );
 

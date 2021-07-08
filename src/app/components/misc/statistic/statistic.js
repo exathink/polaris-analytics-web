@@ -24,7 +24,13 @@ export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=Tr
 TrendIndicator.isPositive = (delta) => delta > 0;
 TrendIndicator.isNegative = (delta) => delta < 0;
 
-export const TrendIndicatorNew = ({firstValue, secondValue, good, deltaThreshold = TrendIndicatorDisplayThreshold}) => {
+export const TrendIndicatorNew = ({
+  firstValue,
+  secondValue,
+  good,
+  deltaThreshold = TrendIndicatorDisplayThreshold,
+  measurementWindow,
+}) => {
   function getTrendIndicator(delta) {
     const icon =
       delta > 0 ? (
@@ -38,8 +44,11 @@ export const TrendIndicatorNew = ({firstValue, secondValue, good, deltaThreshold
       );
 
     return (
-      <div className={delta > 0 ? "positiveIndicator" : "negativeIndicator"}>
-        {icon} <span>{Math.abs(delta.toFixed(2))}%</span>
+      <div>
+        <div className={delta > 0 ? "positiveIndicator" : "negativeIndicator"}>
+          {icon} <span>{Math.abs(delta.toFixed(2))}%</span>
+        </div>
+        <div><span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span></div>
       </div>
     );
   }
