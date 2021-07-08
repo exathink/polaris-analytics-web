@@ -44,7 +44,7 @@ function TrendsDashboard({
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
-        h="30%"
+        h="60%"
         controls={[
           () => (
             <div style={{minWidth: "500px"}}>
@@ -82,7 +82,7 @@ function TrendsDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="60%" >
+      <DashboardRow h="40%" >
         <DashboardWidget
           w={1}
           name="cycle-time"
