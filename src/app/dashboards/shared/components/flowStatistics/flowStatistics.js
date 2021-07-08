@@ -3,6 +3,7 @@ import {
   Statistic,
   TrendIndicator,
   TrendIndicatorDisplayThreshold,
+  TrendIndicatorNew,
 } from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
@@ -10,6 +11,7 @@ import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
 
 import {Card} from "antd";
 import {InfoCard} from "../../../../components/misc/info";
+import {TrendCard} from "../cards/trendCard";
 
 const colors = {
   good: "#338807",
@@ -39,28 +41,42 @@ export const FlowStatistic = ({
 
   const renderedValue = valueRender(value);
   return asCard ? (
-    <Card
-      title={title}
-      size={"small"}
-      hoverable
-      bordered
-      extra={<InfoCard title={title} content={info.headline} drawerContent={info.drawerContent} />}
-    >
-      <Statistic
-        value={renderedValue != null ? renderedValue : "N/A"}
-        precision={precision || 0}
-        valueStyle={{color: color}}
-        prefix={
-          <TrendIndicator
-            firstValue={value}
-            secondValue={comp}
-            good={good}
-            deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
-          />
-        }
-        suffix={value ? uom : ""}
-      />
-    </Card>
+    // <Card
+    //   title={title}
+    //   size={"small"}
+    //   hoverable
+    //   bordered
+    //   extra={<InfoCard title={title} content={info.headline} drawerContent={info.drawerContent} />}
+    // >
+    //   <Statistic
+    //     value={renderedValue != null ? renderedValue : "N/A"}
+    //     precision={precision || 0}
+    //     valueStyle={{color: color}}
+    //     prefix={
+    //       <TrendIndicator
+    //         firstValue={value}
+    //         secondValue={comp}
+    //         good={good}
+    //         deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+    //       />
+    //     }
+    //     suffix={value ? uom : ""}
+    //   />
+    // </Card>
+    <TrendCard
+      metricTitle={title}
+      metricValue={renderedValue != null ? renderedValue.toFixed(2) : "N/A"}
+      suffix={value ? uom : ""}
+      trendIndicator={
+        <TrendIndicatorNew
+          firstValue={value}
+          secondValue={comp}
+          good={good}
+          deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+        />
+      }
+      info={info}
+    />
   ) : (
     <Statistic
       title={title}
