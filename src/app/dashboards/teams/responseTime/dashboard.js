@@ -51,13 +51,13 @@ function TrendsDashboard({
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
             </div>
-          ),
+          )
         ]}
       >
         <DashboardWidget
           w={1}
           name="flow-metrics"
-          title={`Response Time`}
+          title={`Spec Response Time`}
           subtitle={`Last ${daysRange} Days`}
           hideTitlesInDetailView={true}
           render={({view}) => (

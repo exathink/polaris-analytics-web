@@ -8,7 +8,7 @@ import Wip from './wip/topic';
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
-import Trends from "./trends/topic";
+import Trends from "./responseTime/topic";
 
 
 const messages = {

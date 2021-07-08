@@ -22,6 +22,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.trends' defaultMessage="Trends"/>),
     icon: 'ion-arrow-graph-up-right'
   },
+  responseTime: {
+    name: 'responseTime',
+    display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time"/>),
+    icon: 'ion-arrow-return-left'
+  },
   value: {
     name: 'value',
     display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
