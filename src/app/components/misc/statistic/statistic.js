@@ -31,31 +31,39 @@ export const TrendIndicatorNew = ({
   deltaThreshold = TrendIndicatorDisplayThreshold,
   measurementWindow,
 }) => {
-  function getTrendIndicator(delta) {
+  function getTrendIndicator(delta, good) {
+    const absDelta = Math.abs(delta);
+    const style = good(delta) ? "good" : "bad";
     const icon =
       delta > 0 ? (
-        <span style={{color: "green"}}>
+        <span className={`${style}IndicatorArrow`}>
           <ArrowUpOutlined size="small" />
         </span>
       ) : (
-        <span style={{color: "red"}}>
+        <span className={`${style}IndicatorArrow`}>
           <ArrowDownOutlined />
         </span>
       );
 
     return (
-      <div>
-        <div className={delta > 0 ? "positiveIndicator" : "negativeIndicator"}>
-          {icon} <span>{Math.abs(delta.toFixed(2))}%</span>
+      // show indicator only if absDelta greater than the indicator display threshold
+      absDelta > deltaThreshold && (
+        <div>
+          <div className={`${style}Indicator`}>
+            {icon} <span>{absDelta.toFixed(2)}%</span>
+          </div>
+          <div>
+            <span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span>
+          </div>
         </div>
-        <div><span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span></div>
-      </div>
+      )
     );
   }
 
-  if (firstValue && secondValue) {
+  if (good && firstValue && secondValue) {
     const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
-    return Math.abs(delta) > deltaThreshold && getTrendIndicator(delta);
+
+    return getTrendIndicator(delta, good);
   } else {
     return null;
   }
