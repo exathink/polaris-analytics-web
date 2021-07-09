@@ -4,8 +4,6 @@
     grid-template-areas: "leadTime . . ."
     "leadTime cycleTime implement ."
     "leadTime cycleTime implement ."
-    "leadTime cycleTime implement deliver"
-    "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver";
     gap: 0.5rem;
