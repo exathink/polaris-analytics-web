@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./trendCard.module.css";
 import {InfoCard} from "../../../../components/misc/info";
+import classNames from "classnames";
 
-export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, info}) {
+export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, info, selected = false}) {
+  const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: selected}, styles.trendCardWrapper);
   return (
-    <div className={styles.trendCardWrapper}>
+    <div className={selectedTrendCardClasses}>
       <div className={styles.metricTitle}>{metricTitle}</div>
       <div className={styles.infoIcon}>
         <InfoCard title={metricTitle} content={info.headline} drawerContent={info.drawerContent} />

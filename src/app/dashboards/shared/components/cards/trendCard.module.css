@@ -46,3 +46,10 @@
   grid-area: infoIcon;
   justify-self: flex-end;
 }
+
+.selectedTrendCard{
+  border: 1px solid skyblue;
+  border-left: 8px solid;
+  border-left-color: skyblue;
+  background-color: rgba(240, 249, 255, 1);
+}
