@@ -8,9 +8,6 @@ import {
 import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
 import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
-
-import {Card} from "antd";
-import {InfoCard} from "../../../../components/misc/info";
 import {TrendCard} from "../cards/trendCard";
 
 const colors = {
