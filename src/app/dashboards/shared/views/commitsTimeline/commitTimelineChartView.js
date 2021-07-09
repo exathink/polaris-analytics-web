@@ -2,7 +2,8 @@ import React from 'react';
 import {CommitsTimelineChart, CommitsTimelineTable} from "./index";
 import Commits from "../../../commits/context";
 import {Box, Flex} from 'reflexbox';
-import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
+import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart';
+import {CommitsTimelinePackedBubbleChart} from "./commitsTimelinePackedBubbleChart";
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
@@ -230,7 +231,7 @@ class _CommitsTimelineChartView extends React.Component {
     } = this.props;
 
     return (
-      <CommitsTimelineChart
+      <CommitsTimelinePackedBubbleChart
         model={model}
         context={context}
         instanceKey={instanceKey}
