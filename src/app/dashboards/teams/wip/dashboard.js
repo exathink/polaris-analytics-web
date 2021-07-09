@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {TeamDashboard} from "../teamDashboard";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import styles from "../../projects/wip/dashboard.module.css";
+import styles from "./dashboard.module.css";
 import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
@@ -47,17 +47,44 @@ function WipDashboard({
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h="15%">
-
+        <DashboardWidget
+          name="flow-metrics"
+          title={"Throughput"}
+          w={0.375}
+          className={styles.flowMetrics}
+          subtitle={`Last ${wipAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"team"}
+              instanceKey={key}
+              view={view}
+              display={"throughputSummary"}
+              context={context}
+              specsOnly={specsOnly}
+              days={wipAnalysisPeriod}
+              measurementWindow={wipAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={false}
+        />
         <DashboardWidget
           name="pipeline"
-          w={1/2}
+          w={0.25}
+          className={styles.pipeline}
           title={"Work In Progress"}
-          videoConfig={DimensionWipFlowMetricsWidget.videoConfig}
+
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={'team'}
               instanceKey={key}
-              display={"flowboardSummary"}
+              display={"teamWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={wipAnalysisPeriod}
@@ -72,13 +99,15 @@ function WipDashboard({
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={true}
+          showDetail={false}
           hideTitlesInDetailView={true}
         />
+
         <DashboardWidget
           name="flow-metrics"
-          title={"Flow Metrics"}
-          w={1/2}
+          title={"Spec Response Time"}
+          w={0.375}
+          className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
@@ -86,7 +115,7 @@ function WipDashboard({
               dimension={"team"}
               instanceKey={key}
               view={view}
-              display={"performanceSummary"}
+              display={"responseTimeSummary"}
               context={context}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
@@ -99,15 +128,15 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="30%" title={"Latency & Delays"}>
+      <DashboardRow h="30%" title={"Latency"}>
         <DashboardWidget
           name="engineering"
           w={1/3}
           className={styles.engineering}
-          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
+
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={'team'}
@@ -152,7 +181,6 @@ function WipDashboard({
         <DashboardWidget
           name="delivery"
           w={1/3}
-          videoConfig={DimensionPipelineCycleTimeLatencyWidget.videoConfig}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={'team'}
@@ -191,9 +219,9 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               headerMetric={HeaderMetrics.latestCommit}
-              groupBy={'author'}
+              groupBy={'workItem'}
               groupings={
-                  ["author", "workItem",  "repository", "branch"]
+                  ["workItem", "author",   "repository", "branch"]
               }
               showHeader
               showTable
