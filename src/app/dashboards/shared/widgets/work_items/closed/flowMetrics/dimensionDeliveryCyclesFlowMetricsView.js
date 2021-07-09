@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "../../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {Checkbox, Drawer} from "antd";
+import {Drawer, Select} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
-
+const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
@@ -34,21 +34,35 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     initialMetric && setSelectedMetric(initialMetric);
   }, [initialMetric]);
 
+  function selectMetricDropdown() {
+    const optionElements = groupings.map((grouping, index) => (
+      <Option key={grouping} value={index}>
+        {projectDeliveryCycleFlowMetricsMeta[grouping].display}
+      </Option>
+    ));
+
+    function handleDropdownChange(index) {
+      const selectedMetric = groupings[index];
+      setSelectedMetric(selectedMetric);
+    }
+
+    return (
+      <Select
+        defaultValue={2}
+        style={{width: 170}}
+        onChange={handleDropdownChange}
+        getPopupContainer={(node) => node.parentNode}
+        data-testid="groupings-select"
+      >
+        {optionElements}
+      </Select>
+    );
+  }
+
   return (
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
-        {yAxisScale !== "table" && (
-          <GroupingSelector
-            label={"Metric"}
-            groupings={groupings.map((grouping) => ({
-              key: grouping,
-              display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
-            }))}
-            initialValue={selectedMetric}
-            value={selectedMetric}
-            onGroupingChanged={setSelectedMetric}
-          />
-        )}
+        {yAxisScale !== "table" && selectMetricDropdown()}
         {!defectsOnly && (
           <GroupingSelector
             label={"View"}
