@@ -23,7 +23,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
     : ["leadTime", "cycleTime", "backlogTime"];
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || "leadTime");
-  const [showEpics, setShowEpics] = useState(false);
 
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
   
@@ -101,7 +100,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           targetConfidence={targetConfidence}
           defectsOnly={defectsOnly}
           specsOnly={specsOnly}
-          showEpics={showEpics}
           yAxisScale={yAxisScale}
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
