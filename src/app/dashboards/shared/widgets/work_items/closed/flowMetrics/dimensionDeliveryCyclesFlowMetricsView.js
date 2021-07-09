@@ -20,7 +20,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   setYAxisScale
 }) => {
   const groupings = specsOnly
-    ? ["leadTime", "cycleTime", "latency", "duration", "effort", "authors", "backlogTime"]
+    ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
     : ["leadTime", "cycleTime", "backlogTime"];
   const [selectedMetric, setSelectedMetric] = useState(initialMetric || "leadTime");
   const [showEpics, setShowEpics] = useState(false);
