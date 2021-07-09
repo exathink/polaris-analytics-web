@@ -54,6 +54,37 @@ const FlowBoardSummaryView = ({
   );
 };
 
+const TeamWipBoardSummaryView = ({
+  pipelineCycleMetrics,
+  specsOnly,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  wipLimit,
+  viewerContext,
+}) => {
+  return (
+    <div className={styles.boxWrapper}>
+
+      <div>
+        <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
+      </div>
+        <div>
+        <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
+      </div>
+      <div>
+        <PercentileAge
+          currentMeasurement={pipelineCycleMetrics}
+          targetPercentile={cycleTimeTargetPercentile}
+          target={cycleTimeTarget}
+        />
+      </div>
+    </div>
+  );
+};
+
 const NonFlowBoard20View = (
   {
     pipelineCycleMetrics,
@@ -178,6 +209,23 @@ const PipelineSummaryView = withViewerContext((
     case 'flowboardSummary':
       return (
         <FlowBoardSummaryView
+          {
+            ...{
+              pipelineCycleMetrics,
+              specsOnly,
+              targetPercentile,
+              leadTimeTargetPercentile,
+              cycleTimeTargetPercentile,
+              leadTimeTarget,
+              cycleTimeTarget,
+              wipLimit,
+              viewerContext
+            }
+          }/>
+      )
+    case 'teamWipSummary':
+      return (
+        <TeamWipBoardSummaryView
           {
             ...{
               pipelineCycleMetrics,
