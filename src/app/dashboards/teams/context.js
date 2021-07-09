@@ -8,7 +8,7 @@ import Wip from './wip/topic';
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
-import Trends from "./responseTime/topic";
+import ResponseTime from "./responseTime/topic";
 
 
 const messages = {
@@ -36,8 +36,8 @@ const context : Context = {
           },
           {
 
-            match: 'trends',
-            topic: Trends
+            match: 'response-time',
+            topic: ResponseTime
           },
           {
             match: '',
