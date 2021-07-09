@@ -25,6 +25,13 @@ const dashboard = ({viewerContext}) => (
   />
 );
 
+const metricMapping = {
+  avgCycleTime: "cycleTime",
+  avgLeadTime: "leadTime",
+  avgDuration: "duration",
+  avgEffort: "effort",
+  avgLatency: "latency"
+};
 
 function DimensionResponseTimeDashboard({
   dimension,
@@ -44,6 +51,8 @@ function DimensionResponseTimeDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const selectedMetricState = React.useState("avgCycleTime");
+  const [selectedMetric] = selectedMetricState;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -82,6 +91,7 @@ function DimensionResponseTimeDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              selectedMetricState={selectedMetricState}
             />
           )}
           showDetail={false}
@@ -127,7 +137,7 @@ function DimensionResponseTimeDashboard({
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
-              initialMetric={'cycleTime'}
+              initialMetric={metricMapping[selectedMetric]}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}

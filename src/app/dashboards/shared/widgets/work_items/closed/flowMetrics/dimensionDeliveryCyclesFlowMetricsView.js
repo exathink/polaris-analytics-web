@@ -49,6 +49,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     return (
       <Select
         defaultValue={2}
+        value={groupings.indexOf(selectedMetric)}
         style={{width: 170}}
         onChange={handleDropdownChange}
         getPopupContainer={(node) => node.parentNode}

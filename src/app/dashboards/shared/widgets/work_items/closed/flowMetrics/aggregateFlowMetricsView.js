@@ -181,7 +181,7 @@ export const ResponseTimeDetailView = (
     leadTimeTarget,
     cycleTimeTarget,
     specsOnly,
-
+    selectedMetricState
   }
 ) => {
   const [current, previous] = cycleMetricsTrends;
@@ -196,6 +196,7 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
+          selectedMetricState={selectedMetricState}
         />
       </div>
       <div className={styles.cycleTime}>
@@ -204,6 +205,7 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
+          selectedMetricState={selectedMetricState}
         />
       </div>
       <div className={styles.implement}>
@@ -212,10 +214,17 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
+          selectedMetricState={selectedMetricState}
         />
       </div>
       <div className={styles.effort}>
-        <AvgEffort asCard={true} currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+        <AvgEffort
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+          selectedMetricState={selectedMetricState}
+        />
       </div>
       <div className={styles.deliver}>
         <AvgLatency
@@ -224,6 +233,7 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
+          selectedMetricState={selectedMetricState}
         />
       </div>
     </div>
@@ -409,7 +419,8 @@ export const AggregateFlowMetricsView = withViewerContext((
     cycleTimeTarget,
     specsOnly,
     display,
-    twoRows
+    twoRows,
+    selectedMetricState
   }
   ) => {
 
@@ -483,6 +494,7 @@ export const AggregateFlowMetricsView = withViewerContext((
               cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               specsOnly={specsOnly}
               twoRows={twoRows}
+              selectedMetricState={selectedMetricState}
             />
         )
       case 'all':
