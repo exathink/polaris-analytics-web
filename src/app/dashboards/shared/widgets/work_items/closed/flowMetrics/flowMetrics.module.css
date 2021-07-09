@@ -1,11 +1,11 @@
 .responseTimeDetailWrapper{
     display: grid;
     height: 93%;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: "leadTime . . ."
     "leadTime cycleTime implement ."
     "leadTime cycleTime implement ."
+    "leadTime cycleTime implement deliver"
+    "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver";
     gap: 0.5rem;
