@@ -34,7 +34,12 @@ export const Colors = {
   DefectRate: {
     arrival: "#ea9c9c",
     close: "#64de95"
+  },
+  Traceability: {
+    traceable: "#4ff307",
+    untraceable: "#383535"
   }
+
 };
 
 
