@@ -216,8 +216,13 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
   />
 );
 
-export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold, selectedMetricState}) => (
-  <FlowStatistic
+export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgEffort")};
+  }
+
+  return <FlowStatistic
     title={<span>{'Implementation  Effort'}<sup> {'Avg'} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -229,14 +234,13 @@ export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good
     deltaThreshold={deltaThreshold}
     target={target}
     asCard={asCard}
-    selectedMetric={selectedMetricState[0]}
-    setSelectedMetric={() => selectedMetricState[1]("avgEffort")}
+    {...selectedMetricStateProps}
     info={{
       headline: "The average elapsed time a card spent in implementation and delivery.",
       drawerContent: <div><p>Some content</p></div>
     }}
   />
-);
+}
 
 export const PercentileEffort = ({currentMeasurement, previousMeasurement, good, target, targetPercentile, deltaThreshold}) => (
   <FlowStatistic
@@ -267,8 +271,13 @@ export const MaxEffort = ({currentMeasurement, previousMeasurement, good, target
   />
 );
 
-export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => (
-  <ResponseTime
+export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgDuration")};
+  }
+
+  return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgDuration'}
@@ -277,14 +286,13 @@ export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, sh
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    selectedMetric={selectedMetricState[0]}
-    setSelectedMetric={() => selectedMetricState[1]("avgDuration")}
+    {...selectedMetricStateProps}
     info={{
       headline: "The elapsed time from the earliest commit to the latest commit.",
       drawerContent: <div><p>Some content</p></div>
     }}
   />
-);
+}
 
 
 export const PercentileDuration = ({currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
@@ -311,8 +319,13 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => (
-  <ResponseTime
+export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgLatency")};
+  }
+
+  return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgLatency'}
@@ -321,14 +334,13 @@ export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasureme
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    selectedMetric={selectedMetricState[0]}
-    setSelectedMetric={() => selectedMetricState[1]("avgLatency")}
+    {...selectedMetricStateProps}
     info={{
       headline: "The elapsed time from the latest commit till the time the card was closed.",
       drawerContent: <div><p>Some content</p></div>
     }}
   />
-);
+}
 
 
 export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
@@ -368,8 +380,13 @@ export const MinCycleTime = ({currentMeasurement, previousMeasurement, target, d
 );
 
 
-export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => (
-  <ResponseTime
+export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgCycleTime")};
+  }
+
+  return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgCycleTime'}
@@ -378,14 +395,13 @@ export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, t
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    selectedMetric={selectedMetricState[0]}
-    setSelectedMetric={() => selectedMetricState[1]("avgCycleTime")}
+    {...selectedMetricStateProps}
     info={{
       headline: "The average elapsed time a card spent in implementation and delivery.",
       drawerContent: <div><p>Some content</p></div>
     }}
   />
-);
+}
 
 export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ResponseTime
@@ -437,8 +453,13 @@ export const PercentileAge = ({title, currentMeasurement, previousMeasurement, t
   />
 );
 
-export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => (
-  <ResponseTime
+export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgLeadTime")};
+  }
+
+  return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgLeadTime'}
@@ -447,14 +468,13 @@ export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, ta
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    selectedMetric={selectedMetricState[0]}
-    setSelectedMetric={() => selectedMetricState[1]("avgLeadTime")}
+    {...selectedMetricStateProps}
     info={{
       headline: "The average elapsed time since a card was created to the time the card was closed.",
       drawerContent: <div><p>Some content</p></div>
     }}
   />
-);
+}
 
 export const MaxLeadTime = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ResponseTime
