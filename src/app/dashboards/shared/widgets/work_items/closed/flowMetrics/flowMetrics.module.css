@@ -1,0 +1,36 @@
+.responseTimeDetailWrapper{
+    display: grid;
+    height: 93%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "leadTime . . ."
+    "leadTime cycleTime implement ."
+    "leadTime cycleTime implement ."
+    "leadTime cycleTime effort deliver"
+    "leadTime cycleTime effort deliver";
+    gap: 0.5rem;
+    /* align-items: flex-end; */
+}
+
+.leadTime{
+    height: 100%;
+    grid-area: leadTime;
+}
+
+.cycleTime{
+    height: 100%;
+    grid-area: cycleTime;
+}
+
+.implement{
+    grid-area: implement;
+}
+
+.effort{
+    grid-area: effort;
+}
+
+.deliver{
+    height: 100%;
+    grid-area: deliver;
+}

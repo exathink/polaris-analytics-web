@@ -29,3 +29,34 @@
 .viz-item .ant-statistic {
     padding: 0px;
 }
+
+.goodIndicator {
+    background-color: rgba(209, 250, 229, 1);
+    font-weight: 500;
+    color: rgba(6, 95, 70, 1);
+    border-radius: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.goodIndicatorArrow {
+    color: rgba(6, 95, 70, 1);
+}
+
+.badIndicator {
+    background-color: rgba(250, 209, 229, 1);
+    font-weight: 500;
+    color: rgba(95, 6, 70, 1);
+    border-radius: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.badIndicatorArrow {
+    color: rgba(95, 6, 70, 1);
+}
+
+.comparisonWindow {
+    font-size: 1vh
+}
+

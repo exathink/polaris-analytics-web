@@ -50,11 +50,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           />
         )}
         {!defectsOnly && (
-          <Checkbox checked={showEpics} onChange={(e) => setShowEpics(e.target.checked)}>
-            Show Epics
-          </Checkbox>
-        )}
-        {!defectsOnly && (
           <GroupingSelector
             label={"View"}
             value={yAxisScale}

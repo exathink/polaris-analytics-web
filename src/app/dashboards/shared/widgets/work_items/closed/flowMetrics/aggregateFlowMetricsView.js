@@ -1,9 +1,12 @@
 import React from "react";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
+import styles from "./flowMetrics.module.css";
 
 import {
+  AvgLeadTime,
   AvgCycleTime,
+  AvgEffort,
   AvgDuration,
   AvgLatency,
   Cadence,
@@ -76,7 +79,7 @@ export const PerformanceSummaryView = (
 
           />
           <AvgLatency
-            title={'Delivery Latency '}
+            title={'Time to Deliver '}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -157,7 +160,7 @@ export const ValueBoardSummaryView = (
         </VizItem>
         <VizItem w={1/3}>
           <AvgLatency
-            title={'Delivery Latency'}
+            title={'Time to Deliver'}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -166,6 +169,65 @@ export const ValueBoardSummaryView = (
       </VizRow>
     </div>
   )
+};
+
+
+export const ResponseTimeDetailView = (
+  {
+
+    cycleMetricsTrends,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    specsOnly,
+
+  }
+) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <div className={styles.responseTimeDetailWrapper}>
+      <div className={styles.leadTime}>
+        <AvgLeadTime
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.cycleTime}>
+        <AvgCycleTime
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.implement}>
+        <AvgDuration
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.effort}>
+        <AvgEffort asCard={true} currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+      </div>
+      <div className={styles.deliver}>
+        <AvgLatency
+          asCard={true}
+          title={"Time to Deliver"}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+    </div>
+  );
 };
 
 export const CycleMetricsCarouselView = (
@@ -233,7 +295,7 @@ export const ImplementationMetricsCarouselView = (
       </VizItem>
       <VizItem w={0.40}>
         <LatencyCarousel
-          title={'Delivery Latency'}
+          title={'Time to Deliver'}
           currentMeasurement={current}
           previousMeasurement={previous}
           targetPercentile={cycleTimeTargetPercentile}
@@ -326,7 +388,7 @@ export const AllMetricsDisplayView = (
           </VizItem>
           <VizItem w={0.4}>
             <LatencyCarousel
-              title={'Delivery Latency'}
+              title={'Time to Deliver'}
               currentMeasurement={current}
               previousMeasurement={previous}
               targetPercentile={cycleTimeTargetPercentile}
@@ -402,6 +464,18 @@ export const AggregateFlowMetricsView = withViewerContext((
         return (
 
             <ValueBoardSummaryView
+              cycleMetricsTrends={cycleMetricsTrends}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTargetPercentile={leadTimeTargetPercentile}
+              cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+              specsOnly={specsOnly}
+              twoRows={twoRows}
+            />
+        )
+      case 'responseTimeDetail':
+        return (
+            <ResponseTimeDetailView
               cycleMetricsTrends={cycleMetricsTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}

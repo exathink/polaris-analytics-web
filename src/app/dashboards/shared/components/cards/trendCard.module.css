@@ -1,0 +1,49 @@
+.trendCardWrapper {
+    --trend-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:  var(--trend-shadow);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(209, 213, 219, 1);
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-template-areas:
+    "metricTitle infoIcon"
+    "metricValue indicator";
+  padding: 1rem;
+  height: 100%;
+}
+
+.metricTitle {
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.025em;
+  font-size: 1rem;
+  grid-area: metricTitle;
+}
+
+.indicator {
+  grid-area: indicator;
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+
+
+
+.unitOfMesurement {
+  font-size: 0.85rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+.metricValue {
+  grid-area: metricValue;
+  color: rgba(75, 85, 99, 1);
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  align-self: flex-end;
+}
+
+.infoIcon {
+  grid-area: infoIcon;
+  justify-self: flex-end;
+}
