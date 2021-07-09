@@ -1,7 +1,7 @@
 .responseTimeDashboard{
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 6% 43% 50%;
+    grid-template-columns: 49.5% 49.5%;
+    grid-template-rows: auto auto 50%;
     grid-template-areas: "rangeSlider rangeSlider"
     "responseTimeDetail responseTimeDetail"
     "responseTimeTrends flowMetricsScatter";
