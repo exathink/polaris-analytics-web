@@ -47,16 +47,18 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     }
 
     return (
-      <Select
-        defaultValue={2}
-        value={groupings.indexOf(selectedMetric)}
-        style={{width: 170}}
-        onChange={handleDropdownChange}
-        getPopupContainer={(node) => node.parentNode}
-        data-testid="groupings-select"
-      >
-        {optionElements}
-      </Select>
+      <div style={{marginBottom: "5px"}}>
+        <Select
+          defaultValue={2}
+          value={groupings.indexOf(selectedMetric)}
+          style={{width: 170}}
+          onChange={handleDropdownChange}
+          getPopupContainer={(node) => node.parentNode}
+          data-testid="groupings-select"
+        >
+          {optionElements}
+        </Select>
+      </div>
     );
   }
 
@@ -65,26 +67,28 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       <Flex w={0.95} justify={"space-between"}>
         {yAxisScale !== "table" && selectMetricDropdown()}
         {!defectsOnly && (
-          <GroupingSelector
-            label={"View"}
-            value={yAxisScale}
-            groupings={[
-              {
-                key: "logarithmic",
-                display: "Normal",
-              },
-              {
-                key: "linear",
-                display: "Outlier",
-              },
-              {
-                key: "table",
-                display: "Data",
-              },
-            ]}
-            initialValue={"logarithmic"}
-            onGroupingChanged={setYAxisScale}
-          />
+          <div style={{marginLeft: "auto"}}>
+            <GroupingSelector
+              label={"View"}
+              value={yAxisScale}
+              groupings={[
+                {
+                  key: "logarithmic",
+                  display: "Normal",
+                },
+                {
+                  key: "linear",
+                  display: "Outlier",
+                },
+                {
+                  key: "table",
+                  display: "Data",
+                },
+              ]}
+              initialValue={"logarithmic"}
+              onGroupingChanged={setYAxisScale}
+            />
+          </div>
         )}
       </Flex>
       {yAxisScale !== "table" ? (
