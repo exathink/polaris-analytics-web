@@ -13,11 +13,13 @@ export const InfoDrawer = ({title, content}) => {
   };
 
   return (
-    <>
-      <a onClick={showDrawer}>More..</a>
+    <div>
+      <a href={"/"} onClick={showDrawer}>
+        More..
+      </a>
       <Drawer title={title} placement="right" closable={false} onClose={onClose} visible={visible}>
         {content}
       </Drawer>
-    </>
+    </div>
   );
 };
