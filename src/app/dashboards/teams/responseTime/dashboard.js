@@ -14,7 +14,9 @@ const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 const dashboard = ({viewerContext}) => (
   <TeamDashboard
     pollInterval={1000 * 60}
-    render={({team, ...rest}) => <DimensionResponseTimeDashboard dimension={'team'} dimensionData={team} {...rest} viewerContext={viewerContext} />}
+    render={({team, ...rest}) => (
+      <DimensionResponseTimeDashboard dimension={"team"} dimensionData={team} {...rest} viewerContext={viewerContext} />
+    )}
   />
 );
 
@@ -56,15 +58,14 @@ function DimensionResponseTimeDashboard({
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
             </div>
-          )
+          ),
         ]}
       >
         <DashboardWidget
           name="flow-metrics"
           title={`Spec Response Time`}
-          subtitle={`Last ${daysRange} Days`}
           hideTitlesInDetailView={true}
-          className={styles.responseTimeDetail}
+          className={styles.responseTimeMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={"team"}
@@ -88,12 +89,13 @@ function DimensionResponseTimeDashboard({
           )}
           showDetail={false}
         />
-      </DashboardRow>
-      <DashboardRow h="46%" >
+      </DashboardRow >
+      <DashboardRow
+        h="46%"
+      >
         <DashboardWidget
           name="cycle-time"
-          subtitle={"7 Day Detail"}
-          className={styles.responseTimeTrends}
+          className={styles.responseTimeDetailHidden}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
@@ -113,12 +115,13 @@ function DimensionResponseTimeDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
+
         <DashboardWidget
-          subtitle={"Spec Detail"}
+          title={"Card Detail"}
           name="flow-metrics-delivery-details"
-          className={styles.flowMetricsScatter}
+          className={styles.responseTimeDetail}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}

@@ -1,10 +1,10 @@
 .responseTimeDashboard{
     display: grid;
     grid-template-columns: 49.5% 49.5%;
-    grid-template-rows: 6% auto 50%;
+    grid-template-rows: 6% auto  55%;
     grid-template-areas: "rangeSlider rangeSlider"
-    "responseTimeDetail responseTimeDetail"
-    "responseTimeTrends flowMetricsScatter";
+    "responseTimeMetrics responseTimeMetrics"
+    "responseTimeDetail responseTimeDetail";
     gap: 0.5rem;
 }
 
@@ -14,14 +14,14 @@
     justify-content: center;
 }
 
+.responseTimeMetrics{
+    grid-area: responseTimeMetrics;
+}
+
 .responseTimeDetail{
     grid-area: responseTimeDetail;
 }
 
-.responseTimeTrends{
-    grid-area: responseTimeTrends;
-}
-
-.flowMetricsScatter{
-    grid-area: flowMetricsScatter;
+.responseTimeDetailHidden{
+    display: none
 }
