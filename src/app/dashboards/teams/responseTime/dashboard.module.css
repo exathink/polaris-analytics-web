@@ -1,0 +1,27 @@
+.responseTimeDashboard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 6% 43% 50%;
+    grid-template-areas: "rangeSlider rangeSlider"
+    "responseTimeDetail responseTimeDetail"
+    "responseTimeTrends flowMetricsScatter";
+    gap: 0.5rem;
+}
+
+.rangeSlider{
+    grid-area: rangeSlider;
+    display: flex;
+    justify-content: center;
+}
+
+.responseTimeDetail{
+    grid-area: responseTimeDetail;
+}
+
+.responseTimeTrends{
+    grid-area: responseTimeTrends;
+}
+
+.flowMetricsScatter{
+    grid-area: flowMetricsScatter;
+}

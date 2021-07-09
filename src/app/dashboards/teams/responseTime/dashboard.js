@@ -10,7 +10,7 @@ import {
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
-import styles from "../../projects/flow/dashboard.module.css";
+import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 
@@ -46,9 +46,10 @@ function DimensionResponseTimeDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
       <DashboardRow
         h="45%"
+        className={styles.rangeSlider}
         controls={[
           () => (
             <div style={{minWidth: "500px"}}>
@@ -58,11 +59,11 @@ function DimensionResponseTimeDashboard({
         ]}
       >
         <DashboardWidget
-          w={1}
           name="flow-metrics"
           title={`Spec Response Time`}
           subtitle={`Last ${daysRange} Days`}
           hideTitlesInDetailView={true}
+          className={styles.responseTimeDetail}
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={"team"}
@@ -88,9 +89,9 @@ function DimensionResponseTimeDashboard({
       </DashboardRow>
       <DashboardRow h="46%" >
         <DashboardWidget
-          w={1/2}
           name="cycle-time"
           subtitle={"7 Day Detail"}
+          className={styles.responseTimeTrends}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
@@ -113,9 +114,9 @@ function DimensionResponseTimeDashboard({
           showDetail={false}
         />
         <DashboardWidget
-          w={1/2}
           subtitle={"Spec Detail"}
           name="flow-metrics-delivery-details"
+          className={styles.flowMetricsScatter}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
