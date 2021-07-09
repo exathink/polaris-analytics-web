@@ -12,6 +12,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "../../projects/flow/dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
+import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 
 
 
@@ -85,10 +86,11 @@ function DimensionResponseTimeDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="46%" title={"7 Day Detail"}>
+      <DashboardRow h="46%" >
         <DashboardWidget
-          w={1}
+          w={1/2}
           name="cycle-time"
+          subtitle={"7 Day Detail"}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
@@ -108,7 +110,31 @@ function DimensionResponseTimeDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
+        />
+        <DashboardWidget
+          w={1/2}
+          subtitle={"Spec Detail"}
+          name="flow-metrics-delivery-details"
+          render={({view}) => (
+            <DimensionDeliveryCycleFlowMetricsWidget
+              dimension={dimension}
+              instanceKey={key}
+              specsOnly={true}
+              view={view}
+              context={context}
+              showAll={true}
+              latestWorkItemEvent={latestWorkItemEvent}
+              days={daysRange}
+              initialMetric={'cycleTime'}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
