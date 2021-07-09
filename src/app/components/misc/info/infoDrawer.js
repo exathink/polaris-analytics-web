@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Drawer} from "antd";
+import {Drawer, Button} from "antd";
 
 export const InfoDrawer = ({title, content}) => {
   const [visible, setVisible] = useState(false);
@@ -11,12 +11,11 @@ export const InfoDrawer = ({title, content}) => {
   const onClose = () => {
     setVisible(false);
   };
-
   return (
     <div>
-      <a href={"/"} onClick={showDrawer}>
+      <Button onClick={showDrawer}>
         More..
-      </a>
+      </Button>
       <Drawer title={title} placement="right" closable={false} onClose={onClose} visible={visible}>
         {content}
       </Drawer>
