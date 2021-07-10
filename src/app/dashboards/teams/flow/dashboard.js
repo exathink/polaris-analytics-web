@@ -105,7 +105,7 @@ function WipDashboard({
 
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Response Time"}
+          title={"Response Time"}
           w={0.375}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
@@ -131,7 +131,7 @@ function WipDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="30%" title={"Latency"}>
+      <DashboardRow h="30%" title={"Wip Age & Latency"}>
         <DashboardWidget
           name="engineering"
           w={1/3}
