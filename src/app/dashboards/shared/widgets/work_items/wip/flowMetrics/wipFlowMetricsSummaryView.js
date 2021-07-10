@@ -75,7 +75,8 @@ const TeamWipBoardSummaryView = ({
         <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
       </div>
       <div>
-        <PercentileAge
+        <AvgLatency
+          title={'Latency'}
           currentMeasurement={pipelineCycleMetrics}
           targetPercentile={cycleTimeTargetPercentile}
           target={cycleTimeTarget}
