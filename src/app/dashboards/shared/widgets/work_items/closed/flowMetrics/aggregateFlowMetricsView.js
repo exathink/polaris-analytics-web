@@ -79,7 +79,7 @@ export const PerformanceSummaryView = (
 
           />
           <AvgLatency
-            title={'Time to Deliver '}
+
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -146,7 +146,6 @@ export const TeamPerformanceSummaryView = (
         </VizItem>
         <VizItem w={1/6}>
         <AvgLatency
-          title={'Time to Deliver '}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
@@ -234,7 +233,6 @@ export const ResponseTimeSummaryView = (
         </VizItem>
         <VizItem w={1/3}>
         <AvgLatency
-          title={'Time to Deliver '}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
@@ -314,7 +312,6 @@ export const ValueBoardSummaryView = (
         </VizItem>
         <VizItem w={1/3}>
           <AvgLatency
-            title={'Time to Deliver'}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
@@ -383,7 +380,6 @@ export const ResponseTimeDetailView = (
       <div className={styles.deliver}>
         <AvgLatency
           asCard={true}
-          title={"Time to Deliver"}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
@@ -459,7 +455,6 @@ export const ImplementationMetricsCarouselView = (
       </VizItem>
       <VizItem w={0.40}>
         <LatencyCarousel
-          title={'Time to Deliver'}
           currentMeasurement={current}
           previousMeasurement={previous}
           targetPercentile={cycleTimeTargetPercentile}
@@ -552,7 +547,6 @@ export const AllMetricsDisplayView = (
           </VizItem>
           <VizItem w={0.4}>
             <LatencyCarousel
-              title={'Time to Deliver'}
               currentMeasurement={current}
               previousMeasurement={previous}
               targetPercentile={cycleTimeTargetPercentile}
