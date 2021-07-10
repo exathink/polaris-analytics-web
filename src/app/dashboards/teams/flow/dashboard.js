@@ -4,7 +4,7 @@ import {TeamDashboard} from "../teamDashboard";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./dashboard.module.css";
-import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget,
@@ -218,7 +218,6 @@ function WipDashboard({
               days={1}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              headerMetric={HeaderMetrics.latestCommit}
               groupBy={'workItem'}
               groupings={
                   ["workItem", "author",   "repository", "branch"]

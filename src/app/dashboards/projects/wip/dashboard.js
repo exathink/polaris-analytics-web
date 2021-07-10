@@ -2,22 +2,24 @@ import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {WorkItemStateTypes} from "../../shared/config";
 import styles from "./dashboard.module.css";
-import {DimensionCommitsNavigatorWidget, HeaderMetrics} from "../../shared/widgets/accountHierarchy";
+import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionPipelineCycleTimeLatencyWidget, DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
+import {
+  DimensionPipelineCycleTimeLatencyWidget,
+  DimensionWipFlowMetricsWidget,
+} from "../../shared/widgets/work_items/wip";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
-import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
+import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
-
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -248,7 +250,6 @@ function WipDashboard({
               days={1}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              headerMetric={HeaderMetrics.latestCommit}
               groupBy={'workItem'}
               groupings={
                 teamsActive ?
