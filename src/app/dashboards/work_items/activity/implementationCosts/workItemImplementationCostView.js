@@ -16,22 +16,22 @@ export const WorkItemImplementationCostView = (
     <VizRow h={1}>
       <VizItem w={1/3}>
         <Statistic
+            title={<span>Implementation</span>}
+            value={ duration || 'N/A'}
+            precision={1}
+            valueStyle={{color: '#3f8600'}}
+            style={{backgroundColor: '#f2f3f6'}}
+            suffix={"Days"}
+          />
+      </VizItem>
+      <VizItem w={1/3}>
+        <Statistic
             title={<span>Effort</span>}
             value={ effort || 'N/A'}
             precision={1}
             valueStyle={{color: '#3f8600'}}
             style={{backgroundColor: '#f2f3f6'}}
             suffix={"Dev Days"}
-          />
-      </VizItem>
-      <VizItem w={1/3}>
-        <Statistic
-            title={<span>Duration</span>}
-            value={ duration || 'N/A'}
-            precision={1}
-            valueStyle={{color: '#3f8600'}}
-            style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Days"}
           />
       </VizItem>
       <VizItem w={1/3}>
