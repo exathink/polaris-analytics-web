@@ -1,0 +1,27 @@
+.responseTimeDashboard{
+    display: grid;
+    grid-template-columns: 49.5% 49.5%;
+    grid-template-rows: 6% auto  55%;
+    grid-template-areas: "rangeSlider rangeSlider"
+    "responseTimeMetrics responseTimeMetrics"
+    "responseTimeDetail responseTimeDetail";
+    gap: 0.5rem;
+}
+
+.rangeSlider{
+    grid-area: rangeSlider;
+    display: flex;
+    justify-content: center;
+}
+
+.responseTimeMetrics{
+    grid-area: responseTimeMetrics;
+}
+
+.responseTimeDetail{
+    grid-area: responseTimeDetail;
+}
+
+.responseTimeDetailHidden{
+    display: none
+}

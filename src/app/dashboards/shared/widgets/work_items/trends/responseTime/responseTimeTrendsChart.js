@@ -27,10 +27,10 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
       return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`]
     }
     case 'avgDuration': {
-      return [`Avg. Duration: `, `${i18nNumber(intl, measurement.avgDuration)} days`]
+      return [`Avg. Implementation: `, `${i18nNumber(intl, measurement.avgDuration)} days`]
     }
     case 'avgLatency': {
-      return [`Avg. Delivery Latency: `, `${i18nNumber(intl, measurement.avgLatency)} days`]
+      return [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`]
     }
     case 'avgEffort': {
       return [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`]
@@ -61,11 +61,12 @@ export const ResponseTimeTrendsChart = (
   <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={[
-      {key: 'avgLeadTime', displayName: `Avg. Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
-      {key: 'avgCycleTime', displayName: `Avg. Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
-      {key: 'avgLatency', displayName: `Avg. Delivery L..`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'avgDuration', displayName: `Avg. Duration`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
-      {key: 'avgEffort', displayName: `Avg. Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
+      {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
+      {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
+      {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
+      {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
+
+      {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
 
     ]}
     measurementPeriod={measurementPeriod}

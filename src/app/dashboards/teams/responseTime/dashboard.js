@@ -1,30 +1,32 @@
 import React from "react";
 import {TeamDashboard} from "../teamDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {DimensionPredictabilityTrendsWidget} from "../../shared/widgets/work_items/trends/predictability";
-import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
-import {
-  DimensionDefectResponseTimeWidget,
-  DimensionResponseTimeTrendsWidget,
-} from "../../shared/widgets/work_items/trends/responseTime";
+import {DimensionResponseTimeTrendsWidget} from "../../shared/widgets/work_items/trends/responseTime";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
-import styles from "../../projects/flow/dashboard.module.css";
+import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-
-
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
 const dashboard = ({viewerContext}) => (
   <TeamDashboard
     pollInterval={1000 * 60}
-    render={({team, ...rest}) => <DimensionResponseTimeDashboard dimension={'team'} dimensionData={team} {...rest} viewerContext={viewerContext} />}
+    render={({team, ...rest}) => (
+      <DimensionResponseTimeDashboard dimension={"team"} dimensionData={team} {...rest} viewerContext={viewerContext} />
+    )}
   />
 );
 
+const metricMapping = {
+  avgCycleTime: "cycleTime",
+  avgLeadTime: "leadTime",
+  avgDuration: "duration",
+  avgEffort: "effort",
+  avgLatency: "latency"
+};
 
 function DimensionResponseTimeDashboard({
   dimension,
@@ -38,31 +40,32 @@ function DimensionResponseTimeDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     responseTimeConfidenceTarget,
-    trendsAnalysisPeriod,
     wipAnalysisPeriod,
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const selectedMetricState = React.useState("avgCycleTime");
+  const [selectedMetric] = selectedMetricState;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
       <DashboardRow
         h="45%"
+        className={styles.rangeSlider}
         controls={[
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
             </div>
-          )
+          ),
         ]}
       >
         <DashboardWidget
-          w={1}
           name="flow-metrics"
           title={`Spec Response Time`}
-          subtitle={`Last ${daysRange} Days`}
           hideTitlesInDetailView={true}
+          className={styles.responseTimeMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={"team"}
@@ -81,16 +84,18 @@ function DimensionResponseTimeDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              selectedMetricState={selectedMetricState}
             />
           )}
           showDetail={false}
         />
-      </DashboardRow>
-      <DashboardRow h="46%" >
+      </DashboardRow >
+      <DashboardRow
+        h="46%"
+      >
         <DashboardWidget
-          w={1/2}
           name="cycle-time"
-          subtitle={"7 Day Detail"}
+          className={styles.responseTimeDetailHidden}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
@@ -110,12 +115,13 @@ function DimensionResponseTimeDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
+
         <DashboardWidget
-          w={1/2}
-          subtitle={"Spec Detail"}
+          title={"Card Detail"}
           name="flow-metrics-delivery-details"
+          className={styles.responseTimeDetail}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
@@ -126,7 +132,7 @@ function DimensionResponseTimeDashboard({
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
-              initialMetric={'cycleTime'}
+              initialMetric={metricMapping[selectedMetric]}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}

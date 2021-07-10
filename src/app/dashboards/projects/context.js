@@ -41,12 +41,12 @@ const context : Context = {
         display: match => messages.instanceDisplay(match.params.project),
         routes: [
           {
-            match: 'wip',
-            topic: Wip
-          },
-          {
             match: 'flow',
             topic: Flow
+          },
+          {
+            match: 'wip',
+            topic: Wip
           },
           {
             match: 'value',
@@ -59,16 +59,12 @@ const context : Context = {
             topic: Trends
           },
           {
-            match: 'repositories',
-            topic: Repositories
-          },
-          {
             match: 'contributors',
             topic: Contributors
           },
           {
-            match: 'history',
-            topic: History
+            match: 'repositories',
+            topic: Repositories
           },
           {
             match: 'configure',
@@ -77,7 +73,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'wip'
+            redirect: 'flow'
           }
         ]
       }

@@ -2,6 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export function useQueryProjectPullRequestMetricsTrends({
+  dimension,
   instanceKey,
   days,
   measurementWindow,
@@ -10,14 +11,14 @@ export function useQueryProjectPullRequestMetricsTrends({
 }) {
   return useQuery(
     gql`
-      query projectPullRequestMetricsTrends(
+      query ${dimension}PullRequestMetricsTrends(
         $key: String!
         $days: Int!
         $measurementWindow: Int!
         $samplingFrequency: Int!
         $referenceString: String
       ) {
-        project(
+        ${dimension}(
           key: $key
           interfaces: [PullRequestMetricsTrends]
           pullRequestMetricsTrendsArgs: {

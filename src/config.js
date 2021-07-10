@@ -3,7 +3,7 @@ const Config =  {
 };
 
 const siteConfig = {
-  siteName: 'FLOW',
+  siteName: 'Polaris',
   siteIcon: 'ion ion-arrow-graph-up-right',
   homePath: '/app',
   footerText: '©Exathink, LLC 2017-2021',

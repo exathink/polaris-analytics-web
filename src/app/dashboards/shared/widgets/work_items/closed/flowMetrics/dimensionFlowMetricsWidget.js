@@ -23,7 +23,8 @@ export const DimensionFlowMetricsWidget = (
     cycleTimeConfidenceTarget,
     stateMappingIndex,
     pollInterval,
-    includeSubTasks
+    includeSubTasks,
+    selectedMetricState
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
@@ -56,6 +57,7 @@ export const DimensionFlowMetricsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={cycleMetricsTrends}
+        selectedMetricState={selectedMetricState}
       />
     )
   } else {
