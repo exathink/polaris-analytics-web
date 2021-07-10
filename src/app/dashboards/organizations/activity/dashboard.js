@@ -126,11 +126,11 @@ export const dashboard = ({viewerContext}) => {
                       latestCommit={organization.latestCommit}
                       latestWorkItemEvent={organization.latestWorkItemEvent}
                       markLatest
-                      groupBy={teamsActive ? 'team' : 'author'}
+                      groupBy={'workItem'}
                       groupings={
                         teamsActive ?
-                          ['team', 'author', 'workItem', 'repository'] :
-                          ['author', 'workItem', 'repository']
+                          ['workItem', 'team', 'author', 'repository'] :
+                          ['workItem','author', 'repository']
                       }
                       showHeader
                       showTable

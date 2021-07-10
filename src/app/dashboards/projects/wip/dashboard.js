@@ -249,12 +249,12 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               headerMetric={HeaderMetrics.latestCommit}
-              groupBy={teamsActive ? "team" : 'workItem'}
+              groupBy={'workItem'}
               groupings={
                 teamsActive ?
-                  ["team", "author", "workItem",  "repository"]
+                  ["workItem", "team", "author",  "repository", "branch"]
                   :
-                  ["author", "workItem",  "repository", "branch"]
+                  ["workItem", "author",  "repository", "branch"]
 
               }
               showHeader
