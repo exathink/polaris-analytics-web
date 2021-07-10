@@ -144,7 +144,6 @@ export const dashboard =
                         groupings={['author', 'repository', 'branch']}
                         showHeader
                         showTable
-                        hideTraceability
                       />
                   }
                   showDetail={true}

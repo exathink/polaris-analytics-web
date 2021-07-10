@@ -36,9 +36,6 @@ export const DimensionCommitsNavigatorWidget = (
     shortTooltip,
     markLatest,
     showHeader,
-    hideTraceability,
-    // Use one of the legal values above.
-    headerMetric,
     suppressHeaderDataLabels,
     showTable,
     onSelectionChange,
@@ -152,8 +149,6 @@ export const DimensionCommitsNavigatorWidget = (
               totalCommits={totalCommits}
               shortTooltip={shortTooltip}
               showHeader={showHeader}
-              hideTraceability={hideTraceability}
-              headerMetric={headerMetric}
               polling={pollInterval}
               markLatest={markLatest}
               showTable={showTable}

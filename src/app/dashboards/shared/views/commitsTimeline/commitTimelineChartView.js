@@ -255,7 +255,7 @@ class _CommitsTimelineChartView extends React.Component {
 
   getTimelineRollupHeader() {
     const {model} = this.state;
-    const {latestCommit, view} = this.props;
+    const {latestCommit} = this.props;
 
     return (
       <div style={{height: "100%"}}>

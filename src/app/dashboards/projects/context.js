@@ -1,15 +1,14 @@
 // @flow
-import React from 'react';
-import {FormattedMessage} from 'react-intl.macro';
+import React from "react";
+import {FormattedMessage} from "react-intl.macro";
 
 import FourZeroFour from "../../../containers/Page/404";
-import type {Context} from '../../framework/navigation/context/context';
+import type {Context} from "../../framework/navigation/context/context";
 
-import Wip from './wip/topic';
-import Flow from './flow/topic';
-import Repositories from './repositories/topic';
-import Contributors from './contributors/topic';
-import History from './history/topic';
+import Wip from "./wip/topic";
+import Flow from "./flow/topic";
+import Repositories from "./repositories/topic";
+import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Value from "./value/topic";
 import Configure from "./configure/topic";
@@ -20,14 +19,14 @@ import {VALUE_STREAM_CONFIG, VALUE_STREAM_VALUE_DASHBOARD} from "../../../config
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
-
 const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
       id="contexts.projects.instance"
       defaultMessage="Value Stream: {instance}"
-      values={{instance: instanceName}}/>
-  )
+      values={{instance: instanceName}}
+    />
+  ),
 };
 
 const context : Context = {
