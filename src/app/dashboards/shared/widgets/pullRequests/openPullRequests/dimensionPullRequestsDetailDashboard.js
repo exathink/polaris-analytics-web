@@ -63,6 +63,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           name="pr-metrics-summary-detailed"
           render={({view}) => (
             <PullRequestsCompletedTrendsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               view={view}
               days={daysRange}
@@ -78,6 +79,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           name="pr-metrics-reviewtime-detailed"
           render={({view}) => (
             <PullRequestsReviewTimeTrendsWidget
+              dimension={dimension}
               instanceKey={instanceKey}
               view={view}
               days={daysRange}

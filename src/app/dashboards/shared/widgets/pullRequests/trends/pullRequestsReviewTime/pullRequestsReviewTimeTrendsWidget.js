@@ -6,6 +6,7 @@ import {PullRequestsReviewTimeTrendsView} from "./pullRequestsReviewTimeTrendsVi
 import {PullRequestsReviewTimeTrendsDetailDashboard} from "./pullRequestsReviewTimeTrendsDetailDashboard";
 
 export const PullRequestsReviewTimeTrendsWidget = ({
+  dimension,
   instanceKey,
   view,
   context,
@@ -15,16 +16,17 @@ export const PullRequestsReviewTimeTrendsWidget = ({
   latestCommit,
 }) => {
   const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
-    instanceKey: instanceKey,
-    days: days,
-    measurementWindow: measurementWindow,
-    samplingFrequency: samplingFrequency,
+    dimension,
+    instanceKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
     referenceString: latestCommit,
   });
 
   if (loading) return <Loading />;
   if (error) return null;
-  const {pullRequestMetricsTrends} = data["project"];
+  const {pullRequestMetricsTrends} = data[dimension];
 
   return view === "primary" ? (
     <PullRequestsReviewTimeTrendsView

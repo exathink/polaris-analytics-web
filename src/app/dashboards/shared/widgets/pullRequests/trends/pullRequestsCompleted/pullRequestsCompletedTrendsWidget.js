@@ -6,6 +6,7 @@ import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
 
 export const PullRequestsCompletedTrendsWidget = ({
+  dimension,
   instanceKey,
   view,
   context,
@@ -15,16 +16,17 @@ export const PullRequestsCompletedTrendsWidget = ({
   latestCommit,
 }) => {
   const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
-    instanceKey: instanceKey,
-    days: days,
-    measurementWindow: measurementWindow,
-    samplingFrequency: samplingFrequency,
+    dimension,
+    instanceKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
     referenceString: latestCommit,
   });
 
   if (loading) return <Loading />;
   if (error) return null;
-  const {pullRequestMetricsTrends} = data["project"];
+  const {pullRequestMetricsTrends} = data[dimension];
 
   return view === "primary" ? (
     <PullRequestsCompletedTrendsView
