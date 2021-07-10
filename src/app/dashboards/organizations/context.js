@@ -1,24 +1,23 @@
-import React from 'react';
-import {FormattedMessage} from 'react-intl.macro';
+import React from "react";
+import {FormattedMessage} from "react-intl.macro";
 import FourZeroFour from "../../../containers/Page/404";
-import Activity from './activity/topic';
-import Contributors from './contributors/topic';
-import Project from './projects/topic';
-import Repositories from './repositories/topic';
-import Work from './work/topic';
-
+import Activity from "./activity/topic";
+import Contributors from "./contributors/topic";
+import Project from "./projects/topic";
+import Repositories from "./repositories/topic";
 
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
-import { SYSTEM_TEAMS } from "../../../config/featureFlags";
+import {SYSTEM_TEAMS} from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
       id="contexts.organizations.instance"
       defaultMessage="Organization: {instance}"
-      values={{instance: instanceName}}/>
-  )
+      values={{instance: instanceName}}
+    />
+  ),
 };
 
 const context = {
@@ -40,10 +39,6 @@ const context = {
             topic: Project
           },
           {
-            match: 'repositories',
-            topic: Repositories
-          },
-          {
 
             match: 'contributors',
             requiredFeatures: [SYSTEM_TEAMS],
@@ -51,8 +46,8 @@ const context = {
 
           },
           {
-            match: 'work',
-            topic: Work,
+            match: 'repositories',
+            topic: Repositories
           },
           {
             match: '',
