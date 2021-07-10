@@ -50,7 +50,7 @@ function WipDashboard({
         <DashboardWidget
           name="flow-metrics"
           title={"Throughput"}
-          w={0.375}
+          w={1/3}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -76,7 +76,7 @@ function WipDashboard({
         />
         <DashboardWidget
           name="pipeline"
-          w={0.25}
+          w={1/3}
           className={styles.pipeline}
           title={"Work In Progress"}
 
@@ -106,7 +106,7 @@ function WipDashboard({
         <DashboardWidget
           name="flow-metrics"
           title={"Response Time"}
-          w={0.375}
+          w={1/3}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -176,7 +176,7 @@ function WipDashboard({
               asStatistic={false}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="delivery"
