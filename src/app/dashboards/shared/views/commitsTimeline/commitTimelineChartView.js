@@ -10,6 +10,7 @@ import {VizRow} from "../../containers/layout";
 import {Untracked} from "../../config";
 import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
+import { ComponentCarousel } from "../../components/componentCarousel/componentCarousel";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -129,6 +130,19 @@ export class CommitTimelineViewModel {
   }
 }
 
+function Traceability(props: {model: CommitTimelineViewModel}) {
+  return (
+    <Statistic
+      title="Traceability"
+      value={props.model.traceability != null ? props.model.traceability * 100 : "N/A"}
+      precision={props.model.traceability != null && 2}
+      valueStyle={{color: "#3f8600"}}
+      suffix={props.model.traceability != null && "%"}
+      style={{backgroundColor: "#f2f3f6"}}
+    />
+  );
+}
+
 class _CommitsTimelineChartView extends React.Component {
   constructor(props) {
     super(props);
@@ -137,17 +151,16 @@ class _CommitsTimelineChartView extends React.Component {
       model: new CommitTimelineViewModel(props.commits, props.groupBy),
       selectedGrouping: props.groupBy,
       selectedCategories: null,
-      selectedCommits: null
-    }
+      selectedCommits: null,
+    };
   }
-
 
   componentDidUpdate() {
     if (this.props.commits !== this.state.commits) {
       this.setState({
         commits: this.props.commits,
         model: new CommitTimelineViewModel(this.props.commits, this.state.selectedGrouping),
-      })
+      });
     }
   }
 
@@ -156,44 +169,34 @@ class _CommitsTimelineChartView extends React.Component {
       model: new CommitTimelineViewModel(this.props.commits, groupBy),
       selectedGrouping: groupBy,
       selectedCategories: null,
-      selectedCommits: null
-    })
+      selectedCommits: null,
+    });
   }
 
-
   onCategoriesSelected(selected) {
-    const {
-      commits,
-      onSelectionChange,
-    } = this.props;
+    const {commits, onSelectionChange} = this.props;
 
-    const model = new CommitTimelineViewModel(commits, this.state.selectedGrouping, selected)
+    const model = new CommitTimelineViewModel(commits, this.state.selectedGrouping, selected);
     this.setState({
       model: model,
-      selectedCategories: selected
+      selectedCategories: selected,
     });
     if (onSelectionChange) {
-      onSelectionChange(model.commits)
+      onSelectionChange(model.commits);
     }
   }
 
   navigateToCommit(commits) {
-    const {
-      context
-    } = this.props;
+    const {context} = this.props;
 
     if (commits && commits.length === 1) {
       const commit = commits[0];
-      context.navigate(Commits, commit.name, commit.key)
+      context.navigate(Commits, commit.name, commit.key);
     }
   }
 
   onCommitsSelected(commits) {
-    const {
-      onSelectionChange,
-      showTable,
-      view,
-    } = this.props;
+    const {onSelectionChange, showTable, view} = this.props;
 
     // we set this state to suppress further
     // updates to props.commits until selections are done.
@@ -203,12 +206,11 @@ class _CommitsTimelineChartView extends React.Component {
     });
 
     if (onSelectionChange) {
-      onSelectionChange(commits)
-    } else if (view !== 'detail' || !showTable) {
-      this.navigateToCommit(commits)
+      onSelectionChange(commits);
+    } else if (view !== "detail" || !showTable) {
+      this.navigateToCommit(commits);
     }
   }
-
 
   getCommitTimelineChart(model) {
     const {
@@ -226,7 +228,6 @@ class _CommitsTimelineChartView extends React.Component {
       onCategoryItemSelected,
       polling,
       fullScreen,
-
     } = this.props;
 
     return (
@@ -249,181 +250,116 @@ class _CommitsTimelineChartView extends React.Component {
         onCategoryItemSelected={onCategoryItemSelected}
         showScrollbar={true}
       />
-    )
+    );
   }
 
   getTimelineRollupHeader() {
     const {model} = this.state;
-    const {hideTraceability, headerMetric, latestCommit, view} = this.props;
-
-    // This is pretty much of kludge. But what we are trying to say here is that
-    // the traceabiity metric is always shown when in detail mode, and in primary view when headerMetric is not
-    // specified, unless it is explicity suppressed using hideTraceability. Kind of covers the cases we need
-    // until we refactor more the usage sites to show a cleaner more consistent view.
-    const showLatestCommit = view !== 'detail' && headerMetric === HeaderMetrics.latestCommit;
-    const showTraceability = view === 'detail' || (headerMetric !== HeaderMetrics.latestCommit && !hideTraceability);
+    const {latestCommit, view} = this.props;
 
     return (
       <div style={{height: "100%"}}>
-        {
-          showTraceability &&
-          <div style={{
+        <div
+          style={{
             height: "18%",
-            backgroundColor: '#f2f3f6',
-            borderColor: 'GhostWhite',
-            borderStyle: 'solid',
-            borderWidth: '2px'
-          }}>
-            <Statistic
-              title="Traceability"
-              value={model.traceability != null ? model.traceability * 100 : 'N/A'}
-              precision={model.traceability != null && 2}
-              valueStyle={{color: '#3f8600'}}
-
-              suffix={model.traceability != null && "%"}
-              style={{backgroundColor: '#f2f3f6'}}
-            />
-          </div>
-        }
-        {
-          showLatestCommit &&
-          <div style={{
-            height: "18%",
-            backgroundColor: '#f2f3f6',
-            borderColor: 'GhostWhite',
-            borderStyle: 'solid',
-            borderWidth: '2px'
-          }}>
-            <HumanizedDateView
-              title={'Latest Commit'}
-              dateValue={latestCommit}
-              asStatistic={true}
-            />
-          </div>
-        }
-        <div style={!hideTraceability ? {height: "82%"} : {}}>
+            backgroundColor: "#f2f3f6",
+            borderColor: "GhostWhite",
+            borderStyle: "solid",
+            borderWidth: "2px",
+          }}
+        >
+          <ComponentCarousel tickInterval={3000}>
+            <HumanizedDateView title={"Latest Commit"} dateValue={latestCommit} asStatistic={true} />
+            <Traceability model={model} />
+          </ComponentCarousel>
+        </div>
+        <div style={{height: "82%"}}>
           <CommitsTimelineRollupBarChart
             /* We cannot use the model on state here because this should include all the categories
-            *  even when some a selected*/
+             *  even when some a selected*/
             model={new CommitTimelineViewModel(this.state.commits, this.state.selectedGrouping)}
             onSelectionChange={this.onCategoriesSelected.bind(this)}
           />
         </div>
       </div>
-    )
-  }
-
-
-  getTimelineTable(commits) {
-    return (
-      <CommitsTimelineTable
-        commits={this.state.selectedCommits || commits}
-      />
-    )
-  }
-
-  showHeader() {
-    const {
-      showHeader
-    } = this.props;
-
-    return (
-      this.state.selectedCategories ?
-        showHeader
-        :
-        (
-          showHeader &&
-          Object.keys(this.state.model.categoriesIndex).length > 1
-        )
     );
   }
 
+  getTimelineTable(commits) {
+    return <CommitsTimelineTable commits={this.state.selectedCommits || commits} />;
+  }
+
+  showHeader() {
+    const {showHeader} = this.props;
+
+    return this.state.selectedCategories
+      ? showHeader
+      : showHeader && Object.keys(this.state.model.categoriesIndex).length > 1;
+  }
 
   getPrimaryLayout(height, model) {
     const {view, days, setDaysRange, groupings} = this.props;
     const {selectedGrouping} = this.state;
 
-    const showSlider = days && (view === 'detail');
+    const showSlider = days && view === "detail";
 
     return (
       <Flex column style={{height: height, width: "100%"}}>
-        <Flex pl={1} pt={2} pb={2} pr={10} align='center' justify={showSlider ? 'left' : 'center'}
-              style={{height: "5%"}}>
-          {
-            showSlider &&
+        <Flex
+          pl={1}
+          pt={2}
+          pb={2}
+          pr={10}
+          align="center"
+          justify={showSlider ? "left" : "center"}
+          style={{height: "5%"}}
+        >
+          {showSlider && (
             <Box w={"35%"}>
-              <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange}/>
+              <DaysRangeSlider initialDays={days} setDaysRange={setDaysRange} />
             </Box>
-          }
-          {
-            groupings &&
+          )}
+          {groupings && (
             <Box>
               <GroupingSelector
-                groupings={
-                  groupings.map(
-                    grouping => ({
-                      key: grouping,
-                      display: commitTimelineGroupings[grouping]
-                    })
-                  )
-                }
+                groupings={groupings.map((grouping) => ({
+                  key: grouping,
+                  display: commitTimelineGroupings[grouping],
+                }))}
                 initialValue={selectedGrouping}
-                onGroupingChanged={this.onGroupingChanged.bind(this)}/>
+                onGroupingChanged={this.onGroupingChanged.bind(this)}
+              />
             </Box>
-          }
+          )}
         </Flex>
         <Flex style={{height: "95%"}}>
-          <Box w={"90%"}>
-            {
-              this.getCommitTimelineChart(model)
-            }
-          </Box>
-          <Box w={"10%"}>
-            {
-              this.getTimelineRollupHeader()
-            }
-          </Box>
+          <Box w={"90%"}>{this.getCommitTimelineChart(model)}</Box>
+          <Box w={"10%"}>{this.getTimelineRollupHeader()}</Box>
         </Flex>
       </Flex>
-    )
+    );
   }
 
   getDetailLayout(model, showHeader) {
     return (
       <Flex column style={{height: "100%", width: "100%"}}>
-        {
-          this.getPrimaryLayout("72%", model)
-        }
-        {
-          <Flex style={{height: "28%", width: "100%"}}>
-            {
-              this.getTimelineTable(model.commits)
-            }
-          </Flex>
-        }
+        {this.getPrimaryLayout("72%", model)}
+        {<Flex style={{height: "28%", width: "100%"}}>{this.getTimelineTable(model.commits)}</Flex>}
       </Flex>
-    )
+    );
   }
 
   render() {
-    const {
-      view,
-      showHeader
-    } = this.props;
+    const {view, showHeader} = this.props;
 
     return (
       <VizRow h={1}>
-
-        {
-          view === 'detail' ?
-            this.getDetailLayout(this.state.model, showHeader)
-            : this.getPrimaryLayout('100%', this.state.model, showHeader)
-        }
-
+        {view === "detail"
+          ? this.getDetailLayout(this.state.model, showHeader)
+          : this.getPrimaryLayout("100%", this.state.model, showHeader)}
       </VizRow>
-    )
+    );
   }
-
 }
 
 export const CommitsTimelineChartView = withNavigationContext(_CommitsTimelineChartView);
