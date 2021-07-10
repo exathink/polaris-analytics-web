@@ -508,8 +508,7 @@ export const ActiveDays = ({title, currentMeasurement, previousMeasurement, metr
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
-
-
+    uom={uom}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
@@ -571,6 +570,7 @@ export const EffortOUT = ({currentMeasurement, previousMeasurement, target, delt
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
     title={<span>{'Effort'}<sub>{'OUT'}</sub></span>}
+    uom={'Dev-Days'}
     target={target}
     deltaThreshold={deltaThreshold}
   />

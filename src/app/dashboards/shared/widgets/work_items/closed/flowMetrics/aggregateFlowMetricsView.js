@@ -91,70 +91,7 @@ export const PerformanceSummaryView = (
   )
 };
 
-export const TeamPerformanceSummaryView = (
-  {
 
-    cycleMetricsTrends,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
-    leadTimeTarget,
-    cycleTimeTarget,
-    specsOnly,
-
-  }
-) => {
-  const [current, previous] = cycleMetricsTrends;
-  if (current == null || previous == null) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-        <VizItem w={1/6}>
-          <Volume
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            specsOnly={specsOnly}
-          />
-        </VizItem>
-
-        <VizItem w={1/6}>
-        <LatestClosed
-          currentMeasurement={current}
-        />
-        </VizItem>
-        <VizItem w={1/6}>
-        <Cadence
-          currentMeasurement={current}
-          previousMeasurement={previous}
-        />
-        </VizItem>
-        <VizItem w={1/6}>
-        <AvgCycleTime
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          target={cycleTimeTarget}
-
-        />
-        </VizItem>
-        <VizItem w={1/6}>
-        <AvgDuration
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          target={cycleTimeTarget}
-
-        />
-        </VizItem>
-        <VizItem w={1/6}>
-        <AvgLatency
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          target={cycleTimeTarget}
-
-        />
-        </VizItem>
-    </React.Fragment>
-  )
-};
 
 export const ThroughputSummaryView = (
   {
@@ -183,15 +120,23 @@ export const ThroughputSummaryView = (
         </VizItem>
 
         <VizItem w={1/3}>
-        <LatestClosed
-          currentMeasurement={current}
-        />
-        </VizItem>
-        <VizItem w={1/3}>
-          <Cadence
+          <EffortOUT
             currentMeasurement={current}
             previousMeasurement={previous}
+            specsOnly={specsOnly}
           />
+        </VizItem>
+
+        <VizItem w={1/3}>
+        <ComponentCarousel tickInterval={3000}>
+            <LatestClosed
+              currentMeasurement={current}
+            />
+            <Cadence
+              currentMeasurement={current}
+              previousMeasurement={previous}
+            />
+          </ComponentCarousel>
         </VizItem>
     </React.Fragment>
   )
@@ -608,21 +553,6 @@ export const AggregateFlowMetricsView = withViewerContext((
         return (
           <VizRow h={1}>
             <PerformanceSummaryView
-              cycleMetricsTrends={cycleMetricsTrends}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeTargetPercentile={leadTimeTargetPercentile}
-              cycleTimeTargetPercentile={cycleTimeTargetPercentile}
-              specsOnly={specsOnly}
-              twoRows={twoRows}
-            />
-          </VizRow>
-
-        )
-      case 'teamPerformanceSummary':
-        return (
-          <VizRow h={1}>
-            <TeamPerformanceSummaryView
               cycleMetricsTrends={cycleMetricsTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
