@@ -128,7 +128,7 @@ export const WorkItemStateTypeDisplayName = {
   unmapped: 'Unmapped',
   backlog: 'Define',
   open: 'Open',
-  wip: 'Implement',
+  wip: 'Make',
   complete: 'Deliver',
   closed: 'Closed'
 }
