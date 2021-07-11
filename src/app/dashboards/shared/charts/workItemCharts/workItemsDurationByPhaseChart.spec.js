@@ -43,7 +43,7 @@ const fixedChartConfig = {
     type: "linear",
     allowDecimals: false,
     title: {
-      text: "Days",
+      text: "Elapsed Days",
     },
     plotLines: [
       {
