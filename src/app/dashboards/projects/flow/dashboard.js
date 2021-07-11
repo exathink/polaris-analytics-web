@@ -69,7 +69,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline"
@@ -147,7 +147,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               target={0.9}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
 
       </DashboardRow>
