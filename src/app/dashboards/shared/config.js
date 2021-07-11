@@ -9,10 +9,10 @@ export const Colors = {
   },
   WorkItemType: {
     story: '#14753a',
-    bug: '#b5111a',
+    bug: 'rgba(181,17,26,0.7)',
     pullRequest: '#7824b5',
     epic: '#b5945a',
-    task: '#4445ec',
+    task: 'rgba(68,69,236,0.8)',
     default: '#8f9a8e'
   },
   PullRequestStateType: {
