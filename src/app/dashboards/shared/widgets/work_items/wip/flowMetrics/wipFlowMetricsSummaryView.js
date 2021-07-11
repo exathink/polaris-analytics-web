@@ -71,6 +71,9 @@ const TeamWipBoardSummaryView = ({
       <div>
         <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </div>
+      <div>
+        <EffortWIP currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
+      </div>
         <div>
         <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
       </div>

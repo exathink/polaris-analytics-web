@@ -3,8 +3,8 @@
     margin-right: 15%;
 }
 
-.groupingSelectorShiftRight{
-    margin-left: auto;
+.workStreamSelector {
+    margin-right: auto
 }
 
 .workStreamLabel{
@@ -13,4 +13,7 @@
 
 .workItemStateDetailsControlWrapper{
     margin-bottom: 5px;
+}
+.phaseSelector {
+    margin-right: auto;
 }

@@ -168,7 +168,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         softMin: 0,
         allowDecimals: false,
         title: {
-          text: "Days",
+          text: "Elapsed Days",
         },
         plotLines: targetMetrics
           ? [

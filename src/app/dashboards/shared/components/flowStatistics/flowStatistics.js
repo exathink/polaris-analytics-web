@@ -564,6 +564,7 @@ export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement,
 
 
 
+
 export const EffortOUT = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
@@ -583,6 +584,7 @@ export const EffortWIP = ({currentMeasurement, previousMeasurement, target, delt
     metric={'totalEffort'}
     title={<span>{'Effort'}<sub>{'WIP'}</sub></span>}
     target={target}
+    uom={'Dev-Days'}
     deltaThreshold={deltaThreshold}
   />
 );
