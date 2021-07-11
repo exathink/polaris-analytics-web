@@ -188,6 +188,44 @@ export const ResponseTimeSummaryView = (
   )
 };
 
+export const LeadAndCycleTimeSummaryView = (
+  {
+
+    cycleMetricsTrends,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    leadTimeTarget,
+    cycleTimeTarget,
+    specsOnly,
+
+  }
+) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <React.Fragment>
+        <VizItem w={1/3}>
+          <AvgLeadTime
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={leadTimeTarget}
+          />
+        </VizItem>
+        <VizItem w={1/2}>
+          <AvgCycleTime
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+
+          />
+        </VizItem>
+
+    </React.Fragment>
+  )
+};
+
 export const ValueBoardSummaryView = (
   {
 
@@ -596,6 +634,21 @@ export const AggregateFlowMetricsView = withViewerContext((
         return (
           <VizRow>
             <ResponseTimeSummaryView
+              cycleMetricsTrends={cycleMetricsTrends}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeTargetPercentile={leadTimeTargetPercentile}
+              cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+              specsOnly={specsOnly}
+              twoRows={twoRows}
+              selectedMetricState={selectedMetricState}
+            />
+          </VizRow>
+        )
+      case 'leadAndCycleTimeSummary':
+        return (
+          <VizRow>
+            <LeadAndCycleTimeSummaryView
               cycleMetricsTrends={cycleMetricsTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
