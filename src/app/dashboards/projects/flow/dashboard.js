@@ -152,7 +152,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
 
       </DashboardRow>
 
-      <DashboardRow h={"45%"}>
+      <DashboardRow h={"42%"}>
         <DashboardWidget
           name="volume-trends"
           w={1/3}
