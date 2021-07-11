@@ -13,13 +13,16 @@ import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
-import styles from "./dashboard.module.css";
 import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
 import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
 import { DimensionPredictabilityTrendsWidget } from "../../shared/widgets/work_items/trends/predictability";
+import styles from "../../projects/flow/dashboard.module.css";
+import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
+
+
 
 function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context}) {
   const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
@@ -33,114 +36,100 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     flowAnalysisPeriod,
+    wipLimit,
     includeSubTasksFlowMetrics,
     includeSubTasksWipInspector
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
+    <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="response-time-sla"
-          className={styles.leadTime}
-          title={"Lead Time"}
-          subtitle={`${flowAnalysisPeriod} Days`}
-          render={() => (
-            <ProjectResponseTimeSLAWidget
+          name="flow-metrics"
+          title={"Throughput"}
+          w={0.33}
+          className={styles.flowMetrics}
+          subtitle={`Last ${flowAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"project"}
               instanceKey={key}
+              view={view}
+              display={"throughputSummary"}
+              context={context}
+              specsOnly={true}
               days={flowAnalysisPeriod}
-              metric={"leadTime"}
+              measurementWindow={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              latestWorkItemEvent={latestWorkItemEvent}
-              specsOnly={specsOnly}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
+          showDetail={false}
         />
-        {stateMappingIndex.isValid() && (
-          <DashboardWidget
-            name="defect-metrics"
-            className={styles.quality}
-            title={"Quality"}
-            subtitle={`${flowAnalysisPeriod} Days`}
-            hideTitlesInDetailView={true}
-            render={({view}) => (
-              <ProjectDefectMetricsWidget
-                instanceKey={key}
-                view={view}
-                context={context}
-                latestWorkItemEvent={latestWorkItemEvent}
-                stateMappingIndex={stateMappingIndex}
-                days={flowAnalysisPeriod}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              />
-            )}
-            showDetail={true}
-          />
-        )}
-
         <DashboardWidget
-          name="alignment"
-          className={styles.valueMix}
-          title={"Value Mix"}
-          subtitle={`${flowAnalysisPeriod} Days`}
-          styles={{
-            controlContainer: {
-              width: "30%",
-            },
-          }}
-          controls={[({view}) => view !== "detail" && <span>{specsOnly ? "% of EffortOUT" : "% of Volume"}</span>]}
+          name="pipeline"
+          w={0.35}
+          className={styles.pipeline}
+          title={"Work In Progress"}
+
           render={({view}) => (
-            <ProjectFlowMixTrendsWidget
+            <DimensionWipFlowMetricsWidget
+              dimension={'project'}
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
-              days={7}
-              samplingFrequency={7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
+              display={"teamWipSummary"}
               latestCommit={latestCommit}
-              specsOnly={specsOnly}
-              asStatistic={true}
-              includeSubTasks={includeSubTasksFlowMetrics}
+              latestWorkItemEvent={latestWorkItemEvent}
+              days={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              wipLimit={wipLimit}
+              view={view}
+              specsOnly={true}
+              context={context}
+              includeSubTasks={includeSubTasksWipInspector}
             />
           )}
+          showDetail={false}
           hideTitlesInDetailView={true}
-          showDetail={true}
         />
 
         <DashboardWidget
-          name="team"
-          className={styles.team}
-          title={"Team"}
-          subtitle={`${flowAnalysisPeriod} Days`}
-          render={({view}) => (
-            <ProjectEffortTrendsWidget
+          name="flow-metrics"
+          title={"Spec Response Time"}
+          w={0.2}
+          className={styles.flowMetrics}
+          subtitle={`Last ${flowAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"project"}
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
-              days={7}
-              samplingFrequency={7}
-              context={context}
               view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              asStatistic={true}
-              target={0.9}
+              display={"leadAndCycleTimeSummary"}
+              context={context}
+              specsOnly={true}
+              days={flowAnalysisPeriod}
+              measurementWindow={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
-          hideTitlesInDetailView={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="traceability"
-          className={styles.traceability}
+          w={0.13}
           title={"Traceability"}
           subtitle={`${flowAnalysisPeriod} Days`}
           hideTitlesInDetailView={"true"}
@@ -158,101 +147,15 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               target={0.9}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
+
       </DashboardRow>
 
-      <DashboardRow h={"28%"} title={"Flow"} className={styles.flowRow}>
-        {stateMappingIndex.isValid() && (
-          <DashboardWidget
-            name="flow-metrics"
-            className={styles.closed}
-            title={`Closed `}
-            subtitle={`Last ${flowAnalysisPeriod} Days`}
-            hideTitlesInDetailView={true}
-            render={({view}) => (
-              <DimensionFlowMetricsWidget
-                dimension={'project'}
-                instanceKey={key}
-                view={view}
-                display={"valueBoardSummary"}
-                twoRows={true}
-                context={context}
-                specsOnly={specsOnly}
-                latestWorkItemEvent={latestWorkItemEvent}
-                stateMappingIndex={stateMappingIndex}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                includeSubTasks={includeSubTasksFlowMetrics}
-              />
-            )}
-            showDetail={true}
-          />
-        )}
-        <DashboardWidget
-          name="pipeline-funnel"
-          className={styles.funnel}
-          render={({view}) => (
-            <ProjectPipelineFunnelWidget
-              instanceKey={key}
-              context={context}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              days={flowAnalysisPeriod}
-              view={view}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              includeSubTasks={{includeSubTasksInClosedState: includeSubTasksFlowMetrics, includeSubTasksInNonClosedState: includeSubTasksWipInspector}}
-            />
-          )}
-          showDetail={true}
-        />
-        {stateMappingIndex.isValid() && (
-          <DashboardWidget
-            name="wip"
-            className={styles.wip}
-            title={"Work In Progress"}
-            render={({view}) => (
-              <DimensionWipFlowMetricsWidget
-                dimension={"project"}
-                instanceKey={key}
-                display={"valueBoardSummary"}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                stateMappingIndex={stateMappingIndex}
-                days={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                view={view}
-                context={context}
-                includeSubTasks={includeSubTasksWipInspector}
-              />
-            )}
-            showDetail={true}
-            hideTitlesInDetailView={true}
-          />
-        )}
-      </DashboardRow>
-      <div className={styles.scopeSelector}>
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
-      </div>
-      <DashboardRow h={"49%"} title={"Trends"} className={styles.valueRow}>
+      <DashboardRow h={"45%"}>
         <DashboardWidget
           name="volume-trends"
-          className={styles.valueBookClosed}
+          w={1/3}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={'project'}
@@ -271,11 +174,33 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
+        />
+        <DashboardWidget
+          name="pipeline-funnel"
+          w={1/3}
+          render={({view}) => (
+            <ProjectPipelineFunnelWidget
+              instanceKey={key}
+              context={context}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              days={flowAnalysisPeriod}
+              view={view}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              includeSubTasks={{includeSubTasksInClosedState: includeSubTasksFlowMetrics, includeSubTasksInNonClosedState: includeSubTasksWipInspector}}
+            />
+          )}
+          showDetail={false}
         />
         <DashboardWidget
           name="response-time-trends"
-          className={styles.valueMixChart}
+          w={1/3}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={'project'}
@@ -283,7 +208,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
               samplingFrequency={7}
-              specsOnly={specsOnly}
+              specsOnly={true}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
@@ -296,27 +221,31 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
+      </DashboardRow>
+      <DashboardRow h={"45%"}>
+
+
         <DashboardWidget
-          name="predictability-trends"
-          className={styles.valueBookWip}
+          w={1}
+          name="project-pipeline-queues"
           render={({view}) => (
-            <DimensionPredictabilityTrendsWidget
+            <DimensionValueStreamPhaseDetailWidget
               dimension={'project'}
               instanceKey={key}
-              measurementWindow={flowAnalysisPeriod}
-              days={flowAnalysisPeriod}
-              specsOnly={specsOnly}
-              samplingFrequency={7}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
               context={context}
-              view={view}
+              funnelView={true}
+              specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              days={flowAnalysisPeriod}
+              closedWithinDays={flowAnalysisPeriod}
+              view={view}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
