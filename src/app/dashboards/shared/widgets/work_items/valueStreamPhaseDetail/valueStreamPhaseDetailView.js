@@ -32,12 +32,11 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
   }
 
   function selectDropdown() {
-    return uniqWorkItemsSources.length > 1 ? (
-      <div data-testid="pipeline-state-details-view-dropdown" className="stateDetailsDropdown">
+    return (
+      <div data-testid="pipeline-state-details-view-dropdown" className={'workStreamSelector'}>
         <span className="workStreamLabel">Workstream</span>
         <Select
           defaultValue={0}
-          style={{width: 200}}
           onChange={handleChange}
           getPopupContainer={(node) => node.parentNode}
         >
@@ -48,7 +47,7 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
           ))}
         </Select>
       </div>
-    ) : null;
+    );
   }
 
   /* Index the candidates by state type. These will be used to populate each tab */
@@ -79,8 +78,10 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
       <VizRow h={1}>
         <VizItem w={1}>
           <Flex w={0.95} className="workItemStateDetailsControlWrapper">
+            {selectDropdown()}
             <GroupingSelector
               label={"Phase"}
+              className={"phaseSelector"}
               groupings={stateTypes.map((stateType) => ({
                 key: stateType,
                 display: WorkItemStateTypeDisplayName[stateType],
@@ -92,16 +93,17 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
               initialValue={selectedStateType}
               onGroupingChanged={setSelectedStateType}
             />
-            {selectDropdown()}
+
             <GroupingSelector
               label={"Group Cards By"}
+              className={"groupCardsBySelector"}
               groupings={["state", "type"].map((grouping) => ({
                 key: grouping,
                 display: capitalizeFirstLetter(grouping),
               }))}
               initialValue={selectedGrouping}
               onGroupingChanged={setSelectedGrouping}
-              className={uniqWorkItemsSources.length<=1 ? "groupingSelectorShiftRight": ""}
+
             />
           </Flex>
           <WorkItemsDurationsByPhaseChart
