@@ -49,7 +49,7 @@ function DimensionResponseTimeDashboard({
   const selectedMetricState = React.useState("avgCycleTime");
   const [selectedMetric] = selectedMetricState;
   const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
-  const [chartToggle, setChartToggle] = React.useState("cardDetail");
+  const [chartToggle, setChartToggle] = React.useState("trend");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -103,15 +103,16 @@ function DimensionResponseTimeDashboard({
               value={chartToggle}
               groupings={[
                 {
-                  key: "cardDetail",
-                  display: "Card Detail",
-                },
-                {
                   key: "trend",
                   display: "Trend",
                 },
+                {
+                  key: "cardDetail",
+                  display: "Card Detail",
+                },
+
               ]}
-              initialValue={"cardDetail"}
+              initialValue={"trend"}
               onGroupingChanged={setChartToggle}
             />
           ),
