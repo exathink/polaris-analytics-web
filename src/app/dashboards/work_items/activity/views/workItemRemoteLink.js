@@ -2,7 +2,7 @@ import {RowNoOverflow} from "../../../shared/containers/flex/rowNoOverflow";
 import React from "react";
 
 import {capitalizeFirstLetter, elide} from "../../../../helpers/utility";
-import {Button} from "antd";
+import Button from "../../../../../components/uielements/button"
 
 function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
