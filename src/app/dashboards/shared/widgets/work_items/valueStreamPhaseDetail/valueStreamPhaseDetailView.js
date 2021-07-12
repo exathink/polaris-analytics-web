@@ -7,7 +7,6 @@ import {GroupingSelector} from "../../../components/groupingSelector/groupingSel
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
-import WorkItems from "../../../../work_items/context";
 import {Alert, Drawer, Select} from "antd";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
