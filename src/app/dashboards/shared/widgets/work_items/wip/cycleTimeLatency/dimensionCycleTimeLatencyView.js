@@ -1,9 +1,9 @@
 import React from 'react';
-import WorkItems from "../../../../../work_items/context";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 
 export const DimensionCycleTimeLatencyView = (
   {
@@ -27,6 +27,7 @@ export const DimensionCycleTimeLatencyView = (
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
     <VizRow h={1}>
       <VizItem w={1}>
@@ -43,9 +44,17 @@ export const DimensionCycleTimeLatencyView = (
           tooltipType={tooltipType}
           onSelectionChange={(workItems, eventType) => {
             if (eventType === EVENT_TYPES.POINT_CLICK) {
-              context.navigate(WorkItems, workItems[0].displayId, workItems[0].key);
+              setWorkItemKey(workItems[0].key);
+              setShowPanel(true);
             }
           }}
+        />
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          context={context}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          drawerOptions={{placement: "bottom"}}
         />
       </VizItem>
     </VizRow>
