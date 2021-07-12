@@ -47,6 +47,7 @@ function DimensionResponseTimeDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const selectedMetricState = React.useState("avgCycleTime");
   const [selectedMetric] = selectedMetricState;
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -89,7 +90,7 @@ function DimensionResponseTimeDashboard({
           )}
           showDetail={false}
         />
-      </DashboardRow >
+      </DashboardRow>
       <DashboardRow
         h="46%"
       >
@@ -138,6 +139,8 @@ function DimensionResponseTimeDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              yAxisScale={yAxisScale}
+              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}
