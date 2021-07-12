@@ -2,6 +2,7 @@ import {RowNoOverflow} from "../../../shared/containers/flex/rowNoOverflow";
 import React from "react";
 
 import {capitalizeFirstLetter, elide} from "../../../../helpers/utility";
+import {Button} from "antd";
 
 function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
@@ -30,7 +31,9 @@ export const WorkItemRemoteLink = ({workItem}) => {
           <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
             {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
           </h2>
-          <i className={"ion ion-link"} style={{margin: '5px'}}/>
+          <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
+            View on {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+          </Button>
         </RowNoOverflow>
       </a>
       : <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
