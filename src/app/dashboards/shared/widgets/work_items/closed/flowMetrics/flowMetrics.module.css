@@ -31,3 +31,38 @@
     height: 100%;
     grid-area: deliver;
 }
+
+/* Throughput Detail View */
+.throughputDetailWrapper{
+    display: grid;
+    height: 93%;
+    grid-template-areas: "volume effortOut . . ."
+    "volume effortOut . . ."
+    "volume effortOut features defects tasks"
+    "volume effortOut features defects tasks"
+    "volume effortOut features defects tasks";
+    gap: 0.5rem;
+}
+
+.volume{
+    height: 100%;
+    grid-area: volume;
+}
+
+.effortOut{
+    height: 100%;
+    grid-area: effortOut;
+}
+
+.features{
+    grid-area: features;
+}
+
+.defects{
+    grid-area: defects;
+}
+
+.tasks{
+    height: 100%;
+    grid-area: tasks;
+}

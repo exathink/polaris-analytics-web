@@ -373,6 +373,43 @@ export const ResponseTimeDetailView = (
   );
 };
 
+export const ThroughputDetailView = ({
+  cycleMetricsTrends,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  specsOnly,
+  selectedMetricState,
+}) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <div className={styles.throughputDetailWrapper}>
+      <div className={styles.volume}>
+        <Volume
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          specsOnly={specsOnly}
+          selectedMetricState={selectedMetricState}
+        />
+      </div>
+      <div className={styles.effortOut}>
+        <EffortOUT
+          asCard={true}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          specsOnly={specsOnly}
+          selectedMetricState={selectedMetricState}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const CycleMetricsCarouselView = (
   {
 
@@ -673,6 +710,19 @@ export const AggregateFlowMetricsView = withViewerContext((
               selectedMetricState={selectedMetricState}
             />
         )
+        case 'throughputDetail':
+          return (
+              <ThroughputDetailView
+                cycleMetricsTrends={cycleMetricsTrends}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                specsOnly={specsOnly}
+                twoRows={twoRows}
+                selectedMetricState={selectedMetricState}
+              />
+          )
       case 'all':
         return (
           <AllMetricsDisplayView

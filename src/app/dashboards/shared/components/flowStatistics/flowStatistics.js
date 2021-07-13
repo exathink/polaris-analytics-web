@@ -119,19 +119,31 @@ export const ResponseTime = ({title, info, asCard, currentMeasurement, previousM
 );
 
 
-export const Volume = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => (
-  <FlowStatistic
+export const Volume = ({title, asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, selectedMetricState}) => {
+  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1](metric)};
+  }
+
+  return <FlowStatistic
     title={title || "Volume"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
-    metric={specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'}
+    metric={metric}
     uom={specsOnly ? 'Specs' : 'Cards'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
+    asCard={asCard}
     target={target}
     measurementWindow={measurementWindow}
+    {...selectedMetricStateProps}
+    info={{
+      headline: "sample headline",
+      drawerContent: <div><p>Some content</p></div>
+    }}
   />
-);
+}
 
 export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
   const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
@@ -502,8 +514,13 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 //  Commit Days
 // ----
 
-export const ActiveDays = ({title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
-  <FlowStatistic
+export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, selectedMetricState}) => {
+  let selectedMetricStateProps = {}
+  if (selectedMetricState) {
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("totalEffort")};
+  }
+
+  return <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -511,9 +528,15 @@ export const ActiveDays = ({title, currentMeasurement, previousMeasurement, metr
     uom={uom}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
+    asCard={asCard}
     target={target}
+    {...selectedMetricStateProps}
+    info={{
+      headline: "sample headline",
+      drawerContent: <div><p>Some content</p></div>
+    }}
   />
-);
+}
 
 export const AvgActiveDays = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ActiveDays
@@ -565,15 +588,17 @@ export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement,
 
 
 
-export const EffortOUT = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+export const EffortOUT = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
     title={<span>{'Effort'}<sub>{'OUT'}</sub></span>}
     uom={'Dev-Days'}
+    asCard={asCard}
     target={target}
     deltaThreshold={deltaThreshold}
+    selectedMetricState={selectedMetricState}
   />
 );
 
