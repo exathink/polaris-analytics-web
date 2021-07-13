@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder, WorkItemStateTypes} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -120,7 +120,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
             stateType={selectedStateType}
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
-            title={`Phase Details:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+            title={`${selectedStateType !== WorkItemStateTypes.closed ? 'Card Age' : 'Lead Time'}:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
             targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log(`Selection changed: ${workItems.length}`);
