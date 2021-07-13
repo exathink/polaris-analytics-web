@@ -1,14 +1,16 @@
-import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
+import {GroupingSelector} from "../groupingSelector/groupingSelector";
 import React from "react";
 
 export const WorkItemScopeSelector = (
   {
+    label,
     workItemScope,
     setWorkItemScope,
-    display
+    display,
+    className
   }) => (
   <GroupingSelector
-    label={'Show'}
+    label={label || 'Show'}
     groupings={
       [
 
@@ -24,5 +26,6 @@ export const WorkItemScopeSelector = (
     }
     initialValue={workItemScope}
     onGroupingChanged={(selected) => setWorkItemScope(selected)}
+    className={className}
   />
 );
