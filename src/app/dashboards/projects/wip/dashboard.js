@@ -186,20 +186,18 @@ function WipDashboard({
 
         <DashboardWidget
           name="epic-flow-mix-wip"
-          className={styles.pipelineEffort}
+          className={styles.codeReviewDetail}
           render={({ view }) => (
-            <ProjectValueBookWidget
+            <DimensionPullRequestsWidget
+              dimension={'project'}
               instanceKey={key}
-              context={context}
-              specsOnly={specsOnly}
-              activeOnly={true}
+              className={styles.codeReviewDetail}
               view={view}
-              latestCommit={latestCommit}
-
+              context={context}
               latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksWipInspector}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
+              asStatistic={false}
             />
           )}
           showDetail={false}
