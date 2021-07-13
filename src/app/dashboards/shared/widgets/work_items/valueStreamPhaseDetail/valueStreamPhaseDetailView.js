@@ -35,9 +35,9 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
 
   function selectDropdown() {
     return (
-      <div data-testid="pipeline-state-details-view-dropdown" className={"workStreamSelector"}>
-        <span className="workStreamLabel">Workstream</span>
-        <Select defaultValue={0} onChange={handleChange} getPopupContainer={(node) => node.parentNode}>
+      <div data-testid="pipeline-state-details-view-dropdown" className={"control"}>
+        <span className="controlLabel">Workstream</span>
+        <Select  defaultValue={0} onChange={handleChange} getPopupContainer={(node) => node.parentNode} className={"workStreamSelector"}>
           {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
@@ -76,6 +76,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
       <VizRow h={1}>
         <VizItem w={1}>
           <Flex w={0.95} className="workItemStateDetailsControlWrapper">
+            <div className={'leftControls'}>
             {selectDropdown()}
             {
               setWorkItemScope &&
@@ -85,31 +86,35 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
                 setWorkItemScope={setWorkItemScope}
               />
             }
-            <GroupingSelector
-              label={"Phase"}
-              className={"phaseSelector"}
-              groupings={stateTypes.map((stateType) => ({
-                key: stateType,
-                display: WorkItemStateTypeDisplayName[stateType],
-                style: {
-                  backgroundColor: WorkItemStateTypeColor[stateType],
-                  color: stateType === selectedStateType ? "#ffffff" : "#d4d4d4",
-                },
-              }))}
-              initialValue={selectedStateType}
-              onGroupingChanged={setSelectedStateType}
-            />
-
-            <GroupingSelector
-              label={"Group Cards By"}
-              className={"groupCardsBySelector"}
-              groupings={["state", "type"].map((grouping) => ({
-                key: grouping,
-                display: capitalizeFirstLetter(grouping),
-              }))}
-              initialValue={selectedGrouping}
-              onGroupingChanged={setSelectedGrouping}
-            />
+            </div>
+            <div className={'phaseSelector'}>
+              <GroupingSelector
+                label={"Phase"}
+                className={"control"}
+                groupings={stateTypes.map((stateType) => ({
+                  key: stateType,
+                  display: WorkItemStateTypeDisplayName[stateType],
+                  style: {
+                    backgroundColor: WorkItemStateTypeColor[stateType],
+                    color: stateType === selectedStateType ? "#ffffff" : "#d4d4d4",
+                  },
+                }))}
+                initialValue={selectedStateType}
+                onGroupingChanged={setSelectedStateType}
+              />
+            </div>
+            <div className={'rightControls'}>
+              <GroupingSelector
+                label={"Group Cards By"}
+                className={"groupCardsBySelector"}
+                groupings={["state", "type"].map((grouping) => ({
+                  key: grouping,
+                  display: capitalizeFirstLetter(grouping),
+                }))}
+                initialValue={selectedGrouping}
+                onGroupingChanged={setSelectedGrouping}
+              />
+            </div>
           </Flex>
           <WorkItemsDurationsByPhaseChart
             stateType={selectedStateType}
