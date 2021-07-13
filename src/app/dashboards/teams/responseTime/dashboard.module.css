@@ -1,27 +1,35 @@
-.responseTimeDashboard{
-    display: grid;
-    grid-template-columns: 49.5% 49.5%;
-    grid-template-rows: 6% auto  55%;
-    grid-template-areas: "rangeSlider rangeSlider"
+.responseTimeDashboard {
+  display: grid;
+  grid-template-columns: 49.5% 49.5%;
+  grid-template-rows: 6% auto auto 55%;
+  grid-template-areas:
+    "rangeSlider rangeSlider"
     "responseTimeMetrics responseTimeMetrics"
+    "chartsRow chartsRow"
     "responseTimeDetail responseTimeDetail";
-    gap: 0.5rem;
 }
 
-.rangeSlider{
-    grid-area: rangeSlider;
-    display: flex;
-    justify-content: center;
+.rangeSlider {
+  grid-area: rangeSlider;
+  display: flex;
+  justify-content: center;
 }
 
-.responseTimeMetrics{
-    grid-area: responseTimeMetrics;
+.responseTimeMetrics {
+  grid-area: responseTimeMetrics;
 }
 
-.responseTimeDetail{
-    grid-area: responseTimeDetail;
+.responseTimeDetail {
+  grid-area: responseTimeDetail;
 }
 
-.responseTimeDetailHidden{
-    display: none
+.responseTimeDetailHidden {
+  display: none;
+}
+
+.chartsRow {
+  grid-area: chartsRow;
+  background-color: ghostwhite;
+  justify-content: center;
+  margin-top: 10px;
 }

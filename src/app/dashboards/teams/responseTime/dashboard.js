@@ -8,6 +8,7 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSl
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -47,6 +48,8 @@ function DimensionResponseTimeDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const selectedMetricState = React.useState("avgCycleTime");
   const [selectedMetric] = selectedMetricState;
+  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
+  const [chartToggle, setChartToggle] = React.useState("trend");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -89,13 +92,35 @@ function DimensionResponseTimeDashboard({
           )}
           showDetail={false}
         />
-      </DashboardRow >
+      </DashboardRow>
       <DashboardRow
         h="46%"
+        className={styles.chartsRow}
+        controls={[
+          () => (
+            <GroupingSelector
+              label={" "}
+              value={chartToggle}
+              groupings={[
+                {
+                  key: "trend",
+                  display: "Trend",
+                },
+                {
+                  key: "cardDetail",
+                  display: "Card Detail",
+                },
+
+              ]}
+              initialValue={"trend"}
+              onGroupingChanged={setChartToggle}
+            />
+          ),
+        ]}
       >
         <DashboardWidget
           name="cycle-time"
-          className={styles.responseTimeDetailHidden}
+          className={chartToggle === "trend" ? styles.responseTimeDetail : styles.responseTimeDetailHidden}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"team"}
@@ -115,13 +140,13 @@ function DimensionResponseTimeDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
 
         <DashboardWidget
-          title={"Card Detail"}
+          title={""}
           name="flow-metrics-delivery-details"
-          className={styles.responseTimeDetail}
+          className={chartToggle === "cardDetail" ? styles.responseTimeDetail : styles.responseTimeDetailHidden}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
@@ -138,6 +163,8 @@ function DimensionResponseTimeDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              yAxisScale={yAxisScale}
+              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}

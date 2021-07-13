@@ -5,7 +5,7 @@ import {navigateToExternalURL} from "../../../navigation/navigate";
 import {TrendIndicator} from "../../../../../components/misc/statistic/statistic";
 import {FlowStatistic} from "../../../components/flowStatistics/flowStatistics";
 import {average} from "../../../../../helpers/utility";
-import WorkItems from "../../../../work_items/context";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 
 const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   <VizRow h={1}>
@@ -35,28 +35,39 @@ const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   </VizRow>
 );
 
-const PullRequestChartView = ({pullRequests, view, context}) => (
-  <VizRow h={1}>
-    <VizItem w={1}>
-      <PullRequestAgeChart
-        pullRequests={pullRequests}
-        title={pullRequests.length === 1 ? "Open Code Review" : "Open Code Reviews"}
-        view={view}
-        onSelectionChange={(pullRequests) => {
-          if (pullRequests.length === 1) {
-            const pullRequest = pullRequests[0];
-            if (pullRequest.workItemsSummaries.length === 1) {
-              const workItem = pullRequest.workItemsSummaries[0];
-              context.navigate(WorkItems, workItem.displayId, workItem.key);
-            } else {
-              navigateToExternalURL(pullRequests[0].webUrl);
+const PullRequestChartView = ({pullRequests, view, context}) => {
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+  return (
+    <VizRow h={1}>
+      <VizItem w={1}>
+        <PullRequestAgeChart
+          pullRequests={pullRequests}
+          title={pullRequests.length === 1 ? "Open Code Review" : "Open Code Reviews"}
+          view={view}
+          onSelectionChange={(pullRequests) => {
+            if (pullRequests.length === 1) {
+              const pullRequest = pullRequests[0];
+              if (pullRequest.workItemsSummaries.length === 1) {
+                const workItem = pullRequest.workItemsSummaries[0];
+                setWorkItemKey(workItem.key);
+                setShowPanel(true);
+              } else {
+                navigateToExternalURL(pullRequests[0].webUrl);
+              }
             }
-          }
-        }}
-      />
-    </VizItem>
-  </VizRow>
-);
+          }}
+        />
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          context={context}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          drawerOptions={{placement: "bottom"}}
+        />
+      </VizItem>
+    </VizRow>
+  );
+};
 
 
 export const OpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
