@@ -9,7 +9,7 @@ import Flow from './flow/topic';
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
-
+import Throughput from "./throughput/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -38,6 +38,11 @@ const context : Context = {
 
             match: 'response-time',
             topic: ResponseTime
+          },
+          {
+
+            match: 'throughput',
+            topic: Throughput
           },
           {
             match: '',

@@ -45,6 +45,7 @@
   "topics.activity": "Activity",
   "topics.trends": "Trends",
   "topics.responseTime": "Response Time",
+  "topics.throughput": "Throughput",
   "topics.value": "Value",
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
