@@ -205,7 +205,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                   [`Time in Phase:`, `${intl.formatNumber(this.y)} days`],
                 ]
               : [
-                  [`${cycleTimeDisplay(stateType)}: `, `${intl.formatNumber(cycleTime)} days`],
+                  [`${cycleTimeDisplay(stateType)}:`, `${intl.formatNumber(cycleTime)} days`],
                   [`Current State:`, `${state}`],
                   [`Entered:`, `${timeInStateDisplay}`],
                   stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
