@@ -9,10 +9,11 @@ import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Drawer, Select} from "antd";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 
 const {Option} = Select;
 
-const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
+const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemScope, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
     workItems,
   ]);
@@ -76,6 +77,14 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
         <VizItem w={1}>
           <Flex w={0.95} className="workItemStateDetailsControlWrapper">
             {selectDropdown()}
+            {
+              setWorkItemScope &&
+              <WorkItemScopeSelector
+                className={'specsAllSelector'}
+                workItemScope={workItemScope}
+                setWorkItemScope={setWorkItemScope}
+              />
+            }
             <GroupingSelector
               label={"Phase"}
               className={"phaseSelector"}

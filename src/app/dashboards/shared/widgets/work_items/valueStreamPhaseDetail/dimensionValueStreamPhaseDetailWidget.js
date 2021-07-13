@@ -21,16 +21,22 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
-  includeSubTasks
+  includeSubTasks,
+  workItemScope: parentWorkItemScope,
+  setWorkItemScope: parentSetWorkItemScope
+
 }) => {
+  const [workItemScope, setWorkItemScope] = React.useState(parentWorkItemScope || 'all');
+
+
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
-    specsOnly,
     activeOnly,
     funnelView,
     closedWithinDays,
     includeSubTasks,
+    specsOnly: workItemScope === 'specs',
     referenceString: latestWorkItemEvent,
   });
 
@@ -45,9 +51,12 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   return (
     <ValueStreamPhaseDetailView
       view={view}
+      specsOnly={specsOnly}
       context={context}
       workItems={workItems}
       targetMetrics={targetMetrics}
+      workItemScope={workItemScope}
+      setWorkItemScope={parentSetWorkItemScope || setWorkItemScope}
     />
   );
 };
