@@ -13,6 +13,7 @@ import {
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
   WorkItemTypeSortOrder,
+  cycleTimeDisplay
 } from "../../config";
 
 function getMaxDays(workItems, targetMetrics) {
@@ -168,7 +169,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         softMin: 0,
         allowDecimals: false,
         title: {
-          text: "Elapsed Days",
+          text: `${cycleTimeDisplay(stateType)} in Days` ,
         },
         plotLines: targetMetrics
           ? [
@@ -204,7 +205,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                   [`Time in Phase:`, `${intl.formatNumber(this.y)} days`],
                 ]
               : [
-                  [`Cycle Time:`, `${intl.formatNumber(cycleTime)} days`],
+                  [`${cycleTimeDisplay(stateType)}: `, `${intl.formatNumber(cycleTime)} days`],
                   [`Current State:`, `${state}`],
                   [`Entered:`, `${timeInStateDisplay}`],
                   stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
