@@ -18,7 +18,6 @@ import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryPr
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";

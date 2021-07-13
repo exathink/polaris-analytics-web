@@ -75,7 +75,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
     return (
       <VizRow h={1}>
         <VizItem w={1}>
-          <Flex w={0.95} className="workItemStateDetailsControlWrapper">
+          <div className={'workItemStateDetailsControlWrapper'}>
             <div className={'leftControls'}>
             {selectDropdown()}
             {
@@ -115,7 +115,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
                 onGroupingChanged={setSelectedGrouping}
               />
             </div>
-          </Flex>
+          </div>
           <WorkItemsDurationsByPhaseChart
             stateType={selectedStateType}
             groupBy={selectedGrouping}

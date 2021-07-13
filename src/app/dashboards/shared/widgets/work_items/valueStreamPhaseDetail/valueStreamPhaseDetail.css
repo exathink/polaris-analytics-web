@@ -6,6 +6,7 @@
     grid-template-areas:
     "leftControls middleControls rightControls";
     margin-bottom: 5px;
+    width: 95%;
 }
 
 .leftControls {
