@@ -3,6 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionPipelineStateDetails} from "../hooks/useQueryDimensionPipelineStateDetails";
 import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {useChildState} from "../../../../../helpers/hooksUtil";
 
 export const DimensionValueStreamPhaseDetailWidget = ({
   dimension,
@@ -23,11 +24,9 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   cycleTimeTarget,
   includeSubTasks,
   workItemScope: parentWorkItemScope,
-  setWorkItemScope: parentSetWorkItemScope
-
+  setWorkItemScope: parentSetWorkItemScope,
 }) => {
-  const [workItemScope, setWorkItemScope] = React.useState(parentWorkItemScope || 'all');
-
+  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "all");
 
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
@@ -36,7 +35,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
     funnelView,
     closedWithinDays,
     includeSubTasks,
-    specsOnly: workItemScope === 'specs',
+    specsOnly: workItemScope === "specs",
     referenceString: latestWorkItemEvent,
   });
 
@@ -56,7 +55,8 @@ export const DimensionValueStreamPhaseDetailWidget = ({
       workItems={workItems}
       targetMetrics={targetMetrics}
       workItemScope={workItemScope}
-      setWorkItemScope={parentSetWorkItemScope || setWorkItemScope}
+      setWorkItemScope={setWorkItemScope}
+      workItemScopeVisible={!parentWorkItemScope}
     />
   );
 };

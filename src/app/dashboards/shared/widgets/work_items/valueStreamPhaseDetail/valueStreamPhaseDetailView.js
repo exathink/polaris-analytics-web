@@ -13,7 +13,7 @@ import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/w
 
 const {Option} = Select;
 
-const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemScope, view, context}) => {
+const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemScope, workItemScopeVisible=true, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
     workItems,
   ]);
@@ -79,7 +79,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
             <div className={'leftControls'}>
             {selectDropdown()}
             {
-              setWorkItemScope &&
+              workItemScopeVisible &&
               <WorkItemScopeSelector
                 className={'specsAllSelector'}
                 workItemScope={workItemScope}

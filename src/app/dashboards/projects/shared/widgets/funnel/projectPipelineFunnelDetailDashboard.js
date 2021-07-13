@@ -99,6 +99,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               includeSubTasks={includeSubTasks}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           )}
           showDetail={true}
