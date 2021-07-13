@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {ProjectFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {ProjectTraceabilityTrendsWidget} from "../../../../shared/widgets/commits/traceability";
 import {
   getTrendsControlBarControls,

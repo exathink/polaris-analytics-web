@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framew
 import {ProjectPipelinePhaseSummaryWidget} from "../../../../../projects/shared/widgets/wip/projectPipelinePhaseSummaryWidget";
 import {DimensionValueStreamPhaseDetailWidget} from "../../valueStreamPhaseDetail";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 

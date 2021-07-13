@@ -6,7 +6,7 @@ import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook"
 import styles from "./dashboard.module.css";
 import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
 import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 

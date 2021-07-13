@@ -17,7 +17,7 @@ import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/ope
 import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 

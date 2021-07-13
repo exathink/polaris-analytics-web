@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framew
 import {DimensionFlowMetricsWidget} from "./dimensionFlowMetricsWidget";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleFlowMetricsWidget";
 import {DaysRangeSlider} from "../../../../components/daysRangeSlider/daysRangeSlider";
-import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {Box, Flex} from "reflexbox";
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';

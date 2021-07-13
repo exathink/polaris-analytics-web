@@ -13,7 +13,7 @@ import {
 import {WorkItemsEpicEffortChart} from "../../../charts/workItemCharts/workItemsEpicEffortChart";
 import {DaysRangeSlider, ONE_YEAR} from "../../../components/daysRangeSlider/daysRangeSlider";
 import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
 
 const UncategorizedEpic = {

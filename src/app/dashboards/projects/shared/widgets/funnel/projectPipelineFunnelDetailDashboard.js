@@ -5,7 +5,7 @@ import {WorkItemStateTypeMapWidget} from "../workItemStateTypeMap";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 import {DimensionValueStreamPhaseDetailWidget} from "../../../../shared/widgets/work_items/valueStreamPhaseDetail";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
