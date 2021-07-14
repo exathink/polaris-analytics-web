@@ -1,7 +1,8 @@
 .flowDashboard{
+    height: 89%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 15% 27% 47.5%;
+    grid-template-rows: auto 30% 52%;
     gap: 0.5rem;
     grid-template-areas: "throughput throughput throughput pipeline pipeline pipeline pipeline leadAndCycleTime leadAndCycleTime leadAndCycleTime traceability traceability"
     "volumeTrends volumeTrends volumeTrends volumeTrends pipelineFunnel pipelineFunnel pipelineFunnel pipelineFunnel responseTimeTrends responseTimeTrends responseTimeTrends responseTimeTrends"
