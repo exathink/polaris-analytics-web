@@ -32,7 +32,7 @@ export const WorkItemRemoteLink = ({workItem}) => {
             {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
           </h2>
           <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
-            View on {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+            View in {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
         </RowNoOverflow>
       </a>
