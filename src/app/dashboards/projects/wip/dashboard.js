@@ -7,7 +7,6 @@ import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHiera
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {ProjectResponseTimeSLAWidget} from "../shared/widgets/responseTimeSLA";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
@@ -59,26 +58,31 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="response-time-sla"
-          className={styles.responseTimeSLA}
-          title={"Cycle Time"}
-          subtitle={`Last ${wipAnalysisPeriod} Days`}
-          render={() => (
-            <ProjectResponseTimeSLAWidget
+          name="flow-metrics"
+          title={"Throughput"}      
+          className={styles.flowMetrics}
+          subtitle={`Last ${wipAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"project"}
               instanceKey={key}
+              view={view}
+              display={"throughputSummary"}
+              context={context}
+              specsOnly={specsOnly}
               days={wipAnalysisPeriod}
-              metric={"cycleTime"}
+              measurementWindow={wipAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              latestWorkItemEvent={latestWorkItemEvent}
-              specsOnly={specsOnly}
-              includeSubTasks={includeSubTasksWipInspector}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
+          showDetail={false}
         />
-
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
@@ -88,7 +92,7 @@ function WipDashboard({
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
-              display={"flowboardSummary"}
+              display={"commonWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={wipAnalysisPeriod}
@@ -103,31 +107,14 @@ function WipDashboard({
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={true}
+          showDetail={false}
           hideTitlesInDetailView={true}
         />
-        <DashboardWidget
-          name={"code-reviews"}
-          className={styles.codeReviews}
-          title={"Review Requests"}
-          render={({view}) => (
-            <DimensionPullRequestsWidget
-              dimension={'project'}
-              instanceKey={key}
-              view={view}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              latestPullRequestEvent={latestPullRequestEvent}
-              asStatistic={true}
-            />
-          )}
-          showDetail={true}
-        />
+
         <DashboardWidget
           name="flow-metrics"
-          className={styles.flowMetrics}
-          title={"Closed"}
+          title={"Response Time"}       
+          className={styles.responseTime}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
@@ -135,7 +122,7 @@ function WipDashboard({
               dimension={'project'}
               instanceKey={key}
               view={view}
-              display={"performanceSummary"}
+              display={"responseTimeSummary"}
               context={context}
               latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
@@ -150,7 +137,7 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>

@@ -54,7 +54,7 @@ const FlowBoardSummaryView = ({
   );
 };
 
-const TeamWipBoardSummaryView = ({
+const CommonWipBoardSummaryView = ({
   pipelineCycleMetrics,
   specsOnly,
   targetPercentile,
@@ -227,9 +227,9 @@ const PipelineSummaryView = withViewerContext((
             }
           }/>
       )
-    case 'teamWipSummary':
+    case 'commonWipSummary':
       return (
-        <TeamWipBoardSummaryView
+        <CommonWipBoardSummaryView
           {
             ...{
               pipelineCycleMetrics,
