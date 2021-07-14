@@ -1,70 +1,44 @@
 .flowDashboard{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 2.5% 28% 2% 47.5%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 15% 27% 47.5%;
     gap: 0.5rem;
-    grid-template-areas: "leadTime quality valueMix valueMix team traceability"
-    "flowRow flowRow flowRow flowRow flowRow flowRow"
-    "closed closed funnel funnel wip wip"
-    "valueRow valueRow scopeSelector scopeSelector . ."
-    "valueBookClosed valueBookClosed valueMixChart valueMixChart valueBookWip valueBookWip"
+    grid-template-areas: "throughput throughput throughput pipeline pipeline pipeline pipeline leadAndCycleTime leadAndCycleTime leadAndCycleTime traceability traceability"
+    "volumeTrends volumeTrends volumeTrends volumeTrends pipelineFunnel pipelineFunnel pipelineFunnel pipelineFunnel responseTimeTrends responseTimeTrends responseTimeTrends responseTimeTrends"
+    "phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail";
 }
 
-.leadTime{
-    grid-area: leadTime;
+.throughput{
+    grid-area: throughput;
     padding: 0.25rem;
 }
-.quality{
-    grid-area: quality;
+.pipeline{
+    grid-area: pipeline;
     padding: 0.25rem;
 }
-.valueMix{
-    grid-area: valueMix;
-    padding: 0.25rem;
-}
-.team{
-    grid-area: team;
+.leadAndCycleTime{
+    grid-area: leadAndCycleTime;
     padding: 0.25rem;
 }
 .traceability{
     grid-area: traceability;
     padding: 0.25rem;
 }
-.flowRow{
-    grid-area: flowRow;
+.volumeTrends{
+    grid-area: volumeTrends;
     padding-left: 0.25rem;
     align-self: flex-end;
 }
-.closed{
-    grid-area: closed;
+
+.pipelineFunnel{
+    grid-area: pipelineFunnel;
     padding: 0.25rem;
 }
-.funnel{
-    grid-area: funnel;
+.responseTimeTrends{
+    grid-area: responseTimeTrends;
     padding: 0.25rem;
 }
-.wip{
-    grid-area: wip;
-    padding: 0.25rem;
-}
-.scopeSelector{
-    grid-area: scopeSelector;
-    align-self: flex-end;
-}
-.valueRow{
-    grid-area: valueRow;
-    padding-left: 0.25rem;
-    align-self: flex-end;
-}
-.valueBookClosed{
-    grid-area: valueBookClosed;
-    padding: 0.25rem;
-}
-.valueMixChart{
-    grid-area: valueMixChart;
-    padding: 0.25rem;
-}
-.valueBookWip{
-    grid-area: valueBookWip;
+.phaseDetail{
+    grid-area: phaseDetail;
     padding: 0.25rem;
 }
