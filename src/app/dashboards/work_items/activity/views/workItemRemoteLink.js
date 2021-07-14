@@ -3,6 +3,9 @@ import React from "react";
 
 import {capitalizeFirstLetter, elide} from "../../../../helpers/utility";
 import Button from "../../../../../components/uielements/button"
+import {Link} from "react-router-dom";
+import WorkItems from "../../../work_items/context";
+import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 
 function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
@@ -39,5 +42,18 @@ export const WorkItemRemoteLink = ({workItem}) => {
       : <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
         {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
       </h2>
+  );
+};
+
+export const WorkItemLinks = ({workItem}) => {
+  return (
+    <div style={{display: "flex"}}>
+      <WorkItemRemoteLink workItem={workItem} />
+      <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
+        <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
+          Go to Card
+        </Button>
+      </Link>
+    </div>
   );
 };

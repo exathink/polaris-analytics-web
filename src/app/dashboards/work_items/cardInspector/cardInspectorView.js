@@ -4,7 +4,7 @@ import {WorkItemDurationDetailsByStateWidget} from "../activity/durationDetails/
 import {WorkItemEventTimelineWidget} from "../activity/eventTimeline/workItemEventTimelineWidget";
 import {WorkItemFlowMetricsWidget} from "../activity/flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemImplementationCostWidget} from "../activity/implementationCosts/workItemImplementationCostWidget";
-import {WorkItemRemoteLink} from "../activity/views/workItemRemoteLink";
+import {WorkItemLinks} from "../activity/views/workItemRemoteLink";
 import {WorkItemStateView} from "../activity/views/workItemStateView";
 import styles from "./cardInspector.module.css";
 
@@ -16,7 +16,9 @@ export function CardInspectorView({workItem, context}) {
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={() => <WorkItemRemoteLink workItem={workItem} />}
+          render={() => (
+              <WorkItemLinks workItem={workItem} />
+          )}
         />
       </DashboardRow>
       <DashboardRow>
