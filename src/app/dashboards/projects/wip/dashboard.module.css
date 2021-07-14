@@ -1,12 +1,13 @@
 .wipDashboard{
+    height: 95%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 13% 35.5% 4% 1fr;
+    grid-template-rows: auto 35.5% 4% 45%;
     gap: 0.25rem 0.5rem;
     grid-template-areas: "flowMetrics flowMetrics flowMetrics flowMetrics pipeline pipeline pipeline pipeline responseTime responseTime responseTime responseTime"
     "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"
     "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
-    "commits commits commits commits commits commits commits commits commits commits commits commits"
+    "commits commits commits commits commits commits commits commits commits commits commits commits";
 }
 
 .responseTime{
