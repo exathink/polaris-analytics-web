@@ -71,7 +71,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
-              display={"teamWipSummary"}
+              display={"commonWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}
