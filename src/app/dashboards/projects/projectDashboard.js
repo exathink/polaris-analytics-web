@@ -88,7 +88,7 @@ class WithProject extends React.Component {
         client={analytics_service}
         query={gql`
           query with_project_instance($key: String!) {
-            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan]) {
+            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef]) {
               id
               name
               key
@@ -97,6 +97,7 @@ class WithProject extends React.Component {
               commitCount
               latestWorkItemEvent
               latestPullRequestEvent
+              organizationKey
               settings {
                 flowMetricsSettings {
                   cycleTimeTarget

@@ -6,6 +6,7 @@ import {Contexts} from "../../../meta/contexts";
 import Contributors from "../../contributors/context";
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ProjectDashboard} from "../projectDashboard";
+import {OrgTeamsTableWidget} from "../../organizations/contributors/teams/orgTeamsTableWidget";
 
 const dashboard_id = 'dashboards.contributors.project';
 
@@ -57,6 +58,14 @@ export const dashboard = () => (
                 showDetail={true}
               />
             </DashboardRow>
+            <DashboardRow h={"68%"} title={"Teams"}>
+            <DashboardWidget
+              w={1}
+              name={``}
+              render={({ view }) => <OrgTeamsTableWidget organizationKey={project.organizationKey} />}
+              showDetail={false}
+            />
+          </DashboardRow>
           </Dashboard>
         )
       }
