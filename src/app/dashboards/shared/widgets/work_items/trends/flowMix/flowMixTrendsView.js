@@ -32,11 +32,10 @@ export const ProjectFlowMixTrendsStatsView = (
   const currentMix = current.flowMix.reduce(reduceFlowMix, {metric: metric});
   const previousMix = previous.flowMix.reduce(reduceFlowMix, {metric: metric});
 
-  let [selectedMetricFeatureProps, selectedMetricDefectsProps, selectedMetricTasksProps] = [{}, {}, {}];
+  let selectedMetricStateProps = {};
+  const metricVal = "valueMix";
   if (selectedMetricState) {
-    selectedMetricFeatureProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("features")};
-    selectedMetricDefectsProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("defects")};
-    selectedMetricTasksProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("tasks")};
+    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1](metricVal)};
   }
   return (
     <div className={styles.flowMixWrapper}>
@@ -48,11 +47,11 @@ export const ProjectFlowMixTrendsStatsView = (
           uom={'%'}
           precision={2}
           target={target}
-          metric="features"
+          metric={metricVal}
           asCard={true}
           currentMeasurement={current}
           previousMeasurement={previous}
-          {...selectedMetricFeatureProps}
+          {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
       </div>
@@ -64,11 +63,11 @@ export const ProjectFlowMixTrendsStatsView = (
           uom={'%'}
           precision={2}
           target={target}
-          metric="defects"
+          metric={metricVal}
           asCard={true}
           currentMeasurement={current}
           previousMeasurement={previous}
-          {...selectedMetricDefectsProps}
+          {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
       </div>
@@ -79,11 +78,11 @@ export const ProjectFlowMixTrendsStatsView = (
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
           uom={'%'}
           precision={2}
-          metric="tasks"
+          metric={metricVal}
           asCard={true}
           currentMeasurement={current}
           previousMeasurement={previous}
-          {...selectedMetricTasksProps}
+          {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
       </div>
