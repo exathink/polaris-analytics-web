@@ -25,7 +25,7 @@ export function useQueryDimensionFlowMixTrends(
           $specsOnly: Boolean,
           $includeSubTasks: Boolean
           ) {
-      project(
+      ${dimension}(
             key: $key, 
             interfaces: [FlowMixTrends],
              flowMixTrendsArgs: {
