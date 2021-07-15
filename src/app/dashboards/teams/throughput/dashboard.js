@@ -7,6 +7,8 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSl
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix/flowMixTrendsWidget";
+import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
+import {ProjectEffortTrendsWidget} from "../../projects/shared/widgets/capacity";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -37,7 +39,82 @@ function DimensionThroughputDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const selectedMetricState = React.useState("totalEffort");
+  const selectedMetricState = React.useState("workItemsWithCommits");
+  const [selectedMetric] = selectedMetricState;
+
+  const widgetsMap = {
+    workItemsWithCommits: () => (
+      <DashboardWidget
+        name="volume-trends"
+        className={styles.selectedChartMap}
+        render={({view}) => (
+          <DimensionVolumeTrendsWidget
+            dimension={"team"}
+            instanceKey={key}
+            measurementWindow={daysRange}
+            days={daysRange}
+            samplingFrequency={7}
+            targetPercentile={0.7}
+            context={context}
+            view={view}
+            latestWorkItemEvent={latestWorkItemEvent}
+            leadTimeTarget={leadTimeTarget}
+            cycleTimeTarge={cycleTimeTarget}
+            leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+            cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+            includeSubTasks={includeSubTasksFlowMetrics}
+          />
+        )}
+        showDetail={false}
+      />
+    ),
+    totalEffort: () => (
+      <DashboardWidget
+        name="capacity"
+        className={styles.selectedChartMap}
+        render={({view}) => (
+          <ProjectEffortTrendsWidget
+            instanceKey={key}
+            measurementWindow={daysRange}
+            days={daysRange}
+            samplingFrequency={7}
+            context={context}
+            view={view}
+            latestWorkItemEvent={latestWorkItemEvent}
+            latestCommit={latestCommit}
+            target={0.9}
+            showEffort={true}
+            chartConfig={{totalEffortDisplayType: "spline"}}
+            includeSubTasks={includeSubTasksFlowMetrics}
+          />
+        )}
+        showDetail={false}
+      />
+    ),
+    valueMix: () => (
+      <DashboardWidget
+        name="flow-mix"
+        className={styles.selectedChartMap}
+        render={({view}) => (
+          <DimensionFlowMixTrendsWidget
+            dimension={"team"}
+            instanceKey={key}
+            measurementWindow={daysRange}
+            days={daysRange}
+            samplingFrequency={7}
+            context={context}
+            view={view}
+            latestWorkItemEvent={latestWorkItemEvent}
+            latestCommit={latestCommit}
+            specsOnly={true}
+            asStatistic={false}
+            includeSubTasks={includeSubTasksFlowMetrics}
+          />
+        )}
+        showDetail={false}
+      />
+    ),
+  };
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
@@ -104,6 +181,7 @@ function DimensionThroughputDashboard({
           showDetail={false}
         />
       </DashboardRow>
+      <DashboardRow>{widgetsMap[selectedMetric]?.()}</DashboardRow>
     </Dashboard>
   );
 }
