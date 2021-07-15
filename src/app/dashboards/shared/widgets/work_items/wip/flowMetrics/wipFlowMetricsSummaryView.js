@@ -6,7 +6,7 @@ import {
   AvgDuration,
   AvgLatency,
   CycleTimeCarousel,
-  EffortWIP,
+  WipCost,
   LatestCommit,
   PercentileAge,
   Wip,
@@ -69,10 +69,10 @@ const CommonWipBoardSummaryView = ({
     <div className={styles.boxWrapper}>
 
       <div>
-        <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
+        <Wip currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </div>
       <div>
-        <EffortWIP currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
+        <WipCost currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
       </div>
         <div>
         <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
@@ -169,7 +169,7 @@ export const ValueBoardSummaryView = (
                 borderTopColor: 'rgba(0,0,0,0.1)'
               }}>
         <VizItem w={1 / 3}>
-          <EffortWIP
+          <WipCost
             currentMeasurement={current}
           />
         </VizItem>

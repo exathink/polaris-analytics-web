@@ -577,12 +577,12 @@ export const EffortOUT = ({currentMeasurement, previousMeasurement, target, delt
   />
 );
 
-export const EffortWIP = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+export const WipCost = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
-    title={<span>{'Effort'}<sub>{'WIP'}</sub></span>}
+    title={<span>Wip Cost</span>}
     target={target}
     uom={'Dev-Days'}
     deltaThreshold={deltaThreshold}
