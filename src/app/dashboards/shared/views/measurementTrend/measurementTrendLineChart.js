@@ -209,6 +209,7 @@ export const MeasurementTrendLineChart = Chart({
           softMax: yAxisMax,
           // interpolate plotbands
           ...plotBands,
+          plotLines: plotLinesY
 
         },
         // interpolate tooltip
