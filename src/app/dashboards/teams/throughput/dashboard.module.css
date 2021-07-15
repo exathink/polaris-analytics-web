@@ -1,6 +1,7 @@
 .throughputDashboard {
   background-color: ghostwhite;
   display: grid;
+  grid-template-columns: 55% 44%;
   grid-template-rows: 7% auto 40%;
   grid-template-areas: "rangeSlider rangeSlider"
   "volumeCardsWidget valueMixChart"
