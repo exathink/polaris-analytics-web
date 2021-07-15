@@ -1,8 +1,10 @@
 .throughputDashboard {
+  background-color: ghostwhite;
   display: grid;
   grid-template-rows: 7% 40% auto;
   grid-template-areas: "rangeSlider rangeSlider"
   "volumeCardsWidget valueMixChart";
+  gap: 0.5rem;
 }
 
 .rangeSlider {

@@ -6,6 +6,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
+import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix/flowMixTrendsWidget";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -32,6 +33,7 @@ function DimensionThroughputDashboard({
     responseTimeConfidenceTarget,
     wipAnalysisPeriod,
     includeSubTasksFlowMetrics,
+    flowAnalysisPeriod,
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
@@ -71,6 +73,31 @@ function DimensionThroughputDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              selectedMetricState={selectedMetricState}
+            />
+          )}
+          showDetail={false}
+        />
+        <DashboardWidget
+          name="flow-type-flow-mix"
+          title="Value Mix"
+          className={styles.valueMixChart}
+          render={({view}) => (
+            <DimensionFlowMixTrendsWidget
+              dimension={"team"}
+              instanceKey={key}
+              measurementWindow={daysRange}
+              days={flowAnalysisPeriod}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              specsOnly={true}
+              showCounts={true}
+              chartOptions={{alignTitle: "left"}}
+              includeSubTasks={includeSubTasksFlowMetrics}
+              asStatistic={true}
               selectedMetricState={selectedMetricState}
             />
           )}

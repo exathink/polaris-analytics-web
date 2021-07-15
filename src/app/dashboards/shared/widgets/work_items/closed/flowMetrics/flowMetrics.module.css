@@ -34,35 +34,19 @@
 
 /* Throughput Detail View */
 .throughputDetailWrapper{
-    display: grid;
+    display: flex;
     height: 93%;
-    grid-template-areas: "volume effortOut . . ."
-    "volume effortOut . . ."
-    "volume effortOut features defects tasks"
-    "volume effortOut features defects tasks"
-    "volume effortOut features defects tasks";
     gap: 0.5rem;
 }
 
 .volume{
     height: 100%;
     grid-area: volume;
+    flex-grow: 1;
 }
 
 .effortOut{
     height: 100%;
     grid-area: effortOut;
-}
-
-.features{
-    grid-area: features;
-}
-
-.defects{
-    grid-area: defects;
-}
-
-.tasks{
-    height: 100%;
-    grid-area: tasks;
+    flex-grow: 1;
 }

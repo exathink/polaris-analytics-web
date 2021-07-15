@@ -24,7 +24,8 @@ export const DimensionFlowMixTrendsWidget = (
     showCounts,
     chartOptions,
     pollInterval,
-    includeSubTasks
+    includeSubTasks,
+    selectedMetricState
   }) => {
 
     const {loading, error, data} = useQueryDimensionFlowMixTrends(
@@ -53,6 +54,7 @@ export const DimensionFlowMixTrendsWidget = (
           view={view}
           chartOptions={chartOptions}
           showCounts={showCounts}
+          selectedMetricState={selectedMetricState}
         />
         :
         <DimensionFlowMixTrendsDetailDashboard
