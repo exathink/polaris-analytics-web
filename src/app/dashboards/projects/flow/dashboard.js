@@ -36,9 +36,9 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
       <DashboardRow h="12%">
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Throughput"}
+          title={"Throughput"}
           className={styles.throughput}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -58,7 +58,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="pipeline"
@@ -90,9 +90,9 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
 
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Response Time"}
+          title={"Response Time"}
           className={styles.leadAndCycleTime}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -118,7 +118,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="traceability"
           title={"Traceability"}
           className={styles.traceability}
-          subtitle={`${flowAnalysisPeriod} Days`}
           hideTitlesInDetailView={"true"}
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
@@ -130,7 +129,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              asStatistic={{title: "Current"}}
+              asStatistic={{title: "Last 30 Days"}}
+              primaryStatOnly={true}
               target={0.9}
             />
           )}

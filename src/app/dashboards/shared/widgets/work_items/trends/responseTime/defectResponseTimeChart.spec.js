@@ -297,21 +297,15 @@ describe("DefectResponseTimeChart", () => {
         yAxis: {plotBands, plotLines},
       } = renderedChartConfig(<DefectResponseTimeChart {...propsFixture} />);
 
-      test("it has a single plot band on the y-axis", () => {
-        expect(plotBands.length).toBe(1);
+      test("it does not have a plot band on the y-axis", () => {
+        expect(plotBands).toBeUndefined();
       });
 
-      test("it has a three plot lines on the y-axis", () => {
-        expect(plotLines.length).toBe(3);
+      test("it has a single plot lines on the y-axis", () => {
+        expect(plotLines.length).toBe(1);
       });
 
-      test("it uses the min and max value of the avgCycleTime for the range of the plot bands", () => {
-        expect(plotBands).toMatchObject(plotBandsConfig.plotBands);
-      });
 
-      test("it uses the min and max value of the avgCycleTime for the range of the plot lines", () => {
-        expect(plotLines).toMatchObject(plotBandsConfig.plotLines);
-      });
     });
   });
 });

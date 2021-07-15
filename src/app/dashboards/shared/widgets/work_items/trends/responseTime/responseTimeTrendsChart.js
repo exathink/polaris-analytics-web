@@ -1,44 +1,57 @@
-import React from 'react';
+import React from "react";
 import {i18nDate, i18nNumber, percentileToText} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
 
-
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
-    case 'percentileCycleTime': {
-      return [`${percentileToText(targetPercentile)} Cycle Time: `, `${i18nNumber(intl, measurement.percentileCycleTime)} days`]
+    case "percentileCycleTime": {
+      return [
+        `${percentileToText(targetPercentile)} Cycle Time: `,
+        `${i18nNumber(intl, measurement.percentileCycleTime)} days`,
+      ];
     }
-    case 'percentileLeadTime': {
-      return [`${percentileToText(targetPercentile)} Lead Time: `, `${i18nNumber(intl, measurement.percentileLeadTime)} days`]
+    case "percentileLeadTime": {
+      return [
+        `${percentileToText(targetPercentile)} Lead Time: `,
+        `${i18nNumber(intl, measurement.percentileLeadTime)} days`,
+      ];
     }
-    case 'percentileDuration': {
-      return [`${percentileToText(targetPercentile)} Duration: `, `${i18nNumber(intl, measurement.percentileDuration)} days`]
+    case "percentileDuration": {
+      return [
+        `${percentileToText(targetPercentile)} Duration: `,
+        `${i18nNumber(intl, measurement.percentileDuration)} days`,
+      ];
     }
-    case 'percentileLatency': {
-      return [`${percentileToText(targetPercentile)} Delivery Latency: `, `${i18nNumber(intl, measurement.percentileLatency)} days`]
+    case "percentileLatency": {
+      return [
+        `${percentileToText(targetPercentile)} Delivery Latency: `,
+        `${i18nNumber(intl, measurement.percentileLatency)} days`,
+      ];
     }
-    case 'percentileEffort': {
-      return [`${percentileToText(targetPercentile)} Effort: `, `${i18nNumber(intl, measurement.percentileEffort)} dev-days`]
+    case "percentileEffort": {
+      return [
+        `${percentileToText(targetPercentile)} Effort: `,
+        `${i18nNumber(intl, measurement.percentileEffort)} dev-days`,
+      ];
     }
-    case 'avgCycleTime': {
-      return [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`]
+    case "avgCycleTime": {
+      return [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`];
     }
-    case 'avgLeadTime': {
-      return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`]
+    case "avgLeadTime": {
+      return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`];
     }
-    case 'avgDuration': {
-      return [`Avg. Implementation: `, `${i18nNumber(intl, measurement.avgDuration)} days`]
+    case "avgDuration": {
+      return [`Avg. Implementation: `, `${i18nNumber(intl, measurement.avgDuration)} days`];
     }
-    case 'avgLatency': {
-      return [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`]
+    case "avgLatency": {
+      return [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`];
     }
-    case 'avgEffort': {
-      return [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`]
+    case "avgEffort": {
+      return [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`];
     }
     default: {
-      return ['', '']
+      return ["", ""];
     }
-
   }
 }
 function isVisibleByDefault(defaultSeries, series) {
@@ -76,18 +89,27 @@ export const ResponseTimeTrendsChart = (
       title: 'Response Time',
       legendText: specsOnly != null && !specsOnly ? 'All Cards' : 'Specs',
       yAxisUom: 'Days',
-      plotBands: {
-        metric: 'avgCycleTime'
-      },
       plotLinesY: [
+        {
+            color: "blue",
+            value: leadTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: `${percentileToText(targetPercentile)} LTT=${leadTimeTarget}`,
+              align: 'left',
+              verticalAlign: 'middle',
+            },
+            zIndex: 5,
+          },
         {
             color: "orange",
             value: cycleTimeTarget,
             dashStyle: "longdashdot",
             width: 1,
             label: {
-              text: `T=${cycleTimeTarget}`,
-              align: 'right',
+              text: `${percentileToText(targetPercentile)} CTT=${cycleTimeTarget}`,
+              align: 'left',
               verticalAlign: 'middle',
             },
             zIndex: 5,
