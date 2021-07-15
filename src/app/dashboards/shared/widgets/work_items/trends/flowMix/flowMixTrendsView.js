@@ -103,10 +103,11 @@ export const ProjectFlowMixTrendsView = (
     view,
     showCounts,
     target,
+    selectedMetricState
   }) => (
     asStatistic ?
       <ProjectFlowMixTrendsStatsView
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
+        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target, selectedMetricState}  }
       />
       :
       <FlowMixTrendsChart
