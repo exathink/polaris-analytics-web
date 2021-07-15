@@ -36,7 +36,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
       <DashboardRow h="12%">
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Throughput"}
+          title={"Throughput"}
           className={styles.throughput}
           subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -90,7 +90,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
 
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Response Time"}
+          title={"Response Time"}
           className={styles.leadAndCycleTime}
           subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
