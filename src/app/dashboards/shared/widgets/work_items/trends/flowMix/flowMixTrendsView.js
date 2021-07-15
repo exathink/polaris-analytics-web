@@ -4,6 +4,7 @@ import {percentage} from "../../../../../../helpers/utility";
 
 import {FlowMixTrendsChart} from "./flowMixTrendsChart";
 import styles from "./flowMix.module.css";
+import {TrendIndicator} from "../../../../../../components/misc/statistic/statistic";
 
 export const reduceFlowMix = (result, item) => {
   result[item.category] = item;
@@ -25,7 +26,7 @@ export const ProjectFlowMixTrendsStatsView = (
     showCounts,
     asStatistic,
     target,
-    selectedMetricState
+    selectedMetricState,
   }) => {
   const [current, previous] = flowMixTrends;
   const metric = specsOnly ? 'totalEffort' : 'workItemCount';
@@ -49,8 +50,9 @@ export const ProjectFlowMixTrendsStatsView = (
           target={target}
           metric={metricVal}
           asCard={true}
-          currentMeasurement={current}
+          currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
+          good={TrendIndicator.isNegative}
           {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
@@ -65,8 +67,9 @@ export const ProjectFlowMixTrendsStatsView = (
           target={target}
           metric={metricVal}
           asCard={true}
-          currentMeasurement={current}
+          currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
+          good={TrendIndicator.isNegative}
           {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
@@ -80,8 +83,9 @@ export const ProjectFlowMixTrendsStatsView = (
           precision={2}
           metric={metricVal}
           asCard={true}
-          currentMeasurement={current}
+          currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
+          good={TrendIndicator.isNegative}
           {...selectedMetricStateProps}
           info={{headline: "", content: ""}}
         />
