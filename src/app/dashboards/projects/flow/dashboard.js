@@ -38,7 +38,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="flow-metrics"
           title={"Spec Throughput"}
           className={styles.throughput}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -84,7 +84,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={false}
+          showDetail={true}
           hideTitlesInDetailView={true}
         />
 
@@ -92,7 +92,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="flow-metrics"
           title={"Spec Response Time"}
           className={styles.leadAndCycleTime}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -112,13 +112,12 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="traceability"
           title={"Traceability"}
           className={styles.traceability}
-          subtitle={`${flowAnalysisPeriod} Days`}
           hideTitlesInDetailView={"true"}
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
@@ -130,7 +129,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              asStatistic={{title: "Current"}}
+              asStatistic={{title: "Last 30 Days"}}
+              primaryStatOnly={true}
               target={0.9}
             />
           )}
