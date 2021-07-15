@@ -1,12 +1,13 @@
 import React from "react";
-import {Loading} from "../../../../../components/graphql/loading";
+import {Loading} from "../../../../../../components/graphql/loading";
 
-import {useQueryProjectFlowMixTrends} from "./useQueryProjectFlowMixTrends";
+import {useQueryDimensionFlowMixTrends} from "./useQueryDimensionFlowMixTrends";
 import {ProjectFlowMixTrendsView} from "./flowMixTrendsView";
-import {ProjectFlowMixTrendsDetailDashboard} from "./flowMixTrendsDetailDashboard";
+import {DimensionFlowMixTrendsDetailDashboard} from "./flowMixTrendsDetailDashboard";
 
-export const ProjectFlowMixTrendsWidget = (
+export const DimensionFlowMixTrendsWidget = (
   {
+    dimension,
     instanceKey,
     view,
     context,
@@ -26,19 +27,20 @@ export const ProjectFlowMixTrendsWidget = (
     includeSubTasks
   }) => {
 
-    const {loading, error, data} = useQueryProjectFlowMixTrends(
+    const {loading, error, data} = useQueryDimensionFlowMixTrends(
       {
-        instanceKey: instanceKey,
-        days: days,
-        measurementWindow: measurementWindow,
-        samplingFrequency: samplingFrequency,
+        dimension,
+        instanceKey,
+        days,
+        measurementWindow,
+        samplingFrequency,
         specsOnly: specsOnly != null? specsOnly : false,
         includeSubTasks: includeSubTasks
       }
     );
     if (loading) return <Loading/>;
     if (error) return null;
-    const {flowMixTrends} = data['project'];
+    const {flowMixTrends} = data[dimension];
     return (
       view !== 'detail' ?
         <ProjectFlowMixTrendsView
@@ -53,7 +55,8 @@ export const ProjectFlowMixTrendsWidget = (
           showCounts={showCounts}
         />
         :
-        <ProjectFlowMixTrendsDetailDashboard
+        <DimensionFlowMixTrendsDetailDashboard
+          dimension={dimension}
           instanceKey={instanceKey}
           measurementWindow={measurementWindow}
           days={days}

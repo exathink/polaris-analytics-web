@@ -1,7 +1,7 @@
 import React from 'react';
-import {FlowStatistic} from "../../../../shared/components/flowStatistics/flowStatistics";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {percentage} from "../../../../../helpers/utility";
+import {FlowStatistic} from "../../../../components/flowStatistics/flowStatistics";
+import {VizItem, VizRow} from "../../../../containers/layout";
+import {percentage} from "../../../../../../helpers/utility";
 
 import {FlowMixTrendsChart} from "./flowMixTrendsChart";
 

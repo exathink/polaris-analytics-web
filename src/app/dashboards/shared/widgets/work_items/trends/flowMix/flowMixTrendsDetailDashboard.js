@@ -1,18 +1,19 @@
 import React, {useState} from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectFlowMixTrendsWidget} from "./flowMixTrendsWidget";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
+import {DimensionFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../components/workItemScopeSelector";
-import {ProjectTraceabilityTrendsWidget} from "../../../../shared/widgets/commits/traceability";
+import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {ProjectTraceabilityTrendsWidget} from "../../../commits/traceability";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
+} from "../../../../components/trendingControlBar/trendingControlBar";
 
 const dashboard_id = 'dashboards.projects.trends.flow-mix.detail';
 
-export const ProjectFlowMixTrendsDetailDashboard = (
+export const DimensionFlowMixTrendsDetailDashboard = (
   {
+    dimension,
     instanceKey,
     measurementWindow,
     days,
@@ -89,7 +90,8 @@ export const ProjectFlowMixTrendsDetailDashboard = (
           name={'flow-mix'}
           render={
             ({view}) =>
-              <ProjectFlowMixTrendsWidget
+              <DimensionFlowMixTrendsWidget
+                dimension={dimension}
                 instanceKey={instanceKey}
                 measurementWindow={measurementWindowRange}
                 days={daysRange}
