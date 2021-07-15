@@ -120,7 +120,7 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
             stateType={selectedStateType}
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
-            title={`${selectedStateType !== WorkItemStateTypes.closed ? 'Card Age' : 'Lead Time'}:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+            title={`${candidateWorkItems.length} ${workItemScope === 'specs'? 'Specs' : 'Cards'} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
             targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log(`Selection changed: ${workItems.length}`);
