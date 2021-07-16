@@ -1,7 +1,7 @@
 import React from "react";
 import {useQueryRepositories} from "./useQueryRepositories";
 import {useSearch} from "../../../../components/tables/hooks";
-import {StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {fromNow, human_span} from "../../../../helpers/utility";
@@ -29,12 +29,14 @@ export function useRepositoriesTableColumns({statusTypes}) {
       dataIndex: "commitCount",
       key: "commitCount",
       width: "7%",
+      sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
     },
     {
       title: "Contributors",
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "5%",
+      width: "6%",
+      sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
     },
     {
       title: "History",
@@ -47,7 +49,7 @@ export function useRepositoriesTableColumns({statusTypes}) {
       title: "Latest Commit",
       dataIndex: "latestCommit",
       key: "latestCommit",
-      width: "10%",
+      width: "8%",
       render: (latestCommit) => fromNow(latestCommit),
     },
     {
