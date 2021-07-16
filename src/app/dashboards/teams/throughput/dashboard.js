@@ -95,7 +95,7 @@ function DimensionThroughputDashboard({
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              specsOnly={true}
+              specsOnly={selectedMetric==="totalEffort"}
               showCounts={true}
               includeSubTasks={includeSubTasksFlowMetrics}
               asStatistic={true}
