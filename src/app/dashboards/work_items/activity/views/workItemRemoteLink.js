@@ -24,36 +24,43 @@ function getRemoteBrowseUrl(workItem) {
   }
 }
 
-export const WorkItemRemoteLink = ({workItem}) => {
+export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
   const remoteBrowseUrl = getRemoteBrowseUrl(workItem);
 
-  return (
-    remoteBrowseUrl ?
-      <a href={remoteBrowseUrl} target={"_blank"} rel="noopener noreferrer" title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}>
-        <RowNoOverflow align={'center'}>
-          <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-            {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
-          </h2>
-          <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
+  const getRemoteLinkButton = () => {
+    if (remoteBrowseUrl) {
+      return (
+        <a
+          href={remoteBrowseUrl}
+          target={"_blank"}
+          rel="noopener noreferrer"
+          title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
+        >
+          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
             View on {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
-        </RowNoOverflow>
-      </a>
-      : <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-        {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
-      </h2>
-  );
-};
-
-export const WorkItemLinks = ({workItem}) => {
+        </a>
+      );
+    } else {
+      return null
+    }
+  };
   return (
-    <div style={{display: "flex"}}>
-      <WorkItemRemoteLink workItem={workItem} />
-      <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
-        <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
-          Go to Card
-        </Button>
-      </Link>
-    </div>
+    <RowNoOverflow>
+      <div>
+        <h2 style={{color: "#7c7c7c", fontSize: "2.3vh", marginBottom: 0}}>{`${workItem.displayId}: ${elide(
+          workItem.name,
+          250
+        )}`}</h2>
+      </div>
+      {getRemoteLinkButton()}
+      {goToCardLink && (
+        <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
+          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
+            Go to Card
+          </Button>
+        </Link>
+      )}
+    </RowNoOverflow>
   );
 };
