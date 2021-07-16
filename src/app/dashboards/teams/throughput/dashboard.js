@@ -121,6 +121,7 @@ function DimensionThroughputDashboard({
               latestCommit={latestCommit}
               specsOnly={true}
               asStatistic={false}
+              showCounts={true}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
