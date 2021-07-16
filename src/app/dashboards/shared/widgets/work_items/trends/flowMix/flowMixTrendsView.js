@@ -53,6 +53,7 @@ export const ProjectFlowMixTrendsStatsView = (
           showHighlighted={selectedMetric===metricVal}
           onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
+          size={"small"}
         />
       </div>
       <div className={styles.defects}>
@@ -71,6 +72,7 @@ export const ProjectFlowMixTrendsStatsView = (
           showHighlighted={selectedMetric===metricVal}
           onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
+          size={"small"}
         />
       </div>
       <div className={styles.tasks}>
@@ -88,6 +90,7 @@ export const ProjectFlowMixTrendsStatsView = (
           showHighlighted={selectedMetric===metricVal}
           onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
+          size={"small"}
         />
       </div>
     </div>

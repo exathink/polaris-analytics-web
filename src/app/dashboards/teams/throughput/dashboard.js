@@ -7,8 +7,8 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSl
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix/flowMixTrendsWidget";
-import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
-import {ProjectEffortTrendsWidget} from "../../projects/shared/widgets/capacity";
+// import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
+// import {ProjectEffortTrendsWidget} from "../../projects/shared/widgets/capacity";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 

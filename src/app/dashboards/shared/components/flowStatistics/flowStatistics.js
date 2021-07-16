@@ -31,7 +31,8 @@ export const FlowStatistic = ({
   valueRender = (value) => value,
   info,
   showHighlighted,
-  onClick
+  onClick,
+  size
 }) => {
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
@@ -77,6 +78,7 @@ export const FlowStatistic = ({
           measurementWindow={currentMeasurement.measurementWindow}
         />
       }
+      size={size}
       info={info}
 
     />

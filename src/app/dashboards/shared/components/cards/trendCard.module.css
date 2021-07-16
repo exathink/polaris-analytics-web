@@ -34,10 +34,19 @@
   font-weight: 400;
 }
 
-.metricValue {
+.largeMetricValue {
   grid-area: metricValue;
   color: rgba(75, 85, 99, 1);
   font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  align-self: flex-end;
+}
+
+.smallMetricValue {
+  grid-area: metricValue;
+  color: rgba(75, 85, 99, 1);
+  font-size: 1.2rem;
   line-height: 2.25rem;
   font-weight: 500;
   align-self: flex-end;

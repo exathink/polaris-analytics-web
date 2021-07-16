@@ -1,7 +1,7 @@
 .throughputDashboard {
   background-color: ghostwhite;
   display: grid;
-  grid-template-columns: 42% 57%;
+  grid-template-columns: 44% 55%;
   grid-template-rows: 7% auto auto auto 55%;
   grid-template-areas: "rangeSlider rangeSlider"
   "throughputMetrics ."
