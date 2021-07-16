@@ -33,11 +33,8 @@ export const ProjectFlowMixTrendsStatsView = (
   const currentMix = current.flowMix.reduce(reduceFlowMix, {metric: metric});
   const previousMix = previous.flowMix.reduce(reduceFlowMix, {metric: metric});
 
-  let selectedMetricStateProps = {};
+  const [selectedMetric, setSelectedMetric] = selectedMetricState;
   const metricVal = "valueMix";
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1](metricVal)};
-  }
   return (
     <div className={styles.flowMixWrapper}>
       <div className={styles.features}>
@@ -53,7 +50,8 @@ export const ProjectFlowMixTrendsStatsView = (
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          {...selectedMetricStateProps}
+          showHighlighted={selectedMetric===metricVal}
+          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
         />
       </div>
@@ -70,7 +68,8 @@ export const ProjectFlowMixTrendsStatsView = (
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          {...selectedMetricStateProps}
+          showHighlighted={selectedMetric===metricVal}
+          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
         />
       </div>
@@ -86,7 +85,8 @@ export const ProjectFlowMixTrendsStatsView = (
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          {...selectedMetricStateProps}
+          showHighlighted={selectedMetric===metricVal}
+          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
         />
       </div>
