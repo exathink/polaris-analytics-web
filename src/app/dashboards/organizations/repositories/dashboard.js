@@ -80,7 +80,8 @@ const TopDashboard =  () => (
                 render={
                   () =>
                     <RepositoriesTableWidget
-                      organizationKey={organization.key}
+                      dimension="organization"
+                      instanceKey={organization.key}
                     />
                 }
                 showDetail={false}
