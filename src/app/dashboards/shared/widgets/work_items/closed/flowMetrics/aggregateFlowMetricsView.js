@@ -415,7 +415,7 @@ export const ThroughputDetailView = ({
           previousMeasurement={previous}
           specsOnly={specsOnly}
           showHighlighted={selectedMetric==="totalEffort"}
-          onClick={() => setSelectedMetric(metric)}
+          onClick={() => setSelectedMetric("totalEffort")}
         />
       </div>
     </div>

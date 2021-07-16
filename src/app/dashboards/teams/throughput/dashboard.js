@@ -39,6 +39,7 @@ function DimensionThroughputDashboard({
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const selectedMetricState = React.useState("workItemsWithCommits");
+  const [selectedMetric] = selectedMetricState;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
@@ -119,7 +120,7 @@ function DimensionThroughputDashboard({
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              specsOnly={true}
+              specsOnly={selectedMetric==="totalEffort"}
               asStatistic={false}
               showCounts={true}
               includeSubTasks={includeSubTasksFlowMetrics}
