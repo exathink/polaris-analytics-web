@@ -35,86 +35,10 @@ function DimensionThroughputDashboard({
     responseTimeConfidenceTarget,
     wipAnalysisPeriod,
     includeSubTasksFlowMetrics,
-    flowAnalysisPeriod,
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const selectedMetricState = React.useState("workItemsWithCommits");
-  const [selectedMetric] = selectedMetricState;
-
-  const widgetsMap = {
-    workItemsWithCommits: () => (
-      <DashboardWidget
-        name="volume-trends"
-        className={styles.selectedChartMap}
-        render={({view}) => (
-          <DimensionVolumeTrendsWidget
-            dimension={"team"}
-            instanceKey={key}
-            measurementWindow={daysRange}
-            days={daysRange}
-            samplingFrequency={7}
-            targetPercentile={0.7}
-            context={context}
-            view={view}
-            latestWorkItemEvent={latestWorkItemEvent}
-            leadTimeTarget={leadTimeTarget}
-            cycleTimeTarge={cycleTimeTarget}
-            leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-            cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-            includeSubTasks={includeSubTasksFlowMetrics}
-          />
-        )}
-        showDetail={false}
-      />
-    ),
-    totalEffort: () => (
-      <DashboardWidget
-        name="capacity"
-        className={styles.selectedChartMap}
-        render={({view}) => (
-          <ProjectEffortTrendsWidget
-            instanceKey={key}
-            measurementWindow={daysRange}
-            days={daysRange}
-            samplingFrequency={7}
-            context={context}
-            view={view}
-            latestWorkItemEvent={latestWorkItemEvent}
-            latestCommit={latestCommit}
-            target={0.9}
-            showEffort={true}
-            chartConfig={{totalEffortDisplayType: "spline"}}
-            includeSubTasks={includeSubTasksFlowMetrics}
-          />
-        )}
-        showDetail={false}
-      />
-    ),
-    valueMix: () => (
-      <DashboardWidget
-        name="flow-mix"
-        className={styles.selectedChartMap}
-        render={({view}) => (
-          <DimensionFlowMixTrendsWidget
-            dimension={"team"}
-            instanceKey={key}
-            measurementWindow={daysRange}
-            days={daysRange}
-            samplingFrequency={7}
-            context={context}
-            view={view}
-            latestWorkItemEvent={latestWorkItemEvent}
-            latestCommit={latestCommit}
-            specsOnly={true}
-            asStatistic={false}
-            includeSubTasks={includeSubTasksFlowMetrics}
-          />
-        )}
-        showDetail={false}
-      />
-    ),
-  };
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
@@ -158,13 +82,13 @@ function DimensionThroughputDashboard({
         <DashboardWidget
           name="flow-type-flow-mix"
           title="Value Mix"
-          className={styles.valueMixChart}
+          className={styles.valueMix}
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"team"}
               instanceKey={key}
               measurementWindow={daysRange}
-              days={flowAnalysisPeriod}
+              days={daysRange}
               samplingFrequency={7}
               context={context}
               view={view}
@@ -172,7 +96,6 @@ function DimensionThroughputDashboard({
               latestCommit={latestCommit}
               specsOnly={true}
               showCounts={true}
-              chartOptions={{alignTitle: "left"}}
               includeSubTasks={includeSubTasksFlowMetrics}
               asStatistic={true}
               selectedMetricState={selectedMetricState}
@@ -181,7 +104,29 @@ function DimensionThroughputDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow>{widgetsMap[selectedMetric]?.()}</DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
+          name="flow-mix"
+          className={styles.valueMixChart}
+          render={({view}) => (
+            <DimensionFlowMixTrendsWidget
+              dimension={"team"}
+              instanceKey={key}
+              measurementWindow={daysRange}
+              days={daysRange}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              specsOnly={true}
+              asStatistic={false}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={false}
+        />
+      </DashboardRow>
     </Dashboard>
   );
 }

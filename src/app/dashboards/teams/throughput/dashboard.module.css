@@ -5,9 +5,9 @@
   grid-template-rows: 7% auto auto auto 55%;
   grid-template-areas: "rangeSlider rangeSlider"
   "throughputMetrics ."
-  "throughputMetrics valueMixChart"
-  "throughputMetrics valueMixChart"
-  "selectedChartMap selectedChartMap";
+  "throughputMetrics valueMix"
+  "throughputMetrics valueMix"
+  "valueMixChart valueMixChart";
   gap: 0.5rem;
 }
 
@@ -21,10 +21,10 @@
   grid-area: throughputMetrics;
 }
 
-.valueMixChart{
-  grid-area: valueMixChart;
+.valueMix{
+  grid-area: valueMix;
 }
 
-.selectedChartMap{
-  grid-area: selectedChartMap;
+.valueMixChart{
+  grid-area: valueMixChart;
 }
