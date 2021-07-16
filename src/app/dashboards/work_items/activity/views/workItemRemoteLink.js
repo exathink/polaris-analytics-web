@@ -3,6 +3,9 @@ import React from "react";
 
 import {capitalizeFirstLetter, elide} from "../../../../helpers/utility";
 import Button from "../../../../../components/uielements/button"
+import {Link} from "react-router-dom";
+import WorkItems from "../../../work_items/context";
+import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 
 function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
@@ -21,23 +24,43 @@ function getRemoteBrowseUrl(workItem) {
   }
 }
 
-export const WorkItemRemoteLink = ({workItem}) => {
+export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
   const remoteBrowseUrl = getRemoteBrowseUrl(workItem);
 
-  return (
-    remoteBrowseUrl ?
-      <a href={remoteBrowseUrl} target={"_blank"} rel="noopener noreferrer" title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}>
-        <RowNoOverflow align={'center'}>
-          <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-            {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
-          </h2>
-          <Button type="primary" size="small" style={{margin: "0 0 10px 15px"}}>
+  const getRemoteLinkButton = () => {
+    if (remoteBrowseUrl) {
+      return (
+        <a
+          href={remoteBrowseUrl}
+          target={"_blank"}
+          rel="noopener noreferrer"
+          title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
+        >
+          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
             View in {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
-        </RowNoOverflow>
-      </a>
-      : <h2 style={{color: "#7c7c7c", fontSize: '2.3vh'}}>
-        {`${workItem.displayId}: ${elide(workItem.name, 250)}`}
-      </h2>
+        </a>
+      );
+    } else {
+      return null
+    }
+  };
+  return (
+    <RowNoOverflow>
+      <div>
+        <h2 style={{color: "#7c7c7c", fontSize: "2.3vh", marginBottom: 0}}>{`${workItem.displayId}: ${elide(
+          workItem.name,
+          250
+        )}`}</h2>
+      </div>
+      {getRemoteLinkButton()}
+      {goToCardLink && (
+        <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
+          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
+            Go to Card
+          </Button>
+        </Link>
+      )}
+    </RowNoOverflow>
   );
 };
