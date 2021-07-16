@@ -100,7 +100,7 @@ export const FlowStatistic = ({
 };
 
 
-export const ResponseTime = ({title, info, asCard, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, selectedMetric, setSelectedMetric}) => (
+export const ResponseTime = ({title, info, asCard, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
@@ -113,18 +113,14 @@ export const ResponseTime = ({title, info, asCard, currentMeasurement, previousM
     target={target}
     asCard={asCard}
     info={info}
-    selectedMetric={selectedMetric}
-    setSelectedMetric={setSelectedMetric}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
   />
 );
 
 
-export const Volume = ({title, asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, selectedMetricState}) => {
+export const Volume = ({title, asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, onClick, showHighlighted}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1](metric)};
-  }
 
   return <FlowStatistic
     title={title || "Volume"}
@@ -137,7 +133,8 @@ export const Volume = ({title, asCard, currentMeasurement, previousMeasurement, 
     asCard={asCard}
     target={target}
     measurementWindow={measurementWindow}
-    {...selectedMetricStateProps}
+    showHighlighted={showHighlighted}
+    onClick={onClick}
     info={{
       headline: "sample headline",
       drawerContent: <div><p>Some content</p></div>
@@ -225,11 +222,7 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
   />
 );
 
-export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgEffort")};
-  }
+export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold, onClick, showHighlighted}) => {
 
   return <FlowStatistic
     title={<span>{'Effort'}<sup> {'Avg'} </sup></span>}
@@ -243,7 +236,8 @@ export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good
     deltaThreshold={deltaThreshold}
     target={target}
     asCard={asCard}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "The average elapsed time a card spent in implementation and delivery.",
       drawerContent: <div><p>Some content</p></div>
@@ -280,11 +274,7 @@ export const MaxEffort = ({currentMeasurement, previousMeasurement, good, target
   />
 );
 
-export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgDuration")};
-  }
+export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, onClick, showHighlighted}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -295,7 +285,8 @@ export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, sh
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "The elapsed time from the earliest commit to the latest commit.",
       drawerContent: <div><p>Some content</p></div>
@@ -328,11 +319,7 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgLatency")};
-  }
+export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, onClick, showHighlighted}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -343,7 +330,8 @@ export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasureme
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "The elapsed time from the latest commit till the time the card was closed.",
       drawerContent: <div><p>Some content</p></div>
@@ -389,11 +377,7 @@ export const MinCycleTime = ({currentMeasurement, previousMeasurement, target, d
 );
 
 
-export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgCycleTime")};
-  }
+export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -404,7 +388,8 @@ export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, t
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "The average elapsed time a card spent in implementation and delivery.",
       drawerContent: <div><p>Some content</p></div>
@@ -462,11 +447,7 @@ export const PercentileAge = ({title, currentMeasurement, previousMeasurement, t
   />
 );
 
-export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("avgLeadTime")};
-  }
+export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -477,7 +458,8 @@ export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, ta
     target={target}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "The average elapsed time since a card was created to the time the card was closed.",
       drawerContent: <div><p>Some content</p></div>
@@ -514,11 +496,7 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 //  Commit Days
 // ----
 
-export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, selectedMetricState}) => {
-  let selectedMetricStateProps = {}
-  if (selectedMetricState) {
-    selectedMetricStateProps = {selectedMetric: selectedMetricState[0], setSelectedMetric: () => selectedMetricState[1]("totalEffort")};
-  }
+export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
 
   return <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
@@ -530,7 +508,8 @@ export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasureme
     deltaThreshold={deltaThreshold}
     asCard={asCard}
     target={target}
-    {...selectedMetricStateProps}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
     info={{
       headline: "sample headline",
       drawerContent: <div><p>Some content</p></div>
