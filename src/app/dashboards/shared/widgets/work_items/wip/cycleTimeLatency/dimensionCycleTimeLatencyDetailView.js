@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
 import {Button, Drawer} from "antd";
-import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";

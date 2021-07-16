@@ -151,7 +151,7 @@ export const MeasurementTrendLineChart = Chart({
     chartUpdateProps: props => pick(props, 'measurements', 'metrics', 'config', 'measurementWindow', 'measurementPeriod'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points.map(point => point.measurement),
-    getConfig: ({measurements, metrics, measurementPeriod, measurementWindow, config, intl}) => {
+    getConfig: ({measurements, metrics, measurementPeriod, measurementWindow, showPlotBands, config, intl}) => {
 
       const series = getMeasurementTrendSeriesForMetrics(metrics, measurements);
 
@@ -160,7 +160,7 @@ export const MeasurementTrendLineChart = Chart({
       const {plotLinesY} = config
       const {min: yAxisMin, max: yAxisMax} = getYAxisRange(plotLinesY, min, max)
 
-      const plotBands = getPlotBands(config, measurements, metrics, plotLinesY, intl);
+      const plotBands = showPlotBands ? getPlotBands(config, measurements, metrics, plotLinesY, intl) : [];
 
 
       const tooltip = getTooltip(config, intl);
@@ -209,6 +209,7 @@ export const MeasurementTrendLineChart = Chart({
           softMax: yAxisMax,
           // interpolate plotbands
           ...plotBands,
+          plotLines: plotLinesY
 
         },
         // interpolate tooltip

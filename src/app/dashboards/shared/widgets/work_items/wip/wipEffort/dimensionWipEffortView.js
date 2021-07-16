@@ -2,7 +2,7 @@ import React from 'react';
 import WorkItems from "../../../../../work_items/context";
 import {WorkItemsEffortChart} from "../../../../charts/workItemCharts/workItemsEffortChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
-import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {Flex} from "reflexbox";
 
 export const DimensionWipEffortView = (

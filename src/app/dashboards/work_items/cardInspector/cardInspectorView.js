@@ -16,7 +16,9 @@ export function CardInspectorView({workItem, context}) {
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={() => <WorkItemRemoteLink workItem={workItem} />}
+          render={() => (
+              <WorkItemRemoteLink workItem={workItem}/>
+          )}
         />
       </DashboardRow>
       <DashboardRow>

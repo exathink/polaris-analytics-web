@@ -7,7 +7,7 @@ export const WorkItemDurationDetailsByStateView = ({workItem, view}) => (
     <VizItem w={1}>
       <WorkItemsAggregateDurationsByStateChart
         workItems={[workItem]}
-        title={workItem.stateType !== "closed" ? "Cycle time by state" : "Lead time by state"}
+        title={workItem.stateType !== "closed" ? "Time spent by state" : "Lead time by state"}
       />
     </VizItem>
   </VizRow>

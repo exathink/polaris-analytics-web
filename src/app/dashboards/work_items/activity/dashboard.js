@@ -36,7 +36,7 @@ export const dashboard =
                   className={styles.remoteLink}
                   render={
                     () =>
-                      <WorkItemRemoteLink workItem={workItem}/>
+                      <WorkItemRemoteLink workItem={workItem} goToCardLink={false}/>
                   }
                 />
               </DashboardRow>

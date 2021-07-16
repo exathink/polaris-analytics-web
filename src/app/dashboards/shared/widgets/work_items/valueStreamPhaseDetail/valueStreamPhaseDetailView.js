@@ -2,17 +2,18 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder, WorkItemStateTypes} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Drawer, Select} from "antd";
 import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 
 const {Option} = Select;
 
-const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
+const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemScope, workItemScopeVisible=true, view, context}) => {
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
     workItems,
   ]);
@@ -34,9 +35,9 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
 
   function selectDropdown() {
     return (
-      <div data-testid="pipeline-state-details-view-dropdown" className={"workStreamSelector"}>
-        <span className="workStreamLabel">Workstream</span>
-        <Select defaultValue={0} onChange={handleChange} getPopupContainer={(node) => node.parentNode}>
+      <div data-testid="pipeline-state-details-view-dropdown" className={"control"}>
+        <span className="controlLabel">Workstream</span>
+        <Select  defaultValue={0} onChange={handleChange} getPopupContainer={(node) => node.parentNode} className={"workStreamSelector"}>
           {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
@@ -74,39 +75,52 @@ const PhaseDetailView = ({workItems, targetMetrics, view, context}) => {
     return (
       <VizRow h={1}>
         <VizItem w={1}>
-          <Flex w={0.95} className="workItemStateDetailsControlWrapper">
+          <div className={'workItemStateDetailsControlWrapper'}>
+            <div className={'leftControls'}>
             {selectDropdown()}
-            <GroupingSelector
-              label={"Phase"}
-              className={"phaseSelector"}
-              groupings={stateTypes.map((stateType) => ({
-                key: stateType,
-                display: WorkItemStateTypeDisplayName[stateType],
-                style: {
-                  backgroundColor: WorkItemStateTypeColor[stateType],
-                  color: stateType === selectedStateType ? "#ffffff" : "#d4d4d4",
-                },
-              }))}
-              initialValue={selectedStateType}
-              onGroupingChanged={setSelectedStateType}
-            />
-
-            <GroupingSelector
-              label={"Group Cards By"}
-              className={"groupCardsBySelector"}
-              groupings={["state", "type"].map((grouping) => ({
-                key: grouping,
-                display: capitalizeFirstLetter(grouping),
-              }))}
-              initialValue={selectedGrouping}
-              onGroupingChanged={setSelectedGrouping}
-            />
-          </Flex>
+            {
+              workItemScopeVisible &&
+              <WorkItemScopeSelector
+                className={'specsAllSelector'}
+                workItemScope={workItemScope}
+                setWorkItemScope={setWorkItemScope}
+              />
+            }
+            </div>
+            <div className={'phaseSelector'}>
+              <GroupingSelector
+                label={"Phase"}
+                className={"control"}
+                groupings={stateTypes.map((stateType) => ({
+                  key: stateType,
+                  display: WorkItemStateTypeDisplayName[stateType],
+                  style: {
+                    backgroundColor: WorkItemStateTypeColor[stateType],
+                    color: stateType === selectedStateType ? "#ffffff" : "#d4d4d4",
+                  },
+                }))}
+                initialValue={selectedStateType}
+                onGroupingChanged={setSelectedStateType}
+              />
+            </div>
+            <div className={'rightControls'}>
+              <GroupingSelector
+                label={"Group Cards By"}
+                className={"groupCardsBySelector"}
+                groupings={["state", "type"].map((grouping) => ({
+                  key: grouping,
+                  display: capitalizeFirstLetter(grouping),
+                }))}
+                initialValue={selectedGrouping}
+                onGroupingChanged={setSelectedGrouping}
+              />
+            </div>
+          </div>
           <WorkItemsDurationsByPhaseChart
             stateType={selectedStateType}
             groupBy={selectedGrouping}
             workItems={candidateWorkItems}
-            title={`Phase Details:  ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+            title={`${candidateWorkItems.length} ${workItemScope === 'specs'? 'Specs' : 'Cards'} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
             targetMetrics={targetMetrics}
             onSelectionChange={(workItems) => {
               console.log(`Selection changed: ${workItems.length}`);

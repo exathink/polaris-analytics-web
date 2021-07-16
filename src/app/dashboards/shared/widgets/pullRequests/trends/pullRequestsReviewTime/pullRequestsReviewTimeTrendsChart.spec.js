@@ -231,18 +231,11 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
 
     describe("test plot bands", () => {
       const {yAxis: {plotBands}} = chartConfig;
-      test('it has a single plot band on the y-axis', () => {
-        expect(plotBands.length).toBe(1)
+      test('it has no plot band on the y-axis', () => {
+        expect(plotBands).toBeUndefined()
       })
 
-      test('it uses the min and max value of the avgAge series for the range of the plot bands', () => {
-        expect(plotBands).toMatchObject([
-          {
-            "to": 1.31095732285237,
-            "from": 0.705498012000488
-          }
-        ])
-      })
+
     })
   });
 });

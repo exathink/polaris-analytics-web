@@ -43,7 +43,7 @@ const fixedChartConfig = {
     type: "linear",
     allowDecimals: false,
     title: {
-      text: "Elapsed Days",
+      text: "Age in Days",
     },
     plotLines: [
       {
@@ -310,7 +310,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         expect(actual).toMatchObject({
           header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
           body: [
-            [`Cycle Time:`, expect.stringContaining("days")],
+            [`Lead Time:`, expect.stringContaining("days")],
             [`Current State:`, `${state}`],
             [`Entered:`, `${timeInStateDisplay}`],
             ["", ""],

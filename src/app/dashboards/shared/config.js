@@ -114,6 +114,9 @@ export const WorkItemStateTypes = {
   closed: 'closed'
 }
 
+export function cycleTimeDisplay(stateType) {
+  return stateType !== WorkItemStateTypes.closed ? 'Age': `Lead Time`;
+}
 
 export const WorkItemStateTypeSortOrder = {
   unmapped: -1,
@@ -158,10 +161,10 @@ export const WorkItemIcons = {
 
 export const WorkItemStateTypeSubColors = {
   unmapped: ['#6c6c6c'],
-  backlog: ['#8f9a8e', '#81859a', '#9a848d', '#878b9a', '#9a8a7f'],
-  open: ['#069a99', '#22949a', '#15809a', '#8d7d9a', '#5b689a'],
+  backlog: ['#65b59c', '#3e7d68', '#32e5ab', '#165541', '#65b59c'],
+  open: ['#c4ab49', '#af9840', '#cea812', '#f3d042', '#c4ab49'],
   wip: ['#2f9a32', '#879a2e', '#639a0d', '#28a759', '#0aa737'],
-  complete: ['#47479a', '#71499a', '#79579a', '#9a7f97', '#8d689a'],
+  complete: ['#9898db', '#71499a', '#79579a', '#9a7f97', '#8d689a'],
   closed: ['#7824b5', '#9a0db5', '#4b09b5', '#0526b5', '#1603b5']
 }
 

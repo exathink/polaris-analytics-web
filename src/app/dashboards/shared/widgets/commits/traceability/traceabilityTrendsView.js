@@ -7,6 +7,7 @@ import {Traceability, TraceabilityTarget} from "../../../components/flowStatisti
 
 const TraceabilityStatisticView = (
   {
+    title,
     current,
     previous,
     target,
@@ -17,6 +18,7 @@ const TraceabilityStatisticView = (
     <VizRow h={"100%"}>
       <VizItem w={1}>
         <Traceability
+          title={title}
           current={current}
           previous={previous}
           target={target}
@@ -72,6 +74,7 @@ export const ProjectTraceabilityTrendsView = (
     excludeMerges,
     asStatistic,
     primaryStatOnly,
+    title,
     target,
   }) => {
   // trends come back in descending order so this is canonical pattern to
@@ -81,6 +84,7 @@ export const ProjectTraceabilityTrendsView = (
   return (
     asStatistic ?
       <TraceabilityStatisticView
+        title={asStatistic.title}
         current={current}
         previous={previous}
         target={target}

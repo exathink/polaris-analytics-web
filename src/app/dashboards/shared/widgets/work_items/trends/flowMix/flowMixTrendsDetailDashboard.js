@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {DimensionFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../../../../projects/shared/components/workItemScopeSelector";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {ProjectTraceabilityTrendsWidget} from "../../../commits/traceability";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
 } from "../../../../components/trendingControlBar/trendingControlBar";
+
 
 const dashboard_id = 'dashboards.projects.trends.flow-mix.detail';
 

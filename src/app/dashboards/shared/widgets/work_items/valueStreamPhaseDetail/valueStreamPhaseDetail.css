@@ -1,19 +1,42 @@
-.stateDetailsDropdown{
-    margin-left: auto;
-    margin-right: 15%;
+.workItemStateDetailsControlWrapper {
+    display: grid;
+    grid-template-columns: 33% 32% 35%;
+    grid-template-rows: 100%;
+    gap: 0.5rem;
+    grid-template-areas:
+    "leftControls middleControls rightControls";
+    margin-bottom: 5px;
+    width: 95%;
 }
 
-.workStreamSelector {
-    margin-right: auto
+.leftControls {
+    display: flex;
+    justify-content: flex-start;
+
+}
+.phaseSelector {
+    display: flex;
+    justify-content: center;
+}
+.rightControls {
+    display: flex;
+    justify-content: flex-end;
 }
 
-.workStreamLabel{
+.control {
+    margin-right: 20px;
+}
+
+.controlLabel{
     margin-right: 10px;
 }
 
-.workItemStateDetailsControlWrapper{
-    margin-bottom: 5px;
+.workStreamSelector {
+    width: 175px;
 }
-.phaseSelector {
-    margin-right: auto;
-}
+
+
+
+
+
+
