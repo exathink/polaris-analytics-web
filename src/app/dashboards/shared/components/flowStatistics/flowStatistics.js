@@ -30,8 +30,8 @@ export const FlowStatistic = ({
   deltaThreshold,
   valueRender = (value) => value,
   info,
-  selectedMetric,
-  setSelectedMetric
+  showHighlighted,
+  onClick
 }) => {
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
@@ -66,8 +66,8 @@ export const FlowStatistic = ({
       metricTitle={title}
       metricValue={renderedValue != null ? renderedValue.toFixed(2) : "N/A"}
       suffix={value ? uom : ""}
-      selected={selectedMetric===metric}
-      setSelectedMetric={setSelectedMetric}
+      showHighlighted={showHighlighted}
+      onClick={onClick}
       trendIndicator={
         <TrendIndicatorNew
           firstValue={value}

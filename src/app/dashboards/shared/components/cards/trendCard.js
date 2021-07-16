@@ -3,10 +3,10 @@ import styles from "./trendCard.module.css";
 import {InfoCard} from "../../../../components/misc/info";
 import classNames from "classnames";
 
-export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, info, selected = false, setSelectedMetric}) {
-  const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: selected}, styles.trendCardWrapper);
+export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, info, showHighlighted = false, onClick}) {
+  const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: showHighlighted}, styles.trendCardWrapper);
   return (
-    <div className={selectedTrendCardClasses} onClick={setSelectedMetric}>
+    <div className={selectedTrendCardClasses} onClick={onClick}>
       <div className={styles.metricTitle}>{metricTitle}</div>
       <div className={styles.infoIcon}>
         <InfoCard title={metricTitle} content={info.headline} drawerContent={info.drawerContent} />
