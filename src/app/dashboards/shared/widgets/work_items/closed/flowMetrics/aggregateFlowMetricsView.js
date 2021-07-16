@@ -19,6 +19,7 @@ import {
   EffortOUT,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
+import {metricsMapping} from "../../../../helpers/teamUtils";
 
 
 export const PerformanceSummaryView = (
@@ -318,6 +319,8 @@ export const ResponseTimeDetailView = (
     selectedMetricState
   }
 ) => {
+  const [selectedMetric, setSelectedMetric] = selectedMetricState;
+
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
     return null;
@@ -330,7 +333,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metricsMapping.LEAD_TIME}
+          onClick={() => setSelectedMetric(metricsMapping.LEAD_TIME)}
         />
       </div>
       <div className={styles.cycleTime}>
@@ -339,7 +343,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metricsMapping.CYCLE_TIME}
+          onClick={() => setSelectedMetric(metricsMapping.CYCLE_TIME)}
         />
       </div>
       <div className={styles.implement}>
@@ -348,7 +353,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metricsMapping.DURATION}
+          onClick={() => setSelectedMetric(metricsMapping.DURATION)}
         />
       </div>
       <div className={styles.effort}>
@@ -357,7 +363,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metricsMapping.EFFORT}
+          onClick={() => setSelectedMetric(metricsMapping.EFFORT)}
         />
       </div>
       <div className={styles.deliver}>
@@ -366,7 +373,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metricsMapping.LATENCY}
+          onClick={() => setSelectedMetric(metricsMapping.LATENCY)}
         />
       </div>
     </div>
@@ -382,10 +390,12 @@ export const ThroughputDetailView = ({
   specsOnly,
   selectedMetricState,
 }) => {
+  const [selectedMetric, setSelectedMetric] = selectedMetricState;
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
     return null;
   }
+  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
   return (
     <div className={styles.throughputDetailWrapper}>
       <div className={styles.volume}>
@@ -394,7 +404,8 @@ export const ThroughputDetailView = ({
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric===metric}
+          onClick={() => setSelectedMetric(metric)}
         />
       </div>
       <div className={styles.effortOut}>
@@ -403,7 +414,8 @@ export const ThroughputDetailView = ({
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
-          selectedMetricState={selectedMetricState}
+          showHighlighted={selectedMetric==="totalEffort"}
+          onClick={() => setSelectedMetric(metric)}
         />
       </div>
     </div>

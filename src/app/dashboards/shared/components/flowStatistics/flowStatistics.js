@@ -567,7 +567,7 @@ export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement,
 
 
 
-export const EffortOUT = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, selectedMetricState}) => (
+export const EffortOUT = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -577,7 +577,8 @@ export const EffortOUT = ({asCard, currentMeasurement, previousMeasurement, targ
     asCard={asCard}
     target={target}
     deltaThreshold={deltaThreshold}
-    selectedMetricState={selectedMetricState}
+    onClick={onClick}
+    showHighlighted={showHighlighted}
   />
 );
 
