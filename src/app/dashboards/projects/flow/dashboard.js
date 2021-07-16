@@ -32,14 +32,13 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Throughput"}
-          w={0.33}
-          className={styles.flowMetrics}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          title={"Throughput"}
+          className={styles.throughput}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -59,11 +58,10 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="pipeline"
-          w={0.35}
           className={styles.pipeline}
           title={"Work In Progress"}
 
@@ -71,7 +69,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
-              display={"teamWipSummary"}
+              display={"commonWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}
@@ -92,10 +90,9 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
 
         <DashboardWidget
           name="flow-metrics"
-          title={"Spec Response Time"}
-          w={0.2}
-          className={styles.flowMetrics}
-          subtitle={`Last ${flowAnalysisPeriod} days`}
+          title={"Response Time"}
+          className={styles.leadAndCycleTime}
+          subtitle={`${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionFlowMetricsWidget
@@ -119,9 +116,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
         <DashboardWidget
           name="traceability"
-          w={0.13}
           title={"Traceability"}
-          subtitle={`${flowAnalysisPeriod} Days`}
+          className={styles.traceability}
           hideTitlesInDetailView={"true"}
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
@@ -133,7 +129,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              asStatistic={{title: "Current"}}
+              asStatistic={{title: "Last 30 Days"}}
+              primaryStatOnly={true}
               target={0.9}
             />
           )}
@@ -145,7 +142,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
       <DashboardRow h={"42%"}>
         <DashboardWidget
           name="volume-trends"
-          w={1/3}
+          className={styles.volumeTrends}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={'project'}
@@ -168,7 +165,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
         <DashboardWidget
           name="pipeline-funnel"
-          w={1/3}
+          className={styles.pipelineFunnel}
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -190,7 +187,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
         <DashboardWidget
           name="response-time-trends"
-          w={1/3}
+          className={styles.responseTimeTrends}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={'project'}
@@ -214,12 +211,12 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h={"45%"}>
+      <DashboardRow h={"45%"} className={styles.valueRow}>
 
 
         <DashboardWidget
-          w={1}
           name="project-pipeline-queues"
+          className={styles.phaseDetail}
           render={({view}) => (
             <DimensionValueStreamPhaseDetailWidget
               dimension={'project'}

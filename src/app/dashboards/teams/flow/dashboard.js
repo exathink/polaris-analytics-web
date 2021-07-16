@@ -84,7 +84,7 @@ function WipDashboard({
             <DimensionWipFlowMetricsWidget
               dimension={'team'}
               instanceKey={key}
-              display={"teamWipSummary"}
+              display={"commonWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={wipAnalysisPeriod}

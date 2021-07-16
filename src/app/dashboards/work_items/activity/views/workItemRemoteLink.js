@@ -37,7 +37,7 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
         >
           <Button type="primary" size="small" style={{marginLeft: "15px"}}>
-            View on {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+            View in {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
         </a>
       );
