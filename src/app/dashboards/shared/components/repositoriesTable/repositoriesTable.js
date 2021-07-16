@@ -8,7 +8,7 @@ import {fromNow, human_span} from "../../../../helpers/utility";
 import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 
-export function useRepositoriesTableColumns() {
+export function useRepositoriesTableColumns({statusTypes}) {
   const nameSearchState = useSearch("name");
 
   const columns = [
@@ -55,6 +55,8 @@ export function useRepositoriesTableColumns() {
       dataIndex: "latestCommit",
       key: "activityProfile",
       width: "5%",
+      filters: statusTypes.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => getActivityLevelFromDate(record.latestCommit).display_name.indexOf(value)===0,
       render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
     },
     {
@@ -79,7 +81,8 @@ export function useRepositoriesTableColumns() {
 }
 
 export function RepositoriesTable({tableData, loading}) {
-  const columns = useRepositoriesTableColumns();
+  const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
+  const columns = useRepositoriesTableColumns({statusTypes});
 
   return <StripeTable columns={columns} dataSource={tableData} loading={loading} height={TABLE_HEIGHTS.FOURTY_FIVE} />;
 }
