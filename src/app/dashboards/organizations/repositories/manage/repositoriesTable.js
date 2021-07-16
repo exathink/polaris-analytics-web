@@ -1,146 +1,96 @@
-import {gql} from "@apollo/client";
-import {Query} from "@apollo/client/react/components"
-import React from 'react';
-
-import {CompactTable} from "../../../../components/tables";
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-import {analytics_service} from '../../../../services/graphql';
-import {withAntPagination} from "../../../../components/graphql/withAntPagination";
-import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
-import Button from "../../../../../components/uielements/button";
+import React from "react";
+import {useQueryRepositories} from "./useQueryRepositories";
+import {useSearch} from "../../../../components/tables/hooks";
+import {StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
-import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
+import Button from "../../../../../components/uielements/button";
 import {fromNow, human_span} from "../../../../helpers/utility";
+import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
+import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 
-const {Column} = CompactTable;
+export function useRepositoriesTableColumns() {
+  const nameSearchState = useSearch("name");
 
-const RepositoriesPaginatedTable = ({organizationKey, pageSize, currentCursor, onNewPage}) => (
-  <Query
-    client={analytics_service}
-    query={
-      gql`
-      query organizationRepositories($organizationKey: String!, $pageSize: Int!, $endCursor: String) {
-        organization(key: $organizationKey) {
-            id
-            repositories (first: $pageSize, after: $endCursor, interfaces: [CommitSummary, ContributorCount]){
-                  count
-                  edges {
-                      node {
-                          id
-                          name
-                          key
-                          description
-                          earliestCommit
-                          latestCommit
-                          commitCount
-                          contributorCount
-                      }
-                  }
-              }
-         }
-        }
-  `
-    }
-    variables={{
-      organizationKey: organizationKey,
-      pageSize: pageSize,
-      endCursor: currentCursor
-    }}
-    fetchPolicy={'cache-and-network'}
-
-  >
+  const columns = [
     {
-      ({loading, error, data}) => {
-        if (error) return null;
-        let tableData = [];
-        let totalItems = 0;
-        if (!loading) {
-          tableData = data.organization.repositories.edges.map(edge => edge.node);
-          totalItems = data.organization.repositories.count;
-        }
-        return (
-          <CompactTable
-            dataSource={tableData}
-            size="small"
-            loading={loading}
-            rowKey={record => record.id}
-            pagination={{
-              total: totalItems,
-              defaultPageSize: pageSize,
-              hideOnSinglePage: true,
-              showTotal: total => `${total} Repositories`
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "15%",
+      ...nameSearchState,
+      //   render: (name, record) => (
+      //     <RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
+      //       {name}
+      //     </RepositoryLink>
+      //   ),
+    },
+    {
+      title: "Commits",
+      dataIndex: "commitCount",
+      key: "commitCount",
+      width: "7%",
+    },
+    {
+      title: "Contributors",
+      dataIndex: "contributorCount",
+      key: "contributorCount",
+      width: "5%",
+    },
+    {
+      title: "History",
+      dataIndex: "earliestCommit",
+      key: "earliestCommit",
+      width: "10%",
+      render: (_, record) => human_span(record.latestCommit, record.earliestCommit),
+    },
+    {
+      title: "Latest Commit",
+      dataIndex: "latestCommit",
+      key: "latestCommit",
+      width: "10%",
+      render: (latestCommit) => fromNow(latestCommit),
+    },
+    {
+      title: "Status",
+      dataIndex: "latestCommit",
+      key: "activityProfile",
+      width: "5%",
+      render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      key: "actions",
+      width: "4%",
+      align: "right",
+      render: (name, record) => (
+        <ButtonBar>
+          <RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
+            <Button type={"primary"} size={"small"}>
+              Select
+            </Button>
+          </RepositoryLink>
+        </ButtonBar>
+      ),
+    },
+  ];
 
-            }}
-            onChange={onNewPage}
-          >
-            <Column
-              title={"Name"}
-              dataIndex={"name"}
-              key={"name"}
-              render={
-                (name, record) =>
-                  <RepositoryLink
-                    repositoryName={record.name}
-                    repositoryKey={record.key}
-                  >
-                    {name}
-                  </RepositoryLink>
-              }
-            />
-            <Column title={"Commits"} dataIndex={"commitCount"} key={"commitCount"}/>
-            <Column title={"Contributors"} dataIndex={"contributorCount"} key={"contributorCount"}/>
-            <Column
-              title={"History"}
-              dataIndex={"earliestCommit"}
-              key={"earliestCommit"}
-              render={
-                (_, record) => human_span(record.latestCommit, record.earliestCommit)
-              }
-            />
-            <Column
-              title={"Latest Commit"}
-              dataIndex={"latestCommit"}
-              key={"latestCommit"}
-              render={
-                (latestCommit) => fromNow(latestCommit)
-              }
-            />
-            <Column
-              title={"Status"}
-              dataIndex={"latestCommit"}
-              key={"activityProfile"}
-              render={
-                (latestCommit) => getActivityLevelFromDate(latestCommit).display_name
-              }
-            />
-            <Column
-              key={"actions"}
-              width={80}
-              render={
-                (name, record) =>
-                  <ButtonBar>
-                    <RepositoryLink
-                      repositoryName={record.name}
-                      repositoryKey={record.key}
-                    >
-                      <Button
-                        type={'primary'}
-                        size={'small'}
-                      >
-                        Select
-                      </Button>
-                    </RepositoryLink>
-                  </ButtonBar>
-              }
-            />
+  return columns;
+}
 
+export function RepositoriesTable({tableData, loading}) {
+  const columns = useRepositoriesTableColumns();
 
-          </CompactTable>
-        )
-      }
-    }
-  </Query>
-)
+  return <StripeTable columns={columns} dataSource={tableData} loading={loading} height={TABLE_HEIGHTS.FOURTY_FIVE} />;
+}
 
+export const RepositoriesTableWidget = ({dimension, instanceKey}) => {
+  const {loading, error, data} = useQueryRepositories({dimension, instanceKey});
 
-export const RepositoriesTableWidget = withViewerContext(withAntPagination(RepositoriesPaginatedTable, 7))
+  if (error) return null;
+
+  const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
+  const tableData = edges.map((edge) => edge.node);
+
+  return <RepositoriesTable tableData={tableData} loading={loading} />;
+};
