@@ -4,7 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHierarchy";
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import {OrganizationDashboard} from "../organizationDashboard";
-import {RepositoriesTableWidget} from "./manage/repositoriesTable";
+import {RepositoriesTableWidget} from "../../shared/components/repositoriesTable/repositoriesTable";
 
 import Repositories from "../../repositories/context";
 import Button from "../../../../components/uielements/button";
