@@ -99,7 +99,6 @@ function DimensionThroughputDashboard({
               showCounts={true}
               includeSubTasks={includeSubTasksFlowMetrics}
               asStatistic={true}
-              selectedMetricState={selectedMetricState}
             />
           )}
           showDetail={false}

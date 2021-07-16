@@ -17,86 +17,72 @@ export const reduceFlowMix = (result, item) => {
 }
 
 
-export const ProjectFlowMixTrendsStatsView = (
-  {
-    flowMixTrends,
-    measurementPeriod,
-    measurementWindow,
-    specsOnly,
-    showCounts,
-    asStatistic,
-    target,
-    selectedMetricState,
-  }) => {
+export const ProjectFlowMixTrendsStatsView = ({
+  flowMixTrends,
+  measurementPeriod,
+  measurementWindow,
+  specsOnly,
+  showCounts,
+  asStatistic,
+  target,
+}) => {
   const [current, previous] = flowMixTrends;
-  const metric = specsOnly ? 'totalEffort' : 'workItemCount';
+  const metric = specsOnly ? "totalEffort" : "workItemCount";
   const currentMix = current.flowMix.reduce(reduceFlowMix, {metric: metric});
   const previousMix = previous.flowMix.reduce(reduceFlowMix, {metric: metric});
 
-  const [selectedMetric, setSelectedMetric] = selectedMetricState;
-  const metricVal = "valueMix";
   return (
     <div className={styles.flowMixWrapper}>
       <div className={styles.features}>
         <FlowStatistic
-          title={'Features'}
+          title={"Features"}
           currentValue={currentMix.feature ? percentage(currentMix.feature[metric], currentMix.total) : 0}
           previousValue={previousMix.feature ? percentage(previousMix.feature[metric], previousMix.total) : 0}
-          uom={'%'}
+          uom={"%"}
           precision={2}
           target={target}
-          metric={metricVal}
           asCard={true}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          showHighlighted={selectedMetric===metricVal}
-          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
           size={"small"}
         />
       </div>
       <div className={styles.defects}>
         <FlowStatistic
-          title={'Defects'}
+          title={"Defects"}
           currentValue={currentMix.defect ? percentage(currentMix.defect[metric], currentMix.total) : 0}
           previousValue={previousMix.defect ? percentage(previousMix.defect[metric], previousMix.total) : 0}
-          uom={'%'}
+          uom={"%"}
           precision={2}
           target={target}
-          metric={metricVal}
           asCard={true}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          showHighlighted={selectedMetric===metricVal}
-          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
           size={"small"}
         />
       </div>
       <div className={styles.tasks}>
         <FlowStatistic
-          title={'Tasks'}
+          title={"Tasks"}
           currentValue={currentMix.task ? percentage(currentMix.task[metric], currentMix.total) : 0}
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
-          uom={'%'}
+          uom={"%"}
           precision={2}
-          metric={metricVal}
           asCard={true}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          showHighlighted={selectedMetric===metricVal}
-          onClick={() => setSelectedMetric(metricVal)}
           info={{headline: "", content: ""}}
           size={"small"}
         />
       </div>
     </div>
-
-  )
-}
+  );
+};
 
 export const ProjectFlowMixTrendsView = (
   {
@@ -109,11 +95,10 @@ export const ProjectFlowMixTrendsView = (
     view,
     showCounts,
     target,
-    selectedMetricState
   }) => (
     asStatistic ?
       <ProjectFlowMixTrendsStatsView
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target, selectedMetricState}  }
+        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
       />
       :
       <FlowMixTrendsChart
