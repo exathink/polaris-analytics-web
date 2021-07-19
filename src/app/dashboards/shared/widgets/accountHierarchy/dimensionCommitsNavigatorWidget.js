@@ -9,6 +9,7 @@ import {CommitsTimelineChartView} from "../../views/commitsTimeline";
 import moment from 'moment';
 import {toMoment, getReferenceString} from "../../../../helpers/utility";
 import {navigateToContext} from "../../navigation/navigate";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../work_items/cardInspector/cardInspectorUtils";
 
 export {HeaderMetrics} from "../../views/commitsTimeline";
 
@@ -45,7 +46,7 @@ export const DimensionCommitsNavigatorWidget = (
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 1);
-
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
     <Query
       client={analytics_service}
@@ -153,10 +154,27 @@ export const DimensionCommitsNavigatorWidget = (
               markLatest={markLatest}
               showTable={showTable}
               onSelectionChange={onSelectionChange}
-              onCategoryItemSelected={(category, name, key) => navigateToContext(context, category, name, key)}
+              onCategoryItemSelected={(category, name, key) => {
+                if(category === "workItem"){
+                  setWorkItemKey(key);
+                  setShowPanel(true);
+                  return;
+                }
+                navigateToContext(context, category, name, key)
+              }}
             />
           ));
-          return context.getCachedView(getViewCacheKey(instanceKey, display));
+          return (
+            <React.Fragment>
+              {context.getCachedView(getViewCacheKey(instanceKey, display))}
+              <CardInspectorWithDrawer
+                workItemKey={workItemKey}
+                showPanel={showPanel}
+                setShowPanel={setShowPanel}
+                context={context}
+              />
+            </React.Fragment>
+          );
         }
       }
     </Query>
