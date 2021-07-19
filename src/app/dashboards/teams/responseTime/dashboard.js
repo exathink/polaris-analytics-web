@@ -46,8 +46,7 @@ function DimensionResponseTimeDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const selectedMetricState = React.useState("avgCycleTime");
-  const [selectedMetric] = selectedMetricState;
+  const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
   const [chartToggle, setChartToggle] = React.useState("trend");
 
@@ -75,6 +74,11 @@ function DimensionResponseTimeDashboard({
               instanceKey={key}
               view={view}
               display={"responseTimeDetail"}
+              displayProps={{
+                initialSelection: selectedMetric,
+                onSelectionChanged: (metric) => setSelectedMetric(metric)
+              }}
+              initialSelection={''}
               twoRows={true}
               context={context}
               specsOnly={true}
@@ -87,7 +91,6 @@ function DimensionResponseTimeDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-              selectedMetricState={selectedMetricState}
             />
           )}
           showDetail={false}

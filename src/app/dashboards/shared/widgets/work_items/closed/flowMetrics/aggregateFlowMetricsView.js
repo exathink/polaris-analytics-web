@@ -316,10 +316,17 @@ export const ResponseTimeDetailView = (
     leadTimeTarget,
     cycleTimeTarget,
     specsOnly,
-    selectedMetricState
+    displayProps: {
+      initialSelection,
+      onSelectionChanged
+    }
   }
 ) => {
-  const [selectedMetric, setSelectedMetric] = selectedMetricState;
+  const [selectedMetric, setSelectedMetric] = React.useState(initialSelection);
+  const setSelection = (metric) => {
+    setSelectedMetric(metric);
+    onSelectionChanged(metric);
+  }
 
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
@@ -334,7 +341,7 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
           showHighlighted={selectedMetric===metricsMapping.LEAD_TIME}
-          onClick={() => setSelectedMetric(metricsMapping.LEAD_TIME)}
+          onClick={() => setSelection(metricsMapping.LEAD_TIME)}
         />
       </div>
       <div className={styles.cycleTime}>
@@ -344,7 +351,7 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
           showHighlighted={selectedMetric===metricsMapping.CYCLE_TIME}
-          onClick={() => setSelectedMetric(metricsMapping.CYCLE_TIME)}
+          onClick={() => setSelection(metricsMapping.CYCLE_TIME)}
         />
       </div>
       <div className={styles.implement}>
@@ -354,7 +361,7 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
           showHighlighted={selectedMetric===metricsMapping.DURATION}
-          onClick={() => setSelectedMetric(metricsMapping.DURATION)}
+          onClick={() => setSelection(metricsMapping.DURATION)}
         />
       </div>
       <div className={styles.effort}>
@@ -364,7 +371,7 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
           showHighlighted={selectedMetric===metricsMapping.EFFORT}
-          onClick={() => setSelectedMetric(metricsMapping.EFFORT)}
+          onClick={() => setSelection(metricsMapping.EFFORT)}
         />
       </div>
       <div className={styles.deliver}>
@@ -374,7 +381,7 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
           showHighlighted={selectedMetric===metricsMapping.LATENCY}
-          onClick={() => setSelectedMetric(metricsMapping.LATENCY)}
+          onClick={() => setSelection(metricsMapping.LATENCY)}
         />
       </div>
     </div>
@@ -599,6 +606,7 @@ export const AggregateFlowMetricsView = withViewerContext((
     cycleTimeTarget,
     specsOnly,
     display,
+    displayProps,
     twoRows,
     selectedMetricState
   }
@@ -719,7 +727,7 @@ export const AggregateFlowMetricsView = withViewerContext((
               cycleTimeTargetPercentile={cycleTimeTargetPercentile}
               specsOnly={specsOnly}
               twoRows={twoRows}
-              selectedMetricState={selectedMetricState}
+              displayProps={displayProps}
             />
         )
         case 'throughputDetail':
