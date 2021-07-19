@@ -31,8 +31,11 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
 
-  const filteredWorkItemsBySource =
-    selectedSourceKey === "all" ? workItems : workItems.filter((wi) => wi.workItemsSourceKey === selectedSourceKey);
+  const filteredWorkItemsBySource = React.useMemo(
+    () =>
+      selectedSourceKey === "all" ? workItems : workItems.filter((wi) => wi.workItemsSourceKey === selectedSourceKey),
+    [workItems, selectedSourceKey]
+  );
 
   function handleChange(index) {
     setSelectedSourceKey(uniqWorkItemsSourcesWithDefault[index].workItemsSourceKey);
