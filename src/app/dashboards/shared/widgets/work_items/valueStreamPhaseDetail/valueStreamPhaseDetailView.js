@@ -7,9 +7,9 @@ import {GroupingSelector} from "../../../components/groupingSelector/groupingSel
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
-import {Alert, Drawer, Select} from "antd";
-import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
 
 const {Option} = Select;
 
@@ -26,8 +26,8 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
     ...uniqWorkItemsSources,
   ];
-  const [showPanel, setShowPanel] = React.useState(false);
-  const [workItemKey, setWorkItemKey] = React.useState(null);
+  
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
 
@@ -136,11 +136,7 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
             }}
           />
         </VizItem>
-        {workItemKey && (
-          <Drawer placement="top" height={355} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>
-            <CardInspectorWidget context={context} workItemKey={workItemKey} />
-          </Drawer>
-        )}
+        <CardInspectorWithDrawer workItemKey={workItemKey} showPanel={showPanel} setShowPanel={setShowPanel} context={context} />
       </VizRow>
     );
   } else {
