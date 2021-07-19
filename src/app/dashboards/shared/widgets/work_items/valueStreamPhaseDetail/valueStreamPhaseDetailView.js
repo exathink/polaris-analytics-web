@@ -13,7 +13,12 @@ import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/w
 
 const {Option} = Select;
 
-const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemScope, workItemScopeVisible=true, view, context}) => {
+const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWorkItemScope, workItemScopeVisible=true, view, context}) => {
+  const workItems = React.useMemo(() => {
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [data, dimension]);
+
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
     workItems,
   ]);
@@ -49,14 +54,14 @@ const PhaseDetailView = ({workItems, targetMetrics, workItemScope, setWorkItemSc
   }
 
   /* Index the candidates by state type. These will be used to populate each tab */
-  const workItemsByStateType = filteredWorkItemsBySource.reduce((workItemsByStateType, workItem) => {
+  const workItemsByStateType = React.useMemo(() => filteredWorkItemsBySource.reduce((workItemsByStateType, workItem) => {
     if (workItemsByStateType[workItem.stateType] != null) {
       workItemsByStateType[workItem.stateType].push(workItem);
     } else {
       workItemsByStateType[workItem.stateType] = [workItem];
     }
     return workItemsByStateType;
-  }, {});
+  }, {}), [filteredWorkItemsBySource]);
   const stateTypes = Object.keys(workItemsByStateType).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
   );
