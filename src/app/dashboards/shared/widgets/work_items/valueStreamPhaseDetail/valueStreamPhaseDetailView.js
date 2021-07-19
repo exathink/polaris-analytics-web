@@ -10,6 +10,8 @@ import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utilit
 import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
+import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
+import {getWorkItemDurations} from "../../../charts/workItemCharts/shared";
 
 const {Option} = Select;
 
@@ -79,23 +81,22 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
 
   if (selectedStateType != null) {
     const candidateWorkItems = workItemsByStateType[selectedStateType] || [];
-
+    const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
       <VizRow h={1}>
         <VizItem w={1}>
-          <div className={'workItemStateDetailsControlWrapper'}>
-            <div className={'leftControls'}>
-            {selectDropdown()}
-            {
-              workItemScopeVisible &&
-              <WorkItemScopeSelector
-                className={'specsAllSelector'}
-                workItemScope={workItemScope}
-                setWorkItemScope={setWorkItemScope}
-              />
-            }
+          <div className={"workItemStateDetailsControlWrapper"}>
+            <div className={"leftControls"}>
+              {selectDropdown()}
+              {workItemScopeVisible && (
+                <WorkItemScopeSelector
+                  className={"specsAllSelector"}
+                  workItemScope={workItemScope}
+                  setWorkItemScope={setWorkItemScope}
+                />
+              )}
             </div>
-            <div className={'phaseSelector'}>
+            <div className={"phaseSelector"}>
               <GroupingSelector
                 label={"Phase"}
                 className={"control"}
@@ -111,11 +112,11 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
                 onGroupingChanged={setSelectedStateType}
               />
             </div>
-            <div className={'rightControls'}>
+            <div className={"rightControls"}>
               <GroupingSelector
                 label={"Group Cards By"}
                 className={"groupCardsBySelector"}
-                groupings={["state", "type"].map((grouping) => ({
+                groupings={["state", "type", "table"].map((grouping) => ({
                   key: grouping,
                   display: capitalizeFirstLetter(grouping),
                 }))}
@@ -124,22 +125,38 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
               />
             </div>
           </div>
-          <WorkItemsDurationsByPhaseChart
-            stateType={selectedStateType}
-            groupBy={selectedGrouping}
-            workItems={candidateWorkItems}
-            title={`${candidateWorkItems.length} ${workItemScope === 'specs'? 'Specs' : 'Cards'} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
-            targetMetrics={targetMetrics}
-            onSelectionChange={(workItems) => {
-              console.log(`Selection changed: ${workItems.length}`);
-              if (workItems.length === 1) {
-                setShowPanel(true);
-                setWorkItemKey(workItems[0].key);
-              }
-            }}
-          />
+          {selectedGrouping !== "table" && (
+            <WorkItemsDurationsByPhaseChart
+              stateType={selectedStateType}
+              groupBy={selectedGrouping}
+              workItems={candidateWorkItems}
+              title={`${candidateWorkItems.length} ${workItemScope === "specs" ? "Specs" : "Cards"} in ${
+                WorkItemStateTypeDisplayName[selectedStateType]
+              }`}
+              targetMetrics={targetMetrics}
+              onSelectionChange={(workItems) => {
+                console.log(`Selection changed: ${workItems.length}`);
+                if (workItems.length === 1) {
+                  setShowPanel(true);
+                  setWorkItemKey(workItems[0].key);
+                }
+              }}
+            />
+          )}
+          {selectedGrouping === "table" && (
+            <ValueStreamPhaseDetailTable
+              tableData={workItemsWithAggregateDurations}
+              setShowPanel={setShowPanel}
+              setWorkItemKey={setWorkItemKey}
+            />
+          )}
         </VizItem>
-        <CardInspectorWithDrawer workItemKey={workItemKey} showPanel={showPanel} setShowPanel={setShowPanel} context={context} />
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          context={context}
+        />
       </VizRow>
     );
   } else {
