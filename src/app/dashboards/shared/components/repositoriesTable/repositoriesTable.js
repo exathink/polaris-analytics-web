@@ -50,6 +50,7 @@ export function useRepositoriesTableColumns({statusTypes}) {
       dataIndex: "latestCommit",
       key: "latestCommit",
       width: "8%",
+      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
       render: (latestCommit) => fromNow(latestCommit),
     },
     {
@@ -95,7 +96,7 @@ export const RepositoriesTableWidget = ({dimension, instanceKey}) => {
   if (error) return null;
 
   const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
-  const tableData = edges.map((edge) => edge.node);
+  const tableData = edges.map((edge) => edge.node).sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
 
   return <RepositoriesTable tableData={tableData} loading={loading} />;
 };
