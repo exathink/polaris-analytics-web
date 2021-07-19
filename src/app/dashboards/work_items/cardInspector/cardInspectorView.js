@@ -16,9 +16,7 @@ export function CardInspectorView({workItem, context}) {
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={() => (
-              <WorkItemRemoteLink workItem={workItem}/>
-          )}
+          render={() => <WorkItemRemoteLink workItem={workItem} />}
         />
       </DashboardRow>
       <DashboardRow>
@@ -61,7 +59,6 @@ export function CardInspectorView({workItem, context}) {
               view={view}
             />
           )}
-          showDetail={true}
         />
         <DashboardWidget
           name="timeline"
@@ -75,7 +72,6 @@ export function CardInspectorView({workItem, context}) {
               context={context}
             />
           )}
-          showDetail={true}
         />
         <DashboardWidget
           name="duration-detail-by-state"
