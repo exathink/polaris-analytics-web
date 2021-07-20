@@ -36,7 +36,7 @@ export const DimensionFlowMetricsWidget = (
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
     days: days,
     measurementWindow:measurementWindow,
-    samplingFrequency: 7,
+    samplingFrequency: samplingFrequency || 7,
     specsOnly: limitToSpecsOnly,
     includeSubTasks: includeSubTasks,
     referenceString: latestWorkItemEvent
