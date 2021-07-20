@@ -30,7 +30,7 @@ export const Topics = {
   throughput: {
     name: 'throughput',
     display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput"/>),
-    icon: 'ion-paper-airplane'
+    icon: 'ion-arrow-right-a'
   },
   value: {
     name: 'value',
