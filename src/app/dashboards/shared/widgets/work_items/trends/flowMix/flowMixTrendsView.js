@@ -44,7 +44,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           asCard={true}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
-          good={TrendIndicator.isNegative}
+
           info={{headline: "", content: ""}}
           size={"small"}
         />
@@ -75,7 +75,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           asCard={true}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
-          good={TrendIndicator.isNegative}
+
           info={{headline: "", content: ""}}
           size={"small"}
         />
