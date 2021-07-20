@@ -5,9 +5,10 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
-import {WorkItemStateTypeDisplayName} from "../../../config";
+import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {i18nNumber} from "../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -84,12 +85,12 @@ function numberColRender({intl, setShowPanel, setWorkItemKey}) {
         }}
         style={{cursor: "pointer"}}
       >
-        {intl.formatNumber(text)}
+        {i18nNumber(intl, text,2)}
       </span>
     );
 }
 
-function renderTeamsCall({setShowPanel, setWorkItemKey}) {
+function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     return (
       text && (
@@ -107,12 +108,33 @@ function renderTeamsCall({setShowPanel, setWorkItemKey}) {
   };
 }
 
-export function useValueStreamPhaseDetailTableColumns({filters, callBacks, intl}) {
+function customCycleTimeColRender({stateType, intl, setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) => {
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }}
+          style={{cursor: "pointer"}}
+        >
+          {
+            stateType === WorkItemStateTypes.closed ? i18nNumber(intl, record.leadTime,2) : i18nNumber(intl, record.cycleTime,2)
+          }
+        </span>
+      )
+    );
+  };
+}
+
+export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
   const renderState = {render: customColRender(callBacks)};
-  const renderTeamsCol = {render: renderTeamsCall(callBacks)};
+  const renderTeamsCol = {render: customTeamsColRender(callBacks)};
   const renderNumberCol = {render: numberColRender({intl, ...callBacks})}
+  const renderCycleTimeCol = {render: customCycleTimeColRender({stateType, intl, ...callBacks})}
 
   const columns = [
     {
@@ -179,12 +201,19 @@ export function useValueStreamPhaseDetailTableColumns({filters, callBacks, intl}
       ...renderState,
     },
     {
-      title: "Age",
+      // TODO: this little hack to pad the title is to work around
+      // a jitter on the table that appears to be because the column titles have
+      // different widths between the two renders. It does not fix it perfectly
+      // but makes it less noticable. There is a bigger underlying issue
+      // here which is possible because we are returning these columns in a hook,
+      // but I dont know for sure and did not have the time to investigate it well
+      // enough. Something to look at.
+      title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...renderState,
+      ...renderCycleTimeCol
     },
     {
       title: "Latency",
@@ -215,7 +244,7 @@ export function useValueStreamPhaseDetailTableColumns({filters, callBacks, intl}
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({view, tableData, intl, setShowPanel, setWorkItemKey}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -224,9 +253,10 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, tableData, intl, s
 
   const dataSource = getTransformedData(tableData, intl);
   const columns = useValueStreamPhaseDetailTableColumns({
-    intl,
+    stateType,
     filters: {workItemTypes, stateTypes, states, teams},
     callBacks: {setShowPanel, setWorkItemKey},
+    intl,
   });
 
   return (
