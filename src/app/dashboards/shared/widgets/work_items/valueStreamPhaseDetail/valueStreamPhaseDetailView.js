@@ -2,14 +2,14 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder, WorkItemStateTypes} from "../../../config";
+import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
-import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../../../charts/workItemCharts/shared";
 
@@ -114,7 +114,7 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
             </div>
             <div className={"rightControls"}>
               <GroupingSelector
-                label={"Group Cards By"}
+                label={"View"}
                 className={"groupCardsBySelector"}
                 groupings={["state", "type", "table"].map((grouping) => ({
                   key: grouping,
@@ -145,6 +145,8 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
           )}
           {selectedGrouping === "table" && (
             <ValueStreamPhaseDetailTable
+              view={view}
+              stateType={selectedStateType}
               tableData={workItemsWithAggregateDurations}
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
