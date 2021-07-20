@@ -4,25 +4,63 @@ import {withViewerContext} from "../../../../../../framework/viewer/viewerContex
 import styles from "./flowMetrics.module.css";
 
 import {
-  AvgLeadTime,
   AvgCycleTime,
-  AvgEffort,
   AvgDuration,
+  AvgEffort,
   AvgLatency,
+  AvgLeadTime,
   Cadence,
   DurationCarousel,
   EffortCarousel,
+  EffortOUT,
   LatencyCarousel,
   LatestClosed,
   Volume,
   VolumeCarousel,
-  EffortOUT,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
 import {metricsMapping} from "../../../../helpers/teamUtils";
+import {useSelectWithDelegate} from "../../../../../../helpers/hooksUtil";
+
+export const PerformanceSummaryView = ({
+  cycleMetricsTrends,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  specsOnly,
+}) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <React.Fragment>
+      <VizItem w={0.2}>
+        <Volume currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+      </VizItem>
+      <VizItem w={0.25}>
+        <EffortOUT currentMeasurement={current} previousMeasurement={previous} />
+      </VizItem>
+      <VizItem w={0.25}>
+        <ComponentCarousel tickInterval={3000}>
+          <LatestClosed currentMeasurement={current} />
+          <Cadence currentMeasurement={current} previousMeasurement={previous} />
+        </ComponentCarousel>
+      </VizItem>
+      <VizItem w={0.3}>
+        <ComponentCarousel tickInterval={3000}>
+          <AvgCycleTime currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+          <AvgDuration currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+          <AvgLatency currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+        </ComponentCarousel>
+      </VizItem>
+    </React.Fragment>
+  );
+};
 
 
-export const PerformanceSummaryView = (
+export const CadenceDetailView = (
   {
 
     cycleMetricsTrends,
@@ -39,60 +77,25 @@ export const PerformanceSummaryView = (
     return null;
   }
   return (
-    <React.Fragment>
+    <div className={styles.throughputDetailWrapper}>
 
-      <VizItem w={0.20}>
-        <Volume
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          specsOnly={specsOnly}
-        />
-      </VizItem>
-      <VizItem w={0.25}>
-        <EffortOUT
+      <div className={styles.effortOut}>
+        <Cadence
+          asCard={true}
           currentMeasurement={current}
           previousMeasurement={previous}
         />
-      </VizItem>
-      <VizItem w={0.25}>
-        <ComponentCarousel tickInterval={3000}>
-          <LatestClosed
-            currentMeasurement={current}
-          />
-          <Cadence
-            currentMeasurement={current}
-            previousMeasurement={previous}
-          />
-        </ComponentCarousel>
-      </VizItem>
-      <VizItem w={0.30}>
-        <ComponentCarousel tickInterval={3000}>
-          <AvgCycleTime
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
+      </div>
+      <div className={styles.volume}>
 
-          />
-          <AvgDuration
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-
-          />
-          <AvgLatency
-
-            currentMeasurement={current}
-            previousMeasurement={previous}
-            target={cycleTimeTarget}
-
-          />
-        </ComponentCarousel>
-      </VizItem>
-    </React.Fragment>
+        <LatestClosed
+          asCard={true}
+          currentMeasurement={current}
+        />
+      </div>
+    </div>
   )
 };
-
-
 
 export const ThroughputSummaryView = (
   {
@@ -322,11 +325,7 @@ export const ResponseTimeDetailView = (
     }
   }
 ) => {
-  const [selectedMetric, setSelectedMetric] = React.useState(initialSelection);
-  const setSelection = (metric) => {
-    setSelectedMetric(metric);
-    onSelectionChanged(metric);
-  }
+  const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
 
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
@@ -340,8 +339,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric===metricsMapping.LEAD_TIME}
-          onClick={() => setSelection(metricsMapping.LEAD_TIME)}
+          showHighlighted={selectedMetric === metricsMapping.LEAD_TIME}
+          onClick={() => setSelectedMetric(metricsMapping.LEAD_TIME)}
         />
       </div>
       <div className={styles.cycleTime}>
@@ -350,8 +349,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric===metricsMapping.CYCLE_TIME}
-          onClick={() => setSelection(metricsMapping.CYCLE_TIME)}
+          showHighlighted={selectedMetric === metricsMapping.CYCLE_TIME}
+          onClick={() => setSelectedMetric(metricsMapping.CYCLE_TIME)}
         />
       </div>
       <div className={styles.implement}>
@@ -360,8 +359,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric===metricsMapping.DURATION}
-          onClick={() => setSelection(metricsMapping.DURATION)}
+          showHighlighted={selectedMetric === metricsMapping.DURATION}
+          onClick={() => setSelectedMetric(metricsMapping.DURATION)}
         />
       </div>
       <div className={styles.effort}>
@@ -370,8 +369,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric===metricsMapping.EFFORT}
-          onClick={() => setSelection(metricsMapping.EFFORT)}
+          showHighlighted={selectedMetric === metricsMapping.EFFORT}
+          onClick={() => setSelectedMetric(metricsMapping.EFFORT)}
         />
       </div>
       <div className={styles.deliver}>
@@ -380,8 +379,8 @@ export const ResponseTimeDetailView = (
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric===metricsMapping.LATENCY}
-          onClick={() => setSelection(metricsMapping.LATENCY)}
+          showHighlighted={selectedMetric === metricsMapping.LATENCY}
+          onClick={() => setSelectedMetric(metricsMapping.LATENCY)}
         />
       </div>
     </div>
@@ -389,20 +388,24 @@ export const ResponseTimeDetailView = (
 };
 
 export const ThroughputDetailView = ({
-  cycleMetricsTrends,
-  leadTimeTargetPercentile,
-  cycleTimeTargetPercentile,
-  leadTimeTarget,
-  cycleTimeTarget,
-  specsOnly,
-  selectedMetricState,
-}) => {
-  const [selectedMetric, setSelectedMetric] = selectedMetricState;
+                                       cycleMetricsTrends,
+                                       leadTimeTargetPercentile,
+                                       cycleTimeTargetPercentile,
+                                       leadTimeTarget,
+                                       cycleTimeTarget,
+                                       specsOnly,
+                                       displayProps: {
+                                         initialSelection,
+                                         onSelectionChanged
+                                       }
+                                     }) => {
+  const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
+
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
     return null;
   }
-  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
+  const metric = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
   return (
     <div className={styles.throughputDetailWrapper}>
       <div className={styles.volume}>
@@ -740,7 +743,20 @@ export const AggregateFlowMetricsView = withViewerContext((
                 cycleTimeTargetPercentile={cycleTimeTargetPercentile}
                 specsOnly={specsOnly}
                 twoRows={twoRows}
-                selectedMetricState={selectedMetricState}
+                displayProps={displayProps}
+              />
+          )
+      case 'cadenceDetail':
+          return (
+              <CadenceDetailView
+                cycleMetricsTrends={cycleMetricsTrends}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeTargetPercentile={leadTimeTargetPercentile}
+                cycleTimeTargetPercentile={cycleTimeTargetPercentile}
+                specsOnly={specsOnly}
+                twoRows={twoRows}
+                displayProps={displayProps}
               />
           )
       case 'all':
