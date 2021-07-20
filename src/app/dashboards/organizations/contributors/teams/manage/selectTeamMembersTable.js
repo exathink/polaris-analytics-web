@@ -53,7 +53,7 @@ export function SelectTeamMembersTable({tableData, columns, loading, testId, row
       columns={columns}
       loading={loading}
       testId={testId}
-      height={TABLE_HEIGHTS.FOURTY_FIVE}
+      height={TABLE_HEIGHTS.FORTY_FIVE}
       rowSelection={rowSelection}
     />
   );

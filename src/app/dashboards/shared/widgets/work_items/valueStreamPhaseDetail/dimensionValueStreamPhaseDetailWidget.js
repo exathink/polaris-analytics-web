@@ -38,21 +38,24 @@ export const DimensionValueStreamPhaseDetailWidget = ({
     specsOnly: workItemScope === "specs",
     referenceString: latestWorkItemEvent,
   });
+  const targetMetrics = React.useMemo(
+    () => ({leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget}),
+    [leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget]
+  );
 
   if (loading) return <Loading />;
   if (error) {
     logGraphQlError("DimensionValueStreamPhaseDetailWidget.pipelineStateDetails", error);
     return null;
-  }
-  const workItems = data[dimension]["workItems"]["edges"].map((edge) => edge.node);
-  const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
+  }  
 
   return (
     <ValueStreamPhaseDetailView
+      dimension={dimension}
       view={view}
       specsOnly={specsOnly}
       context={context}
-      workItems={workItems}
+      data={data}
       targetMetrics={targetMetrics}
       workItemScope={workItemScope}
       setWorkItemScope={setWorkItemScope}

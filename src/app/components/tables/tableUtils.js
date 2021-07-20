@@ -8,8 +8,9 @@ const DEFAULTS = {
 };
 
 export const TABLE_HEIGHTS = {
-  FOURTY_FIVE: "45vh",
-  SIXTY: "60vh"
+  FORTY_FIVE: "45vh",
+  SIXTY: "60vh",
+  NINETY: "90vh"
 }
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
