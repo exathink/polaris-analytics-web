@@ -5,6 +5,7 @@ import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
+import {INFO_ICON_PLACEMENTS} from "../../../../../../framework/viz/dashboard/dashboardWidget";
 
 
 export const DimensionPipelineCycleTimeLatencyWidget = (
@@ -94,4 +95,17 @@ DimensionPipelineCycleTimeLatencyWidget.videoConfig = {
       <p> lorem ipsum </p>
     </>
   ),
+};
+
+DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
+  title: "Implementation",
+  content: () => (
+    <>
+      <p> short description </p>
+    </>
+  ),
+  content1: () => (
+    <><p>Detailed Description</p></>
+  ),
+  placement: INFO_ICON_PLACEMENTS.Middle
 };

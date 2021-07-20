@@ -5,6 +5,7 @@ import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {getLatest} from "../../../../../helpers/utility";
 import {ProjectPipelineFunnelDetailDashboard} from "./projectPipelineFunnelDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {INFO_ICON_PLACEMENTS} from "../../../../../framework/viz/dashboard/dashboardWidget";
 
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
@@ -72,4 +73,17 @@ ProjectPipelineFunnelWidget.videoConfig = {
       <p> lorem ipsum </p>
     </>
   ),
+};
+
+ProjectPipelineFunnelWidget.infoConfig = {
+  title: "Funnel Widget",
+  content: () => (
+    <>
+      <p> short description </p>
+    </>
+  ),
+  content1: () => (
+    <><p>Funnel Widget Detail Description</p></>
+  ),
+  placement: INFO_ICON_PLACEMENTS.Right
 };
