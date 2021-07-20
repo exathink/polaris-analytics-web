@@ -61,5 +61,5 @@ export function OrgTeamsTable({tableData, organizationKey}) {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
   };
 
-  return <StripeTable columns={columns} dataSource={tableData} height={TABLE_HEIGHTS.FOURTY_FIVE} locale={locale} />;
+  return <StripeTable columns={columns} dataSource={tableData} height={TABLE_HEIGHTS.FORTY_FIVE} locale={locale} />;
 }
