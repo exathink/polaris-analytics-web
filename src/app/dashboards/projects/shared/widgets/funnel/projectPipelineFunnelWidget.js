@@ -64,17 +64,6 @@ export const ProjectPipelineFunnelWidget = ({
   );
 };
 
-ProjectPipelineFunnelWidget.videoConfig = {
-  url: "https://vimeo.com/501974487/080d487fcf",
-  title: "State Mapping",
-  VideoDescription: () => (
-    <>
-      <h2>Value Stream Mapping</h2>
-      <p> lorem ipsum </p>
-    </>
-  ),
-};
-
 ProjectPipelineFunnelWidget.infoConfig = {
   title: "Funnel Widget",
   content: () => (

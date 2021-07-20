@@ -87,7 +87,6 @@ function WipDashboard({
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
-          videoConfig={DimensionWipFlowMetricsWidget.videoConfig}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={'project'}

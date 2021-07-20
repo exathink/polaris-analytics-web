@@ -31,7 +31,6 @@ export function ValueStreamMappingDashboard() {
             <DashboardWidget
               w={1 / 3}
               name="project-pipeline-detailed"
-              videoConfig={ProjectPipelineFunnelWidget.videoConfig}
               render={({view}) => (
                 <ProjectPipelineFunnelWidget
                   instanceKey={key}
