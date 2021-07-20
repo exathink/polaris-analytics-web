@@ -10,7 +10,7 @@ export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, siz
     <div className={selectedTrendCardClasses} onClick={onClick}>
       <div className={styles.metricTitle}>{metricTitle}</div>
       <div className={styles.infoIcon}>
-        <InfoCard title={metricTitle} content={info.headline} drawerContent={info.drawerContent} />
+        <InfoCard title={metricTitle} content={info && info.headline} drawerContent={info && info.drawerContent} />
       </div>
       <div className={metricValueClasses}>
         {metricValue} <span className={styles.unitOfMesurement}>{suffix}</span>
