@@ -24,19 +24,20 @@ export const INFO_ICON_PLACEMENTS = {
   Middle: 1,
   Right: 2
 }
-function getInfoClassNames(placement) {
+
+function getInfoClassNames(placement, itemSelected) {
   switch (placement) {
     case INFO_ICON_PLACEMENTS.Left: {
-      return uniqueStyles.shiftInfoLeft;
+      return itemSelected ? uniqueStyles.shiftInfoLeftDetail : uniqueStyles.shiftInfoLeft;
     }
     case INFO_ICON_PLACEMENTS.Middle: {
-      return uniqueStyles.shiftInfoMiddle;
+      return itemSelected ? uniqueStyles.shiftInfoMiddleDetail : uniqueStyles.shiftInfoMiddle;
     }
     case INFO_ICON_PLACEMENTS.Right: {
-      return uniqueStyles.shiftInfoRight;
+      return itemSelected ? uniqueStyles.shiftInfoRightDetail : uniqueStyles.shiftInfoRight;
     }
     default: {
-      return uniqueStyles.shiftInfoMiddle;
+      return itemSelected ? uniqueStyles.shiftInfoMiddleDetail : uniqueStyles.shiftInfoMiddle;
     }
   }
 }
@@ -89,12 +90,12 @@ export const DashboardWidget = withRouter(withNavigationContext(
               null
           }
            
-          {!itemSelected && infoConfig && (
+          {infoConfig && (
             <InfoCard
               title={infoConfig.title}
               content={infoConfig.content()}
               content1={infoConfig.content1()}
-              className={getInfoClassNames(infoConfig.placement)}
+              className={getInfoClassNames(infoConfig.placement, itemSelected)}
             />
           )}
         </div>
