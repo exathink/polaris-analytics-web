@@ -2,9 +2,9 @@ import React from "react";
 import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
 import {withRouter} from 'react-router';
-import {EmbedVideoPlayer, useVideo} from "../videoPlayer/videoPlayer";
 import uniqueStyles from './dashboard.module.css';
 import classNames from "classnames";
+import {InfoCard} from "../../../components/misc/info/infoCard";
 
 const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
   showDetail?
@@ -18,26 +18,36 @@ const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
     null
 );
 
-function getVideoClassNames(itemSelected, showDetail) {
-  let classes;
-  if (itemSelected) {
-    classes = uniqueStyles["video-detail-view"];
-  }
-  if (!itemSelected && showDetail) {
-    classes = uniqueStyles["video-primary-view"];
-  }
 
-  return classes;
+export const INFO_ICON_PLACEMENTS = {
+  Left: 0,
+  Middle: 1,
+  Right: 2
+}
+function getInfoClassNames(placement) {
+  switch (placement) {
+    case INFO_ICON_PLACEMENTS.Left: {
+      return uniqueStyles.shiftInfoLeft;
+    }
+    case INFO_ICON_PLACEMENTS.Middle: {
+      return uniqueStyles.shiftInfoMiddle;
+    }
+    case INFO_ICON_PLACEMENTS.Right: {
+      return uniqueStyles.shiftInfoRight;
+    }
+    default: {
+      return uniqueStyles.shiftInfoMiddle;
+    }
+  }
 }
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, fullScreen, className="", gridLayout, ...rest}) => {
-  const videoPlayerProps = useVideo();
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
   const margin = gridLayout ? {}: {m: 1};
   return (
     <Flex column w={w} {...margin} className={classNames(uniqueStyles["dashboard-item"], className)}>
       {
-        title || subtitle || controls ?
+        title || subtitle || controls || infoConfig ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
           {
             title && (!itemSelected || !hideTitlesInDetailView) ?
@@ -78,18 +88,20 @@ export const DashboardWidget = withRouter(withNavigationContext(
               :
               null
           }
+           
+          {!itemSelected && infoConfig && (
+            <InfoCard
+              title={infoConfig.title}
+              content={infoConfig.content()}
+              content1={infoConfig.content1()}
+              className={getInfoClassNames(infoConfig.placement)}
+            />
+          )}
         </div>
         :
         null
 
       }
-      {!fullScreen && enableVideo && videoConfig && (
-        <EmbedVideoPlayer
-          className={getVideoClassNames(itemSelected, showDetail)}
-          {...videoConfig}
-          {...videoPlayerProps}
-        />
-      )}
       <WidgetMenu
         {...{itemSelected, showDetail}}
         onClick={() => (
