@@ -7,7 +7,7 @@ import {url_for_instance} from "../../../../../framework/navigation/context/help
 import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
-import {StripeTable, SORTER, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -74,6 +74,21 @@ function customColRender({setShowPanel, setWorkItemKey}) {
     );
 }
 
+function numberColRender({intl, setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) =>
+    text && (
+      <span
+        onClick={() => {
+          setShowPanel(true);
+          setWorkItemKey(record.key);
+        }}
+        style={{cursor: "pointer"}}
+      >
+        {intl.formatNumber(text)}
+      </span>
+    );
+}
+
 function renderTeamsCall({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     return (
@@ -92,11 +107,12 @@ function renderTeamsCall({setShowPanel, setWorkItemKey}) {
   };
 }
 
-export function useValueStreamPhaseDetailTableColumns({filters, callBacks}) {
+export function useValueStreamPhaseDetailTableColumns({filters, callBacks, intl}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
   const renderState = {render: customColRender(callBacks)};
   const renderTeamsCol = {render: renderTeamsCall(callBacks)};
+  const renderNumberCol = {render: numberColRender({intl, ...callBacks})}
 
   const columns = [
     {
@@ -163,7 +179,7 @@ export function useValueStreamPhaseDetailTableColumns({filters, callBacks}) {
       ...renderState,
     },
     {
-      title: "Cycle Time",
+      title: "Age",
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
@@ -179,12 +195,12 @@ export function useValueStreamPhaseDetailTableColumns({filters, callBacks}) {
       ...renderState,
     },
     {
-      title: "Commits",
-      dataIndex: "commitCount",
-      key: "commitCount",
+      title: "Effort",
+      dataIndex: "effort",
+      key: "effort",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
-      ...renderState,
+      ...renderNumberCol
     },
     {
       title: "Latest Commit",
@@ -199,7 +215,7 @@ export function useValueStreamPhaseDetailTableColumns({filters, callBacks}) {
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, tableData, intl, setShowPanel, setWorkItemKey}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -208,6 +224,7 @@ export const ValueStreamPhaseDetailTable = injectIntl(({tableData, intl, setShow
 
   const dataSource = getTransformedData(tableData, intl);
   const columns = useValueStreamPhaseDetailTableColumns({
+    intl,
     filters: {workItemTypes, stateTypes, states, teams},
     callBacks: {setShowPanel, setWorkItemKey},
   });
@@ -217,7 +234,7 @@ export const ValueStreamPhaseDetailTable = injectIntl(({tableData, intl, setShow
       columns={columns}
       dataSource={dataSource}
       testId="value-stream-phase-detail-table"
-      height={TABLE_HEIGHTS.FOURTY_FIVE}
+      height={view === 'primary' ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
     />
   );
 });
