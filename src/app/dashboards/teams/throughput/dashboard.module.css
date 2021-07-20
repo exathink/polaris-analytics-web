@@ -2,14 +2,16 @@
   background-color: ghostwhite;
   display: grid;
   grid-template-columns: 44% 55%;
-  grid-template-rows: 7% auto auto auto 55%;
+  grid-template-rows: 7% auto auto auto 5% 50%;
   grid-template-areas: "rangeSlider rangeSlider"
   "throughputMetrics ."
   "throughputMetrics valueMix"
   "throughputMetrics valueMix"
-  "valueMixChart valueMixChart";
+  "chartsToggleRow chartsToggleRow"
+  "throughputDetail throughputDetail";
   gap: 0.5rem;
 }
+
 
 .rangeSlider {
   grid-area: rangeSlider;
@@ -21,10 +23,24 @@
   grid-area: throughputMetrics;
 }
 
+.chartsToggleRow {
+  grid-area: chartsToggleRow;
+  background-color: ghostwhite;
+  justify-content: center;
+  margin-top: 10px;
+}
+
 .valueMix{
   grid-area: valueMix;
 }
+.hidden {
+  display: none
+}
 
-.valueMixChart{
-  grid-area: valueMixChart;
+.throughputDetail{
+  grid-area: throughputDetail;
+}
+
+.throughputDetailHidden{
+  display: none;
 }
