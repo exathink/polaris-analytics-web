@@ -9,6 +9,7 @@ import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
 import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
 import {TrendCard} from "../cards/trendCard";
+import {fromNow} from "../../../../helpers/utility";
 
 const colors = {
   good: "#338807",
@@ -65,7 +66,7 @@ export const FlowStatistic = ({
     // </Card>
     <TrendCard
       metricTitle={title}
-      metricValue={renderedValue != null ? renderedValue.toFixed(2) : "N/A"}
+      metricValue={renderedValue ? renderedValue.toFixed ? renderedValue.toFixed(precision || 0) : renderedValue :   "N/A"}
       suffix={value ? uom : ""}
       showHighlighted={showHighlighted}
       onClick={onClick}
@@ -180,7 +181,15 @@ export const WipWithLimit = ({title, currentMeasurement, previousMeasurement, ta
 
 };
 
-export const LatestClosed = ({currentMeasurement}) => (
+export const LatestClosed = ({asCard, currentMeasurement}) => (
+  asCard ?
+  <FlowStatistic
+    title={"Latest Closed"}
+    currentMeasurement={currentMeasurement}
+    valueRender={value => fromNow(currentMeasurement['latestClosedDate'])}
+    asCard={true}
+  />
+    :
   <HumanizedDateView
     asStatistic={true}
     title={'Latest Closed'}
@@ -196,7 +205,7 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+export const Cadence = ({title, asCard, currentMeasurement, previousMeasurement, deltaThreshold}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
@@ -206,6 +215,7 @@ export const Cadence = ({title, currentMeasurement, previousMeasurement, deltaTh
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
+    asCard={asCard}
   />
 );
 
