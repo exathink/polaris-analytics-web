@@ -22,6 +22,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   initialMetric,
   defectsOnly,
   pollInterval,
+  hideControls,
   yAxisScale,
   setYAxisScale,
   includeSubTasks,
@@ -76,6 +77,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       initialMetric={initialMetric}
       yAxisScale={yAxisScale}
       setYAxisScale={setYAxisScale}
+      hideControls={hideControls}
     />
   );
 };

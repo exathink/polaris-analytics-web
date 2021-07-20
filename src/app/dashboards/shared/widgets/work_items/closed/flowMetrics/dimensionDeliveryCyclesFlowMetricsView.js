@@ -6,6 +6,8 @@ import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
+import {useChildState} from "../../../../../../helpers/hooksUtil";
+
 const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -16,8 +18,9 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   initialMetric,
   defectsOnly,
   specsOnly,
-  yAxisScale,
-  setYAxisScale
+  hideControls,
+  yAxisScale: parentYAxisScale,
+  setYAxisScale: parentSetYAxisScale,
 }) => {
   const groupings = specsOnly
     ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
@@ -28,6 +31,8 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   
   const [showPanel, setShowPanel] = React.useState(false);
   const [workItemKey, setWorkItemKey] = React.useState();
+
+  const [yAxisScale, setYAxisScale] = useChildState(parentYAxisScale, parentSetYAxisScale, parentYAxisScale || 'logarithmic')
 
   React.useEffect(() => {
     initialMetric && setSelectedMetric(initialMetric);
@@ -46,18 +51,19 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     }
 
     return (
-      <div style={{marginBottom: "5px"}}>
-        <Select
-          defaultValue={2}
-          value={groupings.indexOf(selectedMetric)}
-          style={{width: 170}}
-          onChange={handleDropdownChange}
-          getPopupContainer={(node) => node.parentNode}
-          data-testid="groupings-select"
-        >
-          {optionElements}
-        </Select>
-      </div>
+      !hideControls &&
+        <div style={{marginBottom: "5px"}}>
+          <Select
+            defaultValue={2}
+            value={groupings.indexOf(selectedMetric)}
+            style={{width: 170}}
+            onChange={handleDropdownChange}
+            getPopupContainer={(node) => node.parentNode}
+            data-testid="groupings-select"
+          >
+            {optionElements}
+          </Select>
+        </div>
     );
   }
 
@@ -65,7 +71,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     <React.Fragment>
       <Flex w={0.95} justify={"space-between"}>
         {yAxisScale !== "table" && selectMetricDropdown()}
-        {!defectsOnly && (
+        {!defectsOnly &&  !hideControls && (
           <div style={{marginLeft: "auto"}}>
             <GroupingSelector
               label={"View"}
@@ -84,7 +90,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
                   display: "Data",
                 },
               ]}
-              initialValue={"logarithmic"}
+              initialValue={yAxisScale}
               onGroupingChanged={setYAxisScale}
             />
           </div>
