@@ -6,59 +6,31 @@ import uniqueStyles from './dashboard.module.css';
 import classNames from "classnames";
 import {InfoCard} from "../../../components/misc/info/infoCard";
 
-const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
-  showDetail?
-    <nav className={uniqueStyles["dashboard-item-menu"]}>
-      <i
-        className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
-        title={"Show Details"}
-        onClick={onClick}
-      />
-    </nav> :
-    null
-);
+const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
+  const infoElement = infoConfig && (
+    <InfoCard
+      title={infoConfig.title}
+      content={infoConfig.content()}
+      content1={infoConfig.content1()}
+      className={showDetail ? uniqueStyles.shiftInfo  : uniqueStyles.iconsWrapper}
+    />
+  );
 
-
-export const INFO_ICON_PLACEMENTS = {
-  Left: 0,
-  Middle: 1,
-  Right: 2
-}
-
-function getInfoClassNames(placementInPrimaryView, placementInDetailView, itemSelected) {
-  if (itemSelected) {
-    switch (placementInDetailView) {
-      case INFO_ICON_PLACEMENTS.Left: {
-        return uniqueStyles.shiftInfoLeftDetail;
-      }
-      case INFO_ICON_PLACEMENTS.Middle: {
-        return uniqueStyles.shiftInfoMiddleDetail;
-      }
-      case INFO_ICON_PLACEMENTS.Right: {
-        return uniqueStyles.shiftInfoRightDetail;
-      }
-      default: {
-        return uniqueStyles.shiftInfoMiddleDetail;
-      }
-    }
-  } else {
-    switch (placementInPrimaryView) {
-      case INFO_ICON_PLACEMENTS.Left: {
-        return uniqueStyles.shiftInfoLeft;
-      }
-      case INFO_ICON_PLACEMENTS.Middle: {
-        return uniqueStyles.shiftInfoMiddle;
-      }
-      case INFO_ICON_PLACEMENTS.Right: {
-        return uniqueStyles.shiftInfoRight;
-      }
-      default: {
-        return uniqueStyles.shiftInfoMiddle;
-      }
-    }
-  }
-
-}
+  return showDetail ? (
+    <div className={uniqueStyles.iconsWrapper}>
+      {infoElement}
+      <nav>
+        <i
+          className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
+          title={"Show Details"}
+          onClick={onClick}
+        />
+      </nav>
+    </div>
+  ) : (
+    <React.Fragment>{infoElement}</React.Fragment>
+  );
+};
 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
@@ -66,7 +38,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
   return (
     <Flex column w={w} {...margin} className={classNames(uniqueStyles["dashboard-item"], className)}>
       {
-        title || subtitle || controls || infoConfig ?
+        title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
           {
             title && (!itemSelected || !hideTitlesInDetailView) ?
@@ -107,15 +79,6 @@ export const DashboardWidget = withRouter(withNavigationContext(
               :
               null
           }
-           
-          {infoConfig && (
-            <InfoCard
-              title={infoConfig.title}
-              content={infoConfig.content()}
-              content1={infoConfig.content1()}
-              className={getInfoClassNames(infoConfig.placementInPrimaryView, infoConfig.placementInDetailView, itemSelected)}
-            />
-          )}
         </div>
         :
         null
@@ -126,6 +89,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
         onClick={() => (
           itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
         )}
+        infoConfig={infoConfig}
       />
       {
         itemSelected && showDetail ? render({view: 'detail', ...rest}) : render({view: 'primary', ...rest})
