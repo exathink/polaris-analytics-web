@@ -74,5 +74,5 @@ ProjectPipelineFunnelWidget.infoConfig = {
   content1: () => (
     <><p>Funnel Widget Detail Description</p></>
   ),
-  placement: INFO_ICON_PLACEMENTS.Right
+  placementInPrimaryView: INFO_ICON_PLACEMENTS.Right,
 };

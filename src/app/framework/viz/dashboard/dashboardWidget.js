@@ -25,21 +25,39 @@ export const INFO_ICON_PLACEMENTS = {
   Right: 2
 }
 
-function getInfoClassNames(placement, itemSelected) {
-  switch (placement) {
-    case INFO_ICON_PLACEMENTS.Left: {
-      return itemSelected ? uniqueStyles.shiftInfoLeftDetail : uniqueStyles.shiftInfoLeft;
+function getInfoClassNames(placementInPrimaryView, placementInDetailView, itemSelected) {
+  if (itemSelected) {
+    switch (placementInDetailView) {
+      case INFO_ICON_PLACEMENTS.Left: {
+        return uniqueStyles.shiftInfoLeftDetail;
+      }
+      case INFO_ICON_PLACEMENTS.Middle: {
+        return uniqueStyles.shiftInfoMiddleDetail;
+      }
+      case INFO_ICON_PLACEMENTS.Right: {
+        return uniqueStyles.shiftInfoRightDetail;
+      }
+      default: {
+        return uniqueStyles.shiftInfoMiddleDetail;
+      }
     }
-    case INFO_ICON_PLACEMENTS.Middle: {
-      return itemSelected ? uniqueStyles.shiftInfoMiddleDetail : uniqueStyles.shiftInfoMiddle;
-    }
-    case INFO_ICON_PLACEMENTS.Right: {
-      return itemSelected ? uniqueStyles.shiftInfoRightDetail : uniqueStyles.shiftInfoRight;
-    }
-    default: {
-      return itemSelected ? uniqueStyles.shiftInfoMiddleDetail : uniqueStyles.shiftInfoMiddle;
+  } else {
+    switch (placementInPrimaryView) {
+      case INFO_ICON_PLACEMENTS.Left: {
+        return uniqueStyles.shiftInfoLeft;
+      }
+      case INFO_ICON_PLACEMENTS.Middle: {
+        return uniqueStyles.shiftInfoMiddle;
+      }
+      case INFO_ICON_PLACEMENTS.Right: {
+        return uniqueStyles.shiftInfoRight;
+      }
+      default: {
+        return uniqueStyles.shiftInfoMiddle;
+      }
     }
   }
+
 }
 
 export const DashboardWidget = withRouter(withNavigationContext(
@@ -95,7 +113,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
               title={infoConfig.title}
               content={infoConfig.content()}
               content1={infoConfig.content1()}
-              className={getInfoClassNames(infoConfig.placement, itemSelected)}
+              className={getInfoClassNames(infoConfig.placementInPrimaryView, infoConfig.placementInDetailView, itemSelected)}
             />
           )}
         </div>

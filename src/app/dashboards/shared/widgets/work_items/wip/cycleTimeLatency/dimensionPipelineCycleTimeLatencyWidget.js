@@ -96,5 +96,6 @@ DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
   content1: () => (
     <><p>Detailed Description</p></>
   ),
-  placement: INFO_ICON_PLACEMENTS.Middle
+  placementInPrimaryView: INFO_ICON_PLACEMENTS.Middle,
+  placementInDetailView: INFO_ICON_PLACEMENTS.Right,
 };
