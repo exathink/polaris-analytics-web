@@ -63,7 +63,7 @@ export class App extends Component {
                   >
                     <LayoutWrapper id="app-content-area" className="app-content-wrapper">
 
-                      <div className={"app-content"}>
+                      <div className={"app-content"} id="polaris-app-content">
                         <DashboardControlBar/>
                         <React.Suspense fallback={<Spin/>}>
                           <AppRouter url={url} {...this.props} />
