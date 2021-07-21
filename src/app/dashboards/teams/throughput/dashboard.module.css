@@ -5,8 +5,8 @@
   grid-template-rows: 7% auto auto auto 5% 50%;
   grid-template-areas: "rangeSlider rangeSlider"
   "throughputMetrics ."
-  "throughputMetrics valueMix"
-  "throughputMetrics valueMix"
+  "throughputMetrics cadence"
+  "throughputMetrics cadence"
   "chartsToggleRow chartsToggleRow"
   "throughputDetail throughputDetail";
   gap: 0.5rem;
@@ -30,8 +30,8 @@
   margin-top: 10px;
 }
 
-.valueMix{
-  grid-area: valueMix;
+.cadence{
+  grid-area: cadence;
 }
 .hidden {
   display: none

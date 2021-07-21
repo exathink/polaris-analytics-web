@@ -1,13 +1,11 @@
 import React from "react";
-import {TeamDashboard} from "../teamDashboard";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import { TeamDashboard } from "../teamDashboard";
+import { withViewerContext } from "../../../framework/viewer/viewerContext";
 
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
+import { DaysRangeSlider, THREE_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix/flowMixTrendsWidget";
-import { GroupingSelector } from "../../shared/components/groupingSelector/groupingSelector";
+import { DimensionFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics";
 import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 // import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
 // import {ProjectEffortTrendsWidget} from "../../projects/shared/widgets/capacity";
@@ -42,7 +40,6 @@ function DimensionThroughputDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const [chartToggle, setChartToggle] = React.useState("throughputDetail");
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
 
@@ -92,32 +89,9 @@ function DimensionThroughputDashboard({
           showDetail={false}
         />
         <DashboardWidget
-          name="flow-type-flow-mix"
-          title={`Value Mix by ${selectedMetric === 'workItemsWithCommits' ? 'Volume' : 'Effort'}`}
-          className={chartToggle === 'valueMix' ? styles.valueMix : styles.hidden}
-          render={({view}) => (
-            <DimensionFlowMixTrendsWidget
-              dimension={"team"}
-              instanceKey={key}
-              measurementWindow={daysRange}
-              days={daysRange}
-              samplingFrequency={daysRange}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={selectedMetric==="totalEffort"}
-              showCounts={true}
-              includeSubTasks={includeSubTasksFlowMetrics}
-              asStatistic={true}
-            />
-          )}
-          showDetail={false}
-        />
-        <DashboardWidget
           name="Cadence"
           title={"Cadence"}
-          className={chartToggle === 'throughputDetail' ? styles.valueMix : styles.hidden}
+          className={styles.cadence}
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={"team"}
@@ -146,55 +120,11 @@ function DimensionThroughputDashboard({
       </DashboardRow>
       <DashboardRow
         className={styles.chartsToggleRow}
-        controls={[
-          () => (
-            <GroupingSelector
-              label={" "}
-              value={chartToggle}
-              groupings={[
-                {
-                  key: "throughputDetail",
-                  display: "Cadence",
-                },
-                {
-                  key: "valueMix",
-                  display: "Value Mix",
-                },
-
-              ]}
-              initialValue={"throughputDetail"}
-              onGroupingChanged={setChartToggle}
-            />
-          ),
-        ]}
       >
-        <DashboardWidget
-          name="flow-mix"
-          className={chartToggle === "valueMix" ? styles.throughputDetail : styles.throughputDetailHidden}
-          render={({view}) => (
-            <DimensionFlowMixTrendsWidget
-              dimension={"team"}
-              instanceKey={key}
-              measurementWindow={daysRange}
-              days={daysRange}
-              samplingFrequency={daysRange}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={selectedMetric==="totalEffort"}
-              asStatistic={false}
-              showCounts={true}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={false}
-        />
-
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className={chartToggle === "throughputDetail" ? styles.throughputDetail : styles.throughputDetailHidden}
+          className={styles.throughputDetail}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
