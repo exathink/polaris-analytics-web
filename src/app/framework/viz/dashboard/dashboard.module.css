@@ -138,7 +138,7 @@
 .shiftInfoRight {
   position: absolute;
   top: 2.5%;
-  right: 2.5%;
+  right: 10px;
   z-index: 1;
   cursor: pointer;
 }

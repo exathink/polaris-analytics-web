@@ -218,6 +218,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="project-pipeline-queues"
           className={styles.phaseDetail}
+          infoConfig={DimensionValueStreamPhaseDetailWidget.infoConfig}
           render={({view}) => (
             <DimensionValueStreamPhaseDetailWidget
               dimension={'project'}
