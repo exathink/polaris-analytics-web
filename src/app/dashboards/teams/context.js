@@ -10,7 +10,7 @@ import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
-
+import Value from "./valueMix/topic";
 const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
@@ -43,6 +43,11 @@ const context : Context = {
 
             match: 'throughput',
             topic: Throughput
+          },
+          {
+
+            match: 'value',
+            topic: Value
           },
           {
             match: '',
