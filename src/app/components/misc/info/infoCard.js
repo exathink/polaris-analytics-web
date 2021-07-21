@@ -15,7 +15,7 @@ export function InfoCard({title, content, content1, className = ""}) {
       }
     >
       <div className={className}>
-        <InfoCircleOutlined />
+        <InfoCircleOutlined style={{ fontSize: '12px' }}/>
       </div>
     </Popover>
   );
