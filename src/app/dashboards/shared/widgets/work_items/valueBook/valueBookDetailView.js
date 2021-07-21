@@ -1,4 +1,4 @@
-import {Alert, Button, Drawer} from "antd";
+import {Alert, Button} from "antd";
 import React from "react";
 import styles from "./valueBook.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectEpicEffort";
@@ -14,7 +14,7 @@ import {WorkItemsEpicEffortChart} from "../../../charts/workItemCharts/workItems
 import {DaysRangeSlider, ONE_YEAR} from "../../../components/daysRangeSlider/daysRangeSlider";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
-import {CardInspectorWidget} from "../../../../work_items/cardInspector/cardInspectorWidget";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -76,8 +76,7 @@ export function ValueBookDetailView({
 
   const epicWorkItems = newWorkItems.filter((x) => x.workItemType === "epic");
 
-  const [showPanel, setShowPanel] = React.useState(false);
-  const [workItemKey, setWorkItemKey] = React.useState();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const columns = useImplementationCostTableColumns([state.budgetRecords, dispatch], epicWorkItems, {setShowPanel, setWorkItemKey});
 
   // mutation to update project analysis periods
@@ -194,34 +193,12 @@ export function ValueBookDetailView({
     return chartPoints.length > 0 ? filteredChartPoints : newWorkItems;
   }
 
-  function getCardInspectorPanel() {
-    return (
-      workItemKey && (
-        <Drawer
-          placement="top"
-          height={355}
-          closable={false}
-          onClose={() => setShowPanel(false)}
-          visible={showPanel}
-          key={workItemKey}
-        >
-          <CardInspectorWidget context={context} workItemKey={workItemKey} />
-        </Drawer>
-      )
-    );
-  }
-
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
       {!activeOnly && (
         <div className={styles.daysRangeSlider}>
-          <DaysRangeSlider
-            title={"Days"}
-            initialDays={days}
-            setDaysRange={setClosedWithinDays}
-            range={ONE_YEAR}
-          />
+          <DaysRangeSlider title={"Days"} initialDays={days} setDaysRange={setClosedWithinDays} range={ONE_YEAR} />
         </div>
       )}
       <div className={styles.scopeSelector}>
@@ -251,7 +228,14 @@ export function ValueBookDetailView({
           rowClassName={getRowClassName}
         />
       </div>
-      <div className={styles.cardInspectorPanel}>{getCardInspectorPanel()}</div>
+      <div className={styles.cardInspectorPanel}>
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          context={context}
+        />
+      </div>
     </div>
   );
 }

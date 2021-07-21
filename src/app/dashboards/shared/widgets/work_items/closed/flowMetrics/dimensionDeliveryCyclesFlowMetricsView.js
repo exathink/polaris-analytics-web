@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "../../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {Drawer, Select} from "antd";
+import {Select} from "antd";
 import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
-import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
+
 const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -26,8 +27,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
 
   const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
   
-  const [showPanel, setShowPanel] = React.useState(false);
-  const [workItemKey, setWorkItemKey] = React.useState();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   React.useEffect(() => {
     initialMetric && setSelectedMetric(initialMetric);
@@ -111,11 +111,12 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       ) : (
         <FlowMetricsDetailTable tableData={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
       )}
-      {workItemKey && (
-        <Drawer placement="top" height={355} closable={false} onClose={() => setShowPanel(false)} visible={showPanel}>
-          <CardInspectorWidget context={context} workItemKey={workItemKey} />
-        </Drawer>
-      )}
+      <CardInspectorWithDrawer
+        workItemKey={workItemKey}
+        showPanel={showPanel}
+        setShowPanel={setShowPanel}
+        context={context}
+      />
     </React.Fragment>
   );
 };
