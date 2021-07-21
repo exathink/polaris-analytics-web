@@ -55,6 +55,7 @@ export function SelectTeamMembersTable({tableData, columns, loading, testId, row
       testId={testId}
       height={TABLE_HEIGHTS.FORTY_FIVE}
       rowSelection={rowSelection}
+      rowKey={record => record.key}
     />
   );
 }

@@ -87,7 +87,15 @@ export function RepositoriesTable({tableData, loading}) {
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
   const columns = useRepositoriesTableColumns({statusTypes});
 
-  return <StripeTable columns={columns} dataSource={tableData} loading={loading} height={TABLE_HEIGHTS.FOURTY_FIVE} />;
+  return (
+    <StripeTable
+      columns={columns}
+      dataSource={tableData}
+      loading={loading}
+      height={TABLE_HEIGHTS.FOURTY_FIVE}
+      rowKey={(record) => record.key}
+    />
+  );
 }
 
 export const RepositoriesTableWidget = ({dimension, instanceKey}) => {
