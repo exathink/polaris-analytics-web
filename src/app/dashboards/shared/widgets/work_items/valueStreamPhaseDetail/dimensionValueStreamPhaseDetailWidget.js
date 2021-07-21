@@ -4,7 +4,6 @@ import {useQueryDimensionPipelineStateDetails} from "../hooks/useQueryDimensionP
 import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useChildState} from "../../../../../helpers/hooksUtil";
-import { INFO_ICON_PLACEMENTS } from "../../../../../framework/viz/dashboard/dashboardWidget";
 
 export const DimensionValueStreamPhaseDetailWidget = ({
   dimension,
@@ -72,6 +71,4 @@ DimensionValueStreamPhaseDetailWidget.infoConfig = {
   content1: () => (
     <><p>Detailed Description</p></>
   ),
-  placementInPrimaryView: INFO_ICON_PLACEMENTS.Right,
-  placementInDetailView: INFO_ICON_PLACEMENTS.Right,
 };
