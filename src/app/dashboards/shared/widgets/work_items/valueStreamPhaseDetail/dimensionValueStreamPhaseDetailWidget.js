@@ -63,3 +63,15 @@ export const DimensionValueStreamPhaseDetailWidget = ({
     />
   );
 };
+
+DimensionValueStreamPhaseDetailWidget.infoConfig = {
+  title: "Phase Detail",
+  content: () => (
+    <>
+      <p> short description </p>
+    </>
+  ),
+  content1: () => (
+    <><p>Detailed Description</p></>
+  ),
+};

@@ -3,18 +3,20 @@ import {InfoDrawer} from "./infoDrawer";
 import {InfoCircleOutlined} from "@ant-design/icons";
 import React from "react";
 
-export function InfoCard(props: {title: any, content: string | any, content1: any}) {
+export function InfoCard({title, content, content1, className = ""}) {
   return (
     <Popover
-      title={props.title}
+      title={title}
       content={
         <div>
-          <p>{props.content}</p>
-          <InfoDrawer title={props.title} content={props.content1} />
+          <p>{content}</p>
+          <InfoDrawer title={title} content={content1} />
         </div>
       }
     >
-      <InfoCircleOutlined />
+      <div className={className}>
+        <InfoCircleOutlined style={{ fontSize: '12px' }}/>
+      </div>
     </Popover>
   );
 }

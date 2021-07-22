@@ -40,6 +40,9 @@ html a {
   margin-left: -4px;
 }
 
+.ant-popover{
+  z-index: 999 !important;
+}
 /********** Add Your Global RTL CSS Here **********/
 /* Popover */
 html[dir='rtl'] .ant-popover {
