@@ -155,7 +155,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               leadTimeTarget={leadTimeTarget}
-              cycleTimeTarge={cycleTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
