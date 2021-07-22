@@ -166,7 +166,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="pipeline-funnel"
           className={styles.pipelineFunnel}
-          infoConfig={ProjectPipelineFunnelWidget.infoConfig}
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -218,7 +217,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="project-pipeline-queues"
           className={styles.phaseDetail}
-          infoConfig={DimensionValueStreamPhaseDetailWidget.infoConfig}
           render={({view}) => (
             <DimensionValueStreamPhaseDetailWidget
               dimension={'project'}

@@ -143,7 +143,6 @@ function WipDashboard({
         <DashboardWidget
           name="engineering"
           className={styles.engineering}
-          infoConfig={DimensionPipelineCycleTimeLatencyWidget.infoConfig}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={"project"}
