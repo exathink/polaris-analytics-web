@@ -9,7 +9,7 @@ import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/trac
 import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
+import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
 import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
 import {
   DefectArrivalCloseRateWidget,
@@ -75,7 +75,8 @@ function TrendsDashboard({
             w={1 / 3}
             name="flow-mix"
             render={({view}) => (
-              <ProjectFlowMixTrendsWidget
+              <DimensionFlowMixTrendsWidget
+                dimension={'project'}
                 instanceKey={key}
                 measurementWindow={30}
                 days={daysRange}

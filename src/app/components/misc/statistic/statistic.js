@@ -33,7 +33,7 @@ export const TrendIndicatorNew = ({
 }) => {
   function getTrendIndicator(delta, good) {
     const absDelta = Math.abs(delta);
-    const style = good(delta) ? "good" : "bad";
+    const style = good ? good(delta) ? "good" : "bad" : "neutral";
     const icon =
       delta > 0 ? (
         <span className={`${style}IndicatorArrow`}>
@@ -41,7 +41,7 @@ export const TrendIndicatorNew = ({
         </span>
       ) : (
         <span className={`${style}IndicatorArrow`}>
-          <ArrowDownOutlined />
+          <ArrowDownOutlined size={"small"} />
         </span>
       );
 
@@ -60,7 +60,7 @@ export const TrendIndicatorNew = ({
     );
   }
 
-  if (good && firstValue && secondValue) {
+  if (firstValue && secondValue) {
     const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
 
     return getTrendIndicator(delta, good);

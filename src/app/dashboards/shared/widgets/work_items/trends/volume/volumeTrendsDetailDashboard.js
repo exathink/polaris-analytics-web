@@ -36,7 +36,8 @@ export const VolumeTrendsDetailDashboard = (
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     pollInterval,
-    includeSubTasks
+    includeSubTasks,
+    detailDashboardInitialMetric
   }
 ) => {
   const [before, setBefore] = React.useState();
@@ -104,7 +105,7 @@ export const VolumeTrendsDetailDashboard = (
               latestWorkItemEvent={latestWorkItemEvent}
               days={measurementWindowRange}
               before={before}
-              initialMetric={"leadTime"}
+              initialMetric={detailDashboardInitialMetric || "leadTime"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}

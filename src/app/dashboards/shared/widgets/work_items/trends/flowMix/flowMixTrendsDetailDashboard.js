@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {ProjectFlowMixTrendsWidget} from "./flowMixTrendsWidget";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
+import {DimensionFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import {ProjectTraceabilityTrendsWidget} from "../../../../shared/widgets/commits/traceability";
+import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
+import {ProjectTraceabilityTrendsWidget} from "../../../commits/traceability";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
+} from "../../../../components/trendingControlBar/trendingControlBar";
+
 
 const dashboard_id = 'dashboards.projects.trends.flow-mix.detail';
 
-export const ProjectFlowMixTrendsDetailDashboard = (
+export const DimensionFlowMixTrendsDetailDashboard = (
   {
+    dimension,
     instanceKey,
     measurementWindow,
     days,
@@ -48,10 +50,11 @@ export const ProjectFlowMixTrendsDetailDashboard = (
             ]
           ),
           () => (
-            <div style={{minWidth: "200px", padding: "15px"}}>
+            <div style={{minWidth: "220px", padding: "15px"}}>
               <Flex align={'center'}>
                 <Box pr={2} w={"100%"}>
                   <WorkItemScopeSelector
+                    display={['Effort', 'Volume']}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />
@@ -60,28 +63,7 @@ export const ProjectFlowMixTrendsDetailDashboard = (
             </div>
 
           ),
-          ({view}) =>
-            specsOnly &&
-            <div style={{minWidth: "100px"}}>
-              <Flex align={'start'}>
-                <Box pr={2} w={"100%"}>
-                  <ProjectTraceabilityTrendsWidget
-                    instanceKey={instanceKey}
-                    measurementWindow={30}
-                    days={7}
-                    samplingFrequency={7}
-                    context={context}
-                    view={view}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    asStatistic={true}
-                    primaryStatOnly={true}
-                    target={0.9}
-                  />
-                </Box>
-              </Flex>
-            </div>
-          ,
+
         ]}
       >
         < DashboardWidget
@@ -89,7 +71,8 @@ export const ProjectFlowMixTrendsDetailDashboard = (
           name={'flow-mix'}
           render={
             ({view}) =>
-              <ProjectFlowMixTrendsWidget
+              <DimensionFlowMixTrendsWidget
+                dimension={dimension}
                 instanceKey={instanceKey}
                 measurementWindow={measurementWindowRange}
                 days={daysRange}

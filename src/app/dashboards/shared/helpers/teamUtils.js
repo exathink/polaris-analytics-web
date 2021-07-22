@@ -4,3 +4,11 @@ export const joinTeams = (node) => {
     .sort()
     .join(", ");
 };
+
+export const metricsMapping = {
+  CYCLE_TIME: "avgCycleTime",
+  LEAD_TIME: "avgLeadTime",
+  DURATION: "avgDuration",
+  EFFORT: "avgEffort",
+  LATENCY: "avgLatency",
+};

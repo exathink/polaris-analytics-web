@@ -24,7 +24,7 @@ export const DimensionFlowMetricsWidget = (
     stateMappingIndex,
     pollInterval,
     includeSubTasks,
-    selectedMetricState
+    displayProps
   }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
@@ -36,7 +36,7 @@ export const DimensionFlowMetricsWidget = (
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
     days: days,
     measurementWindow:measurementWindow,
-    samplingFrequency: 7,
+    samplingFrequency: samplingFrequency || 7,
     specsOnly: limitToSpecsOnly,
     includeSubTasks: includeSubTasks,
     referenceString: latestWorkItemEvent
@@ -50,6 +50,7 @@ export const DimensionFlowMetricsWidget = (
       <AggregateFlowMetricsView
         instanceKey={instanceKey}
         display={display}
+        displayProps={displayProps}
         twoRows={twoRows}
         specsOnly={limitToSpecsOnly}
         leadTimeTargetPercentile={leadTimeConfidenceTarget}
@@ -57,7 +58,6 @@ export const DimensionFlowMetricsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={cycleMetricsTrends}
-        selectedMetricState={selectedMetricState}
       />
     )
   } else {

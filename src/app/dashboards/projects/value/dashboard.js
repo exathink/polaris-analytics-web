@@ -4,7 +4,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import styles from "./dashboard.module.css";
-import {ProjectFlowMixTrendsWidget} from "../shared/widgets/flowMix";
+import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
@@ -47,7 +47,8 @@ function ValueDashboard({
           name="flow-type-flow-mix"
           className={styles.valueMixChart}
           render={({view}) => (
-            <ProjectFlowMixTrendsWidget
+            <DimensionFlowMixTrendsWidget
+              dimension={'project'}
               instanceKey={key}
               measurementWindow={7}
               days={flowAnalysisPeriod}

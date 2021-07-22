@@ -64,6 +64,7 @@ function WipDashboard({
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
+              samplingFrequency={wipAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -120,6 +121,7 @@ function WipDashboard({
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
+              samplingFrequency={wipAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}

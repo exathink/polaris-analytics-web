@@ -1,0 +1,19 @@
+.flowMixWrapper {
+  height: 80%;
+  display: flex;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.features {
+  height: 100%;
+  flex-grow: 1;
+}
+.defects {
+  height: 100%;
+  flex-grow: 1;
+}
+.tasks {
+  height: 100%;
+  flex-grow: 1;
+}

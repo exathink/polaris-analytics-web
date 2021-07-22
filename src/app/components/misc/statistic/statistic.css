@@ -43,6 +43,19 @@
     color: rgba(0, 128, 0, 0.7);
 }
 
+.neutralIndicator {
+
+    font-weight: 500;
+
+    border-radius: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.neutralIndicatorArrow {
+
+}
+
 .badIndicator {
 
     font-weight: 500;

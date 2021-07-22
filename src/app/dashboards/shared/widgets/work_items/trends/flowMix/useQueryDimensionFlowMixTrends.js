@@ -1,8 +1,9 @@
 import { useQuery, gql } from "@apollo/client";
-import {analytics_service} from "../../../../../services/graphql";
+import {analytics_service} from "../../../../../../services/graphql";
 
-export function useQueryProjectFlowMixTrends(
+export function useQueryDimensionFlowMixTrends(
   {
+    dimension,
     instanceKey,
     before,
     days,
@@ -14,7 +15,7 @@ export function useQueryProjectFlowMixTrends(
   }) {
   return useQuery(
     gql`
-     query projectFlowMixTrends(
+     query ${dimension}FlowMixTrends(
           $key: String!, 
           $days: Int!,
           $measurementWindow: Int!,
@@ -24,7 +25,7 @@ export function useQueryProjectFlowMixTrends(
           $specsOnly: Boolean,
           $includeSubTasks: Boolean
           ) {
-      project(
+      ${dimension}(
             key: $key, 
             interfaces: [FlowMixTrends],
              flowMixTrendsArgs: {

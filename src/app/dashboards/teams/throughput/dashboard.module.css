@@ -1,0 +1,46 @@
+.throughputDashboard {
+  background-color: ghostwhite;
+  display: grid;
+  grid-template-columns: 44% 55%;
+  grid-template-rows: 7% auto auto auto 5% 50%;
+  grid-template-areas: "rangeSlider rangeSlider"
+  "throughputMetrics ."
+  "throughputMetrics cadence"
+  "throughputMetrics cadence"
+  "chartsToggleRow chartsToggleRow"
+  "throughputDetail throughputDetail";
+  gap: 0.5rem;
+}
+
+
+.rangeSlider {
+  grid-area: rangeSlider;
+  display: flex;
+  justify-content: center;
+}
+
+.throughputMetrics{
+  grid-area: throughputMetrics;
+}
+
+.chartsToggleRow {
+  grid-area: chartsToggleRow;
+  background-color: ghostwhite;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.cadence{
+  grid-area: cadence;
+}
+.hidden {
+  display: none
+}
+
+.throughputDetail{
+  grid-area: throughputDetail;
+}
+
+.throughputDetailHidden{
+  display: none;
+}

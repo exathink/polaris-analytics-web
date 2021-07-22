@@ -31,3 +31,22 @@
     height: 100%;
     grid-area: deliver;
 }
+
+/* Throughput Detail View */
+.throughputDetailWrapper{
+    display: flex;
+    height: 93%;
+    gap: 0.5rem;
+}
+
+.volume{
+    height: 100%;
+    grid-area: volume;
+    flex-grow: 1;
+}
+
+.effortOut{
+    height: 100%;
+    grid-area: effortOut;
+    flex-grow: 1;
+}
