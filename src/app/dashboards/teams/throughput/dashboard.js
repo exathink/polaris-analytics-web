@@ -1,16 +1,14 @@
 import React from "react";
-import { TeamDashboard } from "../teamDashboard";
-import { withViewerContext } from "../../../framework/viewer/viewerContext";
+import {TeamDashboard} from "../teamDashboard";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
-import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
-import { DaysRangeSlider, THREE_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
-import { DimensionFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics";
-import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-// import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
-// import {ProjectEffortTrendsWidget} from "../../projects/shared/widgets/capacity";
-
-
+import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
+import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -40,6 +38,7 @@ function DimensionThroughputDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const [chartToggle, setChartToggle] = React.useState("trend");
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
 
@@ -57,7 +56,8 @@ function DimensionThroughputDashboard({
       >
         <DashboardWidget
           name="flow-metrics"
-          title={"Throughput"}
+          title={`Throughput`}
+          subtitle={`Last ${wipAnalysisPeriod} Days`}
           className={styles.throughputMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget
@@ -67,7 +67,7 @@ function DimensionThroughputDashboard({
               display={"throughputDetail"}
               displayProps={{
                 initialSelection: selectedMetric,
-                onSelectionChanged: (metric) => setSelectedMetric(metric)
+                onSelectionChanged: (metric) => setSelectedMetric(metric),
               }}
               twoRows={true}
               context={context}
@@ -82,10 +82,8 @@ function DimensionThroughputDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-
             />
-          )
-          }
+          )}
           showDetail={false}
         />
         <DashboardWidget
@@ -111,20 +109,63 @@ function DimensionThroughputDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-
             />
-          )
-          }
+          )}
           showDetail={false}
         />
       </DashboardRow>
       <DashboardRow
         className={styles.chartsToggleRow}
+        controls={[
+          () => (
+            <GroupingSelector
+              label={" "}
+              value={chartToggle}
+              groupings={[
+                {
+                  key: "trend",
+                  display: "Trend",
+                },
+                {
+                  key: "cardDetail",
+                  display: "Card Detail",
+                },
+
+              ]}
+              initialValue={"trend"}
+              onGroupingChanged={setChartToggle}
+            />
+          ),
+        ]}
       >
+        <DashboardWidget
+          name="volume-trends"
+          className={chartToggle === 'trend' ? styles.throughputDetail : styles.throughputDetailHidden}
+          render={({view}) => (
+            <DimensionVolumeTrendsWidget
+              dimension={"team"}
+              instanceKey={key}
+              days={daysRange}
+              measurementWindow={1}
+              samplingFrequency={1}
+              targetPercentile={0.7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+
+            />
+          )}
+          showDetail={false}
+        />
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className={styles.throughputDetail}
+          className={chartToggle === 'cardDetail' ? styles.throughputDetail : styles.throughputDetailHidden}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
@@ -135,7 +176,7 @@ function DimensionThroughputDashboard({
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
-              initialMetric={"leadTime"}
+              initialMetric={"effort"}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
@@ -143,7 +184,7 @@ function DimensionThroughputDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
