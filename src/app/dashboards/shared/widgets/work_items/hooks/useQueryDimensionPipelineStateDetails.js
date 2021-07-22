@@ -30,7 +30,6 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
       ) {
         edges {
           node {
-            id
             name
             key
             displayId
