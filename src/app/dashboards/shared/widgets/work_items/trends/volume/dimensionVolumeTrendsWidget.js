@@ -27,7 +27,8 @@ export const DimensionVolumeTrendsWidget = React.memo((
     setBefore,
     setSeriesName,
     pollInterval,
-    includeSubTasks
+    includeSubTasks,
+    detailDashboardInitialMetric
   }) => {
     const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
@@ -80,6 +81,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
           view={view}
           context={context}
           includeSubTasks={includeSubTasks}
+          detailDashboardInitialMetric={detailDashboardInitialMetric}
         />
     )
 });
