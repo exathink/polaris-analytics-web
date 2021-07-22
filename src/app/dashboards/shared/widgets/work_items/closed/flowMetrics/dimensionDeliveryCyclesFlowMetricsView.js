@@ -6,6 +6,7 @@ import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
+import {useChildState} from "../../../../../../helpers/hooksUtil";
 
 const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
