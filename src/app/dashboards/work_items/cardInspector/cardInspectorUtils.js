@@ -12,7 +12,6 @@ export function CardInspectorWithDrawer({workItemKey, context, showPanel, setSho
         onClose={() => setShowPanel(false)}
         visible={showPanel}
         {...drawerOptions}
-        getContainer={() => document.getElementById("polaris-app-content")}
       >
         <CardInspectorWidget context={context} workItemKey={workItemKey} />
       </Drawer>
