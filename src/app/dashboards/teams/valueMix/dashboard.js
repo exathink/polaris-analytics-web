@@ -7,10 +7,6 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSl
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix/flowMixTrendsWidget";
-import { GroupingSelector } from "../../shared/components/groupingSelector/groupingSelector";
-import { DimensionDeliveryCycleFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-
-
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -135,7 +131,7 @@ function DimensionThroughputDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>
