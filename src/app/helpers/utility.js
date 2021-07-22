@@ -340,3 +340,5 @@ export const EVENT_TYPES = {
   RESET_ZOOM_SELECTION: "RESET_ZOOM_SELECTION",
   DESELECT: "DESELECT"
 };
+
+export const getContainerNode = () => document.getElementById("polaris-app-content");
