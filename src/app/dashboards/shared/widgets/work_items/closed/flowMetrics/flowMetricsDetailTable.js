@@ -228,6 +228,11 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   const dataSource = getTransformedData(tableData, intl);
 
   return (
-    <StripeTable columns={columns} dataSource={dataSource} testId="flowmetrics-detail-table"/>
+    <StripeTable
+      columns={columns}
+      dataSource={dataSource}
+      testId="flowmetrics-detail-table"
+      rowKey={(record) => record.key}
+    />
   );
 });

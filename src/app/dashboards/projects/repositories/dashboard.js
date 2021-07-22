@@ -6,7 +6,7 @@ import {DimensionMostActiveChildrenWidget} from "../../shared/widgets/accountHie
 import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
 import Repositories from "../../repositories/context";
 import {ProjectDashboard} from "../projectDashboard";
-
+import {RepositoriesTableWidget} from "../../shared/components/repositoriesTable/repositoriesTable";
 const dashboard_id = 'dashboards.activity.organization.instance';
 
 
@@ -56,7 +56,20 @@ export const dashboard = () => (
               showDetail={true}
             />
           </DashboardRow>
-
+          <DashboardRow h={"68%"}>
+          <DashboardWidget
+                w={1}
+                name="repositories"
+                render={
+                  () =>
+                    <RepositoriesTableWidget
+                      dimension="project"
+                      instanceKey={project.key}
+                    />
+                }
+                showDetail={false}
+              />
+          </DashboardRow>
 
         </Dashboard>
       )

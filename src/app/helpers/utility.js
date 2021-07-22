@@ -257,8 +257,8 @@ export function pick(o, ...fields) {
     }, {});
 }
 
-export function i18nNumber(intl, n) {
-  return intl.formatNumber(n)
+export function i18nNumber(intl, n, precision) {
+  return precision ? intl.formatNumber(n, {maximumFractionDigits: precision}) : intl.formatNumber(n)
 }
 
 export function i18nDate(intl, dt, format="YYYY-MM-DD") {
@@ -340,3 +340,5 @@ export const EVENT_TYPES = {
   RESET_ZOOM_SELECTION: "RESET_ZOOM_SELECTION",
   DESELECT: "DESELECT"
 };
+
+export const getContainerNode = () => document.getElementById("polaris-app-content");

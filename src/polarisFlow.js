@@ -14,6 +14,7 @@ import { themeConfig } from './config';
 import AppHolder from './polarisFlowStyle';
 import {DefaultApolloProvider} from "./app/services/graphql";
 import {initGA} from "./app/ga";
+import {getContainerNode} from "./app/helpers/utility";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
@@ -22,7 +23,7 @@ const currentAppLocale =
 initGA();
 
 const PolarisFlowApp = () => (
-  <ConfigProvider locale={currentAppLocale.antd}>
+  <ConfigProvider locale={currentAppLocale.antd} getPopupContainer={getContainerNode}>
     <IntlProvider
       locale={currentAppLocale.locale}
       messages={currentAppLocale.messages}

@@ -7,6 +7,13 @@ import {Link} from "react-router-dom";
 import WorkItems from "../../../work_items/context";
 import {url_for_instance} from "../../../../framework/navigation/context/helpers";
 
+const workTrackingMap = {
+  jira: "Jira",
+  pivotal_tracker: "Pivotal Tracker",
+  github: "Github",
+  gitlab: "Gitlab",
+};
+
 function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
   const url = new URL(workItem.url);
@@ -37,7 +44,7 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
         >
           <Button type="primary" size="small" style={{marginLeft: "15px"}}>
-            View in {capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+            View in {workTrackingMap[workItem.workTrackingIntegrationType] ?? capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
         </a>
       );

@@ -85,13 +85,14 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
   }
 }
 
-DimensionPipelineCycleTimeLatencyWidget.videoConfig = {
-  url: "https://vimeo.com/501974487/080d487fcf",
+DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
   title: "Implementation",
-  VideoDescription: () => (
+  content: () => (
     <>
-      <h2>Implementation</h2>
-      <p> lorem ipsum </p>
+      <p> short description </p>
     </>
+  ),
+  content1: () => (
+    <><p>Detailed Description</p></>
   ),
 };

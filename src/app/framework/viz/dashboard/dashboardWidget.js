@@ -2,37 +2,38 @@ import React from "react";
 import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
 import {withRouter} from 'react-router';
-import {EmbedVideoPlayer, useVideo} from "../videoPlayer/videoPlayer";
 import uniqueStyles from './dashboard.module.css';
 import classNames from "classnames";
+import {InfoCard} from "../../../components/misc/info/infoCard";
 
-const WidgetMenu = ({itemSelected, showDetail, onClick}) => (
-  showDetail?
-    <nav className={uniqueStyles["dashboard-item-menu"]}>
-      <i
-        className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
-        title={"Show Details"}
-        onClick={onClick}
-      />
-    </nav> :
-    null
-);
+const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
+  const infoElement = infoConfig && (
+    <InfoCard
+      title={infoConfig.title}
+      content={infoConfig.content()}
+      content1={infoConfig.content1()}
+      className={showDetail ? uniqueStyles.shiftInfo  : uniqueStyles.iconsWrapper}
+    />
+  );
 
-function getVideoClassNames(itemSelected, showDetail) {
-  let classes;
-  if (itemSelected) {
-    classes = uniqueStyles["video-detail-view"];
-  }
-  if (!itemSelected && showDetail) {
-    classes = uniqueStyles["video-primary-view"];
-  }
-
-  return classes;
-}
+  return showDetail ? (
+    <div className={uniqueStyles.iconsWrapper}>
+      {infoElement}
+      <nav>
+        <i
+          className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
+          title={"Show Details"}
+          onClick={onClick}
+        />
+      </nav>
+    </div>
+  ) : (
+    <React.Fragment>{infoElement}</React.Fragment>
+  );
+};
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, fullScreen, className="", gridLayout, ...rest}) => {
-  const videoPlayerProps = useVideo();
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
   const margin = gridLayout ? {}: {m: 1};
   return (
     <Flex column w={w} {...margin} className={classNames(uniqueStyles["dashboard-item"], className)}>
@@ -83,18 +84,12 @@ export const DashboardWidget = withRouter(withNavigationContext(
         null
 
       }
-      {!fullScreen && enableVideo && videoConfig && (
-        <EmbedVideoPlayer
-          className={getVideoClassNames(itemSelected, showDetail)}
-          {...videoConfig}
-          {...videoPlayerProps}
-        />
-      )}
       <WidgetMenu
         {...{itemSelected, showDetail}}
         onClick={() => (
           itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
         )}
+        infoConfig={infoConfig}
       />
       {
         itemSelected && showDetail ? render({view: 'detail', ...rest}) : render({view: 'primary', ...rest})

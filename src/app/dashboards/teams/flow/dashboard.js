@@ -190,7 +190,7 @@ function WipDashboard({
               view={view}
               tooltipType="small"
               stageName={"Delivery"}
-              stateTypes={[WorkItemStateTypes.complete]}
+              stateTypes={[WorkItemStateTypes.deliver]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}

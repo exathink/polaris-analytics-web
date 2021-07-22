@@ -30,6 +30,7 @@ export function getWorkItemDurations(workItems) {
       timeInPriorStates: timeInPriorStates,
       latestCommitDisplay: workItemStateDetails.latestCommit ? fromNow(workItemStateDetails.latestCommit) : null,
       cycleTime: timeInState + timeInPriorStates - timeInBacklog,
+      leadTime: timeInState + timeInPriorStates
     }
   });
 }

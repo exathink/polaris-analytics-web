@@ -5,13 +5,13 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../conf
 import {getWorkItemDurations} from "../../../../charts/workItemCharts/shared";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {CardInspectorWidget} from "../../../../../work_items/cardInspector/cardInspectorWidget";
-import {Button, Drawer} from "antd";
+import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -72,8 +72,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   view,
   context,
 }) => {
-  const [showPanel, setShowPanel] = React.useState(false);
-  const [workItemKey, setWorkItemKey] = React.useState();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState();
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
@@ -126,23 +125,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [chartFilteredWorkItems] = useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyFiltersTest);
 
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
-
-  function getCardInspectorPanel() {
-    return (
-      workItemKey && (
-        <Drawer
-          placement={placement}
-          height={355}
-          closable={false}
-          onClose={() => setShowPanel(false)}
-          visible={showPanel}
-          key={workItemKey}
-        >
-          <CardInspectorWidget context={context} workItemKey={workItemKey} />
-        </Drawer>
-      )
-    );
-  }
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
@@ -219,7 +201,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
           appliedFilters={appliedFilters}
         />
       </div>
-      <div className={styles.cardInspectorPanel}>{getCardInspectorPanel()}</div>
+      <div className={styles.cardInspectorPanel}>
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          context={context}
+          drawerOptions={{placement: placement}}
+        />
+      </div>
     </div>
   );
 };

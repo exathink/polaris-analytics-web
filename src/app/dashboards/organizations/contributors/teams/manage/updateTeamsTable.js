@@ -48,8 +48,9 @@ export function UpdateTeamsTable({tableData, columns, loading, testId, rowSelect
       columns={columns}
       loading={loading}
       testId={testId}
-      height={TABLE_HEIGHTS.FOURTY_FIVE}
+      height={TABLE_HEIGHTS.FORTY_FIVE}
       rowSelection={rowSelection}
+      rowKey={record => record.key}
     />
   );
 }

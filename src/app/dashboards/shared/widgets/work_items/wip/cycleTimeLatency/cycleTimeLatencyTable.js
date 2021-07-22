@@ -321,6 +321,7 @@ export const CycleTimeLatencyTable = injectIntl(
         testId="cycle-time-latency-table"
         height="40vh"
         onChange={handleChange}
+        rowKey={record => record.key}
       />
     );
   }
