@@ -50,6 +50,7 @@ export function UpdateTeamsTable({tableData, columns, loading, testId, rowSelect
       testId={testId}
       height={TABLE_HEIGHTS.FORTY_FIVE}
       rowSelection={rowSelection}
+      rowKey={record => record.key}
     />
   );
 }

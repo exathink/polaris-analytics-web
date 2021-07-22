@@ -265,6 +265,7 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableDa
       dataSource={dataSource}
       testId="value-stream-phase-detail-table"
       height={view === 'primary' ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
+      rowKey={record => record.key}
     />
   );
 });
