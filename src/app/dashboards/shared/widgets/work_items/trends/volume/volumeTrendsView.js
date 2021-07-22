@@ -7,6 +7,7 @@ export const VolumeTrendsView = ({
     targetPercentile,
     measurementPeriod,
     measurementWindow,
+    chartConfig,
     onSelectionChange,
     view
   }) => (
@@ -16,6 +17,7 @@ export const VolumeTrendsView = ({
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
+          chartConfig={chartConfig}
           view={view}
           onSelectionChange={onSelectionChange}
         />

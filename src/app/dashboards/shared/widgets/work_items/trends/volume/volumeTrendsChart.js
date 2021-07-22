@@ -7,13 +7,25 @@ export const VolumeTrendsChart = ({
   measurementPeriod,
   measurementWindow,
   onSelectionChange,
+  chartConfig,
   view
-}) => (
+}) => {
+  const {
+    specs = {
+      visible: true,
+      type: 'column'
+    },
+    cards = {
+      visible: true,
+      type: 'spline'
+    }
+  } = chartConfig || {};
+  return (
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: 'workItemsInScope', displayName: 'Cards', visible: true, type: 'spline'},
-        {key: 'workItemsWithCommits', displayName: 'Specs', visible: true, type: 'spline'},
+        {key: 'workItemsInScope', displayName: 'Cards', visible: cards.visible, type: cards.type || 'column'},
+        {key: 'workItemsWithCommits', displayName: 'Specs', visible: specs.visible, type: specs.type || 'spline', color: 'rgba(6,92,87,0.8)'},
 
       ]}
       measurementPeriod={measurementPeriod}
@@ -48,5 +60,6 @@ export const VolumeTrendsChart = ({
         }
       }}
     />
-)
+  );
+}
 
