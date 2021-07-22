@@ -50,10 +50,11 @@ export const DimensionFlowMixTrendsDetailDashboard = (
             ]
           ),
           () => (
-            <div style={{minWidth: "200px", padding: "15px"}}>
+            <div style={{minWidth: "220px", padding: "15px"}}>
               <Flex align={'center'}>
                 <Box pr={2} w={"100%"}>
                   <WorkItemScopeSelector
+                    display={['Effort', 'Volume']}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />
@@ -62,28 +63,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
             </div>
 
           ),
-          ({view}) =>
-            specsOnly &&
-            <div style={{minWidth: "100px"}}>
-              <Flex align={'start'}>
-                <Box pr={2} w={"100%"}>
-                  <ProjectTraceabilityTrendsWidget
-                    instanceKey={instanceKey}
-                    measurementWindow={30}
-                    days={7}
-                    samplingFrequency={7}
-                    context={context}
-                    view={view}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    asStatistic={true}
-                    primaryStatOnly={true}
-                    target={0.9}
-                  />
-                </Box>
-              </Flex>
-            </div>
-          ,
+
         ]}
       >
         < DashboardWidget
