@@ -50,6 +50,7 @@ export function useOrgProjectsTableColumns() {
       dataIndex: "latestWorkItemEvent",
       key: "latestWorkItemEvent",
       width: "10%",
+      sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
       render: (latestWorkItemEvent) => fromNow(latestWorkItemEvent),
     },
     {
@@ -94,7 +95,7 @@ export const ProjectsTableWidget = ({organizationKey}) => {
   const edges = data?.["organization"]?.["projects"]?.["edges"] ?? [];
   const tableData = edges
     .map((edge) => ({...edge.node, subProjectCount: edge.node.workItemsSources.count}))
-    .sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
+    .sort((a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent));
 
   return <ProjectsTable tableData={tableData} loading={loading} />;
 };
