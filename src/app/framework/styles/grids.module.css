@@ -1,0 +1,53 @@
+.twoColumns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.5rem;
+    grid-template-areas: "first second";
+}
+.threeColumns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.5rem;
+    grid-template-areas: "first second third";
+}
+
+.fourColumns{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.5rem;
+    grid-template-areas: "first second third fourth";
+}
+
+.fiveColumns{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.5rem;
+    grid-template-areas: "first second third fourth fifth";
+}
+
+.firstCol {
+    grid-area: first;
+}
+.secondCol {
+    grid-area: second;
+}
+
+.thirdCol {
+    grid-area: third;
+}
+.fourthCol {
+    grid-area: fourth;
+}
+
+.fifthCol {
+    grid-area: fifth;
+}
+
+.boxWrapper{
+    display: flex;
+    justify-content: space-between;
+}

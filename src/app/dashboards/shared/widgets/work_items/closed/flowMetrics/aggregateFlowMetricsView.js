@@ -611,6 +611,7 @@ export const AggregateFlowMetricsView = withViewerContext((
     display,
     displayProps,
     twoRows,
+    latestCommit,
     selectedMetricState
   }
   ) => {

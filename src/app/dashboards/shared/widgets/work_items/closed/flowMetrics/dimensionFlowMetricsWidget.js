@@ -3,6 +3,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
 import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
 import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
+import { getReferenceString } from "../../../../../../helpers/utility";
 
 export const DimensionFlowMetricsWidget = (
   {
@@ -14,6 +15,7 @@ export const DimensionFlowMetricsWidget = (
     display,
     twoRows,
     latestWorkItemEvent,
+    latestCommit,
     days,
     measurementWindow,
     samplingFrequency,
@@ -39,7 +41,7 @@ export const DimensionFlowMetricsWidget = (
     samplingFrequency: samplingFrequency || 7,
     specsOnly: limitToSpecsOnly,
     includeSubTasks: includeSubTasks,
-    referenceString: latestWorkItemEvent
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   });
   if (loading) return <Loading/>;
   if (error) return null;
@@ -57,6 +59,7 @@ export const DimensionFlowMetricsWidget = (
         cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
+        latestCommit={latestCommit}
         cycleMetricsTrends={cycleMetricsTrends}
       />
     )
@@ -76,6 +79,7 @@ export const DimensionFlowMetricsWidget = (
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
         stateMappingIndex={stateMappingIndex}
         includeSubTasks={includeSubTasks}
+        latestCommit={latestCommit}
       />
     )
   }
