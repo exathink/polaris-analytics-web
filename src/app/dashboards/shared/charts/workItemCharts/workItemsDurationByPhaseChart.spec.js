@@ -303,7 +303,8 @@ describe("WorkItemsDurationsByPhaseChart", () => {
 
         // expected values
         const cycleTime = 17; // 10(currentStateTransition.eventDate) + (priorStateDurations-backlog)(4+1+3-1)
-        const latency = 10;
+        // closed items have zero latency (PO-795)
+        const latency = 0;
         const timeInStateDisplay = "10 days ago";
         const commitCount = 15;
         const latestCommitDisplay = "20 days ago";
