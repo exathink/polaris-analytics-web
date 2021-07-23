@@ -1,11 +1,14 @@
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
+import {WorkItemStateTypes} from "../../config";
 
 export function getWorkItemDurations(workItems) {
   return workItems.map(workItem => {
     const workItemStateDetails = workItem.workItemStateDetails;
     const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
-    const timeInState = daysFromNow(toMoment(latestTransitionDate));
-    const timeSinceLatestCommit = workItemStateDetails.commitCount != null  ? daysFromNow(toMoment(workItemStateDetails.latestCommit)) : null;
+    // We do this to account for occassional negative values that arise due to clock drift between
+    // server and local time when the latest update date is very close to now.
+    const timeInState = Math.max(daysFromNow(toMoment(latestTransitionDate)), 0);
+    const timeSinceLatestCommit = workItemStateDetails.commitCount != null  ? Math.max(daysFromNow(toMoment(workItemStateDetails.latestCommit)), 0) : null;
 
     const timeInPriorStates = workItemStateDetails.currentDeliveryCycleDurations.reduce(
         (total, duration) => total + duration.daysInState
@@ -17,15 +20,15 @@ export function getWorkItemDurations(workItems) {
         (total, duration) => total + duration.daysInState
         , 0
       )
+    // for closed items latency is 0 by definition. Otherwise for specs we use time since last commit and for non-specs we use time since last state transition.
+    const latency = workItem.stateType !== WorkItemStateTypes.closed ? timeSinceLatestCommit || timeInState : 0
     return {
       ...workItem,
       timeInState: timeInState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
       commitCount: workItemStateDetails.commitCount,
-      // We should never get negative values, but we sometimes do when the mesurement is made very close in time to the event,
-      // so we are taking abs defensively, so that negative latencies dont show up in the UI. Yes, its a hack.
-      latency: Math.abs(Math.min(timeInState, timeSinceLatestCommit || Number.MAX_VALUE)),
+      latency: latency,
       timeInStateDisplay: fromNow(latestTransitionDate),
       timeInPriorStates: timeInPriorStates,
       latestCommitDisplay: workItemStateDetails.latestCommit ? fromNow(workItemStateDetails.latestCommit) : null,
