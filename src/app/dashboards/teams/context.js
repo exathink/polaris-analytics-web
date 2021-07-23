@@ -10,7 +10,7 @@ import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
-import Value from "./valueMix/topic";
+import Value from "./alignment/topic";
 const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage

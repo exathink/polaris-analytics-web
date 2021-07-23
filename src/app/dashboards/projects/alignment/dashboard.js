@@ -17,7 +17,7 @@ function ValueDashboard({
 }) {
   const {flowAnalysisPeriod, includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
 
-  const [workItemScope, setWorkItemScope] = React.useState("all");
+  const [workItemScope, setWorkItemScope] = React.useState("specs");
   const specsOnly = workItemScope === "specs";
   const [closedWithinDays, setClosedWithinDays] = React.useState(flowAnalysisPeriod);
   return (
@@ -87,7 +87,7 @@ function ValueDashboard({
       </DashboardRow>
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+          <WorkItemScopeSelector label={"Show by"} display={['Effort', 'Volume']} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
     </Dashboard>
