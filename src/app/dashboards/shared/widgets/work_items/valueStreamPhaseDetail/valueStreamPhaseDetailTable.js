@@ -15,7 +15,9 @@ const getNumber = (num, intl) => {
 };
 
 function getTransformedData(data, intl) {
-  return data.map((item) => {
+  const now = new Date().getTime();
+
+  return data.map((item, index) => {
     return {
       ...item,
       cycleTime: getNumber(item.cycleTime, intl),
@@ -23,6 +25,7 @@ function getTransformedData(data, intl) {
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
+      rowKey: `${now}.${index}`
     };
   });
 }
@@ -265,7 +268,7 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableDa
       dataSource={dataSource}
       testId="value-stream-phase-detail-table"
       height={view === 'primary' ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
-      rowKey={record => record.key}
+      rowKey={record => record.rowKey}
     />
   );
 });
