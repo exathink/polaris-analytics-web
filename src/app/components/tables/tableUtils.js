@@ -73,15 +73,47 @@ export function PaginatedTable({columns, dataSource, height, testId, loading, on
   );
 }
 
+
+function edgeCaseHandle(firstVal, secondVal) {
+  if (firstVal == null && secondVal == null) {
+    return 0;
+  }
+
+  if (firstVal == null && secondVal != null) {
+    return -1;
+  }
+
+  if (firstVal != null && secondVal == null) {
+    return 1;
+  }
+
+  return null;
+}
+
 // sorting utilities to be used for table columns
 export const SORTER = {
   number_compare: (numa, numb) => {
+    const compareRes = edgeCaseHandle(numa, numb);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
     return numa - numb;
   },
   string_compare: (stra, strb) => {
+    const compareRes = edgeCaseHandle(stra, strb);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
     return stra.localeCompare(strb);
   },
   date_compare: (date_a, date_b) => {
+    const compareRes = edgeCaseHandle(date_a, date_b);
+    if (compareRes !== null) {
+      return compareRes;
+    }
+
     const span = diff_in_dates(date_a, date_b);
     return span["_milliseconds"];
   },
