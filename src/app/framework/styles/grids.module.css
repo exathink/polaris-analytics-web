@@ -47,7 +47,3 @@
     grid-area: fifth;
 }
 
-.boxWrapper{
-    display: flex;
-    justify-content: space-between;
-}
