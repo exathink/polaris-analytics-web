@@ -231,7 +231,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       dataIndex: "effort",
       key: "effort",
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
+      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
       ...renderNumberCol
     },
     {
