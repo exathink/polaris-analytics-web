@@ -42,6 +42,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       ...item,
       cycleTime: getNumber(item.cycleTime, intl),
       latency: getNumber(item.latency, intl),
+      effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
@@ -274,11 +275,11 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderState,
     },
     {
-      title: "Commits",
-      dataIndex: "commitCount",
-      key: "commitCount",
+      title: "Effort",
+      dataIndex: "effort",
+      key: "effort",
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
+      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
       ...renderState,
     },
     {
