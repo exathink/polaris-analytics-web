@@ -161,7 +161,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline-funnel"
@@ -208,7 +208,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h={"45%"} className={styles.valueRow}>

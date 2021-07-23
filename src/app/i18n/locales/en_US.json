@@ -47,6 +47,7 @@
   "topics.responseTime": "Response Time",
   "topics.throughput": "Throughput",
   "topics.value": "Value",
+  "topics.alignment": "Alignment",
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
   "topics.repositories": "Code",

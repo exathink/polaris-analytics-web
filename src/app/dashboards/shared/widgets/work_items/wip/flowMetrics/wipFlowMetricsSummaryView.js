@@ -1,6 +1,7 @@
 import React from "react";
 import {withNavigationContext} from "../../../../../../framework/navigation/components/withNavigationContext";
 import {VizItem, VizRow} from "../../../../containers/layout";
+import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
 import {
   AvgAge,
   AvgDuration,
@@ -12,10 +13,13 @@ import {
   Wip,
   WipCarousel,
   WipWithLimit,
+
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 
-import styles from "../../../../../projects/shared/widgets/wip/wip.module.css";
+
+import grid from "../../../../../../framework/styles/grids.module.css"
+import styles from "./flowMetrics.module.css";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -63,27 +67,30 @@ const CommonWipBoardSummaryView = ({
   leadTimeTarget,
   cycleTimeTarget,
   wipLimit,
+  latestCommit,
   viewerContext,
 }) => {
   return (
-    <div className={styles.boxWrapper}>
-
-      <div>
+    <div className={grid.fourColumns}>
+      <div className={grid.firstCol}>
         <Wip currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </div>
-      <div>
+      <div className={grid.secondCol}>
         <WipCost currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
       </div>
-        <div>
+      <div className={grid.thirdCol}>
         <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
       </div>
-      <div>
-        <AvgLatency
-          title={'Latency'}
-          currentMeasurement={pipelineCycleMetrics}
-          targetPercentile={cycleTimeTargetPercentile}
-          target={cycleTimeTarget}
-        />
+      <div className={grid.fourthCol}>
+        <ComponentCarousel tickInterval={3000}>
+          <AvgLatency
+            title={'Latency'}
+            currentMeasurement={pipelineCycleMetrics}
+            targetPercentile={cycleTimeTargetPercentile}
+            target={cycleTimeTarget}
+          />
+          <LatestCommit latestCommit={latestCommit}/>
+        </ComponentCarousel>
       </div>
     </div>
   );
@@ -240,6 +247,7 @@ const PipelineSummaryView = withViewerContext((
               leadTimeTarget,
               cycleTimeTarget,
               wipLimit,
+              latestCommit,
               viewerContext
             }
           }/>
