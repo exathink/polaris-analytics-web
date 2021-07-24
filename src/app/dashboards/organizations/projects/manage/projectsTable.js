@@ -1,145 +1,101 @@
-import {gql} from "@apollo/client";
-import {Query} from "@apollo/client/react/components"
-import React from 'react';
-
-import {analytics_service} from '../../../../services/graphql';
-
-import {CompactTable} from "../../../../components/tables";
-import {withAntPagination} from "../../../../components/graphql/withAntPagination";
-import {withViewerContext} from "../../../../framework/viewer/viewerContext";
+import React from "react";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
 import {fromNow} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
+import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
+import {useSearch} from "../../../../components/tables/hooks";
+import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 
-const {Column} = CompactTable;
+export function useOrgProjectsTableColumns() {
+  const nameSearchState = useSearch("name");
 
-const ProjectsPaginatedTable = ({organizationKey, paging, pageSize, currentCursor, onNewPage, newData}) => (
-  <Query
-    client={analytics_service}
-    query={
-      gql`
-      query organizationProjects($organizationKey: String!, $pageSize: Int!, $endCursor: String) {
-        organization(key: $organizationKey) {
-            id
-            projects (first: $pageSize, after: $endCursor, interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan]){
-                  count
-                  edges {
-                      node {
-                          id
-                          name
-                          key
-                          repositoryCount
-                          latestCommit
-                          latestWorkItemEvent
-                          workItemsSources{
-                            count
-                          }
-
-
-                      }
-                  }
-              }
-         }
-        }
-  `
-    }
-    variables={{
-      organizationKey: organizationKey,
-      pageSize: pageSize,
-      endCursor: currentCursor
-    }}
-    fetchPolicy={'cache-and-network'}
-
-  >
+  const columns = [
     {
-      ({loading, error, data}) => {
-        if (error) return null;
-        let tableData = [];
-        let totalItems = 0;
-        if (!loading) {
-          tableData = data.organization.projects.edges.map(
-            edge => ({
-                ...edge.node,
-                subProjectCount: edge.node.workItemsSources.count,
-              }
-            )
-          );
-          totalItems = data.organization.projects.count;
-        }
-        return (
-          <CompactTable
-            dataSource={tableData}
-            size="small"
-            loading={loading}
-            rowKey={record => record.id}
-            pagination={{
-              total: totalItems,
-              defaultPageSize: pageSize,
-              hideOnSinglePage: true
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "15%",
+      ...nameSearchState,
+      // (name, record) => (
+      //   <ProjectLink projectName={record.name} projectKey={record.key}>
+      //     {name}
+      //   </ProjectLink>
+      // )
+    },
+    {
+      title: "Work Streams",
+      dataIndex: "subProjectCount",
+      key: "subProjectCount",
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a.subProjectCount, b.subProjectCount),
+    },
+    {
+      title: "Repositories",
+      dataIndex: "repositoryCount",
+      key: "repositoryCount",
+      width: "6%",
+      sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
+    },
+    {
+      title: "Last Commit",
+      dataIndex: "latestCommit",
+      key: "latestCommit",
+      width: "8%",
+      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
+      render: (latestCommit) => fromNow(latestCommit),
+    },
+    {
+      title: "Last Project Activity",
+      dataIndex: "latestWorkItemEvent",
+      key: "latestWorkItemEvent",
+      width: "10%",
+      sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
+      render: (latestWorkItemEvent) => fromNow(latestWorkItemEvent),
+    },
+    {
+      title: "",
+      key: "actions",
+      width: "4%",
+      align: "right",
+      render: (name, record) => (
+        <ButtonBar>
+          <ProjectLink projectName={record.name} projectKey={record.key}>
+            <Button type={"primary"} size={"small"}>
+              Select
+            </Button>
+          </ProjectLink>
+        </ButtonBar>
+      ),
+    },
+  ];
 
-            }}
-            onChange={onNewPage}
-          >
-            <Column
-              title={"Name"}
-              dataIndex={"name"}
-              key={"name"}
-              render={
-                (name, record) =>
-                  <ProjectLink
-                    projectName={record.name}
-                    projectKey={record.key}
-                  >
-                    {name}
-                  </ProjectLink>
-              }
-            />
-            <Column title={"Work Streams"} dataIndex={"subProjectCount"} key={"subProjectCountCount"}/>
-            <Column title={"Repositories"} dataIndex={"repositoryCount"} key={"repositoryCount"}/>
-            <Column
-              title={"Last Commit"}
-              dataIndex={"latestCommit"}
-              key={"latestCommit"}
-              render={
-                (latestCommit) => fromNow(latestCommit)
-              }
-            />
-            <Column
-              title={"Last Project Activity"}
-              dataIndex={"latestWorkItemEvent"}
-              key={"latestActivity"}
-              render={
-                (latestActivity) => fromNow(latestActivity)
-              }
-            />
-            <Column
-              key={"actions"}
-              width={80}
-              render={
-                (name, record) =>
-                  <ButtonBar>
-                    <ProjectLink
-                      projectName={record.name}
-                      projectKey={record.key}
-                    >
-                      <Button
-                        type={'primary'}
-                        size={'small'}
-                      >
-                        Select
-                      </Button>
-                    </ProjectLink>
-                  </ButtonBar>
-              }
-            />
+  return columns;
+}
 
-          </CompactTable>
-        )
-      }
-    }
-  </Query>
-)
+export function ProjectsTable({tableData, loading}) {
+  const columns = useOrgProjectsTableColumns();
 
+  return (
+    <StripeTable
+      columns={columns}
+      dataSource={tableData}
+      loading={loading}
+      height={TABLE_HEIGHTS.FOURTY_FIVE}
+      rowKey={(record) => record.key}
+    />
+  );
+}
 
-export const ProjectsTableWidget = withViewerContext(withAntPagination(ProjectsPaginatedTable))
+export const ProjectsTableWidget = ({organizationKey}) => {
+  const {error, loading, data} = useQueryOrganizationProjects({organizationKey});
+
+  if (error) return null;
+
+  const edges = data?.["organization"]?.["projects"]?.["edges"] ?? [];
+  const tableData = edges
+    .map((edge) => ({...edge.node, subProjectCount: edge.node.workItemsSources.count}))
+    .sort((a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent));
+
+  return <ProjectsTable tableData={tableData} loading={loading} />;
+};
