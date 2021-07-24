@@ -1,16 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {DimensionFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {ProjectTraceabilityTrendsWidget} from "../../../commits/traceability";
 import {
   getTrendsControlBarControls,
-  useTrendsControlBarState
+  useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
 
-
-const dashboard_id = 'dashboards.projects.trends.flow-mix.detail';
+const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
 export const DimensionFlowMixTrendsDetailDashboard = (
   {
