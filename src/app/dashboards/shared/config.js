@@ -34,6 +34,10 @@ export const Colors = {
   DefectRate: {
     arrival: "#ea9c9c",
     close: "#64de95"
+  },
+  Commits: {
+    nonMerge: "#7cb5ec",
+    merge: "rgba(67,67,72,0.6)"
   }
 };
 
