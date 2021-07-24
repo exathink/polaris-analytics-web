@@ -49,6 +49,7 @@ export function getWorkItemCommitEvents(workItem) {
         symbol: "circle",
         radius: 4,
       },
+      color: timelineEvent.numParents > 1 ? Colors.Commits.merge : Colors.Commits.nonMerge,
       timelineEvent: timelineEvent,
       workItem: workItem,
       eventType: "Commit",

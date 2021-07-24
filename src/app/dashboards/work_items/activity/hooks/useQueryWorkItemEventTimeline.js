@@ -39,6 +39,7 @@ export function useQueryWorkItemEventTimeline({instanceKey, latestWorkItemEvent,
                 committer
                 author
                 authorDate
+                numParents
                 branch
                 repository
                 repositoryUrl

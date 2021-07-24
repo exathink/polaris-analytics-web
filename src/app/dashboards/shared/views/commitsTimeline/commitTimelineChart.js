@@ -284,6 +284,7 @@ export const CommitsTimelineChart = Chart({
             maxSize: bucketToBubbleSize[z_bucket_range.max],
             turboThreshold: 0,
             allowPointSelect: true,
+            color: Colors.Commits.nonMerge
 
           },
           {
@@ -296,8 +297,8 @@ export const CommitsTimelineChart = Chart({
             maxSize: bucketToBubbleSize[z_bucket_range.max],
             turboThreshold: 0,
             allowPointSelect: true,
-            visible: !excludeMerges
-
+            visible: !excludeMerges,
+            color: Colors.Commits.merge
           }
         ],
         legend: {
