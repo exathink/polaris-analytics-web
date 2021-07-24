@@ -221,7 +221,7 @@ export const WorkItemEventsTimelineChart = Chart({
         panKey: "shift",
       },
       title: {
-        text: "Timeline",
+        text: "Delivery Timeline",
         align: "center",
       },
       xAxis: {
@@ -234,9 +234,9 @@ export const WorkItemEventsTimelineChart = Chart({
       yAxis: {
         id: "y-items",
         title: {
-          text: null,
+          text: "Signals",
         },
-        categories: ["Events", "Commits", "Review Requests"],
+        categories: ["State Transitions", "Commits", "Review Requests"],
         reversed: true,
         labels: {
           align: "left",
