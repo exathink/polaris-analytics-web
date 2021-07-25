@@ -221,7 +221,7 @@ const fixedChartConfig = {
   },
 
   title: {
-    text: "Timeline",
+    text: "Delivery Timeline",
     align: "center",
   },
 
@@ -232,10 +232,10 @@ const fixedChartConfig = {
     },
   },
   yAxis: {
-    categories: ["Events", "Commits", "Review Requests"],
+    categories: ["State Transitions", "Commits", "Review Requests"],
     reversed: true,
     title: {
-      text: null,
+      text: "Signals",
     },
     labels: {
       align: "left",
