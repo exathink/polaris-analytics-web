@@ -20,20 +20,27 @@ export function getWorkItemDurations(workItems) {
         (total, duration) => total + duration.daysInState
         , 0
       )
-    // for closed items latency is 0 by definition. Otherwise for specs we use time since last commit and for non-specs we use time since last state transition.
-    const latency = workItem.stateType !== WorkItemStateTypes.closed ? timeSinceLatestCommit || timeInState : 0
+    // These are available iff the item is closed.
+    const leadTime = workItemStateDetails.leadTime;
+    const cycleTime = workItemStateDetails.cycleTime;
+
+    // These are locally calculated values in lieu of
+    const age = workItem.stateType !== WorkItemStateTypes.backlog ? timeInPriorStates - timeInBacklog : timeInPriorStates;
+    const latency = Math.min(timeInState, timeSinceLatestCommit);
+
     return {
       ...workItem,
       timeInState: timeInState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
       commitCount: workItemStateDetails.commitCount,
-      latency: latency,
       timeInStateDisplay: fromNow(latestTransitionDate),
       timeInPriorStates: timeInPriorStates,
       latestCommitDisplay: workItemStateDetails.latestCommit ? fromNow(workItemStateDetails.latestCommit) : null,
-      cycleTime: timeInState + timeInPriorStates - timeInBacklog,
-      leadTime: timeInState + timeInPriorStates
+      cycleTime: cycleTime,
+      leadTime: leadTime,
+      age: age,
+      latency: latency,
     }
   });
 }
