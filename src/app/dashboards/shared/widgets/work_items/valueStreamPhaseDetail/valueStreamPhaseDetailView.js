@@ -11,7 +11,7 @@ import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
-import {getWorkItemDurations} from "../shared";
+import {getWorkItemDurations} from "../clientSideFlowMetrics";
 
 const {Option} = Select;
 

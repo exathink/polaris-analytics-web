@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
 import {PlotLines} from "./chartParts";
-import {getWorkItemDurations} from "../../widgets/work_items/shared";
+import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
   assignWorkItemStateColor,
