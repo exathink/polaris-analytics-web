@@ -37,6 +37,7 @@ function getTransformedData(data, intl) {
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
       effort: getNumber(item.effort, intl),
+      duration: getNumber(item.duration, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
@@ -207,6 +208,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "cycleTime",
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
+      ...renderState,
+    },
+    {
+      title: 'Implem...',
+      dataIndex: "duration",
+      key: "duration",
+      width: "4%",
+      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
       ...renderState,
     },
     {

@@ -119,7 +119,7 @@ export const WorkItemStateTypes = {
 }
 
 export function cycleTimeDisplay(stateType) {
-  return stateType !== WorkItemStateTypes.closed ? 'Age': `Lead Time`;
+  return stateType !== WorkItemStateTypes.closed ? 'Age': `Cycle Time`;
 }
 
 export const WorkItemStateTypeSortOrder = {
