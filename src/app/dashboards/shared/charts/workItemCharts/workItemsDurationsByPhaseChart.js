@@ -189,6 +189,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
             name,
             state,
             stateType,
+            leadTime,
             cycleTime,
             timeInStateDisplay,
             latestCommitDisplay,
@@ -205,6 +206,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                   [`Time in Phase:`, `${intl.formatNumber(this.y)} days`],
                 ]
               : [
+                  stateType === "closed" ? [`Lead Time:`, `${intl.formatNumber(leadTime)} days`] : ["", ""],
                   [`${cycleTimeDisplay(stateType)}:`, `${intl.formatNumber(cycleTime)} days`],
                   [`Current State:`, `${state}`],
                   [`Entered:`, `${timeInStateDisplay}`],
@@ -214,8 +216,8 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                     ? [`Commits: `, `${intl.formatNumber(workItemStateDetails.commitCount)}`]
                     : ["", ""],
                   latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
-                  duration != null ? [`Duration: `, `${intl.formatNumber(duration)} days`] : ["", ""],
-                  latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ["", ""],
+                  duration != null ? [`Implementation: `, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  stateType !== 'closed' && latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ["", ""],
                 ],
           });
         },
