@@ -42,6 +42,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       ...item,
       cycleTime: getNumber(item.cycleTime, intl),
       latency: getNumber(item.latency, intl),
+      duration: getNumber(item.duration, intl),
       effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
@@ -259,7 +260,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderState,
     },
     {
-      title: "Cycle Time",
+      title: "Age",
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
@@ -272,6 +273,14 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "latency",
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
+      ...renderState,
+    },
+    {
+      title: 'Implem...',
+      dataIndex: "duration",
+      key: "duration",
+      width: "4%",
+      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
       ...renderState,
     },
     {

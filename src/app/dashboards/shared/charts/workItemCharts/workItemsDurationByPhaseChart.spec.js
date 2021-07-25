@@ -166,6 +166,8 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           commitCount: 15,
           effort: 1.16666666666667,
           duration: 4.00299768518519,
+          leadTime: 18.00,
+          cycleTime: 17.00
         },
       };
       let workItemsFixture = [workItemFixture];
@@ -302,6 +304,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         } = workItemFixture;
 
         // expected values
+        const leadTime = 18; // 10(currentStateTransition.eventDate) + (priorStateDurations-backlog)(4+1+3-1)
         const cycleTime = 17; // 10(currentStateTransition.eventDate) + (priorStateDurations-backlog)(4+1+3-1)
         // closed items have zero latency (PO-795)
         const latency = 0;
@@ -312,19 +315,21 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           header: expect.stringMatching(`${WorkItemTypeDisplayName[workItemType]}: ${displayId}`),
           body: [
             [`Lead Time:`, expect.stringContaining("days")],
+            [`Cycle Time:`, expect.stringContaining("days")],
             [`Current State:`, `${state}`],
             [`Entered:`, `${timeInStateDisplay}`],
             ["", ""],
             [`-----------------`, ``],
             [`Commits: `, `${formatNumber(commitCount)}`],
             [`Latest Commit: `, `${latestCommitDisplay}`],
-            [`Duration: `, `${formatNumber(duration)} days`],
-            [`Latency: `, expect.stringContaining("days")],
+            [`Implementation: `, `${formatNumber(duration)} days`],
+            ["",""]
           ],
         });
 
-        expect(Number(actual.body[0][1].split(" ")[0])).toBeCloseTo(cycleTime, 0);
-        expect(Number(actual.body[8][1].split(" ")[0])).toBeCloseTo(latency, 0);
+        expect(Number(actual.body[0][1].split(" ")[0])).toBeCloseTo(leadTime, 0);
+        expect(Number(actual.body[1][1].split(" ")[0])).toBeCloseTo(cycleTime, 0);
+
       });
     });
 

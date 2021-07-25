@@ -38,7 +38,7 @@ export const DimensionWipEffortWidget = (
     logGraphQlError('DimensionWipEffortWidget.pipelineStateDetails', error);
     return null;
   }
-  const workItems = data['project']['workItems']['edges'].map(edge => edge.node);
+  const workItems = data[dimension]['workItems']['edges'].map(edge => edge.node);
 
   return (
       <DimensionWipEffortView

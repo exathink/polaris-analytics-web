@@ -2,7 +2,7 @@ import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
-import {getWorkItemDurations} from "../../../../charts/workItemCharts/shared";
+import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";

@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
 import {PlotLines} from "./chartParts";
-import {getWorkItemDurations} from "./shared";
+import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
   assignWorkItemStateColor,
@@ -19,7 +19,7 @@ import {
 function getMaxDays(workItems, targetMetrics) {
   return workItems.reduce(
     (max, workItem) =>
-      workItem.timeInState + workItem.timeInPriorStates > max ? workItem.timeInState + workItem.timeInPriorStates : max,
+      workItem.leadTime + workItem.timeInState > max ? workItem.leadTime + workItem.timeInState : max,
     (targetMetrics && targetMetrics.leadTimeTarget) || 0
   );
 }
@@ -189,6 +189,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
             name,
             state,
             stateType,
+            leadTime,
             cycleTime,
             timeInStateDisplay,
             latestCommitDisplay,
@@ -205,6 +206,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                   [`Time in Phase:`, `${intl.formatNumber(this.y)} days`],
                 ]
               : [
+                  stateType === "closed" ? [`Lead Time:`, `${intl.formatNumber(leadTime)} days`] : ["", ""],
                   [`${cycleTimeDisplay(stateType)}:`, `${intl.formatNumber(cycleTime)} days`],
                   [`Current State:`, `${state}`],
                   [`Entered:`, `${timeInStateDisplay}`],
@@ -214,8 +216,8 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                     ? [`Commits: `, `${intl.formatNumber(workItemStateDetails.commitCount)}`]
                     : ["", ""],
                   latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
-                  duration != null ? [`Duration: `, `${intl.formatNumber(duration)} days`] : ["", ""],
-                  latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ["", ""],
+                  duration != null ? [`Implementation: `, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  stateType !== 'closed' && latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ["", ""],
                 ],
           });
         },

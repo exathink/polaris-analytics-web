@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {buildIndex, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {getWorkItemDurations} from "./shared";
+import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
   Colors,

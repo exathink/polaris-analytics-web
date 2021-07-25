@@ -55,7 +55,10 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
               latestCommit
               commitCount
               effort
+              leadTime
+              cycleTime
               duration
+              latency
             }
           }
         }
