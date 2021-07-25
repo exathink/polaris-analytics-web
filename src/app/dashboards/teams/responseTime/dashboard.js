@@ -143,7 +143,7 @@ function DimensionResponseTimeDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
 
         <DashboardWidget

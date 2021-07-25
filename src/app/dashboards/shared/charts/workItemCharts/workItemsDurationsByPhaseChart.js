@@ -13,7 +13,7 @@ import {
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
   WorkItemTypeSortOrder,
-  cycleTimeDisplay
+  cycleTimeDisplay, WorkItemStateTypes
 } from "../../config";
 
 function getMaxDays(workItems, targetMetrics) {
@@ -169,7 +169,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
         softMin: 0,
         allowDecimals: false,
         title: {
-          text: `${cycleTimeDisplay(stateType)} in Days` ,
+          text: `${stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age'} in Days` ,
         },
         plotLines: targetMetrics
           ? [
@@ -194,7 +194,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
             timeInStateDisplay,
             latestCommitDisplay,
             duration,
-            latency,
+            commitLatency,
             workItemStateDetails,
           } = this.point.workItem;
 
@@ -217,7 +217,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                     : ["", ""],
                   latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
                   duration != null ? [`Implementation: `, `${intl.formatNumber(duration)} days`] : ["", ""],
-                  stateType !== 'closed' && latency != null ? [`Latency: `, `${intl.formatNumber(latency)} days`] : ["", ""],
+                  stateType !== 'closed' && commitLatency != null ? [`Latency: `, `${intl.formatNumber(commitLatency)} days`] : ["", ""],
                 ],
           });
         },

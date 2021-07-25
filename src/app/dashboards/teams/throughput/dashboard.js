@@ -160,7 +160,7 @@ function DimensionThroughputDashboard({
 
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           title={""}

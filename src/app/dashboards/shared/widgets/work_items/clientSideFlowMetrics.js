@@ -37,7 +37,8 @@ export function getWorkItemDurations(workItems) {
     const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
     const timeSinceLatestCommit = workItemStateDetails.commitCount != null  ? Math.max(daysFromNow(toMoment(workItemStateDetails.latestCommit)), 0) : null;
 
-    const latency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
+    // This is the version of latency that records the time since the most recent progress event.
+    const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
 
     return {
       ...workItem,
@@ -49,7 +50,11 @@ export function getWorkItemDurations(workItems) {
       latestCommitDisplay: workItemStateDetails.latestCommit ? fromNow(workItemStateDetails.latestCommit) : null,
       cycleTime: cycleTime,
       leadTime: leadTime,
-      latency: latency
+      latency: internalLatency,
+      // the server side latency avg returns commit latency for specs
+      // and null for non-specs. This number matches for specs, but not for non-specs.
+      // Our averages are for specs, so this should be ok to use as such and more meaningful for non-specs.
+      commitLatency: timeSinceLatestCommit || timeInCurrentState,
     }
   });
 }
