@@ -8,20 +8,35 @@ import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {i18nNumber} from "../../../../../helpers/utility";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
 };
 
+function getLeadTimeOrAge(item, intl) {
+  return item.stateType === WorkItemStateTypes.closed ?
+    getNumber(item.leadTime, intl)
+    :
+    getNumber(item.cycleTime, intl)
+}
+
+function getCycleTimeOrLatency(item, intl) {
+  return item.stateType === WorkItemStateTypes.closed ?
+    getNumber(item.cycleTime, intl)
+    :
+    getNumber(item.latency, intl)
+}
+
 function getTransformedData(data, intl) {
   const now = new Date().getTime();
 
   return data.map((item, index) => {
+
     return {
       ...item,
-      cycleTime: getNumber(item.cycleTime, intl),
-      latency: getNumber(item.latency, intl),
+      leadTimeOrAge: getLeadTimeOrAge(item, intl),
+      cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
+      effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
@@ -78,20 +93,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
     );
 }
 
-function numberColRender({intl, setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {i18nNumber(intl, text,2)}
-      </span>
-    );
-}
+
 
 function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
@@ -111,33 +113,14 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   };
 }
 
-function customCycleTimeColRender({stateType, intl, setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) => {
-    return (
-      text && (
-        <span
-          onClick={() => {
-            setShowPanel(true);
-            setWorkItemKey(record.key);
-          }}
-          style={{cursor: "pointer"}}
-        >
-          {
-            stateType === WorkItemStateTypes.closed ? i18nNumber(intl, record.leadTime,2) : i18nNumber(intl, record.cycleTime,2)
-          }
-        </span>
-      )
-    );
-  };
-}
+
 
 export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
   const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
   const renderState = {render: customColRender(callBacks)};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
-  const renderNumberCol = {render: numberColRender({intl, ...callBacks})}
-  const renderCycleTimeCol = {render: customCycleTimeColRender({stateType, intl, ...callBacks})}
+
 
   const columns = [
     {
@@ -207,23 +190,23 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       // TODO: this little hack to pad the title is to work around
       // a jitter on the table that appears to be because the column titles have
       // different widths between the two renders. It does not fix it perfectly
-      // but makes it less noticable. There is a bigger underlying issue
+      // but makes it less noticeable. There is a bigger underlying issue
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
       title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
-      dataIndex: "cycleTime",
-      key: "cycleTime",
+      dataIndex: "leadTimeOrAge",
+      key: "leadTime",
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...renderCycleTimeCol
+      sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
+      ...renderState
     },
     {
-      title: "Latency",
-      dataIndex: "latency",
-      key: "latency",
+      title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
+      dataIndex: "cycleTimeOrLatency",
+      key: "cycleTime",
       width: "4%",
-      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
+      sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
       ...renderState,
     },
     {
@@ -232,7 +215,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "effort",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...renderNumberCol
+      ...renderState
     },
     {
       title: "Latest Commit",

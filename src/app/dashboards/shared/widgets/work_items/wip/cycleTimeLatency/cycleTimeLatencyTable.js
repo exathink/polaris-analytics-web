@@ -259,7 +259,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderState,
     },
     {
-      title: "Cycle Time",
+      title: "Age",
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",

@@ -19,7 +19,7 @@ import {
 function getMaxDays(workItems, targetMetrics) {
   return workItems.reduce(
     (max, workItem) =>
-      workItem.timeInState + workItem.timeInPriorStates > max ? workItem.timeInState + workItem.timeInPriorStates : max,
+      workItem.leadTime + workItem.timeInState > max ? workItem.leadTime + workItem.timeInState : max,
     (targetMetrics && targetMetrics.leadTimeTarget) || 0
   );
 }
