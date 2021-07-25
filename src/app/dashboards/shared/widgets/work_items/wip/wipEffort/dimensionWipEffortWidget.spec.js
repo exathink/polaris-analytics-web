@@ -29,6 +29,7 @@ const gqlRequest = {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     specsOnly: false,
     activeOnly: true,
+    includeSubTasks: undefined,
     referenceString: getReferenceString(widgetPropsFixture.latestWorkItemEvent, widgetPropsFixture.latestCommit),
   },
 };
@@ -80,6 +81,8 @@ const gqlMocks = [
                     commitCount: 7,
                     effort: 3.66666666666667,
                     duration: 2.23217592592593,
+                    leadTime: 18.0,
+                    cycleTime: 17.0
                   },
                 },
               },
@@ -98,12 +101,6 @@ describe("ProjectPipelineImplementationCostWidget", () => {
       await screen.findByTestId("loading-spinner");
     });
 
-    test("should render the widget with correct title", async () => {
-      renderWithProviders(<DimensionWipEffortWidget {...widgetPropsFixture} />, gqlMocks);
-      await screen.findByTestId("loading-spinner");
-      await screen.findAllByText(/effort/i);
-
-    });
   });
 
   describe("when there are errors", () => {
