@@ -508,7 +508,7 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 //  Commit Days
 // ----
 
-export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
+export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, precision, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
 
   return <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
@@ -516,6 +516,7 @@ export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasureme
     previousMeasurement={previousMeasurement}
     metric={metric}
     uom={uom}
+    precision={precision || 2}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
@@ -602,6 +603,7 @@ export const WipCost = ({currentMeasurement, previousMeasurement, target, deltaT
     title={<span>Wip Cost</span>}
     target={target}
     uom={'Dev-Days'}
+    precision={2}
     deltaThreshold={deltaThreshold}
   />
 );
