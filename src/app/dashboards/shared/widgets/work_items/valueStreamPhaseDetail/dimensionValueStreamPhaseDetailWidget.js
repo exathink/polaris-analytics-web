@@ -4,12 +4,14 @@ import {useQueryDimensionPipelineStateDetails} from "../hooks/useQueryDimensionP
 import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useChildState} from "../../../../../helpers/hooksUtil";
+import { getReferenceString } from "../../../../../helpers/utility";
 
 export const DimensionValueStreamPhaseDetailWidget = ({
   dimension,
   instanceKey,
   specsOnly,
   latestWorkItemEvent,
+  latestCommit,
   days,
   activeOnly,
   funnelView,
@@ -36,7 +38,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
     closedWithinDays,
     includeSubTasks,
     specsOnly: workItemScope === "specs",
-    referenceString: latestWorkItemEvent,
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   });
   const targetMetrics = React.useMemo(
     () => ({leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget}),
