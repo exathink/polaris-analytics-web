@@ -273,6 +273,10 @@ export function i18nDateTimeWithMillseconds(intl, dt, format="YYYY-MM-DDTHH:mm:s
   return intl.formatDate(toMoment(dt,format).valueOf())
 }
 
+export function getNumber(num, intl, precision = 2){
+  return i18nNumber(intl, num, precision)
+};
+
 export function percentage(value, total) {
   return (value/(1.0*total))*100
 }
