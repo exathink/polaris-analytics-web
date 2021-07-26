@@ -370,7 +370,7 @@ function getRangeOfDates(start, end) {
   return result;
 }
 
-export function getWeekendDaysFromRange(startDate, endDate, weekendDays = [DAYS.SATURDAY, DAYS.SUNDAY]) {
+export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
   const [firstDay, secondDay] = weekendDays;
 
   return getRangeOfDates(startDate, endDate).filter((date) => date.day() === firstDay || date.day() === secondDay);
@@ -379,18 +379,21 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays = [DAYS.
 /**
  *
  * @param dateRange collection of all dates to be plotted on chart
- * @param weekendDays days pair to be specified as weekend days, [sat, sun] or [6, 0]
+ * @param options options to be passed to plotLines and
+ * weekendDays: days pair to be specified as weekend days, [sat, sun] or [6, 0]
  * @returns plotlines config which can directly be spread on the chart axes.
  */
-export function getWeekendPlotLines(dateRange, weekendDays) {
+export function getWeekendPlotLines(dateRange, options = {}) {
+  const {weekendDays=[DAYS.SATURDAY, DAYS.SUNDAY], color, dashStyle} = options;
+
   const [startDate, endDate] = getMinMaxDates(dateRange);
   const weekendDates = getWeekendDaysFromRange(startDate, endDate, weekendDays);
 
   return weekendDates.map((weekendDay) => {
     return {
-      color: "purple",
+      color: color ?? "green",
       value: weekendDay.valueOf(),
-      dashStyle: "longdashdot",
+      dashStyle: dashStyle ?? "longdashdot",
       width: 1,
       label: {
         text: DAY_NAMES[weekendDay.day()],
