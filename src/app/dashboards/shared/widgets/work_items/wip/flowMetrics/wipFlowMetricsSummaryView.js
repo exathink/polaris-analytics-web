@@ -83,13 +83,21 @@ const CommonWipBoardSummaryView = ({
       </div>
       <div className={grid.fourthCol}>
         <ComponentCarousel tickInterval={3000}>
+          {/*
+            Putting the children in this order is important to
+            let the numbers lay out more logically across widgets in the
+            summary dashboard view where it is most often shown, In practice this
+            means that the avgLatency actually appears before the latest commit
+            in the dashboard after accounting for the carousel animation time.
+            Odd, but true.
+          */}
+          <LatestCommit latestCommit={latestCommit}/>
           <AvgLatency
             title={'Latency'}
             currentMeasurement={pipelineCycleMetrics}
             targetPercentile={cycleTimeTargetPercentile}
             target={cycleTimeTarget}
           />
-          <LatestCommit latestCommit={latestCommit}/>
         </ComponentCarousel>
       </div>
     </div>
