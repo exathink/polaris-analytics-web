@@ -114,6 +114,7 @@ export const FlowMetricsScatterPlotChart = Chart({
     specsOnly,
     showEpics,
     yAxisScale,
+    weekendDays,
     intl,
   }) => {
     const candidateCycles =
@@ -193,7 +194,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Date Closed`,
         },
         plotLines: [
-        ...getWeekendPlotLines(dateRange, [DAYS.SATURDAY, DAYS.SUNDAY])
+        ...getWeekendPlotLines(dateRange, {weekendDays: weekendDays, color: "purple"})
         ]
       },
       yAxis: {
