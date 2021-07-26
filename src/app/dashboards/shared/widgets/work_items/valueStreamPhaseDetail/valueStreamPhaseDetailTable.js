@@ -8,16 +8,12 @@ import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-
-const getNumber = (num, intl) => {
-  return intl.formatNumber(num, {maximumFractionDigits: 2});
-};
+import {getNumber} from "../../../../../helpers/utility";
 
 function getLeadTimeOrAge(item, intl) {
-  return item.stateType === WorkItemStateTypes.closed ?
-    getNumber(item.leadTime, intl)
-    :
-    getNumber(item.cycleTime, intl)
+  return item.stateType === WorkItemStateTypes.closed
+    ? getNumber(item.leadTime, intl)
+    : getNumber(item.cycleTime, intl);
 }
 
 function getCycleTimeOrLatency(item, intl) {

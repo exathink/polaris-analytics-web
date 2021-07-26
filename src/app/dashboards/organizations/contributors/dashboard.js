@@ -90,12 +90,21 @@ const TopDashboard = ({ viewerContext }) => (
               showDetail={true}
             />
           </DashboardRow>
-          <DashboardRow h={"68%"} title={"Teams"} className={styles.teamsRow}>
+          <DashboardRow h={"68%"} title={"Teams"}  className={styles.teamsRow}>
             <DashboardWidget
               w={1}
               name={``}
+
               className={styles.orgTeamsTable}
-              render={({ view }) => <OrgTeamsTableWidget organizationKey={organization.key} />}
+              render={({ view }) =>
+                <OrgTeamsTableWidget
+                  organizationKey={organization.key}
+                  days={14}
+                  measurementWindow={14}
+                  samplingFrequency={14}
+                  specsOnly={true}
+                  includeSubTasks={false}
+                />}
               showDetail={false}
             />
           </DashboardRow>
