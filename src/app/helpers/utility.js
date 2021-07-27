@@ -2,6 +2,11 @@ import {Map} from "immutable";
 import moment from "moment";
 import {notification} from "antd";
 import flowright from "lodash.flowright";
+import chunk from "lodash/chunk";
+
+export function removeItemAtIndex(arr, index) {
+  return [...arr.slice(0, index), ...arr.slice(index + 1)];
+}
 
 export const compose = flowright;
 
@@ -383,23 +388,26 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
  * weekendDays: days pair to be specified as weekend days, [sat, sun] or [6, 0]
  * @returns plotlines config which can directly be spread on the chart axes.
  */
-export function getWeekendPlotLines(dateRange, options = {}) {
-  const {weekendDays=[DAYS.SATURDAY, DAYS.SUNDAY], color, dashStyle} = options;
+export function getWeekendPlotBands(dateRange, options = {}) {
+  const {weekendDays = [DAYS.SATURDAY, DAYS.SUNDAY], color} = options;
+  const [weekendDay1] = weekendDays;
 
   const [startDate, endDate] = getMinMaxDates(dateRange);
-  const weekendDates = getWeekendDaysFromRange(startDate, endDate, weekendDays);
+  const weekendDates = getWeekendDaysFromRange(startDate, endDate, weekendDays).map((x) => x.startOf("day"));
 
-  return weekendDates.map((weekendDay) => {
+  const [firstWeekendDate] = weekendDates;
+  const weekendDatePairs =
+    firstWeekendDate.day() === weekendDay1
+      ? chunk(weekendDates, 2)
+      : [
+          [moment(firstWeekendDate).subtract(1, "days"), firstWeekendDate],
+          ...chunk(removeItemAtIndex(weekendDates, 0), 2),
+        ];
+  return weekendDatePairs.map(([day1, day2]) => {
     return {
       color: color ?? "green",
-      value: weekendDay.valueOf(),
-      dashStyle: dashStyle ?? "longdashdot",
-      width: 1,
-      label: {
-        text: DAY_NAMES[weekendDay.day()],
-        align: "right",
-        verticalAlign: "middle",
-      },
+      from: day1?.valueOf(),
+      to: day2?.valueOf(),
     };
   });
 }
