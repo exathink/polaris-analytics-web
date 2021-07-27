@@ -1,11 +1,13 @@
 .valueDashboard {
   display: grid;
   grid-template-columns: 33% 32.5% 33%;
-  grid-template-rows: 47% 2%;
+  grid-template-rows: 12% 47% 2% ;
   gap: 0.5rem;
   grid-template-areas:
+    "throughput valueMix workInProgress"
     "valueBookClosed valueMixChart valueBookWip"
     "scopeSelector scopeSelector scopeSelector";
+
 }
 
 .scopeSelector {
@@ -27,6 +29,22 @@
   grid-area: valueMixChart;
   padding: 0.25rem;
 }
+
+.throughput {
+  grid-area: throughput;
+  padding: 0.25rem;
+}
+
+.valueMix {
+  grid-area: valueMix;
+  padding: 0.25rem
+}
+
+.workInProgress {
+  grid-area: workInProgress;
+  padding: 0.25rem;
+}
+
 .valueBookTable {
   grid-area: valueBookTable;
   display: none;
