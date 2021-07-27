@@ -182,7 +182,7 @@ function WipDashboard({
               asStatistic={false}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="delivery"
