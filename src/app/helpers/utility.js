@@ -349,7 +349,11 @@ export const EVENT_TYPES = {
 export const getContainerNode = () => document.getElementById("polaris-app-content");
 
 export function getMinMaxDates(dates) {
-  return [moment.min(...dates), moment.max(...dates)];
+  if (dates.length === 0) {
+    return [];
+  } else {
+    return [moment.min(...dates), moment.max(...dates)];
+  }
 }
 
 export const DAYS = {
@@ -393,16 +397,21 @@ export function getWeekendPlotBands(dateRange, options = {}) {
   const [weekendDay1] = weekendDays;
 
   const [startDate, endDate] = getMinMaxDates(dateRange);
-  const weekendDates = getWeekendDaysFromRange(startDate, endDate, weekendDays).map((x) => x.startOf("day"));
+  const weekendDates =
+    startDate != null && endDate != null
+      ? getWeekendDaysFromRange(startDate, endDate, weekendDays).map((x) => x.startOf("day"))
+      : [];
 
   const [firstWeekendDate] = weekendDates;
   const weekendDatePairs =
-    firstWeekendDate.day() === weekendDay1
-      ? chunk(weekendDates, 2)
-      : [
-          [moment(firstWeekendDate).subtract(1, "days"), firstWeekendDate],
-          ...chunk(removeItemAtIndex(weekendDates, 0), 2),
-        ];
+    firstWeekendDate != null
+      ? firstWeekendDate.day() === weekendDay1
+        ? chunk(weekendDates, 2)
+        : [
+            [moment(firstWeekendDate).subtract(1, "days"), firstWeekendDate],
+            ...chunk(removeItemAtIndex(weekendDates, 0), 2),
+          ]
+      : [];
   return weekendDatePairs.map(([day1, day2]) => {
     return {
       color: color ?? "lightgreen",
