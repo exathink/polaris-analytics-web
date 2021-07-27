@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {DAYS, getWeekendPlotLines, percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -193,8 +193,8 @@ export const FlowMetricsScatterPlotChart = Chart({
         title: {
           text: `Date Closed`,
         },
-        plotLines: [
-        ...getWeekendPlotLines(dateRange, {weekendDays: weekendDays, color: "purple"})
+        plotBands: [
+        ...getWeekendPlotBands(dateRange, {weekendDays: weekendDays, color: "lightyellow"})
         ]
       },
       yAxis: {
