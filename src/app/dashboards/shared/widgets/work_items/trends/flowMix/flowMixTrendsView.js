@@ -24,6 +24,7 @@ export const ProjectFlowMixTrendsStatsView = ({
   specsOnly,
   showCounts,
   asStatistic,
+  asCard = true,
   target,
 }) => {
   const [current, previous] = flowMixTrends;
@@ -41,7 +42,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           uom={"%"}
           precision={2}
           target={target}
-          asCard={true}
+          asCard={asCard}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
 
@@ -57,7 +58,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           uom={"%"}
           precision={2}
           target={target}
-          asCard={true}
+          asCard={asCard}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
@@ -72,7 +73,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
           uom={"%"}
           precision={2}
-          asCard={true}
+          asCard={asCard}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
 
@@ -91,6 +92,7 @@ export const ProjectFlowMixTrendsView = (
     measurementWindow,
     specsOnly,
     asStatistic,
+    asCard,
     chartOptions,
     view,
     showCounts,
@@ -98,7 +100,7 @@ export const ProjectFlowMixTrendsView = (
   }) => (
     asStatistic ?
       <ProjectFlowMixTrendsStatsView
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target}  }
+        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, asCard, target}  }
       />
       :
       <FlowMixTrendsChart
