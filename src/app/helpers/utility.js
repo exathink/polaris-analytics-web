@@ -352,12 +352,16 @@ export const EVENT_TYPES = {
 
 export const getContainerNode = () => document.getElementById("polaris-app-content");
 
-export function getMinMaxDates(dates) {
+export function getMinMaxDatesFromRange(dates) {
   if (dates.length === 0) {
     return [];
   } else {
     return [moment.min(...dates), moment.max(...dates)];
   }
+}
+
+export function getMinMaxDates(days) {
+  return [moment().subtract(days, "days"), moment()];
 }
 
 export const DAYS = {
@@ -391,16 +395,16 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
 
 /**
  *
- * @param dateRange collection of all dates to be plotted on chart
+ * @param startDate startDate
+ * @param endDate endDate
  * @param options options to be passed to plotLines and
  * weekendDays: days pair to be specified as weekend days, [sat, sun] or [6, 0]
  * @returns plotlines config which can directly be spread on the chart axes.
  */
-export function getWeekendPlotBands(dateRange, options = {}) {
+export function getWeekendPlotBands(startDate, endDate, options = {}) {
   const {weekendDays = [DAYS.SATURDAY, DAYS.SUNDAY], color} = options;
   const [weekendDay1] = weekendDays;
 
-  const [startDate, endDate] = getMinMaxDates(dateRange);
   const weekendDates =
     startDate != null && endDate != null
       ? getWeekendDaysFromRange(startDate, endDate, weekendDays)
