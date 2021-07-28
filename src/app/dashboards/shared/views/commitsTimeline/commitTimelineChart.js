@@ -8,7 +8,7 @@ import {
   WorkItemStateTypes,
   WorkItemTypeDisplayName
 } from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, getWeekendPlotBands, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, getMinMaxDates, getWeekendPlotBands, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -176,7 +176,7 @@ export const CommitsTimelineChart = Chart({
         startWindow = moment(endWindow).subtract(days, 'days');
       }
 
-      const dateRange = model.commits.map(c => toMoment(c.commitDate));
+      const [startDate, endDate] = getMinMaxDates(days);
       return {
         chart: {
           type: 'bubble',
@@ -200,7 +200,7 @@ export const CommitsTimelineChart = Chart({
           },
           max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1, 'h').valueOf() : moment().add(1, 'h').valueOf(),
           plotBands: [
-            ...getWeekendPlotBands(dateRange)
+            ...getWeekendPlotBands(startDate, endDate)
           ]
         },
         yAxis: {

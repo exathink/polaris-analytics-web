@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {getMinMaxDates, getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -130,7 +130,7 @@ export const FlowMetricsScatterPlotChart = Chart({
       return groups;
     }, {});
 
-    const dateRange = candidateCycles.map(cycle => toMoment(cycle.endDate));
+    const [startDate, endDate] = getMinMaxDates(days);
 
     const series = Object.entries(deliveryCyclesByWorkItemType)
       .sort((entryA, entryB) => WorkItemTypeSortOrder[entryA[0]] - WorkItemTypeSortOrder[entryB[0]])
@@ -193,7 +193,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Date Closed`,
         },
         plotBands: [
-        ...getWeekendPlotBands(dateRange)
+        ...getWeekendPlotBands(startDate, endDate)
         ]
       },
       yAxis: {
