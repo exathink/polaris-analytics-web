@@ -71,6 +71,8 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={false}
@@ -128,6 +130,8 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={false}
@@ -178,7 +182,7 @@ function WipDashboard({
               asStatistic={false}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="delivery"

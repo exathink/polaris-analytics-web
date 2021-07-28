@@ -4,7 +4,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {ResponseTimeTrendsView} from "./responseTimeTrendsView"
 import {ResponseTimeTrendsDetailDashboard} from "./responseTimeTrendsDetailDashboard";
-import {getServerDate} from "../../../../../../helpers/utility";
+import { getReferenceString, getServerDate } from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 export const DimensionResponseTimeTrendsWidget = React.memo((
@@ -14,6 +14,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
     view,
     context,
     showAll,
+    latestCommit,
     latestWorkItemEvent,
     days,
     specsOnly,
@@ -40,7 +41,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
       samplingFrequency,
       targetPercentile,
       specsOnly: specsOnly != null ? specsOnly : true,
-      referenceString: latestWorkItemEvent,
+      referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
       includeSubTasks
     }
   );

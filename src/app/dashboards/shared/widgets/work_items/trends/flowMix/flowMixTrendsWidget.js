@@ -14,6 +14,8 @@ export const DimensionFlowMixTrendsWidget = (
     showAll,
     latestWorkItemEvent,
     latestCommit,
+    workItemScope,
+    setWorkItemScope,
     specsOnly,
     days,
     measurementWindow,
@@ -21,6 +23,7 @@ export const DimensionFlowMixTrendsWidget = (
     targetPercentile,
     target,
     asStatistic,
+    asCard,
     showCounts,
     chartOptions,
     pollInterval,
@@ -48,6 +51,7 @@ export const DimensionFlowMixTrendsWidget = (
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           asStatistic={asStatistic}
+          asCard={asCard}
           target={target}
           specsOnly={specsOnly}
           view={view}
@@ -65,6 +69,8 @@ export const DimensionFlowMixTrendsWidget = (
           latestCommit={latestCommit}
           latestWorkItemEvent={latestWorkItemEvent}
           specsOnly={specsOnly}
+          workItemScope={workItemScope}
+          setWorkItemScope={setWorkItemScope}
           chartOptions={chartOptions}
           includeSubTasks={includeSubTasks}
           />

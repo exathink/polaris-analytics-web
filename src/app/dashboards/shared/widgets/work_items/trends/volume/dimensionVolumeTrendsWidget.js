@@ -4,7 +4,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends"
 import {VolumeTrendsView} from "./volumeTrendsView"
 import {VolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
-import {getServerDate} from "../../../../../../helpers/utility";
+import { getReferenceString, getServerDate } from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 
 
@@ -15,6 +15,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
     view,
     context,
     showAll,
+    latestCommit,
     latestWorkItemEvent,
     days,
     measurementWindow,
@@ -38,7 +39,8 @@ export const DimensionVolumeTrendsWidget = React.memo((
         measurementWindow,
         samplingFrequency,
         targetPercentile,
-        includeSubTasks
+        includeSubTasks,
+        referenceString: getReferenceString(latestCommit, latestWorkItemEvent)
       }
     );
     if (loading) return <Loading/>;

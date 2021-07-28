@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
 import {DimensionFlowMixTrendsWidget} from "./flowMixTrendsWidget";
 import {Box, Flex} from "reflexbox";
@@ -7,6 +7,7 @@ import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
+import {useChildState} from "../../../../../../helpers/hooksUtil";
 
 const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
@@ -17,15 +18,18 @@ export const DimensionFlowMixTrendsDetailDashboard = (
     measurementWindow,
     days,
     samplingFrequency,
+    workItemScope: parentWorkItemScope,
+    setWorkItemScope: parentSetWorkItemScope,
     context,
     view,
     latestWorkItemEvent,
     latestCommit,
     includeSubTasks
+
   }
 ) => {
 
-  const [workItemScope, setWorkItemScope] = useState('all');
+  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, 'specs');
   const specsOnly = workItemScope === 'specs';
 
   const [

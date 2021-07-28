@@ -79,6 +79,8 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
           showDetail={false}
@@ -123,7 +125,6 @@ function WipDashboard({
               view={view}
               display={"responseTimeSummary"}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
               stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
@@ -134,6 +135,8 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={false}

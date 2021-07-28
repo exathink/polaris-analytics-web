@@ -7,6 +7,8 @@ import styles from "./dashboard.module.css";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
+import { DimensionFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics";
+import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
@@ -15,13 +17,107 @@ function ValueDashboard({
   context,
   viewerContext,
 }) {
-  const {flowAnalysisPeriod, includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
+  const {
+    flowAnalysisPeriod,
+    includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
+    leadTimeTarget,
+    cycleTimeTarget,
+    responseTimeConfidenceTarget,
+    wipLimit
+  } = settingsWithDefaults;
 
   const [workItemScope, setWorkItemScope] = React.useState("specs");
   const specsOnly = workItemScope === "specs";
   const [closedWithinDays, setClosedWithinDays] = React.useState(flowAnalysisPeriod);
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.valueDashboard} gridLayout={true}>
+      <DashboardRow h={"15%"}>
+        <DashboardWidget
+          name="flow-metrics"
+          title={"Throughput"}
+          className={styles.throughput}
+          subtitle={`${specsOnly ? 'Specs' : 'All Cards'}, Last ${flowAnalysisPeriod} days`}
+          hideTitlesInDetailView={true}
+          render={({ view }) => (
+            <DimensionFlowMetricsWidget
+              dimension={"project"}
+              instanceKey={key}
+              view={view}
+              display={"throughputSummary"}
+              context={context}
+              specsOnly={specsOnly}
+              days={flowAnalysisPeriod}
+              measurementWindow={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
+          showDetail={false}
+        />
+        <DashboardWidget
+          name="flow-type-flow-mix"
+          title={`Flow Mix by ${specsOnly ? 'Effort' : 'Volume'}`}
+          subtitle={`Last ${flowAnalysisPeriod} Days`}
+          className={styles.valueMix}
+          render={({view}) => (
+            <DimensionFlowMixTrendsWidget
+              dimension={'project'}
+              instanceKey={key}
+              measurementWindow={7}
+              days={flowAnalysisPeriod}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              specsOnly={specsOnly}
+              showCounts={true}
+              asStatistic={true}
+              asCard={false}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+          hideTitlesInDetailView={true}
+        />
+        <DashboardWidget
+          name="pipeline"
+          className={styles.workInProgress}
+          title={"Work In Progress"}
+          subtitle={`${specsOnly ? 'Specs' : 'All Cards'}`}
+
+          render={({view}) => (
+            <DimensionWipFlowMetricsWidget
+              dimension={'project'}
+              instanceKey={key}
+              display={"commonWipSummary"}
+              days={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              wipLimit={wipLimit}
+              view={view}
+              specsOnly={specsOnly}
+              context={context}
+              includeSubTasks={includeSubTasksWipInspector}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
+          showDetail={false}
+          hideTitlesInDetailView={true}
+        />
+      </DashboardRow>
       <DashboardRow h={"50%"}>
         <DashboardWidget
           name="epic-flow-mix-closed"
@@ -61,9 +157,11 @@ function ValueDashboard({
               showCounts={true}
               chartOptions={{alignTitle: "left"}}
               includeSubTasks={includeSubTasksFlowMetrics}
+
             />
           )}
-          showDetail={true}
+          showDetail={false}
+
         />
         <DashboardWidget
           name="epic-flow-mix-wip"

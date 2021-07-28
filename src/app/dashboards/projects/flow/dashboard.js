@@ -56,6 +56,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
           showDetail={false}
@@ -64,14 +66,13 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
+          subtitle={"Specs"}
 
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
               display={"commonWipSummary"}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
@@ -82,6 +83,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               specsOnly={true}
               context={context}
               includeSubTasks={includeSubTasksWipInspector}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
           showDetail={false}
@@ -110,6 +113,8 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
           showDetail={false}
@@ -153,6 +158,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               targetPercentile={0.7}
               context={context}
               view={view}
+              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -203,6 +209,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
+              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               defaultSeries={["all"]}
               includeSubTasks={includeSubTasksFlowMetrics}
