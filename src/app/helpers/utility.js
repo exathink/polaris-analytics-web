@@ -403,7 +403,7 @@ export function getWeekendPlotBands(dateRange, options = {}) {
   const [startDate, endDate] = getMinMaxDates(dateRange);
   const weekendDates =
     startDate != null && endDate != null
-      ? getWeekendDaysFromRange(startDate, endDate, weekendDays).map((x) => x.startOf("day"))
+      ? getWeekendDaysFromRange(startDate, endDate, weekendDays)
       : [];
 
   const [firstWeekendDate] = weekendDates;
@@ -419,8 +419,8 @@ export function getWeekendPlotBands(dateRange, options = {}) {
   return weekendDatePairs.map(([day1, day2]) => {
     return {
       color: color ?? "lightgreen",
-      from: day1?.valueOf(),
-      to: day2?.valueOf(),
+      from: day1?.startOf("day").valueOf(),
+      to: day2?.endOf("day").valueOf(),
     };
   });
 }
