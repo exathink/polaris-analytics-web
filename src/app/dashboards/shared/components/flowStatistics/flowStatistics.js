@@ -504,6 +504,16 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
   />
 );
 
+
+export const ContributorCount = ({title, contributorCount}) => (
+  <Statistic
+    title={title || 'Contributors'}
+    value={contributorCount}
+    precision={0}
+    valueStyle={{color: colors.good}}
+  />
+);
+
 // ---
 //  Commit Days
 // ----
