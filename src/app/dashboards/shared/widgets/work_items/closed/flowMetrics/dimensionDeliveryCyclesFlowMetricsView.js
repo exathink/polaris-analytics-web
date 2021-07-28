@@ -7,12 +7,14 @@ import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMe
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
+import {pick} from "../../../../../../helpers/utility";
 
 const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
-  model,
+  data,
+  dimension,
   days,
   targetMetrics,
   initialMetric,
@@ -22,6 +24,32 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   yAxisScale: parentYAxisScale,
   setYAxisScale: parentSetYAxisScale,
 }) => {
+  const model = React.useMemo(
+    () =>
+      data[dimension].workItemDeliveryCycles.edges.map((edge) =>
+        pick(
+          edge.node,
+          "id",
+          "name",
+          "key",
+          "displayId",
+          "workItemKey",
+          "workItemType",
+          "state",
+          "startDate",
+          "endDate",
+          "leadTime",
+          "cycleTime",
+          "latency",
+          "duration",
+          "effort",
+          "authorCount",
+          "teamNodeRefs"
+        )
+      ),
+    [data, dimension]
+  );
+
   const groupings = specsOnly
     ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
     : ["leadTime", "cycleTime", "backlogTime"];
