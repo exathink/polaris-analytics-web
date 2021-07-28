@@ -200,7 +200,7 @@ export const CommitsTimelineChart = Chart({
           },
           max: endWindow ? moment(endWindow).add(1, 'h').valueOf() : latestCommit ? toMoment(latestCommit).add(1, 'h').valueOf() : moment().add(1, 'h').valueOf(),
           plotBands: [
-            ...getWeekendPlotBands(startDate, endDate)
+            ...getWeekendPlotBands(startWindow || startDate, endWindow || endDate)
           ]
         },
         yAxis: {
