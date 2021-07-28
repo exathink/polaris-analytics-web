@@ -1,6 +1,5 @@
 import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
-import {pick} from "../../../../../../helpers/utility";
 import {DimensionDeliveryCyclesFlowMetricsView} from "./dimensionDeliveryCyclesFlowMetricsView";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
@@ -44,33 +43,14 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
     return null;
   }
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
-  const flowMetricsData = projectDeliveryCycleData[dimension].workItemDeliveryCycles.edges.map((edge) =>
-    pick(
-      edge.node,
-      "id",
-      "name",
-      "key",
-      "displayId",
-      "workItemKey",
-      "workItemType",
-      "state",
-      "startDate",
-      "endDate",
-      "leadTime",
-      "cycleTime",
-      "latency",
-      "duration",
-      "effort",
-      "authorCount",
-      "teamNodeRefs"
-    )
-  );
+
   return (
     <DimensionDeliveryCyclesFlowMetricsView
       instanceKey={instanceKey}
       context={context}
       days={days}
-      model={flowMetricsData}
+      data={projectDeliveryCycleData}
+      dimension={dimension}
       targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
