@@ -10,12 +10,11 @@ import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
-import Value from "./alignment/topic";
+import Alignment from "./alignment/topic";
 import Configure from "./configure/topic";
-
+import Quality from "./quality/topic";
 import {Contexts} from "../../meta/contexts";
 
-import {VALUE_STREAM_CONFIG, VALUE_STREAM_VALUE_DASHBOARD} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -48,9 +47,12 @@ const context : Context = {
             topic: Wip
           },
           {
-            match: 'value',
-            requiredFeatures: [VALUE_STREAM_VALUE_DASHBOARD],
-            topic: Value
+            match: 'alignment',
+            topic: Alignment
+          },
+          {
+            match: 'quality',
+            topic: Quality
           },
           {
 
@@ -67,7 +69,6 @@ const context : Context = {
           },
           {
             match: 'configure',
-            requiredFeatures: [VALUE_STREAM_CONFIG],
             topic: Configure
           },
           {

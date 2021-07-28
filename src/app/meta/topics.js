@@ -19,8 +19,13 @@ export const Topics = {
   },
   trends: {
     name: 'trends',
-    display: () => (<FormattedMessage id='topics.trends' defaultMessage="Trends"/>),
-    icon: 'ion-arrow-graph-up-right'
+    display: () => (<FormattedMessage id='topics.trends' defaultMessage="360° Trends"/>),
+    icon: 'ion-eye'
+  },
+  quality: {
+    name: 'quality',
+    display: () => (<FormattedMessage id='topics.quality' defaultMessage="Quality"/>),
+    icon: 'ion-ios-checkmark-outline'
   },
   responseTime: {
     name: 'responseTime',
