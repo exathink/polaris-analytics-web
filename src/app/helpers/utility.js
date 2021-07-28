@@ -2,6 +2,11 @@ import {Map} from "immutable";
 import moment from "moment";
 import {notification} from "antd";
 import flowright from "lodash.flowright";
+import chunk from "lodash/chunk";
+
+export function removeItemAtIndex(arr, index) {
+  return [...arr.slice(0, index), ...arr.slice(index + 1)];
+}
 
 export const compose = flowright;
 
@@ -346,3 +351,80 @@ export const EVENT_TYPES = {
 };
 
 export const getContainerNode = () => document.getElementById("polaris-app-content");
+
+export function getMinMaxDatesFromRange(dates) {
+  if (dates.length === 0) {
+    return [];
+  } else {
+    return [moment.min(...dates), moment.max(...dates)];
+  }
+}
+
+export function getMinMaxDates(days) {
+  return [moment().subtract(days, "days"), moment()];
+}
+
+export const DAYS = {
+  SUNDAY: 0,
+  MONDAY: 1,
+  TUESDAY: 2,
+  WEDNESDAY: 3,
+  THURSDAY: 4,
+  FRIDAY: 5,
+  SATURDAY: 6,
+};
+
+export const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function getRangeOfDates(start, end) {
+  const noOfDays = end.diff(start, "days");
+
+  const result = [start];
+  for (let index = 0; index < noOfDays + 1; index++) {
+    const temp = moment(result[index]).add(1, "days");
+    result.push(temp);
+  }
+  return result;
+}
+
+export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
+  const [firstDay, secondDay] = weekendDays;
+
+  return getRangeOfDates(startDate, endDate).filter((date) => date.day() === firstDay || date.day() === secondDay);
+}
+
+/**
+ *
+ * @param startDate startDate
+ * @param endDate endDate
+ * @param options options to be passed to plotLines and
+ * weekendDays: days pair to be specified as weekend days, [sat, sun] or [6, 0]
+ * @returns plotlines config which can directly be spread on the chart axes.
+ */
+export function getWeekendPlotBands(startDate, endDate, options = {}) {
+  const {weekendDays = [DAYS.SATURDAY, DAYS.SUNDAY], color} = options;
+  const [weekendDay1] = weekendDays;
+
+  const weekendDates =
+    startDate != null && endDate != null
+      ? getWeekendDaysFromRange(startDate, endDate, weekendDays)
+      : [];
+
+  const [firstWeekendDate] = weekendDates;
+  const weekendDatePairs =
+    firstWeekendDate != null
+      ? firstWeekendDate.day() === weekendDay1
+        ? chunk(weekendDates, 2)
+        : [
+            [moment(firstWeekendDate).subtract(1, "days"), firstWeekendDate],
+            ...chunk(removeItemAtIndex(weekendDates, 0), 2),
+          ]
+      : [];
+  return weekendDatePairs.map(([day1, day2]) => {
+    return {
+      color: color ?? "lightgrey",
+      from: day1?.startOf("day").valueOf(),
+      to: day2?.endOf("day").valueOf(),
+    };
+  });
+}
