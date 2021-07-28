@@ -194,7 +194,7 @@ export const FlowMetricsScatterPlotChart = Chart({
           text: `Date Closed`,
         },
         plotBands: [
-        ...getWeekendPlotBands(dateRange, {weekendDays: weekendDays, color: "lightyellow"})
+        ...getWeekendPlotBands(dateRange, {weekendDays: weekendDays})
         ]
       },
       yAxis: {

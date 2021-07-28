@@ -418,7 +418,7 @@ export function getWeekendPlotBands(dateRange, options = {}) {
       : [];
   return weekendDatePairs.map(([day1, day2]) => {
     return {
-      color: color ?? "lightgreen",
+      color: color ?? "lightgrey",
       from: day1?.startOf("day").valueOf(),
       to: day2?.endOf("day").valueOf(),
     };
