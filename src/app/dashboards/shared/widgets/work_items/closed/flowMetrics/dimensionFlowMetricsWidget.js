@@ -45,7 +45,7 @@ export const DimensionFlowMetricsWidget = (
   });
   if (loading) return <Loading/>;
   if (error) return null;
-  const {cycleMetricsTrends} = data[dimension];
+  const {cycleMetricsTrends, contributorCount} = data[dimension];
   
   if (view === 'primary') {
     return (
@@ -60,6 +60,7 @@ export const DimensionFlowMetricsWidget = (
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         latestCommit={latestCommit}
+        contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
       />
     )

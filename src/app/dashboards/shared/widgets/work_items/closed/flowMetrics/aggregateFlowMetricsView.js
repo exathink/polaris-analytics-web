@@ -17,6 +17,8 @@ import {
   LatestClosed,
   Volume,
   VolumeCarousel,
+  ContributorCount
+
 } from "../../../../components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
 import {metricsMapping} from "../../../../helpers/teamUtils";
@@ -100,6 +102,7 @@ export const CadenceDetailView = (
 export const ThroughputSummaryView = (
   {
 
+    contributorCount,
     cycleMetricsTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
@@ -115,7 +118,12 @@ export const ThroughputSummaryView = (
   }
   return (
     <React.Fragment>
-        <VizItem w={1/3}>
+      <VizItem w={0.2}>
+          <ContributorCount
+            contributorCount={contributorCount}
+          />
+        </VizItem>
+        <VizItem w={0.2}>
           <Volume
             currentMeasurement={current}
             previousMeasurement={previous}
@@ -123,7 +131,7 @@ export const ThroughputSummaryView = (
           />
         </VizItem>
 
-        <VizItem w={1/3}>
+        <VizItem w={0.3}>
           <EffortOUT
             currentMeasurement={current}
             previousMeasurement={previous}
@@ -131,7 +139,7 @@ export const ThroughputSummaryView = (
           />
         </VizItem>
 
-        <VizItem w={1/3}>
+        <VizItem w={0.3}>
         <ComponentCarousel tickInterval={3000}>
             <LatestClosed
               currentMeasurement={current}
@@ -601,7 +609,7 @@ export const AllMetricsDisplayView = (
 
 export const AggregateFlowMetricsView = withViewerContext((
   {
-
+    contributorCount,
     cycleMetricsTrends,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
@@ -680,6 +688,7 @@ export const AggregateFlowMetricsView = withViewerContext((
         return (
           <VizRow h={1}>
             <ThroughputSummaryView
+              contributorCount={contributorCount}
               cycleMetricsTrends={cycleMetricsTrends}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}

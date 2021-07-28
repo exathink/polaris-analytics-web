@@ -24,7 +24,7 @@ export function useQueryDimensionFlowMetrics(
         ) {
             ${dimension}(
                 key: $key,
-                interfaces: [CycleMetricsTrends],
+                interfaces: [CycleMetricsTrends, ContributorCount],
                 cycleMetricsTrendsArgs: {
                     days: $days,
                     measurementWindow: $measurementWindow,
@@ -62,7 +62,7 @@ export function useQueryDimensionFlowMetrics(
                         cadence
                     ]
                 }
-
+                contributorCountDays: $days
                 referenceString: $referenceString
 
             ) {
@@ -97,6 +97,7 @@ export function useQueryDimensionFlowMetrics(
                     latestClosedDate
                     targetPercentile
                 }
+                contributorCount
             }
         }
     `, {
