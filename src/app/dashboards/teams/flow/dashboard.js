@@ -11,6 +11,7 @@ import {
 } from "../../shared/widgets/work_items/wip";
 import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
+import {ResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/responseTimeWidget";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -107,18 +108,17 @@ function WipDashboard({
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="flow-metrics-response-time"
           title={"Response Time"}
           w={1/3}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <ResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
               view={view}
-              display={"responseTimeSummary"}
               context={context}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
