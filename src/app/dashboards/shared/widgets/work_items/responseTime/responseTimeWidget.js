@@ -1,9 +1,9 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {AggregateFlowMetricsView} from "../closed/flowMetrics/aggregateFlowMetricsView";
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {ResponseTimeDetailDashboard} from "./responseTimeDetailDashboard";
+import {ResponseTimeView} from "./responseTimeView";
 
 export const ResponseTimeWidget = ({
   dimension,
@@ -44,22 +44,12 @@ export const ResponseTimeWidget = ({
   });
   if (loading) return <Loading />;
   if (error) return null;
-  const {cycleMetricsTrends, contributorCount} = data[dimension];
+  const {cycleMetricsTrends} = data[dimension];
 
   if (view === "primary") {
     return (
-      <AggregateFlowMetricsView
-        instanceKey={instanceKey}
-        display={"responseTimeSummary"}
-        displayProps={displayProps}
-        twoRows={twoRows}
-        specsOnly={limitToSpecsOnly}
-        leadTimeTargetPercentile={leadTimeConfidenceTarget}
-        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+      <ResponseTimeView
         cycleTimeTarget={cycleTimeTarget}
-        leadTimeTarget={leadTimeTarget}
-        latestCommit={latestCommit}
-        contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
       />
     );
