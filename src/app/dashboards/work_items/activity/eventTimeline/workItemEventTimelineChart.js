@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, elide, epoch, pick, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, elide, epoch, getMinMaxDatesFromRange, getWeekendPlotBands, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
 
@@ -212,6 +212,12 @@ export const WorkItemEventsTimelineChart = Chart({
       ...getWorkItemPullRequestEvents(workItem),
     ];
 
+    const dateRange = [
+      ...getWorkItemEvents(workItem).map((e) => toMoment(e.timelineEvent.eventDate)),
+      ...getWorkItemCommitEvents(workItem).map((e) => toMoment(e.timelineEvent.commitDate)),
+      ...getWorkItemPullRequestEvents(workItem).filter(e => e.timelineEvent.endDate != null).map((e) => toMoment(e.timelineEvent.endDate)),
+    ];
+    const [startDate, endDate] = getMinMaxDatesFromRange(dateRange);
     return {
       chart: {
         type: "scatter",
@@ -229,7 +235,10 @@ export const WorkItemEventsTimelineChart = Chart({
         title: {
           text: null,
         },
-        plotLines: getDeliveryCyclePlotLines(workItem, intl)
+        plotLines: getDeliveryCyclePlotLines(workItem, intl),
+        plotBands: [
+          ...getWeekendPlotBands(startDate, endDate)
+        ]
       },
       yAxis: {
         id: "y-items",

@@ -390,6 +390,10 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
     }
   }
 
+  if (isDateWeekend(endDate)) {
+    result.push(endDate)
+  }
+
   return result;
 }
 
