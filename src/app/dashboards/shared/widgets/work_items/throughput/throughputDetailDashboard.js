@@ -13,7 +13,6 @@ export function ThroughputDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
-  viewerContext,
 }) {
   const {
     leadTimeTarget,
