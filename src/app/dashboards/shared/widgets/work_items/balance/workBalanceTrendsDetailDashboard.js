@@ -4,15 +4,16 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState
-} from "../../../../shared/components/trendingControlBar/trendingControlBar";
-import {ProjectEffortTrendsWidget} from "./capacityTrendsWidget";
+} from "../../../components/trendingControlBar/trendingControlBar";
+import {DimensionWorkBalanceTrendsWidget} from "./dimensionWorkBalanceTrendsWidget";
 import {Box, Flex} from "reflexbox";
 import {Checkbox} from "antd";
 
-const dashboard_id = 'dashboards.trends.projects.capacity.detail';
+const dashboard_id = 'dashboards.trends.projects.balance.detail';
 
-export const ProjectCapacityTrendsDetailDashboard = (
+export const DimensionWorkBalanceTrendsDetailDashboard = (
   {
+    dimension,
     instanceKey,
     view: parentView,
     context,
@@ -29,13 +30,13 @@ export const ProjectCapacityTrendsDetailDashboard = (
   }) => {
 
   const [showContributorDetail, setShowContributorDetail] = useState(true);
-  const [showEffort, setShowEffort] = useState(false);
+  const [showEffort, setShowEffort] = useState(true);
 
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
-  ] = useTrendsControlBarState(45, 30, 7);
+  ] = useTrendsControlBarState(days || 45, measurementWindow|| 30, samplingFrequency|| 7);
 
 
   return (
@@ -44,7 +45,7 @@ export const ProjectCapacityTrendsDetailDashboard = (
     >
       <DashboardRow
         h={1}
-        title={`Effort Trends`}
+        title={`Work Balance`}
         controls={[
 
           ...getTrendsControlBarControls(
@@ -93,7 +94,8 @@ export const ProjectCapacityTrendsDetailDashboard = (
           name="capacity-trends-detail"
           render={
             ({view}) =>
-              <ProjectEffortTrendsWidget
+              <DimensionWorkBalanceTrendsWidget
+                dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
                 showAllTrends={true}
