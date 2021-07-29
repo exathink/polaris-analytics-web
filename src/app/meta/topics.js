@@ -27,6 +27,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.quality' defaultMessage="Quality"/>),
     icon: 'ion-ios-checkmark-outline'
   },
+  balance: {
+    name: 'balance',
+    display: () => (<FormattedMessage id='topics.capacity' defaultMessage="Work Balance"/>),
+    icon: 'ion-ios-analytics-outline'
+  },
   responseTime: {
     name: 'responseTime',
     display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time"/>),
@@ -45,7 +50,7 @@ export const Topics = {
   alignment: {
     name: 'alignment',
     display: () => (<FormattedMessage id='topics.alignment' defaultMessage="Alignment"/>),
-    icon: 'ion-ionic'
+    icon: 'ion-compass'
   },
   contributors: {
     name: 'contributors',
