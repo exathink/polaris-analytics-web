@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlowStatistic, TotalActiveDays} from "../../../../shared/components/flowStatistics/flowStatistics";
-import {VizItem, VizRow} from "../../../../shared/containers/layout";
-import {EffortTrendsChart} from "./effortTrendsChart";
+import {FlowStatistic, TotalActiveDays} from "../../../components/flowStatistics/flowStatistics";
+import {VizItem, VizRow} from "../../../containers/layout";
+import {WorkBalanceTrendsChart} from "./workBalanceTrendsChart";
 
-export const ProjectCapacityTrendsStatsView = (
+export const WorkBalanceTrendsStatsView = (
   {
     capacityTrends,
     measurementPeriod,
@@ -39,7 +39,7 @@ export const ProjectCapacityTrendsStatsView = (
   )
 }
 
-export const ProjectCapacityTrendsView = (
+export const WorkBalanceTrendsView = (
   {
     capacityTrends,
     contributorDetail,
@@ -54,13 +54,13 @@ export const ProjectCapacityTrendsView = (
     target,
   }) => (
   asStatistic ?
-    <ProjectCapacityTrendsStatsView
+    <WorkBalanceTrendsStatsView
       {...{capacityTrends, measurementPeriod, measurementWindow, target}}
     />
     :
     <VizRow h={1}>
       <VizItem w={1}>
-        <EffortTrendsChart
+        <WorkBalanceTrendsChart
           {...{
             capacityTrends,
             contributorDetail,

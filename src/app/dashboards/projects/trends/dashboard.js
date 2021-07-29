@@ -1,21 +1,21 @@
 import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {DimensionPredictabilityTrendsWidget} from "../../shared/widgets/work_items/trends/predictability";
 import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
-import {DimensionResponseTimeTrendsWidget, DimensionDefectResponseTimeWidget} from "../../shared/widgets/work_items/trends/responseTime";
+import {
+  DimensionDefectResponseTimeWidget,
+  DimensionResponseTimeTrendsWidget,
+} from "../../shared/widgets/work_items/trends/responseTime";
 import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
-
-import {PROJECTS_ALIGNMENT_TRENDS_WIDGETS} from "../../../../config/featureFlags";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
-import {ProjectEffortTrendsWidget} from "../shared/widgets/capacity";
-import {
-  DefectArrivalCloseRateWidget,
-  DefectBacklogTrendsWidget,
-} from "../shared/widgets/quality";
-import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {DimensionWorkBalanceTrendsWidget} from "../../shared/widgets/work_items/balance";
+import {DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget} from "../shared/widgets/quality";
+import {DaysRangeSlider, SIX_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import styles from "../alignment/dashboard.module.css";
+import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
+import {Box, Flex} from "reflexbox";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -30,94 +30,92 @@ function TrendsDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     trendsAnalysisPeriod,
-    includeSubTasksFlowMetrics
+    includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
-      {viewerContext.isFeatureFlagActive(PROJECTS_ALIGNMENT_TRENDS_WIDGETS) && (
-        <DashboardRow
-          h={"28%"}
-          title={"Alignment"}
-          controls={[
-            () => (
-              <div style={{minWidth: "500px"}}>
-                <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={ONE_YEAR}/>
-              </div>
-            ),
-          ]}
-        >
-          <DashboardWidget
-            w={1 / 3}
-            name="capacity"
-            render={({view}) => (
-              <ProjectEffortTrendsWidget
-                instanceKey={key}
-                measurementWindow={30}
-                days={daysRange}
-                samplingFrequency={7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-                target={0.9}
-                showEffort={true}
-                chartConfig={{totalEffortDisplayType: "spline"}}
-                includeSubTasks={includeSubTasksFlowMetrics}
-              />
-            )}
-            showDetail={true}
-          />
-
-          <DashboardWidget
-            w={1 / 3}
-            name="flow-mix"
-            render={({view}) => (
-              <DimensionFlowMixTrendsWidget
-                dimension={'project'}
-                instanceKey={key}
-                measurementWindow={30}
-                days={daysRange}
-                samplingFrequency={7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-                specsOnly={true}
-                asStatistic={false}
-                includeSubTasks={includeSubTasksFlowMetrics}
-              />
-            )}
-            showDetail={true}
-          />
-          <DashboardWidget
-            w={1 / 3}
-            name="traceability"
-            render={({view}) => (
-              <ProjectTraceabilityTrendsWidget
-                instanceKey={key}
-                measurementWindow={30}
-                days={daysRange}
-                samplingFrequency={7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-              />
-            )}
-            showDetail={true}
-          />
-        </DashboardRow>
-      )}
+      <DashboardRow
+        h={"28%"}
+        title={"Alignment"}
+        controls={[
+          ({view}) => (
+            <div style={{minWidth: "200px"}}>
+              <Flex align={"middle"} justify={"start"}>
+                <Box pr={2} w={"100%"}>
+                  <ProjectTraceabilityTrendsWidget
+                    instanceKey={key}
+                    measurementWindow={daysRange}
+                    days={daysRange}
+                    samplingFrequency={daysRange}
+                    context={context}
+                    view={view}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                    asStatistic={true}
+                    primaryStatOnly={true}
+                    target={0.9}
+                  />
+                </Box>
+              </Flex>
+            </div>
+          ),
+          () => (
+            <div style={{minWidth: "500px"}}>
+              <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={SIX_MONTHS} />
+            </div>
+          ),
+        ]}
+      >
+        <DashboardWidget
+          w={1 / 2}
+          name="flow-mix"
+          render={({view}) => (
+            <DimensionFlowMixTrendsWidget
+              dimension={"project"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              specsOnly={true}
+              asStatistic={false}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="epic-flow-mix-closed"
+          w={1 / 2}
+          className={styles.valueBookClosed}
+          render={({view}) => (
+            <ProjectValueBookWidget
+              instanceKey={key}
+              context={context}
+              days={daysRange}
+              specsOnly={true}
+              view={view}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={false}
+        />
+      </DashboardRow>
       <DashboardRow h="28%" title={`Flow`}>
         <DashboardWidget
           w={1 / 3}
           name="throughput"
           render={({view}) => (
             <DimensionVolumeTrendsWidget
-              dimension={'project'}
+              dimension={"project"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
@@ -135,12 +133,35 @@ function TrendsDashboard({
           )}
           showDetail={true}
         />
+
+        <DashboardWidget
+          w={1 / 3}
+          name="capacity"
+          render={({view}) => (
+            <DimensionWorkBalanceTrendsWidget
+              dimension={"project"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              target={0.9}
+              showEffort={true}
+              chartConfig={{totalEffortDisplayType: "areaspline"}}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
         <DashboardWidget
           w={1 / 3}
           name="cycle-time"
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
-              dimension={'project'}
+              dimension={"project"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
@@ -154,29 +175,6 @@ function TrendsDashboard({
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               defaultSeries={["leadTime", "cycleTime"]}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 3}
-          name="predictability"
-          render={({view}) => (
-            <DimensionPredictabilityTrendsWidget
-              dimension={'project'}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
@@ -198,24 +196,7 @@ function TrendsDashboard({
           )}
           showDetail={true}
         />
-        <DashboardWidget
-          w={1 / 3}
-          name="defect-response-time"
-          render={({view}) => (
-            <DimensionDefectResponseTimeWidget
-              dimension={'project'}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              view={view}
-            />
-          )}
-          showDetail={true}
-        />
+
         <DashboardWidget
           w={1 / 3}
           name="backlog-trends-widget"
@@ -225,6 +206,24 @@ function TrendsDashboard({
               measurementWindow={30}
               days={daysRange}
               samplingFrequency={7}
+              view={view}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 3}
+          name="defect-response-time"
+          render={({view}) => (
+            <DimensionDefectResponseTimeWidget
+              dimension={"project"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
               view={view}
             />
           )}
