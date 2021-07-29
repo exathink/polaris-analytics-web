@@ -1,9 +1,9 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {AggregateFlowMetricsView} from "../closed/flowMetrics/aggregateFlowMetricsView";
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
+import { ThroughputView } from "./throughputView";
 
 export const ThroughputWidget = ({
   dimension,
@@ -11,8 +11,6 @@ export const ThroughputWidget = ({
   specsOnly,
   view,
   context,
-  display,
-  twoRows,
   latestWorkItemEvent,
   latestCommit,
   days,
@@ -23,10 +21,7 @@ export const ThroughputWidget = ({
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
   targetPercentile,
-  stateMappingIndex,
-  pollInterval,
   includeSubTasks,
-  displayProps,
 }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
@@ -49,17 +44,8 @@ export const ThroughputWidget = ({
 
   if (view === "primary") {
     return (
-      <AggregateFlowMetricsView
-        instanceKey={instanceKey}
-        display={"throughputSummary"}
-        displayProps={displayProps}
-        twoRows={twoRows}
+      <ThroughputView
         specsOnly={limitToSpecsOnly}
-        leadTimeTargetPercentile={leadTimeConfidenceTarget}
-        cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-        cycleTimeTarget={cycleTimeTarget}
-        leadTimeTarget={leadTimeTarget}
-        latestCommit={latestCommit}
         contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
       />
