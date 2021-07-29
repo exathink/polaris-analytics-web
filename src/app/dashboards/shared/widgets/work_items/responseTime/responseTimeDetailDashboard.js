@@ -1,8 +1,5 @@
 import React from "react";
-
-import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
 import {DimensionResponseTimeTrendsWidget} from "../../../../shared/widgets/work_items/trends/responseTime";
-import {TeamDashboard} from "../../../../teams/teamDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
@@ -12,15 +9,6 @@ import {GroupingSelector} from "../../../../shared/components/groupingSelector/g
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
-const dashboard = ({viewerContext}) => (
-  <TeamDashboard
-    pollInterval={1000 * 60}
-    render={({team, ...rest}) => (
-      <DimensionResponseTimeDashboard dimension={"team"} dimensionData={team} {...rest} viewerContext={viewerContext} />
-    )}
-  />
-);
-
 const metricMapping = {
   avgCycleTime: "cycleTime",
   avgLeadTime: "leadTime",
@@ -29,7 +17,7 @@ const metricMapping = {
   avgLatency: "latency",
 };
 
-function DimensionResponseTimeDashboard({
+export function ResponseTimeDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
@@ -175,5 +163,3 @@ function DimensionResponseTimeDashboard({
     </Dashboard>
   );
 }
-
-export default withViewerContext(dashboard);

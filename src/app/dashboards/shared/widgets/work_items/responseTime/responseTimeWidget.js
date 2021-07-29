@@ -5,13 +5,12 @@ import {DimensionFlowMetricsDetailDashboard} from "../closed/flowMetrics/dimensi
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
 
-export const DimensionFlowMetricsWidget = ({
+export const ResponseTimeWidget = ({
   dimension,
   instanceKey,
   specsOnly,
   view,
   context,
-  display,
   twoRows,
   latestWorkItemEvent,
   latestCommit,
@@ -50,7 +49,7 @@ export const DimensionFlowMetricsWidget = ({
     return (
       <AggregateFlowMetricsView
         instanceKey={instanceKey}
-        display={display}
+        display={"responseTimeSummary"}
         displayProps={displayProps}
         twoRows={twoRows}
         specsOnly={limitToSpecsOnly}
