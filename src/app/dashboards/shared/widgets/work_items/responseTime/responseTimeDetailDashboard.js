@@ -1,14 +1,14 @@
 import React from "react";
-import {TeamDashboard} from "../teamDashboard";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {DimensionResponseTimeTrendsWidget} from "../../shared/widgets/work_items/trends/responseTime";
 
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
+import {DimensionResponseTimeTrendsWidget} from "../../../../shared/widgets/work_items/trends/responseTime";
+import {TeamDashboard} from "../../../../teams/teamDashboard";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
+import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 

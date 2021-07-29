@@ -1,8 +1,8 @@
 import React from "react";
-import {Loading} from "../../../../../../components/graphql/loading";
-import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
-import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
-import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
+import {Loading} from "../../../../../components/graphql/loading";
+import {AggregateFlowMetricsView} from "../closed/flowMetrics/aggregateFlowMetricsView";
+import {DimensionFlowMetricsDetailDashboard} from "../closed/flowMetrics/dimensionFlowMetricsDetailDashboard";
+import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
 
 export const DimensionFlowMetricsWidget = ({
