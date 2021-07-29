@@ -1,33 +1,32 @@
 import React from "react";
-import {Loading} from "../../../../../../components/graphql/loading";
-import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
-import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
-import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
-import { getReferenceString } from "../../../../../../helpers/utility";
+import {Loading} from "../../../../../components/graphql/loading";
+import {AggregateFlowMetricsView} from "../closed/flowMetrics/aggregateFlowMetricsView";
+import {DimensionFlowMetricsDetailDashboard} from "../closed/flowMetrics/dimensionFlowMetricsDetailDashboard";
+import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
+import {getReferenceString} from "../../../../../helpers/utility";
 
-export const DimensionFlowMetricsWidget = (
-  {
-    dimension,
-    instanceKey,
-    specsOnly,
-    view,
-    context,
-    display,
-    twoRows,
-    latestWorkItemEvent,
-    latestCommit,
-    days,
-    measurementWindow,
-    samplingFrequency,
-    leadTimeTarget,
-    cycleTimeTarget,
-    leadTimeConfidenceTarget,
-    cycleTimeConfidenceTarget,
-    stateMappingIndex,
-    pollInterval,
-    includeSubTasks,
-    displayProps
-  }) => {
+export const ThroughputWidget = ({
+  dimension,
+  instanceKey,
+  specsOnly,
+  view,
+  context,
+  display,
+  twoRows,
+  latestWorkItemEvent,
+  latestCommit,
+  days,
+  measurementWindow,
+  samplingFrequency,
+  leadTimeTarget,
+  cycleTimeTarget,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  stateMappingIndex,
+  pollInterval,
+  includeSubTasks,
+  displayProps,
+}) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
     dimension,
@@ -37,17 +36,17 @@ export const DimensionFlowMetricsWidget = (
     leadTimeTargetPercentile: leadTimeConfidenceTarget,
     cycleTimeTargetPercentile: cycleTimeConfidenceTarget,
     days: days,
-    measurementWindow:measurementWindow,
+    measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency || 7,
     specsOnly: limitToSpecsOnly,
     includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return null;
   const {cycleMetricsTrends, contributorCount} = data[dimension];
-  
-  if (view === 'primary') {
+
+  if (view === "primary") {
     return (
       <AggregateFlowMetricsView
         instanceKey={instanceKey}
@@ -63,7 +62,7 @@ export const DimensionFlowMetricsWidget = (
         contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
       />
-    )
+    );
   } else {
     return (
       <DimensionFlowMetricsDetailDashboard
@@ -82,6 +81,6 @@ export const DimensionFlowMetricsWidget = (
         includeSubTasks={includeSubTasks}
         latestCommit={latestCommit}
       />
-    )
+    );
   }
-}
+};

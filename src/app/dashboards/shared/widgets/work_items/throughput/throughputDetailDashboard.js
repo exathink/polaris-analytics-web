@@ -1,27 +1,15 @@
 import React from "react";
-import {TeamDashboard} from "../teamDashboard";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
-
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {DaysRangeSlider, THREE_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
-import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
+import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
+import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
-const dashboard = ({viewerContext}) => (
-  <TeamDashboard
-    pollInterval={1000 * 60}
-    render={({team, ...rest}) => (
-      <DimensionThroughputDashboard dimension={"team"} dimensionData={team} {...rest} viewerContext={viewerContext} />
-    )}
-  />
-);
-
-function DimensionThroughputDashboard({
+export function ThroughputDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
@@ -187,5 +175,3 @@ function DimensionThroughputDashboard({
     </Dashboard>
   );
 }
-
-export default withViewerContext(dashboard);
