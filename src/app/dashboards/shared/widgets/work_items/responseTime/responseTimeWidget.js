@@ -1,9 +1,9 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {AggregateFlowMetricsView} from "../closed/flowMetrics/aggregateFlowMetricsView";
-import {DimensionFlowMetricsDetailDashboard} from "../closed/flowMetrics/dimensionFlowMetricsDetailDashboard";
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
+import {ResponseTimeDetailDashboard} from "./responseTimeDetailDashboard";
 
 export const ResponseTimeWidget = ({
   dimension,
@@ -21,6 +21,7 @@ export const ResponseTimeWidget = ({
   cycleTimeTarget,
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
+  targetPercentile,
   stateMappingIndex,
   pollInterval,
   includeSubTasks,
@@ -63,23 +64,17 @@ export const ResponseTimeWidget = ({
       />
     );
   } else {
-    return (
-      <DimensionFlowMetricsDetailDashboard
-        dimension={dimension}
-        instanceKey={instanceKey}
-        specsOnly={limitToSpecsOnly}
-        view={view}
-        context={context}
-        latestWorkItemEvent={latestWorkItemEvent}
-        days={days}
-        leadTimeTarget={leadTimeTarget}
-        cycleTimeTarget={cycleTimeTarget}
-        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-        stateMappingIndex={stateMappingIndex}
-        includeSubTasks={includeSubTasks}
-        latestCommit={latestCommit}
-      />
-    );
+    const settingsWithDefaults = {
+      leadTimeTarget,
+      cycleTimeTarget,
+      leadTimeConfidenceTarget,
+      cycleTimeConfidenceTarget,
+      responseTimeConfidenceTarget: targetPercentile,
+      wipAnalysisPeriod: days,
+      includeSubTasksFlowMetrics: includeSubTasks,
+    };
+
+    const dimensionData = {key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults};
+    return <ResponseTimeDetailDashboard dimension={dimension} dimensionData={dimensionData} context={context} />;
   }
 };

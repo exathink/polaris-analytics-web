@@ -21,7 +21,6 @@ export function ResponseTimeDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
-  viewerContext,
 }) {
   const {
     leadTimeTarget,
