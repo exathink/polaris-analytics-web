@@ -7,9 +7,26 @@ import {CreateNewTeamWidget} from "./createNewTeam";
 import {TeamLink} from "../../../shared/navigation/teamLink";
 import {fromNow, getNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
+import {Highlighter} from "../../../../components/misc/highlighter";
+
+function customNameRender(text, record, searchText) {
+  return (
+    text && (
+      <TeamLink teamName={record.name} teamKey={record.key}>
+        <span style={{cursor: "pointer"}}>
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={text.toString()}
+          />
+        </span>
+      </TeamLink>
+    )
+  );
+}
 
 export function useOrgTeamsTableColumns() {
-  const nameSearchState = useSearch("name");
+  const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
     {
@@ -18,13 +35,6 @@ export function useOrgTeamsTableColumns() {
       key: "name",
       width: "15%",
       ...nameSearchState,
-      render: (text, record, searchText) => (
-        <TeamLink teamName={record.name} teamKey={record.key}>
-          {
-            record.name
-          }
-        </TeamLink>
-      ),
     },
     {
       title: <span>Contributors<sup> Active</sup></span>,
