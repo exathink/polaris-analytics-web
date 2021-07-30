@@ -6,9 +6,26 @@ import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
 import {useSearch} from "../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {Highlighter} from "../../../../components/misc/highlighter";
+
+function customNameRender(text, record, searchText) {
+  return (
+    text && (
+      <ProjectLink projectName={record.name} projectKey={record.key}>
+        <span style={{cursor: "pointer"}}>
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={text.toString()}
+          />
+        </span>
+      </ProjectLink>
+    )
+  );
+}
 
 export function useOrgProjectsTableColumns() {
-  const nameSearchState = useSearch("name");
+  const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
     {
@@ -17,11 +34,6 @@ export function useOrgProjectsTableColumns() {
       key: "name",
       width: "15%",
       ...nameSearchState,
-      // (name, record) => (
-      //   <ProjectLink projectName={record.name} projectKey={record.key}>
-      //     {name}
-      //   </ProjectLink>
-      // )
     },
     {
       title: "Work Streams",

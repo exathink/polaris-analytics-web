@@ -7,9 +7,26 @@ import Button from "../../../../../components/uielements/button";
 import {fromNow, human_span} from "../../../../helpers/utility";
 import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
+import { Highlighter } from "../../../../components/misc/highlighter";
+
+function customNameRender(text, record, searchText) {
+  return (
+    text && (
+      <RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
+        <span style={{cursor: "pointer"}}>
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={text.toString()}
+          />
+        </span>
+      </RepositoryLink>
+    )
+  );
+}
 
 export function useRepositoriesTableColumns({statusTypes}) {
-  const nameSearchState = useSearch("name");
+  const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
     {
@@ -18,11 +35,6 @@ export function useRepositoriesTableColumns({statusTypes}) {
       key: "name",
       width: "15%",
       ...nameSearchState,
-      //   render: (name, record) => (
-      //     <RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
-      //       {name}
-      //     </RepositoryLink>
-      //   ),
     },
     {
       title: "Commits",
