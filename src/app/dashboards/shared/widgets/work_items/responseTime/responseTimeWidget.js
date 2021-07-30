@@ -12,7 +12,6 @@ export const ResponseTimeWidget = ({
   specsOnly,
   view,
   context,
-  twoRows,
   latestWorkItemEvent,
   latestCommit,
   days,
@@ -23,10 +22,7 @@ export const ResponseTimeWidget = ({
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
   targetPercentile,
-  stateMappingIndex,
-  pollInterval,
   includeSubTasks,
-  displayProps,
 }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
