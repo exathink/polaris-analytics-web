@@ -114,7 +114,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
                 },
                 {
                   key: "table",
-                  display: "Data",
+                  display: "Table",
                 },
               ]}
               initialValue={yAxisScale}
