@@ -2,10 +2,10 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
-import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
+import {DimensionThroughputDetailDashboard} from "./dimensionThroughputDetailDashboard";
 import { ThroughputView } from "./throughputView";
 
-export const ThroughputWidget = ({
+export const DimensionThroughputWidget = ({
   dimension,
   instanceKey,
   specsOnly,
@@ -62,6 +62,6 @@ export const ThroughputWidget = ({
     };
 
     const dimensionData = {key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults};
-    return <ThroughputDetailDashboard dimension={dimension} dimensionData={dimensionData} context={context} />;
+    return <DimensionThroughputDetailDashboard dimension={dimension} dimensionData={dimensionData} context={context} />;
   }
 };

@@ -11,7 +11,7 @@ import {
 import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {ResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/responseTimeWidget";
-import {ThroughputWidget} from "../../shared/widgets/work_items/throughput/throughputWidget";
+import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -56,7 +56,7 @@ function WipDashboard({
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <ThroughputWidget
+            <DimensionThroughputWidget
               dimension={"team"}
               instanceKey={key}
               view={view}

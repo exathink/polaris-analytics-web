@@ -9,7 +9,7 @@ import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
-export function ThroughputDetailDashboard({
+export function DimensionThroughputDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
