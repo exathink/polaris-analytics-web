@@ -10,6 +10,7 @@ import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_ite
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
 import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
+import {ThroughputWidget} from "../../shared/widgets/work_items/throughput/throughputWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -41,11 +42,10 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <ThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
-              display={"throughputSummary"}
               context={context}
               specsOnly={true}
               days={flowAnalysisPeriod}
