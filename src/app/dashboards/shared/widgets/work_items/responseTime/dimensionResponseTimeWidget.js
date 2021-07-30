@@ -2,10 +2,10 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionFlowMetrics} from "../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../helpers/utility";
-import {ResponseTimeDetailDashboard} from "./responseTimeDetailDashboard";
+import {DimensionResponseTimeDetailDashboard} from "./dimensionResponseTimeDetailDashboard";
 import {ResponseTimeView} from "./responseTimeView";
 
-export const ResponseTimeWidget = ({
+export const DimensionResponseTimeWidget = ({
   dimension,
   instanceKey,
   display,
@@ -64,6 +64,6 @@ export const ResponseTimeWidget = ({
     };
 
     const dimensionData = {key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults};
-    return <ResponseTimeDetailDashboard dimension={dimension} dimensionData={dimensionData} context={context} />;
+    return <DimensionResponseTimeDetailDashboard dimension={dimension} dimensionData={dimensionData} context={context} />;
   }
 };

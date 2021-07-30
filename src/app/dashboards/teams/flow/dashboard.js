@@ -10,7 +10,7 @@ import {
 } from "../../shared/widgets/work_items/wip";
 import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
-import {ResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/responseTimeWidget";
+import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
 import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 
 const dashboard_id = "dashboards.activity.teams.instance";
@@ -114,7 +114,7 @@ function WipDashboard({
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <ResponseTimeWidget
+            <DimensionResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
               display={"responseTimeSummary"}

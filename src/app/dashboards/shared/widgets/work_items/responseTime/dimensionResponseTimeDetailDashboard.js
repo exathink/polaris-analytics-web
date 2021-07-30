@@ -17,7 +17,7 @@ const metricMapping = {
   avgLatency: "latency",
 };
 
-export function ResponseTimeDetailDashboard({
+export function DimensionResponseTimeDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
