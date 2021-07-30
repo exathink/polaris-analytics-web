@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
@@ -11,6 +10,7 @@ import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/tre
 import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
 import {ThroughputWidget} from "../../shared/widgets/work_items/throughput/throughputWidget";
+import {ResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/responseTimeWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -98,7 +98,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <ResponseTimeWidget
               dimension={"project"}
               instanceKey={key}
               view={view}

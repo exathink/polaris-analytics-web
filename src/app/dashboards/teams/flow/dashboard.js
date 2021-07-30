@@ -117,6 +117,7 @@ function WipDashboard({
             <ResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
+              display={"responseTimeSummary"}
               view={view}
               context={context}
               specsOnly={specsOnly}

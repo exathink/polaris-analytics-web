@@ -8,6 +8,7 @@ import {ResponseTimeView} from "./responseTimeView";
 export const ResponseTimeWidget = ({
   dimension,
   instanceKey,
+  display,
   specsOnly,
   view,
   context,
@@ -49,7 +50,9 @@ export const ResponseTimeWidget = ({
   if (view === "primary") {
     return (
       <ResponseTimeView
+        display={display}
         cycleTimeTarget={cycleTimeTarget}
+        leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={cycleMetricsTrends}
       />
     );
