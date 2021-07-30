@@ -7,7 +7,6 @@ import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHiera
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget,
@@ -18,6 +17,8 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
+import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
+import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -58,13 +59,13 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="flow-metrics"
+          name="throughput-wip"
           title={"Throughput"}      
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
@@ -83,7 +84,7 @@ function WipDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline"
@@ -113,13 +114,13 @@ function WipDashboard({
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="response-time-wip"
           title={"Response Time"}       
           className={styles.responseTime}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
-            <DimensionFlowMetricsWidget
+            <DimensionResponseTimeWidget
               dimension={'project'}
               instanceKey={key}
               view={view}
@@ -139,7 +140,7 @@ function WipDashboard({
               latestCommit={latestCommit}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>

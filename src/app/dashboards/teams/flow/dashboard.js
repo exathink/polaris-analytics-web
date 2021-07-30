@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {TeamDashboard} from "../teamDashboard";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import styles from "./dashboard.module.css";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
@@ -11,6 +10,8 @@ import {
 } from "../../shared/widgets/work_items/wip";
 import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
+import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
+import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -48,18 +49,17 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h="15%">
         <DashboardWidget
-          name="flow-metrics"
+          name="flow-metrics-throughput"
           title={"Throughput"}
           w={1/3}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionThroughputWidget
               dimension={"team"}
               instanceKey={key}
               view={view}
-              display={"throughputSummary"}
               context={context}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
@@ -107,18 +107,18 @@ function WipDashboard({
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="flow-metrics-response-time"
           title={"Response Time"}
           w={1/3}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
-              view={view}
               display={"responseTimeSummary"}
+              view={view}
               context={context}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}

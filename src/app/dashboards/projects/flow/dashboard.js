@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
@@ -10,6 +9,8 @@ import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_ite
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
 import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
+import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
+import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -35,17 +36,16 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="flow-metrics"
+          name="throughput-flow"
           title={"Throughput"}
           className={styles.throughput}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
-              display={"throughputSummary"}
               context={context}
               specsOnly={true}
               days={flowAnalysisPeriod}
@@ -60,7 +60,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline"
@@ -92,13 +92,13 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="response-time-flow"
           title={"Response Time"}
           className={styles.leadAndCycleTime}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionResponseTimeWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
@@ -117,7 +117,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="traceability"
