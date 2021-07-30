@@ -7,7 +7,6 @@ import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHiera
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {DimensionFlowMetricsWidget} from "../../shared/widgets/work_items/closed/flowMetrics";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget,
@@ -18,6 +17,8 @@ import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
+import {ResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/responseTimeWidget";
+import {ThroughputWidget} from "../../shared/widgets/work_items/throughput/throughputWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -58,13 +59,13 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="flow-metrics"
+          name="throughput-wip"
           title={"Throughput"}      
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <ThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
@@ -113,13 +114,13 @@ function WipDashboard({
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="response-time-wip"
           title={"Response Time"}       
           className={styles.responseTime}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({view}) => (
-            <DimensionFlowMetricsWidget
+            <ResponseTimeWidget
               dimension={'project'}
               instanceKey={key}
               view={view}

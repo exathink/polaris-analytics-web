@@ -36,7 +36,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="flow-metrics"
+          name="throughput-flow"
           title={"Throughput"}
           className={styles.throughput}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
@@ -92,7 +92,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         />
 
         <DashboardWidget
-          name="flow-metrics"
+          name="response-time-flow"
           title={"Response Time"}
           className={styles.leadAndCycleTime}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
