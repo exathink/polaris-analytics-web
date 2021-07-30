@@ -379,6 +379,13 @@ export const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"
 export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
   const isDateWeekend = (date) => weekendDays.includes(date.day());
 
+  const noOfDays = endDate.diff(startDate, "days");
+  // we don't want to show weekend plotbands if timeline is too short and dates are weekend dates
+  // it will occupy the entire chart
+  if (noOfDays < 2 && isDateWeekend(startDate) && isDateWeekend(endDate)) {
+    return [];
+  }
+
   const result = isDateWeekend(startDate) ? [startDate] : [];
 
   let currentDate = startDate;
@@ -391,7 +398,7 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
   }
 
   if (isDateWeekend(endDate)) {
-    result.push(endDate)
+    result.push(endDate);
   }
 
   return result;
