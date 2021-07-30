@@ -1,9 +1,9 @@
 import React from 'react';
 import {toMoment} from "../../../../../helpers/utility";
-import {getMeasurementTrendSeriesForMetrics} from "../../../../shared/views/measurementTrend/measurementTrendLineChart";
+import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTrend/measurementTrendLineChart";
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors} from "../../../../shared/config";
+import {Colors} from "../../../config";
 
 function fteEquivalent(measurementWindow) {
   switch (measurementWindow) {
@@ -18,7 +18,7 @@ function fteEquivalent(measurementWindow) {
 
 
 
-const EffortTrendsWithContributorDetailChart = Chart({
+const WorkBalanceTrendsWithContributorDetailChart = Chart({
   chartUpdateProps: props => props,
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
@@ -93,7 +93,8 @@ const EffortTrendsWithContributorDetailChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${showContributorDetail ? 'Active Days by Contributor ' : 'Effort Throughput'}`
+        text: `${showContributorDetail ? 'Active Days by Contributor ' : '<span>Effort<sub><em>out</em></sub></span>'}`,
+        useHTML: true
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
@@ -157,7 +158,7 @@ const EffortTrendsWithContributorDetailChart = Chart({
 });
 
 
-export const EffortTrendsChart = (
+export const WorkBalanceTrendsChart = (
   {
     capacityTrends,
     contributorDetail,
@@ -171,7 +172,7 @@ export const EffortTrendsChart = (
   }
 ) => (
 
-  <EffortTrendsWithContributorDetailChart {...{
+  <WorkBalanceTrendsWithContributorDetailChart {...{
     capacityTrends,
     contributorDetail,
     showContributorDetail,

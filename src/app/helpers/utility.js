@@ -376,21 +376,25 @@ export const DAYS = {
 
 export const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-function getRangeOfDates(start, end) {
-  const noOfDays = end.diff(start, "days");
-
-  const result = [start];
-  for (let index = 0; index < noOfDays + 1; index++) {
-    const temp = moment(result[index]).add(1, "days");
-    result.push(temp);
-  }
-  return result;
-}
-
 export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
-  const [firstDay, secondDay] = weekendDays;
+  const isDateWeekend = (date) => weekendDays.includes(date.day());
 
-  return getRangeOfDates(startDate, endDate).filter((date) => date.day() === firstDay || date.day() === secondDay);
+  const result = isDateWeekend(startDate) ? [startDate] : [];
+
+  let currentDate = startDate;
+  while (!currentDate.isSame(endDate, "day")) {
+    currentDate = moment(currentDate.toString()).add(1, "days");
+
+    if (isDateWeekend(currentDate)) {
+      result.push(currentDate);
+    }
+  }
+
+  if (isDateWeekend(endDate)) {
+    result.push(endDate)
+  }
+
+  return result;
 }
 
 /**

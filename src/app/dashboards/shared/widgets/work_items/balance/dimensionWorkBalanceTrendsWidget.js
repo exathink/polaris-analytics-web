@@ -2,12 +2,13 @@ import React from 'react';
 import {Loading} from "../../../../../components/graphql/loading";
 
 
-import {useQueryProjectCapacityTrends} from "./useQueryProjectCapacityTrends";
-import {ProjectCapacityTrendsView} from "./capacityTrendsView";
-import {ProjectCapacityTrendsDetailDashboard} from "./capacityTrendsDetailDashboard";
+import {useQueryDimensionWorkBalanceTrends} from "./useQueryDimensionWorkBalanceTrends";
+import {WorkBalanceTrendsView} from "./workBalanceTrendsView";
+import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDetailDashboard";
 
-export const ProjectEffortTrendsWidget = (
+export const DimensionWorkBalanceTrendsWidget = (
   {
+    dimension,
     instanceKey,
     view,
     context,
@@ -26,8 +27,9 @@ export const ProjectEffortTrendsWidget = (
     includeSubTasks
   }) => {
 
-  const {loading, error, data} = useQueryProjectCapacityTrends(
+  const {loading, error, data} = useQueryDimensionWorkBalanceTrends(
     {
+      dimension: dimension,
       instanceKey: instanceKey,
       days: days,
       measurementWindow: measurementWindow,
@@ -38,10 +40,11 @@ export const ProjectEffortTrendsWidget = (
   );
   if (loading) return <Loading/>;
   if (error) return null;
-  const {capacityTrends, contributorDetail, cycleMetricsTrends} = data['project'];
+  const {capacityTrends, contributorDetail, cycleMetricsTrends} = data[dimension];
   return (
     view !== 'detail' ?
-      <ProjectCapacityTrendsView
+
+      <WorkBalanceTrendsView
         capacityTrends={capacityTrends}
         contributorDetail={contributorDetail}
         cycleMetricsTrends={cycleMetricsTrends}
@@ -55,8 +58,8 @@ export const ProjectEffortTrendsWidget = (
         view={view}
       />
       :
-      <ProjectCapacityTrendsDetailDashboard
-        {...{instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks}}
+      <DimensionWorkBalanceTrendsDetailDashboard
+        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks}}
       />
   )
 }

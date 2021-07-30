@@ -1,8 +1,9 @@
 import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectCapacityTrends(
+export function useQueryDimensionWorkBalanceTrends(
   {
+    dimension,
     instanceKey,
     before,
     days,
@@ -14,7 +15,7 @@ export function useQueryProjectCapacityTrends(
   }) {
   return useQuery(
     gql`
-     query projectCapacityTrends(
+     query ${dimension}CapacityTrends(
           $key: String!, 
           $days: Int!,
           $measurementWindow: Int!,
@@ -24,7 +25,7 @@ export function useQueryProjectCapacityTrends(
           $includeSubTasks: Boolean,
           $referenceString: String,
           ) {
-      project(
+      ${dimension}(
             key: $key, 
             interfaces: [CapacityTrends, CycleMetricsTrends],
              capacityTrendsArgs: {
