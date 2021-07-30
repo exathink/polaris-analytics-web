@@ -84,7 +84,7 @@ function WipDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline"
@@ -140,7 +140,7 @@ function WipDashboard({
               latestCommit={latestCommit}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>

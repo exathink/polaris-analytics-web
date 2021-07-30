@@ -60,7 +60,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="pipeline"
@@ -117,7 +117,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="traceability"
