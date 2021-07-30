@@ -50,6 +50,7 @@ function DimensionWorkBalanceTrendsDashboard({
               days={flowAnalysisPeriod}
               measurementWindow={7}
               samplingFrequency={7}
+              showContributorDetail={true}
             />
           )}
           showDetail={false}
