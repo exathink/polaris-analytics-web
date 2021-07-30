@@ -47,7 +47,7 @@ export function ThroughputDetailDashboard({
           className={styles.throughputMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget
-              dimension={"team"}
+              dimension={dimension}
               instanceKey={key}
               view={view}
               display={"throughputDetail"}
@@ -78,7 +78,7 @@ export function ThroughputDetailDashboard({
           className={styles.cadence}
           render={({view}) => (
             <DimensionFlowMetricsWidget
-              dimension={"team"}
+              dimension={dimension}
               instanceKey={key}
               view={view}
               display={"cadenceDetail"}
@@ -128,7 +128,7 @@ export function ThroughputDetailDashboard({
           className={chartToggle === "trend" ? styles.throughputDetail : styles.throughputDetailHidden}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
-              dimension={"team"}
+              dimension={dimension}
               instanceKey={key}
               days={daysRange}
               measurementWindow={1}

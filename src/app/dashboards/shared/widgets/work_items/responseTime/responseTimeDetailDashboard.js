@@ -57,7 +57,7 @@ export function ResponseTimeDetailDashboard({
           className={styles.responseTimeMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget
-              dimension={"team"}
+              dimension={dimension}
               instanceKey={key}
               view={view}
               display={"responseTimeDetail"}
@@ -112,7 +112,7 @@ export function ResponseTimeDetailDashboard({
           className={chartToggle === "trend" ? styles.responseTimeDetail : styles.responseTimeDetailHidden}
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
-              dimension={"team"}
+              dimension={dimension}
               instanceKey={key}
               measurementWindow={7}
               days={daysRange}
