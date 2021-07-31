@@ -397,10 +397,6 @@ export function getWeekendDaysFromRange(startDate, endDate, weekendDays) {
     }
   }
 
-  if (isDateWeekend(endDate)) {
-    result.push(endDate);
-  }
-
   return result;
 }
 
@@ -431,7 +427,10 @@ export function getWeekendPlotBands(startDate, endDate, options = {}) {
             ...chunk(removeItemAtIndex(weekendDates, 0), 2),
           ]
       : [];
-  return weekendDatePairs.map(([day1, day2]) => {
+  
+  // its possible to have weekendDate pairs where day2 is undefined only day1 is available
+  // in those cases we can add next weekend day
+  return weekendDatePairs.map(([day1, day2 = moment(day1.toString()).add(1, "days")]) => {
     return {
       color: color ?? "lightgrey",
       from: day1?.startOf("day").valueOf(),
