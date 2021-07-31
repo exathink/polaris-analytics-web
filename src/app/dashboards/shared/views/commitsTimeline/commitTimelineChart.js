@@ -8,7 +8,7 @@ import {
   WorkItemStateTypes,
   WorkItemTypeDisplayName
 } from "../../config";
-import {capitalizeFirstLetter, daysFromNow, elide, getMinMaxDates, getMinMaxDatesFromRange, getWeekendPlotBands, toMoment} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, daysFromNow, elide, getMinMaxDatesFromRange, getWeekendPlotBands, toMoment} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
@@ -176,7 +176,7 @@ export const CommitsTimelineChart = Chart({
         startWindow = moment(endWindow).subtract(days, 'days');
       }
 
-      const [startDate, endDate] = days ? getMinMaxDates(days) : getMinMaxDatesFromRange(commits.map(c => toMoment(c.commitDate)));
+      const [startDate, endDate] = getMinMaxDatesFromRange(commits.map(c => toMoment(c.commitDate)));
       return {
         chart: {
           type: 'bubble',
