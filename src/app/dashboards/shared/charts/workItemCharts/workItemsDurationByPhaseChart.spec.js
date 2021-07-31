@@ -164,7 +164,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           earliestCommit: "2020-12-05T21:24:07",
           latestCommit: "2020-12-09T21:28:26",
           commitCount: 15,
-          effort: 1.16666666666667,
+          effort: 1.17,
           duration: 4.00299768518519,
           leadTime: 18.00,
           cycleTime: 17.00
@@ -300,7 +300,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
           displayId,
           workItemType,
           state,
-          workItemStateDetails: {duration},
+          workItemStateDetails: {duration, effort},
         } = workItemFixture;
 
         // expected values
@@ -323,6 +323,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
             [`Commits: `, `${formatNumber(commitCount)}`],
             [`Latest Commit: `, `${latestCommitDisplay}`],
             [`Implementation: `, `${formatNumber(duration)} days`],
+            [`Effort: `, `${formatNumber(effort)} dev-days`],
             ["",""]
           ],
         });
