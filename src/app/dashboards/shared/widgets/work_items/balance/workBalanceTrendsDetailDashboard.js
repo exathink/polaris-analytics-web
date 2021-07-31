@@ -25,12 +25,14 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
     targetPercentile,
     target,
     asStatistic,
+    showContributorDetail: parentShowContributorDetail = false,
+    showEffort: parentShowEffort = false,
     pollInterval,
     includeSubTasks
   }) => {
 
-  const [showContributorDetail, setShowContributorDetail] = useState(true);
-  const [showEffort, setShowEffort] = useState(true);
+  const [showContributorDetail, setShowContributorDetail] = useState(parentShowContributorDetail);
+  const [showEffort, setShowEffort] = useState(parentShowEffort);
 
   const [
     [daysRange, setDaysRange],

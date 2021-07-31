@@ -43,7 +43,7 @@ export function DimensionThroughputDetailDashboard({
         <DashboardWidget
           name="flow-metrics"
           title={`Throughput`}
-          subtitle={`Last ${wipAnalysisPeriod} Days`}
+          subtitle={`Specs, Last ${daysRange} Days`}
           className={styles.throughputMetrics}
           render={({view}) => (
             <DimensionFlowMetricsWidget

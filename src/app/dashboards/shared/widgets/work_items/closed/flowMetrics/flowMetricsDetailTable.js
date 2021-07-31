@@ -166,11 +166,11 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       ...renderState
     },
     {
-      title: "Delivery Latency",
-      dataIndex: "latency",
-      key: "latency",
+      title: "Implementation",
+      dataIndex: "duration",
+      key: "duration",
       width: "5%",
-      sorter: (a, b) => a.latency - b.latency,
+      sorter: (a, b) => a.duration - b.duration,
       ...renderState
     },
     {
@@ -182,11 +182,11 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       ...renderState
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
+      title: "Delivery",
+      dataIndex: "latency",
+      key: "latency",
       width: "5%",
-      sorter: (a, b) => a.duration - b.duration,
+      sorter: (a, b) => a.latency - b.latency,
       ...renderState
     },
     {

@@ -59,7 +59,7 @@ export const DimensionWorkBalanceTrendsWidget = (
       />
       :
       <DimensionWorkBalanceTrendsDetailDashboard
-        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks}}
+        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks, showContributorDetail, showEffort}}
       />
   )
 }

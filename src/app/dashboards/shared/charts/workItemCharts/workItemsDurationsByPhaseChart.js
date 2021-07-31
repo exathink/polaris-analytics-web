@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, pick, getNumber} from "../../../../helpers/utility";
 import {PlotLines} from "./chartParts";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
@@ -194,6 +194,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
             timeInStateDisplay,
             latestCommitDisplay,
             duration,
+            effort,
             commitLatency,
             workItemStateDetails,
           } = this.point.workItem;
@@ -217,6 +218,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                     : ["", ""],
                   latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
                   duration != null ? [`Implementation: `, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  effort != null ? [`Effort: `, `${getNumber(effort, intl)} dev-days` ] : ["", ""],
                   stateType !== 'closed' && commitLatency != null ? [`Latency: `, `${intl.formatNumber(commitLatency)} days`] : ["", ""],
                 ],
           });

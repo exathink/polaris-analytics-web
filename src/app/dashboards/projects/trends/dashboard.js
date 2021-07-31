@@ -150,6 +150,7 @@ function TrendsDashboard({
               latestCommit={latestCommit}
               target={0.9}
               showEffort={true}
+              showContributorDetail={false}
               chartConfig={{totalEffortDisplayType: "areaspline"}}
               includeSubTasks={includeSubTasksFlowMetrics}
             />

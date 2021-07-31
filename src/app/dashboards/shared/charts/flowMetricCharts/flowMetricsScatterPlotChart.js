@@ -232,10 +232,9 @@ export const FlowMetricsScatterPlotChart = Chart({
             ["Backlog Time: ", backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : "N/A"],
             ["Cycle Time: ", cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : "N/A"],
 
-            ["Delivery Latency: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
-
-            ["Duration: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
+            ["Implementation: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
             ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} dev-days` : "N/A"],
+            ["Delivery: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
             ["Authors: ", specsOnly ? `${intl.formatNumber(authorCount)}` : "N/A"],
           ];
 

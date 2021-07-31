@@ -52,7 +52,8 @@ export function DimensionResponseTimeDetailDashboard({
       >
         <DashboardWidget
           name="flow-metrics"
-          title={`Spec Response Time`}
+          title={`Response Time`}
+          subtitle={`Specs, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
           className={styles.responseTimeMetrics}
           render={({view}) => (
