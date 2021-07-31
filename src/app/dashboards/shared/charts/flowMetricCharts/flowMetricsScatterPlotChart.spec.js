@@ -241,11 +241,9 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`------`, ``],
             ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
             ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
-
-            ["Delivery Latency: ", `${formatNumber(latency)} days`],
-
-            ["Duration: ", expect.stringMatching(`days`)],
+            ["Implementation: ", expect.stringMatching(`days`)],
             ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Delivery: ", `${formatNumber(latency)} days`],
             ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
@@ -425,10 +423,9 @@ describe("FlowMetricsScatterPlotChart", () => {
             ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
             ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
 
-            ["Delivery Latency: ", `${formatNumber(latency)} days`],
-
-            ["Duration: ", expect.stringMatching(`days`)],
+            ["Implementation: ", expect.stringMatching(`days`)],
             ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Delivery: ", `${formatNumber(latency)} days`],
             ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
@@ -580,9 +577,9 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`------`, ``],
             ["Lead Time: ", `${formatNumber(leadTime)} days`],
             ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
-            ["Delivery Latency: ", `${formatNumber(latency)} days`],
-            ["Duration: ", expect.stringMatching(`days`)],
+            ["Implementation: ", expect.stringMatching(`days`)],
             ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Delivery: ", `${formatNumber(latency)} days`],
             ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
@@ -838,9 +835,9 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`------`, ``],
             ["Lead Time: ", `${formatNumber(leadTime)} days`],
             ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
-            ["Delivery Latency: ", `${formatNumber(latency)} days`],
-            ["Duration: ", expect.stringMatching(`days`)],
+            ["Implementation: ", expect.stringMatching(`days`)],
             ["Effort: ", expect.stringMatching(`dev-days`)],
+            ["Delivery: ", `${formatNumber(latency)} days`],
             ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
