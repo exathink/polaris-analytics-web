@@ -56,11 +56,11 @@ export function useQueryOrganizationTeams({organizationKey, days, measurementWin
     service: analytics_service,
     variables: {
       organizationKey: organizationKey,
-      days: days,
-      measurementWindow: measurementWindow,
-      samplingFrequency: samplingFrequency,
-      specsOnly: specsOnly,
-      includeSubTasks: includeSubTasks
+      days: days ||30,
+      measurementWindow: measurementWindow || 30,
+      samplingFrequency: samplingFrequency || 30,
+      specsOnly: specsOnly || false,
+      includeSubTasks: includeSubTasks || false
     },
     errorPolicy: "all",
   });
