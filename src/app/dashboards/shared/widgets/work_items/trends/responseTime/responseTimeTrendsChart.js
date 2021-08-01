@@ -126,10 +126,9 @@ export const ResponseTimeTrendsChart = (
                   getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
-                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} work items`],
+                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly? 'Specs' : 'Cards'}`],
                   ['Earliest Closed: ', `${i18nDate(intl, measurement.earliestClosedDate)}`],
                   ['Latest Closed: ', `${i18nDate(intl, measurement.latestClosedDate)}`],
-                  ['No Cycle Time  : ', `${measurement.workItemsWithNullCycleTime} work items`],
                 ]
             }
           )
