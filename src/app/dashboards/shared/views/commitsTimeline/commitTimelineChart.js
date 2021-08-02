@@ -281,20 +281,19 @@ export const CommitsTimelineChart = Chart({
             key: 'commits',
             id: 'commits',
             name: 'Commits',
-            cursor: view === 'detail'? 'auto' : 'pointer',
+            cursor: 'pointer',
             data: series_data.filter(point => point.commit.numParents <= 1),
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
             turboThreshold: 0,
             allowPointSelect: true,
             color: Colors.Commits.nonMerge
-
           },
           {
             key: 'merges',
             id: 'merges',
             name: 'Merges',
-            cursor: view === 'detail'? 'auto' : 'pointer',
+            cursor: 'pointer',
             data: series_data.filter(point => point.commit.numParents > 1),
             minSize: bucketToBubbleSize[z_bucket_range.min],
             maxSize: bucketToBubbleSize[z_bucket_range.max],
