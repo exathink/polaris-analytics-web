@@ -253,10 +253,12 @@ export const WorkItemsEpicEffortChart = Chart({
                   context.navigate(WorkItems, workItem.displayId, workItem.workItemKey);
                 }
               } else {
-                const {workItems, epic} = event.point;
-                // split the key by colon if key belongs to deliveryCycles, to get workItemKey
-                const workItemKeys = workItems.map(x => x.key.split(":")[0]).concat(epic.key);
-                setChartPoints(workItemKeys);
+                if (setChartPoints) {
+                  const {workItems, epic} = event.point;
+                  // split the key by colon if key belongs to deliveryCycles, to get workItemKey
+                  const workItemKeys = workItems.map(x => x.key.split(":")[0]).concat(epic.key);
+                  setChartPoints(workItemKeys);
+                }
               }
             },
           },
