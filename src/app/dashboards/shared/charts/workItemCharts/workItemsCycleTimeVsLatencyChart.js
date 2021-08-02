@@ -46,7 +46,7 @@ function getSeriesByStateType(workItems) {
             }
           )
         ),
-
+        cursor: 'pointer'
       }
     )
   );
@@ -83,7 +83,7 @@ function getSeriesByState(workItems, view) {
             }
           )
         ),
-
+        cursor: 'pointer'
       }
     )
   );
