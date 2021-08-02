@@ -10,18 +10,46 @@ import {GroupingSelector} from "../../../shared/components/groupingSelector/grou
 import {Flex} from "reflexbox";
 import styles from "./projectResponseTimeSLASettings.module.css";
 import {TargetSliders} from "./targetSliders";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../work_items/cardInspector/cardInspectorUtils";
+import {pick} from "../../../../helpers/utility";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
 export const ProjectResponseTimeSLASettingsView = ({
+  data,
+  dimension,
   instanceKey,
   context,
-  model,
   days,
   targetMetrics,
   defectsOnly,
   specsOnly,
 }) => {
+  const model = React.useMemo(
+    () =>
+      data[dimension].workItemDeliveryCycles.edges.map((edge) =>
+        pick(
+          edge.node,
+          "id",
+          "name",
+          "key",
+          "displayId",
+          "workItemKey",
+          "workItemType",
+          "state",
+          "startDate",
+          "endDate",
+          "leadTime",
+          "cycleTime",
+          "latency",
+          "duration",
+          "effort",
+          "authorCount"
+        )
+      ),
+    [data, dimension]
+  );
+
   const initialState = {
     selectedMetric: METRICS.LEAD_TIME,
     leadTime: {
@@ -74,6 +102,8 @@ export const ProjectResponseTimeSLASettingsView = ({
   const targetConfidence = selectedMetric === "leadTime" ? leadTime.confidence : cycleTime.confidence;
 
   const sliderProps = {...state, dispatch};
+
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   function handleSaveClick() {
     const payload = {
@@ -176,6 +206,18 @@ export const ProjectResponseTimeSLASettingsView = ({
         defectsOnly={defectsOnly}
         specsOnly={specsOnly}
         yAxisScale={"logarithmic"}
+        onSelectionChange={(workItems) => {
+          if (workItems.length === 1) {
+            setShowPanel(true);
+            setWorkItemKey(workItems[0].workItemKey);
+          }
+        }}
+      />
+      <CardInspectorWithDrawer
+        workItemKey={workItemKey}
+        showPanel={showPanel}
+        setShowPanel={setShowPanel}
+        context={context}
       />
     </React.Fragment>
   );
