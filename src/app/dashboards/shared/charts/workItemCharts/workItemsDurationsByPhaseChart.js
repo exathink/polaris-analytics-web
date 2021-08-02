@@ -96,6 +96,7 @@ function getSeriesGroupedByState(workItems, stateType) {
         minPointLength: 3,
         allowPointSelect: true,
         data: workItemPoints,
+        cursor: 'pointer'
       };
     });
 }
@@ -126,6 +127,7 @@ function getSeriesGroupedByWorkItemType(workItems, stateType) {
         allowPointSelect: true,
         // Since each workItem can yield multiple points, we flatMap to give a valid series array
         data: workItemPoints,
+        cursor: 'pointer'
       };
     });
 }
