@@ -22,6 +22,7 @@ function getSeriesName(seriesName) {
   return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
 }
 
+const all = ["all"];
 export const ResponseTimeTrendsDetailDashboard = (
   {
     dimension,
@@ -89,7 +90,7 @@ export const ResponseTimeTrendsDetailDashboard = (
                 cycleTimeTarget={cycleTimeTarget}
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
-                defaultSeries={["all"]}
+                defaultSeries={all}
                 includeSubTasks={includeSubTasks}
               />
           }
