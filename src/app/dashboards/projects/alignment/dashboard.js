@@ -5,10 +5,12 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 import styles from "./dashboard.module.css";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
-import {Flex} from "reflexbox";
+import { Box, Flex } from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import { DimensionFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics";
 import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip";
+import { ProjectTraceabilityTrendsWidget } from "../../shared/widgets/commits/traceability";
+import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
@@ -34,7 +36,12 @@ function ValueDashboard({
   const [closedWithinDays, setClosedWithinDays] = React.useState(flowAnalysisPeriod);
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.valueDashboard} gridLayout={true}>
-      <DashboardRow h={"15%"}>
+      <div className={styles.rangeSlider}>
+              <DaysRangeSlider initialDays={closedWithinDays} setDaysRange={setClosedWithinDays} range={SIX_MONTHS} />
+      </div>
+      <DashboardRow
+        h={"15%"}
+      >
         <DashboardWidget
           name="flow-metrics"
           title={"Throughput"}
