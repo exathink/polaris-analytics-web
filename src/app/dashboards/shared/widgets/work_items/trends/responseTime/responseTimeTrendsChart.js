@@ -70,18 +70,21 @@ export const ResponseTimeTrendsChart = (
     defaultSeries,
     specsOnly,
     view
-  }) => (
-  <MeasurementTrendLineChart
+  }) => {
+  
+  const metrics = React.useMemo(() => [
+    {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
+    {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
+
+    {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
+    {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
+    {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
+
+  ], [defaultSeries]);
+  
+  return <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
-    metrics={[
-      {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
-      {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
-
-      {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
-      {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
-      {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
-
-    ]}
+    metrics={metrics}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
@@ -136,6 +139,6 @@ export const ResponseTimeTrendsChart = (
       }
     }}
   />
-)
+  }
 
 

@@ -53,6 +53,7 @@ export function getWorkItemCommitEvents(workItem) {
       timelineEvent: timelineEvent,
       workItem: workItem,
       eventType: "Commit",
+      cursor: 'pointer'
     };
   });
 }
@@ -78,6 +79,7 @@ export function getWorkItemPullRequestEvents(workItem) {
         timelineEvent: pullRequest,
         workItem: workItem,
         eventType: "PullRequestCreated",
+        cursor: 'pointer'
       },
       ...(pullRequest.endDate != null
         ? [
@@ -92,6 +94,7 @@ export function getWorkItemPullRequestEvents(workItem) {
               timelineEvent: pullRequest,
               workItem: workItem,
               eventType: "PullRequestCompleted",
+              cursor: 'pointer'
             },
           ]
         : []),
@@ -267,6 +270,7 @@ export const WorkItemEventsTimelineChart = Chart({
           turboThreshold: 0,
           allowPointSelect: true,
           animation: false,
+          cursor: 'pointer'
         },
       ],
       legend: {

@@ -55,6 +55,7 @@ const initSeries = props => {
         data: seriesData,
         visible: level_partition.visible,
         zMin: 1,
+        cursor: "pointer"
       }
     )
   });

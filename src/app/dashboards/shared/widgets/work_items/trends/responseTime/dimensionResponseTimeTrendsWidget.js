@@ -50,11 +50,12 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
     logGraphQlError('DimensionResponseTimeTrendsWidget.useQueryDimensionFlowMetricsTrends', error);
     return null;
   }
-  const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
+  
   return (
     view === 'primary' ?
       <ResponseTimeTrendsView
-        flowMetricsTrends={flowMetricsTrends}
+        data={data}
+        dimension={dimension}
         targetPercentile={targetPercentile}
         leadTimeTarget={leadTimeTarget}
         cycleTimeTarget={cycleTimeTarget}

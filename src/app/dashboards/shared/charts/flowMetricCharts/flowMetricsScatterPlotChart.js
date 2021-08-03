@@ -151,6 +151,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         })),
         turboThreshold: 0,
         allowPointSelect: true,
+        cursor: 'pointer'
       }));
     return {
       chart: {

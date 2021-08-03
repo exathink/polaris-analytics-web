@@ -141,7 +141,8 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
         (m1, m2) => m1.x - m2.x
       ),
       stacking: metric.stacked ? 'normal' : null,
-      color: metric.color
+      color: metric.color,
+      cursor: 'pointer'
     })
   );
   return series;
