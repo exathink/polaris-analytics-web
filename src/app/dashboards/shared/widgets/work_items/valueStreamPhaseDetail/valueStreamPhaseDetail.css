@@ -1,24 +1,25 @@
 .workItemStateDetailsControlWrapper {
     display: grid;
-    grid-template-columns: 33% 32% 35%;
-    grid-template-rows: 100%;
     gap: 0.5rem;
     grid-template-areas:
-    "leftControls middleControls rightControls";
+    "leftControls phaseSelector middleControls teamSelector rightControls";
     margin-bottom: 5px;
     width: 95%;
 }
 
 .leftControls {
+    grid-area: leftControls;
     display: flex;
     justify-content: flex-start;
 
 }
 .phaseSelector {
+    grid-area: phaseSelector;
     display: flex;
     justify-content: center;
 }
 .rightControls {
+    grid-area: rightControls;
     display: flex;
     justify-content: flex-end;
 }
@@ -35,8 +36,10 @@
     width: 175px;
 }
 
-
-
+.teamSelector{
+    grid-area: teamSelectorx;
+    width: 175px;
+}
 
 
 

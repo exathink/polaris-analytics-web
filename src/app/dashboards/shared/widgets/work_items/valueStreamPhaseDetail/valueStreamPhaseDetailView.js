@@ -32,6 +32,7 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
+  const [selectedTeam, setSelectedTeam] = React.useState("All");
 
   const filteredWorkItemsBySource = React.useMemo(
     () =>
@@ -51,6 +52,27 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
           {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
+            </Option>
+          ))}
+        </Select>
+      </div>
+    );
+  }
+
+  const uniqueTeams = ["All", ...new Set(workItems.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+
+  function handleTeamChange(index) {
+    setSelectedTeam(uniqueTeams[index]);
+  }
+
+  function selectTeamDropdown() {
+    return (
+      <div data-testid="pipeline-state-details-team-dropdown" className={"control"}>
+        <span className="controlLabel">Team</span>
+        <Select defaultValue={0} onChange={handleTeamChange} className={"teamSelector"}>
+          {uniqueTeams.map((teamName, index) => (
+            <Option key={teamName} value={index}>
+              {teamName}
             </Option>
           ))}
         </Select>
@@ -79,8 +101,22 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
   );
   const [selectedGrouping, setSelectedGrouping] = useState("state");
 
+  const candidateWorkItems = React.useMemo(() => {
+    if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
+      return workItemsByStateType[selectedStateType].filter((w) => {
+        if (selectedTeam === "All") {
+          return true;
+        } else {
+          const _teams = w.teamNodeRefs.map((t) => t.teamName);
+          return _teams.includes(selectedTeam);
+        }
+      });
+    } else {
+      return [];
+    }
+  }, [selectedStateType, workItemsByStateType, selectedTeam]);
+
   if (selectedStateType != null) {
-    const candidateWorkItems = workItemsByStateType[selectedStateType] || [];
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
       <VizRow h={1}>
@@ -111,6 +147,9 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
                 initialValue={selectedStateType}
                 onGroupingChanged={setSelectedStateType}
               />
+            </div>
+            <div className="selectTeam">
+              {selectTeamDropdown()}
             </div>
             <div className={"rightControls"}>
               <GroupingSelector
