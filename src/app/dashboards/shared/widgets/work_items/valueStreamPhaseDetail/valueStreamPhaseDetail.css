@@ -2,26 +2,24 @@
     display: grid;
     gap: 0.5rem;
     grid-template-areas:
-    "leftControls phaseSelector middleControls teamSelector rightControls";
+    "leftControls phaseSelector teamSelector rightControls";
     margin-bottom: 5px;
     width: 95%;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .leftControls {
     grid-area: leftControls;
     display: flex;
     justify-content: flex-start;
-
+    align-items: center;
 }
 .phaseSelector {
     grid-area: phaseSelector;
-    display: flex;
-    justify-content: center;
 }
 .rightControls {
     grid-area: rightControls;
-    display: flex;
-    justify-content: flex-end;
 }
 
 .control {
