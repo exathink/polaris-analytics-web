@@ -24,11 +24,11 @@ export const ThroughputView = ({
         <ContributorCount contributorCount={contributorCount} />
       </VizItem>
       <VizItem w={0.2}>
-        <Volume currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+        <Volume normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
       </VizItem>
 
       <VizItem w={0.3}>
-        <EffortOUT currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+        <EffortOUT normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
       </VizItem>
 
       <VizItem w={0.3}>

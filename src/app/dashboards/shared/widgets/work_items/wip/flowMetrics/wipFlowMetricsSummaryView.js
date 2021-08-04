@@ -93,7 +93,7 @@ const CommonWipBoardSummaryView = ({
           */}
           <LatestCommit latestCommit={latestCommit}/>
           <AvgLatency
-            title={'Latency'}
+            title={<span>Commit Latency</span>}
             currentMeasurement={pipelineCycleMetrics}
             targetPercentile={cycleTimeTargetPercentile}
             target={cycleTimeTarget}

@@ -122,14 +122,15 @@ export const ResponseTime = ({title, info, asCard, currentMeasurement, previousM
 );
 
 
-export const Volume = ({title, asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, onClick, showHighlighted}) => {
+export const Volume = ({title, asCard, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, onClick, showHighlighted}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
   return <FlowStatistic
-    title={title || "Volume"}
+    title={title || <span>Volume {normalized ? <sup><em>pc</em></sup> : ''}</span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
+    valueRender={value => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={specsOnly ? 'Specs' : 'Cards'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -518,13 +519,14 @@ export const ContributorCount = ({title, contributorCount}) => (
 //  Commit Days
 // ----
 
-export const ActiveDays = ({asCard, title, currentMeasurement, previousMeasurement, metric, uom, precision, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
+export const ActiveDays = ({asCard, title, normalized, contributorCount, currentMeasurement, previousMeasurement, metric, uom, precision, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
 
   return <FlowStatistic
-    title={title || <span>{displayName}<sup> {superScript} </sup></span>}
+    title={title}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
+    valueRender={(value) => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={uom}
     precision={precision || 2}
     good={TrendIndicator.isPositive}
@@ -590,12 +592,16 @@ export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement,
 
 
 
-export const EffortOUT = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => (
+
+
+export const EffortOUT = ({asCard, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
-    title={<span>{'Effort'}<sub>{'OUT'}</sub></span>}
+    title={<span>{'Effort'}<sub>{'OUT'}</sub> {normalized ? <sup><em>pc</em></sup> : ''}</span>}
+    normalized={normalized}
+    contributorCount={contributorCount}
     uom={'Dev-Days'}
     asCard={asCard}
     target={target}
