@@ -15,7 +15,16 @@ import {getWorkItemDurations} from "../clientSideFlowMetrics";
 
 const {Option} = Select;
 
-const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWorkItemScope, workItemScopeVisible=true, view, context}) => {
+const PhaseDetailView = ({
+  data,
+  dimension,
+  targetMetrics,
+  workItemScope,
+  setWorkItemScope,
+  workItemScopeVisible = true,
+  view,
+  context,
+}) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
@@ -28,7 +37,7 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
     {workItemsSourceKey: "all", workItemsSourceName: "All"},
     ...uniqWorkItemsSources,
   ];
-  
+
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
@@ -47,8 +56,13 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
   function selectDropdown() {
     return (
       <div data-testid="pipeline-state-details-view-dropdown" className={"control"}>
-        <span className="controlLabel">Workstream</span>
-        <Select  defaultValue={0} onChange={handleChange} getPopupContainer={(node) => node.parentNode} className={"workStreamSelector"}>
+        <div className="controlLabel">Workstream</div>
+        <Select
+          defaultValue={0}
+          onChange={handleChange}
+          getPopupContainer={(node) => node.parentNode}
+          className={"workStreamSelector"}
+        >
           {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
@@ -68,7 +82,7 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
   function selectTeamDropdown() {
     return (
       <div data-testid="pipeline-state-details-team-dropdown" className={"control"}>
-        <span className="controlLabel">Team</span>
+        <div className="controlLabel">Team</div>
         <Select defaultValue={0} onChange={handleTeamChange} className={"teamSelector"}>
           {uniqueTeams.map((teamName, index) => (
             <Option key={teamName} value={index}>
@@ -81,14 +95,18 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
   }
 
   /* Index the candidates by state type. These will be used to populate each tab */
-  const workItemsByStateType = React.useMemo(() => filteredWorkItemsBySource.reduce((workItemsByStateType, workItem) => {
-    if (workItemsByStateType[workItem.stateType] != null) {
-      workItemsByStateType[workItem.stateType].push(workItem);
-    } else {
-      workItemsByStateType[workItem.stateType] = [workItem];
-    }
-    return workItemsByStateType;
-  }, {}), [filteredWorkItemsBySource]);
+  const workItemsByStateType = React.useMemo(
+    () =>
+      filteredWorkItemsBySource.reduce((workItemsByStateType, workItem) => {
+        if (workItemsByStateType[workItem.stateType] != null) {
+          workItemsByStateType[workItem.stateType].push(workItem);
+        } else {
+          workItemsByStateType[workItem.stateType] = [workItem];
+        }
+        return workItemsByStateType;
+      }, {}),
+    [filteredWorkItemsBySource]
+  );
   const stateTypes = Object.keys(workItemsByStateType).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
   );
@@ -123,12 +141,12 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
         <VizItem w={1}>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"leftControls"}>
-              {selectDropdown()}
+              <div className="selectWorkItemSource">{selectDropdown()}</div>
+              <div className="selectTeam">{selectTeamDropdown()}</div>
             </div>
             <div className={"phaseSelector"}>
               <GroupingSelector
                 label={"Phase"}
-                className={"control"}
                 groupings={stateTypes.map((stateType) => ({
                   key: stateType,
                   display: WorkItemStateTypeDisplayName[stateType],
@@ -141,29 +159,29 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
                 onGroupingChanged={setSelectedStateType}
               />
             </div>
-            <div className="selectTeam">
-              {selectTeamDropdown()}
-            </div>
-            <div className="workItemScopeSelector">
-            {workItemScopeVisible && (
-                <WorkItemScopeSelector
-                  className={"specsAllSelector"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                />
-              )}
-            </div>
+
             <div className={"rightControls"}>
-              <GroupingSelector
-                label={"View"}
-                className={"groupCardsBySelector"}
-                groupings={["state", "type", "table"].map((grouping) => ({
-                  key: grouping,
-                  display: capitalizeFirstLetter(grouping),
-                }))}
-                initialValue={selectedGrouping}
-                onGroupingChanged={setSelectedGrouping}
-              />
+              <div className="workItemScopeSelector">
+                {workItemScopeVisible && (
+                  <WorkItemScopeSelector
+                    className={"specsAllSelector"}
+                    workItemScope={workItemScope}
+                    setWorkItemScope={setWorkItemScope}
+                  />
+                )}
+              </div>
+              <div className="groupView">
+                <GroupingSelector
+                  label={"View"}
+                  className={"groupCardsBySelector"}
+                  groupings={["state", "type", "table"].map((grouping) => ({
+                    key: grouping,
+                    display: capitalizeFirstLetter(grouping),
+                  }))}
+                  initialValue={selectedGrouping}
+                  onGroupingChanged={setSelectedGrouping}
+                />
+              </div>
             </div>
           </div>
           {selectedGrouping !== "table" && (
