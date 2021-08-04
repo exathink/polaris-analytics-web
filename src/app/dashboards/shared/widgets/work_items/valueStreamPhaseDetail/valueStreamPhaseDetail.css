@@ -2,7 +2,7 @@
     display: grid;
     gap: 0.5rem;
     grid-template-areas:
-    "leftControls phaseSelector teamSelector rightControls";
+    "leftControls teamSelector phaseSelector  workItemScopeSelector rightControls";
     margin-bottom: 5px;
     width: 95%;
     align-items: center;
@@ -31,13 +31,15 @@
 }
 
 .workStreamSelector {
-    width: 175px;
+    width: 150px;
 }
 
 .teamSelector{
     grid-area: teamSelectorx;
-    width: 175px;
+    width: 150px;
 }
 
-
+.workItemScopeSelector{
+    grid-area: workItemScopeSelector;
+}
 

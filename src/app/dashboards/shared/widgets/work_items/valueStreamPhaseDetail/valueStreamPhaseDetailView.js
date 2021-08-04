@@ -124,13 +124,6 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"leftControls"}>
               {selectDropdown()}
-              {workItemScopeVisible && (
-                <WorkItemScopeSelector
-                  className={"specsAllSelector"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                />
-              )}
             </div>
             <div className={"phaseSelector"}>
               <GroupingSelector
@@ -150,6 +143,15 @@ const PhaseDetailView = ({data, dimension, targetMetrics, workItemScope, setWork
             </div>
             <div className="selectTeam">
               {selectTeamDropdown()}
+            </div>
+            <div className="workItemScopeSelector">
+            {workItemScopeVisible && (
+                <WorkItemScopeSelector
+                  className={"specsAllSelector"}
+                  workItemScope={workItemScope}
+                  setWorkItemScope={setWorkItemScope}
+                />
+              )}
             </div>
             <div className={"rightControls"}>
               <GroupingSelector
