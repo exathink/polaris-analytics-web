@@ -25,7 +25,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useOrgTeamsTableColumns() {
+export function useOrgTeamsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -33,20 +33,20 @@ export function useOrgTeamsTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "15%",
-      ...nameSearchState,
+      width: "10%",
+      ...nameSearchState
     },
     {
-      title: <span>Contributors<sup> Active</sup></span>,
-
+      title: <span>Active Contributors</span>,
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "6%",
-    },
+      width: "8%"
+    }
+    ,
     {
       title: (
         <span>
-          Throughput <sup>Last 14 Days</sup>
+          Throughput <sup>Last {measurementWindow} Days</sup>
         </span>
       ),
 
@@ -54,7 +54,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Volume <sub> Specs</sub>
+              Volume<sup>pc</sup><br/><sub>Specs</sub>
             </span>
           ),
           dataIndex: "volume",
@@ -65,7 +65,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Effort<sup>Out</sup> <sub> Dev-Days</sub>
+              Effort<sub><em>Out</em></sub> <sup>pc</sup><br /><sub>Dev-Days</sub>
             </span>
           ),
           dataIndex: "effortOut",
@@ -78,7 +78,7 @@ export function useOrgTeamsTableColumns() {
     {
       title: (
         <span>
-          Response Time <sup>Last 14 Days</sup>
+          Response Time <sup>Last {measurementWindow} Days</sup>
         </span>
       ),
 
@@ -86,7 +86,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Cycle Time <sup>Avg</sup> <sub> Days</sub>
+              Cycle Time <sup>Avg</sup> <br /><sub> Days</sub>
             </span>
           ),
           dataIndex: "cycleTime",
@@ -97,7 +97,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Effort <sup>Avg</sup> <sub> Dev-Days</sub>
+              Effort <sup>Avg</sup> <br /><sub> Dev-Days</sub>
             </span>
           ),
           dataIndex: "effort",
@@ -108,7 +108,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Implementation <sup>Avg</sup> <sub> Days</sub>
+              Implementation <sup>Avg</sup> <br /><sub> Days</sub>
             </span>
           ),
           dataIndex: "implementation",
@@ -119,7 +119,7 @@ export function useOrgTeamsTableColumns() {
         {
           title: (
             <span>
-              Delivery <sup>Avg</sup> <sub> Days</sub>
+              Delivery <sup>Avg</sup> <br /><sub> Days</sub>
             </span>
           ),
           dataIndex: "delivery",
@@ -172,8 +172,8 @@ function getTransformedData(tableData, intl) {
           implementation: getNumber(currentCycleMetrics.avgDuration, intl),
           effort: getNumber(currentCycleMetrics.avgEffort, intl),
           delivery: getNumber(currentCycleMetrics.avgLatency, intl),
-          volume: currentCycleMetrics.workItemsInScope,
-          effortOut: getNumber(currentCycleMetrics.totalEffort, intl)
+          volume: getNumber(currentCycleMetrics.workItemsInScope/(team.contributorCount||1), intl),
+          effortOut: getNumber(currentCycleMetrics.totalEffort/(team.contributorCount||1), intl)
         }
       )
     }
@@ -181,9 +181,9 @@ function getTransformedData(tableData, intl) {
 }
 
 
-export const OrgTeamsTable = injectIntl(({tableData, organizationKey, intl}) => {
+export const OrgTeamsTable = injectIntl(({tableData, days, measurementWindow, organizationKey, intl}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgTeamsTableColumns();
+  const columns = useOrgTeamsTableColumns(measurementWindow);
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,

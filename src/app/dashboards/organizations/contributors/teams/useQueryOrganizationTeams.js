@@ -1,5 +1,6 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
+import {getReferenceString} from "../../../../helpers/utility";
 
 export const GET_ORGANIZATION_TEAMS_QUERY = gql`
   query getOrganizationTeamsInfo(
@@ -9,6 +10,7 @@ export const GET_ORGANIZATION_TEAMS_QUERY = gql`
       $samplingFrequency: Int!,
       $specsOnly: Boolean!,
       $includeSubTasks: Boolean!, 
+      $referenceString: String!
   ) {
     organization(key: $organizationKey) {
       teams (interfaces: [ContributorCount, CommitSummary, CycleMetricsTrends], cycleMetricsTrendsArgs: {
@@ -25,8 +27,10 @@ export const GET_ORGANIZATION_TEAMS_QUERY = gql`
               total_effort
       ]
       specsOnly:$specsOnly,
-      includeSubTasks: $includeSubTasks
-      }){
+      includeSubTasks: $includeSubTasks,
+      },
+      referenceString: $referenceString
+      ){
         edges {
           node {
             name
@@ -51,7 +55,7 @@ export const GET_ORGANIZATION_TEAMS_QUERY = gql`
   }
 `;
 
-export function useQueryOrganizationTeams({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}) {
+export function useQueryOrganizationTeams({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks, latestCommit, latestWorkItemEvent}) {
   return useQuery(GET_ORGANIZATION_TEAMS_QUERY, {
     service: analytics_service,
     variables: {
@@ -60,7 +64,8 @@ export function useQueryOrganizationTeams({organizationKey, days, measurementWin
       measurementWindow: measurementWindow || 30,
       samplingFrequency: samplingFrequency || 30,
       specsOnly: specsOnly || false,
-      includeSubTasks: includeSubTasks || false
+      includeSubTasks: includeSubTasks || false,
+      referenceString: getReferenceString(latestCommit, latestWorkItemEvent)
     },
     errorPolicy: "all",
   });

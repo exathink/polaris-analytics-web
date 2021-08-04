@@ -4,14 +4,16 @@ import {logGraphQlError} from "../../../../components/graphql/utils";
 import {OrgTeamsTableView} from "./orgTeamsTableView";
 import {useQueryOrganizationTeams} from "./useQueryOrganizationTeams";
 
-export function OrgTeamsTableWidget({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}) {
+export function OrgTeamsTableWidget({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks, latestCommit, latestWorkItemEvent}) {
   const {loading, error, data} = useQueryOrganizationTeams({
     organizationKey,
     days,
     measurementWindow,
     samplingFrequency,
     specsOnly,
-    includeSubTasks
+    includeSubTasks,
+    latestCommit,
+    latestWorkItemEvent
   });
 
   if (loading) return <Loading />;
@@ -20,5 +22,5 @@ export function OrgTeamsTableWidget({organizationKey, days, measurementWindow, s
     return null;
   }
 
-  return <OrgTeamsTableView data={data} organizationKey={organizationKey}/>;
+  return <OrgTeamsTableView days={days} measurementWindow={measurementWindow} samplingFrequency={samplingFrequency} data={data} organizationKey={organizationKey}/>;
 }
