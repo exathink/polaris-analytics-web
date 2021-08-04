@@ -71,7 +71,7 @@ const CommonWipBoardSummaryView = ({
   viewerContext,
 }) => {
   return (
-    <div className={grid.fourColumns}>
+    <div className={styles.wipSummary}>
       <div className={grid.firstCol}>
         <Wip currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </div>
