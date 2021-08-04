@@ -2,7 +2,7 @@
     height: 89%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1.3fr;
-    grid-template-rows: auto 35% 47%;
+    grid-template-rows: minmax(100px, auto) 35% 47%;
     gap: 0.5rem;
     grid-template-areas: "throughput throughput throughput throughput pipeline pipeline pipeline pipeline leadAndCycleTime leadAndCycleTime leadAndCycleTime traceability"
     "volumeTrends volumeTrends volumeTrends volumeTrends pipelineFunnel pipelineFunnel pipelineFunnel pipelineFunnel responseTimeTrends responseTimeTrends responseTimeTrends responseTimeTrends"

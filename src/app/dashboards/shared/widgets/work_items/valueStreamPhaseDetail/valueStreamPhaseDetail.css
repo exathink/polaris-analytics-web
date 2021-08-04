@@ -1,30 +1,38 @@
 .workItemStateDetailsControlWrapper {
     display: grid;
-    grid-template-columns: 33% 32% 35%;
-    grid-template-rows: 100%;
     gap: 0.5rem;
+    grid-template-columns: 32% 32% 35%;
     grid-template-areas:
-    "leftControls middleControls rightControls";
+    "leftControls phaseSelector rightControls";
     margin-bottom: 5px;
-    width: 95%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .leftControls {
+    grid-area: leftControls;
     display: flex;
     justify-content: flex-start;
-
+    align-items: center;
 }
 .phaseSelector {
     display: flex;
+    align-items: center;
     justify-content: center;
+    grid-area: phaseSelector;
 }
 .rightControls {
+    height: 100%;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
+    margin-right: 10%;
+    grid-area: rightControls;
 }
 
-.control {
-    margin-right: 20px;
+.control{
+    display: flex;
+    flex-direction: column;
 }
 
 .controlLabel{
@@ -32,11 +40,19 @@
 }
 
 .workStreamSelector {
-    width: 175px;
+    width: 150px;
 }
 
+.teamSelector{
+    width: 150px;
+}
 
+.workItemScopeSelector{
 
-
-
-
+}
+.groupView{
+    margin-left: 20px;
+}
+.selectTeam{
+    margin-left: 15px;
+}
