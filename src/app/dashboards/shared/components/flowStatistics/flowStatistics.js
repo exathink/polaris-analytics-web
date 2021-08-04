@@ -528,7 +528,7 @@ export const ActiveDays = ({asCard, title, normalized, contributorCount, current
     metric={metric}
     valueRender={(value) => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={uom}
-    precision={precision || 2}
+    precision={precision || 1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     asCard={asCard}
@@ -619,7 +619,7 @@ export const WipCost = ({currentMeasurement, previousMeasurement, target, deltaT
     title={<span>Wip Cost</span>}
     target={target}
     uom={'Dev-Days'}
-    precision={2}
+    precision={1}
     deltaThreshold={deltaThreshold}
   />
 );
