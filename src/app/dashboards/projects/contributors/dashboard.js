@@ -68,6 +68,8 @@ export const dashboard = () => (
                     samplingFrequency={30}
                     specsOnly={true}
                     includeSubTasks={false}
+                    latestCommit={project.latestCommit}
+                    latestWorkItemEvent={project.latestWorkItemEvent}
                   />
                 )}
                 showDetail={false}
