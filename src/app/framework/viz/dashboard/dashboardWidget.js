@@ -3,6 +3,7 @@ import {Flex} from 'reflexbox';
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
 import {withRouter} from 'react-router';
 import uniqueStyles from './dashboard.module.css';
+import "../../styles/fonts.css";
 import classNames from "classnames";
 import {InfoCard} from "../../../components/misc/info/infoCard";
 
@@ -42,7 +43,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
         <div className={uniqueStyles["dashboard-item-title-container"]}>
           {
             title && (!itemSelected || !hideTitlesInDetailView) ?
-              <h3 className={uniqueStyles["dashboard-item-title"]}>
+              <h3 className={classNames(uniqueStyles["dashboard-item-title"], "text-lg font-normal")}>
                 {title}
               </h3>
               :
@@ -50,7 +51,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
           }
           {
             subtitle && (!itemSelected || !hideTitlesInDetailView) ?
-              <h5 className={uniqueStyles["dashboard-item-subtitle"]}>
+              <h5 className={"text-xs font-normal"}>
                 {subtitle}
               </h5>
               :
