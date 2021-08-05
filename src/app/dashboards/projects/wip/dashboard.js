@@ -39,7 +39,7 @@ function WipDashboard({
   viewerContext
 }) {
   const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
   const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
   const {
