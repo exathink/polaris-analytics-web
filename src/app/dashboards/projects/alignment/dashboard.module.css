@@ -1,7 +1,7 @@
 .valueDashboard {
   display: grid;
   grid-template-columns: 33% 32.5% 33%;
-  grid-template-rows: 6% 12% auto;
+  grid-template-rows: 8% auto 75%;
   gap: 0.5rem;
   grid-template-areas:
     "empty scopeSelector rangeSlider"
