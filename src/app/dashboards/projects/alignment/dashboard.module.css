@@ -1,10 +1,11 @@
 .valueDashboard {
+  height: 95%;
   display: grid;
   grid-template-columns: 33% 32.5% 33%;
-  grid-template-rows: 8% auto 75%;
+  grid-template-rows: auto auto 75%;
   gap: 0.5rem;
   grid-template-areas:
-    "empty scopeSelector rangeSlider"
+    ". scopeSelector rangeSlider"
     "throughput valueMix workInProgress"
     "valueBookClosed valueMixChart valueBookWip"
 
