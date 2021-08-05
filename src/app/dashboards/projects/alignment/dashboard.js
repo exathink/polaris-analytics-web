@@ -7,9 +7,9 @@ import styles from "./dashboard.module.css";
 import { DimensionFlowMixTrendsWidget } from "../../shared/widgets/work_items/trends/flowMix";
 import { Flex } from "reflexbox";
 import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import { DimensionFlowMetricsWidget } from "../../shared/widgets/work_items/closed/flowMetrics";
 import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip";
 import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import { DimensionThroughputWidget } from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
@@ -48,7 +48,7 @@ function ValueDashboard({
           subtitle={`${specsOnly ? 'Specs' : 'All Cards'}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionFlowMetricsWidget
+            <DimensionThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
@@ -65,6 +65,7 @@ function ValueDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              normalized={false}
             />
           )}
           showDetail={false}
