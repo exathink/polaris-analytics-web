@@ -1,0 +1,42 @@
+.text-xs{
+  font-size: 0.75vw;
+  line-height: 1vw;
+}
+
+.text-sm {
+  font-size: 0.875vw;
+  line-height: 1.25vw;
+}
+
+.text-base {
+  font-size: 1vw;
+  line-height: 1.5vw;
+}
+
+.text-lg {
+  font-size: 1.125vw;
+  line-height: 1.75vw;
+}
+
+.text-xl {
+  font-size: 1.25vw;
+  line-height: 1.75vw;
+}
+
+.text-2xl {
+  font-size: 1.5vw;
+  line-height: 2vw;
+}
+
+.font-light {
+  font-weight: 300;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
