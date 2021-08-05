@@ -46,12 +46,12 @@ function WipDashboard({
     latencyTarget
   } = settingsWithDefaults;
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
+    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.teamsFlowDashboard}>
       <DashboardRow h="15%">
         <DashboardWidget
           name="flow-metrics-throughput"
           title={"Throughput"}
-          w={1/3}
+          
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -73,13 +73,14 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
+              normalized={true}
             />
           )}
           showDetail={false}
         />
         <DashboardWidget
           name="pipeline"
-          w={1/3}
+          
           className={styles.pipeline}
           title={"Work In Progress"}
 
@@ -109,8 +110,8 @@ function WipDashboard({
         <DashboardWidget
           name="flow-metrics-response-time"
           title={"Response Time"}
-          w={1/3}
-          className={styles.flowMetrics}
+          
+          className={styles.responseTimeSLA}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
@@ -137,10 +138,10 @@ function WipDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="30%" title={"Wip Age & Latency"}>
+      <DashboardRow h="30%" title={"Wip Age & Latency"} className={styles.wipAge}>
         <DashboardWidget
           name="engineering"
-          w={1/3}
+          
           className={styles.engineering}
 
           render={({view}) => (
@@ -168,7 +169,7 @@ function WipDashboard({
         />
         <DashboardWidget
           name={"code-reviews"}
-          w={1/3}
+          
           className={styles.codeReviews}
           render={({view}) => (
             <DimensionPullRequestsWidget
@@ -186,7 +187,8 @@ function WipDashboard({
         />
         <DashboardWidget
           name="delivery"
-          w={1/3}
+          
+          className={styles.delivery}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={'team'}
@@ -211,10 +213,11 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h={"50%"} title={"Latest Commits"}>
+      <DashboardRow h={"50%"} title={"Latest Commits"} className={styles.latestCommitsTitle}>
         <DashboardWidget
           name="commits"
-          w={1}
+          className={styles.commits}
+          
           render={({view}) => (
             <DimensionCommitsNavigatorWidget
               dimension={"team"}

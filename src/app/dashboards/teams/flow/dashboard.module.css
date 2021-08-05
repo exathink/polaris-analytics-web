@@ -1,53 +1,55 @@
-.wipDashboard{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 13% 35.5% 4% 1fr;
-    gap: 0.25rem 0.5rem;
-    grid-template-areas: "pipeline pipeline pipeline flowMetrics flowMetrics  flowMetrics flowMetrics flowMetrics flowMetrics flowMetrics flowMetrics flowMetrics"
-    "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"
-    "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
-    "commits commits commits commits commits commits commits commits commits commits commits commits"
+.teamsFlowDashboard {
+  height: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto 35% auto 40%;
+  gap: 0.25rem 0.5rem;
+  grid-template-areas:
+    "flowMetrics  flowMetrics flowMetrics flowMetrics pipeline pipeline pipeline pipeline responseTimeSLA responseTimeSLA responseTimeSLA responseTimeSLA "
+    "wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge"
+    "engineering engineering engineering engineering codeReviews codeReviews codeReviews codeReviews delivery delivery delivery delivery"
+    "latestCommitsTitle latestCommitsTitle latestCommitsTitle latestCommitsTitle scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
+    "commits commits commits commits commits commits commits commits commits commits commits commits";
 }
 
-.responseTimeSLA{
-    grid-area: responseTimeSLA;
-    padding: 0.25rem;
+.responseTimeSLA {
+  grid-area: responseTimeSLA;
+  padding: 0.25rem;
 }
-.pipeline{
-    grid-area: pipeline;
-    padding: 0.25rem;
+.pipeline {
+  grid-area: pipeline;
+  padding: 0.25rem;
 }
-.codeReviews{
-    grid-area: codeReviews;
-    padding: 0.25rem;
-}
-.flowMetrics{
-    grid-area: flowMetrics;
-    padding: 0.25rem;
+.flowMetrics {
+  grid-area: flowMetrics;
+  padding: 0.25rem;
 }
 
-.engineering{
-    grid-area: engineering;
-    margin-top: 0.5rem;
+.engineering {
+  grid-area: engineering;
 }
-.codeReviewDetail{
-    grid-area: pipelineEffort;
-    margin-top: 0.5rem;
+.codeReviews {
+  grid-area: codeReviews;
 }
-.delivery{
-    grid-area: delivery;
-     margin-top: 0.5rem;   
+.wipAge {
+  grid-area: wipAge;
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
 }
-.scopeSelector{
-    grid-area: scopeSelector;
-    align-self: flex-end;
-    margin-top: 0.25rem;
+.delivery {
+  grid-area: delivery;
 }
-.commits{
-    grid-area: commits;
+.scopeSelector {
+  grid-area: scopeSelector;
+  align-self: flex-end;
+  margin-top: 0.25rem;
 }
-.latestCommitsTitle{
-    grid-area: latestCommitsTitle;
-    padding-left: 0.25rem;
-    margin-top: 0.25rem;
+.commits {
+  grid-area: commits;
+}
+.latestCommitsTitle {
+  grid-area: latestCommitsTitle;
+  padding-left: 0.25rem;
+  margin-top: 0.25rem;
 }

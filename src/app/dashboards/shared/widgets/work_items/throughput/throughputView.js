@@ -7,11 +7,12 @@ import {
   LatestClosed,
   Volume,
 } from "../../../components/flowStatistics/flowStatistics";
-import {VizItem, VizRow} from "../../../containers/layout";
+import styles from "./dashboard.module.css"
 
 export const ThroughputView = ({
   contributorCount,
   cycleMetricsTrends,
+  normalized,
   specsOnly,
 }) => {
   const [current, previous] = cycleMetricsTrends;
@@ -19,24 +20,24 @@ export const ThroughputView = ({
     return null;
   }
   return (
-    <VizRow>
-      <VizItem w={0.2}>
+    <div className={styles.throughputStatistic}>
+      <div className={styles.firstCol}>
         <ContributorCount contributorCount={contributorCount} />
-      </VizItem>
-      <VizItem w={0.2}>
-        <Volume normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
-      </VizItem>
+      </div>
+      <div className={styles.secondCol}>
+        <Volume normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+      </div>
 
-      <VizItem w={0.3}>
-        <EffortOUT normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
-      </VizItem>
+      <div className={styles.thirdCol}>
+        <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+      </div>
 
-      <VizItem w={0.3}>
+      <div className={styles.fourthCol}>
         <ComponentCarousel tickInterval={3000}>
           <LatestClosed currentMeasurement={current} />
           <Cadence currentMeasurement={current} previousMeasurement={previous} />
         </ComponentCarousel>
-      </VizItem>
-    </VizRow>
+      </div>
+    </div>
   );
 };
