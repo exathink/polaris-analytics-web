@@ -7,7 +7,7 @@
 
 .wipSummary{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    grid-template-columns: 0.8fr 1.1fr 1fr 1.5fr;
     grid-template-rows: auto;
     gap: 0.5rem;
     grid-template-areas: "first second third fourth";
