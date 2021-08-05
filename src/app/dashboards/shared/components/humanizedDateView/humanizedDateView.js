@@ -41,8 +41,8 @@ export class HumanizedDateView extends React.Component {
       this.props.asStatistic ?
         <Statistic
               title={this.props.title}
-              value={+this.state.text.split("days ago")[0]}
-              suffix={"Days ago"}
+              value={' '}
+              prefix={this.state.text}
               precision={0}
               valueStyle={{ color: '#3f8600'}}
 
