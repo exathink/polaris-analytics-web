@@ -1,29 +1,45 @@
 .ant-statistic-title {
-    font-size: 1.7vh;
+    /* text-sm */
+    font-size: 0.875vw !important;
+    line-height: 1.25vw !important;
+    /* font-normal */
+    font-weight: 400 !important;
 }
 
 .ant-statistic-content {
-    line-height: 2vh;
+    /* text-base */
+    font-size: 1vw !important;
+    line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value {
-    font-size: 2.1vh
+    /* text-base */
+    font-size: 1vw !important;
+    line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value-int {
-    font-size: 2.1vh
+    /* text-base */
+    font-size: 1vw !important;
+    line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value-decimal {
-    font-size: 1.8vh
+    /* text-base */
+    font-size: 1vw !important;
+    line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-suffix {
-    font-size: 1.3vh
+    /* text-xs */
+    font-size: 0.75vw !important;;
+    line-height: 1vw !important;;
 }
 
 .ant-statistic-content-prefix {
-    font-size: 1.8vh
+    /* text-xs */
+    font-size: 0.75vw !important;;
+    line-height: 1vw !important;;
 }
 
 .viz-item .ant-statistic {
