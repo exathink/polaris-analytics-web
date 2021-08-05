@@ -22,6 +22,7 @@ export const DimensionThroughputWidget = ({
   cycleTimeConfidenceTarget,
   targetPercentile,
   includeSubTasks,
+  normalized
 }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionFlowMetrics({
@@ -48,6 +49,7 @@ export const DimensionThroughputWidget = ({
         specsOnly={limitToSpecsOnly}
         contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
+        normalized={normalized}
       />
     );
   } else {

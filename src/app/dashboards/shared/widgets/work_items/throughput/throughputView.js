@@ -12,6 +12,7 @@ import styles from "./dashboard.module.css"
 export const ThroughputView = ({
   contributorCount,
   cycleMetricsTrends,
+  normalized,
   specsOnly,
 }) => {
   const [current, previous] = cycleMetricsTrends;
@@ -24,11 +25,11 @@ export const ThroughputView = ({
         <ContributorCount contributorCount={contributorCount} />
       </div>
       <div className={styles.secondCol}>
-        <Volume normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+        <Volume normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
       </div>
 
       <div className={styles.thirdCol}>
-        <EffortOUT normalized={true} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+        <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
       </div>
 
       <div className={styles.fourthCol}>

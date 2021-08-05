@@ -82,6 +82,7 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              normalized={true}
             />
           )}
           showDetail={true}
