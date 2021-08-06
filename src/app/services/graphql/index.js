@@ -17,6 +17,8 @@ function logout() {
 }
 
 const logoutLink = onError(({networkError}) => {
+  // this is not very stable check, this is all we have currently
+  // need to discuss on this, how we can make it more stable
   if (networkError.message === "Failed to fetch") {
     logout();
   }
