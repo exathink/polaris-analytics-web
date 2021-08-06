@@ -2,7 +2,7 @@ import React from 'react';
 import StickerWidget from "../../containers/stickers/simpleSticker/sticker-widget";
 import {fromNow} from "../../../../helpers/utility";
 import {Statistic} from "../../../../components/misc/statistic/statistic";
-
+import fontStyles from "../../../../framework/styles/fonts.module.css";
 export class HumanizedDateView extends React.Component {
 
   constructor(props){
@@ -42,7 +42,7 @@ export class HumanizedDateView extends React.Component {
         <Statistic
               title={this.props.title}
               value={' '}
-              prefix={this.state.text}
+              prefix={<span className={fontStyles["text-base"]}>{this.state.text}</span>}
               precision={0}
               valueStyle={{ color: '#3f8600'}}
 
