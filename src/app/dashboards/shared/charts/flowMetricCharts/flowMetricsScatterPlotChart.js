@@ -1,6 +1,6 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {getMinMaxDates, getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
+import {getMinMaxDatesFromRange, getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
   Colors,
   Symbols,
@@ -130,7 +130,7 @@ export const FlowMetricsScatterPlotChart = Chart({
       return groups;
     }, {});
 
-    const [startDate, endDate] = getMinMaxDates(days);
+    const [startDate, endDate] = getMinMaxDatesFromRange(candidateCycles.map(x => toMoment(x.endDate)));
 
     const series = Object.entries(deliveryCyclesByWorkItemType)
       .sort((entryA, entryB) => WorkItemTypeSortOrder[entryA[0]] - WorkItemTypeSortOrder[entryB[0]])
