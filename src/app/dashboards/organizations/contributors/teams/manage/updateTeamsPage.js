@@ -93,7 +93,7 @@ export function UpdateTeamsPage({
     const payload = localRecords.map((l) => {
       return {
         contributorKey: l.key,
-        newTeamKey: targetTeam.key,
+        newTeamKey: isTargetTeamDefault(targetTeam) ? l.teamKey : targetTeam.key,
         capacity: capacityRecords[l.key],
       };
     });
