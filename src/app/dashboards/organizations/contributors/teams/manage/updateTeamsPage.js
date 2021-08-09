@@ -6,13 +6,18 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
-import {PlusCircleOutlined} from "@ant-design/icons";
 import {getRowSelection} from "../utils";
 
 const {Option} = Select;
 
+const DEFAULT_TEAM = {key: "choose_team", name: "Choose Target Team"};
+const isTargetTeamDefault = (targetTeam) => targetTeam.key === DEFAULT_TEAM.key;
+
 function getTransformedData(selectedRecords, targetTeam) {
-  const kvArr = selectedRecords.map((x) => [x.key, {...x, targetTeam: targetTeam.name}]);
+  const kvArr = selectedRecords.map((x) => [
+    x.key,
+    {...x, targetTeam: isTargetTeamDefault(targetTeam) ? x.teamName : targetTeam.name},
+  ]);
   return new Map(kvArr);
 }
 
@@ -25,10 +30,17 @@ export function UpdateTeamsPage({
   dispatch: dispatchEvent,
   teamsList,
 }) {
-  const [defaultTeam = {}] = teamsList;
+  const getInitialCapacityRecords = () => {
+    return selectedRecords.reduce((acc, item) => {
+      acc[item.key] = item.capacity != null ? item.capacity : 1;
+      return acc;
+    }, {});
+  };
+
   const initialState = {
+    capacityRecords: getInitialCapacityRecords(),
     localRecords: selectedRecords,
-    targetTeam: defaultTeam,
+    targetTeam: DEFAULT_TEAM,
     errorMessage: "",
     successMessage: "",
     timeOutExecuting: undefined,
@@ -36,6 +48,7 @@ export function UpdateTeamsPage({
 
   const [
     {
+      capacityRecords,
       localRecords,
       targetTeam,
       errorMessage,
@@ -81,6 +94,7 @@ export function UpdateTeamsPage({
       return {
         contributorKey: l.key,
         newTeamKey: targetTeam.key,
+        capacity: capacityRecords[l.key],
       };
     });
     // call mutation on save button click
@@ -101,8 +115,9 @@ export function UpdateTeamsPage({
   };
 
   function isButtonDisabled() {
+    const isTargetTeamSet = isTargetTeamDefault(targetTeam) ? localRecords.every((x) => x.teamKey != null) : true;
     // all flows
-    if (loading || timeOutExecuting === true || localRecords.length === 0) {
+    if (loading || timeOutExecuting === true || localRecords.length === 0 || !isTargetTeamSet) {
       return true;
     }
   }
@@ -142,7 +157,7 @@ export function UpdateTeamsPage({
     );
   }
 
-  const columns = useUpdateTeamsColumns();
+  const columns = useUpdateTeamsColumns([capacityRecords, dispatch]);
   const data = getTransformedData(selectedRecords, targetTeam);
   const setLocalRecords = (records) => dispatch({type: actionTypes.UPDATE_LOCAL_RECORDS, payload: records});
 
@@ -151,14 +166,14 @@ export function UpdateTeamsPage({
   }
 
   function selectTeamDropdown() {
-    const optionElements = teamsList.map((t, index) => (
+    const optionElements = [DEFAULT_TEAM, ...teamsList].map((t, index) => (
       <Option key={t.key} value={index}>
-        {index === teamsList.length && <PlusCircleOutlined style={{color: "green"}} />} {t.name}
+        {t.name}
       </Option>
     ));
 
     function handleDropdownChange(index) {
-      const selectedTeam = teamsList[index];
+      const selectedTeam = index === 0 ? DEFAULT_TEAM : teamsList[index - 1];
       dispatch({type: actionTypes.UPDATE_TARGET_TEAM, payload: selectedTeam});
     }
 
