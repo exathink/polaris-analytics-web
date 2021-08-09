@@ -162,7 +162,7 @@ export function UpdateTeamsPage({
   const setLocalRecords = (records) => dispatch({type: actionTypes.UPDATE_LOCAL_RECORDS, payload: records});
 
   function getTitleText() {
-    return "Update target team for below contributors";
+    return "Update target team and allocation capacity for below contributors";
   }
 
   function selectTeamDropdown() {

@@ -290,7 +290,7 @@ describe("ManageTeamsWorkflow", () => {
         fireEvent.click(nextButton);
 
         // assert we are on the update teams page
-        await screen.findByText(/Update target team for below contributors/i);
+        await screen.findByText(/Update target team and allocation capacity for below contributors/i);
       });
     });
   });
@@ -321,7 +321,7 @@ describe("ManageTeamsWorkflow", () => {
       });
 
       test("should render correct title for the table", async () => {
-        await screen.findByText(/Update target team for below contributors/i);
+        await screen.findByText(/Update target team and allocation capacity for below contributors/i);
       });
 
       test("should render all selected contributors from previous page to be selected by default", async () => {
