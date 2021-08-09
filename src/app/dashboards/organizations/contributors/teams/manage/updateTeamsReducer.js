@@ -8,6 +8,12 @@ export function updateTeamsReducer(state, action) {
         localRecords: action.payload,
       };
     }
+    case actionTypes.UPDATE_CAPACITY_RECORDS: {
+      return {
+        ...state,
+        capacityRecords: action.payload,
+      };
+    }
     case actionTypes.UPDATE_ERROR_MESSAGE: {
       return {
         ...state,
