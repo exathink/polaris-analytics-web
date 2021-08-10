@@ -50,3 +50,12 @@
     grid-area: effortOut;
     flex-grow: 1;
 }
+
+.controls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.teamDropdown{
+    margin-left: 15px;
+}

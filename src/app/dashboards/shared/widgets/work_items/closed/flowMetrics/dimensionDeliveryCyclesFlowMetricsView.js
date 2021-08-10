@@ -1,15 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {FlowMetricsScatterPlotChart} from "../../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {Select} from "antd";
-import {Flex} from "reflexbox";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
-import {pick} from "../../../../../../helpers/utility";
+import {getUniqItems, pick} from "../../../../../../helpers/utility";
+import styles from "./flowMetrics.module.css";
+import {SelectDropdown, useSelect} from "../../../../components/teams/selectTeam";
 
-const {Option} = Select;
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
@@ -53,52 +52,81 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   const groupings = specsOnly
     ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
     : ["leadTime", "cycleTime", "backlogTime"];
-  const [selectedMetric, setSelectedMetric] = useState(initialMetric || "leadTime");
 
-  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric, targetMetrics)
+  const uniqueGroupings = groupings.map((g) => ({key: g, name: projectDeliveryCycleFlowMetricsMeta[g].display}));
+  const _defaultMetric = {
+    key: initialMetric || "leadTime",
+    name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
+  };
+  const {selectedVal: selectedMetric, setSelectedVal: setSelectedMetric, handleChange: handleMetricChange} = useSelect({
+    uniqueItems: uniqueGroupings,
+    defaultVal: _defaultMetric,
+  });
+
+  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric.key, targetMetrics)
   
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [yAxisScale, setYAxisScale] = useChildState(parentYAxisScale, parentSetYAxisScale, parentYAxisScale || 'logarithmic')
 
   React.useEffect(() => {
-    initialMetric && setSelectedMetric(initialMetric);
+    initialMetric && setSelectedMetric(_defaultMetric);
   }, [initialMetric]);
 
   function selectMetricDropdown() {
-    const optionElements = groupings.map((grouping, index) => (
-      <Option key={grouping} value={index}>
-        {projectDeliveryCycleFlowMetricsMeta[grouping].display}
-      </Option>
-    ));
-
-    function handleDropdownChange(index) {
-      const selectedMetric = groupings[index];
-      setSelectedMetric(selectedMetric);
-    }
-
     return (
-      !hideControls &&
-        <div style={{marginBottom: "5px"}}>
-          <Select
-            defaultValue={2}
-            value={groupings.indexOf(selectedMetric)}
-            style={{width: 170}}
-            onChange={handleDropdownChange}
-            getPopupContainer={(node) => node.parentNode}
-            data-testid="groupings-select"
-          >
-            {optionElements}
-          </Select>
-        </div>
+      !hideControls && (
+        <SelectDropdown
+          title="Metric"
+          uniqueItems={uniqueGroupings}
+          handleChange={handleMetricChange}
+          testId="groupings-select"
+          width={170}
+        />
+      )
     );
   }
 
+  const _defaultTeam = {key: "all", name: "All"};
+  const uniqueTeams = [
+    _defaultTeam,
+    ...getUniqItems(
+      model.flatMap((x) => x.teamNodeRefs),
+      (x) => x.teamKey
+    ).map((x) => ({key: x.teamKey, name: x.teamName})),
+  ];
+  const {selectedVal: selectedTeam, handleChange: handleTeamChange} = useSelect({
+    uniqueItems: uniqueTeams,
+    defaultVal: _defaultTeam,
+  });
+
+  const filteredData = React.useMemo(
+    () =>
+      model.filter((w) => {
+        if (selectedTeam.key === _defaultTeam.key) {
+          return true;
+        } else {
+          const _teams = w.teamNodeRefs.map((t) => t.teamName);
+          return _teams.includes(selectedTeam.name);
+        }
+      }),
+    [model, selectedTeam, _defaultTeam.key]
+  );
+
   return (
     <React.Fragment>
-      <Flex w={0.95} justify={"space-between"}>
+      <div className={styles.controls}>
         {yAxisScale !== "table" && selectMetricDropdown()}
-        {!defectsOnly &&  !hideControls && (
+        {yAxisScale !== "table" && (
+          <SelectDropdown
+            title={"Team"}
+            uniqueItems={uniqueTeams}
+            handleChange={handleTeamChange}
+            testId="flowmetrics-team-dropdown"
+            className={styles.teamDropdown}
+          />
+        )}
+        {!defectsOnly && !hideControls && (
           <div style={{marginLeft: "auto"}}>
             <GroupingSelector
               label={"View"}
@@ -122,12 +150,12 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
             />
           </div>
         )}
-      </Flex>
+      </div>
       {yAxisScale !== "table" ? (
         <FlowMetricsScatterPlotChart
           days={days}
-          model={model}
-          selectedMetric={selectedMetric}
+          model={filteredData}
+          selectedMetric={selectedMetric.key}
           metricsMeta={projectDeliveryCycleFlowMetricsMeta}
           metricTarget={metricTarget}
           targetConfidence={targetConfidence}
@@ -142,7 +170,11 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           }}
         />
       ) : (
-        <FlowMetricsDetailTable tableData={model} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
+        <FlowMetricsDetailTable
+          tableData={filteredData}
+          setShowPanel={setShowPanel}
+          setWorkItemKey={setWorkItemKey}
+        />
       )}
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
