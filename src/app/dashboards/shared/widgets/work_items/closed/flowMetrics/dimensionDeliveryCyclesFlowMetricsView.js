@@ -7,7 +7,7 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_ite
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
-import {SelectDropdown, useSelect} from "../../../../components/teams/selectTeam";
+import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -82,6 +82,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           handleChange={handleMetricChange}
           testId="groupings-select"
           width={170}
+          className={styles.metricDropdown}
         />
       )
     );
