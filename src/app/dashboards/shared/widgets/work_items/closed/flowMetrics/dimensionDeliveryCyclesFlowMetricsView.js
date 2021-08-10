@@ -71,6 +71,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
 
   React.useEffect(() => {
     initialMetric && setSelectedMetric(_defaultMetric);
+    // eslint-disable-next-line
   }, [initialMetric]);
 
   function selectMetricDropdown() {
