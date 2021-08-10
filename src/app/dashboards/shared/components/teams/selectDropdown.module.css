@@ -1,0 +1,4 @@
+.selectWrapper {
+  display: flex;
+  flex-direction: column;
+}
