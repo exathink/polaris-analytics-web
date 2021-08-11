@@ -118,7 +118,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   return (
     <React.Fragment>
       <div className={styles.controls}>
-        {yAxisScale !== "table" && selectMetricDropdown()}
+
         {yAxisScale !== "table" && (
           <SelectDropdown
             title={"Team"}
@@ -128,6 +128,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
             className={styles.teamDropdown}
           />
         )}
+        {yAxisScale !== "table" && selectMetricDropdown()}
         {!defectsOnly && !hideControls && (
           <div style={{marginLeft: "auto"}}>
             <GroupingSelector
