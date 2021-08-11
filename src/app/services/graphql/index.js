@@ -17,13 +17,11 @@ function logout() {
 }
 
 const logoutLink = onError(({networkError}) => {
-  // this is not very stable check, this is all we have currently
-  // need to discuss on this, how we can make it more stable
-  if (networkError.message === "Failed to fetch") {
+  if (networkError?.response?.type === "opaqueredirect") {
     logout();
   }
 });
-const httpLink = new HttpLink({uri: GRAPHQL_ANALYTICS_URL, credentials: "include"});
+const httpLink = new HttpLink({uri: GRAPHQL_ANALYTICS_URL, credentials: "include", fetchOptions: {redirect: "manual"}});
 
 /**
  *  TODO:
