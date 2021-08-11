@@ -44,7 +44,7 @@ export function useSelectTeamMembersColumns() {
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
     },
     {
-      title: "Allocation Capacity",
+      title: "Coding Capacity",
       dataIndex: "capacity",
       key: "capacity",
       width: "20%",

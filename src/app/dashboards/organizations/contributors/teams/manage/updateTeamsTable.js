@@ -52,7 +52,7 @@ export function useUpdateTeamsColumns([capacityRecords, dispatch]) {
       },
     },
     {
-      title: "Allocation Capacity",
+      title: "Coding Capacity",
       dataIndex: "capacity",
       key: "capacity",
       sorter: (a, b) => SORTER.number_compare(a.capacity, b.capacity),
