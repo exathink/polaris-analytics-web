@@ -1,0 +1,15 @@
+.activityWrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.activityDashboard{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.textCenter{
+    text-align: center;
+}

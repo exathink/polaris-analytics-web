@@ -2,7 +2,7 @@ import React from "react";
 import {Launcher} from "./launcher/launcherCard";
 import {WorkTrackingIcon} from "./launcher/workTrackingIcon"
 
-export const ImportProjectsCard = ({onClick, title, style, compact}) => (
+export const ImportProjectsCard = ({onClick, title, style, compact, completed}) => (
 
     <Launcher
       title={title || "Import Remote Projects"}
@@ -11,7 +11,7 @@ export const ImportProjectsCard = ({onClick, title, style, compact}) => (
       icon={
         <WorkTrackingIcon />
       }
-      
+      completed={completed}
     />
 
 )
