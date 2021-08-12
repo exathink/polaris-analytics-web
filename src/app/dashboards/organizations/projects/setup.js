@@ -25,7 +25,7 @@ export const ProjectsDashboardSetup = ({context}) => (
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col offset={9} span={6}>
+        <Col offset={9} span={6} className={styles.textCenter}>
           <Button type={'primary'} size={"large"} onClick={() => context.go('.', 'new')} compact={true}>Connect Remote Projects</Button>
         </Col>
       </Row>
