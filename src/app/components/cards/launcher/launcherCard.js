@@ -5,6 +5,7 @@ import './launcherCard.css';
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {CheckCircleFilled} from "@ant-design/icons";
+import {Colors} from "../../../dashboards/shared/config";
 
 export const LauncherCard = ({onClick, title, description, cover, style, iconType}) => (
     <Card
@@ -35,7 +36,7 @@ export function Launcher({onClick, title, description, icon, completed}) {
         <div className={classNames("subTitle", fontStyles["text-lg"], fontStyles["font-normal"])}>{description}</div>
       </div>
       <div className={classNames({launcherCheck: !completed, launcherCheckDisabled: completed})} onClick={completed ? undefined: onClick}>
-        <CheckCircleFilled style={{fontSize: "48px", color: completed ? "#32D669" : "#B0B0B0"}} />
+        <CheckCircleFilled style={{fontSize: "48px", color: completed ? Colors.Steps.completed: Colors.Steps.pending}} />
       </div>
     </div>
   );
