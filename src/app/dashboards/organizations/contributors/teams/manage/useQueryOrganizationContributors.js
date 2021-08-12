@@ -11,6 +11,7 @@ export const GET_ORGANIZATION_CONTRIBUTORS_QUERY = gql`
             key
             teamName
             teamKey
+            capacity
             earliestCommit
             latestCommit
             commitCount

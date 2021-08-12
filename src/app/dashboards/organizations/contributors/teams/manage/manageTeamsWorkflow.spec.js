@@ -45,14 +45,17 @@ const gqlMutationRequest = {
       {
         contributorKey: "5b7eecb4-b0c2-4001-904d-542c28fd3204",
         newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
+        capacity: 0.5
       },
       {
         contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
-        newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
+        newTeamKey: "f3bd6f1d-5c6a-41d2-81de-dfce5e794580",
+        capacity: 0.5
       },
       {
         contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
-        newTeamKey: "540444dd-c045-41ed-a017-0b3326620901",
+        newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+        capacity: 0.5
       },
     ],
   },
@@ -75,6 +78,7 @@ const contributorMocks = [
                   earliestCommit: getNDaysAgo(225),
                   latestCommit: getNDaysAgo(11),
                   commitCount: 746,
+                  capacity: 0.5
                 },
               },
               {
@@ -86,6 +90,7 @@ const contributorMocks = [
                   earliestCommit: getNDaysAgo(255),
                   latestCommit: getNDaysAgo(9),
                   commitCount: 7881,
+                  capacity: 0.5
                 },
               },
               {
@@ -97,6 +102,7 @@ const contributorMocks = [
                   earliestCommit: getNDaysAgo(200),
                   latestCommit: getNDaysAgo(10),
                   commitCount: 858,
+                  capacity: 0.5
                 },
               },
             ],
@@ -284,7 +290,7 @@ describe("ManageTeamsWorkflow", () => {
         fireEvent.click(nextButton);
 
         // assert we are on the update teams page
-        await screen.findByText(/Update target team for below contributors/i);
+        await screen.findByText(/Update target team and allocation capacity for below contributors/i);
       });
     });
   });
@@ -315,7 +321,7 @@ describe("ManageTeamsWorkflow", () => {
       });
 
       test("should render correct title for the table", async () => {
-        await screen.findByText(/Update target team for below contributors/i);
+        await screen.findByText(/Update target team and allocation capacity for below contributors/i);
       });
 
       test("should render all selected contributors from previous page to be selected by default", async () => {
@@ -471,14 +477,17 @@ describe("ManageTeamsWorkflow", () => {
               {
                 contributorKey: "5b7eecb4-b0c2-4001-904d-542c28fd3204",
                 newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+                capacity: 0.5
               },
               {
                 contributorKey: "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
                 newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+                capacity: 0.5
               },
               {
                 contributorKey: "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
                 newTeamKey: "e0f303ea-b52e-424d-a00e-e5f4376283e0",
+                capacity: 0.5
               },
             ],
           },

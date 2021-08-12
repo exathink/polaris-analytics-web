@@ -1,0 +1,17 @@
+.percentageWrapper {
+  display: flex;
+  flex-direction: column;
+}
+.percentageSliderTitle {
+}
+.percentageSliderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.percentageSlider {
+  width: 50%;
+}
+.percentageSliderInputNumber {
+  margin-left: 15px;
+}

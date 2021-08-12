@@ -17,7 +17,7 @@ export function useSelectTeamMembersColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: "25%",
       sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...nameSearchState,
     },
@@ -25,7 +25,7 @@ export function useSelectTeamMembersColumns() {
       title: "Current Team",
       dataIndex: "teamName",
       key: "teamName",
-      width: "25%",
+      width: "20%",
       sorter: (a, b) => SORTER.string_compare(a.teamName, b.teamName),
       ...teamNameSearchState,
     },
@@ -40,8 +40,22 @@ export function useSelectTeamMembersColumns() {
       title: "Total Commits",
       dataIndex: "commitCount",
       key: "commitCount",
-      width: "20%",
+      width: "15%",
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
+    },
+    {
+      title: "Coding Capacity",
+      dataIndex: "capacity",
+      key: "capacity",
+      width: "20%",
+      sorter: (a, b) => SORTER.number_compare(a.capacity, b.capacity),
+      render: (text, record) => {
+        if (text != null) {
+          return <span>{+text * 100}%</span>;
+        } else {
+          return null;
+        }
+      },
     },
   ];
   return columns;
