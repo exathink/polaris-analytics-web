@@ -32,7 +32,7 @@ export const RepositoriesDashboardSetup = ({context}) => (
         </Col>
       </Row>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col offset={9} span={6}>
+        <Col offset={9} span={6} className={styles.textCenter}>
           <Button type={"primary"} size={"large"} onClick={() => context.go('.', 'new')}>Import Repositories</Button>
         </Col>
       </Row>
