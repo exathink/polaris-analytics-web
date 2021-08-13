@@ -3,8 +3,9 @@ import {palette} from 'styled-theme';
 import {transition} from '../../../config/style-util';
 
 const antBtnPrimaryColor = "#2E3445";
-const antBtnPrimaryHover = "#2E342f"
+const antBtnPrimaryHover = "#3F475E"
 const antBtnSecondaryBorderColor = "#2E3445";
+const antBtnSecondaryBorderHoverColor = "#3F475E";
 const Buttons = ComponentName => styled(ComponentName)`
   &.ant-btn {
     display: inline-block;
@@ -80,7 +81,8 @@ const Buttons = ComponentName => styled(ComponentName)`
       border-color: ${antBtnSecondaryBorderColor};
 
       &:hover {
-        color: ${antBtnSecondaryBorderColor};
+        color: ${antBtnSecondaryBorderHoverColor};
+        border-color: ${antBtnSecondaryBorderHoverColor};
       }
     }
     &.ant-btn-sm {
