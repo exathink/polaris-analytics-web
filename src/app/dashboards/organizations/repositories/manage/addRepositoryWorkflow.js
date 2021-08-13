@@ -189,13 +189,8 @@ export const AddRepositoryWorkflow = withNavigationContext(
                     Done
                   </WorkflowActionButton>
                 ),
-                backButton: () =>
-                  current > 0 &&
-                  (current < 4 ? (
-                    <BackArrowIcon onClick={() => this.prev()}/>
-                  ) : (
-                    <WorkflowActionButton onClick={() => this.prev()}>Import More Repositories</WorkflowActionButton>
-                  )),
+                backButton: () => current > 0 && current < 4 && (<BackArrowIcon onClick={() => this.prev()}/>),
+                importMoreButton: () => current===4 && <WorkflowActionButton onClick={() => this.prev()}>Import More Repositories</WorkflowActionButton>,
                 nextButton: () =>
                   currentStep.showNext &&
                   current < steps.length - 1 && (

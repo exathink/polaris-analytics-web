@@ -190,15 +190,13 @@ export const AddProjectWorkflow = withViewerContext(withNavigationContext(
                     Done
                   </WorkflowActionButton>
                 ),
-                backButton: () =>
-                  current > 0 &&
-                  (current < 4 ? (
-                    <BackArrowIcon onClick={() => this.prev()} />
-                  ) : (
+                backButton: () => current > 0 && current < 4 && <BackArrowIcon onClick={() => this.prev()} />,
+                importMoreButton: () =>
+                  current === 4 && (
                     <WorkflowActionButton onClick={() => this.prev()}>
                       {`Import More ${getConnectorTypeProjectName(connectorType, true)}`}
                     </WorkflowActionButton>
-                  )),
+                  ),
                 nextButton: () =>
                   currentStep.showNext &&
                   current < steps.length - 1 && (

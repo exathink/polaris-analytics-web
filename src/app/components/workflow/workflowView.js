@@ -7,8 +7,6 @@ import {CheckCircleStepIcon} from "../misc/customIcons";
 const {Step} = Steps;
 
 export const WorkflowView = ({title, steps, current, renderNavigationControls, stepProps}) => {
-  const currentStep = steps[current];
-
   return (
     <div className={styles.workflowViewWrapper}>
       <div className={styles.backButton}>{renderNavigationControls().backButton()}</div>
@@ -28,6 +26,7 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
       <div className={styles.stepsAction}>
         <div className={styles.doneButton}>{renderNavigationControls().doneButton()}</div>
         <div className={styles.nextButton}>{renderNavigationControls().nextButton()}</div>
+        <div className={styles.importMoreButton}>{renderNavigationControls().importMoreButton()}</div>
       </div>
     </div>
   );
