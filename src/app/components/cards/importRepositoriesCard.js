@@ -1,6 +1,7 @@
 import React from "react";
+import {VersionControlIcon} from "../misc/customIcons";
 import {Launcher} from "./launcher/launcherCard";
-import {VersionControlIcon} from "./launcher/versionControlIcon"
+
 export const ImportRepositoriesCard = ({onClick, title, style, compact, completed}) => (
     <Launcher
       onClick={onClick}

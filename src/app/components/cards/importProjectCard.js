@@ -1,6 +1,6 @@
 import React from "react";
+import {WorkTrackingIcon} from "../misc/customIcons";
 import {Launcher} from "./launcher/launcherCard";
-import {WorkTrackingIcon} from "./launcher/workTrackingIcon"
 
 export const ImportProjectsCard = ({onClick, title, style, compact, completed}) => (
 
