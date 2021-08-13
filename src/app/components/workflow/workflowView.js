@@ -1,7 +1,7 @@
 import React from 'react';
-import {Flex} from "reflexbox";
 import {Steps} from "antd";
 import './steps.css';
+import styles from "./workflowView.module.css";
 import {CheckCircleStepIcon} from "../misc/customIcons";
 
 const {Step} = Steps;
@@ -10,8 +10,8 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
   const currentStep = steps[current];
 
   return (
-    <Flex column style={{height: "100%", width: "100%"}}>
-      <Flex column h={0.15}>
+    <div className={styles.workflowViewWrapper}>
+      <div className={styles.stepsWrapper}>
         <h2>{title}</h2>
         <Steps current={current}>
           {steps.map((item, index) => (
@@ -23,17 +23,17 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
           ))}
         </Steps>
 
-      </Flex>
-      <Flex h={0.10} justify='center' pt={'10px'} className="steps-action">
-        {
-          React.createElement(renderNavigationControls, {current, currentStep})
-        }
-      </Flex>
-      <Flex column h={0.75} className="steps-content">
+      </div>
+      <div className={styles.stepsContent}>
         {
           React.createElement(steps[current].content, stepProps)
         }
-      </Flex>
-    </Flex>
+      </div>
+      <div className={styles.stepsAction}>
+        {
+          React.createElement(renderNavigationControls, {current, currentStep})
+        }
+      </div>
+    </div>
   )
 }

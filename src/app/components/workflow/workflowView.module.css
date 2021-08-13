@@ -1,0 +1,23 @@
+.workflowViewWrapper{
+    background-color: white;
+    display: grid;
+    grid-template-columns: 50px auto 50px;
+    grid-template-areas: ". stepsWrapper ."
+    ". stepsContent ."
+    ". stepsAction .";
+    gap: 0.5rem;
+    min-height: 75vh;
+}
+
+.stepsWrapper{
+    text-align: center;
+    grid-area: stepsWrapper;
+}
+
+.stepsContent{
+    grid-area: stepsContent;
+}
+
+.stepsAction{
+    grid-area: stepsAction;
+}
