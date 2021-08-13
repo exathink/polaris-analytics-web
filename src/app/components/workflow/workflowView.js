@@ -11,29 +11,24 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
 
   return (
     <div className={styles.workflowViewWrapper}>
+      <div className={styles.backButton}>{renderNavigationControls().backButton()}</div>
       <div className={styles.stepsWrapper}>
-        <h2>{title}</h2>
         <Steps current={current}>
           {steps.map((item, index) => (
-            <Step key={index}
-                  style={index > current ? {} : {}}
-                  title={item.title}
-                  icon={<CheckCircleStepIcon index={index} current={current} />}
+            <Step
+              key={index}
+              title={item.title}
+              icon={<CheckCircleStepIcon index={index} current={current} />}
             />
           ))}
         </Steps>
-
+        <h2 className={styles.workflowTitle}>{title}</h2>
       </div>
-      <div className={styles.stepsContent}>
-        {
-          React.createElement(steps[current].content, stepProps)
-        }
-      </div>
+      <div className={styles.stepsContent}>{React.createElement(steps[current].content, stepProps)}</div>
       <div className={styles.stepsAction}>
-        {
-          React.createElement(renderNavigationControls, {current, currentStep})
-        }
+        <div className={styles.doneButton}>{renderNavigationControls().doneButton()}</div>
+        <div className={styles.nextButton}>{renderNavigationControls().nextButton()}</div>
       </div>
     </div>
-  )
+  );
 }

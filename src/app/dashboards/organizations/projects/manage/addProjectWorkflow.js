@@ -12,6 +12,7 @@ import {withNavigationContext} from "../../../../framework/navigation/components
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import {BackArrowIcon} from "../../../../components/misc/customIcons";
 
 function getSteps({connectorType}) {
   const steps = [
@@ -182,27 +183,31 @@ export const AddProjectWorkflow = withViewerContext(withNavigationContext(
             title={"Connect Remote Projects"}
             steps={steps}
             current={current}
-            renderNavigationControls={
-              () => (
-                <React.Fragment>
-                  {
-                    <WorkflowActionButton onClick={() => onDone && onDone(this.state.selectedProjects)}>
-                      Done
-                    </WorkflowActionButton>
-                  }
-                  {current > 0 && (
+            renderNavigationControls={() => {
+              return {
+                doneButton: () => (
+                  <WorkflowActionButton onClick={() => onDone && onDone(this.state.selectedProjects)} type="secondary">
+                    Done
+                  </WorkflowActionButton>
+                ),
+                backButton: () =>
+                  current > 0 &&
+                  (current < 4 ? (
+                    <BackArrowIcon onClick={() => this.prev()} />
+                  ) : (
                     <WorkflowActionButton onClick={() => this.prev()}>
-                      {current < 4 ? 'Back' : `Import More ${getConnectorTypeProjectName(connectorType, true)}`}
+                      {`Import More ${getConnectorTypeProjectName(connectorType, true)}`}
                     </WorkflowActionButton>
-                  )}
-                  {currentStep.showNext && current < steps.length - 1 && (
-                    <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
+                  )),
+                nextButton: () =>
+                  currentStep.showNext &&
+                  current < steps.length - 1 && (
+                    <WorkflowActionButton disabled={disableNext} onClick={() => this.next()} type="primary">
                       Next
                     </WorkflowActionButton>
-                  )}
-                </React.Fragment>
-              )
-            }
+                  ),
+              };
+            }}
             stepProps={{
               onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),
               selectedConnectorType: this.state.selectedConnectorType,
