@@ -54,21 +54,22 @@ export const ConnectorsTable = (
                 (text, record) => {
                   return (
                     <ButtonBar>
-                      <Button
-                        size={"small"}
-                        type={'primary'}
-                        onClick={() => onConnectorSelected(record)}
-                        disabled={record.state !== 'enabled'}
-                      >
-                        Select
-                      </Button>
                       <DeleteConfirmationModalButton
                         connectorType={connectorType}
                         record={record}
                         onConnectorDeleted={onConnectorDeleted}
                       />
+                      <Button
+                        size={"small"}
+                        type={"primary"}
+                        onClick={() => onConnectorSelected(record)}
+                        disabled={record.state !== "enabled"}
+                        style={{marginLeft: "30px"}}
+                      >
+                        Select
+                      </Button>
                     </ButtonBar>
-                  )
+                  );
                 }
               }
             />

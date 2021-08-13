@@ -3,7 +3,7 @@ import {Query} from "@apollo/client/react/components"
 import React from 'react';
 
 import {Modal} from 'antd';
-import Button from "../../../../components/uielements/button";
+import {DeleteIcon} from "../../misc/customIcons";
 
 function disableDelete(connectorType, connector) {
   const state = connector.state;
@@ -100,17 +100,15 @@ export class DeleteConfirmationModalButton extends React.Component {
 
   render() {
     const {record, connectorType, onConnectorDeleted} = this.props;
-
+    
     return (
       <React.Fragment>
-        <Button
-          size={"small"}
-          type={'primary'}
+        <DeleteIcon
           onClick={this.showModal.bind(this)}
           disabled={disableDelete(connectorType, record)}
         >
           Delete
-        </Button>
+        </DeleteIcon>
         {
           this.state.modal &&
             <DeleteConfirmationModal
