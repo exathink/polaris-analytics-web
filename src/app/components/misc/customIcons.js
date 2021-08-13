@@ -2,9 +2,11 @@ import Icon from "@ant-design/icons";
 import {CheckCircleFilled} from "@ant-design/icons";
 
 export function CheckCircleStepIcon({index, current}) {
-  return <CheckCircleFilled
-    style={{fontSize: "22px", color: index > current ? "#B0B0B0" : index === current ? "#4482FF" : "#1A2842"}}
-  />;
+  return (
+    <CheckCircleFilled
+      style={{fontSize: "22px", color: index > current ? "#B0B0B0" : index === current ? "#4482FF" : "#1A2842"}}
+    />
+  );
 }
 
 const VersionControlSVG = () => (
@@ -28,3 +30,14 @@ const workTrackingSVG = () => (
 );
 
 export const WorkTrackingIcon = (props) => <Icon component={workTrackingSVG} {...props} />;
+
+const backArrowSVG = () => (
+  <svg width="31" height="26" viewBox="0 0 31 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 12.584C0 12.999 0.182617 13.3809 0.514648 13.6963L11.5381 24.7031C11.8701 25.0186 12.2188 25.168 12.6172 25.168C13.4307 25.168 14.0781 24.5703 14.0781 23.7402C14.0781 23.3418 13.9287 22.9434 13.6631 22.6943L9.94434 18.9092L4.34961 13.8125L8.36719 14.0615H29.3682C30.2314 14.0615 30.8291 13.4473 30.8291 12.584C30.8291 11.7207 30.2314 11.1064 29.3682 11.1064H8.36719L4.36621 11.3555L9.94434 6.25879L13.6631 2.47363C13.9287 2.20801 14.0781 1.82617 14.0781 1.42773C14.0781 0.597656 13.4307 0 12.6172 0C12.2188 0 11.8701 0.132812 11.5049 0.498047L0.514648 11.4717C0.182617 11.7871 0 12.1689 0 12.584Z"
+      fill="#1A2842"
+    />
+  </svg>
+);
+
+export const BackArrowIcon = (props) => <Icon component={backArrowSVG} {...props} />;
