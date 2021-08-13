@@ -35,7 +35,7 @@ export function Launcher({onClick, title, description, icon, completed}) {
         <div className={classNames("title", fontStyles["text-2xl"], fontStyles["font-medium"])}>{title}</div>
         <div className={classNames("subTitle", fontStyles["text-lg"], fontStyles["font-normal"])}>{description}</div>
       </div>
-      <div className={classNames({launcherCheck: !completed, launcherCheckDisabled: completed})} onClick={completed ? undefined: onClick}>
+      <div className="launcherCheck" onClick={onClick}>
         <CheckCircleFilled style={{fontSize: "48px", color: completed ? Colors.Steps.completed: Colors.Steps.pending}} />
       </div>
     </div>
