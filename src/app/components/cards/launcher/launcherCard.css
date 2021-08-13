@@ -11,6 +11,8 @@
   align-items: center;
   background-color: white;
   padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   border-radius: 10px;
   margin-top: 25px;
   box-shadow: 0px 26px 52px rgba(0, 0, 0, 0.05);
