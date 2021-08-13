@@ -2,6 +2,7 @@ import React from 'react';
 import {Flex} from "reflexbox";
 import {Steps} from "antd";
 import './steps.css';
+import {CheckCircleStepIcon} from "../misc/customIcons";
 
 const {Step} = Steps;
 
@@ -15,8 +16,9 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
         <Steps current={current}>
           {steps.map((item, index) => (
             <Step key={index}
-                  style={index > current ? {display: 'none'} : {}}
+                  style={index > current ? {} : {}}
                   title={item.title}
+                  icon={<CheckCircleStepIcon index={index} current={current} />}
             />
           ))}
         </Steps>
