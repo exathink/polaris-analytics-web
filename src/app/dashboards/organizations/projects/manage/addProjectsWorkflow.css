@@ -2,3 +2,8 @@
     margin-top: 10px;
     margin-bottom: 30px;
 }
+
+.select-connector .ant-avatar-image{
+    width: 63px;
+    height: 63px;
+}

@@ -1,7 +1,8 @@
 import React from "react";
 import {Row, Col, Card, Avatar} from "antd";
 import {TRELLO_CONNECTOR} from "../../../../../config/featureFlags";
-
+import "./addProjectsWorkflow.css";
+import Button from "../../../../../components/uielements/button";
 const {Meta} = Card;
 
 export class SelectIntegrationStep extends React.Component {
@@ -22,6 +23,7 @@ export class SelectIntegrationStep extends React.Component {
                   title="Jira"
                   description="Import Projects and Issues"
                 />
+                <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
             </Col>
             <Col span={8}>
@@ -34,6 +36,7 @@ export class SelectIntegrationStep extends React.Component {
                   title="Github"
                   description="Import Repository Issues"
                 />
+                <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
             </Col>
             <Col span={8}>
@@ -46,6 +49,7 @@ export class SelectIntegrationStep extends React.Component {
                   title="Pivotal Tracker"
                   description="Import Projects and Stories"
                 />
+                <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
             </Col>
           </Row>
@@ -62,6 +66,7 @@ export class SelectIntegrationStep extends React.Component {
                   title="GitLab"
                   description="Import Projects and Issues"
                 />
+                <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
             </Col>
             {
@@ -76,6 +81,7 @@ export class SelectIntegrationStep extends React.Component {
                       title="Trello"
                       description="Import Boards and Cards"
                     />
+                    <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
                   </Card>
                 </Col>
                 :
