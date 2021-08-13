@@ -58,7 +58,7 @@ const InitialSetupText = ({organization}) => (
 const SetupProjectsText = ({organization}) => (
   <React.Fragment>
     <h1 className={fontStyles["text-2xl"]}>Connect Work Tracking System for {organization.name}</h1>
-    <p className={classNames(fontStyles["font-normal"], fontStyles(["text-base"]))}>
+    <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
       Congratulations! You have completed the version control system setup for {organization.name}.
       Now let's finish by completing the work tracking system setup.
     </p>
