@@ -1,16 +1,27 @@
 // GraphQL Client Setup
 import React from "react";
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache} from "@apollo/client";
 
 import analyticsFragmentTypes from "../../../config/graphql/analyticsFragmentTypes.json";
 import workTrackingFragmentTypes from "../../../config/graphql/workTrackingFragmentTypes.json";
 import vcsFragmentTypes from "../../../config/graphql/vcsFragmentTypes.json";
-
+import {onError} from "@apollo/client/link/error";
 import {GRAPHQL_ANALYTICS_URL, GRAPHQL_WORK_TRACKING_URL, GRAPHQL_VCS_URL} from "../../../config/url";
 
 export const defaultPollInterval = (service) => {
   return 0;
 };
+
+function logout() {
+  window.location.replace("/logout");
+}
+
+const logoutLink = onError(({networkError}) => {
+  if (networkError?.response?.type === "opaqueredirect") {
+    logout();
+  }
+});
+const httpLink = new HttpLink({uri: GRAPHQL_ANALYTICS_URL, credentials: "include", fetchOptions: {redirect: "manual"}});
 
 /**
  *  TODO:
@@ -22,6 +33,7 @@ const analyticsPossibleTypes = analyticsFragmentTypes.__schema.types.reduce((acc
   return acc;
 }, {});
 export const analytics_service = new ApolloClient({
+  link: from([logoutLink, httpLink]),
   cache: new InMemoryCache({
     possibleTypes: analyticsPossibleTypes,
   }),
@@ -41,7 +53,7 @@ export const work_tracking_service = new ApolloClient({
   uri: GRAPHQL_WORK_TRACKING_URL,
   credentials: "include",
 });
-analytics_service.defaultPollInterval = () => defaultPollInterval(work_tracking_service);
+work_tracking_service.defaultPollInterval = () => defaultPollInterval(work_tracking_service);
 
 const vcsPossibleTypes = vcsFragmentTypes.__schema.types.reduce((acc, item) => {
   acc[item.name] = item.possibleTypes.map((x) => x.name);
