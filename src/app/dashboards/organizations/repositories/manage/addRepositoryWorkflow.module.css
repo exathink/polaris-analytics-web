@@ -24,6 +24,7 @@
 }
 
 .selectRepositoryControls{
+    margin-top: 1rem;
     display: grid;
     grid-template-columns: auto auto 1fr auto auto auto;
     grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports";

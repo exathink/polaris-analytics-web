@@ -14,7 +14,6 @@ import {EditConnectorFormButton} from "../../../../components/workflow/connector
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
-import "./addProjectsWorkflow.css";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
 import styles from "./selectProjectsStep.module.css";
 import classNames from "classnames";
@@ -167,8 +166,10 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h5 className={classNames("flex-center", fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
-                    <h3 className="flex-center">Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <div className={styles["flex-center"]}>
+                      <h3 className={styles["titleCenter"]}>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    </div>
                     <div className={styles.selectProjectControls}>
                       <h4 className={styles.availableProjects}>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
                       <div className={styles.fetchProjects}>
