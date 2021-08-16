@@ -29,13 +29,13 @@ export const LauncherCard = ({onClick, title, description, cover, style, iconTyp
 
 export function Launcher({onClick, title, description, icon, completed}) {
   return (
-    <div className="launcherWrapper">
+    <div className="launcherWrapper" onClick={onClick}>
       <div className="launcherIcon">{icon}</div>
       <div className="launcherTitleWrapper">
         <div className={classNames("title", fontStyles["text-2xl"], fontStyles["font-medium"])}>{title}</div>
         <div className={classNames("subTitle", fontStyles["text-lg"], fontStyles["font-normal"])}>{description}</div>
       </div>
-      <div className="launcherCheck" onClick={onClick}>
+      <div className="launcherCheck">
         <CheckCircleFilled style={{fontSize: "48px", color: completed ? Colors.Steps.completed: Colors.Steps.pending}} />
       </div>
     </div>
