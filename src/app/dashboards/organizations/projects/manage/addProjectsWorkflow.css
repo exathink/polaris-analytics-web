@@ -7,3 +7,7 @@
     width: 63px;
     height: 63px;
 }
+
+.select-connector .ant-card{
+    border-radius: 10px;
+}
