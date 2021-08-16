@@ -1,0 +1,8 @@
+.selectConnector :global(.ant-avatar-image){
+    width: 63px;
+    height: 63px;
+}
+
+.selectConnector :global(.ant-card-body .ant-btn-secondary){
+    margin-left: 30%;
+}
