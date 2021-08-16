@@ -154,7 +154,7 @@ export const SelectRepositoriesStep =
                       <h4 className={styles.availableRepos}>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
                       <div className={styles.refreshRepos}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           size={'small'}
                           icon={<DownloadOutlined />}
                           onClick={
@@ -241,7 +241,7 @@ export const SelectRepositoriesStep =
                         :
                         <NoData message={"No new repositories to import"} />
                     }
-                    </div>
+                    </div> 
                   </div>
 
                 )

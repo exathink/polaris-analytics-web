@@ -26,8 +26,7 @@
 .selectRepositoryControls{
     display: grid;
     grid-template-columns: auto auto 1fr auto auto auto;
-    grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports"
-    "selectReposTable selectReposTable selectReposTable selectReposTable selectReposTable selectReposTable";
+    grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports";
 }
 .availableRepos{
     grid-area: availableRepos;
@@ -51,5 +50,5 @@
     justify-self: flex-end;
 }
 .selectReposTable{
-    grid-area: selectReposTable;
+    margin-top: 1rem;
 }
