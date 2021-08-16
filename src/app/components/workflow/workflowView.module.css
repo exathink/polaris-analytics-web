@@ -22,6 +22,7 @@
 }
 
 .stepsAction{
+    margin-top: 2rem;
     grid-area: stepsAction;
     display: flex;
 }
