@@ -11,9 +11,9 @@ export class SelectIntegrationStep extends React.Component {
 
     return (
       <div className={'select-connector'}>
-        <div style={{padding: '30px'}}>
-          <Row gutter={16}>
-            <Col span={8}>
+        <div className={"select-connector-cards"}>
+          
+            
               <Card hoverable={true} bordered={true} style={{width: 300, marginTop: 16}}
                     onClick={() => this.props.onConnectorTypeSelected('jira')}>
                 <Meta
@@ -25,8 +25,8 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
-            <Col span={8}>
+            
+            
               <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
                     onClick={() => this.props.onConnectorTypeSelected('github')}>
                 <Meta
@@ -38,8 +38,8 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
-            <Col span={8}>
+            
+            
               <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
                     onClick={() => this.props.onConnectorTypeSelected('pivotal')}>
                 <Meta
@@ -51,10 +51,10 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={8}>
+            
+          
+          
+            
               <Card
                 bordered={true}
                 hoverable={true}
@@ -68,10 +68,10 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
+            
             {
               viewerContext.isFeatureFlagActive(TRELLO_CONNECTOR) ?
-                <Col span={8}>
+                
                   <Card bordered={true} hoverable={true} style={{width: 300, marginTop: 16}}
                         onClick={() => this.props.onConnectorTypeSelected('trello')}>
                     <Meta
@@ -83,11 +83,11 @@ export class SelectIntegrationStep extends React.Component {
                     />
                     <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
                   </Card>
-                </Col>
+                
                 :
                 null
             }
-          </Row>
+          
         </div>
       </div>
     )

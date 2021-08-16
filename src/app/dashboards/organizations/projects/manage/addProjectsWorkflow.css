@@ -11,3 +11,9 @@
 .select-connector .ant-card{
     border-radius: 10px;
 }
+
+.select-connector-cards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+}
