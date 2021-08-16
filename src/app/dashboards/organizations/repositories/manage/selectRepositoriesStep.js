@@ -14,6 +14,9 @@ import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import classNames from "classnames";
+import fontStyles from "../../../../framework/styles/fonts.module.css";
+import styles from "./addRepositoryWorkflow.module.css";
 
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: vcs_service};
 
@@ -144,9 +147,10 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div style={{height: "100%"}} className={'selected-repositories'}>
-                    <h3>Select repositories to import from connector {selectedConnector.name}</h3>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <h3 className={styles["flex-center"]}>Select repositories to import from connector {selectedConnector.name}</h3>
                     <h4>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
-                    <h5>{getServerUrl(selectedConnector)}</h5>
+                    
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>

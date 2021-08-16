@@ -16,3 +16,9 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 22px;
 }
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
