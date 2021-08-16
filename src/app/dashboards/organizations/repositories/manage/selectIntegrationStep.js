@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, Card, Col, Row} from "antd";
+import {Avatar, Card} from "antd";
 import Button from "../../../../../components/uielements/button";
 import styles from "./addRepositoryWorkflow.module.css";
 
@@ -11,9 +11,9 @@ export class SelectIntegrationStep extends React.Component {
   render() {
     return (
       <div className={styles.selectConnector}>
-        <div style={{padding: "30px"}}>
-          <Row gutter={16}>
-            <Col span={8}>
+        <div className={styles.selectConnectorCards}>
+          
+            
               <Card
                 bordered={true}
                 hoverable={true}
@@ -27,9 +27,9 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
+            
 
-            <Col span={8}>
+            
               <Card
                 bordered={true}
                 hoverable={true}
@@ -43,9 +43,9 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
+            
 
-            <Col span={8}>
+            
               <Card
                 bordered={true}
                 hoverable={true}
@@ -59,8 +59,8 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Install</Button>
               </Card>
-            </Col>
-          </Row>
+            
+          
         </div>
       </div>
     );

@@ -6,3 +6,13 @@
 .selectConnector :global(.ant-card-body .ant-btn-secondary){
     margin-left: 30%;
 }
+
+.selectConnector :global(.ant-card){
+    border-radius: 10px;
+}
+
+.selectConnectorCards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+}

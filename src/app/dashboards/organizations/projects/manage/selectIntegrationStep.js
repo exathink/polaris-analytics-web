@@ -1,5 +1,5 @@
 import React from "react";
-import {Row, Col, Card, Avatar} from "antd";
+import {Card, Avatar} from "antd";
 import {TRELLO_CONNECTOR} from "../../../../../config/featureFlags";
 import "./addProjectsWorkflow.css";
 import Button from "../../../../../components/uielements/button";
