@@ -15,6 +15,9 @@ import {EditConnectorFormButton} from "../../../../components/workflow/connector
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
 import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import "./addProjectsWorkflow.css";
+import fontStyles from "../../../../framework/styles/fonts.module.css";
+import classNames from "classnames";
 
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
 
@@ -164,9 +167,9 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
-                    <h5>{getServerUrl(selectedConnector)}</h5>
+                    <h5 className={classNames("flex-center", fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <h3 className="flex-center">Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>           
                     <ButtonBar>
                       <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'center'}>
