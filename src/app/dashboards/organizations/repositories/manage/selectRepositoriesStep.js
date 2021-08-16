@@ -3,7 +3,6 @@ import {Query} from "@apollo/client/react/components"
 import React from 'react';
 
 import Button from "../../../../../components/uielements/button";
-import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
@@ -149,11 +148,11 @@ export const SelectRepositoriesStep =
                   <div style={{height: "100%"}} className={'selected-repositories'}>
                     <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
                     <h3 className={styles["flex-center"]}>Select repositories to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
                     
-                    <ButtonBar>
-                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'center'}>
+                    
+                    <div className={styles.selectRepositoryControls}>
+                      <h4 className={styles.availableRepos}>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
+                      <div className={styles.refreshRepos}>
                         <Button
                           type={'primary'}
                           size={'small'}
@@ -168,8 +167,9 @@ export const SelectRepositoriesStep =
                         >
                           Refresh Available Repositories
                     </Button>
-                      </ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'right'}>
+                      </div>
+                      <div className={styles.testConnector}>
+
                         <Button
                           type={'secondary'}
                           icon={<CheckOutlined />}
@@ -186,6 +186,9 @@ export const SelectRepositoriesStep =
                         >
                           {'Test Connector'}
                         </Button>
+                      </div>
+                      <div className={styles.editConnector}>
+
                         <EditConnectorFormButton
                           connectorType={selectedConnectorType}
                           connector={selectedConnector}
@@ -212,6 +215,9 @@ export const SelectRepositoriesStep =
                           error={editConnectorResult.error}
                           lastSubmission={lastSubmission}
                         />
+                      </div>
+                      <div className={styles.activeImports}>
+
                         <Button
                           type={'primary'}
                           size={'small'}
@@ -220,8 +226,10 @@ export const SelectRepositoriesStep =
                         >
                          <DownloadOutlined /> Active Imports
                         </Button>
-                      </ButtonBarColumn>
-                    </ButtonBar>
+                      </div>
+                     
+                    </div>
+                    <div className={styles.selectReposTable}>
                     {
                       repositories.length > 0 ?
                         <SelectRepositoriesTable
@@ -233,6 +241,7 @@ export const SelectRepositoriesStep =
                         :
                         <NoData message={"No new repositories to import"} />
                     }
+                    </div>
                   </div>
 
                 )

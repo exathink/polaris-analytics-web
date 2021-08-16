@@ -22,3 +22,34 @@
     justify-content: center;
     align-items: center;
 }
+
+.selectRepositoryControls{
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto auto;
+    grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports"
+    "selectReposTable selectReposTable selectReposTable selectReposTable selectReposTable selectReposTable";
+}
+.availableRepos{
+    grid-area: availableRepos;
+}
+.refreshRepos{
+    grid-area: refreshRepos;
+    margin-left: 0.5rem;
+}
+.testConnector{
+    grid-area: testConnector;
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+}
+.editConnector{
+   grid-area: editConnector;
+   justify-self: flex-end;
+   margin-right: 0.5rem;
+}
+.activeImports{
+    grid-area: activeImports;
+    justify-self: flex-end;
+}
+.selectReposTable{
+    grid-area: selectReposTable;
+}
