@@ -171,7 +171,7 @@ export const SelectRepositoriesStep =
                       </ButtonBarColumn>
                       <ButtonBarColumn span={8} alignButton={'right'}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           icon={<CheckOutlined />}
                           size={'small'}
                           disabled={selectedConnector.state !== 'enabled'}
@@ -214,12 +214,11 @@ export const SelectRepositoriesStep =
                         />
                         <Button
                           type={'primary'}
-                          icon={'import'}
                           size={'small'}
                           disabled={selectedRepositories.length}
                           onClick={getActiveImports}
                         >
-                          {'Active Imports'}
+                         <DownloadOutlined /> Active Imports
                         </Button>
                       </ButtonBarColumn>
                     </ButtonBar>
