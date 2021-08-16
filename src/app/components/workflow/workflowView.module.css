@@ -6,7 +6,6 @@
     ". stepsContent ."
     ". stepsAction .";
     gap: 0.5rem;
-    min-height: 75vh;
 }
 
 .stepsWrapper{
