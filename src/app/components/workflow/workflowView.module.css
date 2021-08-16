@@ -1,5 +1,4 @@
 .workflowViewWrapper{
-    background-color: white;
     display: grid;
     grid-template-columns: 100px auto 100px;
     grid-template-areas: "backButton stepsWrapper ."
