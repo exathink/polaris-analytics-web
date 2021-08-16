@@ -1,0 +1,25 @@
+.selectProjectControls{
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto auto;
+    grid-template-areas: "availableProjects fetchProjects . editConnector testConnector";
+}
+.availableProjects{
+    grid-area: availableProjects;
+}
+.fetchProjects{
+    grid-area: fetchProjects;
+    margin-left: 0.5rem;
+}
+.testConnector{
+    grid-area: testConnector;
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+}
+.editConnector{
+   grid-area: editConnector;
+   justify-self: flex-end;
+   margin-right: 0.5rem;
+}
+.selectProjectsTable{
+    margin-top: 1rem;
+}
