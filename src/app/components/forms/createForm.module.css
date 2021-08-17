@@ -1,0 +1,4 @@
+.iconOnlyButton :global(.ant-btn-secondary) {
+  border: none;
+  background-color: transparent;
+}

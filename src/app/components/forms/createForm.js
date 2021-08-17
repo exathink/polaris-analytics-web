@@ -5,6 +5,7 @@ import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Drawer, notification } from "antd";
 import {display_error} from "../../helpers/utility";
+import styles from "./createForm.module.css";
 
 function withForm(FormFields, options) {
   const title = options.title
@@ -19,7 +20,7 @@ function withForm(FormFields, options) {
   const buttonSize = options.buttonSize || 'default'
   const noPlus = options.noPlus || false
   const drawerButtonIcon = options.icon
-
+  const isIconOnly = options.buttonType === "iconOnly";
   const FormBody = (
     {
       part,
@@ -197,9 +198,19 @@ function withForm(FormFields, options) {
       const disabled = this.props.enabled != null && !this.props.enabled
       return drawer ?
         <React.Fragment>
-          <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
-            {drawerButtonIcon || noPlus || <PlusOutlined />}{this.props.title || drawerButtonTitle}
-          </Button>
+          {!isIconOnly && (
+            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled}>
+              {drawerButtonIcon || noPlus || <PlusOutlined />}
+              {this.props.title || drawerButtonTitle}
+            </Button>
+          )}
+          {isIconOnly && (
+            <div className={styles.iconOnlyButton}>
+              <Button size={buttonSize} type="secondary" onClick={this.show.bind(this)} disabled={disabled}>
+                {drawerButtonIcon}
+              </Button>
+            </div>
+          )}
           <Drawer
             title={this.props.title || partProps.title || title}
             width={720}
