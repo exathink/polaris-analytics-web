@@ -6,6 +6,7 @@
 }
 .availableProjects {
   grid-area: availableProjects;
+  align-self: center;
 }
 .fetchProjects {
   grid-area: fetchProjects;
@@ -19,7 +20,8 @@
 .editConnector {
   grid-area: editConnector;
   justify-self: flex-end;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
+  align-self: center;
 }
 .selectProjectsTable {
   margin-top: 1rem;

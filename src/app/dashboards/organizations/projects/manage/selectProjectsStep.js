@@ -12,11 +12,12 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import {CheckOutlined} from "@ant-design/icons";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
 import styles from "./selectProjectsStep.module.css";
 import classNames from "classnames";
+import {DownloadIcon} from "../../../../components/misc/customIcons";
 
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
 
@@ -176,7 +177,7 @@ export const SelectProjectsStep =
                         <Button
                           type={'secondary'}
                           size={'small'}
-                          icon={<DownloadOutlined />}
+                          icon={<DownloadIcon />}
                           onClick={
                             () => refetchProjects({
                               variables: {
@@ -190,9 +191,9 @@ export const SelectProjectsStep =
                       </div>
                       <div className={styles.testConnector}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           icon={<CheckOutlined />}
-                          size={'small'}
+                          size={'medium'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={
                             () => testConnector({
