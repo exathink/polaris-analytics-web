@@ -222,13 +222,18 @@ export class ConfigureImportStep extends React.Component {
             connectorType={connectorType}
           />
         }
-        <Button
-          type={'primary'}
-          onClick={
-            () => this.doImport(importMode, this.state.selectedProjects)
-          }
-          disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
-          >Import {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true) : getConnectorTypeProjectName(connectorType)}</Button>
+        <div style={{marginTop: "2rem"}}>
+          <Button
+            type={"primary"}
+            onClick={() => this.doImport(importMode, this.state.selectedProjects)}
+            disabled={this.state.importMode === "existing" && this.state.selectedProjectKey === null}
+          >
+            Import{" "}
+            {selectedProjects.length > 1
+              ? getConnectorTypeProjectName(connectorType, true)
+              : getConnectorTypeProjectName(connectorType)}
+          </Button>
+        </div>
       </div>
     )
   }

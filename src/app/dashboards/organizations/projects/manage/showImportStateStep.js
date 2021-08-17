@@ -97,13 +97,15 @@ export const ShowImportStateStep = (
           return (
             workItemsSources.length > 0 ? (
               <div className={'show-import-state'}>
-                <Progress
-                  type={'circle'}
-                  percent={Math.ceil((numImported / workItemsSources.length) * 100)}
-                  format={
-                    () => `${numImported}/${workItemsSources.length}`
-                  }
-                />
+                <div style={{display: "flex", justifyContent: "center", marginBottom: "1rem"}}>
+                  <Progress
+                    type={'circle'}
+                    percent={Math.ceil((numImported / workItemsSources.length) * 100)}
+                    format={
+                      () => `${numImported}/${workItemsSources.length}`
+                    }
+                  />
+                </div>
                 <CompactTable
                   size="small"
                   dataSource={workItemsSources}

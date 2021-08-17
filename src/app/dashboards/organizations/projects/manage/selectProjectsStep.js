@@ -250,7 +250,7 @@ export const SelectProjectsStep =
                           connectorType={connectorType}
                         />
                         :
-                        <NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} />
+                        <div style={{display: "flex", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}><NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} /></div>
                     }
 
                     </div>
