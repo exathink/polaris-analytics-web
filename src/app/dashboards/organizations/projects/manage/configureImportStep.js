@@ -191,30 +191,34 @@ export class ConfigureImportStep extends React.Component {
             organizationKey={organizationKey}
           />
         }
-        {
-          importMode === 'single' &&
-          <ProjectSetupForm
-            importMode={importMode}
-            selectedProjects={selectedProjects}
-            importedProjectName={importedProjectName}
-            handleSave={this.onSave.bind(this)}
-            onProjectNameChanged={this.onProjectNameChanged.bind(this)}
-            onProjectsSelected={onProjectsSelected}
-            connectorType={connectorType}
-          />
-        }
-        {
-          importMode === 'existing' &&
-          <ProjectSetupForm
-            importMode={importMode}
-            organizationKey={organizationKey}
-            selectedProjects={selectedProjects}
-            selectedProjectKey={this.state.selectedProjectKey}
-            onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
-            onProjectsSelected={onProjectsSelected}
-            connectorType={connectorType}
-          />
-        }
+        <div className={styles.projectSetupForm}>
+          {
+            importMode === 'single' &&
+            <ProjectSetupForm
+              importMode={importMode}
+              selectedProjects={selectedProjects}
+              importedProjectName={importedProjectName}
+              handleSave={this.onSave.bind(this)}
+              onProjectNameChanged={this.onProjectNameChanged.bind(this)}
+              onProjectsSelected={onProjectsSelected}
+              connectorType={connectorType}
+            />
+          }
+        </div>
+        <div  className={styles.projectSetupForm}>
+          {
+            importMode === 'existing' &&
+            <ProjectSetupForm
+              importMode={importMode}
+              organizationKey={organizationKey}
+              selectedProjects={selectedProjects}
+              selectedProjectKey={this.state.selectedProjectKey}
+              onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
+              onProjectsSelected={onProjectsSelected}
+              connectorType={connectorType}
+            />
+          }
+        </div>
         {
           importMode === 'separate' &&
           <SeparateModeImport

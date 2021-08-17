@@ -44,14 +44,14 @@ export class OrganizationProjectSelectorWidget extends React.Component {
             return (
               projects.length > 0 && (
                 <React.Fragment>
-                  <Flex style={{paddingTop: '10px', paddingBottom: '8px' ,justifyContent: 'center', alignContent: 'center'}}>
-                    <span style={{fontSize: '14px', fontWeight: '800' , alignSelf: 'center', paddingRight: '10px'}}>Select Existing Value Stream: </span>
+                  <Flex style={{flexDirection: "column", paddingTop: '10px', paddingBottom: '8px' , alignContent: 'center'}}>
+                    <div style={{fontSize: '14px', fontWeight: '500' , paddingRight: '10px'}}>Select Existing Value Stream: </div>
                     <Select
                       className={'projects-selector'}
                       onChange={value => this.props.onProjectSelectChanged(value)}
                       placeholder={placeholder}
                       defaultValue={selectedProjectKey}
-                      style={{alignSelf: 'center'}}
+                      style={{width: 185}}
                     >
                       {projects.map(project =>
                         <Option key={project.node.key}

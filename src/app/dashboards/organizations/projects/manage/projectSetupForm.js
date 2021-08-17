@@ -74,7 +74,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             label={"Select existing Value Stream"}
           />
         }
-        <React.Fragment>
+        <div style={{marginTop: "1rem"}}>
           <EditableTable
             dataSource={selectedProjects}
             columns={[
@@ -104,7 +104,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             }}
             rowSelection={useSelectionHandler(onProjectsSelected, selectedProjects)}
           />
-        </React.Fragment>
+        </div>
       </div>
     </React.Fragment>
   )
