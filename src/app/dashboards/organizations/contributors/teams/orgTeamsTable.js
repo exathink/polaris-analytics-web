@@ -165,6 +165,7 @@ function getTransformedData(tableData, intl) {
       const currentCycleMetrics = team.cycleMetricsTrends[0];
 
       return (
+        currentCycleMetrics != null ?
         {
           ...team,
           leadTime: getNumber(currentCycleMetrics.avgLeadTime, intl),
@@ -175,6 +176,17 @@ function getTransformedData(tableData, intl) {
           volume: getNumber(currentCycleMetrics.workItemsInScope/(team.contributorCount||1), intl),
           effortOut: getNumber(currentCycleMetrics.totalEffort/(team.contributorCount||1), intl)
         }
+        :
+          {
+            ...team,
+          leadTime: 'N/A',
+          cycleTime:'N/A',
+          implementation: 'N/A',
+          effort: 'N/A',
+          delivery: 'N/A',
+          volume: 'N/A',
+          effortOut: 'N/A'
+          }
       )
     }
   )
