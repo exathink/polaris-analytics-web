@@ -63,3 +63,14 @@ const downLoadIconSVG = () => (
 );
 
 export const DownloadIcon = (props) => <Icon component={downLoadIconSVG} {...props} />;
+
+const editIconSVG = () => (
+  <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M18.5156 4.99609L19.793 3.73047C20.4258 3.09766 20.4492 2.40625 19.875 1.82031L19.418 1.35156C18.8438 0.777344 18.1289 0.835938 17.5078 1.45703L16.2305 2.71094L18.5156 4.99609ZM4.16016 19.3281L17.3906 6.09766L15.1172 3.83594L1.88672 17.043L0.738281 19.8086C0.609375 20.1602 0.972656 20.5469 1.32422 20.418L4.16016 19.3281Z"
+      fill="#2E3445"
+    />
+  </svg>
+);
+
+export const EditIcon = (props) => <Icon component={editIconSVG} {...props} />;
