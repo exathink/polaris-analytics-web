@@ -12,11 +12,11 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import {CheckOutlined} from "@ant-design/icons";
 import classNames from "classnames";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
 import styles from "./addRepositoryWorkflow.module.css";
-
+import {DownloadIcon} from "../../../../components/misc/customIcons";
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: vcs_service};
 
 function getServerUrl(selectedConnector) {
@@ -156,7 +156,7 @@ export const SelectRepositoriesStep =
                         <Button
                           type={'secondary'}
                           size={'small'}
-                          icon={<DownloadOutlined />}
+                          icon={<DownloadIcon />}
                           onClick={
                             () => refetchRepositories({
                               variables: {
@@ -219,12 +219,12 @@ export const SelectRepositoriesStep =
                       <div className={styles.activeImports}>
 
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           size={'small'}
                           disabled={selectedRepositories.length}
                           onClick={getActiveImports}
                         >
-                         <DownloadOutlined /> Active Imports
+                         <DownloadIcon /> Active Imports
                         </Button>
                       </div>
                      

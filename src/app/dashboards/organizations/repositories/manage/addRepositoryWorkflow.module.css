@@ -53,3 +53,13 @@
 .selectReposTable{
     margin-top: 1rem;
 }
+.selectRepositoryControls :global(.ant-btn-secondary){
+    background-color: transparent;
+}
+
+.refreshRepos :global(.ant-btn-secondary){
+    border: none;
+}
+.activeImports :global(.ant-btn-secondary){
+    border: none;
+}
