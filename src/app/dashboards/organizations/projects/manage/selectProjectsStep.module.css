@@ -34,3 +34,12 @@
   width: 385px;
   text-align: center;
 }
+
+.selectProjectControls :global(.ant-btn-secondary){
+  background-color: transparent;
+}
+
+.fetchProjects :global(.ant-btn-secondary){
+  border: none;
+  box-shadow: none;
+}
