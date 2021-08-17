@@ -128,6 +128,7 @@ export const ShowImportStateStep = (
                     title={"Import Status"}
                     dataIndex={"importState"}
                     key={"importState"}
+                    align={"right"}
                     render={
                       importState =>
                         importState !== 'complete' ?
