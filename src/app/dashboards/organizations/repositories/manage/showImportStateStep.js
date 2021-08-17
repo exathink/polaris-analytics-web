@@ -165,20 +165,21 @@ export class ShowImportStateStep extends React.Component {
             );
             return (
               <div className={'show-import-state'}>
-
-                {
-                  repositories.length > 0 &&
-                  numQueued === repositories.length ?
-                    <Spin size={"large"} tip={`Allocating containers to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
-                    :
-                    <Progress
-                      type={'circle'}
-                      percent={Math.ceil((numImported / repositories.length) * 100)}
-                      format={
-                        () => `${numImported}/${repositories.length}`
-                      }
-                    />
-                }
+                <div style={{display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
+                  {
+                    repositories.length > 0 &&
+                    numQueued === repositories.length ?
+                      <Spin size={"large"} tip={`Allocating containers to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
+                      :
+                      <Progress
+                        type={'circle'}
+                        percent={Math.ceil((numImported / repositories.length) * 100)}
+                        format={
+                          () => `${numImported}/${repositories.length}`
+                        }
+                      />
+                  }
+                </div>
                 <CompactTable
                   size="small"
                   dataSource={repositories}
