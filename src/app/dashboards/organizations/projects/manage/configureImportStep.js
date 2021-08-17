@@ -11,6 +11,7 @@ import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import styles from "./configureImportStep.module.css";
 
 const inputModeDescription = {
   single: 'Import as work stream(s) in a new Polaris Flow Value Stream',
@@ -180,7 +181,7 @@ export class ConfigureImportStep extends React.Component {
     const selectedProjects = this.mapSelectedProjects(this.props.selectedProjects);
     const {connectorType} = selectedConnector;
     return (
-      <div className={'import-project'}>
+      <div className={styles.importProject}>
         <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true).toLowerCase() : getConnectorTypeProjectName(connectorType).toLowerCase()} selected for import</h3>
         {
           <SelectImportMode

@@ -1,0 +1,17 @@
+.importProject {
+}
+
+.importProject :global(.ant-input) {
+  border-radius: 8px;
+  background-color: #f4f4f4;
+}
+
+.importProject :global(.ant-legacy-form-item) {
+  display: flex;
+  flex-direction: column;
+}
+
+.importProject :global(.ant-legacy-form-item-label) {
+  display: flex;
+  line-height: normal;
+}
