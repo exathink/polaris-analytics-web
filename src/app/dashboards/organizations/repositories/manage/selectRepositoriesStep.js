@@ -173,7 +173,7 @@ export const SelectRepositoriesStep =
                         <Button
                           type={'secondary'}
                           icon={<CheckOutlined />}
-                          size={'small'}
+                          size={'medium'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={
                             () => testConnector({

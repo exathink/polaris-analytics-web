@@ -28,9 +28,11 @@
     display: grid;
     grid-template-columns: auto auto 1fr auto auto auto;
     grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports";
+    align-items: center;
 }
 .availableRepos{
     grid-area: availableRepos;
+    margin-bottom: 0;
 }
 .refreshRepos{
     grid-area: refreshRepos;
@@ -44,7 +46,7 @@
 .editConnector{
    grid-area: editConnector;
    justify-self: flex-end;
-   margin-right: 0.5rem;
+   margin-right: 1rem;
 }
 .activeImports{
     grid-area: activeImports;

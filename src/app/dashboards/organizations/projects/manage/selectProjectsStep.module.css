@@ -3,10 +3,11 @@
   display: grid;
   grid-template-columns: auto auto 1fr auto auto auto;
   grid-template-areas: "availableProjects fetchProjects . editConnector testConnector";
+  align-items: center;
 }
 .availableProjects {
   grid-area: availableProjects;
-  align-self: center;
+  margin-bottom: 0;
 }
 .fetchProjects {
   grid-area: fetchProjects;
@@ -21,7 +22,6 @@
   grid-area: editConnector;
   justify-self: flex-end;
   margin-right: 1rem;
-  align-self: center;
 }
 .selectProjectsTable {
   margin-top: 1rem;
