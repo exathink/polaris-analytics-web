@@ -1,4 +1,5 @@
 .workflowViewWrapper{
+    background-color: white;
     display: grid;
     grid-template-columns: 100px auto 100px;
     grid-template-areas: "backButton stepsWrapper ."
@@ -19,10 +20,12 @@
 
 .stepsContent{
     grid-area: stepsContent;
+    min-height: 50vh;
 }
 
 .stepsAction{
     margin-top: 2rem;
+    margin-bottom: 2rem;
     grid-area: stepsAction;
     display: flex;
 }
