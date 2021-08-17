@@ -7,6 +7,7 @@ import {work_tracking_service} from "../../../../services/graphql/index";
 import {CompactTable} from "../../../../components/tables";
 import {Loading} from "../../../../components/graphql/loading";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import {CompletedCheckIcon} from "../../../../components/misc/customIcons";
 
 const {Column} = CompactTable;
 const importStateDisplayMap = {
@@ -132,11 +133,7 @@ export const ShowImportStateStep = (
                         importState !== 'complete' ?
                           <Spin tip={importState}/>
                           :
-                          <Progress
-                            type='circle'
-                            width={30}
-                            percent={100}
-                          />
+                          <CompletedCheckIcon />
                     }
                   />
                 </CompactTable>
