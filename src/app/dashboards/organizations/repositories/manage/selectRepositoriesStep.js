@@ -239,7 +239,7 @@ export const SelectRepositoriesStep =
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
                         :
-                        <NoData message={"No new repositories to import"} />
+                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={"No new repositories to import"} /></div>
                     }
                     </div> 
                   </div>
