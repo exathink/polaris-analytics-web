@@ -227,7 +227,7 @@ export class ConfigureImportStep extends React.Component {
             connectorType={connectorType}
           />
         }
-        <div style={{marginTop: "2rem"}}>
+        <div className={styles.importButton} style={{marginTop: "2rem"}}>
           <Button
             type={"primary"}
             onClick={() => this.doImport(importMode, this.state.selectedProjects)}

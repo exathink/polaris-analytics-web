@@ -18,3 +18,9 @@
 .projectSetupForm{
   margin-top: 1rem;
 }
+
+.importButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
