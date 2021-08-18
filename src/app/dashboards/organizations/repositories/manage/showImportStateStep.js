@@ -174,6 +174,7 @@ export class ShowImportStateStep extends React.Component {
                       <Progress
                         type={'circle'}
                         percent={Math.ceil((numImported / repositories.length) * 100)}
+                        width={80}
                         format={
                           () => `${numImported}/${repositories.length}`
                         }

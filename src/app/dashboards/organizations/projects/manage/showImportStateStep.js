@@ -102,6 +102,7 @@ export const ShowImportStateStep = (
                   <Progress
                     type={'circle'}
                     percent={Math.ceil((numImported / workItemsSources.length) * 100)}
+                    width={80}
                     format={
                       () => `${numImported}/${workItemsSources.length}`
                     }
