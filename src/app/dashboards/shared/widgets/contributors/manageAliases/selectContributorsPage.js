@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Button} from "antd";
+import {Table} from "antd";
 import {
   DaysRangeSlider,
   ONE_YEAR,
@@ -11,6 +11,7 @@ import {Statistic} from "../../../../../components/misc/statistic/statistic";
 import styles from "./contributors.module.css";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
+import Button from "../../../../../../components/uielements/button";
 
 function hasChildren(recordKey, data) {
   const record = data.get(recordKey);
@@ -112,8 +113,6 @@ export function SelectContributorsPage({
         <div className={styles.selectContributorsNextAction}>
           <Button
             type="primary"
-            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            className={styles.contributorsButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
@@ -122,9 +121,8 @@ export function SelectContributorsPage({
         </div>
         <div className={styles.selectContributorsDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
+            type="secondary"
           >
             Done
           </Button>

@@ -1,4 +1,4 @@
-import {Input, Checkbox, Table, Alert, Button, Switch} from "antd";
+import {Input, Checkbox, Table, Alert, Switch} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {
@@ -14,6 +14,7 @@ import {useUpdateContributor} from "./useUpdateContributor";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {actionTypes} from "./constants";
 import {updateContributorReducer} from "./updateContributorReducer";
+import Button from "../../../../../../components/uielements/button";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -199,7 +200,6 @@ export function UpdateContributorPage({
         <div className={styles.updateContributorMergeAction}>
           <Button
             type="primary"
-            className={styles.contributorsPrimaryButton}
             onClick={handleUpdateContributorClick}
             disabled={isButtonDisabled()}
           >
@@ -208,8 +208,6 @@ export function UpdateContributorPage({
         </div>
         <div className={styles.updateContributorBackAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleBackClick}
           >
             Back
@@ -217,9 +215,8 @@ export function UpdateContributorPage({
         </div>
         <div className={styles.updateContributorDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
+            type="secondary"
           >
             Done
           </Button>

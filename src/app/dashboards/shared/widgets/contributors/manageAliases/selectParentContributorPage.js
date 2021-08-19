@@ -1,8 +1,9 @@
-import {Radio, Table, Button} from "antd";
+import {Radio, Table} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns, NavigateOnDoneHandlers} from "./utils";
 import {actionTypes} from "./constants";
+import Button from "../../../../../../components/uielements/button";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -62,8 +63,6 @@ export function SelectParentContributorPage({
         <div className={styles.parentContributorNextAction}>
           <Button
             type="primary"
-            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            className={styles.contributorsButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
@@ -72,8 +71,6 @@ export function SelectParentContributorPage({
         </div>
         <div className={styles.parentContributorBackAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleBackClick}
           >
             Back
@@ -81,8 +78,6 @@ export function SelectParentContributorPage({
         </div>
         <div className={styles.parentContributorDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
           >
             Done

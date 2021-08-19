@@ -28,21 +28,6 @@
   justify-self: flex-start;
 }
 
-.contributorsButton {
-  background-color: rgb(120, 36, 181);
-  border-color: rgb(120, 36, 181);
-  color: white;
-  margin: 1px;
-  min-width: 85px;
-  font-weight: 500;
-}
-
-.contributorsPrimaryButton {
-  margin: 1px;
-  min-width: 85px;
-  font-weight: 500;
-}
-
 .selectContributorsLandingPage {
   display: grid;
   gap: 0.2rem;
@@ -83,16 +68,6 @@
   :global(.ant-steps-item-icon)
   > :global(.ant-steps-icon) {
   color: #d4d4d4;
-}
-
-.manageContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
-  background-color: #7824b5;
-  border-color: #7824b5;
-}
-
-.manageContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
-  background: #7824b5;
-  border: #7824b5;
 }
 
 .updateContributorLandingPage {
