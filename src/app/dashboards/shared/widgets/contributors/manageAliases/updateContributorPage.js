@@ -192,7 +192,7 @@ export function UpdateContributorPage({
 
   function renderActionButtons() {
     return (
-      <>
+      <div className={styles.updateContributorAction}>
         <div className={styles.updateContributorMergeAction}>
           <Button
             type="primary"
@@ -210,7 +210,7 @@ export function UpdateContributorPage({
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 

@@ -109,7 +109,7 @@ export function SelectContributorsPage({
     const nextButtonDisabled = selectedRecords.length === 0;
 
     return (
-      <>
+      <div className={styles.selectContributorsAction}>
         <div className={styles.selectContributorsNextAction}>
           <Button
             type="primary"
@@ -127,7 +127,7 @@ export function SelectContributorsPage({
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 

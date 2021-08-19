@@ -26,14 +26,15 @@
   grid-area: stepContent;
 }
 .selectContributorsNextAction {
-  padding-bottom: 16px;
-  grid-area: selectContributorsNextAction;
-  justify-self: flex-end;
+  margin-right: 16px;
 }
 
-.selectContributorsDoneAction {
-  grid-area: selectContributorsDoneAction;
-  justify-self: flex-start;
+.selectContributorsAction{
+  grid-area: selectContributorsAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 16px;
 }
 
 .selectContributorsLandingPage {
@@ -44,7 +45,7 @@
     "contributorsSlider contributorsSlider"
     "userMessage userMessage"
     "contributorsTable contributorsTable"
-    "selectContributorsNextAction selectContributorsDoneAction";
+    "selectContributorsAction selectContributorsAction";
 }
 
 .selectContributorsSlider {
@@ -81,7 +82,7 @@
     "updateContributorTitle updateContributorTitle"
     "updateContributorTable updateContributorTable"
     "actionButtons actionButtons"
-    "updateContributorMergeAction updateContributorDoneAction";
+    "updateContributorAction updateContributorAction";
 }
 
 .messageNotification {
@@ -89,15 +90,18 @@
   grid-area: excludeFromAnalysis;
   z-index: 2;
 }
-.updateContributorMergeAction {
+
+.updateContributorAction{
+  grid-area: updateContributorAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding-bottom: 16px;
-  grid-area: updateContributorMergeAction;
-  justify-self: flex-end;
 }
 
-.updateContributorDoneAction {
-  grid-area: updateContributorDoneAction;
-  justify-self: flex-start;
+.updateContributorMergeAction {
+  margin-right: 16px;
+  justify-self: center;
 }
 
 .activeContributors {
@@ -179,19 +183,20 @@
   grid-template-areas:
     "selectParentContributorTitle selectParentContributorTitle"
     "selectParentContributorTable selectParentContributorTable"
-    "parentContributorNextAction parentContributorDoneAction";
+    "parentContributorAction parentContributorAction";
 }
 
-.parentContributorNextAction {
+.parentContributorAction{
+  grid-area: parentContributorAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding-bottom: 16px;
-  grid-area: parentContributorNextAction;
-  justify-self: flex-end;
+}
+.parentContributorNextAction {
+  margin-right: 16px;
 }
 
-.parentContributorDoneAction {
-  grid-area: parentContributorDoneAction;
-  justify-self: flex-start;
-}
 .selectParentContributorTitle {
   grid-area: selectParentContributorTitle;
   margin-top: 3rem;

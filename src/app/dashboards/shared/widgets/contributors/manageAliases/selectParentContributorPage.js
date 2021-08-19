@@ -55,7 +55,7 @@ export function SelectParentContributorPage({
     const nextButtonDisabled = parentContributorKey.trim() === "";
 
     return (
-      <>
+      <div className={styles.parentContributorAction}>
         <div className={styles.parentContributorNextAction}>
           <Button
             type="primary"
@@ -72,7 +72,7 @@ export function SelectParentContributorPage({
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 
