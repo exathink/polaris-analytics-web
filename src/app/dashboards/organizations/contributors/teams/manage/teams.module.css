@@ -1,12 +1,11 @@
 .manageTeamsWrapper {
   background-color: white;
-  margin-top: 0.5rem;
   display: grid;
   grid-template-columns: 100px 1fr 1fr 100px;
   grid-template-areas:
     "backButton steps steps ."
     "stepContent stepContent stepContent stepContent";
-  gap: 2rem 0.5rem;
+  gap: 0.5rem;
   justify-items: center;
   align-items: center;
 }
@@ -85,7 +84,6 @@
 
 /* Update Teams Page */
 .updateTeamsPage {
-  margin-top: 16px;
   display: grid;
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
