@@ -1,4 +1,4 @@
-import {Alert, Button, Select} from "antd";
+import {Alert, Select} from "antd";
 import React from "react";
 import styles from "./teams.module.css";
 import {useUpdateTeams} from "./useUpdateTeams";
@@ -7,6 +7,7 @@ import {actionTypes} from "./constants";
 import {updateTeamsReducer} from "./updateTeamsReducer";
 import {UpdateTeamsTable, useUpdateTeamsColumns} from "./updateTeamsTable";
 import {getRowSelection} from "../utils";
+import Button from "../../../../../../components/uielements/button";
 
 const {Option} = Select;
 
@@ -128,7 +129,6 @@ export function UpdateTeamsPage({
         <div className={styles.updateTeamsAction}>
           <Button
             type="primary"
-            className={styles.contributorsPrimaryButton}
             onClick={handleUpdateTeamClick}
             disabled={isButtonDisabled()}
           >
@@ -137,8 +137,6 @@ export function UpdateTeamsPage({
         </div>
         <div className={styles.updateTeamsBackAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleBackClick}
           >
             Back
@@ -146,9 +144,8 @@ export function UpdateTeamsPage({
         </div>
         <div className={styles.updateTeamsDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
+            type="secondary"
           >
             Done
           </Button>

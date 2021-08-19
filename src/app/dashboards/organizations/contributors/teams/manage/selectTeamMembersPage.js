@@ -1,5 +1,4 @@
 import React from "react";
-import {Button} from "antd";
 import {DaysRangeSlider, ONE_YEAR} from "../../../../../dashboards/shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./teams.module.css";
 import {actionTypes} from "./constants";
@@ -9,6 +8,7 @@ import {Statistic} from "../../../../../components/misc/statistic/statistic";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {formatDateTime} from "../../../../../i18n/utils";
 import {getRowSelection} from "../utils";
+import Button from "../../../../../../components/uielements/button";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -67,8 +67,6 @@ export function SelectTeamMembersPage({
         <div className={styles.selectTeamMembersNextAction}>
           <Button
             type="primary"
-            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            className={styles.contributorsButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
@@ -77,9 +75,8 @@ export function SelectTeamMembersPage({
         </div>
         <div className={styles.selectTeamMembersDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
+            type="secondary"
           >
             Done
           </Button>
