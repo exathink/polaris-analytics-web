@@ -38,7 +38,7 @@
     "teamMembersSlider teamMembersSlider"
     "userMessage userMessage"
     "teamMembersTable teamMembersTable"
-    "selectTeamMembersNextAction selectTeamMembersDoneAction";
+    "selectTeamMembersAction selectTeamMembersAction";
 }
 
 .selectTeamMembersSlider {
@@ -64,15 +64,16 @@
 .rangeSliderWrapper {
   width: 90%;
 }
-.selectTeamMembersNextAction {
-  padding-bottom: 16px;
-  grid-area: selectTeamMembersNextAction;
-  justify-self: flex-end;
-}
 
-.selectTeamMembersDoneAction {
-  grid-area: selectTeamMembersDoneAction;
-  justify-self: flex-start;
+.selectTeamMembersAction{
+  grid-area: selectTeamMembersAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+.selectTeamMembersNextAction {
+  margin-right: 16px;
 }
 
 .activeContributors {
@@ -120,7 +121,7 @@
 
 .updateTeamsDoneAction {
   grid-area: updateTeamsDoneAction;
-  justify-self: flex-start;
+  justify-self: flex-end;
 }
 
 .updateTeamsTitle {

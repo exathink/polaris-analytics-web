@@ -63,7 +63,7 @@ export function SelectTeamMembersPage({
     const nextButtonDisabled = selectedRecords.length === 0;
 
     return (
-      <>
+      <div className={styles.selectTeamMembersAction}>
         <div className={styles.selectTeamMembersNextAction}>
           <Button
             type="primary"
@@ -81,7 +81,7 @@ export function SelectTeamMembersPage({
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 
