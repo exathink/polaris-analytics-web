@@ -108,19 +108,7 @@
 }
 
 .manageContributorsAction {
-  margin-right: 60px;
-  background-color: #4482ff;
-  border-color: #4482ff;
-}
-
-.manageContributorsAction:global(.ant-btn) {
-  border-radius: 4px;
-}
-
-.manageContributorsAction:hover {
-  background-color: #5896ff;
-  border-color: #5896ff;
-  color: #fff;
+  margin-right: 40px;
 }
 
 .accountContributorsTableWrapper {
