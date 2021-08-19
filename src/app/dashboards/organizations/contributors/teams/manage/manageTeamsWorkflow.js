@@ -5,6 +5,8 @@ import {UpdateTeamsPage} from "./updateTeamsPage";
 import {SelectTeamMembersPage} from "./selectTeamMembersPage";
 import {teamsReducer} from "./teamsReducer";
 import {ACTIVE_WITHIN_DAYS} from "../utils";
+import {BackArrowIcon, CheckCircleStepIcon} from "../../../../../components/misc/customIcons";
+import {actionTypes} from "./constants";
 
 const {Step} = Steps;
 
@@ -36,13 +38,22 @@ export function ManageTeamsWorkflow({organizationKey, teamsList, context, intl})
     },
   ];
 
+  const handleBackClick = () => {
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
+  };
+
   const {current} = state;
   return (
     <div className={styles.manageTeamsWrapper}>
+      {current > 0 && (
+        <div className={styles.updateTeamsBackAction}>
+          <BackArrowIcon onClick={handleBackClick} />
+        </div>
+      )}
       <div className={styles.manageTeamsStepsWrapper}>
         <Steps current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
+          {steps.map((item, index) => (
+            <Step key={item.title} title={item.title} icon={<CheckCircleStepIcon index={index} current={current} />} />
           ))}
         </Steps>
       </div>

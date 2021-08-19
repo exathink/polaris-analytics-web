@@ -107,10 +107,6 @@ export function UpdateTeamsPage({
     });
   }
 
-  const handleBackClick = () => {
-    dispatchEvent({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
-  };
-
   const handleDoneClick = () => {
     context.go("..", "contributors");
   };
@@ -133,13 +129,6 @@ export function UpdateTeamsPage({
             disabled={isButtonDisabled()}
           >
             Update Team
-          </Button>
-        </div>
-        <div className={styles.updateTeamsBackAction}>
-          <Button
-            onClick={handleBackClick}
-          >
-            Back
           </Button>
         </div>
         <div className={styles.updateTeamsDoneAction}>
