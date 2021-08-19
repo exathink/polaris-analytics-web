@@ -2,18 +2,26 @@
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-columns: 100px 1fr 1fr 100px;
   grid-template-areas:
-    ". steps steps ."
-    ". stepContent stepContent .";
-  gap: 0.5rem;
+    "backButton steps steps ."
+    "stepContent stepContent stepContent stepContent";
+    gap: 2rem 0.5rem;
+    justify-items: center;
+    align-items: center;
 }
 
 .manageContributorsStepsWrapper {
+  margin-top: 1rem;
   grid-area: steps;
+  min-width: 50vw;
 }
-
+.contributorBackAction {
+  margin-top: 1rem;
+  grid-area: backButton;
+}
 .manageContributorsStepsContent {
+  margin: 0 2rem;
   min-height: 50vh;
   grid-area: stepContent;
 }
@@ -62,13 +70,6 @@
 .rangeSliderWrapper {
   width: 90%;
 }
-/* override completed steps color */
-.manageContributorsStepsWrapper
-  :global(.ant-steps-item):global(.ant-steps-item-finish)
-  :global(.ant-steps-item-icon)
-  > :global(.ant-steps-icon) {
-  color: #d4d4d4;
-}
 
 .updateContributorLandingPage {
   margin-top: 16px;
@@ -93,9 +94,7 @@
   grid-area: updateContributorMergeAction;
   justify-self: flex-end;
 }
-.updateContributorBackAction {
-  grid-area: updateContributorMergeAction;
-}
+
 .updateContributorDoneAction {
   grid-area: updateContributorDoneAction;
   justify-self: flex-start;
@@ -200,9 +199,7 @@
   grid-area: parentContributorNextAction;
   justify-self: flex-end;
 }
-.parentContributorBackAction {
-  grid-area: parentContributorNextAction;
-}
+
 .parentContributorDoneAction {
   grid-area: parentContributorDoneAction;
   justify-self: flex-start;

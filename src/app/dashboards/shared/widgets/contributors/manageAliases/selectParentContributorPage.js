@@ -47,10 +47,6 @@ export function SelectParentContributorPage({
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
   };
 
-  const handleBackClick = () => {
-    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
-  };
-
   const handleDoneClick = () => {
     NavigateOnDoneHandlers(context)[dimension]();
   };
@@ -67,13 +63,6 @@ export function SelectParentContributorPage({
             disabled={nextButtonDisabled}
           >
             Next
-          </Button>
-        </div>
-        <div className={styles.parentContributorBackAction}>
-          <Button
-            onClick={handleBackClick}
-          >
-            Back
           </Button>
         </div>
         <div className={styles.parentContributorDoneAction}>

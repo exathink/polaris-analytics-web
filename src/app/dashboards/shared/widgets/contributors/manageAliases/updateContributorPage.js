@@ -160,10 +160,6 @@ export function UpdateContributorPage({
     });
   }
 
-  const handleBackClick = () => {
-    dispatchEvent({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
-  };
-
   const handleDoneClick = () => {
     NavigateOnDoneHandlers(context)[dimension]();
   };
@@ -204,13 +200,6 @@ export function UpdateContributorPage({
             disabled={isButtonDisabled()}
           >
             Update Contributor
-          </Button>
-        </div>
-        <div className={styles.updateContributorBackAction}>
-          <Button
-            onClick={handleBackClick}
-          >
-            Back
           </Button>
         </div>
         <div className={styles.updateContributorDoneAction}>
