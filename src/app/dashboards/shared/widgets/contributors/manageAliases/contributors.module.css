@@ -100,8 +100,7 @@
 }
 
 .updateContributorMergeAction {
-  margin-right: 16px;
-  justify-self: center;
+  margin: 0 auto;
 }
 
 .activeContributors {
