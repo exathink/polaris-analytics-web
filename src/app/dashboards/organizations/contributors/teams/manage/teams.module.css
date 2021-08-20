@@ -92,7 +92,7 @@
     "updateTeamsTitle updateTeamsTitle"
     "updateTeamsTable updateTeamsTable"
     "actionButtons actionButtons"
-    "updateTeamsAction updateTeamsDoneAction";
+    "updateTeamsAction updateTeamsAction";
 }
 
 .selectTeam {
@@ -111,15 +111,21 @@
   grid-area: messageNotification;
   z-index: 2;
 }
-.updateTeamsAction {
-  padding-bottom: 16px;
-  grid-area: updateTeamsAction;
-  justify-self: flex-end;
-}
 
-.updateTeamsDoneAction {
-  grid-area: updateTeamsDoneAction;
-  justify-self: flex-end;
+.updateTeamsActionWrapper{
+  grid-area: updateTeamsAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+.updateTeamsActionWrapper::before{
+  content:"Done";
+  visibility: hidden;
+  padding: 0 25px;
+}
+.updateTeamsAction {
+  margin: 0 auto;
 }
 
 .updateTeamsTitle {

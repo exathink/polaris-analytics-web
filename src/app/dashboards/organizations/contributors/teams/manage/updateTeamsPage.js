@@ -121,7 +121,7 @@ export function UpdateTeamsPage({
 
   function renderActionButtons() {
     return (
-      <>
+      <div className={styles.updateTeamsActionWrapper}>
         <div className={styles.updateTeamsAction}>
           <Button
             type="primary"
@@ -139,7 +139,7 @@ export function UpdateTeamsPage({
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 
