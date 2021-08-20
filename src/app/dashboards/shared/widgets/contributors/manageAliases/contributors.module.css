@@ -102,7 +102,11 @@
 .updateContributorMergeAction {
   margin: 0 auto;
 }
-
+.updateContributorAction::before{
+  content:"Done";
+  visibility: hidden;
+  padding: 0 25px;
+}
 .activeContributors {
   margin-left: 30px;
   padding: 8px;
