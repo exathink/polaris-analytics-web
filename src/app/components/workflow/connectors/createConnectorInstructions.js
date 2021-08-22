@@ -5,10 +5,10 @@ const JiraConnectorInstructions = ({part}) => (
   part === 'instructions' ?
     <div>
       <p>
-        Polaris Flow provides the <b>Polaris Flow Connector for Jira, </b> an
+        Polaris  provides the <b>Polaris Flow Connector for Jira, </b> an
         <em> Atlassian Connect </em> app that lets external applications connect securely
         with Atlassian products. There
-        are two steps in connecting Polaris Flow to a Jira Server.
+        are two steps in connecting Polaris to a Jira Server.
       </p>
       <h3>Step 1. Install the Polaris Flow Connector for Jira App on your Jira Server</h3>
       <p>
@@ -23,7 +23,7 @@ const JiraConnectorInstructions = ({part}) => (
           from the top level Apps menu.
         </li>
         <li>
-          Search for "exathink" in the search menu. This will bring up the Polaris Connector for Jira app.
+          Search for "exathink" in the search menu. This will bring up the Polaris Flow Connector for Jira app.
         </li>
         <li>
           Click on the app icon and select "Get App" and wait for the installation to complete successfully.
@@ -36,9 +36,9 @@ const JiraConnectorInstructions = ({part}) => (
     :
     part === 'setup' ?
       <div>
-        <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
+        <h3>Step 2. Register the Atlassian Connect App in Polaris </h3>
         <p>
-          This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
+          This step registers the app you installed on the Jira Server in Step 1, with your Polaris  account and
           associates it with your current
           organization.
         </p>
@@ -50,9 +50,9 @@ const BitbucketConnectorInstructions = ({part}) =>
   part === "instructions" ? (
     <div>
       <p>
-        Polaris Flow provides the <b>Polaris Flow Connector for Bitbucket, </b> an
+        Polaris provides the <b>Polaris Flow Connector for Bitbucket, </b> an
         <em> Atlassian Connect </em> app that lets external applications connect securely with Atlassian products. There
-        are two steps in connecting Polaris Flow to repositories in Bitbucket Cloud.
+        are two steps in connecting Polaris  to repositories in Bitbucket Cloud.
       </p>
       <h3>Step 1. Install the Polaris Flow Connector for Bitbucket App in your Bitbucket Cloud account</h3>
       <p>You will need administrator privileges to do this.</p>
@@ -86,9 +86,9 @@ const BitbucketConnectorInstructions = ({part}) =>
     </div>
   ) : part === "setup" ? (
     <div>
-      <h3>Step 2. Register the Atlassian Connect App in Polaris Flow</h3>
+      <h3>Step 2. Register the Atlassian Connect App in Polaris </h3>
       <p>
-        This step registers the app you installed on the Jira Server in Step 1, with your Polaris Flow account and
+        This step registers the app you installed on the Jira Server in Step 1, with your Polaris  account and
         associates it with your current organization. In this step you can give the connector a name, and also provide the
         information to look up the Bitbucket Cloud workspace in which you installed the Atlassian Connect App.
       </p>
@@ -98,9 +98,9 @@ const BitbucketConnectorInstructions = ({part}) =>
 const GithubConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Polaris Flow Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
+    <p>The Polaris  Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
       is scoped
-      to a specific Github Organization and you must create separate connectors for each Github organization that you
+      to a specific Github Organization. You must create separate connectors for each Github organization that you
       are
       connecting to.
     </p>
@@ -110,7 +110,7 @@ const GithubConnectorInstructions = ({part}) => (
       in repository and project import workflows.
     </p>
     <p>
-      The integration process is straightforward. You will need a personal access token to authenticate Polaris Flow
+      The integration process is straightforward. You will need a personal access token to authenticate Polaris 
       with Github.
     </p>
 
@@ -131,10 +131,10 @@ const PivotalConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
     <p>
-      The Pivotal Tracker Connector for Polaris Flow integrates with the Pivotal Tracker Rest API.
+      The Pivotal Tracker Connector for Polaris  integrates with the Pivotal Tracker Rest API.
       API requests have to be authenticated with an API token for a specific Tracker user,
       on whose behalf the request is being made. You should use an API token for a user who has access to
-      all the Tracker Projects that you wish to import in Polaris Flow.
+      all the Tracker Projects that you wish to import in Polaris .
     </p>
 
     The API key can be retrieved as follows.
@@ -152,21 +152,22 @@ const PivotalConnectorInstructions = ({part}) => (
 const GitlabConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Polaris Flow Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
+    <p>The Polaris  Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
       is scoped
       to a specific Gitlab user.
     </p>
     <p>
-      You will need a personal access token for the user to authenticate Polaris Flow
-      with Gitlab. We recommend that you use a the personal access token for a user who is either an owner
-      or a member of all the projects that you need to analyze in Polaris Flow.
+      You will need a personal access token for the user to authenticate Polaris 
+      with Gitlab. We recommend that you use a bot account with member level access
+      to all the projects that you need to analyze in Polaris. If you use an actual user account, please create
+      a separate access token for Polaris.
     </p>
 
     <ol>
       <li>Login to Gitlab as the user specified above,</li>
       <li>Click on your user profile on the top right corner.</li>
       <li>Navigate to Settings -> Access Tokens</li>
-      <li>Name your access token. We suggest "Polaris Flow Connector"</li>
+      <li>Name your access token. We suggest "Polaris  Connector"</li>
       <li>Don't specify an expiry date. </li>
       <li>For scopes
         select <em>api</em>, <em>read:user</em> <em>read:repository</em>
@@ -183,13 +184,13 @@ const TrelloConnectorInstructions = ({part}) =>
   part === "instructions" && (
     <div>
       <p>
-        The Polaris Flow Trello Connector uses the Trello Rest API to import boards metadata and cards. Each connector
+        The Polaris  Trello Connector uses the Trello Rest API to import boards metadata and cards. Each connector
         is scoped to a specific Trello user.
       </p>
       <p>
-        You will need an api key and access token for the user to authenticate Polaris Flow with Trello. We recommend
+        You will need an api key and access token for the user to authenticate Polaris  with Trello. We recommend
         that you use the api key and access token for a user who is either an owner or a member of all the projects that
-        you need to analyze in Polaris Flow.
+        you need to analyze in Polaris .
       </p>
 
       <ol>
