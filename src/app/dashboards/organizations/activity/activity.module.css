@@ -1,13 +1,15 @@
 .activityWrapper{
     display: flex;
     justify-content: center;
+    background-color: white;
+    height: 100%;
 }
 
 .activityDashboard{
     padding: 30px;
     display: flex;
     flex-direction: column;
-    max-width: 70%;
+    width: 70%;
 }
 
 .textCenter{

@@ -4,6 +4,7 @@ import {ImportRepositoriesCard} from "../../../components/cards/importRepositori
 import fontStyles from "../../../framework/styles/fonts.module.css"
 import styles from "./activity.module.css";
 import classNames from "classnames";
+import {capitalizeFirstLetter} from "../../../helpers/utility";
 
 export const ActivityDashboardSetup = ({organization, context}) => {
   const noProjects = organization.projectCount === 0;
@@ -22,17 +23,17 @@ export const ActivityDashboardSetup = ({organization, context}) => {
           ) : null}
         </div>
         <div>
+           <ImportProjectsCard
+            title={"Connect Projects"}
+            onClick={() => context.go("..", "value-streams/new")}
+            completed={noProjects === false}
+          />
           <ImportRepositoriesCard
-            title={"Connect Version Control System"}
-            onClick={() => context.go("..", "repositories")}
+            title={"Connect Git Repositories"}
+            onClick={() => context.go("..", "repositories/new")}
             completed={noRepositories === false}
           />
 
-          <ImportProjectsCard
-            title={"Connect Work Tracking System"}
-            onClick={() => context.go("..", "value-streams")}
-            completed={noProjects === false}
-          />
         </div>
       </div>
     </div>
@@ -41,17 +42,8 @@ export const ActivityDashboardSetup = ({organization, context}) => {
 
 const InitialSetupText = ({organization}) => (
   <React.Fragment>
-    <h1 className={fontStyles["text-2xl"]}>Setup Organization {organization.name}</h1>
-    <p className={fontStyles["font-normal"]}>
-      To view activity for this organization, you must import project data from a work tracking system
-      that you use to manage your engineering projects, and commit data from from a Git based version control system.
-      The process is simple and should take under 30 minutes in most cases. You may import project and commit data in
-      any order.
-    </p>
-    <p>
-      Once the initial data import is complete, Polaris Flow will
-      keep your data updated automatically in real-time.
-    </p>
+    <h1 className={fontStyles["text-2xl"]}>Let's connect Projects and Git Repositories for {organization.name}</h1>
+    <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>It should take less than 15 minutes to get going. </p>
   </React.Fragment>
 );
 
@@ -59,8 +51,8 @@ const SetupProjectsText = ({organization}) => (
   <React.Fragment>
     <h1 className={fontStyles["text-2xl"]}>Connect Work Tracking System for {organization.name}</h1>
     <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-      Congratulations! You have completed the version control system setup for {organization.name}.
-      Now let's finish by completing the work tracking system setup.
+      Congratulations! You have connected Git repositories for {organization.name}.
+      Now let's finish by connecting projects.
     </p>
   </React.Fragment>
 );
@@ -69,8 +61,8 @@ const SetupRepositoriesText = ({organization}) => (
   <React.Fragment>
     <h1 className={fontStyles["text-2xl"]}>Connect Version Control System for {organization.name}</h1>
     <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-      Congratulations! You have completed the work tracking system setup for {organization.name}.
-      Now let's finish by completing the version control system setup.
+      Congratulations! You have connected projects for {organization.name}.
+      Now let's finish by connecting your Git repositories.
     </p>
   </React.Fragment>
 )
