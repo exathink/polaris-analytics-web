@@ -11,16 +11,15 @@ export const ProjectsDashboardSetup = ({context}) => (
     <div style={{padding: '30px'}}>
       <Row>
         <Col offset={6} span={12} className={styles.textCenter}>
-          <h1 className={fontStyles["text-2xl"]}>Connect your Work Tracking System</h1>
+          <h1 className={fontStyles["text-2xl"]}>Connect your Projects</h1>
           <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-            Connecting your work tracking system allows Polaris Flow to analyze your product
-            delivery process. A <em>Value Stream</em> in Polaris Flow should model a single customer facing product or product line delivered
-            by this organization. A single Value Stream may be mapped to <em>one or more</em> remote projects in your work tracking system.
-            Each such remote project is called a <em>Work Stream</em> in Polaris.
+            A project in your work tracking system maps to a <em>Work Stream</em> in Polaris.
           </p>
           <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-            A Polaris Flow Value Stream will aggregate metrics across work streams, and also allow you
-            to drill down into the details for the work streams.
+            A <em>Value Stream</em> in Polaris aggregates metrics across one or more work streams.
+          </p>
+          <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
+            You connect remote projects to Polaris using a <em> Polaris Connector</em>.
           </p>
         </Col>
       </Row>
