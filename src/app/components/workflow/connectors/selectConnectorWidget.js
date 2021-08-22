@@ -127,7 +127,7 @@ export const SelectConnectorWidget =
                       </div>
                       </React.Fragment>
                       :
-                      <h3 className={classNames("flex-center", fontStyles["font-normal"], fontStyles["text-base"], styles["no-available-connectors"])}>{`No available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                      <h3 className={classNames("flex-center", fontStyles["font-normal"], fontStyles["text-sm"], styles["no-available-connectors"], styles["subTitle"])}>{`Polaris Connectors allows you to securely import data from ${getConnectorTypeDisplayName(connectorType)}`}</h3>
                   }
 
                   {

@@ -6,9 +6,13 @@
     "selectConnectorsTable selectConnectorsTable selectConnectorsTable";
 }
 
+.subTitle {
+    color: #7A7B9A;
+}
+
 .select-connector-not-available {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   grid-template-areas:
     ". noAvailableConnectors ."
     ". newConnectorButtonNot .";
@@ -34,4 +38,5 @@
 
 .new-connector-button-not-available {
   grid-area: newConnectorButtonNot;
+  margin-top: 20px;
 }
