@@ -107,7 +107,6 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
         title={'Description'}
         dataIndex={'description'}
         key={'description'}
-        {...useSearch('description')}
       />
     </Table>
   )
@@ -239,7 +238,7 @@ export const SelectRepositoriesStep =
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
                         :
-                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={"No new repositories to import"} /></div>
+                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={`No repositories to import. Click 'Refresh Available Repositories' to sync with ${getServerUrl(selectedConnector)}`} /></div>
                     }
                     </div> 
                   </div>
