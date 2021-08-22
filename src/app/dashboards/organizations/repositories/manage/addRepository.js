@@ -18,7 +18,7 @@ export default withViewerContext(
         <Dashboard
           dashboard={`${dashboard_id}`}
         >
-          <DashboardRow h={"95%"}>
+          <DashboardRow h={"100%"}>
             <DashboardWidget
               w={1}
               render={

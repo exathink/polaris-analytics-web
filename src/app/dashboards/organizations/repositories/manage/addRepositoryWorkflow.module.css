@@ -17,6 +17,10 @@
     gap: 22px;
 }
 
+.subTitle {
+    color: #7A7B9A;
+}
+
 .flex-center{
     display: flex;
     justify-content: center;
