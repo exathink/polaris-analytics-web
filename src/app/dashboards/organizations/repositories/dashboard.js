@@ -8,7 +8,8 @@ import {RepositoriesTableWidget} from "../../shared/components/repositoriesTable
 
 import Repositories from "../../repositories/context";
 import Button from "../../../../components/uielements/button";
-import {RepositoriesDashboardSetup} from "./setup";
+
+import AddRepositories from "./manage/addRepository"
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -89,7 +90,7 @@ const TopDashboard =  () => (
             </DashboardRow>
           </Dashboard>
           :
-          <RepositoriesDashboardSetup context={context}/>
+          <AddRepositories context={context}/>
     )}
   />
 );
