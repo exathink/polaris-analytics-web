@@ -8,6 +8,7 @@ import {CompactTable} from "../../../../components/tables";
 import {Loading} from "../../../../components/graphql/loading";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 import {CompletedCheckIcon} from "../../../../components/misc/customIcons";
+import styles from "./showImportStateStep.module.css";
 
 const {Column} = CompactTable;
 const importStateDisplayMap = {
@@ -97,7 +98,7 @@ export const ShowImportStateStep = (
 
           return (
             workItemsSources.length > 0 ? (
-              <div className={'show-import-state'}>
+              <div className={styles['show-import-state']}>
                 <div style={{display: "flex", justifyContent: "center", marginBottom: "1rem"}}>
                   <Progress
                     type={'circle'}
