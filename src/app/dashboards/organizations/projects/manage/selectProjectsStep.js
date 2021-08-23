@@ -167,7 +167,7 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
                     <div className={styles["flex-center"]}>
                       <h3 className={styles["titleCenter"]}>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
                     </div>

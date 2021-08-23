@@ -145,7 +145,7 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div style={{height: "100%"}} className={'selected-repositories'}>
-                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["tex-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
                     <h3 className={styles["flex-center"]}>Select repositories to import from connector {selectedConnector.name}</h3>
                     
                     
