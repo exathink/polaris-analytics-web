@@ -5,6 +5,7 @@ import {Progress, Spin} from "antd";
 
 import {vcs_service} from "../../../../services/graphql";
 import {CompactTable} from "../../../../components/tables";
+import styles from "./addRepositoryWorkflow.module.css";
 
 const {Column} = CompactTable;
 
@@ -164,7 +165,7 @@ export class ShowImportStateStep extends React.Component {
               (a, b) => stateSortOrder[a.importState] - stateSortOrder[b.importState]
             );
             return (
-              <div className={'show-import-state'}>
+              <div className={styles['show-import-state']}>
                 <div style={{display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
                   {
                     repositories.length > 0 &&
