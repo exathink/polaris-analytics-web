@@ -28,7 +28,7 @@ const ProjectNameForm = (
     }
   };
   return (
-    <Form hideRequiredMark>
+    <Form hideRequiredMark colon={false}>
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item
