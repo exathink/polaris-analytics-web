@@ -3,7 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/vi
 import {OrganizationDashboard} from "../../organizationDashboard";
 import {AddRepositoryWorkflow} from './addRepositoryWorkflow';
 import {withViewerContext} from "../../../../framework/viewer/viewerContext";
-
+import styles from "./addRepository.module.css";
 const dashboard_id = 'dashboards.add_projects.organization.instance';
 
 export default withViewerContext(
@@ -21,6 +21,7 @@ export default withViewerContext(
           <DashboardRow h={"100%"}>
             <DashboardWidget
               w={1}
+              className={styles.addRepositoryWorkflow}
               render={
                 () =>
                   <AddRepositoryWorkflow
