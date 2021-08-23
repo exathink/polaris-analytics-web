@@ -4,7 +4,6 @@ import {ImportRepositoriesCard} from "../../../components/cards/importRepositori
 import fontStyles from "../../../framework/styles/fonts.module.css"
 import styles from "./activity.module.css";
 import classNames from "classnames";
-import {capitalizeFirstLetter} from "../../../helpers/utility";
 
 export const ActivityDashboardSetup = ({organization, context}) => {
   const noProjects = organization.projectCount === 0;

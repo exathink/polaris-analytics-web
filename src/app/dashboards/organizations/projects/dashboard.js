@@ -14,7 +14,7 @@ import AddProject from "./manage/addProject";
 
 import {Contexts} from "../../../meta";
 import {injectIntl} from "react-intl";
-import {displayPlural, displaySingular} from "../../../i18n";
+import {displayPlural} from "../../../i18n";
 
 const dashboard_id = 'dashboards.projects.organization.instance';
 
