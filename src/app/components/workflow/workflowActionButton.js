@@ -4,8 +4,7 @@ import "./steps.css";
 
 export const WorkflowActionButton = ({children, disabled,  ...rest}) => (
   <Button
-    type="primary"
-    style={!disabled ? {backgroundColor: '#7824b5', borderColor: '#7824b5'} : {}}
+    type={rest.type ?? "primary"}
     disabled={disabled}
     {...rest}>
     {children}

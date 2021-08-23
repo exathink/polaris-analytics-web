@@ -55,7 +55,19 @@ const AppHolder = styled.div`
 
   .ant-steps-item-title:after {
     top: 10px;
+    height: 2px;
+    background-color: #CACACA;
   }
+
+  .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+      background-color: #1A2842;
+    }
+    .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+        background-color: #cacaca;
+    }
+    .ant-steps-item-wait > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+        background-color: #cacaca;
+    }
 
   .ant-steps {
     .ant-steps-item-title,

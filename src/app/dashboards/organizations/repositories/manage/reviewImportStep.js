@@ -26,11 +26,13 @@ export class ReviewImportStep extends React.Component {
           <Column title={"Repository Name"} width='30%' dataIndex={"name"} key={"name"} />
           <Column title={"Description"} dataIndex={"description"} key={"description"} />
         </CompactTable>
+        <div style={{display: "flex", justifyContent: "center"}}>
         <Button
           type={'primary'}
           onClick={() => onDoImport()}
           disabled={selectedRepositories.length === 0}
         >Import {selectedRepositories.length > 1 ? 'Repositories' : 'Repository'}</Button>
+        </div>
       </div>
     )
   }

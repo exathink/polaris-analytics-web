@@ -38,6 +38,10 @@ export const Colors = {
   Commits: {
     nonMerge: "#7cb5ec",
     merge: "rgba(67,67,72,0.6)"
+  },
+  Steps: {
+    completed: "#32D669",
+    pending:"#B0B0B0"
   }
 };
 

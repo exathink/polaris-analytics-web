@@ -1,0 +1,27 @@
+.importProject {
+}
+
+.importProject :global(.ant-input) {
+  border-radius: 8px;
+  background-color: #f4f4f4;
+  height: 38px;
+}
+
+.importProject :global(.ant-legacy-form-item) {
+  display: flex;
+  flex-direction: column;
+}
+
+.importProject :global(.ant-legacy-form-item-label) {
+  display: flex;
+  line-height: normal;
+}
+.projectSetupForm{
+  margin-top: 1rem;
+}
+
+.importButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

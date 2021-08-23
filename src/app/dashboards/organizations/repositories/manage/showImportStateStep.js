@@ -5,6 +5,7 @@ import {Progress, Spin} from "antd";
 
 import {vcs_service} from "../../../../services/graphql";
 import {CompactTable} from "../../../../components/tables";
+import styles from "./addRepositoryWorkflow.module.css";
 
 const {Column} = CompactTable;
 
@@ -164,21 +165,23 @@ export class ShowImportStateStep extends React.Component {
               (a, b) => stateSortOrder[a.importState] - stateSortOrder[b.importState]
             );
             return (
-              <div className={'show-import-state'}>
-
-                {
-                  repositories.length > 0 &&
-                  numQueued === repositories.length ?
-                    <Spin size={"large"} tip={`Allocating containers to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
-                    :
-                    <Progress
-                      type={'circle'}
-                      percent={Math.ceil((numImported / repositories.length) * 100)}
-                      format={
-                        () => `${numImported}/${repositories.length}`
-                      }
-                    />
-                }
+              <div className={styles['show-import-state']}>
+                <div style={{display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
+                  {
+                    repositories.length > 0 &&
+                    numQueued === repositories.length ?
+                      <Spin size={"large"} tip={`Allocating server capacity to import ${repositories.length} ${repositories.length > 1 ? 'repositories' : 'repository'}. This may take a minute or two...`}/>
+                      :
+                      <Progress
+                        type={'circle'}
+                        percent={Math.ceil((numImported / repositories.length) * 100)}
+                        width={80}
+                        format={
+                          () => `${numImported}/${repositories.length}`
+                        }
+                      />
+                  }
+                </div>
                 <CompactTable
                   size="small"
                   dataSource={repositories}

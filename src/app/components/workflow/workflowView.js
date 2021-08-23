@@ -1,37 +1,33 @@
 import React from 'react';
-import {Flex} from "reflexbox";
 import {Steps} from "antd";
 import './steps.css';
+import styles from "./workflowView.module.css";
+import {CheckCircleStepIcon} from "../misc/customIcons";
 
 const {Step} = Steps;
 
 export const WorkflowView = ({title, steps, current, renderNavigationControls, stepProps}) => {
-  const currentStep = steps[current];
-
   return (
-    <Flex column style={{height: "100%", width: "100%"}}>
-      <Flex column h={0.15}>
-        <h2>{title}</h2>
+    <div className={styles.workflowViewWrapper}>
+      <div className={styles.backButton}>{renderNavigationControls().backButton()}</div>
+      <div className={styles.stepsWrapper}>
         <Steps current={current}>
           {steps.map((item, index) => (
-            <Step key={index}
-                  style={index > current ? {display: 'none'} : {}}
-                  title={item.title}
+            <Step
+              key={index}
+              title={item.title}
+              icon={<CheckCircleStepIcon index={index} current={current} />}
             />
           ))}
         </Steps>
-
-      </Flex>
-      <Flex h={0.10} justify='center' pt={'10px'} className="steps-action">
-        {
-          React.createElement(renderNavigationControls, {current, currentStep})
-        }
-      </Flex>
-      <Flex column h={0.75} className="steps-content">
-        {
-          React.createElement(steps[current].content, stepProps)
-        }
-      </Flex>
-    </Flex>
-  )
+        <h2 className={styles.workflowTitle}>{title}</h2>
+      </div>
+      <div className={styles.stepsContent}>{React.createElement(steps[current].content, stepProps)}</div>
+      <div className={styles.stepsAction}>
+        <div className={styles.doneButton}>{renderNavigationControls().doneButton()}</div>
+        <div className={styles.nextButton}>{renderNavigationControls().nextButton()}</div>
+        <div className={styles.importMoreButton}>{renderNavigationControls().importMoreButton()}</div>
+      </div>
+    </div>
+  );
 }

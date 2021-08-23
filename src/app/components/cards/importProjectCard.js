@@ -1,24 +1,17 @@
 import React from "react";
-import {LauncherCard} from "./launcher/launcherCard";
+import {WorkTrackingIcon} from "../misc/customIcons";
+import {Launcher} from "./launcher/launcherCard";
 
-export const ImportProjectsCard = ({onClick, title, style, compact}) => (
+export const ImportProjectsCard = ({onClick, title, style, compact, completed}) => (
 
-    <LauncherCard
+    <Launcher
       title={title || "Import Remote Projects"}
+      description={"Import from Jira, Trello, Pivotal Tracker, etc.."}
       onClick={onClick}
-      cover={
-        <img
-          alt="example"
-          src="/images/third-party/planning-12-512.png"
-        />
+      icon={
+        <WorkTrackingIcon />
       }
-      style={style || {marginTop: 50}}
-      {
-        ...compact ?
-            {}
-            :
-            {iconType: 'download', description: "Import from Jira, Pivotal Tracker, etc.."}
-      }
+      completed={completed}
     />
 
 )

@@ -1,0 +1,44 @@
+.workflowViewWrapper{
+    background-color: white;
+    display: grid;
+    grid-template-columns: 100px auto 100px;
+    grid-template-areas: "backButton stepsWrapper ."
+    ". stepsContent ."
+    ". stepsAction .";
+    gap: 0.5rem;
+}
+
+.stepsWrapper{
+    text-align: center;
+    grid-area: stepsWrapper;
+    margin-top: 1.5rem;
+}
+
+.workflowTitle{
+    margin-top: 1rem;
+}
+
+.stepsContent{
+    grid-area: stepsContent;
+    min-height: 50vh;
+}
+
+.stepsAction{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    grid-area: stepsAction;
+    display: flex;
+}
+
+.backButton{
+    margin-top: 1.5rem;
+    grid-area: backButton;
+    margin-left: 2rem;
+}
+
+.doneButton{
+  margin-left: auto;
+}
+.nextButton{
+    margin-left: 10px;
+}

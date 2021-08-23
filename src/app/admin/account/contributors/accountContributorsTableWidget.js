@@ -1,7 +1,7 @@
 import React from "react";
 import {DashboardWidget} from "../../../framework/viz/dashboard";
 import {PlusOutlined} from "@ant-design/icons";
-import {Button, Table} from "antd";
+import {Table} from "antd";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {injectIntl} from "react-intl";
@@ -11,6 +11,7 @@ import {Loading} from "../../../components/graphql/loading";
 import {useQueryContributorAliasesInfo} from "../../../dashboards/shared/widgets/contributors/manageAliases/useQueryContributorAliasesInfo";
 import styles from "../../../dashboards/shared/widgets/contributors/manageAliases/contributors.module.css";
 import {getAccountContributorsTableColumns, ACTIVE_WITHIN_DAYS} from "../../../dashboards/shared/widgets/contributors/manageAliases/utils";
+import Button from "../../../../components/uielements/button";
 
 function getTransformedData(data, intl) {
   if (data == null) {

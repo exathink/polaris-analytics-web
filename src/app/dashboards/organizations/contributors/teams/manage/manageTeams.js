@@ -6,6 +6,7 @@ import {withNavigationContext} from "../../../../../framework/navigation/compone
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
 import {ManageTeamsWorkflow} from "./manageTeamsWorkflow";
+import styles from "../../../../../framework/viz/dashboard/dashboardItem.module.css";
 
 const dashboard_id = "dashboards.contributors.manage.manage-teams";
 
@@ -29,7 +30,7 @@ function ManageTeams({context, intl}) {
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow h={"95%"}>
-        <DashboardWidget w={1} render={() => <ManageTeamsWorkflow {...props} />} />
+        <DashboardWidget className={styles.dashboardItem} w={1} render={() => <ManageTeamsWorkflow {...props} />} />
       </DashboardRow>
     </Dashboard>
   );

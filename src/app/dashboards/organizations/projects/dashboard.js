@@ -9,11 +9,12 @@ import {ProjectsTableWidget} from "./manage/projectsTable";
 import Projects from "../../projects/context"
 import { PlusOutlined } from '@ant-design/icons';
 import Button from "../../../../components/uielements/button";
-import {ProjectsDashboardSetup} from "./setup";
+
+import AddProject from "./manage/addProject";
 
 import {Contexts} from "../../../meta";
 import {injectIntl} from "react-intl";
-import {displayPlural, displaySingular} from "../../../i18n";
+import {displayPlural} from "../../../i18n";
 
 const dashboard_id = 'dashboards.projects.organization.instance';
 
@@ -35,7 +36,7 @@ export default injectIntl(({intl}) => (
               controls={[
                 () =>
                   <Button type="primary" onClick={() => context.go('.', 'new')}>
-                    <PlusOutlined /> {`New ${displaySingular(intl, Contexts.projects)}`}
+                    <PlusOutlined /> {`Connect Remote Projects`}
                   </Button>
               ]}
             >
@@ -95,7 +96,7 @@ export default injectIntl(({intl}) => (
 
           </Dashboard>
           :
-          <ProjectsDashboardSetup context={context}/>
+          <AddProject context={context}/>
       )
     }/>
 ));

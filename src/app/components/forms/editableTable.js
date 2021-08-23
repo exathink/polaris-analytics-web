@@ -46,7 +46,7 @@ class EditableCell extends React.Component {
     const { children, dataIndex, record, title } = this.props;
     const { editing } = this.state;
     return editing ? (
-      <Form.Item style={{ margin: 0 }}>
+      <Form.Item style={{ margin: "0 0 0 auto", display: "flex"}}>
         {form.getFieldDecorator(dataIndex, {
           rules: [
             {
@@ -55,7 +55,7 @@ class EditableCell extends React.Component {
             },
           ],
           initialValue: record[dataIndex],
-        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
+        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} style={{textAlign: "center", width: "70px", marginLeft: "50%"}} />)}
       </Form.Item>
     ) : (
       <div

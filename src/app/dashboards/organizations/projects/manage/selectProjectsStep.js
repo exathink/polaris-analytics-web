@@ -4,7 +4,6 @@ import React from 'react';
 
 import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
-import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
 import {Table} from "../../../../components/tables";
@@ -13,8 +12,12 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
+import {CheckOutlined} from "@ant-design/icons";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import fontStyles from "../../../../framework/styles/fonts.module.css";
+import styles from "./selectProjectsStep.module.css";
+import classNames from "classnames";
+import {DownloadIcon} from "../../../../components/misc/customIcons";
 
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: work_tracking_service};
 
@@ -164,16 +167,17 @@ export const SelectProjectsStep =
                 }
                 return (
                   <div className={'selected-projects'}>
-                    <h3>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
-                    <h5>{getServerUrl(selectedConnector)}</h5>
-                    <ButtonBar>
-                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'center'}>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <div className={styles["flex-center"]}>
+                      <h3 className={styles["titleCenter"]}>Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                    </div>
+                    <div className={styles.selectProjectControls}>
+                      <h4 className={styles.availableProjects}>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
+                      <div className={styles.fetchProjects}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           size={'small'}
-                          icon={<DownloadOutlined />}
+                          icon={<DownloadIcon />}
                           onClick={
                             () => refetchProjects({
                               variables: {
@@ -184,12 +188,12 @@ export const SelectProjectsStep =
                         >
                           {getFetchProjectsButtonName(selectedConnector)}
                         </Button>
-                      </ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'right'}>
+                      </div>
+                      <div className={styles.testConnector}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           icon={<CheckOutlined />}
-                          size={'small'}
+                          size={'medium'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={
                             () => testConnector({
@@ -202,6 +206,9 @@ export const SelectProjectsStep =
                         >
                           {'Test Connector'}
                         </Button>
+
+                      </div>
+                      <div className={styles.editConnector}>
                         <EditConnectorFormButton
                           connectorType={selectedConnectorType}
                           connector={selectedConnector}
@@ -228,8 +235,11 @@ export const SelectProjectsStep =
                           error={editConnectorResult.error}
                           lastSubmission={lastSubmission}
                         />
-                      </ButtonBarColumn>
-                    </ButtonBar>
+
+                      </div>
+                      
+                    </div>
+                    <div className={styles.selectProjectsTable}>
                     {
                       workItemsSources.length > 0 ?
                         <SelectProjectsTable
@@ -240,8 +250,10 @@ export const SelectProjectsStep =
                           connectorType={connectorType}
                         />
                         :
-                        <NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} />
+                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={`No new ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import`} /></div>
                     }
+
+                    </div>
                   </div>
 
                 )

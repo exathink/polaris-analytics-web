@@ -2,45 +2,39 @@
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-columns: 100px 1fr 1fr 100px;
   grid-template-areas:
-    ". steps steps ."
-    ". stepContent stepContent .";
-  gap: 0.5rem;
+    "backButton steps steps ."
+    "stepContent stepContent stepContent stepContent";
+    gap: 2rem 0.5rem;
+    justify-items: center;
+    align-items: center;
 }
 
 .manageContributorsStepsWrapper {
+  margin-top: 1rem;
   grid-area: steps;
+  min-width: 50vw;
 }
-
+.contributorBackAction {
+  margin-top: 1rem;
+  grid-area: backButton;
+}
 .manageContributorsStepsContent {
+  margin: 0 2rem;
   min-height: 50vh;
   grid-area: stepContent;
 }
 .selectContributorsNextAction {
+  margin-right: 16px;
+}
+
+.selectContributorsAction{
+  grid-area: selectContributorsAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding-bottom: 16px;
-  grid-area: selectContributorsNextAction;
-  justify-self: flex-end;
-}
-
-.selectContributorsDoneAction {
-  grid-area: selectContributorsDoneAction;
-  justify-self: flex-start;
-}
-
-.contributorsButton {
-  background-color: rgb(120, 36, 181);
-  border-color: rgb(120, 36, 181);
-  color: white;
-  margin: 1px;
-  min-width: 85px;
-  font-weight: 500;
-}
-
-.contributorsPrimaryButton {
-  margin: 1px;
-  min-width: 85px;
-  font-weight: 500;
 }
 
 .selectContributorsLandingPage {
@@ -51,7 +45,7 @@
     "contributorsSlider contributorsSlider"
     "userMessage userMessage"
     "contributorsTable contributorsTable"
-    "selectContributorsNextAction selectContributorsDoneAction";
+    "selectContributorsAction selectContributorsAction";
 }
 
 .selectContributorsSlider {
@@ -77,23 +71,6 @@
 .rangeSliderWrapper {
   width: 90%;
 }
-/* override completed steps color */
-.manageContributorsStepsWrapper
-  :global(.ant-steps-item):global(.ant-steps-item-finish)
-  :global(.ant-steps-item-icon)
-  > :global(.ant-steps-icon) {
-  color: #d4d4d4;
-}
-
-.manageContributorsStepsWrapper :global(.ant-steps-item):global(.ant-steps-item-finish) :global(.ant-steps-item-icon) {
-  background-color: #7824b5;
-  border-color: #7824b5;
-}
-
-.manageContributorsStepsWrapper :global(.ant-steps-item-process) :global(.ant-steps-item-icon) {
-  background: #7824b5;
-  border: #7824b5;
-}
 
 .updateContributorLandingPage {
   margin-top: 16px;
@@ -105,7 +82,7 @@
     "updateContributorTitle updateContributorTitle"
     "updateContributorTable updateContributorTable"
     "actionButtons actionButtons"
-    "updateContributorMergeAction updateContributorDoneAction";
+    "updateContributorAction updateContributorAction";
 }
 
 .messageNotification {
@@ -113,19 +90,23 @@
   grid-area: excludeFromAnalysis;
   z-index: 2;
 }
-.updateContributorMergeAction {
+
+.updateContributorAction{
+  grid-area: updateContributorAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding-bottom: 16px;
-  grid-area: updateContributorMergeAction;
-  justify-self: flex-end;
-}
-.updateContributorBackAction {
-  grid-area: updateContributorMergeAction;
-}
-.updateContributorDoneAction {
-  grid-area: updateContributorDoneAction;
-  justify-self: flex-start;
 }
 
+.updateContributorMergeAction {
+  margin: 0 auto;
+}
+.updateContributorAction::before{
+  content:"Done";
+  visibility: hidden;
+  padding: 0 25px;
+}
 .activeContributors {
   margin-left: 30px;
   padding: 8px;
@@ -134,19 +115,7 @@
 }
 
 .manageContributorsAction {
-  margin-right: 60px;
-  background-color: #4482ff;
-  border-color: #4482ff;
-}
-
-.manageContributorsAction:global(.ant-btn) {
-  border-radius: 4px;
-}
-
-.manageContributorsAction:hover {
-  background-color: #5896ff;
-  border-color: #5896ff;
-  color: #fff;
+  margin-right: 40px;
 }
 
 .accountContributorsTableWrapper {
@@ -217,21 +186,20 @@
   grid-template-areas:
     "selectParentContributorTitle selectParentContributorTitle"
     "selectParentContributorTable selectParentContributorTable"
-    "parentContributorNextAction parentContributorDoneAction";
+    "parentContributorAction parentContributorAction";
 }
 
-.parentContributorNextAction {
+.parentContributorAction{
+  grid-area: parentContributorAction;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   padding-bottom: 16px;
-  grid-area: parentContributorNextAction;
-  justify-self: flex-end;
 }
-.parentContributorBackAction {
-  grid-area: parentContributorNextAction;
+.parentContributorNextAction {
+  margin-right: 16px;
 }
-.parentContributorDoneAction {
-  grid-area: parentContributorDoneAction;
-  justify-self: flex-start;
-}
+
 .selectParentContributorTitle {
   grid-area: selectParentContributorTitle;
   margin-top: 3rem;

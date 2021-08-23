@@ -1,0 +1,6 @@
+.show-import-state :global(.ant-spin-text){
+    color: #7A7B9A;
+}
+.show-import-state :global(.ant-spin-dot-item){
+    background-color: #7A7B9A;
+}

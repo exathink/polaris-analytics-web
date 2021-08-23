@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import {palette} from 'styled-theme';
 import {transition} from '../../../config/style-util';
 
+const antBtnPrimaryColor = "#2E3445";
+const antBtnPrimaryHover = "#3F475E"
+const antBtnSecondaryBorderColor = "#2E3445";
+const antBtnSecondaryBorderHoverColor = "#3F475E";
 const Buttons = ComponentName => styled(ComponentName)`
   &.ant-btn {
     display: inline-block;
@@ -64,16 +68,23 @@ const Buttons = ComponentName => styled(ComponentName)`
     }
 
     &.ant-btn-primary {
-      background-color: ${palette('primary', 0)};
-      border-color: ${palette('primary', 0)};
+      background-color: ${antBtnPrimaryColor};
+      border-color: ${antBtnPrimaryColor};
 
       &:hover {
-        background-color: ${palette('primary', 10)};
-        border-color: ${palette('primary', 10)};
+        background-color: ${antBtnPrimaryHover};
+        border-color: ${antBtnPrimaryHover};
         color: #fff;
       }
     }
+    &.ant-btn-secondary {
+      border-color: ${antBtnSecondaryBorderColor};
 
+      &:hover {
+        color: ${antBtnSecondaryBorderHoverColor};
+        border-color: ${antBtnSecondaryBorderHoverColor};
+      }
+    }
     &.ant-btn-sm {
       font-size: 9px;
       height: 20px;

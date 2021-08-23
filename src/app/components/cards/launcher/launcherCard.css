@@ -1,7 +1,43 @@
 .launcher-card .ant-card-body {
-    padding-top: 5px;
+  padding-top: 5px;
 }
 
 .launcher-card .ant-card-head {
-    border-bottom-style: none;
+  border-bottom-style: none;
+}
+
+.launcherWrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  border-radius: 10px;
+  margin-top: 25px;
+  box-shadow: 0px 26px 52px rgba(0, 0, 0, 0.05);
+  min-height: 7rem;
+}
+
+.launcherIcon {
+}
+
+.launcherTitleWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5rem;
+}
+
+.subTitle{
+  margin-top: 3px;
+  color: #7A7B9A;
+}
+.launcherCheck {
+  margin-left: auto;
+}
+
+.launcherCheckDisabled {
+  margin-left: auto;
+  cursor: not-allowed
 }

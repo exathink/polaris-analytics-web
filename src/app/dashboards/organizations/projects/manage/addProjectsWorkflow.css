@@ -2,3 +2,25 @@
     margin-top: 10px;
     margin-bottom: 30px;
 }
+
+.select-connector .ant-avatar-image{
+    width: 63px;
+    height: 63px;
+}
+
+.select-connector .ant-card{
+    border-radius: 10px;
+}
+
+.select-connector .step-description{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7A7B9A;
+}
+
+.select-connector-cards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+}

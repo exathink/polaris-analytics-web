@@ -1,0 +1,78 @@
+.selectConnector :global(.ant-avatar-image){
+    width: 63px;
+    height: 63px;
+}
+
+.selectConnector :global(.ant-card-body .ant-btn-secondary){
+    margin-left: 30%;
+}
+
+.selectConnector :global(.ant-card){
+    border-radius: 10px;
+}
+
+.selectConnectorCards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+}
+
+.subTitle {
+    color: #7A7B9A;
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selectRepositoryControls{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto auto;
+    grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports";
+    align-items: center;
+}
+.availableRepos{
+    grid-area: availableRepos;
+    margin-bottom: 0;
+}
+.refreshRepos{
+    grid-area: refreshRepos;
+    margin-left: 0.5rem;
+}
+.testConnector{
+    grid-area: testConnector;
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+}
+.editConnector{
+   grid-area: editConnector;
+   justify-self: flex-end;
+   margin-right: 1rem;
+}
+.activeImports{
+    grid-area: activeImports;
+    justify-self: flex-end;
+}
+.selectReposTable{
+    margin-top: 1rem;
+}
+.selectRepositoryControls :global(.ant-btn-secondary){
+    background-color: transparent;
+}
+
+.refreshRepos :global(.ant-btn-secondary){
+    border: none;
+}
+.activeImports :global(.ant-btn-secondary){
+    border: none;
+}
+
+.show-import-state :global(.ant-spin-text){
+    color: #7A7B9A;
+}
+.show-import-state :global(.ant-spin-dot-item){
+    background-color: #7A7B9A;
+}

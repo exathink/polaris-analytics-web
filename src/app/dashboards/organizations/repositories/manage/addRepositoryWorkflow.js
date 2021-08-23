@@ -12,6 +12,7 @@ import {withNavigationContext} from "../../../../framework/navigation/components
 import {openNotification} from "../../../../helpers/utility";
 
 import {WorkflowActionButton, WorkflowView} from "../../../../components/workflow";
+import {BackArrowIcon} from "../../../../components/misc/customIcons";
 
 const steps = [
   {
@@ -178,27 +179,27 @@ export const AddRepositoryWorkflow = withNavigationContext(
             title={"Connect Remote Repositories"}
             steps={steps}
             current={current}
-            renderNavigationControls={
-              () => (
-                <React.Fragment>
-                  {
-                    <WorkflowActionButton onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}>
-                      Done
-                    </WorkflowActionButton>
-                  }
-                  {current > 0 && (
-                    <WorkflowActionButton onClick={() => this.prev()}>
-                      {current < 4 ? 'Back' : 'Import More Repositories'}
-                    </WorkflowActionButton>
-                  )}
-                  {currentStep.showNext && current < steps.length - 1 && (
+            renderNavigationControls={() => {
+              return {
+                doneButton: () => (
+                  <WorkflowActionButton
+                    onClick={() => onDone && onDone(this.state.importedRepositoryKeys)}
+                    type="secondary"
+                  >
+                    Done
+                  </WorkflowActionButton>
+                ),
+                backButton: () => current > 0 && current < 4 && (<BackArrowIcon onClick={() => this.prev()}/>),
+                importMoreButton: () => current===4 && <WorkflowActionButton onClick={() => this.prev()}>Import More Repositories</WorkflowActionButton>,
+                nextButton: () =>
+                  currentStep.showNext &&
+                  current < steps.length - 1 && (
                     <WorkflowActionButton disabled={disableNext} onClick={() => this.next()}>
                       Next
                     </WorkflowActionButton>
-                  )}
-                </React.Fragment>
-              )
-            }
+                  ),
+              };
+            }}
             stepProps={{
               organizationKey: organization.key,
               onConnectorTypeSelected: this.onConnectorTypeSelected.bind(this),

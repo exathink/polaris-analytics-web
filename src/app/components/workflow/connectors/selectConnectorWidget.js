@@ -10,9 +10,11 @@ import {withMutation} from "../../graphql/withMutation";
 import {withPollingManager} from "../../graphql/withPollingManager";
 import {NewConnectorFormButton} from "./newConnectorFormButton";
 import {CreateConnectorInstructions} from "./createConnectorInstructions";
-
+import fontStyles from "../../../framework/styles/fonts.module.css";
 import './connectors.css'
+import styles from "./selectConnectorWidget.module.css";
 import {CREATE_CONNECTOR, DELETE_CONNECTOR} from "./mutations";
+import classNames from "classnames";
 
 
 function urlMunge(connectorType, url) {
@@ -98,37 +100,39 @@ export const SelectConnectorWidget =
                 connectors = data.connectors.edges.map(edge => edge.node).filter(node => !node.archived);
               }
               return (
-                <div className={'select-connector'}>
+                <div className={connectors.length === 0 ? styles["select-connector-not-available"]: styles["select-connector-available"]}>
                   {
                     loading || connectors.length > 0 ?
                       <React.Fragment>
                         {
                           connectors.length > 0 &&
-                          <h3>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                          <h3 className={styles["available-connectors"]}>{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
                         }
-                        <ConnectorsTable
-                          connectorType={connectorType}
-                          connectors={connectors}
-                          loading={loading}
-                          onConnectorSelected={onConnectorSelected}
-                          onConnectorDeleted={
-                            (record) => deleteConnector({
-                              variables: {
-                                deleteConnectorInput: {
-                                  connectorKey: record.key
-                                }
-                              }
-                            })
-                          }
-                        />
+                        <div className={styles["select-connectors-table"]}>
+                          <ConnectorsTable
+                            connectorType={connectorType}
+                            connectors={connectors}
+                            loading={loading}
+                            onConnectorSelected={onConnectorSelected}
+                            onConnectorDeleted={(record) =>
+                              deleteConnector({
+                                variables: {
+                                  deleteConnectorInput: {
+                                    connectorKey: record.key,
+                                  },
+                                },
+                              })
+                            }
+                          />
+                      </div>
                       </React.Fragment>
                       :
-                      <h3>{`No available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                      <h3 className={classNames("flex-center", fontStyles["font-normal"], fontStyles["text-sm"], styles["no-available-connectors"], styles["subTitle"])}>{`Polaris Connectors allows you to securely import data from ${getConnectorTypeDisplayName(connectorType)}`}</h3>
                   }
 
                   {
                     viewerContext.isAdmin() || viewerContext.isOrganizationOwner(organizationKey) ?
-                      <React.Fragment>
+                      <div className={classNames({"flex-center": connectors.length===0}, connectors.length>0 ? styles["new-connector-button"]: styles["new-connector-button-not-available"])}>
                         < NewConnectorFormButton
                           connectorType={connectorType}
                           title={`Create ${getConnectorTypeDisplayName(connectorType)} Connector`}
@@ -159,7 +163,7 @@ export const SelectConnectorWidget =
                           lastSubmission={lastSubmission}
                         />
                         <CreateConnectorInstructions initial={connectors.length === 0} connectorType={connectorType}/>
-                      </React.Fragment>
+                      </div>
                       :
                       connectors.length === 0 &&
                       <span>Please contact an administrator for your organization to add a connector</span>

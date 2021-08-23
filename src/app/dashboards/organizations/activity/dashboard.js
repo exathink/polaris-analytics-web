@@ -28,7 +28,7 @@ export const dashboard = ({viewerContext}) => {
     pollInterval={60 * 1000}
     render={
       ({organization, context}) =>
-        organization.repositoryCount > 0 ?
+        organization.repositoryCount > 0 && organization.projectCount > 0 ?
           <Dashboard
             dashboard={`${dashboard_id}`}
           >

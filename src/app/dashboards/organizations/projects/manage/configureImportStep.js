@@ -11,6 +11,7 @@ import Button from "../../../../../components/uielements/button";
 import {ProjectSetupForm} from './projectSetupForm';
 import {capitalizeFirstLetter} from "../../../../helpers/utility";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import styles from "./configureImportStep.module.css";
 
 const inputModeDescription = {
   single: 'Import as work stream(s) in a new Polaris Flow Value Stream',
@@ -180,7 +181,7 @@ export class ConfigureImportStep extends React.Component {
     const selectedProjects = this.mapSelectedProjects(this.props.selectedProjects);
     const {connectorType} = selectedConnector;
     return (
-      <div className={'import-project'}>
+      <div className={styles.importProject}>
         <h3>{selectedProjects.length} remote {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true).toLowerCase() : getConnectorTypeProjectName(connectorType).toLowerCase()} selected for import</h3>
         {
           <SelectImportMode
@@ -190,30 +191,34 @@ export class ConfigureImportStep extends React.Component {
             organizationKey={organizationKey}
           />
         }
-        {
-          importMode === 'single' &&
-          <ProjectSetupForm
-            importMode={importMode}
-            selectedProjects={selectedProjects}
-            importedProjectName={importedProjectName}
-            handleSave={this.onSave.bind(this)}
-            onProjectNameChanged={this.onProjectNameChanged.bind(this)}
-            onProjectsSelected={onProjectsSelected}
-            connectorType={connectorType}
-          />
-        }
-        {
-          importMode === 'existing' &&
-          <ProjectSetupForm
-            importMode={importMode}
-            organizationKey={organizationKey}
-            selectedProjects={selectedProjects}
-            selectedProjectKey={this.state.selectedProjectKey}
-            onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
-            onProjectsSelected={onProjectsSelected}
-            connectorType={connectorType}
-          />
-        }
+        <div className={styles.projectSetupForm}>
+          {
+            importMode === 'single' &&
+            <ProjectSetupForm
+              importMode={importMode}
+              selectedProjects={selectedProjects}
+              importedProjectName={importedProjectName}
+              handleSave={this.onSave.bind(this)}
+              onProjectNameChanged={this.onProjectNameChanged.bind(this)}
+              onProjectsSelected={onProjectsSelected}
+              connectorType={connectorType}
+            />
+          }
+        </div>
+        <div  className={styles.projectSetupForm}>
+          {
+            importMode === 'existing' &&
+            <ProjectSetupForm
+              importMode={importMode}
+              organizationKey={organizationKey}
+              selectedProjects={selectedProjects}
+              selectedProjectKey={this.state.selectedProjectKey}
+              onProjectSelectChanged={this.onProjectSelectChanged.bind(this)}
+              onProjectsSelected={onProjectsSelected}
+              connectorType={connectorType}
+            />
+          }
+        </div>
         {
           importMode === 'separate' &&
           <SeparateModeImport
@@ -222,13 +227,18 @@ export class ConfigureImportStep extends React.Component {
             connectorType={connectorType}
           />
         }
-        <Button
-          type={'primary'}
-          onClick={
-            () => this.doImport(importMode, this.state.selectedProjects)
-          }
-          disabled={this.state.importMode === 'existing' && this.state.selectedProjectKey === null}
-          >Import {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true) : getConnectorTypeProjectName(connectorType)}</Button>
+        <div className={styles.importButton} style={{marginTop: "2rem"}}>
+          <Button
+            type={"primary"}
+            onClick={() => this.doImport(importMode, this.state.selectedProjects)}
+            disabled={this.state.importMode === "existing" && this.state.selectedProjectKey === null}
+          >
+            Import{" "}
+            {selectedProjects.length > 1
+              ? getConnectorTypeProjectName(connectorType, true)
+              : getConnectorTypeProjectName(connectorType)}
+          </Button>
+        </div>
       </div>
     )
   }

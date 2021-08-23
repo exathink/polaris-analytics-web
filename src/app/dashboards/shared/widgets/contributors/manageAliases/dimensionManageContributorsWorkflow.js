@@ -6,6 +6,8 @@ import {SelectParentContributorPage} from "./selectParentContributorPage";
 import {SelectContributorsPage} from "./selectContributorsPage";
 import {contributorsReducer} from "./contributorsReducer";
 import {ACTIVE_WITHIN_DAYS, withNoChildren} from "./utils";
+import {BackArrowIcon, CheckCircleStepIcon} from "../../../../../components/misc/customIcons";
+import {actionTypes} from "./constants";
 
 const {Step} = Steps;
 
@@ -49,13 +51,22 @@ export function DimensionManageContributorsWorkflow({dimension, instanceKey, con
     steps = [selectContributorsStep, selectParentContributorStep, updateContributorStep];
   }
 
+  const handleBackClick = () => {
+    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
+  };
+
   const {current} = state;
   return (
     <div className={styles.manageContributorsWrapper}>
+      {current > 0 && (
+        <div className={styles.contributorBackAction}>
+          <BackArrowIcon onClick={handleBackClick} />
+        </div>
+      )}
       <div className={styles.manageContributorsStepsWrapper}>
         <Steps current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
+          {steps.map((item, index) => (
+            <Step key={item.title} title={item.title} icon={<CheckCircleStepIcon index={index} current={current} />} />
           ))}
         </Steps>
       </div>

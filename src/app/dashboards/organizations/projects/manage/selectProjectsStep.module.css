@@ -1,0 +1,47 @@
+.selectProjectControls {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto auto auto;
+  grid-template-areas: "availableProjects fetchProjects . editConnector testConnector";
+  align-items: center;
+}
+.availableProjects {
+  grid-area: availableProjects;
+  margin-bottom: 0;
+}
+.fetchProjects {
+  grid-area: fetchProjects;
+  margin-left: 0.5rem;
+}
+.testConnector {
+  grid-area: testConnector;
+  justify-self: flex-end;
+  margin-right: 0.5rem;
+}
+.editConnector {
+  grid-area: editConnector;
+  justify-self: flex-end;
+  margin-right: 1rem;
+}
+.selectProjectsTable {
+  margin-top: 1rem;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleCenter {
+  width: 385px;
+  text-align: center;
+}
+
+.selectProjectControls :global(.ant-btn-secondary){
+  background-color: transparent;
+}
+
+.fetchProjects :global(.ant-btn-secondary){
+  border: none;
+  box-shadow: none;
+}

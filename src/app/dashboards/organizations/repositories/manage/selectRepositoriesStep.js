@@ -3,7 +3,6 @@ import {Query} from "@apollo/client/react/components"
 import React from 'react';
 
 import Button from "../../../../../components/uielements/button";
-import {ButtonBar, ButtonBarColumn} from "../../../../containers/buttonBar/buttonBar";
 import {vcs_service} from "../../../../services/graphql";
 import {withMutation} from "../../../../components/graphql/withMutation";
 import {EDIT_CONNECTOR, TEST_CONNECTOR} from "../../../../components/workflow/connectors/mutations";
@@ -13,8 +12,11 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined, DownloadOutlined} from "@ant-design/icons";
-
+import {CheckOutlined} from "@ant-design/icons";
+import classNames from "classnames";
+import fontStyles from "../../../../framework/styles/fonts.module.css";
+import styles from "./addRepositoryWorkflow.module.css";
+import {DownloadIcon} from "../../../../components/misc/customIcons";
 const EDIT_CONNECTOR_WITH_CLIENT = {...EDIT_CONNECTOR, client: vcs_service};
 
 function getServerUrl(selectedConnector) {
@@ -105,7 +107,6 @@ const SelectRepositoriesTable = ({loading, dataSource, selectedRepositories, onR
         title={'Description'}
         dataIndex={'description'}
         key={'description'}
-        {...useSearch('description')}
       />
     </Table>
   )
@@ -144,16 +145,17 @@ export const SelectRepositoriesStep =
                 }
                 return (
                   <div style={{height: "100%"}} className={'selected-repositories'}>
-                    <h3>Select repositories to import from connector {selectedConnector.name}</h3>
-                    <h4>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
-                    <h5>{getServerUrl(selectedConnector)}</h5>
-                    <ButtonBar>
-                      <ButtonBarColumn span={8} alignButton={'left'}></ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'center'}>
+                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
+                    <h3 className={styles["flex-center"]}>Select repositories to import from connector {selectedConnector.name}</h3>
+                    
+                    
+                    <div className={styles.selectRepositoryControls}>
+                      <h4 className={styles.availableRepos}>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
+                      <div className={styles.refreshRepos}>
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           size={'small'}
-                          icon={<DownloadOutlined />}
+                          icon={<DownloadIcon />}
                           onClick={
                             () => refetchRepositories({
                               variables: {
@@ -164,12 +166,13 @@ export const SelectRepositoriesStep =
                         >
                           Refresh Available Repositories
                     </Button>
-                      </ButtonBarColumn>
-                      <ButtonBarColumn span={8} alignButton={'right'}>
+                      </div>
+                      <div className={styles.testConnector}>
+
                         <Button
-                          type={'primary'}
+                          type={'secondary'}
                           icon={<CheckOutlined />}
-                          size={'small'}
+                          size={'medium'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={
                             () => testConnector({
@@ -182,6 +185,9 @@ export const SelectRepositoriesStep =
                         >
                           {'Test Connector'}
                         </Button>
+                      </div>
+                      <div className={styles.editConnector}>
+
                         <EditConnectorFormButton
                           connectorType={selectedConnectorType}
                           connector={selectedConnector}
@@ -208,17 +214,21 @@ export const SelectRepositoriesStep =
                           error={editConnectorResult.error}
                           lastSubmission={lastSubmission}
                         />
+                      </div>
+                      <div className={styles.activeImports}>
+
                         <Button
-                          type={'primary'}
-                          icon={'import'}
+                          type={'secondary'}
                           size={'small'}
                           disabled={selectedRepositories.length}
                           onClick={getActiveImports}
                         >
-                          {'Active Imports'}
+                         <DownloadIcon /> Active Imports
                         </Button>
-                      </ButtonBarColumn>
-                    </ButtonBar>
+                      </div>
+                     
+                    </div>
+                    <div className={styles.selectReposTable}>
                     {
                       repositories.length > 0 ?
                         <SelectRepositoriesTable
@@ -228,8 +238,9 @@ export const SelectRepositoriesStep =
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
                         :
-                        <NoData message={"No new repositories to import"} />
+                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={`No repositories to import. Click 'Refresh Available Repositories' to sync with ${getServerUrl(selectedConnector)}`} /></div>
                     }
+                    </div> 
                   </div>
 
                 )

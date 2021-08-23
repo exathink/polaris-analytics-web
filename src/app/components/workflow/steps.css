@@ -61,10 +61,6 @@
   color: #1db539;
 }
 
-.show-import-state .ant-table .status-complete {
-  color:  #1db539;
-}
-
 .show-import-state .ant-table .import-failed {
   color: #b5111a;
 }

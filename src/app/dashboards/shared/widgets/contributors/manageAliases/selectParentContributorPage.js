@@ -1,8 +1,9 @@
-import {Radio, Table, Button} from "antd";
+import {Radio, Table} from "antd";
 import React from "react";
 import styles from "./contributors.module.css";
 import {useUpdateContributorTableColumns, VERTICAL_SCROLL_HEIGHT, getBaseColumns, NavigateOnDoneHandlers} from "./utils";
 import {actionTypes} from "./constants";
+import Button from "../../../../../../components/uielements/button";
 
 function getTransformedData(selectedRecords) {
   const kvArr = selectedRecords.map((x) => [x.key, x]);
@@ -46,10 +47,6 @@ export function SelectParentContributorPage({
     dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current + 1});
   };
 
-  const handleBackClick = () => {
-    dispatch({type: actionTypes.UPDATE_CURRENT_STEP, payload: current - 1});
-  };
-
   const handleDoneClick = () => {
     NavigateOnDoneHandlers(context)[dimension]();
   };
@@ -58,37 +55,24 @@ export function SelectParentContributorPage({
     const nextButtonDisabled = parentContributorKey.trim() === "";
 
     return (
-      <>
+      <div className={styles.parentContributorAction}>
         <div className={styles.parentContributorNextAction}>
           <Button
             type="primary"
-            style={nextButtonDisabled ? {} : {backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            className={styles.contributorsButton}
             onClick={handleNextClick}
             disabled={nextButtonDisabled}
           >
             Next
           </Button>
         </div>
-        <div className={styles.parentContributorBackAction}>
-          <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
-            onClick={handleBackClick}
-          >
-            Back
-          </Button>
-        </div>
         <div className={styles.parentContributorDoneAction}>
           <Button
-            className={styles.contributorsButton}
-            style={{backgroundColor: "#7824b5", borderColor: "#7824b5", color: "white"}}
             onClick={handleDoneClick}
           >
             Done
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 

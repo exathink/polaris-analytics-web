@@ -7,6 +7,8 @@ import {work_tracking_service} from "../../../../services/graphql/index";
 import {CompactTable} from "../../../../components/tables";
 import {Loading} from "../../../../components/graphql/loading";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
+import {CompletedCheckIcon} from "../../../../components/misc/customIcons";
+import styles from "./showImportStateStep.module.css";
 
 const {Column} = CompactTable;
 const importStateDisplayMap = {
@@ -96,14 +98,17 @@ export const ShowImportStateStep = (
 
           return (
             workItemsSources.length > 0 ? (
-              <div className={'show-import-state'}>
-                <Progress
-                  type={'circle'}
-                  percent={Math.ceil((numImported / workItemsSources.length) * 100)}
-                  format={
-                    () => `${numImported}/${workItemsSources.length}`
-                  }
-                />
+              <div className={styles['show-import-state']}>
+                <div style={{display: "flex", justifyContent: "center", marginBottom: "1rem"}}>
+                  <Progress
+                    type={'circle'}
+                    percent={Math.ceil((numImported / workItemsSources.length) * 100)}
+                    width={80}
+                    format={
+                      () => `${numImported}/${workItemsSources.length}`
+                    }
+                  />
+                </div>
                 <CompactTable
                   size="small"
                   dataSource={workItemsSources}
@@ -125,16 +130,13 @@ export const ShowImportStateStep = (
                     title={"Import Status"}
                     dataIndex={"importState"}
                     key={"importState"}
+                    align={"right"}
                     render={
                       importState =>
                         importState !== 'complete' ?
                           <Spin tip={importState}/>
                           :
-                          <Progress
-                            type='circle'
-                            width={30}
-                            percent={100}
-                          />
+                          <CompletedCheckIcon />
                     }
                   />
                 </CompactTable>

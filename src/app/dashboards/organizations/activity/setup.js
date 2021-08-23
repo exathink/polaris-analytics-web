@@ -1,86 +1,67 @@
 import React from "react";
-import {Col, Row} from "antd";
 import {ImportProjectsCard} from "../../../components/cards/importProjectCard";
 import {ImportRepositoriesCard} from "../../../components/cards/importRepositoriesCard";
+import fontStyles from "../../../framework/styles/fonts.module.css"
+import styles from "./activity.module.css";
+import classNames from "classnames";
 
 export const ActivityDashboardSetup = ({organization, context}) => {
   const noProjects = organization.projectCount === 0;
   const noRepositories = organization.repositoryCount === 0;
 
-  const repositoriesOffset = noProjects ? 6 : 9;
-  const projectsOffset = noRepositories ? 0 : 9;
-
-
   return (
-    <div>
+    <div className={styles.activityWrapper}>
+      <div className={styles.activityDashboard}>
+        <div className={styles.textCenter}>
+          {noProjects && noRepositories ? (
+            <InitialSetupText organization={organization} />
+          ) : noRepositories ? (
+            <SetupRepositoriesText organization={organization} />
+          ) : noProjects ? (
+            <SetupProjectsText organization={organization} />
+          ) : null}
+        </div>
+        <div>
+           <ImportProjectsCard
+            title={"Connect Projects"}
+            onClick={() => context.go("..", "value-streams/new")}
+            completed={noProjects === false}
+          />
+          <ImportRepositoriesCard
+            title={"Connect Git Repositories"}
+            onClick={() => context.go("..", "repositories/new")}
+            completed={noRepositories === false}
+          />
 
-      <div style={{padding: '30px'}}>
-        <Row>
-          <Col offset={6} span={12}>
-            {
-              noProjects && noRepositories ?
-                <InitialSetupText organization={organization}/>
-              : noRepositories ?
-                  <SetupRepositoriesText organization={organization} />
-                : noProjects ?
-                  <SetupProjectsText organization={organization}/>
-                  : null
-            }
-          </Col>
-        </Row>
-        <Row type={'flex'}>
-          {
-            noRepositories &&
-            <Col offset={repositoriesOffset} span={6}>
-              <ImportRepositoriesCard title={"Connect Version Control System"} onClick={() => context.go('..', 'repositories')}/>
-            </Col>
-          }
-          {
-            noProjects &&
-            <Col offset={projectsOffset} span={6}>
-              <ImportProjectsCard title={"Connect Work Tracking System"} onClick={() => context.go('..', 'value-streams')}/>
-            </Col>
-          }
-        </Row>
+        </div>
       </div>
-
     </div>
-
-  )
-}
+  );
+};
 
 const InitialSetupText = ({organization}) => (
   <React.Fragment>
-    <h1>Setup Organization {organization.name}</h1>
-    <p>
-      To view activity for this organization, you must import project data from a work tracking system
-      that you use to manage your engineering projects, and commit data from from a Git based version control system.
-      The process is simple and should take under 30 minutes in most cases. You may import project and commit data in
-      any order.
-    </p>
-    <p>
-      Once the initial data import is complete, Polaris Flow will
-      keep your data updated automatically in real-time.
-    </p>
+    <h1 className={fontStyles["text-2xl"]}>Let's connect Projects and Git Repositories for {organization.name}</h1>
+    <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>It should take less than 15 minutes to get going. </p>
   </React.Fragment>
 );
 
 const SetupProjectsText = ({organization}) => (
   <React.Fragment>
-    <h1>Connect Work Tracking System for {organization.name}</h1>
-    <p>
-      Congratulations! You have completed the version control system setup for {organization.name}.
-      Now let's finish by completing the work tracking system setup.
+    <h1 className={fontStyles["text-2xl"]}>Connect Work Tracking System for {organization.name}</h1>
+    <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
+      Congratulations! You have connected Git repositories for {organization.name}.
+      Now let's finish by connecting projects.
     </p>
   </React.Fragment>
 );
 
 const SetupRepositoriesText = ({organization}) => (
   <React.Fragment>
-    <h1>Connect Version Control System for {organization.name}</h1>
-    <p>
-      Congratulations! You have completed the work tracking system setup for {organization.name}.
-      Now let's finish by completing the version control system setup.
+    <h1 className={fontStyles["text-2xl"]}>Connect Version Control System for {organization.name}</h1>
+    <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
+      Congratulations! You have connected projects for {organization.name}.
+      Now let's finish by connecting your Git repositories.
     </p>
   </React.Fragment>
 )
