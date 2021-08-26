@@ -72,7 +72,7 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
 class WithProject extends React.Component {
 
   onDashboardMounted(project) {
-    const isValueStreamMappingNotDone = project.mappedWorkStreamCount === 1;
+    const isValueStreamMappingNotDone = project.mappedWorkStreamCount === 0;
     
     if (isValueStreamMappingNotDone) {
       const currentUrl = this.props.context.matchInfo.url;

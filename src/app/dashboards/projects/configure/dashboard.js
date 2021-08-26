@@ -195,7 +195,7 @@ export default withViewerContext(({viewerContext}) => {
   return (
     <ProjectDashboard
       render={({project: {key, mappedWorkStreamCount}}) => {
-        const isValueStreamMappingNotDone = mappedWorkStreamCount === 1;
+        const isValueStreamMappingNotDone = mappedWorkStreamCount === 0;
         if (isValueStreamMappingNotDone) {
           return <ValueStreamMappingInitialDashboard />
         }
