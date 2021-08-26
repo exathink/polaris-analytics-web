@@ -12,6 +12,8 @@ import Button from "../../../../components/uielements/button";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
+import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
+import {StateMappingInfoContent} from "./stateMappingInfoContent";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -26,6 +28,8 @@ ValueStreamMappingDashboard.videoConfig = {
 };
 
 export function ValueStreamMappingInitialDashboard() {
+  const [showPanel, setShowPanel] = React.useState(false);
+
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
@@ -34,7 +38,13 @@ export function ValueStreamMappingInitialDashboard() {
             <div className={styles.stateTypeTitleWrapper}>
               <div className= {classNames(fontStyles["text-lg"],fontStyles["font-medium"], styles.title1)}>Configure your Value Stream Phase Mapping</div>
               <div className= {classNames(fontStyles["text-base"], styles.title2)}>Map states in your workflow to Phases in Polaris</div>
-              <Button type="secondary" className={styles.showMeButton}>Show Me How</Button>
+              <Button type="secondary" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>Show Me How</Button>
+              <InfoWithDrawer
+                showPanel={showPanel}
+                setShowPanel={setShowPanel}
+              >
+                <StateMappingInfoContent />
+              </InfoWithDrawer>
             </div>
             <DashboardWidget
               w={2 / 3}
