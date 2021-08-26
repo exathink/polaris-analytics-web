@@ -72,7 +72,16 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
 class WithProject extends React.Component {
 
   onDashboardMounted(project) {
+    const isValueStreamMappingNotDone = project.mappedWorkStreamCount === 1;
+    
+    if (isValueStreamMappingNotDone) {
+      const currentUrl = this.props.context.matchInfo.url;
 
+      if (!this.props.context.targetUrl.includes("/configure")) {
+        const targetUrl = `${currentUrl}/configure`
+        this.props.navigate.push(targetUrl);
+      }
+    }
   }
 
   render() {
@@ -88,10 +97,12 @@ class WithProject extends React.Component {
         client={analytics_service}
         query={gql`
           query with_project_instance($key: String!) {
-            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef]) {
+            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo]) {
               id
               name
               key
+              workStreamCount
+              mappedWorkStreamCount
               earliestCommit
               latestCommit
               commitCount
