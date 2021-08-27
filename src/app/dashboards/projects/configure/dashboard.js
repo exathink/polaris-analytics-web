@@ -8,7 +8,7 @@ import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
-import Button from "../../../../components/uielements/button";
+import {Button} from "antd";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
@@ -38,7 +38,7 @@ export function ValueStreamMappingInitialDashboard() {
             <div className={styles.stateTypeTitleWrapper}>
               <div className= {classNames(fontStyles["text-lg"],fontStyles["font-medium"], styles.title1)}>Configure your Value Stream Phase Mapping</div>
               <div className= {classNames(fontStyles["text-base"], styles.title2)}>Map states in your workflow to Phases in Polaris</div>
-              <Button type="secondary" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>Show Me How</Button>
+              <Button type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>Show Me How</Button>
               <InfoWithDrawer
                 showPanel={showPanel}
                 setShowPanel={setShowPanel}
