@@ -4,8 +4,6 @@
 
 .phase{
     padding: 1rem;
-    
-    margin-top: 1rem;
 }
 
 .define{
@@ -53,6 +51,9 @@
 .mainTitle{
     padding: 1rem;
     text-align: center;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    font-weight: 400;
 }
 
 .title{
