@@ -1,6 +1,7 @@
 import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
-import {Alert, Button, Select} from "antd";
+import {Alert, Select} from "antd";
+import Button from "../../../../../../components/uielements/button";
 import styles from "./workItemStateType.module.css";
 import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
