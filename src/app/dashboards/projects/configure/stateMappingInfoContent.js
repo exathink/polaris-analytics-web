@@ -19,6 +19,13 @@ export function StateMappingInfoContent() {
           </div>
         </div>
         <div className={styles.phase}>
+          <div className={classNames(styles.title, styles.open)}>Open</div>
+          <div className={styles.openContent}>
+            Cards that have begun implementation but are not currently being worked on by anyone, belong here. Blocked
+            cards, cards waiting for code-review etc belong here.
+          </div>
+        </div>
+        <div className={styles.phase}>
           <div className={classNames(styles.title, styles.make)}>Make</div>
           <div className={styles.makeContent}>
             Cards that are currently under implementation belong here. Polaris relies on commit activity to track progress
@@ -42,14 +49,7 @@ export function StateMappingInfoContent() {
             phase. There may be multiple states mapped to this phase. A delivery cycle is marked complete when a card
             enters a state in this phase. Lead and Cycle Time are defined based on this.
           </div>
-        </div>
-        <div className={styles.phase}>
-          <div className={classNames(styles.title, styles.open)}>Open</div>
-          <div className={styles.openContent}>
-            Cards that have begun implementation but are not currently being worked on by anyone, belong here. Blocked
-            cards, cards waiting for code-review etc belong here.
-          </div>
-        </div>
+        </div>       
       </div>
     </div>
   );
