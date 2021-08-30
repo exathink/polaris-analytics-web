@@ -1,63 +1,72 @@
-.stateMappingContentWrapper{
-    padding: 1rem;
+.stateMappingContentWrapper {
+}
+.phasesWrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+.phase {
+  padding: 0.5rem;
+  width: 300px;
 }
 
-.phase{
-    padding: 1rem;
+.define {
+  color: rgb(126, 206, 181);
+}
+.make {
+  color: rgb(72, 179, 75);
+}
+.deliver {
+  color: rgb(177, 177, 244);
+}
+.closed {
+  color: rgb(145, 61, 206);
+}
+.open {
+  color: rgb(221, 196, 98);
 }
 
-.define{
-    color: rgb(126, 206, 181);
+.defineContent {
+  padding: 1rem;
+  background-color: rgba(126, 206, 181, 0.1);
+  min-height: 220px;
+  border-left: 6px solid rgb(126, 206, 181);
 }
-.make{
-    color: rgb(72, 179, 75);
+.makeContent {
+  padding: 1rem;
+  background-color: rgba(72, 179, 75, 0.1);
+  min-height: 220px;
+  border-left: 6px solid rgb(72, 179, 75);
 }
-.deliver{
-    color: rgb(177, 177, 244);
+.deliverContent {
+  padding: 1rem;
+  background-color: rgba(177, 177, 244, 0.1);
+  min-height: 220px;
+  border-left: 6px solid rgb(177, 177, 244);
 }
-.closed{
-    color: rgb(145, 61, 206);
+.closedContent {
+  padding: 1rem;
+  background-color: rgba(145, 61, 206, 0.1);
+  min-height: 220px;
+  border-left: 6px solid rgb(145, 61, 206);
 }
-.open{
-    color: rgb(221, 196, 98);
-}
-
-.defineContent{
-    padding: 1rem;
-    background-color: rgba(126, 206, 181, 0.1);;
-    border-left: 6px solid rgb(126, 206, 181);
-}
-.makeContent{
-    padding: 1rem;
-    background-color: rgba(72, 179, 75, 0.1);;
-    border-left: 6px solid rgb(72, 179, 75);
-}
-.deliverContent{
-    padding: 1rem;
-    background-color: rgba(177, 177, 244, 0.1);;
-    border-left: 6px solid rgb(177, 177, 244);
-}
-.closedContent{
-    padding: 1rem;
-    background-color: rgba(145, 61, 206, 0.1);
-    border-left: 6px solid rgb(145, 61, 206);
-}
-.openContent{
-    padding: 1rem;
-    background-color: rgba(221, 196, 98, 0.1);
-    border-left: 6px solid rgb(221, 196, 98);
+.openContent {
+  padding: 1rem;
+  background-color: rgba(221, 196, 98, 0.1);
+  min-height: 220px;
+  border-left: 6px solid rgb(221, 196, 98);
 }
 
-.mainTitle{
-    padding: 1rem;
-    text-align: center;
-    font-size: 1vw;
-    line-height: 1.5vw;
-    font-weight: 400;
+.mainTitle {
+  width: 600px;
+  text-align: center;
+  font-size: 1vw;
+  line-height: 1.5vw;
+  font-weight: 400;
+  margin: 0 auto;
 }
 
-.title{
-    font-weight: 500;
-    font-size: 1vw;
-    line-height: 1.5vw;
+.title {
+  font-weight: 500;
+  font-size: 1vw;
+  line-height: 1.5vw;
 }
