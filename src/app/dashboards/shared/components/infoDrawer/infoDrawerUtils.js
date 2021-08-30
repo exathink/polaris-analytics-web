@@ -5,7 +5,7 @@ export function InfoWithDrawer({children, showPanel, setShowPanel, drawerOptions
     return (
       <Drawer
         placement="top"
-        height={350}
+        height={400}
         closable={false}
         onClose={() => setShowPanel(false)}
         visible={showPanel}
