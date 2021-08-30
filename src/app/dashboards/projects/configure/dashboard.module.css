@@ -20,3 +20,7 @@
 .stateTypeMappingWidget{
     margin-top: 2rem;
 }
+
+.stateTypeMappingWrapper :global(.ant-drawer-body){
+  margin-bottom: 1rem;
+}
