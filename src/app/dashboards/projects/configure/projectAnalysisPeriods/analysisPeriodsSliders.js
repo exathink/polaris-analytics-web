@@ -77,7 +77,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
           <div className={styles.analysisInfoItems}>
             {analysisPeriodItems.map((item) => {
               return (
-                <div className={styles.itemWrapper}>
+                <div className={styles.itemWrapper} key={item.id}>
                   <div className={styles.title}>{item.title}</div>
                   <div className={styles["analysis-info"]}>{item.info}</div>
                 </div>
