@@ -1,10 +1,11 @@
-import {Checkbox, Button, Alert} from "antd";
+import {Checkbox, Alert} from "antd";
 import React from "react";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";
+import Button from "../../../../../components/uielements/button";
 
 export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics, includeSubTasksWipInspector}) {
   const initialState = {

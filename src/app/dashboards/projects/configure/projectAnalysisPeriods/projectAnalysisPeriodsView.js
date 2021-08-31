@@ -1,11 +1,12 @@
 import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
-import {Alert, Button} from "antd";
+import {Alert} from "antd";
 import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
+import Button from "../../../../../components/uielements/button";
 
 export const ProjectAnalysisPeriodsView = ({
   instanceKey,
