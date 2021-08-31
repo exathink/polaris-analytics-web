@@ -1,6 +1,7 @@
-import {InputNumber} from "antd";
+import {Button, InputNumber} from "antd";
 import React from "react";
 import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/daysRangeSlider/daysRangeSlider";
+import {InfoWithDrawer} from "../../../shared/components/infoDrawer/infoDrawerUtils";
 import {actionTypes} from "./constants";
 import styles from "./projectAnalysisPeriods.module.css";
 
@@ -60,8 +61,32 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
     },
   ];
 
+  const [showPanel, setShowPanel] = React.useState(false);
+  function getInfoDrawer() {
+    return (
+      <div className={styles.infoDrawer} id="analysis-periods-info">
+        <Button type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>
+          Show me how
+        </Button>
+        <InfoWithDrawer
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          height={250}
+          drawerOptions={{getContainer: () => document.getElementById("analysis-periods-info")}}
+        >
+          <div className={styles.analysisInfoItems}>
+            {analysisPeriodItems.map((item) => {
+              return <div className={styles["analysis-info"]}>{item.info}</div>;
+            })}
+          </div>
+        </InfoWithDrawer>
+      </div>
+    );
+  }
+
   return (
     <div className={styles["analysisItemsWrapper"]}>
+      {getInfoDrawer()}
       {analysisPeriodItems.map((item) => {
         return (
           <div key={item.id} className={styles["analysisItemWrapper"]}>
