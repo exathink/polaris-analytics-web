@@ -1,0 +1,74 @@
+.stateMappingContentWrapper {
+}
+.phasesWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.phase {
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  font-size: 1vw;
+  line-height: 1.5vw;
+  text-align: center;
+}
+
+.define {
+  color: rgb(126, 206, 181);
+}
+.make {
+  color: rgb(72, 179, 75);
+}
+.deliver {
+  color: rgb(177, 177, 244);
+}
+.closed {
+  color: rgb(145, 61, 206);
+}
+.open {
+  color: rgb(221, 196, 98);
+}
+
+.defineContent {
+  padding: 1rem 1rem 0 1rem;
+  background-color: rgba(126, 206, 181, 0.1);
+  height: 100%;
+  border-left: 6px solid rgb(126, 206, 181);
+}
+.makeContent {
+  padding: 1rem 1rem 0 1rem;
+  background-color: rgba(72, 179, 75, 0.1);
+  height: 100%;
+  border-left: 6px solid rgb(72, 179, 75);
+}
+.deliverContent {
+  padding: 1rem 1rem 0 1rem;
+  background-color: rgba(177, 177, 244, 0.1);
+  height: 100%;
+  border-left: 6px solid rgb(177, 177, 244);
+}
+.closedContent {
+  padding: 1rem 1rem 0 1rem;
+  background-color: rgba(145, 61, 206, 0.1);
+  height: 100%;
+  border-left: 6px solid rgb(145, 61, 206);
+}
+.openContent {
+  padding: 1rem 1rem 0 1rem;
+  background-color: rgba(221, 196, 98, 0.1);
+  height: 100%;
+  border-left: 6px solid rgb(221, 196, 98);
+}
+
+.mainTitle {
+  width: 620px;
+  text-align: center;
+  font-size: 1vw;
+  line-height: 1.5vw;
+  font-weight: 400;
+  margin: 0 auto;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 1vw;
+  line-height: 1.5vw;
+}

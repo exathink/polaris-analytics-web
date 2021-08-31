@@ -129,7 +129,7 @@ const fixedChartConfig = {
     text: `Value Stream Mapping`,
   },
   subtitle: {
-    text: `Drag a work item state to its desired phase to edit mapping.`,
+    text: `Drag a workflow state to its desired phase.`,
   },
   plotOptions: {
     series: {
