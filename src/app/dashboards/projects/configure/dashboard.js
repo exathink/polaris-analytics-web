@@ -14,6 +14,7 @@ import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
 import {StateMappingInfoContent} from "./stateMappingInfoContent";
+import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -113,6 +114,7 @@ export function ResponseTimeSLASettingsDashboard() {
             <DashboardWidget
               w={1}
               name="flow-metrics-setting-widget"
+              className={dashboardItemStyles.dashboardItem}
               render={({view}) => {
                 return (
                   <ProjectResponseTimeSLASettingsWidget
@@ -150,6 +152,7 @@ export function AnalysisPeriodsDashboard() {
             <DashboardWidget
               w={1}
               name="analysis-periods-widget"
+              className={dashboardItemStyles.dashboardItem}
               render={({view}) => {
                 return (
                   <ProjectAnalysisPeriodsWidget
@@ -181,6 +184,7 @@ export function MeasurementSettingsDashboard() {
               <DashboardWidget
                 w={1}
                 name="measurement-settings-widget"
+                className={dashboardItemStyles.dashboardItem}
                 render={({view}) => {
                   return (
                     <MeasurementSettingsWidget
