@@ -83,7 +83,6 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
                 type="number"
               />
             </div>
-            <div className={styles["analysis-info"]}>{item.info}</div>
           </div>
         );
       })}

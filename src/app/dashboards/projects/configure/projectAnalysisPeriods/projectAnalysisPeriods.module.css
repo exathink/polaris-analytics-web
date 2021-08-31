@@ -14,7 +14,7 @@
 .analysisItemWrapper{
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
