@@ -43,6 +43,7 @@
   font-size: 1vw;
   line-height: 1.5vw;
   text-align: center;
+  height: 100%;
 }
 .analysis-slider-bar-edit {
   border: 1px solid rgb(0, 0, 0, 0.4);
@@ -72,7 +73,7 @@
 .infoDrawer{
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .showMeButton{
@@ -82,4 +83,18 @@
 .analysisInfoItems{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+}
+
+.title{
+  font-weight: 500;
+  font-size: 1vw;
+  line-height: 1.5vw;
+}
+
+.itemWrapper{
+  text-align: center;
+}
+
+.infoDrawer :global(.ant-drawer-body){
+  margin-bottom: 1rem;
 }
