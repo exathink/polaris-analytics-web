@@ -92,7 +92,7 @@ export const WorkItemStateTypeMapChart = Chart({
         text: `Value Stream Mapping`,
       },
       subtitle: {
-        text: enableEdits ? `Drag a work item state to its desired phase to edit mapping.` : ``,
+        text: enableEdits ? `Drag a workflow state to its desired phase.` : ``,
       },
       xAxis: {
         categories: allStateTypeDisplayValues,

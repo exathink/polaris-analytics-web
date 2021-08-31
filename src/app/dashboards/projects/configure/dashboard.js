@@ -37,7 +37,7 @@ export function ValueStreamMappingInitialDashboard() {
           <div className={styles.stateTypeMappingWrapper}>
             <div className={styles.stateTypeTitleWrapper} id="state-type-mapping">
               <div className= {classNames(fontStyles["text-lg"],fontStyles["font-medium"], styles.title1)}>Configure your Value Stream Phase Mapping</div>
-              <div className= {classNames(fontStyles["text-base"], styles.title2)}>Map states in your workflow to Phases in Polaris</div>
+              <div className= {classNames(fontStyles["text-base"], styles.title2)}>Map states in your workflow to phases in Polaris</div>
               <Button type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>Show me how</Button>
               <InfoWithDrawer
                 showPanel={showPanel}
