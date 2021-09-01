@@ -140,8 +140,10 @@ export const ProjectAnalysisPeriodsView = ({
   return (
     <div className={styles["analysisPeriodControlsWrapper"]} data-testid="analysis-periods-view">
       <div className={styles["analysisPeriodTopBar"]}>
-        <div className={styles["analysisPeriodTitle"]}>Drag sliders to update analysis periods</div>
         <div className={styles["analysisPeriodsButtons"]} data-testid="analysis-period-buttons">{getButtonElements()}</div>
+      </div>
+      <div className={styles["titleWrapper"]}>
+         <div className={styles["analysisPeriodTitle"]}>Drag sliders to update analysis periods</div>
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
     </div>
