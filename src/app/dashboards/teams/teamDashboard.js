@@ -81,7 +81,7 @@ class WithTeam extends React.Component {
         client={analytics_service}
         query={gql`
           query with_team_instance($key: String!) {
-            team(key: $key, interfaces: [ContributorCount, CommitSummary]) {
+            team(key: $key, interfaces: [ContributorCount, CommitSummary, TeamInfo]) {
               id
               name
               key
@@ -89,6 +89,24 @@ class WithTeam extends React.Component {
               earliestCommit
               latestCommit
               commitCount
+              settings {
+                flowMetricsSettings {
+                  cycleTimeTarget
+                  leadTimeTarget
+                  responseTimeConfidenceTarget
+                  leadTimeConfidenceTarget
+                  cycleTimeConfidenceTarget
+                  includeSubTasks
+                }
+                analysisPeriods {
+                  wipAnalysisPeriod
+                  flowAnalysisPeriod
+                  trendsAnalysisPeriod
+                }
+                wipInspectorSettings {
+                  includeSubTasks
+                }
+              }
             }
           }
         `}
@@ -103,7 +121,7 @@ class WithTeam extends React.Component {
           const team = data.team;
           const teamWithDefaultSettings = {
             ...team,
-            settingsWithDefaults: getTeamSettings(team.settings || {})
+            settingsWithDefaults: getTeamSettings(team)
           };
           return (
             <DashboardLifecycleManager
