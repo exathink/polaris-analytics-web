@@ -1,6 +1,6 @@
 import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
-import {Alert, Select} from "antd";
+import {Alert, Select, Button as LinkButton} from "antd";
 import Button from "../../../../../../components/uielements/button";
 import styles from "./workItemStateType.module.css";
 import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
@@ -8,6 +8,8 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
+import {StateMappingInfoContent} from "../../../configure/stateMappingInfoContent";
+import {InfoWithDrawer} from "../../../../shared/components/infoDrawer/infoDrawerUtils";
 
 const {Option} = Select;
 
@@ -148,15 +150,36 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
   }
 
+  const [showPanel, setShowPanel] = React.useState(false);
+  function getInfoContent() {
+    return (
+      <div>
+        <LinkButton type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>
+          Show me how
+        </LinkButton>
+        <InfoWithDrawer
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          height={"45vh"}
+          drawerOptions={{getContainer: () => document.getElementById("state-type-mapping-wrapper"), placement: "bottom"}}
+        >
+          <StateMappingInfoContent />
+        </InfoWithDrawer>
+      </div>
+    );
+  }
+
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   return (
-    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]}>
+    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]} id="state-type-mapping-wrapper">   
       <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
       </div>
-
+      <div className={styles["infoContent"]}>
+        {getInfoContent()}
+      </div>
       <div className={styles["chartWrapper"]}>
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
