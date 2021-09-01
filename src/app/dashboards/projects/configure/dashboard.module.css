@@ -24,3 +24,7 @@
 .stateTypeMappingWrapper :global(.ant-drawer-body){
   margin-bottom: 1rem;
 }
+
+.configTab{
+  justify-content: center;
+}

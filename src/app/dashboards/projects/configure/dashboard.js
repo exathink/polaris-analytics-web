@@ -216,10 +216,11 @@ export default withViewerContext(({viewerContext}) => {
         }
 
         return (
-          <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
+          <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true}>
             <DashboardRow
               h={"100%"}
               title={""}
+              className={styles.configTab}
               controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
             >
               {configTab === CONFIG_TABS.VALUE_STREAM ? (
