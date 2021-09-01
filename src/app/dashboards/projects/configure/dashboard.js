@@ -33,7 +33,7 @@ export function ValueStreamMappingInitialDashboard() {
 
   return (
     <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
+      render={({project: {key, settingsWithDefaults, mappedWorkStreamCount}, context}) => {
         return (
           <div className={styles.stateTypeMappingWrapper}>
             <div className={styles.stateTypeTitleWrapper} id="state-type-mapping">
@@ -53,7 +53,7 @@ export function ValueStreamMappingInitialDashboard() {
               name="workitem-statetype-map"
               className={styles.stateTypeMappingWidget}
               render={({view}) => {
-                return <WorkItemStateTypeMapWidget instanceKey={key} context={context} days={30} view={view} />;
+                return <WorkItemStateTypeMapWidget instanceKey={key} context={context} days={30} view={view} showMeLinkVisible={mappedWorkStreamCount!==0} />;
               }}
             />
           </div>

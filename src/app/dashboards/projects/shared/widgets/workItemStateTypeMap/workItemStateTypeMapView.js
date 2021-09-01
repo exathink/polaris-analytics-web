@@ -13,7 +13,7 @@ import {InfoWithDrawer} from "../../../../shared/components/infoDrawer/infoDrawe
 
 const {Option} = Select;
 
-export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits}) {
+export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
@@ -178,7 +178,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
         {getButtonElements()}
       </div>
       <div className={styles["infoContent"]}>
-        {getInfoContent()}
+        {showMeLinkVisible && getInfoContent()}
       </div>
       <div className={styles["chartWrapper"]}>
         <WorkItemStateTypeMapChart
