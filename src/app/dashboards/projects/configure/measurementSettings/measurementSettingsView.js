@@ -6,8 +6,7 @@ import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";
 import Button from "../../../../../components/uielements/button";
-import {InfoWithDrawer} from "../../../shared/components/infoDrawer/infoDrawerUtils";
-import {InfoCircleOutlined} from "@ant-design/icons";
+import {InfoCard} from "../../../../components/misc/info";
 
 const settingsInfo = [
   {
@@ -175,34 +174,35 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
     }
   }
 
-  const [showPanel, setShowPanel] = React.useState(false);
   function getInfoDrawer() {
     return (
       <div className={styles.infoDrawer} id="measurement-settings-info">
-        <InfoWithDrawer
-          showPanel={showPanel}
-          setShowPanel={setShowPanel}
-          height={500}
+        <InfoCard
           drawerOptions={{
             getContainer: () => document.getElementById("measurement-settings-info"),
             placement: "left",
             width: "40vw",
           }}
-        >
-          <div className={styles.settingInfoItems}>
+          title={
             <p className={styles.settingsInfoTitle}>
-            Specify how to treat subtasks in metrics and the application UI. This only applies to Value Streams that track work in Jira. 
+              Specify how to treat subtasks in metrics and the application UI. This only applies to Value Streams that
+              track work in Jira.
             </p>
-            {settingsInfo.map((item) => {
-              return (
-                <div className={styles.itemWrapper} key={item.id}>
-                  <div className={styles.title}>{item.title}</div>
-                  <div className={styles["setting-info"]}>{item.info}</div>
-                </div>
-              );
-            })}
-          </div>
-        </InfoWithDrawer>
+          }
+          drawerContent={
+            <div className={styles.settingInfoItems}>
+              {settingsInfo.map((item) => {
+                return (
+                  <div className={styles.itemWrapper} key={item.id}>
+                    <div className={styles.title}>{item.title}</div>
+                    <div className={styles["setting-info"]}>{item.info}</div>
+                  </div>
+                );
+              })}
+            </div>
+          }
+          className={""}
+        />
       </div>
     );
   }
@@ -214,9 +214,9 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
       </div>
       <div className={styles.subtasksTitle}>
         <div>Subtasks</div>
-        <InfoCircleOutlined className={styles.infoIcon} onClick={() => setShowPanel(!showPanel)} />
+        {getInfoDrawer()}
       </div>
-      {getInfoDrawer()}
+      
       <div className={styles.settings}>
         <div className={styles.includeInFlowMetrics}>
           <Checkbox onChange={handleFlowMetricsChange} name="includeFlowMetrics" checked={state.flowMetricsFlag}>
