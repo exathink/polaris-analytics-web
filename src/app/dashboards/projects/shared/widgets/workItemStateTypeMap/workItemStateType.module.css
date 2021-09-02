@@ -18,9 +18,9 @@
 }
 
 .infoContent{
-  position: relative;
-  margin-left: 36%;
-  margin-top: -25px;
+  position: absolute;
+  left: 61%;
+  margin-top: -3%;
 }
 
 .showMeButton{
