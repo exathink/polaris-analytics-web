@@ -4,7 +4,7 @@ import {Drawer} from "antd";
 export function InfoWithDrawer({children, showPanel, setShowPanel, height, drawerOptions = {}}) {
     return (
       <Drawer
-        placement="top"
+        placement={drawerOptions.placement??"top"}
         height={height??400}
         closable={false}
         onClose={() => setShowPanel(false)}

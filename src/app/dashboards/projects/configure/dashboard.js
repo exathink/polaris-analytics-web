@@ -141,50 +141,40 @@ export function ResponseTimeSLASettingsDashboard() {
   );
 }
 
-export function AnalysisPeriodsDashboard() {
-  return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
-        const {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod} = settingsWithDefaults;
-        return (
-        <Dashboard>
-          <DashboardRow h="95%">
-            <DashboardWidget
-              w={1}
-              name="analysis-periods-widget"
-              className={dashboardItemStyles.dashboardItem}
-              render={({view}) => {
-                return (
-                  <ProjectAnalysisPeriodsWidget
-                    instanceKey={key}
-                    wipAnalysisPeriod={wipAnalysisPeriod}
-                    flowAnalysisPeriod={flowAnalysisPeriod}
-                    trendsAnalysisPeriod={trendsAnalysisPeriod}
-                  />
-                );
-              }}
-              showDetail={false}
-            />
-          </DashboardRow>
-        </Dashboard>
-        );
-      }}
-    />
-  );
-}
-
 export function MeasurementSettingsDashboard() {
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
-        const {includeSubTasksFlowMetrics, includeSubTasksWipInspector} = settingsWithDefaults;
+        const {
+          includeSubTasksFlowMetrics,
+          includeSubTasksWipInspector,
+          wipAnalysisPeriod,
+          flowAnalysisPeriod,
+          trendsAnalysisPeriod,
+        } = settingsWithDefaults;
         return (
-          <Dashboard>
-            <DashboardRow h="95%">
+          <Dashboard gridLayout={true} className={styles.measurementSettingsDashboard}>
+            <DashboardRow>
+              <DashboardWidget
+                w={1}
+                name="analysis-periods-widget"
+                className={classNames(dashboardItemStyles.dashboardItem, styles.analysisPeriodsWidget)}
+                render={({view}) => {
+                  return (
+                    <ProjectAnalysisPeriodsWidget
+                      instanceKey={key}
+                      wipAnalysisPeriod={wipAnalysisPeriod}
+                      flowAnalysisPeriod={flowAnalysisPeriod}
+                      trendsAnalysisPeriod={trendsAnalysisPeriod}
+                    />
+                  );
+                }}
+                showDetail={false}
+              />
               <DashboardWidget
                 w={1}
                 name="measurement-settings-widget"
-                className={dashboardItemStyles.dashboardItem}
+                className={classNames(dashboardItemStyles.dashboardItem, styles.settingsWidget)}
                 render={({view}) => {
                   return (
                     <MeasurementSettingsWidget
@@ -227,8 +217,6 @@ export default withViewerContext(({viewerContext}) => {
                 <ValueStreamMappingDashboard />
               ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
                 <ResponseTimeSLASettingsDashboard />
-              ) : configTab === CONFIG_TABS.ANALYSIS_PERIODS ? (
-                <AnalysisPeriodsDashboard />
               ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
                 <MeasurementSettingsDashboard />
               ) : null}
