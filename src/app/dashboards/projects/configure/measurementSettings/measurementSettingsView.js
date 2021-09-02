@@ -17,8 +17,8 @@ const settingsInfo = [
       <>
         <p>
           If this checkbox is checked, then lead and cycle time for subtasks are included when calculating aggregate
-          lead and cycle time for the value stream or team.{" "}
-        </p>{" "}
+          lead and cycle time for the value stream or team.
+        </p>
         <p>
           We normally recommend that leave this box unchecked since subtasks tend to skew the metrics significantly
           since they are typically of much shorter duration that stories, tasks or bugs which represent more meaningful
@@ -35,14 +35,20 @@ const settingsInfo = [
         <p>
           Some teams find it useful to see subtasks level tracking for work in progress. Checking this box means that
           subtasks will show up on the Wip Dashboard in the Age vs Latency chart, even if they are not included in
-          aggregate flow metrics. We recommend this box also remain unchecked in most cases since it adds to the noise
-          and visual clutter on these dashboards.
+          aggregate flow metrics.
+        </p>
+        <p>
+          We recommend this box also remain unchecked in most cases since it adds to the noise and visual clutter on
+          these dashboards.
         </p>
         <p>
           Note that regardless of the setting of this checkbox, if you map commits to a subtask, those commits will
           always show up on the commit timeline charts. We normally recommend that you not map commits to subtasks, but
-          rather only to their parent tasks. It is more meaningful to track overall effort and costs at the level of the
-          parent tasks rather than at the subtask level.{" "}
+          rather only to their parent tasks.
+        </p>
+        <p>
+          It is more meaningful to track overall effort and costs at the level of the parent tasks rather than at the
+          subtask level.
         </p>
       </>
     ),
@@ -184,6 +190,9 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
           }}
         >
           <div className={styles.settingInfoItems}>
+            <p className={styles.settingsInfoTitle}>
+            Specify how to treat subtasks in metrics and the application UI. This only applies to Value Streams that track work in Jira. 
+            </p>
             {settingsInfo.map((item) => {
               return (
                 <div className={styles.itemWrapper} key={item.id}>

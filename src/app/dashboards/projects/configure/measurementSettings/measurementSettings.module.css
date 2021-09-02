@@ -53,16 +53,21 @@
 
 .settingInfoItems{
   display: grid;
-  gap: 2.5rem;
+}
+
+.settingsInfoTitle{
+  text-align: center;
 }
 
 .itemWrapper{
   text-align: center;
+  margin-bottom: 2.5rem;
 }
 
 .infoIcon{
   margin-left: 0.5rem;
 }
+
 .title{
   font-weight: 500;
   font-size: 1vw;
