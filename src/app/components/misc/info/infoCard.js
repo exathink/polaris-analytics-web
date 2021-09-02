@@ -3,14 +3,14 @@ import {InfoDrawer} from "./infoDrawer";
 import {InfoCircleOutlined} from "@ant-design/icons";
 import React from "react";
 
-export function InfoCard({title, content, content1, className = ""}) {
+export function InfoCard({title, content, drawerContent, className = "", drawerOptions={}}) {
   return (
     <Popover
       title={title}
       content={
         <div>
           <p>{content}</p>
-          <InfoDrawer title={title} content={content1} />
+          <InfoDrawer title={title} content={drawerContent} drawerOptions={drawerOptions}/>
         </div>
       }
     >

@@ -12,7 +12,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
     <InfoCard
       title={infoConfig.title}
       content={infoConfig.content()}
-      content1={infoConfig.content1()}
+      drawerContent={infoConfig.content1()}
       className={showDetail ? uniqueStyles.shiftInfo  : uniqueStyles.infoCardWrapper}
     />
   );
