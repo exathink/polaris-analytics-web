@@ -23,6 +23,8 @@
   font-size: 1.125vw;
   line-height: 1.75vw;
   font-weight: 400;
+  display: flex;
+  justify-content: center;
 }
 
 .buttonElements {
@@ -47,4 +49,35 @@
 
 .shiftRight {
   margin-left: auto;
+}
+
+.settingInfoItems{
+  display: grid;
+  gap: 2.5rem;
+}
+
+.itemWrapper{
+  text-align: center;
+}
+
+.infoIcon{
+  margin-left: 0.5rem;
+}
+.title{
+  font-weight: 500;
+  font-size: 1vw;
+  line-height: 1.5vw;
+}
+
+.setting-info{
+  padding: 16px;
+  margin-left: 16px;
+  text-align: justify;
+  line-height: 1.5rem;
+  border-left: 6px solid #8cc8ff;
+  background-color: rgba(25,118,210,.05);
+  font-size: 1vw;
+  line-height: 1.5vw;
+  text-align: center;
+  height: 100%;
 }

@@ -220,7 +220,7 @@ export const ProjectAnalysisPeriodsView = ({
       </div>
       <div className={styles["titleWrapper"]}>
          <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
-         <InfoCircleOutlined type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)} />
+         <InfoCircleOutlined className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)} />
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
       {getInfoDrawer()}
