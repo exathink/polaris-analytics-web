@@ -57,6 +57,9 @@
 
 .settingsInfoTitle{
   text-align: center;
+  font-size: 1vw;
+  line-height: 1.5vw;
+  font-weight: 400;
 }
 
 .itemWrapper{
