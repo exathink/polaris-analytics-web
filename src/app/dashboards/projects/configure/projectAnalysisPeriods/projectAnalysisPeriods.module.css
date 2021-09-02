@@ -78,13 +78,8 @@
 }
 
 .infoDrawer{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-}
-
-.showMeButton{
-  margin-left: 0.5rem;
+  margin-left: 0.2rem;
+  margin-top: -0.4rem;
 }
 
 .analysisInfoItems{

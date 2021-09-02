@@ -7,8 +7,7 @@ import {logGraphQlError} from "../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 import Button from "../../../../../components/uielements/button";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { InfoWithDrawer } from "../../../shared/components/infoDrawer/infoDrawerUtils";
+import {InfoCard} from "../../../../components/misc/info";
 
 const analysisPeriodItems = [
   {
@@ -187,28 +186,29 @@ export const ProjectAnalysisPeriodsView = ({
 
   }
 
-  const [showPanel, setShowPanel] = React.useState(false);
   function getInfoDrawer() {
     return (
-      <div className={styles.infoDrawer} id="analysis-periods-info">
-        
-        <InfoWithDrawer
-          showPanel={showPanel}
-          setShowPanel={setShowPanel}
-          height={500}
-          drawerOptions={{getContainer: () => document.getElementById("analysis-periods-info"), placement: "right", width: "40vw"}}
-        >
-          <div className={styles.analysisInfoItems}>
-            {analysisPeriodItems.map((item) => {
-              return (
-                <div className={styles.itemWrapper} key={item.id}>
-                  <div className={styles.title}>{item.title}</div>
-                  <div className={styles["analysis-info"]}>{item.info}</div>
-                </div>
-              );
-            })}
-          </div>
-        </InfoWithDrawer>
+      <div className={styles.infoDrawer}>
+        <InfoCard
+          drawerOptions={{
+            placement: "right",
+            width: "40vw",
+          }}
+          title={"Analysis Periods Settings"}
+          drawerContent={
+            <div className={styles.analysisInfoItems}>
+              {analysisPeriodItems.map((item) => {
+                return (
+                  <div className={styles.itemWrapper} key={item.id}>
+                    <div className={styles.title}>{item.title}</div>
+                    <div className={styles["analysis-info"]}>{item.info}</div>
+                  </div>
+                );
+              })}
+            </div>
+          }
+          className={""}
+        />
       </div>
     );
   }
@@ -220,10 +220,10 @@ export const ProjectAnalysisPeriodsView = ({
       </div>
       <div className={styles["titleWrapper"]}>
          <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
-         <InfoCircleOutlined className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)} />
+         {getInfoDrawer()}
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
-      {getInfoDrawer()}
+      
     </div>
   );
 };
