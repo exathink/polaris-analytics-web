@@ -130,20 +130,21 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
   return (
     <div className={styles.settingsViewWrapper}>
       <div className={styles.subtasks}>
-        <div className={styles.subtasksTitle}>
-          <h3>Subtasks</h3>
-        </div>
         <div className={styles.buttonElements}>{getButtonElements()}</div>
       </div>
-      <div className={styles.includeInFlowMetrics}>
-        <Checkbox onChange={handleFlowMetricsChange} name="includeFlowMetrics" checked={state.flowMetricsFlag}>
-          Include in Flow Metrics
-        </Checkbox>
-      </div>
-      <div className={styles.includeInWipInspector}>
-        <Checkbox onChange={handleWipInspectorChange} name="includeWipInspector" checked={state.wipInspectorFlag}>
-          Show in Wip Inspector
-        </Checkbox>
+      <div className={styles.subtasksTitle}>Subtasks</div>
+
+      <div className={styles.settings}>
+        <div className={styles.includeInFlowMetrics}>
+          <Checkbox onChange={handleFlowMetricsChange} name="includeFlowMetrics" checked={state.flowMetricsFlag}>
+            Include in Flow Metrics
+          </Checkbox>
+        </div>
+        <div className={styles.includeInWipInspector}>
+          <Checkbox onChange={handleWipInspectorChange} name="includeWipInspector" checked={state.wipInspectorFlag}>
+            Show in Wip Inspector
+          </Checkbox>
+        </div>
       </div>
     </div>
   );
