@@ -10,6 +10,7 @@ import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
 import {StateMappingInfoContent} from "../../../configure/stateMappingInfoContent";
 import {InfoWithDrawer} from "../../../../shared/components/infoDrawer/infoDrawerUtils";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const {Option} = Select;
 
@@ -154,9 +155,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   function getInfoContent() {
     return (
       <div>
-        <LinkButton type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>
-          Show me how
-        </LinkButton>
+        <InfoCircleOutlined type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)} />
         <InfoWithDrawer
           showPanel={showPanel}
           setShowPanel={setShowPanel}
@@ -175,11 +174,12 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
+        <div className={styles["infoContent"]}>
+        {showMeLinkVisible && getInfoContent()}
+        </div>
         {getButtonElements()}
       </div>
-      <div className={styles["infoContent"]}>
-        {showMeLinkVisible && getInfoContent()}
-      </div>
+
       <div className={styles["chartWrapper"]}>
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
