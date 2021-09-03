@@ -8,6 +8,7 @@ import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 import Button from "../../../../../components/uielements/button";
 import {InfoCard} from "../../../../components/misc/info";
+import {capitalizeFirstLetter} from "../../../../helpers/utility";
 
 const analysisPeriodItems = [
   {
@@ -79,7 +80,7 @@ export const ProjectAnalysisPeriodsView = ({
   // mutation to update project analysis periods
   const [mutate, {loading, client}] = useDimensionUpdateSettings({
     dimension: dimension,
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();

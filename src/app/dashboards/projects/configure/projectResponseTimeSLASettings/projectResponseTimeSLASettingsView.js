@@ -11,7 +11,7 @@ import {Flex} from "reflexbox";
 import styles from "./projectResponseTimeSLASettings.module.css";
 import {TargetSliders} from "./targetSliders";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../work_items/cardInspector/cardInspectorUtils";
-import {pick} from "../../../../helpers/utility";
+import {capitalizeFirstLetter, pick} from "../../../../helpers/utility";
 import Button from "../../../../../components/uielements/button";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
@@ -74,17 +74,17 @@ export const ProjectResponseTimeSLASettingsView = ({
   // mutation to update project settings
   const [mutate, {loading, client}] = useDimensionUpdateSettings({
     dimension: dimension,
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
       } else {
-        logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", errorMessage);
+        logGraphQlError("ProjectResponseTimeSLASettingsView.useDimensionUpdateSettings", errorMessage);
         dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
     onError: (error) => {
-      logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", error);
+      logGraphQlError("ProjectResponseTimeSLASettingsView.useDimensionUpdateSettings", error);
       dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
     },
   });
