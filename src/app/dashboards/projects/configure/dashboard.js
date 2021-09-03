@@ -205,7 +205,9 @@ export function MeasurementSettingsDashboard({dimension}) {
 }
 
 export default withViewerContext(({dimension="project", viewerContext}) => {
-  const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
+  const [configTab, setConfigTab] = React.useState(
+    dimension === "project" ? CONFIG_TABS.VALUE_STREAM : CONFIG_TABS.RESPONSE_TIME_SLA
+  );
 
   function getDashboardElement() {
     return (
@@ -214,9 +216,9 @@ export default withViewerContext(({dimension="project", viewerContext}) => {
           h={"100%"}
           title={""}
           className={styles.configTab}
-          controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
+          controls={[() => <ConfigSelector dimension={dimension} configTab={configTab} setConfigTab={setConfigTab} />]}
         >
-          {configTab === CONFIG_TABS.VALUE_STREAM ? (
+          {configTab === CONFIG_TABS.VALUE_STREAM && dimension === "project" ? (
             <ValueStreamMappingDashboard />
           ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
             <ResponseTimeSLASettingsDashboard dimension={dimension}/>

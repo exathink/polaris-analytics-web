@@ -12,6 +12,7 @@ import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import Alignment from "./alignment/topic";
 import Balance from "./balance/topic";
+import Configure from "./configure/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -54,6 +55,10 @@ const context : Context = {
           {
             match: 'balance',
             topic: Balance
+          },
+          {
+            match: "configure",
+            topic: Configure
           },
           {
             match: '',
