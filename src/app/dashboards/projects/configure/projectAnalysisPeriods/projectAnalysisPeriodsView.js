@@ -2,7 +2,7 @@ import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
 import {Alert} from "antd";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {useDimensionUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
@@ -58,6 +58,7 @@ const analysisPeriodItems = [
 ];
 
 export const ProjectAnalysisPeriodsView = ({
+  dimension,
   instanceKey,
   wipAnalysisPeriod,
   flowAnalysisPeriod,
@@ -76,7 +77,8 @@ export const ProjectAnalysisPeriodsView = ({
   const sliderProps = {...state, dispatch};
 
   // mutation to update project analysis periods
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
@@ -112,7 +114,7 @@ export const ProjectAnalysisPeriodsView = ({
     // call mutation on save button click
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         analysisPeriods: payload,
       },
     });

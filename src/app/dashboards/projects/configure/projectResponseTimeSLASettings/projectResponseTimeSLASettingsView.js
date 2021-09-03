@@ -4,7 +4,7 @@ import {projectDeliveryCycleFlowMetricsMeta} from "../../../shared/helpers/metri
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
 import {Alert} from "antd";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {useDimensionUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
@@ -72,7 +72,8 @@ export const ProjectResponseTimeSLASettingsView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
   // mutation to update project settings
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
@@ -117,7 +118,7 @@ export const ProjectResponseTimeSLASettingsView = ({
     // call mutation on save button click
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         flowMetricsSettings: payload,
       },
     });

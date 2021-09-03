@@ -15,6 +15,7 @@ import classNames from "classnames";
 import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
 import {StateMappingInfoContent} from "./stateMappingInfoContent";
 import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
+import {TeamDashboard} from "../../teams/teamDashboard";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -27,6 +28,11 @@ ValueStreamMappingDashboard.videoConfig = {
     </>
   ),
 };
+
+const componentMap = {
+  team: TeamDashboard,
+  project: ProjectDashboard
+}
 
 export function ValueStreamMappingInitialDashboard() {
   const [showPanel, setShowPanel] = React.useState(false);
@@ -103,10 +109,11 @@ export function ValueStreamMappingDashboard() {
   );
 }
 
-export function ResponseTimeSLASettingsDashboard() {
+export function ResponseTimeSLASettingsDashboard({dimension}) {
+  const Component = componentMap[dimension];
   return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
+    <Component
+      render={({[dimension]: {key, settingsWithDefaults}, context}) => {
         const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = settingsWithDefaults;
         return (
         <Dashboard>
@@ -118,7 +125,7 @@ export function ResponseTimeSLASettingsDashboard() {
               render={({view}) => {
                 return (
                   <ProjectResponseTimeSLASettingsWidget
-                    dimension={'project'}
+                    dimension={dimension}
                     instanceKey={key}
                     view={view}
                     context={context}
@@ -141,10 +148,11 @@ export function ResponseTimeSLASettingsDashboard() {
   );
 }
 
-export function MeasurementSettingsDashboard() {
+export function MeasurementSettingsDashboard({dimension}) {
+  const Component = componentMap[dimension];
   return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
+    <Component
+      render={({[dimension]: {key, settingsWithDefaults}, context}) => {
         const {
           includeSubTasksFlowMetrics,
           includeSubTasksWipInspector,
@@ -163,6 +171,7 @@ export function MeasurementSettingsDashboard() {
                   return (
                     <ProjectAnalysisPeriodsWidget
                       instanceKey={key}
+                      dimension={dimension}
                       wipAnalysisPeriod={wipAnalysisPeriod}
                       flowAnalysisPeriod={flowAnalysisPeriod}
                       trendsAnalysisPeriod={trendsAnalysisPeriod}
@@ -179,6 +188,7 @@ export function MeasurementSettingsDashboard() {
                   return (
                     <MeasurementSettingsWidget
                       instanceKey={key}
+                      dimension={dimension}
                       includeSubTasksFlowMetrics={includeSubTasksFlowMetrics}
                       includeSubTasksWipInspector={includeSubTasksWipInspector}
                     />
@@ -194,37 +204,46 @@ export function MeasurementSettingsDashboard() {
   );
 }
 
-export default withViewerContext(({viewerContext}) => {
+export default withViewerContext(({dimension="project", viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
 
-  return (
-    <ProjectDashboard
-      render={({project: {key, mappedWorkStreamCount}}) => {
-        const isValueStreamMappingNotDone = mappedWorkStreamCount === 0;
-        if (isValueStreamMappingNotDone) {
-          return <ValueStreamMappingInitialDashboard />
-        }
+  function getDashboardElement() {
+    return (
+      <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true}>
+        <DashboardRow
+          h={"100%"}
+          title={""}
+          className={styles.configTab}
+          controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
+        >
+          {configTab === CONFIG_TABS.VALUE_STREAM ? (
+            <ValueStreamMappingDashboard />
+          ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
+            <ResponseTimeSLASettingsDashboard dimension={dimension}/>
+          ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
+            <MeasurementSettingsDashboard dimension={dimension}/>
+          ) : null}
+        </DashboardRow>
+      </Dashboard>
+    );
+  }
+  if (dimension === "project") {
+    return (
+      <ProjectDashboard
+        render={({project: {key, mappedWorkStreamCount}}) => {
+          const isValueStreamMappingNotDone = mappedWorkStreamCount === 0;
+          if (isValueStreamMappingNotDone) {
+            return <ValueStreamMappingInitialDashboard />;
+          }
 
-        return (
-          <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true}>
-            <DashboardRow
-              h={"100%"}
-              title={""}
-              className={styles.configTab}
-              controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
-            >
-              {configTab === CONFIG_TABS.VALUE_STREAM ? (
-                <ValueStreamMappingDashboard />
-              ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
-                <ResponseTimeSLASettingsDashboard />
-              ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
-                <MeasurementSettingsDashboard />
-              ) : null}
-            </DashboardRow>
-          </Dashboard>
-        );
-      }}
-    />
-  );
+          return getDashboardElement();
+        }}
+      />
+    );
+  } else if (dimension === "team") {
+    return getDashboardElement();
+  } else {
+    return null;
+  }
 });
 

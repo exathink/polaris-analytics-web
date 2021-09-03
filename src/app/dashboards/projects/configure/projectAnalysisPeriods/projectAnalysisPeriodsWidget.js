@@ -2,6 +2,7 @@ import React from "react";
 import {ProjectAnalysisPeriodsView} from "./projectAnalysisPeriodsView";
 
 export const ProjectAnalysisPeriodsWidget = ({
+  dimension,
   instanceKey,
   wipAnalysisPeriod,
   flowAnalysisPeriod,
@@ -9,6 +10,7 @@ export const ProjectAnalysisPeriodsWidget = ({
 }) => {
   return (
     <ProjectAnalysisPeriodsView
+      dimension={dimension}
       instanceKey={instanceKey}
       wipAnalysisPeriod={wipAnalysisPeriod}
       flowAnalysisPeriod={flowAnalysisPeriod}

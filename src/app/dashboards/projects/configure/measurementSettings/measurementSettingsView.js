@@ -1,7 +1,7 @@
 import {Checkbox, Alert} from "antd";
 import React from "react";
 import {logGraphQlError} from "../../../../components/graphql/utils";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {useDimensionUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";
@@ -54,7 +54,7 @@ const settingsInfo = [
   },
 ];
 
-export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics, includeSubTasksWipInspector}) {
+export function MeasurementSettingsView({dimension, instanceKey, includeSubTasksFlowMetrics, includeSubTasksWipInspector}) {
   const initialState = {
     flowMetricsFlag: includeSubTasksFlowMetrics,
     wipInspectorFlag: includeSubTasksWipInspector,
@@ -66,7 +66,8 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
   const [state, dispatch] = React.useReducer(measurementSettingsReducer, initialState);
 
   // mutation to update project analysis periods
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
     onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
@@ -103,7 +104,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
     // add mutation related logic here
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         flowMetricsSettings: {
           includeSubTasks: state.flowMetricsFlag,
         },
