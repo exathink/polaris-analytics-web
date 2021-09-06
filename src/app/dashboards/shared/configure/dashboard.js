@@ -1,11 +1,11 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {ProjectDashboard} from "../projectDashboard";
+import {ProjectDashboard} from "../../projects/projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
-import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
-import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
+import {ProjectPipelineFunnelWidget} from "../../projects/shared/widgets/funnel";
+import {WorkItemStateTypeMapWidget} from "../../projects/shared/widgets/workItemStateTypeMap";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import {Button} from "antd";
@@ -204,7 +204,7 @@ export function MeasurementSettingsDashboard({dimension}) {
   );
 }
 
-export default withViewerContext(({dimension="project", viewerContext}) => {
+export default withViewerContext(({dimension, viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(
     dimension === "project" ? CONFIG_TABS.VALUE_STREAM : CONFIG_TABS.RESPONSE_TIME_SLA
   );

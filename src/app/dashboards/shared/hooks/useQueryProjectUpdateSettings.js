@@ -1,5 +1,5 @@
 import {useMutation, gql} from "@apollo/client";
-import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import {capitalizeFirstLetter} from "../../../helpers/utility";
 
 export const DIMENSION_UPDATE_SETTINGS = (dimension) => gql`
   mutation ${dimension}UpdateSettings($instanceKey: String!, $flowMetricsSettings: FlowMetricsSettingsInput, $analysisPeriods: AnalysisPeriodsInput, $wipInspectorSettings: WipInspectorSettingsInput) {

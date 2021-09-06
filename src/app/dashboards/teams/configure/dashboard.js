@@ -1,6 +1,6 @@
 import React from "react";
-import ConfigureDashboard from "../../projects/configure/dashboard";
+import ConfigureDashboard from "../../shared/configure/dashboard";
 
-export default function teamsDashboard() {    
+export default function teamSettingsDashboard() {    
     return <ConfigureDashboard dimension="team" />
 }

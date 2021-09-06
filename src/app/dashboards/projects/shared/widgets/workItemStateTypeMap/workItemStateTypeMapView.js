@@ -8,9 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
-import {StateMappingInfoContent} from "../../../configure/stateMappingInfoContent";
-import {InfoWithDrawer} from "../../../../shared/components/infoDrawer/infoDrawerUtils";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {StateMappingInfoContent} from "../../../../shared/configure/stateMappingInfoContent";
 import { InfoCard } from "../../../../../components/misc/info";
 
 const {Option} = Select;

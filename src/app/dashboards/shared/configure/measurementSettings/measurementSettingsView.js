@@ -1,7 +1,7 @@
 import {Checkbox, Alert} from "antd";
 import React from "react";
 import {logGraphQlError} from "../../../../components/graphql/utils";
-import {useDimensionUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {useDimensionUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
 import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";

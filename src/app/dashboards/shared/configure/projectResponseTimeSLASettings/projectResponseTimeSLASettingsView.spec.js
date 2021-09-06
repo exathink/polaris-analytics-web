@@ -3,7 +3,7 @@ import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/ch
 import * as settings from "./settingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {DIMENSION_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {DIMENSION_UPDATE_SETTINGS} from "../../hooks/useQueryProjectUpdateSettings";
 import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
 
 beforeAll(() => {

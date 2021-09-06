@@ -1,5 +1,5 @@
 import {Topics} from "../../../meta/topics";
-import ConfigureDashboard from "../../teams/configure/dashboard";
+import ConfigureDashboard from "./dashboard";
 
 const topic =  {
   ...Topics.configure,
