@@ -2,7 +2,7 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {Dashboard, DashboardRow} from "../../../framework/viz/dashboard";
 import styles from "./dashboard.module.css";
-import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/configure/dashboard";
+import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/configure/settingWidgets";
 import {ConfigSelector, CONFIG_TABS} from "../../shared/configure/configSelector/configSelector";
 
 const dashboard_id = "dashboards.teams.configure";

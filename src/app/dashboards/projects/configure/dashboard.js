@@ -9,7 +9,7 @@ import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
-import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/configure/dashboard";
+import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/configure/settingWidgets";
 import {StateMappingInfoContent} from "./stateMappingInfoContent";
 import {ConfigSelector, CONFIG_TABS} from "../../shared/configure/configSelector/configSelector";
 
