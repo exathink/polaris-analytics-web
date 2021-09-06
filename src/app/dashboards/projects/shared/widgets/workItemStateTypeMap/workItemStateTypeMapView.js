@@ -8,7 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
-import {StateMappingInfoContent} from "../../../../shared/configure/stateMappingInfoContent";
+import {StateMappingInfoContent} from "../../../configure/stateMappingInfoContent";
 import { InfoCard } from "../../../../../components/misc/info";
 
 const {Option} = Select;
