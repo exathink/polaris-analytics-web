@@ -2,13 +2,13 @@ import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
 import {Alert} from "antd";
-import {useDimensionUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
-import {logGraphQlError} from "../../../../components/graphql/utils";
+import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
-import Button from "../../../../../components/uielements/button";
-import {InfoCard} from "../../../../components/misc/info";
-import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import Button from "../../../../../../components/uielements/button";
+import {InfoCard} from "../../../../../components/misc/info";
+import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 
 const analysisPeriodItems = [
   {

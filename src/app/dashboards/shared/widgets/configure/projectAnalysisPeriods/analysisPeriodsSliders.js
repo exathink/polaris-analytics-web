@@ -1,6 +1,6 @@
 import {InputNumber} from "antd";
 import React from "react";
-import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../components/daysRangeSlider/daysRangeSlider";
+import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../components/daysRangeSlider/daysRangeSlider";
 import {actionTypes} from "./constants";
 import styles from "./projectAnalysisPeriods.module.css";
 

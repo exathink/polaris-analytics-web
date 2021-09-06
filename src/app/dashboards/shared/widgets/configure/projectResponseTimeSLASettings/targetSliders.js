@@ -1,5 +1,5 @@
 import React from "react";
-import {getTargetControlBar} from "../../components/targetControlBar/targetControlBar";
+import {getTargetControlBar} from "../../../components/targetControlBar/targetControlBar";
 import {actionTypes, METRICS, mode} from "./constants";
 import styles from "./projectResponseTimeSLASettings.module.css";
 

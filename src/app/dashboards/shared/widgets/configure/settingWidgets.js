@@ -1,13 +1,13 @@
 import React from "react";
-import {ProjectDashboard} from "../../projects/projectDashboard";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {ProjectDashboard} from "../../../projects/projectDashboard";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import styles from "./settingWidgets.module.css";
 import classNames from "classnames";
-import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
-import {TeamDashboard} from "../../teams/teamDashboard";
+import dashboardItemStyles from "../../../../framework/viz/dashboard/dashboardItem.module.css";
+import {TeamDashboard} from "../../../teams/teamDashboard";
 
 const componentMap = {
   team: TeamDashboard,

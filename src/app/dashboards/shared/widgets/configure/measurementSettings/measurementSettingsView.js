@@ -1,13 +1,13 @@
 import {Checkbox, Alert} from "antd";
 import React from "react";
-import {logGraphQlError} from "../../../../components/graphql/utils";
-import {useDimensionUpdateSettings} from "../../hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
 import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";
-import Button from "../../../../../components/uielements/button";
-import {InfoCard} from "../../../../components/misc/info";
-import {capitalizeFirstLetter} from "../../../../helpers/utility";
+import Button from "../../../../../../components/uielements/button";
+import {InfoCard} from "../../../../../components/misc/info";
+import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 
 const settingsInfo = [
   {

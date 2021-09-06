@@ -1,9 +1,9 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import * as analysis from "./analysisPeriodsReducer";
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {DIMENSION_UPDATE_SETTINGS} from "../../hooks/useQueryProjectUpdateSettings";
+import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
 import {ProjectAnalysisPeriodsView} from "./projectAnalysisPeriodsView";
 
 beforeAll(() => {

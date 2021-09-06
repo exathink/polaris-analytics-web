@@ -1,4 +1,4 @@
-import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import React from "react";
 export const CONFIG_TABS = {
   VALUE_STREAM: "value-stream",
