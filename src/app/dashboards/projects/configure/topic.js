@@ -1,7 +1,7 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
-import {ValueStreamMappingDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/configure/dashboard";
-import ConfigureDashboard from "./dashboard";
+import {ResponseTimeSLASettingsDashboard} from "../../shared/configure/settingWidgets";
+import ConfigureDashboard, {ValueStreamMappingDashboard} from "./dashboard";
 
 const topic =  {
   ...Topics.configure,
