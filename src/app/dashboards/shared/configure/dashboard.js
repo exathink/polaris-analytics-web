@@ -13,7 +13,7 @@ import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
-import {StateMappingInfoContent} from "../../projects/configure/stateMappingInfoContent";
+import {StateMappingInfoContent} from "./stateMappingInfoContent";
 import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
 import {TeamDashboard} from "../../teams/teamDashboard";
 
