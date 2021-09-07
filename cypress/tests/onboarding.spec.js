@@ -2,8 +2,7 @@
 
 describe("Onboarding flows", () => {
   it("Import Board flow for Trello", () => {
-    cy.interceptGraphQl("createConnector");
-    cy.interceptGraphQl("getAccountConnectors");
+    cy.interceptGraphQl();
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -11,11 +10,15 @@ describe("Onboarding flows", () => {
     cy.visit("/");
 
     // assume there is no existing connectors setup already
-    cy.contains(/Connect Work Tracking System/i).click();
-    cy.contains(/Connect Remote Projects/i).click();
+    cy.getBySel("import-project").click();
+
+    // make sure we are on the first step of import project workflow
+    cy.location("pathname").should("include", "/value-streams/new");
+    // step title should be visible
+    cy.getBySel("integration-step-title").should("be.visible")
 
     // Provider Specific
-    cy.contains(/Trello/i).click();
+    cy.getBySel("trello-card").click();
     cy.contains(/Create Trello Connector/i).click();
 
     cy.contains("Next").click();
@@ -28,8 +31,8 @@ describe("Onboarding flows", () => {
 
     cy.contains(/Register/i).click();
 
-    cy.wait("@createConnector");
-    cy.wait("@getAccountConnectors");
+    cy.wait("@gqlcreateConnectorMutation");
+    cy.wait("@gqlgetAccountConnectorsQuery");
 
     cy.contains("Available Trello Connectors").should("be.visible");
     cy.contains("Polaris Test").should("be.visible");
