@@ -15,14 +15,14 @@ export class SelectIntegrationStep extends React.Component {
 
 
       <div className={"select-connector"}>
-        <div className={classNames(fontStyles["font-normal"], fontStyles["text-sm"], "step-description")}>
+        <div className={classNames(fontStyles["font-normal"], fontStyles["text-sm"], "step-description")} data-test="integration-step-title">
           <p>Securely import projects in your work tracking system into a Polaris Value Stream.</p>
         </div>
         <div className={"select-connector-cards"}>
 
 
           <Card hoverable={true} bordered={true} style={{ width: 300, marginTop: 16 }}
-                onClick={() => this.props.onConnectorTypeSelected("jira")}>
+                onClick={() => this.props.onConnectorTypeSelected("jira")} data-test="jira-card">
             <Meta
               avatar={
                 <Avatar src="/images/third-party/jira-mark-contained-gradient-neutral@2x.png" />
@@ -35,7 +35,7 @@ export class SelectIntegrationStep extends React.Component {
 
 
           <Card bordered={true} hoverable={true} style={{ width: 300, marginTop: 16 }}
-                onClick={() => this.props.onConnectorTypeSelected("github")}>
+                onClick={() => this.props.onConnectorTypeSelected("github")} data-test="github-card">
             <Meta
               avatar={
                 <Avatar src="/images/third-party/GitHub-Mark-120px-plus.png" />
@@ -48,7 +48,7 @@ export class SelectIntegrationStep extends React.Component {
 
 
           <Card bordered={true} hoverable={true} style={{ width: 300, marginTop: 16 }}
-                onClick={() => this.props.onConnectorTypeSelected("pivotal")}>
+                onClick={() => this.props.onConnectorTypeSelected("pivotal")} data-test="pivotal-tracker-card">
             <Meta
               avatar={
                 <Avatar src="/images/third-party/Tracker_Icon.svg" />
@@ -65,6 +65,7 @@ export class SelectIntegrationStep extends React.Component {
             hoverable={true}
             style={{ width: 300, marginTop: 16 }}
             onClick={() => this.props.onConnectorTypeSelected("gitlab")}
+            data-test="gitlab-card"
           >
             <Meta
               avatar={<Avatar src="/images/third-party/gitlab-icon-rgb.svg" />}
@@ -76,7 +77,7 @@ export class SelectIntegrationStep extends React.Component {
 
 
           <Card bordered={true} hoverable={true} style={{ width: 300, marginTop: 16 }}
-                onClick={() => this.props.onConnectorTypeSelected("trello")}>
+                onClick={() => this.props.onConnectorTypeSelected("trello")} data-test="trello-card">
             <Meta
               avatar={
                 <Avatar src="/images/third-party/trello.png" />
