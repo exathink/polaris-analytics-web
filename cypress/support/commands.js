@@ -90,7 +90,7 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-Cypress.Commands.add("interceptGraphQl", () => {
+Cypress.Commands.add("aliasGraphQlRequests", () => {
   cy.intercept("POST", "/graphql", (req) => {
     // Queries
     aliasQuery(req, "getAccountConnectors");

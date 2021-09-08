@@ -2,7 +2,7 @@
 
 describe("Onboarding flows", () => {
   it("Import Board flow for Trello", () => {
-    cy.interceptGraphQl();
+    cy.aliasGraphQlRequests();
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
