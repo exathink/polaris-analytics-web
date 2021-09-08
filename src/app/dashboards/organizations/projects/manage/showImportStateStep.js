@@ -107,6 +107,7 @@ export const ShowImportStateStep = (
                     format={
                       () => `${numImported}/${workItemsSources.length}`
                     }
+                    data-test="progress-circle"
                   />
                 </div>
                 <CompactTable
