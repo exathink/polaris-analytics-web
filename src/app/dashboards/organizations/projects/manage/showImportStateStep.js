@@ -137,7 +137,7 @@ export const ShowImportStateStep = (
                         importState !== 'complete' ?
                           <Spin tip={importState}/>
                           :
-                          <CompletedCheckIcon />
+                          <CompletedCheckIcon data-test="completed-check-icon"/>
                     }
                   />
                 </CompactTable>

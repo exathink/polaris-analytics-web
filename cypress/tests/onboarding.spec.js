@@ -62,6 +62,14 @@ describe("Onboarding flows", () => {
     // 5th Step: Import Boards Status
     cy.getBySel("progress-circle").should("be.visible");
 
+    // as there are multiple calls for import state check
+    cy.wait("@gqlshowImportStateQuery");
+    cy.wait("@gqlshowImportStateQuery");
+    cy.wait("@gqlshowImportStateQuery");
+    
+    // make sure there is completed check icon
+    cy.getBySel("completed-check-icon").should("be.visible");
+
     cy.get("button.ant-btn").contains(/done/i).click();
   });
 });

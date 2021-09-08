@@ -75,6 +75,7 @@ Cypress.Commands.add("aliasGraphQlRequests", () => {
   cy.intercept("POST", "/graphql", (req) => {
     // Queries
     aliasQuery(req, "getAccountConnectors");
+    aliasQuery(req, "showImportState");
 
     // Mutations
     aliasMutation(req, "createConnector");
