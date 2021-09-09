@@ -24,5 +24,9 @@ module.exports = (on, config) => {
   config.env.trelloApiKey = process.env.CYPRESS_TRELLO_API_KEY;
   config.env.trelloAccessToken = process.env.CYPRESS_TRELLO_ACCESS_TOKEN;
 
+  // github creds
+  config.env.githubAccessToken = process.env.CYPRESS_GITHUB_ACCESS_TOKEN;
+  config.env.githubOrganization = process.env.CYPRESS_GITHUB_ORGANIZATION;
+
   return config;
 }
