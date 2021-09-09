@@ -127,7 +127,7 @@ Cypress.Commands.add("SelectProjects", () => {
   cy.getBySel("fetch-available-projects").click();
 
   cy.wait("@gqlrefreshConnectorProjectsMutation");
-  cy.get("input[type=checkbox]").first().check();
+  cy.get("input[type=checkbox]").first().check({ force: true });
 
   cy.getBySel("workflow-next-button").click();
 });
