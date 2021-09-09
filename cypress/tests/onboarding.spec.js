@@ -22,7 +22,7 @@ describe("Onboarding flows", () => {
     cy.getBySel("trello-card").click();
 
     // 2nd Step: Select Connector
-    cy.contains(/Create Trello Connector/i).click();
+    cy.getBySel("create-connector-button").click();
 
     cy.contains("Next").click();
 
@@ -41,23 +41,25 @@ describe("Onboarding flows", () => {
     cy.contains(/Available Trello Connectors/).should("be.visible");
     cy.contains(connectorName).should("be.visible");
 
-    cy.get("button.ant-btn")
+    cy.get("table")
+      .find("tbody>tr")
+      .first()
+      .find("button.ant-btn")
       .contains(/select/i)
       .click();
 
     // 3rd Step: Select Boards
-    cy.contains(/Select boards to import from connector/).should("be.visible");
-    cy.contains(/fetch available boards/i).click();
+    cy.getBySel("select-projects-title").should("be.visible");
+    cy.getBySel("fetch-available-projects").click();
 
-    cy.get("input[type=checkbox]").check();
+    cy.wait("@gqlrefreshConnectorProjectsMutation");
+    cy.get("input[type=checkbox]").first().check();
 
-    cy.contains(/Next/i).click();
+    cy.getBySel("workflow-next-button").click();
 
     // 4th Step: Configure Import
-    cy.contains(/Select Import Mode/).should("be.visible");
-    cy.get("button.ant-btn")
-      .contains(/Import Board/i)
-      .click();
+    cy.getBySel("configure-import-title").should("be.visible");
+    cy.getBySel("import-project-button").click();
 
     // 5th Step: Import Boards Status
     cy.getBySel("progress-circle").should("be.visible");
@@ -70,6 +72,6 @@ describe("Onboarding flows", () => {
     // make sure there is completed check icon
     cy.getBySel("completed-check-icon").should("be.visible");
 
-    cy.get("button.ant-btn").contains(/done/i).click();
+    cy.getBySel("workflow-done-button").click();
   });
 });

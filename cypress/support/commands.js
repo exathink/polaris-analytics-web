@@ -79,5 +79,6 @@ Cypress.Commands.add("aliasGraphQlRequests", () => {
 
     // Mutations
     aliasMutation(req, "createConnector");
+    aliasMutation(req, "refreshConnectorProjects")
   });
 });
