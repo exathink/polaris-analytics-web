@@ -93,6 +93,35 @@ Cypress.Commands.add("SelectProvider", ({cardId}) => {
   cy.getBySel(cardId).click();
 });
 
+Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
+  cy.getBySel("create-connector-button").click();
+
+  cy.contains("Next").click();
+
+  cy.get("input#name").type(connectorName).should("have.value", connectorName);
+
+  credentialPairs.forEach(pair => {
+    const [domId, value] = pair;
+    cy.get(domId).type(value).should ("have.value", value);
+  });
+
+  cy.contains(/Register/i).click();
+
+  cy.wait("@gqlcreateConnectorMutation");
+  cy.wait("@gqlgetAccountConnectorsQuery");
+
+  cy.getBySel("available-connectors-title").should("be.visible");
+  cy.contains(connectorName).should("be.visible");
+
+  cy.get("table")
+  .find("tbody>tr")
+  .first()
+  .find("button.ant-btn")
+  .contains(/select/i)
+  .click();
+  
+});
+
 Cypress.Commands.add("SelectProjects", () => {
   cy.getBySel("select-projects-title").should("be.visible");
   cy.getBySel("fetch-available-projects").click();
