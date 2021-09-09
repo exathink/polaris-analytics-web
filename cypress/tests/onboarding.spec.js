@@ -1,16 +1,14 @@
 /// <reference types="cypress" />
 
 describe("Onboarding flows", () => {
-  beforeEach(() => {
+
+  it("Import project flow for - Trello", () => {
     cy.aliasGraphQlRequests();
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
 
     cy.visit("/");
-  });
-
-  it("Import project flow for - Trello", () => {
     // assume there are no existing connectors setup already
 
     // 0th Step: Start import project flow
@@ -40,6 +38,12 @@ describe("Onboarding flows", () => {
   });
 
   it("Import project flow for - Github", () => {
+    cy.aliasGraphQlRequests();
+
+    const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
+    cy.loginByApi(username, password);
+
+    cy.visit("/");
     // assume there are no existing connectors setup already
 
     // 0th Step: Start import project flow
