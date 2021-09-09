@@ -28,5 +28,8 @@ module.exports = (on, config) => {
   config.env.githubAccessToken = process.env.CYPRESS_GITHUB_ACCESS_TOKEN;
   config.env.githubOrganization = process.env.CYPRESS_GITHUB_ORGANIZATION;
 
+  // gitlab creds
+  config.env.gitlabAccessToken = process.env.CYPRESS_GITLAB_ACCESS_TOKEN
+
   return config;
 }

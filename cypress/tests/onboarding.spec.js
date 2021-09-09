@@ -19,6 +19,14 @@ const importProjectFlowConfig = [
       ["input#githubAccessToken", Cypress.env("githubAccessToken")],
     ],
   },
+  {
+    provider: "Gitlab",
+    cardId: "gitlab-card",
+    connectorName: "Gitlab Test",
+    credentialPairs: [
+      ["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")],
+    ],
+  },
 ];
 
 describe("Onboarding flows", () => {
