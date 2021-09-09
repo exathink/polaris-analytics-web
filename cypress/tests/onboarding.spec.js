@@ -35,7 +35,7 @@ describe("Onboarding flows", () => {
     cy.wait("@gqlcreateConnectorMutation");
     cy.wait("@gqlgetAccountConnectorsQuery");
 
-    cy.contains(/Available Trello Connectors/).should("be.visible");
+    cy.getBySel("available-connectors-title").should("be.visible");
     cy.contains(connectorName).should("be.visible");
 
     cy.get("table")
