@@ -82,3 +82,42 @@ Cypress.Commands.add("aliasGraphQlRequests", () => {
     aliasMutation(req, "refreshConnectorProjects")
   });
 });
+
+
+/**
+ *  Useful Commands for onboarding flow (Connect Project Workflow)
+ */
+
+Cypress.Commands.add("SelectProvider", ({cardId}) => {
+  cy.getBySel("integration-step-title").should("be.visible");
+  cy.getBySel(cardId).click();
+});
+
+Cypress.Commands.add("SelectProjects", () => {
+  cy.getBySel("select-projects-title").should("be.visible");
+  cy.getBySel("fetch-available-projects").click();
+
+  cy.wait("@gqlrefreshConnectorProjectsMutation");
+  cy.get("input[type=checkbox]").first().check();
+
+  cy.getBySel("workflow-next-button").click();
+});
+
+Cypress.Commands.add("ConfigureImport", () => {
+  cy.getBySel("configure-import-title").should("be.visible");
+  cy.getBySel("import-project-button").click();
+});
+
+Cypress.Commands.add("ImportProjectStatus", () => {
+  cy.getBySel("progress-circle").should("be.visible");
+
+  // as there are multiple calls for import state check
+  cy.wait("@gqlshowImportStateQuery");
+  cy.wait("@gqlshowImportStateQuery");
+  cy.wait("@gqlshowImportStateQuery");
+  
+  // make sure there is completed check icon
+  cy.getBySel("completed-check-icon").should("be.visible");
+
+  cy.getBySel("workflow-done-button").click();
+});
