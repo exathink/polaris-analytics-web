@@ -2,18 +2,15 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {ConfigSelector, CONFIG_TABS} from "./configSelector/configSelector";
+import {CONFIG_TABS, ConfigSelector} from "./configSelector/configSelector";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
-import {Button} from "antd";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
-import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
-import {StateMappingInfoContent} from "./stateMappingInfoContent";
 import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
 
 const dashboard_id = "dashboards.project.configure";
@@ -29,7 +26,7 @@ ValueStreamMappingDashboard.videoConfig = {
 };
 
 export function ValueStreamMappingInitialDashboard() {
-  const [showPanel, setShowPanel] = React.useState(false);
+
 
   return (
     <ProjectDashboard

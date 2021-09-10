@@ -1,17 +1,40 @@
 import classNames from "classnames";
 import React from "react";
-import styles from "./stateMappingInfoContent.module.css";
+import styles from "./infoConfig.module.css";
 
-export function StateMappingInfoContent({header = null}) {
+export function DeliveryProcessMapping() {
+  return (
+    <div style={{textAlign: "center", maxWidth: "400px"}}>
+      <h3>Why</h3>
+      <p>
+        Polaris models your delivery process by mapping states in your workflow into five standard <em>phases</em>. See
+        mapping guidelines below for the definitions of each phase.
+      </p>
+      <p>Key metrics like lead and cycle time are defined in terms of cumulative time spent in these phases.</p>
+      <h3>How</h3>
+      <p>Drag and drop each state on its desired phase to map your delivery process into Polaris phases.</p>
+      <p>Every workflow state that is unmapped, including ones you are not actively using now, should be mapped.</p>
+      <p>
+        Time spent in unmapped states is not included in cycle metrics calculations, so not mapping them can skew your
+        metrics.
+      </p>
+      <p>
+        You can update this mapping at any time. But note that when you do, Polaris recomputes cycle metrics for{" "}
+        <em>both historical and future cards</em> using the new phase mapping.
+      </p>
+      <p>
+        <em>Note: Drag and drop mapping is disabled if you are not an organization owner. </em>
+      </p>
+    </div>
+  );
+}
+
+export function PhaseDefinitions() {
   return (
     <div className={styles.stateMappingContentWrapper}>
-      {
-        header &&
-          <>
-            <div className={styles.mainTitle}>Phase Definitions</div>
-          </>
 
-      }
+      <div className={styles.mainTitle}>Phase Definitions</div>
+
       <div className={styles.phasesWrapper}>
         <div className={styles.phase}>
           <div className={classNames(styles.title, styles.define)}>Define</div>
