@@ -65,12 +65,12 @@ export const ProjectPipelineFunnelWidget = ({
 
 ProjectPipelineFunnelWidget.infoConfig = {
   title: "Funnel Widget",
-  content: () => (
+  headerContent: () => (
     <>
       <p> short description </p>
     </>
   ),
-  content1: () => (
+  drawerContent: () => (
     <><p>Funnel Widget Detail Description</p></>
   ),
 };

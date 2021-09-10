@@ -18,15 +18,15 @@ export const ConfigSelector = (
 
         {
           key: CONFIG_TABS.VALUE_STREAM,
-          display: 'Value Stream Mapping'
-        },
-        {
-          key: CONFIG_TABS.RESPONSE_TIME_SLA,
-          display: 'Response Time SLA'
+          display: 'Delivery Process Mapping'
         },
         {
           key: CONFIG_TABS.MEASUREMENT_SETTINGS,
           display: 'Measurement Settings'
+        },
+        {
+          key: CONFIG_TABS.RESPONSE_TIME_SLA,
+          display: 'Response Time SLO'
         },
       ]
     }

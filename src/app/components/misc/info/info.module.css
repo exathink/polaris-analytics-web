@@ -1,0 +1,15 @@
+.drawerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+
+}
+
+.moreButton {
+    cursor: pointer;
+}
+
+.drawerTitle {
+    text-align: center;
+}

@@ -164,10 +164,9 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           title={""}
           content={
             <div style={{textAlign: "center", maxWidth: "400px"}}>
-              <p>Polaris maps a delivery process into five standard phases.</p>
+              <p>Polaris maps a delivery process into five standard phases in order to compute key metrics like lead and cycle time.</p>
               <p>
-                States in your workflow must be mapped to one of these five phases in order to compute key measurements
-                such as lead time and cycle time.
+                Drag your workflow states into the appropriate phase using the following guidelines.
               </p>
             </div>
           }
@@ -184,9 +183,6 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
-        <div className={styles["infoContent"]}>
-        {showMeLinkVisible && getInfoContent()}
-        </div>
         {getButtonElements()}
       </div>
 
