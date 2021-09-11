@@ -18,7 +18,9 @@ export const InfoDrawer = ({title, content, moreLinkText, drawerOptions}) => {
         { moreLinkText || "More.."}
       </Button>
       <Drawer title={<div className={styles.drawerTitle}>{title}</div>} placement="right" closable={false} onClose={onClose} visible={visible} {...drawerOptions}>
-        {content}
+        <div className={styles.infoDrawerContent}>
+          {content}
+        </div>
       </Drawer>
     </div>
   );
