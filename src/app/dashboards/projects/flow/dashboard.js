@@ -173,6 +173,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="pipeline-funnel"
           className={styles.pipelineFunnel}
+          infoConfig={ProjectPipelineFunnelWidget.infoConfig}
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}

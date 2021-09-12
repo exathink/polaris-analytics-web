@@ -21,7 +21,7 @@ export function PipelineFunnelWidgetInfoSummary() {
           </p>
         </p>
         <p>
-          <em>Note: This assumes your have configured your Delivery Process Mapping.</em>
+          <em>Note: This assumes your have configured your Delivery Process Mapping using the Model dashboard.</em>
         </p>
       </Section>
     </>
@@ -40,7 +40,8 @@ export function PipelineFunnelWidgetInfoDetail() {
         </p>
         <p>
           When you initially import a work stream, its states are typically unmapped. Use the Delivery Process Mapping
-          widget to map each workflow state to a Polaris phase. The funnel will update after your complete this step.
+          widget in the Model dashboard, to map each workflow state to a Polaris phase. The funnel will update after
+          your complete this step.
         </p>
       </SubSection>
 
