@@ -16,7 +16,7 @@ export const InfoDrawer = ({title, content, moreLinkText,  drawerOptions}) => {
   return (
     <div className={styles.drawerContainer}>
       <Button  type={'primary'}  size={'small'} onClick={showDrawer}>
-        { moreLinkText || "More.."}
+        { moreLinkText || "Learn more.."}
       </Button>
       <Drawer placement="right" width={"60vw"} closable={false} onClose={onClose} visible={visible} {...drawerOptions}>
 
