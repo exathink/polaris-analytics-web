@@ -6,19 +6,24 @@ import {InfoCard} from "../../../../../components/misc/info";
 
 const {Section} = InfoCard;
 
-export function DeliveryProcessMapping() {
+export function DeliveryProcessMappingSummary() {
   return (
     <>
       <Section>
         <p>
-          Polaris models your delivery process by mapping states in your workflow into five standard <em>phases</em>.
-          See mapping guidelines below for the definitions of each phase.
+          Model your delivery process in Polaris by mapping states in your delivery workflow into five standard <em>phases</em>.
         </p>
-        <p>Key metrics like lead and cycle time are defined in terms of cumulative time spent in these phases.</p>
+        <p>Key flow metrics like lead and cycle time are defined in terms of cumulative time spent in these phases.</p>
       </Section>
 
       <Section heading={"How"}>
-        <p>Drag and drop each state on its desired phase to map your delivery process into Polaris phases.</p>
+        <p>For each work stream, drag a workflow state to its Polaris phase. Click the link below
+        for guidelines on how to choose the correct phase for each state, and its impact on flow metrics.</p>
+
+        <p><em>Note: Drag and drop mapping is disabled if you are not an organization owner. </em></p>
+      </Section>
+      <Section heading={"Mapping Guidelines"}>
+
         <p>Every workflow state that is unmapped, including ones you are not actively using now, should be mapped.</p>
         <p>
           Time spent in unmapped states is not included in cycle metrics calculations, so not mapping them can skew your
@@ -26,19 +31,18 @@ export function DeliveryProcessMapping() {
         </p>
         <p>
           You can update this mapping at any time. But note that when you do, Polaris recomputes cycle metrics for{" "}
-          <em>both historical and future cards</em> using the new phase mapping.
+          <em>both historical and future cards</em> using the new delivery process mapping.
         </p>
-        <p>
-          <em>Note: Drag and drop mapping is disabled if you are not an organization owner. </em>
-        </p>
+
       </Section>
     </>
   );
 }
 
-export function PhaseDefinitions() {
+export function DeliveryProcessMappingDetails() {
   return (
     <>
+
       <div className={styles.mainTitle}>Phase Definitions</div>
 
       <div className={styles.phasesWrapper}>
@@ -106,6 +110,7 @@ export function PhaseDefinitions() {
           </div>
         </div>
       </div>
+
     </>
   );
 }

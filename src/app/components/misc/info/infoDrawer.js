@@ -1,8 +1,9 @@
 import React, {useState} from "react";
-import {Drawer, Button} from "antd";
+import {Drawer} from "antd";
+import Button from "../../../../components/uielements/button";
 import styles from "./info.module.css";
 
-export const InfoDrawer = ({title, content, moreLinkText, drawerOptions}) => {
+export const InfoDrawer = ({title, content, moreLinkText,  drawerOptions}) => {
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => {
@@ -14,11 +15,16 @@ export const InfoDrawer = ({title, content, moreLinkText, drawerOptions}) => {
   };
   return (
     <div className={styles.drawerContainer}>
-      <Button type={'link'} onClick={showDrawer} className={styles.moreButton}>
+      <Button  type={'primary'}  size={'small'} onClick={showDrawer}>
         { moreLinkText || "More.."}
       </Button>
-      <Drawer title={<div className={styles.drawerTitle}>{title}</div>} placement="right" closable={false} onClose={onClose} visible={visible} {...drawerOptions}>
+      <Drawer placement="right" width={"60vw"} closable={false} onClose={onClose} visible={visible} {...drawerOptions}>
+
         <div className={styles.infoDrawerContent}>
+          {
+            title &&
+            <h2>{title}</h2>
+          }
           {content}
         </div>
       </Drawer>

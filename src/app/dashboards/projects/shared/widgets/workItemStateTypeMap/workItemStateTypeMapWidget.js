@@ -5,7 +5,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
 
-import {PhaseDefinitions, DeliveryProcessMapping} from "./infoConfig";
+import {DeliveryProcessMappingDetails, DeliveryProcessMappingSummary} from "./infoConfig";
 
 export const WorkItemStateTypeMapWidget = withViewerContext(
   ({
@@ -48,16 +48,16 @@ export const WorkItemStateTypeMapWidget = withViewerContext(
 WorkItemStateTypeMapWidget.infoConfig = {
   title:"Delivery Process Mapping",
   headerContent: () => (
-    <DeliveryProcessMapping/>
+    <DeliveryProcessMappingSummary/>
   ),
-  moreLinkText: "Mapping guidelines...",
+  moreLinkText: "Phase Definitions...",
+  showDrawer: true,
   drawerContent: () => (
-    <PhaseDefinitions/>
+    <DeliveryProcessMappingDetails/>
   ),
   showDrawerTitle: false,
   drawerOptions: {
-
-    placement: "top",
-    height: "60vh",
+    width: "65vw"
   }
+
 }

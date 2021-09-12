@@ -5,6 +5,7 @@ import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {getLatest} from "../../../../../helpers/utility";
 import {ProjectPipelineFunnelDetailDashboard} from "./projectPipelineFunnelDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {PipelineFunnelWidgetInfoSummary, PipelineFunnelWidgetInfoDetail} from "./infoConfig";
 
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
@@ -64,13 +65,13 @@ export const ProjectPipelineFunnelWidget = ({
 };
 
 ProjectPipelineFunnelWidget.infoConfig = {
-  title: "Funnel Widget",
+  title: "The Funnel",
   headerContent: () => (
-    <>
-      <p> short description </p>
-    </>
+    <PipelineFunnelWidgetInfoSummary/>
   ),
+  showDrawer: true,
   drawerContent: () => (
-    <><p>Funnel Widget Detail Description</p></>
+    <PipelineFunnelWidgetInfoDetail/>
   ),
+
 };
