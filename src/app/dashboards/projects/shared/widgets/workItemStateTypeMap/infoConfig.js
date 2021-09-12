@@ -55,16 +55,14 @@ export function DeliveryProcessMappingDetails() {
             <div className={classNames(styles.title, styles.define)}>Define</div>
             <div className={styles.defineContent}>
               <p>
-                This phase includes your active backlog, cards that are at the design or definition stage, and cards
-                that are ready for development belong here.
+                This phase includes states representing your active backlog, cards that are at the design or definition stage, and cards
+                that are ready for development.
               </p>
               <p>
                 When a card is initially created, it starts in this phase and it marks the start of a
-                <em> delivery cycle </em> for the card.
-              </p>
-              <p>The lead time clock starts ticking.</p>
+                <em> delivery cycle </em> for the card. The lead time clock starts ticking at this point.</p>
               <p>
-                The cycle time clock starts ticking whenever a card exits this phase and stops ticking when it re-enters
+                The cycle time clock starts ticking whenever a card exits this phase. It stops ticking when it re-enters
                 this phase.
               </p>
             </div>
