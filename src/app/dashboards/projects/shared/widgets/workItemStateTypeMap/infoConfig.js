@@ -4,29 +4,19 @@ import styles from "./infoConfig.module.css";
 
 import {InfoCard} from "../../../../../components/misc/info";
 
-const {Section} = InfoCard;
+const {Section, SubSection} = InfoCard;
 
 export function DeliveryProcessMappingSummary() {
   return (
     <>
       <Section>
         <p>
-          Model your delivery process in Polaris by mapping states in your delivery workflow into five standard{" "}
-          <em>phases</em>.
+          Model your delivery process in Polaris by mapping states in your delivery workflow into one of five standard
+          <em> phases </em>.
         </p>
         <p>
           Key response time metrics like lead and cycle time are defined in terms of cumulative time spent in these
           phases.
-        </p>
-      </Section>
-
-      <Section heading={"How"}>
-        <p>
-          For each work stream, drag a workflow state to its Polaris phase.
-        </p>
-
-        <p>
-          <em>Note: Drag and drop mapping is disabled if you are not an organization owner. </em>
         </p>
       </Section>
     </>
@@ -37,18 +27,29 @@ export function DeliveryProcessMappingDetails() {
   return (
     <>
       <Section heading={"Mapping Guidelines"}>
-        <p>Every workflow state that is unmapped, including ones you are not actively using now, should be mapped.</p>
         <p>
-          Time spent in unmapped states is not included in cycle metrics calculations, so not mapping them can skew your
-          metrics.
+          For each work stream, drag a workflow state to its Polaris phase.
+          <em> Drag and drop mapping is disabled if you are not an organization owner. </em>
         </p>
-        <p>
-          You can update this mapping at any time. But note that when you do, Polaris recomputes response time metrics
-          for
-          <em>both historical and future cards</em> using the new delivery process mapping.
-        </p>
+        <p>Note: </p>
+        <ul>
+          <li>
+            Polaris
+            analyzes state transition history for cards, and will show you every state for it has recorded at least one state transition
+            involving a state. So every workflow state that is shown as unmapped, including ones you are not actively using now, should be mapped.
+          </li>
+          <li>
+            Time spent in unmapped states is not included in response time calculations, so not mapping them can skew
+            your metrics.
+          </li>
+          <li>
+            You can update this mapping at any time. But note that when you do, Polaris recomputes response time metrics
+            for
+            <em>both historical and future cards</em> using the new delivery process mapping.
+          </li>
+        </ul>
       </Section>
-      <Section heading={"Phase Definitions"}>
+      <SubSection heading={"Phase Definitions"}>
         <div className={styles.phasesWrapper}>
           <div className={styles.phase}>
             <div className={classNames(styles.title, styles.define)}>Define</div>
@@ -116,7 +117,7 @@ export function DeliveryProcessMappingDetails() {
             </div>
           </div>
         </div>
-      </Section>
+      </SubSection>
     </>
   );
 }
