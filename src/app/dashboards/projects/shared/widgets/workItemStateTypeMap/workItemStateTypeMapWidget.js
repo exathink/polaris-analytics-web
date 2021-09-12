@@ -50,14 +50,13 @@ WorkItemStateTypeMapWidget.infoConfig = {
   headerContent: () => (
     <DeliveryProcessMappingSummary/>
   ),
-  moreLinkText: "Phase Definitions...",
+  moreLinkText: "Mapping guidelines...",
   showDrawer: true,
   drawerContent: () => (
     <DeliveryProcessMappingDetails/>
   ),
   showDrawerTitle: false,
   drawerOptions: {
-    width: "65vw"
+    width: "68vw"
   }
-
 }

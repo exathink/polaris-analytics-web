@@ -5,7 +5,7 @@
 }
 .phase {
   padding: 0.5rem 0.5rem 0 0.5rem;
-  font-size: 0.95vw;
+  font-size: initial;
   line-height: 1.3vw;
   text-align: center;
 }

@@ -39,7 +39,7 @@ export function PipelineFunnelWidgetInfoDetail() {
           states is not counted in the response time metrics.
         </p>
         <p>
-          When you initially import a work stream its states are typically unmapped. Use the Delivery Process Mapping
+          When you initially import a work stream, its states are typically unmapped. Use the Delivery Process Mapping
           widget to map each workflow state to a Polaris phase. The funnel will update after your complete this step.
         </p>
       </SubSection>
