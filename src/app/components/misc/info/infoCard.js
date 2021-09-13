@@ -30,7 +30,7 @@ export function InfoCard({title, content, drawerContent, moreLinkText, drawerHei
 
 InfoCard.Section = ({heading, children}) => {
   return (
-    <div>
+    <div className={styles.section}>
       {
         heading &&
           <h3 className={styles.sectionHeading}>
@@ -44,7 +44,7 @@ InfoCard.Section = ({heading, children}) => {
 
 InfoCard.SubSection = ({heading, children}) => {
   return (
-    <div>
+    <div className={styles.subSection}>
       {
         heading &&
           <h4 className={styles.sectionHeading}>

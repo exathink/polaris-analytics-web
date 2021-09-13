@@ -1,7 +1,7 @@
 import React from "react";
 
-import {InfoCard} from "../../index";
-import {PhaseDefinitions} from "../phaseDefinitions/infoConfig";
+import {InfoCard, PhaseDefinitions} from "../../index";
+
 
 const {Section, SubSection} = InfoCard;
 

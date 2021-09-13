@@ -22,20 +22,13 @@ export function PipelineFunnelWidgetInfoSummary() {
     <>
       <Section>
         <p>
-          Shows the number of cards currently in the Define, Open, and Deliver phases of your delivery process. For the
-          Closed phase, it shows the number of completed <em> delivery cycles </em> within the current{" "}
-          <em>flow analysis period</em>.
+          The funnel helps you visualize and balance the end-to-end flow of work across a value stream in real time.
         </p>
-        <p>
-          <p>
-            The funnel gives you real time visibility into Phase level bottlenecks in your value stream and lets you
-            optimize
-            <em> lead time </em> by maintaining a properly sized backlog based on the current pace of delivery.
-          </p>
-        </p>
-        <p>
-          <em>Note: This assumes you have configured your Delivery Process Mapping using the Model dashboard.</em>
-        </p>
+        <h4>Key Functions</h4>
+        <ul>
+          <li>Quickly spot phase level queuing and system-wide constraints as they emerge.</li>
+          <li>Maintain an optimally sized backlog that matches the actual pace of customer delivery.</li>
+        </ul>
       </Section>
     </>
   );
@@ -46,46 +39,64 @@ export function PipelineFunnelWidgetInfoDetail() {
     <>
       <Section>
         <p>
-          Shows the number of cards currently in the Define, Open, and Deliver phases of your delivery process. For the
-          Closed phase, it shows the number of completed <em> delivery cycles </em> within the current{" "}
-          <em>flow analysis period</em>.
+          The funnel helps you visualize and balance the end-to-end flow of work across a value stream in real time.
         </p>
-
+      </Section>
+      <Section heading={"Interpretation"}>
+        <p>
+          Each region in the funnel represents a <em> phase </em> in the delivery process mapping for the value stream.
+        </p>
+        <ol>
+          <li>
+            For the Define, Open, and Deliver phases of your delivery process the chart shows the{" "}
+            <em>number of cards</em> that are currently in the phase.
+          </li>
+          <li>
+            For the Closed phase, it shows the <em> number of completed delivery cycles </em> within the current
+            <em> flow analysis period </em>.
+          </li>
+          <li>
+            The relative sizes of the regions can be used to diagnose and fix queueing, and to balance end to end flow
+            of work.
+          </li>
+        </ol>
+        <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
       </Section>
 
+      <Section heading={"Notes"}>
+        <SubSection heading={"Delivery Cycles and Funnel Counts"}>
+          <p>
+            A delivery cycle is completed every time a card transitions to the Closed phase and a new one starts when
+            the card transitions out of the Closed phase to one of the other active phases. So, if a card was delivered
+            multiple times during the flow analysis period, it may be counted multiple times in the closed phase and may
+            also appear in the counts of one of the active phases.
+          </p>
+        </SubSection>
 
+        <SubSection heading={"Unmapped Cards"}>
+          <p>
+            Cards whose current workflow state is unmapped will show up at the top of the funnel. Time spent in unmapped
+            states is not counted in response time metrics.
+          </p>
+          <p>
+            When you initially import a work stream, its states are typically unmapped. Use the Delivery Process Mapping
+            widget in the Model dashboard, to map each workflow state to a Polaris phase. The funnel will update after
+            your complete this step.
+          </p>
+        </SubSection>
+      </Section>
 
-      <SubSection heading={"Unmapped Cards"}>
-        <p>
-          Cards whose current workflow state is unmapped will show up at the top of the funnel. Time spent in unmapped
-          states is not counted in the response time metrics.
-        </p>
-        <p>
-          When you initially import a work stream, its states are typically unmapped. Use the Delivery Process Mapping
-          widget in the Model dashboard, to map each workflow state to a Polaris phase. The funnel will update after
-          your complete this step.
-        </p>
-      </SubSection>
+      <br />
 
-      <SubSection heading={"Delivery Cycles and Funnel Counts"}>
-        <p>
-          A delivery cycle is completed every time a card transitions to the Closed phase and a new one starts when the
-          card transitions out of the Closed phase to one of the other active phases. So, if a card was delivered
-          multiple times during the flow analysis period, it may be counted multiple times in the closed phase and may
-          also appear in the counts of one of the active phases.
-        </p>
-        <p>
-           <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
-        </p>
-      </SubSection>
-      <br/>
+      <h2>Use Cases</h2>
 
-      <Section heading={"Use Case: Visualizing Phase Level Bottlenecks"}>
+      <Section heading={"Visualizing Phase Level Bottlenecks"}>
         <p>
-          When work is flowing efficiently through the value stream, the sizes of the Define and Closed phase are
-          relatively balanced and the total number of cards in the Open, Make and Deliver phases is typically less than
-          the number of team members working on the cards. This indicates an appropriate level of work in progress and
-          will also be reflected in other metrics like low <em>cycle time</em>.
+          For work to flow efficiently through the value stream, the sizes of the Define and Closed phase should
+          relatively balanced. In addition, the total number of cards in the Open, Make and Deliver phases is typically
+          less than the number of team members working on the cards. This indicates an appropriate level of work in
+          progress in the delivery pipeline and should also be reflected in favorable metrics like low{" "}
+          <em>cycle time</em>.
         </p>
         <p>
           Significant imbalances the sizes of the Open, Make or Deliver areas of the funnel indicate the work is
@@ -94,43 +105,55 @@ export function PipelineFunnelWidgetInfoDetail() {
           Dashboard.
         </p>
       </Section>
-      <Section heading={"Use Case: Lead Time and Backlog Optimization"}>
+      <Section heading={"Lead Time and Backlog Optimization"}>
         <p>
-          The size of the Closed phase is proportional to the current pace of delivery. Polaris shows this in real time
-          as delivery cycles complete. You can use the relative sizes of the Closed and Define phase to understand how
-          large an active backlog you need to maintain in order to keep up with this pace of delivery. If you have a
-          significantly larger number of items in the Define phase compared to the Closed phase, your have much more
-          work queued up than you can reasonably deliver in the near term.
+          While internal queueing is reflected in the Open, Make and Delivery areas of the funnel, the relative sizes of
+          the Define and Closed areas can be used to balance the size of the backlog with the pace of delivery. The size
+          of the Closed phase is proportional to the current pace of delivery. If you have a significantly larger number
+          of items in the Define phase compared to the Closed phase, your have much more work queued up than you can
+          reasonably deliver in the near term, and its time prioritize and communicate your choices.
         </p>
-        <SubSection heading={"Backlog Management"}>
+        <SubSection>
           <p>
-            The concept of delivery cycles in Polaris, gives you a simple and effective technique to continuously
-            optimize the size of your active backlog.
-          </p>
-          <ul>
-            <li>
-              Create a workflow state called ROADMAP and map this to the
-              <em> Closed </em> phase in Polaris.
-            </li>
-            <li>
-              If you think a given card will be not prioritized for delivery within a couple of flow analysis periods,
-              move the card to the ROADMAP state and communicate this to your customer. This will reset your customer's
-              expectations. Polaris also closes the delivery cycle and stops the lead and cycle time clocks for the
-              card. You can move it back to your backlog state when it is re-scheduled for delivery and the lead time
-              clock will start ticking again. This way your lead time becomes a useful metric to measure how well you
-              are doing against your customer commitments.
-            </li>
-            <li>
-              If you dont think a card will be addressed in the next few periods, delete it or move it out of your work
-              stream. It will come back again if the work is important enough to do.
-            </li>
-          </ul>
-          <p>
-            This way, lead time time does not simply accumulate because a card was sitting in the backlog indefinitely.
-            When this happens, it is hard to separate signal from noise in the lead time metric and it becomes much less
-            useful.
+            For example, if your flow analysis period is 30 days and ratio of Define to Closed is 5:1, then you have
+            roughly five months of work in the backlog based on the current pace of delivery. You can decide whether
+            this is an appropriate size for you, but for fast moving Agile teams, we recommend something closer to a 2:1
+            ratio of Define to Closed when sizing the backlog.
           </p>
         </SubSection>
+        <Section heading={"Backlog Management"}>
+          <p>
+            The concept of delivery cycles in Polaris, gives you a simple and effective technique to continuously
+            optimize the size of your active backlog and communicate your plans with your customer.
+          </p>
+          <SubSection>
+            <ul>
+              <li>
+                Create a workflow state called ROADMAP in your work tracking system and map this to the
+                <em> Closed </em> phase in Polaris.
+              </li>
+              <li>
+                If you think a given card will be not prioritized for delivery within a couple of flow analysis periods,
+                move the card to the ROADMAP state and communicate this to your customer. This will reset your
+                customer's expectations. Polaris also closes the delivery cycle and stops the lead and cycle time clocks
+                for the card. You can move it back to your backlog state when it is re-scheduled for delivery and the
+                lead time clock will start ticking again. This way your lead time becomes a useful metric to measure how
+                well you are doing against your customer commitments.
+              </li>
+              <li>
+                If you dont think a card will be addressed in the next few analysis periods, delete it or move it out of
+                your work stream. It will come back again if the work is important enough to do.
+              </li>
+            </ul>
+          </SubSection>
+          <p>
+            By adopting this simple process, lead time time does not simply accumulate because a card was sitting in the
+            backlog indefinitely. When that happens, it is hard to separate signal from noise in the lead time metric
+            and it becomes much less useful. You will also have system for grooming your backlog that forces to you to
+            prioritize and communicate your current plans with your customer and measure your performance against those
+            promises.
+          </p>
+        </Section>
       </Section>
     </>
   );

@@ -22,3 +22,10 @@
 
 }
 
+.section {
+    padding: 5px;
+}
+.subSection {
+    padding: 10px;
+    font-size: initial;
+}
