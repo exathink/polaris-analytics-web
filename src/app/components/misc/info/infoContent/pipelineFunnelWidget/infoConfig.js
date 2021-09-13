@@ -50,7 +50,7 @@ export function PipelineFunnelWidgetInfoDetail() {
           Closed phase, it shows the number of completed <em> delivery cycles </em> within the current{" "}
           <em>flow analysis period</em>.
         </p>
-        <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
+
       </Section>
 
 
@@ -74,9 +74,13 @@ export function PipelineFunnelWidgetInfoDetail() {
           multiple times during the flow analysis period, it may be counted multiple times in the closed phase and may
           also appear in the counts of one of the active phases.
         </p>
+        <p>
+           <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
+        </p>
       </SubSection>
+      <br/>
 
-      <Section heading={"Visualizing Phase Level Bottlenecks"}>
+      <Section heading={"Use Case: Visualizing Phase Level Bottlenecks"}>
         <p>
           When work is flowing efficiently through the value stream, the sizes of the Define and Closed phase are
           relatively balanced and the total number of cards in the Open, Make and Deliver phases is typically less than
@@ -90,7 +94,7 @@ export function PipelineFunnelWidgetInfoDetail() {
           Dashboard.
         </p>
       </Section>
-      <Section heading={"Lead Time and the Backlog"}>
+      <Section heading={"Use Case: Lead Time and Backlog Optimization"}>
         <p>
           The size of the Closed phase is proportional to the current pace of delivery. Polaris shows this in real time
           as delivery cycles complete. You can use the relative sizes of the Closed and Define phase to understand how
