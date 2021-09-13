@@ -63,7 +63,7 @@ export function PhaseDefinitions() {
         <div className={classNames(styles.title, styles.closed)}>Closed</div>
         <div className={styles.closedContent}>
           <p>This phase is meant for cards that are released and available to customers in production.</p>
-          <p>A delivery cycle is completed when a card enters a state in this phase.</p>
+          <p>A delivery cycle ends when a card enters a state in this phase.</p>
           <p>Lead and cycle time clocks stop ticking in this phase.</p>
           <p>A new delivery cycle starts when a card transitions out of this phase.</p>
         </div>
