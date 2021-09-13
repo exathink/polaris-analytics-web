@@ -1,6 +1,6 @@
 import React from "react";
 
-import {InfoCard} from "../../index";
+import {InfoCard, InfoDrawer, PhaseDefinitions} from "../../index";
 
 const {Section, SubSection} = InfoCard;
 
@@ -34,7 +34,7 @@ export function PipelineFunnelWidgetInfoSummary() {
           </p>
         </p>
         <p>
-          <em>Note: This assumes your have configured your Delivery Process Mapping using the Model dashboard.</em>
+          <em>Note: This assumes you have configured your Delivery Process Mapping using the Model dashboard.</em>
         </p>
       </Section>
     </>
@@ -44,7 +44,16 @@ export function PipelineFunnelWidgetInfoSummary() {
 export function PipelineFunnelWidgetInfoDetail() {
   return (
     <>
-      <PipelineFunnelWidgetInfoSummary />
+      <Section>
+        <p>
+          Shows the number of cards currently in the Define, Open, and Deliver phases of your delivery process. For the
+          Closed phase, it shows the number of completed <em> delivery cycles </em> within the current{" "}
+          <em>flow analysis period</em>.
+        </p>
+        <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
+      </Section>
+
+
 
       <SubSection heading={"Unmapped Cards"}>
         <p>
@@ -95,8 +104,10 @@ export function PipelineFunnelWidgetInfoDetail() {
             optimize the size of your active backlog.
           </p>
           <ul>
-            <li>Create a workflow state called ROADMAP and map this to the
-            <em> Closed </em>  phase in Polaris.</li>
+            <li>
+              Create a workflow state called ROADMAP and map this to the
+              <em> Closed </em> phase in Polaris.
+            </li>
             <li>
               If you think a given card will be not prioritized for delivery within a couple of flow analysis periods,
               move the card to the ROADMAP state and communicate this to your customer. This will reset your customer's
