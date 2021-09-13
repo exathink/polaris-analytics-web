@@ -23,9 +23,7 @@ const importProjectFlowConfig = [
     provider: "Gitlab",
     cardId: "gitlab-card",
     connectorName: "Gitlab Test",
-    credentialPairs: [
-      ["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")],
-    ],
+    credentialPairs: [["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")]],
   },
 ];
 
@@ -34,7 +32,10 @@ describe("Onboarding flows", () => {
     cy.aliasGraphQlRequests();
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
-    cy.loginByApi(username, password); 
+    cy.loginByApi(username, password);
+
+    // our auth cookie should be present
+    cy.getCookie("session_key").should("exist");
   });
 
   importProjectFlowConfig.forEach((config) => {
