@@ -35,7 +35,7 @@ describe("Onboarding flows", () => {
     cy.loginByApi(username, password);
 
     // our auth cookie should be present
-    cy.getCookie("session_key").should("exist");
+    cy.getCookie("session").should("exist");
   });
 
   importProjectFlowConfig.forEach((config) => {
