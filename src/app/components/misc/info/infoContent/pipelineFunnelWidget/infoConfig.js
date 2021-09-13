@@ -1,16 +1,29 @@
 import React from "react";
 
-import {InfoCard} from "../../../../../components/misc/info";
+import {InfoCard} from "../../index";
 
 const {Section, SubSection} = InfoCard;
+
+
+export const PipelineFunnelWidgetInfoConfig = {
+  title: "The Funnel",
+  headerContent: () => (
+    <PipelineFunnelWidgetInfoSummary/>
+  ),
+  showDrawer: true,
+  drawerContent: () => (
+    <PipelineFunnelWidgetInfoDetail/>
+  ),
+
+};
 
 export function PipelineFunnelWidgetInfoSummary() {
   return (
     <>
       <Section>
         <p>
-          Shows the number of cards currently in the Define, Open, and Deliver phases of your delivery process. In
-          addition, for the Closed phase, it shows the number of completed <em>delivery cycles</em> within the current{" "}
+          Shows the number of cards currently in the Define, Open, and Deliver phases of your delivery process. For the
+          Closed phase, it shows the number of completed <em> delivery cycles </em> within the current{" "}
           <em>flow analysis period</em>.
         </p>
         <p>
@@ -78,16 +91,17 @@ export function PipelineFunnelWidgetInfoDetail() {
         </p>
         <SubSection heading={"Backlog Management"}>
           <p>
-            The concept of delivery cycles in Polaris, gives you an easy technique to optimize the size of your active
-            backlog: create a workflow state called ROADMAP and map this to the
-            <em> Closed </em> phase in Polaris.
+            The concept of delivery cycles in Polaris, gives you a simple and effective technique to continuously
+            optimize the size of your active backlog.
           </p>
           <ul>
+            <li>Create a workflow state called ROADMAP and map this to the
+            <em> Closed </em>  phase in Polaris.</li>
             <li>
               If you think a given card will be not prioritized for delivery within a couple of flow analysis periods,
               move the card to the ROADMAP state and communicate this to your customer. This will reset your customer's
               expectations. Polaris also closes the delivery cycle and stops the lead and cycle time clocks for the
-              card. You can move it back to your backlog state when it is closer to being worked on and the lead time
+              card. You can move it back to your backlog state when it is re-scheduled for delivery and the lead time
               clock will start ticking again. This way your lead time becomes a useful metric to measure how well you
               are doing against your customer commitments.
             </li>
