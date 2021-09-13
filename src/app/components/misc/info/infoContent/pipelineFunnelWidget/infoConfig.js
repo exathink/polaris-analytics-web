@@ -56,8 +56,8 @@ export function PipelineFunnelWidgetInfoDetail() {
             <em> flow analysis period </em>.
           </li>
           <li>
-            The relative sizes of the regions can be used to diagnose and fix queueing, and to balance end to end flow
-            of work.
+            The relative sizes of the regions of the funnel can be used to diagnose and fix queueing, and to balance end to end flow
+            of work. See the use cases section below for more on this.
           </li>
         </ol>
         <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
@@ -68,8 +68,8 @@ export function PipelineFunnelWidgetInfoDetail() {
           <p>
             A delivery cycle is completed every time a card transitions to the Closed phase and a new one starts when
             the card transitions out of the Closed phase to one of the other active phases. So, if a card was delivered
-            multiple times during the flow analysis period, it may be counted multiple times in the closed phase and may
-            also appear in the counts of one of the active phases.
+            multiple times during the flow analysis period, it will be counted multiple times in the closed phase. It may
+            also appear simultaneously in the counts of the Closed phase and one of the active phases.
           </p>
         </SubSection>
 
