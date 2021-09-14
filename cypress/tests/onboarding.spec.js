@@ -36,6 +36,7 @@ describe("Onboarding flows", () => {
 
     // our auth cookie should be present
     cy.getCookie("session").should("exist");
+    Cypress.Cookies.preserveOnce("session");
   });
 
   importProjectFlowConfig.forEach((config) => {
