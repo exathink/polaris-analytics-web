@@ -6,6 +6,7 @@ const antBtnPrimaryColor = "#2E3445";
 const antBtnPrimaryHover = "#3F475E"
 const antBtnSecondaryBorderColor = "#2E3445";
 const antBtnSecondaryBorderHoverColor = "#3F475E";
+const antBtnLinkColor = "#923e3e";
 const Buttons = ComponentName => styled(ComponentName)`
   &.ant-btn {
     display: inline-block;
@@ -124,6 +125,33 @@ const Buttons = ComponentName => styled(ComponentName)`
     &.ant-btn-primary {
       color: #ffffff;
     }
+    
+    &.ant-btn-link {
+      color: ${antBtnLinkColor};
+      background: transparent;
+      border-color: transparent;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      font-size: large;
+      
+      &:hover {
+        color: ${palette('primary', 0)};
+      }
+    }
+    
+    &.ant-btn-link.tooltip {
+      color: grey;
+      background: transparent;
+      border-color: transparent;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      padding: 0 5px;
+      font-weight: normal;
+      &:hover {
+        color: ${palette('primary', 0)};
+      }
+    }
+
 
     &.ant-btn-dashed {
       border-style: dashed;
