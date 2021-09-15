@@ -1,10 +1,6 @@
 import React from "react";
 
-import {InfoCard, InfoDrawer, PhaseDefinitions, Glossary} from "../../index";
-import styles from "../../info.module.css";
-import {InfoCircleOutlined} from "@ant-design/icons";
-import {Popover, Tooltip} from "antd";
-import Button from "../../../../../../components/uielements/button";
+import {Glossary, InfoCard, InfoDrawer, PhaseDefinitions} from "../../index";
 
 const {Section, SubSection} = InfoCard;
 
@@ -40,39 +36,32 @@ export function PipelineFunnelWidgetInfoDetail() {
       <Section>
         <p>
           The funnel helps you visualize and balance the end-to-end flow of work across a value stream in real time.
-
         </p>
         <p>
-          Each region in the funnel represents a <em> phase </em> in the delivery process mapping for the value stream.
-          If you have not yet set up a mapping, the funnel will show all cards as unmapped.
+          Each region in the funnel represents a {Glossary.PHASE} in the {Glossary.DELIVERY_PROCESS_MAPPING} for the
+          value stream. If you have not yet set up a mapping, the funnel will show all cards as unmapped.
         </p>
       </Section>
       <Section heading={"Interpretation"}>
-
         <ol>
           <li>
-            For the Define, Open, and Deliver phases of your delivery process the chart shows the{" "}
-            <em>number of cards</em> that are currently in the phase.
+            For active phases: Define, Open, Make and Deliver, the chart shows the number of{" "}
+            {Glossary.CARDS} that are currently in the phase.
           </li>
           <li>
-            For the Closed phase, it shows the number of <em> completed delivery cycles </em> within the current
+            For the Closed phase, it shows the number of { Glossary.DELIVERY_CYCLES} that completed within the current
             {Glossary.FLOW_ANALYSIS_PERIOD}.
           </li>
         </ol>
-        <InfoDrawer moreLinkText={"Show Phase Definitions"} content={<PhaseDefinitions />} />
       </Section>
       <br />
-      <Section heading={"Delivery Cycles and Funnel Counts"}>
+      <SubSection heading={"Delivery Cycles and Funnel Counts"}>
         <p>
-          A delivery cycle is completed every time a card transitions to the Closed phase. A new delivery cycle starts
-          when the
-          card transitions out of the Closed phase to one of the other active phases. So, if a card was delivered
-          multiple times during the flow analysis period, it will be counted multiple times in the Closed phase. It may
-          also simultaneously appear in the counts of one of the active phases if it is currently active. Technically,
-          all counts
-          shown in the funnel are counts of delivery cycles, not cards.
+          If a card has multiple completed delivery cycles times during the flow analysis period, it will be counted multiple times in the Closed
+          phase. It may also simultaneously appear in the counts of one of the active phases if it is currently in an active phase.
+          Technically, all counts shown in the funnel are counts of delivery cycles, not cards.
         </p>
-      </Section>
+      </SubSection>
 
       <br />
 
@@ -81,22 +70,20 @@ export function PipelineFunnelWidgetInfoDetail() {
       <Section heading={"Visualizing Phase Level Bottlenecks"}>
         <p>
           The relative sizes of the regions of the funnel can be used to visualize phase level queueing, and to balance
-          end
-          to end flow of work.
+          end to end flow of work.
         </p>
         <p>
-          When work is flowing efficiently through the value stream, the sizes of the Define and Closed phase will
-          be balanced. In addition, the total number of cards in the Open, Make and Deliver phases will typically be
-          less than the number of team members working on the cards. This indicates an appropriate level of work in
-          progress in the delivery pipeline and should also be reflected in favorable outcomes like low{" "}
-          <em>cycle time</em> and high <em>throughput</em>.
+          When work is flowing efficiently through the value stream, the sizes of the Define and Closed phase will be
+          balanced. In addition, the total number of cards in the Open, Make and Deliver phases will typically be less
+          than the number of team members working on the cards. This indicates an appropriate level of work in progress
+          in the delivery pipeline and should also be reflected in favorable outcomes like low {Glossary.CYCLE_TIME} and
+          high {Glossary.VOLUME}
         </p>
         <p>
           Significant imbalances the sizes of the Open, Make or Deliver areas of the funnel indicate the work is
-          queueing up in one or more of those phases. Cycle times will be high and throughput will be low.
-          This will typically also be reflected in the <em>age</em> and{" "}
-          <em>latency</em> of work in progress. You can dig deeper to diagnose the root caus using the Flow
-          Dashboard.
+          queueing up in one or more of those phases. Cycle times will be high and throughput will be low. This will
+          typically also be reflected in the <em>age</em> and <em>latency</em> of work in progress. You can dig deeper
+          to diagnose the root caus using the Flow Dashboard.
         </p>
       </Section>
       <Section heading={"Lead Time and Backlog Optimization"}>

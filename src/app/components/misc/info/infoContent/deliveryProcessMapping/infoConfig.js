@@ -1,6 +1,6 @@
 import React from "react";
 
-import {InfoCard, PhaseDefinitions} from "../../index";
+import {InfoCard, PhaseDefinitions, Glossary} from "../../index";
 
 
 const {Section, SubSection} = InfoCard;
@@ -27,7 +27,7 @@ export function DeliveryProcessMappingSummary() {
       <Section>
         <p>
           Polaris models a delivery process with a mapping that takes states in your workflow into five standard phases that represent
-          the key stages in the software development lifecycle.
+          key stages in the software development lifecycle.
         </p>
         <h4>Key Functions</h4>
         Drag and drop model configuration to specify
@@ -46,31 +46,34 @@ export function DeliveryProcessMappingDetails() {
       <Section heading={"Mapping a Delivery Process"}>
         <p>
           Polaris models a delivery process with a mapping that takes states in your workflow into five standard phases that represent
-          the key stages in the software development lifecycle.
+          key stages in the software development lifecycle. There are four <em>active</em> phases: Define, Open, Make and Deliver and one
+          <em> terminal</em> phase: Closed.
         </p>
         <p>
-          The model is based on a concept called the
-          <em> delivery cycle, </em> that tracks the work required to take an increment of customer value from
-          definition through release.
+          Measurements in the model are based on the concept of a <em>delivery cycle</em>, that
+          tracks how {Glossary.CARDS} transition through these phases.
         </p>
         <SubSection heading={"Key Ideas"}>
           <ul>
             <li>
-              Cards in your work tracking system represent the increments of value and we map card states in your
-              delivery workflow into the five standard phases.
+              Cards in your work tracking system represent increments of customer value, and we map card states in your
+              delivery workflow into one of the five standard phases.
+            </li>
+            <li>A delivery cycle starts when a card transitions to a state mapped to one of the active phases. It ends when it
+            transitions to a state mapped to the terminal phase. When a card is initially created, it starts in the Define phase.
             </li>
             <li>
-              A card may require one <em>or more</em> delivery cycles in your process before it reaches a customer.
+              A card may require one <em>or more</em> delivery cycles through your process before it reaches a customer.
             </li>
-            <li>The delivery process mapping defines when a delivery cycle starts and ends.</li>
             <li>
-              Key response time metrics such as lead time and cycle time are defined in terms of the <em>cumulative</em> time
-              spent by a card in the phases defined by this mapping.
+              There are two key response time measurements that are defined on delivery cycles. <em>Lead Time</em> is defined as the <em>cumulative</em> time
+              a card spends in the active phases during the cycle.
+              <em> Cycle Time</em> is defined as the <em>cumulative</em> time the card spends in the Open, Make and Deliver phases during the cycle.
             </li>
           </ul>
         </SubSection>
 
-        <SubSection heading={"The Phases"}>
+        <SubSection heading={"Mapping Guidelines"}>
           <PhaseDefinitions />
         </SubSection>
       </Section>
@@ -96,12 +99,8 @@ export function DeliveryProcessMappingDetails() {
           </li>
           <li>
             The Closed phase should be limited to states that represent a tangible customer response:  either
-            completed work that is usable by end users or a response like "Wont Implement", "ROADMAP" etc that provide
+            completed work that is deployed to production and usable by end users or a response like "Wont Implement", "ROADMAP" etc that provide
             clarity to the customer on how their request is being handled.
-          </li>
-          <li>
-            A card may transition from one state in the Closed phase to another, but this has no impact on the delivery
-            cycle or response time metrics. Only the first transition into the Closed phase counts.
           </li>
           <li>All work that is
             ready for customer use, but has not yet been released should stay in the Deliver phase.
@@ -116,7 +115,7 @@ export function DeliveryProcessMappingDetails() {
         <ul>
           <li>
             Polaris analyzes the complete state transition history for cards when a work stream is initially imported.
-            So it will show you every state it has seen it the transition history, even ones you are not currently using.
+            So it will show you every state it has seen in the transition history, even ones you are not currently using.
             You should map all of them.
           </li>
           <li>
@@ -125,11 +124,15 @@ export function DeliveryProcessMappingDetails() {
             <em>both historical and future cards</em> using the new delivery process mapping. We currently dont have support for
             mapping updates that preserve historical metrics that use a previous mapping.
           </li>
-
           <li>
-            While lead time is defined entirely in terms of the delivery cycle start and end, the definition of cycle time in Polaris
-            is more nuanced and takes into account commit level information in addition cumulative time spent in the
-            active phases.
+            A card may transition from one state in the Closed phase to another, but this has no impact on the delivery
+            cycle or response time metrics. Only the first transition into the terminal phase counts.
+          </li>
+          <li>
+            Note that the lead and cycle time definitions are based on cumulative time spent in various phases, and not on start and end dates
+            for transitions. This is because work in software often moves <em>backwards</em> through a delivery process, typically due to re-work or
+            re-prioritization. Measuring cumulative
+            time in a phase allows us to correctly account for this.
           </li>
         </ul>
       </SubSection>
