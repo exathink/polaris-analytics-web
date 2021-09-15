@@ -1,7 +1,6 @@
 import React from "react";
 
-import {InfoCard, PhaseDefinitions, Glossary} from "../../index";
-
+import {Glossary, InfoCard, PhaseDefinitions} from "../../index";
 
 const {Section, SubSection} = InfoCard;
 
@@ -70,6 +69,11 @@ export function DeliveryProcessMappingDetails() {
               a card spends in the active phases during the cycle.
               <em> Cycle Time</em> is defined as the <em>cumulative</em> time the card spends in the Open, Make and Deliver phases during the cycle.
             </li>
+            <li>
+              Work in software often moves <em>backwards</em> through a delivery process, typically due to re-work or
+            re-prioritization. Measuring lead and cycle time using cumulative time in various phases as opposed to transition
+              start and end dates, allows us to correctly account for this.
+            </li>
           </ul>
         </SubSection>
 
@@ -127,12 +131,6 @@ export function DeliveryProcessMappingDetails() {
           <li>
             A card may transition from one state in the Closed phase to another, but this has no impact on the delivery
             cycle or response time metrics. Only the first transition into the terminal phase counts.
-          </li>
-          <li>
-            Note that the lead and cycle time definitions are based on cumulative time spent in various phases, and not on start and end dates
-            for transitions. This is because work in software often moves <em>backwards</em> through a delivery process, typically due to re-work or
-            re-prioritization. Measuring cumulative
-            time in a phase allows us to correctly account for this.
           </li>
         </ul>
       </SubSection>
