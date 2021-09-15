@@ -50,7 +50,7 @@ export function DeliveryProcessMappingDetails() {
         </p>
         <p>
           Measurements in the model are based on the concept of a <em>delivery cycle</em>, that
-          tracks how {Glossary.CARDS} transition through these phases.
+          tracks how {<Glossary.CARDS/>} transition through these phases.
         </p>
         <SubSection heading={"Key Ideas"}>
           <ul>
