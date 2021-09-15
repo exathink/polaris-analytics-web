@@ -11,6 +11,26 @@ export const PipelineFunnelWidgetInfoConfig = {
   drawerContent: () => <PipelineFunnelWidgetInfoDetail />,
 };
 
+export const PipelineFunnelWidgetInitialInfoConfig = {
+  title: "The Funnel",
+  headerContent: () => <PipelineFunnelWidgetInitialInfoSummary />,
+  showDrawer: false,
+};
+
+
+export function PipelineFunnelWidgetInitialInfoSummary() {
+  return (
+    <>
+      <Section>
+        <p>
+          Once you have set up the delivery process mapping on the right, the funnel will update and let you
+          visualize the end to end flow of work across the value stream in real time.
+        </p>
+        <p>So head over to the Delivery Process Mapping widget first and set that up. </p>
+      </Section>
+    </>
+  )
+}
 export function PipelineFunnelWidgetInfoSummary() {
   return (
     <>

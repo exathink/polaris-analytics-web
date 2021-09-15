@@ -5,20 +5,47 @@ import {Glossary, InfoCard, PhaseDefinitions} from "../../index";
 const {Section, SubSection} = InfoCard;
 
 export const DeliveryProcessMappingInfoConfig = {
-  title:"Delivery Process Mapping",
-  headerContent: () => (
-    <DeliveryProcessMappingSummary/>
-  ),
+  title: "Delivery Process Mapping",
+  headerContent: () => <DeliveryProcessMappingSummary />,
   showDrawer: true,
-  drawerContent: () => (
-    <DeliveryProcessMappingDetails/>
-  ),
+  drawerContent: () => <DeliveryProcessMappingDetails />,
   showDrawerTitle: false,
   drawerOptions: {
-    width: "68vw"
-  }
-}
+    width: "68vw",
+  },
+};
 
+export const DeliveryProcessMappingInitialInfoConfig = {
+  title: "Delivery Process Mapping",
+  headerContent: () => <DeliveryProcessMappingInitialSummary />,
+  showDrawer: true,
+  drawerContent: () => <DeliveryProcessMappingDetails />,
+  showDrawerTitle: false,
+  drawerOptions: {
+    width: "68vw",
+  },
+};
+
+export function DeliveryProcessMappingInitialSummary() {
+  return (
+    <>
+      <Section>
+        <p>
+          Polaris models a delivery process with a mapping of states in your workflow to one of five standard phases
+          that represent key stages in the software development lifecycle.
+        </p>
+        <p>
+          This is a pre-requisite for analyzing response time metrics for the value stream. It needs to be configured
+          before Polaris can show you the analytics dashboards for the value stream.
+        </p>
+        <p>
+          Click the button below for guidance on how to configure this mapping. You may update this mapping at any time
+          after you set it up initially.
+        </p>
+      </Section>
+    </>
+  );
+}
 
 export function DeliveryProcessMappingSummary() {
   return (

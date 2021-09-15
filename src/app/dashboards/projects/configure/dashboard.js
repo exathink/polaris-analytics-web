@@ -13,6 +13,9 @@ import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
 
+import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
+import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
+
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
   url: "https://vimeo.com/501974487/080d487fcf",
@@ -44,7 +47,7 @@ export function ValueStreamMappingInitialDashboard() {
                       </div>
                       <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
                         <em>
-                          Click on the info icons for more guidance.
+                          Click on the info icon for more guidance.
                         </em>
                       </div>
                     </div>
@@ -57,8 +60,8 @@ export function ValueStreamMappingInitialDashboard() {
                 w={0.35}
                 name="project-pipeline-detailed"
                 title={" "}
-                infoConfig={ProjectPipelineFunnelWidget.infoConfig}
-                render={({view}) => (
+                infoConfig={PipelineFunnelWidgetInitialInfoConfig}
+                render={({ view }) => (
                   <ProjectPipelineFunnelWidget
                     instanceKey={key}
                     context={context}
@@ -67,7 +70,7 @@ export function ValueStreamMappingInitialDashboard() {
                     view={view}
                     includeSubTasks={{
                       includeSubTasksInClosedState: settingsWithDefaults.includeSubTasksFlowMetrics,
-                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector,
+                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector
                     }}
                   />
                 )}
@@ -76,7 +79,7 @@ export function ValueStreamMappingInitialDashboard() {
               <DashboardWidget
                 w={0.6}
                 title={" "}
-                infoConfig={WorkItemStateTypeMapWidget.infoConfig}
+                infoConfig={DeliveryProcessMappingInitialInfoConfig}
                 name="workitem-statetype-map"
                 render={({view}) => {
                   return (
