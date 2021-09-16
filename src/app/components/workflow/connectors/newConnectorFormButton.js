@@ -148,7 +148,7 @@ const AddConnectorForm = (
                         {required: false, message: 'Gitlab Host URL'}
                       ],
                       initialValue: currentValue('baseUrl', null)
-                    })(<Input placeholder="Defaults to https://gitlab.com"/>)}
+                    })(<Input placeholder="Leave empty for Gitlab Cloud. For Gitlab Enterprise provide server URL. "/>)}
                   </Form.Item>
                 </Col>
               </Row>
