@@ -5,8 +5,20 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {withViewerContext} from "../../../../../framework/viewer/viewerContext";
 
+import {DeliveryProcessMappingInfoConfig} from "../../../../../components/misc/info";
+
 export const WorkItemStateTypeMapWidget = withViewerContext(
-  ({instanceKey, latestWorkItemEvent, latestCommit, days, view, context, viewerContext, pollInterval}) => {
+  ({
+    instanceKey,
+    latestWorkItemEvent,
+    latestCommit,
+    days,
+    view,
+    context,
+    viewerContext,
+    pollInterval,
+    showMeLinkVisible,
+  }) => {
     const {loading, error, data} = useQueryProjectWorkItemsSourceStateMappings({instanceKey});
     if (loading) return <Loading />;
     if (error) {
@@ -27,7 +39,10 @@ export const WorkItemStateTypeMapWidget = withViewerContext(
         enableEdits={enableEdits}
         context={context}
         view={view}
+        showMeLinkVisible={showMeLinkVisible}
       />
     );
   }
 );
+
+WorkItemStateTypeMapWidget.infoConfig = DeliveryProcessMappingInfoConfig

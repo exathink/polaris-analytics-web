@@ -1,11 +1,61 @@
 import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
-import {Alert, Button} from "antd";
+import {Alert} from "antd";
 import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
+import Button from "../../../../../components/uielements/button";
+import {InfoCard} from "../../../../components/misc/info";
+
+const analysisPeriodItems = [
+  {
+    id: "wipAnalysisPeriod",
+    title: "Wip Analysis Window",
+    info: (
+      <>
+        <p>The analysis period to benchmark cycle time for work items in progress against recently closed items.</p>{" "}
+        <p>
+          The cycle time SLA as well as metrics for closed items in the Wip dashboard use this period by default.{" "}
+        </p>{" "}
+        <p>
+          This value should be atleast as large as the cycle time SLA value. The value selected here becomes the
+          default Wip analysis period for this value stream for all users.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "flowAnalysisPeriod",
+    title: "Flow Analysis Window",
+    info: (
+      <>
+        <p>The default analysis period to analyze flow metrics for value stream in Flow dashboard.</p>{" "}
+        <p>This value must be larger than the Wip analysis window and typically is 2-4x the Wip analysis period. </p>{" "}
+        <p>
+          This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The
+          value selected here becomes the default analysis period for the Flow dashboard for all users.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "trendsAnalysisPeriod",
+    title: "Trends Analysis Window",
+    info: (
+      <>
+        <p>
+          The default analysis period for showing longer term trends for the Value Stream in the trends dashboard.{" "}
+        </p>
+        <p>
+          This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period.
+        </p>{" "}
+        <p>The value selected here becomes the default analysis period for the Trends dashboard for all users. </p>
+      </>
+    ),
+  },
+];
 
 export const ProjectAnalysisPeriodsView = ({
   instanceKey,
@@ -136,13 +186,44 @@ export const ProjectAnalysisPeriodsView = ({
 
   }
 
+  function getInfoDrawer() {
+    return (
+      <div className={styles.infoDrawer}>
+        <InfoCard
+          drawerOptions={{
+            placement: "right",
+            width: "40vw",
+          }}
+          title={"Analysis Periods Settings"}
+          drawerContent={
+            <div className={styles.analysisInfoItems}>
+              {analysisPeriodItems.map((item) => {
+                return (
+                  <div className={styles.itemWrapper} key={item.id}>
+                    <div className={styles.title}>{item.title}</div>
+                    <div className={styles["analysis-info"]}>{item.info}</div>
+                  </div>
+                );
+              })}
+            </div>
+          }
+          className={""}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles["analysisPeriodControlsWrapper"]} data-testid="analysis-periods-view">
       <div className={styles["analysisPeriodTopBar"]}>
-        <div className={styles["analysisPeriodTitle"]}>Drag sliders to update analysis periods</div>
         <div className={styles["analysisPeriodsButtons"]} data-testid="analysis-period-buttons">{getButtonElements()}</div>
       </div>
+      <div className={styles["titleWrapper"]}>
+         <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
+
+      </div>
       <AnalysisPeriodsSliders {...sliderProps} />
+      
     </div>
   );
 };

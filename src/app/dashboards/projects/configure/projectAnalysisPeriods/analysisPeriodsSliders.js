@@ -4,7 +4,7 @@ import {RangeSlider, TWO_MONTHS, THREE_MONTHS} from "../../../shared/components/
 import {actionTypes} from "./constants";
 import styles from "./projectAnalysisPeriods.module.css";
 
-export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, dispatch}) {
+export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, initialAnalysisPeriods, showPanel, setShowPanel, dispatch}) {
   let [wipDaysMarks, flowDaysMarks, trendsDaysMarks] = [TWO_MONTHS, TWO_MONTHS, THREE_MONTHS];
 
   // get min and max from range
@@ -28,8 +28,6 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       min: wipMin,
       max: wipMax,
       className: wipPeriod !== initialAnalysisPeriods.wipAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
-      info:
-        "The analysis period to benchmark cycle time for work items in progress against recently closed items. The cycle time SLA as well as metrics for closed items in the Wip dashboard use this period by default. This value should be atleast as large as the cycle time SLA value. The value selected here becomes the default Wip analysis period for this value stream for all users.",
       dataTestId: "wip-range-input",
     },
     {
@@ -40,9 +38,8 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       range: flowDaysMarks,
       min: flowMin,
       max: flowMax,
-      className: flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
-      info:
-        "The default analysis period to analyze flow metrics for value stream in Flow dashboard. This value must be larger than the Wip analysis window and typically is 2-4x the Wip analysis period.  This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Flow dashboard for all users.",
+      className:
+        flowPeriod !== initialAnalysisPeriods.flowAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
       dataTestId: "flow-range-input",
     },
     {
@@ -53,9 +50,8 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
       range: trendsDaysMarks,
       min: trendsMin,
       max: trendsMax,
-      className: trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
-      info:
-        "The default analysis period for showing longer term trends for the Value Stream in the trends dashboard. This value must be larger than the flow analysis window and typically is 1.5-4x the Wip analysis period. The value selected here becomes the default analysis period for the Trends dashboard for all users.",
+      className:
+        trendsPeriod !== initialAnalysisPeriods.trendsAnalysisPeriod ? ` ${styles["analysis-slider-bar-edit"]}` : "",
       dataTestId: "trends-range-input",
     },
   ];
@@ -83,7 +79,6 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
                 type="number"
               />
             </div>
-            <div className={styles["analysis-info"]}>{item.info}</div>
           </div>
         );
       })}

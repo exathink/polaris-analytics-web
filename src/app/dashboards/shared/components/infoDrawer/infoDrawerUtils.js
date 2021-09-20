@@ -1,11 +1,11 @@
 import React from "react";
 import {Drawer} from "antd";
 
-export function InfoWithDrawer({children, showPanel, setShowPanel, drawerOptions = {}}) {
+export function InfoWithDrawer({children, showPanel, setShowPanel, height, drawerOptions = {}}) {
     return (
       <Drawer
-        placement="top"
-        height={400}
+        placement={drawerOptions.placement??"top"}
+        height={height??400}
         closable={false}
         onClose={() => setShowPanel(false)}
         visible={showPanel}

@@ -14,13 +14,21 @@
 .analysisItemWrapper{
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.analysisPeriodTitle{
-  margin-left: 40%;
+
+.titleWrapper{
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: center;
+  font-size: 1.125vw;
+  line-height: 1.75vw;
+  font-weight: 400;
+  margin-bottom: 1rem;
 }
+
 .analysisPeriodsButtons {
   height: 25px;
   margin-left: auto;
@@ -31,15 +39,19 @@
   align-items: center;
   padding: 10px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  flex: 0 0 50%;
+  flex: 0 0 90%;
 }
 .analysis-info{
   padding: 16px;
   margin-left: 16px;
   text-align: justify;
   line-height: 1.5rem;
-  border-left: 4px solid #8cc8ff;
+  border-left: 6px solid #8cc8ff;
   background-color: rgba(25,118,210,.05);
+  font-size: 1vw;
+  line-height: 1.5vw;
+  text-align: center;
+  height: 100%;
 }
 .analysis-slider-bar-edit {
   border: 1px solid rgb(0, 0, 0, 0.4);
@@ -63,5 +75,28 @@
 
 .shiftRight {
   margin-left: auto;
-  margin-right: 90px;
+}
+
+.infoDrawer{
+  margin-left: 0.2rem;
+  margin-top: -0.4rem;
+}
+
+.analysisInfoItems{
+  display: grid;
+  gap: 2.5rem;
+}
+
+.title{
+  font-weight: 500;
+  font-size: 1vw;
+  line-height: 1.5vw;
+}
+
+.itemWrapper{
+  text-align: center;
+}
+
+.infoDrawer :global(.ant-drawer-body){
+  margin-bottom: 1rem;
 }

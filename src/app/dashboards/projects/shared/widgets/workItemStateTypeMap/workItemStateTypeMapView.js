@@ -11,7 +11,7 @@ import {useResetComponentState} from "../../helper/hooks";
 
 const {Option} = Select;
 
-export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits}) {
+export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
@@ -148,9 +148,11 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
   }
 
+
+
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   return (
-    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]}>
+    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]} id="state-type-mapping-wrapper">   
       <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
