@@ -220,7 +220,7 @@ export const ProjectAnalysisPeriodsView = ({
       </div>
       <div className={styles["titleWrapper"]}>
          <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
-         {getInfoDrawer()}
+
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
       

@@ -214,7 +214,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
       </div>
       <div className={styles.subtasksTitle}>
         <div>Subtasks</div>
-        {getInfoDrawer()}
+
       </div>
       
       <div className={styles.settings}>

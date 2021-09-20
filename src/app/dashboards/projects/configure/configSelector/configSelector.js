@@ -21,12 +21,12 @@ export const ConfigSelector = (
           display: 'Delivery Process Mapping'
         },
         {
-          key: CONFIG_TABS.MEASUREMENT_SETTINGS,
-          display: 'Measurement Settings'
+          key: CONFIG_TABS.RESPONSE_TIME_SLA,
+          display: 'Service Level Objectives'
         },
         {
-          key: CONFIG_TABS.RESPONSE_TIME_SLA,
-          display: 'Response Time SLO'
+          key: CONFIG_TABS.MEASUREMENT_SETTINGS,
+          display: 'Measurement Settings'
         },
       ]
     }
