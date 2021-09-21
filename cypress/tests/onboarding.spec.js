@@ -1,53 +1,71 @@
 /// <reference types="cypress" />
 
+const importProjectFlowConfig = [
+  {
+    provider: "Trello",
+    cardId: "trello-card",
+    connectorName: "Trello Test",
+    credentialPairs: [
+      ["input#trelloApiKey", Cypress.env("trelloApiKey")],
+      ["input#trelloAccessToken", Cypress.env("trelloAccessToken")],
+    ],
+  },
+  {
+    provider: "Github",
+    cardId: "github-card",
+    connectorName: "Github Test",
+    credentialPairs: [
+      ["input#githubOrganization", Cypress.env("githubOrganization")],
+      ["input#githubAccessToken", Cypress.env("githubAccessToken")],
+    ],
+  },
+  {
+    provider: "Gitlab",
+    cardId: "gitlab-card",
+    connectorName: "Gitlab Test",
+    credentialPairs: [["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")]],
+  },
+];
+
 describe("Onboarding flows", () => {
-  it("Import Board flow for Trello", () => {
-    cy.interceptGraphQl("createConnector");
-    cy.interceptGraphQl("getAccountConnectors");
+  beforeEach(() => {
+    cy.aliasGraphQlRequests();
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
 
-    cy.visit("/");
+    // our auth cookie should be present
+    cy.getCookie("session").should("exist");
+    Cypress.Cookies.preserveOnce("session");
+  });
 
-    // assume there is no existing connectors setup already
-    cy.contains(/Connect Work Tracking System/i).click();
-    cy.contains(/Connect Remote Projects/i).click();
+  importProjectFlowConfig.forEach((config) => {
+    it(`Import project flow for - ${config.provider}`, () => {
+      cy.visit("/");
 
-    // Provider Specific
-    cy.contains(/Trello/i).click();
-    cy.contains(/Create Trello Connector/i).click();
+      // assume there are no existing connectors setup already
 
-    cy.contains("Next").click();
+      // 0th Step: Start import project flow
+      cy.getBySel("import-project").click();
+      cy.location("pathname").should("include", "/value-streams/new");
 
-    cy.get("input#name").type("Polaris Test");
+      // 1st Step
+      cy.SelectProvider({cardId: config.cardId});
 
-    const [trelloApiKey, trelloAccessToken] = [Cypress.env("trelloApiKey"), Cypress.env("trelloAccessToken")];
-    cy.get("input#trelloApiKey").type(trelloApiKey);
-    cy.get("input#trelloAccessToken").type(trelloAccessToken);
+      // 2nd Step
+      cy.SelectConnector({
+        connectorName: config.connectorName,
+        credentialPairs: config.credentialPairs,
+      });
 
-    cy.contains(/Register/i).click();
+      // 3rd Step
+      cy.SelectProjects();
 
-    cy.wait("@createConnector");
-    cy.wait("@getAccountConnectors");
+      // 4th Step
+      cy.ConfigureImport();
 
-    cy.contains("Available Trello Connectors").should("be.visible");
-    cy.contains("Polaris Test").should("be.visible");
-
-    cy.get("button.ant-btn")
-      .contains(/select/i)
-      .click();
-
-    cy.contains(/fetch available boards/i).click();
-
-    cy.get("input[type=checkbox]").check();
-
-    cy.contains(/Next/i).click();
-
-    cy.get("button.ant-btn")
-      .contains(/Import Board/i)
-      .click();
-
-    cy.get("button.ant-btn").contains(/done/i).click();
+      // 5th Step
+      cy.ImportProjectStatus();
+    });
   });
 });

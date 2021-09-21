@@ -25,6 +25,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import {aliasQuery, aliasMutation} from "./utils";
+
+Cypress.Commands.add("getBySel", (selector, ...args) => {
+  return cy.get(`[data-test=${selector}]`, ...args);
+});
+
+Cypress.Commands.add("getBySelLike", (selector, ...args) => {
+  return cy.get(`[data-test*=${selector}]`, ...args);
+});
+
 Cypress.Commands.add("loginByCSRF", (csrfToken, username, password) => {
   cy.request({
     method: "POST",
@@ -61,10 +71,82 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-Cypress.Commands.add("interceptGraphQl", (opName) => {
+Cypress.Commands.add("aliasGraphQlRequests", () => {
   cy.intercept("POST", "/graphql", (req) => {
-    if (req.body?.operationName.includes(opName)) {
-      req.alias = opName;
-    }
+    // Queries
+    aliasQuery(req, "getAccountConnectors");
+    aliasQuery(req, "showImportState");
+
+    // Mutations
+    aliasMutation(req, "createConnector");
+    aliasMutation(req, "refreshConnectorProjects")
   });
+});
+
+
+/**
+ *  Useful Commands for onboarding flow (Connect Project Workflow)
+ */
+
+Cypress.Commands.add("SelectProvider", ({cardId}) => {
+  cy.getBySel("integration-step-title").should("be.visible");
+  cy.getBySel(cardId).click();
+});
+
+Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
+  cy.getBySel("create-connector-button").click();
+
+  cy.contains("Next").click();
+
+  cy.get("input#name").type(connectorName).should("have.value", connectorName);
+
+  credentialPairs.forEach(pair => {
+    const [domId, value] = pair;
+    cy.get(domId).type(value).should ("have.value", value);
+  });
+
+  cy.contains(/Register/i).click();
+
+  cy.wait("@gqlcreateConnectorMutation");
+  cy.wait("@gqlgetAccountConnectorsQuery");
+
+  cy.getBySel("available-connectors-title").should("be.visible");
+  cy.contains(connectorName).should("be.visible");
+
+  cy.get("table")
+  .find("tbody>tr")
+  .first()
+  .find("button.ant-btn")
+  .contains(/select/i)
+  .click();
+  
+});
+
+Cypress.Commands.add("SelectProjects", () => {
+  cy.getBySel("select-projects-title").should("be.visible");
+  cy.getBySel("fetch-available-projects").click();
+
+  cy.wait("@gqlrefreshConnectorProjectsMutation");
+  cy.get("input[type=checkbox]").first().check({ force: true });
+
+  cy.getBySel("workflow-next-button").click();
+});
+
+Cypress.Commands.add("ConfigureImport", () => {
+  cy.getBySel("configure-import-title").should("be.visible");
+  cy.getBySel("import-project-button").click();
+});
+
+Cypress.Commands.add("ImportProjectStatus", () => {
+  cy.getBySel("progress-circle").should("be.visible");
+
+  // as there are multiple calls for import state check
+  cy.wait("@gqlshowImportStateQuery");
+  cy.wait("@gqlshowImportStateQuery");
+  cy.wait("@gqlshowImportStateQuery");
+  
+  // make sure there is completed check icon
+  cy.getBySel("completed-check-icon").should("be.visible");
+
+  cy.getBySel("workflow-done-button").click();
 });

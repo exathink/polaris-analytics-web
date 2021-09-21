@@ -24,8 +24,8 @@ export const WorkflowView = ({title, steps, current, renderNavigationControls, s
       </div>
       <div className={styles.stepsContent}>{React.createElement(steps[current].content, stepProps)}</div>
       <div className={styles.stepsAction}>
-        <div className={styles.doneButton}>{renderNavigationControls().doneButton()}</div>
-        <div className={styles.nextButton}>{renderNavigationControls().nextButton()}</div>
+        <div className={styles.doneButton} data-test="workflow-done-button">{renderNavigationControls().doneButton()}</div>
+        <div className={styles.nextButton} data-test="workflow-next-button">{renderNavigationControls().nextButton()}</div>
         <div className={styles.importMoreButton}>{renderNavigationControls().importMoreButton()}</div>
       </div>
     </div>
