@@ -11,8 +11,14 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
   const infoElement = infoConfig && (
     <InfoCard
       title={infoConfig.title}
-      content={infoConfig.content()}
-      drawerContent={infoConfig.content1()}
+      content={infoConfig.headerContent()}
+      showDrawer={infoConfig.showDrawer}
+      drawerContent={infoConfig.showDrawer ? infoConfig.drawerContent() : null}
+      drawerOptions={infoConfig.drawerOptions}
+      moreLinkText={infoConfig.moreLinkText}
+      showDrawerTitle={infoConfig.showDrawerTitle}
+      drawerWidth={infoConfig.drawerWidth}
+      drawerHeight={infoConfig.drawerHeight}
       className={showDetail ? uniqueStyles.shiftInfo  : uniqueStyles.infoCardWrapper}
     />
   );
@@ -31,7 +37,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
   ) : (
     <React.Fragment>{infoElement}</React.Fragment>
   );
-};
+}
 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {

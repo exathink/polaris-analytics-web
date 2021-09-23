@@ -1,13 +1,13 @@
-.stateMappingContentWrapper {
-}
+
 .phasesWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 20px;
 }
 .phase {
   padding: 0.5rem 0.5rem 0 0.5rem;
-  font-size: 1vw;
-  line-height: 1.5vw;
+  font-size: initial;
+  line-height: 1.3vw;
   text-align: center;
 }
 
@@ -61,9 +61,15 @@
 .mainTitle {
   width: 620px;
   text-align: center;
-  font-size: 1vw;
+  font-size: 1.2vw;
   line-height: 1.5vw;
   font-weight: 400;
+  margin: 0 auto;
+}
+
+.titleContent {
+  width: 620px;
+  text-align: center;
   margin: 0 auto;
 }
 

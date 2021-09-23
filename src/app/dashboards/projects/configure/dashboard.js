@@ -2,16 +2,21 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
 import {Button} from "antd";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
-import {InfoWithDrawer} from "../../shared/components/infoDrawer/infoDrawerUtils";
+
 import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
-import {StateMappingInfoContent} from "./stateMappingInfoContent";
+
 import {ConfigSelector, CONFIG_TABS} from "../../shared/widgets/configure/configSelector/configSelector";
+
+
+import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
+import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -26,65 +31,40 @@ ValueStreamMappingDashboard.videoConfig = {
 };
 
 export function ValueStreamMappingInitialDashboard() {
-  const [showPanel, setShowPanel] = React.useState(false);
+
 
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
-          <div className={styles.stateTypeMappingWrapper}>
-            <div className={styles.stateTypeTitleWrapper} id="state-type-mapping">
-              <div className={classNames(fontStyles["text-lg"], fontStyles["font-medium"], styles.title1)}>
-                Configure your Value Stream Phase Mapping
-              </div>
-              <div className={classNames(fontStyles["text-base"], styles.title2)}>
-                Map states in your workflow to phases in Polaris
-              </div>
-              <Button type="link" className={styles.showMeButton} onClick={() => setShowPanel(!showPanel)}>
-                Show me how
-              </Button>
-              <InfoWithDrawer
-                showPanel={showPanel}
-                setShowPanel={setShowPanel}
-                drawerOptions={{getContainer: () => document.getElementById("state-type-mapping")}}
-              >
-                <StateMappingInfoContent />
-              </InfoWithDrawer>
-            </div>
-            <DashboardWidget
-              w={2 / 3}
-              name="workitem-statetype-map"
-              className={styles.stateTypeMappingWidget}
-              render={({view}) => {
-                return (
-                  <WorkItemStateTypeMapWidget
-                    instanceKey={key}
-                    context={context}
-                    days={30}
-                    view={view}
-                    showMeLinkVisible={false}
-                  />
-                );
-              }}
-            />
-          </div>
-        );
-      }}
-    />
-  );
-}
 
-export function ValueStreamMappingDashboard() {
-  return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
-        return (
           <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
-            <DashboardRow h={"50%"} title={" "}>
+            <DashboardRow h={"10%"}>
               <DashboardWidget
-                w={1 / 3}
+                w={0.96}
+                render={() => (
+                  <div className={styles.stateTypeMappingWrapper}>
+                    <div className={styles.stateTypeTitleWrapper} id="state-type-mapping">
+                      <div className={classNames(fontStyles["text-lg"], fontStyles["font-normal"], styles.title1)}>
+                        Configure the delivery process mapping for this value stream
+                      </div>
+                      <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
+                        <em>
+                          Click on the info icon for more guidance.
+                        </em>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              />
+            </DashboardRow>
+            <DashboardRow h={"65%"} title={" "}>
+              <DashboardWidget
+                w={0.35}
                 name="project-pipeline-detailed"
-                render={({view}) => (
+                title={" "}
+                infoConfig={PipelineFunnelWidgetInitialInfoConfig}
+                render={({ view }) => (
                   <ProjectPipelineFunnelWidget
                     instanceKey={key}
                     context={context}
@@ -93,14 +73,16 @@ export function ValueStreamMappingDashboard() {
                     view={view}
                     includeSubTasks={{
                       includeSubTasksInClosedState: settingsWithDefaults.includeSubTasksFlowMetrics,
-                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector,
+                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector
                     }}
                   />
                 )}
                 showDetail={false}
               />
               <DashboardWidget
-                w={2 / 3}
+                w={0.6}
+                title={" "}
+                infoConfig={DeliveryProcessMappingInitialInfoConfig}
                 name="workitem-statetype-map"
                 render={({view}) => {
                   return (
@@ -121,6 +103,61 @@ export function ValueStreamMappingDashboard() {
     />
   );
 }
+
+export function ValueStreamMappingDashboard() {
+  return (
+    <ProjectDashboard
+      render={({project: {key, settingsWithDefaults}, context}) => {
+        return (
+          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
+            <DashboardRow h={"10%"} />
+            <DashboardRow h={"65%"} title={" "}>
+              <DashboardWidget
+                w={0.35}
+                name="project-pipeline-detailed"
+                title={" "}
+                infoConfig={ProjectPipelineFunnelWidget.infoConfig}
+                render={({view}) => (
+                  <ProjectPipelineFunnelWidget
+                    instanceKey={key}
+                    context={context}
+                    workItemScope={"all"}
+                    days={30}
+                    view={view}
+                    includeSubTasks={{
+                      includeSubTasksInClosedState: settingsWithDefaults.includeSubTasksFlowMetrics,
+                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector,
+                    }}
+                  />
+                )}
+                showDetail={false}
+              />
+              <DashboardWidget
+                w={0.6}
+                title={" "}
+                infoConfig={WorkItemStateTypeMapWidget.infoConfig}
+                name="workitem-statetype-map"
+                render={({view}) => {
+                  return (
+                    <WorkItemStateTypeMapWidget
+                      instanceKey={key}
+                      context={context}
+                      days={30}
+                      view={view}
+                      showMeLinkVisible={true}
+                    />
+                  );
+                }}
+              />
+            </DashboardRow>
+            <DashboardRow h={"15%"} />
+          </Dashboard>
+        );
+      }}
+    />
+  );
+}
+
 
 export default withViewerContext(({viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
@@ -154,6 +191,7 @@ export default withViewerContext(({viewerContext}) => {
               ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
                 <MeasurementSettingsDashboard dimension={"project"} />
               ) : null}
+
             </DashboardRow>
           </Dashboard>
         );

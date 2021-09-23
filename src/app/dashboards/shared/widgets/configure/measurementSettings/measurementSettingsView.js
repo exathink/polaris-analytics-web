@@ -216,7 +216,7 @@ export function MeasurementSettingsView({dimension, instanceKey, includeSubTasks
       </div>
       <div className={styles.subtasksTitle}>
         <div>Subtasks</div>
-        {getInfoDrawer()}
+
       </div>
       
       <div className={styles.settings}>

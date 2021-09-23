@@ -8,8 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
-import {StateMappingInfoContent} from "../../../configure/stateMappingInfoContent";
-import { InfoCard } from "../../../../../components/misc/info";
+
 
 const {Option} = Select;
 
@@ -150,31 +149,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
   }
 
-  function getInfoContent() {
-    return (
-      <div className={styles.infoDrawer}>
-        <InfoCard
-          drawerOptions={{
-            getContainer: () => document.getElementById("state-type-mapping-wrapper"),
-            placement: "bottom",
-            height: "45vh",
-          }}
-          title={""}
-          content={
-            <div style={{textAlign: "center", maxWidth: "400px"}}>
-              <p>Polaris maps a delivery process into five standard phases.</p>
-              <p>
-                States in your workflow must be mapped to one of these five phases in order to compute key measurements
-                such as lead time and cycle time.
-              </p>
-            </div>
-          }
-          drawerContent={<StateMappingInfoContent />}
-          className={""}
-        />
-      </div>
-    );
-  }
+
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   return (
@@ -182,9 +157,6 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       <div className={styles["controlsWrapper"]}>
         {getEmptyAlert()}
         {selectDropdown()}
-        <div className={styles["infoContent"]}>
-        {showMeLinkVisible && getInfoContent()}
-        </div>
         {getButtonElements()}
       </div>
 

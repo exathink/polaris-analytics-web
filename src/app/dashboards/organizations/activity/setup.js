@@ -26,11 +26,13 @@ export const ActivityDashboardSetup = ({organization, context}) => {
             title={"Connect Projects"}
             onClick={() => context.go("..", "value-streams/new")}
             completed={noProjects === false}
+            testId="import-project"
           />
           <ImportRepositoriesCard
             title={"Connect Git Repositories"}
             onClick={() => context.go("..", "repositories/new")}
             completed={noRepositories === false}
+            testId="import-repos"
           />
 
         </div>

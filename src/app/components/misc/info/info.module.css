@@ -1,0 +1,31 @@
+.drawerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+
+}
+
+
+.drawerTitle {
+    text-align: center;
+}
+
+.infoCardContent {
+    max-width: 400px;
+    color: gray;
+}
+
+.infoDrawerContent {
+    color: gray;
+    font-size: large;
+
+}
+
+.section {
+    padding: 5px;
+}
+.subSection {
+    padding: 10px;
+    font-size: initial;
+}

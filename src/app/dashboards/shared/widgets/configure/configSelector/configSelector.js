@@ -12,20 +12,21 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab}) => {
       ? [
           {
             key: CONFIG_TABS.VALUE_STREAM,
-            display: "Value Stream Mapping",
+            display: "Delivery Process Mapping",
           },
         ]
       : [];
 
   const groupings = [
     ...valueStreamGrouping,
-    {
-      key: CONFIG_TABS.RESPONSE_TIME_SLA,
-      display: "Response Time SLA",
-    },
+
     {
       key: CONFIG_TABS.MEASUREMENT_SETTINGS,
       display: "Measurement Settings",
+    },
+    {
+      key: CONFIG_TABS.RESPONSE_TIME_SLA,
+      display: "Service Level Objectives",
     },
   ];
 

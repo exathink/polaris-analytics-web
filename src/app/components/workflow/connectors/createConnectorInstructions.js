@@ -149,36 +149,44 @@ const PivotalConnectorInstructions = ({part}) => (
 );
 
 
-const GitlabConnectorInstructions = ({part}) => (
-  part === 'instructions' &&
-  <div>
-    <p>The Polaris  Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
-      is scoped
-      to a specific Gitlab user.
-    </p>
-    <p>
-      You will need a personal access token for the user to authenticate Polaris 
-      with Gitlab. We recommend that you use a bot account with member level access
-      to all the projects that you need to analyze in Polaris. If you use an actual user account, please create
-      a separate access token for Polaris.
-    </p>
+const GitlabConnectorInstructions = ({part}) =>
+  part === "instructions" && (
+    <div>
+      <p>
+        The Polaris Gitlab Connector uses the Gitlab Rest API to import repository metadata and issues. Each connector
+        is scoped to a specific Gitlab user.
+      </p>
+      <p>
+        You will need a personal access token for the user to authenticate Polaris with Gitlab. We recommend that you
+        use a bot account with member level access to all the projects that you need to analyze in Polaris. If you use
+        an actual user account, please create a separate access token for Polaris.
+      </p>
 
-    <ol>
-      <li>Login to Gitlab as the user specified above,</li>
-      <li>Click on your user profile on the top right corner.</li>
-      <li>Navigate to Settings -> Access Tokens</li>
-      <li>Name your access token. We suggest "Polaris  Connector"</li>
-      <li>Don't specify an expiry date. </li>
-      <li>For scopes
-        select <em>api</em>, <em>read:user</em> <em>read:repository</em>
-      </li>
-      <li>Create the access token</li>
-      <li>
-        Copy the personal access token displayed to the clipboard and enter it as the Personal access token in the next step.
-      </li>
-    </ol>
-  </div>
-);
+
+      <ol>
+        <li>Login to Gitlab as the user specified above,</li>
+        <li>Click on your user profile on the top right corner.</li>
+        <li>Navigate to Settings -> Access Tokens</li>
+        <li>Name your access token. We suggest "Polaris Connector"</li>
+        <li>Don't specify an expiry date.</li>
+        <li>
+          For scopes select <em>api</em>, <em>read:user</em> <em>read:repository</em>
+        </li>
+        <li>Create the access token</li>
+        <li>
+          Copy the personal access token displayed to the clipboard and enter it as the Personal access token in the
+          next step.
+        </li>
+      </ol>
+
+      <p>
+        <em>
+          Note: Polaris does not currently support scoping a connector using Gitlab Groups. All the repos accessible via
+          this token will be available to Polaris under the same connector scope.
+        </em>
+      </p>
+    </div>
+  );
 
 const TrelloConnectorInstructions = ({part}) =>
   part === "instructions" && (

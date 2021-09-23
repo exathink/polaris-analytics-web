@@ -27,9 +27,9 @@ export const LauncherCard = ({onClick, title, description, cover, style, iconTyp
     </Card>
 )
 
-export function Launcher({onClick, title, description, icon, completed}) {
+export function Launcher({onClick, title, description, icon, completed, testId}) {
   return (
-    <div className="launcherWrapper" onClick={onClick}>
+    <div className="launcherWrapper" onClick={onClick} data-test={testId}>
       <div className="launcherIcon">{icon}</div>
       <div className="launcherTitleWrapper">
         <div className={classNames("title", fontStyles["text-2xl"], fontStyles["font-medium"])}>{title}</div>
