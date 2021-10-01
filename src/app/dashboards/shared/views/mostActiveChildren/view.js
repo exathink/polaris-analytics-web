@@ -10,12 +10,9 @@ export const MostActiveChildrenSummaryView = (props) => (
 
   <VizRow h={"100%"}>
     <VizItem w={1}>
-      <VizStickerWidget
-        bgColor={props.context.color()}
-        showHeader={false}
-      >
+
         < MostActiveChildrenBarChart {...props} />
-      </VizStickerWidget>
+
     </VizItem>
   </VizRow>
 )
