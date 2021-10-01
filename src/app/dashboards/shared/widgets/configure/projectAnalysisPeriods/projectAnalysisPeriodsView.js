@@ -2,12 +2,13 @@ import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
 import {Alert} from "antd";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
-import {logGraphQlError} from "../../../../components/graphql/utils";
+import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
-import Button from "../../../../../components/uielements/button";
-import {InfoCard} from "../../../../components/misc/info";
+import Button from "../../../../../../components/uielements/button";
+import {InfoCard} from "../../../../../components/misc/info";
+import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 
 const analysisPeriodItems = [
   {
@@ -58,6 +59,7 @@ const analysisPeriodItems = [
 ];
 
 export const ProjectAnalysisPeriodsView = ({
+  dimension,
   instanceKey,
   wipAnalysisPeriod,
   flowAnalysisPeriod,
@@ -76,8 +78,9 @@ export const ProjectAnalysisPeriodsView = ({
   const sliderProps = {...state, dispatch};
 
   // mutation to update project analysis periods
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
@@ -112,7 +115,7 @@ export const ProjectAnalysisPeriodsView = ({
     // call mutation on save button click
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         analysisPeriods: payload,
       },
     });

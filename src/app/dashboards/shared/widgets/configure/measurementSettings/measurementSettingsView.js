@@ -1,12 +1,13 @@
 import {Checkbox, Alert} from "antd";
 import React from "react";
-import {logGraphQlError} from "../../../../components/graphql/utils";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
 import {actionTypes, mode} from "./constants";
 import {measurementSettingsReducer} from "./measurementSettingsReducer";
 import styles from "./measurementSettings.module.css";
-import Button from "../../../../../components/uielements/button";
-import {InfoCard} from "../../../../components/misc/info";
+import Button from "../../../../../../components/uielements/button";
+import {InfoCard} from "../../../../../components/misc/info";
+import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 
 const settingsInfo = [
   {
@@ -54,7 +55,7 @@ const settingsInfo = [
   },
 ];
 
-export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics, includeSubTasksWipInspector}) {
+export function MeasurementSettingsView({dimension, instanceKey, includeSubTasksFlowMetrics, includeSubTasksWipInspector}) {
   const initialState = {
     flowMetricsFlag: includeSubTasksFlowMetrics,
     wipInspectorFlag: includeSubTasksWipInspector,
@@ -66,8 +67,9 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
   const [state, dispatch] = React.useReducer(measurementSettingsReducer, initialState);
 
   // mutation to update project analysis periods
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
@@ -103,7 +105,7 @@ export function MeasurementSettingsView({instanceKey, includeSubTasksFlowMetrics
     // add mutation related logic here
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         flowMetricsSettings: {
           includeSubTasks: state.flowMetricsFlag,
         },

@@ -1,9 +1,9 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import * as analysis from "./analysisPeriodsReducer";
 import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
 import {ProjectAnalysisPeriodsView} from "./projectAnalysisPeriodsView";
 
 beforeAll(() => {
@@ -20,6 +20,7 @@ afterEach(() => {
 });
 
 const propsFixture = {
+  dimension: "project",
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   wipAnalysisPeriod: 7,
   flowAnalysisPeriod: 30,
@@ -33,9 +34,9 @@ const analysisPeriods = {
 };
 
 const gqlMutationRequest = {
-  query: PROJECT_UPDATE_SETTINGS,
+  query: DIMENSION_UPDATE_SETTINGS("project"),
   variables: {
-    projectKey: propsFixture.instanceKey,
+    instanceKey: propsFixture.instanceKey,
     analysisPeriods: analysisPeriods,
   },
 };
@@ -73,9 +74,9 @@ describe("ProjectAnalysisPeriodsView", () => {
     cases.forEach((analysisItem) => {
       describe(`${analysisItem.name}`, () => {
         const mutationReq = {
-          query: PROJECT_UPDATE_SETTINGS,
+          query: DIMENSION_UPDATE_SETTINGS("project"),
           variables: {
-            projectKey: propsFixture.instanceKey,
+            instanceKey: propsFixture.instanceKey,
             analysisPeriods: {
               ...analysisPeriods,
               [`${analysisItem.name}`]: analysisItem.newValue,

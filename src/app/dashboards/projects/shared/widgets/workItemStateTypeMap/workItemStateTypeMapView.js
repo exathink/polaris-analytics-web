@@ -9,6 +9,7 @@ import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
 
+
 const {Option} = Select;
 
 export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {

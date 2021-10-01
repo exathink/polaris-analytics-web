@@ -1,18 +1,18 @@
 import React from "react";
-import {FlowMetricsScatterPlotChart} from "../../../shared/charts/flowMetricCharts/flowMetricsScatterPlotChart";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../shared/helpers/metricsMeta";
+import {FlowMetricsScatterPlotChart} from "../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {METRICS, actionTypes, mode} from "./constants";
 import {settingsReducer} from "./settingsReducer";
 import {Alert} from "antd";
-import {useProjectUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
-import {logGraphQlError} from "../../../../components/graphql/utils";
-import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
+import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import styles from "./projectResponseTimeSLASettings.module.css";
 import {TargetSliders} from "./targetSliders";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../work_items/cardInspector/cardInspectorUtils";
-import {pick} from "../../../../helpers/utility";
-import Button from "../../../../../components/uielements/button";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import {capitalizeFirstLetter, pick} from "../../../../../helpers/utility";
+import Button from "../../../../../../components/uielements/button";
 
 const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
 
@@ -72,18 +72,19 @@ export const ProjectResponseTimeSLASettingsView = ({
   const [state, dispatch] = React.useReducer(settingsReducer, initialState);
 
   // mutation to update project settings
-  const [mutate, {loading, client}] = useProjectUpdateSettings({
-    onCompleted: ({updateProjectSettings: {success, errorMessage}}) => {
+  const [mutate, {loading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
       } else {
-        logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", errorMessage);
+        logGraphQlError("ProjectResponseTimeSLASettingsView.useDimensionUpdateSettings", errorMessage);
         dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
       }
     },
     onError: (error) => {
-      logGraphQlError("ProjectResponseTimeSLASettingsView.useProjectUpdateSettings", error);
+      logGraphQlError("ProjectResponseTimeSLASettingsView.useDimensionUpdateSettings", error);
       dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
     },
   });
@@ -117,7 +118,7 @@ export const ProjectResponseTimeSLASettingsView = ({
     // call mutation on save button click
     mutate({
       variables: {
-        projectKey: instanceKey,
+        instanceKey: instanceKey,
         flowMetricsSettings: payload,
       },
     });

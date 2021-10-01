@@ -1,6 +1,7 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
-import ConfigureDashboard, {ValueStreamMappingDashboard, ResponseTimeSLASettingsDashboard} from "./dashboard";
+import {ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
+import ConfigureDashboard, {ValueStreamMappingDashboard} from "./dashboard";
 
 const topic =  {
   ...Topics.configure,
@@ -15,7 +16,7 @@ const topic =  {
     },
     {
       match: '',
-      component: ()=> <ConfigureDashboard/>
+      component: ConfigureDashboard
     }
   ]
 };

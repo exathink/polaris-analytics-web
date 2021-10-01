@@ -1,8 +1,8 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
 import {MeasurementSettingsView} from "./measurementSettingsView";
 
 // clear mocks after each test
@@ -11,6 +11,7 @@ afterEach(() => {
 });
 
 const propsFixture = {
+  dimension: "project",
   instanceKey: "8e4d188a-f5a1-4230-a0a2-ef9d8d955f6a",
   includeSubTasksFlowMetrics: false,
   includeSubTasksWipInspector: false,
@@ -51,9 +52,9 @@ describe("MeasurementSettingsView", () => {
     cases.forEach((measurementItem, index) => {
       describe(`${measurementItem.name}`, () => {
         const mutationReq = {
-          query: PROJECT_UPDATE_SETTINGS,
+          query: DIMENSION_UPDATE_SETTINGS("project"),
           variables: {
-            projectKey: propsFixture.instanceKey,
+            instanceKey: propsFixture.instanceKey,
             ...measurementSettings,
             [`${measurementItem.name}`]: {
               includeSubTasks: measurementItem.newValue,

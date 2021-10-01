@@ -1,8 +1,8 @@
 import React from "react";
-import {Loading} from "../../../../components/graphql/loading";
+import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
-import {useQueryProjectClosedDeliveryCycleDetail} from "../../shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
-import {logGraphQlError} from "../../../../components/graphql/utils";
+import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 export const ProjectResponseTimeSLASettingsWidget = ({
   dimension,

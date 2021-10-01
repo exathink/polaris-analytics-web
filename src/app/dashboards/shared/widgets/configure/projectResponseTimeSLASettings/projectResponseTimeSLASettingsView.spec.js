@@ -1,9 +1,9 @@
 import React from "react";
-import {renderWithProviders, gqlUtils} from "../../../../framework/viz/charts/chart-test-utils";
+import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import * as settings from "./settingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
-import {PROJECT_UPDATE_SETTINGS} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
 import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
 
 beforeAll(() => {
@@ -98,9 +98,9 @@ const propsFixture = {
 };
 
 const gqlMutationRequest = {
-  query: PROJECT_UPDATE_SETTINGS,
+  query: DIMENSION_UPDATE_SETTINGS("project"),
   variables: {
-    projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+    instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     flowMetricsSettings: {
       leadTimeTarget: 45,
       leadTimeConfidenceTarget: 0.9,

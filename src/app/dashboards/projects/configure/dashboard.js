@@ -2,16 +2,18 @@ import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {CONFIG_TABS, ConfigSelector} from "./configSelector/configSelector";
-import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
+
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
-import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
-import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
+import {Button} from "antd";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
-import dashboardItemStyles from "../../../framework/viz/dashboard/dashboardItem.module.css";
+
+import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
+
+import {ConfigSelector, CONFIG_TABS} from "../../shared/widgets/configure/configSelector/configSelector";
+
 
 import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
@@ -35,6 +37,7 @@ export function ValueStreamMappingInitialDashboard() {
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
+
           <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
             <DashboardRow h={"10%"}>
               <DashboardWidget
@@ -155,101 +158,6 @@ export function ValueStreamMappingDashboard() {
   );
 }
 
-export function ResponseTimeSLASettingsDashboard() {
-  return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
-        const {
-          leadTimeTarget,
-          cycleTimeTarget,
-          leadTimeConfidenceTarget,
-          cycleTimeConfidenceTarget,
-        } = settingsWithDefaults;
-        return (
-          <Dashboard>
-            <DashboardRow h="94%">
-              <DashboardWidget
-                w={1}
-                name="flow-metrics-setting-widget"
-                className={dashboardItemStyles.dashboardItem}
-                render={({view}) => {
-                  return (
-                    <ProjectResponseTimeSLASettingsWidget
-                      dimension={"project"}
-                      instanceKey={key}
-                      view={view}
-                      context={context}
-                      days={90}
-                      leadTimeTarget={leadTimeTarget}
-                      cycleTimeTarget={cycleTimeTarget}
-                      leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                      cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                      specsOnly={false}
-                    />
-                  );
-                }}
-                showDetail={false}
-              />
-            </DashboardRow>
-          </Dashboard>
-        );
-      }}
-    />
-  );
-}
-
-export function MeasurementSettingsDashboard() {
-  return (
-    <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
-        const {
-          includeSubTasksFlowMetrics,
-          includeSubTasksWipInspector,
-          wipAnalysisPeriod,
-          flowAnalysisPeriod,
-          trendsAnalysisPeriod,
-        } = settingsWithDefaults;
-        return (
-          <Dashboard gridLayout={true} className={styles.measurementSettingsDashboard}>
-            <DashboardRow>
-              <DashboardWidget
-                w={1}
-                name="analysis-periods-widget"
-                className={classNames(dashboardItemStyles.dashboardItem, styles.analysisPeriodsWidget)}
-                render={({view}) => {
-                  return (
-                    <ProjectAnalysisPeriodsWidget
-                      instanceKey={key}
-                      wipAnalysisPeriod={wipAnalysisPeriod}
-                      flowAnalysisPeriod={flowAnalysisPeriod}
-                      trendsAnalysisPeriod={trendsAnalysisPeriod}
-                    />
-                  );
-                }}
-                showDetail={false}
-              />
-              <DashboardWidget
-                w={1}
-                name="measurement-settings-widget"
-                className={classNames(dashboardItemStyles.dashboardItem, styles.settingsWidget)}
-                render={({view}) => {
-                  return (
-                    <MeasurementSettingsWidget
-                      instanceKey={key}
-                      includeSubTasksFlowMetrics={includeSubTasksFlowMetrics}
-                      includeSubTasksWipInspector={includeSubTasksWipInspector}
-                    />
-                  );
-                }}
-                showDetail={false}
-              />
-            </DashboardRow>
-          </Dashboard>
-        );
-      }}
-    />
-  );
-}
 
 export default withViewerContext(({viewerContext}) => {
   const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
@@ -259,24 +167,31 @@ export default withViewerContext(({viewerContext}) => {
       render={({project: {key, mappedWorkStreamCount}}) => {
         const isValueStreamMappingNotDone = mappedWorkStreamCount === 0;
         if (isValueStreamMappingNotDone) {
-          return <ValueStreamMappingInitialDashboard />
+          return <ValueStreamMappingInitialDashboard />;
         }
 
         return (
-          <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true}>
+          <Dashboard
+            dashboard={`${dashboard_id}`}
+            dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
+            gridLayout={true}
+          >
             <DashboardRow
               h={"100%"}
               title={""}
               className={styles.configTab}
-              controls={[() => <ConfigSelector configTab={configTab} setConfigTab={setConfigTab} />]}
+              controls={[
+                () => <ConfigSelector dimension={"project"} configTab={configTab} setConfigTab={setConfigTab} />,
+              ]}
             >
               {configTab === CONFIG_TABS.VALUE_STREAM ? (
                 <ValueStreamMappingDashboard />
+              ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
+                <ResponseTimeSLASettingsDashboard dimension={"project"} />
               ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
-                <MeasurementSettingsDashboard />
-              ): configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
-                <ResponseTimeSLASettingsDashboard />
-              )  : null}
+                <MeasurementSettingsDashboard dimension={"project"} />
+              ) : null}
+
             </DashboardRow>
           </Dashboard>
         );
@@ -284,4 +199,3 @@ export default withViewerContext(({viewerContext}) => {
     />
   );
 });
-
