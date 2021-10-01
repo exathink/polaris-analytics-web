@@ -1,10 +1,12 @@
 import {Popover} from "antd";
 import {InfoDrawer} from "./infoDrawer";
-import {InfoCircleOutlined} from "@ant-design/icons";
+import {InfoCircleOutlined, InfoCircleFilled} from "@ant-design/icons";
 import React from "react";
 import styles from "./info.module.css";
+import {Colors} from "../../../dashboards/shared/config";
 
 export function InfoCard({title, content, drawerContent, moreLinkText, drawerHeight, drawerWidth, showDrawer = true, showDrawerTitle= true, className = "", drawerOptions={}}) {
+  const color = Colors.DashboardWidgetIcons.primary;
   return (
     <Popover
 
@@ -21,7 +23,7 @@ export function InfoCard({title, content, drawerContent, moreLinkText, drawerHei
       }
     >
       <div className={className}>
-        <InfoCircleOutlined style={{ fontSize: '12px' }}/>
+        <InfoCircleFilled style={{ fontSize: '2.5vh', color: color }}/>
       </div>
     </Popover>
   );

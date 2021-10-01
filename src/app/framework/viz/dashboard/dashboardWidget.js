@@ -1,11 +1,14 @@
 import React from "react";
-import {Flex} from 'reflexbox';
+import {Flex} from "reflexbox";
 import {withNavigationContext} from "../../navigation/components/withNavigationContext";
-import {withRouter} from 'react-router';
-import uniqueStyles from './dashboard.module.css';
+import {withRouter} from "react-router";
+import uniqueStyles from "./dashboard.module.css";
 import fontStyles from "../../styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoCard} from "../../../components/misc/info/infoCard";
+import {Tooltip} from "antd";
+import {FullscreenExitOutlined, PieChartFilled} from "@ant-design/icons";
+import {Colors} from "../../../dashboards/shared/config";
 
 const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
   const infoElement = infoConfig && (
@@ -19,25 +22,30 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
       showDrawerTitle={infoConfig.showDrawerTitle}
       drawerWidth={infoConfig.drawerWidth}
       drawerHeight={infoConfig.drawerHeight}
-      className={showDetail ? uniqueStyles.shiftInfo  : uniqueStyles.infoCardWrapper}
+      className={showDetail ? uniqueStyles.shiftInfo : uniqueStyles.infoCardWrapper}
     />
   );
+  const color = Colors.DashboardWidgetIcons.primary;
 
   return showDetail ? (
     <div className={uniqueStyles.iconsWrapper}>
       {infoElement}
       <nav>
-        <i
-          className={itemSelected ? "ion ion-arrow-shrink" : "ion ion-more"}
-          title={"Show Details"}
-          onClick={onClick}
-        />
+        {itemSelected ? (
+          <Tooltip title={"Close Analysis View"}>
+            <FullscreenExitOutlined onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
+          </Tooltip>
+        ) : (
+          <Tooltip title={"Open Analysis View"}>
+            <PieChartFilled onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
+          </Tooltip>
+        )}
       </nav>
     </div>
   ) : (
     <React.Fragment>{infoElement}</React.Fragment>
   );
-}
+};
 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {

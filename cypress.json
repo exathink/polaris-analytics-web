@@ -8,5 +8,7 @@
     "username": "polaris-dev@exathink.com",
     "password": "polaris"
   },
-  "blockHosts": ["*.google-analytics.com"]
+  "blockHosts": ["*.google-analytics.com"],
+  "chromeWebSecurity": false,
+  "defaultCommandTimeout": 10000
 }

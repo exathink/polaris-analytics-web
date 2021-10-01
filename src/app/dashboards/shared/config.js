@@ -42,6 +42,9 @@ export const Colors = {
   Steps: {
     completed: "#32D669",
     pending:"#B0B0B0"
+  },
+  DashboardWidgetIcons: {
+    primary: "rgba(3,21,49,0.63)"
   }
 };
 
