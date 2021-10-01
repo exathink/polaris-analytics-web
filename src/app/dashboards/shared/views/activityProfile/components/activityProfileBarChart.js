@@ -46,8 +46,8 @@ export const ActivityProfileBarChart = Chart(
         }));
 
 
-        const title = `${orientation === 'vertical' ? formatTerm(intl, 'Profile') : formatTerm(intl, 'Activity Profile')} `;
-
+        //const title = `${orientation === 'vertical' ? formatTerm(intl, 'Profile') : formatTerm(intl, 'Activity Profile')} `;
+        const title = `${totalsByActivityLevel['Active']} of ${totalsByActivityLevel['total']} Active`;
 
         return {
           chart: {
@@ -75,7 +75,7 @@ export const ActivityProfileBarChart = Chart(
             }
           },
           title: {
-            text: title,
+            text: orientation === 'vertical' ? null : title,
             align: orientation === 'vertical' ? 'center' : 'left'
           },
           tooltip: {

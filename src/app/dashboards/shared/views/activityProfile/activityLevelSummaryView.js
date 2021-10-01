@@ -13,17 +13,9 @@ export const ActivityLevelSummaryView = (
           <VizItem w={1}>
 
             {/* Sticker Widget */}
-            <VizStickerWidget
-              icon={props.model.childContext.icon}
-              fontColor="#ffffff"
-              bgColor={context.color()}
-              text={childContext && data ? props.model.childContext.display(childCount) : null}
-              number={props.model ? childCount : null}
-              showHeader={true}
-              {...(props.headerWidth? {width:props.headerWidth} : {})}
-            >
+
               <ActivityProfileBarChart orientation={'horizontal'} chartBackgroundColor="#f2f3f6" {...props}/>
-            </VizStickerWidget>
+
 
           </VizItem>
 
