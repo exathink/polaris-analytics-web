@@ -58,8 +58,8 @@ const ActivitySummaryPanelView = (
         <VizItem w={1 / 4}>
           {/* Sticker Widget */}
           <StickerWidget
-            number={secondaryMeasure ? secondaryMeasure.toLocaleString() : '0'}
-            text={secondaryMeasureContext.display(secondaryMeasure)}
+            number={secondaryMeasure ? secondaryMeasure.toLocaleString() : 'No'}
+            text={"Active Contributors"}
             icon={secondaryMeasureContext.icon}
             fontColor={fontColor}
             bgColor={bgColor}
