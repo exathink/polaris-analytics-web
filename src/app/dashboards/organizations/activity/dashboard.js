@@ -42,6 +42,7 @@ export const dashboard = ({viewerContext}) => {
                     <DimensionActivitySummaryPanelWidget
                       dimension={'organization'}
                       instanceKey={organization.key}
+                      latestCommit={organization.latestCommit}
                     />
                 }
               />

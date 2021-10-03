@@ -5,20 +5,22 @@ import {Loading} from "../../../../components/graphql/loading";
 import {analytics_service} from '../../../../services/graphql/index';
 import {ActivitySummaryPanel} from "../../views/activitySummary";
 import {Contexts} from "../../../../meta/index";
+import { getReferenceString } from "../../../../helpers/utility";
 
 
 export const DimensionActivitySummaryPanelWidget = (
   {
     dimension,
     instanceKey,
-    pollInterval
+    pollInterval,
+    latestCommit
   }) => (
   <Query
     client={analytics_service}
     query={
       gql`
-           query ${dimension}CommitSummary($key: String!) {
-            ${dimension}(key: $key, interfaces: [CommitSummary, ContributorCount]) {
+           query ${dimension}ActivitySummary($key: String!, $referenceString: String!) {
+            ${dimension}(key: $key, interfaces: [CommitSummary, ContributorCount], contributorCountDays: 30, referenceString: $referenceString) {
                 id
                 ... on CommitSummary {
                     earliestCommit
@@ -31,7 +33,7 @@ export const DimensionActivitySummaryPanelWidget = (
             }
            }
       `}
-    variables={{key: instanceKey}}
+    variables={{key: instanceKey, referenceString: getReferenceString(latestCommit)}}
     errorPolicy={'all'}
     pollInterval={pollInterval || analytics_service.defaultPollInterval()}
   >

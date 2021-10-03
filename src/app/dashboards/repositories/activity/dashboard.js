@@ -29,6 +29,7 @@ export const dashboard = () => (
                   <DimensionActivitySummaryPanelWidget
                     dimension={'repository'}
                     instanceKey={repository.key}
+                    latestCommit={repository.latestCommit}
                   />
               }
             />
