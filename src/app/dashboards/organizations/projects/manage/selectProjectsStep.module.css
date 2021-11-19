@@ -2,7 +2,7 @@
   margin-top: 1rem;
   display: grid;
   grid-template-columns: auto auto 1fr auto auto auto;
-  grid-template-areas: "availableProjects fetchProjects . editConnector testConnector";
+  grid-template-areas: "availableProjects fetchProjects .  testConnector editConnector";
   align-items: center;
 }
 .availableProjects {

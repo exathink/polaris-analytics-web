@@ -192,9 +192,8 @@ export const SelectProjectsStep =
                       </div>
                       <div className={styles.testConnector}>
                         <Button
-                          type={'secondary'}
-                          icon={<CheckOutlined />}
-                          size={'medium'}
+                          type={'primary'}
+                          size={'small'}
                           disabled={selectedConnector.state !== 'enabled'}
                           onClick={
                             () => testConnector({
