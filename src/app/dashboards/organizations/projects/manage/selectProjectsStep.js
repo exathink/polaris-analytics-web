@@ -1,6 +1,6 @@
 import {gql} from "@apollo/client";
-import {Query} from "@apollo/client/react/components"
-import React from 'react';
+import {Query} from "@apollo/client/react/components";
+import React from "react";
 
 import {work_tracking_service} from "../../../../services/graphql";
 import Button from "../../../../../components/uielements/button";
@@ -12,7 +12,6 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined} from "@ant-design/icons";
 import {getConnectorTypeProjectName} from "../../../../components/workflow/connectors/utility";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
 import styles from "./selectProjectsStep.module.css";
