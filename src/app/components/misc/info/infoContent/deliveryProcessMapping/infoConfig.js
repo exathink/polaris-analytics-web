@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Glossary, InfoCard, PhaseDefinitions} from "../../index";
+import {InfoCard, PhaseDefinitions} from "../../index";
 
 const {Section, SubSection} = InfoCard;
 

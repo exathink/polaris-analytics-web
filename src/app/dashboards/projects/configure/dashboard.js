@@ -5,15 +5,16 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap";
-import {Button} from "antd";
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 
-import {MeasurementSettingsDashboard, ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
+import {
+  MeasurementSettingsDashboard,
+  ResponseTimeSLASettingsDashboard,
+} from "../../shared/widgets/configure/settingWidgets";
 
-import {ConfigSelector, CONFIG_TABS} from "../../shared/widgets/configure/configSelector/configSelector";
-
+import {CONFIG_TABS, ConfigSelector} from "../../shared/widgets/configure/configSelector/configSelector";
 
 import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";

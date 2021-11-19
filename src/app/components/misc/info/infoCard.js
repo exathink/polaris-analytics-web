@@ -1,6 +1,6 @@
 import {Popover} from "antd";
 import {InfoDrawer} from "./infoDrawer";
-import {InfoCircleOutlined, InfoCircleFilled} from "@ant-design/icons";
+import {InfoCircleFilled} from "@ant-design/icons";
 import React from "react";
 import styles from "./info.module.css";
 import {Colors} from "../../../dashboards/shared/config";

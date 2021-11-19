@@ -1,21 +1,16 @@
-import React from 'react';
-import {MostActiveChildrenBarChart} from './mostActiveChildrenBarChart';
+import React from "react";
+import {MostActiveChildrenBarChart} from "./mostActiveChildrenBarChart";
 import {VizItem, VizRow} from "../../containers/layout";
-import {VizStickerWidget} from "../../containers/stickers/vizSticker/vizStickerWidget";
-import {Box, Flex} from 'reflexbox';
+import {Box, Flex} from "reflexbox";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 
-
 export const MostActiveChildrenSummaryView = (props) => (
-
   <VizRow h={"100%"}>
     <VizItem w={1}>
-
-        < MostActiveChildrenBarChart {...props} />
-
+      <MostActiveChildrenBarChart {...props} />
     </VizItem>
   </VizRow>
-)
+);
 
 export const MostActiveChildrenDetailView = (props) => {
   const {days, setDaysRange} = props;
