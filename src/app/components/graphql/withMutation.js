@@ -12,7 +12,15 @@ export const withMutation = ({name, mutation, client, success, error, getTrackin
         onCompleted={data => {
           if (success) {
             success(data)
-            client && client.resetStore();
+            if (refetchSpec != null) {
+              // we need to do this in an async pass because if refetchSpec is
+              // given, then those queries will be in-flight when the store resets,
+              // which causes an InvariantError and crash when in dev mode.
+              setTimeout(() => client && client.resetStore(), 3000);
+            } else{
+              client && client.resetStore()
+            }
+
           }
         }}
         onError={err => error && error(err)}
