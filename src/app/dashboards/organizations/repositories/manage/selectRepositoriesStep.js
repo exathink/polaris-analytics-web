@@ -144,106 +144,124 @@ export const SelectRepositoriesStep =
                   repositories = data.vcsConnector.repositories.edges.map(edge => edge.node);
                 }
                 return (
-                  <div style={{height: "100%"}} className={'selected-repositories'}>
-                    <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
-                    <h3 className={styles["flex-center"]}>Select repositories to import from connector {selectedConnector.name}</h3>
-                    
-                    
+                  <div style={{height: "100%"}} className={"selected-repositories"}>
+                    <h5
+                      className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}
+                    >
+                      {getServerUrl(selectedConnector)}
+                    </h5>
+                    <h3 className={styles["flex-center"]}>
+                      Select repositories to import from connector {selectedConnector.name}
+                    </h3>
+                    <p className={styles["flex-center"]}>
+                      Note: A source repository can be registered under at most one connector per organization
+                    </p>
+
                     <div className={styles.selectRepositoryControls}>
-                      <h4 className={styles.availableRepos}>{`${repositories.length > 0 ?  repositories.length : 'No'} repositories available`} </h4>
+                      <h4 className={styles.availableRepos}>
+                        {`${repositories.length > 0 ? repositories.length : "No"} repositories available`}{" "}
+                      </h4>
                       <div className={styles.refreshRepos}>
                         <Button
-                          type={'secondary'}
-                          size={'small'}
+                          type={"secondary"}
+                          size={"small"}
                           icon={<DownloadIcon />}
-                          onClick={
-                            () => refetchRepositories({
+                          onClick={() =>
+                            refetchRepositories({
                               variables: {
-                                connectorKey: selectedConnector.key
-                              }
-                            })}
+                                connectorKey: selectedConnector.key,
+                              },
+                            })
+                          }
                           loading={refetchRepositoriesResult.data && !trackingReceiptCompleted}
                         >
                           Refresh Available Repositories
-                    </Button>
+                        </Button>
                       </div>
                       <div className={styles.testConnector}>
-
                         <Button
-                          type={'secondary'}
+                          type={"secondary"}
                           icon={<CheckOutlined />}
-                          size={'medium'}
-                          disabled={selectedConnector.state !== 'enabled'}
-                          onClick={
-                            () => testConnector({
+                          size={"medium"}
+                          disabled={selectedConnector.state !== "enabled"}
+                          onClick={() =>
+                            testConnector({
                               variables: {
                                 testConnectorInput: {
-                                  connectorKey: selectedConnector.key
-                                }
-                              }
-                            })}
+                                  connectorKey: selectedConnector.key,
+                                },
+                              },
+                            })
+                          }
                         >
-                          {'Test Connector'}
+                          {"Test Connector"}
                         </Button>
                       </div>
                       <div className={styles.editConnector}>
-
                         <EditConnectorFormButton
                           connectorType={selectedConnectorType}
                           connector={selectedConnector}
                           title={`Edit Connector`}
-                          disabled={selectedConnector.state !== 'enabled'}
-                          onSubmit={
-                            submit(
-                              values =>
-                                editConnector({
-                                  variables: {
-                                    editConnectorInput: {
-                                      key: selectedConnector.key,
-                                      name: values.name,
-                                      connectorType: selectedConnectorType,
-                                      apiKey: values.apiKey,
-                                      githubAccessToken: values.githubAccessToken,
-                                      gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
-                                      bitbucketPrincipalName: values.bitbucketPrincipalName
-                                    }
-                                  }
-                                })
-                            )
-                          }
+                          disabled={selectedConnector.state !== "enabled"}
+                          onSubmit={submit((values) =>
+                            editConnector({
+                              variables: {
+                                editConnectorInput: {
+                                  key: selectedConnector.key,
+                                  name: values.name,
+                                  connectorType: selectedConnectorType,
+                                  apiKey: values.apiKey,
+                                  githubAccessToken: values.githubAccessToken,
+                                  gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
+                                  bitbucketPrincipalName: values.bitbucketPrincipalName,
+                                },
+                              },
+                            })
+                          )}
                           error={editConnectorResult.error}
                           lastSubmission={lastSubmission}
                         />
                       </div>
                       <div className={styles.activeImports}>
-
                         <Button
-                          type={'secondary'}
-                          size={'small'}
+                          type={"secondary"}
+                          size={"small"}
                           disabled={selectedRepositories.length}
                           onClick={getActiveImports}
                         >
-                         <DownloadIcon /> Active Imports
+                          <DownloadIcon /> Active Imports
                         </Button>
                       </div>
-                     
                     </div>
                     <div className={styles.selectReposTable}>
-                    {
-                      repositories.length > 0 ?
+                      {repositories.length > 0 ? (
                         <SelectRepositoriesTable
                           loading={loading}
                           dataSource={repositories}
                           selectedRepositories={selectedRepositories}
                           onRepositoriesSelected={onRepositoriesSelected}
                         />
-                        :
-                        <div style={{display: "flex", justifyContent: "center"}}><NoData message={`No repositories to import. Click 'Refresh Available Repositories' to sync with ${getServerUrl(selectedConnector)}`} /></div>
-                    }
-                    </div> 
+                      ) : (
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                          <NoData
+                            message={`No repositories to import. Click 'Refresh Available Repositories' to sync with ${getServerUrl(
+                              selectedConnector
+                            )}`}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div style={{marginTop: "30px"}}>
+                      <p className={classNames(fontStyles["font-normal"], fontStyles["text-xs"], styles.subTitle)}>
+                        <em>
+                          Note: A source repository can only be registered under a single connector in an organization. If you dont see a repository you expect
+                          here, check if it has been registered under a different connector for this organization. Also, please verify you have permissions
+                          to access the repository using the credentials you supplied for this connector.
+                        </em>
+                      </p>
+                    </div>
                   </div>
-
-                )
+                );
               }
             }
           </Query>
