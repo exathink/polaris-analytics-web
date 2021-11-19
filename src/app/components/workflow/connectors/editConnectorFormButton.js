@@ -136,8 +136,8 @@ const EditConnectorForm = (
 }
 export const EditConnectorFormButton = createForm(EditConnectorForm, {
     drawer: true,
-    title: 'Edit Connector',
+    title: 'Edit',
     buttonSize: 'small',
-    icon: <EditIcon />,
-    buttonType: "iconOnly"
+    noPlus: true
+
 });

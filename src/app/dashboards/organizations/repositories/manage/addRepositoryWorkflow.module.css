@@ -30,8 +30,8 @@
 .selectRepositoryControls{
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: auto auto 1fr auto auto auto;
-    grid-template-areas: "availableRepos refreshRepos . editConnector testConnector activeImports";
+    grid-template-columns: auto auto auto 1fr  1fr auto auto;
+    grid-template-areas: "availableRepos refreshRepos . activeImports .  testConnector editConnector  ";
     align-items: center;
 }
 .availableRepos{

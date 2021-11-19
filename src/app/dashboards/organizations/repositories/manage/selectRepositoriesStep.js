@@ -12,7 +12,7 @@ import {NoData} from "../../../../components/misc/noData";
 import {compose, lexicographic} from "../../../../helpers/utility";
 import {EditConnectorFormButton} from "../../../../components/workflow/connectors/editConnectorFormButton";
 import {withSubmissionCache} from "../../../../components/forms/withSubmissionCache";
-import {CheckOutlined} from "@ant-design/icons";
+import {CheckOutlined, ThunderboltOutlined} from "@ant-design/icons";
 import classNames from "classnames";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
 import styles from "./addRepositoryWorkflow.module.css";
@@ -153,9 +153,7 @@ export const SelectRepositoriesStep =
                     <h3 className={styles["flex-center"]}>
                       Select repositories to import from connector {selectedConnector.name}
                     </h3>
-                    <p className={styles["flex-center"]}>
-                      Note: A source repository can be registered under at most one connector per organization
-                    </p>
+
 
                     <div className={styles.selectRepositoryControls}>
                       <h4 className={styles.availableRepos}>
@@ -178,11 +176,20 @@ export const SelectRepositoriesStep =
                           Refresh Available Repositories
                         </Button>
                       </div>
-                      <div className={styles.testConnector}>
+                      <div className={styles.activeImports}>
                         <Button
                           type={"secondary"}
-                          icon={<CheckOutlined />}
-                          size={"medium"}
+                          size={"small"}
+                          disabled={selectedRepositories.length}
+                          onClick={getActiveImports}
+                        >
+                          <ThunderboltOutlined/> Active Imports
+                        </Button>
+                      </div>
+                      <div className={styles.testConnector}>
+                        <Button
+                          type={"primary"}
+                          size={"small"}
                           disabled={selectedConnector.state !== "enabled"}
                           onClick={() =>
                             testConnector({
@@ -222,16 +229,7 @@ export const SelectRepositoriesStep =
                           lastSubmission={lastSubmission}
                         />
                       </div>
-                      <div className={styles.activeImports}>
-                        <Button
-                          type={"secondary"}
-                          size={"small"}
-                          disabled={selectedRepositories.length}
-                          onClick={getActiveImports}
-                        >
-                          <DownloadIcon /> Active Imports
-                        </Button>
-                      </div>
+
                     </div>
                     <div className={styles.selectReposTable}>
                       {repositories.length > 0 ? (
