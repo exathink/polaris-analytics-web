@@ -174,7 +174,7 @@ function WipDashboard({
 
 
         <DashboardWidget
-          name="epic-flow-mix-wip"
+          name="pull-requests"
           className={styles.codeReviewDetail}
           render={({ view }) => (
             <DimensionPullRequestsWidget
