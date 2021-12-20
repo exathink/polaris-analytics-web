@@ -130,8 +130,8 @@ export const dashboard = ({viewerContext}) => {
                       groupBy={'workItem'}
                       groupings={
                         teamsActive ?
-                          ['workItem', 'team', 'author', 'repository'] :
-                          ['workItem','author', 'repository']
+                          ['workItem', 'team', 'author', 'repository','branch'] :
+                          ['workItem','author', 'repository','branch']
                       }
                       showHeader
                       showTable
