@@ -42,7 +42,7 @@ const PullRequestChartView = ({pullRequests, view, context}) => {
       <VizItem w={1}>
         <PullRequestAgeChart
           pullRequests={pullRequests}
-          title={pullRequests.length === 1 ? "Open Code Review" : "Open Code Reviews"}
+          title={pullRequests.length === 1 ? "Open Pull Request" : "Open Pull Requests"}
           view={view}
           onSelectionChange={(pullRequests) => {
             if (pullRequests.length === 1) {

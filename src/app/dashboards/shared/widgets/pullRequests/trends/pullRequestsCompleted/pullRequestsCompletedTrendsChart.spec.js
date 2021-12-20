@@ -83,7 +83,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Requests Completed",
+    text: "Pull Requests Closed",
   },
   legend: {
     title: {
@@ -103,7 +103,7 @@ const fixedChartConfig = {
     type: "linear",
     id: "cycle-metric",
     title: {
-      text: "Review Requests",
+      text: "Pull Requests",
     },
   },
   time: {
@@ -185,9 +185,9 @@ describe("PullRequestsCompletedTrendsChart", () => {
       expect(actual).toMatchObject({
         header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
         body: [
-          ["Requests Completed: ", `${formatNumber(firstCompletedPRPoint.totalClosed)}`],
-          ["Avg Age: ", `${formatNumber(firstCompletedPRPoint.avgAge)} Days`],
-          ["Max Age: ", `${formatNumber(firstCompletedPRPoint.maxAge)} Days`],
+          ["PRs Closed: ", `${formatNumber(firstCompletedPRPoint.totalClosed)}`],
+          ["Avg Time to Close: ", `${formatNumber(firstCompletedPRPoint.avgAge)} Days`],
+          ["Max Time to Close: ", `${formatNumber(firstCompletedPRPoint.maxAge)} Days`],
         ],
       });
     });

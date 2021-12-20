@@ -4,8 +4,8 @@ import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/meas
 
 function getSelectedMetricDisplay(measurement, seriesKey, intl) {
   const seriesKeys = {
-    avgAge: ["Avg Time to Review: ", `${intl.formatNumber(measurement.avgAge)} Days`],
-    maxAge: ["Max Time to Review: ", `${intl.formatNumber(measurement.maxAge)} Days`],
+    avgAge: ["Avg Time to Close: ", `${intl.formatNumber(measurement.avgAge)} Days`],
+    maxAge: ["Max Time to Close: ", `${intl.formatNumber(measurement.maxAge)} Days`],
   };
 
   return seriesKeys[seriesKey];

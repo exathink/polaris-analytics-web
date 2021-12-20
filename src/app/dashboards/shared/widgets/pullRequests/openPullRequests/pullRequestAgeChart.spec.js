@@ -55,7 +55,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: expect.stringMatching(`Review Requests`),
+    text: expect.stringMatching(`Pull Requests`),
     align: "left",
   },
   subtitle: {

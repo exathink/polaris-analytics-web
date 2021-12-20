@@ -67,7 +67,7 @@ export const PullRequestAgeChart = Chart({
 
       },
       title: {
-        text: `${pullRequests.length} ${title || "Review Requests"}`,
+        text: `${pullRequests.length} ${title || "Pull Requests"}`,
         align: "left",
       },
       subtitle: {

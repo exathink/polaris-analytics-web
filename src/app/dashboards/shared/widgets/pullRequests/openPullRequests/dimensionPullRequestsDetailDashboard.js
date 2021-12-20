@@ -30,27 +30,9 @@ export const DimensionPullRequestsDetailDashboard = ({
 
   return (
     <Dashboard dashboard={dashboard_id}>
-      <DashboardRow h={"55%"}>
-        <DashboardWidget
-          w={1}
-          name="pr-pull-req-detailed"
-          render={({view}) => (
-            <DimensionPullRequestsWidget
-              dimension={dimension}
-              instanceKey={instanceKey}
-              view={view}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              latestPullRequestEvent={latestPullRequestEvent}
-            />
-          )}
-          showDetail={false}
-        />
-      </DashboardRow>
       <DashboardRow
         h={"33%"}
-        title={`Review Request Trends`}
+        title={`Pull Request Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={getTrendsControlBarControls([
           [daysRange, setDaysRange],
@@ -86,6 +68,24 @@ export const DimensionPullRequestsDetailDashboard = ({
               measurementWindow={measurementWindowRange}
               samplingFrequency={frequencyRange}
               latestCommit={latestCommit}
+            />
+          )}
+          showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow h={"55%"}>
+        <DashboardWidget
+          w={1}
+          name="pr-pull-req-detailed"
+          render={({view}) => (
+            <DimensionPullRequestsWidget
+              dimension={dimension}
+              instanceKey={instanceKey}
+              view={view}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
             />
           )}
           showDetail={false}

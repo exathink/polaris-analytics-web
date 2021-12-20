@@ -159,8 +159,8 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
       } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>);
 
       const cases = [
-        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Review: "},
-        {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Review: "},
+        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Close: "},
+        {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Close: "},
       ];
       // Generating test cases for similar usecases
       cases.forEach(({metric, data, displayName}, index) => {
