@@ -37,43 +37,8 @@ export const dashboard = () => (
               }
             />
           </DashboardRow>
-          <DashboardRow h='30%'>
-            <DashboardWidget
-                w={1/2}
-                name="most-active-contributors"
-                render={
-                  ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'repository'}
-                      instanceKey={repository.key}
-                      childConnection={'recentlyActiveContributors'}
-                      context={context}
-                      childContext={Contributors}
-                      top={10}
-                      latestCommit={repository.latestCommit}
-                      days={1}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
-            <DashboardWidget
-              name="pull-requests"
-              w={1/2}
-              render={({ view }) => (
-                  <DimensionPullRequestsWidget
-                    dimension={'repository'}
-                    instanceKey={repository.key}
-                    view={view}
-                    context={context}
-                    latestCommit={repository.latestCommit}
-                    asStatistic={false}
-                  />
-          )}
-          showDetail={true}
-        />
-          </DashboardRow>
-          <DashboardRow h={"51%"}>
+
+          <DashboardRow h={"81%"}>
             <DashboardWidget
               w={1}
               name="commits"
