@@ -27,7 +27,7 @@ function getSeries(pullRequests, intl, view) {
     allowPointSelect: true,
     visible: pullRequestsBySpecsNoSpecs[type] != null,
     showInLegend: pullRequestsBySpecsNoSpecs[type] != null,
-    data: (pullRequestsBySpecsNoSpecs[type] || []).map((pullRequest) => ({
+    data: (pullRequestsBySpecsNoSpecs[type] || []).sort((a,b)=>a.age - b.age).map((pullRequest) => ({
       name: `#${pullRequest.displayId}`,
       y: pullRequest.age,
       pullRequest: pullRequest,
