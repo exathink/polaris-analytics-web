@@ -1,16 +1,16 @@
-import React from 'react';
-import {FormattedMessage} from 'react-intl.macro';
-import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
+import React from "react";
+import {FormattedMessage} from "react-intl.macro";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {
   DimensionActivitySummaryPanelWidget,
-  DimensionCommitsNavigatorWidget, DimensionMostActiveChildrenWidget
+  DimensionCommitsNavigatorWidget,
+  DimensionMostActiveChildrenWidget,
 } from "../../shared/widgets/accountHierarchy";
 import {RepositoryDashboard} from "../repositoryDashboard";
-import styles from "../../projects/wip/dashboard.module.css";
-import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
+import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import Contributors from "../../contributors/context";
 
-const dashboard_id = 'dashboards.activity.repositories.instance';
+const dashboard_id = "dashboards.activity.repositories.instance";
 const messages = {
   topRowTitle: <FormattedMessage id={`${dashboard_id}.topRowTitle`} defaultMessage='Activity Overview'/>
 };
@@ -37,8 +37,43 @@ export const dashboard = () => (
               }
             />
           </DashboardRow>
-
-          <DashboardRow h={"81%"}>
+          <DashboardRow h='30%'>
+            <DashboardWidget
+                w={1/2}
+                name="most-active-contributors"
+                render={
+                  ({view}) =>
+                    <DimensionMostActiveChildrenWidget
+                      dimension={'repository'}
+                      instanceKey={repository.key}
+                      childConnection={'recentlyActiveContributors'}
+                      context={context}
+                      childContext={Contributors}
+                      top={10}
+                      latestCommit={repository.latestCommit}
+                      days={1}
+                      view={view}
+                    />
+                }
+                showDetail={true}
+              />
+            <DashboardWidget
+              name="pull-requests"
+              w={1/2}
+              render={({ view }) => (
+                  <DimensionPullRequestsWidget
+                    dimension={'repository'}
+                    instanceKey={repository.key}
+                    view={view}
+                    context={context}
+                    latestCommit={repository.latestCommit}
+                    asStatistic={false}
+                  />
+          )}
+          showDetail={true}
+        />
+          </DashboardRow>
+          <DashboardRow h={"51%"}>
             <DashboardWidget
               w={1}
               name="commits"
