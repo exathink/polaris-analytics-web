@@ -7,3 +7,11 @@ export function getFlowMetricsRowTitle(measurementWindow, before = getTodayDate(
 export function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
+
+export function pairwise(arr) {
+  let result = [];
+  for (var i = 0; i < arr.length - 1; i++) {
+    result.push([arr[i], arr[i + 1]]);
+  }
+  return result;
+}
