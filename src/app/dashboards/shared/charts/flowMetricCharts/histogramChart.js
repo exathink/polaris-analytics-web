@@ -33,13 +33,12 @@ export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({colWidthBoundaries, selectedMetric, model, metricsMeta, days, defectsOnly, specsOnly, showEpics}) => {
+  getConfig: ({colWidthBoundaries, selectedMetric, model, metricsMeta, days, defectsOnly, specsOnly}) => {
     const points = model
       .filter((cycle) => cycle.workItemType !== "epic")
       .map((cycle) => metricsMeta[selectedMetric].value(cycle));
 
-    const candidateCycles =
-      showEpics != null && !showEpics ? model.filter((cycle) => cycle.workItemType !== "epic") : model;
+    const candidateCycles = model.filter((cycle) => cycle.workItemType !== "epic");
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
