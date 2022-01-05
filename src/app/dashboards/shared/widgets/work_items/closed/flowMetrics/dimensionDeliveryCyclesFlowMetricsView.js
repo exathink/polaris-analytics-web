@@ -16,6 +16,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   data,
   dimension,
   days,
+  before,
   targetMetrics,
   initialMetric,
   defectsOnly,
@@ -164,6 +165,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       {yAxisScale === "histogram" ? (
         <DeliveryCyclesHistogramChart
           days={days}
+          before={before}
           model={filteredData}
           selectedMetric={selectedMetric.key}
           metricsMeta={projectDeliveryCycleFlowMetricsMeta}

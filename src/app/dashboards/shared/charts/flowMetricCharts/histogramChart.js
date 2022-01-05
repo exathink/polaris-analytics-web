@@ -3,7 +3,7 @@ import {pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors} from "../../config";
-import {pairwise} from "../../../projects/shared/helper/utils";
+import {getTimePeriod, pairwise} from "../../../projects/shared/helper/utils";
 
 function getCategories(colWidthBoundaries) {
   const res = pairwise(colWidthBoundaries);
@@ -33,7 +33,7 @@ export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({colWidthBoundaries, selectedMetric, model, metricsMeta, days, defectsOnly, specsOnly}) => {
+  getConfig: ({colWidthBoundaries, selectedMetric, model, metricsMeta, days, before, defectsOnly, specsOnly}) => {
     const points = model
       .filter((cycle) => cycle.workItemType !== "epic")
       .map((cycle) => metricsMeta[selectedMetric].value(cycle));
@@ -43,6 +43,8 @@ export const DeliveryCyclesHistogramChart = Chart({
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
     const series = getSeries({colWidthBoundaries, selectedMetric, points});
+
+    const avgSpecsClosedPerBucket = candidateCycles.length / (colWidthBoundaries.length + 1);
     return {
       chart: {
         type: "column",
@@ -87,8 +89,11 @@ export const DeliveryCyclesHistogramChart = Chart({
           // A header string followed by a two column table with name, value pairs.
           // The strings can be HTML.
           return tooltipHtml({
-            header: `${this.point.series.name}: ${this.point.category}`,
-            body: [[`Specs Closed: `, `${this.point.y}`]],
+            header: `${getTimePeriod(days, before)} `,
+            body: [
+              [`Specs Closed: `, `${this.point.y} specs`],
+              [`Average: `, `${avgSpecsClosedPerBucket} specs`],
+            ],
           });
         },
       },
