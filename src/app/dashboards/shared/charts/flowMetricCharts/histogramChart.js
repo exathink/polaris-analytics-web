@@ -25,6 +25,17 @@ function getSeries({colWidthBoundaries, points, selectedMetric}) {
     {
       name: selectedMetric,
       data: data,
+      dataLabels: {
+        enabled: true,
+        formatter: function () {
+          const percentageVal = this.point.y / points.length;
+          if (percentageVal === 0) {
+            return "";
+          } else {
+            return `${percentageVal * 100}%`;
+          }
+        },
+      },
     },
   ];
 }
