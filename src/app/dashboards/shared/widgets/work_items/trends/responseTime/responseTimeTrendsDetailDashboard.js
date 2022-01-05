@@ -47,7 +47,7 @@ export const ResponseTimeTrendsDetailDashboard = (
   const [before, setBefore] = React.useState();
   const [seriesName, setSeriesName] = React.useState("cycleTime");
   const selectedPointSeries = getSeriesName(seriesName);
-  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
+  const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],

@@ -27,7 +27,7 @@ export const PredictabilityTrendsDetailDashboard = ({
   includeSubTasks
 }) => {
   const [before, setBefore] = React.useState();
-  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
+  const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],

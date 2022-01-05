@@ -21,7 +21,7 @@ export const ProjectDefectMetricsDetailDashboard = (
 
   }) => {
   const [daysRange, setDaysRange] = useState(days || 30)
-  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
+  const [yAxisScale, setYAxisScale] = React.useState("histogram");
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
