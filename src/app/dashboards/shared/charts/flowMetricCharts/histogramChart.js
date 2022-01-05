@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {pick} from "../../../../helpers/utility";
+import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors} from "../../config";
@@ -14,7 +14,7 @@ function getCategories(colWidthBoundaries) {
   return [start, ...middle, end];
 }
 
-function getSeries({colWidthBoundaries, points, selectedMetric}) {
+function getSeries({intl, colWidthBoundaries, points, selectedMetric}) {
   const res = pairwise(colWidthBoundaries);
   const [min, max] = [res[0][0], res[res.length - 1][1]];
   const data = [[0, min], ...res, [max, Infinity]].map((x) => {
@@ -32,7 +32,8 @@ function getSeries({colWidthBoundaries, points, selectedMetric}) {
           if (percentageVal === 0) {
             return "";
           } else {
-            return `${percentageVal * 100}%`;
+            const formattedNumber = i18nNumber(intl, percentageVal, 2);
+            return `${formattedNumber * 100}%`;
           }
         },
       },
@@ -44,7 +45,7 @@ export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({colWidthBoundaries, selectedMetric, model, metricsMeta, days, before, defectsOnly, specsOnly}) => {
+  getConfig: ({intl, colWidthBoundaries, selectedMetric, model, metricsMeta, days, before, defectsOnly, specsOnly}) => {
     const points = model
       .filter((cycle) => cycle.workItemType !== "epic")
       .map((cycle) => metricsMeta[selectedMetric].value(cycle));
@@ -53,7 +54,7 @@ export const DeliveryCyclesHistogramChart = Chart({
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
-    const series = getSeries({colWidthBoundaries, selectedMetric, points});
+    const series = getSeries({intl, colWidthBoundaries, selectedMetric, points});
 
     const avgSpecsClosedPerBucket = candidateCycles.length / (colWidthBoundaries.length + 1);
     return {
