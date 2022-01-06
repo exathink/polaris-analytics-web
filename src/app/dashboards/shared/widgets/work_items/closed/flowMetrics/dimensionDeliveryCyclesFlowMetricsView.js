@@ -79,6 +79,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       !hideControls && (
         <SelectDropdown
           title="Metric"
+          value={uniqueGroupings.map((x) => x.key).indexOf(selectedMetric.key)}
           uniqueItems={uniqueGroupings}
           handleChange={handleMetricChange}
           testId="groupings-select"
@@ -122,6 +123,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
         {yAxisScale !== "table" && (
           <SelectDropdown
             title={"Team"}
+            value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
             uniqueItems={uniqueTeams}
             handleChange={handleTeamChange}
             testId="flowmetrics-team-dropdown"
