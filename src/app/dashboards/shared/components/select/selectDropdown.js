@@ -19,11 +19,11 @@ export function useSelect({uniqueItems, defaultVal}) {
  *
  * uniqueItems: array of {key, name} pair objects
  */
-export function SelectDropdown({title, uniqueItems, testId, handleChange, width = DEFAULT_WIDTH, className}) {
+export function SelectDropdown({title, uniqueItems, testId, handleChange, width = DEFAULT_WIDTH, className, value}) {
   return (
     <div data-testid={testId} className={classNames(styles.selectWrapper, className)}>
       {title && <div className={styles.title}>{title}</div>}
-      <Select defaultValue={0} onChange={handleChange} className={styles.selectControl} style={{width: width}}>
+      <Select defaultValue={0} value={value} onChange={handleChange} className={styles.selectControl} style={{width: width}}>
         {uniqueItems.map((item, index) => (
           <Option key={item.key} value={index}>
             {item.name}
