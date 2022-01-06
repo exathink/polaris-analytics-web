@@ -14,7 +14,7 @@ function getCategories(colWidthBoundaries) {
   return [start, ...middle, end];
 }
 
-function getSeries({intl, colWidthBoundaries, points, selectedMetric}) {
+function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
   const res = pairwise(colWidthBoundaries);
   const [min, max] = [res[0][0], res[res.length - 1][1]];
   const data = [[0, min], ...res, [max, Infinity]].map((x) => {
@@ -23,7 +23,7 @@ function getSeries({intl, colWidthBoundaries, points, selectedMetric}) {
   });
   return [
     {
-      name: selectedMetric,
+      name: metricsMeta[selectedMetric].display,
       data: data,
       dataLabels: {
         enabled: true,
@@ -54,7 +54,7 @@ export const DeliveryCyclesHistogramChart = Chart({
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
-    const series = getSeries({intl, colWidthBoundaries, selectedMetric, points});
+    const series = getSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta});
 
     const avgSpecsClosedPerBucket = candidateCycles.length / (colWidthBoundaries.length + 1);
     return {
@@ -81,7 +81,7 @@ export const DeliveryCyclesHistogramChart = Chart({
       },
       xAxis: {
         title: {
-          text: selectedMetric,
+          text: metricsMeta[selectedMetric].display,
         },
         categories: getCategories(colWidthBoundaries),
         crosshair: true,
