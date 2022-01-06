@@ -28,12 +28,12 @@ function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMet
       dataLabels: {
         enabled: true,
         formatter: function () {
-          const percentageVal = this.point.y / points.length;
-          if (percentageVal === 0) {
+          const fractionVal = this.point.y / points.length;
+          if (fractionVal === 0) {
             return "";
           } else {
-            const formattedNumber = i18nNumber(intl, percentageVal, 2);
-            return `${formattedNumber * 100}%`;
+            const percentVal = i18nNumber(intl, fractionVal*100, 2);
+            return `${percentVal}%`;
           }
         },
       },
