@@ -9,7 +9,7 @@ import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
-const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14];
+const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
