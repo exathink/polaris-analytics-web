@@ -3,21 +3,11 @@ import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors} from "../../config";
-import {getTimePeriod, pairwise} from "../../../projects/shared/helper/utils";
-
-function getCategories(colWidthBoundaries) {
-  const res = pairwise(colWidthBoundaries);
-  const [min, max] = [res[0][0], res[res.length - 1][1]];
-  const middle = res.map((x) => `${x[0]} - ${x[1]} days`);
-  const start = `< ${min} days`;
-  const end = `${max} + days`;
-  return [start, ...middle, end];
-}
+import {getTimePeriod, allPairs, getCategories} from "../../../projects/shared/helper/utils";
 
 function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
-  const res = pairwise(colWidthBoundaries);
-  const [min, max] = [res[0][0], res[res.length - 1][1]];
-  const data = [[0, min], ...res, [max, Infinity]].map((x) => {
+  const res = allPairs(colWidthBoundaries);
+  const data = res.map((x) => {
     const [x1, x2] = x;
     return points.filter((y) => y >= x1 && y < x2).length;
   });
