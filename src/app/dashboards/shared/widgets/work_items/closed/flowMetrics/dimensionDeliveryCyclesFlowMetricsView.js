@@ -9,6 +9,7 @@ import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
+const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -174,7 +175,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           defectsOnly={defectsOnly}
           specsOnly={specsOnly}
           yAxisScale={yAxisScale}
-          colWidthBoundaries={[1, 3, 7, 14]}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         />
       ) : yAxisScale === "logarithmic" ? (
         <FlowMetricsScatterPlotChart
@@ -195,7 +196,12 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           }}
         />
       ) : (
-        <FlowMetricsDetailTable tableData={filteredData} setShowPanel={setShowPanel} setWorkItemKey={setWorkItemKey} />
+        <FlowMetricsDetailTable
+          tableData={filteredData}
+          setShowPanel={setShowPanel}
+          setWorkItemKey={setWorkItemKey}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        />
       )}
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
