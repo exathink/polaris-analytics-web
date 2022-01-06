@@ -66,7 +66,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: metricsMeta[selectedMetric].display,
+        text: `${metricsMeta[selectedMetric].display} Distribution`,
       },
       subtitle: {
         text: (function () {

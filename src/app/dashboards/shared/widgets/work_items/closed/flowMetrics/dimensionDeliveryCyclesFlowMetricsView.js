@@ -145,11 +145,11 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
               groupings={[
                 {
                   key: "histogram",
-                  display: "Histogram",
+                  display: "Distribution",
                 },
                 {
                   key: "logarithmic",
-                  display: "Scatter",
+                  display: "Timeline",
                 },
                 {
                   key: "table",
