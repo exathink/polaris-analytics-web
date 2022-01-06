@@ -34,7 +34,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'Authors',
   },
   backlogTime: {
-    display: "Queued",
+    display: "Define Time",
     value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
     targetMetric: 'leadTime',
     uom: 'Days',
