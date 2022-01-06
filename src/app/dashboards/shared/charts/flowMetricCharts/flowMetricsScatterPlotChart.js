@@ -10,7 +10,7 @@ import {
   WorkItemTypeScatterRadius,
   WorkItemTypeSortOrder,
 } from "../../config";
-
+import {getTimePeriod} from "../../../projects/shared/helper/utils";
 import {PlotLines} from "../workItemCharts/chartParts";
 import {formatDateTime} from "../../../../i18n";
 const METRICS = ["leadTime", "backlogTime", "cycleTime", "latency", "duration", "effort", "authors"];
@@ -106,6 +106,7 @@ export const FlowMetricsScatterPlotChart = Chart({
   getConfig: ({
     model,
     days,
+    before,
     selectedMetric,
     metricsMeta,
     metricTarget,
@@ -168,8 +169,8 @@ export const FlowMetricsScatterPlotChart = Chart({
       subtitle: {
         text: (function () {
           const subTitle = defectsOnly
-            ? `${candidateCycles.length} Defects closed in the last ${days} days`
-            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed in the last ${days} days`;
+            ? `${candidateCycles.length} Defects closed in the last ${getTimePeriod(days, before)}`
+            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed in the last ${getTimePeriod(days, before)}`;
           // When showing cycle time we also report total with no cycle time if they exist.
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`

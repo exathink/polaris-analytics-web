@@ -180,6 +180,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       ) : yAxisScale === "logarithmic" ? (
         <FlowMetricsScatterPlotChart
           days={days}
+          before={before}
           model={filteredData}
           selectedMetric={selectedMetric.key}
           metricsMeta={projectDeliveryCycleFlowMetricsMeta}
