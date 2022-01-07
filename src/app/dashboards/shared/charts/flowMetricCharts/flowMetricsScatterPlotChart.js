@@ -164,7 +164,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `${metricsMeta[selectedMetric].display} Detail`,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       subtitle: {
         text: (function () {

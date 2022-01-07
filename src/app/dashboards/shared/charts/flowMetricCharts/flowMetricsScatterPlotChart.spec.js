@@ -92,7 +92,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithLeadTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta["leadTime"].display} Detail`,
+        text: `${metricsMeta["leadTime"].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -438,7 +438,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithCycleTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Detail`,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -719,7 +719,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithBacklogTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Detail`,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -850,7 +850,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithEffort = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Detail`,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -923,7 +923,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithAuthors = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Detail`,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
