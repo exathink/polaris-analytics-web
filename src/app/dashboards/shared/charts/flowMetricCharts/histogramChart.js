@@ -7,12 +7,13 @@ import {getTimePeriod, allPairs, getCategories} from "../../../projects/shared/h
 
 function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
   const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill(0);
+  const data = new Array(allPairsData.length).fill({y:0, total: 0});
   points.forEach((y) => {
     for (let i = 0; i < allPairsData.length; i++) {
       const [x1, x2] = allPairsData[i];
       if (y >= x1 && y < x2) {
-        data[i] = data[i] + 1;
+        data[i] = {y: data[i].y + 1, total: data[i].total + y};
+
         // we found the correct bucket, no need to traverse entire loop now
         break;
       }
@@ -98,10 +99,15 @@ export const DeliveryCyclesHistogramChart = Chart({
           // A header string followed by a two column table with name, value pairs.
           // The strings can be HTML.
           return tooltipHtml({
-            header: `${metricsMeta[selectedMetric].display}: ${getTimePeriod(days, before)} <br/><br/> ${this.point.category}`,
+            header: `${metricsMeta[selectedMetric].display}: ${getTimePeriod(days, before)} <br/><br/> ${
+              this.point.category
+            }`,
             body: [
               [`Specs Closed: `, `${this.point.y}`],
-              [`Average ${metricsMeta[selectedMetric].display}: `, `${i18nNumber(intl, avgSpecsClosedPerBucket, 2)} days`],
+              [
+                `Average ${metricsMeta[selectedMetric].display}: `,
+                `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`,
+              ],
             ],
           });
         },
