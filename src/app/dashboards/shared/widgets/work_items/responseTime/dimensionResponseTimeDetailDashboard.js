@@ -34,7 +34,7 @@ export function DimensionResponseTimeDetailDashboard({
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
-  const [yAxisScale, setYAxisScale] = React.useState("logarithmic");
+  const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [chartToggle, setChartToggle] = React.useState("trend");
 
   return (

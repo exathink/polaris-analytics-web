@@ -8,6 +8,8 @@ import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
+import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
+const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -15,6 +17,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   data,
   dimension,
   days,
+  before,
   targetMetrics,
   initialMetric,
   defectsOnly,
@@ -50,7 +53,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   );
 
   const groupings = specsOnly
-    ? ["leadTime", "backlogTime", "cycleTime",  "duration", "effort", "latency" ]
+    ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
   const uniqueGroupings = groupings.map((g) => ({key: g, name: projectDeliveryCycleFlowMetricsMeta[g].display}));
@@ -63,11 +66,18 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     defaultVal: _defaultMetric,
   });
 
-  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(selectedMetric.key, targetMetrics)
-  
+  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(
+    selectedMetric.key,
+    targetMetrics
+  );
+
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
-  const [yAxisScale, setYAxisScale] = useChildState(parentYAxisScale, parentSetYAxisScale, parentYAxisScale || 'logarithmic')
+  const [yAxisScale, setYAxisScale] = useChildState(
+    parentYAxisScale,
+    parentSetYAxisScale,
+    parentYAxisScale || "histogram"
+  );
 
   React.useEffect(() => {
     initialMetric && setSelectedMetric(_defaultMetric);
@@ -119,7 +129,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
   return (
     <React.Fragment>
       <div className={styles.controls}>
-
         {yAxisScale !== "table" && (
           <SelectDropdown
             title={"Team"}
@@ -138,12 +147,12 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
               value={yAxisScale}
               groupings={[
                 {
-                  key: "logarithmic",
-                  display: "Normal",
+                  key: "histogram",
+                  display: "Distribution",
                 },
                 {
-                  key: "linear",
-                  display: "Outlier",
+                  key: "logarithmic",
+                  display: "Timeline",
                 },
                 {
                   key: "table",
@@ -156,9 +165,24 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           </div>
         )}
       </div>
-      {yAxisScale !== "table" ? (
+      {yAxisScale === "histogram" ? (
+        <DeliveryCyclesHistogramChart
+          days={days}
+          before={before}
+          model={filteredData}
+          selectedMetric={selectedMetric.key}
+          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+          metricTarget={metricTarget}
+          targetConfidence={targetConfidence}
+          defectsOnly={defectsOnly}
+          specsOnly={specsOnly}
+          yAxisScale={yAxisScale}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        />
+      ) : yAxisScale === "logarithmic" ? (
         <FlowMetricsScatterPlotChart
           days={days}
+          before={before}
           model={filteredData}
           selectedMetric={selectedMetric.key}
           metricsMeta={projectDeliveryCycleFlowMetricsMeta}
@@ -179,6 +203,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           tableData={filteredData}
           setShowPanel={setShowPanel}
           setWorkItemKey={setWorkItemKey}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         />
       )}
       <CardInspectorWithDrawer

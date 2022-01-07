@@ -92,7 +92,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithLeadTime = {
       ...fixedChartConfig,
       title: {
-        text: metricsMeta["leadTime"].display,
+        text: `${metricsMeta["leadTime"].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -184,7 +184,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+          text: expect.stringMatching(`1 Specs closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -209,7 +209,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         expect(data[0].y).toEqual(workItemFixture.leadTime);
       });
 
-      test("it sets the reference of workItemMetaData for each point ", () => {
+      test("it sets the reference of workItemMetaData for each point", () => {
         expect(data[0].cycle).toEqual(workItemFixture);
       });
 
@@ -361,7 +361,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`3 Specs closed in the last 30 days`),
+          text: expect.stringMatching(`3 Specs closed`),
         },
         series: fixedSeriesConfig,
       };
@@ -390,7 +390,7 @@ describe("FlowMetricsScatterPlotChart", () => {
         );
       });
 
-      test("it sets the reference of workItemMetaData for each point ", () => {
+      test("it sets the reference of workItemMetaData for each point", () => {
         expect(data.map((point) => point.cycle)).toEqual(multiplePropsFixture.model.map((wifixture) => wifixture));
       });
 
@@ -438,7 +438,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithCycleTime = {
       ...fixedChartConfig,
       title: {
-        text: metricsMeta[selectedMetric].display,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -538,7 +538,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringContaining(`1 Specs closed in the last 30 days`),
+          text: expect.stringContaining(`1 Specs closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -701,7 +701,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringContaining(`3 Specs closed in the last 30 days (1 with no cycle time)`),
+          text: expect.stringContaining(`(1 with no cycle time)`),
         },
         series: fixedSeriesConfig,
       };
@@ -719,7 +719,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithBacklogTime = {
       ...fixedChartConfig,
       title: {
-        text: metricsMeta[selectedMetric].display,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -850,7 +850,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithEffort = {
       ...fixedChartConfig,
       title: {
-        text: metricsMeta[selectedMetric].display,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -899,7 +899,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithEffort,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+        text: expect.stringMatching(`1 Specs closed`),
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -923,7 +923,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithAuthors = {
       ...fixedChartConfig,
       title: {
-        text: metricsMeta[selectedMetric].display,
+        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -975,7 +975,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithAuthors,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+        text: expect.stringMatching(`1 Specs closed`),
       },
       series: [fixedSeriesConfig],
     };

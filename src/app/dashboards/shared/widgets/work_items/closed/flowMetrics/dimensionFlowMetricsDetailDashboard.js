@@ -26,7 +26,7 @@ export const DimensionFlowMetricsDetailDashboard = (
   const [daysRange, setDaysRange] = useState(days || 30)
   const [workItemScope, setWorkItemScope] = useState('specs');
   const specsOnly = workItemScope === 'specs';
-  const [yAxisScale, setYAxisScale] = useState("logarithmic");
+  const [yAxisScale, setYAxisScale] = useState("histogram");
   return (
     <Dashboard
       dashboard={dashboard_id}

@@ -49,6 +49,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       instanceKey={instanceKey}
       context={context}
       days={days}
+      before={before}
       data={projectDeliveryCycleData}
       dimension={dimension}
       targetMetrics={targetMetrics}
