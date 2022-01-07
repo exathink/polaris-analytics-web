@@ -53,8 +53,6 @@ export const DeliveryCyclesHistogramChart = Chart({
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
     const series = getSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta});
-
-    const avgSpecsClosedPerBucket = candidateCycles.length / (colWidthBoundaries.length + 1);
     return {
       chart: {
         type: "column",
