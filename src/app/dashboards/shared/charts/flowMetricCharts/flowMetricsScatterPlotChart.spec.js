@@ -184,7 +184,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+          text: expect.stringMatching(`1 Specs closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -361,7 +361,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`3 Specs closed in the last 30 days`),
+          text: expect.stringMatching(`3 Specs closed`),
         },
         series: fixedSeriesConfig,
       };
@@ -538,7 +538,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringContaining(`1 Specs closed in the last 30 days`),
+          text: expect.stringContaining(`1 Specs closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -899,7 +899,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithEffort,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+        text: expect.stringMatching(`1 Specs closed`),
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -975,7 +975,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithAuthors,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed in the last 30 days`),
+        text: expect.stringMatching(`1 Specs closed`),
       },
       series: [fixedSeriesConfig],
     };
