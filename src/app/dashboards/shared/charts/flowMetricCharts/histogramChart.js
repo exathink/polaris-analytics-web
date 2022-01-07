@@ -97,9 +97,7 @@ export const DeliveryCyclesHistogramChart = Chart({
           // A header string followed by a two column table with name, value pairs.
           // The strings can be HTML.
           return tooltipHtml({
-            header: `${metricsMeta[selectedMetric].display}: ${getTimePeriod(days, before)} <br/><br/> ${
-              this.point.category
-            }`,
+            header: `${metricsMeta[selectedMetric].display}: ${this.point.category}<br/>${getTimePeriod(days, before)} `,
             body: [
               [`Specs Closed: `, `${this.point.y}`],
               [
