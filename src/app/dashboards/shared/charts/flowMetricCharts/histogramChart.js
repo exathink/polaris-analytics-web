@@ -6,10 +6,17 @@ import {Colors} from "../../config";
 import {getTimePeriod, allPairs, getCategories} from "../../../projects/shared/helper/utils";
 
 function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
-  const res = allPairs(colWidthBoundaries);
-  const data = res.map((x) => {
-    const [x1, x2] = x;
-    return points.filter((y) => y >= x1 && y < x2).length;
+  const allPairsData = allPairs(colWidthBoundaries);
+  const data = new Array(allPairsData.length).fill(0);
+  points.forEach((y) => {
+    for (let i = 0; i < allPairsData.length; i++) {
+      const [x1, x2] = allPairsData[i];
+      if (y >= x1 && y < x2) {
+        data[i] = data[i] + 1;
+        // we found the correct bucket, no need to traverse entire loop now
+        break;
+      }
+    }
   });
   return [
     {
