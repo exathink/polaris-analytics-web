@@ -35,7 +35,7 @@ export function DimensionResponseTimeDetailDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
-  const [chartToggle, setChartToggle] = React.useState("trend");
+  const [chartToggle, setChartToggle] = React.useState("cardDetail");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -94,13 +94,14 @@ export function DimensionResponseTimeDetailDashboard({
               value={chartToggle}
               groupings={[
                 {
-                  key: "trend",
-                  display: "Trend",
-                },
-                {
                   key: "cardDetail",
                   display: "Card Detail",
                 },
+                {
+                  key: "trend",
+                  display: "Trend",
+                },
+
               ]}
               initialValue={"trend"}
               onGroupingChanged={setChartToggle}
