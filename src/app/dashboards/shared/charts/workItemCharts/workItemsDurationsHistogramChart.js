@@ -41,7 +41,7 @@ function getSeries({intl, colWidthBoundaries, workItemsWithAggregateDurations, s
 }
 
 export const WorkItemsDurationsHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly", "stateType"),
+  chartUpdateProps: (props) => pick(props, "workItems", "selectedMetric", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({workItems, intl, colWidthBoundaries, selectedMetric, metricsMeta, stateType}) => {
