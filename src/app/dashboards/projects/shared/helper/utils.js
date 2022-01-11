@@ -1,4 +1,4 @@
-import {formatDate, getTodayDate} from "../../../../helpers/utility";
+import {formatDate, getTodayDate, i18nNumber} from "../../../../helpers/utility";
 
 export function getTimePeriod(measurementWindow, before = getTodayDate()) {
   return before ? `${measurementWindow} days ending ${formatDate(before, "MM/DD/YYYY")} ` : ``;
@@ -29,4 +29,38 @@ export function getCategories(colWidthBoundaries) {
   const start = `< ${min} days`;
   const end = `${max} + days`;
   return [start, ...middle, end];
+}
+
+export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
+  const allPairsData = allPairs(colWidthBoundaries);
+  const data = new Array(allPairsData.length).fill({y:0, total: 0});
+  points.forEach((y) => {
+    for (let i = 0; i < allPairsData.length; i++) {
+      const [x1, x2] = allPairsData[i];
+      if (y >= x1 && y < x2) {
+        data[i] = {y: data[i].y + 1, total: data[i].total + y};
+
+        // we found the correct bucket, no need to traverse entire loop now
+        break;
+      }
+    }
+  });
+  return [
+    {
+      name: metricsMeta[selectedMetric].display,
+      data: data,
+      dataLabels: {
+        enabled: true,
+        formatter: function () {
+          const fractionVal = this.point.y / points.length;
+          if (fractionVal === 0) {
+            return "";
+          } else {
+            const percentVal = i18nNumber(intl, fractionVal*100, 2);
+            return `${percentVal}%`;
+          }
+        },
+      },
+    },
+  ];
 }

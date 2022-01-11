@@ -3,44 +3,8 @@ import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors, WorkItemStateTypes} from "../../config";
-import {allPairs, getCategories} from "../../../projects/shared/helper/utils";
+import {getCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
-
-function getSeries({intl, colWidthBoundaries, workItemsWithAggregateDurations, selectedMetric, metricsMeta}) {
-  const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill({y: 0, total: 0});
-  workItemsWithAggregateDurations
-    .map((w) => w[selectedMetric])
-    .forEach((y) => {
-      for (let i = 0; i < allPairsData.length; i++) {
-        const [x1, x2] = allPairsData[i];
-        if (y >= x1 && y < x2) {
-          data[i] = {y: data[i].y + 1, total: data[i].total + y};
-
-          // we found the correct bucket, no need to traverse entire loop now
-          break;
-        }
-      }
-    });
-  return [
-    {
-      name: metricsMeta[selectedMetric].display,
-      data: data,
-      dataLabels: {
-        enabled: true,
-        formatter: function () {
-          const fractionVal = this.point.y / workItemsWithAggregateDurations.length;
-          if (fractionVal === 0) {
-            return "";
-          } else {
-            const percentVal = i18nNumber(intl, fractionVal * 100, 2);
-            return `${percentVal}%`;
-          }
-        },
-      },
-    },
-  ];
-}
 
 export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "selectedMetric", "specsOnly", "stateType"),
@@ -50,7 +14,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? metricsMeta[selectedMetric].display : "Age";
 
-    const series = getSeries({intl, colWidthBoundaries, selectedMetric, workItemsWithAggregateDurations, metricsMeta});
+    const points = workItemsWithAggregateDurations.map((w) => w[selectedMetric]);
+    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta})
     return {
       chart: {
         type: "column",
