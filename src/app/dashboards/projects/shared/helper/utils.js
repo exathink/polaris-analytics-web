@@ -31,7 +31,7 @@ export function getCategories(colWidthBoundaries) {
   return [start, ...middle, end];
 }
 
-export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
+export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, visible}) {
   const allPairsData = allPairs(colWidthBoundaries);
   const data = new Array(allPairsData.length).fill({y:0, total: 0});
   points.forEach((y) => {
@@ -49,6 +49,7 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMe
     {
       name: metricsMeta[selectedMetric].display,
       data: data,
+      visible: visible !== undefined ? visible : true,
       dataLabels: {
         enabled: true,
         formatter: function () {

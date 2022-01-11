@@ -16,6 +16,11 @@ export const WorkItemsDurationsHistogramChart = Chart({
 
     const points = workItemsWithAggregateDurations.map((w) => w[selectedMetric]);
     const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta})
+    // get series for lead time and cycle time
+    const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
+    const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
+    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta})
+    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, visible: false})
     return {
       chart: {
         type: "column",
@@ -57,10 +62,28 @@ export const WorkItemsDurationsHistogramChart = Chart({
           });
         },
       },
-      series: series,
+      series: stateType === WorkItemStateTypes.closed ? [...seriesLeadTime, ...seriesCycleTime] : series,
       plotOptions: {
         series: {
           animation: false,
+          events: {
+            legendItemClick: function () {
+              // get all the series
+              var series = this.chart.series;
+
+              // don't allow visible series to be hidden
+              if (this.visible) {
+                return false;
+              } else {
+                // find visible series
+                const visibleSeries = series.find((x) => x.visible);
+                visibleSeries.hide();
+
+                // only allow hidden series to be shown, before showing it hide the visible series
+                return true;
+              }
+            },
+          },
         },
       },
       legend: {
