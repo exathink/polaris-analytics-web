@@ -7,15 +7,15 @@ import {getCategories, getHistogramSeries} from "../../../projects/shared/helper
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsDurationsHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItems", "selectedMetric", "specsOnly", "stateType"),
+  chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, selectedMetric, metricsMeta, stateType}) => {
+  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? metricsMeta[selectedMetric].display : "Age";
+    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ?  "Response Time" : "Age";
 
-    const points = workItemsWithAggregateDurations.map((w) => w[selectedMetric]);
-    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta})
+    const points = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
+    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric: "leadTime", metricsMeta})
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
@@ -30,7 +30,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `${metricsMeta[selectedMetric].display} Distribution`,
+        text: `Response Time Distribution`,
       },
       xAxis: {
         title: {
@@ -50,12 +50,13 @@ export const WorkItemsDurationsHistogramChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
+          debugger;
           return tooltipHtml({
             header: `${chartDisplayTitle}: ${this.point.category}`,
             body: [
               [`Cards: `, `${this.point.y}`],
               [
-                `Average ${metricsMeta[selectedMetric].display}: `,
+                `Average ${this.series.name}: `,
                 `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`,
               ],
             ],
