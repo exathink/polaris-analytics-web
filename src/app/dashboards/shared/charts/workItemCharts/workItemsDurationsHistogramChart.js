@@ -4,22 +4,24 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 
 import {Colors, WorkItemStateTypes} from "../../config";
 import {allPairs, getCategories} from "../../../projects/shared/helper/utils";
-import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
+import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 function getSeries({intl, colWidthBoundaries, workItemsWithAggregateDurations, selectedMetric, metricsMeta}) {
   const allPairsData = allPairs(colWidthBoundaries);
   const data = new Array(allPairsData.length).fill({y: 0, total: 0});
-  workItemsWithAggregateDurations.map(w => w[selectedMetric]).forEach((y) => {
-    for (let i = 0; i < allPairsData.length; i++) {
-      const [x1, x2] = allPairsData[i];
-      if (y >= x1 && y < x2) {
-        data[i] = {y: data[i].y + 1, total: data[i].total + y};
+  workItemsWithAggregateDurations
+    .map((w) => w[selectedMetric])
+    .forEach((y) => {
+      for (let i = 0; i < allPairsData.length; i++) {
+        const [x1, x2] = allPairsData[i];
+        if (y >= x1 && y < x2) {
+          data[i] = {y: data[i].y + 1, total: data[i].total + y};
 
-        // we found the correct bucket, no need to traverse entire loop now
-        break;
+          // we found the correct bucket, no need to traverse entire loop now
+          break;
+        }
       }
-    }
-  });
+    });
   return [
     {
       name: metricsMeta[selectedMetric].display,
@@ -46,7 +48,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({workItems, intl, colWidthBoundaries, selectedMetric, metricsMeta, stateType}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-
+    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? metricsMeta[selectedMetric].display : "Age";
 
     const series = getSeries({intl, colWidthBoundaries, selectedMetric, workItemsWithAggregateDurations, metricsMeta});
     return {
@@ -60,15 +62,9 @@ export const WorkItemsDurationsHistogramChart = Chart({
       title: {
         text: `${metricsMeta[selectedMetric].display} Distribution`,
       },
-      subtitle: {
-        text: (function () {
-          
-          return "Subtitle Test"
-        })(),
-      },
       xAxis: {
         title: {
-          text: `${stateType === WorkItemStateTypes.closed ? metricsMeta[selectedMetric].display : 'Age'} in Days` ,
+          text: `${chartDisplayTitle} in Days`,
         },
         categories: getCategories(colWidthBoundaries),
         crosshair: true,
@@ -85,7 +81,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-            header: `${metricsMeta[selectedMetric].display}`,
+            header: `${chartDisplayTitle}: ${this.point.category}`,
             body: [
               [`Cards: `, `${this.point.y}`],
               [
