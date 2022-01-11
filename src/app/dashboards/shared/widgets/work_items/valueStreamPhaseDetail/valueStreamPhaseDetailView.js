@@ -6,7 +6,7 @@ import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeS
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
-import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
+import {getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
@@ -192,6 +192,7 @@ const PhaseDetailView = ({
           </div>
           {selectedGrouping !== "table" && (
             <WorkItemsDurationsHistogramChart
+              stateType={selectedStateType}
               workItems={candidateWorkItems}
               selectedMetric={selectedGrouping}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}

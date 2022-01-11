@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors} from "../../config";
+import {Colors, WorkItemStateTypes} from "../../config";
 import {allPairs, getCategories} from "../../../projects/shared/helper/utils";
 import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
 
@@ -41,10 +41,10 @@ function getSeries({intl, colWidthBoundaries, workItemsWithAggregateDurations, s
 }
 
 export const WorkItemsDurationsHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
+  chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, selectedMetric, metricsMeta}) => {
+  getConfig: ({workItems, intl, colWidthBoundaries, selectedMetric, metricsMeta, stateType}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
 
 
@@ -68,7 +68,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       },
       xAxis: {
         title: {
-          text: metricsMeta[selectedMetric].display,
+          text: `${stateType === WorkItemStateTypes.closed ? metricsMeta[selectedMetric].display : 'Age'} in Days` ,
         },
         categories: getCategories(colWidthBoundaries),
         crosshair: true,
@@ -77,7 +77,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: `Specs Closed`,
+          text: `Cards`,
         },
       },
       tooltip: {
@@ -85,9 +85,9 @@ export const WorkItemsDurationsHistogramChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-            header: `${metricsMeta[selectedMetric].display}} `,
+            header: `${metricsMeta[selectedMetric].display}`,
             body: [
-              [`Specs Closed: `, `${this.point.y}`],
+              [`Cards: `, `${this.point.y}`],
               [
                 `Average ${metricsMeta[selectedMetric].display}: `,
                 `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`,
