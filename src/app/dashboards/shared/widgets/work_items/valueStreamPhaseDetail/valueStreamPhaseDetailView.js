@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
@@ -12,6 +12,8 @@ import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/w
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
+import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
+const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 const {Option} = Select;
 
@@ -185,21 +187,11 @@ const PhaseDetailView = ({
             </div>
           </div>
           {selectedGrouping !== "table" && (
-            <WorkItemsDurationsByPhaseChart
-              stateType={selectedStateType}
-              groupBy={selectedGrouping}
+            <WorkItemsDurationsHistogramChart
               workItems={candidateWorkItems}
-              title={`${candidateWorkItems.length} ${workItemScope === "specs" ? "Specs" : "Cards"} in ${
-                WorkItemStateTypeDisplayName[selectedStateType]
-              }`}
-              targetMetrics={targetMetrics}
-              onSelectionChange={(workItems) => {
-                console.log(`Selection changed: ${workItems.length}`);
-                if (workItems.length === 1) {
-                  setShowPanel(true);
-                  setWorkItemKey(workItems[0].key);
-                }
-              }}
+              selectedMetric="leadTime"
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              metricsMeta={projectDeliveryCycleFlowMetricsMeta}
             />
           )}
           {selectedGrouping === "table" && (
