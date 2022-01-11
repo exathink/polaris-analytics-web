@@ -119,7 +119,7 @@ const PhaseDetailView = ({
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
-  const [selectedGrouping, setSelectedGrouping] = useState("state");
+  const [selectedGrouping, setSelectedGrouping] = useState("leadTime");
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
@@ -176,9 +176,13 @@ const PhaseDetailView = ({
                 <GroupingSelector
                   label={"View"}
                   className={"groupCardsBySelector"}
-                  groupings={["state", "type", "table"].map((grouping) => ({
-                    key: grouping,
-                    display: capitalizeFirstLetter(grouping),
+                  groupings={[
+                    {key: "leadTime", display: "Lead Time"},
+                    {key: "cycleTime", display: "Cycle Time"},
+                    {key: "table", display: "Table"},
+                  ].map((item) => ({
+                    key: item.key,
+                    display: item.display,
                   }))}
                   initialValue={selectedGrouping}
                   onGroupingChanged={setSelectedGrouping}
@@ -189,7 +193,7 @@ const PhaseDetailView = ({
           {selectedGrouping !== "table" && (
             <WorkItemsDurationsHistogramChart
               workItems={candidateWorkItems}
-              selectedMetric="leadTime"
+              selectedMetric={selectedGrouping}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               metricsMeta={projectDeliveryCycleFlowMetricsMeta}
             />
