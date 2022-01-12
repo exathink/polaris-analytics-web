@@ -14,8 +14,6 @@ export const WorkItemsDurationsHistogramChart = Chart({
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const chartDisplayTitle = stateType === WorkItemStateTypes.closed ?  "Response Time" : "Age";
 
-    const points = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
-    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric: "leadTime", metricsMeta, color: ResponseTimeMetricsColor.leadTime})
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
@@ -63,7 +61,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
           });
         },
       },
-      series: stateType === WorkItemStateTypes.closed ? [...seriesLeadTime, ...seriesCycleTime] : series,
+      series: stateType === WorkItemStateTypes.closed ? [...seriesLeadTime, ...seriesCycleTime] : seriesLeadTime,
       plotOptions: {
         series: {
           animation: false,
