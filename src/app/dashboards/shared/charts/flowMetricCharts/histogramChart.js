@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors} from "../../config";
+import {Colors, ResponseTimeMetricsColor} from "../../config";
 import {getTimePeriod, getHistogramSeries, getCategories} from "../../../projects/shared/helper/utils";
 
 export const DeliveryCyclesHistogramChart = Chart({
@@ -18,7 +18,7 @@ export const DeliveryCyclesHistogramChart = Chart({
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
-    const series = getHistogramSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta});
+    const series = getHistogramSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta, color: ResponseTimeMetricsColor[selectedMetric]});
     return {
       chart: {
         type: "column",
