@@ -10,7 +10,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType}) => {
+  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const chartDisplayTitle = stateType === WorkItemStateTypes.closed ?  "Response Time" : "Age";
 
@@ -43,7 +43,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: `Cards`,
+          text: specsOnly ? `Specs`: `Cards`,
         },
       },
       tooltip: {

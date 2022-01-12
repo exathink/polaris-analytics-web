@@ -195,6 +195,7 @@ const PhaseDetailView = ({
               workItems={candidateWorkItems}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+              specsOnly={workItemScope==="specs"}
             />
           )}
           {selectedGrouping === "table" && (
