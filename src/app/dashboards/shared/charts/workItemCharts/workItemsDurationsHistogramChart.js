@@ -12,13 +12,28 @@ export const WorkItemsDurationsHistogramChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ?  "Response Time" : "Age";
+    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Response Time" : "Age";
 
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
-    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta, color: WorkItemStateTypeColor[stateType]})
-    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, color: WorkItemStateTypeColor[stateType]})
+    const seriesLeadTime = getHistogramSeries({
+      intl,
+      colWidthBoundaries,
+      points: pointsLeadTime,
+      selectedMetric: "leadTime",
+      metricsMeta,
+      color: WorkItemStateTypeColor[stateType],
+    });
+    const seriesCycleTime = getHistogramSeries({
+      intl,
+      colWidthBoundaries,
+      points: pointsCycleTime,
+      selectedMetric: "cycleTime",
+      metricsMeta,
+      color: WorkItemStateTypeColor[stateType],
+    });
+    
     return {
       chart: {
         type: "column",
@@ -41,7 +56,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: specsOnly ? `Specs`: `Cards`,
+          text: specsOnly ? `Specs` : `Cards`,
         },
       },
       tooltip: {
@@ -53,15 +68,17 @@ export const WorkItemsDurationsHistogramChart = Chart({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
               [`Cards: `, `${this.point.y}`],
-              [
-                `Average ${this.series.name}: `,
-                `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`,
-              ],
+              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`],
             ],
           });
         },
       },
-      series: stateType === WorkItemStateTypes.closed ? [seriesLeadTime, {...seriesCycleTime, visible: false}] : (stateType === WorkItemStateTypes.backlog ? [seriesLeadTime] : [seriesCycleTime]),
+      series:
+        stateType === WorkItemStateTypes.closed
+          ? [seriesLeadTime, {...seriesCycleTime, visible: false}]
+          : stateType === WorkItemStateTypes.backlog
+          ? [seriesLeadTime]
+          : [seriesCycleTime],
       plotOptions: {
         series: {
           animation: false,
