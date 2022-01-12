@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, ResponseTimeMetricsColor, WorkItemStateTypes} from "../../config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypes} from "../../config";
 import {getCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
@@ -17,8 +17,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
-    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta, color: ResponseTimeMetricsColor.leadTime})
-    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, color: ResponseTimeMetricsColor.cycleTime, visible: false})
+    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta, color: WorkItemStateTypeColor[stateType]})
+    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, color: WorkItemStateTypeColor[stateType]})
     return {
       chart: {
         type: "column",
@@ -61,7 +61,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
           });
         },
       },
-      series: stateType === WorkItemStateTypes.closed ? [...seriesLeadTime, ...seriesCycleTime] : seriesLeadTime,
+      series: stateType === WorkItemStateTypes.closed ? [seriesLeadTime, {...seriesCycleTime, visible: false}] : (stateType === WorkItemStateTypes.backlog ? [seriesLeadTime] : [seriesCycleTime]),
       plotOptions: {
         series: {
           animation: false,
@@ -76,7 +76,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
               } else {
                 // find visible series
                 const visibleSeries = series.find((x) => x.visible);
-                visibleSeries.hide();
+                visibleSeries?.hide();
 
                 // only allow hidden series to be shown, before showing it hide the visible series
                 return true;
