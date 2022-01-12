@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypes} from "../../config";
+import {Colors, ResponseTimeMetricsColor, WorkItemStateTypes} from "../../config";
 import {getCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
@@ -15,12 +15,12 @@ export const WorkItemsDurationsHistogramChart = Chart({
     const chartDisplayTitle = stateType === WorkItemStateTypes.closed ?  "Response Time" : "Age";
 
     const points = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
-    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric: "leadTime", metricsMeta})
+    const series = getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric: "leadTime", metricsMeta, color: ResponseTimeMetricsColor.leadTime})
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
-    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta})
-    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, visible: false})
+    const seriesLeadTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsLeadTime, selectedMetric: "leadTime", metricsMeta, color: ResponseTimeMetricsColor.leadTime})
+    const seriesCycleTime = getHistogramSeries({intl, colWidthBoundaries, points: pointsCycleTime, selectedMetric: "cycleTime", metricsMeta, color: ResponseTimeMetricsColor.cycleTime, visible: false})
     return {
       chart: {
         type: "column",
