@@ -52,7 +52,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         formatter: function () {
           debugger;
           return tooltipHtml({
-            header: `${chartDisplayTitle}: ${this.point.category}`,
+            header: `${this.series.name}: ${this.point.category}`,
             body: [
               [`Cards: `, `${this.point.y}`],
               [
