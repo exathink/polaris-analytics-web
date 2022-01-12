@@ -33,7 +33,7 @@ export function getCategories(colWidthBoundaries) {
 
 export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, color, visible}) {
   const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill({y:0, total: 0});
+  const data = new Array(allPairsData.length).fill({y: 0, total: 0});
   points.forEach((y) => {
     for (let i = 0; i < allPairsData.length; i++) {
       const [x1, x2] = allPairsData[i];
@@ -54,23 +54,21 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMe
     optionalProps.visible = visible;
   }
 
-  return [
-    {
-      name: metricsMeta[selectedMetric].display,
-      data: data,
-      ...optionalProps,
-      dataLabels: {
-        enabled: true,
-        formatter: function () {
+  return {
+    name: metricsMeta[selectedMetric].display,
+    data: data,
+    ...optionalProps,
+    dataLabels: {
+      enabled: true,
+      formatter: function () {
+        if (this.point.y === 0 || points.length === 0) {
+          return "";
+        } else {
           const fractionVal = this.point.y / points.length;
-          if (fractionVal === 0) {
-            return "";
-          } else {
-            const percentVal = i18nNumber(intl, fractionVal*100, 2);
-            return `${percentVal}%`;
-          }
-        },
+          const percentVal = i18nNumber(intl, fractionVal * 100, 2);
+          return `${percentVal}%`;
+        }
       },
     },
-  ];
+  };
 }
