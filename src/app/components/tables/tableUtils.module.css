@@ -2,16 +2,15 @@
   background-color: #ffffff;
 }
 
+.tableStyle :global(table) {
+  font-size: 0.875rem/* 14px */;
+  line-height: 1.25rem/* 20px */;
+  color: rgb(75 85 99 / 1);
+}
+
 .tableStyle :global(.ant-table-body) :global(table) {
   border-spacing: 0 4px;
   background-color: white;
-  font-size: 0.9rem;
-  line-height: 1.2rem;
-  color: #758599;
-}
-
-.tableStyle :global(.ant-table) {
-  margin: 5px;
 }
 
 /* row-hover color */
