@@ -1,66 +1,88 @@
-.responseTimeDetailWrapper{
-    display: grid;
-    height: 93%;
-    grid-template-areas: "leadTime . . ."
+.responseTimeDetailWrapper {
+  display: grid;
+  height: 93%;
+  grid-template-areas:
+    "leadTime . . ."
     "leadTime cycleTime implement ."
     "leadTime cycleTime implement ."
     "leadTime cycleTime effort deliver"
     "leadTime cycleTime effort deliver";
-    gap: 0.5rem;
+  gap: 0.5rem;
 }
 
-.leadTime{
-    height: 100%;
-    grid-area: leadTime;
+.leadTime {
+  height: 100%;
+  grid-area: leadTime;
 }
 
-.cycleTime{
-    height: 100%;
-    grid-area: cycleTime;
+.cycleTime {
+  height: 100%;
+  grid-area: cycleTime;
 }
 
-.implement{
-    grid-area: implement;
+.implement {
+  grid-area: implement;
 }
 
-.effort{
-    grid-area: effort;
+.effort {
+  grid-area: effort;
 }
 
-.deliver{
-    height: 100%;
-    grid-area: deliver;
+.deliver {
+  height: 100%;
+  grid-area: deliver;
 }
 
 /* Throughput Detail View */
-.throughputDetailWrapper{
-    display: flex;
-    height: 93%;
-    gap: 0.5rem;
+.throughputDetailWrapper {
+  display: flex;
+  height: 93%;
+  gap: 0.5rem;
 }
 
-.volume{
-    height: 100%;
-    grid-area: volume;
-    flex-grow: 1;
+.volume {
+  height: 100%;
+  grid-area: volume;
+  flex-grow: 1;
 }
 
-.effortOut{
-    height: 100%;
-    grid-area: effortOut;
-    flex-grow: 1;
+.effortOut {
+  height: 100%;
+  grid-area: effortOut;
+  flex-grow: 1;
 }
 
-.controls{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.teamDropdown{
-    margin-left: 15px;
-    margin-bottom: 5px;
+.teamDropdown {
+  margin-left: 15px;
+  margin-bottom: 5px;
 }
-.metricDropdown{
-    margin-left: 15px;
-    margin-bottom: 5px;
+.metricDropdown {
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+.comboCardCol {
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.workItemType {
+  grid-row: span 2 / span 2;
+  align-self: center;
+}
+.title {
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+  font-weight: 400;
+}
+.displayId {
+  font-size: 0.75rem /* 14px */;
+  line-height: 1rem /* 20px */;
+  font-weight: 600;
 }
