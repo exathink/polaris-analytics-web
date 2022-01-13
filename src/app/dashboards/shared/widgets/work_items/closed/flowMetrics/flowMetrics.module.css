@@ -86,3 +86,10 @@
   line-height: 1rem /* 20px */;
   font-weight: 600;
 }
+
+.flowMetricXs {
+  font-size: 0.75rem/* 12px */;
+  line-height: 1rem/* 16px */;
+  color: rgb(107 114 128 / 1);
+  font-weight: 500;
+}
