@@ -1,16 +1,38 @@
 .tableRow {
-    background-color: #ffffff;
-    height: 5rem;
+  background-color: #ffffff;
+  height: 5rem;
 }
 
 .tableStyle :global(.ant-table) :global(table) {
-    border-spacing: 0 3px;
-    background-color: #fafafa;
-    font-size: 0.9rem;
-    line-height: 1.2rem;
-    color: #758599;
+  border-spacing: 0 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+  color: #758599;
 }
 
+.tableStyle :global(.ant-table) {
+  margin: 5px;
+}
+
+/* row-hover color */
+/* .tableStyle :global(.ant-table) :global(table) :global(tbody) :global(tr:hover) :global(td) {
+    background: rgba(224, 248, 232, 1);
+} */
+
+/* row borders */
 .tableStyle :global(.ant-table) :global(table) :global(tr) :global(td) {
-    border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(tr) :global(td:first-child) {
+  border-left: 1px solid #e5e7eb;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.tableStyle :global(.ant-table) :global(table) :global(tr) :global(td:last-child) {
+  border-right: 1px solid #e5e7eb;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
