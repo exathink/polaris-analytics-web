@@ -54,8 +54,10 @@
 
 /* thead color */
 .tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
-    /* background: rgb(209 213 219 / 0.5); */
     background-color: #e5e7eb;
+    text-transform: uppercase;
+    font-size: 0.75rem/* 12px */;
+    line-height: 1rem/* 16px */;
 }
 
 .tableStyle :global(.ant-table) :global(table) :global(tbody:before) {
