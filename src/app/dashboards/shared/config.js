@@ -48,14 +48,13 @@ export const Colors = {
   }
 };
 
-//TODO: these colors need to be updated
 export const ResponseTimeMetricsColor = {
-  leadTime: '#8f9a8e',
-  cycleTime: '#65b59c',
-  backlogTime: '#affaff',
+  leadTime: '#7cb5ec',
+  cycleTime: '#434348',
+  backlogTime: '#9ca3af',
   latency: '#beddd3',
-  duration: '#2f9a32',
-  effort: '#9898db',
+  duration: '#90ed7d',
+  effort: '#0f49b1',
 }
 
 export const Untracked = 'Untraceable';
