@@ -49,12 +49,12 @@ export const Colors = {
 };
 
 export const ResponseTimeMetricsColor = {
-  leadTime: '#7cb5ec',
-  cycleTime: '#434348',
+  leadTime: '#4949e3',
+  cycleTime: '#5d90bb',
   backlogTime: '#9ca3af',
-  latency: '#beddd3',
+  latency: '#95dc9b',
   duration: '#90ed7d',
-  effort: '#0f49b1',
+  effort: '#b17b0f',
 }
 
 export const Untracked = 'Untraceable';
