@@ -1,6 +1,5 @@
 .tableRow {
   background-color: #ffffff;
-  height: 5rem;
 }
 
 .tableStyle :global(.ant-table-body) :global(table) {
