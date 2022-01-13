@@ -16,7 +16,7 @@ export const TABLE_HEIGHTS = {
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
     <Table
-      rowClassName={(record, index) => (index % 2 === 0 ? styles.tableRowLight : styles.tableRowDark)}
+      rowClassName={(record, index) => styles.tableRow}
       size="small"
       pagination={false}
       columns={columns}
@@ -25,7 +25,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
       showSorterTooltip={false}
       loading={loading}
       data-testid={testId}
-      bordered={true}
+      className={styles.tableStyle}
       onChange={onChange}
       {...tableProps}
     />
