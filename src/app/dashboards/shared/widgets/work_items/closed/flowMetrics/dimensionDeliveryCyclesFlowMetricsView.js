@@ -46,7 +46,8 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           "duration",
           "effort",
           "authorCount",
-          "teamNodeRefs"
+          "teamNodeRefs",
+          "epicName",
         )
       ),
     [data, dimension]
