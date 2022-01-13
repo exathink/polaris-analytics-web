@@ -1,8 +1,5 @@
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../../work_items/context";
 import {Highlighter} from "../../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
@@ -44,20 +41,6 @@ function getTransformedData(data, intl) {
       teams: joinTeams(item),
     };
   });
-}
-
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link to={`${url_for_instance(WorkItems, record.displayId, record.workItemKey)}`}>
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
 }
 
 function customTitleRender(setShowPanel, setWorkItemKey) {
