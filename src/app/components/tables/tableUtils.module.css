@@ -3,7 +3,7 @@
   height: 5rem;
 }
 
-.tableStyle :global(.ant-table) :global(table) {
+.tableStyle :global(.ant-table-body) :global(table) {
   border-spacing: 0 4px;
   background-color: white;
   font-size: 0.9rem;
@@ -56,5 +56,10 @@
 
 /* thead color */
 .tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
-    background: rgb(209 213 219 / 0.5);
+    /* background: rgb(209 213 219 / 0.5); */
+    background-color: #e5e7eb;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(tbody:before) {
+ border-collapse: collapse;
 }
