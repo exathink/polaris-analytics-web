@@ -38,6 +38,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           "workItemKey",
           "workItemType",
           "state",
+          "stateType",
           "startDate",
           "endDate",
           "leadTime",

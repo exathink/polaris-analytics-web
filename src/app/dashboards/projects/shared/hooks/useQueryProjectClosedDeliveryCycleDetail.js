@@ -32,6 +32,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             isBug
 
             state
+            stateType
 
             startDate
             endDate

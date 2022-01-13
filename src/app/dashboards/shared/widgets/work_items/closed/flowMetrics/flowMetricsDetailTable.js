@@ -12,6 +12,7 @@ import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getCategories} from "../../../../../projects/shared/helper/utils";
 import styles from "./flowMetrics.module.css";
 import {Tag} from "antd";
+import {WorkItemStateTypeColor} from "../../../../config";
 
 const workItemTypeImageMap = {
   story: <img src="/images/icons/story.svg" alt="#" style={{width: "16px", height: "16px"}} />,
@@ -93,7 +94,7 @@ function customColRender({setShowPanel, setWorkItemKey, colRender = (text) => te
         style={{cursor: "pointer"}}
         className={className}
       >
-        {colRender(text)}
+        {colRender(text, record)}
       </span>
     );
 }
@@ -116,10 +117,14 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
   };
 }
 
+function getWorkItemTypeIcon(workItemType) {
+  return <div style={{width: "16px", height: "16px", backgroundColor: WorkItemStateTypeColor[workItemType], borderRadius: "0.2rem", marginRight: "0.5rem"}}></div>
+}
+
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
   const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
-  const stateTypeRenderState = {render: customColRender({setShowPanel, setWorkItemKey, colRender: text => text.toLowerCase(), className: styles.flowMetricXs})}
+  const stateTypeRenderState = {render: customColRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getWorkItemTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
   const closedAtRenderState = {render: customColRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
   const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
 
@@ -135,7 +140,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       key: "teams",
       filters: filters.teams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "5%",
+      width: "4%",
       ...renderTeamsColState,
     },
     // {
@@ -169,7 +174,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       dataIndex: "state",
       key: "state",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
-      width: "5%",
+      width: "7%",
       ...stateTypeRenderState,
     },
     {
