@@ -15,20 +15,22 @@ export const TABLE_HEIGHTS = {
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <Table
-      rowClassName={(record, index) => styles.tableRow}
-      size="small"
-      pagination={false}
-      columns={columns}
-      dataSource={dataSource}
-      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
-      showSorterTooltip={false}
-      loading={loading}
-      data-testid={testId}
-      className={styles.tableStyle}
-      onChange={onChange}
-      {...tableProps}
-    />
+    <div style={{padding: "5px", backgroundColor: "white"}}>
+      <Table
+        rowClassName={(record, index) => styles.tableRow}
+        size="small"
+        pagination={false}
+        columns={columns}
+        dataSource={dataSource}
+        scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
+        showSorterTooltip={false}
+        loading={loading}
+        data-testid={testId}
+        className={styles.tableStyle}
+        onChange={onChange}
+        {...tableProps}
+      />
+    </div>
   );
 }
 

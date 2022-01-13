@@ -36,3 +36,25 @@
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
+
+/* th borders */
+/* .tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th:first-child) {
+  border-left: 1px solid #e5e7eb;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th:last-child) {
+  border-right: 1px solid #e5e7eb;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+} */
+
+/* thead color */
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
+    background: rgb(209 213 219 / 0.5);
+}
