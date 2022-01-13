@@ -3,7 +3,7 @@ import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypes} from "../../config";
-import {getCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
+import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsDurationsHistogramChart = Chart({
@@ -49,7 +49,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         title: {
           text: `${chartDisplayTitle} in Days`,
         },
-        categories: getCategories(colWidthBoundaries),
+        categories: getHistogramCategories(colWidthBoundaries),
         crosshair: true,
       },
 

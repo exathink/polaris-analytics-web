@@ -3,7 +3,7 @@ import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors, ResponseTimeMetricsColor} from "../../config";
-import {getTimePeriod, getHistogramSeries, getCategories} from "../../../projects/shared/helper/utils";
+import {getTimePeriod, getHistogramSeries, getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
@@ -45,7 +45,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         title: {
           text: metricsMeta[selectedMetric].display,
         },
-        categories: getCategories(colWidthBoundaries),
+        categories: getHistogramCategories(colWidthBoundaries, selectedMetric, metricsMeta),
         crosshair: true,
       },
 
