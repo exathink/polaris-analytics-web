@@ -1,5 +1,6 @@
 import React from "react";
 import {i18nDate, i18nNumber, percentileToText} from "../../../../../../helpers/utility";
+import { ResponseTimeMetricsColor } from "../../../../config";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
@@ -73,12 +74,12 @@ export const ResponseTimeTrendsChart = (
   }) => {
   
   const metrics = React.useMemo(() => [
-    {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline'},
-    {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline'},
+    {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline', color: ResponseTimeMetricsColor.leadTime},
+    {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline', color: ResponseTimeMetricsColor.cycleTime},
 
-    {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: '#beddd3'},
-    {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true},
-    {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: '#0f49b1'},
+    {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.latency},
+    {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.duration},
+    {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: ResponseTimeMetricsColor.effort},
 
   ], [defaultSeries]);
   
