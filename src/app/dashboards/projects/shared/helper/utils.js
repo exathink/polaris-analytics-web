@@ -1,4 +1,4 @@
-import {formatDate, getTodayDate} from "../../../../helpers/utility";
+import {formatDate, getTodayDate, i18nNumber} from "../../../../helpers/utility";
 
 export function getTimePeriod(measurementWindow, before = getTodayDate()) {
   return before ? `${measurementWindow} days ending ${formatDate(before, "MM/DD/YYYY")} ` : ``;
@@ -22,11 +22,55 @@ export function allPairs(arr) {
   return [[0, min], ...res, [max, Infinity]];
 }
 
-export function getCategories(colWidthBoundaries) {
+export function getHistogramCategories(colWidthBoundaries, selectedMetric, metricsMeta) {
+
+  const uom = selectedMetric != null ? metricsMeta[selectedMetric].uom : 'days';
   const res = pairwise(colWidthBoundaries);
   const [min, max] = [res[0][0], res[res.length - 1][1]];
-  const middle = res.map((x) => `${x[0]} - ${x[1]} days`);
-  const start = `< ${min} days`;
-  const end = `${max} + days`;
+  const middle = res.map((x) => `${x[0]} - ${x[1]} ${uom}`);
+  const start = `< ${min} ${uom}`;
+  const end = `${max} + ${uom}`;
   return [start, ...middle, end];
+}
+
+export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, color, visible}) {
+  const allPairsData = allPairs(colWidthBoundaries);
+  const data = new Array(allPairsData.length).fill({y: 0, total: 0});
+  points.forEach((y) => {
+    for (let i = 0; i < allPairsData.length; i++) {
+      const [x1, x2] = allPairsData[i];
+      if (y >= x1 && y < x2) {
+        data[i] = {y: data[i].y + 1, total: data[i].total + y};
+
+        // we found the correct bucket, no need to traverse entire loop now
+        break;
+      }
+    }
+  });
+
+  const optionalProps = {};
+  if (color !== undefined) {
+    optionalProps.color = color;
+  }
+  if (visible !== undefined) {
+    optionalProps.visible = visible;
+  }
+
+  return {
+    name: metricsMeta[selectedMetric].display,
+    data: data,
+    ...optionalProps,
+    dataLabels: {
+      enabled: true,
+      formatter: function () {
+        if (this.point.y === 0 || points.length === 0) {
+          return "";
+        } else {
+          const fractionVal = this.point.y / points.length;
+          const percentVal = i18nNumber(intl, fractionVal * 100, 2);
+          return `${percentVal}%`;
+        }
+      },
+    },
+  };
 }

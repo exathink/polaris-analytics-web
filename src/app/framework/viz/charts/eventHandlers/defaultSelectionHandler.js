@@ -117,7 +117,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesShow() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange(EVENT_TYPES.SERIES_CLICK)
+      this.onSelectionChange(EVENT_TYPES.SERIES_SHOW)
     }
 
 
@@ -125,7 +125,7 @@ export class DefaultSelectionEventHandler {
 
   onSeriesHide() {
     if(this.selectionTriggers.series) {
-      this.onSelectionChange(EVENT_TYPES.SERIES_CLICK)
+      this.onSelectionChange(EVENT_TYPES.SERIES_HIDE)
     }
   }
 

@@ -9,7 +9,7 @@ import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtil
 import {formatDateTime} from "../../../../../../i18n";
 import {toMoment} from "../../../../../../helpers/utility";
 import {joinTeams} from "../../../../helpers/teamUtils";
-import {allPairs, getCategories} from "../../../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -242,7 +242,7 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-  const categories = getCategories(colWidthBoundaries);
+  const categories = getHistogramCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
   const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData}, {setShowPanel, setWorkItemKey});
   const dataSource = getTransformedData(tableData, intl);

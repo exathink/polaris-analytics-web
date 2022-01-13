@@ -1,17 +1,19 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {WorkItemsDurationsByPhaseChart} from "../../../charts/workItemCharts/workItemsDurationsByPhaseChart";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
-import {capitalizeFirstLetter, getUniqItems} from "../../../../../helpers/utility";
+import {getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
+import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
+const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 const {Option} = Select;
 
@@ -117,7 +119,7 @@ const PhaseDetailView = ({
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
-  const [selectedGrouping, setSelectedGrouping] = useState("state");
+  const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
@@ -174,9 +176,12 @@ const PhaseDetailView = ({
                 <GroupingSelector
                   label={"View"}
                   className={"groupCardsBySelector"}
-                  groupings={["state", "type", "table"].map((grouping) => ({
-                    key: grouping,
-                    display: capitalizeFirstLetter(grouping),
+                  groupings={[
+                    {key: "responseTime", display: "Response Time"},
+                    {key: "table", display: "Table"},
+                  ].map((item) => ({
+                    key: item.key,
+                    display: item.display,
                   }))}
                   initialValue={selectedGrouping}
                   onGroupingChanged={setSelectedGrouping}
@@ -185,21 +190,12 @@ const PhaseDetailView = ({
             </div>
           </div>
           {selectedGrouping !== "table" && (
-            <WorkItemsDurationsByPhaseChart
+            <WorkItemsDurationsHistogramChart
               stateType={selectedStateType}
-              groupBy={selectedGrouping}
               workItems={candidateWorkItems}
-              title={`${candidateWorkItems.length} ${workItemScope === "specs" ? "Specs" : "Cards"} in ${
-                WorkItemStateTypeDisplayName[selectedStateType]
-              }`}
-              targetMetrics={targetMetrics}
-              onSelectionChange={(workItems) => {
-                console.log(`Selection changed: ${workItems.length}`);
-                if (workItems.length === 1) {
-                  setShowPanel(true);
-                  setWorkItemKey(workItems[0].key);
-                }
-              }}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+              specsOnly={workItemScope==="specs"}
             />
           )}
           {selectedGrouping === "table" && (

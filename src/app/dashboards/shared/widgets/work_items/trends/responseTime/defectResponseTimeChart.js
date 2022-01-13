@@ -1,6 +1,7 @@
 import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
+import {ResponseTimeMetricsColor} from "../../../../config";
 
 export const DefectResponseTimeChart = ({
   flowMetricsTrends,
@@ -13,8 +14,8 @@ export const DefectResponseTimeChart = ({
     <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
       metrics={[
-        {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline"},
-        {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline"},
+        {key: "avgLeadTime", displayName: "Avg. Lead Time", visible: true, type: "spline", color: ResponseTimeMetricsColor.leadTime},
+        {key: "avgCycleTime", displayName: "Avg. Cycle Time", visible: true, type: "spline", color: ResponseTimeMetricsColor.cycleTime},
       ]}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
