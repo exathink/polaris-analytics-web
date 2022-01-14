@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { Input } from 'antd';
+import {Button, Checkbox, Empty, Input, Menu} from "antd";
 import {Highlighter} from "../misc/highlighter";
 import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
+import {getContainerNode} from "../../helpers/utility";
 
 export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   const [searchText, setSearchText] = useState(null);
@@ -117,4 +118,99 @@ export function useSelectionHandler(onSelectionsChanged, initialSelections) {
       onSelectionsChanged && onSelectionsChanged(selectedRows)
     }
   }
+}
+
+export function useComboColFilter(dataIndex, {customRender}) {
+  const [searchText] = useState(null);
+
+  function filterDropdown({setSelectedKeys, selectedKeys, confirm, clearFilters, filters}) {
+    const onSelectKeys = ({selectedKeys}) => {
+      setSelectedKeys(selectedKeys);
+    };
+
+    const menuItems = filters.map((filter, index) => {
+      const key = String(filter.value);
+      const item = (
+        <Menu.Item key={filter.value !== undefined ? key : index}>
+          <Checkbox checked={selectedKeys.includes(key)} />
+          <span>{filter.text}</span>
+        </Menu.Item>
+      );
+      return item;
+    });
+
+    const getFilterComponent = () => {
+      if ((filters || []).length === 0) {
+        return (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={""}
+            imageStyle={{
+              height: 24,
+            }}
+            style={{
+              margin: 0,
+              padding: "16px 0",
+            }}
+          />
+        );
+      }
+      return (
+        <Menu
+          multiple={true}
+          prefixCls={`ant-dropdown-menu`}
+          className="ant-dropdown-menu"
+          onSelect={onSelectKeys}
+          onDeselect={onSelectKeys}
+          selectedKeys={selectedKeys}
+          getPopupContainer={getContainerNode}
+        >
+          {menuItems}
+        </Menu>
+      );
+    };
+
+    const onConfirm = ()=>{
+      confirm();
+    }
+
+    const dropdownContent = (
+      <>
+        {getFilterComponent()}
+        <div className={`ant-table-filter-dropdown-btns`}>
+          <Button type="link" size="small" disabled={selectedKeys.length === 0} onClick={clearFilters}>
+            Reset
+          </Button>
+          <Button type="primary" size="small" onClick={onConfirm}>
+            Ok
+          </Button>
+        </div>
+      </>
+    );
+
+    return dropdownContent;
+  }
+
+  function onFilter(value, record) {
+    const recordName = record.epicName??"";
+    const searchLower = value.toLowerCase();
+    return recordName.toString().toLowerCase().includes(searchLower)
+  }
+
+  function render(text, record) {
+      if (customRender) {
+        return customRender(text, record, searchText);
+      }
+      return (
+        text && (
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={text.toString()}
+          />
+        )
+      );
+  }
+
+  return {filterDropdown, render, onFilter};
 }

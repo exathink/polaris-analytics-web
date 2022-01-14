@@ -1,5 +1,5 @@
 import {Highlighter} from "../../../../../../components/misc/highlighter";
-import {useSearch} from "../../../../../../components/tables/hooks";
+import {useComboColFilter} from "../../../../../../components/tables/hooks";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
@@ -105,7 +105,7 @@ function getWorkItemTypeIcon(workItemType) {
 }
 
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
+  const titleSearchState = useComboColFilter("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
   const stateTypeRenderState = {render: customColRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getWorkItemTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
   const closedAtRenderState = {render: customColRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
@@ -138,6 +138,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       title: "CARD",
       dataIndex: "name",
       key: "name",
+      filters: filters.epicNames.map(b => ({text: b, value: b})),
       width: "17%",
       sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...titleSearchState,
@@ -248,7 +249,8 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
   const categories = getCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
-  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData}, {setShowPanel, setWorkItemKey});
+  const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
+  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey});
   const dataSource = getTransformedData(tableData, intl);
 
   return (
