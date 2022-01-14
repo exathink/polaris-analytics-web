@@ -115,7 +115,7 @@ const PhaseDetailView = ({
 
   const [selectedStateType, setSelectedStateType] = useState(
     /* priority order to select the default open tab when we first render this component */
-    ["wip", "complete", "open", "closed", "backlog"].find(
+    ["closed", "wip", "complete", "open",  "backlog"].find(
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
@@ -178,7 +178,7 @@ const PhaseDetailView = ({
                   className={"groupCardsBySelector"}
                   groupings={[
                     {key: "responseTime", display: "Response Time"},
-                    {key: "table", display: "Table"},
+                    {key: "table", display: "Cards"},
                   ].map((item) => ({
                     key: item.key,
                     display: item.display,
