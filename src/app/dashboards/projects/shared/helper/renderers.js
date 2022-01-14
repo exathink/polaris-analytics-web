@@ -21,7 +21,7 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey) {
       <div
         onClick={() => {
           setShowPanel(true);
-          setWorkItemKey(record.workItemKey);
+          setWorkItemKey(record.workItemKey || record.key);
         }}
         className={styles.comboCardCol}
       >
@@ -51,7 +51,7 @@ export function customColumnRender({setShowPanel, setWorkItemKey, colRender = (t
       <span
         onClick={() => {
           setShowPanel(true);
-          setWorkItemKey(record.workItemKey);
+          setWorkItemKey(record.workItemKey || record.key);
         }}
         style={{cursor: "pointer"}}
         className={className}
