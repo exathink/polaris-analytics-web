@@ -152,7 +152,7 @@ export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
   open: '#c4ab49',
-  wip: '#2f9a32',
+  wip: 'rgba(47,154,50,0.75)',
   complete: '#9ed762',
   closed: '#7824b5'
 }
@@ -192,5 +192,5 @@ export const ResponseTimeMetricsColor = {
   backlogTime: '#9ca3af',
   latency: WorkItemStateTypeColor.complete,
   duration: WorkItemStateTypeColor.wip,
-  effort: '#de8d24',
+  effort: '#de6524',
 }
