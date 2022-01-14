@@ -7,8 +7,7 @@ import {toMoment} from "../../../../../../helpers/utility";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getCategories} from "../../../../../projects/shared/helper/utils";
 import styles from "./flowMetrics.module.css";
-import {WorkItemStateTypeColor} from "../../../../config";
-import {comboColumnTitleRender} from "../../../../../projects/shared/helper/renderers";
+import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../../projects/shared/helper/renderers";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -36,22 +35,6 @@ function getTransformedData(data, intl) {
   });
 }
 
-function customColRender({setShowPanel, setWorkItemKey, colRender = (text) => text, className}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.workItemKey);
-        }}
-        style={{cursor: "pointer"}}
-        className={className}
-      >
-        {colRender(text, record)}
-      </span>
-    );
-}
-
 function renderTeamsCol(setShowPanel, setWorkItemKey) {
   return (text, record, searchText) => {
     return (
@@ -70,15 +53,13 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
   };
 }
 
-function getWorkItemTypeIcon(workItemType) {
-  return <div style={{width: "16px", height: "16px", backgroundColor: WorkItemStateTypeColor[workItemType], borderRadius: "0.2rem", marginRight: "0.5rem"}}></div>
-}
+
 
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
   const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
-  const metricRenderState = {render: customColRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
-  const stateTypeRenderState = {render: customColRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getWorkItemTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
-  const closedAtRenderState = {render: customColRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
+  const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
+  const stateTypeRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
+  const closedAtRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
   const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
 
   function testMetric(value, record, metric) {
