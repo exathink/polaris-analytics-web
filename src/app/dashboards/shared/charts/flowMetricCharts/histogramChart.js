@@ -2,42 +2,8 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors} from "../../config";
-import {getTimePeriod, allPairs, getCategories} from "../../../projects/shared/helper/utils";
-
-function getSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta}) {
-  const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill({y:0, total: 0});
-  points.forEach((y) => {
-    for (let i = 0; i < allPairsData.length; i++) {
-      const [x1, x2] = allPairsData[i];
-      if (y >= x1 && y < x2) {
-        data[i] = {y: data[i].y + 1, total: data[i].total + y};
-
-        // we found the correct bucket, no need to traverse entire loop now
-        break;
-      }
-    }
-  });
-  return [
-    {
-      name: metricsMeta[selectedMetric].display,
-      data: data,
-      dataLabels: {
-        enabled: true,
-        formatter: function () {
-          const fractionVal = this.point.y / points.length;
-          if (fractionVal === 0) {
-            return "";
-          } else {
-            const percentVal = i18nNumber(intl, fractionVal*100, 2);
-            return `${percentVal}%`;
-          }
-        },
-      },
-    },
-  ];
-}
+import {Colors, ResponseTimeMetricsColor} from "../../config";
+import {getTimePeriod, getHistogramSeries, getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
@@ -52,7 +18,7 @@ export const DeliveryCyclesHistogramChart = Chart({
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
-    const series = getSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta});
+    const seriesObj = getHistogramSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta, color: ResponseTimeMetricsColor[selectedMetric]});
     return {
       chart: {
         type: "column",
@@ -79,7 +45,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         title: {
           text: metricsMeta[selectedMetric].display,
         },
-        categories: getCategories(colWidthBoundaries),
+        categories: getHistogramCategories(colWidthBoundaries, selectedMetric, metricsMeta),
         crosshair: true,
       },
 
@@ -108,7 +74,7 @@ export const DeliveryCyclesHistogramChart = Chart({
           });
         },
       },
-      series: series,
+      series: [seriesObj],
       plotOptions: {
         series: {
           animation: false,

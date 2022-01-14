@@ -49,6 +49,7 @@ export const Colors = {
 };
 
 
+
 export const Untracked = 'Untraceable';
 
 export const WorkItemColorMap = {
@@ -151,8 +152,8 @@ export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
   open: '#c4ab49',
-  wip: '#2f9a32',
-  complete: '#9898db',
+  wip: 'rgba(47,154,50,0.75)',
+  complete: '#90d53f',
   closed: '#7824b5'
 }
 
@@ -183,4 +184,13 @@ export function assignWorkItemStateColor(stateType, index) {
   const subcolorMap = WorkItemStateTypeSubColors[stateType||'unmapped'];
   // Assign a color from the sub pallete using the index. Wraps around to zero.
   return subcolorMap[index % subcolorMap.length]
+}
+
+export const ResponseTimeMetricsColor = {
+  leadTime: 'rgba(64,64,243,0.8)',
+  cycleTime: '#5d90bb',
+  backlogTime: '#9ca3af',
+  latency: WorkItemStateTypeColor.complete,
+  duration: WorkItemStateTypeColor.wip,
+  effort: '#de6524',
 }

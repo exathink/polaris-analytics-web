@@ -5,9 +5,10 @@ import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtil
 import {formatDateTime} from "../../../../../../i18n";
 import {toMoment} from "../../../../../../helpers/utility";
 import {joinTeams} from "../../../../helpers/teamUtils";
-import {allPairs, getCategories} from "../../../../../projects/shared/helper/utils";
 import styles from "./flowMetrics.module.css";
 import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../../projects/shared/helper/renderers";
+import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
+
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -198,7 +199,7 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-  const categories = getCategories(colWidthBoundaries);
+  const categories = getHistogramCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
   const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey});
