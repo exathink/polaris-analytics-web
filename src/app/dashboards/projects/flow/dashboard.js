@@ -36,16 +36,17 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     <Dashboard dashboard={`${dashboard_id}`} className={styles.flowDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="throughput-flow"
-          title={"Throughput"}
-          className={styles.throughput}
+          name="response-time-flow"
+          title={"Response Time"}
+          className={styles.leadAndCycleTime}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionThroughputWidget
+            <DimensionResponseTimeWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
+              display={"leadAndCycleTimeSummary"}
               context={context}
               specsOnly={true}
               days={flowAnalysisPeriod}
@@ -58,7 +59,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              normalized={true}
             />
           )}
           showDetail={true}
@@ -91,19 +91,17 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-
         <DashboardWidget
-          name="response-time-flow"
-          title={"Response Time"}
-          className={styles.leadAndCycleTime}
+          name="throughput-flow"
+          title={"Throughput"}
+          className={styles.throughput}
           subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionResponseTimeWidget
+            <DimensionThroughputWidget
               dimension={"project"}
               instanceKey={key}
               view={view}
-              display={"leadAndCycleTimeSummary"}
               context={context}
               specsOnly={true}
               days={flowAnalysisPeriod}
@@ -116,10 +114,12 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={includeSubTasksFlowMetrics}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              normalized={true}
             />
           )}
           showDetail={true}
         />
+
         <DashboardWidget
           name="traceability"
           title={"Traceability"}

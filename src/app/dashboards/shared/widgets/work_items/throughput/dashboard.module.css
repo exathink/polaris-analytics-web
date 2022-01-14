@@ -47,10 +47,10 @@
 
 .throughputStatistic{
   display: grid;
-  grid-template-columns: 0.8fr 0.9fr 1fr 1fr;
+  grid-template-columns: 0.8fr 0.9fr 1fr;
   grid-template-rows: auto;
   gap: 0.5rem;
-  grid-template-areas: "first second third fourth";
+  grid-template-areas: "first second third";
 }
 .firstCol {
   grid-area: first;
@@ -61,7 +61,4 @@
 
 .thirdCol {
   grid-area: third;
-}
-.fourthCol {
-  grid-area: fourth;
 }

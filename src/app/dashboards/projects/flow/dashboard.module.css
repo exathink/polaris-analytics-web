@@ -4,8 +4,8 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1.3fr;
     grid-template-rows: auto 35% 49%;
     gap: 0.5rem;
-    grid-template-areas: "throughput throughput throughput throughput pipeline pipeline pipeline pipeline leadAndCycleTime leadAndCycleTime leadAndCycleTime traceability"
-    "volumeTrends volumeTrends volumeTrends volumeTrends pipelineFunnel pipelineFunnel pipelineFunnel pipelineFunnel responseTimeTrends responseTimeTrends responseTimeTrends responseTimeTrends"
+    grid-template-areas: "leadAndCycleTime leadAndCycleTime leadAndCycleTime leadAndCycleTime pipeline pipeline pipeline pipeline throughput throughput throughput traceability"
+    "responseTimeTrends responseTimeTrends responseTimeTrends responseTimeTrends pipelineFunnel pipelineFunnel pipelineFunnel pipelineFunnel volumeTrends volumeTrends volumeTrends volumeTrends  "
     "phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail phaseDetail";
 }
 

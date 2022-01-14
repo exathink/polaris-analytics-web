@@ -24,15 +24,14 @@ export const ThroughputView = ({
       <div className={styles.firstCol}>
         <ContributorCount contributorCount={contributorCount} />
       </div>
-      <div className={styles.secondCol}>
-        <Volume normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
-      </div>
+      <div className={styles.secondCol} >
+        <ComponentCarousel tickInterval={3000}>
+          <Volume normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+          <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
+        </ComponentCarousel>
+        </div>
 
       <div className={styles.thirdCol}>
-        <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current} previousMeasurement={previous} specsOnly={specsOnly} />
-      </div>
-
-      <div className={styles.fourthCol}>
         <ComponentCarousel tickInterval={3000}>
           <LatestClosed currentMeasurement={current} />
           <Cadence currentMeasurement={current} previousMeasurement={previous} />
