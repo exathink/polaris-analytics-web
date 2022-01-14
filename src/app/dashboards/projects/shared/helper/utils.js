@@ -33,7 +33,7 @@ export function getHistogramCategories(colWidthBoundaries, selectedMetric, metri
   return [start, ...middle, end];
 }
 
-export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, color, visible}) {
+export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, color, visible, name=null}) {
   const allPairsData = allPairs(colWidthBoundaries);
   const data = new Array(allPairsData.length).fill({y: 0, total: 0});
   points.forEach((y) => {
@@ -57,7 +57,7 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMe
   }
 
   return {
-    name: metricsMeta[selectedMetric].display,
+    name: name || metricsMeta[selectedMetric].display,
     data: data,
     ...optionalProps,
     dataLabels: {

@@ -2,10 +2,17 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypes} from "../../config";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor} from "../../config";
 import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
+function getChartSubtitle(stateType, specsOnly) {
+  if (stateType !== WorkItemStateTypes.closed) {
+     return `${specsOnly? 'Spec' : 'Card'} Age Distribution `
+  } else {
+    return `${specsOnly? 'Spec' : 'Card'} Response Time Distribution`
+  }
+}
 export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
@@ -23,7 +30,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
       points: pointsLeadTime,
       selectedMetric: "leadTime",
       metricsMeta,
-      color: WorkItemStateTypeColor[stateType],
+      name: stateType !== WorkItemStateTypes.closed ? 'Age' : null,
+      color: stateType !== WorkItemStateTypes.closed ? WorkItemStateTypeColor[stateType] : ResponseTimeMetricsColor.leadTime,
     });
     const seriesCycleTime = getHistogramSeries({
       intl,
@@ -31,7 +39,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
       points: pointsCycleTime,
       selectedMetric: "cycleTime",
       metricsMeta,
-      color: WorkItemStateTypeColor[stateType],
+      name: stateType !== WorkItemStateTypes.closed ? 'Age' : null,
+      color: stateType !== WorkItemStateTypes.closed ? WorkItemStateTypeColor[stateType] : ResponseTimeMetricsColor.cycleTime,
     });
     
     return {
@@ -43,11 +52,14 @@ export const WorkItemsDurationsHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Response Time Distribution`,
+        text: `Phase: ${WorkItemStateTypeDisplayName[stateType]}`,
+      },
+      subtitle: {
+        text: getChartSubtitle(stateType, specsOnly) ,
       },
       xAxis: {
         title: {
-          text: `${chartDisplayTitle} in Days`,
+          text: `${chartDisplayTitle}`,
         },
         categories: getHistogramCategories(colWidthBoundaries),
         crosshair: true,
