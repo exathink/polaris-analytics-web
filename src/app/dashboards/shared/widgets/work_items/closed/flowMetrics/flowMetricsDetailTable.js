@@ -1,4 +1,3 @@
-import {Highlighter} from "../../../../../../components/misc/highlighter";
 import {useComboColFilter} from "../../../../../../components/tables/hooks";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
@@ -8,14 +7,8 @@ import {toMoment} from "../../../../../../helpers/utility";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getCategories} from "../../../../../projects/shared/helper/utils";
 import styles from "./flowMetrics.module.css";
-import {Tag} from "antd";
 import {WorkItemStateTypeColor} from "../../../../config";
-
-const workItemTypeImageMap = {
-  story: <img src="/images/icons/story.svg" alt="#" style={{width: "16px", height: "16px"}} />,
-  task: <img src="/images/icons/task.svg" alt="#" style={{width: "16px", height: "16px"}} />,
-  bug: <img src="/images/icons/bug.svg" alt="#" style={{width: "16px", height: "16px"}} />,
-};
+import {comboColumnTitleRender} from "../../../../../projects/shared/helper/renderers";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -41,29 +34,6 @@ function getTransformedData(data, intl) {
       teams: joinTeams(item),
     };
   });
-}
-
-function customTitleRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) =>
-    text && (
-      <div
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.workItemKey);
-        }}
-        className={styles.comboCardCol}
-      >
-        <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
-        <div className={styles.title}>
-          <Highlighter
-            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-            searchWords={searchText || ""}
-            textToHighlight={text.toString()}
-          />
-        </div>
-        <div className={styles.displayId}>{record.displayId} {record.epicName && <Tag color="#108ee9" style={{marginLeft: "30px"}}>{record.epicName}</Tag>}</div>
-      </div>
-    );
 }
 
 function customColRender({setShowPanel, setWorkItemKey, colRender = (text) => text, className}) {
@@ -105,7 +75,7 @@ function getWorkItemTypeIcon(workItemType) {
 }
 
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
-  const titleSearchState = useComboColFilter("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
+  const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
   const stateTypeRenderState = {render: customColRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getWorkItemTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
   const closedAtRenderState = {render: customColRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
