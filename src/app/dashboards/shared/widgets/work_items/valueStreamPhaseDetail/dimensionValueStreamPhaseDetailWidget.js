@@ -28,7 +28,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   workItemScope: parentWorkItemScope,
   setWorkItemScope: parentSetWorkItemScope,
 }) => {
-  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "all");
+  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "specs");
 
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
