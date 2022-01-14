@@ -1,6 +1,65 @@
-.tableRowLight {
-    background-color: #ffffff;
+.tableRow {
+  background-color: #ffffff;
 }
-.tableRowDark {
-    background-color: #fbfbfb;
+
+.tableStyle :global(table) {
+  font-size: 0.875rem/* 14px */;
+  line-height: 1.25rem/* 20px */;
+  color: rgb(75 85 99 / 1);
+}
+
+.tableStyle :global(.ant-table-body) :global(table) {
+  border-spacing: 0 4px;
+  background-color: white;
+}
+
+/* row-hover color */
+/* .tableStyle :global(.ant-table) :global(table) :global(tbody) :global(tr:hover) :global(td) {
+    background: rgba(224, 248, 232, 1);
+} */
+
+/* row borders */
+.tableStyle :global(.ant-table) :global(table) :global(tr) :global(td) {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(tr) :global(td:first-child) {
+  border-left: 1px solid #e5e7eb;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.tableStyle :global(.ant-table) :global(table) :global(tr) :global(td:last-child) {
+  border-right: 1px solid #e5e7eb;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+/* th borders */
+/* .tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th:first-child) {
+  border-left: 1px solid #e5e7eb;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th:last-child) {
+  border-right: 1px solid #e5e7eb;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+} */
+
+/* thead color */
+.tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
+    background-color: #e5e7eb;
+    text-transform: uppercase;
+    font-size: 0.75rem/* 12px */;
+    line-height: 1rem/* 16px */;
+}
+
+.tableStyle :global(.ant-table) :global(table) :global(tbody:before) {
+ border-collapse: collapse;
 }

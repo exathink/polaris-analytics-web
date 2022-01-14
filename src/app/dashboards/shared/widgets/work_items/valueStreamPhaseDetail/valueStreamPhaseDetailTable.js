@@ -1,14 +1,11 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../work_items/context";
-import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../../helpers/utility";
+import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -35,62 +32,13 @@ function getTransformedData(data, intl) {
       effort: getNumber(item.effort, intl),
       duration: getNumber(item.duration, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
+      stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
       rowKey: `${now}.${index}`
     };
   });
 }
-
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}>
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
-}
-
-function customTitleRender({setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </span>
-    );
-}
-
-function customColRender({setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {text}
-      </span>
-    );
-}
-
-
 
 function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
@@ -113,67 +61,70 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 
 
 export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
-  const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
-  const renderState = {render: customColRender(callBacks)};
+  // const nameSearchState = useSearch("displayId", {customRender});
+  const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
+  const stateTypeRenderState = {render: customColumnRender({...callBacks, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateTypeInternal)} {text.toLowerCase()}</div>, className: "textXs"})}
+  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
+  const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
 
   const columns = [
-    {
-      title: "Name",
-      dataIndex: "displayId",
-      key: "displayId",
-      width: "5%",
-      sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
-      ...nameSearchState,
-    },
-    {
-      title: "Title",
-      dataIndex: "name",
-      key: "name",
-      width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
-      ...titleSearchState,
-    },
-    {
-      title: "Type",
-      dataIndex: "workItemType",
-      key: "workItemType",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      width: "5%",
-      ...renderState,
-    },
     {
       title: "Team",
       dataIndex: "teams",
       key: "teams",
       filters: filters.teams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "5%",
+      width: "4%",
       ...renderTeamsCol,
     },
+    // {
+    //   title: "Name",
+    //   dataIndex: "displayId",
+    //   key: "displayId",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
+    //   ...nameSearchState,
+    // },
     {
-      title: "Phase",
-      dataIndex: "stateType",
-      key: "stateType",
-      sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
-      filters: filters.stateTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.stateType.indexOf(value) === 0,
-      width: "5%",
-      ...renderState,
+      title: "CARD",
+      dataIndex: "name",
+      key: "name",
+      filters: filters.epicNames.map(b => ({text: b, value: b})),
+      width: "12%",
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      ...titleSearchState,
     },
+    // {
+    //   title: "Type",
+    //   dataIndex: "workItemType",
+    //   key: "workItemType",
+    //   sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+    //   filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+    //   width: "5%",
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Phase",
+    //   dataIndex: "stateType",
+    //   key: "stateType",
+    //   sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
+    //   filters: filters.stateTypes.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.stateType.indexOf(value) === 0,
+    //   width: "5%",
+    //   ...renderState,
+    // },
     {
       title: "State",
       dataIndex: "state",
       key: "state",
-      width: "5%",
+      width: "7%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
-      ...renderState,
+      ...stateTypeRenderState,
     },
     {
       title: "Entered",
@@ -196,7 +147,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "leadTime",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
-      ...renderState
+      ...metricRenderState
     },
     {
       title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
@@ -204,24 +155,24 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "cycleTime",
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
-      ...renderState,
+      ...metricRenderState,
     },
-    {
-      title: 'Implem...',
-      dataIndex: "duration",
-      key: "duration",
-      width: "4%",
-      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
-      ...renderState,
-    },
-    {
-      title: "Effort",
-      dataIndex: "effort",
-      key: "effort",
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...renderState
-    },
+    // {
+    //   title: 'Implem...',
+    //   dataIndex: "duration",
+    //   key: "duration",
+    //   width: "4%",
+    //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Effort",
+    //   dataIndex: "effort",
+    //   key: "effort",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+    //   ...renderState
+    // },
     {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
@@ -241,11 +192,12 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableDa
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
 
   const dataSource = getTransformedData(tableData, intl);
   const columns = useValueStreamPhaseDetailTableColumns({
     stateType,
-    filters: {workItemTypes, stateTypes, states, teams},
+    filters: {workItemTypes, stateTypes, states, teams, epicNames},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
   });

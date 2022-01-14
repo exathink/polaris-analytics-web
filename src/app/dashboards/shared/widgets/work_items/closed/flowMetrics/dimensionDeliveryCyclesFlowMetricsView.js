@@ -38,6 +38,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           "workItemKey",
           "workItemType",
           "state",
+          "stateType",
           "startDate",
           "endDate",
           "leadTime",
@@ -46,7 +47,8 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           "duration",
           "effort",
           "authorCount",
-          "teamNodeRefs"
+          "teamNodeRefs",
+          "epicName",
         )
       ),
     [data, dimension]

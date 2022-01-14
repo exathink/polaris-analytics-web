@@ -1,15 +1,14 @@
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../../work_items/context";
-import {Highlighter} from "../../../../../../components/misc/highlighter";
-import {useSearch} from "../../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
+import {useComboColFilter} from "../../../../../../components/tables/hooks";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../../i18n";
 import {toMoment} from "../../../../../../helpers/utility";
 import {joinTeams} from "../../../../helpers/teamUtils";
+import styles from "./flowMetrics.module.css";
+import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
+
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -37,52 +36,6 @@ function getTransformedData(data, intl) {
   });
 }
 
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link to={`${url_for_instance(WorkItems, record.displayId, record.workItemKey)}`}>
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
-}
-
-function customTitleRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => text && (
-    <span
-      onClick={() => {
-        setShowPanel(true);
-        setWorkItemKey(record.workItemKey);
-      }}
-      style={{cursor: "pointer"}}
-    >
-      <Highlighter
-        highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-        searchWords={searchText || ""}
-        textToHighlight={text.toString()}
-      />
-    </span>
-  );
-}
-
-function customColRender(setShowPanel, setWorkItemKey) {
-  return (text, record, searchText) => text && (
-    <span
-      onClick={() => {
-        setShowPanel(true);
-        setWorkItemKey(record.workItemKey);
-      }}
-      style={{cursor: "pointer"}}
-    >
-      {text}
-    </span>
-  );
-}
-
 function renderTeamsCol(setShowPanel, setWorkItemKey) {
   return (text, record, searchText) => {
     return (
@@ -92,7 +45,7 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
             setShowPanel(true);
             setWorkItemKey(record.workItemKey);
           }}
-          style={{cursor: "pointer"}}
+          style={{cursor: "pointer", fontWeight: 500}}
         >
           {record.teamNodeRefs.length > 1 ? "Multiple" : text}
         </span>
@@ -101,10 +54,13 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
   };
 }
 
+
+
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
-  const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(setShowPanel, setWorkItemKey)});
-  const renderState = {render: customColRender(setShowPanel, setWorkItemKey)}
+  const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
+  const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
+  const stateTypeRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
+  const closedAtRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
   const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
 
   function testMetric(value, record, metric) {
@@ -114,47 +70,48 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "displayId",
-      key: "displayId",
-      width: "5%",
-      sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
-      ...nameSearchState,
-    },
-    {
-      title: "Title",
-      dataIndex: "name",
-      key: "name",
-      width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
-      ...titleSearchState,
-    },
-    {
-      title: "Type",
-      dataIndex: "workItemType",
-      key: "workItemType",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      width: "5%",
-      ...renderState,
-    },
-    {
-      title: "State",
-      dataIndex: "state",
-      key: "state",
-      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
-      width: "5%",
-      ...renderState,
-    },
-    {
       title: "Team",
       dataIndex: "teams",
       key: "teams",
       filters: filters.teams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "5%",
+      width: "4%",
       ...renderTeamsColState,
+    },
+    // {
+    //   title: "Name",
+    //   dataIndex: "displayId",
+    //   key: "displayId",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
+    //   ...nameSearchState,
+    // },
+    {
+      title: "CARD",
+      dataIndex: "name",
+      key: "name",
+      filters: filters.epicNames.map(b => ({text: b, value: b})),
+      width: "17%",
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      ...titleSearchState,
+    },
+    // {
+    //   title: "Type",
+    //   dataIndex: "workItemType",
+    //   key: "workItemType",
+    //   sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+    //   filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+    //   width: "5%",
+    //   ...renderState,
+    // },
+    {
+      title: "State",
+      dataIndex: "state",
+      key: "state",
+      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
+      width: "7%",
+      ...stateTypeRenderState,
     },
     {
       title: "Lead Time",
@@ -164,7 +121,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       onFilter: (value, record) => testMetric(value, record, "leadTime"),
       width: "5%",
       sorter: (a, b) => a.leadTime - b.leadTime,
-      ...renderState,
+      ...metricRenderState,
     },
     {
       title: "Cycle Time",
@@ -174,63 +131,63 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       onFilter: (value, record) => testMetric(value, record, "cycleTime"),
       width: "5%",
       sorter: (a, b) => a.cycleTime - b.cycleTime,
-      ...renderState,
+      ...metricRenderState,
     },
-    {
-      title: "Implementation",
-      dataIndex: "duration",
-      key: "duration",
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "duration"),
-      width: "5%",
-      sorter: (a, b) => a.duration - b.duration,
-      ...renderState,
-    },
-    {
-      title: "Effort",
-      dataIndex: "effort",
-      key: "effort",
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "effort"),
-      width: "5%",
-      sorter: (a, b) => a.effort - b.effort,
-      ...renderState,
-    },
-    {
-      title: "Delivery",
-      dataIndex: "latency",
-      key: "latency",
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "latency"),
-      width: "5%",
-      sorter: (a, b) => a.latency - b.latency,
-      ...renderState,
-    },
-    {
-      title: "Authors",
-      dataIndex: "authorCount",
-      key: "authorCount",
-      width: "5%",
-      sorter: (a, b) => a.authorCount - b.authorCount,
-      ...renderState,
-    },
-    {
-      title: "Backlog Time",
-      dataIndex: "backlogTime",
-      key: "backlogTime",
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "backlogTime"),
-      width: "5%",
-      sorter: (a, b) => a.backlogTime - b.backlogTime,
-      ...renderState,
-    },
+    // {
+    //   title: "Implementation",
+    //   dataIndex: "duration",
+    //   key: "duration",
+    //   filters: filters.categories.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => testMetric(value, record, "duration"),
+    //   width: "5%",
+    //   sorter: (a, b) => a.duration - b.duration,
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Effort",
+    //   dataIndex: "effort",
+    //   key: "effort",
+    //   filters: filters.categories.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => testMetric(value, record, "effort"),
+    //   width: "5%",
+    //   sorter: (a, b) => a.effort - b.effort,
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Delivery",
+    //   dataIndex: "latency",
+    //   key: "latency",
+    //   filters: filters.categories.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => testMetric(value, record, "latency"),
+    //   width: "5%",
+    //   sorter: (a, b) => a.latency - b.latency,
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Authors",
+    //   dataIndex: "authorCount",
+    //   key: "authorCount",
+    //   width: "5%",
+    //   sorter: (a, b) => a.authorCount - b.authorCount,
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Backlog Time",
+    //   dataIndex: "backlogTime",
+    //   key: "backlogTime",
+    //   filters: filters.categories.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => testMetric(value, record, "backlogTime"),
+    //   width: "5%",
+    //   sorter: (a, b) => a.backlogTime - b.backlogTime,
+    //   ...renderState,
+    // },
     {
       title: "Closed At",
       dataIndex: "endDate",
       key: "endDate",
-      width: "5%",
+      width: "7%",
       sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
-      ...renderState,
+      ...closedAtRenderState,
     },
   ];
 
@@ -244,7 +201,8 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
   const categories = getHistogramCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
-  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData}, {setShowPanel, setWorkItemKey});
+  const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
+  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey});
   const dataSource = getTransformedData(tableData, intl);
 
   return (
