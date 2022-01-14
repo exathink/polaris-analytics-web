@@ -18,7 +18,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
       workItems(
         activeOnly: $activeOnly
         closedWithinDays: $closedWithinDays
-        interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs]
+        interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs, EpicNodeRef]
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
         funnelView: $funnelView
@@ -34,6 +34,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
             key
             displayId
             workItemType
+            epicName
             state
             stateType
             workItemsSourceKey
