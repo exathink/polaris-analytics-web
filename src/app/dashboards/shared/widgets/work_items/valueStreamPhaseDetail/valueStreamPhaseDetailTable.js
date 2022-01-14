@@ -1,9 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../work_items/context";
-import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
@@ -43,56 +39,6 @@ function getTransformedData(data, intl) {
     };
   });
 }
-
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}>
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
-}
-
-function customTitleRender({setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </span>
-    );
-}
-
-function customColRender({setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {text}
-      </span>
-    );
-}
-
-
 
 function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
