@@ -154,7 +154,7 @@ const PhaseDetailView = ({
                   display: WorkItemStateTypeDisplayName[stateType],
                   style: {
                     backgroundColor: WorkItemStateTypeColor[stateType],
-                    color: stateType === selectedStateType ? "#ffffff" : "#d4d4d4",
+                    color: '#ffffff',
                   },
                 }))}
                 initialValue={selectedStateType}
