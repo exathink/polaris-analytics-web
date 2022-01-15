@@ -49,7 +49,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
             setShowPanel(true);
             setWorkItemKey(record.key);
           }}
-          style={{cursor: "pointer"}}
+          style={{cursor: "pointer", fontWeight: 500}}
         >
           {record.teamNodeRefs.length > 1 ? "multiple" : text}
         </span>
