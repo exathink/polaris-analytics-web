@@ -49,16 +49,17 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.teamsFlowDashboard}>
       <DashboardRow h="15%">
         <DashboardWidget
-          name="flow-metrics-throughput"
-          title={"Throughput"}
-          
-          className={styles.flowMetrics}
+          name="flow-metrics-response-time"
+          title={"Response Time"}
+
+          className={styles.responseTimeSLA}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionThroughputWidget
+            <DimensionResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
+              display={"responseTimeSummary"}
               view={view}
               context={context}
               specsOnly={specsOnly}
@@ -73,7 +74,6 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
-              normalized={true}
             />
           )}
           showDetail={false}
@@ -106,19 +106,17 @@ function WipDashboard({
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-
         <DashboardWidget
-          name="flow-metrics-response-time"
-          title={"Response Time"}
-          
-          className={styles.responseTimeSLA}
+          name="flow-metrics-throughput"
+          title={"Throughput"}
+
+          className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
-            <DimensionResponseTimeWidget
+            <DimensionThroughputWidget
               dimension={"team"}
               instanceKey={key}
-              display={"responseTimeSummary"}
               view={view}
               context={context}
               specsOnly={specsOnly}
@@ -133,10 +131,12 @@ function WipDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
+              normalized={true}
             />
           )}
           showDetail={false}
         />
+
       </DashboardRow>
       <DashboardRow h="30%" title={"Wip Age & Latency"} className={styles.wipAge}>
         <DashboardWidget

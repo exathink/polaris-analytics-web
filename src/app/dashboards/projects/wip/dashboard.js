@@ -59,18 +59,19 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="throughput-wip"
-          title={"Throughput"}      
-          className={styles.flowMetrics}
+          name="response-time-wip"
+          title={"Response Time"}
+          className={styles.responseTime}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          render={({ view }) => (
-            <DimensionThroughputWidget
-              dimension={"project"}
+          render={({view}) => (
+            <DimensionResponseTimeWidget
+              dimension={'project'}
               instanceKey={key}
               view={view}
-              display={"throughputSummary"}
+              display={"responseTimeSummary"}
               context={context}
+              stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
@@ -80,9 +81,8 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              normalized={true}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={true}
@@ -114,20 +114,20 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
 
+
         <DashboardWidget
-          name="response-time-wip"
-          title={"Response Time"}       
-          className={styles.responseTime}
+          name="throughput-wip"
+          title={"Throughput"}
+          className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          render={({view}) => (
-            <DimensionResponseTimeWidget
-              dimension={'project'}
+          render={({ view }) => (
+            <DimensionThroughputWidget
+              dimension={"project"}
               instanceKey={key}
               view={view}
-              display={"responseTimeSummary"}
+              display={"throughputSummary"}
               context={context}
-              stateMappingIndex={stateMappingIndex}
               specsOnly={specsOnly}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
@@ -137,8 +137,9 @@ function WipDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-              latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              normalized={true}
             />
           )}
           showDetail={true}
