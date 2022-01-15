@@ -59,8 +59,9 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
   const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
+  const effortRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} dev-days</>, className: styles.flowMetricXs})}
   const stateTypeRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
-  const closedAtRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
+  const renderState = {render: customColumnRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
   const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
 
   function testMetric(value, record, metric) {
@@ -91,7 +92,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       dataIndex: "name",
       key: "name",
       filters: filters.epicNames.map(b => ({text: b, value: b})),
-      width: "17%",
+      width: "14%",
       sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...titleSearchState,
     },
@@ -143,16 +144,17 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     //   sorter: (a, b) => a.duration - b.duration,
     //   ...renderState,
     // },
-    // {
-    //   title: "Effort",
-    //   dataIndex: "effort",
-    //   key: "effort",
-    //   filters: filters.categories.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => testMetric(value, record, "effort"),
-    //   width: "5%",
-    //   sorter: (a, b) => a.effort - b.effort,
-    //   ...renderState,
-    // },
+     {
+      title: "Effort",
+       dataIndex: "effort",
+       key: "effort",
+       filters: filters.categories.map((b) => ({text: b, value: b})),
+       onFilter: (value, record) => testMetric(value, record, "effort"),
+       width: "5%",
+       sorter: (a, b) => a.effort - b.effort,
+       ...effortRenderState
+
+     },
     // {
     //   title: "Delivery",
     //   dataIndex: "latency",
@@ -171,23 +173,25 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     //   sorter: (a, b) => a.authorCount - b.authorCount,
     //   ...renderState,
     // },
-    // {
-    //   title: "Backlog Time",
-    //   dataIndex: "backlogTime",
-    //   key: "backlogTime",
-    //   filters: filters.categories.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => testMetric(value, record, "backlogTime"),
-    //   width: "5%",
-    //   sorter: (a, b) => a.backlogTime - b.backlogTime,
-    //   ...renderState,
-    // },
+    /*
+    {
+      title: "Backlog Time",
+      dataIndex: "backlogTime",
+      key: "backlogTime",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "backlogTime"),
+      width: "6%",
+      sorter: (a, b) => a.backlogTime - b.backlogTime,
+      ...metricRenderState,
+    },
+    */
     {
       title: "Closed At",
       dataIndex: "endDate",
       key: "endDate",
-      width: "7%",
+      width: "6%",
       sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
-      ...closedAtRenderState,
+      ...renderState,
     },
   ];
 
