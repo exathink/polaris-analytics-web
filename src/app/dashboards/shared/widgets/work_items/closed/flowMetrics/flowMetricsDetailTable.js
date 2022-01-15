@@ -59,6 +59,7 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
   const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
+  const effortRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} dev-days</>, className: styles.flowMetricXs})}
   const stateTypeRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
   const renderState = {render: customColumnRender({setShowPanel, setWorkItemKey, className: styles.flowMetricXs})}
   const renderTeamsColState = {render: renderTeamsCol(setShowPanel, setWorkItemKey)}
@@ -143,16 +144,17 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     //   sorter: (a, b) => a.duration - b.duration,
     //   ...renderState,
     // },
-    // {
-    //   title: "Effort",
-    //   dataIndex: "effort",
-    //   key: "effort",
-    //   filters: filters.categories.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => testMetric(value, record, "effort"),
-    //   width: "5%",
-    //   sorter: (a, b) => a.effort - b.effort,
-    //   ...renderState,
-    // },
+     {
+      title: "Effort",
+       dataIndex: "effort",
+       key: "effort",
+       filters: filters.categories.map((b) => ({text: b, value: b})),
+       onFilter: (value, record) => testMetric(value, record, "effort"),
+       width: "5%",
+       sorter: (a, b) => a.effort - b.effort,
+       ...effortRenderState
+
+     },
     // {
     //   title: "Delivery",
     //   dataIndex: "latency",
@@ -171,6 +173,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     //   sorter: (a, b) => a.authorCount - b.authorCount,
     //   ...renderState,
     // },
+    /*
     {
       title: "Backlog Time",
       dataIndex: "backlogTime",
@@ -181,6 +184,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       sorter: (a, b) => a.backlogTime - b.backlogTime,
       ...metricRenderState,
     },
+    */
     {
       title: "Closed At",
       dataIndex: "endDate",
