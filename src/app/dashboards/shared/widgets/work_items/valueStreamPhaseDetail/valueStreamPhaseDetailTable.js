@@ -65,6 +65,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
@@ -165,14 +166,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
     //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
     //   ...renderState,
     // },
-    // {
-    //   title: "Effort",
-    //   dataIndex: "effort",
-    //   key: "effort",
-    //   width: "5%",
-    //   sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-    //   ...renderState
-    // },
+    {
+      title: "Effort",
+      dataIndex: "effort",
+      key: "effort",
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+      ...effortRenderState
+    },
     {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
