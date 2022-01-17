@@ -163,7 +163,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "cycleTime",
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
-      width: "4%",
+      width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
       ...metricRenderState,
     },
