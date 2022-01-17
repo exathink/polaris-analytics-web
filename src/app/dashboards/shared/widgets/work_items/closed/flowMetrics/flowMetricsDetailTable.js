@@ -121,7 +121,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTime"),
       width: "5%",
-      sorter: (a, b) => a.leadTime - b.leadTime,
+      sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
       ...metricRenderState,
     },
     {
@@ -131,7 +131,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTime"),
       width: "5%",
-      sorter: (a, b) => a.cycleTime - b.cycleTime,
+      sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
       ...metricRenderState,
     },
     // {
@@ -151,7 +151,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
        filters: filters.categories.map((b) => ({text: b, value: b})),
        onFilter: (value, record) => testMetric(value, record, "effort"),
        width: "5%",
-       sorter: (a, b) => a.effort - b.effort,
+       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
        ...effortRenderState
 
      },
