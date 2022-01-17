@@ -6,6 +6,7 @@ import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../../helpers/utility";
 import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../projects/shared/helper/renderers";
+import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -69,6 +70,10 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
+  function testMetric(value, record, metric) {
+    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
+    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  }
 
   const columns = [
     {
@@ -146,6 +151,8 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
       ...metricRenderState
@@ -154,6 +161,8 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
       ...metricRenderState,
@@ -187,18 +196,20 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const categories = getHistogramCategories(colWidthBoundaries);
+  const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
 
   const dataSource = getTransformedData(tableData, intl);
   const columns = useValueStreamPhaseDetailTableColumns({
     stateType,
-    filters: {workItemTypes, stateTypes, states, teams, epicNames},
+    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
   });
