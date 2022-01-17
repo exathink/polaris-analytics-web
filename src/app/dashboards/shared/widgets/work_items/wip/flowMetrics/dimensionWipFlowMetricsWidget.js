@@ -1,48 +1,50 @@
-import React from 'react';
+import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
-import {DimensionWipFlowMetricsDetailDashboard} from "./dimensionWipFlowMetricsDetailDashboard"
 import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
 import {WipFlowMetricsSummaryView} from "./wipFlowMetricsSummaryView";
 import {getReferenceString} from "../../../../../../helpers/utility";
+import {DimensionPipelineCycleTimeLatencyWidget} from "../cycleTimeLatency/dimensionPipelineCycleTimeLatencyWidget";
+import {useChildState} from "../../../../../../helpers/hooksUtil";
 
-export const DimensionWipFlowMetricsWidget = (
-  {
+export const DimensionWipFlowMetricsWidget = ({
+  dimension,
+  instanceKey,
+  display,
+  specsOnly,
+  latestCommit,
+  latestWorkItemEvent,
+  stateMappingIndex,
+  days,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  cycleTimeTarget,
+  latencyTarget,
+  wipLimit,
+  view,
+  context,
+  includeSubTasks,
+  workItemScope: parentWorkItemScope,
+  setWorkItemScope: parentSetWorkItemScope,
+  pollInterval,
+}) => {
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
+  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "specs");
+  const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
     dimension,
     instanceKey,
-    display,
-    specsOnly,
-    latestCommit,
-    latestWorkItemEvent,
-    stateMappingIndex,
-    days,
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
-    cycleTimeTarget,
-    wipLimit,
-    view,
-    context,
-    includeSubTasks,
-    pollInterval
-  }) => {
-  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const {loading, error, data} = useQueryDimensionPipelineCycleMetrics(
-    {
-      dimension,
-      instanceKey,
-      targetPercentile,
-      leadTimeTargetPercentile,
-      cycleTimeTargetPercentile,
-      specsOnly: limitToSpecsOnly,
-      includeSubTasks: includeSubTasks,
-      referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-    }
-  )
-  if (loading) return <Loading/>;
+    specsOnly: limitToSpecsOnly,
+    includeSubTasks: includeSubTasks,
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+  });
+  if (loading) return <Loading />;
   if (error) return null;
-  const pipelineCycleMetrics = data[dimension]['pipelineCycleMetrics'];
+  const pipelineCycleMetrics = data[dimension]["pipelineCycleMetrics"];
 
-  if (view === 'primary') {
+  if (view === "primary") {
     return (
       <WipFlowMetricsSummaryView
         pipelineCycleMetrics={pipelineCycleMetrics}
@@ -55,24 +57,27 @@ export const DimensionWipFlowMetricsWidget = (
         wipLimit={wipLimit}
         specsOnly={limitToSpecsOnly}
       />
-    )
+    );
   } else {
     return (
-      <DimensionWipFlowMetricsDetailDashboard
+      <DimensionPipelineCycleTimeLatencyWidget
         dimension={dimension}
         instanceKey={instanceKey}
-        latestWorkItemEvent={latestWorkItemEvent}
-        stateMappingIndex={stateMappingIndex}
-        days={days}
-        targetPercentile={targetPercentile}
-        leadTimeTargetPercentile={leadTimeTargetPercentile}
-        cycleTimeTargetPercentile={cycleTimeTargetPercentile}
-        specsOnly={limitToSpecsOnly}
+        view={view}
+        tooltipType="small"
+        groupByState={true}
+        cycleTimeTarget={cycleTimeTarget}
+        latencyTarget={latencyTarget || cycleTimeTarget}
         context={context}
+        latestWorkItemEvent={latestWorkItemEvent}
+        latestCommit={latestCommit}
+        targetPercentile={cycleTimeTargetPercentile}
+        specsOnly={workItemScope === "specs"}
         includeSubTasks={includeSubTasks}
+        workItemScope={workItemScope}
+        setWorkItemScope={setWorkItemScope}
       />
-    )
+    );
   }
-
-}
+};
 

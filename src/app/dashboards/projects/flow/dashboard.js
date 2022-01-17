@@ -23,6 +23,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
   const {
     leadTimeTarget,
     cycleTimeTarget,
+    latencyTarget,
     responseTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
@@ -79,6 +80,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               wipLimit={wipLimit}
               view={view}
               specsOnly={true}
@@ -88,7 +90,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latestWorkItemEvent={latestWorkItemEvent}
             />
           )}
-          showDetail={false}
+          showDetail={true}
           hideTitlesInDetailView={true}
         />
         <DashboardWidget
