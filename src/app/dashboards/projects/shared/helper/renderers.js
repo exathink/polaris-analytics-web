@@ -49,6 +49,25 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey) {
     );
 }
 
+export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey) {
+  return (text, record, searchText) =>
+    text && (
+      <div
+        onClick={() => {
+          setShowPanel(true);
+          setWorkItemKey(record.workItemKey || record.key);
+        }}
+        className={styles.comboCardCol}
+      >
+        <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateTypeInternal)}</div>
+        <div className={styles.stateType}>{text}</div>
+        <div className={styles.entered}>
+          entered {record.timeInStateDisplay}
+        </div>
+      </div>
+    );
+}
+
 export function customColumnRender({setShowPanel, setWorkItemKey, colRender = (text) => text, className}) {
   return (text, record, searchText) =>
     text && (

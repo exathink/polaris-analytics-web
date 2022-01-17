@@ -205,6 +205,7 @@ const PhaseDetailView = ({
               tableData={workItemsWithAggregateDurations}
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
             />
           )}
         </VizItem>

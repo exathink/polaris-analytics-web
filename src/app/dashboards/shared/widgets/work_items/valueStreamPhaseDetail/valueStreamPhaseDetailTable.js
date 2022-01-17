@@ -5,7 +5,8 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config"
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../../helpers/utility";
-import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../projects/shared/helper/renderers";
+import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../projects/shared/helper/renderers";
+import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -63,11 +64,16 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
   // const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
-  const stateTypeRenderState = {render: customColumnRender({...callBacks, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateTypeInternal)} {text.toLowerCase()}</div>, className: "textXs"})}
+  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
+  function testMetric(value, record, metric) {
+    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
+    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  }
 
   const columns = [
     {
@@ -126,14 +132,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
     },
-    {
-      title: "Entered",
-      dataIndex: "timeInStateDisplay",
-      key: "timeInStateDisplay",
-      width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      ...renderState,
-    },
+    // {
+    //   title: "Entered",
+    //   dataIndex: "timeInStateDisplay",
+    //   key: "timeInStateDisplay",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
+    //   ...renderState,
+    // },
     {
       // TODO: this little hack to pad the title is to work around
       // a jitter on the table that appears to be because the column titles have
@@ -145,6 +151,8 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
       ...metricRenderState
@@ -153,7 +161,9 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
-      width: "4%",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
+      width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
       ...metricRenderState,
     },
@@ -165,14 +175,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
     //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
     //   ...renderState,
     // },
-    // {
-    //   title: "Effort",
-    //   dataIndex: "effort",
-    //   key: "effort",
-    //   width: "5%",
-    //   sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-    //   ...renderState
-    // },
+    {
+      title: "Effort",
+      dataIndex: "effort",
+      key: "effort",
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+      ...effortRenderState
+    },
     {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
@@ -186,18 +196,20 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const categories = getHistogramCategories(colWidthBoundaries);
+  const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
 
   const dataSource = getTransformedData(tableData, intl);
   const columns = useValueStreamPhaseDetailTableColumns({
     stateType,
-    filters: {workItemTypes, stateTypes, states, teams, epicNames},
+    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
   });
