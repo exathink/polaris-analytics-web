@@ -5,7 +5,7 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config"
 import {joinTeams} from "../../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../../helpers/utility";
-import {comboColumnTitleRender, customColumnRender, getStateTypeIcon} from "../../../../projects/shared/helper/renderers";
+import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../projects/shared/helper/renderers";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -63,7 +63,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
   // const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
-  const stateTypeRenderState = {render: customColumnRender({...callBacks, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateTypeInternal)} {text.toLowerCase()}</div>, className: "textXs"})}
+  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
@@ -126,14 +126,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
     },
-    {
-      title: "Entered",
-      dataIndex: "timeInStateDisplay",
-      key: "timeInStateDisplay",
-      width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      ...renderState,
-    },
+    // {
+    //   title: "Entered",
+    //   dataIndex: "timeInStateDisplay",
+    //   key: "timeInStateDisplay",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
+    //   ...renderState,
+    // },
     {
       // TODO: this little hack to pad the title is to work around
       // a jitter on the table that appears to be because the column titles have
