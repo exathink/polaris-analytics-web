@@ -47,12 +47,12 @@ const context : Context = {
             topic: Wip
           },
           {
-            match: 'alignment',
-            topic: Alignment
-          },
-          {
             match: 'quality',
             topic: Quality
+          },
+          {
+            match: 'alignment',
+            topic: Alignment
           },
           {
 
