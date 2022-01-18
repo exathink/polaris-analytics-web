@@ -1,15 +1,12 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../../work_items/context";
-import {Highlighter} from "../../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
+import {comboColumnStateTypeRender, comboColumnTitleRender} from "../../../../../projects/shared/helper/renderers";
 
 const QuadrantColors = {
   green: "#2f9a32",
@@ -45,6 +42,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       duration: getNumber(item.duration, intl),
       effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
+      stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
       teams: joinTeams(item),
@@ -74,42 +72,6 @@ function getQuadrantIcon(quadrant) {
   }
 }
 
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link
-        to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}
-        style={{color: QuadrantColors[record.quadrant]}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
-}
-
-function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setPlacement("top");
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </span>
-    );
-}
 
 function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
   return (text, record, searchText) =>
@@ -164,8 +126,8 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
+  const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
+  const stateTypeRenderState = useSearch("stateType", {customRender: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const renderState = {render: customColRender(callBacks)};
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   const renderTeamsCol = {render: renderTeamsCall(callBacks)};
@@ -210,7 +172,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderQuadrantState,
     },
     {
-      title: "Title",
+      title: "Card",
       dataIndex: "name",
       key: "name",
       width: "12%",
@@ -244,12 +206,12 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       title: "State",
       dataIndex: "state",
       key: "state",
-      width: "5%",
+      width: "6%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
-      ...renderState,
+      ...stateTypeRenderState,
     },
     // {
     //   title: "Entered",
