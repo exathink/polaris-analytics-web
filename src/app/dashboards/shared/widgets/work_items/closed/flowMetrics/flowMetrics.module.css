@@ -3,10 +3,10 @@
   height: 93%;
   grid-template-areas:
     "leadTime . . ."
-    "leadTime cycleTime implement ."
-    "leadTime cycleTime implement ."
-    "leadTime cycleTime effort deliver"
-    "leadTime cycleTime effort deliver";
+    "leadTime cycleTime effort ."
+    "leadTime cycleTime effort ."
+    "leadTime cycleTime implement deliver"
+    "leadTime cycleTime implement deliver";
   gap: 0.5rem;
 }
 
