@@ -6,7 +6,7 @@ import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
-import {comboColumnStateTypeRender, comboColumnTitleRender} from "../../../../../projects/shared/helper/renderers";
+import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../../projects/shared/helper/renderers";
 
 const QuadrantColors = {
   green: "#2f9a32",
@@ -73,22 +73,6 @@ function getQuadrantIcon(quadrant) {
 }
 
 
-function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setPlacement("top");
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {text}
-      </span>
-    );
-}
-
 function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
   return (text, record, searchText) => (
     <span
@@ -97,7 +81,14 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
         setShowPanel(true);
         setWorkItemKey(record.key);
       }}
-      style={{color: QuadrantColors[record.quadrant], marginLeft: "9px", cursor: "pointer"}}
+      style={{
+        color: QuadrantColors[record.quadrant],
+        marginLeft: "9px",
+        cursor: "pointer",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
+        fontWeight: 500,
+      }}
     >
       {getQuadrantIcon(record.quadrant)}
       &nbsp;
@@ -128,7 +119,9 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = useSearch("stateType", {customRender: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
-  const renderState = {render: customColRender(callBacks)};
+  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
+  const renderState = {render: customColumnRender({...callBacks, className: "textXs"})}
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
@@ -227,7 +220,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "cycleTime",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...renderState,
+      ...metricRenderState,
     },
     {
       title: "Latency",
@@ -235,7 +228,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "latency",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
-      ...renderState,
+      ...metricRenderState,
     },
     // {
     //   title: 'Implem...',
@@ -251,7 +244,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "effort",
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...renderState,
+      ...effortRenderState,
     },
     {
       title: "Latest Commit",
