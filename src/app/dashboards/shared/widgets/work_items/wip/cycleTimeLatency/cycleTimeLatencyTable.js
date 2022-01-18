@@ -118,7 +118,7 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
-  const stateTypeRenderState = useSearch("stateType", {customRender: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
+  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
   const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "textXs"})}
@@ -200,7 +200,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "state",
       key: "state",
       width: "7%",
-      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
+      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,

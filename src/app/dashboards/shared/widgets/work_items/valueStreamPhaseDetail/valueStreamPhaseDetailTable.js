@@ -127,7 +127,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       dataIndex: "state",
       key: "state",
       width: "7%",
-      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
+      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
