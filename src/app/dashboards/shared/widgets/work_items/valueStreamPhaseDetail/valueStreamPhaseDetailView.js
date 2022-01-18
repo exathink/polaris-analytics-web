@@ -119,7 +119,7 @@ const PhaseDetailView = ({
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
-  const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
+  const [selectedGrouping, setSelectedGrouping] = useState("table");
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
@@ -177,8 +177,8 @@ const PhaseDetailView = ({
                   label={"View"}
                   className={"groupCardsBySelector"}
                   groupings={[
-                    {key: "responseTime", display: "Response Time"},
                     {key: "table", display: "Cards"},
+                    {key: "responseTime", display: "Response Time"}
                   ].map((item) => ({
                     key: item.key,
                     display: item.display,
