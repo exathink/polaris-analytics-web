@@ -135,7 +135,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       ...metricRenderState,
     },
     // {
-    //   title: "Implementation",
+    //   title: "Coding",
     //   dataIndex: "duration",
     //   key: "duration",
     //   filters: filters.categories.map((b) => ({text: b, value: b})),

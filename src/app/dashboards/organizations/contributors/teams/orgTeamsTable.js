@@ -108,7 +108,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Implementation <sup>Avg</sup> <br /><sub> Days</sub>
+              Coding <sup>Avg</sup> <br /><sub> Days</sub>
             </span>
           ),
           dataIndex: "implementation",

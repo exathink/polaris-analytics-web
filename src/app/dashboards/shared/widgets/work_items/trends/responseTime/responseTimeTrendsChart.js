@@ -42,7 +42,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
       return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`];
     }
     case "avgDuration": {
-      return [`Avg. Implementation: `, `${i18nNumber(intl, measurement.avgDuration)} days`];
+      return [`Avg. Coding: `, `${i18nNumber(intl, measurement.avgDuration)} days`];
     }
     case "avgLatency": {
       return [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`];
@@ -78,7 +78,7 @@ export const ResponseTimeTrendsChart = (
     {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline', color: ResponseTimeMetricsColor.cycleTime},
 
     {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.latency},
-    {key: 'avgDuration', displayName: `Implementation`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.duration},
+    {key: 'avgDuration', displayName: `Coding`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.duration},
     {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: ResponseTimeMetricsColor.effort},
 
   ], [defaultSeries]);

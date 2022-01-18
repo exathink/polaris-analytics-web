@@ -219,7 +219,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
                     ? [`Commits: `, `${intl.formatNumber(workItemStateDetails.commitCount)}`]
                     : ["", ""],
                   latestCommitDisplay != null ? [`Latest Commit: `, `${latestCommitDisplay}`] : ["", ""],
-                  duration != null ? [`Implementation: `, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  duration != null ? [`Coding: `, `${intl.formatNumber(duration)} days`] : ["", ""],
                   effort != null ? [`Effort: `, `${getNumber(effort, intl)} dev-days` ] : ["", ""],
                   stateType !== 'closed' && commitLatency != null ? [`Latency: `, `${intl.formatNumber(commitLatency)} days`] : ["", ""],
                 ],

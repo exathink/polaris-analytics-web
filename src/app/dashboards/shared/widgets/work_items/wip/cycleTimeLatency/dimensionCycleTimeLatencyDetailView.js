@@ -166,7 +166,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <WorkItemsCycleTimeVsLatencyChart
           key={resetComponentStateKey}
           view={view}
-          stageName={"Implementation"}
+          stageName={"Coding"}
           specsOnly={specsOnly}
           workItems={chartFilteredWorkItems}
           stateTypes={engineeringStateTypes}

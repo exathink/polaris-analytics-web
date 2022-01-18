@@ -62,7 +62,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
     },
 
     {
-      title: "Implementation Cost (Dev-Days)",
+      title: "Coding Cost (Dev-Days)",
       children: [
         {
           title: "Budget",

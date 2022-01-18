@@ -12,7 +12,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'Days',
   },
   duration: {
-    display: "Implementation Time",
+    display: "Coding Time",
     value: (cycle) => cycle.duration,
     targetMetric: 'cycleTime',
     uom: 'Days',
@@ -24,7 +24,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'Days',
   },
   effort: {
-    display: "Implementation Effort",
+    display: "Coding Effort",
     value: (cycle) => cycle.effort,
     uom: 'Dev-Days',
   },

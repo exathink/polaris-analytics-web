@@ -86,7 +86,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
 }
 
 DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
-  title: "Implementation",
+  title: "Coding",
   content: () => (
     <>
       <p> short description </p>

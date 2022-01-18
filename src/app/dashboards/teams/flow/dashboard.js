@@ -150,7 +150,7 @@ function WipDashboard({
               instanceKey={key}
               view={view}
               tooltipType="small"
-              stageName={"Implementation"}
+              stageName={"Coding"}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
