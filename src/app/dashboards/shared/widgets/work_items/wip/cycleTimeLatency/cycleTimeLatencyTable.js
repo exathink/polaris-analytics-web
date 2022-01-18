@@ -142,7 +142,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filteredValue: appliedFilters.teams || null,
       filters: filters.teams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "5%",
+      width: "4%",
       ...renderTeamsCol,
     },
     {
@@ -199,7 +199,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       title: "State",
       dataIndex: "state",
       key: "state",
-      width: "6%",
+      width: "7%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
