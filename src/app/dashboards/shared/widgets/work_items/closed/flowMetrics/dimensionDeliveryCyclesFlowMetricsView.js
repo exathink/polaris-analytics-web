@@ -203,6 +203,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       ) : (
         <FlowMetricsDetailTable
           tableData={filteredData}
+          selectedMetric={selectedMetric.key}
           setShowPanel={setShowPanel}
           setWorkItemKey={setWorkItemKey}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}

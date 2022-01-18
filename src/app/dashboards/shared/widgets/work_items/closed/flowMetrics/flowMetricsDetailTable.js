@@ -56,7 +56,7 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
 
 
 
-export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}) {
+export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}, selectedMetric) {
   const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
   const effortRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} dev-days</>, className: styles.flowMetricXs})}
@@ -69,6 +69,41 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
 
+  let defaultOptionalCol = {
+    title: "Effort",
+    dataIndex: "effort",
+    key: "effort",
+    filters: filters.categories.map((b) => ({text: b, value: b})),
+    onFilter: (value, record) => testMetric(value, record, "effort"),
+    width: "5%",
+    sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+    ...effortRenderState,
+  };
+  if (selectedMetric === "duration") {
+    defaultOptionalCol = {
+      title: "Coding",
+      dataIndex: "duration",
+      key: "duration",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "duration"),
+      width: "5%",
+      sorter: (a, b) => a.duration - b.duration,
+      ...metricRenderState,
+    };
+  }
+  if (selectedMetric === "latency") {
+    defaultOptionalCol = {
+      title: "Delivery",
+      dataIndex: "latency",
+      key: "latency",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "latency"),
+      width: "5%",
+      sorter: (a, b) => a.latency - b.latency,
+      ...metricRenderState,
+    };
+  }
+   
   const columns = [
     {
       title: "Team",
@@ -144,17 +179,18 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
     //   sorter: (a, b) => a.duration - b.duration,
     //   ...renderState,
     // },
-     {
-      title: "Effort",
-       dataIndex: "effort",
-       key: "effort",
-       filters: filters.categories.map((b) => ({text: b, value: b})),
-       onFilter: (value, record) => testMetric(value, record, "effort"),
-       width: "5%",
-       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-       ...effortRenderState
+    //  {
+    //   title: "Effort",
+    //    dataIndex: "effort",
+    //    key: "effort",
+    //    filters: filters.categories.map((b) => ({text: b, value: b})),
+    //    onFilter: (value, record) => testMetric(value, record, "effort"),
+    //    width: "5%",
+    //    sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+    //    ...effortRenderState
 
-     },
+    //  },
+      defaultOptionalCol,
     // {
     //   title: "Delivery",
     //   dataIndex: "latency",
@@ -199,14 +235,14 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
 }
 
 
-export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries}) => {
+export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries, selectedMetric}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
   const categories = getHistogramCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
-  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey});
+  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey}, selectedMetric);
   const dataSource = getTransformedData(tableData, intl);
 
   return (
