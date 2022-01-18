@@ -65,7 +65,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: expect.stringContaining("Value Book:"),
+    text: expect.stringContaining("Allocation:"),
     align: "left",
   },
   subtitle: {

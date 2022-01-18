@@ -184,7 +184,9 @@ export const WorkItemsEpicEffortChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: title || `Value Book: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`,
+        text: title || specsOnly ?
+          `Effort Allocation: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`
+        : `Card Allocation : ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`,
         align: "left",
       },
       subtitle: {
