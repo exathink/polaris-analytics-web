@@ -6,7 +6,6 @@ import {
   DimensionDefectResponseTimeWidget,
   DimensionResponseTimeTrendsWidget,
 } from "../../shared/widgets/work_items/trends/responseTime";
-import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
@@ -15,7 +14,6 @@ import {DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget} from "../shared
 import {DaysRangeSlider, SIX_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "../alignment/dashboard.module.css";
 import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
-import {Box, Flex} from "reflexbox";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 

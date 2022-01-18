@@ -1,15 +1,12 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import WorkItems from "../../../../../work_items/context";
-import {Highlighter} from "../../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../../components/tables/hooks";
-import {url_for_instance} from "../../../../../../framework/navigation/context/helpers";
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrantColor} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
+import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../../projects/shared/helper/renderers";
 
 const QuadrantColors = {
   green: "#2f9a32",
@@ -45,6 +42,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       duration: getNumber(item.duration, intl),
       effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
+      stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
       teams: joinTeams(item),
@@ -74,58 +72,6 @@ function getQuadrantIcon(quadrant) {
   }
 }
 
-function customRender(text, record, searchText) {
-  return (
-    text && (
-      <Link
-        to={`${url_for_instance(WorkItems, record.displayId, record.key)}`}
-        style={{color: QuadrantColors[record.quadrant]}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
-}
-
-function customTitleRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setPlacement("top");
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </span>
-    );
-}
-
-function customColRender({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) =>
-    text && (
-      <span
-        onClick={() => {
-          setPlacement("top");
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {text}
-      </span>
-    );
-}
 
 function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
   return (text, record, searchText) => (
@@ -135,7 +81,14 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
         setShowPanel(true);
         setWorkItemKey(record.key);
       }}
-      style={{color: QuadrantColors[record.quadrant], marginLeft: "9px", cursor: "pointer"}}
+      style={{
+        color: QuadrantColors[record.quadrant],
+        marginLeft: "9px",
+        cursor: "pointer",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
+        fontWeight: 500,
+      }}
     >
       {getQuadrantIcon(record.quadrant)}
       &nbsp;
@@ -164,21 +117,33 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: customTitleRender(callBacks)});
-  const renderState = {render: customColRender(callBacks)};
+  const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
+  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
+  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
+  const renderState = {render: customColumnRender({...callBacks, className: "textXs"})}
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
   const columns = [
+    // {
+    //   title: "Name",
+    //   dataIndex: "displayId",
+    //   key: "displayId",
+    //   width: "5%",
+    //   filteredValue: appliedFilters.displayId || null,
+    //   sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
+    //   ...nameSearchState,
+    // },
     {
-      title: "Name",
-      dataIndex: "displayId",
-      key: "displayId",
-      width: "5%",
-      filteredValue: appliedFilters.displayId || null,
-      sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
-      ...nameSearchState,
+      title: "Team",
+      dataIndex: "teams",
+      key: "teams",
+      filteredValue: appliedFilters.teams || null,
+      filters: filters.teams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
+      width: "4%",
+      ...renderTeamsCol,
     },
     {
       title: "Quadrant",
@@ -200,7 +165,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderQuadrantState,
     },
     {
-      title: "Title",
+      title: "Card",
       dataIndex: "name",
       key: "name",
       width: "12%",
@@ -208,88 +173,78 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...titleSearchState,
     },
-    {
-      title: "Type",
-      dataIndex: "workItemType",
-      key: "workItemType",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      filteredValue: appliedFilters.workItemType || null,
-      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      width: "5%",
-      ...renderState,
-    },
-    {
-      title: "Team",
-      dataIndex: "teams",
-      key: "teams",
-      filteredValue: appliedFilters.teams || null,
-      filters: filters.teams.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "5%",
-      ...renderTeamsCol,
-    },
-    {
-      title: "Phase",
-      dataIndex: "stateType",
-      key: "stateType",
-      sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
-      filteredValue: appliedFilters.stateType || null,
-      filters: filters.stateTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.stateType.indexOf(value) === 0,
-      width: "5%",
-      ...renderState,
-    },
+    // {
+    //   title: "Type",
+    //   dataIndex: "workItemType",
+    //   key: "workItemType",
+    //   sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+    //   filteredValue: appliedFilters.workItemType || null,
+    //   filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+    //   width: "5%",
+    //   ...renderState,
+    // },
+    // {
+    //   title: "Phase",
+    //   dataIndex: "stateType",
+    //   key: "stateType",
+    //   sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
+    //   filteredValue: appliedFilters.stateType || null,
+    //   filters: filters.stateTypes.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.stateType.indexOf(value) === 0,
+    //   width: "5%",
+    //   ...renderState,
+    // },
     {
       title: "State",
       dataIndex: "state",
       key: "state",
-      width: "5%",
-      sorter: (a, b) => SORTER.string_compare(a.state, b.state),
+      width: "7%",
+      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filteredValue: appliedFilters.state || null,
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
-      ...renderState,
+      ...stateTypeRenderState,
     },
-    {
-      title: "Entered",
-      dataIndex: "timeInStateDisplay",
-      key: "timeInStateDisplay",
-      width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      ...renderState,
-    },
+    // {
+    //   title: "Entered",
+    //   dataIndex: "timeInStateDisplay",
+    //   key: "timeInStateDisplay",
+    //   width: "5%",
+    //   sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
+    //   ...renderState,
+    // },
     {
       title: "Age",
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...renderState,
+      ...metricRenderState,
     },
     {
       title: "Latency",
       dataIndex: "latency",
       key: "latency",
-      width: "4%",
+      width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
-      ...renderState,
+      ...metricRenderState,
     },
-    {
-      title: 'Implem...',
-      dataIndex: "duration",
-      key: "duration",
-      width: "4%",
-      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
-      ...renderState,
-    },
+    // {
+    //   title: 'Implem...',
+    //   dataIndex: "duration",
+    //   key: "duration",
+    //   width: "4%",
+    //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
+    //   ...renderState,
+    // },
     {
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
-      width: "5%",
+      width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...renderState,
+      ...effortRenderState,
     },
     {
       title: "Latest Commit",

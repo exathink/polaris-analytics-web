@@ -25,11 +25,13 @@ function truncateString(str, len, color="#108ee9") {
   }
 }
 
-export function comboColumnTitleRender(setShowPanel, setWorkItemKey) {
+// setPlacement is optional property when we need to specify the position of cardInspector
+export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacement) {
   return (text, record, searchText) =>
     text && (
       <div
         onClick={() => {
+          setPlacement?.("top");
           setShowPanel(true);
           setWorkItemKey(record.workItemKey || record.key);
         }}
@@ -49,11 +51,12 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey) {
     );
 }
 
-export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey) {
+export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey, setPlacement) {
   return (text, record, searchText) =>
     text && (
       <div
         onClick={() => {
+          setPlacement?.("top");
           setShowPanel(true);
           setWorkItemKey(record.workItemKey || record.key);
         }}
@@ -68,11 +71,12 @@ export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey) {
     );
 }
 
-export function customColumnRender({setShowPanel, setWorkItemKey, colRender = (text) => text, className}) {
+export function customColumnRender({setShowPanel, setWorkItemKey, setPlacement, colRender = (text) => text, className}) {
   return (text, record, searchText) =>
     text && (
       <span
         onClick={() => {
+          setPlacement?.("top");
           setShowPanel(true);
           setWorkItemKey(record.workItemKey || record.key);
         }}

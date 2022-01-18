@@ -73,7 +73,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   context,
 }) => {
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
-  const [placement, setPlacement] = React.useState();
+  const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
