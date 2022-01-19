@@ -51,6 +51,33 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacemen
     );
 }
 
+export function ComboCardTitleColumn({record}) {
+  return (
+    <div className={styles.comboCardCol} style={{marginLeft: "16px"}}>
+      <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
+      <div className={styles.title}>{truncateString(record.name, 50, "#6b7280")}</div>
+      <div className={styles.displayId}>
+        {record.displayId}{" "}
+        {record.epicName && (
+          <Tag color="#108ee9" style={{marginLeft: "30px"}}>
+            {truncateString(record.epicName, 35, "#108ee9")}
+          </Tag>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function ComboCardStateTypeColumn({record}) {
+  return (
+    <div className={styles.comboCardCol} style={{marginLeft: "16px"}}>
+      <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateType)}</div>
+      <div className={styles.stateType}>{record.state}</div>
+      <div className={styles.entered}>entered {record.timeInStateDisplay}</div>
+    </div>
+  );
+}
+
 export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey, setPlacement) {
   return (text, record, searchText) =>
     text && (
