@@ -31,9 +31,8 @@ function getRemoteBrowseUrl(workItem) {
   }
 }
 
-export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
+export function WorkItemButtons({workItem, goToCardLink = true}) {
   const remoteBrowseUrl = getRemoteBrowseUrl(workItem);
-
   const getRemoteLinkButton = () => {
     if (remoteBrowseUrl) {
       return (
@@ -44,22 +43,19 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
         >
           <Button type="primary" size="small" style={{marginLeft: "15px"}}>
-            View in {workTrackingMap[workItem.workTrackingIntegrationType] ?? capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+            View in{" "}
+            {workTrackingMap[workItem.workTrackingIntegrationType] ??
+              capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
         </a>
       );
     } else {
-      return null
+      return null;
     }
   };
+
   return (
-    <RowNoOverflow>
-      <div>
-        <h2 style={{color: "#7c7c7c", fontSize: "2.3vh", marginBottom: 0}}>{`${workItem.displayId}: ${elide(
-          workItem.name,
-          250
-        )}`}</h2>
-      </div>
+    <div>
       {getRemoteLinkButton()}
       {goToCardLink && (
         <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
@@ -68,6 +64,20 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           </Button>
         </Link>
       )}
+    </div>
+  );
+}
+
+export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
+  return (
+    <RowNoOverflow>
+      <div>
+        <h2 style={{color: "#7c7c7c", fontSize: "2.3vh", marginBottom: 0}}>{`${workItem.displayId}: ${elide(
+          workItem.name,
+          250
+        )}`}</h2>
+      </div>
+      <WorkItemButtons workItem={workItem} goToCardLink={goToCardLink}/>
     </RowNoOverflow>
   );
 };

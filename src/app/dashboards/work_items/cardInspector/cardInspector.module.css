@@ -38,3 +38,7 @@
   grid-area: workItemByState;
   padding: 0.25rem;
 }
+.centerVertically {
+  display: flex;
+  align-items: center;
+}

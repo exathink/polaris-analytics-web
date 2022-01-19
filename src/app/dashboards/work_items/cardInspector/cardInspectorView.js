@@ -6,8 +6,7 @@ import {WorkItemDurationDetailsByStateWidget} from "../activity/durationDetails/
 import {WorkItemEventTimelineWidget} from "../activity/eventTimeline/workItemEventTimelineWidget";
 import {WorkItemFlowMetricsWidget} from "../activity/flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemImplementationCostWidget} from "../activity/implementationCosts/workItemImplementationCostWidget";
-import {WorkItemRemoteLink} from "../activity/views/workItemRemoteLink";
-import {WorkItemStateView} from "../activity/views/workItemStateView";
+import {WorkItemButtons} from "../activity/views/workItemRemoteLink";
 import styles from "./cardInspector.module.css";
 
 const dashboard_id = "dashboards.work_items.work_item.card_inspector";
@@ -19,14 +18,14 @@ export function CardInspectorView({workItem, context}) {
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={({view}) => ComboCardTitleColumn({record: workItemDurations})}
+          render={({view}) => <div className={styles.centerVertically}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} /></div>}
         />
       </DashboardRow>
       <DashboardRow>
         <DashboardWidget
           name="header"
           className={styles.workItemStateView}
-          render={({view}) => ComboCardStateTypeColumn({record: workItemDurations})}
+          render={({view}) => <ComboCardStateTypeColumn record={workItemDurations}/>}
         />
         <DashboardWidget
           name="cycle-metrics"
