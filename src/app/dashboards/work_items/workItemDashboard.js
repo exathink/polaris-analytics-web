@@ -28,7 +28,7 @@ class WithWorkItem extends React.Component {
         query={
           gql`
             query with_work_item_instance($key: String!) {
-                workItem(key: $key, interfaces:[CommitSummary, WorkItemEventSpan, WorkItemsSourceRef]){
+                workItem(key: $key, interfaces:[CommitSummary, WorkItemEventSpan, WorkItemsSourceRef, EpicNodeRef, WorkItemStateDetails]){
                     id
                     name
                     key
@@ -37,6 +37,19 @@ class WithWorkItem extends React.Component {
                     workItemType
                     state
                     stateType
+                    epicName
+                    ... on WorkItemStateDetails {
+                      workItemStateDetails {
+                        currentStateTransition {
+                          eventDate
+                        }
+                        currentDeliveryCycleDurations {
+                          state
+                          stateType
+                          daysInState
+                        }
+                      }
+                    }
                     earliestCommit
                     latestCommit
                     commitCount
