@@ -14,6 +14,15 @@
   line-height: 1.25rem /* 20px */;
   font-weight: 400;
 }
+.titleXl {
+  font-size: 1.25rem/* 20px */;
+  line-height: 1.75rem/* 28px */;
+  font-weight: 400;
+}
+.textBase {
+  font-size: 1rem/* 16px */;
+  line-height: 1.5rem/* 24px */;
+}
 .displayId {
   font-size: 0.75rem /* 14px */;
   line-height: 1rem /* 20px */;

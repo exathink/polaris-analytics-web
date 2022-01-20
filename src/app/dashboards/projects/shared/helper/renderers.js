@@ -1,4 +1,5 @@
 import {Tag, Tooltip} from "antd";
+import cn from "classnames";
 import React from "react";
 import { WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
@@ -55,8 +56,8 @@ export function ComboCardTitleColumn({record}) {
   return (
     <div className={styles.comboCardCol} style={{marginLeft: "16px"}}>
       <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
-      <div className={styles.title}>{truncateString(record.name, 50, "#6b7280")}</div>
-      <div className={styles.displayId}>
+      <div className={styles.titleXl}>{truncateString(record.name, 50, "#6b7280")}</div>
+      <div className={cn(styles.displayId, styles.textBase)}>
         {record.displayId}{" "}
         {record.epicName && (
           <Tag color="#108ee9" style={{marginLeft: "30px"}}>
