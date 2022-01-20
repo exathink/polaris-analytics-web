@@ -13,10 +13,12 @@
 .remoteLink {
   grid-area: remoteLink;
   padding: 0.25rem;
+  justify-content: center;
 }
 .workItemStateView {
   grid-area: workItemStateView;
   padding: 0.25rem;
+  justify-content: center;
 }
 .workItemFlowMetrics {
   grid-area: workItemFlowMetrics;
