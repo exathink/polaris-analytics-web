@@ -1,20 +1,19 @@
 import React from 'react';
 import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/dashboard';
 
-
-import {WorkItemStateView} from "./views/workItemStateView";
-
 import {WorkItemDashboard} from "../workItemDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {WorkItemFlowMetricsWidget} from "./flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemDurationDetailsByPhaseWidget} from "./durationDetails/workItemDurationDetailsByPhaseWidget";
 import {WorkItemEventTimelineWidget} from "./eventTimeline/workItemEventTimelineWidget";
-import {WorkItemRemoteLink} from "./views/workItemRemoteLink";
+import {WorkItemButtons} from "./views/workItemRemoteLink";
 import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
 import {WorkItemImplementationCostWidget} from "./implementationCosts/workItemImplementationCostWidget";
 import {WorkItemDurationDetailsByStateWidget} from "./durationDetails/workItemDurationDetailsByStateWidget";
 import styles from "./dashboard.module.css";
+import {ComboCardStateTypeColumn, ComboCardTitleColumn} from "../../projects/shared/helper/renderers";
+import {getWorkItemDurations} from "../../shared/widgets/work_items/clientSideFlowMetrics";
 
 const dashboard_id = 'dashboards.work_items.work_item.instance';
 
@@ -28,16 +27,14 @@ export const dashboard =
            workItem,
            context
          }) => {
+          const [workItemDurations] = getWorkItemDurations([workItem]);
           return (
             <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.cardInspectorDashboard}>
               <DashboardRow h={'5%'}>
                 <DashboardWidget
                   name="name"
                   className={styles.remoteLink}
-                  render={
-                    () =>
-                      <WorkItemRemoteLink workItem={workItem} goToCardLink={false}/>
-                  }
+                  render={({view}) => <div className={styles.workItemHeaderRow}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} goToCardLink={false}/></div>}
                 />
               </DashboardRow>
               <DashboardRow
@@ -46,13 +43,7 @@ export const dashboard =
                 <DashboardWidget
                   name="header"
                   className={styles.workItemStateView}
-                  render={
-                    ({view}) =>
-                      <WorkItemStateView
-                        workItem={workItem}
-                        view={view}
-                      />
-                  }
+                  render={({view}) => <ComboCardStateTypeColumn record={workItemDurations}/>}
                 />
                 <DashboardWidget
                   name="cycle-metrics"

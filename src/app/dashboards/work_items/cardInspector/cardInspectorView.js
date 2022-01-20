@@ -1,29 +1,31 @@
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {ComboCardStateTypeColumn, ComboCardTitleColumn} from "../../projects/shared/helper/renderers";
+import {getWorkItemDurations} from "../../shared/widgets/work_items/clientSideFlowMetrics";
 import {WorkItemDurationDetailsByPhaseWidget} from "../activity/durationDetails/workItemDurationDetailsByPhaseWidget";
 import {WorkItemDurationDetailsByStateWidget} from "../activity/durationDetails/workItemDurationDetailsByStateWidget";
 import {WorkItemEventTimelineWidget} from "../activity/eventTimeline/workItemEventTimelineWidget";
 import {WorkItemFlowMetricsWidget} from "../activity/flowMetrics/workItemFlowMetricsWidget";
 import {WorkItemImplementationCostWidget} from "../activity/implementationCosts/workItemImplementationCostWidget";
-import {WorkItemRemoteLink} from "../activity/views/workItemRemoteLink";
-import {WorkItemStateView} from "../activity/views/workItemStateView";
+import {WorkItemButtons} from "../activity/views/workItemRemoteLink";
 import styles from "./cardInspector.module.css";
 
 const dashboard_id = "dashboards.work_items.work_item.card_inspector";
 export function CardInspectorView({workItem, context}) {
+  const [workItemDurations] = getWorkItemDurations([workItem]);
   return (
     <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.cardInspectorDashboard}>
       <DashboardRow>
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={() => <WorkItemRemoteLink workItem={workItem} />}
+          render={({view}) => <div className={styles.headerRow}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} /></div>}
         />
       </DashboardRow>
       <DashboardRow>
         <DashboardWidget
           name="header"
           className={styles.workItemStateView}
-          render={({view}) => <WorkItemStateView workItem={workItem} view={view} />}
+          render={({view}) => <ComboCardStateTypeColumn record={workItemDurations}/>}
         />
         <DashboardWidget
           name="cycle-metrics"

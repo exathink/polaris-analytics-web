@@ -31,9 +31,8 @@ function getRemoteBrowseUrl(workItem) {
   }
 }
 
-export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
+export function WorkItemButtons({workItem, goToCardLink = true}) {
   const remoteBrowseUrl = getRemoteBrowseUrl(workItem);
-
   const getRemoteLinkButton = () => {
     if (remoteBrowseUrl) {
       return (
@@ -43,15 +42,33 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           rel="noopener noreferrer"
           title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
         >
-          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
-            View in {workTrackingMap[workItem.workTrackingIntegrationType] ?? capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
+          <Button type="primary" size="medium" style={{marginLeft: "15px"}}>
+            View in{" "}
+            {workTrackingMap[workItem.workTrackingIntegrationType] ??
+              capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
           </Button>
         </a>
       );
     } else {
-      return null
+      return null;
     }
   };
+
+  return (
+    <div>
+      {getRemoteLinkButton()}
+      {goToCardLink && (
+        <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
+          <Button type="primary" size="medium" style={{marginLeft: "15px"}}>
+            Go to Card
+          </Button>
+        </Link>
+      )}
+    </div>
+  );
+}
+
+export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
   return (
     <RowNoOverflow>
       <div>
@@ -60,14 +77,7 @@ export const WorkItemRemoteLink = ({workItem, goToCardLink = true}) => {
           250
         )}`}</h2>
       </div>
-      {getRemoteLinkButton()}
-      {goToCardLink && (
-        <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
-          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
-            Go to Card
-          </Button>
-        </Link>
-      )}
+      <WorkItemButtons workItem={workItem} goToCardLink={goToCardLink}/>
     </RowNoOverflow>
   );
 };

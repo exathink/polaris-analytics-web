@@ -1,7 +1,7 @@
 .cardInspectorDashboard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 12% 30% 58%;
+  grid-template-rows: 21% 19% 55%;
   gap: 0.5rem 0.5rem;
   grid-template-areas:
     "remoteLink remoteLink remoteLink remoteLink remoteLink remoteLink"
@@ -12,6 +12,7 @@
 .remoteLink {
   grid-area: remoteLink;
   padding: 0.25rem;
+  justify-content: center;
 }
 .workItemStateView {
   grid-area: workItemStateView;
@@ -37,4 +38,10 @@
 .workItemByState {
   grid-area: workItemByState;
   padding: 0.25rem;
+}
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
 }
