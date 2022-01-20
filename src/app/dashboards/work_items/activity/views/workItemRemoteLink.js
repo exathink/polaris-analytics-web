@@ -42,7 +42,7 @@ export function WorkItemButtons({workItem, goToCardLink = true}) {
           rel="noopener noreferrer"
           title={`View work item on ${capitalizeFirstLetter(workItem.workTrackingIntegrationType)}`}
         >
-          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
+          <Button type="primary" size="medium" style={{marginLeft: "15px"}}>
             View in{" "}
             {workTrackingMap[workItem.workTrackingIntegrationType] ??
               capitalizeFirstLetter(workItem.workTrackingIntegrationType)}
@@ -59,7 +59,7 @@ export function WorkItemButtons({workItem, goToCardLink = true}) {
       {getRemoteLinkButton()}
       {goToCardLink && (
         <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
-          <Button type="primary" size="small" style={{marginLeft: "15px"}}>
+          <Button type="primary" size="medium" style={{marginLeft: "15px"}}>
             Go to Card
           </Button>
         </Link>

@@ -1,5 +1,4 @@
 import {Tag, Tooltip} from "antd";
-import cn from "classnames";
 import React from "react";
 import { WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
