@@ -1,7 +1,7 @@
 .cardInspectorDashboard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 10% 10% 25% 40%;
+  grid-template-rows: 11% 9% 25% 50%;
   gap: 0.5rem 0.5rem;
   grid-template-areas:
     "remoteLink remoteLink remoteLink remoteLink remoteLink remoteLink"
@@ -44,7 +44,9 @@
   grid-area: commits;
   padding: 0.25rem;
 }
-.centerVertically {
+.workItemHeaderRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
 }

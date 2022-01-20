@@ -18,7 +18,7 @@ export function CardInspectorView({workItem, context}) {
         <DashboardWidget
           name="name"
           className={styles.remoteLink}
-          render={({view}) => <div className={styles.centerVertically}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} /></div>}
+          render={({view}) => <div className={styles.headerRow}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} /></div>}
         />
       </DashboardRow>
       <DashboardRow>

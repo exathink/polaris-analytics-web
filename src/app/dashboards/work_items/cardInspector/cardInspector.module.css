@@ -38,7 +38,9 @@
   grid-area: workItemByState;
   padding: 0.25rem;
 }
-.centerVertically {
+.headerRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
 }

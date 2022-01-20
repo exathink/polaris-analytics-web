@@ -34,7 +34,7 @@ export const dashboard =
                 <DashboardWidget
                   name="name"
                   className={styles.remoteLink}
-                  render={({view}) => <div className={styles.centerVertically}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} goToCardLink={false}/></div>}
+                  render={({view}) => <div className={styles.workItemHeaderRow}><ComboCardTitleColumn record={workItemDurations}/><WorkItemButtons workItem={workItem} goToCardLink={false}/></div>}
                 />
               </DashboardRow>
               <DashboardRow

@@ -20,8 +20,9 @@
   font-weight: 400;
 }
 .textBase {
-  font-size: 1rem/* 16px */;
+  font-size: 1rem /* 16px */;
   line-height: 1.5rem/* 24px */;
+  font-weight: 600;
 }
 .displayId {
   font-size: 0.75rem /* 14px */;
@@ -35,7 +36,7 @@
 .stateType{
   text-transform: lowercase;
   color: rgb(107 114 128 / 1);
-  font-weight: 500;
+  /* font-weight: 500; */
 }
 .entered {
   font-size: 0.75rem /* 12px */;
