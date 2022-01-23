@@ -1,4 +1,4 @@
-import {useComboColFilter} from "../../../../../../components/tables/hooks";
+import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {injectIntl} from "react-intl";
 import {StripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
@@ -57,7 +57,7 @@ function renderTeamsCol(setShowPanel, setWorkItemKey) {
 
 
 export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWorkItemKey}, selectedMetric) {
-  const titleSearchState = useComboColFilter("name", {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
+  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(setShowPanel, setWorkItemKey)});
   const metricRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} days</>, className: styles.flowMetricXs})}
   const effortRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey,colRender: text => <>{text} dev-days</>, className: styles.flowMetricXs})}
   const stateTypeRenderState = {render: customColumnRender({setShowPanel, setWorkItemKey, colRender: (text, record) => <div style={{display: "flex", alignItems: "center"}}>{getStateTypeIcon(record.stateType)} {text.toLowerCase()}</div>, className: styles.flowMetricXs})}
