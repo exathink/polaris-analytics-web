@@ -88,6 +88,72 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   return searchProps;
 }
 
+export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
+  const [dataIndex1, dataIndex2, dataIndex3] = dataIndexes;
+  const [searchText, setSearchText] = useState(null);
+  const searchInputElement = React.useRef();
+
+  const handleSearch = (selectedKeys, confirm) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const searchProps = {
+    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => {
+      searchProps.clearFilters = clearFilters;
+      return (
+        <div style={{padding: 8}}>
+          <Input
+            ref={searchInputElement}
+            placeholder={`Search Card Details`}
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => handleSearch(selectedKeys, confirm)}
+            style={{width: 188, marginBottom: 8, display: "block"}}
+          />
+        </div>
+      );
+    },
+
+    filterIcon: (filtered) => {
+      if (filtered) {
+        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters)} />;
+      } else {
+        return <SearchOutlined />;
+      }
+    },
+
+    onFilter: (value, record) => {
+      const recordName1 = record[dataIndex1] || "";
+      const recordName2 = record[dataIndex2] || "";
+      const recordName3 = record[dataIndex3] || "";
+      const searchLower = value.toLowerCase();
+      return (
+        recordName1.toString().toLowerCase().includes(searchLower) ||
+        recordName2.toString().toLowerCase().includes(searchLower) ||
+        recordName3.toString().toLowerCase().includes(searchLower)
+      );
+    },
+
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInputElement.current && searchInputElement.current.select(), 100);
+      }
+    },
+    render: (text, record) => {
+      if (customRender) {
+        return customRender(text, record, searchText);
+      }
+      return null;
+    },
+  };
+  return searchProps;
+}
 
 export function useSelectionHandler(onSelectionsChanged, initialSelections) {
   const [selected, setSelected] = useState(initialSelections || []);
