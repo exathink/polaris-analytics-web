@@ -99,7 +99,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "name",
       filters: filters.epicNames.map(b => ({text: b, value: b})),
       width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
     // {

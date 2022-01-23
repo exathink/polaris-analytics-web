@@ -128,7 +128,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       key: "name",
       filters: filters.epicNames.map(b => ({text: b, value: b})),
       width: "14%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
     // {

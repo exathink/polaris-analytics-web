@@ -170,7 +170,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "name",
       width: "12%",
       filteredValue: appliedFilters.name || null,
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
     // {
