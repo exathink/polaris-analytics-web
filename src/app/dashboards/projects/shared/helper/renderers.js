@@ -62,12 +62,12 @@ export function ComboCardTitleColumn({record}) {
   return (
     <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
       <div className={styles.workItemType}><img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}}/></div>
-      <div className={styles.titleXl}>{truncateString(record.name, 50, "#6b7280")}</div>
+      <div className={styles.titleXl}>{truncateString(record.name, 100, "#6b7280")}</div>
       <div className={styles.textBase}>
         {record.displayId}{" "}
         {record.epicName && (
           <Tag color="#108ee9" style={{marginLeft: "30px", fontSize: "14px"}}>
-            {truncateString(record.epicName, 35, "#108ee9")}
+            {truncateString(record.epicName, 60, "#108ee9")}
           </Tag>
         )}
       </div>
