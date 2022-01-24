@@ -1,5 +1,5 @@
 import React from "react";
-import {useSearch} from "../../../../../components/tables/hooks";
+import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../config";
 import {joinTeams} from "../../../helpers/teamUtils";
@@ -63,7 +63,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 
 export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
   // const nameSearchState = useSearch("displayId", {customRender});
-  const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
+  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
   const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
@@ -99,7 +99,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       key: "name",
       filters: filters.epicNames.map(b => ({text: b, value: b})),
       width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
     // {

@@ -1,5 +1,5 @@
 import React from "react";
-import {useSearch} from "../../../../../../components/tables/hooks";
+import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
@@ -117,7 +117,7 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const titleSearchState = useSearch("name", {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
+  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
   const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
@@ -170,7 +170,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "name",
       width: "12%",
       filteredValue: appliedFilters.name || null,
-      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
+      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
     // {
