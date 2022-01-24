@@ -15,13 +15,13 @@
   font-weight: 400;
 }
 .titleXl {
-  font-size: 1.25rem/* 20px */;
-  line-height: 1.75rem/* 28px */;
+  font-size: 1.25rem /* 20px */;
+  line-height: 1.75rem /* 28px */;
   font-weight: 400;
 }
 .textBase {
   font-size: 1rem /* 16px */;
-  line-height: 1.5rem/* 24px */;
+  line-height: 1.5rem /* 24px */;
   font-weight: 600;
 }
 .displayId {
@@ -29,16 +29,22 @@
   line-height: 1rem /* 20px */;
   font-weight: 600;
 }
-.stateTypeIcon{
+.stateTypeIcon {
   grid-row: span 2 / span 2;
   align-self: center;
 }
-.stateType{
+.stateType {
+  text-transform: lowercase;
+  color: rgb(107 114 128 / 1);
+  font-weight: 500;
+}
+
+.state {
   text-transform: lowercase;
   color: rgb(107 114 128 / 1);
   font-size: 1rem;
-  /* font-weight: 500; */
 }
+
 .entered {
   font-size: 0.75rem /* 12px */;
   line-height: 1rem /* 16px */;
