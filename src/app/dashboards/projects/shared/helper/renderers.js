@@ -102,7 +102,7 @@ export function ComboCardStateTypeColumn({record}) {
   return (
     <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
       <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateType, "28px")}</div>
-      <div className={styles.stateType}>{record.state}</div>
+      <div className={styles.state}>{record.state}</div>
       <div className={styles.entered}>entered {record.timeInStateDisplay}</div>
     </div>
   );
