@@ -19,6 +19,10 @@ const messages = defineMessages({
     id: 'contexts.teams.display',
     defaultMessage: "{quantity, plural, one {Team} other {Teams}}"
   },
+  videos: {
+    id: 'contexts.videos.display',
+    defaultMessage: "{quantity, plural, one {Video} other {Videos}}"
+  },
   work_items: {
     id: 'contexts.work_items.display',
     defaultMessage: "{quantity, plural, one {Card} other {Cards}}"
@@ -108,6 +112,20 @@ export const Contexts = {
         />
         },
     icon: 'ion-ios-people',
+    color: '#356eb2'
+  },
+  videos: {
+    name: 'videos',
+    message: messages.videos,
+    display:
+        (quantity = 0) => {
+          return <FormattedMessage
+            id="contexts.videos.display"
+            defaultMessage="{quantity, plural, one {Video} other {Videos}}"
+            values={{quantity: quantity}}
+        />
+        },
+    icon: 'ion-ios-videocam-outline',
     color: '#356eb2'
   },
   work_items: {

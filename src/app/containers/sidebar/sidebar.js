@@ -15,6 +15,7 @@ import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
+import Videos from "../../dashboards/video/context"
 
 const {Sider} = Layout;
 
@@ -154,6 +155,19 @@ class Sidebar extends Component {
                   : null
               }
             </Menu>
+
+            <div style={{position: "absolute", bottom: "100px", left: "0"}}>           
+              <Menu key={`bottom`} {...menuProps}>
+                <Menu.Item className="ant-menu-item">
+                  <Link to={Videos.url_for}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={Videos.icon} />
+                      <span className="nav-text">{"Video"}</span>
+                    </span>
+                  </Link>
+                </Menu.Item>  
+              </Menu>
+            </div>
           </Scrollbars>
         </Sider>
       </SidebarWrapper>

@@ -12,6 +12,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
     icon: 'ion-ios-pulse-strong'
   },
+  videos: {
+    name: 'videos',
+    display: () => (<FormattedMessage id='topics.videos' defaultMessage="Videos"/>),
+    icon: 'ion-ios-videocam-outline'
+  },
   activity: {
     name: 'activity',
     display: () => (<FormattedMessage id='topics.activity' defaultMessage="Activity"/>),
