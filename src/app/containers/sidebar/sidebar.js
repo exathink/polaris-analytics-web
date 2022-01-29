@@ -16,7 +16,6 @@ import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
 import Library from "../../dashboards/library/context"
-import { SnippetsOutlined } from '@ant-design/icons';
 
 const {Sider} = Layout;
 
