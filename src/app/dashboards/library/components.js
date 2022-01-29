@@ -6,7 +6,6 @@ export function VideoDetailView({videoUrl}) {
       <div style={{padding: "56.25% 0 0 0", position: "relative"}}>
         <iframe
           title="video-guidance"
-          // src="https://vimeo.com/showcase/8025646/embed"
           src={videoUrl}
           allowfullscreen
           frameborder="0"
