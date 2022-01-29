@@ -1,11 +1,13 @@
 .videoDashboard {
   padding-top: 1rem;
   display: grid;
-  grid-template-columns: 2rem 1fr 2rem;
-  grid-template-areas: ". player .";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "player . .";
   gap: 0.5rem;
 }
 
 .videoPlayer {
+  padding: 0.25rem;
   grid-area: player;
 }
