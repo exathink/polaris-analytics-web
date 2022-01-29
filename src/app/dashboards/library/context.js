@@ -7,12 +7,12 @@ const context = {
   ...Contexts.videos,
   routes: [
     {
-      match: 'gallery',
+      match: 'videos',
       topic: Videos
     },
     {
       match: '',
-      redirect: 'gallery'
+      redirect: 'videos'
     }
   ]
 };
