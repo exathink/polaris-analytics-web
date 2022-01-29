@@ -15,7 +15,7 @@ import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
-import Videos from "../../dashboards/video/context"
+import Library from "../../dashboards/library/context"
 import { SnippetsOutlined } from '@ant-design/icons';
 
 const {Sider} = Layout;
@@ -160,7 +160,7 @@ class Sidebar extends Component {
                  
             <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
               <Menu.Item className="ant-menu-item">
-                <Link to={Videos.url_for}>
+                <Link to={Library.url_for}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <SnippetsOutlined />
                     <span className="nav-text">Library</span>
