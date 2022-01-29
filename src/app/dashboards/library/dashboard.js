@@ -1,6 +1,6 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../framework/viz/dashboard";
-import {VideoCard} from "./lib";
+import {VideoCard} from "./components";
 import styles from "./dashboard.module.css";
 
 const dashboard_id = "dashboards.video.instance";

@@ -1,4 +1,4 @@
-import styles from "./lib.module.css";
+import styles from "./components.module.css";
 
 export function VideoDetailView({videoUrl}) {
   return (
