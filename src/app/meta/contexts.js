@@ -19,9 +19,9 @@ const messages = defineMessages({
     id: 'contexts.teams.display',
     defaultMessage: "{quantity, plural, one {Team} other {Teams}}"
   },
-  videos: {
-    id: 'contexts.videos.display',
-    defaultMessage: "{quantity, plural, one {Video} other {Videos}}"
+  library: {
+    id: 'contexts.library.display',
+    defaultMessage: "{quantity, plural, one {Library} other {Libraries}}"
   },
   work_items: {
     id: 'contexts.work_items.display',
@@ -114,18 +114,18 @@ export const Contexts = {
     icon: 'ion-ios-people',
     color: '#356eb2'
   },
-  videos: {
-    name: 'videos',
-    message: messages.videos,
+  library: {
+    name: 'library',
+    message: messages.library,
     display:
         (quantity = 0) => {
           return <FormattedMessage
-            id="contexts.videos.display"
-            defaultMessage="{quantity, plural, one {Video} other {Videos}}"
+            id="contexts.library.display"
+            defaultMessage="{quantity, plural, one {Library} other {Libraries}}"
             values={{quantity: quantity}}
         />
         },
-    icon: 'ion-ios-videocam-outline',
+    icon: 'ion-ios-copy-outline',
     color: '#356eb2'
   },
   work_items: {

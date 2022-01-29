@@ -4,7 +4,7 @@ import Videos from "./topic";
 import {Contexts} from "../../meta/index";
 
 const context = {
-  ...Contexts.videos,
+  ...Contexts.library,
   routes: [
     {
       match: 'videos',

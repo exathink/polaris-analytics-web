@@ -162,7 +162,7 @@ class Sidebar extends Component {
               <Menu.Item className="ant-menu-item">
                 <Link to={Library.url_for}>
                   <span className="isoMenuHolder" style={submenuColor}>
-                    <SnippetsOutlined />
+                    <i className={Library.icon}/>
                     <span className="nav-text">Library</span>
                   </span>
                 </Link>
