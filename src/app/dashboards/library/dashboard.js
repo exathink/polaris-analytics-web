@@ -10,22 +10,22 @@ import img5 from "../../../image/5.jpg";
 export default function VideoDashboard() {
   return (
     <div className={styles.videoDashboard}>
-      <div className={styles.first}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img1} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
-      <div className={styles.second}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img2} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
-      <div className={styles.third}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img3} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
-      <div className={styles.fourth}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img4} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
-      <div className={styles.fifth}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img5} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
-      <div className={styles.sixth}>
+      <div className={styles.card}>
         <VideoCard title={"Title"} description={"Description"} thumbnail={img1} videoUrl={"https://vimeo.com/showcase/8025646/embed"} />
       </div>
     </div>

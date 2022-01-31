@@ -1,39 +1,11 @@
 .videoDashboard {
   padding-top: 1rem;
   display: grid;
-  grid-template-columns: 3rem 1fr 1fr 1fr 3rem;
-  grid-template-areas: ". first second third ."
-  ". fourth fifth sixth .";
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 1.5rem;
   justify-content: center;
 }
 
-.first {
-  padding: 0.25rem;
-  grid-area: first;
-}
-
-.second {
-  padding: 0.25rem;
-  grid-area: second;
-}
-
-.third {
-  padding: 0.25rem;
-  grid-area: third;
-}
-
-.fourth {
-  padding: 0.25rem;
-  grid-area: fourth;
-}
-
-.fifth {
-  padding: 0.25rem;
-  grid-area: fifth;
-}
-
-.sixth {
-  padding: 0.25rem;
-  grid-area: sixth;
+.card {
+ justify-self: center;
 }
