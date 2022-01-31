@@ -1,4 +1,7 @@
 import styles from "./components.module.css";
+import {Card} from "antd";
+import {PlayCircleOutlined} from "@ant-design/icons";
+const {Meta} = Card;
 
 export function VideoDetailView({videoUrl}) {
   return (
@@ -16,17 +19,24 @@ export function VideoDetailView({videoUrl}) {
   );
 }
 
-export function VideoCard({view, title, description, videoUrl}) {
+export function VideoCard({view, title, description, thumbnail, videoUrl}) {
+  function handleCardClick() {
+    
+  }
   if (view === "detail") {
     return <VideoDetailView videoUrl={videoUrl} />;
   }
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.block}>
-        
-      </div>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.description}>{description}</div>
-    </div>
+    <Card
+      hoverable
+      style={{width: 290, objectFit: "cover"}}
+      cover={<img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}}/>}
+      onClick={handleCardClick}
+      actions={[
+        <PlayCircleOutlined  key="playcircle" style={{fontSize: "1.5rem"}}/>,
+    ]}
+    >
+      <Meta title={""} description={description} />
+    </Card>
   );
 }
