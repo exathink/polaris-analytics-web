@@ -19,7 +19,7 @@ const allCardsData = [
   {name: "title6", description: "Description", thumbnail: img6, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
 ];
 
-export function VideoDashboard({dashboardUrl, itemSelected, navigate, context}) {
+export function VideoDashboard({dashboardUrl, itemSelected, navigate, context, fullScreen}) {
   function onCardClick(name) {
     itemSelected
       ? navigate.push(`${dashboardUrl}${context.search}`)
@@ -28,7 +28,7 @@ export function VideoDashboard({dashboardUrl, itemSelected, navigate, context}) 
 
   // find the selected VideoCard and render that or show all video cards
   if (itemSelected) {
-    return <VideoDetailView getSelectedVideoUrl={name => allCardsData.find(x => x.name===name)?.videoUrl} />;
+    return <VideoDetailView fullScreen={fullScreen} getSelectedVideoUrl={name => allCardsData.find(x => x.name===name)?.videoUrl} />;
   }
 
   return (

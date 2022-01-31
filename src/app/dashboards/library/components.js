@@ -4,11 +4,11 @@ import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
 const {Meta} = Card;
 
-export const VideoDetailView = withRouter(({match, getSelectedVideoUrl}) => {
+export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScreen}) => {
   const videoUrl = getSelectedVideoUrl(match.params.selected);
   return (
     <div className={styles.detailViewWrapper}>
-      <div style={{padding: "50.25% 0 0 0", position: "relative"}}>
+      <div style={{padding: fullScreen ? "61.25% 0 0 0": "53.25% 0 0 0", position: "relative"}}>
         <iframe
           title="video-guidance"
           src={videoUrl}
