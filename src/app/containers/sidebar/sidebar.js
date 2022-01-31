@@ -158,16 +158,20 @@ class Sidebar extends Component {
             </Menu>
 
                  
-            {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
-              <Menu.Item className="ant-menu-item">
-                <Link to={Library.url_for}>
-                  <span className="isoMenuHolder" style={submenuColor}>
-                    <i className={Library.icon}/>
-                    <span className="nav-text">Content Library</span>
-                  </span>
-                </Link>
-              </Menu.Item>
-            </Menu>}
+            {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
+              <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
+                {/* Divider */}
+                <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
+                <Menu.Item className="ant-menu-item">
+                  <Link to={Library.url_for}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={Library.icon} />
+                      <span className="nav-text">Content Library</span>
+                    </span>
+                  </Link>
+                </Menu.Item>
+              </Menu>
+            )}
            
           </Scrollbars>
         </Sider>
