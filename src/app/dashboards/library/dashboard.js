@@ -28,7 +28,7 @@ export function VideoDashboard({dashboardUrl, itemSelected, navigate, context}) 
 
   // find the selected VideoCard and render that or show all video cards
   if (itemSelected) {
-    return <VideoDetailView mapping={allCardsData} />;
+    return <VideoDetailView getSelectedVideoUrl={name => allCardsData.find(x => x.name===name)?.videoUrl} />;
   }
 
   return (

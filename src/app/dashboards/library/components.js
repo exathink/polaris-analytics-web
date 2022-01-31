@@ -4,8 +4,8 @@ import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
 const {Meta} = Card;
 
-export const VideoDetailView = withRouter(({match, mapping}) => {
-  const videoUrl = mapping.find((x) => x.name === match.params.selected)?.videoUrl;
+export const VideoDetailView = withRouter(({match, getSelectedVideoUrl}) => {
+  const videoUrl = getSelectedVideoUrl(match.params.selected);
   return (
     <div className={styles.detailViewWrapper}>
       <div style={{padding: "50.25% 0 0 0", position: "relative"}}>
