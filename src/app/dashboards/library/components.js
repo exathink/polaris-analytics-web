@@ -2,6 +2,7 @@ import styles from "./components.module.css";
 import {Card} from "antd";
 import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
+import {truncateString} from "../projects/shared/helper/renderers";
 const {Meta} = Card;
 
 export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScreen}) => {
@@ -31,7 +32,7 @@ export const VideoCard = ({name, description, thumbnail, onCardClick}) => {
       onClick={() => onCardClick(name)}
       actions={[<PlayCircleOutlined key="playcircle" style={{fontSize: "1.5rem"}} />]}
     >
-      <Meta title={""} description={description} />
+      <Meta title={""} description={truncateString(description, 70, "#6b7280")} />
     </Card>
   );
 };
