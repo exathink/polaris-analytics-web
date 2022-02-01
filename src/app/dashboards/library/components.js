@@ -26,7 +26,7 @@ export const VideoCard = ({name, description, thumbnail, onCardClick}) => {
   return (
     <Card
       hoverable
-      style={{width: 290, objectFit: "cover"}}
+      style={{width: 290, objectFit: "cover", borderRadius: "5px", overflow: "hidden"}}
       cover={<img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}} />}
       onClick={() => onCardClick(name)}
       actions={[<PlayCircleOutlined key="playcircle" style={{fontSize: "1.5rem"}} />]}
