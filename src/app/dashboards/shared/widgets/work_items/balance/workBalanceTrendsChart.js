@@ -4,7 +4,7 @@ import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTre
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../config";
-import {WorkBalancePointDetailChart} from "./workBalancePointDetailChart";
+import {WorkBalanceContributorDetailChart} from "./workBalanceContributorDetailChart";
 
 function fteEquivalent(measurementWindow) {
   switch (measurementWindow) {
@@ -203,7 +203,7 @@ export const WorkBalanceTrendsChart = (
         }}
         onSelectionChange={handleSelectionChange}
       />
-      <WorkBalancePointDetailChart selectedContributors={selectedContributors} />
+      <WorkBalanceContributorDetailChart selectedContributors={selectedContributors} />
     </div>
   );
 }

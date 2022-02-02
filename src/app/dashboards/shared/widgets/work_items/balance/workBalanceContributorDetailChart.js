@@ -7,7 +7,7 @@ function getCategories(selectedContributors) {
   return selectedContributors.map((x) => x.contributorName).sort();
 }
 
-export const WorkBalancePointDetailChart = Chart({
+export const WorkBalanceContributorDetailChart = Chart({
   chartUpdateProps: (props) => pick(props, "selectedContributors"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
@@ -15,7 +15,7 @@ export const WorkBalancePointDetailChart = Chart({
     const seriesObj = {
       key: "test",
       id: "test",
-      name: "Work Balance Detail",
+      name: "Detail",
       data: selectedContributors.map((x) => {
         return {
           y: x.totalCommitDays,
@@ -32,7 +32,7 @@ export const WorkBalancePointDetailChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Work Balance Point Detail`,
+        text: `Contributor Detail`,
       },
       subtitle: {
         text: (function () {
