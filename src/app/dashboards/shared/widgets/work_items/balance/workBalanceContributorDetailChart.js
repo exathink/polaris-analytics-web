@@ -17,6 +17,7 @@ function getSeries(contributors) {
         return {
           y: x.totalCommitDays,
           measurement: x,
+          color: x.color
         };
       }),
     },
