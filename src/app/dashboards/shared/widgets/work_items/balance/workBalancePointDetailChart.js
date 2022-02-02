@@ -13,14 +13,15 @@ export const WorkBalancePointDetailChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({intl, selectedContributors}) => {
     const seriesObj = {
-        key: "test",
-        id: "test",
-        name: "Test",
-        data: selectedContributors.map(x => {
-            return {
-                y: x.totalCommitDays,
-            }
-        })
+      key: "test",
+      id: "test",
+      name: "Work Balance Detail",
+      data: selectedContributors.map((x) => {
+        return {
+          y: x.totalCommitDays,
+          measurement: x,
+        };
+      }),
     };
     return {
       chart: {
@@ -57,8 +58,16 @@ export const WorkBalancePointDetailChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml({
-            header: ` `,
-            body: [[``, ``]],
+            header: `Contributor: ${this.point.measurement.contributorName}`,
+            body: [
+              [
+                `Active Days:`,
+                `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(
+                  (this.point.y / selectedContributors.reduce((acc, x) => acc + x.totalCommitDays, 0)) * 100,
+                  {maximumFractionDigits: 1}
+                )}% )`,
+              ],
+            ],
           });
         },
       },
