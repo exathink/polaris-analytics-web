@@ -7,22 +7,28 @@ function getCategories(selectedContributors) {
   return selectedContributors.map((x) => x.contributorName).sort();
 }
 
-export const WorkBalanceContributorDetailChart = Chart({
-  chartUpdateProps: (props) => pick(props, "selectedContributors"),
-  eventHandler: DefaultSelectionEventHandler,
-  mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({intl, selectedContributors}) => {
-    const seriesObj = {
+function getSeries(contributors) {
+  return [
+    {
       key: "test",
       id: "test",
       name: "Detail",
-      data: selectedContributors.map((x) => {
+      data: contributors.map((x) => {
         return {
           y: x.totalCommitDays,
           measurement: x,
         };
       }),
-    };
+    },
+  ];
+}
+
+export const WorkBalanceContributorDetailChart = Chart({
+  chartUpdateProps: (props) => pick(props, "selectedContributors"),
+  eventHandler: DefaultSelectionEventHandler,
+  mapPoints: (points, _) => points.map((point) => point),
+  getConfig: ({intl, selectedContributors}) => {
+    const series = getSeries(selectedContributors);
     return {
       chart: {
         type: "column",
@@ -71,7 +77,7 @@ export const WorkBalanceContributorDetailChart = Chart({
           });
         },
       },
-      series: [seriesObj],
+      series: series,
       plotOptions: {
         series: {
           animation: false,
