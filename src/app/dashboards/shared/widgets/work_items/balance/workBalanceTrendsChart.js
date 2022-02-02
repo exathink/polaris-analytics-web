@@ -1,5 +1,5 @@
 import React from 'react';
-import {EVENT_TYPES, toMoment} from "../../../../../helpers/utility";
+import {EVENT_TYPES, pick, toMoment} from "../../../../../helpers/utility";
 import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTrend/measurementTrendLineChart";
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
@@ -20,7 +20,7 @@ function fteEquivalent(measurementWindow) {
 
 
 const WorkBalanceTrendsWithContributorDetailChart = Chart({
-  chartUpdateProps: props => props,
+  chartUpdateProps: props => pick(props, "capacityTrends", "contributorDetail", "showContributorDetail", "showEffort", "cycleMetricsTrends", "measurementWindow", "measurementPeriod", "view", "chartConfig"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
@@ -179,7 +179,7 @@ export const WorkBalanceTrendsChart = (
   if(selectedPoint){
     selectedContributors = contributorDetail.filter(x => toMoment(x['measurementDate'], true).valueOf()===selectedPoint);
   }
-  
+
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
       const [{x}] = items;
