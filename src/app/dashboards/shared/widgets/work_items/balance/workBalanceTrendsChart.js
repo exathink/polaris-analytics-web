@@ -177,19 +177,23 @@ export const WorkBalanceTrendsChart = (
   const [contributorSeriesColors, setColors] = React.useState();
 
   let selectedContributors = [];
-  if(selectedPoint && contributorSeriesColors){
-    selectedContributors = contributorDetail.filter(x => toMoment(x['measurementDate'], true).valueOf()===selectedPoint).map(c => ({...c, color: contributorSeriesColors[c.contributorKey]}));
+  if (selectedPoint && contributorSeriesColors) {
+    selectedContributors = contributorDetail
+      .filter((x) => toMoment(x["measurementDate"], true).valueOf() === selectedPoint)
+      .map((c) => ({...c, color: contributorSeriesColors[c.contributorKey]}));
   }
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
       const [{x, series}] = items;
-      const allSeriesColors = series.chart.series.map(s => ({key: s.userOptions.key, color: s.color})).reduce((acc, item)=>{
-        acc[item.key]=item.color;
-        return acc;
-      }, {});
+      const allSeriesColors = series.chart.series
+        .map((s) => ({key: s.userOptions.key, color: s.color}))
+        .reduce((acc, item) => {
+          acc[item.key] = item.color;
+          return acc;
+        }, {});
       setColors(allSeriesColors);
-      setSelectedPoint(x)
+      setSelectedPoint(x);
     }
   }
 
@@ -209,8 +213,12 @@ export const WorkBalanceTrendsChart = (
         }}
         onSelectionChange={handleSelectionChange}
       />
-      <WorkBalanceContributorDetailChart selectedContributors={selectedContributors} />
+      <WorkBalanceContributorDetailChart
+        selectedContributors={selectedContributors}
+        measurementWindow={measurementWindow}
+        selectedDate={selectedPoint}
+      />
     </div>
   );
-}
+};
 

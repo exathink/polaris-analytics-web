@@ -2,6 +2,7 @@ import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {pick} from "../../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../config";
+import {formatAsDate} from "../../../../../i18n/utils";
 
 function getCategories(selectedContributors) {
   return selectedContributors.map((x) => x.contributorName).sort();
@@ -29,7 +30,7 @@ export const WorkBalanceContributorDetailChart = Chart({
   chartUpdateProps: (props) => pick(props, "selectedContributors"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({intl, selectedContributors}) => {
+  getConfig: ({intl, selectedContributors, measurementWindow, selectedDate}) => {
     const series = getSeries(selectedContributors);
     return {
       chart: {
@@ -44,7 +45,7 @@ export const WorkBalanceContributorDetailChart = Chart({
       },
       subtitle: {
         text: (function () {
-          return ``;
+          return `${measurementWindow} days ending ${formatAsDate(intl, selectedDate)}`;
         })(),
       },
       xAxis: {
