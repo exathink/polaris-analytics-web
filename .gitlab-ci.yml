@@ -12,6 +12,7 @@
   stages:
     - build
     - test
+    - deploy
 
 
   build-package-image:
@@ -34,6 +35,9 @@
 
   deploy:
       stage: deploy
+      environment:
+        name: production
+
       tags:
           - polaris-runner
       script:
