@@ -159,20 +159,17 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
 });
 
 
-export const WorkBalanceTrendsChart = (
-  {
-    capacityTrends,
-    contributorDetail,
-    cycleMetricsTrends,
-    showContributorDetail,
-    showEffort,
-    measurementPeriod,
-    measurementWindow,
-    view,
-    chartConfig
-  }
-) => {
-
+export const WorkBalanceTrendsChart = ({
+  capacityTrends,
+  contributorDetail,
+  cycleMetricsTrends,
+  showContributorDetail,
+  showEffort,
+  measurementPeriod,
+  measurementWindow,
+  view,
+  chartConfig,
+}) => {
   const [selectedPoint, setSelectedPoint] = React.useState();
   const [contributorSeriesColors, setColors] = React.useState();
 
@@ -197,28 +194,36 @@ export const WorkBalanceTrendsChart = (
     }
   }
 
-  return (
-    <div>
-      <WorkBalanceTrendsWithContributorDetailChart
-        {...{
-          capacityTrends,
-          contributorDetail,
-          showContributorDetail,
-          showEffort,
-          cycleMetricsTrends,
-          measurementWindow,
-          measurementPeriod,
-          view,
-          chartConfig,
-        }}
-        onSelectionChange={handleSelectionChange}
-      />
-      <WorkBalanceContributorDetailChart
-        selectedContributors={selectedContributors}
-        measurementWindow={measurementWindow}
-        selectedDate={selectedPoint}
-      />
-    </div>
+  const workBalanceTrendsChart = (
+    <WorkBalanceTrendsWithContributorDetailChart
+      {...{
+        capacityTrends,
+        contributorDetail,
+        showContributorDetail,
+        showEffort,
+        cycleMetricsTrends,
+        measurementWindow,
+        measurementPeriod,
+        view,
+        chartConfig,
+      }}
+      onSelectionChange={handleSelectionChange}
+    />
   );
+
+  if (showContributorDetail) {
+    return (
+      <div>
+        {workBalanceTrendsChart}
+        <WorkBalanceContributorDetailChart
+          selectedContributors={selectedContributors}
+          measurementWindow={measurementWindow}
+          selectedDate={selectedPoint}
+        />
+      </div>
+    );
+  } else {
+    return workBalanceTrendsChart;
+  }
 };
 
