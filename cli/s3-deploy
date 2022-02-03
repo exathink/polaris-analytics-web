@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
- aws s3 sync build s3://io.urjuna.staging --exclude "index.html" --delete
+ aws s3 sync build s3://io.urjuna.staging --exclude "index.html"
  aws s3 sync build s3://io.urjuna.staging --exclude "*"  --include "index.html" --cache-control no-cache

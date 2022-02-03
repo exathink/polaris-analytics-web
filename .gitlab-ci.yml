@@ -32,5 +32,18 @@
         - package test-package
 
 
+  deploy:
+      stage: deploy
+      tags:
+          - polaris-runner
+      script:
+          # this runs the tests against the src image.
+          - echo "final build and deploy to prod"
+          - package build
+          - package cli s3-deploy
+
+      rules:
+          - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+            when: manual
 
     
