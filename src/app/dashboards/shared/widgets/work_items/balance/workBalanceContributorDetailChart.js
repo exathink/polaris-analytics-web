@@ -11,8 +11,8 @@ function getCategories(selectedContributors) {
 function getSeries(contributors) {
   return [
     {
-      key: "test",
-      id: "test",
+      key: "contributor_detail",
+      id: "contributor_detail",
       showInLegend: false,
       name: "Detail",
       data: contributors.map((x) => {
