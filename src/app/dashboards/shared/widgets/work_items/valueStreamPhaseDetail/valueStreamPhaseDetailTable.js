@@ -18,7 +18,7 @@ function getCycleTimeOrLatency(item, intl) {
   return item.stateType === WorkItemStateTypes.closed ?
     getNumber(item.cycleTime, intl)
     :
-    getNumber(item.commitLatency, intl)
+    getNumber(item.latency, intl)
 }
 
 function getTransformedData(data, intl) {
