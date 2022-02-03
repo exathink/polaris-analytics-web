@@ -12,6 +12,7 @@ function getSeries(contributors) {
     {
       key: "test",
       id: "test",
+      showInLegend: false,
       name: "Detail",
       data: contributors.map((x) => {
         return {
@@ -39,7 +40,7 @@ export const WorkBalanceContributorDetailChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Contributor Detail`,
+        text: `Active Days by Contributor`,
       },
       subtitle: {
         text: (function () {
@@ -57,7 +58,7 @@ export const WorkBalanceContributorDetailChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: `Dev-Days`,
+          text: `Days`,
         },
       },
       tooltip: {
