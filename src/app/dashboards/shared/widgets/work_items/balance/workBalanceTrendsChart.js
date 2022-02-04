@@ -183,7 +183,7 @@ export const WorkBalanceTrendsChart = ({
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
       const [{x, series}] = items;
-      const allSeriesColors = series.chart.series
+      const allSeriesColors = series?.chart?.series
         .map((s) => ({key: s.userOptions.key, color: s.color}))
         .reduce((acc, item) => {
           acc[item.key] = item.color;
