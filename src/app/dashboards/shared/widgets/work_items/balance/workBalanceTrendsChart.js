@@ -195,6 +195,16 @@ export const WorkBalanceTrendsChart = ({
     }
   }
 
+  function handleInitialChartColors(chart) {
+    const allSeriesColors = chart?.series
+      .map((s) => ({key: s.userOptions.key, color: s.color}))
+      .reduce((acc, item) => {
+        acc[item.key] = item.color;
+        return acc;
+      }, {});
+    setColors(allSeriesColors);
+  }
+
   const workBalanceTrendsChart = (
     <WorkBalanceTrendsWithContributorDetailChart
       {...{
@@ -209,6 +219,7 @@ export const WorkBalanceTrendsChart = ({
         chartConfig,
       }}
       onSelectionChange={handleSelectionChange}
+      getChart={handleInitialChartColors}
     />
   );
 
