@@ -5,7 +5,7 @@ import {Colors} from "../../../config";
 import {formatAsDate} from "../../../../../i18n/utils";
 
 function getCategories(selectedContributors) {
-  return selectedContributors.map((x) => x.contributorName).sort();
+  return selectedContributors.map((x) => x.contributorName);
 }
 
 function getSeries(contributors) {
@@ -19,7 +19,7 @@ function getSeries(contributors) {
         return {
           y: x.totalCommitDays,
           measurement: x,
-          color: x.color
+          color: x.color,
         };
       }),
     },
@@ -31,7 +31,9 @@ export const WorkBalanceContributorDetailChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({intl, selectedContributors, measurementWindow, selectedDate}) => {
-    const series = getSeries(selectedContributors);
+    // sort selected contributors by contributorName
+    const sortedContributors = selectedContributors.sort((a, b) => a.contributorName.localeCompare(b.contributorName));
+    const series = getSeries(sortedContributors);
     return {
       chart: {
         type: "column",

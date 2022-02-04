@@ -1,5 +1,5 @@
 import React from 'react';
-import {EVENT_TYPES, pick, toMoment} from "../../../../../helpers/utility";
+import {EVENT_TYPES, getTodayDate, pick, toMoment} from "../../../../../helpers/utility";
 import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTrend/measurementTrendLineChart";
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
@@ -171,8 +171,8 @@ export const WorkBalanceTrendsChart = ({
   view,
   chartConfig,
 }) => {
-  const [selectedPoint, setSelectedPoint] = React.useState();
-  const [contributorSeriesColors, setColors] = React.useState();
+  const [selectedPoint, setSelectedPoint] = React.useState(toMoment(getTodayDate("YYYY-MM-DD"), true).valueOf());
+  const [contributorSeriesColors, setColors] = React.useState({});
 
   let selectedContributors = [];
   if (selectedPoint && contributorSeriesColors) {
