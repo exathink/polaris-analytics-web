@@ -15,3 +15,10 @@
 .percentageSliderInputNumber {
   margin-left: 15px;
 }
+
+.daysRangeSlider {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

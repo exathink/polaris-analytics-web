@@ -21,7 +21,8 @@ export function getTrendsControlBarControls(
     [daysRange, setDaysRange, daysMarks],
     [measurementWindowRange, setMeasurementWindowRange, measurementWindowMarks],
     [frequencyRange, setFrequencyRange, frequencyRangeMarks]
-  ]
+  ],
+  titleLayout="row"
 ) {
   return [
     () =>
@@ -30,6 +31,7 @@ export function getTrendsControlBarControls(
           initialDays={daysRange}
           setDaysRange={setDaysRange}
           range={daysMarks || SIX_MONTHS}
+          layout={titleLayout}
         />
       </div>
     ,
@@ -40,6 +42,7 @@ export function getTrendsControlBarControls(
           initialDays={frequencyRange}
           setDaysRange={setFrequencyRange}
           range={frequencyRangeMarks || [1, 7, 14, 30]}
+          layout={titleLayout}
         />
       </div>
     ,
@@ -50,6 +53,7 @@ export function getTrendsControlBarControls(
           initialDays={measurementWindowRange}
           setDaysRange={setMeasurementWindowRange}
           range={measurementWindowMarks || [1, 7, 14, 30]}
+          layout={titleLayout}
         />
       </div>
     ,

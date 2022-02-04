@@ -1,0 +1,5 @@
+.workBalance {
+    display: grid;
+    gap: 1rem;
+    grid-template-rows: 40vh 35vh;
+}
