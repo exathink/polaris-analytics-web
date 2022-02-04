@@ -19,6 +19,10 @@ const messages = defineMessages({
     id: 'contexts.teams.display',
     defaultMessage: "{quantity, plural, one {Team} other {Teams}}"
   },
+  library: {
+    id: 'contexts.library.display',
+    defaultMessage: "{quantity, plural, one {Library} other {Libraries}}"
+  },
   work_items: {
     id: 'contexts.work_items.display',
     defaultMessage: "{quantity, plural, one {Card} other {Cards}}"
@@ -108,6 +112,20 @@ export const Contexts = {
         />
         },
     icon: 'ion-ios-people',
+    color: '#356eb2'
+  },
+  library: {
+    name: 'library',
+    message: messages.library,
+    display:
+        (quantity = 0) => {
+          return <FormattedMessage
+            id="contexts.library.display"
+            defaultMessage="{quantity, plural, one {Library} other {Libraries}}"
+            values={{quantity: quantity}}
+        />
+        },
+    icon: 'ion-ios-copy-outline',
     color: '#356eb2'
   },
   work_items: {

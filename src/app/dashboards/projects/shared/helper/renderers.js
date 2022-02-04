@@ -22,7 +22,7 @@ export function getStateTypeIcon(workItemType, size="16px") {
   return <div style={{width: size, height: size, backgroundColor: WorkItemStateTypeColor[workItemType], borderRadius: "0.2rem", marginRight: "0.5rem"}}></div>
 }
 
-function truncateString(str, len, color="#108ee9") {
+export function truncateString(str, len, color="#108ee9") {
   if (str.length>len) {
     const temp = str.substring(0,len) + "...";
     return <Tooltip title={str} color={color}>

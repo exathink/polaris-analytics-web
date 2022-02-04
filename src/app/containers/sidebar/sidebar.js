@@ -15,6 +15,8 @@ import {getCurrentTheme} from '../../themes/config';
 import {themeConfig} from '../../../config';
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
+import Library from "../../dashboards/library/context"
+import {VIDEO_GUIDANCE} from "../../../config/featureFlags";
 
 const {Sider} = Layout;
 
@@ -154,6 +156,23 @@ class Sidebar extends Component {
                   : null
               }
             </Menu>
+
+                 
+            {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
+              <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
+                {/* Divider */}
+                <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
+                <Menu.Item className="ant-menu-item">
+                  <Link to={Library.url_for}>
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className={Library.icon} />
+                      <span className="nav-text">Content Library</span>
+                    </span>
+                  </Link>
+                </Menu.Item>
+              </Menu>
+            )}
+           
           </Scrollbars>
         </Sider>
       </SidebarWrapper>
