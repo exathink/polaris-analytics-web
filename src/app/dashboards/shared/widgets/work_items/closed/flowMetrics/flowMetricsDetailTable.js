@@ -147,6 +147,8 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       key: "state",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
       width: "7%",
+      filters: filters.states.map((b) => ({text: String(b).toLowerCase(), value: b})),
+      onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
     },
     {
@@ -239,10 +241,11 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const states = [...new Set(tableData.map((x) => x.state))];
   const categories = getHistogramCategories(colWidthBoundaries);
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
-  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey}, selectedMetric);
+  const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, states, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey}, selectedMetric);
   const dataSource = getTransformedData(tableData, intl);
 
   return (
