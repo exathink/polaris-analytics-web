@@ -1,7 +1,7 @@
 import React from "react";
 import {VideoCard, VideoDetailView} from "./components";
 import styles from "./dashboard.module.css";
-import img1 from "../../../image/1.jpg";
+import ux_conventions_img from "./images/ux-conventions-5.png";
 import img2 from "../../../image/2.jpg";
 import img3 from "../../../image/3.jpg";
 import img4 from "../../../image/4.jpg";
@@ -11,7 +11,7 @@ import {withDetailRoutes} from "../../framework/viz/dashboard/withDetailRoutes";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 
 const allCardsData = [
-  {name: "title1", description: "Description Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi sit, sunt esse saepe architecto dicta earum voluptates adipisci blanditiis, sapiente aut pariatur atque provident deleniti illum alias dolorem nemo expedita!", thumbnail: img1, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
+  {name: "UX Conventions", description: "Perspectives, Topics and Navigation", thumbnail: ux_conventions_img, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
   {name: "title2", description: "Description", thumbnail: img2, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
   {name: "title3", description: "Description", thumbnail: img3, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
   {name: "title4", description: "Description", thumbnail: img4, videoUrl: "https://vimeo.com/showcase/8025646/embed"},
