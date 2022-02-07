@@ -1,7 +1,6 @@
 import {Box, Flex} from "reflexbox";
 import {Slider} from "antd";
 import React from "react";
-import styles from "./rangeSlider.module.css";
 
 export const SIXTY_DAYS = [1, 3, 7, 14, 30, 45, 60];
 export const SIX_MONTHS = [1, 7, 14, 30, 45, 60, 90, 180];
@@ -23,8 +22,8 @@ export const getMarks = (marks) =>  marks.reduce(
   {}
 );
 
-export const DaysRangeSlider = ({title = "Days", initialDays, setDaysRange, range, layout = "row"}) => (
-  <Flex align={"center"} className={layout === "col" ? styles.daysRangeSlider : ""}>
+export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}) => (
+  <Flex align={'center'}>
     <Box pr={1} pt={"1px"}>
       {title}
     </Box>
@@ -32,14 +31,13 @@ export const DaysRangeSlider = ({title = "Days", initialDays, setDaysRange, rang
       <Slider
         defaultValue={initialDays || 1}
         min={(range && range[0]) || 1}
-        max={(range && range[range.length - 1]) || 60}
+        max={(range && range[range.length -1] )|| 60}
         marks={getMarks(range || SIXTY_DAYS)}
         included={true}
-        onAfterChange={(value) => setDaysRange && setDaysRange(value)}
-      />
+        onAfterChange={value => setDaysRange && setDaysRange(value)}/>
     </Box>
   </Flex>
-);
+)
 
 export const RangeSlider = ({title='', initialDays, setDaysRange, range, className}) => (
   <Flex align={'center'} className={className} data-testid="target-range-slider">

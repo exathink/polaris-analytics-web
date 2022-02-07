@@ -55,11 +55,10 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
               [daysRange, setDaysRange],
               [measurementWindowRange, setMeasurementWindowRange, [1,7,30]],
               [frequencyRange, setFrequencyRange, [1,7,30]]
-            ],
-            "col"
+            ]
           ),
           () => (
-            <div style={{padding: "5px", minWidth:'100px', marginLeft: '10px'}}>
+            <div style={{padding: "5px", minWidth:'160px', marginLeft: '10px'}}>
               <Flex align={'right'}>
                 <Box pr={2} w={"100%"}>
                   <Checkbox
@@ -74,7 +73,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
             </div>
           ),
           () => (
-            <div style={{padding: "5px", minWidth:'100px'}}>
+            <div style={{padding: "5px", minWidth:'180px'}}>
               <Flex align={'right'}>
                 <Box pr={1} w={"100%"}>
                   <Checkbox
