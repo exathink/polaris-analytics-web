@@ -43,6 +43,9 @@ export const Chart = (configProvider: ChartConfigProvider) => {
         }
         // useful for tests
         this.addTestUtilities(chart);
+
+        // useful to get chart after chart is rendered
+        this.props.getChart?.(chart);
       }
 
       addTestUtilities(chart){

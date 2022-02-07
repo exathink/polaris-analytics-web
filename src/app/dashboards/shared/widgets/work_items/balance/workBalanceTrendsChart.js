@@ -1,9 +1,11 @@
 import React from 'react';
-import {toMoment} from "../../../../../helpers/utility";
+import {EVENT_TYPES, getTodayDate, pick, toMoment} from "../../../../../helpers/utility";
 import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTrend/measurementTrendLineChart";
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../config";
+import {WorkBalanceContributorDetailChart} from "./workBalanceContributorDetailChart";
+import styles from "./workBalance.module.css";
 
 function fteEquivalent(measurementWindow) {
   switch (measurementWindow) {
@@ -19,7 +21,7 @@ function fteEquivalent(measurementWindow) {
 
 
 const WorkBalanceTrendsWithContributorDetailChart = Chart({
-  chartUpdateProps: props => props,
+  chartUpdateProps: props => pick(props, "capacityTrends", "contributorDetail", "showContributorDetail", "showEffort", "cycleMetricsTrends", "measurementWindow", "measurementPeriod", "view", "chartConfig"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
@@ -158,32 +160,82 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
 });
 
 
-export const WorkBalanceTrendsChart = (
-  {
-    capacityTrends,
-    contributorDetail,
-    cycleMetricsTrends,
-    showContributorDetail,
-    showEffort,
-    measurementPeriod,
-    measurementWindow,
-    view,
-    chartConfig
+export const WorkBalanceTrendsChart = ({
+  capacityTrends,
+  contributorDetail,
+  cycleMetricsTrends,
+  showContributorDetail,
+  showEffort,
+  measurementPeriod,
+  measurementWindow,
+  view,
+  chartConfig,
+}) => {
+  const [selectedPoint, setSelectedPoint] = React.useState(toMoment(getTodayDate("YYYY-MM-DD"), true).valueOf());
+  const [contributorSeriesColors, setColors] = React.useState({});
+
+  let selectedContributors = [];
+  if (selectedPoint && contributorSeriesColors) {
+    selectedContributors = contributorDetail
+      .filter((x) => toMoment(x["measurementDate"], true).valueOf() === selectedPoint)
+      .map((c) => ({...c, color: contributorSeriesColors[c.contributorKey]}));
   }
-) => (
 
-  <WorkBalanceTrendsWithContributorDetailChart {...{
-    capacityTrends,
-    contributorDetail,
-    showContributorDetail,
-    showEffort,
-    cycleMetricsTrends,
-    measurementWindow,
-    measurementPeriod,
-    view,
-    chartConfig
-  }} />
+  function handleSelectionChange(items, eventType) {
+    if (eventType === EVENT_TYPES.POINT_CLICK) {
+      const [{x, series}] = items;
+      const allSeriesColors = series?.chart?.series
+        .map((s) => ({key: s.userOptions.key, color: s.color}))
+        .reduce((acc, item) => {
+          acc[item.key] = item.color;
+          return acc;
+        }, {});
+      setColors(allSeriesColors);
+      setSelectedPoint(x);
+    }
+  }
 
+  function handleInitialChartColors(chart) {
+    const allSeriesColors = chart?.series
+      .map((s) => ({key: s.userOptions.key, color: s.color}))
+      .reduce((acc, item) => {
+        acc[item.key] = item.color;
+        return acc;
+      }, {});
+    setColors(allSeriesColors);
+  }
 
-)
+  const workBalanceTrendsChart = (
+    <WorkBalanceTrendsWithContributorDetailChart
+      {...{
+        capacityTrends,
+        contributorDetail,
+        showContributorDetail,
+        showEffort,
+        cycleMetricsTrends,
+        measurementWindow,
+        measurementPeriod,
+        view,
+        chartConfig,
+      }}
+      onSelectionChange={handleSelectionChange}
+      getChart={handleInitialChartColors}
+    />
+  );
+
+  if (showContributorDetail) {
+    return (
+      <div className={styles.workBalance}>
+        {workBalanceTrendsChart}
+        <WorkBalanceContributorDetailChart
+          selectedContributors={selectedContributors}
+          measurementWindow={measurementWindow}
+          selectedDate={selectedPoint}
+        />
+      </div>
+    );
+  } else {
+    return workBalanceTrendsChart;
+  }
+};
 
