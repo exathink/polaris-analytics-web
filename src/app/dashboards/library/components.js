@@ -13,8 +13,7 @@ export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScre
           title="video-guidance"
           src={videoUrl}
           allow={"fullscreen"}
-          allowfullscreen
-          frameborder="0"
+          frameBorder="0"
           style={{width: "100%", height: "100%"}}
         ></iframe>
     </div>
