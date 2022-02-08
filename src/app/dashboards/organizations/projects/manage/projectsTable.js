@@ -1,6 +1,6 @@
 import React from "react";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
-import {fromNow, truncateString} from "../../../../helpers/utility";
+import {fromNow, getNumber, truncateString} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
@@ -8,6 +8,7 @@ import {useSearch} from "../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
+import { injectIntl } from "react-intl";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -80,7 +81,7 @@ function subProjectRender(text, record) {
   return fullNodeWithTooltip;
 }
 
-export function useOrgProjectsTableColumns() {
+export function useOrgProjectsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
   const subProjectRenderState = {render: subProjectRender};
 
@@ -89,22 +90,22 @@ export function useOrgProjectsTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "12%",
+      width: "10%",
       ...nameSearchState,
     },
     {
       title: "Work Streams",
       dataIndex: "subProjectCount",
       key: "subProjectCount",
-      width: "8%",
+      width: "7%",
       sorter: (a, b) => SORTER.number_compare(a.subProjectCount, b.subProjectCount),
-      ...subProjectRenderState
+      ...subProjectRenderState,
     },
     {
-      title: "Repositories",
+      title: "Repos",
       dataIndex: "repositoryCount",
       key: "repositoryCount",
-      width: "6%",
+      width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
     },
     {
@@ -115,25 +116,80 @@ export function useOrgProjectsTableColumns() {
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
     },
     {
-      title: "Last Commit",
-      dataIndex: "latestCommit",
-      key: "latestCommit",
-      width: "8%",
-      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
-      render: (latestCommit) => fromNow(latestCommit),
+      title: (
+        <span>
+          Response Time <sup>Last {measurementWindow} Days</sup>
+        </span>
+      ),
+      children: [
+        {
+          title: "Lead Time",
+          dataIndex: "leadTime",
+          key: "leadTime",
+          width: "5%",
+          sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
+        },
+        {
+          title: "Cycle Time",
+          dataIndex: "cycleTime",
+          key: "cycleTime",
+          width: "5%",
+          sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
+        },
+      ],
     },
     {
-      title: "Last Project Activity",
-      dataIndex: "latestWorkItemEvent",
-      key: "latestWorkItemEvent",
-      width: "10%",
-      sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
-      render: (latestWorkItemEvent) => fromNow(latestWorkItemEvent),
+      title: (
+        <span>
+          Throughput <sup>PC</sup>
+        </span>
+      ),
+      children: [
+        {
+          title: "Specs",
+          dataIndex: "workItemsInScope",
+          key: "workItemsInScope",
+          width: "5%",
+          sorter: (a, b) => SORTER.number_compare(a.workItemsInScope, b.workItemsInScope),
+        },
+        {
+          title: "Effort",
+          dataIndex: "effort",
+          key: "effort",
+          width: "5%",
+          sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+        },
+      ],
+    },
+    {
+      title: (
+        <span>
+          Latest Activity
+        </span>
+      ),
+      children: [
+        {
+          title: "Last Commit",
+          dataIndex: "latestCommit",
+          key: "latestCommit",
+          width: "7%",
+          sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
+          render: (latestCommit) => fromNow(latestCommit),
+        },
+        {
+          title: "Last Update",
+          dataIndex: "latestWorkItemEvent",
+          key: "latestWorkItemEvent",
+          width: "7%",
+          sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
+          render: (latestWorkItemEvent) => fromNow(latestWorkItemEvent),
+        },
+      ],
     },
     {
       title: "",
       key: "actions",
-      width: "4%",
+      width: "5%",
       align: "right",
       render: (name, record) => (
         <ButtonBar>
@@ -150,19 +206,41 @@ export function useOrgProjectsTableColumns() {
   return columns;
 }
 
-export function ProjectsTable({tableData, loading}) {
-  const columns = useOrgProjectsTableColumns();
+function getTransformedData(tableData, intl) {
+  return tableData.map((project) => {
+    const currentCycleMetrics = project.cycleMetricsTrends[0];
+    return currentCycleMetrics != null
+      ? {
+          ...project,
+          leadTime: getNumber(currentCycleMetrics.avgLeadTime, intl),
+          cycleTime: getNumber(currentCycleMetrics.avgCycleTime, intl),
+          effort: getNumber(currentCycleMetrics.totalEffort, intl),
+          workItemsInScope: getNumber(currentCycleMetrics.workItemsInScope, intl),
+        }
+      : {
+          ...project,
+          leadTime: "N/A",
+          cycleTime: "N/A",
+          effort: "N/A",
+          workItemsInScope: "N/A"
+        };
+  });
+}
+
+export const ProjectsTable = injectIntl(({tableData, loading, intl}) => {
+  const transformedData = getTransformedData(tableData, intl)
+  const columns = useOrgProjectsTableColumns(30);
 
   return (
     <StripeTable
       columns={columns}
-      dataSource={tableData}
+      dataSource={transformedData}
       loading={loading}
       height={TABLE_HEIGHTS.FOURTY_FIVE}
       rowKey={(record) => record.key}
     />
   );
-}
+})
 
 export const ProjectsTableWidget = ({organizationKey}) => {
   const {error, loading, data} = useQueryOrganizationProjects({organizationKey});
