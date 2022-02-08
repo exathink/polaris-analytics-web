@@ -97,7 +97,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
 
   const columns = [
     {
-      title: "Name",
+      title: "Value Stream",
       dataIndex: "name",
       key: "name",
       width: "10%",
@@ -155,12 +155,12 @@ export function useOrgProjectsTableColumns(measurementWindow) {
     {
       title: (
         <span>
-          Throughput <sup>PC</sup>
+          Throughput <sup>Last {measurementWindow} Days</sup>
         </span>
       ),
       children: [
         {
-          title: "Specs",
+          title: <span>Specs <sup>PC</sup> </span>,
           dataIndex: "workItemsWithCommits",
           key: "workItemsWithCommits",
           width: "5%",
@@ -174,6 +174,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
               <sub>
                 <em>Out</em>
               </sub>
+              <sup>PC</sup>
             </span>
           ),
           dataIndex: "effort",
