@@ -1,6 +1,6 @@
 import {Map} from "immutable";
 import moment from "moment";
-import {notification} from "antd";
+import {notification, Tooltip} from "antd";
 import flowright from "lodash.flowright";
 import chunk from "lodash/chunk";
 
@@ -438,4 +438,15 @@ export function getWeekendPlotBands(startDate, endDate, options = {}) {
       to: day2?.endOf("day").valueOf(),
     };
   });
+}
+
+export function truncateString(str, len, color="#108ee9") {
+  if (str.length>len) {
+    const temp = str.substring(0,len) + "...";
+    return <Tooltip title={str} color={color}>
+      {temp}
+    </Tooltip>
+  } else {
+    return str;
+  }
 }

@@ -89,7 +89,7 @@ export default injectIntl(({intl}) => (
                       organizationKey={organization.key}
                     />
                 }
-                showDetail={false}
+                showDetail={true}
               />
             </DashboardRow>
 

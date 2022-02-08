@@ -2,7 +2,8 @@ import styles from "./components.module.css";
 import {Card} from "antd";
 import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
-import {truncateString} from "../projects/shared/helper/renderers";
+import {truncateString} from "../../helpers/utility";
+
 const {Meta} = Card;
 
 export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScreen}) => {
