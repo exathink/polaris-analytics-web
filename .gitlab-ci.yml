@@ -43,6 +43,7 @@
       - polaris-runner
     script:
       - echo "deploy to production"
+      - package build
       - package cli s3-deploy
 
     rules:
