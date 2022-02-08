@@ -1,12 +1,13 @@
 import React from "react";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
-import {fromNow} from "../../../../helpers/utility";
+import {fromNow, truncateString} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
 import {useSearch} from "../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {Highlighter} from "../../../../components/misc/highlighter";
+import {Tag, Tooltip} from "antd";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -24,8 +25,64 @@ function customNameRender(text, record, searchText) {
   );
 }
 
+const TOOLTIP_COLOR = "#6b7280";
+const TAG_COLOR="blue";
+function CustomTag({children}) {
+  return (
+    <div>
+      <Tag color={TAG_COLOR} style={{marginTop: "5px"}}>
+        {children}
+      </Tag>
+    </div>
+  );
+}
+
+function subProjectRender(text, record) {
+  const fullNodeWithTooltip = (
+    <div>
+      {record.subProjectLabels.map((x) => (
+        <CustomTag key={x}>
+          {truncateString(x, 20, TOOLTIP_COLOR)}
+        </CustomTag>
+      ))}
+    </div>
+  );
+  const fullNode = (
+    <div>
+      {record.subProjectLabels.map((x) => (
+        <CustomTag key={x}>
+          {x}
+        </CustomTag>
+      ))}
+    </div>
+  );
+  const partialNode = (
+    <div>
+      {record.subProjectLabels.slice(0, 2).map((x) => (
+        <CustomTag key={x}>
+          {truncateString(x, 20, TOOLTIP_COLOR)}
+        </CustomTag>
+      ))}
+    </div>
+  );
+  if (record.subProjectLabels.length > 2) {
+    return (
+      <div>
+        {partialNode}
+        <div style={{cursor: "pointer"}}>
+          <Tooltip title={fullNode} color={TOOLTIP_COLOR}>
+            <span style={{fontSize: "20px", color: TAG_COLOR}}>...</span>
+          </Tooltip>
+        </div>
+      </div>
+    );
+  }
+  return fullNodeWithTooltip;
+}
+
 export function useOrgProjectsTableColumns() {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
+  const subProjectRenderState = {render: subProjectRender};
 
   const columns = [
     {
@@ -39,8 +96,9 @@ export function useOrgProjectsTableColumns() {
       title: "Work Streams",
       dataIndex: "subProjectCount",
       key: "subProjectCount",
-      width: "5%",
+      width: "8%",
       sorter: (a, b) => SORTER.number_compare(a.subProjectCount, b.subProjectCount),
+      ...subProjectRenderState
     },
     {
       title: "Repositories",
@@ -106,7 +164,7 @@ export const ProjectsTableWidget = ({organizationKey}) => {
 
   const edges = data?.["organization"]?.["projects"]?.["edges"] ?? [];
   const tableData = edges
-    .map((edge) => ({...edge.node, subProjectCount: edge.node.workItemsSources.count}))
+    .map((edge) => ({...edge.node, subProjectCount: edge.node.workItemsSources.count, subProjectLabels: edge.node.workItemsSources.edges.map(edge => edge.node.name)}))
     .sort((a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent));
 
   return <ProjectsTable tableData={tableData} loading={loading} />;
