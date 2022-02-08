@@ -170,3 +170,10 @@ html[dir='rtl'] .dz-hidden-input {
 html[dir='rtl'] .hidden {
   display: none
 }
+
+.textXs {
+  font-size: 0.75rem /* 12px */;
+  line-height: 1rem /* 16px */;
+  color: rgb(107 114 128 / 1);
+  font-weight: 500;
+}
