@@ -81,6 +81,16 @@ function subProjectRender(text, record) {
   return fullNodeWithTooltip;
 }
 
+function renderMetric(text) {
+  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
+}
+function renderDaysMetric(text) {
+  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} days</span>;
+}
+function renderEffortMetric(text) {
+  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} dev-days</span>;
+}
+
 export function useOrgProjectsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
   const subProjectRenderState = {render: subProjectRender};
@@ -107,6 +117,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       key: "repositoryCount",
       width: "4%",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
+      render: renderMetric
     },
     {
       title: "Contributors",
@@ -114,6 +125,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       key: "contributorCount",
       width: "6%",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
+      render: renderMetric
     },
     {
       title: (
@@ -128,6 +140,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
+          render: renderDaysMetric
         },
         {
           title: "Cycle Time",
@@ -135,6 +148,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
+          render: renderDaysMetric
         },
       ],
     },
@@ -151,6 +165,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "workItemsWithCommits",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.workItemsWithCommits, b.workItemsWithCommits),
+          render: renderMetric
         },
         {
           title: (
@@ -165,6 +180,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "effort",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+          render: renderEffortMetric
         },
       ],
     },
@@ -177,7 +193,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "latestCommit",
           width: "7%",
           sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
-          render: (latestCommit) => fromNow(latestCommit),
+          render: (latestCommit) => <span className="textXs">{fromNow(latestCommit)}</span>,
         },
         {
           title: "Last Update",
@@ -185,7 +201,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "latestWorkItemEvent",
           width: "7%",
           sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
-          render: (latestWorkItemEvent) => fromNow(latestWorkItemEvent),
+          render: (latestWorkItemEvent) => <span className="textXs">{fromNow(latestWorkItemEvent)}</span>,
         },
       ],
     },
