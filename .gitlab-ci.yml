@@ -34,20 +34,21 @@
 
 
   deploy:
-      stage: deploy
-      environment:
-        name: production
+    stage: deploy
 
-      tags:
-          - polaris-runner
-      script:
-          # this runs the tests against the src image.
-          - echo "final build and deploy to prod"
-          - package build
-          - package cli s3-deploy
+    environment:
+      name: production
 
-      rules:
-          - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-            when: manual
+    tags:
+      - polaris-runner
+    script:
+      - echo "deploy to production"
+      - package cli s3-deploy
+
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'production' && $CI_COMMIT_MESSAGE =~ /\[deploy]/
+
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: manual
 
     
