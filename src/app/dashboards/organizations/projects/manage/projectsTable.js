@@ -89,7 +89,7 @@ export function useOrgProjectsTableColumns() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "15%",
+      width: "12%",
       ...nameSearchState,
     },
     {
@@ -106,6 +106,13 @@ export function useOrgProjectsTableColumns() {
       key: "repositoryCount",
       width: "6%",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
+    },
+    {
+      title: "Contributors",
+      dataIndex: "contributorCount",
+      key: "contributorCount",
+      width: "6%",
+      sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
     },
     {
       title: "Last Commit",
