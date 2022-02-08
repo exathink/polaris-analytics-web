@@ -1,6 +1,7 @@
-import {Tag, Tooltip} from "antd";
+import {Tag} from "antd";
 import React from "react";
 import {Highlighter} from "../../../../components/misc/highlighter";
+import {truncateString} from "../../../../helpers/utility";
 import { WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
 
@@ -22,16 +23,7 @@ export function getStateTypeIcon(workItemType, size="16px") {
   return <div style={{width: size, height: size, backgroundColor: WorkItemStateTypeColor[workItemType], borderRadius: "0.2rem", marginRight: "0.5rem"}}></div>
 }
 
-export function truncateString(str, len, color="#108ee9") {
-  if (str.length>len) {
-    const temp = str.substring(0,len) + "...";
-    return <Tooltip title={str} color={color}>
-      {temp}
-    </Tooltip>
-  } else {
-    return str;
-  }
-}
+
 
 // setPlacement is optional property when we need to specify the position of cardInspector
 export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacement) {
