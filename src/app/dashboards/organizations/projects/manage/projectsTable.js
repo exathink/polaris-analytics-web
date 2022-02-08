@@ -153,7 +153,14 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           sorter: (a, b) => SORTER.number_compare(a.workItemsWithCommits, b.workItemsWithCommits),
         },
         {
-          title: "Effort",
+          title: (
+            <span>
+              Effort
+              <sub>
+                <em>Out</em>
+              </sub>
+            </span>
+          ),
           dataIndex: "effort",
           key: "effort",
           width: "5%",
@@ -162,11 +169,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       ],
     },
     {
-      title: (
-        <span>
-          Latest Activity
-        </span>
-      ),
+      title: <span>Latest Activity</span>,
       children: [
         {
           title: "Last Commit",
