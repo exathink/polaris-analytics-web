@@ -147,10 +147,10 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       children: [
         {
           title: "Specs",
-          dataIndex: "workItemsInScope",
-          key: "workItemsInScope",
+          dataIndex: "workItemsWithCommits",
+          key: "workItemsWithCommits",
           width: "5%",
-          sorter: (a, b) => SORTER.number_compare(a.workItemsInScope, b.workItemsInScope),
+          sorter: (a, b) => SORTER.number_compare(a.workItemsWithCommits, b.workItemsWithCommits),
         },
         {
           title: "Effort",
@@ -215,14 +215,14 @@ function getTransformedData(tableData, intl) {
           leadTime: getNumber(currentCycleMetrics.avgLeadTime, intl),
           cycleTime: getNumber(currentCycleMetrics.avgCycleTime, intl),
           effort: getNumber(currentCycleMetrics.totalEffort, intl),
-          workItemsInScope: getNumber(currentCycleMetrics.workItemsInScope, intl),
+          workItemsWithCommits: getNumber(currentCycleMetrics.workItemsWithCommits, intl),
         }
       : {
           ...project,
           leadTime: "N/A",
           cycleTime: "N/A",
           effort: "N/A",
-          workItemsInScope: "N/A"
+          workItemsWithCommits: "N/A"
         };
   });
 }

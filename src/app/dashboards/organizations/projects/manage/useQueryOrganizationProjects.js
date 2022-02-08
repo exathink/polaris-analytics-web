@@ -26,7 +26,7 @@ export const GET_PROJECTS_QUERY = gql`
               avgLeadTime
               avgCycleTime
               totalEffort
-              workItemsInScope
+              workItemsWithCommits
             }
             repositoryCount
             latestCommit
