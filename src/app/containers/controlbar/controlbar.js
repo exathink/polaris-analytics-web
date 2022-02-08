@@ -18,8 +18,6 @@ export const DashboardControlBar = () => {
         <FullscreenBtn componentId="app-content-area" />
         <RefreshButton />
         <PollButton />
-        <VideoButton />
-        <DashboardLevelVideo />
       </nav>
     </div>
   );
