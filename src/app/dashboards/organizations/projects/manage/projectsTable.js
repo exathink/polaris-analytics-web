@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
 }
 
 const TOOLTIP_COLOR = "#6b7280";
-const TAG_COLOR="blue";
+const TAG_COLOR="#108ee9";
 function CustomTag({children}) {
   return (
     <div>
