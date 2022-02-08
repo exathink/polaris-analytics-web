@@ -12,9 +12,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
     icon: 'ion-ios-pulse-strong'
   },
-  videos: {
-    name: 'videos',
-    display: () => (<FormattedMessage id='topics.videos' defaultMessage="Videos"/>),
+  productVideos: {
+    name: 'productVideos',
+    display: () => (<FormattedMessage id='topics.productVideos' defaultMessage="Product Videos"/>),
     icon: 'ion-ios-videocam-outline'
   },
   activity: {

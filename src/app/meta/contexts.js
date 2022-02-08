@@ -121,7 +121,7 @@ export const Contexts = {
         (quantity = 0) => {
           return <FormattedMessage
             id="contexts.library.display"
-            defaultMessage="{quantity, plural, one {Library} other {Libraries}}"
+            defaultMessage="{quantity, plural, one {Content Library} other {Content Library}}"
             values={{quantity: quantity}}
         />
         },

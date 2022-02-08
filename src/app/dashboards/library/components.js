@@ -8,17 +8,14 @@ const {Meta} = Card;
 export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScreen}) => {
   const videoUrl = getSelectedVideoUrl(match.params.selected);
   return (
-    <div className={styles.detailViewWrapper}>
-      <div style={{padding: fullScreen ? "61.25% 0 0 0": "50.25% 0 5% 0", position: "relative"}}>
+    <div className={fullScreen ? styles.fullScreenDetailViewWrapper : styles.detailViewWrapper}>
         <iframe
           title="video-guidance"
           src={videoUrl}
           allow={"fullscreen"}
-          allowfullscreen
-          frameborder="0"
-          style={{position: "absolute", top: 0, left: 0, width: "100%", height: "98%"}}
+          frameBorder="0"
+          style={{width: "100%", height: "100%"}}
         ></iframe>
-      </div>
     </div>
   );
 });
