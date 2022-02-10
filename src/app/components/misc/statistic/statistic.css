@@ -89,3 +89,6 @@
     font-size: 1vh
 }
 
+.trendCursor {
+    cursor: pointer;
+}

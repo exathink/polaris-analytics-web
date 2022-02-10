@@ -2,6 +2,7 @@ import './statistic.css';
 import React from 'react';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
+import {Tooltip} from "antd";
 export {Statistic} from 'antd';
 
 // Display the trend indicator only if abs value of the delta is greater than this threshold.
@@ -72,4 +73,40 @@ export const TrendIndicatorNew = ({
     return null;
   }
 };
+
+export function TrendWithTooltip({
+  firstValue,
+  secondValue,
+  good,
+  deltaThreshold = TrendIndicatorDisplayThreshold,
+  measurementWindow,
+}) {
+  if (firstValue && secondValue) {
+    const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+    const absDelta = Math.abs(delta);
+    const style = good ? (good(delta) ? "good" : "bad") : "neutral";
+    const icon = getTrendIndicatorIcon(delta, good);
+  
+    return (
+      absDelta > deltaThreshold && (
+        <Tooltip
+          title={
+            <div>
+              <div className={`${style}Indicator`}>
+                {icon} <span>{absDelta.toFixed(2)}%</span>
+              </div>
+              <div>
+                <span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span>
+              </div>
+            </div>
+          }
+          color="#9ca3af"
+        >
+          <div className={`${style}Indicator trendCursor`}>{icon}</div>
+        </Tooltip>
+      )
+    );
+  }
+  return null;
+}
 
