@@ -3,8 +3,6 @@ import NavigationControls from "../../framework/navigation/components/navigation
 import FullscreenBtn from "../../../components/buttons/FullscreenBtn";
 import {PollButton} from "../../../components/buttons/pollButton";
 import styles from "./controlbar.module.css";
-import {VideoButton} from "../../../components/buttons/videoButton";
-import {DashboardLevelVideo} from "../../../components/buttons/DashboardLevelVideo";
 import {RefreshButton} from "../../../components/buttons/refreshButton";
 
 export const DashboardControlBar = () => {
