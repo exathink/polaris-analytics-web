@@ -30,10 +30,12 @@ export const VideoCard = ({name, description, thumbnail, onCardClick}) => {
       cover={
         <div style={{position: "relative"}}>
           <img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}} />
-          <div className={cn("text2Xl", styles.imgText)}>
-            {name.split(" ").map((x) => (
-              <div>{x}</div>
-            ))}
+          <div className={cn("text2Xl", styles.imgTextWrapper)}>
+            <div className={styles.imgText}>
+              {name.split(" ").map((x) => (
+                <div>{x}</div>
+              ))}
+            </div>
           </div>
         </div>
       }
