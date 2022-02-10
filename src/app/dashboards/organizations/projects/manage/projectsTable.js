@@ -9,6 +9,7 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
+import {TrendIndicator, TrendWithTooltip} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -84,11 +85,41 @@ function subProjectRender(text, record) {
 function renderMetric(text) {
   return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
 }
-function renderDaysMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} days</span>;
+
+function renderTrendDaysMetric(metric) {
+  return (text, record) => {
+    const [current, previous] = record.cycleMetricsTrends ?? [];
+    const props = {
+      firstValue: current?.[metric],
+      secondValue: previous?.[metric],
+      good: TrendIndicator.isPositive,
+      measurementWindow: 30,
+    };
+    return text === "N/A" ? (
+      <span className="textXs">N/A</span>
+    ) : (
+      <div style={{display: "flex"}}>
+        <div className="textXs">{text} days</div> <TrendWithTooltip {...props} />
+      </div>
+    );
+  };
 }
-function renderEffortMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} dev-days</span>;
+
+function renderEffortMetric(text, record) {
+  const [current, previous] = record.cycleMetricsTrends ?? [];
+  const props = {
+    firstValue: current?.effort,
+    secondValue: previous?.effort,
+    good: TrendIndicator.isPositive,
+    measurementWindow: 30,
+  };
+  return text === "N/A" ? (
+    <span className="textXs">N/A</span>
+  ) : (
+    <div style={{display: "flex"}}>
+      <div className="textXs">{text} dev-days</div> <TrendWithTooltip {...props} />
+    </div>
+  );
 }
 
 export function useOrgProjectsTableColumns(measurementWindow) {
@@ -140,7 +171,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderDaysMetric
+          render: renderTrendDaysMetric("avgLeadTime")
         },
         {
           title: "Cycle Time",
@@ -148,7 +179,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderDaysMetric
+          render: renderTrendDaysMetric("avgCycleTime")
         },
       ],
     },
@@ -179,7 +210,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           ),
           dataIndex: "effort",
           key: "effort",
-          width: "5%",
+          width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
           render: renderEffortMetric
         },
