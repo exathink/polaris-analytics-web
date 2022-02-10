@@ -177,3 +177,10 @@ html[dir='rtl'] .hidden {
   color: rgb(107 114 128 / 1);
   font-weight: 500;
 }
+
+.text2Xl {
+  font-size: 1.875rem/* 30px */;
+  line-height: 2.25rem/* 36px */;
+  color: rgb(12 74 110 / 1);
+  font-weight: 400;
+}

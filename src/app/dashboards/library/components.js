@@ -3,6 +3,7 @@ import {Card} from "antd";
 import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
 import {truncateString} from "../../helpers/utility";
+import cn from "classnames";
 
 const {Meta} = Card;
 
@@ -26,7 +27,18 @@ export const VideoCard = ({name, description, thumbnail, onCardClick}) => {
     <Card
       hoverable
       style={{width: 290, objectFit: "cover", borderRadius: "5px", overflow: "hidden"}}
-      cover={<img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}} />}
+      cover={
+        <div style={{position: "relative"}}>
+          <img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}} />
+          <div className={cn("text2Xl", styles.imgTextWrapper)}>
+            <div className={styles.imgText}>
+              {name.split(" ").map((x) => (
+                <div>{x}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      }
       onClick={() => onCardClick(name)}
       actions={[<PlayCircleOutlined key="playcircle" style={{fontSize: "1.5rem"}} />]}
     >
