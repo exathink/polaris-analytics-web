@@ -24,6 +24,19 @@ export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=Tr
 TrendIndicator.isPositive = (delta) => delta > 0;
 TrendIndicator.isNegative = (delta) => delta < 0;
 
+function getTrendIndicatorIcon(delta, good) {
+  const style = good ? (good(delta) ? "good" : "bad") : "neutral";
+  return delta > 0 ? (
+    <span className={`${style}IndicatorArrow`}>
+      <ArrowUpOutlined size="small" />
+    </span>
+  ) : (
+    <span className={`${style}IndicatorArrow`}>
+      <ArrowDownOutlined size={"small"} />
+    </span>
+  );
+}
+
 export const TrendIndicatorNew = ({
   firstValue,
   secondValue,
@@ -34,16 +47,7 @@ export const TrendIndicatorNew = ({
   function getTrendIndicator(delta, good) {
     const absDelta = Math.abs(delta);
     const style = good ? good(delta) ? "good" : "bad" : "neutral";
-    const icon =
-      delta > 0 ? (
-        <span className={`${style}IndicatorArrow`}>
-          <ArrowUpOutlined size="small" />
-        </span>
-      ) : (
-        <span className={`${style}IndicatorArrow`}>
-          <ArrowDownOutlined size={"small"} />
-        </span>
-      );
+    const icon = getTrendIndicatorIcon(delta, good);
 
     return (
       // show indicator only if absDelta greater than the indicator display threshold
