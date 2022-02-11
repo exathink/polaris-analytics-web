@@ -8,6 +8,8 @@ import {TeamLink} from "../../../shared/navigation/teamLink";
 import {fromNow, getNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
+import {renderTrendMetric} from "../../../shared/helpers/renderers";
+import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -61,6 +63,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "volume",
           width: "6%",
           sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: ""})
         },
         {
           title: (
@@ -72,6 +75,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effortOut",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days"})
         },
       ],
     },
@@ -93,6 +97,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "9%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
         },
         {
           title: (
@@ -104,6 +109,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
+          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days"})
         },
         {
           title: (
@@ -115,6 +121,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "implementation",
           width: "11%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
+          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative})
         },
         {
           title: (
@@ -126,6 +133,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "delivery",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
+          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative})
         },
       ],
     },
@@ -174,7 +182,13 @@ function getTransformedData(tableData, intl) {
           effort: getNumber(currentCycleMetrics.avgEffort, intl),
           delivery: getNumber(currentCycleMetrics.avgLatency, intl),
           volume: getNumber(currentCycleMetrics.workItemsInScope/(team.contributorCount||1), intl),
-          effortOut: getNumber(currentCycleMetrics.totalEffort/(team.contributorCount||1), intl)
+          effortOut: getNumber(currentCycleMetrics.totalEffort/(team.contributorCount||1), intl),
+          cycleMetricsTrends: team.cycleMetricsTrends.map((t) => ({
+            ...t,
+            // calculate volume and effortOut per contributor
+            volume: getNumber(t.workItemsInScope / (team.contributorCount || 1), intl),
+            effortOut: getNumber(t.totalEffort / (team.contributorCount || 1), intl),
+          })),
         }
         :
           {

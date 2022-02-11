@@ -9,7 +9,8 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
-import {TrendIndicator, TrendWithTooltip} from "../../../../components/misc/statistic/statistic";
+import {renderTrendMetric} from "../../../shared/helpers/renderers";
+import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -86,42 +87,6 @@ function renderMetric(text) {
   return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
 }
 
-function renderTrendDaysMetric(metric) {
-  return (text, record) => {
-    const [current, previous] = record.cycleMetricsTrends ?? [];
-    const props = {
-      firstValue: current?.[metric],
-      secondValue: previous?.[metric],
-      good: TrendIndicator.isNegative,
-      measurementWindow: 30,
-    };
-    return text === "N/A" ? (
-      <span className="textXs">N/A</span>
-    ) : (
-      <div style={{display: "flex"}}>
-        <div className="textXs">{text} days</div> <TrendWithTooltip {...props} />
-      </div>
-    );
-  };
-}
-
-function renderEffortMetric(text, record) {
-  const [current, previous] = record.cycleMetricsTrends ?? [];
-  const props = {
-    firstValue: current?.effort,
-    secondValue: previous?.effort,
-    good: TrendIndicator.isNegative,
-    measurementWindow: 30,
-  };
-  return text === "N/A" ? (
-    <span className="textXs">N/A</span>
-  ) : (
-    <div style={{display: "flex"}}>
-      <div className="textXs">{text} dev-days</div> <TrendWithTooltip {...props} />
-    </div>
-  );
-}
-
 export function useOrgProjectsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
   const subProjectRenderState = {render: subProjectRender};
@@ -171,7 +136,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderTrendDaysMetric("avgLeadTime")
+          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative})
         },
         {
           title: "Cycle Time",
@@ -179,7 +144,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendDaysMetric("avgCycleTime")
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
         },
       ],
     },
@@ -192,11 +157,11 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       children: [
         {
           title: <span>Specs <sup>PC</sup> </span>,
-          dataIndex: "workItemsWithCommits",
-          key: "workItemsWithCommits",
+          dataIndex: "specs",
+          key: "specs",
           width: "5%",
-          sorter: (a, b) => SORTER.number_compare(a.workItemsWithCommits, b.workItemsWithCommits),
-          render: renderMetric
+          sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
+          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: ""})
         },
         {
           title: (
@@ -208,11 +173,11 @@ export function useOrgProjectsTableColumns(measurementWindow) {
               <sup>PC</sup>
             </span>
           ),
-          dataIndex: "effort",
-          key: "effort",
+          dataIndex: "effortOut",
+          key: "effortOut",
           width: "6%",
-          sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-          render: renderEffortMetric
+          sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs"})
         },
       ],
     },
@@ -265,15 +230,21 @@ function getTransformedData(tableData, intl) {
           ...project,
           leadTime: getNumber(currentCycleMetrics.avgLeadTime, intl),
           cycleTime: getNumber(currentCycleMetrics.avgCycleTime, intl),
-          effort: getNumber(currentCycleMetrics.totalEffort, intl),
-          workItemsWithCommits: getNumber(currentCycleMetrics.workItemsWithCommits, intl),
+          specs: getNumber(currentCycleMetrics.workItemsWithCommits / (project.contributorCount || 1), intl),
+          effortOut: getNumber(currentCycleMetrics.totalEffort / (project.contributorCount || 1), intl),
+          cycleMetricsTrends: project.cycleMetricsTrends.map((p) => ({
+            ...p,
+            // calculate volume and effortOut per contributor
+            specs: getNumber(p.workItemsWithCommits / (project.contributorCount || 1), intl),
+            effortOut: getNumber(p.totalEffort / (project.contributorCount || 1), intl),
+          })),
         }
       : {
           ...project,
           leadTime: "N/A",
           cycleTime: "N/A",
-          effort: "N/A",
-          workItemsWithCommits: "N/A"
+          specs: "N/A",
+          effortOut: "N/A",
         };
   });
 }
