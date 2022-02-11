@@ -101,11 +101,11 @@ export function TrendWithTooltip({
                 {icon} <span>{absDelta.toFixed(2)}%</span>
               </div>
               <div>
-                <span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span>
+                <span className={"textXs"}>Compared to prior {measurementWindow} days.</span>
               </div>
             </div>
           }
-          color="#9ca3af"
+          color="#f3f4f6"
         >
           <div className={`${style}Indicator trendCursor`}>{icon}</div>
         </Tooltip>
