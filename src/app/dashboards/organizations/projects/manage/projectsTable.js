@@ -93,7 +93,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       title: "Value Stream",
       dataIndex: "name",
       key: "name",
-      width: "9%",
+      width: "8%",
       ...nameSearchState,
     },
     {
@@ -116,7 +116,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       title: "Contributors",
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "6%",
+      width: "7%",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
       render: renderMetric
     },
@@ -156,7 +156,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           title: <span>Specs <sup>PC</sup> </span>,
           dataIndex: "specs",
           key: "specs",
-          width: "4%",
+          width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
           render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: ""})
         },
