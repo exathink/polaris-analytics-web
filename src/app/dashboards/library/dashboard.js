@@ -8,12 +8,7 @@ import {withDetailRoutes} from "../../framework/viz/dashboard/withDetailRoutes";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 
 const allCardsData = [
-  {name: "UX Conventions", description: "Perspectives, Topics and Navigation", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
-  {name: "title2", description: "Description", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
-  {name: "title3", description: "Description", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
-  {name: "title4", description: "Description", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
-  {name: "title5", description: "Description", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
-  {name: "title6", description: "Description", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
+  {name: "UX Conventions", description: "Perspectives, Navigation, and Widgets. Watch this first.", videoUrl: "https://vimeo.com/showcase/8025646/embed"},
 ];
 // background images to be used for video card
 const ALL_BG_IMGS = [video_bg_img, img1, img2];
