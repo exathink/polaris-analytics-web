@@ -235,8 +235,8 @@ function getTransformedData(tableData, intl) {
           cycleMetricsTrends: project.cycleMetricsTrends.map((p) => ({
             ...p,
             // calculate volume and effortOut per contributor
-            specs: getNumber(p.workItemsWithCommits / (project.contributorCount || 1), intl),
-            effortOut: getNumber(p.totalEffort / (project.contributorCount || 1), intl),
+            specs: p.workItemsWithCommits / (project.contributorCount || 1),
+            effortOut: p.totalEffort / (project.contributorCount || 1),
           })),
         }
       : {

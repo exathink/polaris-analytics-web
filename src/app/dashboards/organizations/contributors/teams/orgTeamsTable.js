@@ -186,8 +186,8 @@ function getTransformedData(tableData, intl) {
           cycleMetricsTrends: team.cycleMetricsTrends.map((t) => ({
             ...t,
             // calculate volume and effortOut per contributor
-            volume: getNumber(t.workItemsInScope / (team.contributorCount || 1), intl),
-            effortOut: getNumber(t.totalEffort / (team.contributorCount || 1), intl),
+            volume: t.workItemsInScope / (team.contributorCount || 1),
+            effortOut: t.totalEffort / (team.contributorCount || 1),
           })),
         }
         :
