@@ -185,8 +185,8 @@ export const WorkItemsEpicEffortChart = Chart({
       },
       title: {
         text: title || specsOnly ?
-          `Effort Allocation: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`
-        : `Card Allocation: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`,
+          `Epic Effort Allocation: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`
+        : `Epic Volume Allocation: ${activeOnly ? "Work In Progress" : ""}${days ? `Last ${days} days` : ""}`,
         align: "left",
       },
       subtitle: {

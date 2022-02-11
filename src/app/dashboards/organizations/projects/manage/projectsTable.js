@@ -9,12 +9,14 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
+import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
+import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
     text && (
       <ProjectLink projectName={record.name} projectKey={record.key}>
-        <span style={{cursor: "pointer"}}>
+        <span style={{cursor: "pointer"}} className="textSm">
           <Highlighter
             highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
             searchWords={searchText || ""}
@@ -43,7 +45,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 20, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TOOLTIP_COLOR)}
         </CustomTag>
       ))}
     </div>
@@ -61,7 +63,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.slice(0, 2).map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 20, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TOOLTIP_COLOR)}
         </CustomTag>
       ))}
     </div>
@@ -81,15 +83,6 @@ function subProjectRender(text, record) {
   return fullNodeWithTooltip;
 }
 
-function renderMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
-}
-function renderDaysMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} days</span>;
-}
-function renderEffortMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text} dev-days</span>;
-}
 
 export function useOrgProjectsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
@@ -100,22 +93,22 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       title: "Value Stream",
       dataIndex: "name",
       key: "name",
-      width: "10%",
+      width: "8%",
       ...nameSearchState,
     },
     {
       title: "Work Streams",
       dataIndex: "subProjectCount",
       key: "subProjectCount",
-      width: "7%",
+      width: "8%",
       sorter: (a, b) => SORTER.number_compare(a.subProjectCount, b.subProjectCount),
       ...subProjectRenderState,
     },
     {
-      title: "Repos",
+      title: "Repositories",
       dataIndex: "repositoryCount",
       key: "repositoryCount",
-      width: "4%",
+      width: "6%",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
       render: renderMetric
     },
@@ -123,7 +116,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       title: "Contributors",
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "6%",
+      width: "7%",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
       render: renderMetric
     },
@@ -140,7 +133,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderDaysMetric
+          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative})
         },
         {
           title: "Cycle Time",
@@ -148,7 +141,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderDaysMetric
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
         },
       ],
     },
@@ -161,11 +154,11 @@ export function useOrgProjectsTableColumns(measurementWindow) {
       children: [
         {
           title: <span>Specs <sup>PC</sup> </span>,
-          dataIndex: "workItemsWithCommits",
-          key: "workItemsWithCommits",
+          dataIndex: "specs",
+          key: "specs",
           width: "5%",
-          sorter: (a, b) => SORTER.number_compare(a.workItemsWithCommits, b.workItemsWithCommits),
-          render: renderMetric
+          sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
+          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: ""})
         },
         {
           title: (
@@ -177,11 +170,11 @@ export function useOrgProjectsTableColumns(measurementWindow) {
               <sup>PC</sup>
             </span>
           ),
-          dataIndex: "effort",
-          key: "effort",
-          width: "5%",
-          sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-          render: renderEffortMetric
+          dataIndex: "effortOut",
+          key: "effortOut",
+          width: "6%",
+          sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs"})
         },
       ],
     },
@@ -192,7 +185,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           title: "Last Commit",
           dataIndex: "latestCommit",
           key: "latestCommit",
-          width: "7%",
+          width: "6%",
           sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
           render: (latestCommit) => <span className="textXs">{fromNow(latestCommit)}</span>,
         },
@@ -200,7 +193,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           title: "Last Update",
           dataIndex: "latestWorkItemEvent",
           key: "latestWorkItemEvent",
-          width: "7%",
+          width: "6%",
           sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
           render: (latestWorkItemEvent) => <span className="textXs">{fromNow(latestWorkItemEvent)}</span>,
         },
@@ -234,15 +227,21 @@ function getTransformedData(tableData, intl) {
           ...project,
           leadTime: getNumber(currentCycleMetrics.avgLeadTime, intl),
           cycleTime: getNumber(currentCycleMetrics.avgCycleTime, intl),
-          effort: getNumber(currentCycleMetrics.totalEffort, intl),
-          workItemsWithCommits: getNumber(currentCycleMetrics.workItemsWithCommits, intl),
+          specs: getNumber(currentCycleMetrics.workItemsWithCommits / (project.contributorCount || 1), intl),
+          effortOut: getNumber(currentCycleMetrics.totalEffort / (project.contributorCount || 1), intl),
+          cycleMetricsTrends: project.cycleMetricsTrends.map((p) => ({
+            ...p,
+            // calculate volume and effortOut per contributor
+            specs: p.workItemsWithCommits / (project.contributorCount || 1),
+            effortOut: p.totalEffort / (project.contributorCount || 1),
+          })),
         }
       : {
           ...project,
           leadTime: "N/A",
           cycleTime: "N/A",
-          effort: "N/A",
-          workItemsWithCommits: "N/A"
+          specs: "N/A",
+          effortOut: "N/A",
         };
   });
 }
