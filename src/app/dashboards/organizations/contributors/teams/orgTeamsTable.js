@@ -57,14 +57,14 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Volume<sup>pc</sup><br/><sub>Specs</sub>
+              Volume<sup>pc</sup>
             </span>
           ),
           dataIndex: "volume",
           key: "volume",
           width: "6%",
           sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: ""})
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs"})
         },
         {
           title: (

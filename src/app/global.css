@@ -177,3 +177,10 @@ html[dir='rtl'] .hidden {
   color: rgb(107 114 128 / 1);
   font-weight: 500;
 }
+
+.textBase {
+  font-size: 1rem/* 16px */;
+  line-height: 1.5rem/* 24px */;
+  color: rgb(107 114 128 / 1);
+  font-weight: 500;
+}

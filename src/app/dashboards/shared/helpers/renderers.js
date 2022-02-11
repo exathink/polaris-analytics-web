@@ -12,13 +12,15 @@ export function renderTrendMetric({metric, good, uom="days"}) {
     return text === "N/A" ? (
       <span className="textXs">N/A</span>
     ) : (
-      <div style={{display: "flex"}}>
-        <div className="textXs">{text} {uom}</div> <TrendWithTooltip {...props} />
+      <div style={{display: "flex", alignItems: "center"}}>
+        <div className="textXs" style={{display: "flex", flexDirection: "column"}}>
+         <div className="textBase">{text}</div> <div>{uom}</div>
+        </div> <TrendWithTooltip {...props} />
       </div>
     );
   };
 }
 
 export function renderMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
+  return text === "N/A" ? <span className="textBase">N/A</span> : <span className="textBase">{text}</span>;
 }
