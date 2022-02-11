@@ -9,7 +9,7 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
-import {renderTrendMetric} from "../../../shared/helpers/renderers";
+import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
@@ -83,9 +83,6 @@ function subProjectRender(text, record) {
   return fullNodeWithTooltip;
 }
 
-function renderMetric(text) {
-  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
-}
 
 export function useOrgProjectsTableColumns(measurementWindow) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});

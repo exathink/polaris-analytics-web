@@ -8,7 +8,7 @@ import {TeamLink} from "../../../shared/navigation/teamLink";
 import {fromNow, getNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
-import {renderTrendMetric} from "../../../shared/helpers/renderers";
+import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
@@ -42,7 +42,8 @@ export function useOrgTeamsTableColumns(measurementWindow) {
       title: <span>Active Contributors</span>,
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "8%"
+      width: "8%",
+      render: renderMetric
     }
     ,
     {
@@ -95,7 +96,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           ),
           dataIndex: "cycleTime",
           key: "cycleTime",
-          width: "9%",
+          width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
           render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
         },
@@ -107,7 +108,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           ),
           dataIndex: "effort",
           key: "effort",
-          width: "8%",
+          width: "7%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
           render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days"})
         },
@@ -119,7 +120,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           ),
           dataIndex: "implementation",
           key: "implementation",
-          width: "11%",
+          width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
           render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative})
         },
@@ -142,8 +143,8 @@ export function useOrgTeamsTableColumns(measurementWindow) {
 
       dataIndex: "latestCommit",
       key: "latestCommit",
-      width: "5%",
-      render: (name, record) => fromNow(record.latestCommit),
+      width: "7%",
+      render: (name, record) => <span className="textXs">{fromNow(record.latestCommit)}</span>,
     },
     {
       title: "",

@@ -18,3 +18,7 @@ export function renderTrendMetric({metric, good, uom="days"}) {
     );
   };
 }
+
+export function renderMetric(text) {
+  return text === "N/A" ? <span className="textXs">N/A</span> : <span className="textXs">{text}</span>;
+}
