@@ -14,7 +14,7 @@ export function renderTrendMetric({metric, good, uom="days"}) {
     ) : (
       <div style={{display: "flex", alignItems: "center"}}>
         <div className="textXs" style={{display: "flex", flexDirection: "column"}}>
-         <div className="textBase">{text}</div> <div>{uom}</div>
+         <div className="textSm">{text}</div> <div>{uom}</div>
         </div> <TrendWithTooltip {...props} />
       </div>
     );
@@ -22,5 +22,5 @@ export function renderTrendMetric({metric, good, uom="days"}) {
 }
 
 export function renderMetric(text) {
-  return text === "N/A" ? <span className="textBase">N/A</span> : <span className="textBase">{text}</span>;
+  return text === "N/A" ? <span className="textSm">N/A</span> : <span className="textSm">{text}</span>;
 }

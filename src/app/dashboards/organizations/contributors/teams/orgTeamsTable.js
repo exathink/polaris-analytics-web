@@ -15,7 +15,7 @@ function customNameRender(text, record, searchText) {
   return (
     text && (
       <TeamLink teamName={record.name} teamKey={record.key}>
-        <span style={{cursor: "pointer"}}>
+        <span style={{cursor: "pointer"}} className="textSm">
           <Highlighter
             highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
             searchWords={searchText || ""}
