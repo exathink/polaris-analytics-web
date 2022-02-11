@@ -5,12 +5,29 @@ import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
 export {Statistic} from 'antd';
 
+function getDelta(firstValue, secondValue) {
+  return ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+}
+
+function getTrendIndicatorIcon(delta, good) {
+  const style = good ? (good(delta) ? "good" : "bad") : "neutral";
+  return delta > 0 ? (
+    <span className={`${style}IndicatorArrow`}>
+      <ArrowUpOutlined size="small" />
+    </span>
+  ) : (
+    <span className={`${style}IndicatorArrow`}>
+      <ArrowDownOutlined size={"small"} />
+    </span>
+  );
+}
+
 // Display the trend indicator only if abs value of the delta is greater than this threshold.
 export const TrendIndicatorDisplayThreshold = 2;
 
 export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=TrendIndicatorDisplayThreshold}) => {
   if (firstValue && secondValue) {
-    const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+    const delta = getDelta(firstValue, secondValue);
     return Math.abs(delta) > deltaThreshold &&
     <LegacyIcon
       type={delta > 0 ? 'arrow-up' : 'arrow-down'}
@@ -25,18 +42,6 @@ export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold=Tr
 TrendIndicator.isPositive = (delta) => delta > 0;
 TrendIndicator.isNegative = (delta) => delta < 0;
 
-function getTrendIndicatorIcon(delta, good) {
-  const style = good ? (good(delta) ? "good" : "bad") : "neutral";
-  return delta > 0 ? (
-    <span className={`${style}IndicatorArrow`}>
-      <ArrowUpOutlined size="small" />
-    </span>
-  ) : (
-    <span className={`${style}IndicatorArrow`}>
-      <ArrowDownOutlined size={"small"} />
-    </span>
-  );
-}
 
 export const TrendIndicatorNew = ({
   firstValue,
@@ -66,7 +71,7 @@ export const TrendIndicatorNew = ({
   }
 
   if (firstValue && secondValue) {
-    const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+    const delta = getDelta(firstValue, secondValue);
 
     return getTrendIndicator(delta, good);
   } else {
@@ -82,7 +87,7 @@ export function TrendWithTooltip({
   measurementWindow,
 }) {
   if (firstValue && secondValue) {
-    const delta = ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+    const delta = getDelta(firstValue, secondValue);
     const absDelta = Math.abs(delta);
     const style = good ? (good(delta) ? "good" : "bad") : "neutral";
     const icon = getTrendIndicatorIcon(delta, good);
