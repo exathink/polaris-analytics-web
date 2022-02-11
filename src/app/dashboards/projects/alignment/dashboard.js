@@ -79,9 +79,9 @@ function ValueDashboard({
             <DimensionFlowMixTrendsWidget
               dimension={'project'}
               instanceKey={key}
-              measurementWindow={7}
+              measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
-              samplingFrequency={7}
+              samplingFrequency={flowAnalysisPeriod}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -145,30 +145,6 @@ function ValueDashboard({
             />
           )}
           showDetail={false}
-        />
-        <DashboardWidget
-          name="flow-type-flow-mix"
-          className={styles.valueMixChart}
-          render={({view}) => (
-            <DimensionFlowMixTrendsWidget
-              dimension={'project'}
-              instanceKey={key}
-              measurementWindow={7}
-              days={flowAnalysisPeriod}
-              samplingFrequency={7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={specsOnly}
-              showCounts={true}
-              chartOptions={{alignTitle: "left"}}
-              includeSubTasks={includeSubTasksFlowMetrics}
-
-            />
-          )}
-          showDetail={false}
-
         />
         <DashboardWidget
           name="epic-flow-mix-wip"
