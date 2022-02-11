@@ -42,7 +42,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
       title: <span>Active Contributors</span>,
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "8%",
+      width: "7%",
       render: renderMetric
     }
     ,
@@ -69,7 +69,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Effort<sub><em>Out</em></sub> <sup>pc</sup><br /><sub>Dev-Days</sub>
+              Effort<sub><em>Out</em></sub> <sup>pc</sup>
             </span>
           ),
           dataIndex: "effortOut",
@@ -91,7 +91,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Cycle Time <sup>Avg</sup> <br /><sub> Days</sub>
+              Cycle Time <sup>Avg</sup>
             </span>
           ),
           dataIndex: "cycleTime",
@@ -103,19 +103,19 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Effort <sup>Avg</sup> <br /><sub> Dev-Days</sub>
+              Effort <sup>Avg</sup>
             </span>
           ),
           dataIndex: "effort",
           key: "effort",
-          width: "7%",
+          width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
           render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days"})
         },
         {
           title: (
             <span>
-              Coding <sup>Avg</sup> <br /><sub> Days</sub>
+              Coding <sup>Avg</sup>
             </span>
           ),
           dataIndex: "implementation",
@@ -127,7 +127,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
         {
           title: (
             <span>
-              Delivery <sup>Avg</sup> <br /><sub> Days</sub>
+              Delivery <sup>Avg</sup>
             </span>
           ),
           dataIndex: "delivery",
