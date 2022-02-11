@@ -92,7 +92,7 @@ function renderTrendDaysMetric(metric) {
     const props = {
       firstValue: current?.[metric],
       secondValue: previous?.[metric],
-      good: TrendIndicator.isPositive,
+      good: TrendIndicator.isNegative,
       measurementWindow: 30,
     };
     return text === "N/A" ? (
@@ -110,7 +110,7 @@ function renderEffortMetric(text, record) {
   const props = {
     firstValue: current?.effort,
     secondValue: previous?.effort,
-    good: TrendIndicator.isPositive,
+    good: TrendIndicator.isNegative,
     measurementWindow: 30,
   };
   return text === "N/A" ? (
