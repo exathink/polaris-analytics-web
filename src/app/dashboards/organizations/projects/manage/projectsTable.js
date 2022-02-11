@@ -133,7 +133,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative, measurementWindow})
         },
         {
           title: "Cycle Time",
@@ -141,7 +141,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, measurementWindow})
         },
       ],
     },
@@ -158,7 +158,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "specs",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
-          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: ""})
+          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: "", measurementWindow})
         },
         {
           title: (
@@ -174,7 +174,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "effortOut",
           width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs"})
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs", measurementWindow})
         },
       ],
     },

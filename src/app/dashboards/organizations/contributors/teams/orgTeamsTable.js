@@ -64,7 +64,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "volume",
           width: "6%",
           sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs"})
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", measurementWindow})
         },
         {
           title: (
@@ -76,7 +76,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effortOut",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days"})
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", measurementWindow})
         },
       ],
     },
@@ -98,7 +98,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, measurementWindow})
         },
         {
           title: (
@@ -110,7 +110,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
-          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days"})
+          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", measurementWindow})
         },
         {
           title: (
@@ -122,7 +122,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "implementation",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
-          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative, measurementWindow})
         },
         {
           title: (
@@ -134,7 +134,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "delivery",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
-          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, measurementWindow})
         },
       ],
     },
