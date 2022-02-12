@@ -170,7 +170,7 @@ function TrendsDashboard({
       </DashboardRow>
       <DashboardRow
         h={"28%"}
-        title={"Alignment"}
+        title={"Capacity Alignment"}
 
       >
         <DashboardWidget
