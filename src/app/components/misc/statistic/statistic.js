@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
+import {TOOLTIP_COLOR} from "../../../helpers/utility";
 export {Statistic} from 'antd';
 
 function getDelta(firstValue, secondValue) {
@@ -105,7 +106,7 @@ export function TrendWithTooltip({
               </div>
             </div>
           }
-          color="#f3f4f6"
+          color={TOOLTIP_COLOR}
         >
           <div className={`${style}Indicator trendCursor`}>{icon}</div>
         </Tooltip>

@@ -1,6 +1,6 @@
 import React from "react";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
-import {fromNow, getNumber, truncateString} from "../../../../helpers/utility";
+import {fromNow, getNumber, TOOLTIP_COLOR, truncateString} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
@@ -28,7 +28,6 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-const TOOLTIP_COLOR = "#6b7280";
 const TAG_COLOR="#108ee9";
 function CustomTag({children}) {
   return (
