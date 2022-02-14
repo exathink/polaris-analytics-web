@@ -12,6 +12,7 @@ import {capitalizeFirstLetter, daysFromNow, elide, getMinMaxDatesFromRange, getW
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
+import styles from "./commitTimelineChart.module.css";
 
 function getDaysSubtitle(days, prefix = 'Last') {
   return days > 1 ? `${prefix} ${days} Days`
@@ -93,17 +94,17 @@ function z_bucket(lines) {
 }
 
 function getYAxisCategoryDisplay(model, commits, categories, category) {
-  if (category === 'workItem') {
-    return categories.map(
-      category => {
-        // eslint-disable-next-line
-        const [_, __, stateType] = model.mapCategoryToNode(commits, category);
-        const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;`: '';
-        return `<span style="background-color: ${WorkItemStateTypeColor[stateType]}">.</span><span style="margin: 2px;${strikeThrough}">${category}</span>`
-      }
-      );
+  if (category === "workItem") {
+    return categories.map((category) => {
+      // eslint-disable-next-line
+      const [_, __, stateType, ___, workItemType] = model.mapCategoryToNode(commits, category);
+      const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;` : "";
+      const issueTypeIcon = `<i class=${styles[workItemType]} />`;
+      const stateTypeIcon = `<span style="background-color: ${WorkItemStateTypeColor[stateType]};display:inline-block; width:12px; height:13px; border-radius: 20%">.</span>`;
+      return `${issueTypeIcon} ${stateTypeIcon} <span style="margin: 2px;${strikeThrough}">${category}</span>`;
+    });
   } else {
-    return categories
+    return categories;
   }
 }
 
