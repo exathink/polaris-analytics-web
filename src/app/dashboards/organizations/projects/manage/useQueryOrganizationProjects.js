@@ -10,8 +10,9 @@ export const GET_PROJECTS_QUERY = gql`
         cycleMetricsTrendsArgs: {
           days: 30
           measurementWindow: 30
+          specsOnly: true
           samplingFrequency: 30
-          metrics: [avg_lead_time, avg_cycle_time, total_effort, work_items_in_scope]
+          metrics: [avg_lead_time, avg_cycle_time, total_effort, work_items_with_commits]
         }
         contributorCountDays: 30
       ) {
