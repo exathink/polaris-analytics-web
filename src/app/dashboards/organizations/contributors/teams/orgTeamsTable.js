@@ -44,41 +44,6 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
       key: "contributorCount",
       width: "7%",
       render: renderMetric
-    }
-    ,
-    {
-      title: (
-        <span>
-          Throughput <sup>Last {samplingFrequency} Days</sup>
-        </span>
-      ),
-
-      children: [
-        {
-          title: (
-            <span>
-              Volume<sup>pc</sup>
-            </span>
-          ),
-          dataIndex: "volume",
-          key: "volume",
-          width: "6%",
-          sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", samplingFrequency})
-        },
-        {
-          title: (
-            <span>
-              Effort<sub><em>Out</em></sub> <sup>pc</sup>
-            </span>
-          ),
-          dataIndex: "effortOut",
-          key: "effortOut",
-          width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", samplingFrequency})
-        },
-      ],
     },
     {
       title: (
@@ -135,6 +100,40 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
           render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, samplingFrequency})
+        },
+      ],
+    },
+    {
+      title: (
+        <span>
+          Throughput <sup>Last {samplingFrequency} Days</sup>
+        </span>
+      ),
+
+      children: [
+        {
+          title: (
+            <span>
+              Volume<sup>pc</sup>
+            </span>
+          ),
+          dataIndex: "volume",
+          key: "volume",
+          width: "6%",
+          sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", samplingFrequency})
+        },
+        {
+          title: (
+            <span>
+              Effort<sub><em>Out</em></sub> <sup>pc</sup>
+            </span>
+          ),
+          dataIndex: "effortOut",
+          key: "effortOut",
+          width: "8%",
+          sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", samplingFrequency})
         },
       ],
     },
