@@ -88,7 +88,7 @@ export class CommitTimelineViewModel {
           workItem => (workItem != null) && `${workItem.displayId}: ${workItem.name}` === workItemDisplay
         );
         if (workItem) {
-          return [workItem.displayId, workItem.key, workItem.stateType, workItem.state]
+          return [workItem.displayId, workItem.key, workItem.stateType, workItem.state, workItem.workItemType]
         } else {
           return []
         }

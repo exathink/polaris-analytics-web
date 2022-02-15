@@ -76,7 +76,7 @@ export const FlowStatistic = ({
           secondValue={comp}
           good={good}
           deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
-          measurementWindow={currentMeasurement.measurementWindow}
+          samplingFrequency={currentMeasurement.measurementWindow}
         />
       }
       size={size}

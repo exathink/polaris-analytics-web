@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
+import {TOOLTIP_COLOR} from "../../../helpers/utility";
 export {Statistic} from 'antd';
 
 function getDelta(firstValue, secondValue) {
@@ -48,7 +49,7 @@ export const TrendIndicatorNew = ({
   secondValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
-  measurementWindow,
+  samplingFrequency,
 }) => {
   function getTrendIndicator(delta, good) {
     const absDelta = Math.abs(delta);
@@ -63,7 +64,7 @@ export const TrendIndicatorNew = ({
             {icon} <span>{absDelta.toFixed(2)}%</span>
           </div>
           <div>
-            <span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span>
+            <span className={"comparisonWindow"}>Compared to prior {samplingFrequency} days.</span>
           </div>
         </div>
       )
@@ -84,7 +85,7 @@ export function TrendWithTooltip({
   secondValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
-  measurementWindow,
+  samplingFrequency,
 }) {
   if (firstValue && secondValue) {
     const delta = getDelta(firstValue, secondValue);
@@ -101,11 +102,11 @@ export function TrendWithTooltip({
                 {icon} <span>{absDelta.toFixed(2)}%</span>
               </div>
               <div>
-                <span className={"textXs"}>Compared to prior {measurementWindow} days.</span>
+                <span className={"textXs"}>Compared to prior {samplingFrequency} days.</span>
               </div>
             </div>
           }
-          color="#f3f4f6"
+          color={TOOLTIP_COLOR}
         >
           <div className={`${style}Indicator trendCursor`}>{icon}</div>
         </Tooltip>

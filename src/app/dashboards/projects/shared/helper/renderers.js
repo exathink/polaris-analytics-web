@@ -5,11 +5,17 @@ import {truncateString} from "../../../../helpers/utility";
 import { WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
 
+// import issueType icons
+import story from "../../../../../image/issueType/story.svg"
+import bug from "../../../../../image/issueType/bug.svg"
+import task from "../../../../../image/issueType/task.svg"
+import subtask from "../../../../../image/issueType/subtask.svg"
+
 const issueTypeImagePaths = {
-  story: "/images/icons/story.svg",
-  task: "/images/icons/task.svg",
-  subtask: "/images/icons/subtask.svg",
-  bug: "/images/icons/bug.svg",
+  story: story,
+  task: task,
+  subtask: subtask,
+  bug: bug,
 }
 
 const workItemTypeImageMap = {

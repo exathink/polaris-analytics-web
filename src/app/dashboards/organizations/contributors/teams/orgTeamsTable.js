@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useOrgTeamsTableColumns(measurementWindow) {
+export function useOrgTeamsTableColumns(samplingFrequency) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -44,46 +44,11 @@ export function useOrgTeamsTableColumns(measurementWindow) {
       key: "contributorCount",
       width: "7%",
       render: renderMetric
-    }
-    ,
-    {
-      title: (
-        <span>
-          Throughput <sup>Last {measurementWindow} Days</sup>
-        </span>
-      ),
-
-      children: [
-        {
-          title: (
-            <span>
-              Volume<sup>pc</sup>
-            </span>
-          ),
-          dataIndex: "volume",
-          key: "volume",
-          width: "6%",
-          sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs"})
-        },
-        {
-          title: (
-            <span>
-              Effort<sub><em>Out</em></sub> <sup>pc</sup>
-            </span>
-          ),
-          dataIndex: "effortOut",
-          key: "effortOut",
-          width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days"})
-        },
-      ],
     },
     {
       title: (
         <span>
-          Response Time <sup>Last {measurementWindow} Days</sup>
+          Response Time <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
 
@@ -98,7 +63,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, samplingFrequency})
         },
         {
           title: (
@@ -110,7 +75,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
-          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days"})
+          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", samplingFrequency})
         },
         {
           title: (
@@ -122,7 +87,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "implementation",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
-          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative, samplingFrequency})
         },
         {
           title: (
@@ -134,7 +99,41 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "delivery",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
-          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, samplingFrequency})
+        },
+      ],
+    },
+    {
+      title: (
+        <span>
+          Throughput <sup>Last {samplingFrequency} Days</sup>
+        </span>
+      ),
+
+      children: [
+        {
+          title: (
+            <span>
+              Volume<sup>pc</sup>
+            </span>
+          ),
+          dataIndex: "volume",
+          key: "volume",
+          width: "6%",
+          sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", samplingFrequency})
+        },
+        {
+          title: (
+            <span>
+              Effort<sub><em>Out</em></sub> <sup>pc</sup>
+            </span>
+          ),
+          dataIndex: "effortOut",
+          key: "effortOut",
+          width: "8%",
+          sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", samplingFrequency})
         },
       ],
     },
@@ -208,9 +207,9 @@ function getTransformedData(tableData, intl) {
 }
 
 
-export const OrgTeamsTable = injectIntl(({tableData, days, measurementWindow, organizationKey, intl}) => {
+export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgTeamsTableColumns(measurementWindow);
+  const columns = useOrgTeamsTableColumns(samplingFrequency);
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
