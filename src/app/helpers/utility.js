@@ -451,4 +451,4 @@ export function truncateString(str, len, color="#108ee9") {
   }
 }
 
-export const TOOLTIP_COLOR = "#f3f4f6";
+export const TOOLTIP_COLOR = "#fbfcfd";
