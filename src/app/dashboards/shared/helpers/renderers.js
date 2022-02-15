@@ -1,13 +1,13 @@
 import {TrendWithTooltip} from "../../../components/misc/statistic/statistic";
 
-export function renderTrendMetric({metric, good, uom="days", measurementWindow}) {
+export function renderTrendMetric({metric, good, uom="days", samplingFrequency}) {
   return (text, record) => {
     const [current, previous] = record.cycleMetricsTrends ?? [];
     const props = {
       firstValue: current?.[metric],
       secondValue: previous?.[metric],
       good: good,
-      measurementWindow: measurementWindow,
+      samplingFrequency: samplingFrequency,
     };
     return text === "N/A" ? (
       <span className="textXs">N/A</span>

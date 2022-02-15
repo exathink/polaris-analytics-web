@@ -85,7 +85,7 @@ export function TrendWithTooltip({
   secondValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
-  measurementWindow,
+  samplingFrequency,
 }) {
   if (firstValue && secondValue) {
     const delta = getDelta(firstValue, secondValue);
@@ -102,7 +102,7 @@ export function TrendWithTooltip({
                 {icon} <span>{absDelta.toFixed(2)}%</span>
               </div>
               <div>
-                <span className={"textXs"}>Compared to prior {measurementWindow} days.</span>
+                <span className={"textXs"}>Compared to prior {samplingFrequency} days.</span>
               </div>
             </div>
           }
