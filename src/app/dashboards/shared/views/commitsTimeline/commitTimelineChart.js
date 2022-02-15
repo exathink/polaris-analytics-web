@@ -99,9 +99,8 @@ function getYAxisCategoryDisplay(model, commits, categories, category) {
       // eslint-disable-next-line
       const [_, __, stateType, ___, workItemType] = model.mapCategoryToNode(commits, category);
       const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;` : "";
-      const issueTypeIcon = `<i class=${styles[workItemType]} />`;
-      const stateTypeIcon = `<span style="background-color: ${WorkItemStateTypeColor[stateType]};display:inline-block; width:12px; height:13px; border-radius: 20%">.</span>`;
-      return `${issueTypeIcon} ${stateTypeIcon} <span style="margin: 2px;${strikeThrough}">${category}</span>`;
+      const issueTypeIcon = `<span style="display:flex"><i style="border: 2px solid ${WorkItemStateTypeColor[stateType]}; border-radius: 20%" class=${styles[workItemType]}></i></span>`;
+      return `<span class=${styles.issueWrapper}> ${issueTypeIcon} <span style="display: flex; margin: 2px;${strikeThrough}">${category}</span> </span>`;
     });
   } else {
     return categories;

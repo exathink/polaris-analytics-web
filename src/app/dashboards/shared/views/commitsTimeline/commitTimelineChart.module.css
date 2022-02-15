@@ -1,31 +1,28 @@
 .story {
   background-image: url("../../../../../image/issueType/story.svg");
   background-repeat: no-repeat;
-  padding-top: 2px;
-  padding-bottom: 5px;
-  padding-left: 20px;
+  padding: 8px;
 }
 
 .task {
   background-image: url("../../../../../image/issueType/task.svg");
   background-repeat: no-repeat;
-  padding-top: 2px;
-  padding-bottom: 5px;
-  padding-left: 20px;
+  padding: 8px;
 }
 
 .bug {
   background-image: url("../../../../../image/issueType/bug.svg");
   background-repeat: no-repeat;
-  padding-top: 2px;
-  padding-bottom: 5px;
-  padding-left: 20px;
+  padding: 8px;
 }
 
 .subtask {
   background-image: url("../../../../../image/issueType/subtask.svg");
   background-repeat: no-repeat;
-  padding-top: 2px;
-  padding-bottom: 5px;
-  padding-left: 20px;
+  padding: 8px;
+}
+
+.issueWrapper {
+  display: flex;
+  align-items: center;
 }
