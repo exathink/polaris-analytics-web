@@ -1,6 +1,6 @@
 import React from "react";
 import {ProjectLink} from "../../../shared/navigation/projectLink";
-import {fromNow, getNumber, truncateString} from "../../../../helpers/utility";
+import {fromNow, getNumber, TOOLTIP_COLOR, truncateString} from "../../../../helpers/utility";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
@@ -28,7 +28,6 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-const TOOLTIP_COLOR = "#6b7280";
 const TAG_COLOR="#108ee9";
 function CustomTag({children}) {
   return (
@@ -84,7 +83,7 @@ function subProjectRender(text, record) {
 }
 
 
-export function useOrgProjectsTableColumns(measurementWindow) {
+export function useOrgProjectsTableColumns(samplingFrequency) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
   const subProjectRenderState = {render: subProjectRender};
 
@@ -123,7 +122,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
     {
       title: (
         <span>
-          Response Time <sup>Last {measurementWindow} Days</sup>
+          Response Time <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
       children: [
@@ -133,7 +132,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative, samplingFrequency})
         },
         {
           title: "Cycle Time",
@@ -141,14 +140,14 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative})
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, samplingFrequency})
         },
       ],
     },
     {
       title: (
         <span>
-          Throughput <sup>Last {measurementWindow} Days</sup>
+          Throughput <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
       children: [
@@ -158,7 +157,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "specs",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
-          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: ""})
+          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: "", samplingFrequency})
         },
         {
           title: (
@@ -174,7 +173,7 @@ export function useOrgProjectsTableColumns(measurementWindow) {
           key: "effortOut",
           width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs"})
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs", samplingFrequency})
         },
       ],
     },

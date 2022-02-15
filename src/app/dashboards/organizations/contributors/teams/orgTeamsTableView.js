@@ -7,5 +7,5 @@ export function OrgTeamsTableView({data, days, measurementWindow, samplingFreque
     return edges.map((edge) => edge.node);
   }, [data]);
 
-  return <OrgTeamsTable tableData={teamsData} days={days} measurementWindow={measurementWindow} organizationKey={organizationKey}/>;
+  return <OrgTeamsTable tableData={teamsData} days={days} samplingFrequency={samplingFrequency} organizationKey={organizationKey}/>;
 }

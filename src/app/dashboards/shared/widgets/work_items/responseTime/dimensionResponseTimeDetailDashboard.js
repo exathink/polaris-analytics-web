@@ -73,6 +73,7 @@ export function DimensionResponseTimeDetailDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               measurementWindow={daysRange}
+              samplingFrequency={daysRange}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}

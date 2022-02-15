@@ -52,6 +52,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               specsOnly={true}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
+              samplingFrequency={flowAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
