@@ -49,7 +49,7 @@ export const TrendIndicatorNew = ({
   secondValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
-  measurementWindow,
+  samplingFrequency,
 }) => {
   function getTrendIndicator(delta, good) {
     const absDelta = Math.abs(delta);
@@ -64,7 +64,7 @@ export const TrendIndicatorNew = ({
             {icon} <span>{absDelta.toFixed(2)}%</span>
           </div>
           <div>
-            <span className={"comparisonWindow"}>Compared to prior {measurementWindow} days.</span>
+            <span className={"comparisonWindow"}>Compared to prior {samplingFrequency} days.</span>
           </div>
         </div>
       )

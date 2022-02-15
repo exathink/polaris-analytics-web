@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useOrgTeamsTableColumns(measurementWindow) {
+export function useOrgTeamsTableColumns(samplingFrequency) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -49,7 +49,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
     {
       title: (
         <span>
-          Throughput <sup>Last {measurementWindow} Days</sup>
+          Throughput <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
 
@@ -64,7 +64,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "volume",
           width: "6%",
           sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", measurementWindow})
+          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", samplingFrequency})
         },
         {
           title: (
@@ -76,14 +76,14 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effortOut",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", measurementWindow})
+          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", samplingFrequency})
         },
       ],
     },
     {
       title: (
         <span>
-          Response Time <sup>Last {measurementWindow} Days</sup>
+          Response Time <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
 
@@ -98,7 +98,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "cycleTime",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, measurementWindow})
+          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, samplingFrequency})
         },
         {
           title: (
@@ -110,7 +110,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
-          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", measurementWindow})
+          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", samplingFrequency})
         },
         {
           title: (
@@ -122,7 +122,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "implementation",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
-          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative, measurementWindow})
+          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative, samplingFrequency})
         },
         {
           title: (
@@ -134,7 +134,7 @@ export function useOrgTeamsTableColumns(measurementWindow) {
           key: "delivery",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
-          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, measurementWindow})
+          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, samplingFrequency})
         },
       ],
     },
@@ -208,9 +208,9 @@ function getTransformedData(tableData, intl) {
 }
 
 
-export const OrgTeamsTable = injectIntl(({tableData, days, measurementWindow, organizationKey, intl}) => {
+export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgTeamsTableColumns(measurementWindow);
+  const columns = useOrgTeamsTableColumns(samplingFrequency);
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
