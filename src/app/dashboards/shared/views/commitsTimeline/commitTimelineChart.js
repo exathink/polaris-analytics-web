@@ -100,8 +100,7 @@ function getYAxisCategoryDisplay(model, commits, categories, category) {
       const [_, __, stateType, ___, workItemType] = model.mapCategoryToNode(commits, category);
       const strikeThrough = stateType === WorkItemStateTypes.closed ? `text-decoration: line-through;` : "";
       const issueTypeIcon = `<span style="display:flex"><i class=${styles[workItemType]}></i></span>`;
-      const phaseTypeIcon = `<span style="background-color: ${WorkItemStateTypeColor[stateType]};display:flex; margin-left: 5px">.</span>`;
-      return `<span class=${styles.issueWrapper}> ${issueTypeIcon} ${phaseTypeIcon} <span style="display: flex; margin: 2px;${strikeThrough}">${category}</span> </span>`;
+      return `<span class=${styles.issueWrapper}> ${issueTypeIcon} <span style="display: flex; margin: 2px;${strikeThrough}">${category}</span> </span>`;
     });
   } else {
     return categories;

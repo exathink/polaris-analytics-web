@@ -1,29 +1,29 @@
 .story {
   background-image: url("../../../../../image/issueType/story.svg");
   background-repeat: no-repeat;
-  background-size: 12px;
-  padding: 6px;
+  background-size: 14px;
+  padding: 7px;
 }
 
 .task {
   background-image: url("../../../../../image/issueType/task.svg");
   background-repeat: no-repeat;
-  background-size: 12px;
-  padding: 6px;
+  background-size: 14px;
+  padding: 7px;
 }
 
 .bug {
   background-image: url("../../../../../image/issueType/bug.svg");
   background-repeat: no-repeat;
-  background-size: 12px;
-  padding: 6px;
+  background-size: 14px;
+  padding: 7px;
 }
 
 .subtask {
   background-image: url("../../../../../image/issueType/subtask.svg");
   background-repeat: no-repeat;
-  background-size: 12px;
-  padding: 6px;
+  background-size: 14px;
+  padding: 7px;
 }
 
 .issueWrapper {
