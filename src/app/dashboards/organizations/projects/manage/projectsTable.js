@@ -44,7 +44,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 16, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TAG_COLOR)}
         </CustomTag>
       ))}
     </div>
@@ -62,7 +62,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.slice(0, 2).map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 16, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TAG_COLOR)}
         </CustomTag>
       ))}
     </div>
