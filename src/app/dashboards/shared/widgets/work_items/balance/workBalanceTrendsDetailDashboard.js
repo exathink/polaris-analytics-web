@@ -97,6 +97,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
           render={
             ({view}) =>
               <DimensionWorkBalanceTrendsWidget
+                context={context}
                 dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
