@@ -6,6 +6,7 @@ import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/
 import {Colors} from "../../../config";
 import {WorkBalanceContributorDetailChart} from "./workBalanceContributorDetailChart";
 import styles from "./workBalance.module.css";
+import Contributors from "../../../../contributors/context";
 
 function fteEquivalent(measurementWindow) {
   switch (measurementWindow) {
@@ -161,6 +162,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
 
 
 export const WorkBalanceTrendsChart = ({
+  context,
   capacityTrends,
   contributorDetail,
   cycleMetricsTrends,
@@ -192,6 +194,14 @@ export const WorkBalanceTrendsChart = ({
         }, {});
       setColors(allSeriesColors);
       setSelectedPoint(x);
+    }
+  }
+
+  function onChildrenSelected(context, childContext, children) {
+    if(children && children.length === 1) {
+      const child = children[0];
+      const [key, name] = [child.measurement.contributorKey, child.measurement.contributorName];
+      context.navigate(childContext, name, key)
     }
   }
 
@@ -231,6 +241,9 @@ export const WorkBalanceTrendsChart = ({
           selectedContributors={selectedContributors}
           measurementWindow={measurementWindow}
           selectedDate={selectedPoint}
+          onSelectionChange={(children) => {
+            onChildrenSelected(context, Contributors, children);
+          }}
         />
       </div>
     );

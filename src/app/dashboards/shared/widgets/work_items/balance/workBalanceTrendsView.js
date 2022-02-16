@@ -41,6 +41,7 @@ export const WorkBalanceTrendsStatsView = (
 
 export const WorkBalanceTrendsView = (
   {
+    context,
     capacityTrends,
     contributorDetail,
     cycleMetricsTrends,
@@ -62,6 +63,7 @@ export const WorkBalanceTrendsView = (
       <VizItem w={1}>
         <WorkBalanceTrendsChart
           {...{
+            context,
             capacityTrends,
             contributorDetail,
             cycleMetricsTrends,

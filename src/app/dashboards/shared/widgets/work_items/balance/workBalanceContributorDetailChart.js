@@ -15,6 +15,8 @@ function getSeries(contributors) {
       id: "contributor_detail",
       showInLegend: false,
       name: "Detail",
+      allowPointSelect: true,
+      cursor: "pointer",
       data: contributors.map((x) => {
         return {
           y: x.totalCommitDays,
