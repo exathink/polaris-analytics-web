@@ -3,7 +3,6 @@ import moment from 'moment';
 import {
   Colors,
   Untracked,
-  WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypes,
   WorkItemTypeDisplayName
