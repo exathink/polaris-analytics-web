@@ -66,7 +66,7 @@ Cypress.Commands.add("loginByApi", (username, password) => {
       const csrf = $html.find("input[name=csrf_token]").val();
       cy.loginByCSRF(csrf, username, password).then((resp) => {
         expect(resp.status).to.eq(200);
-        expect(Cypress.$(resp.body).filter("title").text()).to.eq("Polaris Flow");
+        expect(Cypress.$(resp.body).filter("title").text()).to.eq("Polaris");
       });
     });
 });

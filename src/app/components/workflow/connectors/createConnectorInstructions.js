@@ -5,12 +5,12 @@ const JiraConnectorInstructions = ({part}) => (
   part === 'instructions' ?
     <div>
       <p>
-        Polaris  provides the <b>Polaris Flow Connector for Jira, </b> an
+        Polaris  provides the <b>Polaris Connector for Jira, </b> an
         <em> Atlassian Connect </em> app that lets external applications connect securely
         with Atlassian products. There
         are two steps in connecting Polaris to a Jira Server.
       </p>
-      <h3>Step 1. Install the Polaris Flow Connector for Jira App on your Jira Server</h3>
+      <h3>Step 1. Install the Polaris Connector for Jira App on your Jira Server</h3>
       <p>
         You will need administrator privileges to do this.
       </p>
@@ -23,7 +23,7 @@ const JiraConnectorInstructions = ({part}) => (
           from the top level Apps menu.
         </li>
         <li>
-          Search for "exathink" in the search menu. This will bring up the Polaris Flow Connector for Jira app.
+          Search for "exathink" in the search menu. This will bring up the Polaris Connector for Jira app.
         </li>
         <li>
           Click on the app icon and select "Get App" and wait for the installation to complete successfully.

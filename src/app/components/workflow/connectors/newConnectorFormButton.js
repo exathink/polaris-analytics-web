@@ -40,7 +40,7 @@ const AddConnectorForm = (
                   {required: true, message: 'Name is required'}
                 ],
                 initialValue: currentValue('name', null)
-              })(<Input placeholder="The display name for this connector in Polaris Flow"/>)}
+              })(<Input placeholder="The display name for this connector in Polaris"/>)}
             </Form.Item>
           </Col>
         </Row>

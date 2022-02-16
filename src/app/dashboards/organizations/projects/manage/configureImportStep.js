@@ -14,8 +14,8 @@ import {getConnectorTypeProjectName} from "../../../../components/workflow/conne
 import styles from "./configureImportStep.module.css";
 
 const inputModeDescription = {
-  single: 'Import as work stream(s) in a new Polaris Flow Value Stream',
-  existing: 'Import as new work stream(s) into an existing Polaris Flow Value Stream',
+  single: 'Import as work stream(s) in a new Polaris Value Stream',
+  existing: 'Import as new work stream(s) into an existing Polaris Value Stream',
   separate: 'Import each remote project as a separate Polaris Value Stream'
 }
 
@@ -83,7 +83,7 @@ export const SeparateModeImport = ({selectedProjects, handleSave, onImport, conn
             width: '40%'
           },
           {
-            title: `Polaris Flow ${getConnectorTypeProjectName(connectorType)}`,
+            title: `Polaris ${getConnectorTypeProjectName(connectorType)}`,
             dataIndex: 'localName',
             editable: true,
             enableEdits: true,
