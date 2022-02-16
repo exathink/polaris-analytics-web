@@ -260,8 +260,15 @@ export const ProjectsTable = injectIntl(({tableData, loading, intl}) => {
   );
 })
 
-export const ProjectsTableWidget = ({organizationKey}) => {
-  const {error, loading, data} = useQueryOrganizationProjects({organizationKey});
+export const ProjectsTableWidget = ({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}) => {
+  const {error, loading, data} = useQueryOrganizationProjects({
+    organizationKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
+    specsOnly,
+    includeSubTasks,
+  });
 
   if (error) return null;
 
