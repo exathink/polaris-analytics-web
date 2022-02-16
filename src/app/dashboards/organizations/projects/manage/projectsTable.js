@@ -44,7 +44,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 16, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TAG_COLOR)}
         </CustomTag>
       ))}
     </div>
@@ -62,7 +62,7 @@ function subProjectRender(text, record) {
     <div>
       {record.subProjectLabels.slice(0, 2).map((x) => (
         <CustomTag key={x}>
-          {truncateString(x, 16, TOOLTIP_COLOR)}
+          {truncateString(x, 16, TAG_COLOR)}
         </CustomTag>
       ))}
     </div>
@@ -260,8 +260,15 @@ export const ProjectsTable = injectIntl(({tableData, loading, intl}) => {
   );
 })
 
-export const ProjectsTableWidget = ({organizationKey}) => {
-  const {error, loading, data} = useQueryOrganizationProjects({organizationKey});
+export const ProjectsTableWidget = ({organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}) => {
+  const {error, loading, data} = useQueryOrganizationProjects({
+    organizationKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
+    specsOnly,
+    includeSubTasks,
+  });
 
   if (error) return null;
 

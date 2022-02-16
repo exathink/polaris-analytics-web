@@ -83,12 +83,16 @@ export default injectIntl(({intl}) => (
               <DashboardWidget
                 w={1}
                 name={`${displayPlural(intl, Contexts.projects)}`}
-                render={
-                  () =>
-                    <ProjectsTableWidget
-                      organizationKey={organization.key}
-                    />
-                }
+                render={() => (
+                <ProjectsTableWidget
+                  organizationKey={organization.key}
+                  days={30}
+                  measurementWindow={30}
+                  samplingFrequency={30}
+                  specsOnly={true}
+                  includeSubTasks={false}
+                />
+              )}
                 showDetail={true}
               />
             </DashboardRow>

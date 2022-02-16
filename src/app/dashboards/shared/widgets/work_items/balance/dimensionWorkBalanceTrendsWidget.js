@@ -45,6 +45,7 @@ export const DimensionWorkBalanceTrendsWidget = (
     view !== 'detail' ?
 
       <WorkBalanceTrendsView
+        context={context}
         capacityTrends={capacityTrends}
         contributorDetail={contributorDetail}
         cycleMetricsTrends={cycleMetricsTrends}
@@ -59,7 +60,7 @@ export const DimensionWorkBalanceTrendsWidget = (
       />
       :
       <DimensionWorkBalanceTrendsDetailDashboard
-        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks, showContributorDetail, showEffort}}
+        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks, showContributorDetail, showEffort, context}}
       />
   )
 }
