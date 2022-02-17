@@ -1,6 +1,5 @@
 import "./statistic.css";
 import React from "react";
-import {Icon as LegacyIcon} from "@ant-design/compatible";
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
 import {TOOLTIP_COLOR} from "../../../helpers/utility";
@@ -34,15 +33,8 @@ export const TrendIndicatorDisplayThreshold = 2;
 
 export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold = TrendIndicatorDisplayThreshold}) => {
   if (firstValue && secondValue) {
-    const delta = getDelta(firstValue, secondValue);
-    return (
-      Math.abs(delta) > deltaThreshold && (
-        <LegacyIcon
-          type={delta > 0 ? "arrow-up" : "arrow-down"}
-          style={good ? (good(delta) ? {color: "#399a15"} : {color: "#9a3727"}) : {color: "#c1c1c6"}}
-        />
-      )
-    );
+    const {trendIndicatorIcon, absDelta} = getTrendIndicatorUtils({firstValue, secondValue, good});
+    return absDelta > deltaThreshold && trendIndicatorIcon;
   } else {
     return null;
   }

@@ -12,8 +12,8 @@ import {TrendCard} from "../cards/trendCard";
 import {fromNow} from "../../../../helpers/utility";
 
 const colors = {
-  good: "#338807",
-  bad: "#9a3727",
+  good: "rgba(0, 128, 0, 0.7)",
+  bad: "rgba(255, 0, 0, 0.7)",
 };
 
 export const FlowStatistic = ({
