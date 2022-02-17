@@ -25,7 +25,7 @@ export function getTrendIndicatorUtils({firstValue, secondValue, good}) {
     );
 
   const absDelta = Math.abs(delta);
-  const trendValue = <span className={`${style}IndicatorArrow`}>{absDelta.toFixed(2)}%</span>;
+  const trendValue = <span className={`${style}Indicator`}>{absDelta.toFixed(2)}%</span>;
   return {trendIndicatorIcon, trendValue, delta, absDelta};
 }
 
@@ -65,11 +65,11 @@ export const TrendIndicatorNew = ({
       // show indicator only if absDelta greater than the indicator display threshold
       absDelta > deltaThreshold && (
         <div>
-          <div>
+          <div className="trendIndicatorPadding">
             {trendIndicatorIcon} {trendValue}
           </div>
           <div>
-            <span className={"comparisonWindow"}>Compared to prior {samplingFrequency} days.</span>
+            <span className="comparisonWindow">Compared to prior {samplingFrequency} days.</span>
           </div>
         </div>
       )
