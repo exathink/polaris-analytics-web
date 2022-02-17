@@ -104,7 +104,7 @@ export function TrendWithTooltip({
           }
           color={TOOLTIP_COLOR}
         >
-          <div className={`trendCursor`}>{trendIndicatorIcon}</div>
+          <div className={`trendIcon`}>{trendIndicatorIcon}</div>
         </Tooltip>
       )
     );

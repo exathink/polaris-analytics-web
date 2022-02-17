@@ -79,8 +79,9 @@
     font-size: 1vh
 }
 
-.trendCursor {
+.trendIcon {
     cursor: pointer;
+    margin-left: 0.5rem;
 }
 
 .trendIndicatorPadding {
