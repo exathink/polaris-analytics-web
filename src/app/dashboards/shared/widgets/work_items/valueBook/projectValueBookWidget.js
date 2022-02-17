@@ -38,7 +38,7 @@ export const ProjectValueBookWidget = ({
     return null;
   }
 
-  const workItemDeliveryCycles = data.project.workItemDeliveryCycles.edges.map((edge) => edge.node);
+  const workItemDeliveryCycles = data.project.workItems.edges.map((edge) => edge.node);
 
   return (
     <ProjectValueBookView
