@@ -179,7 +179,7 @@ export const LatestClosed = ({asCard, currentMeasurement}) => (
     title={"Latest Closed"}
     currentMeasurement={currentMeasurement}
     valueRender={value => fromNow(currentMeasurement['latestClosedDate'])}
-    asCard={true}
+    displayType="card"
   />
     :
   <HumanizedDateView
