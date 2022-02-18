@@ -6,6 +6,8 @@ import {
   TrendIndicator,
   TrendIndicatorDisplayThreshold,
   TrendIndicatorNew,
+  TrendMetric,
+  TrendWithTooltip,
 } from "../../../../components/misc/statistic/statistic";
 import {percentileToText} from "../../../../helpers/utility";
 import {ComponentCarousel} from "../componentCarousel/componentCarousel";
@@ -16,7 +18,8 @@ import {TrendColors} from "../../config"
 
 export const FlowStatistic = ({
   title,
-  asCard = false,
+  displayType="statistic",
+  displayProps={},
   currentMeasurement,
   previousMeasurement,
   metric,
@@ -28,49 +31,73 @@ export const FlowStatistic = ({
   precision,
   deltaThreshold,
   valueRender = (value) => value,
-  info,
-  showHighlighted,
-  onClick,
-  size
 }) => {
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
   const {metricValue, suffix} = getMetricUtils({target, value, uom, good, valueRender, precision});
-  return asCard ? (
-    <TrendCard
-      metricTitle={title}
-      metricValue={metricValue}
-      suffix={suffix}
-      showHighlighted={showHighlighted}
-      onClick={onClick}
-      trendIndicator={
-        <TrendIndicatorNew
-          firstValue={value}
-          secondValue={comp}
-          good={good}
-          deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
-          samplingFrequency={currentMeasurement.measurementWindow}
+
+  switch (displayType) {
+    case "card": {
+      const {onClick, showHighlighted, info, size} = displayProps;
+      return (
+        <TrendCard
+          metricTitle={title}
+          metricValue={metricValue}
+          suffix={suffix}
+          showHighlighted={showHighlighted}
+          onClick={onClick}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={currentMeasurement.measurementWindow}
+            />
+          }
+          size={size}
+          info={info}
         />
-      }
-      size={size}
-      info={info}
-    />
-  ) : (
-    <CustomStatistic
-      title={title}
-      trendIndicator={
-        <TrendIndicator
-          firstValue={value}
-          secondValue={comp}
-          good={good}
-          deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+      );
+    }
+    case "statistic": {
+      return (
+        <CustomStatistic
+          title={title}
+          trendIndicator={
+            <TrendIndicator
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+            />
+          }
+          value={metricValue}
+          suffix={suffix}
         />
-      }
-      value={metricValue}
-      suffix={suffix}
-    />
-  );
+      );
+    }
+    case "cellrender": {
+      return (
+        <TrendMetric
+          metricValue={metricValue}
+          uom={uom}
+          trendIndicator={
+            <TrendWithTooltip
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              samplingFrequency={currentMeasurement?.measurementWindow}
+            />
+          }
+        />
+      );
+    }
+    default: {
+      return null;
+    }
+  }
 };
 
 
