@@ -101,7 +101,7 @@ export const FlowStatistic = ({
 };
 
 
-export const ResponseTime = ({title, info, asCard, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => (
+export const ResponseTime = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
@@ -112,15 +112,13 @@ export const ResponseTime = ({title, info, asCard, currentMeasurement, previousM
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
     target={target}
-    asCard={asCard}
-    info={info}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
 
-export const Volume = ({title, asCard, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow, onClick, showHighlighted}) => {
+export const Volume = ({title, displayType, displayProps, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
   return <FlowStatistic
@@ -132,15 +130,10 @@ export const Volume = ({title, asCard, normalized, contributorCount, currentMeas
     uom={specsOnly ? 'Specs' : 'Cards'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
+    displayType={displayType}
+    displayProps={displayProps}
     target={target}
     measurementWindow={measurementWindow}
-    showHighlighted={showHighlighted}
-    onClick={onClick}
-    info={{
-      headline: "sample headline",
-      drawerContent: <div><p>Some content</p></div>
-    }}
   />
 }
 
@@ -204,7 +197,7 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, asCard, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
@@ -214,7 +207,7 @@ export const Cadence = ({title, asCard, currentMeasurement, previousMeasurement,
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
+    displayType={displayType}
   />
 );
 
@@ -233,7 +226,7 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
   />
 );
 
-export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good, target, deltaThreshold, onClick, showHighlighted}) => {
+export const AvgEffort = ({displayType, displayProps, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => {
 
   return <FlowStatistic
     title={<span>{'Effort'}<sup> {'Avg'} </sup></span>}
@@ -246,13 +239,8 @@ export const AvgEffort = ({asCard, currentMeasurement, previousMeasurement, good
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
     target={target}
-    asCard={asCard}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "The average elapsed time a card spent in implementation and delivery.",
-      drawerContent: <div><p>Some content</p></div>
-    }}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 }
 
@@ -285,7 +273,7 @@ export const MaxEffort = ({currentMeasurement, previousMeasurement, good, target
   />
 );
 
-export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, onClick, showHighlighted}) => {
+export const AvgDuration = ({displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -295,13 +283,8 @@ export const AvgDuration = ({asCard, currentMeasurement, previousMeasurement, sh
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "The elapsed time from the earliest commit to the latest commit.",
-      drawerContent: <div><p>Some content</p></div>
-    }}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 }
 
@@ -330,7 +313,7 @@ export const MaxDuration = ({currentMeasurement, previousMeasurement, showTrendI
   />
 );
 
-export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, onClick, showHighlighted}) => {
+export const AvgLatency = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -340,13 +323,8 @@ export const AvgLatency = ({title, asCard, currentMeasurement, previousMeasureme
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "The elapsed time from the latest commit till the time the card was closed.",
-      drawerContent: <div><p>Some content</p></div>
-    }}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 }
 
@@ -388,7 +366,7 @@ export const MinCycleTime = ({currentMeasurement, previousMeasurement, target, d
 );
 
 
-export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => {
+export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -398,13 +376,8 @@ export const AvgCycleTime = ({asCard, currentMeasurement, previousMeasurement, t
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "The average elapsed time a card spent in implementation and delivery.",
-      drawerContent: <div><p>Some content</p></div>
-    }}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 }
 
@@ -458,7 +431,7 @@ export const PercentileAge = ({title, currentMeasurement, previousMeasurement, t
   />
 );
 
-export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => {
+export const AvgLeadTime = ({displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -468,13 +441,8 @@ export const AvgLeadTime = ({asCard, currentMeasurement, previousMeasurement, ta
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "The average elapsed time since a card was created to the time the card was closed.",
-      drawerContent: <div><p>Some content</p></div>
-    }}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 }
 
@@ -518,7 +486,7 @@ export const ContributorCount = ({title, contributorCount}) => (
 //  Commit Days
 // ----
 
-export const ActiveDays = ({asCard, title, normalized, contributorCount, currentMeasurement, previousMeasurement, metric, uom, precision, displayName, target, superScript, deltaThreshold, onClick, showHighlighted}) => {
+export const ActiveDays = ({displayType, displayProps, title, normalized, contributorCount, currentMeasurement, previousMeasurement, metric, uom, precision, displayName, target, superScript, deltaThreshold}) => {
 
   return <FlowStatistic
     title={title}
@@ -530,14 +498,9 @@ export const ActiveDays = ({asCard, title, normalized, contributorCount, current
     precision={precision || 1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
-    asCard={asCard}
+    displayType={displayType}
+    displayProps={displayProps}
     target={target}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
-    info={{
-      headline: "sample headline",
-      drawerContent: <div><p>Some content</p></div>
-    }}
   />
 }
 
@@ -593,7 +556,7 @@ export const TotalActiveDays = ({title, currentMeasurement, previousMeasurement,
 
 
 
-export const EffortOUT = ({asCard, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, onClick, showHighlighted}) => (
+export const EffortOUT = ({displayType, displayProps, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ActiveDays
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -602,11 +565,10 @@ export const EffortOUT = ({asCard, normalized, contributorCount, currentMeasurem
     normalized={normalized}
     contributorCount={contributorCount}
     uom={'Dev-Days'}
-    asCard={asCard}
+    displayType={displayType}
+    displayProps={displayProps}
     target={target}
     deltaThreshold={deltaThreshold}
-    onClick={onClick}
-    showHighlighted={showHighlighted}
   />
 );
 
