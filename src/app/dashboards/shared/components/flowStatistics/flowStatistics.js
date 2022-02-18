@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  CustomStatistic,
+  getMetricUtils,
   Statistic,
   TrendIndicator,
   TrendIndicatorDisplayThreshold,
@@ -10,11 +12,7 @@ import {ComponentCarousel} from "../componentCarousel/componentCarousel";
 import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
 import {TrendCard} from "../cards/trendCard";
 import {fromNow} from "../../../../helpers/utility";
-
-const colors = {
-  good: "rgba(0, 128, 0, 0.7)",
-  bad: "rgba(255, 0, 0, 0.7)",
-};
+import {TrendColors} from "../../config"
 
 export const FlowStatistic = ({
   title,
@@ -38,36 +36,12 @@ export const FlowStatistic = ({
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
-  const color = target && value != null && good && !good(value - target) ? colors.bad : colors.good;
-
-  const renderedValue = valueRender(value);
+  const {metricValue, suffix} = getMetricUtils({target, value, uom, good, valueRender, precision});
   return asCard ? (
-    // <Card
-    //   title={title}
-    //   size={"small"}
-    //   hoverable
-    //   bordered
-    //   extra={<InfoCard title={title} content={info.headline} drawerContent={info.drawerContent} />}
-    // >
-    //   <Statistic
-    //     value={renderedValue != null ? renderedValue : "N/A"}
-    //     precision={precision || 0}
-    //     valueStyle={{color: color}}
-    //     prefix={
-    //       <TrendIndicator
-    //         firstValue={value}
-    //         secondValue={comp}
-    //         good={good}
-    //         deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
-    //       />
-    //     }
-    //     suffix={value ? uom : ""}
-    //   />
-    // </Card>
     <TrendCard
       metricTitle={title}
-      metricValue={renderedValue ? renderedValue.toFixed ? renderedValue.toFixed(precision || 0) : renderedValue :   "N/A"}
-      suffix={value ? uom : ""}
+      metricValue={metricValue}
+      suffix={suffix}
       showHighlighted={showHighlighted}
       onClick={onClick}
       trendIndicator={
@@ -81,15 +55,11 @@ export const FlowStatistic = ({
       }
       size={size}
       info={info}
-
     />
   ) : (
-    <Statistic
+    <CustomStatistic
       title={title}
-      value={renderedValue != null ? renderedValue : "N/A"}
-      precision={precision || 0}
-      valueStyle={{color: color}}
-      prefix={
+      trendIndicator={
         <TrendIndicator
           firstValue={value}
           secondValue={comp}
@@ -97,7 +67,8 @@ export const FlowStatistic = ({
           deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
         />
       }
-      suffix={value ? uom : ""}
+      value={metricValue}
+      suffix={suffix}
     />
   );
 };
@@ -509,9 +480,10 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 export const ContributorCount = ({title, contributorCount}) => (
   <Statistic
     title={title || 'Contributors'}
+    formatter={value => <span className="textSm">{value}</span>}
     value={contributorCount}
     precision={0}
-    valueStyle={{color: colors.good}}
+    valueStyle={{color: TrendColors.good}}
   />
 );
 
@@ -894,8 +866,9 @@ export const TraceabilityTarget = ({title, target}) => (
   <Statistic
     title={'Target'}
     value={target * 100}
+    formatter={value => <span className="textSm">{value}</span>}
     precision={0}
-    valueStyle={{color: colors.good}}
+    valueStyle={{color: TrendColors.good}}
     suffix={'%'}
   />
 );

@@ -3,6 +3,7 @@ import React from "react";
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
 import {TOOLTIP_COLOR} from "../../../helpers/utility";
+import {TrendColors} from "../../../dashboards/shared/config";
 export {Statistic} from "antd";
 
 function getDelta(firstValue, secondValue) {
@@ -102,4 +103,39 @@ export function TrendWithTooltip({
     );
   }
   return null;
+}
+
+export function getMetricUtils({target, value, uom, good, valueRender, precision}) {
+  const color = target && value != null && good && !good(value - target) ? TrendColors.bad : TrendColors.good;
+  const suffix = value ? uom : "";
+  const renderedValue = valueRender(value);
+  const metricValue = renderedValue
+    ? renderedValue.toFixed
+      ? renderedValue.toFixed(precision || 0)
+      : renderedValue
+    : "N/A";
+  return {
+    metricValue: <span style={{color: color}}>{metricValue}</span>,
+    suffix: <span style={{color: color}}>{suffix}</span>,
+  };
+}
+
+export function CustomStatistic({title, trendIndicator, value, suffix}) {
+  return (
+    <div>
+      <div className="statisticTitle">{title}</div>
+      <TrendMetric metricValue={value} uom={suffix} trendIndicator={trendIndicator} />
+    </div>
+  );
+}
+
+export function TrendMetric({metricValue, uom, trendIndicator}) {
+  return (
+    <div style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
+      <div style={{display: "flex", flexDirection: "column"}}>
+        <div className="textSm">{metricValue}</div> <div className="textXs">{uom}</div>
+      </div>{" "}
+      {trendIndicator}
+    </div>
+  );
 }
