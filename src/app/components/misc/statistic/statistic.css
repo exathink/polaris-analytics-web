@@ -94,3 +94,14 @@
   margin-bottom: 4px;
   color: rgba(0, 0, 0, 0.45);
 }
+
+.trendMetricWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trendMetricInnerWrapper {
+  display: flex;
+  flex-direction: column;
+}

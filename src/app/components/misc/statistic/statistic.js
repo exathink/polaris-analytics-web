@@ -131,8 +131,8 @@ export function CustomStatistic({title, trendIndicator, value, suffix}) {
 
 export function TrendMetric({metricValue, uom, trendIndicator}) {
   return (
-    <div style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
-      <div style={{display: "flex", flexDirection: "column"}}>
+    <div className="trendMetricWrapper">
+      <div className="trendMetricInnerWrapper">
         <div className="textSm">{metricValue}</div> <div className="textXs">{uom}</div>
       </div>{" "}
       {trendIndicator}
