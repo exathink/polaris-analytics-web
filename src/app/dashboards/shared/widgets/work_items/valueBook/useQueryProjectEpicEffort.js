@@ -13,11 +13,11 @@ export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, d
             $referenceString: String) {
             project(key: $projectKey, referenceString: $referenceString) {
                 id
-                workItemDeliveryCycles(
+                workItems(
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
                     specsOnly: $specsOnly,
-                    closedWithinDays: $days,
+                    activeWithinDays: $days,
                     includeSubTasks: $includeSubTasks
                 ) {
                     edges {
@@ -52,7 +52,7 @@ export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, d
 }
 
 export const GET_PROJECT_IMPLEMENTATION_COST_TABLE = gql`
-query getProjectImplementationCost($projectKey: String!, $closedWithinDays: Int, $includeSubTasks: Boolean, $referenceString: String, $specsOnly: Boolean, $activeOnly: Boolean) {
+query getProjectImplementationCostTable($projectKey: String!, $closedWithinDays: Int, $includeSubTasks: Boolean, $referenceString: String, $specsOnly: Boolean, $activeOnly: Boolean) {
   project(key: $projectKey, referenceString: $referenceString) {
     id
     workItems(
@@ -60,7 +60,7 @@ query getProjectImplementationCost($projectKey: String!, $closedWithinDays: Int,
       includeEpics: true
       specsOnly: $specsOnly
       activeOnly: $activeOnly
-      closedWithinDays: $closedWithinDays
+      activeWithinDays: $closedWithinDays
       includeSubTasks: $includeSubTasks
     ) {
       edges {

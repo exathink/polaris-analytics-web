@@ -5,6 +5,7 @@ import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
 import {ValueBookDetailView} from "./valueBookDetailView";
+import { useChildState } from "../../../../../helpers/hooksUtil";
 
 export const ValueBookDetailWidget = ({
   instanceKey,
