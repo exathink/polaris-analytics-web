@@ -144,7 +144,7 @@ function ValueDashboard({
               setClosedWithinDays={setClosedWithinDays}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="epic-flow-mix-wip"
@@ -163,7 +163,7 @@ function ValueDashboard({
               setWorkItemScope={setWorkItemScope}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
       <div className={styles.scopeSelector}>

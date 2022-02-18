@@ -203,7 +203,7 @@ export function ValueBookDetailView({
       )}
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+          <WorkItemScopeSelector display={["Effort", "Volume"]} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
       <div className={styles.epicEffortChart}>

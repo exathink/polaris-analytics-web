@@ -31,6 +31,8 @@ function TrendsDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
+  const [workItemScope, setWorkItemScope] = React.useState("specs");
+  const specsOnly = workItemScope === "specs";
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
   return (
@@ -203,14 +205,16 @@ function TrendsDashboard({
               instanceKey={key}
               context={context}
               days={daysRange}
-              specsOnly={true}
+              specsOnly={specsOnly}
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasksFlowMetrics}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>
