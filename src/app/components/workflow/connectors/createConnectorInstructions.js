@@ -98,11 +98,7 @@ const BitbucketConnectorInstructions = ({part}) =>
 const GithubConnectorInstructions = ({part}) => (
   part === 'instructions' &&
   <div>
-    <p>The Polaris  Github Connector uses the Github Rest API to import repository metadata and issues. Each connector
-      is scoped
-      to a specific Github Organization. You must create separate connectors for each Github organization that you
-      are
-      connecting to.
+    <p>The Polaris  Github Connector uses the Github Rest API to import repository metadata and issues.
     </p>
     <p>
       If you use Github for version control as well as for issue tracking for an organization, the same connector can be
@@ -111,7 +107,15 @@ const GithubConnectorInstructions = ({part}) => (
     </p>
     <p>
       The integration process is straightforward. You will need a personal access token to authenticate Polaris 
-      with Github.
+      with Github.  Polaris uses the user identity associated with the access token to show the repositories that
+      are available to analyze in Polaris.
+    </p>
+    <p>
+      <em>
+      We strongly recommend that you create a separate bot account for this purpose
+      and give it the specific and limited access to the repositories you want analyzed in Polaris rather than using
+      an existing user or automation account.
+      </em>
     </p>
 
     <ol>
@@ -124,6 +128,10 @@ const GithubConnectorInstructions = ({part}) => (
       <li>Copy the personal access token and enter it as the OAuth access token in the next step.
       </li>
     </ol>
+
+    <p>
+
+    </p>
   </div>
 );
 
