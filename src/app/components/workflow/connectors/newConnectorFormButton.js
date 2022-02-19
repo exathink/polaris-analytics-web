@@ -109,18 +109,7 @@ const AddConnectorForm = (
         {
           connectorType === 'github' ?
             <React.Fragment>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.Item label="Github Organization">
-                    {getFieldDecorator('githubOrganization', {
-                      rules: [
-                        {required: true, message: 'Github Organization'}
-                      ],
-                      initialValue: currentValue('githubOrganization', null)
-                    })(<Input placeholder="Github Organization"/>)}
-                  </Form.Item>
-                </Col>
-              </Row>
+
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item label="OAuth Personal Access Token">
@@ -131,6 +120,29 @@ const AddConnectorForm = (
                       initialValue: currentValue('githubAccessToken', null)
                     })(<Input placeholder="OAuth Access Token"/>)}
                   </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Github Organization">
+                    {getFieldDecorator('githubOrganization', {
+                      rules: [
+                        {message: 'Github Organization'}
+                      ],
+                      initialValue: currentValue('githubOrganization', null)
+                    })(<Input placeholder="Limits visibility to repos from a single Github Organization (optional)"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={1}>
+                <Col span={24}>
+                  <div>
+                    <em>
+                      Note: If you dont specify an organization here, you will need to create a separate connector
+                      to limit visibility to a specific organization later on. We strongly recommend that you scope connectors
+                      to specific github organizations, even though it is an optional field.
+                    </em>
+                  </div>
                 </Col>
               </Row>
             </React.Fragment>
