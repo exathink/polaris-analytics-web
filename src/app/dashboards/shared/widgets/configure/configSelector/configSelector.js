@@ -26,7 +26,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab}) => {
     },
     {
       key: CONFIG_TABS.RESPONSE_TIME_SLA,
-      display: "Service Level Objectives",
+      display: "Response Time Targets",
     },
   ];
 
