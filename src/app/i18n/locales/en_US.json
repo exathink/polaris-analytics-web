@@ -50,6 +50,7 @@
   "topics.throughput": "Throughput",
   "topics.value": "Value",
   "topics.alignment": "Alignment",
+  "topics.valueBook": "Value Book",
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
   "topics.repositories": "Code",

@@ -12,7 +12,7 @@ import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/tren
 import {DimensionWorkBalanceTrendsWidget} from "../../shared/widgets/work_items/balance";
 import {DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget} from "../shared/widgets/quality";
 import {DaysRangeSlider, SIX_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
-import styles from "../alignment/dashboard.module.css";
+import styles from "../valueBook/dashboard.module.css";
 import {ProjectValueBookWidget} from "../../shared/widgets/work_items/valueBook";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";

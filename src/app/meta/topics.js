@@ -57,6 +57,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.alignment' defaultMessage="Alignment"/>),
     icon: 'ion-compass'
   },
+  valueBook: {
+    name: 'valueBook',
+    display: () => (<FormattedMessage id='topics.valueBook' defaultMessage="Value Book"/>),
+    icon: 'ion-social-usd'
+  },
   contributors: {
     name: 'contributors',
     display: () => (<FormattedMessage id='topics.contributors' defaultMessage="Contributors"/>),
