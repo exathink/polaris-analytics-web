@@ -1,11 +1,10 @@
 import React from "react";
 
-import {useQueryImplementationCostTable} from "./useQueryProjectEpicEffort";
-import {getReferenceString} from "../../../../../helpers/utility";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
+import { useQueryImplementationCostTable } from "./useQueryProjectEpicEffort";
+import { getReferenceString } from "../../../../../helpers/utility";
+import { logGraphQlError } from "../../../../../components/graphql/utils";
 
-import {ValueBookDetailView} from "./valueBookDetailView";
-import { useChildState } from "../../../../../helpers/hooksUtil";
+import { ValueBookDetailView } from "./valueBookDetailView";
 
 export const ValueBookDetailWidget = ({
   instanceKey,
