@@ -867,7 +867,7 @@ export const Traceability = ({title, current, previous, target, deltaThreshold})
     title={title || "Traceability"}
     currentValue={current['traceability'] * 100}
     previousValue={previous['traceability'] * 100}
-    uom={'%'}
+    valueRender={value => `${value?.toFixed?.(2)}%`}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target * 100}
