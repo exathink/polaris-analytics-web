@@ -233,7 +233,7 @@ export const AvgEffort = ({displayType, displayProps, currentMeasurement, previo
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgEffort'}
-    precision={1}
+    precision={2}
     uom={'Dev-Days'}
     // we want low avg effort. high total with low average means more throughput.
     good={TrendIndicator.isNegative}
