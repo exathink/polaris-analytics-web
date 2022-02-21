@@ -39,7 +39,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           title={"Features"}
           currentValue={currentMix.feature ? percentage(currentMix.feature[metric], currentMix.total) : 0}
           previousValue={previousMix.feature ? percentage(previousMix.feature[metric], previousMix.total) : 0}
-          uom={"%"}
+          valueRender={value => `${value?.toFixed?.(2)}%`}
           precision={2}
           target={target}
           displayType={asCard ? "card" : "statistic"}
@@ -53,7 +53,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           title={"Defects"}
           currentValue={currentMix.defect ? percentage(currentMix.defect[metric], currentMix.total) : 0}
           previousValue={previousMix.defect ? percentage(previousMix.defect[metric], previousMix.total) : 0}
-          uom={"%"}
+          valueRender={value => `${value?.toFixed?.(2)}%`}
           precision={2}
           target={target}
           displayType={asCard ? "card" : "statistic"}
@@ -68,7 +68,7 @@ export const ProjectFlowMixTrendsStatsView = ({
           title={"Tasks"}
           currentValue={currentMix.task ? percentage(currentMix.task[metric], currentMix.total) : 0}
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
-          uom={"%"}
+          valueRender={value => `${value?.toFixed?.(2)}%`}
           precision={2}
           displayType={asCard ? "card" : "statistic"}
           displayProps={{info: {headline: "", content: ""}, size: "small"}}
