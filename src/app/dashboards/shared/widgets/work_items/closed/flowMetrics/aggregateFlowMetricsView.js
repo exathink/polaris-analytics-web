@@ -350,7 +350,7 @@ export const ResponseTimeDetailView = (
           }}
           currentMeasurement={current}
           previousMeasurement={previous}
-          target={cycleTimeTarget}
+          target={leadTimeTarget}
         />
       </div>
       <div className={styles.cycleTime}>
