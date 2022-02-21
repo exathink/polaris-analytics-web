@@ -11,6 +11,7 @@ import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
 import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
 import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
+import {AvgCycleTime, AvgLeadTime, EffortOUT} from "../../../shared/components/flowStatistics/flowStatistics";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -109,7 +110,7 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
       key: "repositoryCount",
       width: "6%",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
-      render: renderMetric
+      render: renderMetric,
     },
     {
       title: "Contributors",
@@ -117,7 +118,7 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
       key: "contributorCount",
       width: "7%",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
-      render: renderMetric
+      render: renderMetric,
     },
     {
       title: (
@@ -132,7 +133,13 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           key: "leadTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
-          render: renderTrendMetric({metric: "avgLeadTime", good: TrendIndicator.isNegative, samplingFrequency})
+          render: (text, record) => {
+            return <AvgLeadTime
+              displayType="cellrender"
+              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              previousMeasurement={record.cycleMetricsTrends?.[1]}
+            />;
+          },
         },
         {
           title: "Cycle Time",
@@ -140,7 +147,13 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           key: "cycleTime",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, samplingFrequency})
+          render: (text, record) => {
+            return <AvgCycleTime
+              displayType="cellrender"
+              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              previousMeasurement={record.cycleMetricsTrends?.[1]}
+            />;
+          },
         },
       ],
     },
@@ -152,12 +165,16 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
       ),
       children: [
         {
-          title: <span>Specs <sup>PC</sup> </span>,
+          title: (
+            <span>
+              Specs <sup>PC</sup>{" "}
+            </span>
+          ),
           dataIndex: "specs",
           key: "specs",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
-          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: "", samplingFrequency})
+          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: "", samplingFrequency}),
         },
         {
           title: (
@@ -173,7 +190,13 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           key: "effortOut",
           width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-devs", samplingFrequency})
+          render: (text, record) => {
+            return <EffortOUT
+              displayType="cellrender"
+              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              previousMeasurement={record.cycleMetricsTrends?.[1]}
+            />;
+          },
         },
       ],
     },
