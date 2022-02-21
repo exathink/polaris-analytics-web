@@ -9,9 +9,8 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
-import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
-import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
-import {AvgCycleTime, AvgLeadTime, EffortOUT} from "../../../shared/components/flowStatistics/flowStatistics";
+import {renderMetric} from "../../../shared/helpers/renderers";
+import {AvgCycleTime, AvgLeadTime, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -84,7 +83,7 @@ function subProjectRender(text, record) {
 }
 
 
-export function useOrgProjectsTableColumns(samplingFrequency) {
+export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
   const subProjectRenderState = {render: subProjectRender};
 
@@ -167,14 +166,23 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
         {
           title: (
             <span>
-              Specs <sup>PC</sup>{" "}
+              {specsOnly ? "Specs" : "Cards"} <sup>PC</sup>{" "}
             </span>
           ),
           dataIndex: "specs",
           key: "specs",
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
-          render: renderTrendMetric({metric: "specs", good: TrendIndicator.isPositive, uom: "", samplingFrequency}),
+          render: (text, record) => {
+            return (
+              <Volume
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+                specsOnly={specsOnly}
+              />
+            );
+          },
         },
         {
           title: (
@@ -268,9 +276,9 @@ function getTransformedData(tableData, intl) {
   });
 }
 
-export const ProjectsTable = injectIntl(({tableData, loading, intl}) => {
+export const ProjectsTable = injectIntl(({tableData, loading, intl, specsOnly}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgProjectsTableColumns(30);
+  const columns = useOrgProjectsTableColumns(30, specsOnly);
 
   return (
     <StripeTable
@@ -300,5 +308,5 @@ export const ProjectsTableWidget = ({organizationKey, days, measurementWindow, s
     .map((edge) => ({...edge.node, subProjectCount: edge.node.workItemsSources.count, subProjectLabels: edge.node.workItemsSources.edges.map(edge => edge.node.name)}))
     .sort((a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent));
 
-  return <ProjectsTable tableData={tableData} loading={loading} />;
+  return <ProjectsTable tableData={tableData} loading={loading} specsOnly={specsOnly} />;
 };

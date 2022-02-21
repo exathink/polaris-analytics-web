@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useOrgTeamsTableColumns(samplingFrequency) {
+export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -145,7 +145,7 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
         {
           title: (
             <span>
-              Volume<sup>pc</sup>
+              {specsOnly ? "Specs" : "Cards"}<sup>pc</sup>
             </span>
           ),
           dataIndex: "volume",
@@ -158,6 +158,7 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
                 displayType="cellrender"
                 currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
                 previousMeasurement={record.cycleMetricsTrends?.[1]}
+                specsOnly={specsOnly}
               />
             );
           },
@@ -254,9 +255,9 @@ function getTransformedData(tableData, intl) {
 }
 
 
-export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl}) => {
+export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl, specsOnly}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgTeamsTableColumns(samplingFrequency);
+  const columns = useOrgTeamsTableColumns(samplingFrequency, specsOnly);
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
