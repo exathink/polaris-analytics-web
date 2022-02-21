@@ -42,12 +42,10 @@ export const ProjectFlowMixTrendsStatsView = ({
           uom={"%"}
           precision={2}
           target={target}
-          asCard={asCard}
+          displayType={asCard ? "card" : "statistic"}
+          displayProps={{info: {headline: "", content: ""}, size: "small"}}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
-
-          info={{headline: "", content: ""}}
-          size={"small"}
         />
       </div>
       <div className={styles.defects}>
@@ -58,12 +56,11 @@ export const ProjectFlowMixTrendsStatsView = ({
           uom={"%"}
           precision={2}
           target={target}
-          asCard={asCard}
+          displayType={asCard ? "card" : "statistic"}
+          displayProps={{info: {headline: "", content: ""}, size: "small"}}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
-          info={{headline: "", content: ""}}
-          size={"small"}
         />
       </div>
       <div className={styles.tasks}>
@@ -73,12 +70,10 @@ export const ProjectFlowMixTrendsStatsView = ({
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
           uom={"%"}
           precision={2}
-          asCard={asCard}
+          displayType={asCard ? "card" : "statistic"}
+          displayProps={{info: {headline: "", content: ""}, size: "small"}}
           currentMeasurement={{...current, measurementWindow: measurementWindow}}
           previousMeasurement={previous}
-
-          info={{headline: "", content: ""}}
-          size={"small"}
         />
       </div>
     </div>
