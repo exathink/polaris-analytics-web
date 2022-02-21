@@ -136,7 +136,7 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           render: (text, record) => {
             return <AvgLeadTime
               displayType="cellrender"
-              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
               previousMeasurement={record.cycleMetricsTrends?.[1]}
             />;
           },
@@ -150,7 +150,7 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           render: (text, record) => {
             return <AvgCycleTime
               displayType="cellrender"
-              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
               previousMeasurement={record.cycleMetricsTrends?.[1]}
             />;
           },
@@ -193,7 +193,7 @@ export function useOrgProjectsTableColumns(samplingFrequency) {
           render: (text, record) => {
             return <EffortOUT
               displayType="cellrender"
-              currentMeasurement={record.cycleMetricsTrends?.[0]}
+              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
               previousMeasurement={record.cycleMetricsTrends?.[1]}
             />;
           },
