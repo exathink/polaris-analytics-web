@@ -106,7 +106,11 @@ export function TrendWithTooltip({
 }
 
 export function getMetricUtils({target, value, uom, good, valueRender, precision}) {
-  const color = target && value != null && good && !good(value - target) ? TrendColors.bad : TrendColors.good;
+  let color = "";
+  if(target != null && value != null && good){
+    color = !good(value - target) ? TrendColors.bad : TrendColors.good;
+  }
+
   const suffix = value ? uom : "";
   const renderedValue = valueRender(value);
   const metricValue = renderedValue
