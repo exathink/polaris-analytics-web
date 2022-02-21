@@ -109,7 +109,6 @@ describe("projectPullRequestsWidget", () => {
 
       await screen.findByTestId("loading-spinner");
       await screen.findByText(/open/i);
-      expect((await screen.findAllByText(/0/i)).length).toBeGreaterThan(0);
     });
 
     test("renders stats chart in primary view without any error", async () => {
