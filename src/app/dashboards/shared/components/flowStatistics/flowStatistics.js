@@ -108,7 +108,7 @@ export const ResponseTime = ({title, displayType, displayProps, currentMeasureme
     previousMeasurement={previousMeasurement}
     metric={metric}
     uom={uom || 'Days'}
-    precision={1}
+    precision={2}
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
     target={target}
@@ -495,7 +495,7 @@ export const ActiveDays = ({displayType, displayProps, title, normalized, contri
     metric={metric}
     valueRender={(value) => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={uom}
-    precision={precision || 1}
+    precision={precision || 2}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
