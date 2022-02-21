@@ -82,7 +82,7 @@ export const FlowStatistic = ({
       return (
         <TrendMetric
           metricValue={metricValue}
-          uom={uom}
+          uom={suffix}
           trendIndicator={
             <TrendWithTooltip
               firstValue={value}
