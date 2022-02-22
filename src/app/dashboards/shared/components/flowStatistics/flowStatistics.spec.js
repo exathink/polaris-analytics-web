@@ -1,6 +1,15 @@
 import {render, screen, within} from "@testing-library/react";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
 
+export function renderAndAssertMetricComponent(Component, metricVal, uom) {
+  render(Component);
+  const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
+  const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
+
+  expect(getByTextValue(metricVal)).toBeInTheDocument();
+  expect(getByTextUOM(uom)).toBeInTheDocument();
+}
+
 const cycleMetricsTrends = [
   {
     __typename: "AggregateCycleMetricsImpl",
@@ -75,71 +84,48 @@ const propsFixture = {
 
 describe("Metrics", () => {
   describe("Response Time Metrics", () => {
-    test("Avg LeadTime", () => {
-      render(<AvgLeadTime displayType="cellrender" {...propsFixture} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
+    // handle empty / no data edge cases first
 
-      expect(getByTextValue("8.79")).toBeInTheDocument();
-      expect(getByTextUOM("days")).toBeInTheDocument();
+    // handle all displayType (statistic, cellrender, card)
+
+    describe("when there is no data", () => {});
+
+    test("Avg LeadTime", () => {
+      renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...propsFixture} />, 8.79, "days");
     });
 
     test("Avg CycleTime", () => {
-      render(<AvgCycleTime displayType="cellrender" {...propsFixture} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("3.06")).toBeInTheDocument();
-      expect(getByTextUOM("days")).toBeInTheDocument();
+      renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...propsFixture} />, 3.06, "days");
     });
 
     test("Coding", () => {
-      render(<AvgDuration displayType="cellrender" {...propsFixture} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("1.61")).toBeInTheDocument();
-      expect(getByTextUOM("days")).toBeInTheDocument();
+      renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...propsFixture} />, 1.61, "days");
     });
 
     test("Delivery", () => {
-      render(<AvgLatency displayType="cellrender" {...propsFixture} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("0.91")).toBeInTheDocument();
-      expect(getByTextUOM("days")).toBeInTheDocument();
+      renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...propsFixture} />, 0.91, "days");
     });
 
     test("Avg Effort", () => {
-      render(<AvgEffort displayType="cellrender" {...propsFixture} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("0.92")).toBeInTheDocument();
-      expect(getByTextUOM("dev-days")).toBeInTheDocument();
+      renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...propsFixture} />, 0.92, "dev-days");
     });
   });
 
   describe("Throughput Metrics", () => {
     test("Volume PC", () => {
-      render(
-        <Volume displayType="cellrender" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />
+      renderAndAssertMetricComponent(
+        <Volume displayType="cellrender" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
+        5,
+        "specs"
       );
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("5")).toBeInTheDocument();
-      expect(getByTextUOM("specs")).toBeInTheDocument();
     });
 
     test("EffortOUT PC", () => {
-      render(<EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />);
-      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
-
-      expect(getByTextValue("4.58")).toBeInTheDocument();
-      expect(getByTextUOM("dev-days")).toBeInTheDocument();
+      renderAndAssertMetricComponent(
+        <EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />,
+        4.58,
+        "dev-days"
+      );
     });
   });
 });
