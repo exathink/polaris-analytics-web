@@ -2,7 +2,6 @@ import React from 'react';
 import StickerWidget from "../../containers/stickers/simpleSticker/sticker-widget";
 import {fromNow} from "../../../../helpers/utility";
 import {Statistic} from "../../../../components/misc/statistic/statistic";
-import fontStyles from "../../../../framework/styles/fonts.module.css";
 export class HumanizedDateView extends React.Component {
 
   constructor(props){
