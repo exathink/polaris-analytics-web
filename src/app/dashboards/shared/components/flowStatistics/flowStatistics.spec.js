@@ -1,5 +1,5 @@
 import {render, screen, within} from "@testing-library/react";
-import {AvgCycleTime, AvgEffort, AvgLeadTime, EffortOUT} from "./flowStatistics";
+import {AvgCycleTime, AvgEffort, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
 
 const cycleMetricsTrends = [
   {
@@ -101,6 +101,19 @@ describe("Metrics", () => {
       expect(getByTextValue("0.92")).toBeInTheDocument();
       expect(getByTextUOM("dev-days")).toBeInTheDocument();
     });
+  });
+
+  describe("Throughput Metrics", () => {
+    test("Volume PC", () => {
+      render(
+        <Volume displayType="cellrender" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />
+      );
+      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
+      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
+
+      expect(getByTextValue("5")).toBeInTheDocument();
+      expect(getByTextUOM("specs")).toBeInTheDocument();
+    });
 
     test("EffortOUT", () => {
       render(<EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />);
@@ -111,6 +124,4 @@ describe("Metrics", () => {
       expect(getByTextUOM("dev-days")).toBeInTheDocument();
     });
   });
-
-  describe("Throughput Metrics", () => {});
 });
