@@ -1,5 +1,5 @@
 import {render, screen, within} from "@testing-library/react";
-import {AvgCycleTime, AvgEffort, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
+import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
 
 const cycleMetricsTrends = [
   {
@@ -93,6 +93,24 @@ describe("Metrics", () => {
       expect(getByTextUOM("days")).toBeInTheDocument();
     });
 
+    test("Coding", () => {
+      render(<AvgDuration displayType="cellrender" {...propsFixture} />);
+      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
+      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
+
+      expect(getByTextValue("1.61")).toBeInTheDocument();
+      expect(getByTextUOM("days")).toBeInTheDocument();
+    });
+
+    test("Delivery", () => {
+      render(<AvgLatency displayType="cellrender" {...propsFixture} />);
+      const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
+      const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
+
+      expect(getByTextValue("0.91")).toBeInTheDocument();
+      expect(getByTextUOM("days")).toBeInTheDocument();
+    });
+
     test("Avg Effort", () => {
       render(<AvgEffort displayType="cellrender" {...propsFixture} />);
       const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
@@ -115,7 +133,7 @@ describe("Metrics", () => {
       expect(getByTextUOM("specs")).toBeInTheDocument();
     });
 
-    test("EffortOUT", () => {
+    test("EffortOUT PC", () => {
       render(<EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />);
       const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
       const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
