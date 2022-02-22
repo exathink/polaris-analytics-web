@@ -159,6 +159,8 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
                 currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
                 previousMeasurement={record.cycleMetricsTrends?.[1]}
                 specsOnly={specsOnly}
+                normalized={true}
+                contributorCount={record.contributorCount}
               />
             );
           },
