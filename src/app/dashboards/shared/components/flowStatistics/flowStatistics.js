@@ -173,8 +173,8 @@ export const WipWithLimit = ({title, currentMeasurement, previousMeasurement, ta
 
 };
 
-export const LatestClosed = ({asCard, currentMeasurement}) => (
-  asCard ?
+export const LatestClosed = ({displayType, currentMeasurement}) => (
+  displayType==="card" ?
   <FlowStatistic
     title={"Latest Closed"}
     currentMeasurement={currentMeasurement}

@@ -133,11 +133,13 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
           render: (text, record) => {
-            return <AvgLeadTime
-              displayType="cellrender"
-              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
-              previousMeasurement={record.cycleMetricsTrends?.[1]}
-            />;
+            return (
+              <AvgLeadTime
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
           },
         },
         {
@@ -147,11 +149,13 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           width: "5%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
           render: (text, record) => {
-            return <AvgCycleTime
-              displayType="cellrender"
-              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
-              previousMeasurement={record.cycleMetricsTrends?.[1]}
-            />;
+            return (
+              <AvgCycleTime
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
           },
         },
       ],
@@ -199,11 +203,13 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
           render: (text, record) => {
-            return <EffortOUT
-              displayType="cellrender"
-              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
-              previousMeasurement={record.cycleMetricsTrends?.[1]}
-            />;
+            return (
+              <EffortOUT
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
           },
         },
       ],
