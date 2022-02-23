@@ -60,22 +60,55 @@ describe("Metrics", () => {
         currentMeasurement: {},
         previousMeasurement: {},
       };
-      test("Avg LeadTime", () => {
-        renderAndAssertEmptyMetricComponent(<AvgLeadTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
-      });
-      test("Avg CycleTime", () => {
-        renderAndAssertEmptyMetricComponent(<AvgCycleTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
-      });
-      test("Coding", () => {
-        renderAndAssertEmptyMetricComponent(<AvgDuration displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+
+      describe("cellrender", () => {
+        test("Avg LeadTime", () => {
+          renderAndAssertEmptyMetricComponent(<AvgLeadTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        });
+        test("Avg CycleTime", () => {
+          renderAndAssertEmptyMetricComponent(<AvgCycleTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        });
+        test("Coding", () => {
+          renderAndAssertEmptyMetricComponent(<AvgDuration displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        });
+
+        test("Delivery", () => {
+          renderAndAssertEmptyMetricComponent(<AvgLatency displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        });
+
+        test("Avg Effort", () => {
+          renderAndAssertEmptyMetricComponent(<AvgEffort displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        });
       });
 
-      test("Delivery", () => {
-        renderAndAssertEmptyMetricComponent(<AvgLatency displayType="cellrender" {...emptyPropsFixture} />, "N/A");
-      });
+      describe("statistic", () => {
+        test("Avg LeadTime", () => {
+          renderAndAssertEmptyMetricComponent(<AvgLeadTime displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Lead Time")).toBeInTheDocument();
+        });
+        test("Avg CycleTime", () => {
+          renderAndAssertEmptyMetricComponent(<AvgCycleTime displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Cycle Time")).toBeInTheDocument();
+        });
+        test("Coding", () => {
+          renderAndAssertEmptyMetricComponent(<AvgDuration displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Coding")).toBeInTheDocument();
+        });
 
-      test("Avg Effort", () => {
-        renderAndAssertEmptyMetricComponent(<AvgEffort displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+        test("Delivery", () => {
+          renderAndAssertEmptyMetricComponent(<AvgLatency displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Delivery")).toBeInTheDocument();
+        });
+
+        test("Avg Effort", () => {
+          renderAndAssertEmptyMetricComponent(<AvgEffort displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Effort")).toBeInTheDocument();
+        });
       });
     });
 

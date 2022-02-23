@@ -127,7 +127,7 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
 export function CustomStatistic({title, trendIndicator, value, suffix}) {
   return (
     <div>
-      <div className="statisticTitle">{title}</div>
+      <div className="statisticTitle" data-testid="metricTitle">{title}</div>
       <TrendMetric metricValue={value} uom={suffix} trendIndicator={trendIndicator} />
     </div>
   );
