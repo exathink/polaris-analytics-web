@@ -194,3 +194,8 @@ export const ResponseTimeMetricsColor = {
   duration: WorkItemStateTypeColor.wip,
   effort: '#de6524',
 }
+
+export const TrendColors = {
+  good: "rgba(0, 128, 0, 0.7)",
+  bad: "rgba(255, 0, 0, 0.7)",
+}
