@@ -44,8 +44,6 @@ const propsFixture = {
 
 describe("Metrics", () => {
   describe("Response Time Metrics", () => {
-    // check to see valid colors
-
     describe("when there is no data", () => {
       const emptyPropsFixture = {
         currentMeasurement: {},
@@ -214,20 +212,46 @@ describe("Metrics", () => {
     });
 
     describe("when there is data", () => {
-      test("Volume PC", () => {
-        renderAndAssertMetricComponent(
-          <Volume displayType="cellrender" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
-          5,
-          "specs"
-        );
+      describe("cellrender", () => {
+        test("Volume PC", () => {
+          renderAndAssertMetricComponent(
+            <Volume
+              displayType="cellrender"
+              {...propsFixture}
+              specsOnly={true}
+              normalized={true}
+              contributorCount={2}
+            />,
+            5,
+            "specs"
+          );
+        });
+
+        test("EffortOUT PC", () => {
+          renderAndAssertMetricComponent(
+            <EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />,
+            4.58,
+            "dev-days"
+          );
+        });
       });
 
-      test("EffortOUT PC", () => {
-        renderAndAssertMetricComponent(
-          <EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />,
-          4.58,
-          "dev-days"
-        );
+      describe("card", () => {
+        test("Volume PC", () => {
+          renderAndAssertMetricComponent(
+            <Volume displayType="card" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
+            5,
+            "specs"
+          );
+        });
+
+        test("EffortOUT PC", () => {
+          renderAndAssertMetricComponent(
+            <EffortOUT displayType="card" {...propsFixture} contributorCount={2} normalized={true} />,
+            4.58,
+            "dev-days"
+          );
+        });
       });
     });
   });
