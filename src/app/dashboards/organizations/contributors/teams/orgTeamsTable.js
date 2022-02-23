@@ -195,7 +195,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "latestCommit",
       key: "latestCommit",
       width: "7%",
-      render: (name, record) => <span className="textXs">{fromNow(record.latestCommit)}</span>,
+      render: (name, record) => <span className="textSm">{fromNow(record.latestCommit)}</span>,
     },
     {
       title: "",
