@@ -10,13 +10,6 @@ export function renderAndAssertMetricComponent(Component, metricVal, uom) {
   expect(getByTextUOM(uom)).toBeInTheDocument();
 }
 
-export function renderAndAssertEmptyMetricComponent(Component, metricVal) {
-  render(Component);
-  const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
-
-  expect(getByTextValue(metricVal)).toBeInTheDocument();
-}
-
 const cycleMetricsTrends = [
   {
     measurementWindow: 30,
@@ -63,49 +56,49 @@ describe("Metrics", () => {
 
       describe("cellrender", () => {
         test("Avg LeadTime", () => {
-          renderAndAssertEmptyMetricComponent(<AvgLeadTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...emptyPropsFixture} />, "N/A", "");
         });
         test("Avg CycleTime", () => {
-          renderAndAssertEmptyMetricComponent(<AvgCycleTime displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...emptyPropsFixture} />, "N/A", "");
         });
         test("Coding", () => {
-          renderAndAssertEmptyMetricComponent(<AvgDuration displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...emptyPropsFixture} />, "N/A", "");
         });
 
         test("Delivery", () => {
-          renderAndAssertEmptyMetricComponent(<AvgLatency displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...emptyPropsFixture} />, "N/A", "");
         });
 
         test("Avg Effort", () => {
-          renderAndAssertEmptyMetricComponent(<AvgEffort displayType="cellrender" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...emptyPropsFixture} />, "N/A", "");
         });
       });
 
       describe("statistic", () => {
         test("Avg LeadTime", () => {
-          renderAndAssertEmptyMetricComponent(<AvgLeadTime displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
           expect(getByTextTitle("Lead Time")).toBeInTheDocument();
         });
         test("Avg CycleTime", () => {
-          renderAndAssertEmptyMetricComponent(<AvgCycleTime displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
           expect(getByTextTitle("Cycle Time")).toBeInTheDocument();
         });
         test("Coding", () => {
-          renderAndAssertEmptyMetricComponent(<AvgDuration displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgDuration displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
           expect(getByTextTitle("Coding")).toBeInTheDocument();
         });
 
         test("Delivery", () => {
-          renderAndAssertEmptyMetricComponent(<AvgLatency displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgLatency displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
           expect(getByTextTitle("Delivery")).toBeInTheDocument();
         });
 
         test("Avg Effort", () => {
-          renderAndAssertEmptyMetricComponent(<AvgEffort displayType="statistic" {...emptyPropsFixture} />, "N/A");
+          renderAndAssertMetricComponent(<AvgEffort displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
           expect(getByTextTitle("Effort")).toBeInTheDocument();
         });
@@ -113,24 +106,48 @@ describe("Metrics", () => {
     });
 
     describe("when there is data", () => {
-      test("Avg LeadTime", () => {
-        renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...propsFixture} />, 8.79, "days");
+      describe("cellrender", () => {
+        test("Avg LeadTime", () => {
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...propsFixture} />, 8.79, "days");
+        });
+
+        test("Avg CycleTime", () => {
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...propsFixture} />, 3.06, "days");
+        });
+
+        test("Coding", () => {
+          renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...propsFixture} />, 1.61, "days");
+        });
+
+        test("Delivery", () => {
+          renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...propsFixture} />, 0.91, "days");
+        });
+
+        test("Avg Effort", () => {
+          renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...propsFixture} />, 0.92, "dev-days");
+        });
       });
 
-      test("Avg CycleTime", () => {
-        renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...propsFixture} />, 3.06, "days");
-      });
+      describe("card", () => {
+        test("Avg LeadTime", () => {
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="card" {...propsFixture} />, 8.79, "days");
+        });
 
-      test("Coding", () => {
-        renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...propsFixture} />, 1.61, "days");
-      });
+        test("Avg CycleTime", () => {
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="card" {...propsFixture} />, 3.06, "days");
+        });
 
-      test("Delivery", () => {
-        renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...propsFixture} />, 0.91, "days");
-      });
+        test("Coding", () => {
+          renderAndAssertMetricComponent(<AvgDuration displayType="card" {...propsFixture} />, 1.61, "days");
+        });
 
-      test("Avg Effort", () => {
-        renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...propsFixture} />, 0.92, "dev-days");
+        test("Delivery", () => {
+          renderAndAssertMetricComponent(<AvgLatency displayType="card" {...propsFixture} />, 0.91, "days");
+        });
+
+        test("Avg Effort", () => {
+          renderAndAssertMetricComponent(<AvgEffort displayType="card" {...propsFixture} />, 0.92, "dev-days");
+        });
       });
     });
   });
@@ -142,7 +159,7 @@ describe("Metrics", () => {
         previousMeasurement: {},
       };
       test("Volume PC", () => {
-        renderAndAssertEmptyMetricComponent(
+        renderAndAssertMetricComponent(
           <Volume
             displayType="cellrender"
             {...emptyPropsFixture}
@@ -150,14 +167,16 @@ describe("Metrics", () => {
             normalized={true}
             contributorCount={2}
           />,
-          "N/A"
+          "N/A",
+          ""
         );
       });
 
       test("EffortOUT PC", () => {
-        renderAndAssertEmptyMetricComponent(
+        renderAndAssertMetricComponent(
           <EffortOUT displayType="cellrender" {...emptyPropsFixture} contributorCount={2} normalized={true} />,
-          "N/A"
+          "N/A",
+          ""
         );
       });
     });

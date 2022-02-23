@@ -107,7 +107,7 @@ export function TrendWithTooltip({
 
 export function getMetricUtils({target, value, uom, good, valueRender, precision}) {
   let color = "";
-  if(target != null && value != null && good){
+  if (target != null && value != null && good) {
     color = !good(value - target) ? TrendColors.bad : TrendColors.good;
   }
 
@@ -119,15 +119,25 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
       : renderedValue
     : "N/A";
   return {
-    metricValue: <span style={{color: color}}>{metricValue}</span>,
-    suffix: <span style={{color: color}}>{suffix}</span>,
+    metricValue: (
+      <span style={{color: color}} data-testid="metricValue">
+        {metricValue}
+      </span>
+    ),
+    suffix: (
+      <span style={{color: color}} data-testid="uom">
+        {suffix}
+      </span>
+    ),
   };
 }
 
 export function CustomStatistic({title, trendIndicator, value, suffix}) {
   return (
     <div>
-      <div className="statisticTitle" data-testid="metricTitle">{title}</div>
+      <div className="statisticTitle" data-testid="metricTitle">
+        {title}
+      </div>
       <TrendMetric metricValue={value} uom={suffix} trendIndicator={trendIndicator} />
     </div>
   );
@@ -137,7 +147,7 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
   return (
     <div className="trendMetricWrapper">
       <div className="trendMetricInnerWrapper">
-        <div className="textSm" data-testid="metricValue">{metricValue}</div> <div className="textXs" data-testid="uom">{uom}</div>
+        <div className="textSm">{metricValue}</div> <div className="textXs">{uom}</div>
       </div>{" "}
       {trendIndicator}
     </div>
