@@ -8,8 +8,8 @@ import {TeamLink} from "../../../shared/navigation/teamLink";
 import {fromNow, getNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
-import {renderMetric, renderTrendMetric} from "../../../shared/helpers/renderers";
-import {TrendIndicator} from "../../../../components/misc/statistic/statistic";
+import {renderMetric} from "../../../shared/helpers/renderers";
+import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useOrgTeamsTableColumns(samplingFrequency) {
+export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -63,7 +63,13 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           key: "cycleTime",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
-          render: renderTrendMetric({metric: "avgCycleTime", good: TrendIndicator.isNegative, samplingFrequency})
+          render: (text, record) => {
+            return <AvgCycleTime
+              displayType="cellrender"
+              currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+              previousMeasurement={record.cycleMetricsTrends?.[1]}
+            />;
+          },
         },
         {
           title: (
@@ -75,7 +81,16 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
-          render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", samplingFrequency})
+          // render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", samplingFrequency})
+          render: (text, record) => {
+            return (
+              <AvgEffort
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
+          },
         },
         {
           title: (
@@ -87,7 +102,15 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           key: "implementation",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
-          render: renderTrendMetric({metric: "avgDuration", good: TrendIndicator.isNegative, samplingFrequency})
+          render: (text, record) => {
+            return (
+              <AvgDuration
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
+          },
         },
         {
           title: (
@@ -99,7 +122,15 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           key: "delivery",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
-          render: renderTrendMetric({metric: "avgLatency", good: TrendIndicator.isNegative, samplingFrequency})
+          render: (text, record) => {
+            return (
+              <AvgLatency
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+              />
+            );
+          },
         },
       ],
     },
@@ -114,14 +145,25 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
         {
           title: (
             <span>
-              Volume<sup>pc</sup>
+              {specsOnly ? "Specs" : "Cards"}<sup>pc</sup>
             </span>
           ),
           dataIndex: "volume",
           key: "volume",
           width: "6%",
           sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
-          render: renderTrendMetric({metric: "volume", good: TrendIndicator.isPositive, uom: "specs", samplingFrequency})
+          render: (text, record) => {
+            return (
+              <Volume
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+                specsOnly={specsOnly}
+                normalized={true}
+                contributorCount={record.contributorCount}
+              />
+            );
+          },
         },
         {
           title: (
@@ -133,7 +175,17 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
           key: "effortOut",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
-          render: renderTrendMetric({metric: "effortOut", good: TrendIndicator.isPositive, uom: "dev-days", samplingFrequency})
+          render: (text, record) => {
+            return (
+              <EffortOUT
+                displayType="cellrender"
+                currentMeasurement={{...record.cycleMetricsTrends?.[0], samplingFrequency}}
+                previousMeasurement={record.cycleMetricsTrends?.[1]}
+                normalized={true}
+                contributorCount={record.contributorCount}
+              />
+            );
+          },
         },
       ],
     },
@@ -143,7 +195,7 @@ export function useOrgTeamsTableColumns(samplingFrequency) {
       dataIndex: "latestCommit",
       key: "latestCommit",
       width: "7%",
-      render: (name, record) => <span className="textXs">{fromNow(record.latestCommit)}</span>,
+      render: (name, record) => <span className="textSm">{fromNow(record.latestCommit)}</span>,
     },
     {
       title: "",
@@ -207,9 +259,9 @@ function getTransformedData(tableData, intl) {
 }
 
 
-export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl}) => {
+export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl, specsOnly}) => {
   const transformedData = getTransformedData(tableData, intl)
-  const columns = useOrgTeamsTableColumns(samplingFrequency);
+  const columns = useOrgTeamsTableColumns(samplingFrequency, specsOnly);
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,

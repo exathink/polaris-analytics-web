@@ -1,94 +1,107 @@
 .ant-statistic-title {
-    /* text-sm */
-    font-size: 0.875vw !important;
-    line-height: 1.25vw !important;
-    /* font-normal */
-    font-weight: 400 !important;
+  /* text-sm */
+  font-size: 0.875vw !important;
+  line-height: 1.25vw !important;
+  /* font-normal */
+  font-weight: 400 !important;
 }
 
 .ant-statistic-content {
-    /* text-base */
-    font-size: 1vw !important;
-    line-height: 1.5vw !important;
+  /* text-base */
+  font-size: 1vw !important;
+  line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value {
-    /* text-base */
-    font-size: 1vw !important;
-    line-height: 1.5vw !important;
+  /* text-base */
+  font-size: 1vw !important;
+  line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value-int {
-    /* text-base */
-    font-size: 1vw !important;
-    line-height: 1.5vw !important;
+  /* text-base */
+  font-size: 1vw !important;
+  line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-value-decimal {
-    /* text-base */
-    font-size: 1vw !important;
-    line-height: 1.5vw !important;
+  /* text-base */
+  font-size: 1vw !important;
+  line-height: 1.5vw !important;
 }
 
 .ant-statistic-content-suffix {
-    /* text-xs */
-    font-size: 0.75vw !important;;
-    line-height: 1vw !important;;
+  /* text-xs */
+  font-size: 0.75vw !important;
+  line-height: 1vw !important;
 }
 
 .ant-statistic-content-prefix {
-    /* text-xs */
-    font-size: 0.75vw !important;;
-    line-height: 1vw !important;;
+  /* text-xs */
+  font-size: 0.75vw !important;
+  line-height: 1vw !important;
 }
 
 .viz-item .ant-statistic {
-    padding: 0px;
+  padding: 0px;
 }
 
 .goodIndicator {
-
-    font-weight: 500;
-    color: rgba(0, 128, 0, 0.7);
-    border-radius: 1.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  font-weight: 500;
+  color: rgba(0, 128, 0, 0.7);
+  border-radius: 1.5rem;
 }
 
 .goodIndicatorArrow {
-    color: rgba(0, 128, 0, 0.7);
+  color: rgba(0, 128, 0, 0.7);
 }
 
 .neutralIndicator {
-
-    font-weight: 500;
-
-    border-radius: 1.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  font-weight: 500;
+  border-radius: 1.5rem;
 }
 
 .neutralIndicatorArrow {
-
 }
 
 .badIndicator {
-
-    font-weight: 500;
-    color: rgba(255, 0, 0, 0.7);
-    border-radius: 1.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  font-weight: 500;
+  color: rgba(255, 0, 0, 0.7);
+  border-radius: 1.5rem;
 }
 
 .badIndicatorArrow {
-    color: rgba(255, 0, 0, 0.7);
+  color: rgba(255, 0, 0, 0.7);
 }
 
 .comparisonWindow {
-    font-size: 1vh
+  font-size: 1vh;
 }
 
-.trendCursor {
-    cursor: pointer;
+.trendIcon {
+  cursor: pointer;
+}
+
+.trendIndicatorPadding {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.statisticTitle {
+  font-size: 0.875vw !important;
+  line-height: 1.25vw !important;
+  font-weight: 400 !important;
+  margin-bottom: 4px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.trendMetricWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trendMetricInnerWrapper {
+  display: flex;
+  flex-direction: column;
 }

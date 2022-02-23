@@ -1,4 +1,4 @@
-import {TrendWithTooltip} from "../../../components/misc/statistic/statistic";
+import {TrendMetric, TrendWithTooltip} from "../../../components/misc/statistic/statistic";
 
 export function renderTrendMetric({metric, good, uom="days", samplingFrequency}) {
   return (text, record) => {
@@ -12,11 +12,7 @@ export function renderTrendMetric({metric, good, uom="days", samplingFrequency})
     return text === "N/A" ? (
       <span className="textXs">N/A</span>
     ) : (
-      <div style={{display: "flex", alignItems: "center"}}>
-        <div className="textXs" style={{display: "flex", flexDirection: "column"}}>
-         <div className="textSm">{text}</div> <div>{uom}</div>
-        </div> <TrendWithTooltip {...props} />
-      </div>
+      <TrendMetric metricValue={text} uom={uom} trendIndicator={<TrendWithTooltip {...props}/>} />
     );
   };
 }

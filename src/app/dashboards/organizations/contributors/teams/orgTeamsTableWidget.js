@@ -22,5 +22,5 @@ export function OrgTeamsTableWidget({organizationKey, days, measurementWindow, s
     return null;
   }
 
-  return <OrgTeamsTableView days={days} measurementWindow={measurementWindow} samplingFrequency={samplingFrequency} data={data} organizationKey={organizationKey}/>;
+  return <OrgTeamsTableView days={days} measurementWindow={measurementWindow} samplingFrequency={samplingFrequency} data={data} organizationKey={organizationKey} specsOnly={specsOnly}/>;
 }

@@ -83,7 +83,7 @@ export const CadenceDetailView = (
 
       <div className={styles.effortOut}>
         <Cadence
-          asCard={true}
+          displayType="card"
           currentMeasurement={current}
           previousMeasurement={previous}
         />
@@ -91,7 +91,7 @@ export const CadenceDetailView = (
       <div className={styles.volume}>
 
         <LatestClosed
-          asCard={true}
+          displayType="card"
           currentMeasurement={current}
         />
       </div>
@@ -343,52 +343,62 @@ export const ResponseTimeDetailView = (
     <div className={styles.responseTimeDetailWrapper}>
       <div className={styles.leadTime}>
         <AvgLeadTime
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.LEAD_TIME,
+            onClick: () => setSelectedMetric(metricsMapping.LEAD_TIME),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
-          target={cycleTimeTarget}
-          showHighlighted={selectedMetric === metricsMapping.LEAD_TIME}
-          onClick={() => setSelectedMetric(metricsMapping.LEAD_TIME)}
+          target={leadTimeTarget}
         />
       </div>
       <div className={styles.cycleTime}>
         <AvgCycleTime
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.CYCLE_TIME,
+            onClick: () => setSelectedMetric(metricsMapping.CYCLE_TIME),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric === metricsMapping.CYCLE_TIME}
-          onClick={() => setSelectedMetric(metricsMapping.CYCLE_TIME)}
         />
       </div>
       <div className={styles.implement}>
         <AvgDuration
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.DURATION,
+            onClick: () => setSelectedMetric(metricsMapping.DURATION),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric === metricsMapping.DURATION}
-          onClick={() => setSelectedMetric(metricsMapping.DURATION)}
         />
       </div>
       <div className={styles.effort}>
         <AvgEffort
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.EFFORT,
+            onClick: () => setSelectedMetric(metricsMapping.EFFORT),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric === metricsMapping.EFFORT}
-          onClick={() => setSelectedMetric(metricsMapping.EFFORT)}
         />
       </div>
       <div className={styles.deliver}>
         <AvgLatency
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.LATENCY,
+            onClick: () => setSelectedMetric(metricsMapping.LATENCY),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           target={cycleTimeTarget}
-          showHighlighted={selectedMetric === metricsMapping.LATENCY}
-          onClick={() => setSelectedMetric(metricsMapping.LATENCY)}
         />
       </div>
     </div>
@@ -418,22 +428,26 @@ export const ThroughputDetailView = ({
     <div className={styles.throughputDetailWrapper}>
       <div className={styles.volume}>
         <Volume
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metric,
+            onClick: () => setSelectedMetric(metric),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
-          showHighlighted={selectedMetric===metric}
-          onClick={() => setSelectedMetric(metric)}
         />
       </div>
       <div className={styles.effortOut}>
         <EffortOUT
-          asCard={true}
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === "totalEffort",
+            onClick: () => setSelectedMetric("totalEffort"),
+          }}
           currentMeasurement={current}
           previousMeasurement={previous}
           specsOnly={specsOnly}
-          showHighlighted={selectedMetric==="totalEffort"}
-          onClick={() => setSelectedMetric("totalEffort")}
         />
       </div>
     </div>

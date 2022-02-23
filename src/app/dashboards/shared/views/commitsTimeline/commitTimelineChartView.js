@@ -11,6 +11,7 @@ import {Untracked} from "../../config";
 import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import { ComponentCarousel } from "../../components/componentCarousel/componentCarousel";
+import {Traceability } from "../../components/flowStatistics/flowStatistics";
 
 const commitTimelineGroupings = {
   repository: "Repository",
@@ -130,7 +131,7 @@ export class CommitTimelineViewModel {
   }
 }
 
-function Traceability(props: {model: CommitTimelineViewModel}) {
+function _Traceability(props: {model: CommitTimelineViewModel}) {
   return (
     <Statistic
       title="Traceability"
@@ -270,7 +271,7 @@ class _CommitsTimelineChartView extends React.Component {
         >
           <ComponentCarousel tickInterval={3000}>
             <HumanizedDateView title={"Latest Commit"} dateValue={latestCommit} asStatistic={true} />
-            <Traceability model={model} />
+            <Traceability current={model} previous={model} />
           </ComponentCarousel>
         </div>
         <div style={{height: "82%"}}>
