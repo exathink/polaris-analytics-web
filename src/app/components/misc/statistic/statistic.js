@@ -147,7 +147,7 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
   return (
     <div className="trendMetricWrapper">
       <div className="trendMetricInnerWrapper">
-        <div className="textSm">{metricValue}</div> <div className="textXs">{uom}</div>
+        <div className="textMed">{metricValue}</div> <div className="textSm">{uom}</div>
       </div>{" "}
       {trendIndicator}
     </div>
