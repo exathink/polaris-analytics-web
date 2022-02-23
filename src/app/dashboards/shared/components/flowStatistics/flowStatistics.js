@@ -475,7 +475,7 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 export const ContributorCount = ({title, contributorCount}) => (
   <Statistic
     title={title || 'Contributors'}
-    formatter={value => <span className="textSm">{value}</span>}
+    formatter={value => <span className="textMed">{value}</span>}
     value={contributorCount}
     precision={0}
     valueStyle={{color: TrendColors.good}}
