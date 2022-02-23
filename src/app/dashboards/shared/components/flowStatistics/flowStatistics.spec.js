@@ -44,9 +44,7 @@ const propsFixture = {
 
 describe("Metrics", () => {
   describe("Response Time Metrics", () => {
-    // handle empty / no data edge cases first
-
-    // handle all displayType (statistic, cellrender, card)
+    // check to see valid colors
 
     describe("when there is no data", () => {
       const emptyPropsFixture = {
@@ -158,26 +156,60 @@ describe("Metrics", () => {
         currentMeasurement: {},
         previousMeasurement: {},
       };
-      test("Volume PC", () => {
-        renderAndAssertMetricComponent(
-          <Volume
-            displayType="cellrender"
-            {...emptyPropsFixture}
-            specsOnly={true}
-            normalized={true}
-            contributorCount={2}
-          />,
-          "N/A",
-          ""
-        );
+
+      describe("cellrender", () => {
+        test("Volume PC", () => {
+          renderAndAssertMetricComponent(
+            <Volume
+              displayType="cellrender"
+              {...emptyPropsFixture}
+              specsOnly={true}
+              normalized={true}
+              contributorCount={2}
+            />,
+            "N/A",
+            ""
+          );
+        });
+
+        test("EffortOUT PC", () => {
+          renderAndAssertMetricComponent(
+            <EffortOUT displayType="cellrender" {...emptyPropsFixture} contributorCount={2} normalized={true} />,
+            "N/A",
+            ""
+          );
+        });
       });
 
-      test("EffortOUT PC", () => {
-        renderAndAssertMetricComponent(
-          <EffortOUT displayType="cellrender" {...emptyPropsFixture} contributorCount={2} normalized={true} />,
-          "N/A",
-          ""
-        );
+      describe("statistic", () => {
+        test("Volume PC", () => {
+          renderAndAssertMetricComponent(
+            <Volume
+              displayType="statistic"
+              {...emptyPropsFixture}
+              specsOnly={true}
+              normalized={true}
+              contributorCount={2}
+            />,
+            "N/A",
+            ""
+          );
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Volume")).toBeInTheDocument();
+          expect(getByTextTitle("pc")).toBeInTheDocument();
+        });
+
+        test("EffortOUT PC", () => {
+          renderAndAssertMetricComponent(
+            <EffortOUT displayType="statistic" {...emptyPropsFixture} contributorCount={2} normalized={true} />,
+            "N/A",
+            ""
+          );
+          const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
+          expect(getByTextTitle("Effort")).toBeInTheDocument();
+          expect(getByTextTitle("OUT")).toBeInTheDocument();
+          expect(getByTextTitle("pc")).toBeInTheDocument();
+        });
       });
     });
 
