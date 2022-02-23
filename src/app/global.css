@@ -182,7 +182,21 @@ html[dir='rtl'] .hidden {
   font-size: 0.875rem/* 14px */;
   line-height: 1.25rem/* 20px */;
   color: rgb(107 114 128 / 1);
-  font-weight: 500;
+  font-weight: 400;
+}
+
+.textNormal {
+  font-size: 1.2rem/* 14px */;
+  line-height: 1.3rem/* 20px */;
+  color: rgb(107 114 128 / 1);
+  font-weight: 400;
+}
+
+.textMed {
+  font-size: 1.3rem/* 14px */;
+  line-height: 1.3rem/* 20px */;
+  color: rgb(107 114 128 / 1);
+  font-weight: 400;
 }
 
 .text2Xl {
