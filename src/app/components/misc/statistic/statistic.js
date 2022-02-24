@@ -148,7 +148,8 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
   return (
     <div className="trendMetricWrapper">
       <div className="trendMetricInnerWrapper">
-        <div className="textMed">{metricValue}</div> <div className="textSm">{uom}</div>
+        <div className={metricValue?.props?.children === "N/A" ? "textSm" : "textXl"}>{metricValue}</div>
+        <div className="textSm">{uom}</div>
       </div>{" "}
       {trendIndicator}
     </div>
@@ -156,5 +157,5 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
 }
 
 export function renderMetric(text) {
-  return text === "N/A" ? <span className="textSm">N/A</span> : <span className="textMed">{text}</span>;
+  return text === "N/A" ? <span className="textSm">N/A</span> : <span className="textXl">{text}</span>;
 }
