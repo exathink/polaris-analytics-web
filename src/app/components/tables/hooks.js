@@ -89,7 +89,6 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
 }
 
 export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
-  const [dataIndex1, dataIndex2, dataIndex3] = dataIndexes;
   const [searchText, setSearchText] = useState(null);
   const searchInputElement = React.useRef();
 
@@ -102,6 +101,15 @@ export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
     clearFilters();
     setSearchText("");
   };
+
+  const getDescendantValues = (record, dataIndex) => {
+    const values = [];
+    (function recurse(record) {
+      values.push((record[dataIndex] ?? "").toString().toLowerCase());
+      record.children && record.children.forEach(recurse);
+    })(record);
+    return values;
+  }; 
 
   const searchProps = {
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => {
@@ -129,14 +137,12 @@ export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
     },
 
     onFilter: (value, record) => {
-      const recordName1 = record[dataIndex1] || "";
-      const recordName2 = record[dataIndex2] || "";
-      const recordName3 = record[dataIndex3] || "";
       const searchLower = value.toLowerCase();
       return (
-        recordName1.toString().toLowerCase().includes(searchLower) ||
-        recordName2.toString().toLowerCase().includes(searchLower) ||
-        recordName3.toString().toLowerCase().includes(searchLower)
+        dataIndexes.some((dataIndex) => (record[dataIndex] ?? "").toString().toLowerCase().includes(searchLower)) ||
+        dataIndexes.some((dataIndex) =>
+          getDescendantValues(record, dataIndex).some((descValue) => descValue.includes(searchLower))
+        )
       );
     },
 
