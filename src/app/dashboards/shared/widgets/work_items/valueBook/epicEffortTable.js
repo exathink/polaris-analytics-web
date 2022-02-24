@@ -182,7 +182,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
       if (record.key === UncategorizedKey) {
         return null;
       } else {
-        return text;
+        return <span className="textXs">{text}</span>;;
       }
     }
     return text && (
@@ -192,6 +192,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
           setWorkItemKey(record.key);
         }}
         style={{cursor: "pointer"}}
+        className="textXs"
       >
         {text}
       </span>
@@ -211,18 +212,21 @@ function customColTitleRender({setShowPanel, setWorkItemKey}) {
 function unCatColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
-      return text;
+      return <span className="textXs">{text}</span>;
     }
-    return text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-      >
-        {text}
-      </span>
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }}
+          style={{cursor: "pointer"}}
+          className="textXs"
+        >
+          {text}
+        </span>
+      )
     );
   };
 }
