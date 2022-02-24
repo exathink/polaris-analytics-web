@@ -6,12 +6,14 @@ import { WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
 
 // import issueType icons
+import epic from "../../../../../image/issueType/epic.svg"
 import story from "../../../../../image/issueType/story.svg"
 import bug from "../../../../../image/issueType/bug.svg"
 import task from "../../../../../image/issueType/task.svg"
 import subtask from "../../../../../image/issueType/subtask.svg"
 
 const issueTypeImagePaths = {
+  epic: epic,
   story: story,
   task: task,
   subtask: subtask,
@@ -19,6 +21,7 @@ const issueTypeImagePaths = {
 }
 
 const workItemTypeImageMap = {
+  epic: <img src={issueTypeImagePaths.epic} alt="#" style={{width: "16px", height: "16px"}} />,
   story: <img src={issueTypeImagePaths.story} alt="#" style={{width: "16px", height: "16px"}} />,
   task: <img src={issueTypeImagePaths.task} alt="#" style={{width: "16px", height: "16px"}} />,
   subtask: <img src={issueTypeImagePaths.subtask} alt="#" style={{width: "16px", height: "16px"}} />,
@@ -77,6 +80,38 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacemen
         </div>
       </div>
     );
+}
+
+export function comboColumnEpicTitleRender(text, record, searchText) {
+  return (
+    text && (
+      <div className={styles.comboCardCol}>
+        <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
+        <div className={styles.title}>
+          {text && (
+            <Tag color="#108ee9">
+              {searchText ? (
+                <Highlighter
+                  highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+                  searchWords={searchText || ""}
+                  textToHighlight={text || ""}
+                />
+              ) : (
+                truncateString(text, 25, "#108ee9")
+              )}
+            </Tag>
+          )}
+        </div>
+        <div className={styles.displayId}>
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={record.displayId}
+          />
+        </div>
+      </div>
+    )
+  );
 }
 
 export function ComboCardTitleColumn({record}) {

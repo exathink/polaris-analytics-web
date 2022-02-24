@@ -1,17 +1,15 @@
 import {InputNumber} from "antd";
-import {Highlighter} from "../../../../../components/misc/highlighter";
-import {useSearch, useSearchMultiCol} from "../../../../../components/tables/hooks";
+import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
 import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
 import {StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {comboColumnTitleRender} from "../../../../projects/shared/helper/renderers";
+import {comboColumnEpicTitleRender, comboColumnTitleRender} from "../../../../projects/shared/helper/renderers";
 
 export const UncategorizedKey = "Uncategorized";
 export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems, callBacks) {
-  const nameSearchState = useSearch("name", {customRender});
   const renderState = {render: customColRender(callBacks)};
   const titleSearchState = useSearchMultiCol(["title", "displayId", "epicName"], {customRender: customColTitleRender(callBacks)});
   const unCatRenderState = {render: unCatColRender(callBacks)};
@@ -28,18 +26,10 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "10%",
-      sorter: (a, b) => SORTER.string_compare(a, b, "name"),
-      ...nameSearchState,
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      width: "27%",
+      width: "30%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
       ...titleSearchState
     },
@@ -47,7 +37,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       title: "Cards",
       dataIndex: "cards",
       key: "cards",
-      width: "5%",
+      width: "7%",
       sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
       ...unCatRenderState
     },
@@ -185,19 +175,6 @@ export const SORTER = {
   },
 };
 
-function customRender(text, record, searchText) {
-  if (record.type === "epic") {
-    return text && (
-      <Highlighter
-        highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-        searchWords={searchText || ""}
-        textToHighlight={text.toString()}
-      />
-    );
-  }
-
-  return null;
-}
 
 function customColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
@@ -225,11 +202,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
 function customColTitleRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
-      if (record.key === UncategorizedKey) {
-        return null;
-      } else {
-        return text;
-      }
+      return comboColumnEpicTitleRender(text, record, searchText);
     }
     return text && comboColumnTitleRender(setShowPanel, setWorkItemKey)(text, record, searchText)
   };
