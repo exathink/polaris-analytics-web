@@ -1,4 +1,4 @@
-import {Table, InputNumber} from "antd";
+import {InputNumber} from "antd";
 import WorkItems from "../../../../work_items/context";
 import {Link} from "react-router-dom";
 import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
@@ -8,6 +8,7 @@ import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility
 import {formatAsDate} from "../../../../../i18n/utils";
 import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
+import {StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 
 export const UncategorizedKey = "Uncategorized";
 export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
@@ -342,17 +343,13 @@ export const EpicEffortTable = injectIntl(({tableData, columns, loading, intl, r
   const dataSource = getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl);
 
   return (
-    <Table
+    <StripeTable
       rowClassName={rowClassName}
-      loading={loading}
-      size="small"
-      pagination={false}
       columns={columns}
       dataSource={dataSource}
-      scroll={{y: "40vh"}}
-      showSorterTooltip={false}
+      loading={loading}
+      height={TABLE_HEIGHTS.FORTY_FIVE}
       data-testid="implementation-cost-table"
-      bordered={true}
     />
   );
 });
