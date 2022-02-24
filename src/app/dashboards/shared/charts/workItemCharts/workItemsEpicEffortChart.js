@@ -247,6 +247,7 @@ export const WorkItemsEpicEffortChart = Chart({
       plotOptions: {
         series: {
           animation: false,
+          cursor: 'pointer',
           events: {
             click: function (event) {
               if (showHierarchy) {
