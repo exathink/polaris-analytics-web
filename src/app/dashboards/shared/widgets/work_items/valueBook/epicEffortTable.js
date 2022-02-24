@@ -1,20 +1,19 @@
 import {InputNumber} from "antd";
-import WorkItems from "../../../../work_items/context";
-import {Link} from "react-router-dom";
-import {url_for_instance} from "../../../../../framework/navigation/context/helpers";
 import {Highlighter} from "../../../../../components/misc/highlighter";
-import {useSearch} from "../../../../../components/tables/hooks";
+import {useSearch, useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
 import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
 import {StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {comboColumnTitleRender} from "../../../../projects/shared/helper/renderers";
 
 export const UncategorizedKey = "Uncategorized";
 export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems, callBacks) {
   const nameSearchState = useSearch("name", {customRender});
   const renderState = {render: customColRender(callBacks)};
+  const titleSearchState = useSearchMultiCol(["title", "displayId", "epicName"], {customRender: customColTitleRender(callBacks)});
   const unCatRenderState = {render: unCatColRender(callBacks)};
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
@@ -32,7 +31,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "12%",
+      width: "10%",
       sorter: (a, b) => SORTER.string_compare(a, b, "name"),
       ...nameSearchState,
     },
@@ -40,18 +39,9 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       title: "Title",
       dataIndex: "title",
       key: "title",
-      width: "20%",
+      width: "27%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
-      filters: epicWorkItems.map((b) => ({text: b.name, value: b.name})),
-      onFilter: (value, record) => record.title.indexOf(value) === 0,
-      ...renderState
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      width: "5%",
-      ...unCatRenderState
+      ...titleSearchState
     },
     {
       title: "Cards",
@@ -206,17 +196,7 @@ function customRender(text, record, searchText) {
     );
   }
 
-  return (
-    text && (
-      <Link to={`${url_for_instance(WorkItems, record.name, record.key)}`}>
-        <Highlighter
-          highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-          searchWords={searchText || ""}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    )
-  );
+  return null;
 }
 
 function customColRender({setShowPanel, setWorkItemKey}) {
@@ -239,6 +219,19 @@ function customColRender({setShowPanel, setWorkItemKey}) {
         {text}
       </span>
     );
+  };
+}
+
+function customColTitleRender({setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) => {
+    if (record.type === "epic") {
+      if (record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return text;
+      }
+    }
+    return text && comboColumnTitleRender(setShowPanel, setWorkItemKey)(text, record, searchText)
   };
 }
 
@@ -294,6 +287,7 @@ function getTransformedData(epicWorkItemsMap, nonEpicWorkItems, intl) {
 
   const transformWorkItem = (x) => {
     return {
+      ...x,
       key: x.key,
       name: x.displayId,
       title: x.name,
