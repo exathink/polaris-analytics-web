@@ -110,11 +110,11 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           ...renderState
         },
         {
-          title: "Elapsed (Days)",
+          title: "Elapsed",
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
-          ...renderState
+          render: customColRenderWithDays(callBacks)
         },
       ],
     },
@@ -196,6 +196,32 @@ function customColRender({setShowPanel, setWorkItemKey}) {
       >
         {text}
       </span>
+    );
+  };
+}
+
+function customColRenderWithDays({setShowPanel, setWorkItemKey}) {
+  return (text, record, searchText) => {
+    if (record.type === "epic") {
+      if (record.key === UncategorizedKey) {
+        return null;
+      } else {
+        return <span className="textXs">{text} days</span>;
+      }
+    }
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }}
+          style={{cursor: "pointer"}}
+          className="textXs"
+        >
+          {text} days
+        </span>
+      )
     );
   };
 }
