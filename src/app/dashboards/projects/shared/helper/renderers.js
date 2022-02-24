@@ -73,7 +73,7 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacemen
                   textToHighlight={record.epicName || ""}
                 />
               ) : (
-                truncateString(record.epicName, 25, "#108ee9")
+                truncateString(record.epicName, 35, "#108ee9")
               )}
             </Tag>
           )}
@@ -97,7 +97,7 @@ export function comboColumnEpicTitleRender(text, record, searchText) {
                   textToHighlight={text || ""}
                 />
               ) : (
-                truncateString(text, 25, "#108ee9")
+                truncateString(text, 35, "#108ee9")
               )}
             </Tag>
           )}
