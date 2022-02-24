@@ -9,8 +9,8 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
-import {renderMetric} from "../../../shared/helpers/renderers";
 import {AvgCycleTime, AvgLeadTime, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
+import { renderMetric } from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -115,7 +115,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       title: "Contributors",
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "7%",
+      width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
       render: renderMetric,
     },
@@ -127,10 +127,10 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       ),
       children: [
         {
-          title: "Lead Time",
+          title: <span>Lead Time <sup>Avg</sup></span>,
           dataIndex: "leadTime",
           key: "leadTime",
-          width: "5%",
+          width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
           render: (text, record) => {
             return (
@@ -143,10 +143,10 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           },
         },
         {
-          title: "Cycle Time",
+          title: <span>Cycle Time <sup>Avg</sup></span>,
           dataIndex: "cycleTime",
           key: "cycleTime",
-          width: "5%",
+          width: "6%",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
           render: (text, record) => {
             return (

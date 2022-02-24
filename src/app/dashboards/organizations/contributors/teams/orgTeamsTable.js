@@ -8,8 +8,8 @@ import {TeamLink} from "../../../shared/navigation/teamLink";
 import {fromNow, getNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
-import {renderMetric} from "../../../shared/helpers/renderers";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
+import { renderMetric } from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
