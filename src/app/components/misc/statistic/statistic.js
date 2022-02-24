@@ -1,9 +1,10 @@
 import "./statistic.css";
 import React from "react";
-import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
-import {Tooltip} from "antd";
-import {TOOLTIP_COLOR} from "../../../helpers/utility";
-import {TrendColors} from "../../../dashboards/shared/config";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
+import { TOOLTIP_COLOR } from "../../../helpers/utility";
+import { TrendColors } from "../../../dashboards/shared/config";
+
 export {Statistic} from "antd";
 
 function getDelta(firstValue, secondValue) {
@@ -152,4 +153,8 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
       {trendIndicator}
     </div>
   );
+}
+
+export function renderMetric(text) {
+  return text === "N/A" ? <span className="textSm">N/A</span> : <span className="textMed">{text}</span>;
 }
