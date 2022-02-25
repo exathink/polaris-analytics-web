@@ -3,10 +3,10 @@
   background-color: white;
   margin-top: 0.5rem;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 0.3fr;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
   grid-template-rows: 3% 5% 43% 49%;
   grid-template-areas:
-    "daysRangeSlider scopeSelector message ."
+    "daysRangeSlider scopeSelector message clearButton"
     ". . editRecordsTitle ."
     "epicEffortChart epicEffortChart epicEffortChart epicEffortChart"
     "tableContent tableContent tableContent tableContent";
@@ -61,4 +61,11 @@
 
 .cardInspectorPanel{
   visibility: hidden;
+}
+
+.clearButton {
+  grid-area: clearButton;
+  justify-self: center;
+  align-self: flex-start;
+  margin-top: 0.5rem;
 }

@@ -117,6 +117,11 @@ export function ValueBookDetailView({
     dispatch({type: actionTypes.RESET});
   }
 
+  function handleClearClick() {
+    dispatch({type: actionTypes.RESET});
+    setChartPoints([]);
+  }
+
   function getButtonsAndNotifications() {
     if (mutationLoading) {
       return (
@@ -195,6 +200,13 @@ export function ValueBookDetailView({
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
+      <div className={styles.clearButton}>
+        {chartPoints.length > 0 && (
+          <Button onClick={handleClearClick} type="default" size="small" shape="round">
+            Clear
+          </Button>
+        )}
+      </div>
       {!activeOnly && (
         <div className={styles.daysRangeSlider}>
           <DaysRangeSlider title={"Days"} initialDays={days} setDaysRange={setClosedWithinDays} range={ONE_YEAR} />
@@ -202,7 +214,11 @@ export function ValueBookDetailView({
       )}
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector display={["Effort", "Volume"]} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+          <WorkItemScopeSelector
+            display={["Effort", "Volume"]}
+            workItemScope={workItemScope}
+            setWorkItemScope={setWorkItemScope}
+          />
         </Flex>
       </div>
       <div className={styles.epicEffortChart}>
