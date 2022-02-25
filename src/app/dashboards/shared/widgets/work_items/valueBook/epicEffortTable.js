@@ -341,12 +341,17 @@ export const EpicEffortTable = injectIntl(({tableData, columns, loading, intl, r
 
   return (
     <StripeTable
+      key={dataSource[0]?.key}
       rowClassName={rowClassName}
       columns={columns}
       dataSource={dataSource}
       loading={loading}
       height={TABLE_HEIGHTS.FORTY_FIVE}
       data-testid="implementation-cost-table"
+      expandable={{
+        defaultExpandedRowKeys: dataSource.length === 1 ? [dataSource[0]?.key] : [],
+        rowExpandable: true,
+      }}
     />
   );
 });
