@@ -15,6 +15,7 @@ import {DaysRangeSlider, ONE_YEAR} from "../../../components/daysRangeSlider/day
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import cn from "classnames";
 
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -217,7 +218,7 @@ export function ValueBookDetailView({
           setChartPoints={setChartPoints}
         />
       </div>
-      <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
+      <div className={cn(styles.editRecordsTitle, "textXs")}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <EpicEffortTable
           columns={columns}
