@@ -341,7 +341,7 @@ export const EpicEffortTable = injectIntl(({tableData, columns, loading, intl, r
 
   return (
     <StripeTable
-      key={dataSource[0]?.key}
+      key={dataSource.length === 1 ? dataSource[0]?.key : "all"}
       rowClassName={rowClassName}
       columns={columns}
       dataSource={dataSource}

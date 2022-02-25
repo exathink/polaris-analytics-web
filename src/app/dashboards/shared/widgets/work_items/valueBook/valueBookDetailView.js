@@ -22,8 +22,6 @@ const UncategorizedEpic = {
   name: UncategorizedKey,
   key: UncategorizedKey,
   workItemType: "epic",
-  epicName: UncategorizedKey,
-  epicKey: UncategorizedKey,
 };
 export function ValueBookDetailView({
   instanceKey,
