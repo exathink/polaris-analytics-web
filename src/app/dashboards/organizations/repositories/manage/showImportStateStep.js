@@ -199,7 +199,7 @@ export class ShowImportStateStep extends React.Component {
                   <Column title={"Repository"} width="30%" dataIndex={"name"} key={"name"}/>
                   <Column title={"Import Status"} dataIndex={"importState"} key={"importState"}/>
                   <Column title={"Commits Imported"} dataIndex={"commitCount"} key={"commitCount"}/>
-                  <Column title={"Commits Analyzed"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
+                  <Column title={"Commits Analyzed: Latest 6 Months Only"} dataIndex={"commitsProcessed"} key={"commitsProcessed"}/>
                   <Column
                     title={""}
                     dataIndex={"percentComplete"}

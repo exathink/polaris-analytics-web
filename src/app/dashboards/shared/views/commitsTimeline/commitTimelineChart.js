@@ -303,7 +303,7 @@ export const CommitsTimelineChart = Chart({
           }
         ],
         legend: {
-          enabled: z_bucket_range.min !== z_bucket_range.max,
+          enabled: true,
           align: 'right'
         },
         time: {
