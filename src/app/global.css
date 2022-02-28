@@ -185,6 +185,10 @@ html[dir='rtl'] .hidden {
   font-weight: 400;
 }
 
+.fontSemibold {
+  font-weight: 500;
+}
+
 .textNormal {
   font-size: 1.2rem/* 14px */;
   line-height: 1.3rem/* 20px */;

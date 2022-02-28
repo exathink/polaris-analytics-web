@@ -251,7 +251,7 @@ function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
       } else {
         return (
           <div>
-            <div className="textSm">{text}</div>
+            <div className="textSm fontSemibold">{text}</div>
             <div className="textXs">{uom}</div>
           </div>
         );
@@ -266,7 +266,7 @@ function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
           }}
           style={{cursor: "pointer"}}
         >
-          <div className="textSm">{text}</div>
+          <div className="textSm fontSemibold">{text}</div>
           <div className="textXs">{uom}</div>
         </div>
       )
