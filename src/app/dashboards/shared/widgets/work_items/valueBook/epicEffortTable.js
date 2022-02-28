@@ -1,17 +1,56 @@
-import {InputNumber} from "antd";
+import {InputNumber, Tag} from "antd";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
-import {buildIndex, diff_in_dates, fromNow} from "../../../../../helpers/utility";
+import {buildIndex, diff_in_dates, fromNow, truncateString} from "../../../../../helpers/utility";
 import {formatAsDate} from "../../../../../i18n/utils";
 import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
 import {StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {comboColumnEpicTitleRender, comboColumnTitleRender} from "../../../../projects/shared/helper/renderers";
+import {comboColumnTitleRender, workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
+import styles from "../../../../projects/shared/helper/renderers.module.css";
+import {Highlighter} from "../../../../../components/misc/highlighter";
 
 export const UncategorizedKey = "Uncategorized";
+
+export function comboColumnEpicTitleRender(text, record, searchText) {
+  return (
+    text && (
+      <div className={styles.comboCardCol}>
+        <div className={styles.workItemType}>
+          {record.key === UncategorizedKey ? "" : workItemTypeImageMap[record.workItemType] ?? record.workItemType}
+        </div>
+        <div className={styles.title}>
+          {text && (
+            <Tag color={record.key === UncategorizedKey ? "grey" : "#108ee9"}>
+              {searchText ? (
+                <Highlighter
+                  highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+                  searchWords={searchText || ""}
+                  textToHighlight={text || ""}
+                />
+              ) : (
+                truncateString(text, 35, "#108ee9")
+              )}
+            </Tag>
+          )}
+        </div>
+        <div className={styles.displayId}>
+          <Highlighter
+            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            searchWords={searchText || ""}
+            textToHighlight={record.displayId}
+          />
+        </div>
+      </div>
+    )
+  );
+}
+
 export const recordMode = {INITIAL: "INITIAL", EDIT: "EDIT"};
 export function useImplementationCostTableColumns([budgetRecords, dispatch], epicWorkItems, callBacks) {
   const renderState = {render: customColRender(callBacks)};
-  const titleSearchState = useSearchMultiCol(["title", "displayId", "epicName"], {customRender: customColTitleRender(callBacks)});
+  const titleSearchState = useSearchMultiCol(["title", "displayId", "epicName"], {
+    customRender: customColTitleRender(callBacks),
+  });
   const unCatRenderState = {render: unCatColRender(callBacks)};
 
   function setValueForBudgetRecord(key, value, initialBudgetValue) {
@@ -31,7 +70,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       key: "title",
       width: "30%",
       sorter: (a, b) => SORTER.string_compare(a, b, "title"),
-      ...titleSearchState
+      ...titleSearchState,
     },
     {
       title: "Cards",
@@ -39,7 +78,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       key: "cards",
       width: "7%",
       sorter: (a, b) => SORTER.number_compare(a, b, "cards"),
-      ...unCatRenderState
+      ...unCatRenderState,
     },
 
     {
@@ -76,7 +115,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalEffort",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
-          render: customColRenderWithDays(callBacks, "dev-days")
+          render: customColRenderWithDays(callBacks, "dev-days"),
         },
         {
           title: "Contributors",
@@ -84,7 +123,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalContributors",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalContributors"),
           width: "9%",
-          ...renderState
+          ...renderState,
         },
       ],
     },
@@ -96,28 +135,28 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           dataIndex: "startDate",
           key: "startDate",
           sorter: (a, b) => SORTER.date_compare(a, b, "startDate"),
-          ...renderState
+          ...renderState,
         },
         {
           title: "Ended",
           dataIndex: "endDate",
           key: "endDate",
           sorter: (a, b) => SORTER.date_compare(a, b, "endDate"),
-          ...renderState
+          ...renderState,
         },
         {
           title: "Last Commit",
           dataIndex: "lastUpdateDisplay",
           key: "lastUpdateDisplay",
           sorter: (a, b) => SORTER.date_compare(a, b, "lastUpdate"),
-          ...renderState
+          ...renderState,
         },
         {
           title: "Elapsed",
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
-          render: customColRenderWithDays(callBacks, "days")
+          render: customColRenderWithDays(callBacks, "days"),
         },
       ],
     },
@@ -178,27 +217,28 @@ export const SORTER = {
   },
 };
 
-
 function customColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
       if (record.key === UncategorizedKey) {
         return null;
       } else {
-        return <span className="textXs">{text}</span>;;
+        return <span className="textXs">{text}</span>;
       }
     }
-    return text && (
-      <span
-        onClick={() => {
-          setShowPanel(true);
-          setWorkItemKey(record.key);
-        }}
-        style={{cursor: "pointer"}}
-        className="textXs"
-      >
-        {text}
-      </span>
+    return (
+      text && (
+        <span
+          onClick={() => {
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }}
+          style={{cursor: "pointer"}}
+          className="textXs"
+        >
+          {text}
+        </span>
+      )
     );
   };
 }
@@ -237,9 +277,13 @@ function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
 function customColTitleRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
-      return comboColumnEpicTitleRender(text, record, searchText);
+      if (record.key === UncategorizedKey) {
+        return comboColumnEpicTitleRender("No Epic", {...record, displayId: ""}, searchText);
+      } else {
+        return comboColumnEpicTitleRender(text, record, searchText);
+      }
     }
-    return text && comboColumnTitleRender(setShowPanel, setWorkItemKey)(text, record, searchText)
+    return text && comboColumnTitleRender(setShowPanel, setWorkItemKey)(text, record, searchText);
   };
 }
 

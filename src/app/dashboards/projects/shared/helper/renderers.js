@@ -20,7 +20,7 @@ const issueTypeImagePaths = {
   bug: bug,
 }
 
-const workItemTypeImageMap = {
+export const workItemTypeImageMap = {
   epic: <img src={issueTypeImagePaths.epic} alt="#" style={{width: "16px", height: "16px"}} />,
   story: <img src={issueTypeImagePaths.story} alt="#" style={{width: "16px", height: "16px"}} />,
   task: <img src={issueTypeImagePaths.task} alt="#" style={{width: "16px", height: "16px"}} />,
@@ -80,38 +80,6 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacemen
         </div>
       </div>
     );
-}
-
-export function comboColumnEpicTitleRender(text, record, searchText) {
-  return (
-    text && (
-      <div className={styles.comboCardCol}>
-        <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
-        <div className={styles.title}>
-          {text && (
-            <Tag color="#108ee9">
-              {searchText ? (
-                <Highlighter
-                  highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-                  searchWords={searchText || ""}
-                  textToHighlight={text || ""}
-                />
-              ) : (
-                truncateString(text, 35, "#108ee9")
-              )}
-            </Tag>
-          )}
-        </div>
-        <div className={styles.displayId}>
-          <Highlighter
-            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-            searchWords={searchText || ""}
-            textToHighlight={record.displayId}
-          />
-        </div>
-      </div>
-    )
-  );
 }
 
 export function ComboCardTitleColumn({record}) {
