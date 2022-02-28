@@ -129,13 +129,13 @@ describe("ValueBookDetailView", () => {
     test("should render table with correct number of records", () => {
       const {container} = renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       const tableRows = container.querySelectorAll(".ant-table-row");
-      expect([...tableRows]).toHaveLength(1);
+      expect([...tableRows]).toHaveLength(2);
     });
 
     test("when budget is updated for any record, save/cancel button should appear", () => {
       renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
-      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-      const budgetTextBox = getByRole("spinbutton");
+      const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const [budgetTextBox] = getAllByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
 
       expect(screen.getByText(/save/i)).toBeInTheDocument();
@@ -144,8 +144,8 @@ describe("ValueBookDetailView", () => {
 
     test("when cancel button is clicked, save/cancel button should disappear", () => {
       renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
-      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-      const budgetTextBox = getByRole("spinbutton");
+      const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const [budgetTextBox] = getAllByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
 
       // before
@@ -164,8 +164,8 @@ describe("ValueBookDetailView", () => {
       // before
       expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
 
-      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-      const budgetTextBox = getByRole("spinbutton");
+      const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const [budgetTextBox] = getAllByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
 
       // after
@@ -176,8 +176,8 @@ describe("ValueBookDetailView", () => {
       renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
 
       // change the value of inputNumber, so that save/cancel appears
-      const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-      const budgetTextBox = getByRole("spinbutton");
+      const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+      const [budgetTextBox] = getAllByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
 
       const saveElement = screen.getByText(/save/i);
@@ -221,8 +221,8 @@ describe("ValueBookDetailView", () => {
         renderWithProviders(<ValueBookDetailView {...propsFixture} />, mockNetworkError);
 
         // change the value of inputNumber, so that save/cancel appears
-        const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-        const budgetTextBox = getByRole("spinbutton");
+        const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+        const [budgetTextBox] = getAllByRole("spinbutton");
         fireEvent.change(budgetTextBox, {target: {value: 75}});
 
         // before
@@ -244,8 +244,8 @@ describe("ValueBookDetailView", () => {
         renderWithProviders(<ValueBookDetailView {...propsFixture} />, mockGraphQlErrors);
 
         // change the value of inputNumber, so that save/cancel appears
-        const {getByRole} = within(screen.queryByTestId("implementation-cost-table"));
-        const budgetTextBox = getByRole("spinbutton");
+        const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
+        const [budgetTextBox] = getAllByRole("spinbutton");
         fireEvent.change(budgetTextBox, {target: {value: 75}});
 
         // before

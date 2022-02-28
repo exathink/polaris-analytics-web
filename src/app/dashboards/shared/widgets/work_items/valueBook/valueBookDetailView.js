@@ -1,4 +1,5 @@
-import {Alert, Button} from "antd";
+import {Alert} from "antd";
+import Button from "../../../../../../components/uielements/button";
 import React from "react";
 import styles from "./valueBook.module.css";
 import {useUpdateProjectWorkItems} from "./useQueryProjectEpicEffort";
@@ -15,6 +16,7 @@ import {DaysRangeSlider, ONE_YEAR} from "../../../components/daysRangeSlider/day
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import cn from "classnames";
 
 const UncategorizedEpic = {
   id: UncategorizedKey,
@@ -22,8 +24,6 @@ const UncategorizedEpic = {
   name: UncategorizedKey,
   key: UncategorizedKey,
   workItemType: "epic",
-  epicName: UncategorizedKey,
-  epicKey: UncategorizedKey,
 };
 export function ValueBookDetailView({
   instanceKey,
@@ -118,6 +118,11 @@ export function ValueBookDetailView({
     dispatch({type: actionTypes.RESET});
   }
 
+  function handleClearClick() {
+    dispatch({type: actionTypes.RESET});
+    setChartPoints([]);
+  }
+
   function getButtonsAndNotifications() {
     if (mutationLoading) {
       return (
@@ -196,6 +201,13 @@ export function ValueBookDetailView({
   return (
     <div className={styles.implementationCostTableWrapper}>
       <div className={styles.messageNotification}>{getButtonsAndNotifications()}</div>
+      <div className={styles.clearButton}>
+        {chartPoints.length > 0 && (
+          <Button onClick={handleClearClick} type="default" size="small" shape="round">
+           Clear selection
+          </Button>
+        )}
+      </div>
       {!activeOnly && (
         <div className={styles.daysRangeSlider}>
           <DaysRangeSlider title={"Days"} initialDays={days} setDaysRange={setClosedWithinDays} range={ONE_YEAR} />
@@ -203,7 +215,11 @@ export function ValueBookDetailView({
       )}
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector display={["Effort", "Volume"]} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+          <WorkItemScopeSelector
+            display={["Effort", "Volume"]}
+            workItemScope={workItemScope}
+            setWorkItemScope={setWorkItemScope}
+          />
         </Flex>
       </div>
       <div className={styles.epicEffortChart}>
@@ -219,7 +235,7 @@ export function ValueBookDetailView({
           setChartPoints={setChartPoints}
         />
       </div>
-      <div className={styles.editRecordsTitle}>{getEditRecordsTitle()}</div>
+      <div className={cn(styles.editRecordsTitle, "textXs")}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <EpicEffortTable
           columns={columns}
