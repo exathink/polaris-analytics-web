@@ -16,11 +16,11 @@ export function comboColumnEpicTitleRender(text, record, searchText) {
     text && (
       <div className={styles.comboCardCol}>
         <div className={styles.workItemType}>
-          {record.key === UncategorizedKey ? "" : workItemTypeImageMap[record.workItemType] ?? record.workItemType}
+          {record.key === UncategorizedKey ? workItemTypeImageMap[UncategorizedKey] : workItemTypeImageMap[record.workItemType] ?? record.workItemType}
         </div>
         <div className={styles.title}>
           {text && (
-            <Tag color={record.key === UncategorizedKey ? "grey" : "#108ee9"}>
+            <Tag color={record.key === UncategorizedKey ? "#6b7280" : "#108ee9"}>
               {searchText ? (
                 <Highlighter
                   highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
