@@ -56,14 +56,17 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
               return null;
             }
             return (
-              <InputNumber
-                key={record.key}
-                min={0}
-                max={Infinity}
-                value={budgetRecords[record.key] != null ? budgetRecords[record.key].budget : ""}
-                onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
-                type="number"
-              />
+              <div>
+                <InputNumber
+                  key={record.key}
+                  min={0}
+                  max={Infinity}
+                  value={budgetRecords[record.key] != null ? budgetRecords[record.key].budget : ""}
+                  onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
+                  type="number"
+                />
+                <div className="textXs">dev-days</div>
+              </div>
             );
           },
         },
@@ -73,7 +76,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalEffort",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
-          ...renderState
+          render: customColRenderWithDays(callBacks, "dev-days")
         },
         {
           title: "Contributors",
@@ -114,7 +117,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
-          render: customColRenderWithDays(callBacks)
+          render: customColRenderWithDays(callBacks, "days")
         },
       ],
     },
@@ -200,27 +203,32 @@ function customColRender({setShowPanel, setWorkItemKey}) {
   };
 }
 
-function customColRenderWithDays({setShowPanel, setWorkItemKey}) {
+function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
       if (record.key === UncategorizedKey) {
         return null;
       } else {
-        return <span className="textXs">{text} days</span>;
+        return (
+          <div>
+            <div className="textSm">{text}</div>
+            <div className="textXs">{uom}</div>
+          </div>
+        );
       }
     }
     return (
       text && (
-        <span
+        <div
           onClick={() => {
             setShowPanel(true);
             setWorkItemKey(record.key);
           }}
           style={{cursor: "pointer"}}
-          className="textXs"
         >
-          {text} days
-        </span>
+          <div className="textSm">{text}</div>
+          <div className="textXs">{uom}</div>
+        </div>
       )
     );
   };
