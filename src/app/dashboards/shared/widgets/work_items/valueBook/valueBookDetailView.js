@@ -204,7 +204,7 @@ export function ValueBookDetailView({
       <div className={styles.clearButton}>
         {chartPoints.length > 0 && (
           <Button onClick={handleClearClick} type="default" size="small" shape="round">
-           Clear all selections
+           Clear selection
           </Button>
         )}
       </div>
