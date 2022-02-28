@@ -6,7 +6,7 @@ import {Colors} from "../../config";
 
 require("highcharts/modules/treemap")(Highcharts);
 
-const UNCATEGORIZED = {key: "uncategorized", displayValue: "Uncategorized", color: "#a2c0de"};
+const UNCATEGORIZED = {key: "uncategorized", displayValue: "No Epic", color: "#a2c0de"};
 const EFFORT_LIMIT = 0.5;
 const TEXT_LIMIT = 37;
 const colors = ['#2f7ed8', '#732855', '#8bbc21', '#964b4b', '#1aadce',
@@ -247,6 +247,7 @@ export const WorkItemsEpicEffortChart = Chart({
       plotOptions: {
         series: {
           animation: false,
+          cursor: 'pointer',
           events: {
             click: function (event) {
               if (showHierarchy) {

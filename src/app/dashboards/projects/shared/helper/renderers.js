@@ -2,34 +2,47 @@ import {Tag} from "antd";
 import React from "react";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {truncateString} from "../../../../helpers/utility";
-import { WorkItemStateTypeColor } from "../../../shared/config";
+import {WorkItemStateTypeColor} from "../../../shared/config";
 import styles from "./renderers.module.css";
 
 // import issueType icons
-import story from "../../../../../image/issueType/story.svg"
-import bug from "../../../../../image/issueType/bug.svg"
-import task from "../../../../../image/issueType/task.svg"
-import subtask from "../../../../../image/issueType/subtask.svg"
+import epic from "../../../../../image/issueType/epic.svg";
+import story from "../../../../../image/issueType/story.svg";
+import bug from "../../../../../image/issueType/bug.svg";
+import task from "../../../../../image/issueType/task.svg";
+import subtask from "../../../../../image/issueType/subtask.svg";
+import {QuestionCircleOutlined} from "@ant-design/icons";
 
 const issueTypeImagePaths = {
+  epic: epic,
   story: story,
   task: task,
   subtask: subtask,
   bug: bug,
-}
+};
 
-const workItemTypeImageMap = {
+export const workItemTypeImageMap = {
+  epic: <img src={issueTypeImagePaths.epic} alt="#" style={{width: "16px", height: "16px"}} />,
   story: <img src={issueTypeImagePaths.story} alt="#" style={{width: "16px", height: "16px"}} />,
   task: <img src={issueTypeImagePaths.task} alt="#" style={{width: "16px", height: "16px"}} />,
   subtask: <img src={issueTypeImagePaths.subtask} alt="#" style={{width: "16px", height: "16px"}} />,
   bug: <img src={issueTypeImagePaths.bug} alt="#" style={{width: "16px", height: "16px"}} />,
+  Uncategorized:<QuestionCircleOutlined />
 };
 
-export function getStateTypeIcon(workItemType, size="16px") {
-  return <div style={{width: size, height: size, backgroundColor: WorkItemStateTypeColor[workItemType], borderRadius: "0.2rem", marginRight: "0.5rem"}}></div>
+export function getStateTypeIcon(workItemType, size = "16px") {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: WorkItemStateTypeColor[workItemType],
+        borderRadius: "0.2rem",
+        marginRight: "0.5rem",
+      }}
+    ></div>
+  );
 }
-
-
 
 // setPlacement is optional property when we need to specify the position of cardInspector
 export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacement) {
@@ -82,7 +95,9 @@ export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacemen
 export function ComboCardTitleColumn({record}) {
   return (
     <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
-      <div className={styles.workItemType}><img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}}/></div>
+      <div className={styles.workItemType}>
+        <img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}} />
+      </div>
       <div className={styles.titleXl}>{truncateString(record.name, 100, "#6b7280")}</div>
       <div className={styles.textBase}>
         {record.displayId}{" "}
@@ -119,14 +134,18 @@ export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey, setPlac
       >
         <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateTypeInternal)}</div>
         <div className={styles.stateType}>{text}</div>
-        <div className={styles.entered}>
-          entered {record.timeInStateDisplay}
-        </div>
+        <div className={styles.entered}>entered {record.timeInStateDisplay}</div>
       </div>
     );
 }
 
-export function customColumnRender({setShowPanel, setWorkItemKey, setPlacement, colRender = (text) => text, className}) {
+export function customColumnRender({
+  setShowPanel,
+  setWorkItemKey,
+  setPlacement,
+  colRender = (text) => text,
+  className,
+}) {
   return (text, record, searchText) =>
     text && (
       <span

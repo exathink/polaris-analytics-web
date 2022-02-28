@@ -5,7 +5,7 @@
   grid-template-rows: auto auto 83%;
   gap: 0.5rem;
   grid-template-areas:
-    "scopeSelector scopeSelector rangeSlider rangeSlider"
+    " rangeSlider scopeSelector . ."
     "throughput valueMix valueMix workInProgress"
     "valueBookClosed valueBookClosed valueBookWip  valueBookWip"
 
