@@ -58,7 +58,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
             ]
           ),
           () => (
-            <div style={{padding: "5px", minWidth:'160px', marginLeft: '10px'}}>
+            <div style={{minWidth:'100px', marginLeft: '10px'}}>
               <Flex align={'right'}>
                 <Box pr={2} w={"100%"}>
                   <Checkbox
@@ -73,7 +73,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
             </div>
           ),
           () => (
-            <div style={{padding: "5px", minWidth:'180px'}}>
+            <div style={{minWidth:'100px'}}>
               <Flex align={'right'}>
                 <Box pr={1} w={"100%"}>
                   <Checkbox

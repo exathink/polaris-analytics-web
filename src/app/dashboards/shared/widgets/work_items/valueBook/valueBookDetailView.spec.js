@@ -162,14 +162,14 @@ describe("ValueBookDetailView", () => {
     test("when budget is updated for any record, edited title shows above the table", () => {
       renderWithProviders(<ValueBookDetailView {...propsFixture} />, updateWorkItemsMocks);
       // before
-      expect(screen.queryByText(/Budget Edited for Cards/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Budget Edited/i)).not.toBeInTheDocument();
 
       const {getAllByRole} = within(screen.queryByTestId("implementation-cost-table"));
       const [budgetTextBox] = getAllByRole("spinbutton");
       fireEvent.change(budgetTextBox, {target: {value: 75}});
 
       // after
-      expect(screen.queryByText(/Budget Edited for Cards/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Budget Edited/i)).toBeInTheDocument();
     });
 
     test("when save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
