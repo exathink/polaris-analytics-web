@@ -24,8 +24,12 @@ export const getMarks = (marks) =>  marks.reduce(
   {}
 );
 
-export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}) => (
-  <Flex className={classNames(styles.daysRangeSlider, "textXs")}>
+export const DaysRangeSlider = ({title = "Days", initialDays, setDaysRange, range, layout = "row"}) => (
+  <Flex
+    className={classNames(
+      layout === "col" ? styles.daysRangeSlider : styles.daysRangeSliderRow,
+    )}
+  >
     <Box pr={1} pt={"1px"}>
       {title}
     </Box>
@@ -33,13 +37,14 @@ export const DaysRangeSlider = ({title='Days', initialDays, setDaysRange, range}
       <Slider
         defaultValue={initialDays || 1}
         min={(range && range[0]) || 1}
-        max={(range && range[range.length -1] )|| 60}
+        max={(range && range[range.length - 1]) || 60}
         marks={getMarks(range || SIXTY_DAYS)}
         included={true}
-        onAfterChange={value => setDaysRange && setDaysRange(value)}/>
+        onAfterChange={(value) => setDaysRange && setDaysRange(value)}
+      />
     </Box>
   </Flex>
-)
+);
 
 export const RangeSlider = ({title='', initialDays, setDaysRange, range, className}) => (
   <Flex align={'center'} className={className} data-testid="target-range-slider">
