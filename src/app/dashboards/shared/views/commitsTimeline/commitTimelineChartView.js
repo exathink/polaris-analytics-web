@@ -5,7 +5,6 @@ import {Box, Flex} from 'reflexbox';
 import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
-import {Statistic} from "../../../../../app/components/misc/statistic/statistic";
 import {VizRow} from "../../containers/layout";
 import {Untracked} from "../../config";
 import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
@@ -131,18 +130,6 @@ export class CommitTimelineViewModel {
   }
 }
 
-function _Traceability(props: {model: CommitTimelineViewModel}) {
-  return (
-    <Statistic
-      title="Traceability"
-      value={props.model.traceability != null ? props.model.traceability * 100 : "N/A"}
-      precision={props.model.traceability != null && 2}
-      valueStyle={{color: "#3f8600"}}
-      suffix={props.model.traceability != null && "%"}
-      style={{backgroundColor: "#f2f3f6"}}
-    />
-  );
-}
 
 class _CommitsTimelineChartView extends React.Component {
   constructor(props) {
