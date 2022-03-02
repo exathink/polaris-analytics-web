@@ -25,7 +25,7 @@ export function getTrendsControlBarControls(
 ) {
   return [
     () =>
-      <div title="Days" style={{minWidth: "500px"}}>
+      <div title="Days" style={{minWidth: "350px"}}>
         <DaysRangeSlider
           initialDays={daysRange}
           setDaysRange={setDaysRange}
