@@ -183,7 +183,7 @@ export function ValueBookDetailView({
     if (editedRecords.length === 0) {
       return null;
     }
-    return <span>Budget Edited for Cards: {editedRecords.length}</span>;
+    return <span>Budget edited for {editedRecords.length} cards.</span>;
   }
 
   const getRowClassName = (record, index) => {
