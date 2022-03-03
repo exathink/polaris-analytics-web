@@ -24,6 +24,9 @@ export const WorkItemsDurationsHistogramChart = Chart({
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
     const pointsCycleTime = workItemsWithAggregateDurations.map((w) => w["cycleTime"]);
+    const pointsLatency = workItemsWithAggregateDurations.map((w) => w["latency"]);
+    const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
+
     const seriesLeadTime = getHistogramSeries({
       intl,
       colWidthBoundaries,
@@ -42,7 +45,26 @@ export const WorkItemsDurationsHistogramChart = Chart({
       name: stateType !== WorkItemStateTypes.closed ? 'Age' : null,
       color: stateType !== WorkItemStateTypes.closed ? WorkItemStateTypeColor[stateType] : ResponseTimeMetricsColor.cycleTime,
     });
-    
+    const seriesEffort = getHistogramSeries({
+      intl,
+      colWidthBoundaries,
+      points: pointsEffort,
+      selectedMetric: "effort",
+      metricsMeta,
+      name: "Effort",
+      color: ResponseTimeMetricsColor.effort,
+      visible: false
+    });
+    const seriesLatency = getHistogramSeries({
+      intl,
+      colWidthBoundaries,
+      points: pointsLatency,
+      selectedMetric: "latency",
+      metricsMeta,
+      name: "Latency",
+      color: ResponseTimeMetricsColor.latency,
+      visible: false
+    });
     return {
       chart: {
         type: "column",
@@ -55,7 +77,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         text: `Phase: ${WorkItemStateTypeDisplayName[stateType]}`,
       },
       subtitle: {
-        text: getChartSubtitle(stateType, specsOnly) ,
+        text: getChartSubtitle(stateType, specsOnly),
       },
       xAxis: {
         title: {
@@ -87,10 +109,10 @@ export const WorkItemsDurationsHistogramChart = Chart({
       },
       series:
         stateType === WorkItemStateTypes.closed
-          ? [seriesLeadTime, {...seriesCycleTime, visible: false}]
+          ? [seriesLeadTime, {...seriesCycleTime, visible: false}, seriesEffort]
           : stateType === WorkItemStateTypes.backlog
-          ? [seriesLeadTime]
-          : [seriesCycleTime],
+          ? [seriesLeadTime, seriesLatency, seriesEffort]
+          : [seriesCycleTime, seriesLatency, seriesEffort],
       plotOptions: {
         series: {
           animation: false,
