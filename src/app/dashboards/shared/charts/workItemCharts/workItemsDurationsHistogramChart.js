@@ -19,7 +19,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Response Time" : "Age";
+    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age";
 
     // get series for lead time and cycle time
     const pointsLeadTime = workItemsWithAggregateDurations.map((w) => w["leadTime"]);
@@ -97,12 +97,12 @@ export const WorkItemsDurationsHistogramChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          debugger;
+          const uom = this.series.name === "Effort" ? "dev-days" : "days";
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
               [`Cards: `, `${this.point.y}`],
-              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`],
+              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
         },
@@ -125,6 +125,22 @@ export const WorkItemsDurationsHistogramChart = Chart({
               if (this.visible) {
                 return false;
               } else {
+                const currentSeries = this;
+                
+                // update xAxis title, as we click through different series
+                currentSeries.xAxis.setTitle({ text: currentSeries.name });
+
+                // check if the current series is effort
+                if(currentSeries.name === "Effort"){
+                  currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
+                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map(x => x.replace("days", "dev-days"));
+                } else {
+                  // reset xAxis categories if it has been overridden earlier
+                  if(currentSeries.xAxis.userOptions.originalCategories){
+                    currentSeries.xAxis.categories = currentSeries.xAxis.userOptions.originalCategories
+                  }
+                }
+                
                 // find visible series
                 const visibleSeries = series.find((x) => x.visible);
                 visibleSeries?.hide();
