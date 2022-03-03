@@ -6,12 +6,16 @@ import {Colors, WorkItemStateTypeColor, WorkItemStateTypes, WorkItemStateTypeDis
 import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
-function getChartSubtitle(stateType, specsOnly) {
+function getChartTitle(stateType, seriesName=null) {
   if (stateType !== WorkItemStateTypes.closed) {
-     return `${specsOnly? 'Spec' : 'Card'} Age Distribution `
+     return `${seriesName || 'Age'} Distribution`
   } else {
-    return `${specsOnly? 'Spec' : 'Card'} Response Time Distribution`
+    return `${seriesName || 'Lead Time' } Variability`
   }
+}
+
+function getChartSubTitle(stateType, specsOnly) {
+  return `${specsOnly ? 'Specs' : 'All cards'} in ${WorkItemStateTypeDisplayName[stateType]}`
 }
 export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
@@ -74,10 +78,10 @@ export const WorkItemsDurationsHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Phase: ${WorkItemStateTypeDisplayName[stateType]}`,
+        text: getChartTitle(stateType),
       },
       subtitle: {
-        text: getChartSubtitle(stateType, specsOnly),
+        text: getChartSubTitle(stateType, specsOnly)
       },
       xAxis: {
         title: {
@@ -129,7 +133,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
                 
                 // update xAxis title, as we click through different series
                 currentSeries.xAxis.setTitle({ text: currentSeries.name });
-
+                // update the chart title
+                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)})
                 // check if the current series is effort
                 if(currentSeries.name === "Effort"){
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
