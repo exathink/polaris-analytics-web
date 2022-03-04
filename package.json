@@ -69,7 +69,7 @@
     "source-map-explorer": "^2.5.2"
   },
   "scripts": {
-    "start": "rm -rf ./node_modules/.cache/babel-loader   && react-scripts start",
+    "start": "rm -rf ./node_modules/.cache/babel-loader   && GENERATE_SOURCEMAP=false react-scripts start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-scripts build'",
     "build:staging": "REACT_APP_ENV=staging MESSAGE_DIR='./build/messages' yarn build",
     "test": "react-scripts test",
