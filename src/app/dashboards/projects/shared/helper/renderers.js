@@ -30,13 +30,13 @@ export const workItemTypeImageMap = {
   Uncategorized:<QuestionCircleOutlined />
 };
 
-export function getStateTypeIcon(workItemType, size = "16px") {
+export function getStateTypeIcon(stateType, size = "16px") {
   return (
     <div
       style={{
         width: size,
         height: size,
-        backgroundColor: WorkItemStateTypeColor[workItemType],
+        backgroundColor: WorkItemStateTypeColor[stateType ?? "unmapped"],
         borderRadius: "0.2rem",
         marginRight: "0.5rem",
       }}
