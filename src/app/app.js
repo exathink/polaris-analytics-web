@@ -77,7 +77,7 @@ export class App extends Component {
                       height: '5vh',
                     }}
                   >
-                    {siteConfig.footerText}
+                    {`©Exathink, LLC 2016 - ${new Date().getFullYear()}`}
                   </Footer>
                 </Layout>
               </Layout>
