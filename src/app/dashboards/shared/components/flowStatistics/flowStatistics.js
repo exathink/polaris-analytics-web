@@ -862,7 +862,7 @@ export const TraceabilityTarget = ({title, target}) => (
   />
 );
 
-export const Traceability = ({title, current, previous, target, deltaThreshold}) => (
+export const Traceability = ({title, current, previous, target=0.9, deltaThreshold}) => (
   <FlowStatistic
     title={title || "Traceability"}
     currentValue={current['traceability'] * 100}
