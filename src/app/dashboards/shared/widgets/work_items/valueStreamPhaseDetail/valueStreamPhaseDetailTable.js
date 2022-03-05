@@ -180,6 +180,8 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       dataIndex: "effort",
       key: "effort",
       width: "5%",
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "effort"),
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
       ...effortRenderState
     },
