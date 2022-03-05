@@ -35,7 +35,7 @@ export function DimensionResponseTimeDetailDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
-  const [chartToggle, setChartToggle] = React.useState("cardDetail");
+
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
@@ -88,57 +88,12 @@ export function DimensionResponseTimeDetailDashboard({
       <DashboardRow
         h="46%"
         className={styles.chartsRow}
-        controls={[
-          () => (
-            <GroupingSelector
-              label={" "}
-              value={chartToggle}
-              groupings={[
-                {
-                  key: "cardDetail",
-                  display: "Card Detail",
-                },
-                {
-                  key: "trend",
-                  display: "Trend",
-                },
-
-              ]}
-              initialValue={"trend"}
-              onGroupingChanged={setChartToggle}
-            />
-          ),
-        ]}
       >
-        <DashboardWidget
-          name="cycle-time"
-          className={chartToggle === "trend" ? styles.responseTimeDetail : styles.responseTimeDetailHidden}
-          render={({view}) => (
-            <DimensionResponseTimeTrendsWidget
-              dimension={dimension}
-              instanceKey={key}
-              measurementWindow={7}
-              days={daysRange}
-              samplingFrequency={7}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["all"]}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
 
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className={chartToggle === "cardDetail" ? styles.responseTimeDetail : styles.responseTimeDetailHidden}
+          className={styles.responseTimeDetail}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
