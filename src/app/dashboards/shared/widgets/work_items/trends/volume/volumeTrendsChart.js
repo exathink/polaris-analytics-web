@@ -52,7 +52,7 @@ export const VolumeTrendsChart = ({
                 ['Latest Closed: ', `${i18nDate(intl, measurement.latestClosedDate)}`],
 
               ]: [
-                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} work items`],
+                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} cards`],
                   ['Specs Closed: ', `${i18nNumber(intl, measurement.workItemsWithCommits)} specs`]
                 ]
             }
