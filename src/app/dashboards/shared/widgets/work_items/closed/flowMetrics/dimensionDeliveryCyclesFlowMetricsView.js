@@ -150,15 +150,11 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
               groupings={[
                 {
                   key: "histogram",
-                  display: "Distribution",
-                },
-                {
-                  key: "logarithmic",
-                  display: "Timeline",
+                  display: "Histogram",
                 },
                 {
                   key: "table",
-                  display: "Cards",
+                  display: "Card Detail",
                 },
               ]}
               initialValue={yAxisScale}
@@ -180,25 +176,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           specsOnly={specsOnly}
           yAxisScale={yAxisScale}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        />
-      ) : yAxisScale === "logarithmic" ? (
-        <FlowMetricsScatterPlotChart
-          days={days}
-          before={before}
-          model={filteredData}
-          selectedMetric={selectedMetric.key}
-          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-          metricTarget={metricTarget}
-          targetConfidence={targetConfidence}
-          defectsOnly={defectsOnly}
-          specsOnly={specsOnly}
-          yAxisScale={yAxisScale}
-          onSelectionChange={(workItems) => {
-            if (workItems.length === 1) {
-              setShowPanel(true);
-              setWorkItemKey(workItems[0].workItemKey);
-            }
-          }}
         />
       ) : (
         <FlowMetricsDetailTable
