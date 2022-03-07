@@ -14,8 +14,9 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
     onSearch && onSearch(selectedKeys[0])
   };
 
-  const handleReset = clearFilters => {
+  const handleReset = (clearFilters, confirm) => {
     clearFilters();
+    confirm();
     setSearchText('');
     onSearch && onSearch(null)
   };
@@ -32,6 +33,7 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   const searchProps = {
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => {
       searchProps.clearFilters = clearFilters;
+      searchProps.confirm = confirm;
       return (
         <div style={{padding: 8}}>
           <Input
@@ -48,7 +50,7 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
 
     filterIcon: (filtered) => {
       if (filtered) {
-        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters)}/>;
+        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters, searchProps.confirm)}/>;
       } else {
         return <SearchOutlined />;
       }
@@ -97,8 +99,9 @@ export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
     setSearchText(selectedKeys[0]);
   };
 
-  const handleReset = (clearFilters) => {
+  const handleReset = (clearFilters, confirm) => {
     clearFilters();
+    confirm();
     setSearchText("");
   };
 
@@ -114,6 +117,7 @@ export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
   const searchProps = {
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => {
       searchProps.clearFilters = clearFilters;
+      searchProps.confirm = confirm;
       return (
         <div style={{padding: 8}}>
           <Input
@@ -130,7 +134,7 @@ export function useSearchMultiCol(dataIndexes, {customRender} = {}) {
 
     filterIcon: (filtered) => {
       if (filtered) {
-        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters)} />;
+        return <CloseOutlined onClick={() => handleReset(searchProps.clearFilters, searchProps.confirm)} />;
       } else {
         return <SearchOutlined />;
       }
