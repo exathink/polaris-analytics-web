@@ -5,7 +5,14 @@ export const GET_REPOSITORIES_QUERY = (dimension) => gql`
 query dimensionRepositories($instanceKey: String!) {
   ${dimension}(key: $instanceKey) {
       id
-      repositories (interfaces: [CommitSummary, ContributorCount]){
+      repositories (
+        interfaces: [CommitSummary, ContributorCount, TraceabilityTrends], 
+        traceabilityTrendsArgs: {
+          measurementWindow: 30, 
+          days:30, 
+          samplingFrequency: 30
+        }
+        ){
             count
             edges {
                 node {
@@ -17,6 +24,14 @@ query dimensionRepositories($instanceKey: String!) {
                     latestCommit
                     commitCount
                     contributorCount
+                    traceabilityTrends {
+                      measurementDate
+                      measurementWindow
+                      traceability
+                      specCount
+                      nospecCount
+                      totalCommits
+                    }
                 }
             }
         }

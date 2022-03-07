@@ -8,6 +8,7 @@ import {fromNow, human_span} from "../../../../helpers/utility";
 import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 import { Highlighter } from "../../../../components/misc/highlighter";
+import { AvgLeadTime, Traceability } from "../flowStatistics/flowStatistics";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -73,6 +74,20 @@ export function useRepositoriesTableColumns({statusTypes}) {
       filters: statusTypes.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => getActivityLevelFromDate(record.latestCommit).display_name.indexOf(value)===0,
       render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
+    },
+    {
+      title: "Traceability",
+      dataIndex: "traceabilityTrends",
+      key: "traceabilityTrends",
+      width: "10%",
+      render: (text, record) => {
+            return (
+              <Traceability
+                current={record.traceabilityTrends?.[0]}
+                previous={record.traceabilityTrends?.[1]}
+              />
+            );
+          },
     },
     {
       title: "",
