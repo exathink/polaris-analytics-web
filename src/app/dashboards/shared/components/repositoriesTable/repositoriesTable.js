@@ -27,7 +27,7 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useRepositoriesTableColumns({statusTypes}) {
+export function useRepositoriesTableColumns({statusTypes, days}) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
 
   const columns = [
@@ -35,27 +35,27 @@ export function useRepositoriesTableColumns({statusTypes}) {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "15%",
+      width: "12%",
       ...nameSearchState,
     },
     {
       title: "Total Commits",
       dataIndex: "commitCount",
       key: "commitCount",
-      width: "7%",
+      width: "6%",
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
       render: renderMetric
     },
     {
-      title: "Contributors",
+      title:  <span>Contributors<sup> {`Last  ${days} days`}</sup></span>,
       dataIndex: "contributorCount",
       key: "contributorCount",
-      width: "6%",
+      width: "8%",
       render: renderMetric,
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
     },
     {
-      title: <span>Traceability<sup> Last 30 days</sup></span>,
+      title: <span>Traceability<sup> {`Last  ${days} days`}</sup></span>,
       dataIndex: "traceabilityTrends",
       key: "traceabilityTrends",
       width: "10%",
@@ -112,9 +112,9 @@ export function useRepositoriesTableColumns({statusTypes}) {
   return columns;
 }
 
-export function RepositoriesTable({tableData, loading}) {
+export function RepositoriesTable({tableData, days, loading}) {
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
-  const columns = useRepositoriesTableColumns({statusTypes});
+  const columns = useRepositoriesTableColumns({statusTypes, days});
 
   return (
     <StripeTable
@@ -127,13 +127,13 @@ export function RepositoriesTable({tableData, loading}) {
   );
 }
 
-export const RepositoriesTableWidget = ({dimension, instanceKey}) => {
-  const {loading, error, data} = useQueryRepositories({dimension, instanceKey});
+export const RepositoriesTableWidget = ({dimension, instanceKey, days=30}) => {
+  const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days});
 
   if (error) return null;
 
   const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
   const tableData = edges.map((edge) => edge.node).sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
 
-  return <RepositoriesTable tableData={tableData} loading={loading} />;
+  return <RepositoriesTable tableData={tableData} days={days} loading={loading} />;
 };

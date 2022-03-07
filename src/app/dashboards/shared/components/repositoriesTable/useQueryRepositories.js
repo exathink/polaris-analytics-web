@@ -2,16 +2,17 @@ import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export const GET_REPOSITORIES_QUERY = (dimension) => gql`
-query dimensionRepositories($instanceKey: String!) {
+query dimensionRepositories($instanceKey: String!, $days: Int!) {
   ${dimension}(key: $instanceKey) {
       id
       repositories (
         interfaces: [CommitSummary, ContributorCount, TraceabilityTrends], 
         traceabilityTrendsArgs: {
-          measurementWindow: 30, 
-          days:30, 
-          samplingFrequency: 30
-        }
+          measurementWindow: $days, 
+          days:$days, 
+          samplingFrequency: $days
+        }, 
+        contributorCountDays: $days
         ){
             count
             edges {
@@ -39,11 +40,12 @@ query dimensionRepositories($instanceKey: String!) {
   }
 `
 
-export function useQueryRepositories({dimension, instanceKey}) {
+export function useQueryRepositories({dimension, instanceKey, days}) {
   return useQuery(GET_REPOSITORIES_QUERY(dimension), {
     service: analytics_service,
     variables: {
       instanceKey: instanceKey,
+      days: days
     },
     errorPolicy: "all",
     fetchPolicy: "cache-and-network"
