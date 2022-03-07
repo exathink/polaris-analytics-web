@@ -9,6 +9,7 @@ import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
 import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
 import { Highlighter } from "../../../../components/misc/highlighter";
 import { AvgLeadTime, Traceability } from "../flowStatistics/flowStatistics";
+import { renderMetric } from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -38,33 +39,38 @@ export function useRepositoriesTableColumns({statusTypes}) {
       ...nameSearchState,
     },
     {
-      title: "Commits",
+      title: "Total Commits",
       dataIndex: "commitCount",
       key: "commitCount",
       width: "7%",
       sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
+      render: renderMetric
     },
     {
       title: "Contributors",
       dataIndex: "contributorCount",
       key: "contributorCount",
       width: "6%",
+      render: renderMetric,
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
     },
     {
-      title: "History",
-      dataIndex: "earliestCommit",
-      key: "earliestCommit",
+      title: <span>Traceability<sup> Last 30 days</sup></span>,
+      dataIndex: "traceabilityTrends",
+      key: "traceabilityTrends",
       width: "10%",
-      render: (_, record) => human_span(record.latestCommit, record.earliestCommit),
-    },
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommit",
-      key: "latestCommit",
-      width: "8%",
-      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
-      render: (latestCommit) => fromNow(latestCommit),
+      sorter: (a, b) => {
+        return SORTER.number_compare(b.traceabilityTrends?.[0]?.traceability, a.traceabilityTrends?.[0]?.traceability)
+      },
+      render: (text, record) => {
+            return (
+              <Traceability
+                current={record.traceabilityTrends?.[0]}
+                previous={record.traceabilityTrends?.[1]}
+                displayType={'cellrender'}
+              />
+            );
+          },
     },
     {
       title: "Status",
@@ -76,19 +82,15 @@ export function useRepositoriesTableColumns({statusTypes}) {
       render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
     },
     {
-      title: "Traceability",
-      dataIndex: "traceabilityTrends",
-      key: "traceabilityTrends",
-      width: "10%",
-      render: (text, record) => {
-            return (
-              <Traceability
-                current={record.traceabilityTrends?.[0]}
-                previous={record.traceabilityTrends?.[1]}
-              />
-            );
-          },
+      title: "Latest Commit",
+      dataIndex: "latestCommit",
+      key: "latestCommit",
+      width: "8%",
+      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
+      render: (latestCommit) => fromNow(latestCommit),
     },
+
+
     {
       title: "",
       dataIndex: "actions",
