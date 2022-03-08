@@ -92,7 +92,7 @@ export function TrendWithTooltip({
                 {trendIndicatorIcon} {trendValue}
               </div>
               <div>
-                <span className={"textXs"}>Compared to prior {samplingFrequency} days.</span>
+                <span className={"tw-textXs"}>Compared to prior {samplingFrequency} days.</span>
               </div>
             </div>
           }
@@ -148,8 +148,8 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
   return (
     <div className="trendMetricWrapper">
       <div className="trendMetricInnerWrapper">
-        <div className={metricValue?.props?.children === "N/A" ? "textSm" : "textXl"}>{metricValue}</div>
-        <div className="textSm">{uom}</div>
+        <div className={metricValue?.props?.children === "N/A" ? "tw-textSm" : "tw-textXl"}>{metricValue}</div>
+        <div className="tw-textSm">{uom}</div>
       </div>{" "}
       {trendIndicator}
     </div>
@@ -157,5 +157,5 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
 }
 
 export function renderMetric(text) {
-  return text === "N/A" ? <span className="textSm">N/A</span> : <span className="textXl">{text}</span>;
+  return text === "N/A" ? <span className="tw-textSm">N/A</span> : <span className="tw-textXl">{text}</span>;
 }

@@ -235,7 +235,7 @@ export function ValueBookDetailView({
           setChartPoints={setChartPoints}
         />
       </div>
-      <div className={cn(styles.editRecordsTitle, "textXs")}>{getEditRecordsTitle()}</div>
+      <div className={cn(styles.editRecordsTitle, "tw-textXs")}>{getEditRecordsTitle()}</div>
       <div className={styles.implementationCostTable}>
         <EpicEffortTable
           columns={columns}

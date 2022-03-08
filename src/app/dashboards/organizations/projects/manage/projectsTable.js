@@ -16,7 +16,7 @@ function customNameRender(text, record, searchText) {
   return (
     text && (
       <ProjectLink projectName={record.name} projectKey={record.key}>
-        <span style={{cursor: "pointer"}} className="textSm">
+        <span style={{cursor: "pointer"}} className="tw-textSm">
           <Highlighter
             highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
             searchWords={searchText || ""}
@@ -227,7 +227,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           key: "latestCommit",
           width: "6%",
           sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
-          render: (latestCommit) => <span className="textSm">{fromNow(latestCommit)}</span>,
+          render: (latestCommit) => <span className="tw-textSm">{fromNow(latestCommit)}</span>,
         },
         {
           title: "Last Update",
@@ -235,7 +235,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           key: "latestWorkItemEvent",
           width: "6%",
           sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
-          render: (latestWorkItemEvent) => <span className="textSm">{fromNow(latestWorkItemEvent)}</span>,
+          render: (latestWorkItemEvent) => <span className="tw-textSm">{fromNow(latestWorkItemEvent)}</span>,
         },
       ],
     },
