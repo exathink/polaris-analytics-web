@@ -31,6 +31,7 @@ export class CommitTimelineViewModel {
     this.getCategories = this.initCategorySelector(groupBy);
     this.mapCategoryToNode = this.initCategoryReverseMapper(groupBy);
     this.commits = filterCategories ? this.filter(commits, filterCategories) : commits;
+    this.totalCommits = this.commits.length > 0;
     this.traceability = this.commits.length > 0 ?
       this.commits.filter(commit => commit.workItemsSummaries.length > 0).length / this.commits.length
       : null;
