@@ -52,26 +52,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
       dataIndex: "contributorCount",
       key: "contributorCount",
       width: "8%",
-      render: renderMetric,
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
-    },
-    {
-      title: <span>Traceability<sup> {`Last  ${days} days`}</sup></span>,
-      dataIndex: "traceabilityTrends",
-      key: "traceabilityTrends",
-      width: "10%",
-      sorter: (a, b) => {
-        return SORTER.number_compare(b.traceabilityTrends?.[0]?.traceability, a.traceabilityTrends?.[0]?.traceability)
-      },
-      render: (text, record) => {
-            return (
-              <Traceability
-                current={record.traceabilityTrends?.[0]}
-                previous={record.traceabilityTrends?.[1]}
-                displayType={'cellrender'}
-              />
-            );
-          },
     },
     {
       title: "Total Commits",
