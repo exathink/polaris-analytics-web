@@ -8,8 +8,8 @@ module.exports = {
       white: colors.white,
       gray: {
         100: colors.gray["100"],
-        200: colors.gray["200"],
-        300: colors.gray["300"],
+        200: colors.gray["300"],
+        300: colors.gray["500"],
       },
     }),
     fontSize: {

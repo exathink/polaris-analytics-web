@@ -1,0 +1,15 @@
+.tw-textXs {
+  @apply tw-text-xs tw-font-medium tw-text-gray-300;
+}
+.tw-textSm {
+  @apply tw-text-sm tw-font-normal tw-text-gray-300;
+}
+.tw-textXl {
+  @apply tw-text-xl tw-font-normal tw-text-gray-300;
+}
+.tw-text2Xl {
+  @apply tw-text-2xl tw-font-normal tw-text-gray-300;
+}
+.tw-textBase {
+  @apply tw-text-base tw-font-normal tw-text-gray-300;
+}

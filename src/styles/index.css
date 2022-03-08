@@ -6,6 +6,10 @@
 @import "tailwindcss/components";
 /* ! END_TAILWIND_COMPONENTS */
 
+/* ! TAILWIND_CUSTOM_COMPONENTS */
+@import "./custom_components.css";
+/* ! END_TAILWIND_CUSTOM_COMPONENTS */
+
 /* ! TAILWIND_UTILITIES */
 @import "tailwindcss/utilities";
 /* ! END_TAILWIND_UTILITIES */
