@@ -865,10 +865,13 @@ export const TraceabilityTarget = ({title, target}) => (
 export const Traceability = ({title, displayType, current, previous, target=0.9, deltaThreshold}) => (
   <FlowStatistic
     title={title || "Traceability"}
+    currentMeasurement={current}
+    previousMeasurement={previous}
+    metric={'traceability'}
     displayType={displayType}
     currentValue={current['traceability'] * 100}
     previousValue={previous['traceability'] * 100}
-    valueRender={value => `${value?.toFixed?.(2)}%`}
+    valueRender={value => current['totalCommits'] > 0 ? `${value?.toFixed?.(2)} %` : 'N/A'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target * 100}
