@@ -5,7 +5,6 @@ import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {Colors} from "../../../config";
 import {WorkBalanceContributorDetailChart} from "./workBalanceContributorDetailChart";
-import styles from "./workBalance.module.css";
 import Contributors from "../../../../contributors/context";
 
 function fteEquivalent(measurementWindow) {
@@ -235,7 +234,7 @@ export const WorkBalanceTrendsChart = ({
 
   if (showContributorDetail) {
     return (
-      <div className={styles.workBalance}>
+      <div className="tw-grid tw-gap-4 tw-grid-rows-[37vh,34vh]">
         {workBalanceTrendsChart}
         <WorkBalanceContributorDetailChart
           selectedContributors={selectedContributors}
