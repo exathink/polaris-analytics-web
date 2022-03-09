@@ -878,6 +878,17 @@ export const Traceability = ({title, displayType, current, previous, target=0.9,
   />
 );
 
+export const TotalCommits = ({title, displayType, current, previous, deltaThreshold}) => (
+  <FlowStatistic
+    title={title || "Total Commits"}
+    currentMeasurement={current}
+    previousMeasurement={previous}
+    metric={'totalCommits'}
+    displayType={displayType}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+  />
+);
 
 export const TraceabilityCarousel = ({title, current, previous, target, deltaThreshold, disabled = false, tickInterval = 3000}) => (
   <ComponentCarousel disabled={disabled} tickInterval={tickInterval}>
