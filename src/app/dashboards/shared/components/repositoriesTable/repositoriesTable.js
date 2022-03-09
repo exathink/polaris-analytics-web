@@ -1,23 +1,23 @@
 import React from "react";
-import {useQueryRepositories} from "./useQueryRepositories";
-import {useSearch} from "../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
+import { useQueryRepositories } from "./useQueryRepositories";
+import { useSearch } from "../../../../components/tables/hooks";
+import { SORTER, StripeTable, TABLE_HEIGHTS } from "../../../../components/tables/tableUtils";
+import { ButtonBar } from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
-import {fromNow, human_span} from "../../../../helpers/utility";
-import {RepositoryLink} from "../../../shared/navigation/repositoryLink";
-import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
+import { fromNow, human_span } from "../../../../helpers/utility";
+import { RepositoryLink } from "../../../shared/navigation/repositoryLink";
+import { getActivityLevelFromDate } from "../../../shared/helpers/activityLevel";
 import { Highlighter } from "../../../../components/misc/highlighter";
-import { AvgLeadTime, Traceability } from "../flowStatistics/flowStatistics";
-import { renderMetric } from "../../../../components/misc/statistic/statistic";
+import { AvgLeadTime, TotalCommits, Traceability } from "../flowStatistics/flowStatistics";
+import { renderMetric, TrendMetric } from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (
     text && (
       <RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
-        <span style={{cursor: "pointer"}}>
+        <span style={{ cursor: "pointer" }}>
           <Highlighter
-            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+            highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
             searchWords={searchText || ""}
             textToHighlight={text.toString()}
           />
@@ -27,68 +27,99 @@ function customNameRender(text, record, searchText) {
   );
 }
 
-export function useRepositoriesTableColumns({statusTypes, days}) {
-  const nameSearchState = useSearch("name", {customRender: customNameRender});
+export function useRepositoriesTableColumns({ statusTypes, days }) {
+  const nameSearchState = useSearch("name", { customRender: customNameRender });
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "8%",
-      ...nameSearchState,
+      title: "",
+      children: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+          width: "8%",
+          ...nameSearchState
+        }
+      ]
     },
     {
-      title: "Status",
-      dataIndex: "latestCommit",
-      key: "activityProfile",
-      width: "5%",
-      filters: statusTypes.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => getActivityLevelFromDate(record.latestCommit).display_name.indexOf(value)===0,
-      render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
+      title: "",
+      children: [
+        {
+          title: "Status",
+          dataIndex: "latestCommit",
+          key: "activityProfile",
+          width: "5%",
+          filters: statusTypes.map((b) => ({ text: b, value: b })),
+          onFilter: (value, record) => getActivityLevelFromDate(record.latestCommit).display_name.indexOf(value) === 0,
+          render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name
+        }
+      ]
     },
+
     {
-      title:  <span>Active Contributors</span>,
-      dataIndex: "contributorCount",
-      key: "contributorCount",
-      width: "8%",
-      render: renderMetric,
-      sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
-    },
-    {
-      title: <span>Traceability<sup> {`Last  ${days} days`}</sup></span>,
-      dataIndex: "traceabilityTrends",
-      key: "traceabilityTrends",
-      width: "10%",
-      sorter: (a, b) => {
-        return SORTER.number_compare(b.traceabilityTrends?.[0]?.traceability, a.traceabilityTrends?.[0]?.traceability)
-      },
-      render: (text, record) => {
+      title: (
+        <span>
+          Activity <sup>Last {days} Days</sup>
+        </span>
+      ),
+      children: [
+        {
+          title: <span>Contributors</span>,
+          dataIndex: "contributorCount",
+          key: "contributorCount",
+          width: "8%",
+          render: renderMetric,
+          sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount)
+        },
+        {
+          title: <span>Commits</span>,
+          dataIndex: "traceabilityTrends",
+          key: "totalCommits",
+          width: "10%",
+          sorter: (a, b) => {
+            return SORTER.number_compare(b.traceabilityTrends?.[0]?.totalCommits, a.traceabilityTrends?.[0]?.totalCommits);
+          },
+          render: (text, record) => {
+            return (
+              <TotalCommits
+                current={record.traceabilityTrends?.[0]}
+                previous={record.traceabilityTrends?.[1]}
+                displayType={"cellrender"}
+              />
+            );
+          }
+        },
+        {
+          title: <span>Traceability</span>,
+          dataIndex: "traceabilityTrends",
+          key: "traceabilityTrends",
+          width: "10%",
+          sorter: (a, b) => {
+            return SORTER.number_compare(b.traceabilityTrends?.[0]?.traceability, a.traceabilityTrends?.[0]?.traceability);
+          },
+          render: (text, record) => {
             return (
               <Traceability
                 current={record.traceabilityTrends?.[0]}
                 previous={record.traceabilityTrends?.[1]}
-                displayType={'cellrender'}
+                displayType={"cellrender"}
               />
             );
-          },
-    },
-    {
-      title: "Total Commits",
-      dataIndex: "commitCount",
-      key: "commitCount",
-      width: "6%",
-      sorter: (a, b) => SORTER.number_compare(a.commitCount, b.commitCount),
-    },
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommit",
-      key: "latestCommit",
-      width: "8%",
-      sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
-      render: (latestCommit) => fromNow(latestCommit),
-    },
+          }
+        },
 
+        {
+          title: "Latest Commit",
+          dataIndex: "latestCommit",
+          key: "latestCommit",
+          width: "8%",
+          sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
+          render: (latestCommit) => fromNow(latestCommit)
+        }
+      ]
+    },
 
     {
       title: "",
@@ -104,16 +135,16 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
             </Button>
           </RepositoryLink>
         </ButtonBar>
-      ),
-    },
+      )
+    }
   ];
 
   return columns;
 }
 
-export function RepositoriesTable({tableData, days, loading}) {
+export function RepositoriesTable({ tableData, days, loading }) {
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
-  const columns = useRepositoriesTableColumns({statusTypes, days});
+  const columns = useRepositoriesTableColumns({ statusTypes, days });
 
   return (
     <StripeTable
@@ -126,8 +157,8 @@ export function RepositoriesTable({tableData, days, loading}) {
   );
 }
 
-export const RepositoriesTableWidget = ({dimension, instanceKey, days=30}) => {
-  const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days});
+export const RepositoriesTableWidget = ({ dimension, instanceKey, days = 30 }) => {
+  const { loading, error, data } = useQueryRepositories({ dimension, instanceKey, days });
 
   if (error) return null;
 
