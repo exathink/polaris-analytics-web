@@ -6,7 +6,12 @@ query dimensionRepositories($instanceKey: String!, $days: Int!) {
   ${dimension}(key: $instanceKey) {
       id
       repositories (
-        interfaces: [CommitSummary, ContributorCount], 
+        interfaces: [CommitSummary, ContributorCount, TraceabilityTrends], 
+        traceabilityTrendsArgs: {
+          measurementWindow: $days, 
+          days:$days, 
+          samplingFrequency: $days
+        }, 
         contributorCountDays: $days
         ){
             count
@@ -20,6 +25,14 @@ query dimensionRepositories($instanceKey: String!, $days: Int!) {
                     latestCommit
                     commitCount
                     contributorCount
+                    traceabilityTrends {
+                      measurementDate
+                      measurementWindow
+                      traceability
+                      specCount
+                      nospecCount
+                      totalCommits
+                    }
                 }
             }
         }
