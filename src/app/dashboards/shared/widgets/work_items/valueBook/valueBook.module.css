@@ -25,10 +25,6 @@
   margin-bottom: 20px;
 }
 
-.implementationSave {
-  margin-right: 10px;
-}
-
 .editRecordsTitle {
   grid-area: editRecordsTitle;
   min-height: 20px;
@@ -37,9 +33,7 @@
   justify-content: flex-end;
   margin-top: 10px;
 }
-.rangeSliderWrapper {
-  width: 90%;
-}
+
 .epicEffortChart{
   grid-area: epicEffortChart;
   padding: 0.25rem;
@@ -57,10 +51,6 @@
   display: flex;
   align-items: center;
   margin-top: 15px;
-}
-
-.cardInspectorPanel{
-  visibility: hidden;
 }
 
 .clearButton {

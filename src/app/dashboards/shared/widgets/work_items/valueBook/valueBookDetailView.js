@@ -160,7 +160,7 @@ export function ValueBookDetailView({
         <>
           <Button
             onClick={handleSaveClick}
-            className={styles.implementationSave}
+            className={"tw-mr-2"}
             type="primary"
             size="small"
             shape="round"
@@ -244,7 +244,7 @@ export function ValueBookDetailView({
           rowClassName={getRowClassName}
         />
       </div>
-      <div className={styles.cardInspectorPanel}>
+      <div className="tw-invisible">
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           showPanel={showPanel}
