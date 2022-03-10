@@ -7,7 +7,6 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tabl
 import {getNumber} from "../../../../../helpers/utility";
 import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
-import { projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -98,7 +97,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: "CARD",
       dataIndex: "name",
       key: "name",
-      filters: filters.epicNames.map(b => ({text: b, value: b})),
+      filters: filters.epicNames.map((b) => ({text: b, value: b})),
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
@@ -149,21 +148,25 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
+      title: stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age      ",
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
-      ...(selectedMetric==="leadTimeOrAge" ? {defaultFilteredValue: [selectedFilter]} : {}),
+      ...(selectedMetric === "leadTimeOrAge"
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
-      ...metricRenderState
+      ...metricRenderState,
     },
     {
-      title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
+      title: stateType === WorkItemStateTypes.closed ? "Cycle Time" : "Latency       ",
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
-      ...(selectedMetric==="cycleTimeOrLatency"? {defaultFilteredValue: [selectedFilter]} : {}),
+      ...(selectedMetric === "cycleTimeOrLatency"
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
       width: "5%",
@@ -182,12 +185,12 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
-      ...(selectedMetric==="effort" ? {defaultFilteredValue: [selectedFilter]} : {}),
+      ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       width: "5%",
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "effort"),
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...effortRenderState
+      ...effortRenderState,
     },
     {
       title: "Latest Commit",

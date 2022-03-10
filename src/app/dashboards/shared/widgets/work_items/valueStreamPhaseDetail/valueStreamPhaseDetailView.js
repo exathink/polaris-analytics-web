@@ -44,8 +44,8 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
-  const [selectedFilter, setFilter] = React.useState("")
-  const [selectedMetric, setSelectedMetric] = React.useState("") 
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [selectedMetric, setSelectedMetric] = React.useState("");
 
   const filteredWorkItemsBySource = React.useMemo(
     () =>
@@ -122,6 +122,13 @@ const PhaseDetailView = ({
     ) || stateTypes[0]
   );
   const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
+
+  // reset table filters on tab change back to histogram view
+  React.useEffect(() => {
+    if (selectedGrouping === "responseTime") {
+      setFilter(null);
+    }
+  }, [selectedGrouping]);
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
