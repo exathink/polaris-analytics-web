@@ -4,12 +4,12 @@ import { useSearch } from "../../../../components/tables/hooks";
 import { SORTER, StripeTable, TABLE_HEIGHTS } from "../../../../components/tables/tableUtils";
 import { ButtonBar } from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
-import { fromNow, human_span } from "../../../../helpers/utility";
+import { fromNow } from "../../../../helpers/utility";
 import { RepositoryLink } from "../../../shared/navigation/repositoryLink";
 import { getActivityLevelFromDate } from "../../../shared/helpers/activityLevel";
 import { Highlighter } from "../../../../components/misc/highlighter";
-import { AvgLeadTime, TotalCommits, Traceability } from "../flowStatistics/flowStatistics";
-import { renderMetric, TrendMetric } from "../../../../components/misc/statistic/statistic";
+import { TotalCommits, Traceability } from "../flowStatistics/flowStatistics";
+import { renderMetric } from "../../../../components/misc/statistic/statistic";
 
 function customNameRender(text, record, searchText) {
   return (text && (<RepositoryLink repositoryName={record.name} repositoryKey={record.key}>

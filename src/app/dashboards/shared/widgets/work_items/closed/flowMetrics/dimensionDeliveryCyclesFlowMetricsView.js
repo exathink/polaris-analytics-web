@@ -1,6 +1,5 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {FlowMetricsScatterPlotChart} from "../../../../charts/flowMetricCharts/flowMetricsScatterPlotChart";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
