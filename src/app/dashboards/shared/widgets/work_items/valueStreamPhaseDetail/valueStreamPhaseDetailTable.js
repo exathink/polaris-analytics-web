@@ -7,6 +7,7 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tabl
 import {getNumber} from "../../../../../helpers/utility";
 import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
+import { projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
 
 function getLeadTimeOrAge(item, intl) {
   return item.stateType === WorkItemStateTypes.closed
@@ -61,7 +62,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 
 
 
-export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
+export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric}) {
   // const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
@@ -151,6 +152,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
+      ...(selectedMetric==="leadTimeOrAge" ? {defaultFilteredValue: [selectedFilter]} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
       width: "5%",
@@ -161,6 +163,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
+      ...(selectedMetric==="cycleTimeOrLatency"? {defaultFilteredValue: [selectedFilter]} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
       width: "5%",
@@ -179,6 +182,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
+      ...(selectedMetric==="effort" ? {defaultFilteredValue: [selectedFilter]} : {}),
       width: "5%",
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "effort"),
@@ -198,13 +202,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries, selectedFilter, selectedMetric}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-  const categories = getHistogramCategories(colWidthBoundaries);
+
+  const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "dev-days" : "days");
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
 
@@ -214,6 +219,8 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableDa
     filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
+    selectedFilter,
+    selectedMetric
   });
 
   return (

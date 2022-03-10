@@ -214,6 +214,8 @@ const PhaseDetailView = ({
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              selectedFilter={selectedFilter}
+              selectedMetric={selectedMetric}
             />
           )}
         </VizItem>
