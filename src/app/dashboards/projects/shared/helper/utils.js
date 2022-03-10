@@ -58,6 +58,7 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMe
 
   return {
     name: name || metricsMeta[selectedMetric].display,
+    id: selectedMetric,
     data: data,
     ...optionalProps,
     dataLabels: {
