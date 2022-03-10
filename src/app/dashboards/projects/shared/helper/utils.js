@@ -22,9 +22,7 @@ export function allPairs(arr) {
   return [[0, min], ...res, [max, Infinity]];
 }
 
-export function getHistogramCategories(colWidthBoundaries, selectedMetric, metricsMeta) {
-
-  const uom = selectedMetric != null ? metricsMeta[selectedMetric].uom : 'days';
+export function getHistogramCategories(colWidthBoundaries, uom) {
   const res = pairwise(colWidthBoundaries);
   const [min, max] = [res[0][0], res[res.length - 1][1]];
   const middle = res.map((x) => `${x[0]} - ${x[1]} ${uom}`);
@@ -33,7 +31,7 @@ export function getHistogramCategories(colWidthBoundaries, selectedMetric, metri
   return [start, ...middle, end];
 }
 
-export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMetric, metricsMeta, color, visible, name=null}) {
+export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id}) {
   const allPairsData = allPairs(colWidthBoundaries);
   const data = new Array(allPairsData.length).fill({y: 0, total: 0});
   points.forEach((y) => {
@@ -57,8 +55,8 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, selectedMe
   }
 
   return {
-    name: name || metricsMeta[selectedMetric].display,
-    id: selectedMetric,
+    id: id,
+    name: name,
     data: data,
     ...optionalProps,
     dataLabels: {

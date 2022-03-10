@@ -242,7 +242,7 @@ export const FlowMetricsDetailTable = injectIntl(({tableData, intl, setShowPanel
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
   const states = [...new Set(tableData.map((x) => x.state))];
-  const categories = getHistogramCategories(colWidthBoundaries);
+  const categories = getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom);
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
   const columns = useFlowMetricsDetailTableColumns({workItemTypes, teams, states, categories, allPairsData, epicNames}, {setShowPanel, setWorkItemKey}, selectedMetric);
