@@ -61,7 +61,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 
 
 
-export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl}) {
+export function useValueStreamPhaseDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric}) {
   // const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
@@ -97,7 +97,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: "CARD",
       dataIndex: "name",
       key: "name",
-      filters: filters.epicNames.map(b => ({text: b, value: b})),
+      filters: filters.epicNames.map((b) => ({text: b, value: b})),
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
@@ -148,19 +148,25 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: stateType === WorkItemStateTypes.closed ? 'Lead Time' : 'Age      ',
+      title: stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age      ",
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
+      ...(selectedMetric === "leadTimeOrAge"
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
-      ...metricRenderState
+      ...metricRenderState,
     },
     {
-      title: stateType === WorkItemStateTypes.closed ? 'Cycle Time' : 'Latency       ',
+      title: stateType === WorkItemStateTypes.closed ? "Cycle Time" : "Latency       ",
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
+      ...(selectedMetric === "cycleTimeOrLatency"
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
       width: "5%",
@@ -179,11 +185,12 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
       title: "Effort",
       dataIndex: "effort",
       key: "effort",
+      ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       width: "5%",
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "effort"),
       sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...effortRenderState
+      ...effortRenderState,
     },
     {
       title: "Latest Commit",
@@ -198,13 +205,14 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   return columns;
 }
 
-export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries}) => {
+export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableData, intl, setShowPanel, setWorkItemKey, colWidthBoundaries, selectedFilter, selectedMetric}) => {
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-  const categories = getHistogramCategories(colWidthBoundaries);
+
+  const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "dev-days" : "days");
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
 
@@ -214,6 +222,8 @@ export const ValueStreamPhaseDetailTable = injectIntl(({view, stateType, tableDa
     filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
+    selectedFilter,
+    selectedMetric
   });
 
   return (

@@ -44,6 +44,8 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [selectedMetric, setSelectedMetric] = React.useState("");
 
   const filteredWorkItemsBySource = React.useMemo(
     () =>
@@ -121,6 +123,13 @@ const PhaseDetailView = ({
   );
   const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
 
+  // reset table filters on tab change back to histogram view
+  React.useEffect(() => {
+    if (selectedGrouping === "responseTime") {
+      setFilter(null);
+    }
+  }, [selectedGrouping]);
+
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
       return workItemsByStateType[selectedStateType].filter((w) => {
@@ -154,7 +163,7 @@ const PhaseDetailView = ({
                   display: WorkItemStateTypeDisplayName[stateType],
                   style: {
                     backgroundColor: WorkItemStateTypeColor[stateType],
-                    color: '#ffffff',
+                    color: "#ffffff",
                   },
                 }))}
                 initialValue={selectedStateType}
@@ -179,12 +188,12 @@ const PhaseDetailView = ({
                   groupings={[
                     {key: "responseTime", display: `Histogram`},
                     {key: "table", display: "Card Detail"},
-
                   ].map((item) => ({
                     key: item.key,
                     display: item.display,
                   }))}
                   initialValue={selectedGrouping}
+                  value={selectedGrouping}
                   onGroupingChanged={setSelectedGrouping}
                 />
               </div>
@@ -196,7 +205,12 @@ const PhaseDetailView = ({
               workItems={candidateWorkItems}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-              specsOnly={workItemScope==="specs"}
+              specsOnly={workItemScope === "specs"}
+              onPointClick={({category, selectedMetric}) => {
+                setSelectedMetric(selectedMetric);
+                setFilter(category);
+                setSelectedGrouping("table");
+              }}
             />
           )}
           {selectedGrouping === "table" && (
@@ -207,6 +221,8 @@ const PhaseDetailView = ({
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              selectedFilter={selectedFilter}
+              selectedMetric={selectedMetric}
             />
           )}
         </VizItem>

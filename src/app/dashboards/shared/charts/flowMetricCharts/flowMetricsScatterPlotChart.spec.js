@@ -59,7 +59,7 @@ const fixedChartConfig = {
   yAxis: {
     id: "cycle-metric",
     title: {
-      text: `Days`,
+      text: `days`,
     },
   },
   tooltip: {
@@ -904,7 +904,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       yAxis: {
         ...fixedChartConfig.yAxis,
         title: {
-          text: "Dev-Days",
+          text: "dev-days",
         },
         plotLines: [],
       },
@@ -928,7 +928,7 @@ describe("FlowMetricsScatterPlotChart", () => {
       yAxis: {
         ...fixedChartConfig.yAxis,
         title: {
-          text: "Authors",
+          text: "authors",
         },
         plotLines: [],
       },
