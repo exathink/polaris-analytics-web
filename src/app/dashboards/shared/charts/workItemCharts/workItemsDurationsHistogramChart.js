@@ -95,7 +95,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
-              [`Cards: `, `${this.point.y}`],
+              [specsOnly ? `Specs: ` : `Cards: `, `${this.point.y}`],
               [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
