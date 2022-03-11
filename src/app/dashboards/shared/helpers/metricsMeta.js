@@ -3,41 +3,41 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Lead Time",
     value: (cycle) => cycle.leadTime,
     targetMetric: 'leadTime',
-    uom: 'Days',
+    uom: 'days',
   },
   cycleTime: {
     display: "Cycle Time",
     value: (cycle) => cycle.cycleTime,
     targetMetric: 'cycleTime',
-    uom: 'Days',
+    uom: 'days',
   },
   duration: {
     display: "Coding Time",
     value: (cycle) => cycle.duration,
     targetMetric: 'cycleTime',
-    uom: 'Days',
+    uom: 'days',
   },
   latency: {
     display: "Time to Deliver",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
-    uom: 'Days',
+    uom: 'days',
   },
   effort: {
     display: "Coding Effort",
     value: (cycle) => cycle.effort,
-    uom: 'Dev-Days',
+    uom: 'dev-days',
   },
   authors: {
     display: "Authors",
     value: (cycle) => cycle.authorCount,
-    uom: 'Authors',
+    uom: 'authors',
   },
   backlogTime: {
     display: "Define Time",
     value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
     targetMetric: 'leadTime',
-    uom: 'Days',
+    uom: 'days',
   },
 
   getTargetsAndConfidence: (selectedMetric, targetMetrics) => {

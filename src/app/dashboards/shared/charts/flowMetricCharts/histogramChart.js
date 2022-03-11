@@ -18,7 +18,7 @@ export const DeliveryCyclesHistogramChart = Chart({
 
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
 
-    const seriesObj = getHistogramSeries({intl, colWidthBoundaries, selectedMetric, points, metricsMeta, color: ResponseTimeMetricsColor[selectedMetric]});
+    const seriesObj = getHistogramSeries({id: selectedMetric,intl, colWidthBoundaries, name: metricsMeta[selectedMetric].display, points, color: ResponseTimeMetricsColor[selectedMetric]});
     return {
       chart: {
         type: "column",
@@ -45,7 +45,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         title: {
           text: metricsMeta[selectedMetric].display,
         },
-        categories: getHistogramCategories(colWidthBoundaries, selectedMetric, metricsMeta),
+        categories: getHistogramCategories(colWidthBoundaries, metricsMeta[selectedMetric].uom),
         crosshair: true,
       },
 
