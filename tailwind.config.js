@@ -21,6 +21,11 @@ module.exports = {
         200: colors.gray["300"],
         300: colors.gray["500"],
       },
+      blue: {
+        100: colors.sky["300"],
+        200: colors.sky["500"],
+        300: colors.sky["900"],
+      }
     }),
     fontSize: {
       xs: ["0.75rem", {lineHeight: "1rem"}],
