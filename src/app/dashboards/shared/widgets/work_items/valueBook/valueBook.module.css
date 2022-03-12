@@ -25,10 +25,6 @@
   margin-bottom: 20px;
 }
 
-.implementationSave {
-  margin-right: 10px;
-}
-
 .editRecordsTitle {
   grid-area: editRecordsTitle;
   min-height: 20px;
@@ -37,9 +33,7 @@
   justify-content: flex-end;
   margin-top: 10px;
 }
-.rangeSliderWrapper {
-  width: 90%;
-}
+
 .epicEffortChart{
   grid-area: epicEffortChart;
   padding: 0.25rem;
@@ -59,18 +53,9 @@
   margin-top: 15px;
 }
 
-.cardInspectorPanel{
-  visibility: hidden;
-}
-
 .clearButton {
   grid-area: clearButton;
   justify-self: center;
   align-self: flex-start;
   margin-top: 0.5rem;
-}
-
-:global([data-testid="implementation-cost-table"]) :global(table) :global(thead) :global(th){
-  border-right: 1px solid #f0f0f0;
-  border-bottom: 1px solid #f0f0f0 !important;
 }

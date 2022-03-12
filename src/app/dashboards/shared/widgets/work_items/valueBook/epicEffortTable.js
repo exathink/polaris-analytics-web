@@ -104,7 +104,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
                   onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
                   type="number"
                 />
-                <div className="textXs">dev-days</div>
+                <div className="tw-textXs">dev-days</div>
               </div>
             );
           },
@@ -223,7 +223,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
       if (record.key === UncategorizedKey) {
         return null;
       } else {
-        return <span className="textXs">{text}</span>;
+        return <span className="tw-textXs">{text}</span>;
       }
     }
     return (
@@ -234,7 +234,7 @@ function customColRender({setShowPanel, setWorkItemKey}) {
             setWorkItemKey(record.key);
           }}
           style={{cursor: "pointer"}}
-          className="textXs"
+          className="tw-textXs"
         >
           {text}
         </span>
@@ -251,8 +251,8 @@ function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
       } else {
         return (
           <div>
-            <div className="textSm fontSemibold">{text}</div>
-            <div className="textXs">{uom}</div>
+            <div className="tw-textSm tw-font-medium">{text}</div>
+            <div className="tw-textXs">{uom}</div>
           </div>
         );
       }
@@ -266,8 +266,8 @@ function customColRenderWithDays({setShowPanel, setWorkItemKey}, uom) {
           }}
           style={{cursor: "pointer"}}
         >
-          <div className="textSm fontSemibold">{text}</div>
-          <div className="textXs">{uom}</div>
+          <div className="tw-textSm tw-font-medium">{text}</div>
+          <div className="tw-textXs">{uom}</div>
         </div>
       )
     );
@@ -290,7 +290,7 @@ function customColTitleRender({setShowPanel, setWorkItemKey}) {
 function unCatColRender({setShowPanel, setWorkItemKey}) {
   return (text, record, searchText) => {
     if (record.type === "epic") {
-      return <span className="textXs">{text}</span>;
+      return <span className="tw-textXs">{text}</span>;
     }
     return (
       text && (
@@ -300,7 +300,7 @@ function unCatColRender({setShowPanel, setWorkItemKey}) {
             setWorkItemKey(record.key);
           }}
           style={{cursor: "pointer"}}
-          className="textXs"
+          className="tw-textXs"
         >
           {text}
         </span>

@@ -15,7 +15,7 @@ function customNameRender(text, record, searchText) {
   return (
     text && (
       <TeamLink teamName={record.name} teamKey={record.key}>
-        <span style={{cursor: "pointer"}} className="textSm">
+        <span style={{cursor: "pointer"}} className="tw-textSm">
           <Highlighter
             highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
             searchWords={searchText || ""}
@@ -195,7 +195,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "latestCommit",
       key: "latestCommit",
       width: "7%",
-      render: (name, record) => <span className="textSm">{fromNow(record.latestCommit)}</span>,
+      render: (name, record) => <span className="tw-textSm">{fromNow(record.latestCommit)}</span>,
     },
     {
       title: "",

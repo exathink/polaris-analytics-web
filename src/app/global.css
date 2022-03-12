@@ -171,41 +171,12 @@ html[dir='rtl'] .hidden {
   display: none
 }
 
-.textXs {
-  font-size: 0.75rem /* 12px */;
-  line-height: 1rem /* 16px */;
-  color: rgb(107 114 128 / 1);
-  font-weight: 500;
+/* fix css issue, that got introduced by antd upgrade, by overriding */
+.ant-table-thead > tr > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+  background-color: transparent !important;
 }
 
-.textSm {
-  font-size: 0.875rem/* 14px */;
-  line-height: 1.25rem/* 20px */;
-  color: rgb(107 114 128 / 1);
-  font-weight: 400;
-}
-
-.fontSemibold {
-  font-weight: 500;
-}
-
-.textNormal {
-  font-size: 1.2rem/* 14px */;
-  line-height: 1.3rem/* 20px */;
-  color: rgb(107 114 128 / 1);
-  font-weight: 400;
-}
-
-.textXl {
-  font-size: 1.25rem/* 20px */;
-  line-height: 1.75rem/* 28px */;
-  color: rgb(107 114 128 / 1);
-  font-weight: 400;
-}
-
-.text2Xl {
-  font-size: 1.875rem/* 30px */;
-  line-height: 2.25rem/* 36px */;
-  color: rgb(12 74 110 / 1);
-  font-weight: 400;
+table thead th {
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0 !important;
 }

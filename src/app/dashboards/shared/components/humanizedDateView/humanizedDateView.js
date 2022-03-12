@@ -41,7 +41,7 @@ export class HumanizedDateView extends React.Component {
         <Statistic
               title={this.props.title}
               value={' '}
-              prefix={<span className={"textNormal"}>{this.state.text}</span>}
+              prefix={<span className={"tw-textBase"}>{this.state.text}</span>}
               precision={0}
               valueStyle={{ color: '#3f8600'}}
               formatter={value => <span>{value}</span>}

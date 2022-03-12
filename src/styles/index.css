@@ -1,0 +1,31 @@
+/* ! TAILWIND_BASE */
+@tailwind base;
+/* ! END_TAILWIND_BASE */
+
+/* ! TAILWIND_COMPONENTS */
+@tailwind components;
+/* ! END_TAILWIND_COMPONENTS */
+
+/* ! TAILWIND_UTILITIES */
+@tailwind utilities;
+/* ! END_TAILWIND_UTILITIES */
+
+@layer components {
+  /* ! TAILWIND_CUSTOM_COMPONENTS */
+  .tw-textXs {
+    @apply tw-text-xs tw-font-medium tw-text-gray-300;
+  }
+  .tw-textSm {
+    @apply tw-text-sm tw-font-normal tw-text-gray-300;
+  }
+  .tw-textXl {
+    @apply tw-text-xl tw-font-normal tw-text-gray-300;
+  }
+  .tw-text3Xl {
+    @apply tw-text-3xl tw-font-normal tw-text-blue-300;
+  }
+  .tw-textBase {
+    @apply tw-text-base tw-font-normal tw-text-gray-300;
+  }
+  /* ! END_TAILWIND_CUSTOM_COMPONENTS */
+}

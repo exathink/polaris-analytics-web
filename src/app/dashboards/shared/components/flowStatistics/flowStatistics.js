@@ -475,7 +475,7 @@ export const PercentileLeadTime = ({title, currentMeasurement, previousMeasureme
 export const ContributorCount = ({title, contributorCount}) => (
   <Statistic
     title={title || 'Contributors'}
-    formatter={value => <span className="textXl">{value}</span>}
+    formatter={value => <span className="tw-textXl">{value}</span>}
     value={contributorCount}
     precision={0}
     valueStyle={{color: TrendColors.good}}
@@ -855,7 +855,7 @@ export const TraceabilityTarget = ({title, target}) => (
   <Statistic
     title={'Target'}
     value={target * 100}
-    formatter={value => <span className="textSm">{value}</span>}
+    formatter={value => <span className="tw-textSm">{value}</span>}
     precision={0}
     valueStyle={{color: TrendColors.good}}
     suffix={'%'}
