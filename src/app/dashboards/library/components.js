@@ -1,23 +1,21 @@
-import styles from "./components.module.css";
 import {Card} from "antd";
 import {PlayCircleOutlined} from "@ant-design/icons";
 import {withRouter} from "react-router";
 import {truncateString} from "../../helpers/utility";
-import cn from "classnames";
 
 const {Meta} = Card;
 
 export const VideoDetailView = withRouter(({match, getSelectedVideoUrl, fullScreen}) => {
   const videoUrl = getSelectedVideoUrl(match.params.selected);
   return (
-    <div className={fullScreen ? styles.fullScreenDetailViewWrapper : styles.detailViewWrapper}>
-        <iframe
-          title="video-guidance"
-          src={videoUrl}
-          allow={"fullscreen"}
-          frameBorder="0"
-          style={{width: "100%", height: "100%"}}
-        ></iframe>
+    <div className={fullScreen ? "tw-w-full tw-h-[98%]" : "tw-w-full tw-h-[95%]"}>
+      <iframe
+        title="video-guidance"
+        src={videoUrl}
+        allow={"fullscreen"}
+        frameBorder="0"
+        style={{width: "100%", height: "100%"}}
+      ></iframe>
     </div>
   );
 });
@@ -28,10 +26,10 @@ export const VideoCard = ({name, description, thumbnail, onCardClick}) => {
       hoverable
       style={{width: 290, objectFit: "cover", borderRadius: "5px", overflow: "hidden"}}
       cover={
-        <div style={{position: "relative"}}>
+        <div className="tw-relative">
           <img alt="example" src={thumbnail} style={{width: 290, height: 180, objectFit: "cover"}} />
-          <div className={cn("text2Xl", styles.imgTextWrapper)}>
-            <div className={styles.imgText}>
+          <div className="tw-text3Xl tw-absolute tw-top-1/4 tw-left-auto tw-w-full tw-text-center">
+            <div className="tw-flex tw-flex-col tw-items-center tw-justify-center">
               {name.split(" ").map((x) => (
                 <div>{x}</div>
               ))}

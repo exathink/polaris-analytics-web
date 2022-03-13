@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import PolarisFlowApp from "./polarisFlow";
+import "./styles/index.css";
 import "antd/dist/antd.css";
 
 ReactDOM.render(

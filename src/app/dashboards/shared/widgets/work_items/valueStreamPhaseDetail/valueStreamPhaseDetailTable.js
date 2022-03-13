@@ -65,9 +65,9 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   // const nameSearchState = useSearch("displayId", {customRender});
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)}
-  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "textXs"})}
-  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "textXs"})}
-  const renderState = {render: customColumnRender({...callBacks, className: "textXs"})};
+  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "tw-textXs"})}
+  const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
   function testMetric(value, record, metric) {
