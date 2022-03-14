@@ -1,7 +1,7 @@
 .workItemStateDetailsControlWrapper {
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 32% 32% 35%;
+    grid-template-columns: 28% 36% 35%;
     grid-template-areas:
     "leftControls phaseSelector rightControls";
     margin-bottom: 5px;

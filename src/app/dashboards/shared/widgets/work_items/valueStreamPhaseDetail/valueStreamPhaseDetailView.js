@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import Button from "../../../../../../components/uielements/button";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
@@ -13,6 +14,7 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 const {Option} = Select;
@@ -121,7 +123,9 @@ const PhaseDetailView = ({
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
-  const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
+
+  const defaultSelectedGrouping = "responseTime";
+  const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
@@ -137,6 +141,20 @@ const PhaseDetailView = ({
       return [];
     }
   }, [selectedStateType, workItemsByStateType, selectedTeam]);
+
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+
+  React.useEffect(() => {
+    if (selectedFilter === null) {
+      setSelectedGrouping(defaultSelectedGrouping);
+    }
+  }, [selectedFilter]);
+
+  function handleClearClick() {
+    // clear bucket and clear series
+    setFilter(null);
+    resetComponentState();
+  }
 
   if (selectedStateType != null) {
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
@@ -162,6 +180,22 @@ const PhaseDetailView = ({
                 initialValue={selectedStateType}
                 onGroupingChanged={setSelectedStateType}
               />
+        
+              <div className="tw-ml-4 tw-flex tw-flex-col tw-items-center tw-justify-start">
+                {selectedFilter && (
+                  <div className="tw-textXs">
+                    <span>selected bucket:</span>
+                    {selectedFilter}
+                  </div>
+                )}
+                <div>
+                  {selectedFilter != null && (
+                    <Button onClick={handleClearClick} type="default" size="small" shape="round">
+                      clear filters
+                    </Button>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className={"rightControls"}>
@@ -195,6 +229,7 @@ const PhaseDetailView = ({
 
           <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
             <WorkItemsDurationsHistogramChart
+              key={resetComponentStateKey}
               stateType={selectedStateType}
               workItems={candidateWorkItems}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
@@ -210,6 +245,7 @@ const PhaseDetailView = ({
 
           {selectedGrouping === "table" && (
             <ValueStreamPhaseDetailTable
+              key={resetComponentStateKey}
               view={view}
               stateType={selectedStateType}
               tableData={workItemsWithAggregateDurations}
