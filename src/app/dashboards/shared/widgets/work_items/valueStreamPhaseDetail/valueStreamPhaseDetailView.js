@@ -199,7 +199,8 @@ const PhaseDetailView = ({
               </div>
             </div>
           </div>
-          {selectedGrouping !== "table" && (
+
+          <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
             <WorkItemsDurationsHistogramChart
               stateType={selectedStateType}
               workItems={candidateWorkItems}
@@ -212,7 +213,8 @@ const PhaseDetailView = ({
                 setSelectedGrouping("table");
               }}
             />
-          )}
+          </div>
+
           {selectedGrouping === "table" && (
             <ValueStreamPhaseDetailTable
               view={view}
