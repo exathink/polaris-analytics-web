@@ -3,12 +3,12 @@ import Button from "../../../../../../components/uielements/button";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {ResponseTimeMetricsColor, WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {getUniqItems} from "../../../../../helpers/utility";
-import {Alert, Select} from "antd";
+import {Alert, Select, Tag} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
@@ -16,6 +16,24 @@ import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
+function getActualMetric(selectedMetric, selectedStateType) {
+  if (selectedMetric === "leadTimeOrAge") {
+    if (selectedStateType === "closed") {
+      return "leadTime";
+    } else {
+      return "cycleTime";
+    }
+  }
+  if (selectedMetric === "cycleTimeOrLatency") {
+    if (selectedStateType === "closed") {
+      return "cycleTime";
+    } else {
+      return "latency";
+    }
+  }
+  return selectedMetric;
+}
 
 const {Option} = Select;
 
@@ -180,24 +198,23 @@ const PhaseDetailView = ({
                 initialValue={selectedStateType}
                 onGroupingChanged={setSelectedStateType}
               />
-        
-              <div className="tw-ml-4 tw-flex tw-flex-col tw-items-center tw-justify-start">
-                {selectedFilter && (
-                  <div className="tw-textXs">
-                    <span>selected bucket:</span>
+            </div>
+            <div className="filterControls tw-flex tw-flex-col tw-items-center tw-justify-center">
+              {selectedFilter && (
+                <div className="tw-textXs">
+                  <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
                     {selectedFilter}
-                  </div>
-                )}
-                <div>
-                  {selectedFilter != null && (
-                    <Button onClick={handleClearClick} type="default" size="small" shape="round">
-                      clear filters
-                    </Button>
-                  )}
+                  </Tag>
                 </div>
+              )}
+              <div className="tw-mt-1">
+                {selectedFilter != null && (
+                  <Button onClick={handleClearClick} type="default" size="small" shape="round">
+                    clear filters
+                  </Button>
+                )}
               </div>
             </div>
-
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
                 {workItemScopeVisible && (

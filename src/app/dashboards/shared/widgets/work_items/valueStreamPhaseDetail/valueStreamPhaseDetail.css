@@ -1,9 +1,9 @@
 .workItemStateDetailsControlWrapper {
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 28% 36% 35%;
+    grid-template-columns: 28% 28% 10% 34%;
     grid-template-areas:
-    "leftControls phaseSelector rightControls";
+    "leftControls phaseSelector filterControls rightControls";
     margin-bottom: 5px;
     align-items: center;
     justify-content: space-between;
@@ -20,6 +20,9 @@
     align-items: center;
     justify-content: center;
     grid-area: phaseSelector;
+}
+.filterControls {
+    grid-area: filterControls;
 }
 .rightControls {
     height: 100%;
