@@ -123,13 +123,6 @@ const PhaseDetailView = ({
   );
   const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
 
-  // reset table filters on tab change back to histogram view
-  React.useEffect(() => {
-    if (selectedGrouping === "responseTime") {
-      setFilter(null);
-    }
-  }, [selectedGrouping]);
-
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
       return workItemsByStateType[selectedStateType].filter((w) => {
