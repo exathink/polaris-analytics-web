@@ -71,7 +71,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         text: getChartTitle(stateType),
       },
       subtitle: {
-        text: getChartSubTitle(stateType, specsOnly)
+        text: getChartSubTitle(stateType, specsOnly),
       },
       xAxis: {
         title: {
@@ -105,13 +105,21 @@ export const WorkItemsDurationsHistogramChart = Chart({
       plotOptions: {
         series: {
           animation: false,
-          cursor: 'pointer',
+          allowPointSelect: true,
+          cursor: "pointer",
+          states: {
+            select: {
+              color: null,
+              borderWidth: 2,
+              borderColor: "Black",
+            },
+          },
           point: {
             events: {
               click: function () {
                 const category = this.category;
                 const selectedMetric = this.series.userOptions.id;
-                onPointClick({category, selectedMetric})
+                onPointClick({category, selectedMetric});
               },
             },
           },
@@ -125,22 +133,24 @@ export const WorkItemsDurationsHistogramChart = Chart({
                 return false;
               } else {
                 const currentSeries = this;
-                
+
                 // update xAxis title, as we click through different series
-                currentSeries.xAxis.setTitle({ text: currentSeries.name });
+                currentSeries.xAxis.setTitle({text: currentSeries.name});
                 // update the chart title
-                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)})
+                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)});
                 // check if the current series is effort
-                if(currentSeries.name === "Effort"){
+                if (currentSeries.name === "Effort") {
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
-                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map(x => x.replace("days", "dev-days"));
+                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map((x) =>
+                    x.replace("days", "dev-days")
+                  );
                 } else {
                   // reset xAxis categories if it has been overridden earlier
-                  if(currentSeries.xAxis.userOptions.originalCategories){
-                    currentSeries.xAxis.categories = currentSeries.xAxis.userOptions.originalCategories
+                  if (currentSeries.xAxis.userOptions.originalCategories) {
+                    currentSeries.xAxis.categories = currentSeries.xAxis.userOptions.originalCategories;
                   }
                 }
-                
+
                 // find visible series
                 const visibleSeries = series.find((x) => x.visible);
                 visibleSeries?.hide();
