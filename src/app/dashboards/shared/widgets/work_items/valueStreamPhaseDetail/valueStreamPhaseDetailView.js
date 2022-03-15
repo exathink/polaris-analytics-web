@@ -201,7 +201,10 @@ const PhaseDetailView = ({
                   },
                 }))}
                 initialValue={selectedStateType}
-                onGroupingChanged={setSelectedStateType}
+                onGroupingChanged={(stateType) => {
+                  setSelectedStateType(stateType);
+                  resetFilterAndMetric();
+                }}
                 layout="col"
               />
             </div>
