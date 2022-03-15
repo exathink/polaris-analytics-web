@@ -7,7 +7,8 @@ export const WorkItemScopeSelector = (
     workItemScope,
     setWorkItemScope,
     display,
-    className
+    className,
+    layout="row"
   }) => (
   <GroupingSelector
     label={label || 'Show'}
@@ -27,5 +28,6 @@ export const WorkItemScopeSelector = (
     initialValue={workItemScope}
     onGroupingChanged={(selected) => setWorkItemScope(selected)}
     className={className}
+    layout={layout}
   />
 );
