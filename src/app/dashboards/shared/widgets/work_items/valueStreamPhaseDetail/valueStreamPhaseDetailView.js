@@ -189,7 +189,7 @@ const PhaseDetailView = ({
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
             </div>
-            <div className={"phaseSelector"}>
+            <div className={"middleControls"}>
               <GroupingSelector
                 label={"Phase"}
                 groupings={stateTypes.map((stateType) => ({
@@ -206,11 +206,11 @@ const PhaseDetailView = ({
                   resetFilterAndMetric();
                 }}
                 layout="col"
+                className="tw-ml-4"
               />
-            </div>
-            {selectedFilter != null && (
-              <div className="filterControls tw-flex tw-items-center tw-justify-center">
-                <div className="tw-textXs tw-flex tw-flex-col tw-items-start tw-justify-center">
+              {selectedFilter != null && (
+              <div className="tw-ml-6 tw-flex tw-items-center tw-justify-center">
+                <div className="tw-textXs tw-flex tw-flex-col tw-items-start tw-justify-center tw-gap-1">
                   <div>{projectDeliveryCycleFlowMetricsMeta[(getActualMetric(selectedMetric, selectedStateType))].display}</div>
                   <div>
                     <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
@@ -223,6 +223,7 @@ const PhaseDetailView = ({
                 </div>
               </div>
             )}
+            </div>
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
                 {workItemScopeVisible && (
