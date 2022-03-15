@@ -198,6 +198,7 @@ const PhaseDetailView = ({
                 }))}
                 initialValue={selectedStateType}
                 onGroupingChanged={setSelectedStateType}
+                layout="col"
               />
             </div>
             {selectedFilter != null && (
@@ -222,6 +223,7 @@ const PhaseDetailView = ({
                     className={"specsAllSelector"}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
+                    layout="col"
                   />
                 )}
               </div>
@@ -239,6 +241,7 @@ const PhaseDetailView = ({
                   initialValue={selectedGrouping}
                   value={selectedGrouping}
                   onGroupingChanged={setSelectedGrouping}
+                  layout="col"
                 />
               </div>
             </div>
