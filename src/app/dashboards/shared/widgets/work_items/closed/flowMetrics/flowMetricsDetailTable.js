@@ -87,7 +87,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "duration"),
       width: "5%",
-      sorter: (a, b) => a.duration - b.duration,
+      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
       ...metricRenderState,
     };
   }
@@ -99,7 +99,7 @@ export function useFlowMetricsDetailTableColumns(filters, {setShowPanel, setWork
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "latency"),
       width: "5%",
-      sorter: (a, b) => a.latency - b.latency,
+      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
       ...metricRenderState,
     };
   }
