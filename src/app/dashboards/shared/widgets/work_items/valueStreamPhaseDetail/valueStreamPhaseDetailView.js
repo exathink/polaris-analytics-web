@@ -207,7 +207,7 @@ const PhaseDetailView = ({
             </div>
             {selectedFilter != null && (
               <div className="filterControls tw-flex tw-items-center tw-justify-center">
-                <div className="tw-textXs tw-flex tw-flex-col tw-items-start tw-justify-center tw-gap-1">
+                <div className="tw-textXs tw-flex tw-flex-col tw-items-start tw-justify-center">
                   <div>{projectDeliveryCycleFlowMetricsMeta[(getActualMetric(selectedMetric, selectedStateType))].display}</div>
                   <div>
                     <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
@@ -215,7 +215,7 @@ const PhaseDetailView = ({
                     </Tag>
                   </div>
                 </div>
-                <div className="tw-mt-1">
+                <div>
                   <ClearFilterIcon style={{color: ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}} onClick={handleClearClick} />
                 </div>
               </div>
