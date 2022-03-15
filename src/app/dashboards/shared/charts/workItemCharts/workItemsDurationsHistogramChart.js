@@ -21,7 +21,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly, onPointClick}) => {
+  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly, onPointClick, clearFilters}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
     const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age";
 
@@ -152,9 +152,9 @@ export const WorkItemsDurationsHistogramChart = Chart({
           },
           events: {
             legendItemClick: function () {
+              clearFilters();
               // get all the series
               var series = this.chart.series;
-
               // don't allow visible series to be hidden
               if (this.visible) {
                 return false;

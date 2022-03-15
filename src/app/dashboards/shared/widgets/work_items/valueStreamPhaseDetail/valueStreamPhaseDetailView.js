@@ -168,10 +168,14 @@ const PhaseDetailView = ({
     }
   }, [selectedFilter]);
 
-  function handleClearClick() {
+  function resetFilterAndMetric() {
     // clear bucket and clear series
     setFilter(null);
     setSelectedMetric(null);
+  }
+
+  function handleClearClick() {
+    resetFilterAndMetric();
     resetComponentState();
   }
 
@@ -260,6 +264,7 @@ const PhaseDetailView = ({
                 setFilter(category);
                 setSelectedGrouping("table");
               }}
+              clearFilters={resetFilterAndMetric}
             />
           </div>
 
