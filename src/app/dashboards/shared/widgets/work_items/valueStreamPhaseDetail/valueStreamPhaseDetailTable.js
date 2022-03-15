@@ -30,6 +30,7 @@ function getTransformedData(data, intl) {
       ...item,
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
+      latency: getNumber(item.latency, intl),
       effort: getNumber(item.effort, intl),
       duration: getNumber(item.duration, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
@@ -73,6 +74,44 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  }
+
+  let defaultOptionalCol = {
+    title: "Effort",
+    dataIndex: "effort",
+    key: "effort",
+    ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+    filters: filters.categories.map((b) => ({text: b, value: b})),
+    onFilter: (value, record) => testMetric(value, record, "effort"),
+    width: "5%",
+    sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
+    ...effortRenderState,
+  };
+  if (selectedMetric === "duration") {
+    defaultOptionalCol = {
+      title: "Coding",
+      dataIndex: "duration",
+      key: "duration",
+      ...(selectedMetric === "duration" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "duration"),
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
+      ...metricRenderState,
+    };
+  }
+  if (selectedMetric === "latency") {
+    defaultOptionalCol = {
+      title: "Delivery",
+      dataIndex: "latency",
+      key: "latency",
+      ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "latency"),
+      width: "5%",
+      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
+      ...metricRenderState,
+    };
   }
 
   const columns = [
@@ -181,17 +220,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
     //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
     //   ...renderState,
     // },
-    {
-      title: "Effort",
-      dataIndex: "effort",
-      key: "effort",
-      ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
-      width: "5%",
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "effort"),
-      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...effortRenderState,
-    },
+      defaultOptionalCol,
     {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
