@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Button from "../../../../../../components/uielements/button";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
@@ -15,6 +14,7 @@ import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import {ClearFilterIcon} from "../../../../../components/misc/customIcons";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 function getActualMetric(selectedMetric, selectedStateType) {
@@ -199,22 +199,21 @@ const PhaseDetailView = ({
                 onGroupingChanged={setSelectedStateType}
               />
             </div>
-            <div className="filterControls tw-flex tw-flex-col tw-items-center tw-justify-center">
-              {selectedFilter && (
-                <div className="tw-textXs">
-                  <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
-                    {selectedFilter}
-                  </Tag>
+            {selectedFilter != null && (
+              <div className="filterControls tw-flex tw-items-center tw-justify-center">
+                <div className="tw-textXs tw-flex tw-flex-col tw-items-start tw-justify-center tw-gap-1">
+                  <div>{projectDeliveryCycleFlowMetricsMeta[(getActualMetric(selectedMetric, selectedStateType))].display}</div>
+                  <div>
+                    <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
+                      {selectedFilter}
+                    </Tag>
+                  </div>
                 </div>
-              )}
-              <div className="tw-mt-1">
-                {selectedFilter != null && (
-                  <Button onClick={handleClearClick} type="default" size="small" shape="round">
-                    clear filters
-                  </Button>
-                )}
+                <div className="tw-mt-1">
+                  <ClearFilterIcon style={{color: ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}} onClick={handleClearClick} />
+                </div>
               </div>
-            </div>
+            )}
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
                 {workItemScopeVisible && (
