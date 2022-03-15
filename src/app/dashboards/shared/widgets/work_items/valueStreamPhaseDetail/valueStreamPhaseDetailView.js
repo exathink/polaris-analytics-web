@@ -65,7 +65,7 @@ const PhaseDetailView = ({
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
   const [selectedFilter, setFilter] = React.useState(null);
-  const [selectedMetric, setSelectedMetric] = React.useState("");
+  const [selectedMetric, setSelectedMetric] = React.useState(null);
 
   const filteredWorkItemsBySource = React.useMemo(
     () =>
@@ -171,6 +171,7 @@ const PhaseDetailView = ({
   function handleClearClick() {
     // clear bucket and clear series
     setFilter(null);
+    setSelectedMetric(null);
     resetComponentState();
   }
 
