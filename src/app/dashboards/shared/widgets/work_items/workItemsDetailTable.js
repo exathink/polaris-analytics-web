@@ -123,6 +123,27 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     };
   }
 
+  let lastCol = {};
+  if (isClosed({stateType})) {
+    lastCol = {
+      title: "Closed At",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: "6%",
+      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
+      ...renderState,
+    };
+  } else {
+    lastCol = {
+      title: "Latest Commit",
+      dataIndex: "latestCommitDisplay",
+      key: "latestCommitDisplay",
+      width: "5%",
+      sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
+      ...renderState,
+    };
+  }
+  
   const columns = [
     {
       title: "Team",
@@ -186,14 +207,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     },
     defaultOptionalCol,
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommitDisplay",
-      key: "latestCommitDisplay",
-      width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
-      ...renderState,
-    },
+    lastCol,
   ];
 
   return columns;
