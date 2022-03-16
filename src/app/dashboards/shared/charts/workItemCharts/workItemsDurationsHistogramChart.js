@@ -7,6 +7,10 @@ import {getHistogramCategories, getHistogramSeries} from "../../../projects/shar
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
+function isClosed(item) {
+  return item.stateType === WorkItemStateTypes.closed;
+}
+
 function getChartTitle(stateType, seriesName=null) {
   if (stateType !== WorkItemStateTypes.closed) {
      return `${seriesName || 'Age'} Distribution`
@@ -24,13 +28,13 @@ export const WorkItemsDurationsHistogramChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly, onPointClick, clearFilters}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age";
+    const chartDisplayTitle = isClosed({stateType}) ? "Lead Time" : "Age";
 
     const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
-      stateType === WorkItemStateTypes.closed ? w["leadTime"] : w["cycleTime"]
+      isClosed({stateType}) ? w["leadTime"] : w["cycleTime"]
     );
     const pointsCycleTimeOrLatency = workItemsWithAggregateDurations.map((w) =>
-      stateType === WorkItemStateTypes.closed ? w["cycleTime"] : w["latency"]
+      isClosed({stateType}) ? w["cycleTime"] : w["latency"]
     );
     const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
 
@@ -43,16 +47,16 @@ export const WorkItemsDurationsHistogramChart = Chart({
       intl,
       colWidthBoundaries,
       points: pointsLeadTimeOrAge,
-      name: stateType === WorkItemStateTypes.closed ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
-      color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
+      name: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
+      color: isClosed({stateType}) ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
     });
     const seriesCycleTimeOrLatency = getHistogramSeries({
       id: "cycleTimeOrLatency",
       intl,
       colWidthBoundaries,
       points: pointsCycleTimeOrLatency,
-      name: stateType === WorkItemStateTypes.closed ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
-      color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
+      name: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      color: isClosed({stateType}) ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
       visible: false
     });
 
