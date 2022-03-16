@@ -137,13 +137,13 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     lastCol = {
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
-      key: "latestCommitDisplay",
+      key: "latestCommit",
       width: "5%",
       sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
       ...renderState,
     };
   }
-  
+
   const columns = [
     {
       title: "Team",
@@ -158,7 +158,6 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       title: "CARD",
       dataIndex: "name",
       key: "name",
-      filters: filters.epicNames.map((b) => ({text: b, value: b})),
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
@@ -181,7 +180,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: isClosed({stateType}) ? "Lead Time" : "Age      ",
+      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age      ",
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
       ...(selectedMetric === "leadTimeOrAge"
@@ -194,7 +193,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     },
     {
-      title: isClosed({stateType}) ? "Cycle Time" : "Latency       ",
+      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : `${projectDeliveryCycleFlowMetricsMeta["latency"].display}       `,
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
       ...(selectedMetric === "cycleTimeOrLatency"
@@ -233,7 +232,7 @@ export const WorkItemsDetailTable = injectIntl(
 
     const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "dev-days" : "days");
     const allPairsData = allPairs(colWidthBoundaries);
-    const epicNames = [...new Set(tableData.map((x) => x.epicNames))];
+    const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
 
     const dataSource = getTransformedData(tableData, intl);
     const columns = useWorkItemsDetailTableColumns({
