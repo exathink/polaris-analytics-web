@@ -5,6 +5,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {Colors, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor} from "../../config";
 import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
 function getChartTitle(stateType, seriesName=null) {
   if (stateType !== WorkItemStateTypes.closed) {
@@ -35,14 +36,14 @@ export const WorkItemsDurationsHistogramChart = Chart({
 
     const pointsDuration = workItemsWithAggregateDurations.map((w) => w["duration"]);
 
-    const pointsLatency = workItemsWithAggregateDurations.map((w) => w["commitLatency"]);
+    const pointsCommitLatency = workItemsWithAggregateDurations.map((w) => w["commitLatency"]);
 
     const seriesLeadTimeOrAge = getHistogramSeries({
       id: "leadTimeOrAge",
       intl,
       colWidthBoundaries,
       points: pointsLeadTimeOrAge,
-      name: stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age",
+      name: stateType === WorkItemStateTypes.closed ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
       color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
     });
     const seriesCycleTimeOrLatency = getHistogramSeries({
@@ -50,7 +51,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       intl,
       colWidthBoundaries,
       points: pointsCycleTimeOrLatency,
-      name: stateType === WorkItemStateTypes.closed ? "Cycle Time" : "Latency",
+      name: stateType === WorkItemStateTypes.closed ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
       color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
       visible: false
     });
@@ -59,8 +60,8 @@ export const WorkItemsDurationsHistogramChart = Chart({
       id: "latency",
       intl,
       colWidthBoundaries,
-      points: pointsLatency,
-      name: "Delivery",
+      points: pointsCommitLatency,
+      name: projectDeliveryCycleFlowMetricsMeta["latency"].display,
       color: ResponseTimeMetricsColor.latency,
       visible: false
     });
@@ -70,7 +71,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       intl,
       colWidthBoundaries,
       points: pointsDuration,
-      name: "Coding",
+      name: projectDeliveryCycleFlowMetricsMeta["duration"].display,
       color: ResponseTimeMetricsColor.duration,
       visible: false
     });
@@ -80,7 +81,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       intl,
       colWidthBoundaries,
       points: pointsEffort,
-      name: "Effort",
+      name: projectDeliveryCycleFlowMetricsMeta["effort"].display,
       color: ResponseTimeMetricsColor.effort,
       visible: false
     });
