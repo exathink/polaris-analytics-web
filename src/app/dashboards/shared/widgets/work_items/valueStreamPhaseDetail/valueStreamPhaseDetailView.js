@@ -10,11 +10,11 @@ import {getUniqItems} from "../../../../../helpers/utility";
 import {Alert, Select, Tag} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
-import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {ClearFilterIcon} from "../../../../../components/misc/customIcons";
+import {WorkItemsDetailTable} from "../workItemsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 function getActualMetric(selectedMetric, selectedStateType) {
@@ -273,7 +273,7 @@ const PhaseDetailView = ({
           </div>
 
           {selectedGrouping === "table" && (
-            <ValueStreamPhaseDetailTable
+            <WorkItemsDetailTable
               key={resetComponentStateKey}
               view={view}
               stateType={selectedStateType}
