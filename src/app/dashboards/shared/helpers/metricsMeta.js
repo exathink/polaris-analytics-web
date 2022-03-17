@@ -12,19 +12,19 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'days',
   },
   duration: {
-    display: "Coding Time",
+    display: "Coding",
     value: (cycle) => cycle.duration,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
   latency: {
-    display: "Time to Deliver",
+    display: "Delivery",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
   effort: {
-    display: "Coding Effort",
+    display: "Effort",
     value: (cycle) => cycle.effort,
     uom: 'dev-days',
   },

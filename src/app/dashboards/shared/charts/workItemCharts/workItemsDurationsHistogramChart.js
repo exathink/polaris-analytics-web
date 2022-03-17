@@ -5,6 +5,11 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {Colors, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor} from "../../config";
 import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
+import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+
+function isClosed(stateType) {
+  return stateType === WorkItemStateTypes.closed;
+}
 
 function getChartTitle(stateType, seriesName=null) {
   if (stateType !== WorkItemStateTypes.closed) {
@@ -21,41 +26,66 @@ export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, metricsMeta, stateType, specsOnly, onPointClick}) => {
+  getConfig: ({workItems, intl, colWidthBoundaries, stateType, specsOnly, onPointClick, clearFilters}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age";
+    const chartDisplayTitle = isClosed(stateType) ? "Lead Time" : "Age";
 
     const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
-      stateType === WorkItemStateTypes.closed ? w["leadTime"] : w["cycleTime"]
+      isClosed(stateType) ? w["leadTime"] : w["cycleTime"]
     );
     const pointsCycleTimeOrLatency = workItemsWithAggregateDurations.map((w) =>
-      stateType === WorkItemStateTypes.closed ? w["cycleTime"] : w["latency"]
+      isClosed(stateType) ? w["cycleTime"] : w["latency"]
     );
     const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
+
+    const pointsDuration = workItemsWithAggregateDurations.map((w) => w["duration"]);
+
+    const pointsCommitLatency = workItemsWithAggregateDurations.map((w) => w["commitLatency"]);
 
     const seriesLeadTimeOrAge = getHistogramSeries({
       id: "leadTimeOrAge",
       intl,
       colWidthBoundaries,
       points: pointsLeadTimeOrAge,
-      name: stateType === WorkItemStateTypes.closed ? "Lead Time" : "Age",
-      color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
+      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
+      color: isClosed(stateType) ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
     });
     const seriesCycleTimeOrLatency = getHistogramSeries({
       id: "cycleTimeOrLatency",
       intl,
       colWidthBoundaries,
       points: pointsCycleTimeOrLatency,
-      name: stateType === WorkItemStateTypes.closed ? "Cycle Time" : "Latency",
-      color: stateType === WorkItemStateTypes.closed ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
+      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      color: isClosed(stateType) ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
       visible: false
     });
+
+    const seriesDelivery = getHistogramSeries({
+      id: "latency",
+      intl,
+      colWidthBoundaries,
+      points: pointsCommitLatency,
+      name: projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      color: ResponseTimeMetricsColor.latency,
+      visible: false
+    });
+
+    const seriesCoding = getHistogramSeries({
+      id: "duration",
+      intl,
+      colWidthBoundaries,
+      points: pointsDuration,
+      name: projectDeliveryCycleFlowMetricsMeta["duration"].display,
+      color: ResponseTimeMetricsColor.duration,
+      visible: false
+    });
+
     const seriesEffort = getHistogramSeries({
       id: "effort",
       intl,
       colWidthBoundaries,
       points: pointsEffort,
-      name: "Effort",
+      name: projectDeliveryCycleFlowMetricsMeta["effort"].display,
       color: ResponseTimeMetricsColor.effort,
       visible: false
     });
@@ -71,7 +101,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         text: getChartTitle(stateType),
       },
       subtitle: {
-        text: getChartSubTitle(stateType, specsOnly)
+        text: getChartSubTitle(stateType, specsOnly),
       },
       xAxis: {
         title: {
@@ -101,46 +131,58 @@ export const WorkItemsDurationsHistogramChart = Chart({
           });
         },
       },
-      series: [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort],
+      series: isClosed(stateType)
+        ? [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesDelivery, seriesCoding, seriesEffort]
+        : [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort],
       plotOptions: {
         series: {
           animation: false,
-          cursor: 'pointer',
+          allowPointSelect: true,
+          cursor: "pointer",
+          states: {
+            select: {
+              color: null,
+              borderWidth: 2,
+              borderColor: "Black",
+            },
+          },
           point: {
             events: {
               click: function () {
                 const category = this.category;
                 const selectedMetric = this.series.userOptions.id;
-                onPointClick({category, selectedMetric})
+                onPointClick({category, selectedMetric});
               },
             },
           },
           events: {
             legendItemClick: function () {
+              clearFilters();
               // get all the series
               var series = this.chart.series;
-
               // don't allow visible series to be hidden
               if (this.visible) {
                 return false;
               } else {
                 const currentSeries = this;
-                
+
                 // update xAxis title, as we click through different series
-                currentSeries.xAxis.setTitle({ text: currentSeries.name });
+                currentSeries.xAxis.setTitle({text: currentSeries.name});
                 // update the chart title
-                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)})
+                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)});
                 // check if the current series is effort
-                if(currentSeries.name === "Effort"){
+                if (currentSeries.name === "Effort") {
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
-                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map(x => x.replace("days", "dev-days"));
+                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map((x) =>
+                    x.replace("days", "dev-days")
+                  );
                 } else {
                   // reset xAxis categories if it has been overridden earlier
-                  if(currentSeries.xAxis.userOptions.originalCategories){
-                    currentSeries.xAxis.categories = currentSeries.xAxis.userOptions.originalCategories
+                  if (currentSeries.xAxis.userOptions.originalCategories) {
+                    currentSeries.xAxis.categories = currentSeries.xAxis.userOptions.originalCategories;
                   }
                 }
-                
+
                 // find visible series
                 const visibleSeries = series.find((x) => x.visible);
                 visibleSeries?.hide();
