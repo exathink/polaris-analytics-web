@@ -28,7 +28,7 @@ function getActualMetric(selectedMetric, selectedStateType) {
     if (selectedStateType === "closed") {
       return "leadTime";
     } else {
-      return "cycleTime";
+      return "age";
     }
   }
   if (selectedMetric === "cycleTimeOrLatency") {
@@ -197,7 +197,7 @@ const PhaseDetailView = ({
             </div>
             <div className={"middleControls"}>
               <GroupingSelector
-                label={"Phase"}
+                label={`Phase: ${WorkItemStateTypeDisplayName[selectedStateType]}`}
                 groupings={stateTypes.map((stateType) => ({
                   key: stateType,
                   display: WorkItemStateTypeDisplayName[stateType],

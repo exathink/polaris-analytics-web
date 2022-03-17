@@ -102,7 +102,7 @@ export function useValueStreamPhaseDetailTableColumns({stateType, filters, callB
   }
   if (selectedMetric === "latency") {
     defaultOptionalCol = {
-      title: "Delivery",
+      title: "Latency",
       dataIndex: "latency",
       key: "latency",
       ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
