@@ -1,51 +1,77 @@
-import React, {useState} from "react";
-import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../helpers/metricsMeta";
-import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
-import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
-import {Flex} from "reflexbox";
+import React, { useState } from "react";
+import { withNavigationContext } from "../../../../../framework/navigation/components/withNavigationContext";
+import { projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
+import { VizItem, VizRow } from "../../../containers/layout";
+import {
+  ResponseTimeMetricsColor,
+  WorkItemStateTypeColor,
+  WorkItemStateTypeDisplayName,
+  WorkItemStateTypeSortOrder
+} from "../../../config";
+import { GroupingSelector } from "../../../components/groupingSelector/groupingSelector";
+import { Flex } from "reflexbox";
 import "./valueStreamPhaseDetail.css";
-import {getUniqItems} from "../../../../../helpers/utility";
-import {Alert, Select} from "antd";
-import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
-import {ValueStreamPhaseDetailTable} from "./valueStreamPhaseDetailTable";
-import {getWorkItemDurations} from "../clientSideFlowMetrics";
+import { getUniqItems } from "../../../../../helpers/utility";
+import { Alert, Select, Tag } from "antd";
+import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
+import { getWorkItemDurations } from "../clientSideFlowMetrics";
 import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
+import { useResetComponentState } from "../../../../projects/shared/helper/hooks";
+import { ClearFilterIcon } from "../../../../../components/misc/customIcons";
+import { WorkItemsDetailTable } from "../workItemsDetailTable";
+
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-const {Option} = Select;
+function getActualMetric(selectedMetric, selectedStateType) {
+  if (selectedMetric === "leadTimeOrAge") {
+    if (selectedStateType === "closed") {
+      return "leadTime";
+    } else {
+      return "cycleTime";
+    }
+  }
+  if (selectedMetric === "cycleTimeOrLatency") {
+    if (selectedStateType === "closed") {
+      return "cycleTime";
+    } else {
+      return "latency";
+    }
+  }
+  return selectedMetric;
+}
+
+const { Option } = Select;
 
 const PhaseDetailView = ({
-  data,
-  dimension,
-  targetMetrics,
-  workItemScope,
-  setWorkItemScope,
-  workItemScopeVisible = true,
-  view,
-  context,
-}) => {
+                           data,
+                           dimension,
+                           targetMetrics,
+                           workItemScope,
+                           setWorkItemScope,
+                           workItemScopeVisible = true,
+                           view,
+                           context
+                         }) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
   const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
-    workItems,
+    workItems
   ]);
   const uniqWorkItemsSourcesWithDefault = [
-    {workItemsSourceKey: "all", workItemsSourceName: "All"},
-    ...uniqWorkItemsSources,
+    { workItemsSourceKey: "all", workItemsSourceName: "All" },
+    ...uniqWorkItemsSources
   ];
 
-  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+  const { workItemKey, setWorkItemKey, showPanel, setShowPanel } = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
   const [selectedFilter, setFilter] = React.useState(null);
-  const [selectedMetric, setSelectedMetric] = React.useState("");
+  const [selectedMetric, setSelectedMetric] = React.useState(null);
 
   const filteredWorkItemsBySource = React.useMemo(
     () =>
@@ -67,7 +93,7 @@ const PhaseDetailView = ({
           getPopupContainer={(node) => node.parentNode}
           className={"workStreamSelector"}
         >
-          {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
+          {uniqWorkItemsSourcesWithDefault.map(({ workItemsSourceKey, workItemsSourceName }, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
             </Option>
@@ -117,18 +143,13 @@ const PhaseDetailView = ({
 
   const [selectedStateType, setSelectedStateType] = useState(
     /* priority order to select the default open tab when we first render this component */
-    ["closed", "wip", "complete", "open",  "backlog"].find(
+    ["closed", "wip", "complete", "open", "backlog"].find(
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0]
   );
-  const [selectedGrouping, setSelectedGrouping] = useState("responseTime");
 
-  // reset table filters on tab change back to histogram view
-  React.useEffect(() => {
-    if (selectedGrouping === "responseTime") {
-      setFilter(null);
-    }
-  }, [selectedGrouping]);
+  const defaultSelectedGrouping = "responseTime";
+  const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
@@ -145,6 +166,25 @@ const PhaseDetailView = ({
     }
   }, [selectedStateType, workItemsByStateType, selectedTeam]);
 
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+
+  React.useEffect(() => {
+    if (selectedFilter === null) {
+      setSelectedGrouping(defaultSelectedGrouping);
+    }
+  }, [selectedFilter]);
+
+  function resetFilterAndMetric() {
+    // clear bucket and clear series
+    setFilter(null);
+    setSelectedMetric(null);
+  }
+
+  function handleClearClick() {
+    resetFilterAndMetric();
+    resetComponentState();
+  }
+
   if (selectedStateType != null) {
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
@@ -155,7 +195,7 @@ const PhaseDetailView = ({
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
             </div>
-            <div className={"phaseSelector"}>
+            <div className={"middleControls"}>
               <GroupingSelector
                 label={"Phase"}
                 groupings={stateTypes.map((stateType) => ({
@@ -163,14 +203,35 @@ const PhaseDetailView = ({
                   display: WorkItemStateTypeDisplayName[stateType],
                   style: {
                     backgroundColor: WorkItemStateTypeColor[stateType],
-                    color: "#ffffff",
-                  },
+                    color: "#ffffff"
+                  }
                 }))}
                 initialValue={selectedStateType}
-                onGroupingChanged={setSelectedStateType}
+                onGroupingChanged={(stateType) => {
+                  setSelectedStateType(stateType);
+                  resetFilterAndMetric();
+                }}
+                layout="col"
+                className="tw-ml-4"
               />
+              {selectedFilter != null && (
+                <div className="tw-ml-6 tw-flex tw-flex-col tw-items-center tw-justify-center tw-cursor-pointer" title="Clear Filters" onClick={handleClearClick} >
+                  <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-justify-center tw-gap-1">
+                    <div>
+                      <ClearFilterIcon
+                        style={{ color: ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)] }}
+                        />
+                    </div>
+                    <div>{projectDeliveryCycleFlowMetricsMeta[(getActualMetric(selectedMetric, selectedStateType))].display}</div>
+                  </div>
+                  <div>
+                    <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
+                      {selectedFilter}
+                    </Tag>
+                  </div>
+                </div>
+              )}
             </div>
-
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
                 {workItemScopeVisible && (
@@ -178,6 +239,7 @@ const PhaseDetailView = ({
                     className={"specsAllSelector"}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
+                    layout="col"
                   />
                 )}
               </div>
@@ -186,35 +248,41 @@ const PhaseDetailView = ({
                   label={"View"}
                   className={"groupCardsBySelector"}
                   groupings={[
-                    {key: "responseTime", display: `Histogram`},
-                    {key: "table", display: "Card Detail"},
+                    { key: "responseTime", display: `Histogram` },
+                    { key: "table", display: "Card Detail" }
                   ].map((item) => ({
                     key: item.key,
-                    display: item.display,
+                    display: item.display
                   }))}
                   initialValue={selectedGrouping}
                   value={selectedGrouping}
                   onGroupingChanged={setSelectedGrouping}
+                  layout="col"
                 />
               </div>
             </div>
           </div>
-          {selectedGrouping !== "table" && (
+
+          <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
             <WorkItemsDurationsHistogramChart
+              key={resetComponentStateKey}
               stateType={selectedStateType}
               workItems={candidateWorkItems}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               metricsMeta={projectDeliveryCycleFlowMetricsMeta}
               specsOnly={workItemScope === "specs"}
-              onPointClick={({category, selectedMetric}) => {
+              onPointClick={({ category, selectedMetric }) => {
                 setSelectedMetric(selectedMetric);
                 setFilter(category);
                 setSelectedGrouping("table");
               }}
+              clearFilters={resetFilterAndMetric}
             />
-          )}
+          </div>
+
           {selectedGrouping === "table" && (
-            <ValueStreamPhaseDetailTable
+            <WorkItemsDetailTable
+              key={resetComponentStateKey}
               view={view}
               stateType={selectedStateType}
               tableData={workItemsWithAggregateDurations}
