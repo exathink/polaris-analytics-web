@@ -1,6 +1,6 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName} from "../../../../helpers/metricsMeta";
 import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
@@ -8,6 +8,7 @@ import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
+import { WorkItemStateTypes } from "../../../../config";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
@@ -57,7 +58,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
-  const uniqueGroupings = groupings.map((g) => ({key: g, name: projectDeliveryCycleFlowMetricsMeta[g].display}));
+  const uniqueGroupings = groupings.map((g) => ({key: g, name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
   const _defaultMetric = {
     key: initialMetric || "leadTime",
     name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
