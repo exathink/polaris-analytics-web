@@ -189,6 +189,7 @@ export function assignWorkItemStateColor(stateType, index) {
 export const ResponseTimeMetricsColor = {
   leadTime: '#4040f3cc',
   cycleTime: '#5d90bb',
+  age: '#5d90bb',
   backlogTime: '#9ca3af',
   latency: WorkItemStateTypeColor.complete,
   duration: WorkItemStateTypeColor.wip,
