@@ -2,8 +2,9 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, ResponseTimeMetricsColor} from "../../config";
+import {Colors, ResponseTimeMetricsColor, WorkItemStateTypes} from "../../config";
 import {getTimePeriod, getHistogramSeries, getHistogramCategories} from "../../../projects/shared/helper/utils";
+import { getSelectedMetricDisplayName } from "../../helpers/metricsMeta";
 
 export const DeliveryCyclesHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "model", "selectedMetric", "specsOnly"),
@@ -28,7 +29,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `${metricsMeta[selectedMetric].display} Variability`,
+        text: `${getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed)} Variability`,
       },
       subtitle: {
         text: (function () {
@@ -43,7 +44,7 @@ export const DeliveryCyclesHistogramChart = Chart({
       },
       xAxis: {
         title: {
-          text: metricsMeta[selectedMetric].display,
+          text: getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed),
         },
         categories: getHistogramCategories(colWidthBoundaries, metricsMeta[selectedMetric].uom),
         crosshair: true,

@@ -8,6 +8,8 @@
 // display names. Even more ideal would be to make all the back end interfaces
 // consistent with the front end usages, but that is a big task that may not be fully
 // worth the squeeze at this time.
+import { ResponseTimeMetricsColor, WorkItemStateTypes } from "../config";
+
 export const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
     display: "Lead Time",
@@ -92,3 +94,35 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   }
 };
 
+export function getMetricsMetaKey(selectedMetric, selectedStateType) {
+  if (selectedMetric === "leadTimeOrAge") {
+    if (selectedStateType === WorkItemStateTypes.closed) {
+      return "leadTime";
+    } else {
+      return "age";
+    }
+  }
+  if (selectedMetric === "cycleTimeOrLatency") {
+    if (selectedStateType === WorkItemStateTypes.closed) {
+      return "cycleTime";
+    } else {
+      return "latency";
+    }
+  }
+  if(selectedMetric === 'latency') {
+    if (selectedStateType === WorkItemStateTypes.closed) {
+      return 'delivery'
+    } else {
+      return 'latency'
+    }
+  }
+  return selectedMetric;
+}
+
+export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) {
+  return projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)].display
+}
+
+export function getSelectedMetricColor(selectedMetric, selectedStateType) {
+  return ResponseTimeMetricsColor[getMetricsMetaKey(selectedMetric, selectedStateType)]
+}

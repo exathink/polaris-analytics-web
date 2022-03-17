@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { withNavigationContext } from "../../../../../framework/navigation/components/withNavigationContext";
-import { projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
+import { getSelectedMetricColor, getSelectedMetricDisplayName,  projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
 import { VizItem, VizRow } from "../../../containers/layout";
 import {
-  ResponseTimeMetricsColor,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder
@@ -22,24 +21,6 @@ import { ClearFilterIcon } from "../../../../../components/misc/customIcons";
 import { WorkItemsDetailTable } from "../workItemsDetailTable";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
-
-function getActualMetric(selectedMetric, selectedStateType) {
-  if (selectedMetric === "leadTimeOrAge") {
-    if (selectedStateType === "closed") {
-      return "leadTime";
-    } else {
-      return "age";
-    }
-  }
-  if (selectedMetric === "cycleTimeOrLatency") {
-    if (selectedStateType === "closed") {
-      return "cycleTime";
-    } else {
-      return "latency";
-    }
-  }
-  return selectedMetric;
-}
 
 const { Option } = Select;
 
@@ -219,13 +200,13 @@ const PhaseDetailView = ({
                   <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-justify-center tw-gap-1">
                     <div>
                       <ClearFilterIcon
-                        style={{ color: ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)] }}
+                        style={{ color: getSelectedMetricColor(selectedMetric, selectedStateType)}}
                         />
                     </div>
-                    <div>{projectDeliveryCycleFlowMetricsMeta[(getActualMetric(selectedMetric, selectedStateType))].display}</div>
+                    <div>{getSelectedMetricDisplayName(selectedMetric, selectedStateType)}</div>
                   </div>
                   <div>
-                    <Tag color={ResponseTimeMetricsColor[getActualMetric(selectedMetric, selectedStateType)]}>
+                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)}>
                       {selectedFilter}
                     </Tag>
                   </div>
