@@ -38,10 +38,6 @@ export const WorkItemsDurationsHistogramChart = Chart({
     );
     const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
 
-    const pointsDuration = workItemsWithAggregateDurations.map((w) => w["duration"]);
-
-    const pointsCommitLatency = workItemsWithAggregateDurations.map((w) => w["commitLatency"]);
-
     const seriesLeadTimeOrAge = getHistogramSeries({
       id: "leadTimeOrAge",
       intl,
@@ -60,25 +56,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       visible: false
     });
 
-    const seriesDelivery = getHistogramSeries({
-      id: "latency",
-      intl,
-      colWidthBoundaries,
-      points: pointsCommitLatency,
-      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["delivery"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
-      color: ResponseTimeMetricsColor.latency,
-      visible: false
-    });
 
-    const seriesCoding = getHistogramSeries({
-      id: "duration",
-      intl,
-      colWidthBoundaries,
-      points: pointsDuration,
-      name: projectDeliveryCycleFlowMetricsMeta["duration"].display,
-      color: ResponseTimeMetricsColor.duration,
-      visible: false
-    });
 
     const seriesEffort = getHistogramSeries({
       id: "effort",
@@ -132,7 +110,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
         },
       },
       series: isClosed(stateType)
-        ? [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesDelivery, seriesCoding, seriesEffort]
+        ? [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort]
         : [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort],
       plotOptions: {
         series: {
