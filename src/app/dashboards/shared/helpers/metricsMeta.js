@@ -1,3 +1,13 @@
+// This class exists mainly to serve as a bridge between the back end api definitions
+// of metrics and how we have ended displaying them on the front end.
+// Ideally we would not need this class, but the rules around naming
+// depending on phase have gotten pretty complex, and for now this class is a
+// decent solution to manage the complexity. Ideally we should refactor
+// all the code that lives around this class into a single class that can
+// encapsulate all the complicated logic around translating metric names into
+// display names. Even more ideal would be to make all the back end interfaces
+// consistent with the front end usages, but that is a big task that may not be fully
+// worth the squeeze at this time.
 export const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
     display: "Lead Time",
@@ -5,24 +15,50 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     targetMetric: 'leadTime',
     uom: 'days',
   },
+  // Cycle time and Age are synonyms
+  // for the same underlying cycle time data point
+  // on the back end api.
+  // For closed items we call this data point cycle time in
+  // the UI and for non-closed we call this the age.
+  // The next two entries encapsulate this logic in metricsMeta
   cycleTime: {
     display: "Cycle Time",
     value: (cycle) => cycle.cycleTime,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
+  age: {
+    display: "Age",
+    value: (cycle) => cycle.cycleTime,
+    targetMetric: 'cycleTime',
+    uom: 'days',
+  },
+  //
   duration: {
     display: "Coding",
     value: (cycle) => cycle.duration,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
+  // Latency and Delivery are synonyms
+  // for the same underlying latency data point
+  // on the back end api.
+  // For closed items we call this data point delivery in
+  // the UI and for non-closed we call this the latency.
+  // The next two entries encapsulate this logic in metricsMeta
   latency: {
+    display: "Latency",
+    value: (cycle) => cycle.latency,
+    targetMetric: 'cycleTime',
+    uom: 'days',
+  },
+  delivery: {
     display: "Delivery",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
+  //
   effort: {
     display: "Effort",
     value: (cycle) => cycle.effort,

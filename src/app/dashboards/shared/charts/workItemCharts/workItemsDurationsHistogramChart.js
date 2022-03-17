@@ -65,7 +65,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       intl,
       colWidthBoundaries,
       points: pointsCommitLatency,
-      name: projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["delivery"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
       color: ResponseTimeMetricsColor.latency,
       visible: false
     });
