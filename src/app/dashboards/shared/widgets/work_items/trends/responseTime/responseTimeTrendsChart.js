@@ -6,52 +6,67 @@ import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/meas
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
     case "percentileCycleTime": {
-      return [
+      return [[
         `${percentileToText(targetPercentile)} Cycle Time: `,
         `${i18nNumber(intl, measurement.percentileCycleTime)} days`,
-      ];
+      ]];
     }
     case "percentileLeadTime": {
-      return [
+      return [[
         `${percentileToText(targetPercentile)} Lead Time: `,
         `${i18nNumber(intl, measurement.percentileLeadTime)} days`,
-      ];
+      ]];
     }
     case "percentileDuration": {
-      return [
+      return [[
         `${percentileToText(targetPercentile)} Duration: `,
         `${i18nNumber(intl, measurement.percentileDuration)} days`,
-      ];
+      ]];
     }
     case "percentileLatency": {
-      return [
+      return [[
         `${percentileToText(targetPercentile)} Delivery Latency: `,
         `${i18nNumber(intl, measurement.percentileLatency)} days`,
-      ];
+      ]];
     }
     case "percentileEffort": {
-      return [
+      return [[
         `${percentileToText(targetPercentile)} Effort: `,
         `${i18nNumber(intl, measurement.percentileEffort)} dev-days`,
-      ];
+      ]];
     }
     case "avgCycleTime": {
-      return [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`];
+      return [
+        [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`],
+        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileCycleTime', intl)
+      ];
     }
     case "avgLeadTime": {
-      return [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`];
+      return [
+        [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`],
+        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileLeadTime', intl)
+      ];
     }
     case "avgDuration": {
-      return [`Avg. Coding: `, `${i18nNumber(intl, measurement.avgDuration)} days`];
+      return [
+        [`Avg. Coding: `, `${i18nNumber(intl, measurement.avgDuration)} days`],
+        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileDuration', intl)
+      ];
     }
     case "avgLatency": {
-      return [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`];
+      return [
+        [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`],
+        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileLatency', intl)
+      ];
     }
     case "avgEffort": {
-      return [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`];
+      return [
+        [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`],
+        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileEffort', intl)
+      ];
     }
     default: {
-      return ["", ""];
+      return [["", ""]];
     }
   }
 }
@@ -127,7 +142,7 @@ export const ResponseTimeTrendsChart = (
               header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
               body:
                 [
-                  getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
+                  ...getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
                   ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly? 'Specs' : 'Cards'}`],
