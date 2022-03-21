@@ -113,10 +113,10 @@ export function ComboCardTitleColumn({record}) {
 
 export function ComboCardStateTypeColumn({record}) {
   return (
-    <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
-      <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateType, "28px")}</div>
-      <div className={styles.state}>{record.state}</div>
-      {record.timeInStateDisplay && <div className={styles.entered}>entered {record.timeInStateDisplay}</div>}
+    <div className="tw-grid tw-grid-cols-[25px,auto] tw-gap-1 tw-cursor-pointer tw-items-center" style={{marginLeft: "16px", columnGap: "1rem"}}>
+      <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center" : "tw-self-center"}>{getStateTypeIcon(record.stateType, "28px")}</div>
+      <div className="tw-lowercase tw-text-gray-300 tw-font-medium tw-text-base">{record.state}</div>
+      {record.timeInStateDisplay && <div className="tw-text-xs tw-text-gray-300 tw-font-normal">entered {record.timeInStateDisplay}</div>}
     </div>
   );
 }
@@ -130,11 +130,11 @@ export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey, setPlac
           setShowPanel(true);
           setWorkItemKey(record.workItemKey || record.key);
         }}
-        className={styles.comboCardCol}
+        className="tw-grid tw-grid-cols-[25px,auto] tw-gap-1 tw-cursor-pointer tw-items-center"
       >
-        <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateTypeInternal)}</div>
-        <div className={styles.stateType}>{text}</div>
-        {record.timeInStateDisplay && <div className={styles.entered}>entered {record.timeInStateDisplay}</div>}
+        <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center" : "tw-self-center"}>{getStateTypeIcon(record.stateTypeInternal)}</div>
+        <div className="tw-lowercase tw-text-gray-300 tw-font-medium">{text}</div>
+        {record.timeInStateDisplay && <div className="tw-text-xs tw-text-gray-300 tw-font-normal">entered {record.timeInStateDisplay}</div>}
       </div>
     );
 }

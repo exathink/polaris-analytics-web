@@ -1,7 +1,6 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName} from "../../../../helpers/metricsMeta";
-import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
@@ -9,6 +8,7 @@ import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
 import { WorkItemStateTypes } from "../../../../config";
+import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
@@ -178,7 +178,8 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         />
       ) : (
-        <FlowMetricsDetailTable
+        <WorkItemsDetailTable
+          stateType="closed"
           tableData={filteredData}
           selectedMetric={selectedMetric.key}
           setShowPanel={setShowPanel}
