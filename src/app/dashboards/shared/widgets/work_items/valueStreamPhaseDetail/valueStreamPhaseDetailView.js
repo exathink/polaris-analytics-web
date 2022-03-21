@@ -198,11 +198,11 @@ const PhaseDetailView = ({
               />
               {selectedFilter != null && (
                 <div
-                  className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center"
+                  className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
                   title="Clear Filters"
                   onClick={handleClearClick}
                 >
-                  <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-justify-center tw-gap-1">
+                  <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
                     <div>
                       <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric, selectedStateType)}} />
                     </div>
