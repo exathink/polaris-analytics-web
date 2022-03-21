@@ -45,15 +45,18 @@ export const WorkItemsDurationsHistogramChart = Chart({
       points: pointsLeadTimeOrAge,
       name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
       color: isClosed(stateType) ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
+      visible: (isClosed(stateType) && specsOnly === false) || !isClosed(stateType),
     });
     const seriesCycleTimeOrLatency = getHistogramSeries({
       id: "cycleTimeOrLatency",
       intl,
       colWidthBoundaries,
       points: pointsCycleTimeOrLatency,
-      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : projectDeliveryCycleFlowMetricsMeta["latency"].display,
-      color: isClosed(stateType) ? ResponseTimeMetricsColor.cycleTime: ResponseTimeMetricsColor.latency,
-      visible: false
+      name: isClosed(stateType)
+        ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display
+        : projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      color: isClosed(stateType) ? ResponseTimeMetricsColor.cycleTime : ResponseTimeMetricsColor.latency,
+      visible: isClosed(stateType) && specsOnly === true,
     });
 
 
