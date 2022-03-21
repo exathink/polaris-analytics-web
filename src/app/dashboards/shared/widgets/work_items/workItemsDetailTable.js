@@ -223,6 +223,7 @@ export const WorkItemsDetailTable = injectIntl(
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
+    onChange
   }) => {
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -251,6 +252,7 @@ export const WorkItemsDetailTable = injectIntl(
         testId="work-items-detail-table"
         height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
         rowKey={(record) => record.rowKey}
+        onChange={onChange}
       />
     );
   }
