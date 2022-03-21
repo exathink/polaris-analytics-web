@@ -1,53 +1,54 @@
-import React, { useState } from "react";
-import { withNavigationContext } from "../../../../../framework/navigation/components/withNavigationContext";
-import { getSelectedMetricColor, getSelectedMetricDisplayName,  projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
-import { VizItem, VizRow } from "../../../containers/layout";
+import React, {useState} from "react";
+import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {
-  WorkItemStateTypeColor,
-  WorkItemStateTypeDisplayName,
-  WorkItemStateTypeSortOrder
-} from "../../../config";
-import { GroupingSelector } from "../../../components/groupingSelector/groupingSelector";
-import { Flex } from "reflexbox";
+  getSelectedMetricColor,
+  getSelectedMetricDisplayName,
+  projectDeliveryCycleFlowMetricsMeta,
+} from "../../../helpers/metricsMeta";
+import {VizItem, VizRow} from "../../../containers/layout";
+import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
+import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
-import { getUniqItems } from "../../../../../helpers/utility";
-import { Alert, Select, Tag } from "antd";
-import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
-import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
-import { getWorkItemDurations } from "../clientSideFlowMetrics";
-import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
-import { useResetComponentState } from "../../../../projects/shared/helper/hooks";
-import { ClearFilterIcon } from "../../../../../components/misc/customIcons";
-import { WorkItemsDetailTable } from "../workItemsDetailTable";
+import {getUniqItems} from "../../../../../helpers/utility";
+import {Alert, Select, Tag} from "antd";
+import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import {getWorkItemDurations} from "../clientSideFlowMetrics";
+import {WorkItemsDurationsHistogramChart} from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import {ClearFilterIcon} from "../../../../../components/misc/customIcons";
+import {WorkItemsDetailTable} from "../workItemsDetailTable";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-const { Option } = Select;
+const {Option} = Select;
 
 const PhaseDetailView = ({
-                           data,
-                           dimension,
-                           targetMetrics,
-                           workItemScope,
-                           setWorkItemScope,
-                           workItemScopeVisible = true,
-                           view,
-                           context
-                         }) => {
+  data,
+  dimension,
+  targetMetrics,
+  workItemScope,
+  setWorkItemScope,
+  workItemScopeVisible = true,
+  view,
+  context,
+}) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
-    workItems
-  ]);
+  const uniqWorkItemsSources = React.useMemo(
+    () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
+    [workItems]
+  );
   const uniqWorkItemsSourcesWithDefault = [
-    { workItemsSourceKey: "all", workItemsSourceName: "All" },
-    ...uniqWorkItemsSources
+    {workItemsSourceKey: "all", workItemsSourceName: "All"},
+    ...uniqWorkItemsSources,
   ];
 
-  const { workItemKey, setWorkItemKey, showPanel, setShowPanel } = useCardInspector();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
@@ -74,7 +75,7 @@ const PhaseDetailView = ({
           getPopupContainer={(node) => node.parentNode}
           className={"workStreamSelector"}
         >
-          {uniqWorkItemsSourcesWithDefault.map(({ workItemsSourceKey, workItemsSourceName }, index) => (
+          {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
             </Option>
@@ -184,8 +185,8 @@ const PhaseDetailView = ({
                   display: WorkItemStateTypeDisplayName[stateType],
                   style: {
                     backgroundColor: WorkItemStateTypeColor[stateType],
-                    color: "#ffffff"
-                  }
+                    color: "#ffffff",
+                  },
                 }))}
                 initialValue={selectedStateType}
                 onGroupingChanged={(stateType) => {
@@ -196,19 +197,19 @@ const PhaseDetailView = ({
                 className="tw-ml-4"
               />
               {selectedFilter != null && (
-                <div className="tw-ml-6 tw-flex tw-flex-col tw-items-center tw-justify-center tw-cursor-pointer" title="Clear Filters" onClick={handleClearClick} >
+                <div
+                  className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center"
+                  title="Clear Filters"
+                  onClick={handleClearClick}
+                >
                   <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-justify-center tw-gap-1">
                     <div>
-                      <ClearFilterIcon
-                        style={{ color: getSelectedMetricColor(selectedMetric, selectedStateType)}}
-                        />
+                      <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric, selectedStateType)}} />
                     </div>
                     <div>{getSelectedMetricDisplayName(selectedMetric, selectedStateType)}</div>
                   </div>
                   <div>
-                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)}>
-                      {selectedFilter}
-                    </Tag>
+                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)}>{selectedFilter}</Tag>
                   </div>
                 </div>
               )}
@@ -229,11 +230,11 @@ const PhaseDetailView = ({
                   label={"View"}
                   className={"groupCardsBySelector"}
                   groupings={[
-                    { key: "responseTime", display: `Histogram` },
-                    { key: "table", display: "Card Detail" }
+                    {key: "responseTime", display: `Histogram`},
+                    {key: "table", display: "Card Detail"},
                   ].map((item) => ({
                     key: item.key,
-                    display: item.display
+                    display: item.display,
                   }))}
                   initialValue={selectedGrouping}
                   value={selectedGrouping}
@@ -252,7 +253,7 @@ const PhaseDetailView = ({
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               metricsMeta={projectDeliveryCycleFlowMetricsMeta}
               specsOnly={workItemScope === "specs"}
-              onPointClick={({ category, selectedMetric }) => {
+              onPointClick={({category, selectedMetric}) => {
                 setSelectedMetric(selectedMetric);
                 setFilter(category);
                 setSelectedGrouping("table");
