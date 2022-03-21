@@ -4,7 +4,7 @@ import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {getNumber} from "../../../../helpers/utility";
+import {getNumber, toMoment} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -42,7 +42,7 @@ function getTransformedData(data, intl) {
       stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
-      endDate: formatDateTime(intl, item.endDate),
+      endDate: formatDateTime(intl, toMoment(item.endDate)),
       rowKey: `${now}.${index}`,
     };
   });
