@@ -47,6 +47,7 @@ export function getWorkItemDurations(workItems) {
       effort: workItemStateDetails.effort,
       commitCount: workItemStateDetails.commitCount,
       timeInStateDisplay: fromNow(latestTransitionDate),
+      latestCommit: workItemStateDetails.latestCommit,
       latestCommitDisplay: workItemStateDetails.latestCommit ? fromNow(workItemStateDetails.latestCommit) : null,
       latestTransitionDate: workItemStateDetails.currentStateTransition.eventDate,
       cycleTime: cycleTime,
