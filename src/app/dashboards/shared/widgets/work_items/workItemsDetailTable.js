@@ -55,7 +55,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
         <span
           onClick={() => {
             setShowPanel(true);
-            setWorkItemKey(record.key);
+            setWorkItemKey(record.key ?? record.workItemKey);
           }}
           className="tw-cursor-pointer tw-font-medium"
         >
