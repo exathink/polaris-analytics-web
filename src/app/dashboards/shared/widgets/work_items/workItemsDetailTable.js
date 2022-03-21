@@ -40,7 +40,6 @@ function getTransformedData(data, intl) {
       duration: getNumber(item.duration, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
-      latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
       endDate: formatDateTime(intl, toMoment(item.endDate)),
       rowKey: `${now}.${index}`,
