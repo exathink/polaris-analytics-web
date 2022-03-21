@@ -4,7 +4,7 @@ import {injectIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {getNumber, toMoment} from "../../../../helpers/utility";
+import {getNumber} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -12,7 +12,7 @@ import {
 } from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+import {getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
 function isClosed(item) {
   return item.stateType === WorkItemStateTypes.closed;
@@ -41,7 +41,7 @@ function getTransformedData(data, intl) {
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       teams: joinTeams(item),
-      endDate: formatDateTime(intl, toMoment(item.endDate)),
+      endDate: formatDateTime(intl, item.endDate),
       rowKey: `${now}.${index}`,
     };
   });
@@ -110,9 +110,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   }
   if (selectedMetric === "latency") {
     defaultOptionalCol = {
-      title: isClosed({stateType})
-        ? projectDeliveryCycleFlowMetricsMeta["delivery"].display
-        : projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      title: getSelectedMetricDisplayName("latency", stateType),
       dataIndex: "latency",
       key: "latency",
       ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
@@ -181,7 +179,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : `${projectDeliveryCycleFlowMetricsMeta["age"].display}      `,
+      title: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
       ...(selectedMetric === "leadTimeOrAge"
@@ -194,7 +192,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     },
     {
-      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : `${projectDeliveryCycleFlowMetricsMeta["latency"].display}       `,
+      title: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
       ...(selectedMetric === "cycleTimeOrLatency"
