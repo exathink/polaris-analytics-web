@@ -19,13 +19,13 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     }
     case "percentileDuration": {
       return [[
-        `${percentileToText(targetPercentile)} Duration: `,
+        `${percentileToText(targetPercentile)} Coding: `,
         `${i18nNumber(intl, measurement.percentileDuration)} days`,
       ]];
     }
     case "percentileLatency": {
       return [[
-        `${percentileToText(targetPercentile)} Delivery Latency: `,
+        `${percentileToText(targetPercentile)} Delivery: `,
         `${i18nNumber(intl, measurement.percentileLatency)} days`,
       ]];
     }
