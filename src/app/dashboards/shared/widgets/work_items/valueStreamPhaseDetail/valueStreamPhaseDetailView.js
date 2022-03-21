@@ -208,8 +208,8 @@ const PhaseDetailView = ({
                     </div>
                     <div>{getSelectedMetricDisplayName(selectedMetric, selectedStateType)}</div>
                   </div>
-                  <div>
-                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)}>{selectedFilter}</Tag>
+                  <div className="tw-w-full">
+                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)} className="tw-w-full tw-text-center">{selectedFilter}</Tag>
                   </div>
                 </div>
               )}
