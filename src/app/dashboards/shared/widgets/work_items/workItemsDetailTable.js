@@ -14,16 +14,16 @@ import {allPairs, getHistogramCategories} from "../../../projects/shared/helper/
 import {formatDateTime} from "../../../../i18n";
 import {getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
-function isClosed(item) {
-  return item.stateType === WorkItemStateTypes.closed;
+function isClosed(stateType) {
+  return stateType === WorkItemStateTypes.closed;
 }
 
 function getLeadTimeOrAge(item, intl) {
-  return isClosed(item) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
+  return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
 }
 
 function getCycleTimeOrLatency(item, intl) {
-  return isClosed(item) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
+  return isClosed(item.stateType) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
 }
 
 function getTransformedData(data, intl) {
@@ -123,7 +123,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   }
 
   let lastCol = {};
-  if (isClosed({stateType})) {
+  if (isClosed(stateType)) {
     lastCol = {
       title: "Closed At",
       dataIndex: "endDate",
