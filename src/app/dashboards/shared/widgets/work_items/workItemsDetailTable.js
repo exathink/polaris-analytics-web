@@ -111,7 +111,9 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   }
   if (selectedMetric === "latency") {
     defaultOptionalCol = {
-      title: projectDeliveryCycleFlowMetricsMeta["latency"].display,
+      title: isClosed({stateType})
+        ? projectDeliveryCycleFlowMetricsMeta["delivery"].display
+        : projectDeliveryCycleFlowMetricsMeta["latency"].display,
       dataIndex: "latency",
       key: "latency",
       ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
