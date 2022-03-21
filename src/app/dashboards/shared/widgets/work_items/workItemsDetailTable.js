@@ -180,7 +180,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age      ",
+      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : `${projectDeliveryCycleFlowMetricsMeta["age"].display}      `,
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
       ...(selectedMetric === "leadTimeOrAge"
