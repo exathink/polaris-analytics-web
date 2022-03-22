@@ -3,7 +3,6 @@ import {withNavigationContext} from "../../../../../framework/navigation/compone
 import {
   getSelectedMetricColor,
   getSelectedMetricDisplayName,
-  projectDeliveryCycleFlowMetricsMeta,
 } from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
@@ -15,10 +14,12 @@ import {Alert, Select, Tag} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
-import {WorkItemsDurationsHistogramChart} from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {ClearFilterIcon} from "../../../../../components/misc/customIcons";
 import {WorkItemsDetailTable} from "../workItemsDetailTable";
+import {WorkItemsDetailHistogramChart} from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
+import {injectIntl} from "react-intl";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -33,6 +34,7 @@ const PhaseDetailView = ({
   workItemScopeVisible = true,
   view,
   context,
+  intl,
 }) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -178,6 +180,49 @@ const PhaseDetailView = ({
     resetComponentState();
   }
 
+  function getChartSeries() {
+    const specsOnly = workItemScope === "specs";
+    const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
+
+    const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
+      isClosed(selectedStateType) ? w["leadTime"] : w["cycleTime"]
+    );
+    const pointsCycleTimeOrLatency = workItemsWithAggregateDurations.map((w) =>
+      isClosed(selectedStateType) ? w["cycleTime"] : w["latency"]
+    );
+    const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
+
+    const seriesLeadTimeOrAge = getHistogramSeries({
+      id: "leadTimeOrAge",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsLeadTimeOrAge,
+      name: getSelectedMetricDisplayName("leadTimeOrAge", selectedStateType),
+      color: getSelectedMetricColor("leadTimeOrAge", selectedStateType),
+      visible: (isClosed(selectedStateType) && specsOnly === false) || !isClosed(selectedStateType),
+    });
+    const seriesCycleTimeOrLatency = getHistogramSeries({
+      id: "cycleTimeOrLatency",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsCycleTimeOrLatency,
+      name: getSelectedMetricDisplayName("cycleTimeOrLatency", selectedStateType),
+      color: getSelectedMetricColor("cycleTimeOrLatency", selectedStateType),
+      visible: isClosed(selectedStateType) && specsOnly === true,
+    });
+    const seriesEffort = getHistogramSeries({
+      id: "effort",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsEffort,
+      name: getSelectedMetricDisplayName("effort", selectedStateType),
+      color: getSelectedMetricColor("effort", selectedStateType),
+      visible: false
+    });
+
+    return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
+  }
+
   if (selectedStateType != null) {
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
@@ -257,13 +302,12 @@ const PhaseDetailView = ({
           </div>
 
           <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-            <WorkItemsDurationsHistogramChart
+            <WorkItemsDetailHistogramChart
               key={resetComponentStateKey}
-              stateType={selectedStateType}
-              workItems={candidateWorkItems}
-              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-              metricsMeta={projectDeliveryCycleFlowMetricsMeta}
               specsOnly={workItemScope === "specs"}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              stateType={selectedStateType}
+              series={getChartSeries()}
               onPointClick={({category, selectedMetric}) => {
                 setSelectedMetric(selectedMetric);
                 setFilter(category);
@@ -315,4 +359,4 @@ const PhaseDetailView = ({
     );
   }
 };
-export const ValueStreamPhaseDetailView = withNavigationContext(PhaseDetailView);
+export const ValueStreamPhaseDetailView = withNavigationContext(injectIntl(PhaseDetailView));
