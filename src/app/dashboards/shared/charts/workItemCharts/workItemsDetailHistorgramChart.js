@@ -36,7 +36,7 @@ function getWorkItemTitle(stateType, specsOnly) {
 }
 
 export const WorkItemsDetailHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props,"selectedMetric", "specsOnly", "stateType"),
+  chartUpdateProps: (props) => pick(props, "series", "selectedMetric", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
