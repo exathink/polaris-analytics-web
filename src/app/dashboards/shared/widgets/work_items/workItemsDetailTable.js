@@ -12,7 +12,7 @@ import {
 } from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
-import {getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -31,6 +31,7 @@ function getTransformedData(data, intl) {
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
       latency: getNumber(item.latency, intl),
+      delivery: getNumber(item.latency, intl),
       commitLatency: getNumber(item.commitLatency, intl),
       effort: getNumber(item.effort, intl),
       duration: getNumber(item.duration, intl),
@@ -104,16 +105,17 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     };
   }
-  if (selectedMetric === "latency") {
+  const latencyKey = getMetricsMetaKey("latency", stateType);
+  if (selectedMetric === latencyKey) {
     defaultOptionalCol = {
       title: getSelectedMetricDisplayName("latency", stateType),
-      dataIndex: "latency",
-      key: "latency",
-      ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      dataIndex: latencyKey,
+      key: latencyKey,
+      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "latency"),
+      onFilter: (value, record) => testMetric(value, record, latencyKey),
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
+      sorter: (a, b) => SORTER.number_compare(a[latencyKey], b[latencyKey]),
       ...metricRenderState,
     };
   }

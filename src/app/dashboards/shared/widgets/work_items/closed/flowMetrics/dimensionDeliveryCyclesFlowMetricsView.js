@@ -67,7 +67,7 @@ const DeliveryCyclesFlowMetricsView = ({
 
   const uniqueGroupings = groupings.map((g) => ({key: g, name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
   const _defaultMetric = {
-    key: initialMetric || "leadTime",
+    key: getMetricsMetaKey(initialMetric, WorkItemStateTypes.closed) || "leadTime",
     name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
   };
   const {selectedVal: selectedMetric, setSelectedVal: setSelectedMetric, handleChange: handleMetricChange} = useSelect({

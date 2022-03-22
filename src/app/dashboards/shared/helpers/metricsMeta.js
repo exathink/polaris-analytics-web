@@ -109,13 +109,13 @@ export function getMetricsMetaKey(selectedMetric, selectedStateType) {
       return "latency";
     }
   }
-  // if(selectedMetric === 'latency') {
-  //   if (selectedStateType === WorkItemStateTypes.closed) {
-  //     return 'delivery'
-  //   } else {
-  //     return 'latency'
-  //   }
-  // }
+  if(selectedMetric === 'latency') {
+    if (selectedStateType === WorkItemStateTypes.closed) {
+      return 'delivery'
+    } else {
+      return 'latency'
+    }
+  }
   return selectedMetric;
 }
 
