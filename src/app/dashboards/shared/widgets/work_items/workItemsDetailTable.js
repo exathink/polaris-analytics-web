@@ -1,7 +1,7 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
-import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
+import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../helpers/utility";
@@ -10,13 +10,9 @@ import {
   comboColumnTitleRender,
   customColumnRender,
 } from "../../../projects/shared/helper/renderers";
-import {allPairs, getHistogramCategories} from "../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
-
-function isClosed(stateType) {
-  return stateType === WorkItemStateTypes.closed;
-}
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);

@@ -8,11 +8,7 @@ import {
   getSelectedMetricDisplayName,
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
-import {getHistogramCategories} from "../../../projects/shared/helper/utils";
-
-function isClosed(stateType) {
-  return stateType === WorkItemStateTypes.closed;
-}
+import {getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 
 function getChartTitle(metric, stateType) {
   const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
