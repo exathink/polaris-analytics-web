@@ -165,6 +165,14 @@ const DeliveryCyclesFlowMetricsView = ({
     return [seriesObj];
   }
 
+  function getNormalizedMetricKey(selectedMetric) {
+    return selectedMetric.key === "leadTime"
+      ? "leadTimeOrAge"
+      : selectedMetric.key === "cycleTime"
+      ? "cycleTimeOrLatency"
+      : selectedMetric.key;
+  }
+
   return (
     <React.Fragment>
       <div className={styles.controls}>
@@ -187,7 +195,9 @@ const DeliveryCyclesFlowMetricsView = ({
           >
             <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
               <div>
-                <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}} />
+                <ClearFilterIcon
+                  style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}}
+                />
               </div>
               <div>{getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed)}</div>
             </div>
@@ -247,7 +257,7 @@ const DeliveryCyclesFlowMetricsView = ({
           key={resetComponentStateKey}
           stateType={WorkItemStateTypes.closed}
           tableData={filteredData}
-          selectedMetric={selectedMetric.key}
+          selectedMetric={getNormalizedMetricKey(selectedMetric)}
           selectedFilter={selectedFilter}
           setShowPanel={setShowPanel}
           setWorkItemKey={setWorkItemKey}
