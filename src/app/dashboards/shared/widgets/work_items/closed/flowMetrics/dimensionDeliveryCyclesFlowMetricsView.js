@@ -68,11 +68,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     defaultVal: _defaultMetric,
   });
 
-  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(
-    selectedMetric.key,
-    targetMetrics
-  );
-
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [yAxisScale, setYAxisScale] = useChildState(
@@ -170,8 +165,6 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           model={filteredData}
           selectedMetric={selectedMetric.key}
           metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-          metricTarget={metricTarget}
-          targetConfidence={targetConfidence}
           defectsOnly={defectsOnly}
           specsOnly={specsOnly}
           yAxisScale={yAxisScale}
