@@ -9,6 +9,8 @@ import {SelectDropdown, useSelect} from "../../../../components/select/selectDro
 import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
 import { WorkItemStateTypes } from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const DimensionDeliveryCyclesFlowMetricsView = ({
@@ -76,6 +78,9 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     parentYAxisScale || "histogram"
   );
 
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+
   React.useEffect(() => {
     initialMetric && setSelectedMetric(_defaultMetric);
     // eslint-disable-next-line
@@ -123,6 +128,16 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     [model, selectedTeam, _defaultTeam.key]
   );
 
+  function resetFilterAndMetric() {
+    setFilter(null);
+    setSelectedMetric(_defaultMetric);
+  }
+
+  function handleClearClick() {
+    resetFilterAndMetric();
+    resetComponentState();
+  }
+  
   return (
     <React.Fragment>
       <div className={styles.controls}>
