@@ -1,21 +1,26 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName} from "../../../../helpers/metricsMeta";
+import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName, getMetricsMetaKey, getSelectedMetricColor} from "../../../../helpers/metricsMeta";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
-import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
+import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { WorkItemStateTypes } from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
+import {injectIntl} from "react-intl";
+import {ClearFilterIcon} from "../../../../../../components/misc/customIcons";
+import {Tag} from "antd";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export const DimensionDeliveryCyclesFlowMetricsView = ({
+const DeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
+  intl,
   data,
   dimension,
   days,
@@ -80,9 +85,20 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  function resetFilterAndMetric() {
+    setFilter(null);
+    setSelectedMetric(_defaultMetric);
+  }
+
+  function handleClearClick() {
+    resetFilterAndMetric();
+    resetComponentState();
+  }
 
   React.useEffect(() => {
-    initialMetric && setSelectedMetric(_defaultMetric);
+    if (initialMetric) {
+      handleClearClick();
+    }
     // eslint-disable-next-line
   }, [initialMetric]);
 
@@ -93,7 +109,10 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           title="Metric"
           value={uniqueGroupings.map((x) => x.key).indexOf(selectedMetric.key)}
           uniqueItems={uniqueGroupings}
-          handleChange={handleMetricChange}
+          handleChange={(index) => {
+            setFilter(null);
+            handleMetricChange(index);
+          }}
           testId="groupings-select"
           width={170}
           className={styles.metricDropdown}
@@ -128,16 +147,24 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     [model, selectedTeam, _defaultTeam.key]
   );
 
-  function resetFilterAndMetric() {
-    setFilter(null);
-    setSelectedMetric(_defaultMetric);
+ 
+  function getChartSeries() {
+    const points = filteredData
+      .filter((cycle) => cycle.workItemType !== "epic")
+      .map((cycle) => projectDeliveryCycleFlowMetricsMeta[selectedMetric.key].value(cycle));
+
+    const seriesObj = getHistogramSeries({
+      id: selectedMetric.key,
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      name: getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed),
+      points,
+      color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed),
+    });
+
+    return [seriesObj];
   }
 
-  function handleClearClick() {
-    resetFilterAndMetric();
-    resetComponentState();
-  }
-  
   return (
     <React.Fragment>
       <div className={styles.controls}>
@@ -152,6 +179,28 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           />
         )}
         {yAxisScale !== "table" && selectMetricDropdown()}
+        {selectedFilter != null && (
+          <div
+            className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
+            title="Clear Filters"
+            onClick={handleClearClick}
+          >
+            <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
+              <div>
+                <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}} />
+              </div>
+              <div>{getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed)}</div>
+            </div>
+            <div className="tw-w-full">
+              <Tag
+                color={getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}
+                className="tw-w-full tw-text-center"
+              >
+                {selectedFilter}
+              </Tag>
+            </div>
+          </div>
+        )}
         {!defectsOnly && !hideControls && (
           <div style={{marginLeft: "auto"}}>
             <GroupingSelector
@@ -173,28 +222,39 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           </div>
         )}
       </div>
-      {yAxisScale === "histogram" ? (
-        <DeliveryCyclesHistogramChart
-          days={days}
-          before={before}
-          model={filteredData}
+
+      <div className={yAxisScale === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
+        <WorkItemsDetailHistogramChart
+          key={resetComponentStateKey}
           selectedMetric={selectedMetric.key}
-          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-          defectsOnly={defectsOnly}
           specsOnly={specsOnly}
-          yAxisScale={yAxisScale}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          stateType={WorkItemStateTypes.closed}
+          series={getChartSeries()}
+          onPointClick={({category, selectedMetric}) => {
+            setSelectedMetric({
+              key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
+              name: getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed),
+            });
+            setFilter(category);
+            setYAxisScale("table");
+          }}
+          clearFilters={resetFilterAndMetric}
         />
-      ) : (
+      </div>
+      {yAxisScale === "table" && (
         <WorkItemsDetailTable
-          stateType="closed"
+          key={resetComponentStateKey}
+          stateType={WorkItemStateTypes.closed}
           tableData={filteredData}
           selectedMetric={selectedMetric.key}
+          selectedFilter={selectedFilter}
           setShowPanel={setShowPanel}
           setWorkItemKey={setWorkItemKey}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         />
       )}
+
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
         showPanel={showPanel}
@@ -204,3 +264,5 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     </React.Fragment>
   );
 };
+
+export const DimensionDeliveryCyclesFlowMetricsView = injectIntl(DeliveryCyclesFlowMetricsView)
