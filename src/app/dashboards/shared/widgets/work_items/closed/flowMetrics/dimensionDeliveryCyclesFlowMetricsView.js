@@ -91,6 +91,7 @@ const DeliveryCyclesFlowMetricsView = ({
   }
 
   function handleClearClick() {
+    setYAxisScale("histogram");
     resetFilterAndMetric();
     resetComponentState();
   }
