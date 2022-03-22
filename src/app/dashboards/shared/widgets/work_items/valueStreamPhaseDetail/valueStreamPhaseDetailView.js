@@ -180,6 +180,11 @@ const PhaseDetailView = ({
     resetComponentState();
   }
 
+  function getChartSubTitle() {
+    const specsOnly = workItemScope === "specs";
+    return `${specsOnly ? "Specs" : "All cards"} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
+  }
+
   function getChartSeries() {
     const specsOnly = workItemScope === "specs";
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
@@ -304,6 +309,7 @@ const PhaseDetailView = ({
           <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
             <WorkItemsDetailHistogramChart
               key={resetComponentStateKey}
+              chartSubTitle={getChartSubTitle()}
               specsOnly={workItemScope === "specs"}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               stateType={selectedStateType}

@@ -10,7 +10,7 @@ import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/w
 import { WorkItemStateTypes } from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
-import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
+import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
 import {ClearFilterIcon} from "../../../../../../components/misc/customIcons";
 import {Tag} from "antd";
@@ -174,6 +174,17 @@ const DeliveryCyclesFlowMetricsView = ({
       : selectedMetric.key;
   }
 
+  function getChartSubTitle() {
+    const candidateCycles = filteredData.filter((cycle) => cycle.workItemType !== "epic");
+    const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
+    const subTitle = defectsOnly
+      ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
+      : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+    // When showing cycle time we also report total with no cycle time if they exist.
+    return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
+      ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
+      : subTitle;
+  }
   return (
     <React.Fragment>
       <div className={styles.controls}>
@@ -237,6 +248,7 @@ const DeliveryCyclesFlowMetricsView = ({
       <div className={yAxisScale === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
         <WorkItemsDetailHistogramChart
           key={resetComponentStateKey}
+          chartSubTitle={getChartSubTitle()}
           selectedMetric={selectedMetric.key}
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
