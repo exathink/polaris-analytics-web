@@ -65,7 +65,7 @@ const DeliveryCyclesFlowMetricsView = ({
     ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
-  const uniqueGroupings = groupings.map((g) => ({key: g, name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
+  const uniqueGroupings = groupings.map((g) => ({key: getMetricsMetaKey(g, WorkItemStateTypes.closed), name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
   const _defaultMetric = {
     key: getMetricsMetaKey(initialMetric, WorkItemStateTypes.closed) || "leadTime",
     name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
@@ -108,7 +108,7 @@ const DeliveryCyclesFlowMetricsView = ({
       !hideControls && (
         <SelectDropdown
           title="Metric"
-          value={uniqueGroupings.map((x) => x.key).indexOf(selectedMetric.key)}
+          value={uniqueGroupings.map((x) => x.key).indexOf(getMetricsMetaKey(selectedMetric.key, WorkItemStateTypes.closed))}
           uniqueItems={uniqueGroupings}
           handleChange={(index) => {
             setFilter(null);
