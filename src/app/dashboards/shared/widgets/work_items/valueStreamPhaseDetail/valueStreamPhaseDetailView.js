@@ -185,7 +185,7 @@ const PhaseDetailView = ({
     return `${specsOnly ? "Specs" : "All cards"} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
   }
 
-  function getChartSeries() {
+  const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
 
@@ -226,7 +226,7 @@ const PhaseDetailView = ({
     });
 
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
-  }
+  }, [candidateWorkItems, workItemScope, intl, selectedStateType]);
 
   if (selectedStateType != null) {
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
@@ -313,7 +313,7 @@ const PhaseDetailView = ({
               specsOnly={workItemScope === "specs"}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               stateType={selectedStateType}
-              series={getChartSeries()}
+              series={seriesData}
               onPointClick={({category, selectedMetric}) => {
                 setSelectedMetric(selectedMetric);
                 setFilter(category);

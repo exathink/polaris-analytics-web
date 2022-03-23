@@ -149,7 +149,7 @@ const DeliveryCyclesFlowMetricsView = ({
   );
 
  
-  function getChartSeries() {
+  const seriesData = React.useMemo(() => {
     const points = filteredData
       .filter((cycle) => cycle.workItemType !== "epic")
       .map((cycle) => projectDeliveryCycleFlowMetricsMeta[selectedMetric.key].value(cycle));
@@ -164,7 +164,7 @@ const DeliveryCyclesFlowMetricsView = ({
     });
 
     return [seriesObj];
-  }
+  }, [filteredData, selectedMetric.key, intl]);
 
   function getNormalizedMetricKey(selectedMetric) {
     return selectedMetric.key === "leadTime"
@@ -254,7 +254,7 @@ const DeliveryCyclesFlowMetricsView = ({
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           stateType={WorkItemStateTypes.closed}
-          series={getChartSeries()}
+          series={seriesData}
           onPointClick={({category, selectedMetric}) => {
             setSelectedMetric({
               key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
