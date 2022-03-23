@@ -1,25 +1,22 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {
-  getSelectedMetricColor,
-  getSelectedMetricDisplayName,
-} from "../../../helpers/metricsMeta";
+import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {getUniqItems} from "../../../../../helpers/utility";
-import {Alert, Select, Tag} from "antd";
+import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
-import {ClearFilterIcon} from "../../../../../components/misc/customIcons";
 import {WorkItemsDetailTable} from "../workItemsDetailTable";
 import {WorkItemsDetailHistogramChart} from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
+import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -222,7 +219,7 @@ const PhaseDetailView = ({
       points: pointsEffort,
       name: getSelectedMetricDisplayName("effort", selectedStateType),
       color: getSelectedMetricColor("effort", selectedStateType),
-      visible: false
+      visible: false,
     });
 
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
@@ -258,20 +255,13 @@ const PhaseDetailView = ({
                 className="tw-ml-4"
               />
               {selectedFilter != null && (
-                <div
-                  className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
-                  title="Clear Filters"
-                  onClick={handleClearClick}
-                >
-                  <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
-                    <div>
-                      <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric, selectedStateType)}} />
-                    </div>
-                    <div>{getSelectedMetricDisplayName(selectedMetric, selectedStateType)}</div>
-                  </div>
-                  <div className="tw-w-full">
-                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)} className="tw-w-full tw-text-center">{selectedFilter}</Tag>
-                  </div>
+                <div className="tw-ml-6">
+                  <ClearFilters
+                    selectedFilter={selectedFilter}
+                    selectedMetric={selectedMetric}
+                    stateType={selectedStateType}
+                    handleClearClick={handleClearClick}
+                  />
                 </div>
               )}
             </div>

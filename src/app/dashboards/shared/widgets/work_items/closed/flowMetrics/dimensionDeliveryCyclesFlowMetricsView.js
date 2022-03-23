@@ -17,8 +17,7 @@ import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
-import {ClearFilterIcon} from "../../../../../../components/misc/customIcons";
-import {Tag} from "antd";
+import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -218,27 +217,13 @@ const DeliveryCyclesFlowMetricsView = ({
         {!defectsOnly && !hideControls && (
           <div className="tw-ml-auto tw-flex tw-items-center">
             {selectedFilter != null && (
-              <div
-                className="tw-mr-8 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
-                title="Clear Filters"
-                onClick={handleClearClick}
-              >
-                <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
-                  <div>
-                    <ClearFilterIcon
-                      style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}}
-                    />
-                  </div>
-                  <div>{getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed)}</div>
-                </div>
-                <div className="tw-w-full">
-                  <Tag
-                    color={getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}
-                    className="tw-w-full tw-text-center"
-                  >
-                    {selectedFilter}
-                  </Tag>
-                </div>
+              <div className="tw-mr-8">
+                <ClearFilters
+                  selectedFilter={selectedFilter}
+                  selectedMetric={selectedMetric.key}
+                  stateType={WorkItemStateTypes.closed}
+                  handleClearClick={handleClearClick}
+                />
               </div>
             )}
             <GroupingSelector
