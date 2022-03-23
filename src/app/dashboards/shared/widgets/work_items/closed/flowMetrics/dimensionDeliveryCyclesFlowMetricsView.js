@@ -202,16 +202,18 @@ const DeliveryCyclesFlowMetricsView = ({
     <React.Fragment>
       <div className="tw-flex tw-items-center tw-justify-center">
         {yAxisScale !== "table" && (
-          <SelectDropdown
-            title={"Team"}
-            value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
-            uniqueItems={uniqueTeams}
-            handleChange={handleTeamChange}
-            testId="flowmetrics-team-dropdown"
-            className={styles.teamDropdown}
-          />
+          <div className="tw-flex tw-items-center tw-justify-center">
+            <SelectDropdown
+              title={"Team"}
+              value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
+              uniqueItems={uniqueTeams}
+              handleChange={handleTeamChange}
+              testId="flowmetrics-team-dropdown"
+              className={styles.teamDropdown}
+            />
+            {selectMetricDropdown()}
+          </div>
         )}
-        {yAxisScale !== "table" && selectMetricDropdown()}
         {selectedFilter != null && (
           <div
             className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
