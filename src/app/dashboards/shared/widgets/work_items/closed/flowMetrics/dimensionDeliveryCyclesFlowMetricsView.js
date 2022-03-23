@@ -187,7 +187,7 @@ const DeliveryCyclesFlowMetricsView = ({
   }
   return (
     <React.Fragment>
-      <div className={styles.controls}>
+      <div className="tw-flex tw-items-center tw-justify-center">
         {yAxisScale !== "table" && (
           <SelectDropdown
             title={"Team"}
@@ -224,7 +224,7 @@ const DeliveryCyclesFlowMetricsView = ({
           </div>
         )}
         {!defectsOnly && !hideControls && (
-          <div style={{marginLeft: "auto"}}>
+          <div className="tw-ml-auto">
             <GroupingSelector
               label={"View"}
               value={yAxisScale}
@@ -240,6 +240,7 @@ const DeliveryCyclesFlowMetricsView = ({
               ]}
               initialValue={yAxisScale}
               onGroupingChanged={setYAxisScale}
+              layout="col"
             />
           </div>
         )}
