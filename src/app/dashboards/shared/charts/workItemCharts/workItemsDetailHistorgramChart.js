@@ -2,74 +2,54 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor} from "../../config";
-import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
-import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+import {Colors, WorkItemStateTypes} from "../../config";
+import {
+  getDefaultMetricKey,
+  getSelectedMetricDisplayName,
+  projectDeliveryCycleFlowMetricsMeta,
+} from "../../helpers/metricsMeta";
+import {getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 
-function isClosed(stateType) {
-  return stateType === WorkItemStateTypes.closed;
-}
-
-function getChartTitle(stateType, seriesName=null) {
-  if (stateType !== WorkItemStateTypes.closed) {
-     return `${seriesName || 'Age'} Distribution`
+function getChartTitle(metric, stateType) {
+  const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
+  if (stateType === WorkItemStateTypes.closed) {
+    return `${metricDisplayName} Variability`;
   } else {
-    return `${seriesName || 'Lead Time' } Variability`
+    return `${metricDisplayName} Distribution`;
   }
 }
 
-function getChartSubTitle(stateType, specsOnly) {
-  return `${specsOnly ? 'Specs' : 'All cards'} in ${WorkItemStateTypeDisplayName[stateType]}`
+function getWorkItemTitle(stateType, specsOnly) {
+  if (isClosed(stateType)) {
+    if (specsOnly) {
+      return `Specs Closed`;
+    } else {
+      return `Cards Closed`;
+    }
+  } else {
+    if (specsOnly) {
+      return `Specs`;
+    } else {
+      return `All Cards`;
+    }
+  }
 }
-export const WorkItemsDurationsHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
+
+export const WorkItemsDetailHistogramChart = Chart({
+  chartUpdateProps: (props) => pick(props, "series", "selectedMetric", "specsOnly", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
-  getConfig: ({workItems, intl, colWidthBoundaries, stateType, specsOnly, onPointClick, clearFilters}) => {
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
-    const chartDisplayTitle = isClosed(stateType) ? "Lead Time" : "Age";
-
-    const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
-      isClosed(stateType) ? w["leadTime"] : w["cycleTime"]
-    );
-    const pointsCycleTimeOrLatency = workItemsWithAggregateDurations.map((w) =>
-      isClosed(stateType) ? w["cycleTime"] : w["latency"]
-    );
-    const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
-
-    const seriesLeadTimeOrAge = getHistogramSeries({
-      id: "leadTimeOrAge",
-      intl,
-      colWidthBoundaries,
-      points: pointsLeadTimeOrAge,
-      name: isClosed(stateType) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age",
-      color: isClosed(stateType) ? ResponseTimeMetricsColor.leadTime : ResponseTimeMetricsColor.cycleTime,
-      visible: (isClosed(stateType) && specsOnly === false) || !isClosed(stateType),
-    });
-    const seriesCycleTimeOrLatency = getHistogramSeries({
-      id: "cycleTimeOrLatency",
-      intl,
-      colWidthBoundaries,
-      points: pointsCycleTimeOrLatency,
-      name: isClosed(stateType)
-        ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display
-        : projectDeliveryCycleFlowMetricsMeta["latency"].display,
-      color: isClosed(stateType) ? ResponseTimeMetricsColor.cycleTime : ResponseTimeMetricsColor.latency,
-      visible: isClosed(stateType) && specsOnly === true,
-    });
-
-
-
-    const seriesEffort = getHistogramSeries({
-      id: "effort",
-      intl,
-      colWidthBoundaries,
-      points: pointsEffort,
-      name: projectDeliveryCycleFlowMetricsMeta["effort"].display,
-      color: ResponseTimeMetricsColor.effort,
-      visible: false
-    });
+  getConfig: ({
+    chartSubTitle,
+    specsOnly,
+    intl,
+    series,
+    colWidthBoundaries,
+    stateType,
+    selectedMetric = getDefaultMetricKey(stateType),
+    onPointClick,
+    clearFilters,
+  }) => {
     return {
       chart: {
         type: "column",
@@ -79,42 +59,40 @@ export const WorkItemsDurationsHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: getChartTitle(stateType),
+        text: getChartTitle(selectedMetric, stateType),
       },
       subtitle: {
-        text: getChartSubTitle(stateType, specsOnly),
+        text: chartSubTitle,
       },
       xAxis: {
         title: {
-          text: `${chartDisplayTitle}`,
+          text: getSelectedMetricDisplayName(selectedMetric, stateType),
         },
-        categories: getHistogramCategories(colWidthBoundaries, "days"),
+        categories: getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom),
         crosshair: true,
       },
 
       yAxis: {
         softMin: 0,
         title: {
-          text: specsOnly ? `Specs` : `Cards`,
+          text: getWorkItemTitle(stateType, specsOnly),
         },
       },
       tooltip: {
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const uom = this.series.name === "Effort" ? "dev-days" : "days";
+          const uom = this.series.userOptions.id === "effort" ? "dev-days" : "days";
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
-              [specsOnly ? `Specs: ` : `Cards: `, `${this.point.y}`],
+              [getWorkItemTitle(stateType, specsOnly), this.point.y],
               [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
         },
       },
-      series: isClosed(stateType)
-        ? [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort]
-        : [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort],
+      series: series,
       plotOptions: {
         series: {
           animation: false,
@@ -150,7 +128,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
                 // update xAxis title, as we click through different series
                 currentSeries.xAxis.setTitle({text: currentSeries.name});
                 // update the chart title
-                this.chart.setTitle({text: getChartTitle(stateType, currentSeries.name)});
+                this.chart.setTitle({text: getChartTitle(currentSeries.userOptions.id, stateType)});
                 // check if the current series is effort
                 if (currentSeries.name === "Effort") {
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;

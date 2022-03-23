@@ -1,53 +1,53 @@
-import React, { useState } from "react";
-import { withNavigationContext } from "../../../../../framework/navigation/components/withNavigationContext";
-import { getSelectedMetricColor, getSelectedMetricDisplayName,  projectDeliveryCycleFlowMetricsMeta } from "../../../helpers/metricsMeta";
-import { VizItem, VizRow } from "../../../containers/layout";
-import {
-  WorkItemStateTypeColor,
-  WorkItemStateTypeDisplayName,
-  WorkItemStateTypeSortOrder
-} from "../../../config";
-import { GroupingSelector } from "../../../components/groupingSelector/groupingSelector";
-import { Flex } from "reflexbox";
+import React, {useState} from "react";
+import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
+import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
+import {VizItem, VizRow} from "../../../containers/layout";
+import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
+import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
-import { getUniqItems } from "../../../../../helpers/utility";
-import { Alert, Select, Tag } from "antd";
-import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
-import { CardInspectorWithDrawer, useCardInspector } from "../../../../work_items/cardInspector/cardInspectorUtils";
-import { getWorkItemDurations } from "../clientSideFlowMetrics";
-import { WorkItemsDurationsHistogramChart } from "../../../charts/workItemCharts/workItemsDurationsHistogramChart";
-import { useResetComponentState } from "../../../../projects/shared/helper/hooks";
-import { ClearFilterIcon } from "../../../../../components/misc/customIcons";
-import { WorkItemsDetailTable } from "../workItemsDetailTable";
+import {getUniqItems} from "../../../../../helpers/utility";
+import {Alert, Select} from "antd";
+import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import {getWorkItemDurations} from "../clientSideFlowMetrics";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import {WorkItemsDetailTable} from "../workItemsDetailTable";
+import {WorkItemsDetailHistogramChart} from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
+import {injectIntl} from "react-intl";
+import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-const { Option } = Select;
+const {Option} = Select;
 
 const PhaseDetailView = ({
-                           data,
-                           dimension,
-                           targetMetrics,
-                           workItemScope,
-                           setWorkItemScope,
-                           workItemScopeVisible = true,
-                           view,
-                           context
-                         }) => {
+  data,
+  dimension,
+  targetMetrics,
+  workItemScope,
+  setWorkItemScope,
+  workItemScopeVisible = true,
+  view,
+  context,
+  intl,
+}) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const uniqWorkItemsSources = React.useMemo(() => getUniqItems(workItems, (item) => item.workItemsSourceKey), [
-    workItems
-  ]);
+  const uniqWorkItemsSources = React.useMemo(
+    () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
+    [workItems]
+  );
   const uniqWorkItemsSourcesWithDefault = [
-    { workItemsSourceKey: "all", workItemsSourceName: "All" },
-    ...uniqWorkItemsSources
+    {workItemsSourceKey: "all", workItemsSourceName: "All"},
+    ...uniqWorkItemsSources,
   ];
 
-  const { workItemKey, setWorkItemKey, showPanel, setShowPanel } = useCardInspector();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
@@ -74,7 +74,7 @@ const PhaseDetailView = ({
           getPopupContainer={(node) => node.parentNode}
           className={"workStreamSelector"}
         >
-          {uniqWorkItemsSourcesWithDefault.map(({ workItemsSourceKey, workItemsSourceName }, index) => (
+          {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
             <Option key={workItemsSourceKey} value={index}>
               {workItemsSourceName}
             </Option>
@@ -155,6 +155,17 @@ const PhaseDetailView = ({
     }
   }, [selectedFilter]);
 
+  React.useEffect(() => {
+    if (selectedStateType === "backlog" || selectedStateType === "unmapped") {
+      setWorkItemScope("all");
+    } else {
+      if (workItemScope === "all") {
+        setWorkItemScope("specs");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStateType]);
+
   function resetFilterAndMetric() {
     // clear bucket and clear series
     setFilter(null);
@@ -165,6 +176,54 @@ const PhaseDetailView = ({
     resetFilterAndMetric();
     resetComponentState();
   }
+
+  function getChartSubTitle() {
+    const specsOnly = workItemScope === "specs";
+    return `${specsOnly ? "Specs" : "All cards"} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
+  }
+
+  const seriesData = React.useMemo(() => {
+    const specsOnly = workItemScope === "specs";
+    const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
+
+    const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
+      isClosed(selectedStateType) ? w["leadTime"] : w["cycleTime"]
+    );
+    const pointsCycleTimeOrLatency = workItemsWithAggregateDurations.map((w) =>
+      isClosed(selectedStateType) ? w["cycleTime"] : w["latency"]
+    );
+    const pointsEffort = workItemsWithAggregateDurations.map((w) => w["effort"]);
+
+    const seriesLeadTimeOrAge = getHistogramSeries({
+      id: "leadTimeOrAge",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsLeadTimeOrAge,
+      name: getSelectedMetricDisplayName("leadTimeOrAge", selectedStateType),
+      color: getSelectedMetricColor("leadTimeOrAge", selectedStateType),
+      visible: (isClosed(selectedStateType) && specsOnly === false) || !isClosed(selectedStateType),
+    });
+    const seriesCycleTimeOrLatency = getHistogramSeries({
+      id: "cycleTimeOrLatency",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsCycleTimeOrLatency,
+      name: getSelectedMetricDisplayName("cycleTimeOrLatency", selectedStateType),
+      color: getSelectedMetricColor("cycleTimeOrLatency", selectedStateType),
+      visible: isClosed(selectedStateType) && specsOnly === true,
+    });
+    const seriesEffort = getHistogramSeries({
+      id: "effort",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: pointsEffort,
+      name: getSelectedMetricDisplayName("effort", selectedStateType),
+      color: getSelectedMetricColor("effort", selectedStateType),
+      visible: false,
+    });
+
+    return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
+  }, [candidateWorkItems, workItemScope, intl, selectedStateType]);
 
   if (selectedStateType != null) {
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
@@ -184,8 +243,8 @@ const PhaseDetailView = ({
                   display: WorkItemStateTypeDisplayName[stateType],
                   style: {
                     backgroundColor: WorkItemStateTypeColor[stateType],
-                    color: "#ffffff"
-                  }
+                    color: "#ffffff",
+                  },
                 }))}
                 initialValue={selectedStateType}
                 onGroupingChanged={(stateType) => {
@@ -196,20 +255,13 @@ const PhaseDetailView = ({
                 className="tw-ml-4"
               />
               {selectedFilter != null && (
-                <div className="tw-ml-6 tw-flex tw-flex-col tw-items-center tw-justify-center tw-cursor-pointer" title="Clear Filters" onClick={handleClearClick} >
-                  <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-justify-center tw-gap-1">
-                    <div>
-                      <ClearFilterIcon
-                        style={{ color: getSelectedMetricColor(selectedMetric, selectedStateType)}}
-                        />
-                    </div>
-                    <div>{getSelectedMetricDisplayName(selectedMetric, selectedStateType)}</div>
-                  </div>
-                  <div>
-                    <Tag color={getSelectedMetricColor(selectedMetric, selectedStateType)}>
-                      {selectedFilter}
-                    </Tag>
-                  </div>
+                <div className="tw-ml-6">
+                  <ClearFilters
+                    selectedFilter={selectedFilter}
+                    selectedMetric={selectedMetric}
+                    stateType={selectedStateType}
+                    handleClearClick={handleClearClick}
+                  />
                 </div>
               )}
             </div>
@@ -229,11 +281,11 @@ const PhaseDetailView = ({
                   label={"View"}
                   className={"groupCardsBySelector"}
                   groupings={[
-                    { key: "responseTime", display: `Histogram` },
-                    { key: "table", display: "Card Detail" }
+                    {key: "responseTime", display: `Histogram`},
+                    {key: "table", display: "Card Detail"},
                   ].map((item) => ({
                     key: item.key,
-                    display: item.display
+                    display: item.display,
                   }))}
                   initialValue={selectedGrouping}
                   value={selectedGrouping}
@@ -245,14 +297,14 @@ const PhaseDetailView = ({
           </div>
 
           <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-            <WorkItemsDurationsHistogramChart
+            <WorkItemsDetailHistogramChart
               key={resetComponentStateKey}
-              stateType={selectedStateType}
-              workItems={candidateWorkItems}
-              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-              metricsMeta={projectDeliveryCycleFlowMetricsMeta}
+              chartSubTitle={getChartSubTitle()}
               specsOnly={workItemScope === "specs"}
-              onPointClick={({ category, selectedMetric }) => {
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              stateType={selectedStateType}
+              series={seriesData}
+              onPointClick={({category, selectedMetric}) => {
                 setSelectedMetric(selectedMetric);
                 setFilter(category);
                 setSelectedGrouping("table");
@@ -303,4 +355,4 @@ const PhaseDetailView = ({
     );
   }
 };
-export const ValueStreamPhaseDetailView = withNavigationContext(PhaseDetailView);
+export const ValueStreamPhaseDetailView = withNavigationContext(injectIntl(PhaseDetailView));

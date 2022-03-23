@@ -1,7 +1,7 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
-import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
+import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 import {getNumber} from "../../../../helpers/utility";
@@ -10,20 +10,16 @@ import {
   comboColumnTitleRender,
   customColumnRender,
 } from "../../../projects/shared/helper/renderers";
-import {allPairs, getHistogramCategories} from "../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
-
-function isClosed(item) {
-  return item.stateType === WorkItemStateTypes.closed;
-}
+import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 
 function getLeadTimeOrAge(item, intl) {
-  return isClosed(item) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
+  return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
 }
 
 function getCycleTimeOrLatency(item, intl) {
-  return isClosed(item) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
+  return isClosed(item.stateType) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
 }
 
 function getTransformedData(data, intl) {
@@ -35,12 +31,12 @@ function getTransformedData(data, intl) {
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
       latency: getNumber(item.latency, intl),
+      delivery: getNumber(item.latency, intl),
       commitLatency: getNumber(item.commitLatency, intl),
       effort: getNumber(item.effort, intl),
       duration: getNumber(item.duration, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
-      latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       teams: joinTeams(item),
       endDate: formatDateTime(intl, item.endDate),
       rowKey: `${now}.${index}`,
@@ -55,7 +51,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
         <span
           onClick={() => {
             setShowPanel(true);
-            setWorkItemKey(record.key);
+            setWorkItemKey(record.key ?? record.workItemKey);
           }}
           className="tw-cursor-pointer tw-font-medium"
         >
@@ -109,22 +105,23 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     };
   }
-  if (selectedMetric === "latency") {
+  const latencyKey = getMetricsMetaKey("latency", stateType);
+  if (selectedMetric === latencyKey) {
     defaultOptionalCol = {
-      title: projectDeliveryCycleFlowMetricsMeta["latency"].display,
-      dataIndex: "latency",
-      key: "latency",
-      ...(selectedMetric === "latency" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      title: getSelectedMetricDisplayName("latency", stateType),
+      dataIndex: latencyKey,
+      key: latencyKey,
+      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "latency"),
+      onFilter: (value, record) => testMetric(value, record, latencyKey),
       width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
+      sorter: (a, b) => SORTER.number_compare(a[latencyKey], b[latencyKey]),
       ...metricRenderState,
     };
   }
 
   let lastCol = {};
-  if (isClosed({stateType})) {
+  if (isClosed(stateType)) {
     lastCol = {
       title: "Closed At",
       dataIndex: "endDate",
@@ -139,7 +136,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       dataIndex: "latestCommitDisplay",
       key: "latestCommit",
       width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
+      sorter: (a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
       ...renderState,
     };
   }
@@ -180,7 +177,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["leadTime"].display : "Age      ",
+      title: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
       ...(selectedMetric === "leadTimeOrAge"
@@ -193,7 +190,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       ...metricRenderState,
     },
     {
-      title: isClosed({stateType}) ? projectDeliveryCycleFlowMetricsMeta["cycleTime"].display : `${projectDeliveryCycleFlowMetricsMeta["latency"].display}       `,
+      title: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
       ...(selectedMetric === "cycleTimeOrLatency"
@@ -223,6 +220,7 @@ export const WorkItemsDetailTable = injectIntl(
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
+    onChange
   }) => {
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -251,6 +249,7 @@ export const WorkItemsDetailTable = injectIntl(
         testId="work-items-detail-table"
         height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
         rowKey={(record) => record.rowKey}
+        onChange={onChange}
       />
     );
   }

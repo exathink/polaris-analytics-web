@@ -1,19 +1,30 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName} from "../../../../helpers/metricsMeta";
-import {FlowMetricsDetailTable} from "./flowMetricsDetailTable";
+import {
+  projectDeliveryCycleFlowMetricsMeta,
+  getSelectedMetricDisplayName,
+  getMetricsMetaKey,
+  getSelectedMetricColor,
+} from "../../../../helpers/metricsMeta";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
-import {DeliveryCyclesHistogramChart} from "../../../../charts/flowMetricCharts/histogramChart";
-import { WorkItemStateTypes } from "../../../../config";
+import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import {WorkItemStateTypes} from "../../../../config";
+import {WorkItemsDetailTable} from "../../workItemsDetailTable";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
+import {injectIntl} from "react-intl";
+import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
+
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export const DimensionDeliveryCyclesFlowMetricsView = ({
+const DeliveryCyclesFlowMetricsView = ({
   instanceKey,
   context,
+  intl,
   data,
   dimension,
   days,
@@ -48,7 +59,7 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
           "effort",
           "authorCount",
           "teamNodeRefs",
-          "epicName",
+          "epicName"
         )
       ),
     [data, dimension]
@@ -58,20 +69,22 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
-  const uniqueGroupings = groupings.map((g) => ({key: g, name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
+  const uniqueGroupings = groupings.map((g) => ({
+    key: getMetricsMetaKey(g, WorkItemStateTypes.closed),
+    name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed),
+  }));
   const _defaultMetric = {
-    key: initialMetric || "leadTime",
+    key: getMetricsMetaKey(initialMetric, WorkItemStateTypes.closed) || "leadTime",
     name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
   };
-  const {selectedVal: selectedMetric, setSelectedVal: setSelectedMetric, handleChange: handleMetricChange} = useSelect({
+  const {
+    selectedVal: selectedMetric,
+    setSelectedVal: setSelectedMetric,
+    handleChange: handleMetricChange,
+  } = useSelect({
     uniqueItems: uniqueGroupings,
     defaultVal: _defaultMetric,
   });
-
-  const [metricTarget, targetConfidence] = projectDeliveryCycleFlowMetricsMeta.getTargetsAndConfidence(
-    selectedMetric.key,
-    targetMetrics
-  );
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
@@ -81,8 +94,23 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     parentYAxisScale || "histogram"
   );
 
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  function resetFilterAndMetric() {
+    setFilter(null);
+    setSelectedMetric(_defaultMetric);
+  }
+
+  function handleClearClick() {
+    setYAxisScale("histogram");
+    resetFilterAndMetric();
+    resetComponentState();
+  }
+
   React.useEffect(() => {
-    initialMetric && setSelectedMetric(_defaultMetric);
+    if (initialMetric) {
+      handleClearClick();
+    }
     // eslint-disable-next-line
   }, [initialMetric]);
 
@@ -91,9 +119,14 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
       !hideControls && (
         <SelectDropdown
           title="Metric"
-          value={uniqueGroupings.map((x) => x.key).indexOf(selectedMetric.key)}
+          value={uniqueGroupings
+            .map((x) => x.key)
+            .indexOf(getMetricsMetaKey(selectedMetric.key, WorkItemStateTypes.closed))}
           uniqueItems={uniqueGroupings}
-          handleChange={handleMetricChange}
+          handleChange={(index) => {
+            setFilter(null);
+            handleMetricChange(index);
+          }}
           testId="groupings-select"
           width={170}
           className={styles.metricDropdown}
@@ -128,22 +161,71 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
     [model, selectedTeam, _defaultTeam.key]
   );
 
+  const seriesData = React.useMemo(() => {
+    const points = filteredData
+      .filter((cycle) => cycle.workItemType !== "epic")
+      .map((cycle) => projectDeliveryCycleFlowMetricsMeta[selectedMetric.key].value(cycle));
+
+    const seriesObj = getHistogramSeries({
+      id: selectedMetric.key,
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      name: getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed),
+      points,
+      color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed),
+    });
+
+    return [seriesObj];
+  }, [filteredData, selectedMetric.key, intl]);
+
+  function getNormalizedMetricKey(selectedMetric) {
+    return selectedMetric.key === "leadTime"
+      ? "leadTimeOrAge"
+      : selectedMetric.key === "cycleTime"
+      ? "cycleTimeOrLatency"
+      : selectedMetric.key;
+  }
+
+  function getChartSubTitle() {
+    const candidateCycles = filteredData.filter((cycle) => cycle.workItemType !== "epic");
+    const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
+    const subTitle = defectsOnly
+      ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
+      : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+    // When showing cycle time we also report total with no cycle time if they exist.
+    return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
+      ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
+      : subTitle;
+  }
   return (
-    <React.Fragment>
-      <div className={styles.controls}>
+    <div className="tw-h-[36vh]">
+      <div className="tw-flex tw-h-[60px] tw-items-center">
         {yAxisScale !== "table" && (
-          <SelectDropdown
-            title={"Team"}
-            value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
-            uniqueItems={uniqueTeams}
-            handleChange={handleTeamChange}
-            testId="flowmetrics-team-dropdown"
-            className={styles.teamDropdown}
-          />
+          <div className="tw-flex tw-items-center tw-justify-center">
+            <SelectDropdown
+              title={"Team"}
+              value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
+              uniqueItems={uniqueTeams}
+              handleChange={handleTeamChange}
+              testId="flowmetrics-team-dropdown"
+              className={styles.teamDropdown}
+            />
+            {selectMetricDropdown()}
+          </div>
         )}
-        {yAxisScale !== "table" && selectMetricDropdown()}
+
         {!defectsOnly && !hideControls && (
-          <div style={{marginLeft: "auto"}}>
+          <div className="tw-ml-auto tw-flex tw-items-center">
+            {selectedFilter != null && (
+              <div className="tw-mr-8">
+                <ClearFilters
+                  selectedFilter={selectedFilter}
+                  selectedMetric={selectedMetric.key}
+                  stateType={WorkItemStateTypes.closed}
+                  handleClearClick={handleClearClick}
+                />
+              </div>
+            )}
             <GroupingSelector
               label={"View"}
               value={yAxisScale}
@@ -159,39 +241,55 @@ export const DimensionDeliveryCyclesFlowMetricsView = ({
               ]}
               initialValue={yAxisScale}
               onGroupingChanged={setYAxisScale}
+              layout="col"
             />
           </div>
         )}
       </div>
-      {yAxisScale === "histogram" ? (
-        <DeliveryCyclesHistogramChart
-          days={days}
-          before={before}
-          model={filteredData}
+
+      <div className={yAxisScale === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
+        <WorkItemsDetailHistogramChart
+          key={resetComponentStateKey}
+          chartSubTitle={getChartSubTitle()}
           selectedMetric={selectedMetric.key}
-          metricsMeta={projectDeliveryCycleFlowMetricsMeta}
-          metricTarget={metricTarget}
-          targetConfidence={targetConfidence}
-          defectsOnly={defectsOnly}
           specsOnly={specsOnly}
-          yAxisScale={yAxisScale}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          stateType={WorkItemStateTypes.closed}
+          series={seriesData}
+          onPointClick={({category, selectedMetric}) => {
+            setSelectedMetric({
+              key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
+              name: getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed),
+            });
+            setFilter(category);
+            setYAxisScale("table");
+          }}
+          clearFilters={resetFilterAndMetric}
         />
-      ) : (
-        <FlowMetricsDetailTable
-          tableData={filteredData}
-          selectedMetric={selectedMetric.key}
-          setShowPanel={setShowPanel}
-          setWorkItemKey={setWorkItemKey}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        />
+      </div>
+      {yAxisScale === "table" && (
+        <div className="tw-h-full tw-w-full">
+          <WorkItemsDetailTable
+            key={resetComponentStateKey}
+            stateType={WorkItemStateTypes.closed}
+            tableData={filteredData}
+            selectedMetric={getNormalizedMetricKey(selectedMetric)}
+            selectedFilter={selectedFilter}
+            setShowPanel={setShowPanel}
+            setWorkItemKey={setWorkItemKey}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          />
+        </div>
       )}
+
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
         showPanel={showPanel}
         setShowPanel={setShowPanel}
         context={context}
       />
-    </React.Fragment>
+    </div>
   );
 };
+
+export const DimensionDeliveryCyclesFlowMetricsView = injectIntl(DeliveryCyclesFlowMetricsView);

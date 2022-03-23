@@ -15,7 +15,7 @@ export const TABLE_HEIGHTS = {
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div style={{padding: "5px", backgroundColor: "white"}}>
+    <div className="tw-p-1 tw-bg-white">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"

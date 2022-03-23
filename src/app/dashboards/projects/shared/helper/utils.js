@@ -1,4 +1,5 @@
 import {formatDate, getTodayDate, i18nNumber} from "../../../../helpers/utility";
+import {WorkItemStateTypes} from "../../../shared/config";
 
 export function getTimePeriod(measurementWindow, before = getTodayDate()) {
   return before ? `${measurementWindow} days ending ${formatDate(before, "MM/DD/YYYY")} ` : ``;
@@ -72,4 +73,8 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, color, vis
       },
     },
   };
+}
+
+export function isClosed(stateType) {
+  return stateType === WorkItemStateTypes.closed;
 }
