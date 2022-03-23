@@ -200,7 +200,7 @@ const DeliveryCyclesFlowMetricsView = ({
   }
   return (
     <div className="tw-h-[36vh]">
-      <div className="tw-flex tw-items-center tw-justify-center tw-h-[60px]">
+      <div className="tw-flex tw-h-[60px] tw-items-center">
         {yAxisScale !== "table" && (
           <div className="tw-flex tw-items-center tw-justify-center">
             <SelectDropdown
@@ -214,32 +214,33 @@ const DeliveryCyclesFlowMetricsView = ({
             {selectMetricDropdown()}
           </div>
         )}
-        {selectedFilter != null && (
-          <div
-            className="tw-ml-6 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
-            title="Clear Filters"
-            onClick={handleClearClick}
-          >
-            <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
-              <div>
-                <ClearFilterIcon
-                  style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}}
-                />
-              </div>
-              <div>{getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed)}</div>
-            </div>
-            <div className="tw-w-full">
-              <Tag
-                color={getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}
-                className="tw-w-full tw-text-center"
-              >
-                {selectedFilter}
-              </Tag>
-            </div>
-          </div>
-        )}
+
         {!defectsOnly && !hideControls && (
-          <div className="tw-ml-auto">
+          <div className="tw-ml-auto tw-flex tw-items-center">
+            {selectedFilter != null && (
+              <div
+                className="tw-mr-8 tw-flex tw-cursor-pointer tw-flex-col tw-justify-center tw-gap-1"
+                title="Clear Filters"
+                onClick={handleClearClick}
+              >
+                <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
+                  <div>
+                    <ClearFilterIcon
+                      style={{color: getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}}
+                    />
+                  </div>
+                  <div>{getSelectedMetricDisplayName(selectedMetric.key, WorkItemStateTypes.closed)}</div>
+                </div>
+                <div className="tw-w-full">
+                  <Tag
+                    color={getSelectedMetricColor(selectedMetric.key, WorkItemStateTypes.closed)}
+                    className="tw-w-full tw-text-center"
+                  >
+                    {selectedFilter}
+                  </Tag>
+                </div>
+              </div>
+            )}
             <GroupingSelector
               label={"View"}
               value={yAxisScale}
