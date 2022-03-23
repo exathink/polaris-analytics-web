@@ -1,13 +1,18 @@
 import React from "react";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {projectDeliveryCycleFlowMetricsMeta,getSelectedMetricDisplayName, getMetricsMetaKey, getSelectedMetricColor} from "../../../../helpers/metricsMeta";
+import {
+  projectDeliveryCycleFlowMetricsMeta,
+  getSelectedMetricDisplayName,
+  getMetricsMetaKey,
+  getSelectedMetricColor,
+} from "../../../../helpers/metricsMeta";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
-import { WorkItemStateTypes } from "../../../../config";
+import {WorkItemStateTypes} from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
@@ -55,7 +60,7 @@ const DeliveryCyclesFlowMetricsView = ({
           "effort",
           "authorCount",
           "teamNodeRefs",
-          "epicName",
+          "epicName"
         )
       ),
     [data, dimension]
@@ -65,12 +70,19 @@ const DeliveryCyclesFlowMetricsView = ({
     ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
-  const uniqueGroupings = groupings.map((g) => ({key: getMetricsMetaKey(g, WorkItemStateTypes.closed), name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed)}));
+  const uniqueGroupings = groupings.map((g) => ({
+    key: getMetricsMetaKey(g, WorkItemStateTypes.closed),
+    name: getSelectedMetricDisplayName(g, WorkItemStateTypes.closed),
+  }));
   const _defaultMetric = {
     key: getMetricsMetaKey(initialMetric, WorkItemStateTypes.closed) || "leadTime",
     name: projectDeliveryCycleFlowMetricsMeta[initialMetric].display,
   };
-  const {selectedVal: selectedMetric, setSelectedVal: setSelectedMetric, handleChange: handleMetricChange} = useSelect({
+  const {
+    selectedVal: selectedMetric,
+    setSelectedVal: setSelectedMetric,
+    handleChange: handleMetricChange,
+  } = useSelect({
     uniqueItems: uniqueGroupings,
     defaultVal: _defaultMetric,
   });
@@ -108,7 +120,9 @@ const DeliveryCyclesFlowMetricsView = ({
       !hideControls && (
         <SelectDropdown
           title="Metric"
-          value={uniqueGroupings.map((x) => x.key).indexOf(getMetricsMetaKey(selectedMetric.key, WorkItemStateTypes.closed))}
+          value={uniqueGroupings
+            .map((x) => x.key)
+            .indexOf(getMetricsMetaKey(selectedMetric.key, WorkItemStateTypes.closed))}
           uniqueItems={uniqueGroupings}
           handleChange={(index) => {
             setFilter(null);
@@ -148,7 +162,6 @@ const DeliveryCyclesFlowMetricsView = ({
     [model, selectedTeam, _defaultTeam.key]
   );
 
- 
   const seriesData = React.useMemo(() => {
     const points = filteredData
       .filter((cycle) => cycle.workItemType !== "epic")
@@ -289,4 +302,4 @@ const DeliveryCyclesFlowMetricsView = ({
   );
 };
 
-export const DimensionDeliveryCyclesFlowMetricsView = injectIntl(DeliveryCyclesFlowMetricsView)
+export const DimensionDeliveryCyclesFlowMetricsView = injectIntl(DeliveryCyclesFlowMetricsView);
