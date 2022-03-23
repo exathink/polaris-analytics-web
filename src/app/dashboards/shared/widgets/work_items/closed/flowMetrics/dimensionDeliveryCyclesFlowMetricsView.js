@@ -199,8 +199,8 @@ const DeliveryCyclesFlowMetricsView = ({
       : subTitle;
   }
   return (
-    <React.Fragment>
-      <div className="tw-flex tw-items-center tw-justify-center">
+    <div className="tw-h-[36vh]">
+      <div className="tw-flex tw-items-center tw-justify-center tw-h-[60px]">
         {yAxisScale !== "table" && (
           <div className="tw-flex tw-items-center tw-justify-center">
             <SelectDropdown
@@ -282,16 +282,18 @@ const DeliveryCyclesFlowMetricsView = ({
         />
       </div>
       {yAxisScale === "table" && (
-        <WorkItemsDetailTable
-          key={resetComponentStateKey}
-          stateType={WorkItemStateTypes.closed}
-          tableData={filteredData}
-          selectedMetric={getNormalizedMetricKey(selectedMetric)}
-          selectedFilter={selectedFilter}
-          setShowPanel={setShowPanel}
-          setWorkItemKey={setWorkItemKey}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        />
+        <div className="tw-h-full tw-w-full">
+          <WorkItemsDetailTable
+            key={resetComponentStateKey}
+            stateType={WorkItemStateTypes.closed}
+            tableData={filteredData}
+            selectedMetric={getNormalizedMetricKey(selectedMetric)}
+            selectedFilter={selectedFilter}
+            setShowPanel={setShowPanel}
+            setWorkItemKey={setWorkItemKey}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          />
+        </div>
       )}
 
       <CardInspectorWithDrawer
@@ -300,7 +302,7 @@ const DeliveryCyclesFlowMetricsView = ({
         setShowPanel={setShowPanel}
         context={context}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
