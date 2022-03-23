@@ -119,6 +119,14 @@ export function getMetricsMetaKey(selectedMetric, selectedStateType) {
   return selectedMetric;
 }
 
+export function getDefaultMetricKey(stateType) {
+  if (stateType === WorkItemStateTypes.closed) {
+    return "cycleTime";
+  } else {
+    return "age";
+  }
+}
+
 export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) {
   return projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)].display
 }

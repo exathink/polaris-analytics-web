@@ -27,7 +27,7 @@ export const workItemTypeImageMap = {
   task: <img src={issueTypeImagePaths.task} alt="#" style={{width: "16px", height: "16px"}} />,
   subtask: <img src={issueTypeImagePaths.subtask} alt="#" style={{width: "16px", height: "16px"}} />,
   bug: <img src={issueTypeImagePaths.bug} alt="#" style={{width: "16px", height: "16px"}} />,
-  Uncategorized:<QuestionCircleOutlined />
+  Uncategorized: <QuestionCircleOutlined />,
 };
 
 export function getStateTypeIcon(stateType, size = "16px") {
@@ -113,10 +113,17 @@ export function ComboCardTitleColumn({record}) {
 
 export function ComboCardStateTypeColumn({record}) {
   return (
-    <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
-      <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateType, "28px")}</div>
-      <div className={styles.state}>{record.state}</div>
-      <div className={styles.entered}>entered {record.timeInStateDisplay}</div>
+    <div
+      className="tw-grid tw-cursor-pointer tw-grid-cols-[25px,auto] tw-items-center tw-gap-1"
+      style={{marginLeft: "16px", columnGap: "1rem"}}
+    >
+      <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center" : "tw-self-center"}>
+        {getStateTypeIcon(record.stateType, "28px")}
+      </div>
+      <div className="tw-text-base tw-font-medium tw-lowercase tw-text-gray-300">{record.state}</div>
+      {record.timeInStateDisplay && (
+        <div className="tw-text-xs tw-font-normal tw-text-gray-300">entered {record.timeInStateDisplay}</div>
+      )}
     </div>
   );
 }
@@ -130,11 +137,15 @@ export function comboColumnStateTypeRender(setShowPanel, setWorkItemKey, setPlac
           setShowPanel(true);
           setWorkItemKey(record.workItemKey || record.key);
         }}
-        className={styles.comboCardCol}
+        className="tw-grid tw-cursor-pointer tw-grid-cols-[25px,auto] tw-items-center tw-gap-1"
       >
-        <div className={styles.stateTypeIcon}>{getStateTypeIcon(record.stateTypeInternal)}</div>
-        <div className={styles.stateType}>{text}</div>
-        <div className={styles.entered}>entered {record.timeInStateDisplay}</div>
+        <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center" : "tw-self-center"}>
+          {getStateTypeIcon(record.stateTypeInternal)}
+        </div>
+        <div className="tw-font-medium tw-lowercase tw-text-gray-300">{text}</div>
+        {record.timeInStateDisplay && (
+          <div className="tw-text-xs tw-font-normal tw-text-gray-300">entered {record.timeInStateDisplay}</div>
+        )}
       </div>
     );
 }

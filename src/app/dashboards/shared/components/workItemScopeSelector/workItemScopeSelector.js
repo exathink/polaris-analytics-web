@@ -26,6 +26,7 @@ export const WorkItemScopeSelector = (
       ]
     }
     initialValue={workItemScope}
+    value={workItemScope}
     onGroupingChanged={(selected) => setWorkItemScope(selected)}
     className={className}
     layout={layout}

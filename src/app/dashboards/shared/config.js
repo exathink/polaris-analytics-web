@@ -192,6 +192,7 @@ export const ResponseTimeMetricsColor = {
   age: '#5d90bb',
   backlogTime: '#9ca3af',
   latency: WorkItemStateTypeColor.complete,
+  delivery: WorkItemStateTypeColor.complete,
   duration: WorkItemStateTypeColor.wip,
   effort: '#de6524',
 }
