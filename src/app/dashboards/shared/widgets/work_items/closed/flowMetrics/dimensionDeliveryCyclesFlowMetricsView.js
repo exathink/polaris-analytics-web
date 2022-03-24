@@ -239,6 +239,7 @@ const DeliveryCyclesFlowMetricsView = ({
       </div>
 
       <WorkItemsDetailHistogramTable
+        key={resetComponentStateKey}
         series={seriesData}
         stateType={WorkItemStateTypes.closed}
         chartSubTitle={getChartSubTitle()}
@@ -259,8 +260,7 @@ const DeliveryCyclesFlowMetricsView = ({
         tableData={filteredData}
         setShowPanel={setShowPanel}
         setWorkItemKey={setWorkItemKey}
-        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        resetComponentStateKey={resetComponentStateKey}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES} 
       />
 
       <CardInspectorWithDrawer

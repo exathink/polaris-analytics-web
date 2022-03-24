@@ -296,6 +296,7 @@ const PhaseDetailView = ({
           </div>
 
           <WorkItemsDetailHistogramTable
+            key={resetComponentStateKey}
             series={seriesData}
             stateType={selectedStateType}
             chartSubTitle={getChartSubTitle()}
@@ -314,7 +315,6 @@ const PhaseDetailView = ({
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
             colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            resetComponentStateKey={resetComponentStateKey}
           />
         </VizItem>
         <CardInspectorWithDrawer

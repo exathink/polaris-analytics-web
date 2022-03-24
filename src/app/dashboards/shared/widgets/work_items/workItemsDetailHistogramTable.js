@@ -26,13 +26,11 @@ export function WorkItemsDetailHistogramTable({
   setShowPanel,
   setWorkItemKey,
   view,
-  resetComponentStateKey,
 }) {
   return (
     <React.Fragment>
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
         <WorkItemsDetailHistogramChart
-          key={resetComponentStateKey}
           chartSubTitle={chartSubTitle}
           selectedMetric={chartSelectedMetric}
           specsOnly={specsOnly}
@@ -46,7 +44,6 @@ export function WorkItemsDetailHistogramTable({
       {tabSelection === "table" && (
         <div className="tw-h-full tw-w-full">
           <WorkItemsDetailTable
-            key={resetComponentStateKey}
             view={view}
             stateType={stateType}
             tableData={tableData}
