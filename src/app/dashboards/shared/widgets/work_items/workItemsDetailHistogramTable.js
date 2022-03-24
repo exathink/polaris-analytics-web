@@ -11,21 +11,24 @@ function getNormalizedMetricKey(selectedMetric) {
 }
 
 export function WorkItemsDetailHistogramTable({
-  series,
+  // common props
   stateType,
+  tabSelection,
+  colWidthBoundaries,
+  // chart props
   chartSubTitle,
-  selectedFilter,
   chartSelectedMetric,
-  tableSelectedMetric,
+  specsOnly,
+  series,
   onPointClick,
   clearFilters,
-  specsOnly,
-  tabSelection,
+  // table props
+  view,
+  selectedFilter,
   tableData,
-  colWidthBoundaries,
+  tableSelectedMetric,
   setShowPanel,
   setWorkItemKey,
-  view,
 }) {
   return (
     <React.Fragment>

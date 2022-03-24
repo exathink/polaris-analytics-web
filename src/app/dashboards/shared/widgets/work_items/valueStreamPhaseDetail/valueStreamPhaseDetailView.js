@@ -296,25 +296,28 @@ const PhaseDetailView = ({
           </div>
 
           <WorkItemsDetailHistogramTable
+            // common props
             key={resetComponentStateKey}
-            series={seriesData}
             stateType={selectedStateType}
-            chartSubTitle={getChartSubTitle()}
-            selectedFilter={selectedFilter}
-            tableSelectedMetric={selectedMetric}
             tabSelection={selectedGrouping}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            // chart props
+            chartSubTitle={getChartSubTitle()}
             specsOnly={workItemScope === "specs"}
+            series={seriesData}
             onPointClick={({category, selectedMetric}) => {
               setSelectedMetric(selectedMetric);
               setFilter(category);
               setSelectedGrouping("table");
             }}
             clearFilters={resetFilterAndMetric}
-            tableData={workItemsWithAggregateDurations}
+            // table props
             view={view}
+            selectedFilter={selectedFilter}
+            tableData={workItemsWithAggregateDurations}
+            tableSelectedMetric={selectedMetric}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           />
         </VizItem>
         <CardInspectorWithDrawer

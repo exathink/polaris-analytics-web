@@ -239,15 +239,16 @@ const DeliveryCyclesFlowMetricsView = ({
       </div>
 
       <WorkItemsDetailHistogramTable
+        // common props
         key={resetComponentStateKey}
-        series={seriesData}
         stateType={WorkItemStateTypes.closed}
-        chartSubTitle={getChartSubTitle()}
-        selectedFilter={selectedFilter}
-        chartSelectedMetric={selectedMetric.key}
-        tableSelectedMetric={selectedMetric.key}
         tabSelection={yAxisScale}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        // chart props
+        chartSubTitle={getChartSubTitle()}
+        chartSelectedMetric={selectedMetric.key}
         specsOnly={specsOnly}
+        series={seriesData}
         onPointClick={({category, selectedMetric}) => {
           setSelectedMetric({
             key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
@@ -257,10 +258,12 @@ const DeliveryCyclesFlowMetricsView = ({
           setYAxisScale("table");
         }}
         clearFilters={resetFilterAndMetric}
+        // table props
+        selectedFilter={selectedFilter}
         tableData={filteredData}
+        tableSelectedMetric={selectedMetric.key}
         setShowPanel={setShowPanel}
         setWorkItemKey={setWorkItemKey}
-        colWidthBoundaries={COL_WIDTH_BOUNDARIES} 
       />
 
       <CardInspectorWithDrawer
