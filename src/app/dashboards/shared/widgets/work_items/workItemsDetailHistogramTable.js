@@ -15,7 +15,8 @@ export function WorkItemsDetailHistogramTable({
   stateType,
   chartSubTitle,
   selectedFilter,
-  selectedMetric,
+  chartSelectedMetric,
+  tableSelectedMetric,
   onPointClick,
   clearFilters,
   specsOnly,
@@ -24,6 +25,7 @@ export function WorkItemsDetailHistogramTable({
   colWidthBoundaries,
   setShowPanel,
   setWorkItemKey,
+  view,
   resetComponentStateKey,
 }) {
   return (
@@ -32,7 +34,7 @@ export function WorkItemsDetailHistogramTable({
         <WorkItemsDetailHistogramChart
           key={resetComponentStateKey}
           chartSubTitle={chartSubTitle}
-          selectedMetric={selectedMetric}
+          selectedMetric={chartSelectedMetric}
           specsOnly={specsOnly}
           colWidthBoundaries={colWidthBoundaries}
           stateType={stateType}
@@ -45,9 +47,10 @@ export function WorkItemsDetailHistogramTable({
         <div className="tw-h-full tw-w-full">
           <WorkItemsDetailTable
             key={resetComponentStateKey}
+            view={view}
             stateType={stateType}
             tableData={tableData}
-            selectedMetric={getNormalizedMetricKey(selectedMetric)}
+            selectedMetric={getNormalizedMetricKey(tableSelectedMetric)}
             selectedFilter={selectedFilter}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}

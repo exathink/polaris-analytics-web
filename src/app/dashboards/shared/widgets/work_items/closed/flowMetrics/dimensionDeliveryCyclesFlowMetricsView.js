@@ -11,13 +11,12 @@ import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
-import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {WorkItemStateTypes} from "../../../../config";
-import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
+import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -178,14 +177,6 @@ const DeliveryCyclesFlowMetricsView = ({
     return [seriesObj];
   }, [filteredData, selectedMetric.key, intl]);
 
-  function getNormalizedMetricKey(selectedMetric) {
-    return selectedMetric.key === "leadTime"
-      ? "leadTimeOrAge"
-      : selectedMetric.key === "cycleTime"
-      ? "cycleTimeOrLatency"
-      : selectedMetric.key;
-  }
-
   function getChartSubTitle() {
     const candidateCycles = filteredData.filter((cycle) => cycle.workItemType !== "epic");
     const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
@@ -247,40 +238,30 @@ const DeliveryCyclesFlowMetricsView = ({
         )}
       </div>
 
-      <div className={yAxisScale === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-        <WorkItemsDetailHistogramChart
-          key={resetComponentStateKey}
-          chartSubTitle={getChartSubTitle()}
-          selectedMetric={selectedMetric.key}
-          specsOnly={specsOnly}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          stateType={WorkItemStateTypes.closed}
-          series={seriesData}
-          onPointClick={({category, selectedMetric}) => {
-            setSelectedMetric({
-              key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
-              name: getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed),
-            });
-            setFilter(category);
-            setYAxisScale("table");
-          }}
-          clearFilters={resetFilterAndMetric}
-        />
-      </div>
-      {yAxisScale === "table" && (
-        <div className="tw-h-full tw-w-full">
-          <WorkItemsDetailTable
-            key={resetComponentStateKey}
-            stateType={WorkItemStateTypes.closed}
-            tableData={filteredData}
-            selectedMetric={getNormalizedMetricKey(selectedMetric)}
-            selectedFilter={selectedFilter}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          />
-        </div>
-      )}
+      <WorkItemsDetailHistogramTable
+        series={seriesData}
+        stateType={WorkItemStateTypes.closed}
+        chartSubTitle={getChartSubTitle()}
+        selectedFilter={selectedFilter}
+        chartSelectedMetric={selectedMetric.key}
+        tableSelectedMetric={selectedMetric.key}
+        tabSelection={yAxisScale}
+        specsOnly={specsOnly}
+        onPointClick={({category, selectedMetric}) => {
+          setSelectedMetric({
+            key: getMetricsMetaKey(selectedMetric, WorkItemStateTypes.closed),
+            name: getSelectedMetricDisplayName(selectedMetric, WorkItemStateTypes.closed),
+          });
+          setFilter(category);
+          setYAxisScale("table");
+        }}
+        clearFilters={resetFilterAndMetric}
+        tableData={filteredData}
+        setShowPanel={setShowPanel}
+        setWorkItemKey={setWorkItemKey}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        resetComponentStateKey={resetComponentStateKey}
+      />
 
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
