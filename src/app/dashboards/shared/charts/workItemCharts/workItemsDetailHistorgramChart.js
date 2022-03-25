@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypes} from "../../config";
+import {Colors, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 import {
   getDefaultMetricKey,
   getSelectedMetricDisplayName,
@@ -17,6 +17,11 @@ function getChartTitle(metric, stateType) {
   } else {
     return `${metricDisplayName} Distribution`;
   }
+}
+
+function getNewSubtitle(count, specsOnly, stateType) {
+  const item = specsOnly ? "spec" : "card";
+  return`${count} ${item}${count > 1 ? "s" : ""} in ${WorkItemStateTypeDisplayName[stateType]}`;
 }
 
 function getWorkItemTitle(stateType, specsOnly) {
@@ -110,6 +115,9 @@ export const WorkItemsDetailHistogramChart = Chart({
               click: function () {
                 const category = this.category;
                 const selectedMetric = this.series.userOptions.id;
+                // update subtitle
+                this.series.chart.setSubtitle({text: getNewSubtitle(this.y, specsOnly, stateType)});
+
                 onPointClick({category, selectedMetric});
               },
             },
@@ -117,6 +125,9 @@ export const WorkItemsDetailHistogramChart = Chart({
           events: {
             legendItemClick: function () {
               clearFilters();
+              // reset subtitle on series change
+              this.chart.setSubtitle({text: this.chart.userOptions.subtitle.text});
+
               // get all the series
               var series = this.chart.series;
               // don't allow visible series to be hidden
