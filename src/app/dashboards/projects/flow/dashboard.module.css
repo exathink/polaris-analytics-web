@@ -37,7 +37,6 @@
 }
 .responseTimeTrends{
     grid-area: responseTimeTrends;
-    padding: 0.25rem;
 }
 .phaseDetail{
     grid-area: phaseDetail;
