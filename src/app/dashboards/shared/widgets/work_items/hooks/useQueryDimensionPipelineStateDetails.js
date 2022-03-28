@@ -56,6 +56,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
               latestCommit
               commitCount
               effort
+              endDate
               leadTime
               cycleTime
               duration
