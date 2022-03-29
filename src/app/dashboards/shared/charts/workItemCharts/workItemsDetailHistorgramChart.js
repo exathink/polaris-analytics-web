@@ -107,7 +107,7 @@ export const WorkItemsDetailHistogramChart = Chart({
             select: {
               color: null,
               borderWidth: 2,
-              borderColor: "Black",
+              borderColor: Colors.HistogramSelection,
             },
           },
           point: {

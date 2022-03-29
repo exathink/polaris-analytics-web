@@ -45,7 +45,8 @@ export const Colors = {
   },
   DashboardWidgetIcons: {
     primary: "rgba(3,21,49,0.63)"
-  }
+  },
+  HistogramSelection: "#6b7280"
 };
 
 
