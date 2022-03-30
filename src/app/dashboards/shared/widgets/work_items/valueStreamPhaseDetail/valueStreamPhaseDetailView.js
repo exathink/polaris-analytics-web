@@ -154,17 +154,6 @@ const PhaseDetailView = ({
     }
   }, [selectedFilter]);
 
-  React.useEffect(() => {
-    if (selectedStateType === "backlog" || selectedStateType === "unmapped") {
-      setWorkItemScope("all");
-    } else {
-      if (workItemScope === "all") {
-        setWorkItemScope("specs");
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedStateType]);
-
   function resetFilterAndMetric() {
     // clear bucket and clear series
     setFilter(null);
