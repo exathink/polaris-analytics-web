@@ -12,11 +12,10 @@ import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/w
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
-import {WorkItemsDetailTable} from "../workItemsDetailTable";
-import {WorkItemsDetailHistogramChart} from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
+import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -155,17 +154,6 @@ const PhaseDetailView = ({
     }
   }, [selectedFilter]);
 
-  React.useEffect(() => {
-    if (selectedStateType === "backlog" || selectedStateType === "unmapped") {
-      setWorkItemScope("all");
-    } else {
-      if (workItemScope === "all") {
-        setWorkItemScope("specs");
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedStateType]);
-
   function resetFilterAndMetric() {
     // clear bucket and clear series
     setFilter(null);
@@ -296,36 +284,30 @@ const PhaseDetailView = ({
             </div>
           </div>
 
-          <div className={selectedGrouping === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-            <WorkItemsDetailHistogramChart
-              key={resetComponentStateKey}
-              chartSubTitle={getChartSubTitle()}
-              specsOnly={workItemScope === "specs"}
-              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-              stateType={selectedStateType}
-              series={seriesData}
-              onPointClick={({category, selectedMetric}) => {
-                setSelectedMetric(selectedMetric);
-                setFilter(category);
-                setSelectedGrouping("table");
-              }}
-              clearFilters={resetFilterAndMetric}
-            />
-          </div>
-
-          {selectedGrouping === "table" && (
-            <WorkItemsDetailTable
-              key={resetComponentStateKey}
-              view={view}
-              stateType={selectedStateType}
-              tableData={workItemsWithAggregateDurations}
-              setShowPanel={setShowPanel}
-              setWorkItemKey={setWorkItemKey}
-              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-              selectedFilter={selectedFilter}
-              selectedMetric={selectedMetric}
-            />
-          )}
+          <WorkItemsDetailHistogramTable
+            // common props
+            key={resetComponentStateKey}
+            stateType={selectedStateType}
+            tabSelection={selectedGrouping}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            // chart props
+            chartSubTitle={getChartSubTitle()}
+            specsOnly={workItemScope === "specs"}
+            series={seriesData}
+            onPointClick={({category, selectedMetric}) => {
+              setSelectedMetric(selectedMetric);
+              setFilter(category);
+              setSelectedGrouping("table");
+            }}
+            clearFilters={resetFilterAndMetric}
+            // table props
+            view={view}
+            selectedFilter={selectedFilter}
+            tableData={workItemsWithAggregateDurations}
+            tableSelectedMetric={selectedMetric}
+            setShowPanel={setShowPanel}
+            setWorkItemKey={setWorkItemKey}
+          />
         </VizItem>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}

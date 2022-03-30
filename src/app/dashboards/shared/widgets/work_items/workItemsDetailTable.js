@@ -135,7 +135,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       title: "Latest Commit",
       dataIndex: "latestCommitDisplay",
       key: "latestCommit",
-      width: "5%",
+      width: "6%",
       sorter: (a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
       ...renderState,
     };
