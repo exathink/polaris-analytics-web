@@ -58,7 +58,7 @@ export const ResponseTimeTrendsDetailDashboard = (
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-rows-[10%,35%,6%,37%]"
+      className="tw-grid tw-grid-rows-[10%,37%,6%,43%]"
     >
       <DashboardRow
         title={`Response Time Trends`}

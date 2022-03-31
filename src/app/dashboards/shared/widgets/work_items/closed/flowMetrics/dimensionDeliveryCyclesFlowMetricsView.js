@@ -189,7 +189,7 @@ const DeliveryCyclesFlowMetricsView = ({
       : subTitle;
   }
   return (
-    <div className="tw-h-[36vh]">
+    <div className="tw-h-full">
       <div className="tw-flex tw-h-[60px] tw-items-center">
         {yAxisScale !== "table" && (
           <div className="tw-flex tw-items-center tw-justify-center">
