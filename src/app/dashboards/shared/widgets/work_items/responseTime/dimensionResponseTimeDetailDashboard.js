@@ -1,7 +1,6 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
-import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 
@@ -36,10 +35,9 @@ export function DimensionResponseTimeDetailDashboard({
 
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} className={styles.responseTimeDashboard} gridLayout={true}>
+    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] lg:tw-grid-rows-[6%,43%,45%] tw-gap-2">
       <DashboardRow
-        h="45%"
-        className={styles.rangeSlider}
+        className="tw-col-span-2 tw-flex tw-justify-center"
         controls={[
           () => (
             <div style={{minWidth: "500px"}}>
@@ -53,7 +51,7 @@ export function DimensionResponseTimeDetailDashboard({
           title={`Response Time`}
           subtitle={`Specs, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
-          className={styles.responseTimeMetrics}
+          className="tw-col-span-2"
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={dimension}
@@ -83,15 +81,11 @@ export function DimensionResponseTimeDetailDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow
-        h="46%"
-        className={styles.chartsRow}
-      >
-
+      <DashboardRow>
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className={styles.responseTimeDetail}
+          className="tw-col-span-2"
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
