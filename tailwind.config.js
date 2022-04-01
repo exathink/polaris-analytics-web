@@ -3,6 +3,8 @@ module.exports = {
   prefix: "tw-",
   theme: {
     spacing: {
+      px: '1px',
+      0: '0px',
       1: "0.25rem",
       2: "0.5rem",
       3: "0.75rem",
