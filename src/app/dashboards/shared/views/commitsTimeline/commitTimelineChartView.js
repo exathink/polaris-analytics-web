@@ -262,13 +262,15 @@ class _CommitsTimelineChartView extends React.Component {
             <Traceability current={model} previous={model} />
           </ComponentCarousel>
         </div>
-        <div style={{height: "82%"}}>
-          <CommitsTimelineRollupBarChart
-            /* We cannot use the model on state here because this should include all the categories
-             *  even when some a selected*/
-            model={new CommitTimelineViewModel(this.state.commits, this.state.selectedGrouping)}
-            onSelectionChange={this.onCategoriesSelected.bind(this)}
-          />
+        <div className="tw-relative tw-h-[82%]">
+          <div className="tw-absolute tw-inset-0">
+            <CommitsTimelineRollupBarChart
+              /* We cannot use the model on state here because this should include all the categories
+               *  even when some a selected*/
+              model={new CommitTimelineViewModel(this.state.commits, this.state.selectedGrouping)}
+              onSelectionChange={this.onCategoriesSelected.bind(this)}
+            />
+          </div>
         </div>
       </div>
     );
