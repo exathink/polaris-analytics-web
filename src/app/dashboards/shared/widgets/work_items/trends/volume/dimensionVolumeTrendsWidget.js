@@ -7,6 +7,7 @@ import {VolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
 import { getReferenceString, getServerDate } from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
+import {VolumeTrendsTable} from "./volumeTrendsTable";
 
 
 export const DimensionVolumeTrendsWidget = React.memo((
@@ -74,7 +75,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
       );
 
       if (display === "withCardDetails") {
-        const table = <div>Table</div>;
+        const table = <VolumeTrendsTable tableData={flowMetricsTrends}/>;
         return (
           <React.Fragment>
             <GroupingSelector
