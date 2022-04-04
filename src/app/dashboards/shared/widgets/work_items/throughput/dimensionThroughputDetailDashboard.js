@@ -3,8 +3,6 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
@@ -25,7 +23,6 @@ export function DimensionThroughputDetailDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const [chartToggle, setChartToggle] = React.useState("trend");
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   return (
@@ -102,30 +99,10 @@ export function DimensionThroughputDetailDashboard({
       </DashboardRow>
       <DashboardRow
         className={styles.chartsToggleRow}
-        controls={[
-          () => (
-            <GroupingSelector
-              label={" "}
-              value={chartToggle}
-              groupings={[
-                {
-                  key: "trend",
-                  display: "Trend",
-                },
-                {
-                  key: "cardDetail",
-                  display: "Card Detail",
-                },
-              ]}
-              initialValue={"trend"}
-              onGroupingChanged={setChartToggle}
-            />
-          ),
-        ]}
       >
         <DashboardWidget
           name="volume-trends"
-          className={chartToggle === "trend" ? styles.throughputDetail : styles.throughputDetailHidden}
+          className={styles.throughputDetail}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={dimension}
@@ -145,30 +122,6 @@ export function DimensionThroughputDetailDashboard({
             />
           )}
           showDetail={true}
-        />
-        <DashboardWidget
-          title={""}
-          name="flow-metrics-delivery-details"
-          className={chartToggle === "cardDetail" ? styles.throughputDetail : styles.throughputDetailHidden}
-          render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
-              dimension={dimension}
-              instanceKey={key}
-              specsOnly={true}
-              view={view}
-              context={context}
-              showAll={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              days={daysRange}
-              initialMetric={"effort"}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
