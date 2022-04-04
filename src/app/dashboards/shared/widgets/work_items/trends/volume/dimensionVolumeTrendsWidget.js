@@ -6,6 +6,7 @@ import {VolumeTrendsView} from "./volumeTrendsView"
 import {VolumeTrendsDetailDashboard} from "./volumeTrendsDetailDashboard";
 import { getReferenceString, getServerDate } from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 
 
 export const DimensionVolumeTrendsWidget = React.memo((
@@ -13,6 +14,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
     dimension,
     instanceKey,
     view,
+    display,
     context,
     showAll,
     latestCommit,
@@ -31,6 +33,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
     includeSubTasks,
     detailDashboardInitialMetric
   }) => {
+    const [tabSelection, setTab] = React.useState("volume");
     const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
         dimension,
@@ -49,8 +52,9 @@ export const DimensionVolumeTrendsWidget = React.memo((
       return null;
     }
     const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
-    return (
-      view === 'primary' ?
+
+    function getConsolidatedVolumeTrends() {
+      const vol = (
         <VolumeTrendsView
           flowMetricsTrends={flowMetricsTrends}
           targetPercentile={targetPercentile}
@@ -67,23 +71,57 @@ export const DimensionVolumeTrendsWidget = React.memo((
             }
           }}
         />
-        :
-        <VolumeTrendsDetailDashboard
-          dimension={dimension}
-          instanceKey={instanceKey}
-          flowMetricsTrends={flowMetricsTrends}
-          targetPercentile={targetPercentile}
-          measurementWindow={measurementWindow}
-          days={days}
-          samplingFrequency={samplingFrequency}
-          leadTimeTarget={leadTimeTarget}
-          cycleTimeTarget={cycleTimeTarget}
-          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-          view={view}
-          context={context}
-          includeSubTasks={includeSubTasks}
-          detailDashboardInitialMetric={detailDashboardInitialMetric}
-        />
-    )
+      );
+
+      if (display === "withCardDetails") {
+        const table = <div>Table</div>;
+        return (
+          <React.Fragment>
+            <GroupingSelector
+              label={"View"}
+              value={tabSelection}
+              groupings={[
+                {
+                  key: "volume",
+                  display: "Volume",
+                },
+                {
+                  key: "table",
+                  display: "Card Detail",
+                },
+              ]}
+              initialValue={tabSelection}
+              onGroupingChanged={setTab}
+              className="tw-ml-auto tw-mr-10"
+            />
+            {tabSelection==="table" ? null : vol}
+            {tabSelection === "table" && table}
+          </React.Fragment>
+        );
+      } else {
+        return vol;
+      }
+    }
+
+    return view === "primary" ? (
+      getConsolidatedVolumeTrends()
+    ) : (
+      <VolumeTrendsDetailDashboard
+        dimension={dimension}
+        instanceKey={instanceKey}
+        flowMetricsTrends={flowMetricsTrends}
+        targetPercentile={targetPercentile}
+        measurementWindow={measurementWindow}
+        days={days}
+        samplingFrequency={samplingFrequency}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeTarget={cycleTimeTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        view={view}
+        context={context}
+        includeSubTasks={includeSubTasks}
+        detailDashboardInitialMetric={detailDashboardInitialMetric}
+      />
+    );
 });

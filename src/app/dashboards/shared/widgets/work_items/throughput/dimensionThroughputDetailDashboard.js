@@ -113,6 +113,7 @@ export function DimensionThroughputDetailDashboard({
               targetPercentile={0.7}
               context={context}
               view={view}
+              display="withCardDetails"
               latestWorkItemEvent={latestWorkItemEvent}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
