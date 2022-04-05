@@ -5,12 +5,14 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionWorkBalanceTrends} from "./useQueryDimensionWorkBalanceTrends";
 import {WorkBalanceTrendsView} from "./workBalanceTrendsView";
 import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDetailDashboard";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
     dimension,
     instanceKey,
     view,
+    display,
     context,
     showContributorDetail,
     showEffort,
@@ -26,7 +28,8 @@ export const DimensionWorkBalanceTrendsWidget = (
     chartConfig,
     includeSubTasks
   }) => {
-
+  
+  const [tabSelection, setTab] = React.useState("balance");
   const {loading, error, data} = useQueryDimensionWorkBalanceTrends(
     {
       dimension: dimension,
@@ -41,9 +44,9 @@ export const DimensionWorkBalanceTrendsWidget = (
   if (loading) return <Loading/>;
   if (error) return null;
   const {capacityTrends, contributorDetail, cycleMetricsTrends} = data[dimension];
-  return (
-    view !== 'detail' ?
 
+  function getConsolidatedWorkBalanceTrends() {
+    const workBalance = (
       <WorkBalanceTrendsView
         context={context}
         capacityTrends={capacityTrends}
@@ -58,9 +61,55 @@ export const DimensionWorkBalanceTrendsWidget = (
         chartConfig={chartConfig}
         view={view}
       />
-      :
-      <DimensionWorkBalanceTrendsDetailDashboard
-        {...{dimension, instanceKey, days, measurementWindow, samplingFrequency, target, view, includeSubTasks, showContributorDetail, showEffort, context}}
-      />
-  )
+    );
+
+    if (display === "withCardDetails") {
+      const table = <div>Table</div>;
+      return (
+        <React.Fragment>
+          <GroupingSelector
+            label={"View"}
+            value={tabSelection}
+            groupings={[
+              {
+                key: "balance",
+                display: "Work Balance",
+              },
+              {
+                key: "table",
+                display: "Card Detail",
+              },
+            ]}
+            initialValue={tabSelection}
+            onGroupingChanged={setTab}
+            className="tw-ml-auto tw-mr-10"
+          />
+          {tabSelection !== "table" && workBalance}
+          {tabSelection === "table" && table}
+        </React.Fragment>
+      );
+    } else {
+      return workBalance;
+    }
+  }
+
+  return view !== "detail" ? (
+    getConsolidatedWorkBalanceTrends()
+  ) : (
+    <DimensionWorkBalanceTrendsDetailDashboard
+      {...{
+        dimension,
+        instanceKey,
+        days,
+        measurementWindow,
+        samplingFrequency,
+        target,
+        view,
+        includeSubTasks,
+        showContributorDetail,
+        showEffort,
+        context,
+      }}
+    />
+  );
 }

@@ -125,7 +125,7 @@ export function DimensionThroughputDetailDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          name="workbalance-trends"
+          name="capacity-trends-detail"
           className={classNames(selectedMetric === "totalEffort" ? "" : "tw-hidden", styles.throughputDetail)}
           render={({view}) => (
             <DimensionWorkBalanceTrendsWidget
@@ -133,6 +133,7 @@ export function DimensionThroughputDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               view={view}
+              display="withCardDetails"
               showAllTrends={true}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
