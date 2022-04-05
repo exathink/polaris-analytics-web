@@ -4,6 +4,8 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysR
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
+import {DimensionWorkBalanceTrendsWidget} from "../balance";
+import classNames from "classnames";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -97,12 +99,10 @@ export function DimensionThroughputDetailDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow
-        className={styles.chartsToggleRow}
-      >
+      <DashboardRow className={styles.chartsToggleRow}>
         <DashboardWidget
           name="volume-trends"
-          className={styles.throughputDetail}
+          className={classNames(selectedMetric === "workItemsWithCommits" ? "" : "tw-hidden", styles.throughputDetail)}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={dimension}
@@ -119,6 +119,29 @@ export function DimensionThroughputDetailDashboard({
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          name="workbalance-trends"
+          className={classNames(selectedMetric === "totalEffort" ? "" : "tw-hidden", styles.throughputDetail)}
+          render={({view}) => (
+            <DimensionWorkBalanceTrendsWidget
+              context={context}
+              dimension={dimension}
+              instanceKey={key}
+              view={view}
+              showAllTrends={true}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              days={daysRange}
+              measurementWindow={daysRange}
+              samplingFrequency={7}
+              showContributorDetail={false}
+              showEffort={true}
+              chartConfig={{totalEffortDisplayType: "areaspline"}}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
