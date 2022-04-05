@@ -95,7 +95,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
               onGroupingChanged={setTab}
               className="tw-ml-auto tw-mr-10"
             />
-            {tabSelection==="table" ? null : vol}
+            {tabSelection !== "table" && vol}
             {tabSelection === "table" && table}
           </React.Fragment>
         );
