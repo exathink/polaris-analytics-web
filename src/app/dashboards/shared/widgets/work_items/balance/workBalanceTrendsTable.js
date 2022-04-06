@@ -1,9 +1,10 @@
 import React from "react";
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {i18nNumber} from "../../../../../helpers/utility";
 import {formatDateTime} from "../../../../../i18n";
 
-export function useWorkBalanceTrendsTableColumns() {
+export function useWorkBalanceTrendsTableColumns(intl) {
   const columns = [
     {
       title: "Measurement Date",
@@ -18,7 +19,7 @@ export function useWorkBalanceTrendsTableColumns() {
       key: "effort",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.totalEffort, b.totalEffort),
-      render: (text) => <span className="tw-textXs">{text} dev-days</span>,
+      render: (text) => <span className="tw-textXs">{i18nNumber(intl, text, 2)} dev-days</span>,
     },
   ];
 
@@ -36,7 +37,7 @@ function getTransformedData(tableData, intl) {
 
 export const WorkBalanceTrendsTable = injectIntl(({tableData, intl}) => {
   const transformedData = getTransformedData(tableData, intl);
-  const columns = useWorkBalanceTrendsTableColumns();
+  const columns = useWorkBalanceTrendsTableColumns(intl);
 
   return (
     <StripeTable
