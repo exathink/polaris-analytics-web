@@ -6,6 +6,7 @@ import {useQueryDimensionWorkBalanceTrends} from "./useQueryDimensionWorkBalance
 import {WorkBalanceTrendsView} from "./workBalanceTrendsView";
 import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDetailDashboard";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
+import {WorkBalanceTrendsTable} from "./workBalanceTrendsTable";
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
@@ -64,7 +65,7 @@ export const DimensionWorkBalanceTrendsWidget = (
     );
 
     if (display === "withCardDetails") {
-      const table = <div>Table</div>;
+      const table = <WorkBalanceTrendsTable tableData={cycleMetricsTrends}/>;
       return (
         <React.Fragment>
           <GroupingSelector
