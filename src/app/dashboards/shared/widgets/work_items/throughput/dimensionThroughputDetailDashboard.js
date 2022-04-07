@@ -5,7 +5,7 @@ import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
 import {DimensionWorkBalanceTrendsWidget} from "../balance";
-import classNames from "classnames";
+import cn from "classnames";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -102,7 +102,7 @@ export function DimensionThroughputDetailDashboard({
       <DashboardRow className={styles.chartsToggleRow}>
         <DashboardWidget
           name="volume-trends"
-          className={classNames(selectedMetric === "workItemsWithCommits" ? "" : "tw-hidden", styles.throughputDetail)}
+          className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-hidden", styles.throughputDetail)}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={dimension}
@@ -125,8 +125,11 @@ export function DimensionThroughputDetailDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          name="capacity-trends-detail"
-          className={classNames(selectedMetric === "totalEffort" ? "" : "tw-hidden", styles.throughputDetail)}
+          name="workbalance-trends"
+          className={cn(
+            selectedMetric === "totalEffort" || context.targetUrl.includes("workbalance-trends") ? "" : "tw-hidden",
+            styles.throughputDetail
+          )}
           render={({view}) => (
             <DimensionWorkBalanceTrendsWidget
               context={context}
