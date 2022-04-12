@@ -11,12 +11,13 @@ export const ORGANIZATION_PROJECT_QUERY = gql`
   query getOrganizationProjects($organizationKey: String!){
     organization(key: $organizationKey) {
       id
-      projects {
+      projects(interfaces:[ArchivedStatus]) {
           edges {
             node {
                 id
                 name
                 key
+                archived
             }
           }
         }
@@ -53,11 +54,15 @@ export class OrganizationProjectSelectorWidget extends React.Component {
                       defaultValue={selectedProjectKey}
                       style={{width: 185}}
                     >
-                      {projects.map(project =>
-                        <Option key={project.node.key}
-                                value={project.node.key}>{project.node.name}
-                        </Option>
-                      )}
+                      {
+                        projects.filter(
+                          project=>!project.node.archived
+                        ).map(project =>
+                          <Option key={project.node.key}
+                                  value={project.node.key}>{project.node.name}
+                          </Option>
+                        )
+                      }
                     </Select>
                   </Flex>
                 </React.Fragment>
