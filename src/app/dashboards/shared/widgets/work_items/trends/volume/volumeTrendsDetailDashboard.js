@@ -54,8 +54,12 @@ export const VolumeTrendsDetailDashboard = ({
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={displayProps.chartOrTable === undefined ? "40%" : "100%"}
-        title={`Volume Trends`}
-        subTitle={`Last ${displayProps.chartOrTable === undefined ? daysRange : days} days`}
+        title={displayProps.chartOrTable === undefined ? `Volume Trends` : ` `}
+        subTitle={
+          displayProps.chartOrTable === undefined
+            ? `Last ${displayProps.chartOrTable === undefined ? daysRange : days} days`
+            : ` `
+        }
         controls={
           displayProps.chartOrTable === undefined
             ? getTrendsControlBarControls([
@@ -80,7 +84,6 @@ export const VolumeTrendsDetailDashboard = ({
                     ]}
                     initialValue={displayProps.tabSelection}
                     onGroupingChanged={displayProps.setTab}
-                    layout="col"
                   />
                 ),
               ]
