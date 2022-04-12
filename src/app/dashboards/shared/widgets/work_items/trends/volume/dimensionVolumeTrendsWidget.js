@@ -30,7 +30,9 @@ export const DimensionVolumeTrendsWidget = React.memo((
     setSeriesName,
     pollInterval,
     includeSubTasks,
-    detailDashboardInitialMetric
+    detailDashboardInitialMetric,
+    tabSelection,
+    setTab
   }) => {
     const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
@@ -69,6 +71,8 @@ export const DimensionVolumeTrendsWidget = React.memo((
           includeSubTasks={includeSubTasks}
           detailDashboardInitialMetric={detailDashboardInitialMetric}
           chartOrTable="table"
+          tabSelection={tabSelection}
+          setTab={setTab}
         />
     }
     return (
@@ -85,6 +89,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
               if (setBefore && setSeriesName) {
                 setBefore(getServerDate(measurementDate));
                 setSeriesName(key);
+                setTab("table")
               }
             }
           }}

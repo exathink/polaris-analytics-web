@@ -26,6 +26,7 @@ export function DimensionThroughputDetailDashboard({
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
+  const [tabSelection, setTab] = React.useState("volume");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
@@ -120,6 +121,8 @@ export function DimensionThroughputDetailDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              tabSelection={tabSelection}
+              setTab={setTab}
             />
           )}
           showDetail={true}

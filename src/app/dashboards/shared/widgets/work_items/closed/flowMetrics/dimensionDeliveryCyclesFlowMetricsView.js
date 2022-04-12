@@ -191,8 +191,8 @@ const DeliveryCyclesFlowMetricsView = ({
   }
   return (
     <div className="tw-h-full">
-      <div className="tw-flex tw-h-[60px] tw-items-center">
-        {yAxisScale !== "table" && chartOrTable===undefined && (
+      {chartOrTable===undefined && <div className="tw-flex tw-h-[60px] tw-items-center">
+        {yAxisScale !== "table" && (
           <div className="tw-flex tw-items-center tw-justify-center">
             <SelectDropdown
               title={"Team"}
@@ -206,7 +206,7 @@ const DeliveryCyclesFlowMetricsView = ({
           </div>
         )}
 
-        {!defectsOnly && !hideControls && chartOrTable===undefined && (
+        {!defectsOnly && !hideControls && (
           <div className="tw-ml-auto tw-flex tw-items-center">
             {selectedFilter != null && (
               <div className="tw-mr-8">
@@ -237,7 +237,7 @@ const DeliveryCyclesFlowMetricsView = ({
             />
           </div>
         )}
-      </div>
+      </div>}
 
       <WorkItemsDetailHistogramTable
         // common props
