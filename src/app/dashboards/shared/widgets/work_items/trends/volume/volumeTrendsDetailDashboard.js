@@ -37,7 +37,8 @@ export const VolumeTrendsDetailDashboard = (
     cycleTimeConfidenceTarget,
     pollInterval,
     includeSubTasks,
-    detailDashboardInitialMetric
+    detailDashboardInitialMetric,
+    chartOrTable
   }
 ) => {
   const [before, setBefore] = React.useState();
@@ -57,15 +58,15 @@ export const VolumeTrendsDetailDashboard = (
       <DashboardRow
         h={"40%"}
         title={`Volume Trends`}
-        subTitle={`Last ${daysRange} days`}
-        controls={
+        subTitle={`Last ${chartOrTable===undefined ? daysRange : days} days`}
+        controls={chartOrTable===undefined ? 
           getTrendsControlBarControls(
             [
               [daysRange, setDaysRange],
               [measurementWindowRange, setMeasurementWindowRange],
               [frequencyRange, setFrequencyRange]
             ]
-          )
+          ) : []
         }
       >
         <DashboardWidget
@@ -80,9 +81,9 @@ export const VolumeTrendsDetailDashboard = (
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={daysRange}
-                measurementWindow={measurementWindowRange}
-                samplingFrequency={frequencyRange}
+                days={chartOrTable===undefined ? daysRange : days}
+                measurementWindow={chartOrTable===undefined  ? measurementWindowRange : measurementWindow }
+                samplingFrequency={chartOrTable===undefined  ? frequencyRange : samplingFrequency  }
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
               />
@@ -103,7 +104,7 @@ export const VolumeTrendsDetailDashboard = (
               context={context}
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
-              days={measurementWindowRange}
+              days={chartOrTable===undefined ? measurementWindowRange : measurementWindow}
               before={before}
               initialMetric={detailDashboardInitialMetric || "leadTime"}
               leadTimeTarget={leadTimeTarget}
@@ -113,6 +114,7 @@ export const VolumeTrendsDetailDashboard = (
               yAxisScale={yAxisScale}
               setYAxisScale={setYAxisScale}
               includeSubTasks={includeSubTasks}
+              chartOrTable={chartOrTable}
             />
           )}
           showDetail={false}
