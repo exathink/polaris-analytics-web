@@ -13,6 +13,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
     dimension,
     instanceKey,
     view,
+    display,
     context,
     showAll,
     latestCommit,
@@ -49,6 +50,27 @@ export const DimensionVolumeTrendsWidget = React.memo((
       return null;
     }
     const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
+
+    if (view === 'primary' && display === "withCardDetails") {
+      return <VolumeTrendsDetailDashboard
+          dimension={dimension}
+          instanceKey={instanceKey}
+          flowMetricsTrends={flowMetricsTrends}
+          targetPercentile={targetPercentile}
+          measurementWindow={measurementWindow}
+          days={days}
+          samplingFrequency={samplingFrequency}
+          leadTimeTarget={leadTimeTarget}
+          cycleTimeTarget={cycleTimeTarget}
+          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+          view={view}
+          context={context}
+          includeSubTasks={includeSubTasks}
+          detailDashboardInitialMetric={detailDashboardInitialMetric}
+          chartOrTable="table"
+        />
+    }
     return (
       view === 'primary' ?
         <VolumeTrendsView
