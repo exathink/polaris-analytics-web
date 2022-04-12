@@ -53,21 +53,16 @@ export const VolumeTrendsDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={displayProps.chartOrTable === undefined ? "40%" : "100%"}
-        title={displayProps.chartOrTable === undefined ? `Volume Trends` : ` `}
+        h={displayProps.chartOrTable === "table" ? "100%" : "40%"}
+        title={displayProps.chartOrTable === "table" ? ` ` : `Volume Trends`}
         subTitle={
-          displayProps.chartOrTable === undefined
-            ? `Last ${displayProps.chartOrTable === undefined ? daysRange : days} days`
-            : ` `
+          displayProps.chartOrTable === "table"
+            ? ` `
+            : `Last ${displayProps.chartOrTable === "table" ? daysRange : days} days`
         }
         controls={
-          displayProps.chartOrTable === undefined
-            ? getTrendsControlBarControls([
-                [daysRange, setDaysRange],
-                [measurementWindowRange, setMeasurementWindowRange],
-                [frequencyRange, setFrequencyRange],
-              ])
-            : [
+          displayProps.chartOrTable === "table"
+            ? [
                 () => (
                   <GroupingSelector
                     label={"View"}
@@ -87,6 +82,11 @@ export const VolumeTrendsDetailDashboard = ({
                   />
                 ),
               ]
+            : getTrendsControlBarControls([
+                [daysRange, setDaysRange],
+                [measurementWindowRange, setMeasurementWindowRange],
+                [frequencyRange, setFrequencyRange],
+              ])
         }
       >
         {displayProps.tabSelection === undefined || displayProps.tabSelection === "volume" ? (
@@ -101,9 +101,9 @@ export const VolumeTrendsDetailDashboard = ({
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.chartOrTable === undefined ? daysRange : days}
-                measurementWindow={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
-                samplingFrequency={displayProps.chartOrTable === undefined ? frequencyRange : samplingFrequency}
+                days={displayProps.chartOrTable === "table" ? days : daysRange}
+                measurementWindow={displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
+                samplingFrequency={displayProps.chartOrTable === "table" ? samplingFrequency : frequencyRange}
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
                 tabSelection={displayProps.tabSelection}
@@ -125,7 +125,7 @@ export const VolumeTrendsDetailDashboard = ({
                 context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
+                days={displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
                 before={before}
                 initialMetric={detailDashboardInitialMetric || "leadTime"}
                 leadTimeTarget={leadTimeTarget}
@@ -156,7 +156,7 @@ export const VolumeTrendsDetailDashboard = ({
                 context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
+                days={displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
                 before={before}
                 initialMetric={detailDashboardInitialMetric || "leadTime"}
                 leadTimeTarget={leadTimeTarget}
