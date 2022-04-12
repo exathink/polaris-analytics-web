@@ -25,6 +25,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   yAxisScale,
   setYAxisScale,
   includeSubTasks,
+  chartOrTable
 }) => {
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
@@ -59,6 +60,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       yAxisScale={yAxisScale}
       setYAxisScale={setYAxisScale}
       hideControls={hideControls}
+      chartOrTable={chartOrTable}
     />
   );
 };
