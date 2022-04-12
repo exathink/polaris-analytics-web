@@ -34,6 +34,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
     tabSelection,
     setTab
   }) => {
+    const displayProps = React.useMemo(() => ({chartOrTable: "table", tabSelection, setTab}), [tabSelection, setTab])
     const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
       {
         dimension,
@@ -70,9 +71,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
           context={context}
           includeSubTasks={includeSubTasks}
           detailDashboardInitialMetric={detailDashboardInitialMetric}
-          chartOrTable="table"
-          tabSelection={tabSelection}
-          setTab={setTab}
+          displayProps={displayProps}
         />
     }
     return (

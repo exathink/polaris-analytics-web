@@ -38,9 +38,7 @@ export const VolumeTrendsDetailDashboard = ({
   pollInterval,
   includeSubTasks,
   detailDashboardInitialMetric,
-  chartOrTable,
-  tabSelection,
-  setTab,
+  displayProps = {},
 }) => {
   const [before, setBefore] = React.useState();
   const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
@@ -55,11 +53,11 @@ export const VolumeTrendsDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={chartOrTable === undefined ? "40%" : "100%"}
+        h={displayProps.chartOrTable === undefined ? "40%" : "100%"}
         title={`Volume Trends`}
-        subTitle={`Last ${chartOrTable === undefined ? daysRange : days} days`}
+        subTitle={`Last ${displayProps.chartOrTable === undefined ? daysRange : days} days`}
         controls={
-          chartOrTable === undefined
+          displayProps.chartOrTable === undefined
             ? getTrendsControlBarControls([
                 [daysRange, setDaysRange],
                 [measurementWindowRange, setMeasurementWindowRange],
@@ -69,7 +67,7 @@ export const VolumeTrendsDetailDashboard = ({
                 () => (
                   <GroupingSelector
                     label={"View"}
-                    value={tabSelection}
+                    value={displayProps.tabSelection}
                     groupings={[
                       {
                         key: "volume",
@@ -80,15 +78,15 @@ export const VolumeTrendsDetailDashboard = ({
                         display: "Card Detail",
                       },
                     ]}
-                    initialValue={tabSelection}
-                    onGroupingChanged={setTab}
+                    initialValue={displayProps.tabSelection}
+                    onGroupingChanged={displayProps.setTab}
                     layout="col"
                   />
                 ),
               ]
         }
       >
-        {tabSelection === undefined || tabSelection === "volume" ? (
+        {displayProps.tabSelection === undefined || displayProps.tabSelection === "volume" ? (
           <DashboardWidget
             w={1}
             name="cycle-metrics-summary-detailed"
@@ -100,13 +98,13 @@ export const VolumeTrendsDetailDashboard = ({
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={chartOrTable === undefined ? daysRange : days}
-                measurementWindow={chartOrTable === undefined ? measurementWindowRange : measurementWindow}
-                samplingFrequency={chartOrTable === undefined ? frequencyRange : samplingFrequency}
+                days={displayProps.chartOrTable === undefined ? daysRange : days}
+                measurementWindow={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
+                samplingFrequency={displayProps.chartOrTable === undefined ? frequencyRange : samplingFrequency}
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
-                tabSelection={tabSelection}
-                setTab={setTab}
+                tabSelection={displayProps.tabSelection}
+                setTab={displayProps.setTab}
               />
             )}
             showDetail={false}
@@ -124,7 +122,7 @@ export const VolumeTrendsDetailDashboard = ({
                 context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={chartOrTable === undefined ? measurementWindowRange : measurementWindow}
+                days={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
                 before={before}
                 initialMetric={detailDashboardInitialMetric || "leadTime"}
                 leadTimeTarget={leadTimeTarget}
@@ -134,14 +132,14 @@ export const VolumeTrendsDetailDashboard = ({
                 yAxisScale={yAxisScale}
                 setYAxisScale={setYAxisScale}
                 includeSubTasks={includeSubTasks}
-                chartOrTable={chartOrTable}
+                chartOrTable={displayProps.chartOrTable}
               />
             )}
             showDetail={false}
           />
         )}
       </DashboardRow>
-      {tabSelection === undefined && (
+      {displayProps.tabSelection === undefined && (
         <DashboardRow h="45%" title={getTimePeriod(measurementWindowRange, before)}>
           <DashboardWidget
             w={1}
@@ -155,7 +153,7 @@ export const VolumeTrendsDetailDashboard = ({
                 context={context}
                 showAll={true}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={chartOrTable === undefined ? measurementWindowRange : measurementWindow}
+                days={displayProps.chartOrTable === undefined ? measurementWindowRange : measurementWindow}
                 before={before}
                 initialMetric={detailDashboardInitialMetric || "leadTime"}
                 leadTimeTarget={leadTimeTarget}
@@ -165,7 +163,7 @@ export const VolumeTrendsDetailDashboard = ({
                 yAxisScale={yAxisScale}
                 setYAxisScale={setYAxisScale}
                 includeSubTasks={includeSubTasks}
-                chartOrTable={chartOrTable}
+                chartOrTable={displayProps.chartOrTable}
               />
             )}
             showDetail={false}
