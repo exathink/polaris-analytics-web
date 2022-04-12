@@ -106,6 +106,8 @@ export const VolumeTrendsDetailDashboard = (
               samplingFrequency={chartOrTable === undefined ? frequencyRange : samplingFrequency}
               targetPercentile={targetPercentile}
               includeSubTasks={includeSubTasks}
+              tabSelection={tabSelection}
+              setTab={setTab}
             />
           )}
           showDetail={false}

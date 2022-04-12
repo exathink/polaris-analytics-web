@@ -89,7 +89,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
               if (setBefore && setSeriesName) {
                 setBefore(getServerDate(measurementDate));
                 setSeriesName(key);
-                setTab("table")
+                setTab?.("table");
               }
             }
           }}
