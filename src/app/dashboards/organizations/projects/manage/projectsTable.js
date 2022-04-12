@@ -260,7 +260,9 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
 }
 
 function getTransformedData(tableData, intl) {
-  return tableData.map((project) => {
+  return tableData.filter(
+    (project) => !project.archived
+  ).map((project) => {
     const currentCycleMetrics = project.cycleMetricsTrends[0];
     return currentCycleMetrics != null
       ? {

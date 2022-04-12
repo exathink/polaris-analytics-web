@@ -13,7 +13,7 @@ export const GET_PROJECTS_QUERY = gql`
     organization(key: $organizationKey) {
       id
       projects(
-        interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan, CycleMetricsTrends, ContributorCount]
+        interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan, CycleMetricsTrends, ContributorCount, ArchivedStatus]
         cycleMetricsTrendsArgs: {
           days:$days,
           measurementWindow:$measurementWindow,
@@ -30,6 +30,7 @@ export const GET_PROJECTS_QUERY = gql`
             id
             name
             key
+            archived
             contributorCount
             cycleMetricsTrends {
               avgLeadTime
