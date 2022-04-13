@@ -4,12 +4,12 @@ import Button from "../../../../../components/uielements/button";
 import styles from "./addRepositoryWorkflow.module.css";
 import classNames from "classnames";
 import fontStyles from "../../../../framework/styles/fonts.module.css";
+import { withViewerContext } from "../../../../framework/viewer/viewerContext";
+import {AZURE_DEVOPS_CONNECTOR} from "../../../../../config/featureFlags";
 
 const {Meta} = Card;
 
-export class SelectIntegrationStep extends React.Component {
-
-
+class SelectIntegrationStep_ extends React.Component {
   render() {
     return (
       <div className={styles.selectConnector}>
@@ -64,8 +64,23 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Connect</Button>
               </Card>
-            
-          
+
+          {
+            this.props.viewerContext.isFeatureFlagActive(AZURE_DEVOPS_CONNECTOR) &&
+              <Card
+                bordered={true}
+                hoverable={true}
+                style={{ width: 300, marginTop: 16 }}
+                onClick={() => this.props.onConnectorTypeSelected("azure")}
+              >
+                <Meta
+                  avatar={<Avatar src="/images/third-party/AzureDevOps.png" />}
+                  title="Azure DevOps"
+                  description="Sync Commits & Pull Requests"
+                />
+                <Button type="secondary" size="small" style={{ marginTop: "10px" }}>Connect</Button>
+              </Card>
+          }
         </div>
         <div style={{marginTop: "30px"}}>
           <p className={classNames(fontStyles["font-normal"], fontStyles["text-xs"], styles.subTitle)}>
@@ -79,3 +94,5 @@ export class SelectIntegrationStep extends React.Component {
     );
   }
 }
+
+export const SelectIntegrationStep = withViewerContext(SelectIntegrationStep_);
