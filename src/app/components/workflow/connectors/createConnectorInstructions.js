@@ -229,6 +229,49 @@ const TrelloConnectorInstructions = ({part}) =>
     </div>
   );
 
+const AzureConnectorInstructions = ({part}) => (
+  part === 'instructions' &&
+  <div>
+    <p>The Polaris AzureDevOps Connector uses the Azure Rest API to import repository metadata and issues.
+    </p>
+    <p>
+      If you use AzureDevOps for version control as well as for issue tracking for an organization, the same connector can be
+      used
+      in repository and project import workflows.
+    </p>
+
+    <p>
+      A connector is scoped to a single Azure DevOps organization.
+    </p>
+    <p>
+      The integration process is straightforward. You will need a personal access token to authenticate Polaris
+      with Azure.  Polaris uses the user identity associated with the access token to show the repositories that
+      are available to analyze in Polaris.
+    </p>
+    <p>
+      <em>
+      We strongly recommend that you create a separate bot account for this purpose
+      and give it the specific and limited access to the repositories you want analyzed in Polaris rather than using
+      an existing user or automation account.
+      </em>
+    </p>
+
+    <ol>
+      <li>Login to Azure as the user who is a member of the Azure DevOps organization above.</li>
+      <li>Click on your user profile on the top right corner.</li>
+      <li>Navigate to Personal Access Tokens</li>
+      <li>Create a new personal access token for the connector. For scopes
+        select <em>Code (Read)</em>, <em>Notifications (Read&Write) </em> and <em>Work Items (Read)</em>.
+      </li>
+      <li>Copy the personal access token and enter it as the authentication token in the next step.
+      </li>
+    </ol>
+
+    <p>
+
+    </p>
+  </div>
+);
 export const CreateConnectorInstructions = ({part, connectorType}) => {
   switch (connectorType) {
     case 'jira':
@@ -257,6 +300,11 @@ export const CreateConnectorInstructions = ({part, connectorType}) => {
     case 'trello':
       return(
         <TrelloConnectorInstructions part={part}/>
+      )
+
+    case 'azure':
+      return(
+        <AzureConnectorInstructions part={part}/>
       )
     default:
       return `Unknown connector type: ${connectorType}`;

@@ -64,6 +64,20 @@ export class SelectIntegrationStep extends React.Component {
                 />
                 <Button type="secondary" size="small" style={{marginTop: "10px"}}>Connect</Button>
               </Card>
+
+              <Card
+                  bordered={true}
+                  hoverable={true}
+                  style={{width: 300, marginTop: 16}}
+                  onClick={() => this.props.onConnectorTypeSelected("azure")}
+                >
+                  <Meta
+                    avatar={<Avatar src="/images/third-party/AzureDevOps.png" />}
+                    title="Azure DevOps"
+                    description="Sync Commits & Pull Requests"
+                  />
+                  <Button type="secondary" size="small" style={{marginTop: "10px"}}>Connect</Button>
+              </Card>
             
           
         </div>

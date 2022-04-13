@@ -153,7 +153,9 @@ export const SelectConnectorWidget =
                                       githubOrganization: values.githubOrganization,
                                       gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
                                       trelloAccessToken: values.trelloAccessToken,
-                                      trelloApiKey: values.trelloApiKey
+                                      trelloApiKey: values.trelloApiKey,
+                                      azureAccessToken: values.azureAccessToken,
+                                      azureOrganization: values.azureOrganization
                                     }
                                   }
                                 })

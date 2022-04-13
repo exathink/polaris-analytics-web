@@ -97,6 +97,19 @@ const EditConnectorForm = ({ connector, connectorType, currentValue, form: { get
           </Row>
         </React.Fragment>
       ) : null}
+      {connectorType === "azure" ? (
+        <React.Fragment>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="Personal Access Token">
+                {getFieldDecorator("azureAccessToken", {
+                  initialValue: currentValue("azureAccessToken", null)
+                })(<Input placeholder="Replace existing access token." />)}
+              </Form.Item>
+            </Col>
+          </Row>
+        </React.Fragment>
+      ) : null}
     </React.Fragment>
   );
 };

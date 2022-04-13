@@ -223,6 +223,38 @@ const AddConnectorForm = (
             :
             null
         }
+        {
+          connectorType === 'azure' ?
+            <React.Fragment>
+
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Personal Access Token">
+                    {getFieldDecorator('azureAccessToken', {
+                      rules: [
+                        {required: true, message: 'Personal Access Token'}
+                      ],
+                      initialValue: currentValue('azureAccessToken', null)
+                    })(<Input placeholder="Personal Access Token"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Azure DevOps Organization">
+                    {getFieldDecorator('azureOrganization', {
+                      rules: [
+                        {required: true, message: 'Azure DevOps Organization'}
+                      ],
+                      initialValue: currentValue('azureOrganization', null)
+                    })(<Input placeholder="Specify the Azure DevOps Organization"/>)}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </React.Fragment>
+            :
+            null
+        }
       </React.Fragment>
   )
 }

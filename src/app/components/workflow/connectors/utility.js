@@ -5,7 +5,8 @@ const connectorTypeDisplayName = {
   'gitlab' : 'Gitlab',
   'trello' : 'Trello',
   'bitbucket': 'BitBucket',
-  'atlassian': 'Atlassian'
+  'atlassian': 'Atlassian',
+  'azure': 'Azure DevOps'
 }
 
 const DEFAULT_PROJECT_NAMES = {singular: "Project", plural: "Projects"}
