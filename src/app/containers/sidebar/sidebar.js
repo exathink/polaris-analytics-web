@@ -166,7 +166,7 @@ class Sidebar extends Component {
                   <Link to={Library.url_for}>
                     <span className="isoMenuHolder" style={submenuColor}>
                       <i className={Library.icon} />
-                      <span className="nav-text">Content Library</span>
+                      <span className="tw-text-white">Content Library</span>
                     </span>
                   </Link>
                 </Menu.Item>
