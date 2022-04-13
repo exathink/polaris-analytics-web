@@ -110,6 +110,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
           context={context}
           includeSubTasks={includeSubTasks}
           detailDashboardInitialMetric={detailDashboardInitialMetric}
+          displayProps={{chartOrTable: "table"}}
         />
     )
 });
