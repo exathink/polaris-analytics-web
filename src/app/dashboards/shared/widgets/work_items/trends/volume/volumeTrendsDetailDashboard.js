@@ -50,6 +50,33 @@ export const VolumeTrendsDetailDashboard = ({
     [frequencyRange, setFrequencyRange],
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
+  const renderDeliveryCycleFlowMetricsWidget = ({view}) => (
+    <DimensionDeliveryCycleFlowMetricsWidget
+      dimension={dimension}
+      instanceKey={instanceKey}
+      specsOnly={selectedPointSeries === "Specs"}
+      view={view}
+      context={context}
+      showAll={true}
+      latestWorkItemEvent={latestWorkItemEvent}
+      days={
+        displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
+          ? measurementWindow
+          : measurementWindowRange
+      }
+      before={before}
+      initialMetric={detailDashboardInitialMetric || "leadTime"}
+      leadTimeTarget={leadTimeTarget}
+      cycleTimeTarget={cycleTimeTarget}
+      leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+      cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+      yAxisScale={yAxisScale}
+      setYAxisScale={setYAxisScale}
+      includeSubTasks={includeSubTasks}
+      chartOrTable={displayProps.chartOrTable}
+    />
+  );
+
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
@@ -116,28 +143,7 @@ export const VolumeTrendsDetailDashboard = ({
           <DashboardWidget
             w={1}
             name="flow-metrics-delivery-details"
-            render={({view}) => (
-              <DimensionDeliveryCycleFlowMetricsWidget
-                dimension={dimension}
-                instanceKey={instanceKey}
-                specsOnly={selectedPointSeries === "Specs"}
-                view={view}
-                context={context}
-                showAll={true}
-                latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
-                before={before}
-                initialMetric={detailDashboardInitialMetric || "leadTime"}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                yAxisScale={yAxisScale}
-                setYAxisScale={setYAxisScale}
-                includeSubTasks={includeSubTasks}
-                chartOrTable={displayProps.chartOrTable}
-              />
-            )}
+            render={renderDeliveryCycleFlowMetricsWidget}
             showDetail={false}
           />
         )}
@@ -147,28 +153,7 @@ export const VolumeTrendsDetailDashboard = ({
           <DashboardWidget
             w={1}
             name="flow-metrics-delivery-details"
-            render={({view}) => (
-              <DimensionDeliveryCycleFlowMetricsWidget
-                dimension={dimension}
-                instanceKey={instanceKey}
-                specsOnly={selectedPointSeries === "Specs"}
-                view={view}
-                context={context}
-                showAll={true}
-                latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
-                before={before}
-                initialMetric={detailDashboardInitialMetric || "leadTime"}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                yAxisScale={yAxisScale}
-                setYAxisScale={setYAxisScale}
-                includeSubTasks={includeSubTasks}
-                chartOrTable={displayProps.chartOrTable}
-              />
-            )}
+            render={renderDeliveryCycleFlowMetricsWidget}
             showDetail={false}
           />
         </DashboardRow>
