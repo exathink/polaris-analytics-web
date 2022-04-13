@@ -4,6 +4,7 @@ export const VIDEO_GUIDANCE = 'system.video_guidance';
 export const VALUE_STREAM_VALUE_DASHBOARD = 'projects.value-dashboard';
 export const TRELLO_CONNECTOR = 'connectors.trello';
 export const SYSTEM_TEAMS = 'system.teams';
+export const AZURE_DEVOPS_CONNECTOR = 'connectors.azure-devops'
 
 
 
