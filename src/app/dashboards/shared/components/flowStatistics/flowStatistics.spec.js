@@ -222,7 +222,7 @@ describe("Metrics", () => {
               normalized={true}
               contributorCount={2}
             />,
-            5.00,
+            "5.00",
             "specs"
           );
         });
@@ -240,7 +240,7 @@ describe("Metrics", () => {
         test("Volume PC", () => {
           renderAndAssertMetricComponent(
             <Volume displayType="card" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
-            5.00,
+            "5.00",
             "specs"
           );
         });
