@@ -145,7 +145,7 @@ export function DimensionThroughputDetailDashboard({
               latestCommit={latestCommit}
               days={daysRange}
               measurementWindow={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={daysRange}
               showContributorDetail={false}
               showEffort={true}
               chartConfig={{totalEffortDisplayType: "areaspline"}}
