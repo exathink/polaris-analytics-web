@@ -95,7 +95,7 @@ export const DimensionWorkBalanceTrendsWidget = (
             groupings={[
               {
                 key: "balance",
-                display: "Work Balance",
+                display: "Effort",
               },
               {
                 key: "table",
