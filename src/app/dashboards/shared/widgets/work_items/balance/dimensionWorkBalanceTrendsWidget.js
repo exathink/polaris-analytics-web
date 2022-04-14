@@ -6,7 +6,8 @@ import {useQueryDimensionWorkBalanceTrends} from "./useQueryDimensionWorkBalance
 import {WorkBalanceTrendsView} from "./workBalanceTrendsView";
 import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDetailDashboard";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
-import {WorkBalanceTrendsTable} from "./workBalanceTrendsTable";
+import {DimensionDeliveryCycleFlowMetricsWidget} from "../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import { getServerDate } from '../../../../../helpers/utility';
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
@@ -29,7 +30,7 @@ export const DimensionWorkBalanceTrendsWidget = (
     chartConfig,
     includeSubTasks
   }) => {
-  
+  const [before, setBefore] = React.useState();
   const [tabSelection, setTab] = React.useState("balance");
   const {loading, error, data} = useQueryDimensionWorkBalanceTrends(
     {
@@ -61,11 +62,31 @@ export const DimensionWorkBalanceTrendsWidget = (
         target={target}
         chartConfig={chartConfig}
         view={view}
+        onPointClick={x => {
+          setTab("table");
+          setBefore(x)
+        }}
       />
     );
 
     if (display === "withCardDetails") {
-      const table = <WorkBalanceTrendsTable tableData={cycleMetricsTrends}/>;
+      const table = (
+        <DimensionDeliveryCycleFlowMetricsWidget
+          dimension={dimension}
+          instanceKey={instanceKey}
+          specsOnly={true}
+          view={view}
+          context={context}
+          showAll={true}
+          latestWorkItemEvent={latestWorkItemEvent}
+          days={30}
+          before={getServerDate(before)}
+          initialDays={30}
+          initialMetric={"leadTime"}
+          includeSubTasks={includeSubTasks}
+          chartOrTable={"table"}
+        />
+      );
       return (
         <React.Fragment>
           <GroupingSelector

@@ -53,6 +53,7 @@ export const WorkBalanceTrendsView = (
     view,
     chartConfig,
     target,
+    onPointClick
   }) => (
   asStatistic ?
     <WorkBalanceTrendsStatsView
@@ -73,7 +74,8 @@ export const WorkBalanceTrendsView = (
             measurementWindow,
             target,
             view,
-            chartConfig
+            chartConfig,
+            onPointClick
           }}
         />
       </VizItem>
