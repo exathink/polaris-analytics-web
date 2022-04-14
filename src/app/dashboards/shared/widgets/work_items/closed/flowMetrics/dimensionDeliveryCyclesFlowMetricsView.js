@@ -33,6 +33,7 @@ const DeliveryCyclesFlowMetricsView = ({
   defectsOnly,
   specsOnly,
   hideControls,
+  chartOrTable,
   yAxisScale: parentYAxisScale,
   setYAxisScale: parentSetYAxisScale,
 }) => {
@@ -190,7 +191,7 @@ const DeliveryCyclesFlowMetricsView = ({
   }
   return (
     <div className="tw-h-full">
-      <div className="tw-flex tw-h-[60px] tw-items-center">
+      {chartOrTable===undefined && <div className="tw-flex tw-h-[60px] tw-items-center">
         {yAxisScale !== "table" && (
           <div className="tw-flex tw-items-center tw-justify-center">
             <SelectDropdown
@@ -236,13 +237,13 @@ const DeliveryCyclesFlowMetricsView = ({
             />
           </div>
         )}
-      </div>
+      </div>}
 
       <WorkItemsDetailHistogramTable
         // common props
         key={resetComponentStateKey}
         stateType={WorkItemStateTypes.closed}
-        tabSelection={yAxisScale}
+        tabSelection={chartOrTable==="table" ? "table" : yAxisScale}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         // chart props
         chartSubTitle={getChartSubTitle()}
