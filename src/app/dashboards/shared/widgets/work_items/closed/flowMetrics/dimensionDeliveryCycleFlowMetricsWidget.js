@@ -18,6 +18,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   cycleTimeConfidenceTarget,
   days,
   before,
+  initialDays,
   initialMetric,
   defectsOnly,
   pollInterval,
@@ -27,10 +28,11 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   includeSubTasks,
   chartOrTable
 }) => {
+  let _days = before === undefined ? initialDays : days;
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
-    days,
+    days: _days,
     defectsOnly,
     specsOnly,
     before,

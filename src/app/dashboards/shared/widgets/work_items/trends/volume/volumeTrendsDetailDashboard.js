@@ -41,7 +41,7 @@ export const VolumeTrendsDetailDashboard = ({
   displayProps = {},
 }) => {
   const [before, setBefore] = React.useState();
-  const [seriesName, setSeriesName] = React.useState("workItemsWithCommits");
+  const [seriesName, setSeriesName] = React.useState("workItemsInScope");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [
@@ -65,6 +65,7 @@ export const VolumeTrendsDetailDashboard = ({
           : measurementWindowRange
       }
       before={before}
+      initialDays={daysRange}
       initialMetric={detailDashboardInitialMetric || "leadTime"}
       leadTimeTarget={leadTimeTarget}
       cycleTimeTarget={cycleTimeTarget}
