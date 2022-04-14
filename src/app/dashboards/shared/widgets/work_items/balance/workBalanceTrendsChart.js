@@ -171,6 +171,7 @@ export const WorkBalanceTrendsChart = ({
   measurementWindow,
   view,
   chartConfig,
+  onPointClick
 }) => {
   const [selectedPoint, setSelectedPoint] = React.useState(toMoment(getTodayDate("YYYY-MM-DD"), true).valueOf());
   const [contributorSeriesColors, setColors] = React.useState({});
@@ -193,6 +194,7 @@ export const WorkBalanceTrendsChart = ({
         }, {});
       setColors(allSeriesColors);
       setSelectedPoint(x);
+      onPointClick(x)
     }
   }
 

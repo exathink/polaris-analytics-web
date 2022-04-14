@@ -3,9 +3,9 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {GroupingSelector} from "../../../../shared/components/groupingSelector/groupingSelector";
 import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
+import {DimensionWorkBalanceTrendsWidget} from "../balance";
+import cn from "classnames";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -25,8 +25,8 @@ export function DimensionThroughputDetailDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const [chartToggle, setChartToggle] = React.useState("trend");
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
+  const [tabSelection, setTab] = React.useState("volume");
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
@@ -100,32 +100,10 @@ export function DimensionThroughputDetailDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow
-        className={styles.chartsToggleRow}
-        controls={[
-          () => (
-            <GroupingSelector
-              label={" "}
-              value={chartToggle}
-              groupings={[
-                {
-                  key: "trend",
-                  display: "Trend",
-                },
-                {
-                  key: "cardDetail",
-                  display: "Card Detail",
-                },
-              ]}
-              initialValue={"trend"}
-              onGroupingChanged={setChartToggle}
-            />
-          ),
-        ]}
-      >
+      <DashboardRow className={styles.chartsToggleRow}>
         <DashboardWidget
           name="volume-trends"
-          className={chartToggle === "trend" ? styles.throughputDetail : styles.throughputDetailHidden}
+          className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-hidden", styles.throughputDetail)}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={dimension}
@@ -136,39 +114,45 @@ export function DimensionThroughputDetailDashboard({
               targetPercentile={0.7}
               context={context}
               view={view}
+              display="withCardDetails"
               latestWorkItemEvent={latestWorkItemEvent}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
+              tabSelection={tabSelection}
+              setTab={setTab}
             />
           )}
           showDetail={true}
         />
         <DashboardWidget
-          title={""}
-          name="flow-metrics-delivery-details"
-          className={chartToggle === "cardDetail" ? styles.throughputDetail : styles.throughputDetailHidden}
+          name="workbalance-trends"
+          className={cn(
+            selectedMetric === "totalEffort" || context.targetUrl.includes("workbalance-trends") ? "" : "tw-hidden",
+            styles.throughputDetail
+          )}
           render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
+            <DimensionWorkBalanceTrendsWidget
+              context={context}
               dimension={dimension}
               instanceKey={key}
-              specsOnly={true}
               view={view}
-              context={context}
-              showAll={true}
+              display="withCardDetails"
+              showAllTrends={true}
               latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
               days={daysRange}
-              initialMetric={"effort"}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              measurementWindow={daysRange}
+              samplingFrequency={daysRange}
+              showContributorDetail={false}
+              showEffort={true}
+              chartConfig={{totalEffortDisplayType: "areaspline"}}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
     </Dashboard>
