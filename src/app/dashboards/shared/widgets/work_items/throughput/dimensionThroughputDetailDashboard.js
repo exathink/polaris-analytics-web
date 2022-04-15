@@ -103,7 +103,7 @@ export function DimensionThroughputDetailDashboard({
       <DashboardRow className={styles.chartsToggleRow}>
         <DashboardWidget
           name="volume-trends"
-          className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-hidden", styles.throughputDetail)}
+          className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-impHidden", styles.throughputDetail)}
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={dimension}
@@ -130,7 +130,7 @@ export function DimensionThroughputDetailDashboard({
         <DashboardWidget
           name="workbalance-trends"
           className={cn(
-            selectedMetric === "totalEffort" || context.targetUrl.includes("workbalance-trends") ? "" : "tw-hidden",
+            selectedMetric === "totalEffort" || context.targetUrl.includes("workbalance-trends") ? "" : "tw-impHidden",
             styles.throughputDetail
           )}
           render={({view}) => (
