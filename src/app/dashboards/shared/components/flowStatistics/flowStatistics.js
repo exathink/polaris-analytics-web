@@ -128,6 +128,7 @@ export const Volume = ({title, displayType, displayProps, normalized, contributo
     metric={metric}
     valueRender={value => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={specsOnly ? 'specs' : 'cards'}
+    precision={normalized ? 2 : 0}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
