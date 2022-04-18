@@ -96,6 +96,7 @@ export function DimensionResponseTimeDetailDashboard({
               showAll={true}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
+              initialDays={daysRange}
               initialMetric={metricMapping[selectedMetric]}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
