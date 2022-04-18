@@ -124,7 +124,7 @@ export const DimensionWorkBalanceTrendsWidget = (
         instanceKey,
         days,
         measurementWindow,
-        samplingFrequency,
+        samplingFrequency: 7,
         target,
         view,
         includeSubTasks,
