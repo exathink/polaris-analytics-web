@@ -8,6 +8,8 @@ import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDeta
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import { getServerDate } from '../../../../../helpers/utility';
+import {ClearFilters} from "../../../components/clearFilters/clearFilters";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
@@ -32,6 +34,20 @@ export const DimensionWorkBalanceTrendsWidget = (
   }) => {
   const [before, setBefore] = React.useState();
   const [tabSelection, setTab] = React.useState("balance");
+
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  function resetFilterAndMetric() {
+    setFilter(null);
+  }
+
+  function handleClearClick() {
+    setTab("balance");
+    setBefore(undefined);
+    resetFilterAndMetric();
+    resetComponentState();
+  }
+
   const {loading, error, data} = useQueryDimensionWorkBalanceTrends(
     {
       dimension: dimension,
@@ -50,6 +66,7 @@ export const DimensionWorkBalanceTrendsWidget = (
   function getConsolidatedWorkBalanceTrends() {
     const workBalance = (
       <WorkBalanceTrendsView
+        key={resetComponentStateKey}
         context={context}
         capacityTrends={capacityTrends}
         contributorDetail={contributorDetail}
@@ -62,9 +79,10 @@ export const DimensionWorkBalanceTrendsWidget = (
         target={target}
         chartConfig={chartConfig}
         view={view}
-        onPointClick={x => {
+        onPointClick={({x, y}) => {
           setTab("table");
           setBefore(x)
+          setFilter(y)
         }}
       />
     );
@@ -72,6 +90,7 @@ export const DimensionWorkBalanceTrendsWidget = (
     if (display === "withCardDetails") {
       const table = (
         <DimensionDeliveryCycleFlowMetricsWidget
+          key={resetComponentStateKey}
           dimension={dimension}
           instanceKey={instanceKey}
           specsOnly={true}
@@ -89,23 +108,35 @@ export const DimensionWorkBalanceTrendsWidget = (
       );
       return (
         <React.Fragment>
-          <GroupingSelector
-            label={"View"}
-            value={tabSelection}
-            groupings={[
-              {
-                key: "balance",
-                display: "Effort",
-              },
-              {
-                key: "table",
-                display: "Card Detail",
-              },
-            ]}
-            initialValue={tabSelection}
-            onGroupingChanged={setTab}
-            className="tw-ml-auto tw-mr-10"
-          />
+          <div className="tw-ml-auto tw-flex tw-items-center">
+            {selectedFilter != null && (
+              <div className="tw-mr-8">
+                <ClearFilters
+                  selectedFilter={getServerDate(before)}
+                  selectedMetric={"effort"}
+                  stateType={"closed"}
+                  handleClearClick={handleClearClick}
+                />
+              </div>
+            )}
+            <GroupingSelector
+              label={"View"}
+              value={tabSelection}
+              groupings={[
+                {
+                  key: "balance",
+                  display: "Effort",
+                },
+                {
+                  key: "table",
+                  display: "Card Detail",
+                },
+              ]}
+              initialValue={tabSelection}
+              onGroupingChanged={setTab}
+              className="tw-ml-auto tw-mr-10"
+            />
+          </div>
           {tabSelection !== "table" && workBalance}
           {tabSelection === "table" && table}
         </React.Fragment>
