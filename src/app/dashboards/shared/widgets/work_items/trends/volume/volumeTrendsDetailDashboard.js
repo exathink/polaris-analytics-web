@@ -8,6 +8,9 @@ import {
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
+import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
+import {WorkItemStateTypes} from "../../../../config";
+import {getServerDate} from "../../../../../../helpers/utility";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -44,6 +47,12 @@ export const VolumeTrendsDetailDashboard = ({
   const [seriesName, setSeriesName] = React.useState("workItemsInScope");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
+
+  function handleClearClick() {
+    displayProps.setTab("volume");
+    setBefore(undefined);
+  }
+
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -86,11 +95,24 @@ export const VolumeTrendsDetailDashboard = ({
         subTitle={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
             ? ` `
-            : `Last ${displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? daysRange : days} days`
+            : `Last ${
+                displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? daysRange : days
+              } days`
         }
         controls={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
             ? [
+                () =>
+                  before != null ? (
+                    <div className="tw-mr-8">
+                      <ClearFilters
+                        selectedFilter={getServerDate(before)}
+                        selectedMetric={"Closed Before"}
+                        stateType={WorkItemStateTypes.closed}
+                        handleClearClick={handleClearClick}
+                      />
+                    </div>
+                  ) : null,
                 () => (
                   <GroupingSelector
                     label={"View"}
@@ -129,9 +151,19 @@ export const VolumeTrendsDetailDashboard = ({
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
-                days={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? days : daysRange}
-                measurementWindow={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? measurementWindow : measurementWindowRange}
-                samplingFrequency={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? samplingFrequency : frequencyRange}
+                days={
+                  displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? days : daysRange
+                }
+                measurementWindow={
+                  displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
+                    ? measurementWindow
+                    : measurementWindowRange
+                }
+                samplingFrequency={
+                  displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
+                    ? samplingFrequency
+                    : frequencyRange
+                }
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
                 tabSelection={displayProps.tabSelection}
