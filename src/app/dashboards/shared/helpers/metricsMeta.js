@@ -128,9 +128,11 @@ export function getDefaultMetricKey(stateType) {
 }
 
 export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) {
-  return projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)].display
+  return (
+    projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)]?.display ?? selectedMetric
+  );
 }
 
 export function getSelectedMetricColor(selectedMetric, selectedStateType) {
-  return ResponseTimeMetricsColor[getMetricsMetaKey(selectedMetric, selectedStateType)]
+  return ResponseTimeMetricsColor[getMetricsMetaKey(selectedMetric, selectedStateType)] ?? ResponseTimeMetricsColor.leadTime;
 }
