@@ -185,7 +185,7 @@ export const WorkBalanceTrendsChart = ({
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
-      const [{x, series}] = items;
+      const [{x,y, series}] = items;
       const allSeriesColors = series?.chart?.series
         .map((s) => ({key: s.userOptions.key, color: s.color}))
         .reduce((acc, item) => {
@@ -194,7 +194,7 @@ export const WorkBalanceTrendsChart = ({
         }, {});
       setColors(allSeriesColors);
       setSelectedPoint(x);
-      onPointClick(x)
+      onPointClick({x,y})
     }
   }
 
