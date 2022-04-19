@@ -107,7 +107,7 @@ export const VolumeTrendsDetailDashboard = ({
                     <div className="tw-mr-8">
                       <ClearFilters
                         selectedFilter={getServerDate(before)}
-                        selectedMetric={"Closed At"}
+                        selectedMetric={"Closed Before"}
                         stateType={WorkItemStateTypes.closed}
                         handleClearClick={handleClearClick}
                       />
