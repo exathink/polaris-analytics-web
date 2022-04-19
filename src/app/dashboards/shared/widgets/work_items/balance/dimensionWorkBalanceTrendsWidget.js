@@ -37,14 +37,10 @@ export const DimensionWorkBalanceTrendsWidget = (
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
-  function resetFilterAndMetric() {
-    setFilter(null);
-  }
-
   function handleClearClick() {
     setTab("balance");
     setBefore(undefined);
-    resetFilterAndMetric();
+    setFilter(null);
     resetComponentState();
   }
 
