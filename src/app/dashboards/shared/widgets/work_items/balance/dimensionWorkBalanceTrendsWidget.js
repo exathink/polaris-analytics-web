@@ -10,6 +10,7 @@ import {DimensionDeliveryCycleFlowMetricsWidget} from "../closed/flowMetrics/dim
 import { getServerDate } from '../../../../../helpers/utility';
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import { WorkItemStateTypes } from '../../../config';
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
@@ -109,8 +110,8 @@ export const DimensionWorkBalanceTrendsWidget = (
               <div className="tw-mr-8">
                 <ClearFilters
                   selectedFilter={getServerDate(before)}
-                  selectedMetric={"effort"}
-                  stateType={"closed"}
+                  selectedMetric={"Closed Before"}
+                  stateType={WorkItemStateTypes.closed}
                   handleClearClick={handleClearClick}
                 />
               </div>
