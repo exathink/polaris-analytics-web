@@ -94,12 +94,12 @@ export const VolumeTrendsDetailDashboard = ({
   );
 
   function getClearFilter() {
-    const temp = measurementWindowRange===1 ? "on" : `${measurementWindowRange} days ending`;
+    const preFilterText = measurementWindowRange===1 ? "on" : `${measurementWindowRange} days ending`;
     return before != null ? (
       <div className="tw-mr-8">
         <ClearFilters
-          selectedFilter={i18nDate(intl, getServerDate(before))}
-          selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed ${temp}`}
+          selectedFilter={ `${preFilterText} ${i18nDate(intl, getServerDate(before))}`}
+          selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
           stateType={WorkItemStateTypes.closed}
           handleClearClick={handleClearClick}
         />
