@@ -110,8 +110,8 @@ export const DimensionWorkBalanceTrendsWidget = (
             {selectedFilter != null && (
               <div className="tw-mr-8">
                 <ClearFilters
-                  selectedFilter={i18nDate(intl, getServerDate(before))}
-                  selectedMetric={`${days} days ending`}
+                  selectedFilter={`${days} days ending ${i18nDate(intl, getServerDate(before))}`}
+                  selectedMetric={`Cards Closed`}
                   stateType={WorkItemStateTypes.closed}
                   handleClearClick={handleClearClick}
                 />
