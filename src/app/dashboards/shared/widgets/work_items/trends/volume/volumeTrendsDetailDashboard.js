@@ -10,8 +10,9 @@ import {getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemStateTypes} from "../../../../config";
-import {getServerDate} from "../../../../../../helpers/utility";
+import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useIntl} from "react-intl";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -49,6 +50,8 @@ export const VolumeTrendsDetailDashboard = ({
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  const intl = useIntl()
+
   function handleClearClick() {
     displayProps.setTab?.("volume");
     setBefore(undefined);
@@ -95,7 +98,7 @@ export const VolumeTrendsDetailDashboard = ({
     return before != null ? (
       <div className="tw-mr-8">
         <ClearFilters
-          selectedFilter={getServerDate(before)}
+          selectedFilter={i18nDate(intl, getServerDate(before))}
           selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed ${temp}`}
           stateType={WorkItemStateTypes.closed}
           handleClearClick={handleClearClick}
@@ -103,7 +106,7 @@ export const VolumeTrendsDetailDashboard = ({
       </div>
     ) : null;
   }
-  
+
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
