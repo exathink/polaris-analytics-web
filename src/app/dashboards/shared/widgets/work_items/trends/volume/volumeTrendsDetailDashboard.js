@@ -59,11 +59,12 @@ export const VolumeTrendsDetailDashboard = ({
     [frequencyRange, setFrequencyRange],
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
+  const specsOnly = selectedPointSeries === "Specs";
   const renderDeliveryCycleFlowMetricsWidget = ({view}) => (
     <DimensionDeliveryCycleFlowMetricsWidget
       dimension={dimension}
       instanceKey={instanceKey}
-      specsOnly={selectedPointSeries === "Specs"}
+      specsOnly={specsOnly}
       view={view}
       context={context}
       showAll={true}
@@ -107,7 +108,7 @@ export const VolumeTrendsDetailDashboard = ({
                     <div className="tw-mr-8">
                       <ClearFilters
                         selectedFilter={getServerDate(before)}
-                        selectedMetric={"Closed Before"}
+                        selectedMetric={`${specsOnly ? "Specs": "Cards"} Closed on`}
                         stateType={WorkItemStateTypes.closed}
                         handleClearClick={handleClearClick}
                       />
