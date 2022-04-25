@@ -11,6 +11,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemStateTypes} from "../../../../config";
 import {getServerDate} from "../../../../../../helpers/utility";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -47,10 +48,11 @@ export const VolumeTrendsDetailDashboard = ({
   const [seriesName, setSeriesName] = React.useState("workItemsInScope");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
-
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   function handleClearClick() {
-    displayProps.setTab("volume");
+    displayProps.setTab?.("volume");
     setBefore(undefined);
+    resetComponentState();
   }
 
   const [
@@ -88,6 +90,20 @@ export const VolumeTrendsDetailDashboard = ({
     />
   );
 
+  function getClearFilter() {
+    const temp = measurementWindowRange===1 ? "on" : `${measurementWindowRange} days ending`;
+    return before != null ? (
+      <div className="tw-mr-8">
+        <ClearFilters
+          selectedFilter={getServerDate(before)}
+          selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed ${temp}`}
+          stateType={WorkItemStateTypes.closed}
+          handleClearClick={handleClearClick}
+        />
+      </div>
+    ) : null;
+  }
+  
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
@@ -102,18 +118,7 @@ export const VolumeTrendsDetailDashboard = ({
         }
         controls={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
-            ? [
-                () =>
-                  before != null ? (
-                    <div className="tw-mr-8">
-                      <ClearFilters
-                        selectedFilter={getServerDate(before)}
-                        selectedMetric={`${specsOnly ? "Specs": "Cards"} Closed on`}
-                        stateType={WorkItemStateTypes.closed}
-                        handleClearClick={handleClearClick}
-                      />
-                    </div>
-                  ) : null,
+            ? [getClearFilter,
                 () => (
                   <GroupingSelector
                     label={"View"}
@@ -142,6 +147,7 @@ export const VolumeTrendsDetailDashboard = ({
       >
         {displayProps.tabSelection === undefined || displayProps.tabSelection === "volume" ? (
           <DashboardWidget
+            key={resetComponentStateKey}
             w={1}
             name="cycle-metrics-summary-detailed"
             render={({view}) => (
@@ -183,7 +189,11 @@ export const VolumeTrendsDetailDashboard = ({
         )}
       </DashboardRow>
       {displayProps.tabSelection === undefined && (
-        <DashboardRow h="45%" title={getTimePeriod(measurementWindowRange, before)}>
+        <DashboardRow
+          h="45%"
+          title={getTimePeriod(measurementWindowRange, before)}
+          controls={[getClearFilter]}
+        >
           <DashboardWidget
             w={1}
             name="flow-metrics-delivery-details"
