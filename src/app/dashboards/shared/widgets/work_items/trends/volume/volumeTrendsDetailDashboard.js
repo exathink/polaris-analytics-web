@@ -194,7 +194,7 @@ export const VolumeTrendsDetailDashboard = ({
       {displayProps.tabSelection === undefined && (
         <DashboardRow
           h="45%"
-          title={getTimePeriod(measurementWindowRange, before)}
+          title={`Card Details`}
           controls={[getClearFilter]}
         >
           <DashboardWidget
