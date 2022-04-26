@@ -329,6 +329,20 @@ export const AvgLatency = ({title, displayType, displayProps, currentMeasurement
   />
 }
 
+export const PullRequest = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+
+  return <ResponseTime
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={'pullRequest'}
+    displayName={title || 'Pull Request'}
+    superScript={'Avg'}
+    target={target}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
+  />
+}
 
 export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
