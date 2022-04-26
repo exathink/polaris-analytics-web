@@ -39,45 +39,38 @@ export const WorkBalanceTrendsStatsView = (
   )
 }
 
-export const WorkBalanceTrendsView = (
-  {
-    context,
-    capacityTrends,
-    contributorDetail,
-    cycleMetricsTrends,
-    showContributorDetail,
-    showEffort,
-    measurementPeriod,
-    measurementWindow,
-    asStatistic,
-    view,
-    chartConfig,
-    target,
-    onPointClick
-  }) => (
-  asStatistic ?
-    <WorkBalanceTrendsStatsView
-      {...{capacityTrends, measurementPeriod, measurementWindow, target}}
+export const WorkBalanceTrendsView = ({
+  context,
+  capacityTrends,
+  contributorDetail,
+  cycleMetricsTrends,
+  showContributorDetail,
+  showEffort,
+  measurementPeriod,
+  measurementWindow,
+  asStatistic,
+  view,
+  chartConfig,
+  target,
+  onPointClick,
+}) =>
+  asStatistic ? (
+    <WorkBalanceTrendsStatsView {...{capacityTrends, measurementPeriod, measurementWindow, target}} />
+  ) : (
+    <WorkBalanceTrendsChart
+      {...{
+        context,
+        capacityTrends,
+        contributorDetail,
+        cycleMetricsTrends,
+        showContributorDetail,
+        showEffort,
+        measurementPeriod,
+        measurementWindow,
+        target,
+        view,
+        chartConfig,
+        onPointClick,
+      }}
     />
-    :
-    <VizRow h={1}>
-      <VizItem w={1}>
-        <WorkBalanceTrendsChart
-          {...{
-            context,
-            capacityTrends,
-            contributorDetail,
-            cycleMetricsTrends,
-            showContributorDetail,
-            showEffort,
-            measurementPeriod,
-            measurementWindow,
-            target,
-            view,
-            chartConfig,
-            onPointClick
-          }}
-        />
-      </VizItem>
-    </VizRow>
-)
+  );
