@@ -6,7 +6,6 @@ import {
   useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemStateTypes} from "../../../../config";
@@ -53,7 +52,7 @@ export const VolumeTrendsDetailDashboard = ({
   const intl = useIntl()
 
   function handleClearClick() {
-    displayProps.setTab?.("volume");
+    setSeriesName("workItemsInScope")
     setBefore(undefined);
     resetComponentState();
   }
