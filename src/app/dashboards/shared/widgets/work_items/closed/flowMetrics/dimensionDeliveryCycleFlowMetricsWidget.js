@@ -18,7 +18,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   cycleTimeConfidenceTarget,
   days,
   before,
-  initialDays,
+  initialDays = days,
   initialMetric,
   defectsOnly,
   pollInterval,

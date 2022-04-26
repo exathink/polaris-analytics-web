@@ -256,12 +256,23 @@ const AzureConnectorInstructions = ({part}) => (
       </em>
     </p>
 
+    <p>
+      <em>
+      We strongly recommend that you set up the tokens to expire no less than 90 days from creation. When a token expires, you will
+        need to recreate it or extend its validity before expiration, otherwise Polaris will be unable to sync your data.
+      </em>
+    </p>
+
     <ol>
       <li>Login to Azure as the user who is a member of the Azure DevOps organization above.</li>
       <li>Click on your user profile on the top right corner.</li>
       <li>Navigate to Personal Access Tokens</li>
       <li>Create a new personal access token for the connector. For scopes
         select <em>Code (Read)</em>, <em>Notifications (Read&Write) </em> and <em>Work Items (Read)</em>.
+      </li>
+      <li>
+        Edit the token after it has been created and set its expiry to no less than 90 days and preferably up to the maximum
+        allowed period which is one year.
       </li>
       <li>Copy the personal access token and enter it as the authentication token in the next step.
       </li>

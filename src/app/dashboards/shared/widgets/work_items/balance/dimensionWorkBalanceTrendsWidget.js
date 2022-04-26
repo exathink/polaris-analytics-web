@@ -7,10 +7,11 @@ import {WorkBalanceTrendsView} from "./workBalanceTrendsView";
 import {DimensionWorkBalanceTrendsDetailDashboard} from "./workBalanceTrendsDetailDashboard";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import { getServerDate } from '../../../../../helpers/utility';
+import {getServerDate, i18nDate} from "../../../../../helpers/utility";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import { WorkItemStateTypes } from '../../../config';
+import {useIntl} from "react-intl";
 
 export const DimensionWorkBalanceTrendsWidget = (
   {
@@ -35,7 +36,7 @@ export const DimensionWorkBalanceTrendsWidget = (
   }) => {
   const [before, setBefore] = React.useState();
   const [tabSelection, setTab] = React.useState("balance");
-
+  const intl = useIntl();
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   function handleClearClick() {
@@ -109,8 +110,8 @@ export const DimensionWorkBalanceTrendsWidget = (
             {selectedFilter != null && (
               <div className="tw-mr-8">
                 <ClearFilters
-                  selectedFilter={getServerDate(before)}
-                  selectedMetric={"Closed Before"}
+                  selectedFilter={`${days} days ending ${i18nDate(intl, getServerDate(before))}`}
+                  selectedMetric={`Cards Closed`}
                   stateType={WorkItemStateTypes.closed}
                   handleClearClick={handleClearClick}
                 />
@@ -134,8 +135,8 @@ export const DimensionWorkBalanceTrendsWidget = (
               className="tw-ml-auto tw-mr-10"
             />
           </div>
-          {tabSelection !== "table" && workBalance}
-          {tabSelection === "table" && table}
+          <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full"}>{workBalance}</div>
+          <div className={tabSelection === "table" ? "" : "tw-hidden"}>{table}</div>
         </React.Fragment>
       );
     } else {
