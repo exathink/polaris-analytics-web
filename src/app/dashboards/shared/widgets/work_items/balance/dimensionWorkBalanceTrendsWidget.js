@@ -135,8 +135,8 @@ export const DimensionWorkBalanceTrendsWidget = (
               className="tw-ml-auto tw-mr-10"
             />
           </div>
-          {tabSelection !== "table" && workBalance}
-          {tabSelection === "table" && table}
+          <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full"}>{workBalance}</div>
+          <div className={tabSelection === "table" ? "" : "tw-hidden"}>{table}</div>
         </React.Fragment>
       );
     } else {
