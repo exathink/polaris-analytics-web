@@ -6,11 +6,12 @@ import {
   useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemStateTypes} from "../../../../config";
-import {getServerDate} from "../../../../../../helpers/utility";
+import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useIntl} from "react-intl";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -47,10 +48,13 @@ export const VolumeTrendsDetailDashboard = ({
   const [seriesName, setSeriesName] = React.useState("workItemsInScope");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  const intl = useIntl()
 
   function handleClearClick() {
-    displayProps.setTab("volume");
+    setSeriesName("workItemsInScope")
     setBefore(undefined);
+    resetComponentState();
   }
 
   const [
@@ -59,11 +63,12 @@ export const VolumeTrendsDetailDashboard = ({
     [frequencyRange, setFrequencyRange],
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
+  const specsOnly = selectedPointSeries === "Specs";
   const renderDeliveryCycleFlowMetricsWidget = ({view}) => (
     <DimensionDeliveryCycleFlowMetricsWidget
       dimension={dimension}
       instanceKey={instanceKey}
-      specsOnly={selectedPointSeries === "Specs"}
+      specsOnly={specsOnly}
       view={view}
       context={context}
       showAll={true}
@@ -87,6 +92,20 @@ export const VolumeTrendsDetailDashboard = ({
     />
   );
 
+  function getClearFilter() {
+    const preFilterText = measurementWindowRange===1 ? "on" : `${measurementWindowRange} days ending`;
+    return before != null ? (
+      <div className="tw-mr-8">
+        <ClearFilters
+          selectedFilter={ `${preFilterText} ${i18nDate(intl, getServerDate(before))}`}
+          selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
+          stateType={WorkItemStateTypes.closed}
+          handleClearClick={handleClearClick}
+        />
+      </div>
+    ) : null;
+  }
+
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
@@ -101,18 +120,7 @@ export const VolumeTrendsDetailDashboard = ({
         }
         controls={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
-            ? [
-                () =>
-                  before != null ? (
-                    <div className="tw-mr-8">
-                      <ClearFilters
-                        selectedFilter={getServerDate(before)}
-                        selectedMetric={"Closed Before"}
-                        stateType={WorkItemStateTypes.closed}
-                        handleClearClick={handleClearClick}
-                      />
-                    </div>
-                  ) : null,
+            ? [getClearFilter,
                 () => (
                   <GroupingSelector
                     label={"View"}
@@ -141,6 +149,7 @@ export const VolumeTrendsDetailDashboard = ({
       >
         {displayProps.tabSelection === undefined || displayProps.tabSelection === "volume" ? (
           <DashboardWidget
+            key={resetComponentStateKey}
             w={1}
             name="cycle-metrics-summary-detailed"
             render={({view}) => (
@@ -182,7 +191,11 @@ export const VolumeTrendsDetailDashboard = ({
         )}
       </DashboardRow>
       {displayProps.tabSelection === undefined && (
-        <DashboardRow h="45%" title={getTimePeriod(measurementWindowRange, before)}>
+        <DashboardRow
+          h="45%"
+          title={`Card Details`}
+          controls={[getClearFilter]}
+        >
           <DashboardWidget
             w={1}
             name="flow-metrics-delivery-details"
