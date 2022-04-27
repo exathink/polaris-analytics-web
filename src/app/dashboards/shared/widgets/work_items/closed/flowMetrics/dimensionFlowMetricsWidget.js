@@ -4,6 +4,7 @@ import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
 import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
 import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
 import { getReferenceString } from "../../../../../../helpers/utility";
+import { useQueryProjectPullRequestMetricsTrends } from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
 
 export const DimensionFlowMetricsWidget = (
   {
@@ -43,9 +44,24 @@ export const DimensionFlowMetricsWidget = (
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   });
-  if (loading) return <Loading/>;
-  if (error) return null;
+  const {loading: loading1, error: error1, data: data1} = useQueryProjectPullRequestMetricsTrends({
+    dimension,
+    instanceKey,
+    days,
+    measurementWindow,
+    samplingFrequency,
+    referenceString: latestCommit,
+  });
+  if (loading || loading1) return <Loading/>;
+  if (error || error1) return null;
+  const {pullRequestMetricsTrends} = data1[dimension];
   const {cycleMetricsTrends, contributorCount} = data[dimension];
+  const [currentPullRequestTrend, previousPullRequestTrend] = pullRequestMetricsTrends;
+  
+  const finalCycleMetricTrends = [
+    {...cycleMetricsTrends[0], pullRequestAvgAge: currentPullRequestTrend.avgAge},
+    {...cycleMetricsTrends[1], pullRequestAvgAge: previousPullRequestTrend.avgAge},
+  ];
   
   if (view === 'primary') {
     return (
@@ -61,7 +77,7 @@ export const DimensionFlowMetricsWidget = (
         leadTimeTarget={leadTimeTarget}
         latestCommit={latestCommit}
         contributorCount={contributorCount}
-        cycleMetricsTrends={cycleMetricsTrends}
+        cycleMetricsTrends={finalCycleMetricTrends}
       />
     )
   } else {

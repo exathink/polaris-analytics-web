@@ -334,7 +334,7 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
   return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
-    metric={'pullRequest'}
+    metric={'pullRequestAvgAge'}
     displayName={title || 'Pull Request'}
     superScript={'Avg'}
     target={target}
