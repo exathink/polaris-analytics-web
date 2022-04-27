@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {PullRequestsReviewTimeTrendsWidget} from "../../pullRequests/trends/pullRequestsReviewTime";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -12,6 +13,7 @@ const metricMapping = {
   avgDuration: "duration",
   avgEffort: "effort",
   avgLatency: "latency",
+  pullRequestAvgAge: "pullRequestAvgAge"
 };
 
 export function DimensionResponseTimeDetailDashboard({
@@ -35,7 +37,11 @@ export function DimensionResponseTimeDetailDashboard({
 
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] lg:tw-grid-rows-[6%,43%,45%] tw-gap-2">
+    <Dashboard
+      dashboard={`${dashboard_id}`}
+      gridLayout={true}
+      className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] tw-gap-2 lg:tw-grid-rows-[6%,43%,45%]"
+    >
       <DashboardRow
         className="tw-col-span-2 tw-flex tw-justify-center"
         controls={[
@@ -85,7 +91,7 @@ export function DimensionResponseTimeDetailDashboard({
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className="tw-col-span-2"
+          className={metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge ? "tw-hidden" : "tw-col-span-2"}
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
@@ -105,6 +111,22 @@ export function DimensionResponseTimeDetailDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
               yAxisScale={yAxisScale}
               setYAxisScale={setYAxisScale}
+            />
+          )}
+          showDetail={false}
+        />
+        <DashboardWidget
+          name="pr-metrics-reviewtime-detailed"
+          className={metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge ? "tw-col-span-2" : "tw-hidden"}
+          render={({view}) => (
+            <PullRequestsReviewTimeTrendsWidget
+              dimension={dimension}
+              instanceKey={key}
+              view={view}
+              days={daysRange}
+              measurementWindow={daysRange}
+              samplingFrequency={daysRange}
+              latestCommit={latestCommit}
             />
           )}
           showDetail={false}
