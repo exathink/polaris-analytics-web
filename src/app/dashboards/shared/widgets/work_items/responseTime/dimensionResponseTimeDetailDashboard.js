@@ -88,49 +88,53 @@ export function DimensionResponseTimeDetailDashboard({
         />
       </DashboardRow>
       <DashboardRow>
-        <DashboardWidget
-          title={""}
-          name="flow-metrics-delivery-details"
-          className={metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge ? "tw-hidden" : "tw-col-span-2"}
-          render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
-              dimension={dimension}
-              instanceKey={key}
-              specsOnly={true}
-              view={view}
-              context={context}
-              showAll={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              days={daysRange}
-              initialDays={daysRange}
-              initialMetric={metricMapping[selectedMetric]}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-              yAxisScale={yAxisScale}
-              setYAxisScale={setYAxisScale}
-            />
-          )}
-          showDetail={false}
-        />
-        <DashboardWidget
-          name="pr-metrics-reviewtime-detailed"
-          className={metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge ? "tw-col-span-2" : "tw-hidden"}
-          render={({view}) => (
-            <PullRequestsReviewTimeTrendsWidget
-              dimension={dimension}
-              instanceKey={key}
-              view={view}
-              days={daysRange}
-              measurementWindow={daysRange}
-              samplingFrequency={daysRange}
-              latestCommit={latestCommit}
-            />
-          )}
-          showDetail={false}
-        />
+        {metricMapping[selectedMetric] !== metricMapping.pullRequestAvgAge && (
+          <DashboardWidget
+            title={""}
+            name="flow-metrics-delivery-details"
+            className="tw-col-span-2"
+            render={({view}) => (
+              <DimensionDeliveryCycleFlowMetricsWidget
+                dimension={dimension}
+                instanceKey={key}
+                specsOnly={true}
+                view={view}
+                context={context}
+                showAll={true}
+                latestWorkItemEvent={latestWorkItemEvent}
+                days={daysRange}
+                initialDays={daysRange}
+                initialMetric={metricMapping[selectedMetric]}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                yAxisScale={yAxisScale}
+                setYAxisScale={setYAxisScale}
+              />
+            )}
+            showDetail={false}
+          />
+        )}
+        {metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge && (
+          <DashboardWidget
+            name="pr-metrics-reviewtime-detailed"
+            className="tw-col-span-2"
+            render={({view}) => (
+              <PullRequestsReviewTimeTrendsWidget
+                dimension={dimension}
+                instanceKey={key}
+                view={view}
+                days={daysRange}
+                measurementWindow={daysRange}
+                samplingFrequency={daysRange}
+                latestCommit={latestCommit}
+              />
+            )}
+            showDetail={false}
+          />
+        )}
       </DashboardRow>
     </Dashboard>
   );
