@@ -22,7 +22,6 @@ export const PullRequestsReviewTimeTrendsView = ({
       colWidthBoundaries: COL_WIDTH_BOUNDARIES,
       points: pullRequestMetricsTrends.map((x) => x["avgAge"]),
       name: "Pull Request Age",
-      color: "green",
       visible: true,
     });
     // show histogram view
