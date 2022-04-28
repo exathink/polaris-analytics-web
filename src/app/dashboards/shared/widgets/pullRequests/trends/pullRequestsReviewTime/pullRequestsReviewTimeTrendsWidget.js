@@ -9,6 +9,7 @@ export const PullRequestsReviewTimeTrendsWidget = ({
   dimension,
   instanceKey,
   view,
+  display,
   context,
   days,
   measurementWindow,
@@ -34,6 +35,7 @@ export const PullRequestsReviewTimeTrendsWidget = ({
       measurementWindow={measurementWindow}
       measurementPeriod={days}
       view={view}
+      display={display}
     />
   ) : (
     <PullRequestsReviewTimeTrendsDetailDashboard

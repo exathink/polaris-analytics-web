@@ -130,6 +130,7 @@ export function DimensionResponseTimeDetailDashboard({
                 measurementWindow={daysRange}
                 samplingFrequency={daysRange}
                 latestCommit={latestCommit}
+                display="histogram"
               />
             )}
             showDetail={false}
