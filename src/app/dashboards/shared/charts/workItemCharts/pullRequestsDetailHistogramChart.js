@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypes} from "../../config";
+import {Colors} from "../../config";
 import {
   getDefaultMetricKey,
   getSelectedMetricDisplayName,
@@ -12,11 +12,7 @@ import {getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 function getChartTitle(metric, stateType) {
   const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
-  if (stateType === WorkItemStateTypes.closed) {
-    return `${metricDisplayName} Variability`;
-  } else {
-    return `${metricDisplayName} Distribution`;
-  }
+  return `${metricDisplayName} Variability`;
 }
 
 function getTitle() {
