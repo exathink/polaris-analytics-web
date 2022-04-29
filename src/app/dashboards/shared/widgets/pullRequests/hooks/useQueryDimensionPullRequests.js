@@ -5,6 +5,7 @@ export const getProjectPullRequests = (dimension) => gql`
 query ${dimension}PullRequests(
   $projectKey: String!
   $activeOnly: Boolean
+  $closedWithinDays: Int
   $referenceString: String
 ) {
   ${dimension}(key: $projectKey, referenceString: $referenceString) {
@@ -12,6 +13,7 @@ query ${dimension}PullRequests(
     pullRequests(
       interfaces: [BranchRef, WorkItemsSummaries]
       activeOnly: $activeOnly
+      closedWithinDays: $closedWithinDays
     ) {
       edges {
         node {
@@ -37,12 +39,13 @@ query ${dimension}PullRequests(
 }
 `;
 
-export function useQueryDimensionPullRequests({dimension, instanceKey, activeOnly, referenceString}) {
+export function useQueryDimensionPullRequests({dimension, instanceKey, activeOnly, closedWithinDays, referenceString}) {
   return useQuery(getProjectPullRequests(dimension), {
     service: analytics_service,
     variables: {
       projectKey: instanceKey,
       activeOnly: activeOnly,
+      closedWithinDays: closedWithinDays,
       referenceString: referenceString,
     },
     errorPolicy: "all",
