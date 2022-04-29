@@ -5,18 +5,16 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {Colors} from "../../config";
 import {
   getDefaultMetricKey,
-  getSelectedMetricDisplayName,
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
 import {getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 function getChartTitle(metric, stateType) {
-  const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
-  return `${metricDisplayName} Variability`;
+  return `Code Review Variability`;
 }
 
 function getTitle() {
-  return "Pull Requests Closed"
+  return "Pull Requests"
 }
 
 export const PullRequestsDetailHistogramChart = Chart({
