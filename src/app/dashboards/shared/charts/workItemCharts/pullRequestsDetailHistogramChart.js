@@ -4,14 +4,9 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 
 import {Colors} from "../../config";
 import {
-  getDefaultMetricKey,
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
 import {getHistogramCategories} from "../../../projects/shared/helper/utils";
-
-function getChartTitle(metric, stateType) {
-  return `Code Review Variability`;
-}
 
 function getTitle() {
   return "Pull Requests"
@@ -23,12 +18,10 @@ export const PullRequestsDetailHistogramChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
     chartSubTitle,
-    specsOnly,
     intl,
     series,
     colWidthBoundaries,
-    stateType,
-    selectedMetric = getDefaultMetricKey(stateType),
+    selectedMetric,
   }) => {
     return {
       chart: {
@@ -39,7 +32,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: getChartTitle(selectedMetric, stateType),
+        text: `Code Review Variability`,
       },
       subtitle: {
         text: chartSubTitle,
@@ -55,7 +48,7 @@ export const PullRequestsDetailHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: getTitle(stateType, specsOnly),
+          text: getTitle(),
         },
       },
       tooltip: {
@@ -66,7 +59,7 @@ export const PullRequestsDetailHistogramChart = Chart({
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
-              [getTitle(stateType, specsOnly), this.point.y],
+              [getTitle(), this.point.y],
               [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
