@@ -11,13 +11,13 @@ export function ClosedPullRequestsView({pullRequests}) {
     intl,
     colWidthBoundaries: COL_WIDTH_BOUNDARIES,
     points: pullRequests.map((x) => x["age"]),
-    name: "Pull Request Age",
+    name: "Age",
     visible: true,
   });
   // show histogram view
   return (
     <PullRequestsDetailHistogramChart
-      chartSubTitle={"Pull Request Avg Age"}
+      chartSubTitle={"Pull Requests Avg Age"}
       selectedMetric={"pullRequestAvgAge"}
       specsOnly={true}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
