@@ -12,7 +12,6 @@ export const DimensionPullRequestsClosedWidget = ({
   latestCommit,
   latestPullRequestEvent,
   view,
-  display,
   context,
   pollInterval,
   closedWithinDays,
@@ -36,6 +35,6 @@ export const DimensionPullRequestsClosedWidget = ({
       <div></div>
     );
   } else {
-    return <ClosedPullRequestsView display={display} pullRequests={pullRequests} view={view} context={context} />;
+    return <ClosedPullRequestsView pullRequests={pullRequests} view={view} context={context} />;
   }
 };

@@ -130,7 +130,6 @@ export function DimensionResponseTimeDetailDashboard({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
-                display="histogram"
               />
             )}
             showDetail={false}
