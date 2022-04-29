@@ -18,7 +18,7 @@ const metricMapping = {
 
 export function DimensionResponseTimeDetailDashboard({
   dimension,
-  dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
+  dimensionData: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settingsWithDefaults},
   context,
 }) {
   const {
@@ -119,7 +119,7 @@ export function DimensionResponseTimeDetailDashboard({
         )}
         {metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge && (
           <DashboardWidget
-            name="pr-metrics-reviewtime-detailed"
+            name="pr-metrics-reviewtime-closed"
             className="tw-col-span-2"
             render={({view}) => (
               <DimensionPullRequestsClosedWidget
@@ -129,6 +129,7 @@ export function DimensionResponseTimeDetailDashboard({
                 closedWithinDays={daysRange}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
+                latestPullRequestEvent={latestPullRequestEvent}
                 display="histogram"
               />
             )}
