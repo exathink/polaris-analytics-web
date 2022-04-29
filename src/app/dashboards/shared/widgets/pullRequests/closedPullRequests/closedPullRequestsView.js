@@ -1,6 +1,7 @@
 import {useIntl} from "react-intl";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
+import {ResponseTimeMetricsColor} from "../../../config";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export function ClosedPullRequestsView({pullRequests}) {
@@ -12,6 +13,7 @@ export function ClosedPullRequestsView({pullRequests}) {
     points: pullRequests.map((x) => x["age"]),
     name: "Cycle Time",
     visible: true,
+    color: ResponseTimeMetricsColor.duration
   });
   // show histogram view
   return (
