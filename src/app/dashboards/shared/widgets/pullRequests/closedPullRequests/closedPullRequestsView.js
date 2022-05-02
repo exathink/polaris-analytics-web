@@ -4,7 +4,7 @@ import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/p
 import {ResponseTimeMetricsColor} from "../../../config";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function ClosedPullRequestsView({pullRequests}) {
+export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
   const intl = useIntl();
   const seriesAvgAge = getHistogramSeries({
     id: "pull-request",
@@ -18,7 +18,7 @@ export function ClosedPullRequestsView({pullRequests}) {
   // show histogram view
   return (
     <PullRequestsDetailHistogramChart
-      chartSubTitle={"Pull Request Cycle Time"}
+      chartSubTitle={`${pullRequests.length} pull requests closed within last ${closedWithinDays} days`}
       selectedMetric={"pullRequestAvgAge"}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
       series={[seriesAvgAge]}

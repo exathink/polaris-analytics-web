@@ -35,6 +35,6 @@ export const DimensionPullRequestsClosedWidget = ({
       <div></div>
     );
   } else {
-    return <ClosedPullRequestsView pullRequests={pullRequests} view={view} context={context} />;
+    return <ClosedPullRequestsView pullRequests={pullRequests} closedWithinDays={closedWithinDays} view={view} context={context} />;
   }
 };

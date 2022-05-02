@@ -32,7 +32,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Code Review Variability`,
+        text: `Pull Request Cycle Time Variability`,
       },
       subtitle: {
         text: chartSubTitle,
