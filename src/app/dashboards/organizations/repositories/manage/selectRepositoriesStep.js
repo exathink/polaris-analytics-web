@@ -222,6 +222,7 @@ export const SelectRepositoriesStep =
                                   githubAccessToken: values.githubAccessToken,
                                   gitlabPersonalAccessToken: values.gitlabPersonalAccessToken,
                                   bitbucketPrincipalName: values.bitbucketPrincipalName,
+                                  azureAccessToken: values.azureAccessToken
                                 },
                               },
                             })
