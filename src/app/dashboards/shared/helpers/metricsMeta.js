@@ -77,6 +77,12 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     targetMetric: 'leadTime',
     uom: 'days',
   },
+  pullRequestAvgAge: {
+    display: "Pull Request",
+    value: (cycle) => cycle.pullRequestAvgAge,
+    targetMetric: 'pullRequestAvgAge',
+    uom: 'days',
+  },
 
   getTargetsAndConfidence: (selectedMetric, targetMetrics) => {
     const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = targetMetrics;

@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import { DimensionPullRequestsClosedWidget } from "../../pullRequests/closedPullRequests/dimensionPullRequestsClosedWidget";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -12,11 +13,12 @@ const metricMapping = {
   avgDuration: "duration",
   avgEffort: "effort",
   avgLatency: "latency",
+  pullRequestAvgAge: "pullRequestAvgAge"
 };
 
 export function DimensionResponseTimeDetailDashboard({
   dimension,
-  dimensionData: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
+  dimensionData: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settingsWithDefaults},
   context,
 }) {
   const {
@@ -35,7 +37,11 @@ export function DimensionResponseTimeDetailDashboard({
 
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] lg:tw-grid-rows-[6%,43%,45%] tw-gap-2">
+    <Dashboard
+      dashboard={`${dashboard_id}`}
+      gridLayout={true}
+      className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] tw-gap-2 lg:tw-grid-rows-[6%,43%,45%]"
+    >
       <DashboardRow
         className="tw-col-span-2 tw-flex tw-justify-center"
         controls={[
@@ -82,33 +88,53 @@ export function DimensionResponseTimeDetailDashboard({
         />
       </DashboardRow>
       <DashboardRow>
-        <DashboardWidget
-          title={""}
-          name="flow-metrics-delivery-details"
-          className="tw-col-span-2"
-          render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
-              dimension={dimension}
-              instanceKey={key}
-              specsOnly={true}
-              view={view}
-              context={context}
-              showAll={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              days={daysRange}
-              initialDays={daysRange}
-              initialMetric={metricMapping[selectedMetric]}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-              yAxisScale={yAxisScale}
-              setYAxisScale={setYAxisScale}
-            />
-          )}
-          showDetail={false}
-        />
+        {metricMapping[selectedMetric] !== metricMapping.pullRequestAvgAge && (
+          <DashboardWidget
+            title={""}
+            name="flow-metrics-delivery-details"
+            className="tw-col-span-2"
+            render={({view}) => (
+              <DimensionDeliveryCycleFlowMetricsWidget
+                dimension={dimension}
+                instanceKey={key}
+                specsOnly={true}
+                view={view}
+                context={context}
+                showAll={true}
+                latestWorkItemEvent={latestWorkItemEvent}
+                days={daysRange}
+                initialDays={daysRange}
+                initialMetric={metricMapping[selectedMetric]}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                yAxisScale={yAxisScale}
+                setYAxisScale={setYAxisScale}
+              />
+            )}
+            showDetail={false}
+          />
+        )}
+        {metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge && (
+          <DashboardWidget
+            name="pr-metrics-reviewtime-closed"
+            className="tw-col-span-2"
+            render={({view}) => (
+              <DimensionPullRequestsClosedWidget
+                dimension={dimension}
+                instanceKey={key}
+                view={view}
+                closedWithinDays={daysRange}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                latestPullRequestEvent={latestPullRequestEvent}
+              />
+            )}
+            showDetail={false}
+          />
+        )}
       </DashboardRow>
     </Dashboard>
   );

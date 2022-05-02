@@ -17,7 +17,8 @@ import {
   LatestClosed,
   Volume,
   VolumeCarousel,
-  ContributorCount
+  ContributorCount,
+  PullRequest
 
 } from "../../../../components/flowStatistics/flowStatistics";
 import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
@@ -383,6 +384,18 @@ export const ResponseTimeDetailView = (
           displayProps={{
             showHighlighted: selectedMetric === metricsMapping.EFFORT,
             onClick: () => setSelectedMetric(metricsMapping.EFFORT),
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className={styles.pullRequest}>
+        <PullRequest
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === metricsMapping.PULLREQUEST,
+            onClick: () => setSelectedMetric(metricsMapping.PULLREQUEST),
           }}
           currentMeasurement={current}
           previousMeasurement={previous}

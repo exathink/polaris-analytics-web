@@ -3,8 +3,8 @@
   height: 93%;
   grid-template-areas:
     "leadTime . . ."
-    "leadTime cycleTime effort ."
-    "leadTime cycleTime effort ."
+    "leadTime cycleTime effort pullRequest"
+    "leadTime cycleTime effort pullRequest"
     "leadTime cycleTime implement deliver"
     "leadTime cycleTime implement deliver";
   gap: 0.5rem;
@@ -26,6 +26,10 @@
 
 .effort {
   grid-area: effort;
+}
+
+.pullRequest {
+  grid-area: pullRequest;
 }
 
 .deliver {
