@@ -66,7 +66,7 @@ const DeliveryCyclesFlowMetricsView = ({
   );
 
   const groupings = specsOnly
-    ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency"]
+    ? ["leadTime", "backlogTime", "cycleTime", "duration", "effort", "latency", "pullRequestAvgAge"]
     : ["leadTime", "cycleTime", "backlogTime"];
 
   const uniqueGroupings = groupings.map((g) => ({
