@@ -5,6 +5,7 @@ import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {i18nNumber, truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
+import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
@@ -48,13 +49,17 @@ export function comboColumnPRInfoRender(text, record, searchText) {
   );
 }
 
-function usePullRequestsDetailTableColumns({intl}) {
+function usePullRequestsDetailTableColumns({intl, filters}) {
   const prInfoSearchState = useSearchMultiCol(["name", "displayId", "repositoryName"], {
     customRender: comboColumnPRInfoRender,
   });
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: text => text,
+    customRender: (text) => text,
   });
+  function testMetric(value, record, metric) {
+    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
+    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  }
   return [
     {
       title: "PR Info",
@@ -78,7 +83,7 @@ function usePullRequestsDetailTableColumns({intl}) {
       key: "state",
       width: "5%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
-      render: text => <span className="tw-textXs">{text}</span>,
+      render: (text) => <span className="tw-textXs">{text}</span>,
     },
     {
       title: "Age / CycleTime",
@@ -86,7 +91,9 @@ function usePullRequestsDetailTableColumns({intl}) {
       key: "age",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.age, b.age),
-      render: text => <span className="tw-textXs">{text} days</span>,
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "age"),
+      render: (text) => <span className="tw-textXs">{text} days</span>,
     },
   ];
 }
@@ -108,16 +115,20 @@ function getTransformedData(tableData, intl) {
     return {
       ...item,
       title: item.name,
-      age: i18nNumber(intl, item.age, 2)
+      age: i18nNumber(intl, item.age, 2),
     };
   });
 }
 
-export function PullRequestsDetailTable({tableData}) {
+export function PullRequestsDetailTable({tableData, colWidthBoundaries}) {
   const intl = useIntl();
   const dataSource = getTransformedData(tableData, intl);
+
+  const categories = getHistogramCategories(colWidthBoundaries, "days");
+  const allPairsData = allPairs(colWidthBoundaries);
   const columns = usePullRequestsDetailTableColumns({
     intl,
+    filters: {categories, allPairsData},
   });
   return (
     <StripeTable

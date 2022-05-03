@@ -52,7 +52,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
       </div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
-          <PullRequestsDetailTable tableData={pullRequests} />
+          <PullRequestsDetailTable tableData={pullRequests} colWidthBoundaries={COL_WIDTH_BOUNDARIES} />
         </div>
       )}
     </div>
