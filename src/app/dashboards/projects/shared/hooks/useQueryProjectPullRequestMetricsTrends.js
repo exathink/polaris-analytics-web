@@ -26,6 +26,7 @@ export function useQueryProjectPullRequestMetricsTrends({
             measurementWindow: $measurementWindow
             samplingFrequency: $samplingFrequency
             metrics: [avg_age, max_age, total_closed]
+            specsOnly: true
           }
           referenceString: $referenceString
         ) {
