@@ -22,6 +22,7 @@ export const PullRequestsDetailHistogramChart = Chart({
     series,
     colWidthBoundaries,
     selectedMetric,
+    onPointClick
   }) => {
     return {
       chart: {
@@ -76,6 +77,16 @@ export const PullRequestsDetailHistogramChart = Chart({
               color: null,
               borderWidth: 2,
               borderColor: Colors.HistogramSelection,
+            },
+          },
+          point: {
+            events: {
+              click: function () {
+                const category = this.category;
+                const selectedMetric = this.series.userOptions.id;
+
+                onPointClick({category, selectedMetric});
+              },
             },
           },
         },

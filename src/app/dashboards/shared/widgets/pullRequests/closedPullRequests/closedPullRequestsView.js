@@ -44,6 +44,9 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
           selectedMetric={"pullRequestAvgAge"}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           series={[seriesAvgAge]}
+          onPointClick={({category, selectedMetric}) => {
+            setTab("table");
+          }}
         />
       </div>
       {tabSelection === "table" && <div className="tw-h-full">TABLE</div>}
