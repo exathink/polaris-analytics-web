@@ -1,7 +1,9 @@
 import React from "react";
 import {useIntl} from "react-intl";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
+import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
@@ -10,6 +12,8 @@ const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
+  const [selectedFilter, setFilter] = React.useState(null);
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const seriesAvgAge = getHistogramSeries({
     id: "pull-request",
     intl,
@@ -19,10 +23,25 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
     visible: true,
     color: ResponseTimeMetricsColor.duration,
   });
+
+  function handleClearClick() {
+    setFilter(null);
+    resetComponentState();
+  }
   // show histogram view
   return (
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
+        {selectedFilter != null && (
+          <div className="tw-mr-6">
+            <ClearFilters
+              selectedFilter={selectedFilter}
+              selectedMetric={"age"}
+              stateType={"closed"}
+              handleClearClick={handleClearClick}
+            />
+          </div>
+        )}
         <GroupingSelector
           label={"View"}
           className={"groupCardsBySelector"}
@@ -46,13 +65,19 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           series={[seriesAvgAge]}
           onPointClick={({category, selectedMetric}) => {
+            setFilter(category);
             setTab("table");
           }}
         />
       </div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
-          <PullRequestsDetailTable tableData={pullRequests} colWidthBoundaries={COL_WIDTH_BOUNDARIES} />
+          <PullRequestsDetailTable
+            key={resetComponentStateKey}
+            tableData={pullRequests}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            selectedFilter={selectedFilter}
+          />
         </div>
       )}
     </div>

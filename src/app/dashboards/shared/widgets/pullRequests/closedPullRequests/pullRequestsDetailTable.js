@@ -49,7 +49,7 @@ export function comboColumnPRInfoRender(text, record, searchText) {
   );
 }
 
-function usePullRequestsDetailTableColumns({intl, filters}) {
+function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
   const prInfoSearchState = useSearchMultiCol(["name", "displayId", "repositoryName"], {
     customRender: comboColumnPRInfoRender,
   });
@@ -60,7 +60,7 @@ function usePullRequestsDetailTableColumns({intl, filters}) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
-  return [
+  const columns =  [
     {
       title: "PR Info",
       dataIndex: "name",
@@ -91,11 +91,14 @@ function usePullRequestsDetailTableColumns({intl, filters}) {
       key: "age",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.age, b.age),
+      defaultFilteredValue: selectedFilter != null ? [selectedFilter] : [],
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "age"),
-      render: (text) => <span className="tw-textXs">{text} days</span>,
+      render: (text) => <span className="tw-textXs">{i18nNumber(intl, Number(text), 2)} days</span>,
     },
   ];
+
+  return columns;
 }
 
 function getTransformedData(tableData, intl) {
@@ -114,13 +117,13 @@ function getTransformedData(tableData, intl) {
   return tableData.map((item) => {
     return {
       ...item,
+      rowKey: item.key,
       title: item.name,
-      age: i18nNumber(intl, item.age, 2),
     };
   });
 }
 
-export function PullRequestsDetailTable({tableData, colWidthBoundaries}) {
+export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter}) {
   const intl = useIntl();
   const dataSource = getTransformedData(tableData, intl);
 
@@ -129,6 +132,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries}) {
   const columns = usePullRequestsDetailTableColumns({
     intl,
     filters: {categories, allPairsData},
+    selectedFilter
   });
   return (
     <StripeTable
