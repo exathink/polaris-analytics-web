@@ -5,6 +5,7 @@ import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
+import { comboColumnTitleRender } from "../../../../projects/shared/helper/renderers";
 
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
@@ -54,7 +55,7 @@ function usePullRequestsDetailTableColumns({intl}) {
     customRender: comboColumnPRInfoRender,
   });
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: () => {},
+    customRender: text => text,
   });
   return [
     {
