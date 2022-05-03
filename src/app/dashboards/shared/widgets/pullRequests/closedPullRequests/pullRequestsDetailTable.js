@@ -3,10 +3,8 @@ import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {truncateString} from "../../../../../helpers/utility";
+import {i18nNumber, truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
-import { comboColumnTitleRender } from "../../../../projects/shared/helper/renderers";
-
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
@@ -80,7 +78,7 @@ function usePullRequestsDetailTableColumns({intl}) {
       key: "state",
       width: "5%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
-      // render: (renderMetric),
+      render: text => <span className="tw-textXs">{text}</span>,
     },
     {
       title: "Age / CycleTime",
@@ -88,7 +86,7 @@ function usePullRequestsDetailTableColumns({intl}) {
       key: "age",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.age, b.age),
-      // render: renderMetric,
+      render: text => <span className="tw-textXs">{text} days</span>,
     },
   ];
 }
@@ -110,6 +108,7 @@ function getTransformedData(tableData, intl) {
     return {
       ...item,
       title: item.name,
+      age: i18nNumber(intl, item.age, 2)
     };
   });
 }
