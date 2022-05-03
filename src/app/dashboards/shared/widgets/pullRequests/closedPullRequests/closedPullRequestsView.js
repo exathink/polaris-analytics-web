@@ -4,6 +4,7 @@ import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {ResponseTimeMetricsColor} from "../../../config";
+import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
@@ -49,7 +50,11 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
           }}
         />
       </div>
-      {tabSelection === "table" && <div className="tw-h-full">TABLE</div>}
+      {tabSelection === "table" && (
+        <div className="tw-h-full">
+          <PullRequestsDetailTable tableData={pullRequests} />
+        </div>
+      )}
     </div>
   );
 }
