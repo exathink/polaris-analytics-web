@@ -13,7 +13,7 @@ function getTitle() {
 }
 
 export const PullRequestsDetailHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "series", "selectedMetric", "specsOnly", "stateType"),
+  chartUpdateProps: (props) => pick(props, "series", "selectedMetric"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({

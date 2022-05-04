@@ -16,15 +16,20 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
-  const seriesAvgAge = getHistogramSeries({
-    id: "pull-request",
-    intl,
-    colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-    points: pullRequests.map((x) => x["age"]),
-    name: "Cycle Time",
-    visible: true,
-    color: ResponseTimeMetricsColor.duration,
-  });
+
+  const seriesAvgAge = React.useMemo(() => {
+    return [
+      getHistogramSeries({
+        id: "pull-request",
+        intl,
+        colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+        points: pullRequests.map((x) => x["age"]),
+        name: "Cycle Time",
+        visible: true,
+        color: ResponseTimeMetricsColor.duration,
+      }),
+    ];
+  }, [pullRequests, intl]);
 
   function handleClearClick() {
     setFilter(null);
@@ -65,7 +70,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
           chartSubTitle={`${pullRequests.length} pull requests closed within last ${closedWithinDays} days`}
           selectedMetric={"pullRequestAvgAge"}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          series={[seriesAvgAge]}
+          series={seriesAvgAge}
           onPointClick={({category, selectedMetric}) => {
             setFilter(category);
             setTab("table");
