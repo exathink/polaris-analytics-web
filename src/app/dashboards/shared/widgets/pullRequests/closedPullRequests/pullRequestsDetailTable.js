@@ -8,6 +8,7 @@ import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
+import {WorkItemStateTypeColor} from "../../../config";
 
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
@@ -56,10 +57,10 @@ export function comboColumnPRInfoRender(text, record, searchText) {
 }
 
 const TAG_COLOR="#108ee9";
-function CustomTag({children, onClick}) {
+function CustomTag({children, onClick, state}) {
   return (
     <div className="tw-cursor-pointer">
-      <Tag color={TAG_COLOR} style={{marginTop: "5px"}} onClick={onClick}>
+      <Tag color={WorkItemStateTypeColor[state]} style={{marginTop: "5px"}} onClick={onClick}>
         {children}
       </Tag>
     </div>
@@ -75,7 +76,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNodeWithTooltip = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
             {truncateString(x.displayId, 16, TAG_COLOR)}
           </CustomTag>
         ))}
@@ -84,7 +85,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNode = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
             {x.displayId}
           </CustomTag>
         ))}
@@ -93,7 +94,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const partialNode = (
       <div>
         {record.workItemsSummaries.slice(0, 2).map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
             {truncateString(x.displayId, 16, TAG_COLOR)}
           </CustomTag>
         ))}
