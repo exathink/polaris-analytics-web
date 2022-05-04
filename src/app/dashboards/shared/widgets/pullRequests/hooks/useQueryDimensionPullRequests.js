@@ -26,6 +26,7 @@ query ${dimension}PullRequests(
           repositoryName
           age
           webUrl
+          endDate
           workItemsSummaries {
             displayId
             key

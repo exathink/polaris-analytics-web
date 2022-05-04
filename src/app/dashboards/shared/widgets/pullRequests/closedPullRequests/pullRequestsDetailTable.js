@@ -6,6 +6,7 @@ import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tabl
 import {i18nNumber, truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
+import {formatDateTime} from "../../../../../i18n";
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
@@ -96,6 +97,14 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
       onFilter: (value, record) => testMetric(value, record, "age"),
       render: (text) => <span className="tw-textXs">{i18nNumber(intl, Number(text), 2)} days</span>,
     },
+    {
+      title: "Merged At",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: "5%",
+      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
+      render: (text) => <span className="tw-textXs">{text}</span>,
+    },
   ];
 
   return columns;
@@ -119,6 +128,7 @@ function getTransformedData(tableData, intl) {
       ...item,
       rowKey: item.key,
       title: item.name,
+      endDate: formatDateTime(intl, item.endDate),
     };
   });
 }
