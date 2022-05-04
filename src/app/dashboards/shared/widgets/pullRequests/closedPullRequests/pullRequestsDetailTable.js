@@ -3,7 +3,7 @@ import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {i18nNumber, truncateString} from "../../../../../helpers/utility";
+import {fromNow, i18nNumber, truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
@@ -25,12 +25,15 @@ export function comboColumnPRInfoRender(text, record, searchText) {
             truncateString(text, 38, "#6b7280")
           )}
         </div>
-        <div className="">
-          <Highlighter
-            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-            searchWords={searchText || ""}
-            textToHighlight={record.createdAt || ""}
-          />
+        <div className="tw-flex">
+          <div className="tw-textXs">
+            <Highlighter
+              highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+              searchWords={searchText || ""}
+              textToHighlight={record.createdAt || ""}
+            />
+          </div>
+
           {record.repositoryName && (
             <Tag color="#108ee9" style={{marginLeft: "30px"}}>
               {searchText ? (
@@ -61,7 +64,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
-  const columns =  [
+  const columns = [
     {
       title: "PR Info",
       dataIndex: "name",
@@ -129,6 +132,7 @@ function getTransformedData(tableData, intl) {
       rowKey: item.key,
       title: item.name,
       endDate: formatDateTime(intl, item.endDate),
+      createdAt: fromNow(item.createdAt),
     };
   });
 }
@@ -142,7 +146,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
   const columns = usePullRequestsDetailTableColumns({
     intl,
     filters: {categories, allPairsData},
-    selectedFilter
+    selectedFilter,
   });
   return (
     <StripeTable

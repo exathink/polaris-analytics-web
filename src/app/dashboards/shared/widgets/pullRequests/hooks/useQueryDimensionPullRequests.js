@@ -27,6 +27,7 @@ query ${dimension}PullRequests(
           age
           webUrl
           endDate
+          createdAt
           workItemsSummaries {
             displayId
             key
