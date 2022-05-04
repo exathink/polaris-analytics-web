@@ -2,7 +2,7 @@ import {Tag} from "antd";
 import React from "react";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {truncateString} from "../../../../helpers/utility";
-import {WorkItemStateTypeColor} from "../../../shared/config";
+import {PullRequestStateTypeColor, WorkItemStateTypeColor} from "../../../shared/config";
 import styles from "./renderers.module.css";
 
 // import issueType icons
@@ -37,6 +37,20 @@ export function getStateTypeIcon(stateType, size = "16px") {
         width: size,
         height: size,
         backgroundColor: WorkItemStateTypeColor[stateType ?? "unmapped"],
+        borderRadius: "0.2rem",
+        marginRight: "0.5rem",
+      }}
+    ></div>
+  );
+}
+
+export function getPullRequestStateTypeIcon(stateType, size = "16px") {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: PullRequestStateTypeColor[stateType ?? "unmapped"],
         borderRadius: "0.2rem",
         marginRight: "0.5rem",
       }}

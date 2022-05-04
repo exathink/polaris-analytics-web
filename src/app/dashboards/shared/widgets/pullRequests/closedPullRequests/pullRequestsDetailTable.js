@@ -7,6 +7,8 @@ import {fromNow, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../..
 import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
+import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
+
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
@@ -147,7 +149,12 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       key: "state",
       width: "5%",
       sorter: (a, b) => SORTER.string_compare(a.state, b.state),
-      render: (text) => <span className="tw-textXs">{text}</span>,
+      render: (text) => (
+        <div className="tw-flex tw-items-center">
+          {getPullRequestStateTypeIcon(text)}
+          <span className="tw-textXs">{text}</span>
+        </div>
+      ),
     },
     {
       title: "Age / CycleTime",

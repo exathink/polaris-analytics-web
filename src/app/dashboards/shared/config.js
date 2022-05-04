@@ -158,6 +158,13 @@ export const WorkItemStateTypeColor = {
   closed: '#7824b5'
 }
 
+export const PullRequestStateTypeColor = {
+  unmapped: '#8f9a8e',
+  open: '#c4ab49',
+  closed: '#7824b5',
+  merged: '#7824b5'
+}
+
 export const WorkItemStateTypeIcon = {
   unmapped: 'ion-exclamation',
   backlog: 'ion-caretup',
