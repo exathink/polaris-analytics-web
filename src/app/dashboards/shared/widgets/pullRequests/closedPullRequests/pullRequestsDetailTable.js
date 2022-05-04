@@ -8,14 +8,14 @@ import {allPairs, getHistogramCategories} from "../../../../projects/shared/help
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
-import {ClosedPrIcon} from "../../../../../components/misc/customIcons";
+import {MergedPrIcon} from "../../../../../components/misc/customIcons";
 
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
       <div className="tw-grid tw-grid-cols-[25px,auto] tw-grid-rows-[auto,auto] tw-gap-1">
         <div className="tw-row-span-2 tw-self-center">
-          <ClosedPrIcon />
+          <MergedPrIcon />
         </div>
         <div className="">
           {searchText ? (
