@@ -2,6 +2,7 @@ import React from "react";
 import {useIntl} from "react-intl";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
+import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
@@ -9,11 +10,12 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
+export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const seriesAvgAge = getHistogramSeries({
     id: "pull-request",
     intl,
@@ -77,9 +79,17 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays}) {
             tableData={pullRequests}
             colWidthBoundaries={COL_WIDTH_BOUNDARIES}
             selectedFilter={selectedFilter}
+            setShowPanel={setShowPanel}
+            setWorkItemKey={setWorkItemKey}
           />
         </div>
       )}
+      <CardInspectorWithDrawer
+        workItemKey={workItemKey}
+        showPanel={showPanel}
+        setShowPanel={setShowPanel}
+        context={context}
+      />
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import {Tag} from "antd";
+import {Tag, Tooltip} from "antd";
 import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {fromNow, i18nNumber, truncateString} from "../../../../../helpers/utility";
+import {fromNow, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
@@ -53,12 +53,72 @@ export function comboColumnPRInfoRender(text, record, searchText) {
   );
 }
 
-function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
+const TAG_COLOR="#108ee9";
+function CustomTag({children, onClick}) {
+  return (
+    <div className="tw-cursor-pointer">
+      <Tag color={TAG_COLOR} style={{marginTop: "5px"}} onClick={onClick}>
+        {children}
+      </Tag>
+    </div>
+  );
+}
+
+function allCardsRender(setShowPanel, setWorkItemKey) {
+  function handleClick(key) {
+    setShowPanel(true);
+    setWorkItemKey(key);
+  }
+  return (text, record) => {
+    const fullNodeWithTooltip = (
+      <div>
+        {record.workItemsSummaries.map((x) => (
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+            {truncateString(x.displayId, 16, TAG_COLOR)}
+          </CustomTag>
+        ))}
+      </div>
+    );
+    const fullNode = (
+      <div>
+        {record.workItemsSummaries.map((x) => (
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+            {x.displayId}
+          </CustomTag>
+        ))}
+      </div>
+    );
+    const partialNode = (
+      <div>
+        {record.workItemsSummaries.slice(0, 2).map((x) => (
+          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)}>
+            {truncateString(x.displayId, 16, TAG_COLOR)}
+          </CustomTag>
+        ))}
+      </div>
+    );
+    if (record.workItemsSummaries.length > 2) {
+      return (
+        <div>
+          {partialNode}
+          <div style={{cursor: "pointer"}}>
+            <Tooltip title={fullNode} color={TOOLTIP_COLOR}>
+              <span style={{fontSize: "20px", color: TAG_COLOR}}>...</span>
+            </Tooltip>
+          </div>
+        </div>
+      );
+    }
+    return fullNodeWithTooltip;
+  };
+}
+
+function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setShowPanel, setWorkItemKey}) {
   const prInfoSearchState = useSearchMultiCol(["name", "displayId", "repositoryName"], {
     customRender: comboColumnPRInfoRender,
   });
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: (text) => text,
+    customRender: allCardsRender(setShowPanel, setWorkItemKey),
   });
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
@@ -77,7 +137,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
       title: "CARD Info",
       dataIndex: "displayId",
       key: "displayId",
-      width: "12%",
+      width: "7%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
@@ -104,7 +164,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
       title: "Merged At",
       dataIndex: "endDate",
       key: "endDate",
-      width: "5%",
+      width: "7%",
       sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
       render: (text) => <span className="tw-textXs">{text}</span>,
     },
@@ -114,18 +174,6 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter}) {
 }
 
 function getTransformedData(tableData, intl) {
-  // Pull Request Info:
-  // repositoryName: displayId
-  // name
-  // created (??)
-
-  // CardInfo
-  // workItemsSummaries
-
-  // state
-  // age
-
-  // mergedAt (??)
   return tableData.map((item) => {
     return {
       ...item,
@@ -137,7 +185,7 @@ function getTransformedData(tableData, intl) {
   });
 }
 
-export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter}) {
+export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey}) {
   const intl = useIntl();
   const dataSource = getTransformedData(tableData, intl);
 
@@ -147,6 +195,8 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     intl,
     filters: {categories, allPairsData},
     selectedFilter,
+    setShowPanel,
+    setWorkItemKey
   });
   return (
     <StripeTable
