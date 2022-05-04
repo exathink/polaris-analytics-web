@@ -4,18 +4,18 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
 import {fromNow, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
-import prImg from "../../../../../../image/merge-request.svg";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
+import {ClosedPrIcon} from "../../../../../components/misc/customIcons";
 
 export function comboColumnPRInfoRender(text, record, searchText) {
   return (
     text && (
       <div className="tw-grid tw-grid-cols-[25px,auto] tw-grid-rows-[auto,auto] tw-gap-1">
         <div className="tw-row-span-2 tw-self-center">
-          <img src={prImg} alt="#" style={{width: "16px", height: "16px"}} />
+          <ClosedPrIcon />
         </div>
         <div className="">
           {searchText ? (
@@ -56,7 +56,7 @@ export function comboColumnPRInfoRender(text, record, searchText) {
   );
 }
 
-const TAG_COLOR="#108ee9";
+const TAG_COLOR = "#108ee9";
 function CustomTag({children, onClick, state}) {
   return (
     <div className="tw-cursor-pointer">
@@ -76,7 +76,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNodeWithTooltip = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
             {truncateString(x.displayId, 16, TAG_COLOR)}
           </CustomTag>
         ))}
@@ -85,7 +85,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNode = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
             {x.displayId}
           </CustomTag>
         ))}
@@ -94,7 +94,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const partialNode = (
       <div>
         {record.workItemsSummaries.slice(0, 2).map((x) => (
-          <CustomTag key={x.displayId} onClick={()=>handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
             {truncateString(x.displayId, 16, TAG_COLOR)}
           </CustomTag>
         ))}
@@ -204,7 +204,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     filters: {categories, allPairsData},
     selectedFilter,
     setShowPanel,
-    setWorkItemKey
+    setWorkItemKey,
   });
   return (
     <StripeTable
