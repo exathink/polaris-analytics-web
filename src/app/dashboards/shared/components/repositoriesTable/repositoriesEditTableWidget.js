@@ -1,4 +1,5 @@
 import {SORTER} from "../../../../components/tables/tableUtils";
+import {RepositoriesEditTable} from "./repositoriesTable";
 import {useQueryRepositories} from "./useQueryRepositories";
 
 export function RepositoriesEditTableWidget({dimension, instanceKey, view, days = 30}) {
@@ -8,5 +9,5 @@ export function RepositoriesEditTableWidget({dimension, instanceKey, view, days 
 
   const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
   const tableData = edges.map((edge) => edge.node).sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
-  return <div>Edit Table</div>;
+  return <RepositoriesEditTable tableData={tableData} days={days} loading={loading} />;
 }
