@@ -11,6 +11,7 @@ import {Highlighter} from "../../../../components/misc/highlighter";
 import {TotalCommits, Traceability} from "../flowStatistics/flowStatistics";
 import {renderMetric} from "../../../../components/misc/statistic/statistic";
 import {RepositoriesDetailDashboard} from "./repositoriesDetailDashboard";
+import {Switch} from "antd";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -46,6 +47,37 @@ const getActionCol = () => {
     ),
   };
 };
+
+function getToggleCol(excludeRecordsState) {
+  const [excludeRecords, updateExcludeRecords] = excludeRecordsState;
+
+  function handleChange({recordKey, checked}) {
+    const updatedRecords = excludeRecords.map((x) => {
+      if (x.key === recordKey) {
+        return {...x, checked};
+      }
+      return {...x};
+    });
+
+    updateExcludeRecords(updatedRecords);
+  }
+
+  return {
+    title: "Excluded",
+    dataIndex: "exclude_switch",
+    key: "exclude_switch",
+    width: "5%",
+    align: "center",
+    render: (text, record) => (
+      <Switch
+        checked={excludeRecords.find((x) => x.key === record.key)?.checked}
+        onChange={(checked, e) => handleChange({recordKey: record.key, checked: checked})}
+        size="small"
+        className="!tw-rounded-[100px]"
+      />
+    ),
+  };
+}
 
 export function useRepositoriesTableColumns({statusTypes, days}) {
   const nameSearchState = useSearch("name", {customRender: customNameRender});
@@ -165,8 +197,9 @@ export function RepositoriesTable({tableData, days, loading}) {
 }
 
 export function RepositoriesEditTable({tableData, days, loading}) {
+  const excludeRecordsState = React.useState(tableData.map(x => ({key:x.key, checked: x.excluded})));
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
-  const columns = [...useRepositoriesTableColumns({statusTypes, days})];
+  const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol(excludeRecordsState)];
 
   return (
     <StripeTable
