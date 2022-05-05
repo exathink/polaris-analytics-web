@@ -3,7 +3,7 @@ import {RepositoriesEditTable} from "./repositoriesTable";
 import {useQueryRepositories} from "./useQueryRepositories";
 
 export function RepositoriesEditTableWidget({dimension, instanceKey, view, days = 30}) {
-  const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days});
+  const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days, showExcluded: true});
 
   if (error) return null;
 
