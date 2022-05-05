@@ -10,6 +10,7 @@ import { getActivityLevelFromDate } from "../../../shared/helpers/activityLevel"
 import { Highlighter } from "../../../../components/misc/highlighter";
 import { TotalCommits, Traceability } from "../flowStatistics/flowStatistics";
 import { renderMetric } from "../../../../components/misc/statistic/statistic";
+import { RepositoriesDetailDashboard } from "./repositoriesDetailDashboard";
 
 function customNameRender(text, record, searchText) {
   return (text && (<RepositoryLink repositoryName={record.name} repositoryKey={record.key}>
@@ -129,7 +130,7 @@ export function RepositoriesTable({ tableData, days, loading }) {
     />);
 }
 
-export const RepositoriesTableWidget = ({ dimension, instanceKey, days = 30 }) => {
+export const RepositoriesTableWidget = ({ dimension, instanceKey, days = 30, view }) => {
   const { loading, error, data } = useQueryRepositories({ dimension, instanceKey, days });
 
   if (error) return null;
@@ -137,5 +138,8 @@ export const RepositoriesTableWidget = ({ dimension, instanceKey, days = 30 }) =
   const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
   const tableData = edges.map((edge) => edge.node).sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
 
+  if (view === "detail") {
+    return <RepositoriesDetailDashboard dimension={dimension} instanceKey={instanceKey} view={view} />
+  }
   return <RepositoriesTable tableData={tableData} days={days} loading={loading} />;
 };
