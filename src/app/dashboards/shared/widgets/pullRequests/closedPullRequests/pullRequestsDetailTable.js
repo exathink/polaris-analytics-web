@@ -98,11 +98,21 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
         ))}
       </div>
     );
+
+    const nameTitleNode = ({name, title}) => (
+      <div>
+        <div>{name}</div>
+        <div>{title}</div>
+      </div>
+    );
+
     const partialNode = (
       <div>
         {record.workItemsSummaries.slice(0, 2).map((x) => (
           <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
-            {truncateString(x.displayId, 16, TAG_COLOR)}
+            <Tooltip title={nameTitleNode({name: x.name, title: x.displayId})} color={TOOLTIP_COLOR}>
+              {truncateString(x.displayId, 16, TAG_COLOR)}
+            </Tooltip>
           </CustomTag>
         ))}
       </div>
