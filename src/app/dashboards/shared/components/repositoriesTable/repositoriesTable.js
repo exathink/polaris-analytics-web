@@ -197,18 +197,45 @@ export function RepositoriesTable({tableData, days, loading}) {
 }
 
 export function RepositoriesEditTable({tableData, days, loading}) {
-  const excludeRecordsState = React.useState(tableData.map(x => ({key:x.key, checked: x.excluded})));
+  const initialState = tableData.map((x) => ({...x, checked: x.excluded}));
+  const excludeRecordsState = React.useState(initialState);
+  const [excludeRecords, updateExcludeRecords] = excludeRecordsState;
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
   const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol(excludeRecordsState)];
 
+  function handleCancelClick() {
+    updateExcludeRecords(initialState);
+  }
+
+  function handleSaveClick() {}
+
+  function getButtonElements() {
+    const isEdited = excludeRecords.some((x) => x.checked !== tableData.find((y) => y.key === x.key)?.excluded);
+    if (!isEdited) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <Button type="primary" onClick={handleSaveClick}>
+          Save
+        </Button>
+        <Button type="secondary" onClick={handleCancelClick}>
+          Cancel
+        </Button>
+      </React.Fragment>
+    );
+  }
   return (
-    <StripeTable
-      columns={columns}
-      dataSource={tableData}
-      loading={loading}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
-      rowKey={(record) => record.key}
-    />
+    <div className="">
+      <div className="tw-my-2 tw-ml-[80%] tw-flex tw-h-10 tw-items-center tw-space-x-2">{getButtonElements()}</div>
+      <StripeTable
+        columns={columns}
+        dataSource={tableData}
+        loading={loading}
+        height={TABLE_HEIGHTS.FORTY_FIVE}
+        rowKey={(record) => record.key}
+      />
+    </div>
   );
 }
 
