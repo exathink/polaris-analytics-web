@@ -11,7 +11,7 @@ import {Highlighter} from "../../../../components/misc/highlighter";
 import {TotalCommits, Traceability} from "../flowStatistics/flowStatistics";
 import {renderMetric} from "../../../../components/misc/statistic/statistic";
 import {RepositoriesDetailDashboard} from "./repositoriesDetailDashboard";
-import {Switch} from "antd";
+import {Alert, Switch} from "antd";
 import {useExcludeRepos} from "./useExcludedRepositories";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
@@ -214,20 +214,24 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
   const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol([draftState, setDraftState], tableData)];
 
+  const [errorMessage, setErrorMessage] = React.useState();
+  const [successMessage, setSuccessMessage] = React.useState();
+
   // mutation to exclude repos
   const [mutate, {loading: mutationLoading, client}] = useExcludeRepos({
     onCompleted: ({updateProjectExcludedRepositories: {success, errorMessage}}) => {
       if (success) {
-        // update successMessage in state
+        setSuccessMessage("Successfully Updated.")
         client.resetStore();
       } else {
         logGraphQlError("RepositoriesEditTable.useExcludeRepos", errorMessage);
-        // update errorMessage in state
+        setErrorMessage(errorMessage)
       }
     },
     onError: (error) => {
       logGraphQlError("RepositoriesEditTable.useExcludeRepos", error);
       // update errorMessage in state
+      setErrorMessage(error)
     },
   });
 
@@ -264,6 +268,19 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   }
   return (
     <div className="">
+      <div className="tw-ml-auto tw-mr-10 tw-w-1/3">
+        {errorMessage && (
+          <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage(null)} />
+        )}
+        {successMessage && (
+          <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage(null)} />
+        )}
+        {mutationLoading && (
+          <Button className={"shiftRight"} type="primary" loading>
+            Processing...
+          </Button>
+        )}
+      </div>
       <div className="tw-my-2 tw-ml-[80%] tw-flex tw-h-10 tw-items-center tw-space-x-2">{getButtonElements()}</div>
       <StripeTable
         columns={columns}
