@@ -123,7 +123,13 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
   };
 }
 
-function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setShowPanel, setWorkItemKey}) {
+const PRStateTypeMap = {
+  open: "Age",
+  closed: "CycleTime",
+  both: "Age / CycleTime"
+}
+
+function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const prInfoSearchState = useSearchMultiCol(["name", "displayId", "repositoryName"], {
     customRender: comboColumnPRInfoRender,
   });
@@ -172,7 +178,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       ),
     },
     {
-      title: "Age / CycleTime",
+      title: PRStateTypeMap[prStateType],
       dataIndex: "age",
       key: "age",
       width: "5%",
@@ -207,7 +213,7 @@ function getTransformedData(tableData, intl) {
   });
 }
 
-export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey}) {
+export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
   const dataSource = getTransformedData(tableData, intl);
 
@@ -219,6 +225,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     selectedFilter,
     setShowPanel,
     setWorkItemKey,
+    prStateType
   });
   return (
     <StripeTable

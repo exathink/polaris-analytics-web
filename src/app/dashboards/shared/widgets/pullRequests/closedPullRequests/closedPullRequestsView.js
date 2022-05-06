@@ -86,6 +86,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
             selectedFilter={selectedFilter}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
+            prStateType="closed"
           />
         </div>
       )}
