@@ -12,6 +12,8 @@ import {TotalCommits, Traceability} from "../flowStatistics/flowStatistics";
 import {renderMetric} from "../../../../components/misc/statistic/statistic";
 import {RepositoriesDetailDashboard} from "./repositoriesDetailDashboard";
 import {Switch} from "antd";
+import {useExcludeRepos} from "./useExcludedRepositories";
+import {logGraphQlError} from "../../../../components/graphql/utils";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -48,19 +50,30 @@ const getActionCol = () => {
   };
 };
 
-function getToggleCol(excludeRecordsState) {
-  const [excludeRecords, updateExcludeRecords] = excludeRecordsState;
+function getToggleCol(draftRecordsState, tableData) {
+  const [draftState, setDraftState] = draftRecordsState;
 
   function handleChange({recordKey, checked}) {
-    const updatedRecords = excludeRecords.map((x) => {
-      if (x.key === recordKey) {
-        return {...x, checked};
-      }
-      return {...x};
-    });
-
-    updateExcludeRecords(updatedRecords);
+    const draftEl = draftState.find(d => d.key === recordKey);
+    if (draftEl) {
+      setDraftState(draftState.map((d) => {
+        if (d.key === recordKey) {
+          return {...d, excluded: checked};
+        }
+        return d;
+      }))
+    } else {
+      setDraftState([...draftState, {key: recordKey, excluded: checked}])
+    }
   }
+
+  const excludeRecords = tableData.map(x => {
+    const draftEl = draftState.find(d => d.key === x.key);
+    if (draftEl) {
+      return {...x, excluded: draftEl.excluded}
+    }
+    return x;
+  })
 
   return {
     title: "Excluded",
@@ -70,7 +83,7 @@ function getToggleCol(excludeRecordsState) {
     align: "center",
     render: (text, record) => (
       <Switch
-        checked={excludeRecords.find((x) => x.key === record.key)?.checked}
+        checked={excludeRecords.find((x) => x.key === record.key)?.excluded}
         onChange={(checked, e) => handleChange({recordKey: record.key, checked: checked})}
         size="small"
         className="!tw-rounded-[100px]"
@@ -196,22 +209,47 @@ export function RepositoriesTable({tableData, days, loading}) {
   );
 }
 
-export function RepositoriesEditTable({tableData, days, loading}) {
-  const initialState = tableData.map((x) => ({...x, checked: x.excluded}));
-  const excludeRecordsState = React.useState(initialState);
-  const [excludeRecords, updateExcludeRecords] = excludeRecordsState;
+export function RepositoriesEditTable({dimension, instanceKey, tableData, days, loading}) {
+  const [draftState, setDraftState] = React.useState([]);
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
-  const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol(excludeRecordsState)];
+  const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol([draftState, setDraftState], tableData)];
+
+  // mutation to exclude repos
+  const [mutate, {loading: mutationLoading, client}] = useExcludeRepos({
+    onCompleted: ({success, errorMessage}) => {
+      //  {success, contributorKey, message, exception}
+      if (success) {
+        // update successMessage in state
+        client.resetStore();
+      } else {
+        logGraphQlError("RepositoriesEditTable.useExcludeRepos", errorMessage);
+        // update errorMessage in state
+      }
+    },
+    onError: (error) => {
+      logGraphQlError("RepositoriesEditTable.useExcludeRepos", error);
+      // update errorMessage in state
+    },
+  });
 
   function handleCancelClick() {
-    updateExcludeRecords(initialState);
+    setDraftState([]);
   }
 
-  function handleSaveClick() {}
+  function handleSaveClick() {
+    const exclusions = draftState.map(x => ({repositoryKey: x.key, excluded: x.excluded}));
+
+    // call mutation on save button click
+    mutate({
+      variables: {
+        instanceKey: instanceKey,
+        exclusions: exclusions,
+      },
+    });
+  }
 
   function getButtonElements() {
-    const isEdited = excludeRecords.some((x) => x.checked !== tableData.find((y) => y.key === x.key)?.excluded);
-    if (!isEdited) {
+    if (draftState.length === 0) {
       return null;
     }
     return (

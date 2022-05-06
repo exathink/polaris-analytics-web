@@ -9,5 +9,5 @@ export function RepositoriesEditTableWidget({dimension, instanceKey, view, days 
 
   const edges = data?.[dimension]?.["repositories"]?.["edges"] ?? [];
   const tableData = edges.map((edge) => edge.node).sort((a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit));
-  return <RepositoriesEditTable tableData={tableData} days={days} loading={loading} />;
+  return <RepositoriesEditTable dimension={dimension} instanceKey={instanceKey} tableData={tableData} days={days} loading={loading} />;
 }
