@@ -140,7 +140,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       dataIndex: "name",
       key: "name",
       width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...prInfoSearchState,
     },
     {
@@ -148,8 +148,15 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       dataIndex: "displayId",
       key: "displayId",
       width: "7%",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
+    },
+    {
+      title: "Repository",
+      dataIndex: "repositoryName",
+      key: "repositoryName",
+      width: "7%",
+      sorter: (a, b) => SORTER.string_compare(a.repositoryName, b.repositoryName),
+      render: (text) => <span className="tw-textXs">{text}</span>,
     },
     {
       title: "State",
