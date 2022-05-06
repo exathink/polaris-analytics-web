@@ -275,10 +275,28 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
     <div className="">
       <div className="tw-my-2 tw-ml-[80%] tw-flex tw-h-10 tw-items-center tw-space-x-2">
         {errorMessage && (
-          <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage(null)} />
+          <Alert
+            message={errorMessage}
+            type="error"
+            showIcon
+            closable
+            onClose={() => {
+              setErrorMessage(null);
+              setDraftState([]);
+            }}
+          />
         )}
         {successMessage && (
-          <Alert message={successMessage} type="success" showIcon closable onClose={() => setSuccessMessage(null)} />
+          <Alert
+            message={successMessage}
+            type="success"
+            showIcon
+            closable
+            onClose={() => {
+              setSuccessMessage(null);
+              setDraftState([]);
+            }}
+          />
         )}
         {mutationLoading && (
           <Button className={"shiftRight"} type="primary" loading>
