@@ -216,8 +216,7 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
 
   // mutation to exclude repos
   const [mutate, {loading: mutationLoading, client}] = useExcludeRepos({
-    onCompleted: ({success, errorMessage}) => {
-      //  {success, contributorKey, message, exception}
+    onCompleted: ({updateProjectExcludedRepositories: {success, errorMessage}}) => {
       if (success) {
         // update successMessage in state
         client.resetStore();
