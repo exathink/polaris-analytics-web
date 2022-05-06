@@ -59,15 +59,16 @@ export const dashboard = () => (
           <DashboardRow h={"68%"}>
           <DashboardWidget
                 w={1}
-                name="repositories"
+                name="repositories-detail"
                 render={
-                  () =>
+                  ({view}) =>
                     <RepositoriesTableWidget
                       dimension="project"
                       instanceKey={project.key}
+                      view={view}
                     />
                 }
-                showDetail={false}
+                showDetail={true}
               />
           </DashboardRow>
 
