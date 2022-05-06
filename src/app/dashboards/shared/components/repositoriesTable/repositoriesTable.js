@@ -54,26 +54,28 @@ function getToggleCol(draftRecordsState, tableData) {
   const [draftState, setDraftState] = draftRecordsState;
 
   function handleChange({recordKey, checked}) {
-    const draftEl = draftState.find(d => d.key === recordKey);
+    const draftEl = draftState.find((d) => d.key === recordKey);
     if (draftEl) {
-      setDraftState(draftState.map((d) => {
-        if (d.key === recordKey) {
-          return {...d, excluded: checked};
-        }
-        return d;
-      }))
+      setDraftState(
+        draftState.map((d) => {
+          if (d.key === recordKey) {
+            return {...d, excluded: checked};
+          }
+          return d;
+        })
+      );
     } else {
-      setDraftState([...draftState, {key: recordKey, excluded: checked}])
+      setDraftState([...draftState, {key: recordKey, excluded: checked}]);
     }
   }
 
-  const excludeRecords = tableData.map(x => {
-    const draftEl = draftState.find(d => d.key === x.key);
+  const excludeRecords = tableData.map((x) => {
+    const draftEl = draftState.find((d) => d.key === x.key);
     if (draftEl) {
-      return {...x, excluded: draftEl.excluded}
+      return {...x, excluded: draftEl.excluded};
     }
     return x;
-  })
+  });
 
   return {
     title: "Excluded",
@@ -212,7 +214,10 @@ export function RepositoriesTable({tableData, days, loading}) {
 export function RepositoriesEditTable({dimension, instanceKey, tableData, days, loading}) {
   const [draftState, setDraftState] = React.useState([]);
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
-  const columns = [...useRepositoriesTableColumns({statusTypes, days}), getToggleCol([draftState, setDraftState], tableData)];
+  const columns = [
+    ...useRepositoriesTableColumns({statusTypes, days}),
+    getToggleCol([draftState, setDraftState], tableData),
+  ];
 
   const [errorMessage, setErrorMessage] = React.useState();
   const [successMessage, setSuccessMessage] = React.useState();
@@ -221,17 +226,17 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   const [mutate, {loading: mutationLoading, client}] = useExcludeRepos({
     onCompleted: ({updateProjectExcludedRepositories: {success, errorMessage}}) => {
       if (success) {
-        setSuccessMessage("Successfully Updated.")
+        setSuccessMessage("Successfully Updated.");
         client.resetStore();
       } else {
         logGraphQlError("RepositoriesEditTable.useExcludeRepos", errorMessage);
-        setErrorMessage(errorMessage)
+        setErrorMessage(errorMessage);
       }
     },
     onError: (error) => {
       logGraphQlError("RepositoriesEditTable.useExcludeRepos", error);
       // update errorMessage in state
-      setErrorMessage(error)
+      setErrorMessage(error);
     },
   });
 
@@ -240,7 +245,7 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   }
 
   function handleSaveClick() {
-    const exclusions = draftState.map(x => ({repositoryKey: x.key, excluded: x.excluded}));
+    const exclusions = draftState.map((x) => ({repositoryKey: x.key, excluded: x.excluded}));
 
     // call mutation on save button click
     mutate({
@@ -252,7 +257,7 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   }
 
   function getButtonElements() {
-    if (draftState.length === 0) {
+    if (draftState.length === 0 || mutationLoading || successMessage || errorMessage) {
       return null;
     }
     return (
@@ -268,7 +273,7 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   }
   return (
     <div className="">
-      <div className="tw-ml-auto tw-mr-10 tw-w-1/3">
+      <div className="tw-my-2 tw-ml-[80%] tw-flex tw-h-10 tw-items-center tw-space-x-2">
         {errorMessage && (
           <Alert message={errorMessage} type="error" showIcon closable onClose={() => setErrorMessage(null)} />
         )}
@@ -280,8 +285,8 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
             Processing...
           </Button>
         )}
+        {getButtonElements()}
       </div>
-      <div className="tw-my-2 tw-ml-[80%] tw-flex tw-h-10 tw-items-center tw-space-x-2">{getButtonElements()}</div>
       <StripeTable
         columns={columns}
         dataSource={tableData}
