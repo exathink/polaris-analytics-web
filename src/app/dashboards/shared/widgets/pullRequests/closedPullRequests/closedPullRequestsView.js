@@ -24,7 +24,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        name: "Cycle Time",
+        name:"Time to Review",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
       }),

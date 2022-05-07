@@ -20,6 +20,7 @@ export function comboColumnPRInfoRender(text, record, searchText) {
   const IconComponent = PrComponentsMap[record.state];
   return (
     text && (
+      <a href={record.webUrl} target="_blank" rel="noreferrer">
       <div className="tw-grid tw-grid-cols-[25px,auto] tw-grid-rows-[auto,auto] tw-gap-1">
         <div className="tw-row-span-2 tw-self-center">
           {IconComponent}
@@ -40,7 +41,7 @@ export function comboColumnPRInfoRender(text, record, searchText) {
             <Highlighter
               highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
               searchWords={searchText || ""}
-              textToHighlight={record.createdAt || ""}
+              textToHighlight={`Created ${record.createdAt}` || ""}
             />
           </div>
 
@@ -59,6 +60,7 @@ export function comboColumnPRInfoRender(text, record, searchText) {
           )}
         </div>
       </div>
+      </a>
     )
   );
 }
@@ -138,8 +140,8 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
 
 const PRStateTypeMap = {
   open: "Age",
-  closed: "CycleTime",
-  both: "Age / CycleTime"
+  closed: "Time to Review",
+  both: "Age / Time to Review"
 }
 
 function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
@@ -202,19 +204,12 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       render: (text) => <span className="tw-textXs">{i18nNumber(intl, Number(text), 2)} days</span>,
     },
     {
-      title: "Merged At",
+      title: "Completed At",
       dataIndex: "endDate",
       key: "endDate",
       width: "7%",
       sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
       render: (text) => <span className="tw-textXs">{text}</span>,
-    },
-    {
-      title: " ",
-      dataIndex: "webUrl",
-      key: "webUrl",
-      width: "4%",
-      render: (text) => <a href={text} target="_blank" rel="noreferrer">Link</a>,
     }
   ];
 
