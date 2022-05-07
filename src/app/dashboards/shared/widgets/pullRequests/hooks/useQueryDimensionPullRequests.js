@@ -30,6 +30,7 @@ query ${dimension}PullRequests(
           createdAt
           workItemsSummaries {
             displayId
+            name
             key
             state
             stateType
