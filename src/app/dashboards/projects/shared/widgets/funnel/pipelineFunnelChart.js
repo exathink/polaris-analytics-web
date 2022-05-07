@@ -76,7 +76,7 @@ export const PipelineFunnelChart = Chart({
               body: [
                 [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Cards'}`],
 
-                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  Dev-Days`],
+                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
               ]
             }
           )

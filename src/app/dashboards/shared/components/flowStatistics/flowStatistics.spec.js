@@ -120,7 +120,7 @@ describe("Metrics", () => {
         });
 
         test("Avg Effort", () => {
-          renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...propsFixture} />, 0.92, "dev-days");
+          renderAndAssertMetricComponent(<AvgEffort displayType="cellrender" {...propsFixture} />, 0.92, "FTE Days");
         });
       });
 
@@ -142,7 +142,7 @@ describe("Metrics", () => {
         });
 
         test("Avg Effort", () => {
-          renderAndAssertMetricComponent(<AvgEffort displayType="card" {...propsFixture} />, 0.92, "dev-days");
+          renderAndAssertMetricComponent(<AvgEffort displayType="card" {...propsFixture} />, 0.92, "FTE Days");
         });
       });
     });
@@ -231,7 +231,7 @@ describe("Metrics", () => {
           renderAndAssertMetricComponent(
             <EffortOUT displayType="cellrender" {...propsFixture} contributorCount={2} normalized={true} />,
             4.58,
-            "dev-days"
+            "FTE Days"
           );
         });
       });
@@ -249,7 +249,7 @@ describe("Metrics", () => {
           renderAndAssertMetricComponent(
             <EffortOUT displayType="card" {...propsFixture} contributorCount={2} normalized={true} />,
             4.58,
-            "dev-days"
+            "FTE Days"
           );
         });
       });

@@ -64,7 +64,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   effort: {
     display: "Effort",
     value: (cycle) => cycle.effort,
-    uom: 'dev-days',
+    uom: 'FTE Days',
   },
   authors: {
     display: "Authors",

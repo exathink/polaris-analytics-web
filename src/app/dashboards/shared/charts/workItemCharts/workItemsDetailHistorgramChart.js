@@ -87,7 +87,7 @@ export const WorkItemsDetailHistogramChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const uom = this.series.userOptions.id === "effort" ? "dev-days" : "days";
+          const uom = this.series.userOptions.id === "effort" ? "FTE Days" : "days";
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
@@ -144,7 +144,7 @@ export const WorkItemsDetailHistogramChart = Chart({
                 if (currentSeries.name === "Effort") {
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
                   currentSeries.xAxis.categories = currentSeries.xAxis.categories.map((x) =>
-                    x.replace("days", "dev-days")
+                    x.replace("days", "FTE Days")
                   );
                 } else {
                   // reset xAxis categories if it has been overridden earlier

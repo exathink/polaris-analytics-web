@@ -235,7 +235,7 @@ export const FlowMetricsScatterPlotChart = Chart({
             ["Cycle Time: ", cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : "N/A"],
 
             ["Coding: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
-            ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} dev-days` : "N/A"],
+            ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} FTE Days` : "N/A"],
             ["Delivery: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
             ["Authors: ", specsOnly ? `${intl.formatNumber(authorCount)}` : "N/A"],
           ];

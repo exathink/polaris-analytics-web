@@ -113,7 +113,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
           id: 'commit-days',
           type: 'linear',
           title: {
-            text: `Dev-Days`
+            text: `FTE Days`
           },
 
         },
@@ -142,12 +142,12 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
             } : this.point.series.name === 'EffortOUT' ?  {
               header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [``, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [``, `${intl.formatNumber(this.point.y)} FTE Days`],
               ]
             }  : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Capacity: `, `${intl.formatNumber(this.point.y)} Dev-Days`],
+                [`Capacity: `, `${intl.formatNumber(this.point.y)} FTE Days`],
                 [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
               ]
             }

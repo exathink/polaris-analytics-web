@@ -160,7 +160,7 @@ export const FlowMixTrendsChart = Chart({
           const metricDisplay = specsOnly ? 'Effort' : 'Volume';
           const value = this.point.flowMixItem[metric];
 
-          const uom = specsOnly ? 'Dev-Days' : 'Cards';
+          const uom = specsOnly ? 'FTE Days' : 'Cards';
           return tooltipHtml(this.point.series.type === 'column' ? {
             header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Value Type: ${flowType}`,
             body: [

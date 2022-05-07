@@ -32,7 +32,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     case "percentileEffort": {
       return [[
         `${percentileToText(targetPercentile)} Effort: `,
-        `${i18nNumber(intl, measurement.percentileEffort)} dev-days`,
+        `${i18nNumber(intl, measurement.percentileEffort)} FTE Days`,
       ]];
     }
     case "avgCycleTime": {
@@ -61,7 +61,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     }
     case "avgEffort": {
       return [
-        [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} dev-days`],
+        [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} FTE Days`],
         ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileEffort', intl)
       ];
     }

@@ -81,7 +81,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           key: "effort",
           width: "8%",
           sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
-          // render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "dev-days", samplingFrequency})
+          // render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "FTE Days", samplingFrequency})
           render: (text, record) => {
             return (
               <AvgEffort
