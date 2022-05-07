@@ -139,6 +139,10 @@ export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) 
   );
 }
 
+export function getSelectedPullRequestMetricDisplayName(selectedMetric, selectedStateType) {
+  return selectedStateType === WorkItemStateTypes.closed ? 'Time to Review' : 'Age'
+}
+
 export function getSelectedMetricColor(selectedMetric, selectedStateType) {
   return ResponseTimeMetricsColor[getMetricsMetaKey(selectedMetric, selectedStateType)] ?? ResponseTimeMetricsColor.leadTime;
 }
