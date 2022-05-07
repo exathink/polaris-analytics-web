@@ -71,7 +71,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
   };
   const effortRenderState = {
-    render: customColumnRender({...callBacks, colRender: (text) => <>{text} dev-days</>, className: "tw-textXs"}),
+    render: customColumnRender({...callBacks, colRender: (text) => <>{text} FTE Days</>, className: "tw-textXs"}),
   };
   const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})};
   const renderTeamsCol = {render: customTeamsColRender(callBacks)};
@@ -228,7 +228,7 @@ export const WorkItemsDetailTable = injectIntl(
     const states = [...new Set(tableData.map((x) => x.state))];
     const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
-    const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "dev-days" : "days");
+    const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "FTE Days" : "days");
     const allPairsData = allPairs(colWidthBoundaries);
     const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
 

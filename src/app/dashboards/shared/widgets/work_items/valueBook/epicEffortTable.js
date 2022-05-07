@@ -104,7 +104,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
                   onChange={(value) => setValueForBudgetRecord(record.key, value, record.budget)}
                   type="number"
                 />
-                <div className="tw-textXs">dev-days</div>
+                <div className="tw-textXs">FTE Days</div>
               </div>
             );
           },
@@ -115,7 +115,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           key: "totalEffort",
           sorter: (a, b) => SORTER.number_compare(a, b, "totalEffort"),
           width: "7%",
-          render: customColRenderWithDays(callBacks, "dev-days"),
+          render: customColRenderWithDays(callBacks, "FTE Days"),
         },
         {
           title: "Contributors",

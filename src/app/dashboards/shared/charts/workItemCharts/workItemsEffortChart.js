@@ -129,7 +129,7 @@ export const WorkItemsEffortChart = Chart({
       },
       title: {
         useHTML: true,
-        text: `<span>Effort<sub>WIP</sub> : ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} Dev-Days</span>`,
+        text: `<span>Effort<sub>WIP</sub> : ${intl.formatNumber(totalEffort, {maximumFractionDigits: 2})} FTE Days</span>`,
         align: "left",
       },
       subtitle: {
@@ -153,7 +153,7 @@ export const WorkItemsEffortChart = Chart({
         type: "linear",
         visible: isYAxisVisible(series),
         title: {
-          text: "Effort in Dev-Days",
+          text: "Effort in FTE Days",
         },
       },
 
@@ -180,7 +180,7 @@ export const WorkItemsEffortChart = Chart({
             body:
               commitCount != null
                 ? [
-                    [`Effort`, `${intl.formatNumber(effort)} Dev-Days`],
+                    [`Effort`, `${intl.formatNumber(effort)} FTE Days`],
                     [`-----------------`, ``],
                     [`Duration`, `${intl.formatNumber(duration)} days`],
                     [`Latest Commit`, `${latestCommitDisplay}`],

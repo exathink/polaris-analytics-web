@@ -130,7 +130,7 @@ const fixedChartConfig = {
     type: "linear",
 
     title: {
-      text: "Effort in Dev-Days",
+      text: "Effort in FTE Days",
     },
   },
 };
@@ -219,7 +219,7 @@ describe("workItemEffortChart", () => {
       const [{header, body}] = await renderedTooltipConfig(<WorkItemsEffortChart workItems={testWorkItems} />);
       expect(header).toBe("Story: PO-302<br/>Column chart for Wip Effort");
       expect(body).toMatchObject([
-        ["Effort", "9 Dev-Days"],
+        ["Effort", "9 FTE Days"],
         ["-----------------", ""],
         ["Duration", "0.001 days"],
         ["Latest Commit", expect.stringMatching(/.*ago/)],

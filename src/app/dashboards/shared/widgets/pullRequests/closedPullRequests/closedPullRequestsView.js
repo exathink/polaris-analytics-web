@@ -43,7 +43,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
           <div className="tw-mr-6">
             <ClearFilters
               selectedFilter={selectedFilter}
-              selectedMetric={"age"}
+              selectedMetric={"pullRequestAvgAge"}
               stateType={"closed"}
               handleClearClick={handleClearClick}
             />

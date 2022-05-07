@@ -140,7 +140,7 @@ const fixedChartConfig = {
       id: "commit-days",
       type: "linear",
       title: {
-        text: `Dev-Days`,
+        text: `FTE Days`,
       },
     },
   ],
@@ -280,7 +280,7 @@ describe("CapacityTrendsChart", () => {
                     [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])}`],
                     [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
-                : [[``, `${formatNumber(firstPoint[trend.key])} Dev-Days`]],
+                : [[``, `${formatNumber(firstPoint[trend.key])} FTE Days`]],
           });
         });
       });

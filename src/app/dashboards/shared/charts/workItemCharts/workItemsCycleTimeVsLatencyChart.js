@@ -216,7 +216,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                   [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
                   workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
                   duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
-                  effort != null ? [`Effort`, `${intl.formatNumber(effort)} dev-days`] : ["", ""],
+                  effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
                 ];
 
           return tooltipHtml({
