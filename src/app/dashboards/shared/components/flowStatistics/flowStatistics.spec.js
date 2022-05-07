@@ -223,7 +223,7 @@ describe("Metrics", () => {
               contributorCount={2}
             />,
             "5.00",
-            "specs"
+            "Specs"
           );
         });
 
@@ -241,7 +241,7 @@ describe("Metrics", () => {
           renderAndAssertMetricComponent(
             <Volume displayType="card" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
             "5.00",
-            "specs"
+            "Specs"
           );
         });
 

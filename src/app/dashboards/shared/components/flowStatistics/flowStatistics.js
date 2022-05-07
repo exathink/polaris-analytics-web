@@ -107,7 +107,7 @@ export const ResponseTime = ({title, displayType, displayProps, currentMeasureme
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
-    uom={uom || 'days'}
+    uom={uom || 'Days'}
     precision={2}
     good={TrendIndicator.isNegative}
     deltaThreshold={deltaThreshold}
@@ -127,7 +127,7 @@ export const Volume = ({title, displayType, displayProps, normalized, contributo
     previousMeasurement={previousMeasurement}
     metric={metric}
     valueRender={value => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
-    uom={specsOnly ? 'specs' : 'cards'}
+    uom={specsOnly ? 'Specs' : 'Cards'}
     precision={normalized ? 2 : 0}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -144,7 +144,7 @@ export const Wip = ({title, currentMeasurement, previousMeasurement, target, del
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'specs' : 'cards'}
+        uom={specsOnly ? 'Specs' : 'cards'}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
@@ -205,7 +205,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
     valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
-    uom={'days'}
+    uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
