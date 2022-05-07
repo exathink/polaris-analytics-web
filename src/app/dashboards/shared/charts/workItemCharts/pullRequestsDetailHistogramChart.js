@@ -13,7 +13,7 @@ function getTitle() {
 }
 
 export const PullRequestsDetailHistogramChart = Chart({
-  chartUpdateProps: (props) => pick(props, "series", "selectedMetric", "specsOnly", "stateType"),
+  chartUpdateProps: (props) => pick(props, "series", "selectedMetric"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
@@ -22,6 +22,7 @@ export const PullRequestsDetailHistogramChart = Chart({
     series,
     colWidthBoundaries,
     selectedMetric,
+    onPointClick
   }) => {
     return {
       chart: {
@@ -32,7 +33,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Pull Request Cycle Time Variability`,
+        text: `Review Time Variability`,
       },
       subtitle: {
         text: chartSubTitle,
@@ -76,6 +77,16 @@ export const PullRequestsDetailHistogramChart = Chart({
               color: null,
               borderWidth: 2,
               borderColor: Colors.HistogramSelection,
+            },
+          },
+          point: {
+            events: {
+              click: function () {
+                const category = this.category;
+                const selectedMetric = this.series.userOptions.id;
+
+                onPointClick({category, selectedMetric});
+              },
             },
           },
         },

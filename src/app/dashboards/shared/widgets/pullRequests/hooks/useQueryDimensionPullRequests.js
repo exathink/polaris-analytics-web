@@ -26,8 +26,11 @@ query ${dimension}PullRequests(
           repositoryName
           age
           webUrl
+          endDate
+          createdAt
           workItemsSummaries {
             displayId
+            name
             key
             state
             stateType
