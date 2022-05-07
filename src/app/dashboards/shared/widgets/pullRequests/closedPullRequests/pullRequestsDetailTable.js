@@ -155,7 +155,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
   }
   const columns = [
     {
-      title: "PR Info",
+      title: "Pull Request",
       dataIndex: "name",
       key: "name",
       width: "12%",
@@ -163,7 +163,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       ...prInfoSearchState,
     },
     {
-      title: "CARD Info",
+      title: "Spec",
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
