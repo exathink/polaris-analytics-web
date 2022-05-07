@@ -209,6 +209,13 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
       render: (text) => <span className="tw-textXs">{text}</span>,
     },
+    {
+      title: " ",
+      dataIndex: "webUrl",
+      key: "webUrl",
+      width: "4%",
+      render: (text) => <a href={text} target="_blank" rel="noreferrer">Link</a>,
+    }
   ];
 
   return columns;
