@@ -78,7 +78,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'days',
   },
   pullRequestAvgAge: {
-    display: "Pull Request",
+    display: "Time to Review",
     value: (cycle) => cycle.pullRequestAvgAge,
     targetMetric: 'pullRequestAvgAge',
     uom: 'days',
