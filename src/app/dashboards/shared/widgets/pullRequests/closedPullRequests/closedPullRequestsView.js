@@ -54,7 +54,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
           className={"groupCardsBySelector"}
           groupings={[
             {key: "histogram", display: `Histogram`},
-            {key: "table", display: "Card Detail"},
+            {key: "table", display: "Pull Requests"},
           ].map((item) => ({
             key: item.key,
             display: item.display,
