@@ -17,7 +17,7 @@ export function ClearFilters({selectedFilter, selectedMetric, stateType, handleC
         <div>
           <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric, stateType)}} />
         </div>
-        <div>{getSelectedPullRequestMetricDisplayName(selectedMetric, stateType)}</div>
+        <div>{getSelectedMetricDisplayName(selectedMetric, stateType)}</div>
       </div>
       <div className="tw-w-full">
         <Tag color={getSelectedMetricColor(selectedMetric, stateType)} className="tw-w-full tw-text-center">
