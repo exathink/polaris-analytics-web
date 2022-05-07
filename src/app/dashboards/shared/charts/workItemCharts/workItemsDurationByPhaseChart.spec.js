@@ -323,7 +323,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
             [`Commits: `, `${formatNumber(commitCount)}`],
             [`Latest Commit: `, `${latestCommitDisplay}`],
             [`Coding: `, `${formatNumber(duration)} days`],
-            [`Effort: `, `${formatNumber(effort)} dev-days`],
+            [`Effort: `, `${formatNumber(effort)} FTE Days`],
             ["",""]
           ],
         });

@@ -19,7 +19,7 @@ export function useWorkBalanceTrendsTableColumns(intl) {
       key: "effort",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.totalEffort, b.totalEffort),
-      render: (text) => <span className="tw-textXs">{i18nNumber(intl, text, 2)} dev-days</span>,
+      render: (text) => <span className="tw-textXs">{i18nNumber(intl, text, 2)} FTE Days</span>,
     },
   ];
 

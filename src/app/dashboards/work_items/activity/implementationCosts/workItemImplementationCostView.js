@@ -31,7 +31,7 @@ export const WorkItemImplementationCostView = (
             precision={1}
             valueStyle={{color: '#3f8600'}}
             style={{backgroundColor: '#f2f3f6'}}
-            suffix={"Dev Days"}
+            suffix={"FTE Days"}
           />
       </VizItem>
       <VizItem w={1/3}>

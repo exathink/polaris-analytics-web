@@ -120,7 +120,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
-  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} dev-days</>, className: "tw-textXs"})}
+  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} FTE Days</>, className: "tw-textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})}
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   const renderTeamsCol = {render: renderTeamsCall(callBacks)};

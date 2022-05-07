@@ -64,7 +64,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   effort: {
     display: "Effort",
     value: (cycle) => cycle.effort,
-    uom: 'dev-days',
+    uom: 'FTE Days',
   },
   authors: {
     display: "Authors",
@@ -78,7 +78,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'days',
   },
   pullRequestAvgAge: {
-    display: "Pull Request",
+    display: "Time to Review",
     value: (cycle) => cycle.pullRequestAvgAge,
     targetMetric: 'pullRequestAvgAge',
     uom: 'days',
@@ -137,6 +137,10 @@ export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) 
   return (
     projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)]?.display ?? selectedMetric
   );
+}
+
+export function getSelectedPullRequestMetricDisplayName(selectedMetric, selectedStateType) {
+  return selectedStateType === WorkItemStateTypes.closed ? 'Time to Review' : 'Age'
 }
 
 export function getSelectedMetricColor(selectedMetric, selectedStateType) {

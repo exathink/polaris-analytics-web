@@ -27,7 +27,6 @@ export function DimensionThroughputDetailDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
   const [tabSelection, setTab] = React.useState("volume");
-
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
       <DashboardRow
@@ -144,8 +143,11 @@ export function DimensionThroughputDetailDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               days={daysRange}
-              measurementWindow={daysRange}
-              samplingFrequency={daysRange}
+              // Using this scheme here, since a weekly non-overlapping rollup is the
+              // the most sensible way to show the effort out. It also matches what we see
+              // in the detail dashboard when we first launch it.
+              measurementWindow={Math.min(daysRange, 7)}
+              samplingFrequency={Math.min(daysRange, 7)}
               showContributorDetail={false}
               showEffort={true}
               chartConfig={{totalEffortDisplayType: "areaspline"}}

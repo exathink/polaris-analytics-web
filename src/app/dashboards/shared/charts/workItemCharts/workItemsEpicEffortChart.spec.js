@@ -196,7 +196,7 @@ describe("WorkItemsEpicEffortChart", () => {
           expect(actual).toMatchObject({
             header: `Quality Trends`,
             body: [
-              [`Effort`, `1.5 Dev-Days`],
+              [`Effort`, `1.5 FTE Days`],
               [`Cards`, `2`],
             ],
           });
@@ -351,7 +351,7 @@ describe("WorkItemsEpicEffortChart", () => {
 
           expect(actual).toMatchObject({
             header: expect.stringContaining("Quality Trends"),
-            body: [["Story", `Defect Lead Time/ Cycle Time Trends`], ["Effort", "0.5 Dev-Days"]],
+            body: [["Story", `Defect Lead Time/ Cycle Time Trends`], ["Effort", "0.5 FTE Days"]],
           });
         });
 
