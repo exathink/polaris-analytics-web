@@ -83,7 +83,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNodeWithTooltip = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.stateType}>
             {truncateString(x.displayId, 16, TAG_COLOR)}
           </CustomTag>
         ))}
@@ -92,7 +92,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const fullNode = (
       <div>
         {record.workItemsSummaries.map((x) => (
-          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.stateType}>
             {x.displayId}
           </CustomTag>
         ))}
@@ -109,7 +109,7 @@ function allCardsRender(setShowPanel, setWorkItemKey) {
     const partialNode = (
       <div>
         {record.workItemsSummaries.slice(0, 2).map((x) => (
-          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.state}>
+          <CustomTag key={x.displayId} onClick={() => handleClick(x.key)} state={x.stateType}>
             <Tooltip title={nameTitleNode({name: x.name, title: x.displayId})} color={TOOLTIP_COLOR}>
               {truncateString(x.displayId, 16, TAG_COLOR)}
             </Tooltip>
