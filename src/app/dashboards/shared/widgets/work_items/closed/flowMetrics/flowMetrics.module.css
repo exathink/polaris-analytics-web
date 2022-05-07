@@ -3,6 +3,7 @@
   height: 93%;
   grid-template-areas:
     "leadTime . . ."
+    "leadTime cycleTime text1 text2"
     "leadTime cycleTime effort pullRequest"
     "leadTime cycleTime effort pullRequest"
     "leadTime cycleTime implement deliver"
@@ -20,12 +21,20 @@
   grid-area: cycleTime;
 }
 
-.implement {
-  grid-area: implement;
+.text1 {
+  grid-area: text1;
 }
 
 .effort {
   grid-area: effort;
+}
+
+.implement {
+  grid-area: implement;
+}
+
+.text2 {
+  grid-area: text2;
 }
 
 .pullRequest {
