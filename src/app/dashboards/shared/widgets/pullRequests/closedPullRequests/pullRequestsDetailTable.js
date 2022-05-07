@@ -166,7 +166,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       title: "CARD Info",
       dataIndex: "displayId",
       key: "displayId",
-      width: "7%",
+      width: "5%",
       ...titleSearchState,
     },
     {
