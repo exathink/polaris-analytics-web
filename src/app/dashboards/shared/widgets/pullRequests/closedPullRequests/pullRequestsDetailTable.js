@@ -146,9 +146,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
   const prInfoSearchState = useSearchMultiCol(["name", "displayId", "repositoryName"], {
     customRender: comboColumnPRInfoRender,
   });
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: allCardsRender(setShowPanel, setWorkItemKey),
-  });
+
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
@@ -167,7 +165,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
-      ...titleSearchState,
+      render: allCardsRender(setShowPanel, setWorkItemKey),
     },
     {
       title: "Repository",
