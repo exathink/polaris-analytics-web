@@ -104,19 +104,19 @@ describe("Metrics", () => {
     describe("when there is data", () => {
       describe("cellrender", () => {
         test("Avg LeadTime", () => {
-          renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...propsFixture} />, 8.79, "days");
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="cellrender" {...propsFixture} />, 8.79, "Days");
         });
 
         test("Avg CycleTime", () => {
-          renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...propsFixture} />, 3.06, "days");
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="cellrender" {...propsFixture} />, 3.06, "Days");
         });
 
         test("Coding", () => {
-          renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...propsFixture} />, 1.61, "days");
+          renderAndAssertMetricComponent(<AvgDuration displayType="cellrender" {...propsFixture} />, 1.61, "Days");
         });
 
         test("Delivery", () => {
-          renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...propsFixture} />, 0.91, "days");
+          renderAndAssertMetricComponent(<AvgLatency displayType="cellrender" {...propsFixture} />, 0.91, "Days");
         });
 
         test("Avg Effort", () => {
@@ -126,19 +126,19 @@ describe("Metrics", () => {
 
       describe("card", () => {
         test("Avg LeadTime", () => {
-          renderAndAssertMetricComponent(<AvgLeadTime displayType="card" {...propsFixture} />, 8.79, "days");
+          renderAndAssertMetricComponent(<AvgLeadTime displayType="card" {...propsFixture} />, 8.79, "Days");
         });
 
         test("Avg CycleTime", () => {
-          renderAndAssertMetricComponent(<AvgCycleTime displayType="card" {...propsFixture} />, 3.06, "days");
+          renderAndAssertMetricComponent(<AvgCycleTime displayType="card" {...propsFixture} />, 3.06, "Days");
         });
 
         test("Coding", () => {
-          renderAndAssertMetricComponent(<AvgDuration displayType="card" {...propsFixture} />, 1.61, "days");
+          renderAndAssertMetricComponent(<AvgDuration displayType="card" {...propsFixture} />, 1.61, "Days");
         });
 
         test("Delivery", () => {
-          renderAndAssertMetricComponent(<AvgLatency displayType="card" {...propsFixture} />, 0.91, "days");
+          renderAndAssertMetricComponent(<AvgLatency displayType="card" {...propsFixture} />, 0.91, "Days");
         });
 
         test("Avg Effort", () => {
