@@ -175,6 +175,8 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       key: "repositoryName",
       width: "7%",
       sorter: (a, b) => SORTER.string_compare(a.repositoryName, b.repositoryName),
+      filters: filters.repos.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.repositoryName.indexOf(value) === 0,
       render: (text) => <span className="tw-textXs">{text}</span>,
     },
     {
@@ -229,12 +231,12 @@ function getTransformedData(tableData, intl) {
 export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
   const dataSource = getTransformedData(tableData, intl);
-
+  const repos = [...new Set(tableData.map((x) => x.repositoryName))];
   const categories = getHistogramCategories(colWidthBoundaries, "days");
   const allPairsData = allPairs(colWidthBoundaries);
   const columns = usePullRequestsDetailTableColumns({
     intl,
-    filters: {categories, allPairsData},
+    filters: {categories, allPairsData, repos},
     selectedFilter,
     setShowPanel,
     setWorkItemKey,
