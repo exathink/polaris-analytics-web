@@ -7,7 +7,7 @@
   grid-template-areas:
     " rangeSlider scopeSelector . ."
     "throughput valueMix valueMix workInProgress"
-    "valueBookClosed valueBookClosed valueBookWip  valueBookWip"
+    "valueBookClosed valueBookClosed valueBookClosed valueBookClosed"
 
 }
 

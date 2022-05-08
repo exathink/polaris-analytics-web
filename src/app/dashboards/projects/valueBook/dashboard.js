@@ -125,7 +125,7 @@ function ValueDashboard({
           hideTitlesInDetailView={true}
         />
       </DashboardRow>
-      <DashboardRow h={"50%"}>
+      <DashboardRow h={"100%"}>
         <DashboardWidget
           name="epic-flow-mix-closed"
           className={styles.valueBookClosed}
@@ -146,25 +146,7 @@ function ValueDashboard({
           )}
           showDetail={true}
         />
-        <DashboardWidget
-          name="epic-flow-mix-wip"
-          className={styles.valueBookWip}
-          render={({view}) => (
-            <ProjectValueBookWidget
-              instanceKey={key}
-              context={context}
-              specsOnly={specsOnly}
-              activeOnly={true}
-              view={view}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              includeSubTasks={includeSubTasksWipInspector}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-            />
-          )}
-          showDetail={true}
-        />
+
       </DashboardRow>
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
