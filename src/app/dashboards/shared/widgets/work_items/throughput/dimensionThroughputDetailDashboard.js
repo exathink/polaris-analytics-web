@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
@@ -6,6 +6,7 @@ import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/
 import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
 import {DimensionWorkBalanceTrendsWidget} from "../balance";
 import cn from "classnames";
+import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -24,14 +25,23 @@ export function DimensionThroughputDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
   const [tabSelection, setTab] = React.useState("volume");
+
+  const limitToSpecsOnly = workItemScope === 'specs';
+
   return (
     <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
       <DashboardRow
         className={styles.rangeSlider}
         controls={[
+          () => (
+            <div style={{marginRight: "20px"}}>
+              <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+            </div>
+          ),
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
@@ -56,7 +66,7 @@ export function DimensionThroughputDetailDashboard({
               }}
               twoRows={true}
               context={context}
-              specsOnly={true}
+              specsOnly={limitToSpecsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               measurementWindow={daysRange}
@@ -83,7 +93,7 @@ export function DimensionThroughputDetailDashboard({
               display={"cadenceDetail"}
               twoRows={true}
               context={context}
-              specsOnly={true}
+              specsOnly={limitToSpecsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               measurementWindow={daysRange}

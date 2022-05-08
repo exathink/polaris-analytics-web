@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import { DimensionPullRequestsClosedWidget } from "../../pullRequests/closedPullRequests/dimensionPullRequestsClosedWidget";
+import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -31,10 +32,12 @@ export function DimensionResponseTimeDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
+  const [workItemScope, setWorkItemScope] = useState("specs");
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
 
+  const limitToSpecsOnly = workItemScope === 'specs';
 
   return (
     <Dashboard
@@ -46,16 +49,21 @@ export function DimensionResponseTimeDetailDashboard({
         className="tw-col-span-2 tw-flex tw-justify-center"
         controls={[
           () => (
+            <div style={{marginRight: "20px"}}>
+              <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+            </div>
+          ),
+          () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
             </div>
-          ),
+          )
         ]}
       >
         <DashboardWidget
           name="flow-metrics"
           title={`Response Time`}
-          subtitle={`Specs, Last ${daysRange} days`}
+          subtitle={`${limitToSpecsOnly ? 'Specs' : 'All Cards'}, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
           className="tw-col-span-2"
           render={({view}) => (
@@ -71,7 +79,7 @@ export function DimensionResponseTimeDetailDashboard({
               initialSelection={""}
               twoRows={true}
               context={context}
-              specsOnly={true}
+              specsOnly={limitToSpecsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={daysRange}
               measurementWindow={daysRange}
@@ -97,7 +105,7 @@ export function DimensionResponseTimeDetailDashboard({
               <DimensionDeliveryCycleFlowMetricsWidget
                 dimension={dimension}
                 instanceKey={key}
-                specsOnly={true}
+                specsOnly={limitToSpecsOnly}
                 view={view}
                 context={context}
                 showAll={true}
