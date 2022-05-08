@@ -29,7 +29,7 @@ export const DimensionWipFlowMetricsWidget = ({
   pollInterval,
 }) => {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "specs");
+  const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, limitToSpecsOnly ? "specs" : "all");
   const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
     dimension,
     instanceKey,
