@@ -144,7 +144,7 @@ export const Wip = ({title, currentMeasurement, previousMeasurement, target, del
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'Specs' : 'cards'}
+        uom={specsOnly ? 'Specs' : 'Cards'}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
@@ -592,7 +592,7 @@ export const WipCost = ({currentMeasurement, previousMeasurement, target, deltaT
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
-    title={<span>Wip Cost</span>}
+    title={<span>Code Wip</span>}
     target={target}
     uom={'FTE Days'}
     precision={1}

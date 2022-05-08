@@ -354,6 +354,9 @@ export const ResponseTimeDetailView = (
           target={leadTimeTarget}
         />
       </div>
+      <div className={styles.text1}>
+        <span className={'tw-textXs tw-grey tw-italic'}>Cost of Change</span>
+      </div>
       <div className={styles.cycleTime}>
         <AvgCycleTime
           displayType="card"
@@ -389,6 +392,9 @@ export const ResponseTimeDetailView = (
           previousMeasurement={previous}
           target={cycleTimeTarget}
         />
+      </div>
+      <div className={styles.text2}>
+        <span className={'tw-textXs tw-grey tw-italic'}>Cost of Delivery</span>
       </div>
       <div className={styles.pullRequest}>
         <PullRequest

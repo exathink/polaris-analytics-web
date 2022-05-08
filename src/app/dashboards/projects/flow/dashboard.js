@@ -69,7 +69,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
-          subtitle={"Specs"}
+          subtitle={"All Cards"}
 
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
@@ -84,7 +84,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latencyTarget={latencyTarget}
               wipLimit={wipLimit}
               view={view}
-              specsOnly={true}
+              specsOnly={false}
               context={context}
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
