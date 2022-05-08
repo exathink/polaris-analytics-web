@@ -1,7 +1,7 @@
 import React from "react";
-import {withNavigationContext} from "../../../../../../framework/navigation/components/withNavigationContext";
-import {VizItem, VizRow} from "../../../../containers/layout";
-import {ComponentCarousel} from "../../../../components/componentCarousel/componentCarousel";
+import { withNavigationContext } from "../../../../../../framework/navigation/components/withNavigationContext";
+import { VizItem, VizRow } from "../../../../containers/layout";
+import { ComponentCarousel } from "../../../../components/componentCarousel/componentCarousel";
 import {
   AvgAge,
   AvgDuration,
@@ -12,26 +12,26 @@ import {
   PercentileAge,
   Wip,
   WipCarousel,
-  WipWithLimit,
+  WipWithLimit
 
 } from "../../../../components/flowStatistics/flowStatistics";
-import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
+import { withViewerContext } from "../../../../../../framework/viewer/viewerContext";
 
 
-import grid from "../../../../../../framework/styles/grids.module.css"
+import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 
 const FlowBoardSummaryView = ({
-  pipelineCycleMetrics,
-  specsOnly,
-  targetPercentile,
-  leadTimeTargetPercentile,
-  cycleTimeTargetPercentile,
-  leadTimeTarget,
-  cycleTimeTarget,
-  wipLimit,
-  viewerContext,
-}) => {
+                                pipelineCycleMetrics,
+                                specsOnly,
+                                targetPercentile,
+                                leadTimeTargetPercentile,
+                                cycleTimeTargetPercentile,
+                                leadTimeTarget,
+                                cycleTimeTarget,
+                                wipLimit,
+                                viewerContext
+                              }) => {
   return (
     <div className={styles.boxWrapper}>
       <div>
@@ -49,7 +49,7 @@ const FlowBoardSummaryView = ({
           paddingLeft: "40px",
           borderLeftWidth: "1px",
           borderLeftStyle: "solid",
-          borderLeftColor: "rgba(0,0,0,0.1)",
+          borderLeftColor: "rgba(0,0,0,0.1)"
         }}
       >
         <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
@@ -59,46 +59,35 @@ const FlowBoardSummaryView = ({
 };
 
 const CommonWipBoardSummaryView = ({
-  pipelineCycleMetrics,
-  specsOnly,
-  targetPercentile,
-  leadTimeTargetPercentile,
-  cycleTimeTargetPercentile,
-  leadTimeTarget,
-  cycleTimeTarget,
-  wipLimit,
-  latestCommit,
-  viewerContext,
-}) => {
+                                     pipelineCycleMetrics,
+                                     specsOnly,
+                                     targetPercentile,
+                                     leadTimeTargetPercentile,
+                                     cycleTimeTargetPercentile,
+                                     leadTimeTarget,
+                                     cycleTimeTarget,
+                                     wipLimit,
+                                     latestCommit,
+                                     viewerContext
+                                   }) => {
   return (
     <div className={styles.wipSummary}>
       <div className={grid.firstCol}>
         <Wip currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
       </div>
       <div className={grid.secondCol}>
-        <WipCost currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
-      </div>
-      <div className={grid.thirdCol}>
         <AvgAge currentMeasurement={pipelineCycleMetrics} target={cycleTimeTarget} />
       </div>
+      <div className={grid.thirdCol}>
+        <WipCost currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
+      </div>
       <div className={grid.fourthCol}>
-        <ComponentCarousel tickInterval={3000}>
-          {/*
-            Putting the children in this order is important to
-            let the numbers lay out more logically across widgets in the
-            summary dashboard view where it is most often shown, In practice this
-            means that the avgLatency actually appears before the latest commit
-            in the dashboard after accounting for the carousel animation time.
-            Odd, but true.
-          */}
-          <LatestCommit latestCommit={latestCommit}/>
-          <AvgLatency
-            title={<span>Commit Latency</span>}
-            currentMeasurement={pipelineCycleMetrics}
-            targetPercentile={cycleTimeTargetPercentile}
-            target={cycleTimeTarget}
-          />
-        </ComponentCarousel>
+        <AvgLatency
+          title={<span>Commit Latency</span>}
+          currentMeasurement={pipelineCycleMetrics}
+          targetPercentile={cycleTimeTargetPercentile}
+          target={cycleTimeTarget}
+        />
       </div>
     </div>
   );
@@ -133,8 +122,8 @@ const NonFlowBoard20View = (
         />
       </VizItem>
     </VizRow>
-  )
-}
+  );
+};
 
 export const ValueBoardSummaryView = (
   {
@@ -147,7 +136,7 @@ export const ValueBoardSummaryView = (
     leadTimeTarget,
     cycleTimeTarget,
     wipLimit,
-    specsOnly,
+    specsOnly
 
   }
 ) => {
@@ -178,10 +167,10 @@ export const ValueBoardSummaryView = (
       </VizRow>
       <VizRow h={"50%"}
               style={{
-                paddingTop: '20px',
-                borderTop: '1px',
-                borderTopStyle: 'solid',
-                borderTopColor: 'rgba(0,0,0,0.1)'
+                paddingTop: "20px",
+                borderTop: "1px",
+                borderTopStyle: "solid",
+                borderTopColor: "rgba(0,0,0,0.1)"
               }}>
         <VizItem w={1 / 3}>
           <WipCost
@@ -197,7 +186,7 @@ export const ValueBoardSummaryView = (
         </VizItem>
         <VizItem w={1 / 3}>
           <AvgLatency
-            title={'Latency'}
+            title={"Latency"}
             currentMeasurement={current}
 
             target={cycleTimeTarget}
@@ -205,7 +194,7 @@ export const ValueBoardSummaryView = (
         </VizItem>
       </VizRow>
     </div>
-  )
+  );
 };
 
 const PipelineSummaryView = withViewerContext((
@@ -225,7 +214,7 @@ const PipelineSummaryView = withViewerContext((
 ) => {
 
   switch (display) {
-    case 'flowboardSummary':
+    case "flowboardSummary":
       return (
         <FlowBoardSummaryView
           {
@@ -240,9 +229,9 @@ const PipelineSummaryView = withViewerContext((
               wipLimit,
               viewerContext
             }
-          }/>
-      )
-    case 'commonWipSummary':
+          } />
+      );
+    case "commonWipSummary":
       return (
         <CommonWipBoardSummaryView
           {
@@ -258,9 +247,9 @@ const PipelineSummaryView = withViewerContext((
               latestCommit,
               viewerContext
             }
-          }/>
-      )
-    case 'valueBoardSummary':
+          } />
+      );
+    case "valueBoardSummary":
       return (
         <ValueBoardSummaryView
           {
@@ -276,8 +265,8 @@ const PipelineSummaryView = withViewerContext((
               wipLimit,
               viewerContext
             }
-          }/>
-      )
+          } />
+      );
     default:
       return (
         <NonFlowBoard20View
@@ -295,7 +284,7 @@ const PipelineSummaryView = withViewerContext((
             }
           }
         />
-      )
+      );
   }
 });
 
