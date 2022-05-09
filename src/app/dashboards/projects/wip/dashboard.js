@@ -188,6 +188,7 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
               asStatistic={false}
+              activeOnly={true}
             />
           )}
           showDetail={true}

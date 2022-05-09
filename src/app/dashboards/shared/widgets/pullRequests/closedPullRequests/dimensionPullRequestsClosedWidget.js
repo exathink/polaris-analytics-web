@@ -3,7 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionPullRequests} from "../hooks/useQueryDimensionPullRequests";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {ClosedPullRequestsView} from "./closedPullRequestsView";
+import {PullRequestsView} from "./pullRequestsView";
 
 export const DimensionPullRequestsClosedWidget = ({
   dimension,
@@ -35,6 +35,6 @@ export const DimensionPullRequestsClosedWidget = ({
       <div></div>
     );
   } else {
-    return <ClosedPullRequestsView pullRequests={pullRequests} closedWithinDays={closedWithinDays} view={view} context={context} />;
+    return <PullRequestsView pullRequests={pullRequests} closedWithinDays={closedWithinDays} view={view} context={context} pullRequestsType="closed" />;
   }
 };

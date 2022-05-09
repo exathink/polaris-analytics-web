@@ -86,6 +86,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
+              activeOnly={true}
             />
           )}
           showDetail={false}
