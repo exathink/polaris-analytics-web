@@ -216,7 +216,7 @@ export function ValueBookDetailView({
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector
-            display={["Effort", "Volume"]}
+            display={["Capacity", "Volume"]}
             workItemScope={workItemScope}
             setWorkItemScope={setWorkItemScope}
           />

@@ -56,7 +56,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               <Flex align={'center'}>
                 <Box pr={2} w={"100%"}>
                   <WorkItemScopeSelector
-                    display={['Effort', 'Volume']}
+                    display={['Capacity', 'Volume']}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />
