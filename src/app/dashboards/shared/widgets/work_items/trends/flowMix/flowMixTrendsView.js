@@ -65,7 +65,7 @@ export const ProjectFlowMixTrendsStatsView = ({
       </div>
       <div className={styles.tasks}>
         <FlowStatistic
-          title={"Tasks"}
+          title={"Platform"}
           currentValue={currentMix.task ? percentage(currentMix.task[metric], currentMix.total) : 0}
           previousValue={previousMix.task ? percentage(previousMix.task[metric], previousMix.total) : 0}
           valueRender={value => `${value?.toFixed?.(2)}%`}

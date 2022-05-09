@@ -38,6 +38,11 @@ function ValueDashboard({
       <div className={styles.rangeSlider}>
               <DaysRangeSlider initialDays={closedWithinDays} setDaysRange={setClosedWithinDays} range={SIX_MONTHS} />
       </div>
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector label={"Show by"} display={['Capacity', 'Volume']} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
       <DashboardRow
         h={"15%"}
       >
@@ -72,7 +77,7 @@ function ValueDashboard({
         />
         <DashboardWidget
           name="flow-type-flow-mix"
-          title={`Value Mix by ${specsOnly ? 'Effort' : 'Volume'}`}
+          title={`${specsOnly ? 'Effort Allocation' : 'Flow Mix'}`}
           subtitle={`Last ${flowAnalysisPeriod} Days`}
           className={styles.valueMix}
           render={({view}) => (
@@ -148,11 +153,6 @@ function ValueDashboard({
         />
 
       </DashboardRow>
-      <div className={styles.scopeSelector}>
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector label={"Show by"} display={['Effort', 'Volume']} workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
-      </div>
     </Dashboard>
   );
 }
