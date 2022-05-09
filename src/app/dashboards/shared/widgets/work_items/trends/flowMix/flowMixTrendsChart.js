@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {capitalizeFirstLetter, toMoment} from "../../../../../../helpers/utility";
-import {Colors} from "../../../../config";
+import {Colors,FlowTypeDisplayName} from "../../../../config";
 
 export const FlowMixTrendsChart = Chart({
   chartUpdateProps: props => props,
@@ -42,7 +42,7 @@ export const FlowMixTrendsChart = Chart({
         {
           key: `${category}%`,
           id: `${category}%`,
-          name: `${capitalizeFirstLetter(category)}`,
+          name: `${FlowTypeDisplayName[category]}`,
           type: 'column',
           stacking: 'percent',
           maxPointWidth: 30,
@@ -66,7 +66,7 @@ export const FlowMixTrendsChart = Chart({
           {
             key: `${category}#`,
             id: `${category}#`,
-            name: `${capitalizeFirstLetter(category)}`,
+            name: `${FlowTypeDisplayName[category]}`,
             type: 'spline',
             color: Colors.FlowType[category],
             data: seriesData[category].map(
@@ -96,7 +96,7 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `Value Mix: Last ${measurementPeriod} days`,
+        text: `${specsOnly ? 'Effort Allocation' : 'Flow Mix'}: Last ${measurementPeriod} days`,
         align: alignTitle || 'center',
       },
       subtitle: {
@@ -170,7 +170,7 @@ export const FlowMixTrendsChart = Chart({
 
             ]
           } : {
-            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Flow Type: ${flowType}s`,
+            header: `Closed: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}<br/>Value Type: ${flowType}`,
             body: [
               [`Volume: `, `${intl.formatNumber(this.point.y)}`],
             ]

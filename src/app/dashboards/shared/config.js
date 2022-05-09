@@ -97,6 +97,12 @@ export const WorkItemTypeSortOrder = {
   pull_request: 4
 }
 
+export const FlowTypeDisplayName = {
+  feature: 'Features',
+  defect: 'Defects',
+  task: 'Platform'
+}
+
 export const WorkItemTypeScatterRadius = {
   epic: 8,
   issue: 5,
@@ -204,6 +210,8 @@ export const ResponseTimeMetricsColor = {
   duration: WorkItemStateTypeColor.wip,
   effort: '#de6524',
 }
+
+
 
 export const TrendColors = {
   good: "rgba(0, 128, 0, 0.7)",
