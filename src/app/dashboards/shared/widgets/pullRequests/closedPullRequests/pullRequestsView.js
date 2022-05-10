@@ -67,7 +67,11 @@ export function PullRequestsView({pullRequests, closedWithinDays, context, pullR
       </div>
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
         <PullRequestsDetailHistogramChart
-          chartSubTitle={`${pullRequests.length} pull requests closed within last ${closedWithinDays} days`}
+          chartSubTitle={
+            pullRequestsType === "closed"
+              ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
+              : ``
+          }
           selectedMetric={"pullRequestAvgAge"}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           series={seriesAvgAge}
