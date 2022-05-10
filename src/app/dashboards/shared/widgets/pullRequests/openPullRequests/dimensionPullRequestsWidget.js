@@ -5,7 +5,7 @@ import {OpenPullRequestsView} from "./openPullRequestsView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {DimensionPullRequestsDetailDashboard} from "./dimensionPullRequestsDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {PullRequestsView} from "../closedPullRequests/pullRequestsView";
+import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 
 // use activeOnly prop for inProgress and closedWithinDays prop for closed pull requests
 // at at time, we can use only one prop
