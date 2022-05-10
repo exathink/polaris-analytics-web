@@ -68,6 +68,8 @@ export const dashboard = () => (
                     context={context}
                     latestCommit={repository.latestCommit}
                     asStatistic={false}
+                    activeOnly={true}
+                    display="histogram"
                   />
           )}
           showDetail={true}

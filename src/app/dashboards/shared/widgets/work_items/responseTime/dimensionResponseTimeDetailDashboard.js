@@ -3,8 +3,8 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import { DimensionPullRequestsClosedWidget } from "../../pullRequests/closedPullRequests/dimensionPullRequestsClosedWidget";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import { DimensionPullRequestsWidget } from "../../pullRequests/openPullRequests";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -130,7 +130,7 @@ export function DimensionResponseTimeDetailDashboard({
             name="pr-metrics-reviewtime-closed"
             className="tw-col-span-2"
             render={({view}) => (
-              <DimensionPullRequestsClosedWidget
+              <DimensionPullRequestsWidget
                 dimension={dimension}
                 instanceKey={key}
                 view={view}
@@ -138,6 +138,7 @@ export function DimensionResponseTimeDetailDashboard({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
+                display="histogramTable"
               />
             )}
             showDetail={false}

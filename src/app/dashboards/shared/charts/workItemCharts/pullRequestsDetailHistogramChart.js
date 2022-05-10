@@ -9,7 +9,7 @@ import {
 import {getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 function getTitle() {
-  return "Pull Requests"
+  return "Number of Pull Requests"
 }
 
 export const PullRequestsDetailHistogramChart = Chart({
@@ -17,6 +17,7 @@ export const PullRequestsDetailHistogramChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
+    title,
     chartSubTitle,
     intl,
     series,
@@ -33,7 +34,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `Review Time Variability`,
+        text: title || `Review Time Variability`,
       },
       subtitle: {
         text: chartSubTitle,
@@ -51,6 +52,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         title: {
           text: getTitle(),
         },
+        allowDecimals: false,
       },
       tooltip: {
         useHTML: true,
@@ -102,7 +104,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         layout: "vertical",
         verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: true,
+        enabled: false,
       },
     };
   },

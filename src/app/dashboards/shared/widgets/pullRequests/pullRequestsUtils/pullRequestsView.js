@@ -10,7 +10,7 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}) {
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -24,7 +24,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        name:"Time to Review",
+        name: pullRequestsType === 'closed' ? "Time to Review" : "Age",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
       }),
@@ -35,6 +35,32 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
     setFilter(null);
     resetComponentState();
   }
+
+  const histogramChart = (
+    <PullRequestsDetailHistogramChart
+      title={
+        pullRequestsType === "closed"
+          ? `Review Time Variability`
+          : `Open Pull Request Age`
+      }
+      chartSubTitle={
+        pullRequestsType === "closed"
+          ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
+          : ``
+      }
+      selectedMetric={"pullRequestAvgAge"}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      series={seriesAvgAge}
+      onPointClick={({category, selectedMetric}) => {
+        setFilter(category);
+        setTab("table");
+      }}
+    />
+  );
+
+  if (display==="histogram") {
+    return histogramChart;
+  }
   // show histogram view
   return (
     <div className="tw-h-full">
@@ -44,7 +70,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
             <ClearFilters
               selectedFilter={selectedFilter}
               selectedMetric={"pullRequestAvgAge"}
-              stateType={"closed"}
+              stateType={pullRequestsType}
               handleClearClick={handleClearClick}
             />
           </div>
@@ -66,16 +92,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
         />
       </div>
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-        <PullRequestsDetailHistogramChart
-          chartSubTitle={`${pullRequests.length} pull requests closed within last ${closedWithinDays} days`}
-          selectedMetric={"pullRequestAvgAge"}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          series={seriesAvgAge}
-          onPointClick={({category, selectedMetric}) => {
-            setFilter(category);
-            setTab("table");
-          }}
-        />
+        {histogramChart}
       </div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
@@ -86,7 +103,7 @@ export function ClosedPullRequestsView({pullRequests, closedWithinDays, context}
             selectedFilter={selectedFilter}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
-            prStateType="closed"
+            prStateType={pullRequestsType}
           />
         </div>
       )}
