@@ -8,7 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 
 // use activeOnly prop for inProgress and closedWithinDays prop for closed pull requests
-// at at time, we can use only one prop
+// at a time, we can use only one prop
 export const DimensionPullRequestsWidget = ({
   dimension,
   instanceKey,
