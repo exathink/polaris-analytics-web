@@ -35,6 +35,24 @@ export function PullRequestsView({pullRequests, closedWithinDays, context, pullR
     setFilter(null);
     resetComponentState();
   }
+
+  const histogramChart = (
+    <PullRequestsDetailHistogramChart
+      chartSubTitle={
+        pullRequestsType === "closed"
+          ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
+          : ``
+      }
+      selectedMetric={"pullRequestAvgAge"}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      series={seriesAvgAge}
+      onPointClick={({category, selectedMetric}) => {
+        setFilter(category);
+        setTab("table");
+      }}
+    />
+  );
+
   // show histogram view
   return (
     <div className="tw-h-full">
@@ -66,20 +84,7 @@ export function PullRequestsView({pullRequests, closedWithinDays, context, pullR
         />
       </div>
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-        <PullRequestsDetailHistogramChart
-          chartSubTitle={
-            pullRequestsType === "closed"
-              ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
-              : ``
-          }
-          selectedMetric={"pullRequestAvgAge"}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          series={seriesAvgAge}
-          onPointClick={({category, selectedMetric}) => {
-            setFilter(category);
-            setTab("table");
-          }}
-        />
+        {histogramChart}
       </div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
