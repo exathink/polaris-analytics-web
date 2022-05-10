@@ -5,6 +5,7 @@ import {getProjectPullRequests} from "../hooks/useQueryDimensionPullRequests";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 import {GraphQLError} from "graphql";
 import {getReferenceString} from "../../../../../helpers/utility";
+import {getNDaysAgo} from "../../../../../../test/test-utils";
 
 const referenceDates = {
   latestWorkItemEvent: "2020-12-09T22:31:01.244000",
@@ -18,6 +19,7 @@ const gqlRequest = {
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     activeOnly: true,
+    closedWithinDays: undefined,
     referenceString: getReferenceString(referenceDates.latestCommit, referenceDates.latestWorkItemEvent, referenceDates.latestPullRequestEvent),
   },
 };
@@ -43,9 +45,12 @@ const mocks = [
                   repositoryName: "polaris-analytics-web",
                   age: 11.865918751713,
                   webUrl: "https://gitlab.com/polaris-apps/polaris-analytics-web/-/merge_requests/118",
+                  createdAt: getNDaysAgo(11.86),
+                  endDate: getNDaysAgo(4.86),
                   workItemsSummaries: [
                     {
                       displayId: "PO-397",
+                      name: "test",
                       key: "13f98361-9dd6-45ea-a832-8dec0d9ace55",
                       state: "Code-Review-Needed",
                       stateType: "wip",
@@ -64,6 +69,8 @@ const mocks = [
                   repositoryName: "polaris-analytics-web",
                   age: 11.865918751713,
                   webUrl: "https://gitlab.com/polaris-apps/polaris-analytics-web/-/merge_requests/119",
+                  createdAt: getNDaysAgo(11.86),
+                  endDate: getNDaysAgo(4.86),
                   workItemsSummaries: [],
                 },
               },
@@ -80,6 +87,7 @@ const projectPullRequestsPropsFixture = {
   instanceKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
   view: "primary",
   asStatistic: true,
+  activeOnly: true,
   context: {},
   ...referenceDates
 };
@@ -125,7 +133,7 @@ describe("projectPullRequestsWidget", () => {
 
       renderWithProviders(<DimensionPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/open/i);
+      await screen.findByText(/review time variability/i);
     });
   });
 
