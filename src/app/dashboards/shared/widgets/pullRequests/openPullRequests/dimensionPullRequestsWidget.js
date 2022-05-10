@@ -21,6 +21,7 @@ export const DimensionPullRequestsWidget = ({
   activeOnly,
   closedWithinDays,
   asStatistic,
+  display
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
@@ -59,6 +60,7 @@ export const DimensionPullRequestsWidget = ({
     }
     return (
       <PullRequestsView
+        display={display}
         pullRequests={pullRequests}
         closedWithinDays={closedWithinDays}
         view={view}

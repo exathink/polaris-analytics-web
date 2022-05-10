@@ -87,6 +87,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={true}
+              display="histogramTable"
             />
           )}
           showDetail={false}

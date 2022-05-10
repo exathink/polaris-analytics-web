@@ -10,7 +10,7 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function PullRequestsView({pullRequests, closedWithinDays, context, pullRequestsType}) {
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -53,6 +53,9 @@ export function PullRequestsView({pullRequests, closedWithinDays, context, pullR
     />
   );
 
+  if (display==="histogram") {
+    return histogramChart;
+  }
   // show histogram view
   return (
     <div className="tw-h-full">
