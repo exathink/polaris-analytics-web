@@ -69,6 +69,7 @@ export const dashboard = () => (
                     latestCommit={repository.latestCommit}
                     asStatistic={false}
                     activeOnly={true}
+                    display="histogram"
                   />
           )}
           showDetail={true}

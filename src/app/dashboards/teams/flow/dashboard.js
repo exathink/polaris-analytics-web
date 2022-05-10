@@ -182,6 +182,7 @@ function WipDashboard({
               latestPullRequestEvent={latestPullRequestEvent}
               asStatistic={false}
               activeOnly={true}
+              display="histogram"
             />
           )}
           showDetail={true}
