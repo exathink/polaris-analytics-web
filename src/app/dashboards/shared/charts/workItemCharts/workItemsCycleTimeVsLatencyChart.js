@@ -137,7 +137,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         align: 'left',
       },
       subtitle: {
-        text: `Age vs Latency: ${localNow(intl)} `,
+        text: `Age vs Idle Time: ${localNow(intl)} `,
         align: 'left',
       },
       xAxis: {
@@ -175,7 +175,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
           },
         },
         title: {
-          text: 'Latency in Days'
+          text: 'Idle Time in Days'
         },
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
@@ -227,7 +227,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               [`Current State:`, `${state}`],
               [`-----------------`, ``],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],
-              [`Latency`, `${intl.formatNumber(latency)} days`],
+              [`Idle Time`, `${intl.formatNumber(latency)} days`],
 
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries,
