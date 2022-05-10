@@ -5,7 +5,10 @@ import {OpenPullRequestsView} from "./openPullRequestsView";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {DimensionPullRequestsDetailDashboard} from "./dimensionPullRequestsDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
+import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 
+// use activeOnly prop for inProgress and closedWithinDays prop for closed pull requests
+// at a time, we can use only one prop
 export const DimensionPullRequestsWidget = ({
   dimension,
   instanceKey,
@@ -15,14 +18,19 @@ export const DimensionPullRequestsWidget = ({
   view,
   context,
   pollInterval,
+  activeOnly,
+  closedWithinDays,
   asStatistic,
+  display
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
     instanceKey,
-    activeOnly: true,
+    activeOnly: activeOnly,
+    closedWithinDays: closedWithinDays,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
+  const pullRequestsType = activeOnly ? "open" : "closed";
   if (loading) return <Loading />;
   if (error) {
     logGraphQlError("useQueryProjectPullRequests", error);
@@ -45,13 +53,21 @@ export const DimensionPullRequestsWidget = ({
       />
     );
   } else {
+    if (pullRequestsType==="open" && asStatistic) {
+      return (
+        <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} />
+      );
+    }
     return (
-      <OpenPullRequestsView
+      <PullRequestsView
+        display={display}
         pullRequests={pullRequests}
+        closedWithinDays={closedWithinDays}
         view={view}
         context={context}
-        asStatistic={asStatistic}
+        pullRequestsType={pullRequestsType}
       />
     );
+    
   }
 };
