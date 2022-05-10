@@ -24,7 +24,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        name:"Time to Review",
+        name: pullRequestsType === 'closed' ? "Time to Review" : "Age",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
       }),
@@ -38,6 +38,11 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
+      title={
+        pullRequestsType === "closed"
+          ? `Review Time Variability`
+          : `Open Pull Request Age`
+      }
       chartSubTitle={
         pullRequestsType === "closed"
           ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
