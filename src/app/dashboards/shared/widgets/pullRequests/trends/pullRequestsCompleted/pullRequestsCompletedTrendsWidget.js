@@ -6,7 +6,7 @@ import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
 import {toMoment} from "../../../../../../helpers/utility";
 
-export const PullRequestsCompletedTrendsWidget = ({
+export const PullRequestsCompletedTrendsWidget = React.memo(({
   dimension,
   instanceKey,
   view,
@@ -56,4 +56,4 @@ export const PullRequestsCompletedTrendsWidget = ({
       latestCommit={latestCommit}
     />
   );
-};
+});
