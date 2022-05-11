@@ -2,6 +2,7 @@ import React from "react";
 import {i18nDate, i18nNumber, percentileToText} from "../../../../../../helpers/utility";
 import { ResponseTimeMetricsColor } from "../../../../config";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
+import { getFlowEfficiency } from "../../../../helpers/statsUtils";
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
@@ -146,8 +147,8 @@ export const ResponseTimeTrendsChart = (
                   ,
                   [`------`, ``],
                   ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly? 'Specs' : 'Cards'}`],
-                  ['Earliest Closed: ', `${i18nDate(intl, measurement.earliestClosedDate)}`],
-                  ['Latest Closed: ', `${i18nDate(intl, measurement.latestClosedDate)}`],
+                  ['Flow Efficiency: ', `${i18nNumber(intl, getFlowEfficiency(measurement.avgEffort, measurement.avgCycleTime))} %`],
+
                 ]
             }
           )
