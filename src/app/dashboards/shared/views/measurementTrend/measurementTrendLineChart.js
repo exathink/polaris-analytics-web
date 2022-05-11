@@ -132,10 +132,10 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
       visible: metric.visible,
       allowPointSelect: true,
       data: measurements.map(
-        measurement => ({
+        (measurement, index) => ({
           x: toMoment(measurement.measurementDate, true).valueOf(),
           y: metric.value ? metric.value(measurement) : measurement[metric.key],
-          measurement: {...measurement, key: metric.key}
+          measurement: {...measurement, key: metric.key, index: index},
         })
       ).sort(
         (m1, m2) => m1.x - m2.x
