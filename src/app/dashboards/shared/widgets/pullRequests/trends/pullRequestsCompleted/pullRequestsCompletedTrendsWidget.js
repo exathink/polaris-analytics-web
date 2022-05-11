@@ -4,7 +4,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
 import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView";
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
-import {getServerDate} from "../../../../../../helpers/utility";
+import {toMoment} from "../../../../../../helpers/utility";
 
 export const PullRequestsCompletedTrendsWidget = ({
   dimension,
@@ -39,7 +39,7 @@ export const PullRequestsCompletedTrendsWidget = ({
         if (items.length === 1) {
           const [{measurementDate}] = items;
           if (setBefore) {
-            setBefore(getServerDate(measurementDate));
+            setBefore(toMoment(measurementDate));
           }
         }
       }}

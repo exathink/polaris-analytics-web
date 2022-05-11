@@ -28,6 +28,8 @@ export const DimensionPullRequestsDetailDashboard = ({
     [frequencyRange, setFrequencyRange],
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
+  const [before, setBefore] = React.useState();
+
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
@@ -52,6 +54,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               measurementWindow={measurementWindowRange}
               samplingFrequency={frequencyRange}
               latestCommit={latestCommit}
+              setBefore={setBefore}
             />
           )}
           showDetail={false}
@@ -86,7 +89,9 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
-              activeOnly={true}
+              activeOnly={before ? undefined: true}
+              before={before}
+              closedWithinDays={before ? measurementWindowRange : undefined}
               display="histogramTable"
             />
           )}

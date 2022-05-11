@@ -21,12 +21,14 @@ export const DimensionPullRequestsWidget = ({
   activeOnly,
   closedWithinDays,
   asStatistic,
-  display
+  display,
+  before
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
     instanceKey,
     activeOnly: activeOnly,
+    before: before,
     closedWithinDays: closedWithinDays,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
