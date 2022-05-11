@@ -396,6 +396,23 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
   />
 }
 
+export const FlowEfficiency = ({title, displayType, precision, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
+
+  return <FlowStatistic
+    title={title || "Flow Efficiency"}
+    currentValue={currentMeasurement['avgCycleTime'] > 0 ?  (currentMeasurement['avgEffort']/currentMeasurement['avgCycleTime'])*100 : 0}
+    previousMeasurement={previousMeasurement['avgCycleTime'] > 0 ?  (previousMeasurement['avgEffort']/previousMeasurement['avgCycleTime'])*100 : 0}
+    valueRender={ (value) => value > 0 ? `${value.toFixed(precision)} %` : 'N/A' }
+    uom={''}
+    precision={precision || 2}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
+    target={target}
+  />
+}
+
 export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
