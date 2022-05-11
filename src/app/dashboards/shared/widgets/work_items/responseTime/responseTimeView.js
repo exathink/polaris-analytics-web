@@ -48,10 +48,10 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
           <VizItem w={1 / 3}>
             <AvgLeadTime currentMeasurement={current} previousMeasurement={previous} target={leadTimeTarget} />
           </VizItem>
-          <VizItem w={1 / 2}>
+          <VizItem w={1 / 3}>
             <AvgCycleTime currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
           </VizItem>
-          <VizItem w={1 / 2}>
+          <VizItem w={1 / 3}>
             <FlowEfficiency currentMeasurement={current} previousMeasurement={previous} target={70} />
           </VizItem>
         </VizRow>
