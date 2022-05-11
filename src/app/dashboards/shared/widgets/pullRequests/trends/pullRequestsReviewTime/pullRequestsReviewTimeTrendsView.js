@@ -11,7 +11,8 @@ export const PullRequestsReviewTimeTrendsView = ({
   measurementPeriod,
   measurementWindow,
   view,
-  display
+  display,
+  onSelectionChange
 }) => {
 
   const intl = useIntl();
@@ -43,6 +44,7 @@ export const PullRequestsReviewTimeTrendsView = ({
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
+        onSelectionChange={onSelectionChange}
       />
     </VizItem>
   </VizRow>

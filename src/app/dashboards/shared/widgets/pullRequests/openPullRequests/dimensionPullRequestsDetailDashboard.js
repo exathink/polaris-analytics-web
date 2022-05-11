@@ -71,6 +71,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               measurementWindow={measurementWindowRange}
               samplingFrequency={frequencyRange}
               latestCommit={latestCommit}
+              setBefore={setBefore}
             />
           )}
           showDetail={false}

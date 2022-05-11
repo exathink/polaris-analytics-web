@@ -16,6 +16,7 @@ export const PullRequestsReviewTimeTrendsChart = ({
   measurementPeriod,
   measurementWindow,
   view,
+  onSelectionChange
 }) => (
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
@@ -25,6 +26,7 @@ export const PullRequestsReviewTimeTrendsChart = ({
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
+    onSelectionChange={onSelectionChange}
     config={{
       title: "Time to Close",
       yAxisUom: "Days",
