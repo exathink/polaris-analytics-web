@@ -186,7 +186,7 @@ export const ValueBoardSummaryView = (
         </VizItem>
         <VizItem w={1 / 3}>
           <AvgLatency
-            title={"Latency"}
+            title={"Idle Time"}
             currentMeasurement={current}
 
             target={cycleTimeTarget}
