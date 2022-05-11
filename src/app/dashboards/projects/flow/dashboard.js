@@ -47,7 +47,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               dimension={"project"}
               instanceKey={key}
               view={view}
-              display={"leadAndCycleTimeSummary"}
+              display={"leadCycleTimeFlowEfficiencySummary"}
               context={context}
               specsOnly={true}
               days={flowAnalysisPeriod}
@@ -216,7 +216,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["all"]}
+              defaultSeries={["leadTime", "cycleTime", "effort"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}

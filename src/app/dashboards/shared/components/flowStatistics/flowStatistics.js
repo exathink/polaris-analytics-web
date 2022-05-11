@@ -7,14 +7,14 @@ import {
   TrendIndicatorDisplayThreshold,
   TrendIndicatorNew,
   TrendMetric,
-  TrendWithTooltip,
+  TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import {percentileToText} from "../../../../helpers/utility";
-import {ComponentCarousel} from "../componentCarousel/componentCarousel";
-import {HumanizedDateView} from "../humanizedDateView/humanizedDateView";
-import {TrendCard} from "../cards/trendCard";
-import {fromNow} from "../../../../helpers/utility";
-import {TrendColors} from "../../config"
+import { fromNow, percentileToText } from "../../../../helpers/utility";
+import { ComponentCarousel } from "../componentCarousel/componentCarousel";
+import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
+import { TrendCard } from "../cards/trendCard";
+import { TrendColors } from "../../config";
+import { getCapacityEfficiency } from "../../helpers/statsUtils";
 
 export const FlowStatistic = ({
   title,
@@ -396,6 +396,23 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
   />
 }
 
+export const FlowEfficiency = ({title, displayType, precision, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
+
+  return <FlowStatistic
+    title={title || "Flow Efficiency"}
+    currentValue={currentMeasurement['avgCycleTime'] > 0 ?  (currentMeasurement['avgEffort']/currentMeasurement['avgCycleTime'])*100 : 0}
+    previousMeasurement={previousMeasurement['avgCycleTime'] > 0 ?  (previousMeasurement['avgEffort']/previousMeasurement['avgCycleTime'])*100 : 0}
+    valueRender={ (value) => value > 0 ? `${value.toFixed(precision)} %` : 'N/A' }
+    uom={''}
+    precision={precision || 2}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
+    target={target}
+  />
+}
+
 export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
@@ -585,6 +602,40 @@ export const EffortOUT = ({displayType, displayProps, normalized, contributorCou
     target={target}
     deltaThreshold={deltaThreshold}
   />
+);
+
+function getCapEfficiency(measurement, contributorCount) {
+  return getCapacityEfficiency(measurement['totalEffort'], measurement['measurementWindow'], contributorCount)
+}
+
+export const CapacityEfficiency = ({displayType, displayProps, precision, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+  getCapEfficiency(currentMeasurement, contributorCount) != null ?
+    <FlowStatistic
+      title={'Cap. Efficiency'}
+      currentValue={getCapEfficiency(currentMeasurement, contributorCount)}
+      previousValue={getCapEfficiency(previousMeasurement, contributorCount)}
+      valueRender={ value =>  `${value.toFixed(precision || 2)} %`}
+      metric={'totalEffort'}
+      normalized={normalized}
+      contributorCount={contributorCount}
+      uom={``}
+      displayType={displayType}
+      displayProps={displayProps}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
+    :
+    <EffortOUT
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      contributorCount={contributorCount}
+      normalized={normalized}
+      precision={precision}
+      displayType={displayType}
+      displayProps={displayProps}
+      target={target}
+      deltaThreshold={deltaThreshold}
+    />
 );
 
 export const WipCost = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
