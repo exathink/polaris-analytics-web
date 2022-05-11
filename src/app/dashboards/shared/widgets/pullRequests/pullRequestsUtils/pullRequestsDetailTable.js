@@ -153,6 +153,21 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
+
+  let lastColArr = [];
+  if (prStateType === "closed") {
+    lastColArr = [
+      {
+        title: "Completed At",
+        dataIndex: "endDate",
+        key: "endDate",
+        width: "7%",
+        sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
+        render: (text) => <span className="tw-textXs">{text}</span>,
+      },
+    ];
+  }
+
   const columns = [
     {
       title: "Pull Request",
@@ -203,14 +218,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       onFilter: (value, record) => testMetric(value, record, "age"),
       render: (text) => <span className="tw-textXs">{i18nNumber(intl, Number(text), 2)} days</span>,
     },
-    {
-      title: "Completed At",
-      dataIndex: "endDate",
-      key: "endDate",
-      width: "7%",
-      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
-      render: (text) => <span className="tw-textXs">{text}</span>,
-    }
+    ...lastColArr
   ];
 
   return columns;
