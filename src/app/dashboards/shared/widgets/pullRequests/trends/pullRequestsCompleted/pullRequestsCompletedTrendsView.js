@@ -7,6 +7,7 @@ export const PullRequestsCompletedTrendsView = ({
   measurementPeriod,
   measurementWindow,
   view,
+  onSelectionChange
 }) => (
   <VizRow h={1}>
     <VizItem w={1}>
@@ -14,6 +15,7 @@ export const PullRequestsCompletedTrendsView = ({
         pullRequestMetricsTrends={pullRequestMetricsTrends}
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
+        onSelectionChange={onSelectionChange}
         view={view}
       />
     </VizItem>

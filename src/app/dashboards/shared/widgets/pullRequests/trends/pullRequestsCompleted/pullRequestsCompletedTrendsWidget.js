@@ -4,6 +4,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
 import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView";
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
+import {getServerDate} from "../../../../../../helpers/utility";
 
 export const PullRequestsCompletedTrendsWidget = ({
   dimension,
@@ -14,6 +15,7 @@ export const PullRequestsCompletedTrendsWidget = ({
   measurementWindow,
   samplingFrequency,
   latestCommit,
+  setBefore
 }) => {
   const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
     dimension,
@@ -33,6 +35,14 @@ export const PullRequestsCompletedTrendsWidget = ({
       pullRequestMetricsTrends={pullRequestMetricsTrends}
       measurementWindow={measurementWindow}
       measurementPeriod={days}
+      onSelectionChange={(items) => {
+        if (items.length === 1) {
+          const [{measurementDate}] = items;
+          if (setBefore) {
+            setBefore(getServerDate(measurementDate));
+          }
+        }
+      }}
       view={view}
     />
   ) : (
