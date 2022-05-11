@@ -1,23 +1,14 @@
-import React from 'react';
-import {EVENT_TYPES, getTodayDate, pick, toMoment} from "../../../../../helpers/utility";
-import {getMeasurementTrendSeriesForMetrics} from "../../../views/measurementTrend/measurementTrendLineChart";
-import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
-import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors} from "../../../config";
-import {WorkBalanceContributorDetailChart} from "./workBalanceContributorDetailChart";
+import React from "react";
+import { EVENT_TYPES, getTodayDate, pick, toMoment } from "../../../../../helpers/utility";
+import { getMeasurementTrendSeriesForMetrics } from "../../../views/measurementTrend/measurementTrendLineChart";
+import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
+import {
+  DefaultSelectionEventHandler
+} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import { Colors } from "../../../config";
+import { WorkBalanceContributorDetailChart } from "./workBalanceContributorDetailChart";
 import Contributors from "../../../../contributors/context";
-
-function fteEquivalent(measurementWindow) {
-  switch (measurementWindow) {
-    case 7: return 5;
-
-    case 30: return 20;
-
-    default: return null;
-
-  }
-}
-
+import { fteEquivalent } from "../../../helpers/statsUtils";
 
 
 const WorkBalanceTrendsWithContributorDetailChart = Chart({

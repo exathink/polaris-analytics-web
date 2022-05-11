@@ -61,3 +61,32 @@ export function getMetricsRange(measurements, metrics) {
 export function getPercentSpread(min, max) {
   return ((max - min) / (min)) * 100;
 }
+
+// Calculation helpers for converting effort to capacity efficiency
+// Currently this is pretty kludgy and needs to be beefed up a lot.
+
+export function fteEquivalent(measurementWindow) {
+  switch (measurementWindow) {
+    case 7:
+      return 5;
+    case 14:
+      return 10;
+    case 30:
+      return 20;
+    case 60:
+      return 40;
+    case 90:
+      return 60;
+    default:
+      return null;
+
+  }
+}
+
+export function getCapacityEfficiency(effort, measurementWindow, contributorCount) {
+  if (fteEquivalent(measurementWindow) != null) {
+    return (effort / (fteEquivalent(measurementWindow) * contributorCount)) * 100;
+  } else {
+    return null;
+  }
+}
