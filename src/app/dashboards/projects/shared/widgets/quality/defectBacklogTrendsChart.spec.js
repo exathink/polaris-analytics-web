@@ -160,10 +160,10 @@ describe("DefectBacklogTrendsChart", () => {
         );
       });
 
-      test("it sets the reference to the measurement for each point ", () => {
+      test("it sets the reference to the measurement for each point", () => {
         expectSetsAreEqual(
-          avgBacklogSeries.data.map((point) => point.measurement),
-          backlogTrends.map((measurement) => measurement)
+          avgBacklogSeries.data.map((point) => point.measurement.key),
+          backlogTrends.map((measurement) => measurement.key)
         );
       });
 

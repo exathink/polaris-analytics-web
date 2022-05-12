@@ -257,8 +257,8 @@ describe("MeasurementTrendLineChart", () => {
 
     test("it sets the reference to the measurement for each point ", () => {
       expectSetsAreEqual(
-        data.map((point) => point.measurement),
-        measurementsFixture.map(x => ({...x, key: singleMetricsFixture.key}))
+        data.map((point) => point.measurement.key),
+        measurementsFixture.map((x) => singleMetricsFixture.key)
       );
     });
 
@@ -320,8 +320,8 @@ describe("MeasurementTrendLineChart", () => {
 
       test(`it sets the reference to the measurement of each point for ${metric} series`, () => {
         expectSetsAreEqual(
-          data.map((point) => point.measurement),
-          measurementsFixture.map(x => ({...x, key: metric}))
+          data.map((point) => point.measurement.key),
+          measurementsFixture.map((x) => metric)
         );
       });
 

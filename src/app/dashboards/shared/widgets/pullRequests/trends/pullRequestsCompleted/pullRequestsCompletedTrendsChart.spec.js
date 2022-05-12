@@ -166,10 +166,10 @@ describe("PullRequestsCompletedTrendsChart", () => {
       );
     });
 
-    test("it sets the reference to the measurement for each point ", () => {
+    test("it sets the reference to the measurement for each point", () => {
       expectSetsAreEqual(
-        data.map((point) => point.measurement),
-        pullRequestsCompletedTrendsFixture.map(x => ({...x, key: "totalClosed"}))
+        data.map((point) => point.measurement.key),
+        pullRequestsCompletedTrendsFixture.map(x => ("totalClosed"))
       );
     });
 
