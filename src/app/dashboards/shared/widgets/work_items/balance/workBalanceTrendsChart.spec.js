@@ -280,7 +280,12 @@ describe("CapacityTrendsChart", () => {
                     [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])}`],
                     [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
-                : [[``, `${formatNumber(firstPoint[trend.key])} FTE Days`]],
+                : trend.displayName === "EffortOUT"
+                ? [
+                    [`EffortOUT: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
+                    [`Cap. Efficiency: `, `61.111 %`],
+                  ]
+                : [],
           });
         });
       });
