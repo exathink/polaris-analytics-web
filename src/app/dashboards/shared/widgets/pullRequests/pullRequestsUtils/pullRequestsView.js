@@ -11,6 +11,23 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
+function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
+  if (pullRequests.length === 1 && closedWithinDays === 1) {
+    return `${pullRequests.length} pull request closed on ${intl.formatDate(before)}`;
+  }
+  if (pullRequests.length === 1 && closedWithinDays > 1) {
+    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${intl.formatDate(
+      before
+    )}`;
+  }
+  if (closedWithinDays === 1 && pullRequests.length > 1) {
+    return `${pullRequests.length} pull requests closed on ${intl.formatDate(before)}`;
+  }
+  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending ${intl.formatDate(
+    before
+  )}`;
+}
+
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
@@ -52,7 +69,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       }
       chartSubTitle={
         pullRequestsType === "closed"
-          ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
+          ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
           : ``
       }
       selectedMetric={"pullRequestAvgAge"}
