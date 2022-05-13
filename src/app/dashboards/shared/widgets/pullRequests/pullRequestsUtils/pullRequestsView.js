@@ -74,7 +74,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       <div className="tw-flex tw-items-center tw-justify-end">
         {before != null && (
           <Button size="small" onClick={() => setBefore?.(undefined)} className="tw-mr-auto">
-            Open PR view
+          View Open Pull Request
           </Button>
         )}
         {selectedFilter != null && (
