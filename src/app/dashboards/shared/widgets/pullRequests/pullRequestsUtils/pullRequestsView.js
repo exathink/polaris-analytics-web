@@ -29,7 +29,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         color: ResponseTimeMetricsColor.duration,
       }),
     ];
-  }, [pullRequests, intl]);
+  }, [pullRequests, pullRequestsType, intl]);
 
   function handleClearClick() {
     setFilter(null);
