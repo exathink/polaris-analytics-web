@@ -1,5 +1,6 @@
 import React from "react";
 import {useIntl} from "react-intl";
+import Button from "../../../../../../components/uielements/button";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
@@ -10,7 +11,7 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before}) {
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -71,6 +72,11 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
   return (
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
+        {before != null && (
+          <Button size="small" onClick={() => setBefore?.(undefined)} className="tw-mr-auto">
+            Open PR view
+          </Button>
+        )}
         {selectedFilter != null && (
           <div className="tw-mr-6">
             <ClearFilters
@@ -97,9 +103,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           layout="col"
         />
       </div>
-      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-        {histogramChart}
-      </div>
+      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
           <PullRequestsDetailTable

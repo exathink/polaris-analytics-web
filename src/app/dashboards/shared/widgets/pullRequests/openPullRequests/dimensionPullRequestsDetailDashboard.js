@@ -92,6 +92,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={before ? undefined: true}
               before={before}
+              setBefore={setBefore}
               closedWithinDays={before ? measurementWindowRange : undefined}
               display="histogramTable"
             />
