@@ -20,7 +20,7 @@ function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
       before
     )}`;
   }
-  if (closedWithinDays === 1 && pullRequests.length > 1) {
+  if (closedWithinDays === 1 && pullRequests.length !== 1) {
     return `${pullRequests.length} pull requests closed on ${intl.formatDate(before)}`;
   }
   return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending ${intl.formatDate(
