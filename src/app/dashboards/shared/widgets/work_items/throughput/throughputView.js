@@ -25,7 +25,7 @@ export const ThroughputView = ({
         <ContributorCount contributorCount={contributorCount} />
       </div>
       <div className={styles.secondCol}>
-        <Volume normalized={normalized} contributorCount={contributorCount} currentMeasurement={current}
+        <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current}
                 previousMeasurement={previous} specsOnly={specsOnly} />
       </div>
 
