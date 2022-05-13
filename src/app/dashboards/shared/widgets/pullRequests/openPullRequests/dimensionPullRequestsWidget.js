@@ -62,6 +62,7 @@ export const DimensionPullRequestsWidget = ({
     }
     return (
       <PullRequestsView
+        before={before}
         display={display}
         pullRequests={pullRequests}
         closedWithinDays={closedWithinDays}

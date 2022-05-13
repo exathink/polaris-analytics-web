@@ -10,7 +10,7 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType}) {
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -30,6 +30,12 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       }),
     ];
   }, [pullRequests, pullRequestsType, intl]);
+
+  React.useEffect(() => {
+    if (before) {
+      setTab("table");
+    }
+  }, [before]);
 
   function handleClearClick() {
     setFilter(null);
