@@ -91,7 +91,9 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         {before != null && (
           <div className="tw-mr-auto">
             <ClearFilters
-              selectedFilter={`${closedWithinDays} days ending ${intl.formatDate(before)}`}
+              selectedFilter={`${closedWithinDays} ${closedWithinDays === 1 ? "day" : "days"} ending ${intl.formatDate(
+                before
+              )}`}
               selectedMetric={"Pull Requests Closed"}
               stateType={pullRequestsType}
               handleClearClick={() => {
