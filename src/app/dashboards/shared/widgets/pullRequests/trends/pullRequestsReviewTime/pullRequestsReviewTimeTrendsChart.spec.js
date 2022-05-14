@@ -83,7 +83,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Time to Close",
+    text: "Review Time",
   },
   legend: {
     title: {
@@ -159,8 +159,8 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
       } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>);
 
       const cases = [
-        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Close: "},
-        {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Close: "},
+        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Review: "},
+        {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Review: "},
       ];
       // Generating test cases for similar usecases
       cases.forEach(({metric, data, displayName}, index) => {
@@ -212,11 +212,11 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
         <PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>
       );
     describe("test series", () => {
-      test("line type is spline", () => {
+      test("line type is correct", () => {
         expectSetsAreEqual(chartConfig.series.map((series) => [series.key, series.type]),
           [
             ["maxAge", "spline"],
-            ["avgAge", "spline"],
+            ["avgAge", "areaspline"],
           ]);
       });
 

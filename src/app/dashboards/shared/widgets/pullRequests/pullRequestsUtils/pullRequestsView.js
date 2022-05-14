@@ -10,7 +10,32 @@ import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType}) {
+function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
+  if (closedWithinDays === 1 && pullRequests.length === 1) {
+    return `${pullRequests.length} pull request closed on ${intl.formatDate(before)}`;
+  }
+  if (closedWithinDays === 1 && pullRequests.length !== 1) {
+    return `${pullRequests.length} pull requests closed on ${intl.formatDate(before)}`;
+  }
+  if (closedWithinDays > 1 && pullRequests.length === 1) {
+    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${intl.formatDate(
+      before
+    )}`;
+  }
+  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending ${intl.formatDate(
+    before
+  )}`;
+}
+
+function getSelectedFilterText({closedWithinDays, intl, before}) {
+  if (closedWithinDays === 1) {
+    return `on ${intl.formatDate(before)}`;
+  } else if (closedWithinDays > 1) {
+    return `${closedWithinDays} days ending ${intl.formatDate(before)}`;
+  }
+}
+
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -29,7 +54,13 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         color: ResponseTimeMetricsColor.duration,
       }),
     ];
-  }, [pullRequests, intl]);
+  }, [pullRequests, pullRequestsType, intl]);
+
+  React.useEffect(() => {
+    if (before) {
+      setTab("table");
+    }
+  }, [before]);
 
   function handleClearClick() {
     setFilter(null);
@@ -41,11 +72,11 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       title={
         pullRequestsType === "closed"
           ? `Review Time Variability`
-          : `Open Pull Request Age`
+          : `Open Pull Requests by Age`
       }
       chartSubTitle={
         pullRequestsType === "closed"
-          ? `${pullRequests.length} pull requests closed within last ${closedWithinDays} days`
+          ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
           : ``
       }
       selectedMetric={"pullRequestAvgAge"}
@@ -65,6 +96,19 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
   return (
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
+        {before != null && (
+          <div className="tw-mr-auto">
+            <ClearFilters
+              selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
+              selectedMetric={"Pull Requests Closed"}
+              stateType={pullRequestsType}
+              handleClearClick={() => {
+                setBefore?.(undefined);
+                setTab("histogram");
+              }}
+            />
+          </div>
+        )}
         {selectedFilter != null && (
           <div className="tw-mr-6">
             <ClearFilters
@@ -91,9 +135,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           layout="col"
         />
       </div>
-      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
-        {histogramChart}
-      </div>
+      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
       {tabSelection === "table" && (
         <div className="tw-h-full">
           <PullRequestsDetailTable

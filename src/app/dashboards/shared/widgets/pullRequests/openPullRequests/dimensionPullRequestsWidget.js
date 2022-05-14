@@ -12,6 +12,9 @@ import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 export const DimensionPullRequestsWidget = ({
   dimension,
   instanceKey,
+  days,
+  measurementWindow,
+  samplingFrequency,
   latestWorkItemEvent,
   latestCommit,
   latestPullRequestEvent,
@@ -21,12 +24,15 @@ export const DimensionPullRequestsWidget = ({
   activeOnly,
   closedWithinDays,
   asStatistic,
-  display
+  display,
+  before,
+  setBefore
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
     instanceKey,
     activeOnly: activeOnly,
+    before: before,
     closedWithinDays: closedWithinDays,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
@@ -47,9 +53,9 @@ export const DimensionPullRequestsWidget = ({
         latestCommit={latestCommit}
         latestPullRequestEvent={latestPullRequestEvent}
         context={context}
-        days={30}
-        measurementWindow={1}
-        samplingFrequency={1}
+        days={days}
+        measurementWindow={measurementWindow || Math.min(days,7)}
+        samplingFrequency={samplingFrequency || Math.min(days,7)}
       />
     );
   } else {
@@ -60,6 +66,8 @@ export const DimensionPullRequestsWidget = ({
     }
     return (
       <PullRequestsView
+        before={before}
+        setBefore={setBefore}
         display={display}
         pullRequests={pullRequests}
         closedWithinDays={closedWithinDays}
