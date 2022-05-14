@@ -209,7 +209,7 @@ describe("CapacityTrendsChart", () => {
         id: "totalCommitDays",
         type: "spline",
         name: "Active Days",
-        visible: true,
+        visible: false,
         data: propsFixture.capacityTrends
           .map((measurement) => ({
             x: epoch(measurement.measurementDate, true),
