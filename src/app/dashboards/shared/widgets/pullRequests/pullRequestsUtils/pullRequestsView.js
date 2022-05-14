@@ -1,6 +1,5 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import Button from "../../../../../../components/uielements/button";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
@@ -90,9 +89,17 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
         {before != null && (
-          <Button size="small" onClick={() => setBefore?.(undefined)} className="tw-mr-auto">
-          View Open Pull Request
-          </Button>
+          <div className="tw-mr-auto">
+            <ClearFilters
+              selectedFilter={`${closedWithinDays} days ending ${intl.formatDate(before)}`}
+              selectedMetric={"Pull Requests Closed"}
+              stateType={pullRequestsType}
+              handleClearClick={() => {
+                setBefore?.(undefined);
+                setTab("histogram");
+              }}
+            />
+          </div>
         )}
         {selectedFilter != null && (
           <div className="tw-mr-6">
