@@ -48,15 +48,6 @@ const context : Context = {
             topic: Throughput
           },
           {
-
-            match: 'alignment',
-            topic: Alignment
-          },
-          {
-            match: 'balance',
-            topic: Balance
-          },
-          {
             match: "configure",
             topic: Configure
           },
