@@ -72,7 +72,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       title={
         pullRequestsType === "closed"
           ? `Review Time Variability`
-          : `Open Pull Request Age`
+          : `Open Pull Requests by Age`
       }
       chartSubTitle={
         pullRequestsType === "closed"

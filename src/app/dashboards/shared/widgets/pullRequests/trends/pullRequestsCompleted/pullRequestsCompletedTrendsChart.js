@@ -1,11 +1,13 @@
 import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
+import { Colors } from "../../../../config";
+
 
 export const PullRequestsCompletedTrendsChart = ({pullRequestMetricsTrends, measurementPeriod, measurementWindow, view, onSelectionChange}) => (
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
-    metrics={[{key: "totalClosed", displayName: "Total Closed", visible: true, type: "spline"}]}
+    metrics={[{key: "totalClosed", displayName: "Total Closed", visible: true, type: "column", color: Colors.PullRequestStateType.closed}]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
