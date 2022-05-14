@@ -8,8 +8,20 @@ import {
 import { Colors } from "../../../config";
 import { WorkBalanceContributorDetailChart } from "./workBalanceContributorDetailChart";
 import Contributors from "../../../../contributors/context";
-import { fteEquivalent } from "../../../helpers/statsUtils";
+import { fteEquivalent, getCapacityEfficiency } from "../../../helpers/statsUtils";
 
+function getCapEfficiencyForEffortOutPoint(effortOutPoint, measurementWindow, capacityTrends) {
+  // Bit of a hack to show the capEfficiency in the tooltip for effortOut.
+  // We are grabbing the index of the effort out point and looking up the capacityTrends in the corresponding capacity
+  // trends data since we dont have that in the context of highchart series.
+
+  const effortOutPointIndex = effortOutPoint.measurement.index;
+  if (0 <= effortOutPointIndex <= capacityTrends.length) {
+    return getCapacityEfficiency(effortOutPoint.measurement.totalEffort, measurementWindow, capacityTrends[effortOutPointIndex].contributorCount)
+  } else {
+    return null
+  }
+}
 
 const WorkBalanceTrendsWithContributorDetailChart = Chart({
   chartUpdateProps: props => pick(props, "capacityTrends", "contributorDetail", "showContributorDetail", "showEffort", "cycleMetricsTrends", "measurementWindow", "measurementPeriod", "view", "chartConfig"),
@@ -133,7 +145,8 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
             } : this.point.series.name === 'EffortOUT' ?  {
               header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [``, `${intl.formatNumber(this.point.y)} FTE Days`],
+                [`EffortOUT: `, `${intl.formatNumber(this.point.y)} FTE Days`],
+                [`Cap. Efficiency: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends ))} %`],
               ]
             }  : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,

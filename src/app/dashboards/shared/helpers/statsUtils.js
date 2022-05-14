@@ -90,3 +90,7 @@ export function getCapacityEfficiency(effort, measurementWindow, contributorCoun
     return null;
   }
 }
+
+export function getFlowEfficiency(avgEffort, avgCycleTime) {
+  return avgCycleTime > 0 ? (avgEffort/avgCycleTime) * 100 : null
+}

@@ -255,10 +255,10 @@ describe("CapacityTrendsChart", () => {
           );
         });
 
-        test("it sets the reference to the measurement for each point ", () => {
+        test("it sets the reference to the measurement for each point", () => {
           expectSetsAreEqual(
-            seriesData.data.map((point) => point.measurement),
-            seriesFixture.map((measurement) => ({...measurement, key: trend.key}))
+            seriesData.data.map((point) => point.measurement.key),
+            seriesFixture.map((measurement) => (trend.key))
           );
         });
 
@@ -280,7 +280,12 @@ describe("CapacityTrendsChart", () => {
                     [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])}`],
                     [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
-                : [[``, `${formatNumber(firstPoint[trend.key])} FTE Days`]],
+                : trend.displayName === "EffortOUT"
+                ? [
+                    [`EffortOUT: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
+                    [`Cap. Efficiency: `, `61.111 %`],
+                  ]
+                : [],
           });
         });
       });

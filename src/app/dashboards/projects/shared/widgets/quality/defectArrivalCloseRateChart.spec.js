@@ -158,10 +158,10 @@ describe("DefectArrivalCloseRateChart", () => {
         );
       });
 
-      test("it sets the reference to the measurement for each point ", () => {
+      test("it sets the reference to the measurement for each point", () => {
         expectSetsAreEqual(
-          arrivalRateSeries.data.map((point) => point.measurement),
-          flowRateTrends.map((measurement) => measurement)
+          arrivalRateSeries.data.map((point) => point.measurement.key),
+          flowRateTrends.map((measurement) => measurement.key)
         );
       });
 

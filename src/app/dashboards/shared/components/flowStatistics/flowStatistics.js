@@ -14,7 +14,7 @@ import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
-import { getCapacityEfficiency } from "../../helpers/statsUtils";
+import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
 
 export const FlowStatistic = ({
   title,
@@ -400,8 +400,8 @@ export const FlowEfficiency = ({title, displayType, precision, displayProps, cur
 
   return <FlowStatistic
     title={title || "Flow Efficiency"}
-    currentValue={currentMeasurement['avgCycleTime'] > 0 ?  (currentMeasurement['avgEffort']/currentMeasurement['avgCycleTime'])*100 : 0}
-    previousMeasurement={previousMeasurement['avgCycleTime'] > 0 ?  (previousMeasurement['avgEffort']/previousMeasurement['avgCycleTime'])*100 : 0}
+    currentValue={getFlowEfficiency(currentMeasurement['avgEffort'], currentMeasurement['avgCycleTime'])}
+    previousMeasurement={getFlowEfficiency(previousMeasurement['avgEffort'], previousMeasurement['avgCycleTime'])}
     valueRender={ (value) => value > 0 ? `${value.toFixed(precision)} %` : 'N/A' }
     uom={''}
     precision={precision || 2}
