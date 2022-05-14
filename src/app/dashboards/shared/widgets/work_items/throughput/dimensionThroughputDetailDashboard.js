@@ -27,7 +27,7 @@ export function DimensionThroughputDetailDashboard({
 
   const [workItemScope, setWorkItemScope] = useState("specs");
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
+  const [selectedMetric, setSelectedMetric] = React.useState("totalEffort");
   const [tabSelection, setTab] = React.useState("volume");
 
   const limitToSpecsOnly = workItemScope === 'specs';
