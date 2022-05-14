@@ -1,7 +1,6 @@
 import React from "react";
 import { withNavigationContext } from "../../../../../../framework/navigation/components/withNavigationContext";
 import { VizItem, VizRow } from "../../../../containers/layout";
-import { ComponentCarousel } from "../../../../components/componentCarousel/componentCarousel";
 import {
   AvgAge,
   AvgDuration,

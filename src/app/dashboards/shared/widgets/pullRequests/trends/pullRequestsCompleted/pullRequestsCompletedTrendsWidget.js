@@ -4,8 +4,9 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
 import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView";
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
+import {toMoment} from "../../../../../../helpers/utility";
 
-export const PullRequestsCompletedTrendsWidget = ({
+export const PullRequestsCompletedTrendsWidget = React.memo(({
   dimension,
   instanceKey,
   view,
@@ -14,6 +15,7 @@ export const PullRequestsCompletedTrendsWidget = ({
   measurementWindow,
   samplingFrequency,
   latestCommit,
+  setBefore
 }) => {
   const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
     dimension,
@@ -33,6 +35,14 @@ export const PullRequestsCompletedTrendsWidget = ({
       pullRequestMetricsTrends={pullRequestMetricsTrends}
       measurementWindow={measurementWindow}
       measurementPeriod={days}
+      onSelectionChange={(items) => {
+        if (items.length === 1) {
+          const [{measurementDate}] = items;
+          if (setBefore) {
+            setBefore(toMoment(measurementDate));
+          }
+        }
+      }}
       view={view}
     />
   ) : (
@@ -46,4 +56,4 @@ export const PullRequestsCompletedTrendsWidget = ({
       latestCommit={latestCommit}
     />
   );
-};
+});

@@ -133,7 +133,7 @@ describe("projectPullRequestsWidget", () => {
 
       renderWithProviders(<DimensionPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/open pull request age/i);
+      await screen.findByText(/open pull requests by age/i);
     });
   });
 

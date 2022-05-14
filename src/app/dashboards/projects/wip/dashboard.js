@@ -181,6 +181,8 @@ function WipDashboard({
             <DimensionPullRequestsWidget
               dimension={'project'}
               instanceKey={key}
+              days={wipAnalysisPeriod}
+              measurementWindow={wipAnalysisPeriod}
               className={styles.codeReviewDetail}
               view={view}
               context={context}
