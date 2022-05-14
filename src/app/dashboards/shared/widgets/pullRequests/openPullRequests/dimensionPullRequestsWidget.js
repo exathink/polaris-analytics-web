@@ -12,6 +12,9 @@ import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 export const DimensionPullRequestsWidget = ({
   dimension,
   instanceKey,
+  days,
+  measurementWindow,
+  samplingFrequency,
   latestWorkItemEvent,
   latestCommit,
   latestPullRequestEvent,
@@ -50,9 +53,9 @@ export const DimensionPullRequestsWidget = ({
         latestCommit={latestCommit}
         latestPullRequestEvent={latestPullRequestEvent}
         context={context}
-        days={30}
-        measurementWindow={1}
-        samplingFrequency={1}
+        days={days}
+        measurementWindow={measurementWindow || Math.min(days,7)}
+        samplingFrequency={samplingFrequency || Math.min(days,7)}
       />
     );
   } else {
