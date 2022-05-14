@@ -61,6 +61,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
                   x: toMoment(measurement['measurementDate'], true).valueOf(),
                   y: measurement.totalCommitDays,
                   measurement: measurement,
+
                 }
               )
             ),
@@ -71,8 +72,8 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
     }
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
-        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: false, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Active Days', visible: true, type: 'spline', color: '#0f49b1'}
+        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: true, type: 'spline', color: '#8d9196'},
+        {key: 'totalCommitDays', displayName: 'Active Days', visible: false, type: 'spline', color: '#0f49b1'}
       ],
       capacityTrends
     );
@@ -128,7 +129,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function () {
-          return tooltipHtml(this.point.series.type === 'column' ? {
+          return tooltipHtml(this.point.measurement.contributorName !=  null ? {
               header: `Contributor: ${this.point.measurement.contributorName}<br/>${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Active Days:`, `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}% )`],
