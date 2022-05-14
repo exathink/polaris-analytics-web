@@ -27,6 +27,14 @@ function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   )}`;
 }
 
+function getSelectedFilterText({closedWithinDays, intl, before}) {
+  if (closedWithinDays === 1) {
+    return `on ${intl.formatDate(before)}`;
+  } else if (closedWithinDays > 1) {
+    return `${closedWithinDays} days ending ${intl.formatDate(before)}`;
+  }
+}
+
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
   const [tabSelection, setTab] = React.useState("histogram");
@@ -91,9 +99,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         {before != null && (
           <div className="tw-mr-auto">
             <ClearFilters
-              selectedFilter={`${closedWithinDays} ${closedWithinDays === 1 ? "day" : "days"} ending ${intl.formatDate(
-                before
-              )}`}
+              selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
               selectedMetric={"Pull Requests Closed"}
               stateType={pullRequestsType}
               handleClearClick={() => {
