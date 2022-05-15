@@ -31,7 +31,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
     includeSubTasks
   }) => {
 
-  const [showContributorDetail, setShowContributorDetail] = useState(true);
+  const [showContributorDetail, setShowContributorDetail] = useState(false);
   const [showEffort, setShowEffort] = useState(parentShowEffort);
 
   const [
