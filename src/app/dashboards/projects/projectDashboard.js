@@ -65,7 +65,7 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
     includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
     includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector,
-    latencyTarget: defaults.LATENCY_TARGET
+    latencyTarget: cycleTimeTarget*0.1 || defaults.LATENCY_TARGET
   };
 }
 
