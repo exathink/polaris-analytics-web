@@ -283,7 +283,7 @@ describe("CapacityTrendsChart", () => {
                 : trend.displayName === "EffortOUT"
                 ? [
                     [`EffortOUT: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
-                    [`Cap. Efficiency: `, `61.111 %`],
+                    [`Cap Ratio: `, `61.111 %`],
                   ]
                 : [],
           });
