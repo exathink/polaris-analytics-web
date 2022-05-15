@@ -154,7 +154,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         align: "left"
       },
       subtitle: {
-        text: `Age vs Idle Time: ${localNow(intl)} `,
+        text: `Age & Idle Time: ${localNow(intl)} `,
         align: "left"
       },
       xAxis: {
