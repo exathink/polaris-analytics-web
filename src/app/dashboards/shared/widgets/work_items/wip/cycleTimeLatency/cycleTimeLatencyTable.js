@@ -16,10 +16,10 @@ const QuadrantColors = {
 };
 
 const QuadrantNames = {
-  green: "Ok",
-  yellow: "High Idle Time",
-  orange: "High Age",
-  red: "High Age and Idle Time",
+  green: "On Track",
+  yellow: "Watch List",
+  orange: "Late",
+  red: "Critical",
 };
 
 const QuadrantSort = {
@@ -146,7 +146,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...renderTeamsCol,
     },
     {
-      title: "Quadrant",
+      title: "Status",
       dataIndex: "quadrant",
       key: "quadrant",
       width: "5%",
