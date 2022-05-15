@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
+import {getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -84,12 +84,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
       const [nodeWithAggrDurations] = getWorkItemDurations([node]);
       const calculatedColumns = {
         stateType: WorkItemStateTypeDisplayName[node.stateType],
-        quadrant: getQuadrantColor({
-          cycleTime: nodeWithAggrDurations.cycleTime,
-          latency: nodeWithAggrDurations.latency,
+        quadrant: getQuadrant(
+          nodeWithAggrDurations.cycleTime,
+          nodeWithAggrDurations.latency,
           cycleTimeTarget,
           latencyTarget,
-        }),
+        ),
         teams: joinTeams(node),
       };
       const newNode = {...node, ...calculatedColumns};

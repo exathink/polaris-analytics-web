@@ -3,7 +3,7 @@ import { useSearchMultiCol } from "../../../../../../components/tables/hooks";
 import { injectIntl } from "react-intl";
 import { SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
 import { WorkItemStateTypeDisplayName } from "../../../../config";
-import { getQuadrantColor, QuadrantColors } from "./cycleTimeLatencyUtils";
+import { getQuadrant, QuadrantColors, QuadrantNames, Quadrants } from "./cycleTimeLatencyUtils";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { joinTeams } from "../../../../helpers/teamUtils";
 import {
@@ -12,18 +12,11 @@ import {
   customColumnRender
 } from "../../../../../projects/shared/helper/renderers";
 
-const QuadrantNames = {
-  green: "On Track",
-  yellow: "Watch List",
-  orange: "Off Track",
-  red: "Critical",
-};
-
 const QuadrantSort = {
-  green: 0,
-  yellow: 1,
-  orange: 2,
-  red: 3,
+  ok: 0,
+  latency: 1,
+  age: 2,
+  critical: 3,
 };
 
 const getNumber = (num, intl) => {
@@ -41,28 +34,28 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
-      quadrant: getQuadrantColor({cycleTime: item.cycleTime, latency: item.latency, cycleTimeTarget, latencyTarget}),
+      quadrant: getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget),
       teams: joinTeams(item),
     };
   });
 }
 function getQuadrantIcon(quadrant) {
-  if (quadrant === "green") {
+  if (quadrant === Quadrants.ok) {
     return (
       <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
     );
   }
-  if (quadrant === "yellow") {
+  if (quadrant === Quadrants.latency) {
     return (
       <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
     );
   }
-  if (quadrant === "orange") {
+  if (quadrant === Quadrants.age) {
     return (
       <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
     );
   }
-  if (quadrant === "red") {
+  if (quadrant === Quadrants.critical) {
     return (
       <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
     );

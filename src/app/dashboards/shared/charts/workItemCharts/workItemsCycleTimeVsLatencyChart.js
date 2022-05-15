@@ -12,7 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrantColor } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrantColor, getQuadrantName } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 
 
@@ -65,7 +65,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
         type: "scatter",
         key: `${state}`,
         id: `${state}`,
-        name: view === "primary" ? elide(state, 10) : state,
+        name: view === "primary" ? elide(state.toLowerCase(), 10) : state.toLowerCase(),
         marker: {
 
           symbol: "circle"
@@ -76,11 +76,12 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
-              color: getQuadrantColor({
-                cycleTime: workItem.cycleTime,
-                latency: workItem.latency,
-                cycleTimeTarget: cycleTimeTarget, latencyTarget: latencyTarget
-              }),
+              color: getQuadrantColor(
+                workItem.cycleTime,
+                workItem.latency,
+                cycleTimeTarget,
+                latencyTarget
+              ),
               marker: {
                 symbol: Symbols.WorkItemType[workItem.workItemType]
               },
@@ -239,7 +240,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               ? []
               : [
                 [`-----------------`, ``],
-                [`Current State:`, `${state}`],
+                [`Current State:`, `${state.toLowerCase()}`],
                 [`Entered:`, `${timeInStateDisplay}`],
 
                 stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
@@ -255,11 +256,12 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               elide(name, 30)
             }`,
             body: [
-              [`Current State:`, `${state}`],
+              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)}`],
+              [`Current State:`, `${state.toLowerCase()}`],
               [`-----------------`, ``],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],
               [`Idle Time`, `${intl.formatNumber(latency)} days`],
-
+              effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries
 
