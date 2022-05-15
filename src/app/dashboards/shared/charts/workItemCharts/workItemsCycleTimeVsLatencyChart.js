@@ -12,6 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
+import { getQuadrantColor } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 
 
@@ -52,7 +53,7 @@ function getSeriesByStateType(workItems) {
   );
 }
 
-function getSeriesByState(workItems, view) {
+function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   // We group the work items into series by state.
   const workItemsByState = buildIndex(workItems, workItem => workItem.state);
 
@@ -75,9 +76,13 @@ function getSeriesByState(workItems, view) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
+              color: getQuadrantColor({
+                cycleTime: workItem.cycleTime,
+                latency: workItem.latency,
+                cycleTimeTarget: cycleTimeTarget, latencyTarget: latencyTarget
+              }),
               marker: {
                 symbol: Symbols.WorkItemType[workItem.workItemType]
-
               },
               workItem: workItem
             }
@@ -132,7 +137,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
     const targetLatency = latencyTarget || (cycleTimeTarget && cycleTimeTarget * 0.1) || null;
 
     const cycleTimeVsLatencySeries = groupByState ?
-      getSeriesByState(workItemsWithAggregateDurations, view)
+      getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
     return {
@@ -274,18 +279,6 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               return this.point.workItem.displayId;
             }
           },
-          zoneAxis: 'x',
-          zones: [{
-            value: 0,
-            color: "#f7a35c"
-          }, {
-            value: cycleTimeTarget,
-            color: "#488a1a"
-          },
-          {
-            color: "#d30c4b"
-          }
-          ]
         }
       },
       legend: {
@@ -302,6 +295,6 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
         enabled: workItemsWithAggregateDurations.length > 0
 
       }
-    };
+    }
   }
 });

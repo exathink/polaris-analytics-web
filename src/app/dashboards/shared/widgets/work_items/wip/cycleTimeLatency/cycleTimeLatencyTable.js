@@ -1,24 +1,21 @@
 import React from "react";
-import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
-import {injectIntl} from "react-intl";
-import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
-import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrantColor} from "./cycleTimeLatencyUtils";
-import {InfoCircleFilled} from "@ant-design/icons";
-import {joinTeams} from "../../../../helpers/teamUtils";
-import {comboColumnStateTypeRender, comboColumnTitleRender, customColumnRender} from "../../../../../projects/shared/helper/renderers";
-
-const QuadrantColors = {
-  green: "#2f9a32",
-  yellow: "#d4ae10",
-  orange: "#d08535",
-  red: "#b5111a",
-};
+import { useSearchMultiCol } from "../../../../../../components/tables/hooks";
+import { injectIntl } from "react-intl";
+import { SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
+import { WorkItemStateTypeDisplayName } from "../../../../config";
+import { getQuadrantColor, QuadrantColors } from "./cycleTimeLatencyUtils";
+import { InfoCircleFilled } from "@ant-design/icons";
+import { joinTeams } from "../../../../helpers/teamUtils";
+import {
+  comboColumnStateTypeRender,
+  comboColumnTitleRender,
+  customColumnRender
+} from "../../../../../projects/shared/helper/renderers";
 
 const QuadrantNames = {
   green: "On Track",
   yellow: "Watch List",
-  orange: "Late",
+  orange: "Off Track",
   red: "Critical",
 };
 
