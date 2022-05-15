@@ -279,7 +279,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
             value: 0,
             color: "#f7a35c"
           }, {
-            value: 7,
+            value: cycleTimeTarget,
             color: "#488a1a"
           },
           {
