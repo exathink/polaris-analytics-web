@@ -147,7 +147,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
               header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`EffortOUT: `, `${intl.formatNumber(this.point.y)} FTE Days`],
-                [`Cap. Efficiency: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends ))} %`],
+                [`Cap Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends ))} %`],
               ]
             }  : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
