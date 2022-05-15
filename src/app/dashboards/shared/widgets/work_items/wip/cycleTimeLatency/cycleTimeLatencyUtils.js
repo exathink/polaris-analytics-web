@@ -1,18 +1,18 @@
 export const getQuadrantColor = ({cycleTime, latency, cycleTimeTarget, latencyTarget}) => {
   if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
-    return QuadrantColors.green;
+    return "green";
   }
 
   if (cycleTime <= cycleTimeTarget && latency > latencyTarget) {
-    return QuadrantColors.yellow;
+    return "yellow";
   }
 
   if (cycleTime > cycleTimeTarget && latency <= latencyTarget) {
-    return QuadrantColors.orange;
+    return "orange";
   }
 
   if (cycleTime > cycleTimeTarget && latency > latencyTarget) {
-    return QuadrantColors.red;
+    return "red";
   }
 };
 
