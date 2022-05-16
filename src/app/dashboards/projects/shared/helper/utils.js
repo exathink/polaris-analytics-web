@@ -24,25 +24,30 @@ export function allPairs(arr) {
 }
 
 function breakArrIntoTwo(colWidthBoundaries) {
-  return [colWidthBoundaries.filter(x => x < 1), colWidthBoundaries.filter(x => x >= 1)]
+  return [colWidthBoundaries.filter(x => x <= 1), colWidthBoundaries.filter(x => x > 1)]
 }
 
 export function getHistogramCategories(colWidthBoundaries, uom) {
-  let boundareis = colWidthBoundaries;
+  let boundaries = colWidthBoundaries;
   let lessThanOneArr = [];
-  if (colWidthBoundaries[0] < 1) {
+  if (colWidthBoundaries[0] <= 1) {
     const [lessThanOne, greaterThanEqualOne] = breakArrIntoTwo(colWidthBoundaries);
-    boundareis = greaterThanEqualOne;
+    boundaries = greaterThanEqualOne;
 
     lessThanOneArr = lessThanOne.map((x) => {
       if (x < 1 / 24) {
         return `< ${x * 24 * 60} mins`;
-      } else {
+      } else if ( x < 1 ){
         return `< ${x * 24} hours`;
+      } else {
+        // bit of a hack - the two uoms here currently are days and FTE Days
+        // so this will work - we should probably be using i18N utils here instead,
+        // but not sure how to fully integrate FTE days.
+        return `< 1 ${uom.replace('s', '')}`
       }
     });
   }
-  const res = pairwise(boundareis);
+  const res = pairwise(boundaries);
   let [min, max] = [res[0][0], res[res.length - 1][1]];
   let start = `< ${min} ${uom}`;
 
