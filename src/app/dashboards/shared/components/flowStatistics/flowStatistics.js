@@ -9,7 +9,7 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import { fromNow, percentileToText } from "../../../../helpers/utility";
+import { fromNow, percentileToText, humanizeDuration } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
@@ -101,11 +101,12 @@ export const FlowStatistic = ({
 };
 
 
-export const ResponseTime = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold}) => (
+export const ResponseTime = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, valueRender}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
+    valueRender={valueRender}
     metric={metric}
     uom={uom || 'Days'}
     precision={2}
@@ -334,6 +335,8 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
   return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
+    valueRender={ value => humanizeDuration(value)}
+    uom={' '}
     metric={'pullRequestAvgAge'}
     displayName={title || 'Code Review'}
     superScript={'Avg'}
