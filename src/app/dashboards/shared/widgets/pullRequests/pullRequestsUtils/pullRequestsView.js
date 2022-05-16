@@ -100,7 +100,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
         {before != null && (
-          <div className="tw-mr-auto">
+          <div className="tw-mr-2">
             <ClearFilters
               selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
               selectedMetric={"Pull Requests Closed"}
