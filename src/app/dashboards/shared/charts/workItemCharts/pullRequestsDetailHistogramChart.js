@@ -6,7 +6,7 @@ import {Colors} from "../../config";
 import {
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
-import {getHistogramCategories} from "../../../projects/shared/helper/utils";
+import {getHistogramCategories, getReadableTime} from "../../../projects/shared/helper/utils";
 
 function getTitle() {
   return "Number of Pull Requests"
@@ -58,12 +58,11 @@ export const PullRequestsDetailHistogramChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          const uom = "days";
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
               [getTitle(), this.point.y],
-              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
+              [`Average ${this.series.name}: `, `${getReadableTime(i18nNumber(intl, this.point.total / this.point.y, 2))}`],
             ],
           });
         },
