@@ -1,12 +1,5 @@
 import React from "react";
-import { ComponentCarousel } from "../../../components/componentCarousel/componentCarousel";
-import {
-  Cadence, CapacityEfficiency,
-  ContributorCount,
-  EffortOUT,
-  LatestClosed,
-  Volume
-} from "../../../components/flowStatistics/flowStatistics";
+import {CapacityEfficiency, ContributorCount, EffortOUT} from "../../../components/flowStatistics/flowStatistics";
 import styles from "./dashboard.module.css";
 
 export const ThroughputView = ({

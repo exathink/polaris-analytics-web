@@ -23,13 +23,33 @@ export function allPairs(arr) {
   return [[0, min], ...res, [max, Infinity]];
 }
 
+function breakArrIntoTwo(colWidthBoundaries) {
+  return [colWidthBoundaries.filter(x => x < 1), colWidthBoundaries.filter(x => x >= 1)]
+}
+
 export function getHistogramCategories(colWidthBoundaries, uom) {
-  const res = pairwise(colWidthBoundaries);
-  const [min, max] = [res[0][0], res[res.length - 1][1]];
+  let boundareis = colWidthBoundaries;
+  let lessThanOneArr = [];
+  if (colWidthBoundaries[0] < 1) {
+    const [lessThanOne, greaterThanEqualOne] = breakArrIntoTwo(colWidthBoundaries);
+    boundareis = greaterThanEqualOne;
+
+    lessThanOneArr = lessThanOne.map((x) => {
+      if (x < 1 / 24) {
+        return `< ${x * 24 * 60} mins`;
+      } else {
+        return `< ${x * 24} hours`;
+      }
+    });
+  }
+  const res = pairwise(boundareis);
+  let [min, max] = [res[0][0], res[res.length - 1][1]];
+  let start = `< ${min} ${uom}`;
+
   const middle = res.map((x) => `${x[0]} - ${x[1]} ${uom}`);
-  const start = `< ${min} ${uom}`;
+
   const end = `${max} + ${uom}`;
-  return [start, ...middle, end];
+  return [...lessThanOneArr, start, ...middle, end];
 }
 
 export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id}) {

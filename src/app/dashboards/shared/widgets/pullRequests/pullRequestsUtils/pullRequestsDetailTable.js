@@ -3,7 +3,7 @@ import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {fromNow, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
+import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
@@ -216,7 +216,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       defaultFilteredValue: selectedFilter != null ? [selectedFilter] : [],
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "age"),
-      render: (text) => <span className="tw-textXs">{i18nNumber(intl, Number(text), 2)} days</span>,
+      render: (text) => <span className="tw-textXs">{humanizeDuration(i18nNumber(intl, Number(text), 2))}</span>,
     },
     ...lastColArr
   ];

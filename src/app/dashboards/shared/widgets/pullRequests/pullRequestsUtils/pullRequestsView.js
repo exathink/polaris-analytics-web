@@ -8,7 +8,10 @@ import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
-const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
+// Here we are passing all values in days format for consistency sake
+// 1/48 days => 30mins, 6/24 days => 6 hours
+const COL_WIDTH_BOUNDARIES = [1/48, 6/24, 1, 3, 7];
 
 function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   if (closedWithinDays === 1 && pullRequests.length === 1) {
@@ -97,7 +100,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     <div className="tw-h-full">
       <div className="tw-flex tw-items-center tw-justify-end">
         {before != null && (
-          <div className="tw-mr-auto">
+          <div className="tw-mr-2">
             <ClearFilters
               selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
               selectedMetric={"Pull Requests Closed"}
