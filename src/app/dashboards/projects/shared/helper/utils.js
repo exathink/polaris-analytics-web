@@ -1,4 +1,4 @@
-import {formatDate, getTodayDate, humanizeDuration, i18nNumber} from "../../../../helpers/utility";
+import {formatDate, getTodayDate, i18nNumber} from "../../../../helpers/utility";
 import {WorkItemStateTypes} from "../../../shared/config";
 
 export function getTimePeriod(measurementWindow, before = getTodayDate()) {
