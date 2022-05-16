@@ -3,8 +3,8 @@ import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {fromNow, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
-import {allPairs, getHistogramCategories, getReadableTime} from "../../../../projects/shared/helper/utils";
+import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
+import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
@@ -216,7 +216,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       defaultFilteredValue: selectedFilter != null ? [selectedFilter] : [],
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "age"),
-      render: (text) => <span className="tw-textXs">{getReadableTime(i18nNumber(intl, Number(text), 2))}</span>,
+      render: (text) => <span className="tw-textXs">{humanizeDuration(i18nNumber(intl, Number(text), 2))}</span>,
     },
     ...lastColArr
   ];

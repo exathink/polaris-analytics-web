@@ -27,10 +27,6 @@ function breakArrIntoTwo(colWidthBoundaries) {
   return [colWidthBoundaries.filter(x => x < 1), colWidthBoundaries.filter(x => x >= 1)]
 }
 
-export function getReadableTime(days) {
-  return humanizeDuration(days)
-}
-
 export function getHistogramCategories(colWidthBoundaries, uom) {
   let boundareis = colWidthBoundaries;
   let lessThanOneArr = [];

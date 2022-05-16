@@ -1,12 +1,12 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {i18nNumber, pick} from "../../../../helpers/utility";
+import {humanizeDuration, i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {Colors} from "../../config";
 import {
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
-import {getHistogramCategories, getReadableTime} from "../../../projects/shared/helper/utils";
+import {getHistogramCategories} from "../../../projects/shared/helper/utils";
 
 function getTitle() {
   return "Number of Pull Requests"
@@ -62,7 +62,7 @@ export const PullRequestsDetailHistogramChart = Chart({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
               [getTitle(), this.point.y],
-              [`Average ${this.series.name}: `, `${getReadableTime(i18nNumber(intl, this.point.total / this.point.y, 2))}`],
+              [`Average ${this.series.name}: `, `${humanizeDuration(i18nNumber(intl, this.point.total / this.point.y, 2))}`],
             ],
           });
         },
