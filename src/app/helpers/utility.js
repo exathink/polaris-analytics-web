@@ -194,6 +194,10 @@ export function fromNow(serverCommitDate) {
   return serverCommitDate ? moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true) : 'None'
 }
 
+export function humanizeDuration(days) {
+  return moment.duration(days, "days").humanize();
+}
+
 export function isToday(serverCommitDate) {
   return moment.duration(moment.utc().diff(toMoment(serverCommitDate))).asDays() < 1;
 }

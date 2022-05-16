@@ -1,4 +1,4 @@
-import {formatDate, getTodayDate, i18nNumber} from "../../../../helpers/utility";
+import {formatDate, getTodayDate, humanizeDuration, i18nNumber} from "../../../../helpers/utility";
 import {WorkItemStateTypes} from "../../../shared/config";
 
 export function getTimePeriod(measurementWindow, before = getTodayDate()) {
@@ -28,15 +28,7 @@ function breakArrIntoTwo(colWidthBoundaries) {
 }
 
 export function getReadableTime(days) {
-  if (days < 1) {
-    if (days < 1 / 24) {
-      return `${(days * 24 * 60).toFixed(2)} mins`;
-    } else {
-      return `${(days * 24).toFixed(2)} hours`;
-    }
-  } else {
-    return `${days} days`;
-  }
+  return humanizeDuration(days)
 }
 
 export function getHistogramCategories(colWidthBoundaries, uom) {
