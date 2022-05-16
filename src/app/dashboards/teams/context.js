@@ -10,8 +10,6 @@ import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
-import Alignment from "./alignment/topic";
-import Balance from "./balance/topic";
 import Configure from "./configure/topic";
 
 const messages = {
