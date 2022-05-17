@@ -101,7 +101,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
             before != null && (
               <div className="tw-mr-2">
                 <ClearFilters
-                  selectedFilter={`${measurementWindow} days ending ${i18nDate(intl, getServerDate(before))}`}
+                  selectedFilter={`${measurementWindowRange} days ending ${i18nDate(intl, getServerDate(before))}`}
                   selectedMetric={"Cards Closed"}
                   stateType={WorkItemStateTypes.closed}
                   handleClearClick={() => {
