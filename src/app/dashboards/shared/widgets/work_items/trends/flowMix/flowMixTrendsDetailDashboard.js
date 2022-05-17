@@ -9,6 +9,10 @@ import {
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
+import {WorkItemStateTypes} from "../../../../config";
+import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
+import {useIntl} from "react-intl";
 
 const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
@@ -29,7 +33,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
 
   }
 ) => {
-
+  const intl = useIntl();
   const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, 'specs');
   const specsOnly = workItemScope === 'specs';
   const [before, setBefore] = React.useState();
@@ -89,7 +93,25 @@ export const DimensionFlowMixTrendsDetailDashboard = (
           )}
         />
       </DashboardRow>
-      <DashboardRow h={"50%"} title="Card Details">
+      <DashboardRow
+        h={"50%"}
+        title="Card Details"
+        controls={[
+          () =>
+            before != null && (
+              <div className="tw-mr-2">
+                <ClearFilters
+                  selectedFilter={`${measurementWindow} days ending ${i18nDate(intl, getServerDate(before))}`}
+                  selectedMetric={"Cards Closed"}
+                  stateType={WorkItemStateTypes.closed}
+                  handleClearClick={() => {
+                    setBefore?.(undefined);
+                  }}
+                />
+              </div>
+            ),
+        ]}
+      >
         <DashboardWidget
           w={1}
           name={"card-details-mix"}
