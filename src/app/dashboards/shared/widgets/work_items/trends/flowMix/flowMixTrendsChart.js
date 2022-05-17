@@ -1,14 +1,14 @@
 import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, toMoment} from "../../../../../../helpers/utility";
+import {pick, toMoment} from "../../../../../../helpers/utility";
 import {Colors,FlowTypeDisplayName} from "../../../../config";
 
 export const FlowMixTrendsChart = Chart({
-  chartUpdateProps: props => props,
+  chartUpdateProps: props => pick(props, "flowMixTrends", "measurementWindow", "measurementPeriod", "specsOnly", "showCounts"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, chartOptions={}, intl}) => {
+  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, chartOptions={}, intl, onPointClick}) => {
 
     const {alignTitle} = chartOptions;
 
@@ -182,7 +182,17 @@ export const FlowMixTrendsChart = Chart({
       plotOptions: {
         series: {
           animation: false,
+          allowPointSelect: true,
+          cursor: "pointer",
+          point: {
+            events: {
+              click: function () {
+                const {flowMixItem, measurement: {measurementDate}} = this;
 
+                onPointClick({item: flowMixItem, measurementDate});
+              },
+            },
+          },
         }
       }
       ,
