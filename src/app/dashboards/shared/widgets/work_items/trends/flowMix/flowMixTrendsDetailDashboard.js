@@ -132,8 +132,6 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               // cycleTimeTarget={cycleTimeTarget}
               // leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               // cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              // yAxisScale={yAxisScale}
-              // setYAxisScale={setYAxisScale}
               includeSubTasks={includeSubTasks}
               chartOrTable={"table"}
             />
