@@ -62,10 +62,16 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   };
 }
 
-export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric}) {
+export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilter}) {
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey),
+    customRender: comboColumnTitleRender(callBacks),
   });
+
+  const filterState = {
+      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+      render: comboColumnTitleRender({...callBacks, search: false}),
+  }
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
   const metricRenderState = {
     render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
@@ -157,7 +163,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       key: "name",
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      ...titleSearchState,
+      ...(supportsFilter ? filterState : titleSearchState),
     },
     {
       title: "State",
@@ -220,6 +226,7 @@ export const WorkItemsDetailTable = injectIntl(
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
+    supportsFilter,
     onChange
   }) => {
     // get unique workItem types
@@ -240,6 +247,7 @@ export const WorkItemsDetailTable = injectIntl(
       intl,
       selectedFilter,
       selectedMetric,
+      supportsFilter
     });
 
     return (

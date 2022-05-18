@@ -29,6 +29,7 @@ export function WorkItemsDetailHistogramTable({
   tableSelectedMetric,
   setShowPanel,
   setWorkItemKey,
+  supportsFilter
 }) {
   return (
     <React.Fragment>
@@ -55,6 +56,7 @@ export function WorkItemsDetailHistogramTable({
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
             colWidthBoundaries={colWidthBoundaries}
+            supportsFilter={supportsFilter}
           />
         </div>
       )}

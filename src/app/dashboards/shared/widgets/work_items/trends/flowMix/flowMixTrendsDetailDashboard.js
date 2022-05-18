@@ -134,6 +134,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               // cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasks}
               chartOrTable={"table"}
+              supportsFilter={true}
             />
           )}
         />
