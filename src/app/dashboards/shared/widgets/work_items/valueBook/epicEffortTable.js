@@ -283,7 +283,7 @@ function customColTitleRender({setShowPanel, setWorkItemKey}) {
         return comboColumnEpicTitleRender(text, record, searchText);
       }
     }
-    return text && comboColumnTitleRender(setShowPanel, setWorkItemKey)(text, record, searchText);
+    return text && comboColumnTitleRender({setShowPanel, setWorkItemKey})(text, record, searchText);
   };
 }
 
