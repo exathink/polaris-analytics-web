@@ -8,11 +8,11 @@ import {
   useTrendsControlBarState,
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemStateTypes} from "../../../../config";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
+import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
 
 const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
@@ -37,6 +37,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, 'specs');
   const specsOnly = workItemScope === 'specs';
   const [before, setBefore] = React.useState();
+  const [workItemTypeFilter, setFilter] = React.useState(null);
 
   const [
     [daysRange, setDaysRange],
@@ -89,6 +90,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               showCounts={true}
               includeSubTasks={includeSubTasks}
               setBefore={setBefore}
+              setFilter={setFilter}
             />
           )}
         />
@@ -106,6 +108,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
                   stateType={WorkItemStateTypes.closed}
                   handleClearClick={() => {
                     setBefore?.(undefined);
+                    setFilter?.(undefined);
                   }}
                 />
               </div>
@@ -116,25 +119,18 @@ export const DimensionFlowMixTrendsDetailDashboard = (
           w={1}
           name={"card-details-mix"}
           render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
+            <CardDetailsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              days={measurementWindowRange}
               specsOnly={specsOnly}
+              before={before}
+              includeSubTasks={includeSubTasks}
+              latestWorkItemEvent={latestWorkItemEvent}
               view={view}
               context={context}
-              showAll={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              days={measurementWindowRange}
-              before={before}
-              initialDays={measurementWindowRange}
-              initialMetric={"leadTime"}
-              // leadTimeTarget={leadTimeTarget}
-              // cycleTimeTarget={cycleTimeTarget}
-              // leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              // cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasks}
-              chartOrTable={"table"}
               supportsFilter={true}
+              workItemTypeFilter={workItemTypeFilter}
             />
           )}
         />
