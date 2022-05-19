@@ -1,6 +1,6 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
-import {injectIntl} from "react-intl";
+import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
@@ -69,6 +69,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 
   const filterState = {
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       render: comboColumnTitleRender({...callBacks, search: false}),
   }
@@ -215,20 +216,21 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
-export const WorkItemsDetailTable = injectIntl(
+export const WorkItemsDetailTable = 
   ({
     view,
     stateType,
     tableData,
-    intl,
     setShowPanel,
     setWorkItemKey,
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
     supportsFilter,
-    onChange
+    onChange,
+    loading
   }) => {
+    const intl = useIntl();
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -258,7 +260,7 @@ export const WorkItemsDetailTable = injectIntl(
         height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
         rowKey={(record) => record.rowKey}
         onChange={onChange}
+        loading={loading}
       />
     );
-  }
-);
+  };

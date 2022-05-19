@@ -70,7 +70,6 @@ export function CardDetailsWidget({
         view={view}
         stateType={WorkItemStateTypes.closed}
         tableData={tableData}
-        selectedMetric={""}
         selectedFilter={workItemTypeFilter}
         setShowPanel={setShowPanel}
         setWorkItemKey={setWorkItemKey}
