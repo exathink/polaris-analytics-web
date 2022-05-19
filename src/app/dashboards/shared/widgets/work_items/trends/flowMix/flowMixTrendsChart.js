@@ -184,6 +184,13 @@ export const FlowMixTrendsChart = Chart({
           animation: false,
           allowPointSelect: true,
           cursor: "pointer",
+          states: {
+            select: {
+              color: null,
+              borderWidth: 2,
+              borderColor: Colors.HistogramSelection,
+            },
+          },
           point: {
             events: {
               click: function () {
