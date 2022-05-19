@@ -1,10 +1,8 @@
 import React from "react";
-import {pick} from "../../../../../../helpers/utility";
+import {Loading} from "../../../../../../components/graphql/loading";
+import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import { WorkItemStateTypes } from "../../../../config";
-import {WorkItemsDetailTable} from "../../workItemsDetailTable";
-const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+import {CardDetailsView} from "./dimensionCardDetailsView";
 
 export function CardDetailsWidget({
   dimension,
@@ -18,7 +16,7 @@ export function CardDetailsWidget({
   view,
   context,
   supportsFilter,
-  workItemTypeFilter
+  workItemTypeFilter,
 }) {
   const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
@@ -31,58 +29,20 @@ export function CardDetailsWidget({
     referenceString: latestWorkItemEvent,
   });
 
-  const tableData = React.useMemo(
-    () =>
-{
-  const edgeNodes = data?.[dimension]?.workItemDeliveryCycles?.edges??[]
-  return edgeNodes.map((edge) =>
-    pick(
-      edge.node,
-      "id",
-      "name",
-      "key",
-      "displayId",
-      "workItemKey",
-      "workItemType",
-      "state",
-      "stateType",
-      "startDate",
-      "endDate",
-      "leadTime",
-      "cycleTime",
-      "latency",
-      "duration",
-      "effort",
-      "authorCount",
-      "teamNodeRefs",
-      "epicName"
-    )
-  );
-},
-    [data, dimension]
-  );
+  if (loading) return <Loading />;
+  if (error) {
+    logGraphQlError("CardDetailsWidget.useQueryProjectClosedDeliveryCycleDetail", error);
+    return null;
+  }
 
-  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
-    <div className="tw-h-full tw-w-full">
-      <WorkItemsDetailTable
-        key={workItemTypeFilter}
-        view={view}
-        stateType={WorkItemStateTypes.closed}
-        tableData={tableData}
-        selectedFilter={workItemTypeFilter}
-        setShowPanel={setShowPanel}
-        setWorkItemKey={setWorkItemKey}
-        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        supportsFilter={supportsFilter}
-        loading={loading}
-      />
-      <CardInspectorWithDrawer
-        workItemKey={workItemKey}
-        showPanel={showPanel}
-        setShowPanel={setShowPanel}
-        context={context}
-      />
-    </div>
+    <CardDetailsView
+      data={data}
+      dimension={dimension}
+      view={view}
+      context={context}
+      supportsFilter={supportsFilter}
+      workItemTypeFilter={workItemTypeFilter}
+    />
   );
 }
