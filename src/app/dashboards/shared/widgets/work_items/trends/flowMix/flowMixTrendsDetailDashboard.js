@@ -129,7 +129,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               latestWorkItemEvent={latestWorkItemEvent}
               view={view}
               context={context}
-              supportsFilter={true}
+              supportsFilterOnCard={true}
               workItemTypeFilter={workItemTypeFilter}
             />
           )}

@@ -62,7 +62,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   };
 }
 
-export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilter}) {
+export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
     customRender: comboColumnTitleRender(callBacks),
   });
@@ -164,7 +164,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       key: "name",
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      ...(supportsFilter ? filterState : titleSearchState),
+      ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
       title: "State",
@@ -226,7 +226,7 @@ export const WorkItemsDetailTable =
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
-    supportsFilter,
+    supportsFilterOnCard,
     onChange,
     loading
   }) => {
@@ -249,7 +249,7 @@ export const WorkItemsDetailTable =
       intl,
       selectedFilter,
       selectedMetric,
-      supportsFilter
+      supportsFilterOnCard
     });
 
     return (

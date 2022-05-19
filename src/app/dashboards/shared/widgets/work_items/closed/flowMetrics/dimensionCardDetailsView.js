@@ -5,7 +5,7 @@ import {WorkItemStateTypes} from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilter}) {
+export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard}) {
   const tableData = React.useMemo(() => {
     const edgeNodes = data?.[dimension]?.workItemDeliveryCycles?.edges ?? [];
     return edgeNodes.map((edge) =>
@@ -44,7 +44,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
         setShowPanel={setShowPanel}
         setWorkItemKey={setWorkItemKey}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        supportsFilter={supportsFilter}
+        supportsFilterOnCard={supportsFilterOnCard}
       />
       <CardInspectorWithDrawer
         workItemKey={workItemKey}

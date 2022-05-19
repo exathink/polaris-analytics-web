@@ -15,7 +15,7 @@ export function CardDetailsWidget({
   referenceString: latestWorkItemEvent,
   view,
   context,
-  supportsFilter,
+  supportsFilterOnCard,
   workItemTypeFilter,
 }) {
   const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
@@ -41,7 +41,7 @@ export function CardDetailsWidget({
       dimension={dimension}
       view={view}
       context={context}
-      supportsFilter={supportsFilter}
+      supportsFilterOnCard={supportsFilterOnCard}
       workItemTypeFilter={workItemTypeFilter}
     />
   );
