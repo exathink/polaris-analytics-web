@@ -36,7 +36,6 @@ const DeliveryCyclesFlowMetricsView = ({
   chartOrTable,
   yAxisScale: parentYAxisScale,
   setYAxisScale: parentSetYAxisScale,
-  supportsFilter
 }) => {
   const model = React.useMemo(
     () =>
@@ -266,7 +265,6 @@ const DeliveryCyclesFlowMetricsView = ({
         tableSelectedMetric={selectedMetric.key}
         setShowPanel={setShowPanel}
         setWorkItemKey={setWorkItemKey}
-        supportsFilter={supportsFilter}
       />
 
       <CardInspectorWithDrawer
