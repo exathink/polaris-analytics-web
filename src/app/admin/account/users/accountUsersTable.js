@@ -7,7 +7,7 @@ import {Table} from "antd";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {analytics_service} from "../../../services/graphql";
 import {withAntPagination} from "../../../components/graphql/withAntPagination";
-import {EditUserFormWithDrawer} from "./editUserForm";
+import {EditUserForm} from "./editUserForm";
 
 const {Column} = Table;
 
@@ -83,8 +83,7 @@ const AccountUsersPaginatedTable = ({
               width="5%"
               render={(value, record) => {
                 return (
-                  <EditUserFormWithDrawer
-                    drawerTitle={"Edit User"}
+                  <EditUserForm
                     onSubmit={() => {}}
                     initialValues={{email: record.email, firstName: record.firstName, lastName: record.lastName, role: record.role}}
                   />
