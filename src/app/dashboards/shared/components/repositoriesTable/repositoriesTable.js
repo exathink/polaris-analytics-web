@@ -59,13 +59,13 @@ function getToggleCol(draftRecordsState, tableData) {
       setDraftState(
         draftState.map((d) => {
           if (d.key === recordKey) {
-            return {...d, excluded: checked};
+            return {...d, excluded: !checked};
           }
           return d;
         })
       );
     } else {
-      setDraftState([...draftState, {key: recordKey, excluded: checked}]);
+      setDraftState([...draftState, {key: recordKey, excluded: !checked}]);
     }
   }
 
@@ -78,14 +78,14 @@ function getToggleCol(draftRecordsState, tableData) {
   });
 
   return {
-    title: "Excluded",
+    title: "Include",
     dataIndex: "exclude_switch",
     key: "exclude_switch",
     width: "5%",
     align: "center",
     render: (text, record) => (
       <Switch
-        checked={excludeRecords.find((x) => x.key === record.key)?.excluded}
+        checked={!excludeRecords.find((x) => x.key === record.key)?.excluded}
         onChange={(checked, e) => handleChange({recordKey: record.key, checked: checked})}
         size="small"
         className="!tw-rounded-[100px]"
