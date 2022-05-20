@@ -78,7 +78,7 @@ function getToggleCol(draftRecordsState, tableData) {
   });
 
   return {
-    title: "Excluded",
+    title: "Include",
     dataIndex: "exclude_switch",
     key: "exclude_switch",
     width: "5%",
