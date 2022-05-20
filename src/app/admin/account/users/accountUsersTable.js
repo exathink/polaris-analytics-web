@@ -7,6 +7,7 @@ import {Table} from 'antd';
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {analytics_service} from '../../../services/graphql';
 import {withAntPagination} from "../../../components/graphql/withAntPagination";
+import Button from "../../../../components/uielements/button";
 
 
 const {Column} = Table;
@@ -66,20 +67,28 @@ const AccountUsersPaginatedTable = (
             dataSource={tableData}
             size="middle"
             loading={loading}
-            rowKey={record => record.id}
+            rowKey={(record) => record.id}
             pagination={{
               total: totalItems,
               defaultPageSize: pageSize,
-              hideOnSinglePage: true
-
+              hideOnSinglePage: true,
             }}
             onChange={onNewPage}
           >
-            <Column title={"Name"} dataIndex={"name"} key={"name"}/>
-            <Column title={"Email"} dataIndex={"email"} key={"email"}/>
-            <Column title={"Role"} dataIndex={"role"} key={"role"}/>
+            <Column title={"Name"} dataIndex={"name"} key={"name"} />
+            <Column title={"Email"} dataIndex={"email"} key={"email"} />
+            <Column title={"Role"} dataIndex={"role"} key={"role"} />
+            {view === "detail" && (
+              <Column
+                title={""}
+                dataIndex={""}
+                key={"edit"}
+                width="5%"
+                render={(value, record) => <Button type="primary">Edit</Button>}
+              />
+            )}
           </Table>
-        )
+        );
       }
     }
   </Query>
