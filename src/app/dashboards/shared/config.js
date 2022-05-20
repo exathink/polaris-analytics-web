@@ -103,6 +103,12 @@ export const FlowTypeDisplayName = {
   task: 'Platform'
 }
 
+export const FlowTypeWorkItemType = {
+  feature: 'story',
+  defect: 'bug',
+  task: 'task'
+}
+
 export const WorkItemTypeScatterRadius = {
   epic: 8,
   issue: 5,

@@ -82,7 +82,8 @@ export const ProjectFlowMixTrendsStatsView = ({
 
 export const ProjectFlowMixTrendsView = (
   {
-    flowMixTrends,
+    data,
+    dimension,
     measurementPeriod,
     measurementWindow,
     specsOnly,
@@ -92,13 +93,23 @@ export const ProjectFlowMixTrendsView = (
     view,
     showCounts,
     target,
-  }) => (
-    asStatistic ?
+    onPointClick
+  }) => {
+    const {flowMixTrends} = React.useMemo(() => data[dimension], [data, dimension]);
+    return asStatistic ?
       <ProjectFlowMixTrendsStatsView
         {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, asCard, target}  }
       />
       :
       <FlowMixTrendsChart
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, target, showCounts, chartOptions, view}  }
+        flowMixTrends={flowMixTrends}
+        measurementPeriod={measurementPeriod}
+        measurementWindow={measurementWindow}
+        specsOnly={specsOnly}
+        target={target}
+        showCounts={showCounts}
+        chartOptions={chartOptions}
+        view={view}
+        onPointClick={onPointClick}
       />
-)
+  }

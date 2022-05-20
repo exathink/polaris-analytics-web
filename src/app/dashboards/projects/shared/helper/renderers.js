@@ -59,51 +59,58 @@ export function getPullRequestStateTypeIcon(stateType, size = "16px") {
 }
 
 // setPlacement is optional property when we need to specify the position of cardInspector
-export function comboColumnTitleRender(setShowPanel, setWorkItemKey, setPlacement) {
+export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlacement, search}) {
   return (text, record, searchText) =>
-    text && (
-      <div
-        onClick={() => {
-          setPlacement?.("top");
-          setShowPanel(true);
-          setWorkItemKey(record.workItemKey || record.key);
-        }}
-        className={styles.comboCardCol}
-      >
-        <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
-        <div className={styles.title}>
-          {searchText ? (
-            <Highlighter
-              highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-              searchWords={searchText || ""}
-              textToHighlight={text}
-            />
-          ) : (
-            truncateString(text, 38, "#6b7280")
-          )}
-        </div>
-        <div className={styles.displayId}>
-          <Highlighter
-            highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-            searchWords={searchText || ""}
-            textToHighlight={record.displayId}
-          />
-          {record.epicName && (
-            <Tag color="#108ee9" style={{marginLeft: "30px"}}>
+    {
+      searchText = search===false ? undefined : searchText;
+      return (
+        text && (
+          <div
+            onClick={() => {
+              setPlacement?.("top");
+              setShowPanel(true);
+              setWorkItemKey(record.workItemKey || record.key);
+            }}
+            className={styles.comboCardCol}
+          >
+            <div className={styles.workItemType}>
+              {workItemTypeImageMap[record.workItemType] ?? record.workItemType}
+            </div>
+            <div className={styles.title}>
               {searchText ? (
                 <Highlighter
                   highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
                   searchWords={searchText || ""}
-                  textToHighlight={record.epicName || ""}
+                  textToHighlight={text}
                 />
               ) : (
-                truncateString(record.epicName, 25, "#108ee9")
+                truncateString(text, 38, "#6b7280")
               )}
-            </Tag>
-          )}
-        </div>
-      </div>
-    );
+            </div>
+            <div className={styles.displayId}>
+              <Highlighter
+                highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+                searchWords={searchText || ""}
+                textToHighlight={record.displayId}
+              />
+              {record.epicName && (
+                <Tag color="#108ee9" style={{marginLeft: "30px"}}>
+                  {searchText ? (
+                    <Highlighter
+                      highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+                      searchWords={searchText || ""}
+                      textToHighlight={record.epicName || ""}
+                    />
+                  ) : (
+                    truncateString(record.epicName, 25, "#108ee9")
+                  )}
+                </Tag>
+              )}
+            </div>
+          </div>
+        )
+      );
+    }
 }
 
 export function ComboCardTitleColumn({record}) {
