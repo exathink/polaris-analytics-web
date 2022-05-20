@@ -1,6 +1,6 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
-import {injectIntl} from "react-intl";
+import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
@@ -62,10 +62,17 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
   };
 }
 
-export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric}) {
+export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: comboColumnTitleRender(callBacks.setShowPanel, callBacks.setWorkItemKey),
+    customRender: comboColumnTitleRender(callBacks),
   });
+
+  const filterState = {
+      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+      render: comboColumnTitleRender({...callBacks, search: false}),
+  }
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
   const metricRenderState = {
     render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
@@ -157,7 +164,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       key: "name",
       width: "12%",
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      ...titleSearchState,
+      ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
       title: "State",
@@ -209,19 +216,21 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
-export const WorkItemsDetailTable = injectIntl(
+export const WorkItemsDetailTable = 
   ({
     view,
     stateType,
     tableData,
-    intl,
     setShowPanel,
     setWorkItemKey,
     colWidthBoundaries,
     selectedFilter,
     selectedMetric,
-    onChange
+    supportsFilterOnCard,
+    onChange,
+    loading
   }) => {
+    const intl = useIntl();
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -240,6 +249,7 @@ export const WorkItemsDetailTable = injectIntl(
       intl,
       selectedFilter,
       selectedMetric,
+      supportsFilterOnCard
     });
 
     return (
@@ -250,7 +260,7 @@ export const WorkItemsDetailTable = injectIntl(
         height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
         rowKey={(record) => record.rowKey}
         onChange={onChange}
+        loading={loading}
       />
     );
-  }
-);
+  };

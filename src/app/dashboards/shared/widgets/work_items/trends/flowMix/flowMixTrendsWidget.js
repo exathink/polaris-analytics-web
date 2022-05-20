@@ -4,6 +4,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionFlowMixTrends} from "./useQueryDimensionFlowMixTrends";
 import {ProjectFlowMixTrendsView} from "./flowMixTrendsView";
 import {DimensionFlowMixTrendsDetailDashboard} from "./flowMixTrendsDetailDashboard";
+import { getServerDate } from "../../../../../../helpers/utility";
 
 export const DimensionFlowMixTrendsWidget = (
   {
@@ -28,6 +29,8 @@ export const DimensionFlowMixTrendsWidget = (
     chartOptions,
     pollInterval,
     includeSubTasks,
+    setBefore,
+    setFilter
   }) => {
 
     const {loading, error, data} = useQueryDimensionFlowMixTrends(
@@ -43,11 +46,12 @@ export const DimensionFlowMixTrendsWidget = (
     );
     if (loading) return <Loading/>;
     if (error) return null;
-    const {flowMixTrends} = data[dimension];
+
     return (
       view !== 'detail' ?
         <ProjectFlowMixTrendsView
-          flowMixTrends={flowMixTrends}
+          data={data}
+          dimension={dimension}
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           asStatistic={asStatistic}
@@ -57,6 +61,10 @@ export const DimensionFlowMixTrendsWidget = (
           view={view}
           chartOptions={chartOptions}
           showCounts={showCounts}
+          onPointClick={({item, measurementDate}) => {
+            setBefore?.(getServerDate(measurementDate));
+            setFilter?.(item.category)
+        }}
         />
         :
         <DimensionFlowMixTrendsDetailDashboard
