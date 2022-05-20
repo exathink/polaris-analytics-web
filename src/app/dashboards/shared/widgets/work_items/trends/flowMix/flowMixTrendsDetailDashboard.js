@@ -9,7 +9,7 @@ import {
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
-import {WorkItemStateTypes} from "../../../../config";
+import {FlowTypeWorkItemType, WorkItemStateTypes, FlowTypeDisplayName} from "../../../../config";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
@@ -104,7 +104,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               <div className="tw-mr-2">
                 <ClearFilters
                   selectedFilter={`${measurementWindowRange} days ending ${i18nDate(intl, getServerDate(before))}`}
-                  selectedMetric={`${specsOnly ? "Specs": "Cards"} Closed`}
+                  selectedMetric={`${FlowTypeDisplayName[workItemTypeFilter]} Closed`}
                   stateType={WorkItemStateTypes.closed}
                   handleClearClick={() => {
                     setBefore?.(undefined);
@@ -130,7 +130,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               view={view}
               context={context}
               supportsFilterOnCard={true}
-              workItemTypeFilter={workItemTypeFilter}
+              workItemTypeFilter={FlowTypeWorkItemType[workItemTypeFilter]}
             />
           )}
         />

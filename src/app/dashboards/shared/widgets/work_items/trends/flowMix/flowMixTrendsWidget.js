@@ -5,7 +5,6 @@ import {useQueryDimensionFlowMixTrends} from "./useQueryDimensionFlowMixTrends";
 import {ProjectFlowMixTrendsView} from "./flowMixTrendsView";
 import {DimensionFlowMixTrendsDetailDashboard} from "./flowMixTrendsDetailDashboard";
 import { getServerDate } from "../../../../../../helpers/utility";
-import {FlowTypeWorkItemType} from "../../../../config";
 
 export const DimensionFlowMixTrendsWidget = (
   {
@@ -64,7 +63,7 @@ export const DimensionFlowMixTrendsWidget = (
           showCounts={showCounts}
           onPointClick={({item, measurementDate}) => {
             setBefore?.(getServerDate(measurementDate));
-            setFilter?.(FlowTypeWorkItemType[item.category])
+            setFilter?.(item.category)
         }}
         />
         :
