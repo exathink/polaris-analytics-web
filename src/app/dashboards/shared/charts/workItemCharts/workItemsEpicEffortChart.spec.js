@@ -64,13 +64,8 @@ const fixedChartConfig = {
   chart: {
     ...commonChartProps,
   },
-  title: {
-    text: expect.stringContaining("Allocation:"),
-    align: "left",
-  },
-  subtitle: {
-    text: expect.stringContaining(`Volume  by Epic`),
-  },
+
+
   xAxis: {
     type: "linear",
 

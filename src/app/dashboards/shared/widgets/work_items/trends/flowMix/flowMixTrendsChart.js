@@ -96,11 +96,11 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${specsOnly ? 'Effort Allocation' : 'Flow Mix'}: Last ${measurementPeriod} days`,
+        text: `${specsOnly ? 'Capacity Allocation by Value Type' : 'Flow Mix'}: Last ${measurementPeriod} days`,
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay} by Value Type` : `% of ${metricDisplay} by Value Type`,
+        text: showCounts ? `% of ${metricDisplay}` : `% of ${metricDisplay}`,
         align: alignTitle || 'center',
       },
       legend: {
