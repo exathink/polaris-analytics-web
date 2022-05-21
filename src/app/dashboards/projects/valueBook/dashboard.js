@@ -77,7 +77,7 @@ function ValueDashboard({
         />
         <DashboardWidget
           name="flow-type-flow-mix"
-          title={`${specsOnly ? 'Effort Allocation' : 'Flow Mix'}`}
+          title={`${specsOnly ? 'Capacity Allocation' : 'Flow Mix'}`}
           subtitle={`Last ${flowAnalysisPeriod} Days`}
           className={styles.valueMix}
           render={({view}) => (
