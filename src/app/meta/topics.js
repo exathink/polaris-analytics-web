@@ -4,12 +4,12 @@ import {FormattedMessage} from 'react-intl.macro';
 export const Topics = {
   flow: {
     name: 'flow',
-    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow"/>),
+    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analysis"/>),
     icon: 'ion-ios-infinite-outline'
   },
   wip: {
     name: 'wip',
-    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
+    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Analysis"/>),
     icon: 'ion-ios-pulse-strong'
   },
   productVideos: {
@@ -136,5 +136,10 @@ export const Topics = {
     name: 'configure',
     display: () => (<FormattedMessage id='topics.configure' defaultMessage="Configure"/>),
     icon: 'ion-settings' //TODO: also this ion-ios-settings-strong
-  }
+  },
+  home: {
+    name: 'home',
+    display: () => (<FormattedMessage id='topics.home' defaultMessage="Home"/>),
+    icon: 'ion-ios-home'
+  },
 };

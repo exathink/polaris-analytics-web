@@ -39,6 +39,11 @@ const context : Context = {
         display: match => messages.instanceDisplay(match.params.project),
         routes: [
           {
+
+            match: '360-view',
+            topic: Trends
+          },
+          {
             match: 'flow',
             topic: Flow
           },
@@ -49,15 +54,6 @@ const context : Context = {
           {
             match: 'quality',
             topic: Quality
-          },
-          {
-            match: 'alignment',
-            topic: Alignment
-          },
-          {
-
-            match: '360-view',
-            topic: Trends
           },
           {
             match: 'contributors',
@@ -73,7 +69,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'flow'
+            redirect: '360-view'
           }
         ]
       }
