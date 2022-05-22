@@ -129,6 +129,7 @@ function TrendsDashboard({
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
+              showAnnotations={true}
               latestWorkItemEvent={latestWorkItemEvent}
               defaultSeries={["leadTime", "cycleTime", 'effort']}
               includeSubTasks={includeSubTasksFlowMetrics}
