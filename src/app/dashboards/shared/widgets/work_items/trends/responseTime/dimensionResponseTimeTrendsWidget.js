@@ -29,7 +29,8 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
     setSeriesName,
     defaultSeries,
     pollInterval,
-    includeSubTasks
+    includeSubTasks,
+    showAnnotations,
   }) => {
 
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
@@ -71,6 +72,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
           }
         }}
         view={view}
+        showAnnotations={showAnnotations}
         specsOnly={specsOnly}
         defaultSeries={defaultSeries}
       />
