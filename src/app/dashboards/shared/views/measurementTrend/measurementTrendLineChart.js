@@ -3,6 +3,9 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {i18nNumber, pick, toMoment} from "../../../../helpers/utility";
 import {Colors} from "../../../shared/config";
 import {getMetricRange} from "../../../shared/helpers/statsUtils";
+import {Highcharts} from "../../../../framework/viz/charts"
+
+require('highcharts/modules/annotations')(Highcharts);
 
 function getPlotBands(config, measurements, metrics, plotLinesY, intl) {
   if (config.plotBands) {
@@ -121,6 +124,30 @@ function getYAxisRange(plotLinesY, min, max) {
   }
 }
 
+function getAnnotations(config, measurements, intl) {
+  let annotations = [];
+  if (config.annotations != null) {
+    annotations = config.annotations.map(
+      annotation => ({
+        ...annotation,
+        labels: annotation.labels.map(
+          label => ({
+            ...label,
+            point: getPointId(label.seriesKey, label.index),
+            text: label.getText(
+              measurements, label.seriesKey, label.index, intl
+            )
+          })
+        )
+      })
+    )
+  }
+  return annotations
+}
+
+function getPointId(seriesKey, index) {
+  return `${seriesKey}:${index}`
+}
 
 export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
   const series = metrics.map(
@@ -133,6 +160,7 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
       allowPointSelect: true,
       data: measurements.map(
         (measurement, index) => ({
+          id: getPointId(metric.key, index),
           x: toMoment(measurement.measurementDate, true).valueOf(),
           y: metric.value ? metric.value(measurement) : measurement[metric.key],
           measurement: {...measurement, key: metric.key, index: index},
@@ -221,6 +249,7 @@ export const MeasurementTrendLineChart = Chart({
             animation: false,
           }
         },
+        annotations: getAnnotations(config, measurements, intl) || [],
         time: {
           // Since we are already passing in UTC times we
           // dont need the chart to translate the time to UTC
