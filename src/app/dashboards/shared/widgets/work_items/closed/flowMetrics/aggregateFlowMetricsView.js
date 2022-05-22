@@ -355,7 +355,7 @@ export const ResponseTimeDetailView = (
         />
       </div>
       <div className={styles.text1}>
-        <span className={'tw-textXs tw-grey tw-italic'}>Cost of Change</span>
+        <span className={'tw-textXs tw-grey tw-italic'}>Value Added</span>
       </div>
       <div className={styles.cycleTime}>
         <AvgCycleTime
@@ -394,7 +394,7 @@ export const ResponseTimeDetailView = (
         />
       </div>
       <div className={styles.text2}>
-        <span className={'tw-textXs tw-grey tw-italic'}>Cost of Delivery</span>
+        <span className={'tw-textXs tw-grey tw-italic'}>Non Value-Added</span>
       </div>
       <div className={styles.pullRequest}>
         <PullRequest
