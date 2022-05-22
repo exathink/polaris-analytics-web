@@ -217,7 +217,8 @@ export const ResponseTimeMetricsColor = {
   effort: '#de6524',
   effortGradient: '#ea9482',
   capacity: '#8d9196',
-  activeDays: "#68b10f"
+  activeDays: "#68b10f",
+  specs: 'rgba(6,92,87,0.8)'
 }
 
 
