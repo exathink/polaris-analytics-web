@@ -75,6 +75,10 @@ function isVisibleByDefault(defaultSeries, series) {
   return defaultSeries.indexOf("all") !== -1 || defaultSeries.indexOf(series) !== -1;
 }
 
+function getAnnotationFor(measurements, seriesKey, index, intl, targetPercentile) {
+  const tooltipDisplay = getSelectedMetricDisplay(measurements[index], targetPercentile, seriesKey, intl)
+  return `${tooltipDisplay[0][1]}`
+}
 export const ResponseTimeTrendsChart = (
   {
     flowMetricsTrends,
@@ -86,6 +90,7 @@ export const ResponseTimeTrendsChart = (
     onSelectionChange,
     defaultSeries,
     specsOnly,
+    showAnnotations = false,
     view
   }) => {
   
@@ -135,6 +140,36 @@ export const ResponseTimeTrendsChart = (
             zIndex: 5,
           },
       ],
+      annotations: [{
+        visible: showAnnotations,
+        labels: [{
+          seriesKey: 'avgLeadTime',
+          index: 0,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} Days`,
+          backgroundColor: ResponseTimeMetricsColor.leadTime,
+          borderColor: ResponseTimeMetricsColor.leadTime,
+          align: 'center',
+
+           distance: 9
+        },  {
+          seriesKey: 'avgCycleTime',
+          index: 0,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} Days`,
+          backgroundColor: ResponseTimeMetricsColor.cycleTime,
+          borderColor: ResponseTimeMetricsColor.cycleTime,
+          align: 'center',
+
+          distance: 10
+        }, {
+          seriesKey: 'avgEffort',
+          index: 0,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} FTE Days`,
+          backgroundColor: ResponseTimeMetricsColor.effort,
+          borderColor: ResponseTimeMetricsColor.effort,
+          align: 'center',
+          distance: 10
+        }]
+      }],
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
 
