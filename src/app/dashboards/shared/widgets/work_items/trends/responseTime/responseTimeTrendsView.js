@@ -12,6 +12,7 @@ export const ResponseTimeTrendsView = ({
     measurementWindow,
     onSelectionChange,
     defaultSeries,
+    showAnnotations,
     specsOnly,
     view
   }) => {
@@ -31,6 +32,7 @@ export const ResponseTimeTrendsView = ({
           defaultSeries={defaultSeries}
           specsOnly={specsOnly}
           view={view}
+          showAnnotations={showAnnotations}
         />
       </VizItem>
     </VizRow>

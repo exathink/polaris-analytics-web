@@ -32,7 +32,8 @@ export const DimensionWorkBalanceTrendsWidget = (
     asStatistic,
     pollInterval,
     chartConfig,
-    includeSubTasks
+    includeSubTasks,
+    showAnnotations,
   }) => {
   const [before, setBefore] = React.useState();
   const [tabSelection, setTab] = React.useState("balance");
@@ -77,6 +78,7 @@ export const DimensionWorkBalanceTrendsWidget = (
         target={target}
         chartConfig={chartConfig}
         view={view}
+        showAnnotations={showAnnotations}
         onPointClick={({x, y}) => {
           setTab("table");
           setBefore(x)

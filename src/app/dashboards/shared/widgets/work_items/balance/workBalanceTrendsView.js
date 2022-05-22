@@ -50,6 +50,7 @@ export const WorkBalanceTrendsView = ({
   measurementWindow,
   asStatistic,
   view,
+  showAnnotations,
   chartConfig,
   target,
   onPointClick,
@@ -69,6 +70,7 @@ export const WorkBalanceTrendsView = ({
         measurementWindow,
         target,
         view,
+        showAnnotations,
         chartConfig,
         onPointClick,
       }}

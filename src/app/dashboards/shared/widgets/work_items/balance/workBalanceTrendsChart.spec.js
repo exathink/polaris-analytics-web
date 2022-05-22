@@ -1,7 +1,7 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual, formatNumber} from "../../../../../../test/test-utils";
-import {Colors} from "../../../config";
+import { Colors, ResponseTimeMetricsColor } from "../../../config";
 import {WorkBalanceTrendsChart} from "./workBalanceTrendsChart";
 import {epoch} from "../../../../../helpers/utility";
 
@@ -188,7 +188,7 @@ describe("CapacityTrendsChart", () => {
           }))
           .sort((m1, m2) => m1.x - m2.x),
         stacking: null,
-        color: "#4c84ec",
+        color: ResponseTimeMetricsColor.effort,
       };
 
       const expectedChartConfig = {
@@ -209,7 +209,7 @@ describe("CapacityTrendsChart", () => {
         id: "totalCommitDays",
         type: "spline",
         name: "Active Days",
-        visible: false,
+        visible: true,
         data: propsFixture.capacityTrends
           .map((measurement) => ({
             x: epoch(measurement.measurementDate, true),
@@ -218,7 +218,7 @@ describe("CapacityTrendsChart", () => {
           }))
           .sort((m1, m2) => m1.x - m2.x),
         stacking: null,
-        color: "#0f49b1",
+        color: ResponseTimeMetricsColor.activeDays,
       };
 
       const expectedChartConfig = {

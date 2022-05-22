@@ -1,11 +1,11 @@
 import React from "react";
-import { EVENT_TYPES, getTodayDate, pick, toMoment } from "../../../../../helpers/utility";
+import { EVENT_TYPES, getTodayDate, i18nNumber, pick, toMoment } from "../../../../../helpers/utility";
 import { getMeasurementTrendSeriesForMetrics } from "../../../views/measurementTrend/measurementTrendLineChart";
 import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { Colors } from "../../../config";
+import { Colors, ResponseTimeMetricsColor } from "../../../config";
 import { WorkBalanceContributorDetailChart } from "./workBalanceContributorDetailChart";
 import Contributors from "../../../../contributors/context";
 import { fteEquivalent, getCapacityEfficiency } from "../../../helpers/statsUtils";
@@ -17,9 +17,9 @@ function getCapEfficiencyForEffortOutPoint(effortOutPoint, measurementWindow, ca
 
   const effortOutPointIndex = effortOutPoint.measurement.index;
   if (0 <= effortOutPointIndex <= capacityTrends.length) {
-    return getCapacityEfficiency(effortOutPoint.measurement.totalEffort, measurementWindow, capacityTrends[effortOutPointIndex].contributorCount)
+    return getCapacityEfficiency(effortOutPoint.measurement.totalEffort, measurementWindow, capacityTrends[effortOutPointIndex].contributorCount);
   } else {
-    return null
+    return null;
   }
 }
 
@@ -28,39 +28,52 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({capacityTrends, contributorDetail, cycleMetricsTrends, showContributorDetail,showEffort, measurementWindow, measurementPeriod, specsOnly, showCounts, intl, chartConfig}) => {
+  getConfig: ({
+                capacityTrends,
+                contributorDetail,
+                cycleMetricsTrends,
+                showContributorDetail,
+                showEffort,
+                measurementWindow,
+                measurementPeriod,
+                specsOnly,
+                showCounts,
+                showAnnotations,
+                intl,
+                chartConfig
+              }) => {
 
     // One series per contributor
-    let contributorDetailSeries = []
+    let contributorDetailSeries = [];
     if (showContributorDetail) {
       const contributorDetailByContributor = contributorDetail.reduce(
         (result, measurement) => {
           const key = measurement.contributorKey;
           if (result[key] != null) {
-            result[key].push(measurement)
+            result[key].push(measurement);
           } else {
-            result[key] = [measurement]
+            result[key] = [measurement];
           }
-          return result
+          return result;
         },
         {}
-      )
+      );
       contributorDetailSeries = Object.keys(contributorDetailByContributor).map(
         contributor => (
           {
             key: `${contributor}`,
             id: `${contributor}`,
             name: `${contributorDetailByContributor[contributor][0].contributorName}`,
-            type: 'column',
-            stacking: 'normal',
+            type: "column",
+            stacking: "normal",
             maxPointWidth: 30,
             minPointLength: 1,
             data: contributorDetailByContributor[contributor].map(
               measurement => (
                 {
-                  x: toMoment(measurement['measurementDate'], true).valueOf(),
+                  x: toMoment(measurement["measurementDate"], true).valueOf(),
                   y: measurement.totalCommitDays,
-                  measurement: measurement,
+                  measurement: measurement
 
                 }
               )
@@ -72,11 +85,19 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
     }
 
     const capacityTrendsSeries = getMeasurementTrendSeriesForMetrics([
-        {key: 'baseline', value : measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount), displayName: 'Capacity', visible: true, type: 'spline', color: '#8d9196'},
-        {key: 'totalCommitDays', displayName: 'Active Days', visible: false, type: 'spline', color: '#0f49b1'}
+        {
+          key: "baseline",
+          value: measurement => (fteEquivalent(measurementWindow) * measurement.contributorCount),
+          displayName: "Capacity",
+          visible: true,
+          type: "spline",
+          color: ResponseTimeMetricsColor.capacity
+        },
+        { key: "totalCommitDays", displayName: "Active Days", visible: true, type: "spline", color: "#68b10f" }
       ],
       capacityTrends
     );
+
 
     let cycleMetricsTrendsSeries = [];
     if (showEffort) {
@@ -85,7 +106,9 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         totalEffortChartType = chartConfig.totalEffortDisplayType;
       }
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
-        [{key: "totalEffort", displayName: "EffortOUT", visible: true, type: totalEffortChartType, color: "#4c84ec"}],
+        [{
+          key: "totalEffort", displayName: "EffortOUT", visible: true, type: totalEffortChartType, color: ResponseTimeMetricsColor.effort,
+        }],
         cycleMetricsTrends
       );
     }
@@ -95,18 +118,18 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         animation: false,
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
-        panKey: 'shift',
-        zoomType: 'xy'
+        panKey: "shift",
+        zoomType: "xy"
       },
       title: {
-        text: `${showContributorDetail ? 'Active Days by Contributor ' : '<span>Effort<sub><em>out</em></sub></span>'}`,
+        text: `${showContributorDetail ? "Active Days by Contributor " : "<span>Effort<sub><em>out</em></sub></span>"}`,
         useHTML: true
       },
       subtitle: {
         text: `${measurementPeriod} day trend`
       },
       xAxis: {
-        type: 'datetime',
+        type: "datetime",
         title: {
           text: `${measurementWindow} days ending`
         }
@@ -114,70 +137,93 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
 
       yAxis: [
         {
-          id: 'commit-days',
-          type: 'linear',
+          id: "commit-days",
+          type: "linear",
           title: {
             text: `FTE Days`
-          },
+          }
 
-        },
+        }
 
       ],
-
+      plotOptions: {
+        series: {
+          animation: false
+        }
+      },
+      annotations: [{
+        visible: true,
+        labels: [{
+          point: "baseline:0",
+          text: `${i18nNumber(intl, capacityTrends[0]?.contributorCount, 1)} Contributors`,
+          backgroundColor: ResponseTimeMetricsColor.capacity,
+          borderColor: ResponseTimeMetricsColor.capacity,
+          align: "center",
+          distance: 12
+        }, {
+          point: "totalEffort:0",
+          text: `${i18nNumber(intl, cycleMetricsTrends[0]?.totalEffort, 1)} FTE Days`,
+          backgroundColor: ResponseTimeMetricsColor.effort,
+          borderColor: ResponseTimeMetricsColor.effort,
+          align: "center",
+          distance: 12
+        }]
+      }],
       tooltip: {
         useHTML: true,
         followPointer: false,
         hideDelay: 0,
-        formatter: function () {
-          return tooltipHtml(this.point.measurement.contributorName !=  null ? {
+        formatter: function() {
+          return tooltipHtml(this.point.measurement.contributorName != null ? {
               header: `Contributor: ${this.point.measurement.contributorName}<br/>${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`Active Days:`, `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(this.point.percentage, {maximumFractionDigits: 1})}% )`],
+                [`Active Days:`, `${intl.formatNumber(this.point.y)} ( ${intl.formatNumber(this.point.percentage, { maximumFractionDigits: 1 })}% )`]
 
 
               ]
-            } : this.point.series.name === 'Active Days' ? {
+            } : this.point.series.name === "Active Days" ? {
               header: `Active Days: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Active Days: `, `${intl.formatNumber(this.point.y)}`],
-                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`]
 
               ]
-            } : this.point.series.name === 'EffortOUT' ?  {
+            } : this.point.series.name === "EffortOUT" ? {
               header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`EffortOUT: `, `${intl.formatNumber(this.point.y)} FTE Days`],
-                [`Cap Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends ))} %`],
+                [`Cap Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends))} %`]
               ]
-            }  : {
+            } : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Capacity: `, `${intl.formatNumber(this.point.y)} FTE Days`],
-                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`],
+                [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`]
               ]
             }
-          )
+          );
         }
       },
-      series: [...capacityTrendsSeries, ...cycleMetricsTrendsSeries, ...contributorDetailSeries,]
-    }
+      series: [...capacityTrendsSeries, ...cycleMetricsTrendsSeries, ...contributorDetailSeries]
+    };
   }
 });
 
 
 export const WorkBalanceTrendsChart = ({
-  context,
-  capacityTrends,
-  contributorDetail,
-  cycleMetricsTrends,
-  showContributorDetail,
-  showEffort,
-  measurementPeriod,
-  measurementWindow,
-  view,
-  chartConfig,
-  onPointClick
-}) => {
+                                         context,
+                                         capacityTrends,
+                                         contributorDetail,
+                                         cycleMetricsTrends,
+                                         showContributorDetail,
+                                         showEffort,
+                                         measurementPeriod,
+                                         measurementWindow,
+                                         view,
+                                         showAnnotations,
+                                         chartConfig,
+                                         onPointClick
+                                       }) => {
   const [selectedPoint, setSelectedPoint] = React.useState(toMoment(getTodayDate("YYYY-MM-DD"), true).valueOf());
   const [contributorSeriesColors, setColors] = React.useState({});
 
@@ -185,35 +231,35 @@ export const WorkBalanceTrendsChart = ({
   if (selectedPoint && contributorSeriesColors) {
     selectedContributors = contributorDetail
       .filter((x) => toMoment(x["measurementDate"], true).valueOf() === selectedPoint)
-      .map((c) => ({...c, color: contributorSeriesColors[c.contributorKey]}));
+      .map((c) => ({ ...c, color: contributorSeriesColors[c.contributorKey] }));
   }
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
-      const [{x,y, series}] = items;
+      const [{ x, y, series }] = items;
       const allSeriesColors = series?.chart?.series
-        .map((s) => ({key: s.userOptions.key, color: s.color}))
+        .map((s) => ({ key: s.userOptions.key, color: s.color }))
         .reduce((acc, item) => {
           acc[item.key] = item.color;
           return acc;
         }, {});
       setColors(allSeriesColors);
       setSelectedPoint(x);
-      onPointClick({x,y})
+      onPointClick({ x, y });
     }
   }
 
   function onChildrenSelected(context, childContext, children) {
-    if(children && children.length === 1) {
+    if (children && children.length === 1) {
       const child = children[0];
       const [key, name] = [child.measurement.contributorKey, child.measurement.contributorName];
-      context.navigate(childContext, name, key)
+      context.navigate(childContext, name, key);
     }
   }
 
   function handleInitialChartColors(chart) {
     const allSeriesColors = chart?.series
-      .map((s) => ({key: s.userOptions.key, color: s.color}))
+      .map((s) => ({ key: s.userOptions.key, color: s.color }))
       .reduce((acc, item) => {
         acc[item.key] = item.color;
         return acc;
@@ -232,7 +278,7 @@ export const WorkBalanceTrendsChart = ({
         measurementWindow,
         measurementPeriod,
         view,
-        chartConfig,
+        chartConfig
       }}
       onSelectionChange={handleSelectionChange}
       getChart={handleInitialChartColors}
