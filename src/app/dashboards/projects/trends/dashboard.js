@@ -10,6 +10,8 @@ import { DimensionWorkBalanceTrendsWidget } from "../../shared/widgets/work_item
 import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "../valueBook/dashboard.module.css";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
+import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
+import {Colors} from "../../shared/config";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -37,9 +39,27 @@ function TrendsDashboard({
         h={"50%"}
         title={"Value Delivered"}
         controls={[
+
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={SIX_MONTHS} />
+            </div>
+          ),
+          (view) => (
+            <div style={{minWidth: "100px", marginLeft: "60px", backgroundColor: '#f5f5f5' }}>
+              <ProjectTraceabilityTrendsWidget
+              instanceKey={key}
+              measurementWindow={daysRange}
+              days={daysRange}
+              samplingFrequency={daysRange}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              asStatistic={{title: "Traceability"}}
+              primaryStatOnly={true}
+              target={0.9}
+            />
             </div>
           ),
         ]}
