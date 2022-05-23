@@ -62,6 +62,9 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
               </Col>
             )}
             <Col span={24}>
+              <div className="tw-text-base">
+                Roles Assigned to all organizations belonging to this User
+              </div>
               {initialValues.organizationRoles.map((org) => {
                 return (
                   <Form.Item name={org.organizationKey} label={org.organizationName} key={org.organizationKey}>
