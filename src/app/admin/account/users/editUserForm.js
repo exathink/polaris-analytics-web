@@ -24,7 +24,7 @@ export const EditUserForm = withViewerContext(
         <Button type="primary" onClick={() => setVisible(true)}>
           Edit
         </Button>
-        <Drawer title={"Edit User"} width={720} onClose={onClose} visible={visible}>
+        <Drawer key={visible} title={"Edit User"} width={720} onClose={onClose} visible={visible}>
           <Form layout="vertical" hideRequiredMark onFinish={onSubmit} initialValues={initialValues}>
             <Row gutter={16}>
               <Col span={24}>
