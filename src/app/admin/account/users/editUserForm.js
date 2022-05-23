@@ -1,22 +1,31 @@
 import React from "react";
 
 import "@ant-design/compatible/assets/index.css";
-import {Checkbox, Col, Drawer, Form, Input, Row, Select} from "antd";
+import {Checkbox, Col, Drawer, Form, Input, Row} from "antd";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import Button from "../../../../components/uielements/button";
+import { SelectDropdown } from "../../../dashboards/shared/components/select/selectDropdown";
 
-const {Option} = Select;
-function isAccountOwner(owner) {
-  return true;
-}
+const ALL_ORG_ROLES = [{key: "owner", name: "owner"}, {key: "member", name: "member"}];
+
 export const EditUserForm = withViewerContext(
   ({initialValues, onSubmit, viewerContext: {viewer, getViewerOrganizations}}) => {
-    const organizations = getViewerOrganizations("owner");
+    // const organizations = getViewerOrganizations("owner");
     const [visible, setVisible] = React.useState(false);
     function onClose() {
       setVisible(false);
     }
 
+    const [draftOrgRoles, setDraftOrgRoles] = React.useState(initialValues.organizationRoles)
+    function handleChange(index, orgKey) {
+      const newRole = ALL_ORG_ROLES[index].key;
+      setDraftOrgRoles(draftOrgRoles.map(d => {
+        if (d.organizationKey === orgKey) {
+          return {...d, organizationRole: newRole}
+        }
+        return d;
+      }))
+    }
     return (
       <div>
         <Button type="primary" onClick={() => setVisible(true)}>
@@ -63,8 +72,18 @@ export const EditUserForm = withViewerContext(
                 </Col>
               )}
               <Col span={24}>
-                {organizations.map((organization) => {
-                  return <div key={organization.key}>{organization.name}</div>;
+                {draftOrgRoles.map((org) => {
+                  return (
+                    <div key={org.organizationKey} className="tw-flex tw-items-center tw-space-x-4">
+                      <SelectDropdown
+                        title={org.organizationKey}
+                        uniqueItems={ALL_ORG_ROLES}
+                        value={ALL_ORG_ROLES.findIndex((o) => o.key === org.organizationRole)}
+                        handleChange={(index) => handleChange(index, org.organizationKey)}
+                        layout="row"
+                      />
+                    </div>
+                  );
                 })}
               </Col>
             </Row>

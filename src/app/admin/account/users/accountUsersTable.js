@@ -94,6 +94,7 @@ const AccountUsersPaginatedTable = ({
                       firstName: record.firstName,
                       lastName: record.lastName,
                       role: record.role,
+                      organizationRoles: record.organizationRoles
                     }}
                   />
                 );
