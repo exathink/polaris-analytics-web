@@ -1,7 +1,7 @@
 import React from "react";
-import {i18nDate, i18nNumber, percentileToText} from "../../../../../../helpers/utility";
+import { i18nDate, i18nNumber, percentileToText } from "../../../../../../helpers/utility";
 import { ResponseTimeMetricsColor } from "../../../../config";
-import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
+import { MeasurementTrendLineChart } from "../../../../views/measurementTrend/measurementTrendLineChart";
 import { getFlowEfficiency } from "../../../../helpers/statsUtils";
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
@@ -9,61 +9,61 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     case "percentileCycleTime": {
       return [[
         `${percentileToText(targetPercentile)} Cycle Time: `,
-        `${i18nNumber(intl, measurement.percentileCycleTime)} days`,
+        `${i18nNumber(intl, measurement.percentileCycleTime)} days`
       ]];
     }
     case "percentileLeadTime": {
       return [[
         `${percentileToText(targetPercentile)} Lead Time: `,
-        `${i18nNumber(intl, measurement.percentileLeadTime)} days`,
+        `${i18nNumber(intl, measurement.percentileLeadTime)} days`
       ]];
     }
     case "percentileDuration": {
       return [[
         `${percentileToText(targetPercentile)} Coding: `,
-        `${i18nNumber(intl, measurement.percentileDuration)} days`,
+        `${i18nNumber(intl, measurement.percentileDuration)} days`
       ]];
     }
     case "percentileLatency": {
       return [[
         `${percentileToText(targetPercentile)} Delivery: `,
-        `${i18nNumber(intl, measurement.percentileLatency)} days`,
+        `${i18nNumber(intl, measurement.percentileLatency)} days`
       ]];
     }
     case "percentileEffort": {
       return [[
         `${percentileToText(targetPercentile)} Effort: `,
-        `${i18nNumber(intl, measurement.percentileEffort)} FTE Days`,
+        `${i18nNumber(intl, measurement.percentileEffort)} FTE Days`
       ]];
     }
     case "avgCycleTime": {
       return [
         [`Avg. Cycle Time: `, `${i18nNumber(intl, measurement.avgCycleTime)} days`],
-        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileCycleTime', intl)
+        ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileCycleTime", intl)
       ];
     }
     case "avgLeadTime": {
       return [
         [`Avg. Lead Time: `, `${i18nNumber(intl, measurement.avgLeadTime)} days`],
-        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileLeadTime', intl)
+        ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileLeadTime", intl)
       ];
     }
     case "avgDuration": {
       return [
         [`Avg. Coding: `, `${i18nNumber(intl, measurement.avgDuration)} days`],
-        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileDuration', intl)
+        ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileDuration", intl)
       ];
     }
     case "avgLatency": {
       return [
         [`Avg. Delivery: `, `${i18nNumber(intl, measurement.avgLatency)} days`],
-        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileLatency', intl)
+        ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileLatency", intl)
       ];
     }
     case "avgEffort": {
       return [
         [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} FTE Days`],
-        ...getSelectedMetricDisplay(measurement, targetPercentile, 'percentileEffort', intl)
+        ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileEffort", intl)
       ];
     }
     default: {
@@ -71,14 +71,16 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     }
   }
 }
+
 function isVisibleByDefault(defaultSeries, series) {
   return defaultSeries.indexOf("all") !== -1 || defaultSeries.indexOf(series) !== -1;
 }
 
 function getAnnotationFor(measurements, seriesKey, index, intl, targetPercentile) {
-  const tooltipDisplay = getSelectedMetricDisplay(measurements[index], targetPercentile, seriesKey, intl)
-  return `${tooltipDisplay[0][1]}`
+  const tooltipDisplay = getSelectedMetricDisplay(measurements[index], targetPercentile, seriesKey, intl);
+  return `${tooltipDisplay[0][1]}`;
 }
+
 export const ResponseTimeTrendsChart = (
   {
     flowMetricsTrends,
@@ -93,17 +95,49 @@ export const ResponseTimeTrendsChart = (
     showAnnotations = false,
     view
   }) => {
-  
-  const metrics = React.useMemo(() => [
-    {key: 'avgLeadTime', displayName: `Lead Time`, visible: isVisibleByDefault(defaultSeries, "leadTime"), type: 'spline', color: ResponseTimeMetricsColor.leadTime},
-    {key: 'avgCycleTime', displayName: `Cycle Time`, visible: isVisibleByDefault(defaultSeries, "cycleTime"), type:'spline', color: ResponseTimeMetricsColor.cycleTime},
 
-    {key: 'avgLatency', displayName: `Delivery`, visible: isVisibleByDefault(defaultSeries, "latency"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.latency},
-    {key: 'avgDuration', displayName: `Coding`, visible: isVisibleByDefault(defaultSeries, "duration"), type: 'areaspline', stacked: true, color: ResponseTimeMetricsColor.duration},
-    {key: 'avgEffort', displayName: `Effort`, visible: isVisibleByDefault(defaultSeries, "effort"), type:'spline', color: ResponseTimeMetricsColor.effort},
+  const metrics = React.useMemo(() => [
+    {
+      key: "avgLeadTime",
+      displayName: `Lead Time`,
+      visible: isVisibleByDefault(defaultSeries, "leadTime"),
+      type: "spline",
+      color: ResponseTimeMetricsColor.leadTime
+    },
+    {
+      key: "avgCycleTime",
+      displayName: `Cycle Time`,
+      visible: isVisibleByDefault(defaultSeries, "cycleTime"),
+      type: "spline",
+      color: ResponseTimeMetricsColor.cycleTime
+    },
+
+    {
+      key: "avgLatency",
+      displayName: `Delivery`,
+      visible: isVisibleByDefault(defaultSeries, "latency"),
+      type: "areaspline",
+      stacked: true,
+      color: ResponseTimeMetricsColor.latency
+    },
+    {
+      key: "avgDuration",
+      displayName: `Coding`,
+      visible: isVisibleByDefault(defaultSeries, "duration"),
+      type: "areaspline",
+      stacked: true,
+      color: ResponseTimeMetricsColor.duration
+    },
+    {
+      key: "avgEffort",
+      displayName: `Effort`,
+      visible: isVisibleByDefault(defaultSeries, "effort"),
+      type: "spline",
+      color: ResponseTimeMetricsColor.effort
+    }
 
   ], [defaultSeries]);
-  
+
   return <MeasurementTrendLineChart
     measurements={flowMetricsTrends}
     metrics={metrics}
@@ -111,62 +145,70 @@ export const ResponseTimeTrendsChart = (
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: 'Response Time',
-      legendText: specsOnly != null && !specsOnly ? 'All Cards' : 'Specs',
-      yAxisUom: 'Days',
+      title: "Response Time",
+      legendText: specsOnly != null && !specsOnly ? "All Cards" : "Specs",
+      yAxisUom: "Days",
       plotLinesY: [
         {
-            color: "blue",
-            value: leadTimeTarget,
-            dashStyle: "longdashdot",
-            width: 1,
-            label: {
-              text: `${percentileToText(targetPercentile)} LTT=${leadTimeTarget}`,
-              align: 'left',
-              verticalAlign: 'middle',
-            },
-            zIndex: 5,
+          color: "blue",
+          value: leadTimeTarget,
+          dashStyle: "longdashdot",
+          width: 1,
+          label: {
+            text: `${percentileToText(targetPercentile)} LTT=${leadTimeTarget}`,
+            align: "left",
+            verticalAlign: "middle"
           },
+          zIndex: 5
+        },
         {
-            color: "orange",
-            value: cycleTimeTarget,
-            dashStyle: "longdashdot",
-            width: 1,
-            label: {
-              text: `${percentileToText(targetPercentile)} CTT=${cycleTimeTarget}`,
-              align: 'left',
-              verticalAlign: 'middle',
-            },
-            zIndex: 5,
+          color: "orange",
+          value: cycleTimeTarget,
+          dashStyle: "longdashdot",
+          width: 1,
+          label: {
+            text: `${percentileToText(targetPercentile)} CTT=${cycleTimeTarget}`,
+            align: "left",
+            verticalAlign: "middle"
           },
+          zIndex: 5
+        }
       ],
       annotations: [{
         visible: showAnnotations,
         labels: [{
-          seriesKey: 'avgLeadTime',
-          index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} Days`,
-          backgroundColor: ResponseTimeMetricsColor.leadTime,
-          borderColor: ResponseTimeMetricsColor.leadTime,
-          align: 'center',
-
-           distance: 9
-        },  {
-          seriesKey: 'avgCycleTime',
-          index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} Days`,
+          point: { x: 0, y: 0 },
+          getText: (measurements, seriesKey, index, intl) =>
+            `Cycle Efficiency: ${i18nNumber(intl, getFlowEfficiency(flowMetricsTrends[0].avgEffort, flowMetricsTrends[0].avgCycleTime), 1)} %`,
           backgroundColor: ResponseTimeMetricsColor.cycleTime,
           borderColor: ResponseTimeMetricsColor.cycleTime,
-          align: 'center',
+          align: "center",
+          distance: 9
+        }, {
+          seriesKey: "avgLeadTime",
+          index: 0,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Days`,
+          backgroundColor: ResponseTimeMetricsColor.leadTime,
+          borderColor: ResponseTimeMetricsColor.leadTime,
+          align: "center",
+
+          distance: 9
+        }, {
+          seriesKey: "avgCycleTime",
+          index: 0,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Days`,
+          backgroundColor: ResponseTimeMetricsColor.cycleTime,
+          borderColor: ResponseTimeMetricsColor.cycleTime,
+          align: "center",
 
           distance: 10
         }, {
-          seriesKey: 'avgEffort',
+          seriesKey: "avgEffort",
           index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey],1)} FTE Days`,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} FTE Days`,
           backgroundColor: ResponseTimeMetricsColor.effort,
           borderColor: ResponseTimeMetricsColor.effort,
-          align: 'center',
+          align: "center",
           distance: 10
         }]
       }],
@@ -181,16 +223,16 @@ export const ResponseTimeTrendsChart = (
                   ...getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
-                  ['Total Closed: ', `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly? 'Specs' : 'Cards'}`],
-                  ['Flow Efficiency: ', `${i18nNumber(intl, getFlowEfficiency(measurement.avgEffort, measurement.avgCycleTime))} %`],
+                  ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly ? "Specs" : "Cards"}`],
+                  ["Cycle Efficiency: ", `${i18nNumber(intl, getFlowEfficiency(measurement.avgEffort, measurement.avgCycleTime))} %`]
 
                 ]
             }
-          )
+          );
         }
       }
     }}
-  />
-  }
+  />;
+};
 
 
