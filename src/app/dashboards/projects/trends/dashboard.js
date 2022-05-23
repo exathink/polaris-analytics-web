@@ -46,7 +46,7 @@ function TrendsDashboard({
             </div>
           ),
           (view) => (
-            <div style={{minWidth: "100px", marginLeft: "60px", backgroundColor: '#f5f5f5' }}>
+            <div style={{minWidth: "150px", marginLeft: "60px", backgroundColor: '#f5f5f5' }}>
               <ProjectTraceabilityTrendsWidget
               instanceKey={key}
               measurementWindow={daysRange}
