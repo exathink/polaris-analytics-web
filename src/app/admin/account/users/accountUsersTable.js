@@ -88,7 +88,9 @@ const AccountUsersPaginatedTable = ({
               render={(value, record) => {
                 return (
                   <EditUserForm
-                    onSubmit={() => {}}
+                    onSubmit={(values) => {
+                      console.log({values})
+                    }}
                     initialValues={{
                       email: record.email,
                       firstName: record.firstName,
