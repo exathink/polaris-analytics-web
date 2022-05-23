@@ -80,18 +80,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
             </Col>
           </Row>
 
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              bottom: 0,
-              width: "100%",
-              borderTop: "1px solid #e9e9e9",
-              padding: "10px 16px",
-              background: "#fff",
-              textAlign: "right",
-            }}
-          >
+          <div className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-border-t tw-border-solid tw-border-t-[#e9e9e9] tw-bg-white tw-py-4 tw-px-4 tw-text-right">
             <Button onClick={onClose} style={{marginRight: 8}}>
               Cancel
             </Button>
