@@ -120,6 +120,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
+              title={"Cost of Delay"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
