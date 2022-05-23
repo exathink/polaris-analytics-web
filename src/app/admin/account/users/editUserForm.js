@@ -55,11 +55,13 @@ export const EditUserForm = withViewerContext(
                   <Input placeholder="last name" />
                 </Form.Item>
               </Col>
-              <Col span={24}>
-                <Form.Item name={"role"} label="Roles and Access">
-                  <Checkbox>Account Owner</Checkbox>
-                </Form.Item>
-              </Col>
+              {initialValues.role === "owner" && (
+                <Col span={24}>
+                  <Form.Item name={"role"} label="Roles and Access">
+                    <Checkbox>Account Owner</Checkbox>
+                  </Form.Item>
+                </Col>
+              )}
               <Col span={24}>
                 {organizations.map((organization) => {
                   return <div key={organization.key}>{organization.name}</div>;
