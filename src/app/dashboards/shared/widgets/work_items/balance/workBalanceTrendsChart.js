@@ -120,7 +120,6 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         panning: true,
         panKey: "shift",
         zoomType: "xy",
-        margin: 50
       },
       title: {
         text: `${showContributorDetail ? "Active Days by Contributor " : "<span>Effort<sub><em>out</em></sub></span>"}`,
