@@ -11,6 +11,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
   {
     dimension,
     instanceKey,
+    title,
     view,
     context,
     showAll,
@@ -55,6 +56,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
   return (
     view === 'primary' ?
       <ResponseTimeTrendsView
+        title={title}
         data={data}
         dimension={dimension}
         targetPercentile={targetPercentile}

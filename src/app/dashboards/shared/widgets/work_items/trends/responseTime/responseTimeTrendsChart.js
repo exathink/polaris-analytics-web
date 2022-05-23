@@ -83,6 +83,8 @@ function getAnnotationFor(measurements, seriesKey, index, intl, targetPercentile
 
 export const ResponseTimeTrendsChart = (
   {
+    title,
+    subtitle,
     flowMetricsTrends,
     targetPercentile,
     leadTimeTarget,
@@ -145,7 +147,7 @@ export const ResponseTimeTrendsChart = (
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: "Response Time",
+      title: title || "Response Time",
       legendText: specsOnly != null && !specsOnly ? "All Cards" : "Specs",
       yAxisUom: "Days",
       plotLinesY: [

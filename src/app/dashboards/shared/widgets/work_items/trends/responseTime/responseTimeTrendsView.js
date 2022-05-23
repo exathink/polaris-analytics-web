@@ -5,6 +5,7 @@ import {VizItem, VizRow} from "../../../../containers/layout";
 export const ResponseTimeTrendsView = ({
     data,
     dimension,
+    title,
     targetPercentile,
     leadTimeTarget,
     cycleTimeTarget,
@@ -22,6 +23,7 @@ export const ResponseTimeTrendsView = ({
     return <VizRow h={1}>
       <VizItem w={1}>
         <ResponseTimeTrendsChart
+          title={title}
           flowMetricsTrends={flowMetricsTrends}
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}

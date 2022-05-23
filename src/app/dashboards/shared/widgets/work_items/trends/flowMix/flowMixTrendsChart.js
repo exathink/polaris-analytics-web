@@ -1,7 +1,12 @@
 import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, toMoment} from "../../../../../../helpers/utility";
-import {Colors,FlowTypeDisplayName} from "../../../../config";
+import { i18nNumber, pick, toMoment, sum_field } from "../../../../../../helpers/utility";
+import { Colors, FlowTypeDisplayName, ResponseTimeMetricsColor } from "../../../../config";
+import { getFlowEfficiency } from "../../../../helpers/statsUtils";
+
+function getFlowMixEffortPercentage(flowMix, category) {
+  return flowMix.find(flowMixItem => flowMixItem.category == category)?.totalEffort/sum_field(flowMix, 'totalEffort', 0) * 100
+}
 
 export const FlowMixTrendsChart = Chart({
   chartUpdateProps: props => pick(props, "flowMixTrends", "measurementWindow", "measurementPeriod", "specsOnly", "showCounts"),
@@ -20,12 +25,13 @@ export const FlowMixTrendsChart = Chart({
       task: []
     }
     flowMixTrends.forEach(
-      measurement => {
+      (measurement, index) => {
         measurement.flowMix.forEach(
           flowMixItem => {
             const category = flowMixItem['category'];
             seriesData[category].push(
               {
+                id: `${category}%${index}`,
                 x: toMoment(measurement['measurementDate'], true).valueOf(),
                 y: flowMixItem[specsOnly ? 'totalEffort' : 'workItemCount'],
                 measurement: measurement,
@@ -70,7 +76,8 @@ export const FlowMixTrendsChart = Chart({
             type: 'spline',
             color: Colors.FlowType[category],
             data: seriesData[category].map(
-              point => ({
+              (point, index) => ({
+                id: `${category}#${index}`,
                 x: point.x,
                 y: point.flowMixItem.workItemCount,
                 measurement: point.measurement,
@@ -150,6 +157,42 @@ export const FlowMixTrendsChart = Chart({
           ] : [],
 
       ],
+      annotations: [{
+        labels: [{
+          point: "defect%0",
+          text:
+            `Cost of Defects: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'defect'), 1)} %`,
+          backgroundColor: Colors.FlowType['defect'],
+          borderColor: Colors.FlowType['defect'],
+          style: {
+                color: '#ffffff',
+          },
+          align: "center",
+          distance: 9
+        },{
+          point: "feature%0",
+          text:
+            `Direct Value: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'feature'), 1)} %`,
+          backgroundColor: Colors.FlowType['feature'],
+          borderColor: Colors.FlowType['feature'],
+          style: {
+                color: 'rgba(24,12,12,0.5)',
+          },
+          align: "center",
+          distance: 9
+        },{
+          point: "task%0",
+          text:
+            `Indirect Value: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'task'), 1)} %`,
+          backgroundColor: Colors.FlowType['task'],
+          borderColor: Colors.FlowType['task'],
+          style: {
+                color: '#ffffff',
+          },
+          align: "center",
+          distance: 9
+        },]
+      }],
       tooltip: {
         useHTML: true,
         followPointer: false,
