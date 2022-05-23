@@ -455,4 +455,9 @@ export function truncateString(str, len, color="#108ee9") {
   }
 }
 
+export function sum_field(array, field, initial=0) {
+  return array.reduce((total, _, index) => total + array[index][field], 0)
+}
+
+
 export const TOOLTIP_COLOR = "#fbfcfd";
