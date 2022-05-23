@@ -214,7 +214,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               targetPercentile={cycleTimeConfidenceTarget}
               context={context}
               view={view}
-              showAnnotations={true}
+              showAnnotations={false}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               defaultSeries={["leadTime", "cycleTime", "effort"]}
