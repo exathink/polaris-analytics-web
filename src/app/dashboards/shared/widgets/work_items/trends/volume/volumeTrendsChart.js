@@ -46,6 +46,14 @@ export const VolumeTrendsChart = ({
         annotations: [{
           visible: true,
           labels: [{
+            point: {x:0, y:0},
+            getText: (measurements, seriesKey, index, intl) => `Spec Ratio: ${i18nNumber(intl, (measurements[0].workItemsWithCommits/measurements[0].workItemsInScope)*100.0)} %`,
+            backgroundColor: ResponseTimeMetricsColor.specs,
+            borderColor: ResponseTimeMetricsColor.specs,
+            align: 'center',
+
+            distance: 9
+          },{
             seriesKey: 'workItemsWithCommits',
             index: 0,
             getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Specs`,
