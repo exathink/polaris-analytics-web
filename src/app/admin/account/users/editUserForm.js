@@ -57,24 +57,24 @@ export const EditUserForm = withViewerContext(
                   <Input placeholder="last name" />
                 </Form.Item>
               </Col>
-              {initialValues.role === "owner" && (
+              {initialValues.role && (
                 <Col span={24}>
-                  <Form.Item name={"role"} label="Roles and Access">
-                    <Checkbox defaultChecked={initialValues.role === "owner"}>Account Owner</Checkbox>
+                  <Form.Item name={"role"} label="Roles and Access" valuePropName="checked">
+                    <Checkbox defaultChecked={initialValues.role}>Account Owner</Checkbox>
                   </Form.Item>
                 </Col>
               )}
               <Col span={24}>
                 {initialValues.organizationRoles.map((org) => {
                   return (
-                    <Form.Item name={org.organizationKey} label={org.organizationKey} key={org.organizationKey}>
+                    <Form.Item name={org.organizationKey} label={org.organizationName} key={org.organizationKey}>
                       <Select
                         style={{width: 150}}
-                        defaultValue={ALL_ORG_ROLES.findIndex((o) => o.key === org.organizationRole)}
+                        defaultValue={initialValues[org.organizationKey]}
                       >
-                        {ALL_ORG_ROLES.map((a, index) => {
+                        {ALL_ORG_ROLES.map((a) => {
                           return (
-                            <Option key={a.key} value={index}>
+                            <Option key={a.key} value={a.key}>
                               {a.name}
                             </Option>
                           );

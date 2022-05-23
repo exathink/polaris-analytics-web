@@ -41,6 +41,7 @@ const AccountUsersPaginatedTable = ({
                 organizationRoles {
                   organizationKey
                   organizationRole
+                  organizationName
                 }
               }
             }
@@ -89,14 +90,18 @@ const AccountUsersPaginatedTable = ({
                 return (
                   <EditUserForm
                     onSubmit={(values) => {
-                      console.log({values})
+                      console.log({values});
                     }}
                     initialValues={{
                       email: record.email,
                       firstName: record.firstName,
                       lastName: record.lastName,
-                      role: record.role,
-                      organizationRoles: record.organizationRoles
+                      role: record.role==="owner",
+                      organizationRoles: record.organizationRoles,
+                      ...record.organizationRoles.reduce((acc, item) => {
+                        acc[item.organizationKey] = item.organizationRole;
+                        return acc;
+                      }, {}),
                     }}
                   />
                 );
