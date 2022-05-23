@@ -100,7 +100,8 @@ export const FlowMixTrendsChart = Chart({
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
         panKey: 'shift',
-        zoomType: 'xy'
+        zoomType: 'xy',
+        marginRight: 90
       },
       title: {
         text: title || `${specsOnly ? 'Capacity Allocation by Value Type' : 'Flow Mix'}: Last ${measurementPeriod} days`,
@@ -112,14 +113,12 @@ export const FlowMixTrendsChart = Chart({
       },
       legend: {
         title: {
-          text: `${showCounts ? (specsOnly ? 'Specs' : 'Cards') : 'Value Types'}`,
+          text: ``,
           style: {
             fontStyle: 'italic'
           }
         },
-        align: 'right',
-        layout: 'vertical',
-        verticalAlign: 'middle',
+
         itemMarginBottom: 3,
       },
       xAxis: {
@@ -178,7 +177,7 @@ export const FlowMixTrendsChart = Chart({
           style: {
                 color: 'rgba(24,12,12,0.5)',
           },
-          align: "center",
+          align: "right",
           distance: 9
         },{
           point: "task%0",
