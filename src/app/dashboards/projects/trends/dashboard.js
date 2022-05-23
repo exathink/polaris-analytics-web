@@ -70,6 +70,7 @@ function TrendsDashboard({
           className={styles.valueBookClosed}
           render={({view}) => (
             <ProjectValueBookWidget
+              title={`Roadmap Allocations: Last ${daysRange} Days`}
               instanceKey={key}
               context={context}
               days={daysRange}
@@ -90,6 +91,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
+              title={`Strategic Allocations: Last ${daysRange} Days`}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}

@@ -133,10 +133,10 @@ function getAnnotations(config, measurements, intl) {
         labels: annotation.labels.map(
           label => ({
             ...label,
-            point: getPointId(label.seriesKey, label.index),
-            text: label.getText(
+            point: label.seriesKey ? getPointId(label.seriesKey, label.index) : label.point,
+            text: label.getText ? label.getText(
               measurements, label.seriesKey, label.index, intl
-            )
+            ): label.text
           })
         )
       })

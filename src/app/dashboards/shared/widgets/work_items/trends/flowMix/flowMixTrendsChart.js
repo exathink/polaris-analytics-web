@@ -8,7 +8,7 @@ export const FlowMixTrendsChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points,
 
-  getConfig: ({flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, chartOptions={}, intl, onPointClick}) => {
+  getConfig: ({title, subTitle, flowMixTrends, measurementWindow, measurementPeriod, specsOnly, showCounts, chartOptions={}, intl, onPointClick}) => {
 
     const {alignTitle} = chartOptions;
 
@@ -96,11 +96,11 @@ export const FlowMixTrendsChart = Chart({
         zoomType: 'xy'
       },
       title: {
-        text: `${specsOnly ? 'Capacity Allocation by Value Type' : 'Flow Mix'}: Last ${measurementPeriod} days`,
+        text: title || `${specsOnly ? 'Capacity Allocation by Value Type' : 'Flow Mix'}: Last ${measurementPeriod} days`,
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: showCounts ? `% of ${metricDisplay}` : `% of ${metricDisplay}`,
+        text: subTitle || showCounts ? `% of ${metricDisplay}` : `% of ${metricDisplay} by Value Type`,
         align: alignTitle || 'center',
       },
       legend: {

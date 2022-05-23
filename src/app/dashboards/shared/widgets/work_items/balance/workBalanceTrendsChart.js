@@ -8,7 +8,7 @@ import {
 import { Colors, ResponseTimeMetricsColor } from "../../../config";
 import { WorkBalanceContributorDetailChart } from "./workBalanceContributorDetailChart";
 import Contributors from "../../../../contributors/context";
-import { fteEquivalent, getCapacityEfficiency } from "../../../helpers/statsUtils";
+import { fteEquivalent, getCapacityEfficiency, getFlowEfficiency } from "../../../helpers/statsUtils";
 
 function getCapEfficiencyForEffortOutPoint(effortOutPoint, measurementWindow, capacityTrends) {
   // Bit of a hack to show the capEfficiency in the tooltip for effortOut.
@@ -154,6 +154,13 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
       annotations: [{
         visible: true,
         labels: [{
+          point: { x: 0, y: 0 },
+          text: `Cap Ratio: ${i18nNumber(intl, getCapacityEfficiency(cycleMetricsTrends[0]?.totalEffort, measurementWindow, capacityTrends[0]?.contributorCount), 1)} %`,
+          backgroundColor: ResponseTimeMetricsColor.effort,
+          borderColor: ResponseTimeMetricsColor.effort,
+          align: "center",
+          distance: 9
+        },{
           point: "baseline:0",
           text: `${i18nNumber(intl, capacityTrends[0]?.contributorCount, 1)} Contributors`,
           backgroundColor: ResponseTimeMetricsColor.capacity,

@@ -1,36 +1,36 @@
-import React from 'react';
-import {FlowStatistic} from "../../../../components/flowStatistics/flowStatistics";
-import {percentage} from "../../../../../../helpers/utility";
+import React from "react";
+import { FlowStatistic } from "../../../../components/flowStatistics/flowStatistics";
+import { percentage } from "../../../../../../helpers/utility";
 
-import {FlowMixTrendsChart} from "./flowMixTrendsChart";
+import { FlowMixTrendsChart } from "./flowMixTrendsChart";
 import styles from "./flowMix.module.css";
-import {TrendIndicator} from "../../../../../../components/misc/statistic/statistic";
+import { TrendIndicator } from "../../../../../../components/misc/statistic/statistic";
 
 export const reduceFlowMix = (result, item) => {
   result[item.category] = item;
-  if (result['total'] != null) {
-    result['total'] = result['total'] + item[result.metric]
+  if (result["total"] != null) {
+    result["total"] = result["total"] + item[result.metric];
   } else {
-    result['total'] = item[result.metric]
+    result["total"] = item[result.metric];
   }
-  return result
-}
+  return result;
+};
 
 
 export const ProjectFlowMixTrendsStatsView = ({
-  flowMixTrends,
-  measurementPeriod,
-  measurementWindow,
-  specsOnly,
-  showCounts,
-  asStatistic,
-  asCard = true,
-  target,
-}) => {
+                                                flowMixTrends,
+                                                measurementPeriod,
+                                                measurementWindow,
+                                                specsOnly,
+                                                showCounts,
+                                                asStatistic,
+                                                asCard = true,
+                                                target
+                                              }) => {
   const [current, previous] = flowMixTrends;
   const metric = specsOnly ? "totalEffort" : "workItemCount";
-  const currentMix = current.flowMix.reduce(reduceFlowMix, {metric: metric});
-  const previousMix = previous.flowMix.reduce(reduceFlowMix, {metric: metric});
+  const currentMix = current.flowMix.reduce(reduceFlowMix, { metric: metric });
+  const previousMix = previous.flowMix.reduce(reduceFlowMix, { metric: metric });
 
   return (
     <div className={styles.flowMixWrapper}>
@@ -43,8 +43,8 @@ export const ProjectFlowMixTrendsStatsView = ({
           precision={2}
           target={target}
           displayType={asCard ? "card" : "statistic"}
-          displayProps={{info: {headline: "", content: ""}, size: "small"}}
-          currentMeasurement={{...current, measurementWindow: measurementWindow}}
+          displayProps={{ info: { headline: "", content: "" }, size: "small" }}
+          currentMeasurement={{ ...current, measurementWindow: measurementWindow }}
           previousMeasurement={previous}
         />
       </div>
@@ -57,8 +57,8 @@ export const ProjectFlowMixTrendsStatsView = ({
           precision={2}
           target={target}
           displayType={asCard ? "card" : "statistic"}
-          displayProps={{info: {headline: "", content: ""}, size: "small"}}
-          currentMeasurement={{...current, measurementWindow: measurementWindow}}
+          displayProps={{ info: { headline: "", content: "" }, size: "small" }}
+          currentMeasurement={{ ...current, measurementWindow: measurementWindow }}
           previousMeasurement={previous}
           good={TrendIndicator.isNegative}
         />
@@ -71,8 +71,8 @@ export const ProjectFlowMixTrendsStatsView = ({
           valueRender={value => `${value?.toFixed?.(2)}%`}
           precision={2}
           displayType={asCard ? "card" : "statistic"}
-          displayProps={{info: {headline: "", content: ""}, size: "small"}}
-          currentMeasurement={{...current, measurementWindow: measurementWindow}}
+          displayProps={{ info: { headline: "", content: "" }, size: "small" }}
+          currentMeasurement={{ ...current, measurementWindow: measurementWindow }}
           previousMeasurement={previous}
         />
       </div>
@@ -91,25 +91,29 @@ export const ProjectFlowMixTrendsView = (
     asCard,
     chartOptions,
     view,
+    title,
+    subTitle,
     showCounts,
     target,
     onPointClick
   }) => {
-    const {flowMixTrends} = React.useMemo(() => data[dimension], [data, dimension]);
-    return asStatistic ?
-      <ProjectFlowMixTrendsStatsView
-        {...{flowMixTrends, measurementPeriod, measurementWindow, specsOnly, asCard, target}  }
-      />
-      :
-      <FlowMixTrendsChart
-        flowMixTrends={flowMixTrends}
-        measurementPeriod={measurementPeriod}
-        measurementWindow={measurementWindow}
-        specsOnly={specsOnly}
-        target={target}
-        showCounts={showCounts}
-        chartOptions={chartOptions}
-        view={view}
-        onPointClick={onPointClick}
-      />
-  }
+  const { flowMixTrends } = React.useMemo(() => data[dimension], [data, dimension]);
+  return asStatistic ?
+    <ProjectFlowMixTrendsStatsView
+      {...{ flowMixTrends, measurementPeriod, measurementWindow, specsOnly, asCard, target }}
+    />
+    :
+    <FlowMixTrendsChart
+      title={title}
+      subTitle={subTitle}
+      flowMixTrends={flowMixTrends}
+      measurementPeriod={measurementPeriod}
+      measurementWindow={measurementWindow}
+      specsOnly={specsOnly}
+      target={target}
+      showCounts={showCounts}
+      chartOptions={chartOptions}
+      view={view}
+      onPointClick={onPointClick}
+    />;
+};

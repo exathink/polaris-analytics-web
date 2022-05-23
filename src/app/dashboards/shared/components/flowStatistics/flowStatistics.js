@@ -402,7 +402,7 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
 export const FlowEfficiency = ({title, displayType, precision, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
 
   return <FlowStatistic
-    title={title || "Flow Efficiency"}
+    title={title || "Cycle Efficiency"}
     currentValue={getFlowEfficiency(currentMeasurement['avgEffort'], currentMeasurement['avgCycleTime'])}
     previousMeasurement={getFlowEfficiency(previousMeasurement['avgEffort'], previousMeasurement['avgCycleTime'])}
     valueRender={ (value) => value > 0 ? `${value.toFixed(precision)} %` : 'N/A' }
