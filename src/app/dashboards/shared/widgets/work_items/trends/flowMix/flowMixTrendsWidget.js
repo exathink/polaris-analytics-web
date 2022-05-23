@@ -10,6 +10,8 @@ export const DimensionFlowMixTrendsWidget = (
   {
     dimension,
     instanceKey,
+    title,
+    subTitle,
     view,
     context,
     showAll,
@@ -61,6 +63,8 @@ export const DimensionFlowMixTrendsWidget = (
           view={view}
           chartOptions={chartOptions}
           showCounts={showCounts}
+          title={title}
+          subTitle={subTitle}
           onPointClick={({item, measurementDate}) => {
             setBefore?.(getServerDate(measurementDate));
             setFilter?.(item.category)
