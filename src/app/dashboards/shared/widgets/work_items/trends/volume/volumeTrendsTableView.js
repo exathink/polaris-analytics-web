@@ -55,37 +55,40 @@ export function VolumeTrendsTableView({
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
   return (
     <div className="tw-h-full tw-w-full">
-      <div className="tw-ml-auto tw-flex tw-items-center">
-        {before != null && (
-          <div className="tw-mr-2">
-            <ClearFilters
-              selectedFilter={`${measurementWindow} days ending ${i18nDate(intl, getServerDate(before))}`}
-              selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
-              stateType={WorkItemStateTypes.closed}
-              handleClearClick={() => {
-                setBefore?.(undefined);
-              }}
-            />
-          </div>
-        )}
-        <GroupingSelector
-          label={"View"}
-          value={tabSelection}
-          groupings={[
-            {
-              key: "volume",
-              display: "Volume",
-            },
-            {
-              key: "table",
-              display: "Card Detail",
-            },
-          ]}
-          initialValue={tabSelection}
-          onGroupingChanged={setTab}
-          layout="col"
-        />
+      <div className="tw-mr-8 tw-flex">
+        <div className="tw-ml-auto tw-flex tw-items-center">
+          {before != null && (
+            <div className="tw-mr-2">
+              <ClearFilters
+                selectedFilter={`${measurementWindow} days ending ${i18nDate(intl, getServerDate(before))}`}
+                selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
+                stateType={WorkItemStateTypes.closed}
+                handleClearClick={() => {
+                  setBefore?.(undefined);
+                }}
+              />
+            </div>
+          )}
+          <GroupingSelector
+            label={"View"}
+            value={tabSelection}
+            groupings={[
+              {
+                key: "volume",
+                display: "Volume",
+              },
+              {
+                key: "table",
+                display: "Card Detail",
+              },
+            ]}
+            initialValue={tabSelection}
+            onGroupingChanged={setTab}
+            layout="col"
+          />
+        </div>
       </div>
+
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
         <VolumeTrendsChart
           flowMetricsTrends={flowMetricsTrends}
@@ -96,10 +99,8 @@ export function VolumeTrendsTableView({
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
               const [{measurementDate}] = workItems;
-              if (setBefore) {
-                setBefore(getServerDate(measurementDate));
-                setTab?.("table");
-              }
+              setBefore?.(getServerDate(measurementDate));
+              setTab?.("table");
             }
           }}
         />
