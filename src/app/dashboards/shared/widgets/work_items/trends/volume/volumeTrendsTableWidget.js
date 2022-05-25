@@ -44,6 +44,7 @@ export function VolumeTrendsTableWidget({
       dimension={dimension}
       instanceKey={instanceKey}
       days={measurementWindow}
+      initialDays={days}
       specsOnly={specsOnly}
       before={before}
       includeSubTasks={includeSubTasks}
