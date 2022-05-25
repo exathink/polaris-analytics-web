@@ -74,7 +74,7 @@ export const VolumeTrendsChart = ({
                 getText: (measurements, seriesKey, index, intl) =>
                   `Spec Ratio: ${i18nNumber(
                     intl,
-                    (measurements[0].workItemsWithCommits / measurements[0].workItemsInScope) * 100.0
+                    measurements[0].workItemsInScope !== 0 ? (measurements[0].workItemsWithCommits / measurements[0].workItemsInScope) * 100.0 : 0
                   )} %`,
                 backgroundColor: ResponseTimeMetricsColor.specs,
                 borderColor: ResponseTimeMetricsColor.specs,
