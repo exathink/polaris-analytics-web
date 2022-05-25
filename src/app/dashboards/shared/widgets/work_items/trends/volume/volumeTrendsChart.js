@@ -113,7 +113,7 @@ export const VolumeTrendsChart = ({
                       "Spec Ratio: ",
                       `${i18nNumber(
                         intl,
-                        (measurement.workItemsWithCommits / measurement.workItemsInScope) * 100.0
+                        measurement.workItemsInScope !== 0 ? (measurement.workItemsWithCommits / measurement.workItemsInScope) * 100.0 : 0
                       )} %`,
                     ],
                   ],
