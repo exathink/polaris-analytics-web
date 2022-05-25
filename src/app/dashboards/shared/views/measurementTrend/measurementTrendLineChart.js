@@ -177,7 +177,7 @@ export function getMeasurementTrendSeriesForMetrics(metrics, measurements) {
 }
 
 export const MeasurementTrendLineChart = Chart({
-    chartUpdateProps: props => pick(props, 'measurements', 'metrics', 'config', 'measurementWindow', 'measurementPeriod'),
+    chartUpdateProps: props => pick(props, 'measurements', 'metrics', 'measurementWindow', 'measurementPeriod'),
     eventHandler: DefaultSelectionEventHandler,
     mapPoints: (points, _) => points.map(point => point.measurement),
     getConfig: ({measurements, metrics, measurementPeriod, measurementWindow, showPlotBands, config, intl}) => {

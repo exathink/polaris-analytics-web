@@ -21,7 +21,7 @@ export function VolumeTrendsTableView({
   const [tabSelection, setTab] = React.useState("volume");
   const intl = useIntl();
 
-  const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
+  const {cycleMetricsTrends: flowMetricsTrends} = React.useMemo(() => data[dimension], [data, dimension]);
   return (
     <div className="tw-h-full tw-w-full">
       <div className="tw-mr-8 tw-flex">
