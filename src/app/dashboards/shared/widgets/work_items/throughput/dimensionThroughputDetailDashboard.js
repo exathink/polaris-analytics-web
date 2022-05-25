@@ -7,6 +7,7 @@ import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items
 import {DimensionWorkBalanceTrendsWidget} from "../balance";
 import cn from "classnames";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import { VolumeTrendsTableWidget } from "../trends/volume/volumeTrendsTableWidget";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -114,7 +115,7 @@ export function DimensionThroughputDetailDashboard({
           name="volume-trends"
           className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-impHidden", styles.throughputDetail)}
           render={({view}) => (
-            <DimensionVolumeTrendsWidget
+            <VolumeTrendsTableWidget
               dimension={dimension}
               instanceKey={key}
               days={daysRange}
@@ -123,15 +124,9 @@ export function DimensionThroughputDetailDashboard({
               targetPercentile={0.7}
               context={context}
               view={view}
-              display="withCardDetails"
+              latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-              tabSelection={tabSelection}
-              setTab={setTab}
             />
           )}
           showDetail={true}
