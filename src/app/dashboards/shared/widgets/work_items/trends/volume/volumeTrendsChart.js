@@ -11,24 +11,35 @@ export const VolumeTrendsChart = ({
   chartConfig,
   view
 }) => {
-  const {
-    specs = {
-      visible: true,
-      type: 'column'
-    },
-    cards = {
-      visible: true,
-      type: 'spline'
-    }
-  } = chartConfig || {};
+
+
+  const metrics = React.useMemo(() => {
+    const {
+      specs = {
+        visible: true,
+        type: 'column'
+      },
+      cards = {
+        visible: true,
+        type: 'spline'
+      }
+    } = chartConfig || {};
+    return [
+      {key: "workItemsInScope", displayName: "Cards", visible: cards.visible, type: cards.type || "column"},
+      {
+        key: "workItemsWithCommits",
+        displayName: "Specs",
+        visible: specs.visible,
+        type: specs.type || "spline",
+        color: ResponseTimeMetricsColor.specs,
+      },
+    ]
+  }, [chartConfig]);
+
   return (
   <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
-      metrics={[
-        {key: 'workItemsInScope', displayName: 'Cards', visible: cards.visible, type: cards.type || 'column'},
-        {key: 'workItemsWithCommits', displayName: 'Specs', visible: specs.visible, type: specs.type || 'spline', color: ResponseTimeMetricsColor.specs},
-
-      ]}
+      metrics={metrics}
       measurementPeriod={measurementPeriod}
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
