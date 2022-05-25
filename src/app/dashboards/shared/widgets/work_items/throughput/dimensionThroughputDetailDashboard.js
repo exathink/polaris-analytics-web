@@ -113,7 +113,7 @@ export function DimensionThroughputDetailDashboard({
       <DashboardRow className={styles.chartsToggleRow}>
         <DashboardWidget
           name="volume-trends"
-          className={cn(selectedMetric === "workItemsWithCommits" ? "" : "tw-impHidden", styles.throughputDetail)}
+          className={cn((selectedMetric === "workItemsWithCommits" || selectedMetric === "workItemsInScope") ? "" : "tw-impHidden", styles.throughputDetail)}
           render={({view}) => (
             <VolumeTrendsTableWidget
               dimension={dimension}

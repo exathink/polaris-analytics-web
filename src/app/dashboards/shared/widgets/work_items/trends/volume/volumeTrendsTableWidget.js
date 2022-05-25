@@ -2,7 +2,7 @@ import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import { useQueryProjectClosedDeliveryCycleDetail } from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
 import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {VolumeTrendsTableView} from "./volumeTrendsTableView";
 
@@ -18,7 +18,7 @@ export function VolumeTrendsTableWidget({
   latestWorkItemEvent,
   view,
   context,
-  specsOnly
+  specsOnly,
 }) {
   const [before, setBefore] = React.useState();
 
@@ -32,26 +32,29 @@ export function VolumeTrendsTableWidget({
     includeSubTasks,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
   });
-  const {loading: loading1, error: error1, data: data1} = useQueryProjectClosedDeliveryCycleDetail({
-    dimension,
-    instanceKey,
-    days,
-    specsOnly: specsOnly,
-    before,
-    includeSubTasks,
-    referenceString: latestWorkItemEvent,
-  });
 
-  if (loading || loading1) return <Loading />;
-  if (error || error1) {
+  if (loading) return <Loading />;
+  if (error) {
     logGraphQlError("VolumeTrendsTableWidget.useQueryDimensionFlowMetricsTrends", error);
     return null;
   }
 
+  const cardDetailsWidget = (
+    <CardDetailsWidget
+      dimension={dimension}
+      instanceKey={instanceKey}
+      days={measurementWindow}
+      specsOnly={specsOnly}
+      before={before}
+      includeSubTasks={includeSubTasks}
+      latestWorkItemEvent={latestWorkItemEvent}
+      view={view}
+      context={context}
+    />
+  );
   return (
     <VolumeTrendsTableView
       data={data}
-      tableData={data1}
       dimension={dimension}
       targetPercentile={targetPercentile}
       measurementWindow={measurementWindow}
@@ -60,7 +63,7 @@ export function VolumeTrendsTableWidget({
       before={before}
       specsOnly={specsOnly}
       setBefore={setBefore}
-      context={context}
+      cardDetailsWidget={cardDetailsWidget}
     />
   );
 }
