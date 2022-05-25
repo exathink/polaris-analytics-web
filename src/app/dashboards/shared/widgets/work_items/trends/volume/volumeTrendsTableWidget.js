@@ -17,7 +17,8 @@ export function VolumeTrendsTableWidget({
   latestCommit,
   latestWorkItemEvent,
   view,
-  context
+  context,
+  specsOnly
 }) {
   const [before, setBefore] = React.useState();
 
@@ -35,7 +36,7 @@ export function VolumeTrendsTableWidget({
     dimension,
     instanceKey,
     days,
-    specsOnly: false,
+    specsOnly: specsOnly,
     before,
     includeSubTasks,
     referenceString: latestWorkItemEvent,
@@ -57,6 +58,7 @@ export function VolumeTrendsTableWidget({
       measurementPeriod={days}
       view={view}
       before={before}
+      specsOnly={specsOnly}
       setBefore={setBefore}
       context={context}
     />

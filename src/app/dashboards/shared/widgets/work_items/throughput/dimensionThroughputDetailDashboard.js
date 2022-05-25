@@ -123,6 +123,7 @@ export function DimensionThroughputDetailDashboard({
               samplingFrequency={1}
               targetPercentile={0.7}
               context={context}
+              specsOnly={limitToSpecsOnly}
               view={view}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}

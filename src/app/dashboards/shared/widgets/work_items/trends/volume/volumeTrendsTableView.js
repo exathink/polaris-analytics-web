@@ -9,11 +9,6 @@ import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 import {VolumeTrendsChart} from "./volumeTrendsChart";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-const WorkItemsTypeMap = {
-  workItemsInScope: "all",
-  workItemsWithCommits: "specs",
-};
-
 export function VolumeTrendsTableView({
   data,
   tableData,
@@ -25,6 +20,7 @@ export function VolumeTrendsTableView({
   context,
   before,
   setBefore,
+  specsOnly
 }) {
     const tableData2 = React.useMemo(() => {
         const edgeNodes = tableData?.[dimension]?.workItemDeliveryCycles?.edges ?? [];
@@ -52,9 +48,7 @@ export function VolumeTrendsTableView({
           )
         );
       }, [tableData, dimension]);
-  const [tabSelection, setTab] = React.useState("histogram");
-  const [workItemScope, setWorkItemScope] = React.useState("all");
-  const specsOnly = workItemScope==="specs";
+  const [tabSelection, setTab] = React.useState("volume");
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const intl = useIntl();
 
@@ -76,10 +70,11 @@ export function VolumeTrendsTableView({
         )}
         <GroupingSelector
           label={"View"}
+          value={tabSelection}
           groupings={[
             {
-              key: "histogram",
-              display: "Histogram",
+              key: "volume",
+              display: "Volume",
             },
             {
               key: "table",
@@ -100,10 +95,9 @@ export function VolumeTrendsTableView({
           view={view}
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
-              const [{measurementDate, key}] = workItems;
-              if (setBefore && setWorkItemScope) {
+              const [{measurementDate}] = workItems;
+              if (setBefore) {
                 setBefore(getServerDate(measurementDate));
-                setWorkItemScope(WorkItemsTypeMap[key]);
                 setTab?.("table");
               }
             }
