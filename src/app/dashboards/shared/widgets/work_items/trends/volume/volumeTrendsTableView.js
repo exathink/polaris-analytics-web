@@ -65,6 +65,7 @@ export function VolumeTrendsTableView({
           measurementWindow={measurementWindow}
           chartConfig={chartConfig}
           view={view}
+          specsOnly={specsOnly}
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
               const [{measurementDate}] = workItems;
