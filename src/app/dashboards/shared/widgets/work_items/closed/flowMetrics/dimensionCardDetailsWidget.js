@@ -8,6 +8,7 @@ export function CardDetailsWidget({
   dimension,
   instanceKey,
   days,
+  initialDays=days,
   specsOnly,
   defectsOnly,
   before,
@@ -18,10 +19,11 @@ export function CardDetailsWidget({
   supportsFilterOnCard,
   workItemTypeFilter,
 }) {
+  let _days = before === undefined ? initialDays : days;
   const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
-    days,
+    days: _days,
     defectsOnly,
     specsOnly,
     before,
