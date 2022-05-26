@@ -2,6 +2,7 @@ import Organizations from "./organizations/context";
 import type {Context} from "../framework/navigation/context/context";
 import Projects from "./projects/context";
 import Library from "./library/context";
+import Insights from "./insights/context";
 import Teams from "./teams/context";
 import Accounts from "./accounts/context";
 import Repositories from "./repositories/context";
@@ -27,6 +28,10 @@ const context: Context = {
     {
       match: 'library',
       context: Library,
+    },
+    {
+      match: 'insights',
+      context: Insights,
     },
     {
       match: 'teams',

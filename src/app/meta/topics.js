@@ -17,6 +17,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.productVideos' defaultMessage="Product Videos"/>),
     icon: 'ion-ios-videocam-outline'
   },
+  insights: {
+    name: 'insights',
+    display: () => (<FormattedMessage id='topics.insights' defaultMessage="Insights"/>),
+    icon: 'ion-ios-fastforward-outline'
+  },
   activity: {
     name: 'activity',
     display: () => (<FormattedMessage id='topics.activity' defaultMessage="Activity"/>),

@@ -23,6 +23,10 @@ const messages = defineMessages({
     id: 'contexts.library.display',
     defaultMessage: "{quantity, plural, one {Library} other {Libraries}}"
   },
+  insights: {
+    id: 'contexts.insights.display',
+    defaultMessage: "{quantity, plural, one {Insight} other {Insights}}"
+  },
   work_items: {
     id: 'contexts.work_items.display',
     defaultMessage: "{quantity, plural, one {Card} other {Cards}}"
@@ -126,6 +130,20 @@ export const Contexts = {
         />
         },
     icon: 'ion-ios-copy-outline',
+    color: '#356eb2'
+  },
+  insights: {
+    name: 'insights',
+    message: messages.insights,
+    display:
+        (quantity = 0) => {
+          return <FormattedMessage
+            id="contexts.insights.display"
+            defaultMessage="{quantity, plural, one {Insight} other {Insights}}"
+            values={{quantity: quantity}}
+        />
+        },
+    icon: 'ion-ios-fastforward-outline',
     color: '#356eb2'
   },
   work_items: {

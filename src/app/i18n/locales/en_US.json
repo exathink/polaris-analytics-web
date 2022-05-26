@@ -40,6 +40,7 @@
   "contexts.commits.display": "{quantity, plural, one {Commit} other {Commits}}",
   "contexts.work_items.display": "{quantity, plural, one {Card} other {Cards}}",
   "contexts.library.display": "{quantity, plural, one {Content Library} other {Content Library}}",
+  "contexts.insights.display": "{quantity, plural, one {Insight} other {Insights}}",
   "contexts.oss": "Open Source",
   "topics.flow": "Flow Analysis",
   "topics.wip": "Wip Analysis",
