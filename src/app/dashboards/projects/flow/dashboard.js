@@ -84,7 +84,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               latencyTarget={latencyTarget}
               wipLimit={wipLimit}
               view={view}
-              specsOnly={false}
+              specsOnly={true}
               context={context}
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
