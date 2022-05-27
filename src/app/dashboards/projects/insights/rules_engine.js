@@ -17,9 +17,10 @@ export const RULES_ENGINE = {
 
 export function getMetricInsight({metric, target, value}) {
   const metricRuleObj = RULES_ENGINE[metric];
-  if (metricRuleObj.isPositive({value, target})) {
-    return metricRuleObj.positiveText({value, target})
+  const isPositive = metricRuleObj.isPositive({value, target});
+  if (isPositive) {
+    return {isPositive, text: metricRuleObj.positiveText({value, target})};
   } else {
-    return metricRuleObj.negativeText({value, target})
+    return {isPositive, text: metricRuleObj.negativeText({value, target})};
   }
 }
