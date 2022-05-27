@@ -1,9 +1,12 @@
 import React from "react";
-import { withViewerContext } from "../../../framework/viewer/viewerContext";
-import { ProjectDashboard } from "../projectDashboard";
-import {getMetricInsight, RULES_ENGINE, RULES_MESSAGES} from "./rules_engine";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {ProjectDashboard} from "../projectDashboard";
+import {getMetricInsight} from "./rules_engine";
 
-export function InsightsDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context}) {
+export function InsightsDashboard({
+  project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults},
+  context,
+}) {
   const [workItemScope, setWorkItemScope] = React.useState("all");
   const specsOnly = workItemScope === "specs";
 
@@ -17,12 +20,12 @@ export function InsightsDashboard({project: {key, latestWorkItemEvent, latestCom
     flowAnalysisPeriod,
     wipLimit,
     includeSubTasksFlowMetrics,
-    includeSubTasksWipInspector
+    includeSubTasksWipInspector,
   } = settingsWithDefaults;
 
   // if its on-demand insights, it could be very scalable (we can have few insights ready initially)
   const metric = "cycleTime";
-  const text = getMetricInsight({metric, target: cycleTimeTarget, value: 3})
+  const text = getMetricInsight({metric, target: cycleTimeTarget, value: 3});
 
   return (
     <div className="">

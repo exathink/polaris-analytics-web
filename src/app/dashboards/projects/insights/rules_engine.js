@@ -3,15 +3,15 @@ export const RULES_ENGINE = {
     isPositive: ({target, value}) => {
       return value <= target;
     },
-    positiveText: ({target, value}) => "metric health improved",
-    negativeText: ({target, value}) => "metric health went down",
+    positiveText: ({target, value}) => "metric health is good",
+    negativeText: ({target, value}) => "metric health is not good",
   },
   cycleTime: {
     isPositive: ({target, value}) => {
       return value <= target;
     },
-    positiveText: ({target, value}) => "metric health improved",
-    negativeText: ({target, value}) => "metric health went down",
+    positiveText: ({target, value}) => "metric health is good",
+    negativeText: ({target, value}) => "metric health is not good",
   },
 };
 
