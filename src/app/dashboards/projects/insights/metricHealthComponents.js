@@ -26,12 +26,12 @@ export function LeadTimeHealth({target, value}) {
   );
 }
 
-export function FlowInsights({leadTime, cycleTime, cycleTimeTarget, leadTimeTarget, measurementWindow}) {
+export function ResponseTimeInsights({title, subTitle, leadTime, cycleTime, cycleTimeTarget, leadTimeTarget}) {
   return (
     <div className="tw-ml-2 tw-mt-2 tw-flex tw-flex-col tw-justify-center tw-space-y-2 tw-bg-white tw-p-4">
       <div className="tw-text-center  tw-flex tw-justify-between">
-        <div className="tw-text-lg tw-font-semibold">Flow Insights</div>
-        <div className="tw-text-xs">Last {measurementWindow} days</div>
+        <div className="tw-text-lg tw-font-semibold">{title}</div>
+        <div className="tw-text-xs">{subTitle}</div>
       </div>
       <CycleTimeHealth target={cycleTimeTarget} value={cycleTime} />
       <LeadTimeHealth target={leadTimeTarget} value={leadTime} />

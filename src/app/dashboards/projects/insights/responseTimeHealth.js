@@ -1,7 +1,7 @@
 import {Loading} from "../../../components/graphql/loading";
 import {getReferenceString} from "../../../helpers/utility";
 import {useQueryDimensionFlowMetrics} from "../../shared/widgets/work_items/closed/flowMetrics/useQueryDimensionFlowMetrics";
-import { FlowInsights } from "./metricHealthComponents";
+import {FlowInsights, ResponseTimeInsights} from "./metricHealthComponents";
 
 export function ResponseTimeHealth({
   dimension,
@@ -37,10 +37,21 @@ export function ResponseTimeHealth({
   });
   if (loading) return <Loading />;
   if (error) return null;
-  const {cycleMetricsTrends: [current, prev]} = data[dimension];
+  const {
+    cycleMetricsTrends: [current, prev],
+  } = data[dimension];
   const [leadTimeValue, cycleTimeValue] = [current?.avgLeadTime, current?.avgCycleTime];
 
-  return <div>
-      <FlowInsights cycleTime={cycleTimeValue} leadTime={leadTimeValue} cycleTimeTarget={cycleTimeTarget} leadTimeTarget={leadTimeTarget} measurementWindow={measurementWindow}/>
-  </div>;
+  return (
+    <div>
+      <ResponseTimeInsights
+        title="Flow Insights"
+        subTitle={`Last ${measurementWindow} days`}
+        cycleTime={cycleTimeValue}
+        leadTime={leadTimeValue}
+        cycleTimeTarget={cycleTimeTarget}
+        leadTimeTarget={leadTimeTarget}
+      />
+    </div>
+  );
 }
