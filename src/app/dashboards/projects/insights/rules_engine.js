@@ -1,21 +1,25 @@
-export const RULES_MESSAGES = {
-    leadTime: ["", ""],
-    cycleTime: ["", ""]
-}
-
 export const RULES_ENGINE = {
-  cycleTime: (value, target, {positiveText, negativeText}) => {
-    if (value > target) {
-      return positiveText;
-    } else {
-      return negativeText;
-    }
+  leadTime: {
+    isPositive: ({target, value}) => {
+      return value <= target;
+    },
+    positiveText: ({target, value}) => "metric health improved",
+    negativeText: ({target, value}) => "metric health went down",
   },
-  leadTime: (value, target, {positiveText, negativeText}) => {
-    if (value < target) {
-      return positiveText;
-    } else {
-      return negativeText;
-    }
+  cycleTime: {
+    isPositive: ({target, value}) => {
+      return value <= target;
+    },
+    positiveText: ({target, value}) => "metric health improved",
+    negativeText: ({target, value}) => "metric health went down",
   },
 };
+
+export function getMetricInsight({metric, target, value}) {
+  const ruleObj = RULES_ENGINE[metric];
+  if (ruleObj.isPositive({value, target})) {
+    return ruleObj.positiveText({value, target})
+  } else {
+    return ruleObj.negativeText({value, target})
+  }
+}
