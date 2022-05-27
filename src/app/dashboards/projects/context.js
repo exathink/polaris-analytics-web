@@ -13,7 +13,7 @@ import Trends from "./trends/topic";
 import Alignment from "./valueBook/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
-import Insights from "./insights/context";
+import Insights from "./insights/topic";
 import {Contexts} from "../../meta/contexts";
 
 

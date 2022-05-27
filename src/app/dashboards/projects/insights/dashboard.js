@@ -4,7 +4,7 @@ import { ProjectDashboard } from "../projectDashboard";
 import {RULES_ENGINE, RULES_MESSAGES} from "./rules_engine";
 
 export function InsightsDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context}) {
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope, setWorkItemScope] = React.useState("all");
   const specsOnly = workItemScope === "specs";
 
   const {
@@ -19,7 +19,7 @@ export function InsightsDashboard({project: {key, latestWorkItemEvent, latestCom
     includeSubTasksFlowMetrics,
     includeSubTasksWipInspector
   } = settingsWithDefaults;
-  
+
   // if its on-demand insights, it could be very scalable (we can have few insights ready initially)
   const metric = "cycleTime";
   const ruleFn = RULES_ENGINE[metric];
