@@ -1,5 +1,6 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import {DaysRangeSlider, SIX_MONTHS} from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import {ProjectDashboard} from "../projectDashboard";
 import {ResponseTimeHealth} from "./responseTimeHealth";
 
@@ -22,9 +23,13 @@ export function InsightsDashboard({
     includeSubTasksFlowMetrics,
     includeSubTasksWipInspector,
   } = settingsWithDefaults;
+  const [daysRange, setDaysRange] = React.useState(flowAnalysisPeriod);
 
   return (
     <div className="tw-grid tw-grid-cols-3 tw-gap-2">
+      <div className="tw-col-start-2 tw-col-end-4 tw-p-2">
+        <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={SIX_MONTHS} />
+      </div>
       <ResponseTimeHealth
         dimension={"project"}
         instanceKey={key}
@@ -32,9 +37,9 @@ export function InsightsDashboard({
         cycleTimeTarget={cycleTimeTarget}
         leadTimeConfidenceTarget={leadTimeConfidenceTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-        days={flowAnalysisPeriod}
-        measurementWindow={flowAnalysisPeriod}
-        samplingFrequency={flowAnalysisPeriod}
+        days={daysRange}
+        measurementWindow={daysRange}
+        samplingFrequency={daysRange}
         specsOnly={true}
         includeSubTasks={true}
         latestCommit={latestCommit}
