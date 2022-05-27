@@ -1,7 +1,6 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-import {CycleTimeHealth, FlowInsights, LeadTimeHealth, WipInsights} from "./metricHealthComponents";
 import {ResponseTimeHealth} from "./responseTimeHealth";
 
 export function InsightsDashboard({
@@ -23,8 +22,6 @@ export function InsightsDashboard({
     includeSubTasksFlowMetrics,
     includeSubTasksWipInspector,
   } = settingsWithDefaults;
-
-  // if its on-demand insights, it could be very scalable (we can have few insights ready initially)
 
   return (
     <div className="tw-grid tw-grid-cols-3 tw-gap-2">
