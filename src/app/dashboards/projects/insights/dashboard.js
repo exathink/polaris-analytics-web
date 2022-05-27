@@ -1,7 +1,8 @@
 import React from "react";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-import {CycleTimeHealth, LeadTimeHealth} from "./metricHealthComponents";
+import {CycleTimeHealth, FlowInsights, LeadTimeHealth, WipInsights} from "./metricHealthComponents";
+import {ResponseTimeHealth} from "./responseTimeHealth";
 
 export function InsightsDashboard({
   project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults},
@@ -27,9 +28,21 @@ export function InsightsDashboard({
 
   return (
     <div className="tw-grid tw-grid-cols-3 tw-gap-2">
-      Insights Module
-      <CycleTimeHealth target={cycleTimeTarget} value={3} />
-      <LeadTimeHealth target={leadTimeTarget} value={35} />
+      <ResponseTimeHealth
+        dimension={"project"}
+        instanceKey={key}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeTarget={cycleTimeTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        days={flowAnalysisPeriod}
+        measurementWindow={flowAnalysisPeriod}
+        samplingFrequency={flowAnalysisPeriod}
+        specsOnly={true}
+        includeSubTasks={true}
+        latestCommit={latestCommit}
+        latestWorkItemEvent={latestWorkItemEvent}
+      />
     </div>
   );
 }
