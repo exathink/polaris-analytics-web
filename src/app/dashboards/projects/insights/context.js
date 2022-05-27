@@ -1,7 +1,7 @@
 
 import Insights from "./topic";
 
-import {Contexts} from "../../meta/index";
+import {Contexts} from "../../../meta/index";
 
 const context = {
   ...Contexts.insights,

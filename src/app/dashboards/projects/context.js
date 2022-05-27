@@ -13,6 +13,7 @@ import Trends from "./trends/topic";
 import Alignment from "./valueBook/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
+import Insights from "./insights/context";
 import {Contexts} from "../../meta/contexts";
 
 
@@ -66,6 +67,10 @@ const context : Context = {
           {
             match: 'configure',
             topic: Configure
+          },
+          {
+            match: 'insights',
+            topic: Insights
           },
           {
             match: '',
