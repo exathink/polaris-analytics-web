@@ -1,6 +1,7 @@
 import {Tooltip} from "antd";
 import cn from "classnames";
 import {getMetricUtils} from "../../../components/misc/statistic/statistic";
+import { TOOLTIP_COLOR } from "../../../helpers/utility";
 import {getMetricInsight} from "./rules_engine";
 
 function getClassNames(isPositive) {
@@ -17,7 +18,7 @@ function getTooltipElement({target, value, uom, metric, metricLabel}) {
     valueRender: (text) => text,
   });
   return (
-    <div className="tw-flex tw-flex-col tw-justify-center">
+    <div className="tw-flex tw-flex-col tw-justify-center tw-text-gray-300">
       <div className="tw-flex tw-items-center">
         <div>{metricLabel}: </div>
         <div className="tw-ml-2">
@@ -41,7 +42,7 @@ export function CycleTimeHealth({target, value}) {
       <div className="tw-font-semibold">CYCLE TIME</div>
       <div className="tw-flex tw-items-center tw-justify-between">
         <div>{text}</div>
-        <Tooltip title={tooltipElement} color={"green"}>
+        <Tooltip title={tooltipElement} color={TOOLTIP_COLOR}>
           <div className="tw-cursor-pointer tw-text-xs tw-text-blue-200">Details</div>
         </Tooltip>
       </div>
@@ -59,7 +60,7 @@ export function LeadTimeHealth({target, value}) {
       <div className="tw-font-semibold">LEAD TIME</div>
       <div className="tw-flex tw-items-center tw-justify-between">
         <div>{text}</div>
-        <Tooltip title={tooltipElement} color={"green"}>
+        <Tooltip title={tooltipElement} color={TOOLTIP_COLOR}>
           <div className="tw-cursor-pointer tw-text-xs tw-text-blue-200">Details</div>
         </Tooltip>
       </div>

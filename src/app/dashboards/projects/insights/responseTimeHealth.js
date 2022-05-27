@@ -1,7 +1,7 @@
 import {Loading} from "../../../components/graphql/loading";
 import {getReferenceString} from "../../../helpers/utility";
 import {useQueryDimensionFlowMetrics} from "../../shared/widgets/work_items/closed/flowMetrics/useQueryDimensionFlowMetrics";
-import {FlowInsights, ResponseTimeInsights} from "./metricHealthComponents";
+import {ResponseTimeInsights} from "./metricHealthComponents";
 
 export function ResponseTimeHealth({
   dimension,
