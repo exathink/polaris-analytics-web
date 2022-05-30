@@ -18,12 +18,7 @@ function getQuadrantSummaryValues({workItems, cycleTimeTarget, latencyTarget}) {
   }, {});
 }
 
-export function QuadrantSummaryPanel({
-  workItems,
-  stateTypes,
-  cycleTimeTarget,
-  latencyTarget,
-}) {
+export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget}) {
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
@@ -35,21 +30,30 @@ export function QuadrantSummaryPanel({
 
   return (
     <div className="tw-grid tw-grid-cols-4 tw-grid-rows-1 tw-gap-1">
-      <div className="tw-flex tw-flex-col tw-p-1 tw-rounded-md" style={{backgroundColor: QuadrantColors[Quadrants.ok]}}>
+      <div className="tw-flex tw-flex-col tw-rounded-md tw-p-1" style={{backgroundColor: QuadrantColors[Quadrants.ok]}}>
         <div>{QuadrantNames[Quadrants.ok]}</div>
-        <div>{quadrantValues[Quadrants.ok] ?? 0}</div>
+        <div className="tw-font-medium">{quadrantValues[Quadrants.ok] ?? 0}</div>
       </div>
-      <div className="tw-flex tw-flex-col tw-p-1 tw-rounded-md" style={{backgroundColor: QuadrantColors[Quadrants.latency]}}>
+      <div
+        className="tw-flex tw-flex-col tw-rounded-md tw-p-1"
+        style={{backgroundColor: QuadrantColors[Quadrants.latency]}}
+      >
         <div>{QuadrantNames[Quadrants.latency]}</div>
-        <div>{quadrantValues[Quadrants.latency] ?? 0}</div>
+        <div className="tw-font-medium">{quadrantValues[Quadrants.latency] ?? 0}</div>
       </div>
-      <div className="tw-flex tw-flex-col tw-p-1 tw-rounded-md" style={{backgroundColor: QuadrantColors[Quadrants.age]}}>
+      <div
+        className="tw-flex tw-flex-col tw-rounded-md tw-p-1"
+        style={{backgroundColor: QuadrantColors[Quadrants.age]}}
+      >
         <div>{QuadrantNames[Quadrants.age]}</div>
-        <div>{quadrantValues[Quadrants.age] ?? 0}</div>
+        <div className="tw-font-medium">{quadrantValues[Quadrants.age] ?? 0}</div>
       </div>
-      <div className="tw-flex tw-flex-col tw-p-1 tw-rounded-md" style={{backgroundColor: QuadrantColors[Quadrants.critical]}}>
+      <div
+        className="tw-flex tw-flex-col tw-rounded-md tw-p-1"
+        style={{backgroundColor: QuadrantColors[Quadrants.critical]}}
+      >
         <div>{QuadrantNames[Quadrants.critical]}</div>
-        <div>{quadrantValues[Quadrants.critical] ?? 0}</div>
+        <div className="tw-font-medium">{quadrantValues[Quadrants.critical] ?? 0}</div>
       </div>
     </div>
   );
