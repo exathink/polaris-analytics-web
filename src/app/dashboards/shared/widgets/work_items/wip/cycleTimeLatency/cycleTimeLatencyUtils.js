@@ -26,10 +26,10 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
 
 
 export const QuadrantColors = {
-  ok: "#2f9a32",
-  latency: "#d7aa11",
-  age: "#da7304",
-  critical: "#b5111a"
+  [Quadrants.ok]: "#2f9a32",
+  [Quadrants.latency]: "#d7aa11",
+  [Quadrants.age]: "#da7304",
+  [Quadrants.critical]: "#b5111a"
 };
 
 export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget){
@@ -37,10 +37,10 @@ export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTar
 }
 
 export const QuadrantNames = {
-  ok: "On Track",
-  latency: "Watch List",
-  age: "Off Track",
-  critical: "Critical"
+  [Quadrants.ok]: "Moving",
+  [Quadrants.latency]: "Slowing",
+  [Quadrants.age]: "Delayed",
+  [Quadrants.critical]: "Stalled"
 };
 
 export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget) {
