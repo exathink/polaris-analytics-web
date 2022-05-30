@@ -3,7 +3,6 @@ import {ClearFilterIcon} from "../../../../components/misc/customIcons";
 import {
   getSelectedMetricColor,
   getSelectedMetricDisplayName,
-  getSelectedPullRequestMetricDisplayName
 } from "../../helpers/metricsMeta";
 
 export function ClearFilters({selectedFilter, selectedMetric, stateType, handleClearClick}) {

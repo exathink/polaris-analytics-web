@@ -11,7 +11,6 @@ import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSl
 import styles from "../valueBook/dashboard.module.css";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
 import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
-import {Colors} from "../../shared/config";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 

@@ -8,7 +8,7 @@ import {
 import { Colors, ResponseTimeMetricsColor } from "../../../config";
 import { WorkBalanceContributorDetailChart } from "./workBalanceContributorDetailChart";
 import Contributors from "../../../../contributors/context";
-import { fteEquivalent, getCapacityEfficiency, getFlowEfficiency } from "../../../helpers/statsUtils";
+import { fteEquivalent, getCapacityEfficiency } from "../../../helpers/statsUtils";
 
 function getCapEfficiencyForEffortOutPoint(effortOutPoint, measurementWindow, capacityTrends) {
   // Bit of a hack to show the capEfficiency in the tooltip for effortOut.
