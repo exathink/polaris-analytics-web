@@ -4,6 +4,7 @@ import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
+import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
 export const DimensionCycleTimeLatencyView = (
   {
@@ -31,6 +32,12 @@ export const DimensionCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
+        <QuadrantSummaryPanel
+          workItems={workItems}
+          stateTypes={stateTypes}
+          cycleTimeTarget={cycleTimeTarget}
+          latencyTarget={latencyTarget}
+        />
         <WorkItemsCycleTimeVsLatencyChart
           view={view}
           stageName={stageName}
