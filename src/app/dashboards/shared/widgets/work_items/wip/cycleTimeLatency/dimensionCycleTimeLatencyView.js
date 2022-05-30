@@ -32,30 +32,34 @@ export const DimensionCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <QuadrantSummaryPanel
-          workItems={workItems}
-          stateTypes={stateTypes}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-        />
-        <WorkItemsCycleTimeVsLatencyChart
-          view={view}
-          stageName={stageName}
-          specsOnly={specsOnly}
-          workItems={workItems}
-          stateTypes={stateTypes}
-          groupByState={groupByState}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          tick={tick}
-          tooltipType={tooltipType}
-          onSelectionChange={(workItems, eventType) => {
-            if (eventType === EVENT_TYPES.POINT_CLICK) {
-              setWorkItemKey(workItems[0].key);
-              setShowPanel(true);
-            }
-          }}
-        />
+        <div className="tw-h-[20%]">
+          <QuadrantSummaryPanel
+            workItems={workItems}
+            stateTypes={stateTypes}
+            cycleTimeTarget={cycleTimeTarget}
+            latencyTarget={latencyTarget}
+          />
+        </div>
+        <div className="tw-h-[80%]">
+          <WorkItemsCycleTimeVsLatencyChart
+            view={view}
+            stageName={stageName}
+            specsOnly={specsOnly}
+            workItems={workItems}
+            stateTypes={stateTypes}
+            groupByState={groupByState}
+            cycleTimeTarget={cycleTimeTarget}
+            latencyTarget={latencyTarget}
+            tick={tick}
+            tooltipType={tooltipType}
+            onSelectionChange={(workItems, eventType) => {
+              if (eventType === EVENT_TYPES.POINT_CLICK) {
+                setWorkItemKey(workItems[0].key);
+                setShowPanel(true);
+              }
+            }}
+          />
+        </div>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
