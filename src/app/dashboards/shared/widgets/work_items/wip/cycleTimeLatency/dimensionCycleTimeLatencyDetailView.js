@@ -160,7 +160,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
       <div className="tw-ml-4 tw-inline">
-        <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="includeFlowMetrics" checked={isSideBySide}>
+        <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="sideBySide" checked={isSideBySide}>
           Side By Side
         </Checkbox>
       </div>
