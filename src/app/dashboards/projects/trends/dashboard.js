@@ -70,7 +70,7 @@ function TrendsDashboard({
           className={styles.valueBookClosed}
           render={({view}) => (
             <ProjectValueBookWidget
-              title={`Roadmap Allocations: Last ${daysRange} Days`}
+              title={`Roadmap Investments: Last ${daysRange} Days`}
               instanceKey={key}
               context={context}
               days={daysRange}
@@ -93,14 +93,15 @@ function TrendsDashboard({
               dimension={"project"}
               title={`Strategic Allocations: Last ${daysRange} Days`}
               instanceKey={key}
-              measurementWindow={30}
+              measurementWindow={daysRange}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={daysRange}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               specsOnly={true}
+              showCounts={true}
               asStatistic={false}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
@@ -120,7 +121,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
-              title={"Cost of Delay"}
+              title={"Response Time"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
@@ -181,7 +182,7 @@ function TrendsDashboard({
               target={0.9}
               showEffort={true}
               showContributorDetail={false}
-              chartConfig={{totalEffortDisplayType: "areaspline"}}
+              chartConfig={{totalEffortDisplayType: "column"}}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
