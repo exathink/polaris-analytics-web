@@ -55,7 +55,7 @@ export const VolumeTrendsChart = ({
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
       config={{
-        title: "Volume",
+        title: "Throughput",
         yAxisUom: "Cards",
         plotBands: {
           metric: "workItemsWithCommits",
