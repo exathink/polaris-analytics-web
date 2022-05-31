@@ -154,6 +154,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     resetComponentState();
   }
 
+  const items = specsOnly ? "Specs" : "Cards";
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={styles.workItemScope}>
@@ -161,7 +162,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
       <div className="tw-ml-4 tw-inline">
         <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="sideBySide" checked={isSideBySide}>
-          Side By Side
+          {stateTypes.includes(deliveryStateTypes[0]) ? `Show ${items} in Coding`: `Show ${items} in Delivery`}
         </Checkbox>
       </div>
       <div className={styles.resetAllButton}>
