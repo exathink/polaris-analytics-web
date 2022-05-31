@@ -4,12 +4,12 @@ import {FormattedMessage} from 'react-intl.macro';
 export const Topics = {
   flow: {
     name: 'flow',
-    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analysis"/>),
+    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analyzer"/>),
     icon: 'ion-ios-infinite-outline'
   },
   wip: {
     name: 'wip',
-    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Analysis"/>),
+    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
     icon: 'ion-ios-pulse-strong'
   },
   productVideos: {

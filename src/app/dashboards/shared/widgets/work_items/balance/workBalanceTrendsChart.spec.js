@@ -124,7 +124,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: `<span>Effort<sub><em>out</em></sub></span>`,
+    text: `<span>Engineering Capacity</span>`,
   },
   subtitle: {
     text: `45 day trend`,
