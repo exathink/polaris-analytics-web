@@ -256,7 +256,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               elide(name, 30)
             }`,
             body: [
-              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)}`],
+              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
               [`Current State:`, `${state.toLowerCase()}`],
               [`-----------------`, ``],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],
