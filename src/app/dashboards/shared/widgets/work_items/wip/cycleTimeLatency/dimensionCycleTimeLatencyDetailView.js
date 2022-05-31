@@ -5,13 +5,14 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../conf
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {Button} from "antd";
+import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
+import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -62,6 +63,8 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
   data,
+  stateTypes,
+  stageName,
   groupByState,
   cycleTimeTarget,
   latencyTarget,
@@ -78,6 +81,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
+  const [isSideBySide, setSideBySide] = React.useState(false);
+
   const localAppliedFilters = getSanitizedFilters(appliedFilters);
   const applyFiltersTest = React.useCallback(
     (node) => {
@@ -88,7 +93,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           nodeWithAggrDurations.cycleTime,
           nodeWithAggrDurations.latency,
           cycleTimeTarget,
-          latencyTarget,
+          latencyTarget
         ),
         teams: joinTeams(node),
       };
@@ -154,6 +159,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
+      <div className="tw-mr-8 tw-inline">
+        <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="includeFlowMetrics" checked={isSideBySide}>
+          Side By Side
+        </Checkbox>
+      </div>
       <div className={styles.resetAllButton}>
         {(tableFilteredWorkItems.length < initWorkItems.length ||
           chartFilteredWorkItems.length < initWorkItems.length) && (
@@ -163,38 +173,96 @@ export const DimensionCycleTimeLatencyDetailView = ({
         )}
       </div>
       <div className={styles.engineering}>
-        <WorkItemsCycleTimeVsLatencyChart
-          key={resetComponentStateKey}
-          view={view}
-          stageName={"Coding"}
-          specsOnly={specsOnly}
-          workItems={chartFilteredWorkItems}
-          stateTypes={engineeringStateTypes}
-          groupByState={groupByState}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          tooltipType={tooltipType}
-          onSelectionChange={handleSelectionChange}
-        />
-      </div>
-      <div className={styles.delivery}>
-        <WorkItemsCycleTimeVsLatencyChart
-          key={resetComponentStateKey}
-          view={view}
-          stageName={"Delivery"}
-          specsOnly={specsOnly}
-          workItems={chartFilteredWorkItems}
-          stateTypes={deliveryStateTypes}
-          groupByState={groupByState}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          tooltipType={tooltipType}
-          onSelectionChange={handleSelectionChange}
-        />
+        {isSideBySide ? (
+          <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-2">
+            <div className="tw-h-full">
+              <div className="tw-h-[20%]">
+                <QuadrantSummaryPanel
+                  workItems={chartFilteredWorkItems}
+                  stateTypes={engineeringStateTypes}
+                  cycleTimeTarget={cycleTimeTarget}
+                  latencyTarget={latencyTarget}
+                />
+              </div>
+              <div className="tw-h-[80%]">
+                <WorkItemsCycleTimeVsLatencyChart
+                  key={resetComponentStateKey}
+                  view={view}
+                  stageName={"Coding"}
+                  specsOnly={specsOnly}
+                  workItems={chartFilteredWorkItems}
+                  stateTypes={engineeringStateTypes}
+                  groupByState={groupByState}
+                  cycleTimeTarget={cycleTimeTarget}
+                  latencyTarget={latencyTarget}
+                  tooltipType={tooltipType}
+                  onSelectionChange={handleSelectionChange}
+                />
+              </div>
+            </div>
+            <div className="tw-h-full">
+              <div className="tw-h-[20%]">
+                <QuadrantSummaryPanel
+                  workItems={chartFilteredWorkItems}
+                  stateTypes={deliveryStateTypes}
+                  cycleTimeTarget={cycleTimeTarget}
+                  latencyTarget={latencyTarget}
+                />
+              </div>
+              <div className="tw-h-[80%]">
+                <WorkItemsCycleTimeVsLatencyChart
+                  key={resetComponentStateKey}
+                  view={view}
+                  stageName={"Delivery"}
+                  specsOnly={specsOnly}
+                  workItems={chartFilteredWorkItems}
+                  stateTypes={deliveryStateTypes}
+                  groupByState={groupByState}
+                  cycleTimeTarget={cycleTimeTarget}
+                  latencyTarget={latencyTarget}
+                  tooltipType={tooltipType}
+                  onSelectionChange={handleSelectionChange}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <React.Fragment>
+            <div className="tw-h-[20%]">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={stateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+              />
+            </div>
+            <div className="tw-h-[80%]">
+              <WorkItemsCycleTimeVsLatencyChart
+                key={resetComponentStateKey}
+                view={view}
+                stageName={stageName}
+                specsOnly={specsOnly}
+                workItems={chartFilteredWorkItems}
+                stateTypes={stateTypes}
+                groupByState={groupByState}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                tooltipType={tooltipType}
+                onSelectionChange={handleSelectionChange}
+              />
+            </div>
+          </React.Fragment>
+        )}
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
-          tableData={getWorkItemDurations(tableFilteredWorkItems)}
+          tableData={
+            isSideBySide
+              ? getWorkItemDurations(tableFilteredWorkItems)
+              : getWorkItemDurations(tableFilteredWorkItems).filter((workItem) =>
+                  stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
+                )
+          }
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}

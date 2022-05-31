@@ -6,7 +6,7 @@
   gap: 0.5rem 0.5rem;
   grid-template-areas:
     ". workItemScope workItemScope resetAll"
-    "engineering engineering delivery delivery"
+    "engineering engineering engineering engineering"
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
 }
 
