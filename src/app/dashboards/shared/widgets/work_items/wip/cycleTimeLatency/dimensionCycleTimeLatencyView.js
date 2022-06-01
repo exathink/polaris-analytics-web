@@ -32,7 +32,7 @@ export const DimensionCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div className="tw-h-[22%]">
+        <div className="tw-h-[22%] tw-flex tw-items-center">
           <QuadrantSummaryPanel
             workItems={workItems}
             stateTypes={stateTypes}
