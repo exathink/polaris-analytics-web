@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 import {
   getQuadrant,
@@ -22,12 +23,12 @@ function QuadrantBox({name, val, color}) {
   return (
     <div className="tw-flex tw-flex-col tw-rounded-md tw-p-1" style={{backgroundColor: color}}>
       <div>{name}</div>
-      <div className="tw-font-medium">{val}</div>
+      <div className="tw-textXl tw-text-black tw-text-opacity-80">{val}</div>
     </div>
   );
 }
 
-export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget}) {
+export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget, className}) {
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
@@ -38,7 +39,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
   });
 
   return (
-    <div className="tw-grid tw-grid-cols-4 tw-grid-rows-1 tw-gap-1">
+    <div className={classNames("tw-grid tw-grid-cols-4 tw-grid-rows-1 tw-gap-1", className)}>
       <QuadrantBox
         name={QuadrantNames[Quadrants.ok]}
         val={quadrantValues[Quadrants.ok] ?? 0}

@@ -32,15 +32,16 @@ export const DimensionCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div className="tw-h-[20%]">
+        <div className="tw-h-[22%]">
           <QuadrantSummaryPanel
             workItems={workItems}
             stateTypes={stateTypes}
             cycleTimeTarget={cycleTimeTarget}
             latencyTarget={latencyTarget}
+            className="tw-w-[90%]"
           />
         </div>
-        <div className="tw-h-[80%]">
+        <div className="tw-h-[78%]">
           <WorkItemsCycleTimeVsLatencyChart
             view={view}
             stageName={stageName}
