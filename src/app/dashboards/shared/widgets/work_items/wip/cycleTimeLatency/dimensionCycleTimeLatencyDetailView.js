@@ -61,6 +61,11 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
+function getCurrentStateType(stateTypes) {
+  const [deliveryStateType] = deliveryStateTypes;
+  return stateTypes.includes(deliveryStateType) ? "Delivery" : "Coding"
+}
+
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
   data,
@@ -79,6 +84,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
+
+  const [selectedQuadrant, setSelectedQuadrant] = React.useState();
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
@@ -159,14 +166,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={classNames(styles.title, "tw-textXl tw-text-center")}>
-        Latency Inspector: {stateTypes.includes(deliveryStateTypes[0]) ? "Delivery" : "Coding"} Phase
+        Latency Inspector: {getCurrentStateType(stateTypes)} Phase
       </div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
       <div className={classNames(styles.sideBySide, "tw-ml-4 tw-inline")}>
         <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="sideBySide" checked={isSideBySide}>
-          {stateTypes.includes(deliveryStateTypes[0]) ? `Show ${items} in Coding`: `Show ${items} in Delivery`}
+          {getCurrentStateType(stateTypes)==="Delivery" ? `Show ${items} in Coding`: `Show ${items} in Delivery`}
         </Checkbox>
       </div>
       <div className={styles.resetAllButton}>
