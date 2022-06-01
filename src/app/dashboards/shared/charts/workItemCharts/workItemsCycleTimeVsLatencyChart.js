@@ -12,7 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrantColor, getQuadrantName } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrant, getQuadrantColor, getQuadrantName } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 
 
@@ -109,7 +109,7 @@ function getTeamEntry(teamNodeRefs) {
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick")
+    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant")
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
@@ -125,12 +125,13 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 tick,
                 intl,
                 view,
-                tooltipType
+                tooltipType,
+                selectedQuadrant
               }) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    );
+    ).filter(x => selectedQuadrant === undefined || selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget));
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
     const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));

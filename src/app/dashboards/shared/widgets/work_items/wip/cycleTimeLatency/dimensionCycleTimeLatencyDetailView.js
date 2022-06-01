@@ -173,7 +173,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
       <div className={classNames(styles.sideBySide, "tw-ml-4 tw-inline")}>
         <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="sideBySide" checked={isSideBySide}>
-          {getCurrentStateType(stateTypes)==="Delivery" ? `Show ${items} in Coding`: `Show ${items} in Delivery`}
+          {getCurrentStateType(stateTypes) === "Delivery" ? `Show ${items} in Coding` : `Show ${items} in Delivery`}
         </Checkbox>
       </div>
       <div className={styles.resetAllButton}>
@@ -246,6 +246,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 stateTypes={stateTypes}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  setSelectedQuadrant(quadrant);
+                }}
+                selectedQuadrant={selectedQuadrant}
               />
             </div>
             <div className="tw-h-[80%]">
@@ -261,6 +265,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 latencyTarget={latencyTarget}
                 tooltipType={tooltipType}
                 onSelectionChange={handleSelectionChange}
+                selectedQuadrant={selectedQuadrant}
               />
             </div>
           </React.Fragment>
@@ -271,9 +276,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
           tableData={
             isSideBySide
               ? getWorkItemDurations(tableFilteredWorkItems)
-              : getWorkItemDurations(tableFilteredWorkItems).filter((workItem) =>
-                  stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-                )
+              : getWorkItemDurations(tableFilteredWorkItems)
+                  .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+                  .filter(
+                    (x) =>
+                      selectedQuadrant === undefined ||
+                      selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                  )
           }
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
