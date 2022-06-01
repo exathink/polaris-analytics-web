@@ -12,7 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrant, getQuadrantColor, getQuadrantName } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrant, getQuadrantColor, getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 
 
@@ -95,9 +95,12 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   );
 }
 
-function getTitle(workItems, stageName, specsOnly) {
+function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
   const count = workItems.length;
   const countDisplay = `${count} ${count === 1 ? specsOnly ? "Spec" : "Card" : specsOnly ? "Specs" : "Cards"}`;
+  if (selectedQuadrant) {
+    return `${countDisplay} in ${QuadrantNames[selectedQuadrant]}`
+  }
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
 
@@ -152,7 +155,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
       },
       title: {
-        text: getTitle(workItemsWithAggregateDurations, stageName, specsOnly),
+        text: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant}),
         align: "left"
       },
       subtitle: {
