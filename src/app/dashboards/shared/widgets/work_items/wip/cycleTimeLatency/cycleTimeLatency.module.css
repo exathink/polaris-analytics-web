@@ -2,12 +2,21 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 4% 50% 45%;
+  grid-template-rows: 4% 4% 50% 45%;
   gap: 0.5rem 0.5rem;
   grid-template-areas:
-    ". workItemScope workItemScope resetAll"
+    "title title title title"
+    "sideBySide workItemScope workItemScope resetAll"
     "engineering engineering engineering engineering"
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
+}
+
+.title {
+  grid-area: title
+}
+
+.sideBySide {
+  grid-area: sideBySide;
 }
 
 .engineering {

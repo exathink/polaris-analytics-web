@@ -13,6 +13,7 @@ import {useResetComponentState} from "../../../../../projects/shared/helper/hook
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import classNames from "classnames";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -157,10 +158,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const items = specsOnly ? "Specs" : "Cards";
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
+      <div className={classNames(styles.title, "tw-textXl tw-text-center")}>
+        Latency Inspector: {stateTypes.includes(deliveryStateTypes[0]) ? "Delivery" : "Coding"} Phase
+      </div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
-      <div className="tw-ml-4 tw-inline">
+      <div className={classNames(styles.sideBySide, "tw-ml-4 tw-inline")}>
         <Checkbox onChange={(e) => setSideBySide(e.target.checked)} name="sideBySide" checked={isSideBySide}>
           {stateTypes.includes(deliveryStateTypes[0]) ? `Show ${items} in Coding`: `Show ${items} in Delivery`}
         </Checkbox>
