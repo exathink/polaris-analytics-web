@@ -157,6 +157,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     // reset table component state
     setTableFilteredWorkItems(initWorkItems);
     setAppliedFilters(EmptyObj);
+    setSelectedQuadrant(undefined);
 
     // reset chart components state
     resetComponentState();
@@ -178,7 +179,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
       <div className={styles.resetAllButton}>
         {(tableFilteredWorkItems.length < initWorkItems.length ||
-          chartFilteredWorkItems.length < initWorkItems.length) && (
+          chartFilteredWorkItems.length < initWorkItems.length ||
+          selectedQuadrant !== undefined) && (
           <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
             Clear Filters
           </Button>
