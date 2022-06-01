@@ -250,6 +250,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   setSelectedQuadrant(quadrant);
                 }}
                 selectedQuadrant={selectedQuadrant}
+                layout="row"
               />
             </div>
             <div className="tw-h-[80%]">

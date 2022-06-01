@@ -19,16 +19,24 @@ function getQuadrantSummaryValues({workItems, cycleTimeTarget, latencyTarget}) {
   }, {});
 }
 
-function QuadrantBox({name, val, color, onQuadrantClick, className}) {
+function QuadrantBox({name, val, color, onQuadrantClick, className, layout}) {
   return (
-    <div className={classNames("tw-flex tw-flex-col tw-rounded-md tw-p-1 tw-cursor-pointer", className)} style={{backgroundColor: color}} onClick={onQuadrantClick}>
+    <div
+      className={classNames(
+        "tw-flex tw-cursor-pointer tw-rounded-md tw-p-1",
+        layout === "col" ? "tw-flex-col" : "tw-flex-row tw-justify-between tw-items-center tw-h-14 tw-px-6",
+        className
+      )}
+      style={{backgroundColor: color}}
+      onClick={onQuadrantClick}
+    >
       <div>{name}</div>
       <div className="tw-textXl tw-text-black tw-text-opacity-80">{val}</div>
     </div>
   );
 }
 
-export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget, className, onQuadrantClick, selectedQuadrant}) {
+export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget, className, onQuadrantClick, selectedQuadrant, layout="col"}) {
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
@@ -46,6 +54,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         val={quadrantValues[Quadrants.ok] ?? 0}
         color={QuadrantColors[Quadrants.ok]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.ok)}
+        layout={layout}
         className={selectedQuadrant === Quadrants.ok ? selectedBorderClasses : ""}
       />
       <QuadrantBox
@@ -53,6 +62,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         val={quadrantValues[Quadrants.latency] ?? 0}
         color={QuadrantColors[Quadrants.latency]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.latency)}
+        layout={layout}
         className={selectedQuadrant === Quadrants.latency ? selectedBorderClasses : ""}
       />
       <QuadrantBox
@@ -60,6 +70,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         val={quadrantValues[Quadrants.age] ?? 0}
         color={QuadrantColors[Quadrants.age]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.age)}
+        layout={layout}
         className={selectedQuadrant === Quadrants.age ? selectedBorderClasses : ""}
       />
       <QuadrantBox
@@ -67,6 +78,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         val={quadrantValues[Quadrants.critical] ?? 0}
         color={QuadrantColors[Quadrants.critical]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.critical)}
+        layout={layout}
         className={selectedQuadrant === Quadrants.critical ? selectedBorderClasses : ""}
       />
     </div>
