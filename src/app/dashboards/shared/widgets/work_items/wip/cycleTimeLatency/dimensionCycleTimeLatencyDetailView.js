@@ -62,10 +62,10 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 }
 
 function getTitle(stageName) {
-  if (stageName===undefined) {
-    return `Latency Inspector: Wip Phase`
+  if (stageName === undefined) {
+    return `Latency Inspector: Wip Phase`;
   }
-  return `Latency Inspector: ${stageName} Phase`
+  return `Latency Inspector: ${stageName} Phase`;
 }
 
 export const DimensionCycleTimeLatencyDetailView = ({
@@ -165,9 +165,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-ml-4 tw-text-base")}>
-        {getTitle(stageName)}
-      </div>
+      <div className={classNames(styles.title, "tw-ml-4 tw-text-base")}>{getTitle(stageName)}</div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
@@ -184,14 +182,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
         {stateTypes === undefined ? (
           <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-2">
             <div className="tw-h-full">
-              <div className="tw-h-[20%]">
-                <QuadrantSummaryPanel
-                  workItems={chartFilteredWorkItems}
-                  stateTypes={engineeringStateTypes}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                />
-              </div>
               <div className="tw-h-[80%]">
                 <WorkItemsCycleTimeVsLatencyChart
                   key={resetComponentStateKey}
@@ -207,16 +197,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   onSelectionChange={handleSelectionChange}
                 />
               </div>
-            </div>
-            <div className="tw-h-full">
               <div className="tw-h-[20%]">
                 <QuadrantSummaryPanel
                   workItems={chartFilteredWorkItems}
-                  stateTypes={deliveryStateTypes}
+                  stateTypes={engineeringStateTypes}
                   cycleTimeTarget={cycleTimeTarget}
                   latencyTarget={latencyTarget}
+                  className="tw-mx-auto tw-w-[98%]"
                 />
               </div>
+            </div>
+            <div className="tw-h-full">
               <div className="tw-h-[80%]">
                 <WorkItemsCycleTimeVsLatencyChart
                   key={resetComponentStateKey}
@@ -232,24 +223,19 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   onSelectionChange={handleSelectionChange}
                 />
               </div>
+              <div className="tw-h-[20%]">
+                <QuadrantSummaryPanel
+                  workItems={chartFilteredWorkItems}
+                  stateTypes={deliveryStateTypes}
+                  cycleTimeTarget={cycleTimeTarget}
+                  latencyTarget={latencyTarget}
+                  className="tw-mx-auto tw-w-[98%]"
+                />
+              </div>
             </div>
           </div>
         ) : (
           <React.Fragment>
-            <div className="tw-h-auto">
-              <QuadrantSummaryPanel
-                workItems={chartFilteredWorkItems}
-                stateTypes={stateTypes}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
-                }}
-                selectedQuadrant={selectedQuadrant}
-                className="tw-mx-auto tw-w-[98%]"
-                valueFontClass="tw-text-3xl"
-              />
-            </div>
             <div className="tw-h-[80%]">
               <WorkItemsCycleTimeVsLatencyChart
                 key={resetComponentStateKey}
@@ -264,6 +250,20 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 tooltipType={tooltipType}
                 onSelectionChange={handleSelectionChange}
                 selectedQuadrant={selectedQuadrant}
+              />
+            </div>
+            <div className="tw-h-auto">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={stateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  setSelectedQuadrant(quadrant);
+                }}
+                selectedQuadrant={selectedQuadrant}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
               />
             </div>
           </React.Fragment>
