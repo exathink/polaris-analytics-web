@@ -18,7 +18,6 @@ import classNames from "classnames";
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
 
-const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
 const EmptyObj = {}; // using the module level global variable to keep the identity of object same
