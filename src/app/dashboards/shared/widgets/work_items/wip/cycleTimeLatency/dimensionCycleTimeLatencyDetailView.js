@@ -197,7 +197,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   onSelectionChange={handleSelectionChange}
                 />
               </div>
-              <div className="tw-h-[20%]">
+              <div className="tw-h-[20%] tw-bg-chart">
                 <QuadrantSummaryPanel
                   workItems={chartFilteredWorkItems}
                   stateTypes={engineeringStateTypes}
@@ -223,7 +223,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   onSelectionChange={handleSelectionChange}
                 />
               </div>
-              <div className="tw-h-[20%]">
+              <div className="tw-h-[20%] tw-bg-chart">
                 <QuadrantSummaryPanel
                   workItems={chartFilteredWorkItems}
                   stateTypes={deliveryStateTypes}
