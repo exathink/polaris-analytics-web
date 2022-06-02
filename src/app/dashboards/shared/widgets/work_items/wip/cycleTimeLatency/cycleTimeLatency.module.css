@@ -6,17 +6,13 @@
   gap: 0.5rem 0.5rem;
   grid-template-areas:
     "title title title title"
-    "sideBySide workItemScope workItemScope resetAll"
+    ". workItemScope workItemScope resetAll"
     "engineering engineering engineering engineering"
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
 }
 
 .title {
   grid-area: title
-}
-
-.sideBySide {
-  grid-area: sideBySide;
 }
 
 .engineering {
