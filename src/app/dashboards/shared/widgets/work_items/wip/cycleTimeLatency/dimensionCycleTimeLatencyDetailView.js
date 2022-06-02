@@ -163,7 +163,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-textXl tw-text-center")}>
+      <div className={classNames(styles.title, "tw-text-base")}>
         Latency Inspector: {getCurrentStateType(stateTypes)} Phase
       </div>
       <div className={styles.workItemScope}>
@@ -179,7 +179,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         )}
       </div>
       <div className={styles.engineering}>
-        <div className="tw-h-[20%]">
+        <div className="tw-h-auto">
           <QuadrantSummaryPanel
             workItems={chartFilteredWorkItems}
             stateTypes={stateTypes}
@@ -189,6 +189,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               setSelectedQuadrant(quadrant);
             }}
             selectedQuadrant={selectedQuadrant}
+            className="tw-w-[98%] tw-mx-auto"
           />
         </div>
         <div className="tw-h-[80%]">

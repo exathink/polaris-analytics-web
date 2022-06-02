@@ -30,7 +30,7 @@ export const DimensionCycleTimeLatencyView = ({
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div className="tw-h-[78%]">
+        <div className="tw-h-[77%]">
           <WorkItemsCycleTimeVsLatencyChart
             view={view}
             stageName={stageName}
@@ -50,13 +50,13 @@ export const DimensionCycleTimeLatencyView = ({
             }}
           />
         </div>
-        <div className="tw-flex tw-h-[22%] tw-items-center">
+        <div className={`tw-flex tw-h-auto tw-items-center tw-bg-[#f2f3f6]`}>
           <QuadrantSummaryPanel
             workItems={workItems}
             stateTypes={stateTypes}
             cycleTimeTarget={cycleTimeTarget}
             latencyTarget={latencyTarget}
-            className="tw-w-[100%]"
+            className="tw-w-[98%] tw-mx-auto"
           />
         </div>
         <CardInspectorWithDrawer
