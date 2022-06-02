@@ -24,14 +24,16 @@ function QuadrantBox({name, val, color, onQuadrantClick, className, layout}) {
     <div
       className={classNames(
         "tw-flex tw-cursor-pointer tw-rounded-md tw-p-1",
-        layout === "col" ? "tw-flex-col" : "tw-flex-row tw-justify-between tw-items-center tw-h-14 tw-px-6",
+        layout === "col" ? "tw-flex-col" : "tw-h-14 tw-flex-row tw-items-center tw-justify-between tw-px-6",
         className
       )}
       style={{backgroundColor: color}}
       onClick={onQuadrantClick}
     >
       <div>{name}</div>
-      <div className="tw-textXl tw-text-black tw-text-opacity-80">{val}</div>
+      <div className={classNames("tw-text-black tw-text-opacity-80", layout === "col" ? "tw-textXl" : "tw-text-2xl")}>
+        {val}
+      </div>
     </div>
   );
 }
