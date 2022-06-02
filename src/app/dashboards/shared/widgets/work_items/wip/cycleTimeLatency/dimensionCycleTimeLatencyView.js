@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -6,21 +6,19 @@ import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
-export const DimensionCycleTimeLatencyView = (
-  {
-    dimension,
-    stageName,
-    data,
-    stateTypes,
-    groupByState,
-    cycleTimeTarget,
-    latencyTarget,
-    specsOnly,
-    tooltipType,
-    view,
-    context,
-  }
-) => {
+export const DimensionCycleTimeLatencyView = ({
+  dimension,
+  stageName,
+  data,
+  stateTypes,
+  groupByState,
+  cycleTimeTarget,
+  latencyTarget,
+  specsOnly,
+  tooltipType,
+  view,
+  context,
+}) => {
   const tick = useGenerateTicks(2, 60000);
 
   const workItems = React.useMemo(() => {
@@ -32,15 +30,6 @@ export const DimensionCycleTimeLatencyView = (
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div className="tw-h-[22%] tw-flex tw-items-center">
-          <QuadrantSummaryPanel
-            workItems={workItems}
-            stateTypes={stateTypes}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            className="tw-w-[90%]"
-          />
-        </div>
         <div className="tw-h-[78%]">
           <WorkItemsCycleTimeVsLatencyChart
             view={view}
@@ -61,6 +50,15 @@ export const DimensionCycleTimeLatencyView = (
             }}
           />
         </div>
+        <div className="tw-flex tw-h-[22%] tw-items-center">
+          <QuadrantSummaryPanel
+            workItems={workItems}
+            stateTypes={stateTypes}
+            cycleTimeTarget={cycleTimeTarget}
+            latencyTarget={latencyTarget}
+            className="tw-w-[100%]"
+          />
+        </div>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
@@ -71,5 +69,4 @@ export const DimensionCycleTimeLatencyView = (
       </VizItem>
     </VizRow>
   );
-
-}
+};
