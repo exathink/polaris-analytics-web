@@ -163,7 +163,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-text-base")}>
+      <div className={classNames(styles.title, "tw-text-base tw-ml-4")}>
         Latency Inspector: {getCurrentStateType(stateTypes)} Phase
       </div>
       <div className={styles.workItemScope}>
@@ -190,6 +190,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             }}
             selectedQuadrant={selectedQuadrant}
             className="tw-w-[98%] tw-mx-auto"
+            valueFontClass="tw-text-3xl"
           />
         </div>
         <div className="tw-h-[80%]">
