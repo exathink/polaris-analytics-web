@@ -69,8 +69,8 @@ function getCurrentStateType(stateTypes) {
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
   data,
-  stateTypes,
-  stageName,
+  stateTypes=[WorkItemStateTypes.open, WorkItemStateTypes.make],
+  stageName="Coding",
   groupByState,
   cycleTimeTarget,
   latencyTarget,
