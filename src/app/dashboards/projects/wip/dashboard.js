@@ -59,42 +59,14 @@ function WipDashboard({
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
       <DashboardRow h="12%">
         <DashboardWidget
-          name="response-time-wip"
-          title={"Response Time"}
-          className={styles.responseTime}
-          subtitle={`Last ${wipAnalysisPeriod} days`}
-          hideTitlesInDetailView={true}
-          render={({view}) => (
-            <DimensionResponseTimeWidget
-              dimension={'project'}
-              instanceKey={key}
-              view={view}
-              display={"responseTimeSummary"}
-              context={context}
-              stateMappingIndex={stateMappingIndex}
-              specsOnly={specsOnly}
-              days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
-          title={"Work In Progress"}
+          title={""}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
+              newDesign={true}
               display={"commonWipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -114,36 +86,6 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
 
-
-        <DashboardWidget
-          name="throughput-wip"
-          title={"Throughput"}
-          className={styles.flowMetrics}
-          subtitle={`Last ${wipAnalysisPeriod} days`}
-          hideTitlesInDetailView={true}
-          render={({ view }) => (
-            <DimensionThroughputWidget
-              dimension={"project"}
-              instanceKey={key}
-              view={view}
-              display={"throughputSummary"}
-              context={context}
-              specsOnly={specsOnly}
-              days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              normalized={true}
-            />
-          )}
-          showDetail={true}
-        />
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>
         <DashboardWidget
