@@ -1,11 +1,10 @@
 import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import { i18nNumber, pick, toMoment, sum_field } from "../../../../../../helpers/utility";
-import { Colors, FlowTypeDisplayName, ResponseTimeMetricsColor } from "../../../../config";
-import { getFlowEfficiency } from "../../../../helpers/statsUtils";
+import { Colors, FlowTypeDisplayName } from "../../../../config";
 
 function getFlowMixEffortPercentage(flowMix, category) {
-  return flowMix.find(flowMixItem => flowMixItem.category == category)?.totalEffort/sum_field(flowMix, 'totalEffort', 0) * 100
+  return flowMix.find(flowMixItem => flowMixItem.category === category)?.totalEffort/sum_field(flowMix, 'totalEffort', 0) * 100
 }
 
 export const FlowMixTrendsChart = Chart({
