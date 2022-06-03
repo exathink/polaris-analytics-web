@@ -62,10 +62,7 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 }
 
 function getTitle(stageName) {
-  if (stageName === undefined) {
-    return `Latency Inspector: Wip Phase`;
-  }
-  return `Latency Inspector: ${stageName} Phase`;
+  return `Latency Analyzer`;
 }
 
 export const DimensionCycleTimeLatencyDetailView = ({
@@ -165,7 +162,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-ml-4 tw-text-base")}>{getTitle(stageName)}</div>
+      <div className={classNames(styles.title, "tw-text-2xl")}>{getTitle(stageName)}</div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>

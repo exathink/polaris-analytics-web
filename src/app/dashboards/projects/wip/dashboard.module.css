@@ -4,7 +4,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto 42% 4% 47%;
     gap: 0.25rem 0.5rem;
-    grid-template-areas: "responseTime responseTime responseTime responseTime pipeline pipeline pipeline pipeline flowMetrics flowMetrics flowMetrics flowMetrics"
+    grid-template-areas: "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
     "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"
     "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
     "commits commits commits commits commits commits commits commits commits commits commits commits";
