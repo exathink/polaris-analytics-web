@@ -282,7 +282,7 @@ export function WorkInProgressSummaryView({
   const pRAge = 10;
 
   return (
-    <div className="tw-grid tw-grid-cols-6 tw-gap-2">
+    <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
       <MetricCard title={"Avg Age"} value={avgAge} uom={"Days"} />
       <MetricCard title={"Avg Effort"} value={avgEffort} uom={"FTE Days"} />
       <MetricCard title={"Cycle Efficiency"} value={cycleEfficiency} uom={"%"} />
