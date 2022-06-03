@@ -180,58 +180,46 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
       <div className={styles.engineering}>
         {stateTypes === undefined ? (
-          <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-2">
-            <div className="tw-h-full">
-              <div className="tw-h-[80%]">
-                <WorkItemsCycleTimeVsLatencyChart
-                  key={resetComponentStateKey}
-                  view={view}
-                  stageName={"Coding"}
-                  specsOnly={specsOnly}
-                  workItems={chartFilteredWorkItems}
-                  stateTypes={engineeringStateTypes}
-                  groupByState={groupByState}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType={tooltipType}
-                  onSelectionChange={handleSelectionChange}
-                />
-              </div>
-              <div className="tw-h-[20%] tw-bg-chart">
-                <QuadrantSummaryPanel
-                  workItems={chartFilteredWorkItems}
-                  stateTypes={engineeringStateTypes}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  className="tw-mx-auto tw-w-[98%]"
-                />
-              </div>
-            </div>
-            <div className="tw-h-full">
-              <div className="tw-h-[80%]">
-                <WorkItemsCycleTimeVsLatencyChart
-                  key={resetComponentStateKey}
-                  view={view}
-                  stageName={"Delivery"}
-                  specsOnly={specsOnly}
-                  workItems={chartFilteredWorkItems}
-                  stateTypes={deliveryStateTypes}
-                  groupByState={groupByState}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType={tooltipType}
-                  onSelectionChange={handleSelectionChange}
-                />
-              </div>
-              <div className="tw-h-[20%] tw-bg-chart">
-                <QuadrantSummaryPanel
-                  workItems={chartFilteredWorkItems}
-                  stateTypes={deliveryStateTypes}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  className="tw-mx-auto tw-w-[98%]"
-                />
-              </div>
+          <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[80%,20%] tw-gap-x-2" key={resetComponentStateKey}>
+            <WorkItemsCycleTimeVsLatencyChart
+              view={view}
+              stageName={"Coding"}
+              specsOnly={specsOnly}
+              workItems={chartFilteredWorkItems}
+              stateTypes={engineeringStateTypes}
+              groupByState={groupByState}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType={tooltipType}
+              onSelectionChange={handleSelectionChange}
+              selectedQuadrant={selectedQuadrant}
+            />
+            <WorkItemsCycleTimeVsLatencyChart
+              view={view}
+              stageName={"Delivery"}
+              specsOnly={specsOnly}
+              workItems={chartFilteredWorkItems}
+              stateTypes={deliveryStateTypes}
+              groupByState={groupByState}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType={tooltipType}
+              onSelectionChange={handleSelectionChange}
+              selectedQuadrant={selectedQuadrant}
+            />
+            <div className="tw-col-span-2 tw-bg-chart">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={engineeringStateTypes.concat(deliveryStateTypes)}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  setSelectedQuadrant(quadrant);
+                }}
+                selectedQuadrant={selectedQuadrant}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
+              />
             </div>
           </div>
         ) : (
