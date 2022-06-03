@@ -1,8 +1,8 @@
 .wipDashboard{
-    height: 93%;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 35.5% 4% 47%;
+    grid-template-rows: auto 42% 4% 47%;
     gap: 0.25rem 0.5rem;
     grid-template-areas: "responseTime responseTime responseTime responseTime pipeline pipeline pipeline pipeline flowMetrics flowMetrics flowMetrics flowMetrics"
     "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"

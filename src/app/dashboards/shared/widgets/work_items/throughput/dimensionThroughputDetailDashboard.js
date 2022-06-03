@@ -3,7 +3,6 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
-import {DimensionVolumeTrendsWidget} from "../../../../shared/widgets/work_items/trends/volume";
 import {DimensionWorkBalanceTrendsWidget} from "../balance";
 import cn from "classnames";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
@@ -29,7 +28,6 @@ export function DimensionThroughputDetailDashboard({
   const [workItemScope, setWorkItemScope] = useState("specs");
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("totalEffort");
-  const [tabSelection, setTab] = React.useState("volume");
 
   const limitToSpecsOnly = workItemScope === 'specs';
 

@@ -10,7 +10,6 @@ import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
-import Alignment from "./valueBook/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
 import {Contexts} from "../../meta/contexts";

@@ -12,6 +12,8 @@ import {EVENT_TYPES} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
+import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import classNames from "classnames";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -59,9 +61,18 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
+function getTitle(stageName) {
+  if (stageName === undefined) {
+    return `Latency Inspector: Wip Phase`;
+  }
+  return `Latency Inspector: ${stageName} Phase`;
+}
+
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
   data,
+  stateTypes,
+  stageName,
   groupByState,
   cycleTimeTarget,
   latencyTarget,
@@ -76,6 +87,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
+  const [selectedQuadrant, setSelectedQuadrant] = React.useState();
+
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
   const localAppliedFilters = getSanitizedFilters(appliedFilters);
@@ -88,7 +101,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           nodeWithAggrDurations.cycleTime,
           nodeWithAggrDurations.latency,
           cycleTimeTarget,
-          latencyTarget,
+          latencyTarget
         ),
         teams: joinTeams(node),
       };
@@ -144,6 +157,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     // reset table component state
     setTableFilteredWorkItems(initWorkItems);
     setAppliedFilters(EmptyObj);
+    setSelectedQuadrant(undefined);
 
     // reset chart components state
     resetComponentState();
@@ -151,50 +165,107 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
+      <div className={classNames(styles.title, "tw-ml-4 tw-text-base")}>{getTitle(stageName)}</div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
       <div className={styles.resetAllButton}>
         {(tableFilteredWorkItems.length < initWorkItems.length ||
-          chartFilteredWorkItems.length < initWorkItems.length) && (
+          chartFilteredWorkItems.length < initWorkItems.length ||
+          selectedQuadrant !== undefined) && (
           <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
             Clear Filters
           </Button>
         )}
       </div>
       <div className={styles.engineering}>
-        <WorkItemsCycleTimeVsLatencyChart
-          key={resetComponentStateKey}
-          view={view}
-          stageName={"Coding"}
-          specsOnly={specsOnly}
-          workItems={chartFilteredWorkItems}
-          stateTypes={engineeringStateTypes}
-          groupByState={groupByState}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          tooltipType={tooltipType}
-          onSelectionChange={handleSelectionChange}
-        />
-      </div>
-      <div className={styles.delivery}>
-        <WorkItemsCycleTimeVsLatencyChart
-          key={resetComponentStateKey}
-          view={view}
-          stageName={"Delivery"}
-          specsOnly={specsOnly}
-          workItems={chartFilteredWorkItems}
-          stateTypes={deliveryStateTypes}
-          groupByState={groupByState}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          tooltipType={tooltipType}
-          onSelectionChange={handleSelectionChange}
-        />
+        {stateTypes === undefined ? (
+          <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[80%,20%] tw-gap-x-2" key={resetComponentStateKey}>
+            <WorkItemsCycleTimeVsLatencyChart
+              view={view}
+              stageName={"Coding"}
+              specsOnly={specsOnly}
+              workItems={chartFilteredWorkItems}
+              stateTypes={engineeringStateTypes}
+              groupByState={groupByState}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType={tooltipType}
+              onSelectionChange={handleSelectionChange}
+              selectedQuadrant={selectedQuadrant}
+            />
+            <WorkItemsCycleTimeVsLatencyChart
+              view={view}
+              stageName={"Delivery"}
+              specsOnly={specsOnly}
+              workItems={chartFilteredWorkItems}
+              stateTypes={deliveryStateTypes}
+              groupByState={groupByState}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType={tooltipType}
+              onSelectionChange={handleSelectionChange}
+              selectedQuadrant={selectedQuadrant}
+            />
+            <div className="tw-col-span-2 tw-bg-chart">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={engineeringStateTypes.concat(deliveryStateTypes)}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  setSelectedQuadrant(quadrant);
+                }}
+                selectedQuadrant={selectedQuadrant}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
+              />
+            </div>
+          </div>
+        ) : (
+          <React.Fragment>
+            <div className="tw-h-[80%]">
+              <WorkItemsCycleTimeVsLatencyChart
+                key={resetComponentStateKey}
+                view={view}
+                stageName={stageName}
+                specsOnly={specsOnly}
+                workItems={chartFilteredWorkItems}
+                stateTypes={stateTypes}
+                groupByState={groupByState}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                tooltipType={tooltipType}
+                onSelectionChange={handleSelectionChange}
+                selectedQuadrant={selectedQuadrant}
+              />
+            </div>
+            <div className="tw-h-auto">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={stateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  setSelectedQuadrant(quadrant);
+                }}
+                selectedQuadrant={selectedQuadrant}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
+              />
+            </div>
+          </React.Fragment>
+        )}
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
-          tableData={getWorkItemDurations(tableFilteredWorkItems)}
+          tableData={getWorkItemDurations(tableFilteredWorkItems)
+            .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+            .filter(
+              (x) =>
+                selectedQuadrant === undefined ||
+                selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+            )}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}

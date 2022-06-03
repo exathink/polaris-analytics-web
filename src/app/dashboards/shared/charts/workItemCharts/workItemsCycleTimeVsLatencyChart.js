@@ -12,7 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrantColor, getQuadrantName } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrant, getQuadrantColor, getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 
 
@@ -95,9 +95,12 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   );
 }
 
-function getTitle(workItems, stageName, specsOnly) {
+function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
   const count = workItems.length;
   const countDisplay = `${count} ${count === 1 ? specsOnly ? "Spec" : "Card" : specsOnly ? "Specs" : "Cards"}`;
+  if (selectedQuadrant) {
+    return `${countDisplay} in ${QuadrantNames[selectedQuadrant]}`
+  }
   return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
 }
 
@@ -109,7 +112,7 @@ function getTeamEntry(teamNodeRefs) {
 
 export const WorkItemsCycleTimeVsLatencyChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick")
+    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant")
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
@@ -125,12 +128,13 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 tick,
                 intl,
                 view,
-                tooltipType
+                tooltipType,
+                selectedQuadrant
               }) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
       workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    );
+    ).filter(x => selectedQuadrant === undefined || selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget));
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
     const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));
@@ -151,7 +155,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
       },
       title: {
-        text: getTitle(workItemsWithAggregateDurations, stageName, specsOnly),
+        text: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant}),
         align: "left"
       },
       subtitle: {
@@ -256,7 +260,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
               elide(name, 30)
             }`,
             body: [
-              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)}`],
+              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
               [`Current State:`, `${state.toLowerCase()}`],
               [`-----------------`, ``],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],

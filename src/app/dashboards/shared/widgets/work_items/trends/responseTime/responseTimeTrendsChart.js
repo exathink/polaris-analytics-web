@@ -76,10 +76,10 @@ function isVisibleByDefault(defaultSeries, series) {
   return defaultSeries.indexOf("all") !== -1 || defaultSeries.indexOf(series) !== -1;
 }
 
-function getAnnotationFor(measurements, seriesKey, index, intl, targetPercentile) {
-  const tooltipDisplay = getSelectedMetricDisplay(measurements[index], targetPercentile, seriesKey, intl);
-  return `${tooltipDisplay[0][1]}`;
-}
+// function getAnnotationFor(measurements, seriesKey, index, intl, targetPercentile) {
+//   const tooltipDisplay = getSelectedMetricDisplay(measurements[index], targetPercentile, seriesKey, intl);
+//   return `${tooltipDisplay[0][1]}`;
+// }
 
 export const ResponseTimeTrendsChart = (
   {
