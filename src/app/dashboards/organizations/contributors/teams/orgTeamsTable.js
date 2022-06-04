@@ -168,7 +168,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
         {
           title: (
             <span>
-              Effort<sub><em>Out</em></sub> <sup>pc</sup>
+              Effort<sub><em>T</em></sub> <sup>pc</sup>
             </span>
           ),
           dataIndex: "effortOut",

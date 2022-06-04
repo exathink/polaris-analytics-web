@@ -81,7 +81,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
                     checked={showEffort}
                     onChange={e => setShowEffort(e.target.checked)}
                   >
-                    Show EffortOUT
+                    Show Effort
                   </Checkbox>
                 </Box>
               </Flex>

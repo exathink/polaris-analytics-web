@@ -190,7 +190,7 @@ export const WorkItemsEpicEffortChart = Chart({
         align: "left",
       },
       subtitle: {
-        text: `${specsOnly ? "% EffortOUT " : "% Volume "} by Epic: ${localNow(intl)}`,
+        text: `${specsOnly ? "% Traceable Effort " : "% Volume "} by Epic: ${localNow(intl)}`,
         align: "left",
       },
       xAxis: {

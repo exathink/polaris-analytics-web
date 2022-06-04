@@ -107,7 +107,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
       }
       cycleMetricsTrendsSeries = getMeasurementTrendSeriesForMetrics(
         [{
-          key: "totalEffort", displayName: "EffortOUT", visible: true, type: totalEffortChartType, color: ResponseTimeMetricsColor.effort,
+          key: "totalEffort", displayName: "Total Traceable Effort", visible: true, type: totalEffortChartType, color: ResponseTimeMetricsColor.effort,
         }],
         cycleMetricsTrends
       );
@@ -195,10 +195,10 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
                 [`Contributors: `, `${intl.formatNumber(this.point.measurement.contributorCount)}`]
 
               ]
-            } : this.point.series.name === "EffortOUT" ? {
-              header: `EffortOUT: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
+            } : this.point.series.name === "Total Traceable Effort" ? {
+              header: `Total Traceable Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
-                [`EffortOUT: `, `${intl.formatNumber(this.point.y)} FTE Days`],
+                [`Effort: `, `${intl.formatNumber(this.point.y)} FTE Days`],
                 [`Cap Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends))} %`]
               ]
             } : {
