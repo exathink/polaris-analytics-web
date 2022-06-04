@@ -6,6 +6,8 @@ import {
   QuadrantNames,
   Quadrants,
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { useIntl } from "react-intl";
+import { i18nNumber } from "../../../../helpers/utility";
 
 function getQuadrantSummaryValues({workItems, cycleTimeTarget, latencyTarget}) {
   return workItems.reduce((acc, item) => {
@@ -20,6 +22,7 @@ function getQuadrantSummaryValues({workItems, cycleTimeTarget, latencyTarget}) {
 }
 
 function QuadrantBox({name, val, total, color, onQuadrantClick, className, layout, fontClass}) {
+  const intl = useIntl();
   return (
     <div
       className={classNames(
@@ -32,7 +35,7 @@ function QuadrantBox({name, val, total, color, onQuadrantClick, className, layou
     >
       <div>{name}</div>
       <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>
-        {total > 0 ? `${(val/total)*100} %` : 0}
+        {total > 0 ? `${i18nNumber(intl,(val/total)*100, 2 ) } %` : 0}
       </div>
     </div>
   );
