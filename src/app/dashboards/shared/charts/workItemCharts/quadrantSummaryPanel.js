@@ -35,7 +35,7 @@ function QuadrantBox({name, val, total, color, onQuadrantClick, className, layou
     >
       <div>{name}</div>
       <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>
-        {total > 0 ? `${i18nNumber(intl,(val/total)*100, 2 ) } %` : 0}
+        {total > 0 ? `${i18nNumber(intl,(val/total)*100, 0 ) } %` : 0}
       </div>
     </div>
   );

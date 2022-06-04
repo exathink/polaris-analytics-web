@@ -266,8 +266,8 @@ export function pick(o, ...fields) {
     }, {});
 }
 
-export function i18nNumber(intl, n, precision) {
-  return precision ? intl.formatNumber(n, {maximumFractionDigits: precision}) : intl.formatNumber(n)
+export function i18nNumber(intl, n, precision=null) {
+  return precision != null ? intl.formatNumber(n, {maximumFractionDigits: precision}) : intl.formatNumber(n)
 }
 
 export function i18nDate(intl, dt, format="YYYY-MM-DD") {
