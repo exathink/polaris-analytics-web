@@ -21,7 +21,6 @@ function getEpicPointValue(epicWorkItems, specsOnly) {
 function getHierarchySeries(workItems, specsOnly, intl) {
   const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
   const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
-
   const nonEpicWorkItemPoints = nonEpicWorkItems.map((w) => {
       return {
         name: w.name,
@@ -111,7 +110,7 @@ function getSeries(workItems, specsOnly, intl, view) {
   const nonEpicWorkItems = workItems.filter((x) => x.workItemType !== "epic");
 
   const workItemsByEpic = buildIndex(nonEpicWorkItems, (workItem) => workItem.epicKey || UNCATEGORIZED.key);
-
+  const effortOut = workItems.reduce((effortOut, workItem) => effortOut + workItem.effort, 0)
   return [
     {
       type: "treemap",
@@ -128,6 +127,7 @@ function getSeries(workItems, specsOnly, intl, view) {
         name: epicName,
         value: getEpicPointValue(workItemsByEpic[epicKey], specsOnly),
         effortValue: workItemsByEpic[epicKey].reduce((totalEffort, workItem) => totalEffort + workItem.effort, 0),
+        effortOut: effortOut,
         epic: {
           name: epicName,
           key: epicKey,
@@ -140,11 +140,11 @@ function getSeries(workItems, specsOnly, intl, view) {
         useHTML: true,
 
         formatter: function () {
-          const {value, workItems} = this.point;
-          const dataLabelTitle = specsOnly ? value : workItems.length;
+          const {value, effortOut, workItems} = this.point;
+          const dataLabelTitle = specsOnly ? (value/effortOut) * 100 : workItems.length;
           return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
             maximumSignificantDigits: 2,
-          })} ${specsOnly ? `FTE Days` : `Cards`}</div>`;
+          } )} ${specsOnly ? `%` : `Cards`}</div>`;
         },
       },
     },
