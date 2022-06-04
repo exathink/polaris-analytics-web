@@ -19,7 +19,7 @@ function getQuadrantSummaryValues({workItems, cycleTimeTarget, latencyTarget}) {
   }, {});
 }
 
-function QuadrantBox({name, val, color, onQuadrantClick, className, layout, fontClass}) {
+function QuadrantBox({name, val, total, color, onQuadrantClick, className, layout, fontClass}) {
   return (
     <div
       className={classNames(
@@ -32,7 +32,7 @@ function QuadrantBox({name, val, color, onQuadrantClick, className, layout, font
     >
       <div>{name}</div>
       <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>
-        {val}
+        {total > 0 ? `${(val/total)*100} %` : 0}
       </div>
     </div>
   );
@@ -54,6 +54,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
       <QuadrantBox
         name={QuadrantNames[Quadrants.ok]}
         val={quadrantValues[Quadrants.ok] ?? 0}
+        total={workItems.length}
         color={QuadrantColors[Quadrants.ok]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.ok)}
         layout={layout}
@@ -63,6 +64,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
       <QuadrantBox
         name={QuadrantNames[Quadrants.latency]}
         val={quadrantValues[Quadrants.latency] ?? 0}
+        total={workItems.length}
         color={QuadrantColors[Quadrants.latency]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.latency)}
         layout={layout}
@@ -72,6 +74,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
       <QuadrantBox
         name={QuadrantNames[Quadrants.age]}
         val={quadrantValues[Quadrants.age] ?? 0}
+        total={workItems.length}
         color={QuadrantColors[Quadrants.age]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.age)}
         layout={layout}
@@ -81,6 +84,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
       <QuadrantBox
         name={QuadrantNames[Quadrants.critical]}
         val={quadrantValues[Quadrants.critical] ?? 0}
+        total={workItems.length}
         color={QuadrantColors[Quadrants.critical]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.critical)}
         layout={layout}
