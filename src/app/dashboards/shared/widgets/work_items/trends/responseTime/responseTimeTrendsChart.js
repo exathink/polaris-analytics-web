@@ -32,7 +32,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     }
     case "percentileEffort": {
       return [[
-        `${percentileToText(targetPercentile)} Effort: `,
+        `${percentileToText(targetPercentile)} Traceable Effort: `,
         `${i18nNumber(intl, measurement.percentileEffort)} FTE Days`
       ]];
     }
@@ -62,7 +62,7 @@ function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl
     }
     case "avgEffort": {
       return [
-        [`Avg. Effort: `, `${i18nNumber(intl, measurement.avgEffort)} FTE Days`],
+        [`Avg. Traceable Effort: `, `${i18nNumber(intl, measurement.avgEffort)} FTE Days`],
         ...getSelectedMetricDisplay(measurement, targetPercentile, "percentileEffort", intl)
       ];
     }
@@ -132,7 +132,7 @@ export const ResponseTimeTrendsChart = (
     },
     {
       key: "avgEffort",
-      displayName: `Effort`,
+      displayName: `Tr. Effort`,
       visible: isVisibleByDefault(defaultSeries, "effort"),
       type: "spline",
       color: ResponseTimeMetricsColor.effort

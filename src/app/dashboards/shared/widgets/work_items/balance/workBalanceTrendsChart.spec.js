@@ -178,7 +178,7 @@ describe("CapacityTrendsChart", () => {
         key: "totalEffort",
         id: "totalEffort",
         type: "spline",
-        name: "EffortOUT",
+        name: "Total Traceable Effort",
         visible: true,
         data: propsFixture.cycleMetricsTrends
           .map((measurement) => ({
@@ -234,7 +234,7 @@ describe("CapacityTrendsChart", () => {
 
     const trends = [
       {trend: "capacityTrends", displayName: "Active Days", key: "totalCommitDays"},
-      {trend: "cycleMetricsTrends", displayName: "EffortOUT", key: "totalEffort"},
+      {trend: "cycleMetricsTrends", displayName: "Traceable Effort", key: "totalEffort"},
     ];
 
     trends.forEach((trend, index) => {
@@ -280,9 +280,9 @@ describe("CapacityTrendsChart", () => {
                     [expect.stringContaining(trend.displayName), `${formatNumber(firstPoint[trend.key])}`],
                     [expect.stringContaining("Contributors"), `${formatNumber(firstPoint.contributorCount)}`],
                   ]
-                : trend.displayName === "EffortOUT"
+                : trend.displayName === "Traceable Effort"
                 ? [
-                    [`EffortOUT: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
+                    [`Effort: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
                     [`Cap Ratio: `, `61.111 %`],
                   ]
                 : [],

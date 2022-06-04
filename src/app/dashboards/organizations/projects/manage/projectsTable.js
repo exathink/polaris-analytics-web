@@ -195,7 +195,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
             <span>
               Effort
               <sub>
-                <em>Out</em>
+                <em>T</em>
               </sub>
               <sup>PC</sup>
             </span>

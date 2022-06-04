@@ -204,8 +204,8 @@ describe("Metrics", () => {
             ""
           );
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
-          expect(getByTextTitle("Effort")).toBeInTheDocument();
-          expect(getByTextTitle("OUT")).toBeInTheDocument();
+          expect(getByTextTitle("Total Effort")).toBeInTheDocument();
+
           expect(getByTextTitle("pc")).toBeInTheDocument();
         });
       });

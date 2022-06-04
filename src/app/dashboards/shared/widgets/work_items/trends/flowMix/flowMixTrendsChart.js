@@ -91,7 +91,7 @@ export const FlowMixTrendsChart = Chart({
       [];
     const series = [...work_item_count_series, ...flow_mix_series];
 
-    const metricDisplay = specsOnly ? 'EffortOUT' : 'Volume';
+    const metricDisplay = specsOnly ? 'Traceable Effort' : 'Volume';
 
     return {
       chart: {
