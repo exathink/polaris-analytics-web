@@ -1,24 +1,22 @@
-import React, {useState} from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {WorkItemStateTypes} from "../../shared/config";
+import React, { useState } from "react";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
+import { WorkItemStateTypes } from "../../shared/config";
 import styles from "./dashboard.module.css";
-import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
+import { DimensionCommitsNavigatorWidget } from "../../shared/widgets/accountHierarchy";
 
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
+import { withViewerContext } from "../../../framework/viewer/viewerContext";
 
-import {ProjectDashboard} from "../projectDashboard";
+import { ProjectDashboard } from "../projectDashboard";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
-  DimensionWipFlowMetricsWidget,
+  DimensionWipFlowMetricsWidget
 } from "../../shared/widgets/work_items/wip";
-import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
-import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {StateMappingIndex} from "../shared/stateMappingIndex";
-import {Flex} from "reflexbox";
-import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
-import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
-import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
+import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
+import { useProjectWorkItemSourcesStateMappings } from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import { StateMappingIndex } from "../shared/stateMappingIndex";
+import { Flex } from "reflexbox";
+import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
+import { SYSTEM_TEAMS } from "../../../../config/featureFlags";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -38,12 +36,11 @@ function WipDashboard({
   context,
   viewerContext
 }) {
-  const stateMappingIndex = new StateMappingIndex(useProjectWorkItemSourcesStateMappings(key));
+
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
   const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
   const {
-    leadTimeTarget,
     cycleTimeTarget,
     responseTimeConfidenceTarget,
     leadTimeConfidenceTarget,
@@ -51,7 +48,6 @@ function WipDashboard({
     wipLimit,
     wipAnalysisPeriod,
     includeSubTasksWipInspector,
-    includeSubTasksFlowMetrics,
     latencyTarget
   } = settingsWithDefaults;
 
