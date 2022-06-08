@@ -283,7 +283,7 @@ describe("CapacityTrendsChart", () => {
                 : trend.displayName === "Traceable Effort"
                 ? [
                     [`Effort: `, `${formatNumber(firstPoint[trend.key])} FTE Days`],
-                    [`Cap Ratio: `, `61.111 %`],
+                    [`Effort Ratio: `, `61.111 %`],
                   ]
                 : [],
           });
