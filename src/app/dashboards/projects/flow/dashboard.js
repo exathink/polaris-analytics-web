@@ -86,6 +86,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               specsOnly={true}
               context={context}
+              groupByState={true}
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
