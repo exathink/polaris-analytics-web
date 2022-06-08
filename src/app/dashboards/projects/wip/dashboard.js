@@ -167,7 +167,7 @@ function WipDashboard({
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
-      <DashboardRow h={"50%"} title={"Latest Commits"} className={styles.latestCommitsTitle}>
+      <DashboardRow h={"50%"} title={"Latest Changes"} className={styles.latestCommitsTitle}>
         <DashboardWidget
           name="commits"
           className={styles.commits}
@@ -180,12 +180,12 @@ function WipDashboard({
               days={1}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              groupBy={'workItem'}
+              groupBy={'author'}
               groupings={
                 teamsActive ?
-                  ["workItem", "team", "author",  "repository", "branch"]
+                  ["author", "workItem", "team",  "repository", "branch"]
                   :
-                  ["workItem", "author",  "repository", "branch"]
+                  ["author", "workItem",  "repository", "branch"]
 
               }
               showHeader
