@@ -12,8 +12,6 @@ import {
   DimensionWipFlowMetricsWidget
 } from "../../shared/widgets/work_items/wip";
 import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
-import { useProjectWorkItemSourcesStateMappings } from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import { StateMappingIndex } from "../shared/stateMappingIndex";
 import { Flex } from "reflexbox";
 import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import { SYSTEM_TEAMS } from "../../../../config/featureFlags";

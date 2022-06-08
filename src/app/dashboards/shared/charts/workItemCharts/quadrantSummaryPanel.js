@@ -1,13 +1,12 @@
 import classNames from "classnames";
-import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
-import {TooltipHtml} from "../../../../framework/viz/charts/tooltip";
-import {Popover} from "antd";
+import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
+import { Popover } from "antd";
 
 import {
   getQuadrant,
   QuadrantColors,
   QuadrantNames,
-  Quadrants,
+  Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";

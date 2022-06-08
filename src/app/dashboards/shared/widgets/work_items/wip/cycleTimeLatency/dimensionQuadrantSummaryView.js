@@ -1,10 +1,6 @@
 import React from "react";
-import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {VizItem, VizRow} from "../../../../containers/layout";
-import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
-import {EVENT_TYPES} from "../../../../../../helpers/utility";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import { VizItem, VizRow } from "../../../../containers/layout";
+import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
@@ -19,8 +15,6 @@ export const DimensionQuadrantSummaryView = ({
   view,
   context,
 }) => {
-  const tick = useGenerateTicks(2, 60000);
-
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);

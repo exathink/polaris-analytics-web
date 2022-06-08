@@ -62,7 +62,7 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 }
 
 function getTitle(stageName) {
-  return `Latency Analyzer`;
+  return `Delay Analyzer`;
 }
 
 export const DimensionCycleTimeLatencyDetailView = ({
