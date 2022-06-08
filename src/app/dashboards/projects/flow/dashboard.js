@@ -1,16 +1,16 @@
-import React, {useState} from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip";
-import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {ProjectDashboard} from "../projectDashboard";
-import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
+import React, { useState } from "react";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
+import { DimensionPipelineQuadrantSummaryWidget } from "../../shared/widgets/work_items/wip";
+import { ProjectPipelineFunnelWidget } from "../shared/widgets/funnel";
+import { withViewerContext } from "../../../framework/viewer/viewerContext";
+import { ProjectDashboard } from "../projectDashboard";
+import { ProjectTraceabilityTrendsWidget } from "../../shared/widgets/commits/traceability";
 import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
 import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
-import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
-import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
+import { DimensionThroughputWidget } from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
+import { DimensionResponseTimeWidget } from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -72,7 +72,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           subtitle={"Specs"}
 
           render={({view}) => (
-            <DimensionWipFlowMetricsWidget
+            <DimensionPipelineQuadrantSummaryWidget
               dimension={'project'}
               instanceKey={key}
               display={"commonWipSummary"}

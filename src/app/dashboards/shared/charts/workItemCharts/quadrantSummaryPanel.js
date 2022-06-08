@@ -1,13 +1,12 @@
 import classNames from "classnames";
-import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
-import {TooltipHtml} from "../../../../framework/viz/charts/tooltip";
-import {Popover} from "antd";
+import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
+import { Popover } from "antd";
 
 import {
   getQuadrant,
   QuadrantColors,
   QuadrantNames,
-  Quadrants,
+  Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
@@ -60,7 +59,7 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
   }, {});
 }
 
-function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, color, onQuadrantClick, className, layout, fontClass}) {
+function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, layout, fontClass}) {
   const intl = useIntl();
 
   const percentageCount = (val/total)*100;
@@ -97,8 +96,18 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
 
     </div>
   )
+  const tooltipTitle = (
+    <div>
+      <div>
+        {`${val} ${name}`}
+      </div>
+      <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
+        {quadrantDescription}
+      </div>
+    </div>
+  )
   return (
-    <Popover content={tooltipContent} title={`${val} ${name}`} trigger={"hover"}>
+    <Popover content={tooltipContent} title={tooltipTitle} trigger={"hover"}>
       <div
         className={classNames(
           "tw-flex tw-cursor-pointer tw-rounded-md tw-p-1",
@@ -121,6 +130,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
 }
 
 export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget, className, onQuadrantClick, selectedQuadrant, layout="col", valueFontClass="tw-text-2xl"}) {
+  const intl = useIntl();
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
@@ -162,6 +172,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         totalLatency={quadrantLatency[Quadrants.ok] ?? 0}
         quadrantEffort={quadrantEffort[Quadrants.ok] ?? 0}
         totalEffort={totalEffort}
+        quadrantDescription={`Age <= ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`}
         color={QuadrantColors[Quadrants.ok]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.ok)}
         layout={layout}
@@ -176,6 +187,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         totalLatency={quadrantLatency[Quadrants.latency] ?? 0}
         quadrantEffort={quadrantEffort[Quadrants.latency] ?? 0}
         totalEffort={totalEffort}
+        quadrantDescription={`Age <= ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`}
         color={QuadrantColors[Quadrants.latency]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.latency)}
         layout={layout}
@@ -190,6 +202,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         totalLatency={quadrantLatency[Quadrants.age] ?? 0}
         quadrantEffort={quadrantEffort[Quadrants.age] ?? 0}
         totalEffort={totalEffort}
+        quadrantDescription={`Age > ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`}
         color={QuadrantColors[Quadrants.age]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.age)}
         layout={layout}
@@ -204,6 +217,7 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
         totalLatency={quadrantLatency[Quadrants.critical] ?? 0}
         quadrantEffort={quadrantEffort[Quadrants.critical] ?? 0}
         totalEffort={totalEffort}
+        quadrantDescription={`Age > ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`}
         color={QuadrantColors[Quadrants.critical]}
         onQuadrantClick={() => onQuadrantClick(Quadrants.critical)}
         layout={layout}
