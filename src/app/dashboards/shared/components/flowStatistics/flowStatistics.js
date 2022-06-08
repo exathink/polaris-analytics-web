@@ -614,7 +614,7 @@ function getCapEfficiency(measurement, contributorCount) {
 export const CapacityEfficiency = ({displayType, displayProps, precision, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
   getCapEfficiency(currentMeasurement, contributorCount) != null ?
     <FlowStatistic
-      title={'Cap Ratio'}
+      title={'Effort Ratio'}
       currentValue={getCapEfficiency(currentMeasurement, contributorCount)}
       previousValue={getCapEfficiency(previousMeasurement, contributorCount)}
       valueRender={ value =>  `${value.toFixed(precision || 2)} %`}

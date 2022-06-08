@@ -155,7 +155,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         visible: true,
         labels: [{
           point: { x: 0, y: 0 },
-          text: `Cap Ratio: ${i18nNumber(intl, getCapacityEfficiency(cycleMetricsTrends[0]?.totalEffort, measurementWindow, capacityTrends[0]?.contributorCount), 1)} %`,
+          text: `Effort Ratio: ${i18nNumber(intl, getCapacityEfficiency(cycleMetricsTrends[0]?.totalEffort, measurementWindow, capacityTrends[0]?.contributorCount), 1)} %`,
           backgroundColor: ResponseTimeMetricsColor.effort,
           borderColor: ResponseTimeMetricsColor.effort,
           align: "center",
@@ -199,7 +199,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
               header: `Total Traceable Effort: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
               body: [
                 [`Effort: `, `${intl.formatNumber(this.point.y)} FTE Days`],
-                [`Cap Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends))} %`]
+                [`Effort Ratio: `, `${intl.formatNumber(getCapEfficiencyForEffortOutPoint(this.point, measurementWindow, capacityTrends))} %`]
               ]
             } : {
               header: `Capacity: ${measurementWindow} days ending ${intl.formatDate(this.point.x)}`,
