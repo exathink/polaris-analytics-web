@@ -42,11 +42,34 @@ Glossary.CARDS = ({display="cards", ...rest}) => {
   )
 }
 
+
+Glossary.CODING_TIME = ({display="coding time", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"The elapsed time from the earliest commit to the latest commit recorded for the card."}
+      {...rest}
+    />
+  )
+}
+
+Glossary.DELIVERY_TIME = ({display="coding time", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"The elapsed time from the earliest commit to the latest commit recorded for the card."}
+      {...rest}
+    />
+  )
+}
+
 Glossary.CYCLE_TIME = ({display="cycle time", ...rest}) => {
   return (
     <TermDefinition
       name={display}
-      definition={"The cumulative time a card spent in Open, Make and Deliver phases during a delivery cycle."}
+      definition={"The cumulative time required to make and deliver the code changes for a card. Computed from the " +
+        "most conservative value that can be derived from coding and delivery times from commit history " +
+        "and the cumulative time spent in open, make and deliver phases."}
       {...rest}
     />
   )
@@ -65,6 +88,8 @@ Glossary.DELIVERY_CYCLES = ({display="delivery cycles", ...rest}) => {
   )
 }
 
+
+
 Glossary.DELIVERY_PROCESS_MAPPING = ({display="delivery process mapping", ...rest}) => {
   return (
     <TermDefinition
@@ -77,6 +102,17 @@ Glossary.DELIVERY_PROCESS_MAPPING = ({display="delivery process mapping", ...res
   )
 }
 
+Glossary.DELIVERY_TIME = ({display="delivery time", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={
+      "The elapsed time from the latest commit recorded for the card to the time the card first entered a state in the closed phase." +
+        "This value is set to 0 if the latest commit is recorded after the card is closed"}
+      {...rest}
+    />
+  )
+}
 
 Glossary.FLOW_ANALYSIS_PERIOD = ({display="flow analysis period", ...rest}) => {
   return (
