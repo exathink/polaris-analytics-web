@@ -1,20 +1,42 @@
 import {Chart, tooltipHtml} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {capitalizeFirstLetter, pick} from "../../../../../helpers/utility";
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {capitalizeFirstLetter, pick, humanizeDuration} from "../../../../../helpers/utility";
+import {Colors, WorkItemStateTypeColor, WorkItemStateTypes, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {Highcharts} from "../../../../../framework/viz/charts/chartWrapper";
 
 require('highcharts/modules/funnel')(Highcharts);
 
+function getTimeToClear(workItemStateTypeCounts, days) {
+  const timeToClear = {}
+  const closeRate = (workItemStateTypeCounts[WorkItemStateTypes.closed] || 0)/days;
+  if (closeRate > 0) {
+    timeToClear[WorkItemStateTypes.backlog] = (
+      workItemStateTypeCounts[WorkItemStateTypes.backlog] || 0 +
+      workItemStateTypeCounts[WorkItemStateTypes.open] || 0 +
+      workItemStateTypeCounts[WorkItemStateTypes.make] || 0 +
+      workItemStateTypeCounts[WorkItemStateTypes.deliver] || 0
+    ) / closeRate;
+    timeToClear[WorkItemStateTypes.make] = (
+      workItemStateTypeCounts[WorkItemStateTypes.open] || 0 +
+      workItemStateTypeCounts[WorkItemStateTypes.make] || 0 +
+      workItemStateTypeCounts[WorkItemStateTypes.deliver] || 0
+    ) / closeRate;
+    timeToClear[WorkItemStateTypes.deliver] = (
+      workItemStateTypeCounts[WorkItemStateTypes.deliver]
+    ) / closeRate;
+  }
+  return timeToClear;
+
+}
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'totalEffortByStateType', 'grouping'),
+  chartUpdateProps: (props) => pick(props, 'workItemStateTypeCounts', 'totalEffortByStateType', 'grouping', 'days'),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItemStateTypeCounts, totalEffortByStateType, title, grouping, intl}) => {
+  getConfig: ({workItemStateTypeCounts, totalEffortByStateType, days, title, grouping, intl}) => {
 
     const selectedSummary = workItemStateTypeCounts;
-
+    const timeToClear = getTimeToClear(workItemStateTypeCounts, days)
     return {
       chart: {
         type: 'funnel',
@@ -26,12 +48,22 @@ export const PipelineFunnelChart = Chart({
       },
       plotOptions: {
         series: {
-          dataLabels: {
+          dataLabels: [{
             enabled: true,
-            format: '<b>{point.name}</b> ({point.y:,.0f})',
+            formatter : function() {
+              const label = this.point.stateType === WorkItemStateTypes.closed ? `${this.point.name} Last ${days} days` : `${this.point.name}`;
+              return `<b>${label}</b> (${this.point.y})`
+            },
             softConnector: true,
             color: 'black'
-          },
+          }, {
+            enabled: true,
+            align: 'center',
+            formatter: function (){
+              return this.point.timeToClear? humanizeDuration(this.point.timeToClear) : ''
+            },
+            color: 'black'
+          }],
           center: ['45%', '50%'],
           neckWidth: '25%',
           neckHeight: '45%',
@@ -60,7 +92,8 @@ export const PipelineFunnelChart = Chart({
             name: WorkItemStateTypeDisplayName[stateType],
             y: selectedSummary[stateType] || 0,
             color: WorkItemStateTypeColor[stateType],
-            stateType: stateType
+            stateType: stateType,
+            timeToClear: timeToClear[stateType]
           })
         ),
         showInLegend: true
@@ -70,9 +103,9 @@ export const PipelineFunnelChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function () {
-
+          const timeToClear = this.point.timeToClear ? `<br/>Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : ''
           return tooltipHtml({
-              header: `Phase: ${this.point.name}`,
+              header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
                 [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === 'specs'? 'Specs': 'Cards'}`],
 

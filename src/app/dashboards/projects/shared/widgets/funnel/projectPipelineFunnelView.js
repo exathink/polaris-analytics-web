@@ -4,6 +4,7 @@ import {PipelineFunnelChart} from "./pipelineFunnelChart";
 export const ProjectPipelineFunnelView = ({
   workItemStateTypeCounts,
   totalEffortByStateType,
+  days,
   workItemScope,
   setWorkItemScope,
   view,
@@ -14,6 +15,7 @@ export const ProjectPipelineFunnelView = ({
           <PipelineFunnelChart
             workItemStateTypeCounts={workItemStateTypeCounts}
             totalEffortByStateType={totalEffortByStateType}
+            days={days}
             title={" "}
             grouping={workItemScope}
           />

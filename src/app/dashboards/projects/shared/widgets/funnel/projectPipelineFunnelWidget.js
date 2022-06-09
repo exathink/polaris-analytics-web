@@ -41,6 +41,7 @@ export const ProjectPipelineFunnelWidget = ({
   return view === "primary" ? (
     <ProjectPipelineFunnelView
       context={context}
+      days={days}
       workItemStateTypeCounts={workItemStateTypeCounts}
       totalEffortByStateType={totalEffortByStateType}
       workItemScope={workItemScope}

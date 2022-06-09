@@ -45,7 +45,16 @@ export const ProjectPipelineFunnelDetailDashboard = ({
         ]}
       >
         <DashboardWidget
-          w={1 / 3}
+          w={1/4}
+          name="project-pipeline-funnel-detailed"
+          render={({view}) => (
+            null
+          )}
+          showDetail={false}
+        />
+
+        <DashboardWidget
+          w={1/2}
           name="project-pipeline-funnel-detailed"
           render={({view}) => (
             <ProjectPipelineFunnelWidget
@@ -59,23 +68,15 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               includeSubTasks={includeSubTasks}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
-          w={2 / 3}
-          name="workitem-statetype-map"
-          render={({view}) => {
-            return (
-              <WorkItemStateTypeMapWidget
-                instanceKey={instanceKey}
-                context={context}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-                days={days}
-                view={view}
-              />
-            );
-          }}
+          w={1/4}
+          name="project-pipeline-funnel-detailed"
+          render={({view}) => (
+            null
+          )}
+          showDetail={false}
         />
       </DashboardRow>
       <DashboardRow h={"48%"}>
