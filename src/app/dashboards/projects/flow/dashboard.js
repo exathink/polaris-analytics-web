@@ -177,7 +177,6 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="pipeline-funnel"
           className={styles.pipelineFunnel}
-          infoConfig={ProjectPipelineFunnelWidget.infoConfig}
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -195,7 +194,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               includeSubTasks={{includeSubTasksInClosedState: includeSubTasksFlowMetrics, includeSubTasksInNonClosedState: includeSubTasksWipInspector}}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           name="response-time-trends"
