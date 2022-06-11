@@ -7,6 +7,7 @@ export const ProjectPipelineFunnelView = ({
   days,
   workItemScope,
   setWorkItemScope,
+  showVolumeOrEffort,
   view,
   context,
 }) => {
@@ -18,6 +19,7 @@ export const ProjectPipelineFunnelView = ({
             days={days}
             title={" "}
             grouping={workItemScope}
+            showVolumeOrEffort={showVolumeOrEffort}
           />
     </div>
   );
