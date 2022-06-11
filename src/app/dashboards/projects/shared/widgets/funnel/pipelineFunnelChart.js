@@ -2,7 +2,7 @@ import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { capitalizeFirstLetter, pick, humanizeDuration } from "../../../../../helpers/utility";
+import { capitalizeFirstLetter, pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
 import {
   Colors,
   WorkItemStateTypeColor,
@@ -36,12 +36,15 @@ function getTimeToClear(workItemStateTypeCounts, days) {
 
 }
 
+
+
+
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "days"),
+  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({ workItemStateTypeCounts, totalEffortByStateType, days, title, grouping, intl }) => {
+  getConfig: ({ workItemStateTypeCounts, totalEffortByStateType, days, title, grouping, showVolumeOrEffort = 'volume', intl }) => {
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
@@ -58,17 +61,23 @@ export const PipelineFunnelChart = Chart({
         series: {
           dataLabels: [{
             enabled: true,
+            useHTML: true,
             formatter: function() {
               const label = this.point.stateType === WorkItemStateTypes.closed ? `${this.point.name} Last ${days} days` : `${this.point.name}`;
-              return `<b>${label}</b> (${this.point.y})`;
+              return `<b>${label}</b> (${this.point.count})`;
             },
             softConnector: true,
             color: "black"
           }, {
             enabled: true,
             align: "center",
+            allowOverlap: false,
             formatter: function() {
-              return this.point.timeToClear ? humanizeDuration(this.point.timeToClear) : "";
+              return showVolumeOrEffort === 'volume' ?
+                (this.point.timeToClear ? humanizeDuration(this.point.timeToClear) : "")
+                :
+                ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
+                ;
             },
             color: "black"
           }],
@@ -98,10 +107,12 @@ export const PipelineFunnelChart = Chart({
         ).map(
           stateType => ({
             name: WorkItemStateTypeDisplayName[stateType],
-            y: selectedSummary[stateType] || 0,
+            y: (selectedSummary[stateType] || 0),
+
             color: WorkItemStateTypeColor[stateType],
             stateType: stateType,
-            timeToClear: timeToClear[stateType]
+            count: selectedSummary[stateType],
+            timeToClear: timeToClear[stateType],
           })
         ),
         showInLegend: true
@@ -111,11 +122,11 @@ export const PipelineFunnelChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function() {
-          const timeToClear = this.point.timeToClear ? `<br/>Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
+          const timeToClear = this.point.timeToClear ? `<br/>Avg. Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
           return tooltipHtml({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
-                [`Volume: `, ` ${intl.formatNumber(this.point.y)} ${grouping === "specs" ? "Specs" : "Cards"}`],
+                [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? "Specs" : "Cards"}`],
 
                 [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`]
               ]

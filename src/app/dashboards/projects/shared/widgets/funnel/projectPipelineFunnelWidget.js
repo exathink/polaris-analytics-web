@@ -14,6 +14,7 @@ export const ProjectPipelineFunnelWidget = ({
   workItemScope,
   setWorkItemScope,
   days,
+  showVolumeOrEffort,
   view,
   context,
   pollInterval,
@@ -46,6 +47,7 @@ export const ProjectPipelineFunnelWidget = ({
       totalEffortByStateType={totalEffortByStateType}
       workItemScope={workItemScope}
       setWorkItemScope={setWorkItemScope}
+      showVolumeOrEffort={showVolumeOrEffort}
       view={view}
     />
   ) : (
