@@ -132,6 +132,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               latestCommit={latestCommit}
               days={daysRange}
               showVolumeOrEffort={volumeOrEffort}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
               view={view}
               includeSubTasks={includeSubTasks}
             />
