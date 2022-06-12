@@ -132,7 +132,7 @@ export const PipelineFunnelChart = Chart({
           const wipLevelInfo = [
             ['Throughput Rate: ' , `${i18nNumber(intl, closeRate, 3)} /day`],
             ['-------', ``],
-            ['<b>Closed + Deliver Phase</b>', ''],
+            ['<b>Code + Deliver Phase</b>', ''],
             ['Current Total Wip', workItemStateTypeCounts[WorkItemStateTypes.open] + workItemStateTypeCounts[WorkItemStateTypes.make] + workItemStateTypeCounts[WorkItemStateTypes.deliver]],
             ['Recommended Target Wip', ` ${i18nNumber(intl,cycleTimeTarget * getCloseRate(workItemStateTypeCounts, days), 0)}` ],
 
