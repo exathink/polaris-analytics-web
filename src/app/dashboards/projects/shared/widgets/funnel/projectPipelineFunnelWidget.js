@@ -48,6 +48,8 @@ export const ProjectPipelineFunnelWidget = ({
       workItemScope={workItemScope}
       setWorkItemScope={setWorkItemScope}
       showVolumeOrEffort={showVolumeOrEffort}
+      leadTimeTarget={leadTimeTarget}
+      cycleTimeTarget={cycleTimeTarget}
       view={view}
     />
   ) : (

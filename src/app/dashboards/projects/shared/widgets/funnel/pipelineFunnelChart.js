@@ -13,9 +13,14 @@ import { Highcharts } from "../../../../../framework/viz/charts/chartWrapper";
 
 require("highcharts/modules/funnel")(Highcharts);
 
+
+function getCloseRate(workItemStateTypeCounts, days) {
+  return (workItemStateTypeCounts[WorkItemStateTypes.closed] || 0) / days;
+}
+
 function getTimeToClear(workItemStateTypeCounts, days) {
   const timeToClear = {};
-  const closeRate = (workItemStateTypeCounts[WorkItemStateTypes.closed] || 0) / days;
+  const closeRate = getCloseRate(workItemStateTypeCounts, days);
   if (closeRate > 0) {
     timeToClear[WorkItemStateTypes.backlog] = (
       (workItemStateTypeCounts[WorkItemStateTypes.backlog] || 0) +
@@ -40,11 +45,11 @@ function getTimeToClear(workItemStateTypeCounts, days) {
 
 
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days"),
+  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days", "leadTimeTarget", "cycleTimeTarget"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({ workItemStateTypeCounts, totalEffortByStateType, days, title, grouping, showVolumeOrEffort = 'volume', intl }) => {
+  getConfig: ({ workItemStateTypeCounts, totalEffortByStateType, days, leadTimeTarget, cycleTimeTarget, title, grouping, showVolumeOrEffort = 'volume', intl }) => {
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
@@ -123,12 +128,23 @@ export const PipelineFunnelChart = Chart({
         hideDelay: 0,
         formatter: function() {
           const timeToClear = this.point.timeToClear ? `<br/>Avg. Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
+          const closeRate = getCloseRate(workItemStateTypeCounts, days);
+          const wipLevelInfo = [
+            ['Throughput Rate: ' , `${i18nNumber(intl, closeRate, 1)} /day`],
+            ['-------', ``],
+            ['<b>Closed + Deliver Phase</b>', ''],
+            ['Current Total Wip', workItemStateTypeCounts[WorkItemStateTypes.open] + workItemStateTypeCounts[WorkItemStateTypes.make] + workItemStateTypeCounts[WorkItemStateTypes.deliver]],
+            ['Recommended Target Wip', ` ${i18nNumber(intl,cycleTimeTarget * getCloseRate(workItemStateTypeCounts, days), 0)}` ],
+
+          ]
           return tooltipHtml({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
                 [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? "Specs" : "Cards"}`],
 
-                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`]
+                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
+
+                ...(this.point.stateType === WorkItemStateTypes.closed ? wipLevelInfo : [['','']])
               ]
             }
           );

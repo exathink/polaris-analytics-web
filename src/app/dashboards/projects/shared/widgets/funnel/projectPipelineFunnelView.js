@@ -5,6 +5,8 @@ export const ProjectPipelineFunnelView = ({
   workItemStateTypeCounts,
   totalEffortByStateType,
   days,
+  leadTimeTarget,
+  cycleTimeTarget,
   workItemScope,
   setWorkItemScope,
   showVolumeOrEffort,
@@ -17,6 +19,8 @@ export const ProjectPipelineFunnelView = ({
             workItemStateTypeCounts={workItemStateTypeCounts}
             totalEffortByStateType={totalEffortByStateType}
             days={days}
+            leadTimeTarget={leadTimeTarget}
+            cycleTimeTarget={cycleTimeTarget}
             title={" "}
             grouping={workItemScope}
             showVolumeOrEffort={showVolumeOrEffort}
