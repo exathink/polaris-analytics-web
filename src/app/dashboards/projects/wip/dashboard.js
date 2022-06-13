@@ -66,6 +66,7 @@ function WipDashboard({
               display={"wipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              latestPullRequestEvent={latestPullRequestEvent}
               days={wipAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}

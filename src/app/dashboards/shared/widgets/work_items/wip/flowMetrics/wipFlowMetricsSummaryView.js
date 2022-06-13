@@ -16,7 +16,7 @@ import {
 } from "../../../../components/flowStatistics/flowStatistics";
 import { withViewerContext } from "../../../../../../framework/viewer/viewerContext";
 import {MetricCard} from "../../../../components/cards/metricCard";
-import { i18nNumber } from "../../../../../../helpers/utility";
+import { capitalizeFirstLetter, humanizeDuration, i18nNumber } from "../../../../../../helpers/utility";
 import { useIntl } from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
@@ -308,16 +308,7 @@ const PipelineSummaryView = withViewerContext((
 
 export function WorkInProgressSummaryView({
   pipelineCycleMetrics,
-  display,
   specsOnly,
-  latestCommit,
-  targetPercentile,
-  leadTimeTargetPercentile,
-  cycleTimeTargetPercentile,
-  leadTimeTarget,
-  cycleTimeTarget,
-  wipLimit,
-  viewerContext,
 }) {
   const intl = useIntl();
 
@@ -326,14 +317,13 @@ export function WorkInProgressSummaryView({
   const codeWip = i18nNumber(intl, pipelineCycleMetrics["totalEffort"], 2);
   
   const commitLatency = i18nNumber(intl, pipelineCycleMetrics["avgLatency"], 2);;
-  // TODO: Need to fix this
-  const pRAge = 10;
+  const [pRAge, pRUom] = humanizeDuration(i18nNumber(intl, pipelineCycleMetrics["avgPullRequestsAge"], 2)).split(" ");
 
   return (
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
       <MetricCard title={"Wip"} value={items} uom={specsOnly ? "Specs": "Cards"} />
       <MetricCard title={"Avg Age"} value={avgAge} uom={"Days"} />
-      <MetricCard title={"PR Age"} value={pRAge} uom={"Days"} className="tw-col-span-2"/>
+      <MetricCard title={"PR Age"} value={pRAge} uom={capitalizeFirstLetter(pRUom)} className="tw-col-span-2"/>
       <MetricCard title={"Code Wip"} value={codeWip} uom={"FTE Days"} />
       <MetricCard title={"Commit Latency"} value={commitLatency} uom={"Days"} />
     </div>
