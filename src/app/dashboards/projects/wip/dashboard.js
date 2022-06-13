@@ -11,10 +11,12 @@ import {
   DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget
 } from "../../shared/widgets/work_items/wip";
-import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
-import { Flex } from "reflexbox";
-import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import { SYSTEM_TEAMS } from "../../../../config/featureFlags";
+import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
+import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
+import {StateMappingIndex} from "../shared/stateMappingIndex";
+import {Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
+import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -56,12 +58,12 @@ function WipDashboard({
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
-          title={"Work In Progress"}
+          title={""}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
-              display={"commonWipSummary"}
+              display={"wipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               days={wipAnalysisPeriod}
