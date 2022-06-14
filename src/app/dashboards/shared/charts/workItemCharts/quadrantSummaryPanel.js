@@ -129,7 +129,17 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   );
 }
 
-export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, latencyTarget, className, onQuadrantClick, selectedQuadrant, layout="col", valueFontClass="tw-text-2xl"}) {
+export function QuadrantSummaryPanel({
+  workItems,
+  stateTypes,
+  cycleTimeTarget,
+  latencyTarget,
+  className,
+  onQuadrantClick,
+  selectedQuadrant,
+  layout = "col",
+  valueFontClass = "tw-text-2xl",
+}) {
   const intl = useIntl();
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
@@ -158,72 +168,58 @@ export function QuadrantSummaryPanel({workItems, stateTypes, cycleTimeTarget, la
     latencyTarget,
   });
 
-  const totalEffort = Object.keys(quadrantEffort).reduce((totalEffort, current) => totalEffort + quadrantEffort[current], 0);
-
+  const totalEffort = Object.keys(quadrantEffort).reduce(
+    (totalEffort, current) => totalEffort + quadrantEffort[current],
+    0
+  );
 
   const selectedBorderClasses = "tw-border-2 tw-border-solid tw-border-gray-300";
-  return (
-    <div className={classNames("tw-grid tw-grid-cols-4 tw-grid-rows-1 tw-gap-1", className)}>
+  const quadrantDescription = {
+    [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(
+      intl,
+      latencyTarget,
+      1
+    )} days`,
+    [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(
+      intl,
+      latencyTarget,
+      1
+    )} days`,
+    [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(
+      intl,
+      latencyTarget,
+      1
+    )} days`,
+    [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(
+      intl,
+      latencyTarget,
+      1
+    )} days`,
+  };
+  const allQuadrants = Object.entries(QuadrantNames).map(([key, value]) => ({
+    quadKey: key,
+    name: value,
+    val: quadrantCounts[key] ?? 0,
+    totalAge: quadrantAge[key] ?? 0,
+    totalLatency: quadrantLatency[key] ?? 0,
+    quadrantEffort: quadrantEffort[key] ?? 0,
+    quadrantDescription: quadrantDescription[key],
+    color: QuadrantColors[key],
+    className: selectedQuadrant === key ? selectedBorderClasses : "",
+  }));
+
+  const allElements = allQuadrants.map((q) => {
+    return (
       <QuadrantBox
-        name={QuadrantNames[Quadrants.ok]}
-        val={quadrantCounts[Quadrants.ok] ?? 0}
-        total={workItems.length}
-        totalAge={quadrantAge[Quadrants.ok] ?? 0}
-        totalLatency={quadrantLatency[Quadrants.ok] ?? 0}
-        quadrantEffort={quadrantEffort[Quadrants.ok] ?? 0}
-        totalEffort={totalEffort}
-        quadrantDescription={`Age <= ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`}
-        color={QuadrantColors[Quadrants.ok]}
-        onQuadrantClick={() => onQuadrantClick(Quadrants.ok)}
+        key={q.quadKey}
+        {...q}
         layout={layout}
-        className={selectedQuadrant === Quadrants.ok ? selectedBorderClasses : ""}
         fontClass={valueFontClass}
-      />
-      <QuadrantBox
-        name={QuadrantNames[Quadrants.latency]}
-        val={quadrantCounts[Quadrants.latency] ?? 0}
         total={workItems.length}
-        totalAge={quadrantAge[Quadrants.latency] ?? 0}
-        totalLatency={quadrantLatency[Quadrants.latency] ?? 0}
-        quadrantEffort={quadrantEffort[Quadrants.latency] ?? 0}
         totalEffort={totalEffort}
-        quadrantDescription={`Age <= ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`}
-        color={QuadrantColors[Quadrants.latency]}
-        onQuadrantClick={() => onQuadrantClick(Quadrants.latency)}
-        layout={layout}
-        className={selectedQuadrant === Quadrants.latency ? selectedBorderClasses : ""}
-        fontClass={valueFontClass}
+        onQuadrantClick={() => onQuadrantClick(q.quadKey)}
       />
-      <QuadrantBox
-        name={QuadrantNames[Quadrants.age]}
-        val={quadrantCounts[Quadrants.age] ?? 0}
-        total={workItems.length}
-        totalAge={quadrantAge[Quadrants.age] ?? 0}
-        totalLatency={quadrantLatency[Quadrants.age] ?? 0}
-        quadrantEffort={quadrantEffort[Quadrants.age] ?? 0}
-        totalEffort={totalEffort}
-        quadrantDescription={`Age > ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`}
-        color={QuadrantColors[Quadrants.age]}
-        onQuadrantClick={() => onQuadrantClick(Quadrants.age)}
-        layout={layout}
-        className={selectedQuadrant === Quadrants.age ? selectedBorderClasses : ""}
-        fontClass={valueFontClass}
-      />
-      <QuadrantBox
-        name={QuadrantNames[Quadrants.critical]}
-        val={quadrantCounts[Quadrants.critical] ?? 0}
-        total={workItems.length}
-        totalAge={quadrantAge[Quadrants.critical] ?? 0}
-        totalLatency={quadrantLatency[Quadrants.critical] ?? 0}
-        quadrantEffort={quadrantEffort[Quadrants.critical] ?? 0}
-        totalEffort={totalEffort}
-        quadrantDescription={`Age > ${i18nNumber(intl, cycleTimeTarget,0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`}
-        color={QuadrantColors[Quadrants.critical]}
-        onQuadrantClick={() => onQuadrantClick(Quadrants.critical)}
-        layout={layout}
-        className={selectedQuadrant === Quadrants.critical ? selectedBorderClasses : ""}
-        fontClass={valueFontClass}
-      />
-    </div>
-  );
+    );
+  });
+  return <div className={classNames("tw-grid tw-grid-cols-4 tw-grid-rows-1 tw-gap-1", className)}>{allElements}</div>;
 }
