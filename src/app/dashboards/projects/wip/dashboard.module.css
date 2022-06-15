@@ -1,8 +1,8 @@
 .wipDashboard{
-    height: 100%;
+    height: 97%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 5% auto 70%;
+    grid-template-rows: 5% auto 75%;
     gap: 0.25rem 0.5rem;
     grid-template-areas: ". . . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
     "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
@@ -24,11 +24,9 @@
 
 .engineering{
     grid-area: engineering;
-    margin-top: 0.5rem;
 }
 .delivery{
-    grid-area: delivery;
-     margin-top: 0.5rem;   
+    grid-area: delivery;  
 }
 .scopeSelector{
     grid-area: scopeSelector;

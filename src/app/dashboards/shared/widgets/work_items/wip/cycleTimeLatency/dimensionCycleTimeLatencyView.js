@@ -50,7 +50,7 @@ export const DimensionCycleTimeLatencyView = ({
             }}
           />
         </div>
-        <div className={`tw-flex tw-h-auto tw-items-center tw-bg-chart`}>
+        <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
           <QuadrantSummaryPanel
             workItems={workItems}
             stateTypes={stateTypes}
