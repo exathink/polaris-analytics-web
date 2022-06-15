@@ -175,26 +175,10 @@ export function QuadrantSummaryPanel({
 
   const selectedBorderClasses = "tw-border-2 tw-border-solid tw-border-gray-300";
   const quadrantDescription = {
-    [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(
-      intl,
-      latencyTarget,
-      1
-    )} days`,
-    [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(
-      intl,
-      latencyTarget,
-      1
-    )} days`,
-    [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(
-      intl,
-      latencyTarget,
-      1
-    )} days`,
-    [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(
-      intl,
-      latencyTarget,
-      1
-    )} days`,
+    [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
+    [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
+    [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
+    [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
   };
   const allQuadrants = Object.entries(QuadrantNames).map(([key, value]) => ({
     quadKey: key,
