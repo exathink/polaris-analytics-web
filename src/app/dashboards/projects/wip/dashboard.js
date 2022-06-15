@@ -11,7 +11,7 @@ import {
 } from "../../shared/widgets/work_items/wip";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
+
 import { DimensionWipMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
@@ -35,7 +35,7 @@ function WipDashboard({
 
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
-  const teamsActive = viewerContext.isFeatureFlagActive(SYSTEM_TEAMS)
+
   const {
     cycleTimeTarget,
     responseTimeConfidenceTarget,
