@@ -121,8 +121,8 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
         <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>
           {percentageCountDisplay}
         </div>
-        <div className={classNames("tw-text-black tw-text-opacity-80", "tw-text-xs")}>
-          {val > 0 ? `Avg. Age ${averageAgeDisplay}` : ''}
+        <div className={classNames("tw-text-black tw-text-opacity-80 tw-truncate tw-text-xs", val===0 ? "tw-invisible": "")}>
+          {val > 0 ? `Avg. Age ${averageAgeDisplay}` : 'random text'}
         </div>
       </div>
     </Popover>
