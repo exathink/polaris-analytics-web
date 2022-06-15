@@ -8,11 +8,11 @@ import { withViewerContext } from "../../../framework/viewer/viewerContext";
 import { ProjectDashboard } from "../projectDashboard";
 import {
   DimensionPipelineCycleTimeLatencyWidget,
-  DimensionWipFlowMetricsWidget
 } from "../../shared/widgets/work_items/wip";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
+import { DimensionWipMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -61,7 +61,7 @@ function WipDashboard({
           className={styles.pipeline}
           title={""}
           render={({view}) => (
-            <DimensionWipFlowMetricsWidget
+            <DimensionWipMetricsWidget
               dimension={'project'}
               instanceKey={key}
               display={"wipSummary"}

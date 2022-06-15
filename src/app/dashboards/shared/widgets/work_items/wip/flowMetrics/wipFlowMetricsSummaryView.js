@@ -309,6 +309,7 @@ const PipelineSummaryView = withViewerContext((
 export function WorkInProgressSummaryView({
   pipelineCycleMetrics,
   specsOnly,
+  quadrantSummaryPanel
 }) {
   const intl = useIntl();
 
@@ -323,7 +324,10 @@ export function WorkInProgressSummaryView({
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
       <MetricCard title={"Wip"} value={items} uom={specsOnly ? "Specs": "Cards"} />
       <MetricCard title={"Avg Age"} value={avgAge} uom={"Days"} />
-      <MetricCard title={"PR Age"} value={pRAge} uom={capitalizeFirstLetter(pRUom)} className="tw-col-span-2"/>
+      {/* <MetricCard title={"PR Age"} value={pRAge} uom={capitalizeFirstLetter(pRUom)} className="tw-col-span-2"/> */}
+      <div className="tw-col-span-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md tw-h-full tw-flex tw-items-center">
+        {quadrantSummaryPanel}
+      </div>
       <MetricCard title={"Code Wip"} value={codeWip} uom={"FTE Days"} />
       <MetricCard title={"Commit Latency"} value={commitLatency} uom={"Days"} />
     </div>
