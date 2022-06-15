@@ -59,7 +59,7 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
   }, {});
 }
 
-function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, layout, fontClass}) {
+function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass}) {
   const intl = useIntl();
 
   const percentageCount = (val/total)*100;
@@ -109,20 +109,19 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   return (
     <Popover content={tooltipContent} title={tooltipTitle} trigger={"hover"}>
       <div
-        className={classNames(
-          "tw-flex tw-cursor-pointer tw-rounded-md tw-p-1",
-          layout === "col" ? "tw-flex-col tw-items-center" : "tw-h-14 tw-flex-row tw-items-center tw-justify-between tw-px-6",
-          className
-        )}
+        className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-rounded-md tw-p-1", className)}
         style={{backgroundColor: color}}
         onClick={onQuadrantClick}
       >
         <div>{name}</div>
-        <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>
-          {percentageCountDisplay}
-        </div>
-        <div className={classNames("tw-text-black tw-text-opacity-80 tw-truncate tw-text-xs", val===0 ? "tw-invisible": "")}>
-          {val > 0 ? `Avg. Age ${averageAgeDisplay}` : 'random text'}
+        <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>{percentageCountDisplay}</div>
+        <div
+          className={classNames(
+            "tw-truncate tw-text-xs tw-text-black tw-text-opacity-80",
+            val === 0 ? "tw-invisible" : ""
+          )}
+        >
+          {val > 0 ? `Avg. Age ${averageAgeDisplay}` : "random text"}
         </div>
       </div>
     </Popover>
@@ -137,7 +136,6 @@ export function QuadrantSummaryPanel({
   className,
   onQuadrantClick,
   selectedQuadrant,
-  layout = "col",
   valueFontClass = "tw-text-2xl",
 }) {
   const intl = useIntl();
@@ -197,7 +195,6 @@ export function QuadrantSummaryPanel({
       <QuadrantBox
         key={q.quadKey}
         {...q}
-        layout={layout}
         fontClass={valueFontClass}
         total={workItems.length}
         totalEffort={totalEffort}
