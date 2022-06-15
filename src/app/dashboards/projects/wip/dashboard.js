@@ -49,6 +49,11 @@ function WipDashboard({
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
+      <div className={styles.scopeSelector}>
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
       <DashboardRow h="12%">
 
         <DashboardWidget
@@ -137,11 +142,7 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <div className={styles.scopeSelector}>
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
-      </div>
+      
     </Dashboard>
   );
 }

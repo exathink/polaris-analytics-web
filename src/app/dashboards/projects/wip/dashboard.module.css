@@ -2,11 +2,11 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 70% 10%;
+    grid-template-rows: 5% auto 70%;
     gap: 0.25rem 0.5rem;
-    grid-template-areas: "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
-    "engineering engineering engineering engineering engineering engineering delivery delivery delivery delivery delivery delivery"
-    "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
+    grid-template-areas: ". . . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
+    "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
+    "engineering engineering engineering engineering engineering engineering delivery delivery delivery delivery delivery delivery" 
 }
 
 .responseTime{
