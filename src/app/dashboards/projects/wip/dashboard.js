@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
 import { WorkItemStateTypes } from "../../shared/config";
 import styles from "./dashboard.module.css";
-import { DimensionCommitsNavigatorWidget } from "../../shared/widgets/accountHierarchy";
 
 import { withViewerContext } from "../../../framework/viewer/viewerContext";
 
@@ -11,9 +10,6 @@ import {
   DimensionPipelineCycleTimeLatencyWidget,
   DimensionWipFlowMetricsWidget
 } from "../../shared/widgets/work_items/wip";
-import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
-import {useProjectWorkItemSourcesStateMappings} from "../shared/hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {StateMappingIndex} from "../shared/stateMappingIndex";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {SYSTEM_TEAMS} from "../../../../config/featureFlags";
@@ -114,30 +110,6 @@ function WipDashboard({
           showDetail={true}
         />
 
-
-        <DashboardWidget
-          name="pull-requests"
-          className={styles.codeReviewDetail}
-          render={({ view }) => (
-            <DimensionPullRequestsWidget
-              dimension={'project'}
-              instanceKey={key}
-              days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
-              className={styles.codeReviewDetail}
-              view={view}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              latestPullRequestEvent={latestPullRequestEvent}
-              asStatistic={false}
-              activeOnly={true}
-              display="histogram"
-            />
-          )}
-          showDetail={true}
-        />
-
         <DashboardWidget
           name="delivery"
           className={styles.delivery}
@@ -170,34 +142,6 @@ function WipDashboard({
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
-      <DashboardRow h={"50%"} title={"Latest Changes"} className={styles.latestCommitsTitle}>
-        <DashboardWidget
-          name="commits"
-          className={styles.commits}
-          render={({view}) => (
-            <DimensionCommitsNavigatorWidget
-              dimension={"project"}
-              instanceKey={key}
-              context={context}
-              view={view}
-              days={1}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              groupBy={'author'}
-              groupings={
-                teamsActive ?
-                  ["author", "workItem", "team",  "repository", "branch"]
-                  :
-                  ["author", "workItem",  "repository", "branch"]
-
-              }
-              showHeader
-              showTable
-            />
-          )}
-          showDetail={true}
-        />
-      </DashboardRow>
     </Dashboard>
   );
 }

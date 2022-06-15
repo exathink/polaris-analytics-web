@@ -2,12 +2,11 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 39% 4% 42%;
+    grid-template-rows: auto 70% 10%;
     gap: 0.25rem 0.5rem;
     grid-template-areas: "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
-    "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"
+    "engineering engineering engineering engineering engineering engineering delivery delivery delivery delivery delivery delivery"
     "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
-    "commits commits commits commits commits commits commits commits commits commits commits commits";
 }
 
 .responseTime{
@@ -18,10 +17,6 @@
     grid-area: pipeline;
     padding: 0.25rem;
 }
-.codeReviews{
-    grid-area: codeReviews;
-    padding: 0.25rem;
-}
 .flowMetrics{
     grid-area: flowMetrics;
     padding: 0.25rem;
@@ -29,10 +24,6 @@
 
 .engineering{
     grid-area: engineering;
-    margin-top: 0.5rem;
-}
-.codeReviewDetail{
-    grid-area: pipelineEffort;
     margin-top: 0.5rem;
 }
 .delivery{
