@@ -38,11 +38,12 @@ function WipDashboard({
 
   const {
     cycleTimeTarget,
+    leadTimeTarget,
     responseTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     wipLimit,
-    wipAnalysisPeriod,
+    flowAnalysisPeriod,
     includeSubTasksWipInspector,
     latencyTarget
   } = settingsWithDefaults;
@@ -68,11 +69,13 @@ function WipDashboard({
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               latestPullRequestEvent={latestPullRequestEvent}
-              days={wipAnalysisPeriod}
+              days={flowAnalysisPeriod}
+              leadTimeTarget={leadTimeTarget}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               wipLimit={wipLimit}
               view={view}
               specsOnly={specsOnly}

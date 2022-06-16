@@ -7,6 +7,7 @@ import {useQueryDimensionPullRequests} from "../../../pullRequests/hooks/useQuer
 import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {WorkItemStateTypes} from "../../../../config";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
 
 function useQueryDimensionWipCombined({
   dimension,
@@ -70,9 +71,11 @@ export const DimensionWipMetricsWidget = ({
   dimension,
   instanceKey,
   specsOnly,
+  days,
   latestCommit,
   latestWorkItemEvent,
   latestPullRequestEvent,
+  leadTimeTarget,
   targetPercentile,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
@@ -98,19 +101,37 @@ export const DimensionWipMetricsWidget = ({
     latestPullRequestEvent,
   });
 
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
+  const {loading: _loading, error: _error, data} = useQueryDimensionFlowMetrics({
+    dimension,
+    instanceKey,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeTargetPercentile: leadTimeTargetPercentile,
+    cycleTimeTargetPercentile: cycleTimeTargetPercentile,
+    days: days,
+    measurementWindow: days,
+    samplingFrequency: days,
+    specsOnly: limitToSpecsOnly,
+    includeSubTasks: includeSubTasks,
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+  });
+
   const workItems = React.useMemo(() => {
     const edges = pipelineData?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [pipelineData, dimension]);
 
-  if (loading) return <Loading />;
-  if (error) return null;
+  if (loading || _loading) return <Loading />;
+  if (error || _error) return null;
 
+  const {cycleMetricsTrends: [current]} = data[dimension];
   const pullRequests = prData[dimension]["pullRequests"]["edges"].map((edge) => edge.node);
   const avgPullRequestsAge = average(pullRequests, (pullRequest) => pullRequest.age);
   const pipelineCycleMetrics = {
     ...metricsData[dimension]["pipelineCycleMetrics"],
     avgPullRequestsAge: avgPullRequestsAge,
+    cycleTime: current["avgCycleTime"]
   };
 
   if (view === "primary") {
