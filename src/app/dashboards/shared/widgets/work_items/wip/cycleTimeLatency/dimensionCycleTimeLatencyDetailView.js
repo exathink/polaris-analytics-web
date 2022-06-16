@@ -183,7 +183,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
         )}
       </div>
       <div className={styles.engineering}>
-        {stateTypes === undefined ? (
           <div
             className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[80%,20%] tw-gap-x-2"
             key={resetComponentStateKey}
@@ -253,40 +252,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
               />
             </div>
           </div>
-        ) : (
-          <React.Fragment>
-            <div className="tw-h-[75%]">
-              <WorkItemsCycleTimeVsLatencyChart
-                key={resetComponentStateKey}
-                view={view}
-                stageName={stageName}
-                specsOnly={specsOnly}
-                workItems={chartFilteredWorkItems}
-                stateTypes={stateTypes}
-                groupByState={groupByState}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                tooltipType={tooltipType}
-                onSelectionChange={handleSelectionChange}
-                selectedQuadrant={selectedQuadrant}
-              />
-            </div>
-            <div className="tw-h-auto">
-              <QuadrantSummaryPanel
-                workItems={chartFilteredWorkItems}
-                stateTypes={stateTypes}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
-                }}
-                selectedQuadrant={selectedQuadrant}
-                className="tw-mx-auto tw-w-[98%]"
-                valueFontClass="tw-text-3xl"
-              />
-            </div>
-          </React.Fragment>
-        )}
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
