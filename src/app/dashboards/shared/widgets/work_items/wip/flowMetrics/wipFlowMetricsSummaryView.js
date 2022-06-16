@@ -15,7 +15,7 @@ import {
 
 } from "../../../../components/flowStatistics/flowStatistics";
 import { withViewerContext } from "../../../../../../framework/viewer/viewerContext";
-import {MetricCard} from "../../../../components/cards/metricCard";
+import {MetricCard, MultipleMetricsCard} from "../../../../components/cards/metricCard";
 import { capitalizeFirstLetter, humanizeDuration, i18nNumber } from "../../../../../../helpers/utility";
 import { useIntl } from "react-intl";
 
@@ -323,13 +323,12 @@ export function WorkInProgressSummaryView({
   return (
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
       <MetricCard title={"Wip"} value={items} uom={specsOnly ? "Specs": "Cards"} />
-      <MetricCard title={"Avg Age"} value={avgAge} uom={"Days"} />
-      {/* <MetricCard title={"PR Age"} value={pRAge} uom={capitalizeFirstLetter(pRUom)} className="tw-col-span-2"/> */}
+      <MultipleMetricsCard metrics={[{title: "Avg. Age:", value: avgAge, uom: "Days"}, {title: "Cycle Time:", value: 90, uom: "Days"}]}/>
       <div className="tw-col-span-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md tw-h-full tw-flex tw-items-center">
         {quadrantSummaryPanel}
       </div>
-      <MetricCard title={"Code Wip"} value={codeWip} uom={"FTE Days"} />
-      <MetricCard title={"Commit Latency"} value={commitLatency} uom={"Days"} />
+      <MultipleMetricsCard metrics={[{title: "Code Wip", value: codeWip, uom: "FTE Days"}, {title: "Commit Latency", value: commitLatency, uom: "Days"}]}/>
+      <MetricCard title={"PR Age"} value={pRAge} uom={capitalizeFirstLetter(pRUom)}/>
     </div>
   );
 }

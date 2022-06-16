@@ -17,3 +17,22 @@ export function MetricCard({title, value, uom, info, className}) {
     </div>
   );
 }
+
+
+export function MultipleMetricsCard({metrics, className}) {
+  return (
+    <div
+      className={classNames(
+        "tw-flex tw-h-full tw-flex-col tw-justify-between tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md",
+        className
+      )}
+    >
+        {metrics.map((m, i) => (
+          <div className={classNames("tw-flex tw-flex-row tw-justify-between tw-items-center", i===1 ? "tw-mt-auto": "")} key={m.title}>
+            <div className="tw-textBase">{m.title} </div>
+            <div className="tw-text-xl">{m.value} <span className="tw-text-sm tw-font-normal tw-text-gray-300">{m.uom}</span></div>
+          </div>
+        ))}
+    </div>
+  );
+}
