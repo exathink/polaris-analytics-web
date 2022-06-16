@@ -184,7 +184,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
       <div className={styles.engineering}>
           <div
-            className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[80%,20%] tw-gap-x-2"
+            className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[75%,25%] tw-gap-x-2"
             key={resetComponentStateKey}
           >
             <WorkItemsCycleTimeVsLatencyChart
