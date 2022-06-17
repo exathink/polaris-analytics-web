@@ -15,6 +15,9 @@ function useQueryDimensionWipCombined({
   targetPercentile,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  days,
   specsOnly,
   includeSubTasks,
   latestWorkItemEvent,
@@ -60,10 +63,25 @@ function useQueryDimensionWipCombined({
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
 
+  const {loading: loading3, error: error3, data: flowMetricsData} = useQueryDimensionFlowMetrics({
+    dimension,
+    instanceKey,
+    leadTimeTarget,
+    cycleTimeTarget,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    days: days,
+    measurementWindow: days,
+    samplingFrequency: days,
+    specsOnly: specsOnly,
+    includeSubTasks: includeSubTasks,
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+  });
+
   return {
-    loading: loading || loading1 || loading2,
-    error: error || error1 || error2,
-    data: [metricsData, pipelineData, prData],
+    loading: loading || loading1 || loading2 || loading3,
+    error: error || error1 || error2 || error3,
+    data: [metricsData, pipelineData, prData, flowMetricsData],
   };
 }
 
@@ -87,13 +105,16 @@ export const DimensionWipMetricsWidget = ({
   const {
     loading,
     error,
-    data: [metricsData, pipelineData, prData],
+    data: [metricsData, pipelineData, prData, flowMetricsData],
   } = useQueryDimensionWipCombined({
     dimension,
     instanceKey,
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
+    days,
+    leadTimeTarget,
+    cycleTimeTarget,
     specsOnly,
     includeSubTasks,
     latestWorkItemEvent,
@@ -101,31 +122,15 @@ export const DimensionWipMetricsWidget = ({
     latestPullRequestEvent,
   });
 
-  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const {loading: _loading, error: _error, data} = useQueryDimensionFlowMetrics({
-    dimension,
-    instanceKey,
-    leadTimeTarget,
-    cycleTimeTarget,
-    leadTimeTargetPercentile: leadTimeTargetPercentile,
-    cycleTimeTargetPercentile: cycleTimeTargetPercentile,
-    days: days,
-    measurementWindow: days,
-    samplingFrequency: days,
-    specsOnly: limitToSpecsOnly,
-    includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
-  });
-
   const workItems = React.useMemo(() => {
     const edges = pipelineData?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [pipelineData, dimension]);
 
-  if (loading || _loading) return <Loading />;
-  if (error || _error) return null;
+  if (loading) return <Loading />;
+  if (error) return null;
 
-  const {cycleMetricsTrends: [current]} = data[dimension];
+  const {cycleMetricsTrends: [current]} = flowMetricsData[dimension];
   const pullRequests = prData[dimension]["pullRequests"]["edges"].map((edge) => edge.node);
   const avgPullRequestsAge = average(pullRequests, (pullRequest) => pullRequest.age);
   const pipelineCycleMetrics = {
