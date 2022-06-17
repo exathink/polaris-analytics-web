@@ -228,8 +228,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(QuadrantStateTypes.engineering);
+                  if(selectedQuadrant===undefined){
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(QuadrantStateTypes.engineering);
+                  } else {
+                    handleResetAll()
+                  }  
                 }}
                 selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
                 className="tw-mx-auto tw-w-[98%]"
@@ -243,8 +247,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(QuadrantStateTypes.delivery);
+                  if(selectedQuadrant===undefined){
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(QuadrantStateTypes.delivery);
+                  } else {
+                    handleResetAll()
+                  }   
                 }}
                 selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
                 className="tw-mx-auto tw-w-[98%]"
