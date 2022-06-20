@@ -1,13 +1,12 @@
 .wipDashboard{
-    height: 100%;
+    height: 97%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 39% 4% 42%;
+    grid-template-rows: 5% auto 75%;
     gap: 0.25rem 0.5rem;
-    grid-template-areas: "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
-    "engineering engineering engineering engineering pipelineEffort pipelineEffort pipelineEffort pipelineEffort delivery delivery delivery delivery"
-    "latestCommitsTitle latestCommitsTitle . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
-    "commits commits commits commits commits commits commits commits commits commits commits commits";
+    grid-template-areas: ". . . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
+    "pipeline pipeline pipeline pipeline summaryWip summaryWip summaryWip summaryWip baseWip baseWip baseWip baseWip"
+    "engineering engineering engineering engineering engineering engineering delivery delivery delivery delivery delivery delivery" 
 }
 
 .responseTime{
@@ -18,9 +17,17 @@
     grid-area: pipeline;
     padding: 0.25rem;
 }
-.codeReviews{
-    grid-area: codeReviews;
+.baseWip{
+    grid-area: baseWip;
     padding: 0.25rem;
+}
+.quadSummary{
+    grid-area: quadSummary;
+    padding: 0.25rem;
+}
+.summaryWip{
+    grid-area: summaryWip;
+    padding: 0.25rem; 
 }
 .flowMetrics{
     grid-area: flowMetrics;
@@ -29,15 +36,9 @@
 
 .engineering{
     grid-area: engineering;
-    margin-top: 0.5rem;
-}
-.codeReviewDetail{
-    grid-area: pipelineEffort;
-    margin-top: 0.5rem;
 }
 .delivery{
-    grid-area: delivery;
-     margin-top: 0.5rem;   
+    grid-area: delivery;  
 }
 .scopeSelector{
     grid-area: scopeSelector;

@@ -1,6 +1,6 @@
 import React from "react";
-import { withNavigationContext } from "../../../../../../framework/navigation/components/withNavigationContext";
-import { VizItem, VizRow } from "../../../../containers/layout";
+import {withNavigationContext} from "../../../../../../framework/navigation/components/withNavigationContext";
+import {VizItem, VizRow} from "../../../../containers/layout";
 import {
   AvgAge,
   AvgDuration,
@@ -11,26 +11,28 @@ import {
   PercentileAge,
   Wip,
   WipCarousel,
-  WipWithLimit
-
+  WipWithLimit,
 } from "../../../../components/flowStatistics/flowStatistics";
-import { withViewerContext } from "../../../../../../framework/viewer/viewerContext";
-
+import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
+import {i18nNumber} from "../../../../../../helpers/utility";
+import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
+import {getMetricUtils, TrendIndicator} from "../../../../../../components/misc/statistic/statistic";
+import {TrendCard} from "../../../../components/cards/trendCard";
 
 const FlowBoardSummaryView = ({
-                                pipelineCycleMetrics,
-                                specsOnly,
-                                targetPercentile,
-                                leadTimeTargetPercentile,
-                                cycleTimeTargetPercentile,
-                                leadTimeTarget,
-                                cycleTimeTarget,
-                                wipLimit,
-                                viewerContext
-                              }) => {
+  pipelineCycleMetrics,
+  specsOnly,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  wipLimit,
+  viewerContext,
+}) => {
   return (
     <div className={styles.boxWrapper}>
       <div>
@@ -48,7 +50,7 @@ const FlowBoardSummaryView = ({
           paddingLeft: "40px",
           borderLeftWidth: "1px",
           borderLeftStyle: "solid",
-          borderLeftColor: "rgba(0,0,0,0.1)"
+          borderLeftColor: "rgba(0,0,0,0.1)",
         }}
       >
         <WipWithLimit currentMeasurement={pipelineCycleMetrics} target={wipLimit} specsOnly={specsOnly} />
@@ -58,17 +60,17 @@ const FlowBoardSummaryView = ({
 };
 
 const CommonWipBoardSummaryView = ({
-                                     pipelineCycleMetrics,
-                                     specsOnly,
-                                     targetPercentile,
-                                     leadTimeTargetPercentile,
-                                     cycleTimeTargetPercentile,
-                                     leadTimeTarget,
-                                     cycleTimeTarget,
-                                     wipLimit,
-                                     latestCommit,
-                                     viewerContext
-                                   }) => {
+  pipelineCycleMetrics,
+  specsOnly,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  wipLimit,
+  latestCommit,
+  viewerContext,
+}) => {
   return (
     <div className={styles.wipSummary}>
       <div className={grid.firstCol}>
@@ -92,26 +94,20 @@ const CommonWipBoardSummaryView = ({
   );
 };
 
-const NonFlowBoard20View = (
-  {
-    pipelineCycleMetrics,
-    specsOnly,
-    targetPercentile,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
-    leadTimeTarget,
-    cycleTimeTarget,
-    viewerContext
-  }
-) => {
-
+const NonFlowBoard20View = ({
+  pipelineCycleMetrics,
+  specsOnly,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  viewerContext,
+}) => {
   return (
     <VizRow h={1}>
       <VizItem w={0.4}>
-        <WipCarousel
-          currentMeasurement={pipelineCycleMetrics}
-          specsOnly={specsOnly}
-        />
+        <WipCarousel currentMeasurement={pipelineCycleMetrics} specsOnly={specsOnly} />
       </VizItem>
       <VizItem w={0.6}>
         <CycleTimeCarousel
@@ -124,80 +120,57 @@ const NonFlowBoard20View = (
   );
 };
 
-export const ValueBoardSummaryView = (
-  {
+export const ValueBoardSummaryView = ({
+  pipelineCycleMetrics,
 
-    pipelineCycleMetrics,
-
-    latestCommit,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
-    leadTimeTarget,
-    cycleTimeTarget,
-    wipLimit,
-    specsOnly
-
-  }
-) => {
+  latestCommit,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
+  leadTimeTarget,
+  cycleTimeTarget,
+  wipLimit,
+  specsOnly,
+}) => {
   const current = pipelineCycleMetrics;
 
   return (
     <div>
       <VizRow h={"50"}>
         <VizItem w={1 / 3}>
-          <Wip
-            currentMeasurement={current}
-            target={wipLimit}
-            specsOnly={specsOnly}
-          />
+          <Wip currentMeasurement={current} target={wipLimit} specsOnly={specsOnly} />
         </VizItem>
         <VizItem w={1 / 3}>
-          <AvgAge
-            currentMeasurement={current}
-
-            target={cycleTimeTarget}
-          />
+          <AvgAge currentMeasurement={current} target={cycleTimeTarget} />
         </VizItem>
         <VizItem w={1 / 3}>
-          <LatestCommit
-            latestCommit={latestCommit}
-          />
+          <LatestCommit latestCommit={latestCommit} />
         </VizItem>
       </VizRow>
-      <VizRow h={"50%"}
-              style={{
-                paddingTop: "20px",
-                borderTop: "1px",
-                borderTopStyle: "solid",
-                borderTopColor: "rgba(0,0,0,0.1)"
-              }}>
+      <VizRow
+        h={"50%"}
+        style={{
+          paddingTop: "20px",
+          borderTop: "1px",
+          borderTopStyle: "solid",
+          borderTopColor: "rgba(0,0,0,0.1)",
+        }}
+      >
         <VizItem w={1 / 3}>
-          <WipCost
-            currentMeasurement={current}
-          />
+          <WipCost currentMeasurement={current} />
         </VizItem>
         <VizItem w={1 / 3}>
-          <AvgDuration
-            currentMeasurement={current}
-
-            target={cycleTimeTarget}
-          />
+          <AvgDuration currentMeasurement={current} target={cycleTimeTarget} />
         </VizItem>
         <VizItem w={1 / 3}>
-          <AvgLatency
-            title={"Idle Time"}
-            currentMeasurement={current}
-
-            target={cycleTimeTarget}
-          />
+          <AvgLatency title={"Idle Time"} currentMeasurement={current} target={cycleTimeTarget} />
         </VizItem>
       </VizRow>
     </div>
   );
 };
 
-const PipelineSummaryView = withViewerContext((
-  {
+const PipelineSummaryView = withViewerContext(
+  ({
     pipelineCycleMetrics,
     display,
     specsOnly,
@@ -208,16 +181,13 @@ const PipelineSummaryView = withViewerContext((
     leadTimeTarget,
     cycleTimeTarget,
     wipLimit,
-    viewerContext
-  }
-) => {
-
-  switch (display) {
-    case "flowboardSummary":
-      return (
-        <FlowBoardSummaryView
-          {
-            ...{
+    viewerContext,
+  }) => {
+    switch (display) {
+      case "flowboardSummary":
+        return (
+          <FlowBoardSummaryView
+            {...{
               pipelineCycleMetrics,
               specsOnly,
               targetPercentile,
@@ -226,15 +196,14 @@ const PipelineSummaryView = withViewerContext((
               leadTimeTarget,
               cycleTimeTarget,
               wipLimit,
-              viewerContext
-            }
-          } />
-      );
-    case "commonWipSummary":
-      return (
-        <CommonWipBoardSummaryView
-          {
-            ...{
+              viewerContext,
+            }}
+          />
+        );
+      case "commonWipSummary":
+        return (
+          <CommonWipBoardSummaryView
+            {...{
               pipelineCycleMetrics,
               specsOnly,
               targetPercentile,
@@ -244,15 +213,14 @@ const PipelineSummaryView = withViewerContext((
               cycleTimeTarget,
               wipLimit,
               latestCommit,
-              viewerContext
-            }
-          } />
-      );
-    case "valueBoardSummary":
-      return (
-        <ValueBoardSummaryView
-          {
-            ...{
+              viewerContext,
+            }}
+          />
+        );
+      case "valueBoardSummary":
+        return (
+          <ValueBoardSummaryView
+            {...{
               pipelineCycleMetrics,
               latestCommit,
               specsOnly,
@@ -262,15 +230,14 @@ const PipelineSummaryView = withViewerContext((
               leadTimeTarget,
               cycleTimeTarget,
               wipLimit,
-              viewerContext
-            }
-          } />
-      );
-    default:
-      return (
-        <NonFlowBoard20View
-          {
-            ...{
+              viewerContext,
+            }}
+          />
+        );
+      default:
+        return (
+          <NonFlowBoard20View
+            {...{
               pipelineCycleMetrics,
               specsOnly,
               targetPercentile,
@@ -279,18 +246,132 @@ const PipelineSummaryView = withViewerContext((
               leadTimeTarget,
               cycleTimeTarget,
               wipLimit,
-              viewerContext
-            }
-          }
-        />
-      );
+              viewerContext,
+            }}
+          />
+        );
+    }
   }
-});
+);
 
+export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
+  const intl = useIntl();
+  const {cycleMetricsTrends} = data[dimension];
+  const [currentTrend] = cycleMetricsTrends;
+  const itemsLabel = specsOnly ? "Specs" : "Cards";
 
+  const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const throughput = getMetricUtils({
+    value: i18nNumber(intl, items / days, 2),
+    uom: `${itemsLabel} / Day`,
+    good: TrendIndicator.isPositive,
+    precision: items > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  const cycleTime = getMetricUtils({
+    target: cycleTimeTarget,
+    value: currentTrend["avgCycleTime"],
+    uom: "Days",
+    good: TrendIndicator.isNegative,
+    precision: currentTrend["cycleTime"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  return (
+    <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+      <div className="tw-col-span-2 tw-text-base">
+        Closed {itemsLabel}, Last {days} Days
+      </div>
+      <TrendCard
+        metricTitle={<span>Throughput <sup>Avg</sup></span>}
+        metricValue={throughput.metricValue}
+        suffix={throughput.suffix}
+      />
+      <TrendCard
+        metricTitle={
+          <span>
+            Cycle Time <sup>Avg</sup>
+          </span>
+        }
+        metricValue={cycleTime.metricValue}
+        suffix={cycleTime.suffix}
+        target={<span>Target: {cycleTimeTarget} Days</span>}
+      />
+    </div>
+  );
+}
+
+export function WorkInProgressBaseView({data, dimension}) {
+  const {pipelineCycleMetrics} = data[dimension];
+
+  const totalEffort = getMetricUtils({
+    value: pipelineCycleMetrics["totalEffort"],
+    uom: "FTE Days",
+    good: TrendIndicator.isNegative,
+    precision: pipelineCycleMetrics["totalEffort"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  const commitLatency = getMetricUtils({
+    value: pipelineCycleMetrics["avgLatency"],
+    uom: "Days",
+    good: TrendIndicator.isNegative,
+    precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  return (
+    <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+      <div className="tw-col-span-2 tw-text-base">Cost of Unshipped Code</div>
+      <TrendCard
+        metricTitle={<span>Total Effort</span>}
+        metricValue={totalEffort.metricValue}
+        suffix={totalEffort.suffix}
+      />
+      <TrendCard
+        metricTitle={<span>Commit Latency <sup>Avg</sup> </span>}
+        metricValue={commitLatency.metricValue}
+        suffix={commitLatency.suffix}
+      />
+    </div>
+  );
+}
+
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days}) {
+  const {pipelineCycleMetrics} = data[dimension];
+
+  const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const avgAge = getMetricUtils({
+    target: cycleTimeTarget,
+    value: pipelineCycleMetrics["avgCycleTime"],
+    uom: "Days",
+    good: TrendIndicator.isNegative,
+    precision: pipelineCycleMetrics["avgCycleTime"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  return (
+    <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+      <div className="tw-col-span-2 tw-text-base">Work in Progress</div>
+      <TrendCard
+        metricTitle={<span>Total</span>}
+        metricValue={items}
+        suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
+        // TODO: fix this with actual calculation
+        target={null}
+      />
+      <TrendCard
+        metricTitle={
+          <span>
+            Age <sup>Avg</sup>
+          </span>
+        }
+        metricValue={avgAge.metricValue}
+        suffix={avgAge.suffix}
+        target={<span>Target: {cycleTimeTarget} Days</span>}
+      />
+    </div>
+  );
+}
 export const WipFlowMetricsSummaryView = withNavigationContext(PipelineSummaryView);
-
-
-
-
-

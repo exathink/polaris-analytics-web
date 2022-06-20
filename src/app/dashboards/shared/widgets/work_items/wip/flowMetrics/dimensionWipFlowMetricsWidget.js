@@ -2,9 +2,10 @@ import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
 import {WipFlowMetricsSummaryView} from "./wipFlowMetricsSummaryView";
-import {getReferenceString} from "../../../../../../helpers/utility";
+import {average, getReferenceString} from "../../../../../../helpers/utility";
 import {DimensionPipelineCycleTimeLatencyWidget} from "../cycleTimeLatency/dimensionPipelineCycleTimeLatencyWidget";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
+import { useQueryDimensionPullRequests } from "../../../pullRequests/hooks/useQueryDimensionPullRequests";
 
 export const DimensionWipFlowMetricsWidget = ({
   dimension,
@@ -13,6 +14,7 @@ export const DimensionWipFlowMetricsWidget = ({
   specsOnly,
   latestCommit,
   latestWorkItemEvent,
+  latestPullRequestEvent,
   stateMappingIndex,
   days,
   targetPercentile,
@@ -40,9 +42,20 @@ export const DimensionWipFlowMetricsWidget = ({
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
-  if (loading) return <Loading />;
-  if (error) return null;
-  const pipelineCycleMetrics = data[dimension]["pipelineCycleMetrics"];
+  
+  const {loading: _loading, error: _error, data: prData} = useQueryDimensionPullRequests({
+    dimension,
+    instanceKey,
+    activeOnly: true,
+    referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
+  });
+
+  if (loading || _loading) return <Loading />;
+  if (error || _error) return null;
+
+  const pullRequests = prData[dimension]["pullRequests"]["edges"].map((edge) => edge.node);
+  const avgPullRequestsAge = average(pullRequests, (pullRequest) => pullRequest.age);
+  const pipelineCycleMetrics = {...data[dimension]["pipelineCycleMetrics"], avgPullRequestsAge: avgPullRequestsAge};
 
   if (view === "primary") {
     return (
