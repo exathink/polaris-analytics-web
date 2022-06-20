@@ -317,14 +317,14 @@ export function WorkInProgressSummaryView({
 
   //TODO: make sure all the targets are correct?
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]
-  const avgAge = getMetricUtils({
-    target: cycleTimeTarget,
-    value: pipelineCycleMetrics["avgCycleTime"],
-    uom: "Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["avgCycleTime"] > 10 ? 1 : 2,
-    valueRender: (text) => text,
-  });
+  // const avgAge = getMetricUtils({
+  //   target: cycleTimeTarget,
+  //   value: pipelineCycleMetrics["avgCycleTime"],
+  //   uom: "Days",
+  //   good: TrendIndicator.isNegative,
+  //   precision: pipelineCycleMetrics["avgCycleTime"] > 10 ? 1 : 2,
+  //   valueRender: (text) => text,
+  // });
   const codeWip = getMetricUtils({
     target: cycleTimeTarget,
     value: pipelineCycleMetrics["totalEffort"],
@@ -342,25 +342,25 @@ export function WorkInProgressSummaryView({
     valueRender: (text) => text,
   });
   
-  const commitLatency = getMetricUtils({
-    target: cycleTimeTarget,
-    value: pipelineCycleMetrics["avgLatency"],
-    uom: "Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
-    valueRender: (text) => text,
-  });
-  const pRAgeDisplay = humanizeDuration(i18nNumber(intl, pipelineCycleMetrics["avgPullRequestsAge"], 2));
+  // const commitLatency = getMetricUtils({
+  //   target: cycleTimeTarget,
+  //   value: pipelineCycleMetrics["avgLatency"],
+  //   uom: "Days",
+  //   good: TrendIndicator.isNegative,
+  //   precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
+  //   valueRender: (text) => text,
+  // });
+  // const pRAgeDisplay = humanizeDuration(i18nNumber(intl, pipelineCycleMetrics["avgPullRequestsAge"], 2));
 
   return (
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
       <MetricCard title={"Wip"} value={items} uom={specsOnly ? "Specs": "Cards"} />
-      <MultipleMetricsCard metrics={[{title: "Avg. Age:", value: avgAge.metricValue, uom: avgAge.suffix}, {title: "Cycle Time:", value: cycleTime.metricValue, uom: cycleTime.suffix}]}/>
-      <div className="tw-col-span-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md tw-h-full tw-flex tw-items-center">
+      {/* <MultipleMetricsCard metrics={[{title: "Avg. Age:", value: avgAge.metricValue, uom: avgAge.suffix}, {title: "Cycle Time:", value: cycleTime.metricValue, uom: cycleTime.suffix}]}/> */}
+      {/* <div className="tw-col-span-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md tw-h-full tw-flex tw-items-center">
         {quadrantSummaryPanel}
-      </div>
-      <MultipleMetricsCard metrics={[{title: "Code Wip", value: codeWip.metricValue, uom: codeWip.suffix}, {title: "Commit Latency", value: commitLatency.metricValue, uom: commitLatency.suffix}]}/>
-      <MetricCard title={"PR Age"} value={pRAgeDisplay} uom={""} />
+      </div> */}
+      {/* <MultipleMetricsCard metrics={[{title: "Code Wip", value: codeWip.metricValue, uom: codeWip.suffix}, {title: "Commit Latency", value: commitLatency.metricValue, uom: commitLatency.suffix}]}/> */}
+      {/* <MetricCard title={"PR Age"} value={pRAgeDisplay} uom={""} /> */}
     </div>
   );
 }
