@@ -42,7 +42,6 @@ function WipDashboard({
     responseTimeConfidenceTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
-    wipLimit,
     flowAnalysisPeriod,
     includeSubTasksWipInspector,
     latencyTarget,
