@@ -14,7 +14,7 @@ export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, siz
       </div>
       <div className={metricValueClasses}>
         {metricValue} <span className={styles.unitOfMesurement}>{suffix}</span>
-        {target && <div className="tw-text-xs tw-leading-[0.25rem] tw-font-medium tw-text-gray-300">{target}</div>}
+        {target && <div className="tw-text-[10px] tw-leading-3 tw-font-medium tw-text-gray-300">{target}</div>}
       </div>
       <div className={styles.indicator}>{trendIndicator}</div>
     </div>
