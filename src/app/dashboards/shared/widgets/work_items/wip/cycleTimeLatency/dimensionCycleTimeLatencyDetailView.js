@@ -18,6 +18,11 @@ import classNames from "classnames";
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
 
+const QuadrantStateTypes = {
+  engineering: "engineering",
+  delivery: "delivery"
+}
+
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
@@ -85,6 +90,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
   const [selectedQuadrant, setSelectedQuadrant] = React.useState();
+  const [quadrantStateType, setQuadrantStateType] = React.useState();
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
@@ -156,6 +162,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setAppliedFilters(EmptyObj);
     setSelectedQuadrant(undefined);
 
+    setQuadrantStateType(undefined)
     // reset chart components state
     resetComponentState();
   }
@@ -176,87 +183,102 @@ export const DimensionCycleTimeLatencyDetailView = ({
         )}
       </div>
       <div className={styles.engineering}>
-        {stateTypes === undefined ? (
-          <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[80%,20%] tw-gap-x-2" key={resetComponentStateKey}>
+          <div
+            className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[75%,25%] tw-gap-x-2"
+            key={resetComponentStateKey}
+          >
             <WorkItemsCycleTimeVsLatencyChart
               view={view}
               stageName={"Coding"}
               specsOnly={specsOnly}
-              workItems={chartFilteredWorkItems}
+              workItems={
+                quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.engineering
+                  ? chartFilteredWorkItems
+                  : []
+              }
               stateTypes={engineeringStateTypes}
               groupByState={groupByState}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               tooltipType={tooltipType}
               onSelectionChange={handleSelectionChange}
-              selectedQuadrant={selectedQuadrant}
+              selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
             />
             <WorkItemsCycleTimeVsLatencyChart
               view={view}
               stageName={"Delivery"}
               specsOnly={specsOnly}
-              workItems={chartFilteredWorkItems}
+              workItems={
+                quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.delivery
+                  ? chartFilteredWorkItems
+                  : []
+              }
               stateTypes={deliveryStateTypes}
               groupByState={groupByState}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               tooltipType={tooltipType}
               onSelectionChange={handleSelectionChange}
-              selectedQuadrant={selectedQuadrant}
+              selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
             />
-            <div className="tw-col-span-2 tw-bg-chart">
+            <div className="tw-bg-chart">
               <QuadrantSummaryPanel
                 workItems={chartFilteredWorkItems}
-                stateTypes={engineeringStateTypes.concat(deliveryStateTypes)}
+                stateTypes={engineeringStateTypes}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
+                  if (
+                    selectedQuadrant !== undefined &&
+                    selectedQuadrant === quadrant &&
+                    quadrantStateType === QuadrantStateTypes.engineering
+                  ) {
+                    handleResetAll();
+                  } else {
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(QuadrantStateTypes.engineering);
+                  }  
                 }}
-                selectedQuadrant={selectedQuadrant}
+                selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
+              />
+            </div>
+            <div className="tw-bg-chart">
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={deliveryStateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  if (
+                    selectedQuadrant !== undefined &&
+                    selectedQuadrant === quadrant &&
+                    quadrantStateType === QuadrantStateTypes.delivery
+                  ) {
+                    handleResetAll();
+                  } else {
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(QuadrantStateTypes.delivery);
+                  }
+                }}
+                selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
                 className="tw-mx-auto tw-w-[98%]"
                 valueFontClass="tw-text-3xl"
               />
             </div>
           </div>
-        ) : (
-          <React.Fragment>
-            <div className="tw-h-[80%]">
-              <WorkItemsCycleTimeVsLatencyChart
-                key={resetComponentStateKey}
-                view={view}
-                stageName={stageName}
-                specsOnly={specsOnly}
-                workItems={chartFilteredWorkItems}
-                stateTypes={stateTypes}
-                groupByState={groupByState}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                tooltipType={tooltipType}
-                onSelectionChange={handleSelectionChange}
-                selectedQuadrant={selectedQuadrant}
-              />
-            </div>
-            <div className="tw-h-auto">
-              <QuadrantSummaryPanel
-                workItems={chartFilteredWorkItems}
-                stateTypes={stateTypes}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                onQuadrantClick={(quadrant) => {
-                  setSelectedQuadrant(quadrant);
-                }}
-                selectedQuadrant={selectedQuadrant}
-                className="tw-mx-auto tw-w-[98%]"
-                valueFontClass="tw-text-3xl"
-              />
-            </div>
-          </React.Fragment>
-        )}
       </div>
       <div className={styles.cycleTimeLatencyTable}>
         <CycleTimeLatencyTable
           tableData={getWorkItemDurations(tableFilteredWorkItems)
+            .filter(
+              (workItem) =>
+                quadrantStateType === undefined ||
+                (quadrantStateType === QuadrantStateTypes.engineering
+                  ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
+                  : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+            )
             .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
             .filter(
               (x) =>
