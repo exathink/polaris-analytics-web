@@ -358,6 +358,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricTitle={<span>Total</span>}
         metricValue={items}
         suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
+        // TODO: fix this with actual calculation
         target={<span>Limit: xx</span>}
       />
       <TrendCard
