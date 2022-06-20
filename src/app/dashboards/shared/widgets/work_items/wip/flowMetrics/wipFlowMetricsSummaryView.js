@@ -322,10 +322,43 @@ export function WorkInProgressFlowMetricsView({
   });
 
   return (
-    <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
-      <div className="tw-col-span-6 tw-text-base">Closed {itemsLabel}, Last {days} Days</div>
+    <div className="tw-h-full tw-grid tw-grid-cols-2 tw-gap-1">
+      <div className="tw-col-span-2 tw-text-base">Closed {itemsLabel}, Last {days} Days</div>
       <TrendCard metricTitle={<span>Throughput</span>} metricValue={throughput.metricValue} suffix={throughput.suffix} />
       <TrendCard metricTitle={<span>Cycle Time <sup>avg</sup></span>} metricValue={cycleTime.metricValue} suffix={cycleTime.suffix} target={<span className="tw-text-[1vh]">Target: {cycleTimeTarget} Days</span>}/>  
+    </div>
+  );
+}
+
+export function WorkInProgressBaseView({
+  data,
+  dimension,
+}) {
+  const {pipelineCycleMetrics} = data[dimension];
+
+
+  const totalEffort = getMetricUtils({
+    value: pipelineCycleMetrics["totalEffort"],
+    uom: "FTE Days",
+    good: TrendIndicator.isNegative,
+    precision: pipelineCycleMetrics["totalEffort"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  
+  const commitLatency = getMetricUtils({
+    value: pipelineCycleMetrics["avgLatency"],
+    uom: "Days",
+    good: TrendIndicator.isNegative,
+    precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
+    valueRender: (text) => text,
+  });
+
+  return (
+    <div className="tw-h-full tw-grid tw-grid-cols-2 tw-gap-1">
+      <div className="tw-col-span-2 tw-text-base">Wip Cost</div>
+      <TrendCard metricTitle={<span>Total Effort</span>} metricValue={totalEffort.metricValue} suffix={totalEffort.suffix} />
+      <TrendCard metricTitle={<span>Commit Latency </span>} metricValue={commitLatency.metricValue} suffix={commitLatency.suffix} />  
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
+import { DimensionWipWidget } from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -65,7 +66,6 @@ function WipDashboard({
             <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
-              display={"wipSummary"}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               latestPullRequestEvent={latestPullRequestEvent}
@@ -85,7 +85,27 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
 
-
+      <DashboardWidget
+          name="base-wip"
+          className={styles.baseWip}
+          title={""}
+          render={({view}) => (
+            <DimensionWipWidget
+              dimension={'project'}
+              instanceKey={key}
+              specsOnly={specsOnly}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              view={view}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={false}
+          hideTitlesInDetailView={true}
+        />
 
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>

@@ -5,7 +5,7 @@
     grid-template-rows: 5% auto 75%;
     gap: 0.25rem 0.5rem;
     grid-template-areas: ". . . . scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
-    "pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline pipeline"
+    "pipeline pipeline pipeline pipeline . . . . baseWip baseWip baseWip baseWip"
     "engineering engineering engineering engineering engineering engineering delivery delivery delivery delivery delivery delivery" 
 }
 
@@ -15,6 +15,10 @@
 }
 .pipeline{
     grid-area: pipeline;
+    padding: 0.25rem;
+}
+.baseWip{
+    grid-area: baseWip;
     padding: 0.25rem;
 }
 .flowMetrics{

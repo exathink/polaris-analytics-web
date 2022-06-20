@@ -1,23 +1,29 @@
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
+import {WorkInProgressBaseView} from "../flowMetrics/wipFlowMetricsSummaryView";
 
-// this will have wip query
 export function DimensionWipWidget({
   dimension,
   instanceKey,
   specsOnly,
   latestWorkItemEvent,
   latestCommit,
+  targetPercentile,
+  leadTimeTargetPercentile,
+  cycleTimeTargetPercentile,
   includeSubTasks,
   view,
 }) {
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
+  const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
     dimension,
     instanceKey,
-    specsOnly,
-    activeOnly: true,
+    targetPercentile,
+    leadTimeTargetPercentile,
+    cycleTimeTargetPercentile,
+    specsOnly: limitToSpecsOnly,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
@@ -27,6 +33,5 @@ export function DimensionWipWidget({
     return null;
   }
 
-//   default view
-  return <div></div>;
+  return <WorkInProgressBaseView data={data} dimension={dimension} />;
 }
