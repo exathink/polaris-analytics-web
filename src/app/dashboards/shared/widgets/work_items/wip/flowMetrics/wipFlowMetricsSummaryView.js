@@ -263,7 +263,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
   const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const throughput = getMetricUtils({
     value: i18nNumber(intl, items, 2),
-    uom: `${itemsLabel} / Day`,
+    uom: `${itemsLabel}`,
     good: TrendIndicator.isPositive,
     precision: items > 10 ? 1 : 2,
     valueRender: (text) => text,
