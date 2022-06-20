@@ -262,8 +262,8 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
 
   const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const throughput = getMetricUtils({
-    value: i18nNumber(intl, items, 2),
-    uom: `${itemsLabel}`,
+    value: i18nNumber(intl, items / days, 2),
+    uom: `${itemsLabel} / Day`,
     good: TrendIndicator.isPositive,
     precision: items > 10 ? 1 : 2,
     valueRender: (text) => text,
@@ -284,14 +284,14 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         Closed {itemsLabel}, Last {days} Days
       </div>
       <TrendCard
-        metricTitle={<span>Throughput <sup>avg</sup></span>}
+        metricTitle={<span>Throughput <sup>Avg</sup></span>}
         metricValue={throughput.metricValue}
         suffix={throughput.suffix}
       />
       <TrendCard
         metricTitle={
           <span>
-            Cycle Time <sup>avg</sup>
+            Cycle Time <sup>Avg</sup>
           </span>
         }
         metricValue={cycleTime.metricValue}
@@ -330,7 +330,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         suffix={totalEffort.suffix}
       />
       <TrendCard
-        metricTitle={<span>Commit Latency <sup>avg</sup> </span>}
+        metricTitle={<span>Commit Latency <sup>Avg</sup> </span>}
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
       />
@@ -359,12 +359,12 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricValue={items}
         suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
         // TODO: fix this with actual calculation
-        target={<span>Limit: xx</span>}
+        target={null}
       />
       <TrendCard
         metricTitle={
           <span>
-            Age <sup>avg</sup>
+            Age <sup>Avg</sup>
           </span>
         }
         metricValue={avgAge.metricValue}
