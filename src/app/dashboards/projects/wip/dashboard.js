@@ -7,7 +7,7 @@ import { withViewerContext } from "../../../framework/viewer/viewerContext";
 
 import { ProjectDashboard } from "../projectDashboard";
 import {
-  DimensionPipelineCycleTimeLatencyWidget,
+  DimensionPipelineCycleTimeLatencyWidget, DimensionPipelineQuadrantSummaryWidget,
 } from "../../shared/widgets/work_items/wip";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
@@ -78,6 +78,62 @@ function WipDashboard({
               view={view}
               specsOnly={specsOnly}
               context={context}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={false}
+          hideTitlesInDetailView={true}
+        />
+{/* <DashboardWidget
+          name="quad-summary"
+          className={styles.quadSummary}
+          title={"Work In Progress"}
+          subtitle={"Specs"}
+
+          render={({view}) => (
+            <DimensionPipelineQuadrantSummaryWidget
+              dimension={'project'}
+              instanceKey={key}
+              display={"commonWipSummary"}
+              days={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              wipLimit={wipLimit}
+              view={view}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              context={context}
+              groupByState={true}
+              includeSubTasks={includeSubTasksWipInspector}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
+          showDetail={true}
+          hideTitlesInDetailView={true}
+        /> */}
+
+<DashboardWidget
+          name="summary-wip"
+          className={styles.summaryWip}
+          title={""}
+          render={({view}) => (
+            <DimensionWipWidget
+              dimension={'project'}
+              instanceKey={key}
+              display="wip-summary"
+              specsOnly={specsOnly}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              cycleTimeTarget={cycleTimeTarget}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              view={view}
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
