@@ -284,7 +284,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         Closed {itemsLabel}, Last {days} Days
       </div>
       <TrendCard
-        metricTitle={<span>Throughput</span>}
+        metricTitle={<span>Throughput <sup>avg</sup></span>}
         metricValue={throughput.metricValue}
         suffix={throughput.suffix}
       />
@@ -296,7 +296,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         }
         metricValue={cycleTime.metricValue}
         suffix={cycleTime.suffix}
-        target={<span className="tw-text-[1vh]">Target: {cycleTimeTarget} Days</span>}
+        target={<span>Target: {cycleTimeTarget} Days</span>}
       />
     </div>
   );
@@ -330,7 +330,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         suffix={totalEffort.suffix}
       />
       <TrendCard
-        metricTitle={<span>Commit Latency </span>}
+        metricTitle={<span>Commit Latency <sup>avg</sup> </span>}
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
       />
@@ -338,7 +338,7 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly}) {
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days}) {
   const {pipelineCycleMetrics} = data[dimension];
 
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
@@ -354,7 +354,12 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <div className="tw-col-span-2 tw-text-base">Work in Progress</div>
-      <TrendCard metricTitle={<span>Total</span>} metricValue={items} suffix={specsOnly ? "Specs" : "Cards"} />
+      <TrendCard
+        metricTitle={<span>Total</span>}
+        metricValue={items}
+        suffix={specsOnly ? "Specs" : "Cards"}
+        target={<span>Limit: xx</span>}
+      />
       <TrendCard
         metricTitle={
           <span>
@@ -363,6 +368,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         }
         metricValue={avgAge.metricValue}
         suffix={avgAge.suffix}
+        target={<span>Target: {cycleTimeTarget} Days</span>}
       />
     </div>
   );
