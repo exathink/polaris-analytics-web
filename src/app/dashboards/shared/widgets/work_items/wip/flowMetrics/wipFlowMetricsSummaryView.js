@@ -251,23 +251,6 @@ const PipelineSummaryView = withViewerContext((
             }
           } />
       );
-    case "wipSummary":
-      return (
-        <WorkInProgressSummaryView
-          {...{
-            pipelineCycleMetrics,
-            specsOnly,
-            targetPercentile,
-            leadTimeTargetPercentile,
-            cycleTimeTargetPercentile,
-            leadTimeTarget,
-            cycleTimeTarget,
-            wipLimit,
-            latestCommit,
-            viewerContext,
-          }}
-        />
-      );
     case "valueBoardSummary":
       return (
         <ValueBoardSummaryView
