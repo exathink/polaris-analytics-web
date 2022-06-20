@@ -1,6 +1,6 @@
 import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
-import {WorkInProgressSummaryView} from "./wipFlowMetricsSummaryView";
+import {WorkInProgressFlowMetricsView} from "./wipFlowMetricsSummaryView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
 
@@ -38,10 +38,12 @@ export const DimensionWipFlowMetricsWidget = ({
 
   if (view === "primary") {
     return (
-      <WorkInProgressSummaryView
+      <WorkInProgressFlowMetricsView
         data={data}
         dimension={dimension}
+        cycleTimeTarget={cycleTimeTarget}
         specsOnly={specsOnly}
+        days={days}
       />
     );
   } else {

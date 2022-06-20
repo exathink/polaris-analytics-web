@@ -12,7 +12,7 @@ import {
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
-import { DimensionWipMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
+import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -62,7 +62,7 @@ function WipDashboard({
           className={styles.pipeline}
           title={""}
           render={({view}) => (
-            <DimensionWipMetricsWidget
+            <DimensionWipFlowMetricsWidget
               dimension={'project'}
               instanceKey={key}
               display={"wipSummary"}
@@ -75,8 +75,6 @@ function WipDashboard({
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
               cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              wipLimit={wipLimit}
               view={view}
               specsOnly={specsOnly}
               context={context}
