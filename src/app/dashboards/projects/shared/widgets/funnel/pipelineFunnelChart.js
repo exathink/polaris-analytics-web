@@ -128,7 +128,7 @@ export const PipelineFunnelChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function() {
-          const timeToClear = this.point.timeToClear ? `<br/>Exepected Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
+          const timeToClear = this.point.timeToClear ? `<br/>Expected Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
           const closeRate = getCloseRate(workItemStateTypeCounts, days);
           const wipLevelInfo = [
             ['Avg. Throughput: ' , `${i18nNumber(intl, closeRate, 3)} /day`],
