@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
-import { WorkItemStateTypes } from "../../shared/config";
+import React, {useState} from "react";
+import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
+import {WorkItemStateTypes} from "../../shared/config";
 import styles from "./dashboard.module.css";
 
-import { withViewerContext } from "../../../framework/viewer/viewerContext";
+import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
-import { ProjectDashboard } from "../projectDashboard";
+import {ProjectDashboard} from "../projectDashboard";
 import {
-  DimensionPipelineCycleTimeLatencyWidget, DimensionPipelineQuadrantSummaryWidget,
+  DimensionPipelineCycleTimeLatencyWidget,
 } from "../../shared/widgets/work_items/wip";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
-import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
-import { DimensionWipWidget } from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
+import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
+import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -31,9 +31,8 @@ WipDashboard.videoConfig = {
 function WipDashboard({
   project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
-  viewerContext
+  viewerContext,
 }) {
-
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
 
@@ -46,25 +45,29 @@ function WipDashboard({
     wipLimit,
     flowAnalysisPeriod,
     includeSubTasksWipInspector,
-    latencyTarget
+    latencyTarget,
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} dashboardVideoConfig={WipDashboard.videoConfig} className={styles.wipDashboard} gridLayout={true}>
+    <Dashboard
+      dashboard={`${dashboard_id}`}
+      dashboardVideoConfig={WipDashboard.videoConfig}
+      className={styles.wipDashboard}
+      gridLayout={true}
+    >
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
       <DashboardRow h="12%">
-
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
           title={""}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
-              dimension={'project'}
+              dimension={"project"}
               instanceKey={key}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -84,46 +87,14 @@ function WipDashboard({
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-{/* <DashboardWidget
-          name="quad-summary"
-          className={styles.quadSummary}
-          title={"Work In Progress"}
-          subtitle={"Specs"}
 
-          render={({view}) => (
-            <DimensionPipelineQuadrantSummaryWidget
-              dimension={'project'}
-              instanceKey={key}
-              display={"commonWipSummary"}
-              days={flowAnalysisPeriod}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTargetPercentile={leadTimeConfidenceTarget}
-              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              wipLimit={wipLimit}
-              view={view}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              context={context}
-              groupByState={true}
-              includeSubTasks={includeSubTasksWipInspector}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-            />
-          )}
-          showDetail={true}
-          hideTitlesInDetailView={true}
-        /> */}
-
-<DashboardWidget
+        <DashboardWidget
           name="summary-wip"
           className={styles.summaryWip}
           title={""}
           render={({view}) => (
             <DimensionWipWidget
-              dimension={'project'}
+              dimension={"project"}
               instanceKey={key}
               display="wip-summary"
               specsOnly={specsOnly}
@@ -141,13 +112,13 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
 
-      <DashboardWidget
+        <DashboardWidget
           name="base-wip"
           className={styles.baseWip}
           title={""}
           render={({view}) => (
             <DimensionWipWidget
-              dimension={'project'}
+              dimension={"project"}
               instanceKey={key}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
@@ -162,7 +133,6 @@ function WipDashboard({
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-
       </DashboardRow>
       <DashboardRow h="36%" title={" "}>
         <DashboardWidget
@@ -189,7 +159,7 @@ function WipDashboard({
               includeSubTasks={includeSubTasksWipInspector}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
 
         <DashboardWidget
@@ -219,9 +189,13 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      
     </Dashboard>
   );
 }
-export const dashboard = ({viewerContext}) => <ProjectDashboard pollInterval={1000 * 60} render={props => <WipDashboard viewerContext={viewerContext}  {...props}/>} />;
+export const dashboard = ({viewerContext}) => (
+  <ProjectDashboard
+    pollInterval={1000 * 60}
+    render={(props) => <WipDashboard viewerContext={viewerContext} {...props} />}
+  />
+);
 export default withViewerContext(dashboard);
