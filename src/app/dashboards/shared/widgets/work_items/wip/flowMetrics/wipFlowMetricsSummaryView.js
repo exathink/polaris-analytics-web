@@ -357,7 +357,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
       <TrendCard
         metricTitle={<span>Total</span>}
         metricValue={items}
-        suffix={specsOnly ? "Specs" : "Cards"}
+        suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
         target={<span>Limit: xx</span>}
       />
       <TrendCard
