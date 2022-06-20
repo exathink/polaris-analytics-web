@@ -15,13 +15,13 @@ import {
 
 } from "../../../../components/flowStatistics/flowStatistics";
 import { withViewerContext } from "../../../../../../framework/viewer/viewerContext";
-import {MetricCard, MultipleMetricsCard} from "../../../../components/cards/metricCard";
-import { humanizeDuration, i18nNumber } from "../../../../../../helpers/utility";
+import { i18nNumber } from "../../../../../../helpers/utility";
 import { useIntl } from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import { getMetricUtils, TrendIndicator } from "../../../../../../components/misc/statistic/statistic";
+import { TrendCard } from "../../../../components/cards/trendCard";
 
 const FlowBoardSummaryView = ({
                                 pipelineCycleMetrics,
@@ -307,60 +307,40 @@ const PipelineSummaryView = withViewerContext((
   }
 });
 
-export function WorkInProgressSummaryView({
-  pipelineCycleMetrics,
+export function WorkInProgressFlowMetricsView({
+  data,
+  dimension,
   cycleTimeTarget,
   specsOnly,
-  quadrantSummaryPanel
+  days
 }) {
-  const intl = useIntl();
 
-  //TODO: make sure all the targets are correct?
-  const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]
-  // const avgAge = getMetricUtils({
-  //   target: cycleTimeTarget,
-  //   value: pipelineCycleMetrics["avgCycleTime"],
-  //   uom: "Days",
-  //   good: TrendIndicator.isNegative,
-  //   precision: pipelineCycleMetrics["avgCycleTime"] > 10 ? 1 : 2,
-  //   valueRender: (text) => text,
-  // });
-  const codeWip = getMetricUtils({
-    target: cycleTimeTarget,
-    value: pipelineCycleMetrics["totalEffort"],
-    uom: "FTE Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["totalEffort"] > 10 ? 1 : 2,
+  const intl = useIntl();
+  const {cycleMetricsTrends} = data[dimension];
+  const [currentTrend] = cycleMetricsTrends;
+
+  const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]
+  const throughput = getMetricUtils({
+    value: i18nNumber(intl, items/days, 2),
+    uom: `${specsOnly ? "Specs": "Cards"} / Day`,
+    good: TrendIndicator.isPositive,
+    precision: items > 10 ? 1 : 2,
     valueRender: (text) => text,
   });
+
   const cycleTime = getMetricUtils({
     target: cycleTimeTarget,
-    value: pipelineCycleMetrics["cycleTime"],
+    value: currentTrend["avgCycleTime"],
     uom: "Days",
     good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["cycleTime"] > 10 ? 1 : 2,
+    precision: currentTrend["cycleTime"] > 10 ? 1 : 2,
     valueRender: (text) => text,
   });
-  
-  // const commitLatency = getMetricUtils({
-  //   target: cycleTimeTarget,
-  //   value: pipelineCycleMetrics["avgLatency"],
-  //   uom: "Days",
-  //   good: TrendIndicator.isNegative,
-  //   precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
-  //   valueRender: (text) => text,
-  // });
-  // const pRAgeDisplay = humanizeDuration(i18nNumber(intl, pipelineCycleMetrics["avgPullRequestsAge"], 2));
 
   return (
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
-      <MetricCard title={"Wip"} value={items} uom={specsOnly ? "Specs": "Cards"} />
-      {/* <MultipleMetricsCard metrics={[{title: "Avg. Age:", value: avgAge.metricValue, uom: avgAge.suffix}, {title: "Cycle Time:", value: cycleTime.metricValue, uom: cycleTime.suffix}]}/> */}
-      {/* <div className="tw-col-span-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md tw-h-full tw-flex tw-items-center">
-        {quadrantSummaryPanel}
-      </div> */}
-      {/* <MultipleMetricsCard metrics={[{title: "Code Wip", value: codeWip.metricValue, uom: codeWip.suffix}, {title: "Commit Latency", value: commitLatency.metricValue, uom: commitLatency.suffix}]}/> */}
-      {/* <MetricCard title={"PR Age"} value={pRAgeDisplay} uom={""} /> */}
+      <TrendCard metricTitle={<span>Throughput</span>} metricValue={throughput.metricValue} suffix={throughput.suffix} />
+      <TrendCard metricTitle={<span>Cycle Time <sup>avg</sup></span>} metricValue={cycleTime.metricValue} suffix={cycleTime.suffix} target={<span className="tw-text-[1vh]">Target: {cycleTimeTarget} Days</span>}/>  
     </div>
   );
 }
