@@ -77,14 +77,15 @@ export const PipelineFunnelChart = Chart({
             enabled: true,
             align: "center",
             allowOverlap: false,
+            useHTML: true,
             formatter: function() {
               return showVolumeOrEffort === 'volume' ?
-                (this.point.timeToClear ? humanizeDuration(this.point.timeToClear) : "")
+                (this.point.timeToClear ? humanizeDuration(this.point.timeToClear) : `Throughput: ${getCloseRate(workItemStateTypeCounts, days)} /day`)
                 :
                 ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
                 ;
             },
-            color: "black"
+            color: "white"
           }],
           center: ["45%", "50%"],
           neckWidth: "25%",
@@ -127,10 +128,10 @@ export const PipelineFunnelChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function() {
-          const timeToClear = this.point.timeToClear ? `<br/>Avg. Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
+          const timeToClear = this.point.timeToClear ? `<br/>Exepected Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
           const closeRate = getCloseRate(workItemStateTypeCounts, days);
           const wipLevelInfo = [
-            ['Throughput Rate: ' , `${i18nNumber(intl, closeRate, 3)} /day`],
+            ['Avg. Throughput: ' , `${i18nNumber(intl, closeRate, 3)} /day`],
             ['-------', ``],
             ['<b>Code + Deliver Phase</b>', ''],
             ['Current Total Wip', workItemStateTypeCounts[WorkItemStateTypes.open] + workItemStateTypeCounts[WorkItemStateTypes.make] + workItemStateTypeCounts[WorkItemStateTypes.deliver]],
