@@ -323,7 +323,7 @@ export function WorkInProgressBaseView({data, dimension}) {
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">Wip Cost</div>
+      <div className="tw-col-span-2 tw-text-base">Cost of Unshipped Code</div>
       <TrendCard
         metricTitle={<span>Total Effort</span>}
         metricValue={totalEffort.metricValue}
