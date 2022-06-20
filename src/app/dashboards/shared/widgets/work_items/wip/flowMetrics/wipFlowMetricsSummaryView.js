@@ -301,11 +301,12 @@ export function WorkInProgressFlowMetricsView({
   const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
   const [currentTrend] = cycleMetricsTrends;
+  const itemsLabel = specsOnly ? "Specs": "Cards";
 
   const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]
   const throughput = getMetricUtils({
     value: i18nNumber(intl, items/days, 2),
-    uom: `${specsOnly ? "Specs": "Cards"} / Day`,
+    uom: `${itemsLabel} / Day`,
     good: TrendIndicator.isPositive,
     precision: items > 10 ? 1 : 2,
     valueRender: (text) => text,
@@ -322,6 +323,7 @@ export function WorkInProgressFlowMetricsView({
 
   return (
     <div className="tw-grid tw-grid-cols-6 tw-gap-2 tw-h-full">
+      <div className="tw-col-span-6 tw-text-base">Closed {itemsLabel}, Last {days} Days</div>
       <TrendCard metricTitle={<span>Throughput</span>} metricValue={throughput.metricValue} suffix={throughput.suffix} />
       <TrendCard metricTitle={<span>Cycle Time <sup>avg</sup></span>} metricValue={cycleTime.metricValue} suffix={cycleTime.suffix} target={<span className="tw-text-[1vh]">Target: {cycleTimeTarget} Days</span>}/>  
     </div>
