@@ -304,6 +304,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
             deltaThreshold={TrendIndicatorDisplayThreshold}
           />
         }
+        className="tw-p-2"
       />
       <TrendCard
         metricTitle={
@@ -322,6 +323,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
             deltaThreshold={TrendIndicatorDisplayThreshold}
           />
         }
+        className="tw-p-2"
       />
     </div>
   );
@@ -354,6 +356,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         metricValue={totalEffort.metricValue}
         suffix={totalEffort.suffix}
         target={<span className="tw-invisible">random text</span>}
+        className="tw-p-2"
       />
       <TrendCard
         metricTitle={
@@ -364,6 +367,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
         target={<span className="tw-invisible">random text</span>}
+        className="tw-p-2"
       />
     </div>
   );
@@ -403,6 +407,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricValue={wip.metricValue}
         suffix={wip.suffix}
         target={<span>Limit {wipLimit}</span>}
+        className="tw-p-2"
       />
       <TrendCard
         metricTitle={
@@ -413,6 +418,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricValue={avgAge.metricValue}
         suffix={avgAge.suffix}
         target={<span>Target {cycleTimeTarget} Days</span>}
+        className="tw-p-2"
       />
     </div>
   );
