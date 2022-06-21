@@ -119,7 +119,7 @@ export const ResponseTime = ({title, displayType, displayProps, currentMeasureme
 );
 
 
-export const Volume = ({title, displayType, displayProps, normalized, contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
+export const Volume = ({title, displayType, displayProps, normalized,  contributorCount, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
   return <FlowStatistic
@@ -130,6 +130,29 @@ export const Volume = ({title, displayType, displayProps, normalized, contributo
     valueRender={value => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
     uom={specsOnly ? 'Specs' : 'Cards'}
     precision={normalized ? 2 : 0}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
+    target={target}
+    measurementWindow={measurementWindow}
+  />
+}
+
+export const Throughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
+  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
+  return <FlowStatistic
+    title={title || <span>Throughput</span>}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={metric}
+    valueRender={
+      value =>  {
+        return currentMeasurement[metric]/measurementWindow
+      }
+    }
+    uom={specsOnly ? 'Specs/day' : 'Cards/day'}
+    precision={1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
@@ -215,7 +238,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
 
 export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
   <FlowStatistic
-    title={title ||  <span>{'Effort'}<sup> {'Total'} </sup></span>}
+    title={title ||  <span>{'Total Effort'}</span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'totalEffort'}
