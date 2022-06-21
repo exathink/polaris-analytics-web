@@ -19,7 +19,7 @@ import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
-import {getMetricUtils, TrendIndicator} from "../../../../../../components/misc/statistic/statistic";
+import {getMetricUtils, TrendIndicator, TrendIndicatorDisplayThreshold, TrendIndicatorNew} from "../../../../../../components/misc/statistic/statistic";
 import {TrendCard} from "../../../../components/cards/trendCard";
 
 const FlowBoardSummaryView = ({
@@ -261,9 +261,10 @@ function MetricsGroupTitle({children}) {
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
   const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
-  const [currentTrend] = cycleMetricsTrends;
+  const [currentTrend, previousTrend] = cycleMetricsTrends;
 
-  const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const specKey = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
+  const items = currentTrend[specKey];
   const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
   const throughput = getMetricUtils({
     value: i18nNumber(intl, items / days, 1),
@@ -295,6 +296,14 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         }
         metricValue={throughput.metricValue}
         suffix={throughput.suffix}
+        trendIndicator={
+          <TrendIndicatorNew
+            firstValue={currentTrend[specKey]}
+            secondValue={previousTrend[specKey]}
+            good={TrendIndicator.isPositive}
+            deltaThreshold={TrendIndicatorDisplayThreshold}
+          />
+        }
       />
       <TrendCard
         metricTitle={
@@ -304,7 +313,15 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         }
         metricValue={cycleTime.metricValue}
         suffix={cycleTime.suffix}
-        target={<span>Target: {cycleTimeTarget} Days</span>}
+        target={<span>Target {cycleTimeTarget} Days</span>}
+        trendIndicator={
+          <TrendIndicatorNew
+            firstValue={currentTrend["avgCycleTime"]}
+            secondValue={previousTrend["avgCycleTime"]}
+            good={TrendIndicator.isNegative}
+            deltaThreshold={TrendIndicatorDisplayThreshold}
+          />
+        }
       />
     </div>
   );
@@ -357,7 +374,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
   const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const throughputRate = flowItems / days;
-  const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 2);
+  const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
 
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const wip = getMetricUtils({
@@ -383,7 +400,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricTitle={<span>Total</span>}
         metricValue={wip.metricValue}
         suffix={wip.suffix}
-        target={<span>Limit: {wipLimit}</span>}
+        target={<span>Limit {wipLimit}</span>}
       />
       <TrendCard
         metricTitle={
@@ -393,7 +410,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         }
         metricValue={avgAge.metricValue}
         suffix={avgAge.suffix}
-        target={<span>Target: {cycleTimeTarget} Days</span>}
+        target={<span>Target {cycleTimeTarget} Days</span>}
       />
     </div>
   );
