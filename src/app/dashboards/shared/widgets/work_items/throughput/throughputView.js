@@ -1,8 +1,9 @@
 import React from "react";
-import {CapacityEfficiency, ContributorCount, EffortOUT} from "../../../components/flowStatistics/flowStatistics";
+import {Volume, Throughput, TotalEffort} from "../../../components/flowStatistics/flowStatistics";
 import styles from "./dashboard.module.css";
 
 export const ThroughputView = ({
+                                 measurementWindow,
                                  contributorCount,
                                  cycleMetricsTrends,
                                  normalized,
@@ -15,16 +16,17 @@ export const ThroughputView = ({
   return (
     <div className={styles.throughputStatistic}>
       <div className={styles.firstCol}>
-        <ContributorCount contributorCount={contributorCount} />
+        <Volume currentMeasurement={current}
+                            previousMeasurement={previous} specsOnly={specsOnly} />
       </div>
       <div className={styles.secondCol}>
-        <EffortOUT normalized={normalized} contributorCount={contributorCount} currentMeasurement={current}
-                previousMeasurement={previous} specsOnly={specsOnly} />
+        <Throughput currentMeasurement={current}
+                            previousMeasurement={previous} measurementWindow={measurementWindow} specsOnly={specsOnly}/>
       </div>
 
       <div className={styles.thirdCol}>
-        <CapacityEfficiency normalized={normalized} contributorCount={contributorCount} currentMeasurement={current}
-                            previousMeasurement={previous} specsOnly={specsOnly} />
+        <TotalEffort contributorCount={contributorCount} currentMeasurement={current}
+                previousMeasurement={previous} specsOnly={specsOnly} />
       </div>
     </div>
   );

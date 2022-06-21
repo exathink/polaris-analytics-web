@@ -445,24 +445,25 @@ export const ThroughputDetailView = ({
   const metric = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
   return (
     <div className={styles.throughputDetailWrapper}>
-      <div className={styles.effortOut}>
-        <EffortOUT
-          displayType="card"
-          displayProps={{
-            showHighlighted: selectedMetric === "totalEffort",
-            onClick: () => setSelectedMetric("totalEffort"),
-          }}
-          currentMeasurement={current}
-          previousMeasurement={previous}
-          specsOnly={specsOnly}
-        />
-      </div>
+
       <div className={styles.volume}>
         <Volume
           displayType="card"
           displayProps={{
             showHighlighted: selectedMetric === metric,
             onClick: () => setSelectedMetric(metric),
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          specsOnly={specsOnly}
+        />
+      </div>
+      <div className={styles.effortOut}>
+        <EffortOUT
+          displayType="card"
+          displayProps={{
+            showHighlighted: selectedMetric === "totalEffort",
+            onClick: () => setSelectedMetric("totalEffort"),
           }}
           currentMeasurement={current}
           previousMeasurement={previous}
