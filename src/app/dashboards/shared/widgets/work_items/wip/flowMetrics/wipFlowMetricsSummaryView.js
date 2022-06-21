@@ -338,12 +338,18 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days}) {
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData}) {
+  const intl = useIntl();
   const {pipelineCycleMetrics} = data[dimension];
+
+  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+  const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const throughputRate = flowItems / days;
+  const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 2);
 
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const wip = getMetricUtils({
-    target: 9,
+    target: wipLimit,
     value: items,
     uom: getItemSuffix({specsOnly, itemsCount: items}),
     good: TrendIndicator.isNegative,
@@ -365,8 +371,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         metricTitle={<span>Total</span>}
         metricValue={wip.metricValue}
         suffix={wip.suffix}
-        // TODO: fix this with actual calculation
-        target={null}
+        target={<span>Limit: {wipLimit}</span>}
       />
       <TrendCard
         metricTitle={
