@@ -21,6 +21,8 @@ import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import {getMetricUtils, TrendIndicator, TrendIndicatorDisplayThreshold, TrendIndicatorNew} from "../../../../../../components/misc/statistic/statistic";
 import {TrendCard} from "../../../../components/cards/trendCard";
+import fontStyles from "../../../../../../framework/styles/fonts.module.css";
+import classNames from "classnames";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -255,7 +257,7 @@ const PipelineSummaryView = withViewerContext(
 );
 
 function MetricsGroupTitle({children}) {
-  return <div className="tw-col-span-2 tw-text-lg">{children}</div>;
+  return <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>{children}</div>;
 }
 
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
@@ -285,7 +287,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <MetricsGroupTitle>
-        Closed {itemsLabel}, Last {days} Days
+        Flow <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>{itemsLabel}, Last {days} Days</span>
       </MetricsGroupTitle>
 
       <TrendCard
