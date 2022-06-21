@@ -42,14 +42,22 @@ function getTimeToClear(workItemStateTypeCounts, days) {
 }
 
 
-
-
 export const PipelineFunnelChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days", "leadTimeTarget", "cycleTimeTarget"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({ workItemStateTypeCounts, totalEffortByStateType, days, leadTimeTarget, cycleTimeTarget, title, grouping, showVolumeOrEffort = 'volume', intl }) => {
+  getConfig: ({
+                workItemStateTypeCounts,
+                totalEffortByStateType,
+                days,
+                leadTimeTarget,
+                cycleTimeTarget,
+                title,
+                grouping,
+                showVolumeOrEffort = "volume",
+                intl
+              }) => {
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
@@ -79,11 +87,18 @@ export const PipelineFunnelChart = Chart({
             allowOverlap: false,
             useHTML: true,
             formatter: function() {
-              return showVolumeOrEffort === 'volume' ?
-                (this.point.timeToClear ? humanizeDuration(this.point.timeToClear) : `Throughput: ${i18nNumber(intl, getCloseRate(workItemStateTypeCounts, days), 1)} /day`)
-                :
-                ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
-                ;
+              return (
+                showVolumeOrEffort === "volume" ?
+                  this.point.timeToClear ?
+                    humanizeDuration(this.point.timeToClear)
+                    :
+                    this.point.stateType === WorkItemStateTypes.closed ?
+                      `Throughput: ${i18nNumber(intl, getCloseRate(workItemStateTypeCounts, days), 1)} /day`
+                      :
+                      ""
+                  :
+                  ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
+              );
             },
             color: "white"
           }],
@@ -118,7 +133,7 @@ export const PipelineFunnelChart = Chart({
             color: WorkItemStateTypeColor[stateType],
             stateType: stateType,
             count: selectedSummary[stateType],
-            timeToClear: timeToClear[stateType],
+            timeToClear: timeToClear[stateType]
           })
         ),
         showInLegend: true
@@ -131,13 +146,13 @@ export const PipelineFunnelChart = Chart({
           const timeToClear = this.point.timeToClear ? `<br/>Expected Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
           const closeRate = getCloseRate(workItemStateTypeCounts, days);
           const wipLevelInfo = [
-            ['Avg. Throughput: ' , `${i18nNumber(intl, closeRate, 3)} /day`],
-            ['-------', ``],
-            ['<b>Code + Deliver Phase</b>', ''],
-            ['Current Total Wip', workItemStateTypeCounts[WorkItemStateTypes.open] + workItemStateTypeCounts[WorkItemStateTypes.make] + workItemStateTypeCounts[WorkItemStateTypes.deliver]],
-            ['Recommended Target Wip', ` ${i18nNumber(intl,cycleTimeTarget * getCloseRate(workItemStateTypeCounts, days), 0)}` ],
+            ["Avg. Throughput: ", `${i18nNumber(intl, closeRate, 3)} /day`],
+            ["-------", ``],
+            ["<b>Code + Deliver Phase</b>", ""],
+            ["Current Total Wip", workItemStateTypeCounts[WorkItemStateTypes.open] + workItemStateTypeCounts[WorkItemStateTypes.make] + workItemStateTypeCounts[WorkItemStateTypes.deliver]],
+            ["Recommended Target Wip", ` ${i18nNumber(intl, cycleTimeTarget * getCloseRate(workItemStateTypeCounts, days), 0)}`]
 
-          ]
+          ];
           return tooltipHtml({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
@@ -145,7 +160,7 @@ export const PipelineFunnelChart = Chart({
 
                 [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
 
-                ...(this.point.stateType === WorkItemStateTypes.closed ? wipLevelInfo : [['','']])
+                ...(this.point.stateType === WorkItemStateTypes.closed ? wipLevelInfo : [["", ""]])
               ]
             }
           );
