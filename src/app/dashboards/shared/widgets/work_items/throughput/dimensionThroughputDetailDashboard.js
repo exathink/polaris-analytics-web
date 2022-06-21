@@ -27,7 +27,7 @@ export function DimensionThroughputDetailDashboard({
 
   const [workItemScope, setWorkItemScope] = useState("specs");
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
-  const [selectedMetric, setSelectedMetric] = React.useState("totalEffort");
+  const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
 
@@ -128,7 +128,7 @@ export function DimensionThroughputDetailDashboard({
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           name="workbalance-trends"

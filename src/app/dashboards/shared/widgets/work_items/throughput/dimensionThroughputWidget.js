@@ -46,6 +46,7 @@ export const DimensionThroughputWidget = ({
   if (view === "primary") {
     return (
       <ThroughputView
+        measurementWindow={measurementWindow}
         specsOnly={limitToSpecsOnly}
         contributorCount={contributorCount}
         cycleMetricsTrends={cycleMetricsTrends}
