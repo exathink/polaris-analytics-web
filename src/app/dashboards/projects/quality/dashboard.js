@@ -32,87 +32,13 @@ function TrendsDashboard({
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
-      <DashboardRow
-        h={"28%"}
-        title={"Flow"}
-        controls={[
+      <DashboardRow h="45%" title={`Defects`} controls={[
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={ONE_YEAR} />
             </div>
           ),
-        ]}
-      >
-        <DashboardWidget
-          w={1 / 3}
-          name="throughput"
-          render={({view}) => (
-            <DimensionVolumeTrendsWidget
-              dimension={"project"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              targetPercentile={0.7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 3}
-          name="flow-mix"
-          render={({view}) => (
-            <DimensionFlowMixTrendsWidget
-              dimension={"project"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              specsOnly={true}
-              asStatistic={false}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 3}
-          name="cycle-time"
-          render={({view}) => (
-            <DimensionResponseTimeTrendsWidget
-              dimension={"project"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime"]}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-      </DashboardRow>
-      <DashboardRow h="50%" title={`Defects`}>
+        ]}>
         <DashboardWidget
           w={1 / 3}
           name="defect-rate"
@@ -160,7 +86,81 @@ function TrendsDashboard({
           showDetail={true}
         />
       </DashboardRow>
+      <DashboardRow
+        h={"33%"}
+        title={"All Cards"}
 
+      >
+        <DashboardWidget
+          w={1 / 3}
+          name="throughput"
+          render={({view}) => (
+            <DimensionVolumeTrendsWidget
+              dimension={"project"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              targetPercentile={0.7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 3}
+          name="flow-mix"
+          render={({view}) => (
+            <DimensionFlowMixTrendsWidget
+              dimension={"project"}
+              title={"Cost of Defects"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              specsOnly={true}
+              asStatistic={false}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+        <DashboardWidget
+          w={1 / 3}
+          name="cycle-time"
+          render={({view}) => (
+            <DimensionResponseTimeTrendsWidget
+              dimension={"project"}
+              instanceKey={key}
+              measurementWindow={30}
+              days={daysRange}
+              samplingFrequency={7}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
+              context={context}
+              view={view}
+              latestWorkItemEvent={latestWorkItemEvent}
+              defaultSeries={["leadTime", "cycleTime"]}
+              includeSubTasks={includeSubTasksFlowMetrics}
+            />
+          )}
+          showDetail={true}
+        />
+      </DashboardRow>
     </Dashboard>
   );
 }
