@@ -353,6 +353,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         metricTitle={<span>Total Effort</span>}
         metricValue={totalEffort.metricValue}
         suffix={totalEffort.suffix}
+        target={<span className="tw-invisible">random text</span>}
       />
       <TrendCard
         metricTitle={
@@ -362,6 +363,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         }
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
+        target={<span className="tw-invisible">random text</span>}
       />
     </div>
   );
