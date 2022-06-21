@@ -2,11 +2,10 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
-import {WorkInProgressBaseView, WorkInProgressSummaryView} from "../flowMetrics/wipFlowMetricsSummaryView";
+import {WorkInProgressBaseView} from "../flowMetrics/wipFlowMetricsSummaryView";
 
 export function DimensionWipWidget({
   dimension,
-  display,
   instanceKey,
   specsOnly,
   latestWorkItemEvent,
@@ -14,7 +13,6 @@ export function DimensionWipWidget({
   targetPercentile,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
-  cycleTimeTarget,
   includeSubTasks,
   view,
 }) {
@@ -29,14 +27,12 @@ export function DimensionWipWidget({
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
+
   if (loading) return <Loading />;
   if (error) {
     logGraphQlError("DimensionWipWidget.pipelineStateDetails", error);
     return null;
   }
 
-  if (display==="wip-summary") {
-    return <WorkInProgressSummaryView data={data} dimension={dimension} specsOnly={specsOnly} cycleTimeTarget={cycleTimeTarget} />;
-  }
   return <WorkInProgressBaseView data={data} dimension={dimension} />;
 }

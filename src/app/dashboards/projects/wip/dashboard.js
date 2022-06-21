@@ -14,6 +14,7 @@ import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelect
 
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
+import { DimensionWipSummaryWidget } from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -92,17 +93,18 @@ function WipDashboard({
           className={styles.summaryWip}
           title={""}
           render={({view}) => (
-            <DimensionWipWidget
+            <DimensionWipSummaryWidget
               dimension={"project"}
               instanceKey={key}
-              display="wip-summary"
               specsOnly={specsOnly}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
               cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              days={flowAnalysisPeriod}
               view={view}
               includeSubTasks={includeSubTasksWipInspector}
             />

@@ -459,5 +459,12 @@ export function sum_field(array, field, initial=0) {
   return array.reduce((total, _, index) => total + array[index][field], 0)
 }
 
+export function getItemSuffix({specsOnly, itemsCount}) {
+  if (specsOnly) {
+    return itemsCount === 1 ? "Spec" : "Specs";
+  } else {
+    return itemsCount === 1 ? "Card" : "Cards";
+  }
+}
 
 export const TOOLTIP_COLOR = "#fbfcfd";

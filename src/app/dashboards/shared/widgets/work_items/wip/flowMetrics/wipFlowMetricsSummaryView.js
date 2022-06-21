@@ -14,13 +14,15 @@ import {
   WipWithLimit,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
-import {i18nNumber} from "../../../../../../helpers/utility";
+import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
-import {getMetricUtils, TrendIndicator} from "../../../../../../components/misc/statistic/statistic";
+import {getMetricUtils, TrendIndicator, TrendIndicatorDisplayThreshold, TrendIndicatorNew} from "../../../../../../components/misc/statistic/statistic";
 import {TrendCard} from "../../../../components/cards/trendCard";
+import fontStyles from "../../../../../../framework/styles/fonts.module.css";
+import classNames from "classnames";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -254,18 +256,22 @@ const PipelineSummaryView = withViewerContext(
   }
 );
 
+function MetricsGroupTitle({children}) {
+  return <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>{children}</div>;
+}
+
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
   const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
-  const [currentTrend] = cycleMetricsTrends;
-  const itemsLabel = specsOnly ? "Specs" : "Cards";
+  const [currentTrend, previousTrend] = cycleMetricsTrends;
 
-  const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const specKey = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
+  const items = currentTrend[specKey];
+  const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
   const throughput = getMetricUtils({
-    value: i18nNumber(intl, items / days, 2),
+    value: i18nNumber(intl, items / days, 1),
     uom: `${itemsLabel} / Day`,
     good: TrendIndicator.isPositive,
-    precision: items > 10 ? 1 : 2,
     valueRender: (text) => text,
   });
 
@@ -280,13 +286,27 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">
-        Closed {itemsLabel}, Last {days} Days
-      </div>
+      <MetricsGroupTitle>
+        Flow <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>{itemsLabel}, Last {days} Days</span>
+      </MetricsGroupTitle>
+
       <TrendCard
-        metricTitle={<span>Throughput <sup>Avg</sup></span>}
+        metricTitle={
+          <span>
+            Throughput <sup>Avg</sup>
+          </span>
+        }
         metricValue={throughput.metricValue}
         suffix={throughput.suffix}
+        trendIndicator={
+          <TrendIndicatorNew
+            firstValue={currentTrend[specKey]}
+            secondValue={previousTrend[specKey]}
+            good={TrendIndicator.isPositive}
+            deltaThreshold={TrendIndicatorDisplayThreshold}
+          />
+        }
+        className="tw-p-2"
       />
       <TrendCard
         metricTitle={
@@ -296,7 +316,16 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         }
         metricValue={cycleTime.metricValue}
         suffix={cycleTime.suffix}
-        target={<span>Target: {cycleTimeTarget} Days</span>}
+        target={<span>Target {cycleTimeTarget} Days</span>}
+        trendIndicator={
+          <TrendIndicatorNew
+            firstValue={currentTrend["avgCycleTime"]}
+            secondValue={previousTrend["avgCycleTime"]}
+            good={TrendIndicator.isNegative}
+            deltaThreshold={TrendIndicatorDisplayThreshold}
+          />
+        }
+        className="tw-p-2"
       />
     </div>
   );
@@ -323,25 +352,46 @@ export function WorkInProgressBaseView({data, dimension}) {
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">Cost of Unshipped Code</div>
+      <MetricsGroupTitle>Cost of Unshipped Code</MetricsGroupTitle>
       <TrendCard
         metricTitle={<span>Total Effort</span>}
         metricValue={totalEffort.metricValue}
         suffix={totalEffort.suffix}
+        target={<span className="tw-invisible">random text</span>}
+        className="tw-p-2"
       />
       <TrendCard
-        metricTitle={<span>Commit Latency <sup>Avg</sup> </span>}
+        metricTitle={
+          <span>
+            Commit Latency <sup>Avg</sup>{" "}
+          </span>
+        }
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
+        target={<span className="tw-invisible">random text</span>}
+        className="tw-p-2"
       />
     </div>
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days}) {
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData}) {
+  const intl = useIntl();
   const {pipelineCycleMetrics} = data[dimension];
 
+  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+  const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const throughputRate = flowItems / days;
+  const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const wip = getMetricUtils({
+    target: wipLimit,
+    value: items,
+    uom: getItemSuffix({specsOnly, itemsCount: items}),
+    good: TrendIndicator.isNegative,
+    valueRender: (text) => text,
+  });
   const avgAge = getMetricUtils({
     target: cycleTimeTarget,
     value: pipelineCycleMetrics["avgCycleTime"],
@@ -353,13 +403,13 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">Work in Progress</div>
+      <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
       <TrendCard
         metricTitle={<span>Total</span>}
-        metricValue={items}
-        suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
-        // TODO: fix this with actual calculation
-        target={null}
+        metricValue={wip.metricValue}
+        suffix={wip.suffix}
+        target={<span>Limit {wipLimit}</span>}
+        className="tw-p-2"
       />
       <TrendCard
         metricTitle={
@@ -369,7 +419,8 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         }
         metricValue={avgAge.metricValue}
         suffix={avgAge.suffix}
-        target={<span>Target: {cycleTimeTarget} Days</span>}
+        target={<span>Target {cycleTimeTarget} Days</span>}
+        className="tw-p-2"
       />
     </div>
   );

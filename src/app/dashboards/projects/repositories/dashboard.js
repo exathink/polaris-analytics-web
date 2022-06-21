@@ -4,10 +4,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from '../../../framework/viz/d
 import {Contexts} from "../../../meta/contexts";
 import {
   DimensionCommitsNavigatorWidget,
-  DimensionMostActiveChildrenWidget
 } from "../../shared/widgets/accountHierarchy";
-import {ChildDimensionActivityProfileWidget} from "../../shared/views/activityProfile";
-import Repositories from "../../repositories/context";
 import {ProjectDashboard} from "../projectDashboard";
 import {RepositoriesTableWidget} from "../../shared/components/repositoriesTable/repositoriesTable";
 const dashboard_id = 'dashboards.activity.organization.instance';
