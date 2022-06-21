@@ -14,7 +14,7 @@ import {
   WipWithLimit,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
-import {i18nNumber} from "../../../../../../helpers/utility";
+import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
@@ -258,9 +258,9 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
   const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
   const [currentTrend] = cycleMetricsTrends;
-  const itemsLabel = specsOnly ? "Specs" : "Cards";
 
   const items = currentTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
   const throughput = getMetricUtils({
     value: i18nNumber(intl, items / days, 2),
     uom: `${itemsLabel} / Day`,
@@ -342,6 +342,13 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const {pipelineCycleMetrics} = data[dimension];
 
   const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const wip = getMetricUtils({
+    target: 9,
+    value: items,
+    uom: getItemSuffix({specsOnly, itemsCount: items}),
+    good: TrendIndicator.isNegative,
+    valueRender: (text) => text,
+  });
   const avgAge = getMetricUtils({
     target: cycleTimeTarget,
     value: pipelineCycleMetrics["avgCycleTime"],
@@ -356,8 +363,8 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
       <div className="tw-col-span-2 tw-text-base">Work in Progress</div>
       <TrendCard
         metricTitle={<span>Total</span>}
-        metricValue={items}
-        suffix={specsOnly ? (items === 1 ? "Spec" : "Specs") : items.length ? "Card" : "Cards"}
+        metricValue={wip.metricValue}
+        suffix={wip.suffix}
         // TODO: fix this with actual calculation
         target={null}
       />
