@@ -54,6 +54,7 @@ export const PipelineFunnelChart = Chart({
                 leadTimeTarget,
                 cycleTimeTarget,
                 title,
+                subTitle,
                 grouping,
                 showVolumeOrEffort = "volume",
                 intl
@@ -67,8 +68,12 @@ export const PipelineFunnelChart = Chart({
         backgroundColor: Colors.Chart.backgroundColor
       },
       title: {
-        text: title || "Flow States",
-        align: "left"
+        text: title || `Flow, ${grouping === 'specs' ? "Specs" : "All Cards"}`,
+        align: "center"
+      },
+      subtitle: {
+        text: subTitle || showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase",
+        align: "center"
       },
       plotOptions: {
         series: {
@@ -80,7 +85,7 @@ export const PipelineFunnelChart = Chart({
               return `<b>${label}</b> (${this.point.count})`;
             },
             softConnector: true,
-            color: "black"
+            color: "black",
           }, {
             enabled: true,
             align: "center",
@@ -102,20 +107,18 @@ export const PipelineFunnelChart = Chart({
             },
             color: "white"
           }],
-          center: ["45%", "50%"],
+          center: ["38%", "50%"],
           neckWidth: "25%",
           neckHeight: "45%",
-          width: "80%"
+          width: "70%"
         }
       },
       legend: {
         title: {
-          text: grouping === "specs" ? capitalizeFirstLetter(grouping) : "All Cards",
-          style: {
-            fontStyle: "italic"
-          }
+          text: "Phases",
+          fontStyle: "italic"
         },
-        align: "right",
+        align: "left",
         layout: "vertical",
         verticalAlign: "middle",
         itemMarginBottom: 3,

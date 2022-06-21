@@ -21,7 +21,6 @@ export const ProjectPipelineFunnelView = ({
             days={days}
             leadTimeTarget={leadTimeTarget}
             cycleTimeTarget={cycleTimeTarget}
-            title={" "}
             grouping={workItemScope}
             showVolumeOrEffort={showVolumeOrEffort}
           />
