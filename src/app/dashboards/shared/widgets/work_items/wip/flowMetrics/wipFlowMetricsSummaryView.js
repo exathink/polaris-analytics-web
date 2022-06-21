@@ -254,6 +254,10 @@ const PipelineSummaryView = withViewerContext(
   }
 );
 
+function MetricsGroupTitle({children}) {
+  return <div className="tw-col-span-2 tw-text-lg">{children}</div>;
+}
+
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
   const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
@@ -279,11 +283,16 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">
+      <MetricsGroupTitle>
         Closed {itemsLabel}, Last {days} Days
-      </div>
+      </MetricsGroupTitle>
+
       <TrendCard
-        metricTitle={<span>Throughput <sup>Avg</sup></span>}
+        metricTitle={
+          <span>
+            Throughput <sup>Avg</sup>
+          </span>
+        }
         metricValue={throughput.metricValue}
         suffix={throughput.suffix}
       />
@@ -322,14 +331,18 @@ export function WorkInProgressBaseView({data, dimension}) {
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">Cost of Unshipped Code</div>
+      <MetricsGroupTitle>Cost of Unshipped Code</MetricsGroupTitle>
       <TrendCard
         metricTitle={<span>Total Effort</span>}
         metricValue={totalEffort.metricValue}
         suffix={totalEffort.suffix}
       />
       <TrendCard
-        metricTitle={<span>Commit Latency <sup>Avg</sup> </span>}
+        metricTitle={
+          <span>
+            Commit Latency <sup>Avg</sup>{" "}
+          </span>
+        }
         metricValue={commitLatency.metricValue}
         suffix={commitLatency.suffix}
       />
@@ -365,7 +378,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
-      <div className="tw-col-span-2 tw-text-base">Work in Progress</div>
+      <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
       <TrendCard
         metricTitle={<span>Total</span>}
         metricValue={wip.metricValue}
