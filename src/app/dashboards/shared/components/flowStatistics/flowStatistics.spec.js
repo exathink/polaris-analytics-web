@@ -1,9 +1,9 @@
-import {render, screen, within} from "@testing-library/react";
+import {screen, within} from "@testing-library/react";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
-import { IntlProvider } from 'react-intl';
+import {renderWithProviders} from "../../../../framework/viz/charts/chart-test-utils";
 
 export function renderAndAssertMetricComponent(Component, metricVal, uom) {
-  render(<IntlProvider locale={'en'}>{Component}</IntlProvider>);
+  renderWithProviders(Component);
   const {getByText: getByTextValue} = within(screen.getByTestId("metricValue"));
   const {getByText: getByTextUOM} = within(screen.getByTestId("uom"));
 
