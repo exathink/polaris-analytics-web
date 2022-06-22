@@ -1,88 +1,118 @@
 import {gql} from "@apollo/client";
-import {Query} from "@apollo/client/react/components"
-import React from 'react';
+import {Query} from "@apollo/client/react/components";
+import React from "react";
 
-import {Table} from 'antd';
+import {Table} from "antd";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {analytics_service} from '../../../services/graphql';
+import {analytics_service} from "../../../services/graphql";
 import {withAntPagination} from "../../../components/graphql/withAntPagination";
-
+import {EditUserForm} from "./editUserForm";
 
 const {Column} = Table;
 
-const AccountUsersPaginatedTable = (
-  {
-    view,
-    viewerContext:{ viewer },
-    paging,
-    pageSize,
-    currentCursor,
-    onNewPage,
-    newData
-  }) => (
+const AccountUsersPaginatedTable = ({
+  view,
+  viewerContext: {viewer},
+  paging,
+  pageSize,
+  currentCursor,
+  onNewPage,
+  newData,
+}) => (
   <Query
     client={analytics_service}
-    query={
-      gql`
+    query={gql`
       query accountUsers($accountKey: String!, $pageSize: Int!, $endCursor: String) {
-          account(key: $accountKey) {
-            id
-            key
-            users(first: $pageSize, after: $endCursor, interfaces:[UserInfo, ScopedRole]) {
-              count
-              edges {
-               node {
-                  id
-                  name
-                  key
-                  email
-                  role
-               }
+        account(key: $accountKey) {
+          id
+          key
+          users(first: $pageSize, after: $endCursor, interfaces: [UserInfo, ScopedRole]) {
+            count
+            edges {
+              node {
+                id
+                name
+                firstName
+                lastName
+                key
+                email
+                role
+                organizationRoles {
+                  organizationKey
+                  organizationRole
+                  organizationName
+                }
               }
             }
           }
+        }
       }
-  `
-    }
+    `}
     variables={{
       pageSize: pageSize,
       endCursor: currentCursor,
-      accountKey: viewer.accountKey
+      accountKey: viewer.accountKey,
     }}
-    fetchPolicy={newData ? 'network-only' : 'cache-first'}
+    fetchPolicy={newData ? "network-only" : "cache-first"}
   >
-    {
-      ({loading, error, data}) => {
-        if (error) return null;
-        let tableData = [];
-        let totalItems = 0;
-        if (!loading) {
-          tableData = data.account.users.edges.map(edge => edge.node);
-          totalItems = data.account.users.count;
-        }
-        return (
-          <Table
-            dataSource={tableData}
-            size="middle"
-            loading={loading}
-            rowKey={record => record.id}
-            pagination={{
-              total: totalItems,
-              defaultPageSize: pageSize,
-              hideOnSinglePage: true
-
-            }}
-            onChange={onNewPage}
-          >
-            <Column title={"Name"} dataIndex={"name"} key={"name"}/>
-            <Column title={"Email"} dataIndex={"email"} key={"email"}/>
-            <Column title={"Role"} dataIndex={"role"} key={"role"}/>
-          </Table>
-        )
+    {({loading, error, data}) => {
+      if (error) return null;
+      let tableData = [];
+      let totalItems = 0;
+      if (!loading) {
+        tableData = data.account.users.edges.map((edge) => edge.node);
+        totalItems = data.account.users.count;
       }
-    }
+      return (
+        <Table
+          dataSource={tableData}
+          size="middle"
+          loading={loading}
+          rowKey={(record) => record.id}
+          pagination={{
+            total: totalItems,
+            defaultPageSize: pageSize,
+            hideOnSinglePage: true,
+          }}
+          onChange={onNewPage}
+        >
+          <Column title={"Name"} dataIndex={"name"} key={"name"} />
+          <Column title={"Email"} dataIndex={"email"} key={"email"} />
+          <Column title={"Role"} dataIndex={"role"} key={"role"} />
+          {view === "detail" && (
+            <Column
+              title={""}
+              dataIndex={""}
+              key={"edit"}
+              width="5%"
+              render={(value, record) => {
+                return (
+                  <EditUserForm
+                    onSubmit={(values) => {
+                      console.log({values});
+                    }}
+                    initialValues={{
+                      email: record.email,
+                      firstName: record.firstName,
+                      lastName: record.lastName,
+                      role: record.role==="owner",
+                      organizationRoles: record.organizationRoles,
+                      ...record.organizationRoles.reduce((acc, item) => {
+                        acc[item.organizationKey] = item.organizationRole;
+                        return acc;
+                      }, {}),
+                    }}
+                  />
+                );
+              }}
+            />
+          )}
+        </Table>
+      );
+    }}
   </Query>
-)
+);
+
 
 export const AccountUsersTableWidget = withViewerContext(withAntPagination(AccountUsersPaginatedTable), ['account-owner'])
