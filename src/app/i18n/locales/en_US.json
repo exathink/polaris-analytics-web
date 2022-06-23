@@ -53,6 +53,7 @@
   "topics.valueBook": "Value Book",
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
+  "topics.pull_requests": "Pull Requests",
   "topics.repositories": "Code",
   "topics.organizations": "Organizations",
   "topics.commit": "Commit",

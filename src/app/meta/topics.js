@@ -72,6 +72,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     icon: 'ion-folder'
   },
+  pull_requests: {
+    name: 'pull_requests',
+    display: () => (<FormattedMessage id='topics.pull_requests' defaultMessage="Pull Requests"/>),
+    icon: 'ion-fork-repo'
+  },
   repositories: {
     name: 'repositories',
     display: () => (<FormattedMessage id='topics.repositories' defaultMessage="Repositories"/>),
