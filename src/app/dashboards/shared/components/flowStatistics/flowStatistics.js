@@ -39,7 +39,7 @@ export const FlowStatistic = ({
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size} = displayProps;
+      const {onClick, showHighlighted, info, size, className, targetText} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -58,6 +58,8 @@ export const FlowStatistic = ({
           }
           size={size}
           info={info}
+          className={className}
+          target={targetText}
         />
       );
     }
