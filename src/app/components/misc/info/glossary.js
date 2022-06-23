@@ -3,12 +3,14 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import React from "react";
 import { capitalizeFirstLetter } from "../../../helpers/utility";
+import {InfoCard} from "./infoCard";
 
 export const Glossary = {};
+const {Section} = InfoCard;
 
-
-export function TermDefinition({name, definition, capitalize, append, className}) {
+export function TermDefinition({name, definition, capitalize, append, className, inline=false}) {
   return (
+    !inline  ?
     <span className={className}>
       <Tooltip title={definition}>
         <Button type={"link"} className={"tooltip"}>
@@ -27,6 +29,8 @@ export function TermDefinition({name, definition, capitalize, append, className}
         </Button>
       </Tooltip>
     </span>
+      :
+      <span>{definition}</span>
   );
 }
 
@@ -37,6 +41,16 @@ Glossary.CARDS = ({display="cards", ...rest}) => {
     <TermDefinition
       name={display}
       definition={"Generic term in Polaris for tickets, issues, work items etc. in your work tracking system."}
+      {...rest}
+    />
+  )
+}
+
+Glossary.SPECS = ({display="specs", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"A card that has commits associated with it."}
       {...rest}
     />
   )
@@ -67,9 +81,7 @@ Glossary.CYCLE_TIME = ({display="cycle time", ...rest}) => {
   return (
     <TermDefinition
       name={display}
-      definition={"The cumulative time required to make and deliver the code changes for a card. Computed from the " +
-        "most conservative value that can be derived from coding and delivery times from commit history " +
-        "and the cumulative time spent in open, make and deliver phases."}
+      definition={"The time required to make and deliver the code changes for a card in a delivery cycle."}
       {...rest}
     />
   )
@@ -144,6 +156,15 @@ Glossary.PHASE = ({display="phase", ...rest}) => {
   )
 }
 
+Glossary.REVIEW_TIME = ({display="code review time", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"The elapsed time from when a pull request was opened to the time it was merged or closed."}
+      {...rest}
+    />
+  )
+}
 Glossary.VOLUME = ({display="volume", ...rest}) => {
   return (
     <TermDefinition
