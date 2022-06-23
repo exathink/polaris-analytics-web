@@ -9,12 +9,17 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
+import {StatsInfo} from "../../../../components/misc/info/infoContent/flowStatistics/infoConfig";
 import { fromNow, percentileToText, humanizeDuration } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
+import {
+  PipelineFunnelWidgetInfoDetail,
+  PipelineFunnelWidgetInfoSummary
+} from "../../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
 
 export const FlowStatistic = ({
   title,
@@ -30,6 +35,7 @@ export const FlowStatistic = ({
   target,
   precision,
   deltaThreshold,
+  info,
   valueRender = (value) => value,
 }) => {
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
@@ -39,7 +45,7 @@ export const FlowStatistic = ({
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size} = displayProps;
+      const {onClick, showHighlighted, size} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -101,7 +107,7 @@ export const FlowStatistic = ({
 };
 
 
-export const ResponseTime = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, valueRender}) => (
+export const ResponseTime = ({title, displayType, displayProps, info, currentMeasurement, previousMeasurement, metric, uom, displayName, target, superScript, deltaThreshold, valueRender}) => (
   <FlowStatistic
     title={title || <span>{displayName}<sup> {superScript} </sup></span>}
     currentMeasurement={currentMeasurement}
@@ -115,6 +121,7 @@ export const ResponseTime = ({title, displayType, displayProps, currentMeasureme
     target={target}
     displayType={displayType}
     displayProps={displayProps}
+    info={info}
   />
 );
 
@@ -419,6 +426,7 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
     deltaThreshold={deltaThreshold}
     displayType={displayType}
     displayProps={displayProps}
+    info={StatsInfo.CycleTime}
   />
 }
 
