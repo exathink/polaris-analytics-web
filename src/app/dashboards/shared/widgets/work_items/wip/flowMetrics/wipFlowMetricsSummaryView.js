@@ -13,6 +13,7 @@ import {
   WipCarousel,
   WipWithLimit,
   AvgCycleTime,
+  Throughput,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
@@ -262,47 +263,37 @@ function MetricsGroupTitle({children}) {
 }
 
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
-  const intl = useIntl();
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   const specKey = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
   const items = currentTrend[specKey];
   const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
-  const throughput = getMetricUtils({
-    value: i18nNumber(intl, items / days, 1),
-    uom: `${itemsLabel} / Day`,
-    good: TrendIndicator.isPositive,
-    valueRender: (text) => text,
-  });
 
   // since we don't want to show compared to text in the card
   currentTrend = {...currentTrend, samplingFrequency: undefined, measurementWindow: undefined};
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <MetricsGroupTitle>
-        Flow <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>{itemsLabel}, Last {days} Days</span>
+        Flow{" "}
+        <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>
+          {itemsLabel}, Last {days} Days
+        </span>
       </MetricsGroupTitle>
-
-      <TrendCard
-        metricTitle={
+      <Throughput
+        title={
           <span>
             Throughput <sup>Avg</sup>
           </span>
         }
-        metricValue={throughput.metricValue}
-        suffix={throughput.suffix}
-        trendIndicator={
-          <TrendIndicatorNew
-            firstValue={currentTrend[specKey]}
-            secondValue={previousTrend[specKey]}
-            good={TrendIndicator.isPositive}
-            deltaThreshold={TrendIndicatorDisplayThreshold}
-          />
-        }
-        className="tw-p-2"
+        displayType={"card"}
+        displayProps={{className: "tw-p-2"}}
+        specsOnly={specsOnly}
+        currentMeasurement={currentTrend}
+        previousMeasurement={previousTrend}
+        measurementWindow={days}
       />
-      <AvgCycleTime 
+      <AvgCycleTime
         displayType={"card"}
         displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
         currentMeasurement={currentTrend}

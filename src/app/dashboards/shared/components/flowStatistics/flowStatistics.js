@@ -153,7 +153,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
         return currentMeasurement[metric]/measurementWindow
       }
     }
-    uom={specsOnly ? 'Specs/day' : 'Cards/day'}
+    uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
     precision={1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
