@@ -14,6 +14,7 @@ import {
   WipWithLimit,
   AvgCycleTime,
   Throughput,
+  TotalEffort,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
@@ -307,43 +308,25 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
 export function WorkInProgressBaseView({data, dimension}) {
   const {pipelineCycleMetrics} = data[dimension];
 
-  const totalEffort = getMetricUtils({
-    value: pipelineCycleMetrics["totalEffort"],
-    uom: "FTE Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["totalEffort"] > 10 ? 1 : 2,
-    valueRender: (text) => text,
-  });
-
-  const commitLatency = getMetricUtils({
-    value: pipelineCycleMetrics["avgLatency"],
-    uom: "Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["avgLatency"] > 10 ? 1 : 2,
-    valueRender: (text) => text,
-  });
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <MetricsGroupTitle>Cost of Unshipped Code</MetricsGroupTitle>
-      <TrendCard
-        metricTitle={<span>Total Effort</span>}
-        metricValue={totalEffort.metricValue}
-        suffix={totalEffort.suffix}
-        target={<span className="tw-invisible">random text</span>}
-        className="tw-p-2"
+      <TotalEffort 
+        displayType="card"
+        currentMeasurement={pipelineCycleMetrics}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
       />
-      <TrendCard
-        metricTitle={
+      <AvgLatency
+        title={
           <span>
-            Commit Latency <sup>Avg</sup>{" "}
+            Commit Latency
           </span>
         }
-        metricValue={commitLatency.metricValue}
-        suffix={commitLatency.suffix}
-        target={<span className="tw-invisible">random text</span>}
-        className="tw-p-2"
-      />
+        displayType="card"
+        currentMeasurement={pipelineCycleMetrics}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
+       />
     </div>
   );
 }

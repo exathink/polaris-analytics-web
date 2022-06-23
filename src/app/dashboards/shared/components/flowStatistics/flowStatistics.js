@@ -238,7 +238,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
   />
 );
 
-export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
+export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold, displayType, displayProps}) => (
   <FlowStatistic
     title={title ||  <span>{'Total Effort'}</span>}
     currentMeasurement={currentMeasurement}
@@ -250,6 +250,8 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
