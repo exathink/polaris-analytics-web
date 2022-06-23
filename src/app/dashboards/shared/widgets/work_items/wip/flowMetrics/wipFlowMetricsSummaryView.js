@@ -340,43 +340,22 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const throughputRate = flowItems / days;
   const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
 
-  const items = pipelineCycleMetrics[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
-  const wip = getMetricUtils({
-    target: wipLimit,
-    value: items,
-    uom: getItemSuffix({specsOnly, itemsCount: items}),
-    good: TrendIndicator.isNegative,
-    valueRender: (text) => text,
-  });
-  const avgAge = getMetricUtils({
-    target: cycleTimeTarget,
-    value: pipelineCycleMetrics["avgCycleTime"],
-    uom: "Days",
-    good: TrendIndicator.isNegative,
-    precision: pipelineCycleMetrics["avgCycleTime"] > 10 ? 1 : 2,
-    valueRender: (text) => text,
-  });
-
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
-      <TrendCard
-        metricTitle={<span>Total</span>}
-        metricValue={wip.metricValue}
-        suffix={wip.suffix}
-        target={<span>Limit {wipLimit}</span>}
-        className="tw-p-2"
+      <Wip 
+        title={<span>Total</span>}
+        currentMeasurement={pipelineCycleMetrics}
+        specsOnly={specsOnly}
+        target={wipLimit}
+        displayType="card"
+        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>}}
       />
-      <TrendCard
-        metricTitle={
-          <span>
-            Age <sup>Avg</sup>
-          </span>
-        }
-        metricValue={avgAge.metricValue}
-        suffix={avgAge.suffix}
-        target={<span>Target {cycleTimeTarget} Days</span>}
-        className="tw-p-2"
+      <AvgAge 
+        currentMeasurement={pipelineCycleMetrics}
+        target={cycleTimeTarget}
+        displayType="card"
+        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
       />
     </div>
   );
