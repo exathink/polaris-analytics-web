@@ -9,7 +9,7 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import { fromNow, percentileToText, humanizeDuration } from "../../../../helpers/utility";
+import { fromNow, percentileToText, humanizeDuration, getItemSuffix } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
@@ -39,7 +39,7 @@ export const FlowStatistic = ({
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size} = displayProps;
+      const {onClick, showHighlighted, info, size, className, targetText} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -58,6 +58,8 @@ export const FlowStatistic = ({
           }
           size={size}
           info={info}
+          className={className}
+          target={targetText}
         />
       );
     }
@@ -151,7 +153,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
         return currentMeasurement[metric]/measurementWindow
       }
     }
-    uom={specsOnly ? 'Specs/day' : 'Cards/day'}
+    uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
     precision={1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -162,16 +164,18 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
   />
 }
 
-export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, displayType, displayProps}) => {
   const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
   return (
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'Specs' : 'Cards'}
+        uom={getItemSuffix({specsOnly, itemsCount: value})}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
+        displayType={displayType}
+        displayProps={displayProps}
       />
   )
 }
@@ -236,7 +240,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
   />
 );
 
-export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
+export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold, displayType, displayProps}) => (
   <FlowStatistic
     title={title ||  <span>{'Total Effort'}</span>}
     currentMeasurement={currentMeasurement}
@@ -248,6 +252,8 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
@@ -439,7 +445,7 @@ export const FlowEfficiency = ({title, displayType, precision, displayProps, cur
   />
 }
 
-export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold, displayType, displayProps}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -448,6 +454,8 @@ export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaTh
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
