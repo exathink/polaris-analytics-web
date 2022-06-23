@@ -56,16 +56,16 @@ const context : Context = {
             topic: Quality
           },
           {
-            match: 'contributors',
-            topic: Contributors
-          },
-          {
             match: 'pull_requests',
             topic: PullRequests
           },
           {
             match: 'repositories',
             topic: Repositories
+          },
+          {
+            match: 'contributors',
+            topic: Contributors
           },
           {
             match: 'configure',
