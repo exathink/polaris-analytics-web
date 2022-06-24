@@ -61,6 +61,9 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
     }
     case "pullRequestsFlowMetricsSummary": {
       const itemsLabel = specsOnly ? "Specs": "Cards";
+      // as we dont want to show compared to text.
+      const currentTrend = {...current, samplingFrequency: undefined, measurementWindow: undefined}
+
       return (
         <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
           <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>
@@ -72,14 +75,14 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
           <AvgCycleTime
             displayType={"card"}
             displayProps={{className: "tw-p-2"}}
-            currentMeasurement={current}
+            currentMeasurement={currentTrend}
             previousMeasurement={previous}
             target={cycleTimeTarget}
           />
           <AvgDuration
             displayType={"card"}
             displayProps={{className: "tw-p-2"}}
-            currentMeasurement={current}
+            currentMeasurement={currentTrend}
             previousMeasurement={previous}
             target={cycleTimeTarget}
           />
