@@ -20,7 +20,7 @@ export const dashboard = () => (
             <DashboardWidget
                 w={1}
                 name="commits"
-                title={"Latest Activity"}
+                title={"Latest Commits"}
                 render={
                   ({view}) =>
                     <DimensionCommitsNavigatorWidget
@@ -32,9 +32,9 @@ export const dashboard = () => (
                       latestCommit={project.latestCommit}
                       latestWorkItemEvent={project.latestWorkItemEvent}
                       markLatest
-                      groupBy={'repository'}
+                      groupBy={'workItem'}
                       groupings={
-                          ['repository','branch', 'author', 'workItem' ]
+                          ['workItem', 'repository','branch', 'author',  ]
                       }
                       showHeader
                       showTable
