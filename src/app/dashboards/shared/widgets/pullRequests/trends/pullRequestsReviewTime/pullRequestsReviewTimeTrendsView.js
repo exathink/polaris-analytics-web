@@ -26,10 +26,10 @@ export const PullRequestsReviewTimeTrendsView = ({
     return (
       <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
         <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>
-          Code Reviews
+          Closed Pull Requests
           <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>Last {measurementWindow} days</span>
         </div>
-        <PullRequest displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} metric="avgAge" />
+        <PullRequest title={"Review Time"} displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} metric="avgAge" />
         <ClosedPullRequests displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} />
       </div>
     );

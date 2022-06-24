@@ -44,7 +44,7 @@ export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
       title={
         title || (
           <span>
-            {"Code Review"}
+            {"Age"}
             <sup> Avg </sup>
           </span>
         )
@@ -54,6 +54,7 @@ export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
       displayProps={{className: "tw-p-2"}}
     />
     <OpenPullRequests
+    title={"Total"}
       currentValue={(pullRequests && pullRequests.length) || 0}
       displayType="card"
       displayProps={{className: "tw-p-2"}}
