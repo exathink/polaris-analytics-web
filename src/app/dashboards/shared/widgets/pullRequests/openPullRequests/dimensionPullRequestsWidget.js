@@ -24,6 +24,7 @@ export const DimensionPullRequestsWidget = ({
   activeOnly,
   closedWithinDays,
   asStatistic,
+  asCard,
   display,
   before,
   setBefore
@@ -59,9 +60,9 @@ export const DimensionPullRequestsWidget = ({
       />
     );
   } else {
-    if (pullRequestsType==="open" && asStatistic) {
+    if (pullRequestsType==="open" && (asStatistic || asCard)) {
       return (
-        <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} />
+        <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} asCard={asCard} />
       );
     }
     return (

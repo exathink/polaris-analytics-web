@@ -8,6 +8,7 @@ import type {Context} from "../../framework/navigation/context/context";
 import Wip from "./wip/topic";
 import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
+import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Configure from "./configure/topic";
@@ -55,12 +56,16 @@ const context : Context = {
             topic: Quality
           },
           {
-            match: 'contributors',
-            topic: Contributors
-          },
-          {
             match: 'repositories',
             topic: Repositories
+          },
+          {
+            match: 'pull-requests',
+            topic: PullRequests
+          },
+          {
+            match: 'contributors',
+            topic: Contributors
           },
           {
             match: 'configure',

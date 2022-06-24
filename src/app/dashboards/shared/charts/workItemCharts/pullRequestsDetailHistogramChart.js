@@ -41,7 +41,7 @@ export const PullRequestsDetailHistogramChart = Chart({
       },
       xAxis: {
         title: {
-          text: "",
+          text: "Age",
         },
         categories: getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom),
         crosshair: true,
