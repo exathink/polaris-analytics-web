@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {
   AvgCycleTime,
@@ -7,8 +8,9 @@ import {
   FlowEfficiency
 } from "../../../components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../containers/layout";
+import fontStyles from "../../../../../framework/styles/fonts.module.css";
 
-export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeTarget, display}) => {
+export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeTarget, display, specsOnly, days}) => {
   const [current, previous] = cycleMetricsTrends;
   if (current == null || previous == null) {
     return null;
@@ -58,16 +60,28 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
       );
     }
     case "pullRequestsFlowMetricsSummary": {
+      const itemsLabel = specsOnly ? "Specs": "Cards";
       return (
-        <VizRow>
-        <VizItem w={1 / 2}>
-            <AvgCycleTime displayType={"card"} currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
-          </VizItem>
-          <VizItem w={1 / 2}>
-            <AvgDuration displayType={"card"}  currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
-          </VizItem>
-          
-        </VizRow>
+        <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+          <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>
+            Flow
+            <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>
+              {itemsLabel}, Last {days} Days
+            </span>
+          </div>
+          <AvgCycleTime
+            displayType={"card"}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+          <AvgDuration
+            displayType={"card"}
+            currentMeasurement={current}
+            previousMeasurement={previous}
+            target={cycleTimeTarget}
+          />
+        </div>
       );
     }
     default: {
