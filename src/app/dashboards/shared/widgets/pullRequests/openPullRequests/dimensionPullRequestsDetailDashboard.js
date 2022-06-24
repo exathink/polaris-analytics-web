@@ -49,7 +49,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           [frequencyRange, setFrequencyRange],
         ])}
       >
-      <DashboardWidget
+        <DashboardWidget
           w={1 / 2}
           name="pr-flow-metrics-summary"
           render={({view}) => (
@@ -71,11 +71,12 @@ export const DimensionPullRequestsDetailDashboard = ({
               includeSubTasks={includeSubTasks}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-            />)}
             />
+          )}
+        />
       </DashboardRow>
       <DashboardRow h="33%">
-      <DashboardWidget
+        <DashboardWidget
           w={1 / 2}
           name="pr-metrics-summary-detailed"
           render={({view}) => (
@@ -123,7 +124,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
-              activeOnly={before ? undefined: true}
+              activeOnly={before ? undefined : true}
               before={before}
               setBefore={setBefore}
               closedWithinDays={before ? measurementWindowRange : undefined}

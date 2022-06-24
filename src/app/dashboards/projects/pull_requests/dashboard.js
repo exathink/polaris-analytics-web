@@ -25,8 +25,8 @@ export const dashboard = () => (
         latestPullRequestEvent={project.latestPullRequestEvent}
         context={context}
         days={flowAnalysisPeriod}
-        measurementWindow={7}
-        samplingFrequency={7}
+        measurementWindow={30}
+        samplingFrequency={30}
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
