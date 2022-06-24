@@ -75,7 +75,7 @@ export const Topics = {
   pull_requests: {
     name: 'pull_requests',
     display: () => (<FormattedMessage id='topics.pull_requests' defaultMessage="Pull Requests"/>),
-    icon: 'ion-fork-repo'
+    icon: 'ion-pull-request'
   },
   repositories: {
     name: 'repositories',
