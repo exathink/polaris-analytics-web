@@ -41,7 +41,7 @@ export const DimensionPullRequestsDetailDashboard = ({
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-6 tw-grid-rows-[12%_25%_35%_35%] tw-gap-x-2 tw-gap-y-1"
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_20%_35%_33%] tw-gap-x-2 tw-gap-y-1"
     >
       <DashboardRow
         title={`Pull Request Trends`}
@@ -53,50 +53,6 @@ export const DimensionPullRequestsDetailDashboard = ({
           [frequencyRange, setFrequencyRange],
         ])}
       >
-        <DashboardWidget
-          name="pr-flow-metrics-summary"
-          className="tw-col-span-2"
-          render={({view}) => (
-            <DimensionResponseTimeWidget
-              dimension={"project"}
-              instanceKey={instanceKey}
-              view={view}
-              display={"pullRequestsFlowMetricsSummary"}
-              context={context}
-              specsOnly={true}
-              days={daysRange}
-              measurementWindow={measurementWindowRange}
-              samplingFrequency={frequencyRange}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasks}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-            />
-          )}
-        />
-
-        <DashboardWidget
-          name="pr-metrics-review-avg-closed"
-          className="tw-col-span-2"
-          render={({view}) => {
-            return (
-              <PullRequestsReviewTimeTrendsWidget
-                dimension={"project"}
-                instanceKey={instanceKey}
-                view={view}
-                days={daysRange}
-                display="reviewTimeAvgPRClosed"
-                measurementWindow={measurementWindowRange}
-                samplingFrequency={frequencyRange}
-                latestCommit={latestCommit}
-              />
-            );
-          }}
-        />
 
         <DashboardWidget
           name="pr-open-summary"
@@ -114,6 +70,52 @@ export const DimensionPullRequestsDetailDashboard = ({
               />
             );
           }}
+        />
+        
+        <DashboardWidget
+          name="pr-metrics-review-avg-closed"
+          className="tw-col-span-2"
+          render={({view}) => {
+            return (
+              <PullRequestsReviewTimeTrendsWidget
+                dimension={"project"}
+                instanceKey={instanceKey}
+                view={view}
+                days={daysRange}
+                display="reviewTimeAvgPRClosed"
+                measurementWindow={daysRange}
+                samplingFrequency={daysRange}
+                latestCommit={latestCommit}
+              />
+            );
+          }}
+        />
+
+
+        <DashboardWidget
+          name="pr-flow-metrics-summary"
+          className="tw-col-span-2"
+          render={({view}) => (
+            <DimensionResponseTimeWidget
+              dimension={"project"}
+              instanceKey={instanceKey}
+              view={view}
+              display={"pullRequestsFlowMetricsSummary"}
+              context={context}
+              specsOnly={true}
+              days={daysRange}
+              measurementWindow={daysRange}
+              samplingFrequency={daysRange}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasks}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
         />
       </DashboardRow>
       <DashboardRow>
