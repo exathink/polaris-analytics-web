@@ -40,6 +40,12 @@ const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
 export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
   <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_80%] tw-gap-1">
     <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>Open Pull Requests</div>
+    <OpenPullRequests
+      title={"Total"}
+      currentValue={(pullRequests && pullRequests.length) || 0}
+      displayType="card"
+      displayProps={{className: "tw-p-2"}}
+    />
     <OpenPullRequestsAvg
       title={
         title || (
@@ -53,12 +59,7 @@ export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
       displayType="card"
       displayProps={{className: "tw-p-2"}}
     />
-    <OpenPullRequests
-    title={"Total"}
-      currentValue={(pullRequests && pullRequests.length) || 0}
-      displayType="card"
-      displayProps={{className: "tw-p-2"}}
-    />
+
   </div>
 );
 
