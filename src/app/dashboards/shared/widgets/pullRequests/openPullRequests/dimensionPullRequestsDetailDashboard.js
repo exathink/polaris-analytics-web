@@ -7,7 +7,7 @@ import {
   useTrendsControlBarState,
 } from "../../../components/trendingControlBar/trendingControlBar";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
-import { DimensionResponseTimeWidget } from "../../work_items/responseTime/dimensionResponseTimeWidget";
+import {DimensionResponseTimeWidget} from "../../work_items/responseTime/dimensionResponseTimeWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
@@ -27,7 +27,7 @@ export const DimensionPullRequestsDetailDashboard = ({
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
   responseTimeConfidenceTarget,
-  includeSubTasks
+  includeSubTasks,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -38,11 +38,15 @@ export const DimensionPullRequestsDetailDashboard = ({
   const [before, setBefore] = React.useState();
 
   return (
-    <Dashboard dashboard={dashboard_id}>
+    <Dashboard
+      dashboard={dashboard_id}
+      gridLayout={true}
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[12%_25%_35%_auto] tw-gap-x-2 tw-gap-y-1"
+    >
       <DashboardRow
-        h={"20%"}
         title={`Pull Request Trends`}
         subTitle={`Last ${daysRange} days`}
+        className="tw-col-span-6 tw-grid tw-grid-cols-[30%_70%]"
         controls={getTrendsControlBarControls([
           [daysRange, setDaysRange],
           [measurementWindowRange, setMeasurementWindowRange],
@@ -50,8 +54,8 @@ export const DimensionPullRequestsDetailDashboard = ({
         ])}
       >
         <DashboardWidget
-          w={1 / 2}
           name="pr-flow-metrics-summary"
+          className="tw-col-span-2"
           render={({view}) => (
             <DimensionResponseTimeWidget
               dimension={"project"}
@@ -75,8 +79,8 @@ export const DimensionPullRequestsDetailDashboard = ({
           )}
         />
         <DashboardWidget
-          w={1 / 2}
           name="pr-open-summary"
+          className="tw-col-span-2"
           render={({view}) => {
             return (
               <DimensionPullRequestsWidget
@@ -90,10 +94,10 @@ export const DimensionPullRequestsDetailDashboard = ({
               />
             );
           }}
-         />
+        />
         <DashboardWidget
-          w={1/2}
           name="pr-metrics-review-avg-closed"
+          className="tw-col-span-2"
           render={({view}) => {
             return (
               <PullRequestsReviewTimeTrendsWidget
@@ -108,12 +112,12 @@ export const DimensionPullRequestsDetailDashboard = ({
               />
             );
           }}
-         />
+        />
       </DashboardRow>
-      <DashboardRow h="33%">
+      <DashboardRow>
         <DashboardWidget
-          w={1 / 2}
           name="pr-metrics-summary-detailed"
+          className="tw-col-span-3"
           render={({view}) => (
             <PullRequestsCompletedTrendsWidget
               dimension={dimension}
@@ -129,8 +133,8 @@ export const DimensionPullRequestsDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          w={1 / 2}
           name="pr-metrics-reviewtime-detailed"
+          className="tw-col-span-3"
           render={({view}) => (
             <PullRequestsReviewTimeTrendsWidget
               dimension={dimension}
@@ -146,10 +150,10 @@ export const DimensionPullRequestsDetailDashboard = ({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h={"55%"}>
+      <DashboardRow>
         <DashboardWidget
-          w={1}
           name="pr-pull-req-detailed"
+          className="tw-col-span-6"
           render={({view}) => (
             <DimensionPullRequestsWidget
               dimension={dimension}
