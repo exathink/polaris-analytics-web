@@ -7,7 +7,7 @@ import {useIntl} from "react-intl";
 import {PullRequestsDetailHistogramChart} from "../../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
 import classNames from "classnames";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css"
-import { ClosedPullRequests, PullRequest } from "../../../../components/flowStatistics/flowStatistics";
+import { ClosedPullRequestCount, PullRequest } from "../../../../components/flowStatistics/flowStatistics";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 export const PullRequestsReviewTimeTrendsView = ({
@@ -29,7 +29,7 @@ export const PullRequestsReviewTimeTrendsView = ({
           Closed Pull Requests
           <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>Last {measurementWindow} days</span>
         </div>
-        <ClosedPullRequests title="Total" displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} />
+        <ClosedPullRequestCount title="Total" displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} />
         <PullRequest title={"Review Time"} displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} metric="avgAge" />
       </div>
     );

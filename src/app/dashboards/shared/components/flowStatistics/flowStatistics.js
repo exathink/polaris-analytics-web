@@ -370,7 +370,7 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
   />
 }
 
-export const ClosedPullRequests = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+export const ClosedPullRequestCount = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
   return (
     <FlowStatistic
       title={title || <span>Pull Requests Closed</span>}
@@ -387,7 +387,7 @@ export const ClosedPullRequests = ({title, displayType, displayProps, currentMea
   );
 }
 
-export const OpenPullRequests = ({title, displayType, displayProps, currentValue}) => {
+export const OpenPullRequestCount = ({title, displayType, displayProps, currentValue}) => {
   return (
     <FlowStatistic
       title={title || <span>Pull Requests Open</span>}

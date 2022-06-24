@@ -3,7 +3,7 @@ import {VizItem, VizRow} from "../../../containers/layout";
 import {PullRequestAgeChart} from "./pullRequestAgeChart";
 import {navigateToExternalURL} from "../../../navigation/navigate";
 import {TrendIndicator} from "../../../../../components/misc/statistic/statistic";
-import {FlowStatistic, OpenPullRequests, OpenPullRequestsAvg} from "../../../components/flowStatistics/flowStatistics";
+import {FlowStatistic, OpenPullRequestCount, OpenPullRequestsAvg} from "../../../components/flowStatistics/flowStatistics";
 import {average} from "../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import classNames from "classnames";
@@ -40,7 +40,7 @@ const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
 export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
   <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_80%] tw-gap-1">
     <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>Open Pull Requests</div>
-    <OpenPullRequests
+    <OpenPullRequestCount
       title={"Total"}
       currentValue={(pullRequests && pullRequests.length) || 0}
       displayType="card"
