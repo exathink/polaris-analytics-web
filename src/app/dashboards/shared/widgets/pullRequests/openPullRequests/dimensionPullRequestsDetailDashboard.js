@@ -78,23 +78,7 @@ export const DimensionPullRequestsDetailDashboard = ({
             />
           )}
         />
-        <DashboardWidget
-          name="pr-open-summary"
-          className="tw-col-span-2"
-          render={({view}) => {
-            return (
-              <DimensionPullRequestsWidget
-                dimension={"project"}
-                instanceKey={instanceKey}
-                view={view}
-                context={context}
-                latestCommit={latestCommit}
-                asCard={true}
-                activeOnly={true}
-              />
-            );
-          }}
-        />
+
         <DashboardWidget
           name="pr-metrics-review-avg-closed"
           className="tw-col-span-2"
@@ -109,6 +93,24 @@ export const DimensionPullRequestsDetailDashboard = ({
                 measurementWindow={measurementWindowRange}
                 samplingFrequency={frequencyRange}
                 latestCommit={latestCommit}
+              />
+            );
+          }}
+        />
+
+        <DashboardWidget
+          name="pr-open-summary"
+          className="tw-col-span-2"
+          render={({view}) => {
+            return (
+              <DimensionPullRequestsWidget
+                dimension={"project"}
+                instanceKey={instanceKey}
+                view={view}
+                context={context}
+                latestCommit={latestCommit}
+                asCard={true}
+                activeOnly={true}
               />
             );
           }}

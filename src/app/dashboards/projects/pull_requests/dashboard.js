@@ -16,24 +16,26 @@ export const dashboard = () => (
         flowAnalysisPeriod,
         includeSubTasksFlowMetrics,
       } = project.settingsWithDefaults;
-      
-      return <DimensionPullRequestsDetailDashboard
-        dimension={"project"}
-        instanceKey={project.key}
-        latestWorkItemEvent={project.latestWorkItemEvent}
-        latestCommit={project.latestCommit}
-        latestPullRequestEvent={project.latestPullRequestEvent}
-        context={context}
-        days={flowAnalysisPeriod}
-        measurementWindow={30}
-        samplingFrequency={30}
-        cycleTimeTarget={cycleTimeTarget}
-        leadTimeTarget={leadTimeTarget}
-        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-        responseTimeConfidenceTarget={responseTimeConfidenceTarget}
-        includeSubTasks={includeSubTasksFlowMetrics}
-      />
+
+      return (
+        <DimensionPullRequestsDetailDashboard
+          dimension={"project"}
+          instanceKey={project.key}
+          latestWorkItemEvent={project.latestWorkItemEvent}
+          latestCommit={project.latestCommit}
+          latestPullRequestEvent={project.latestPullRequestEvent}
+          context={context}
+          days={flowAnalysisPeriod}
+          measurementWindow={30}
+          samplingFrequency={30}
+          cycleTimeTarget={cycleTimeTarget}
+          leadTimeTarget={leadTimeTarget}
+          cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+          leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+          responseTimeConfidenceTarget={responseTimeConfidenceTarget}
+          includeSubTasks={includeSubTasksFlowMetrics}
+        />
+      );
     }}
   />
 );
