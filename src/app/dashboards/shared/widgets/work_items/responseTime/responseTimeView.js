@@ -71,12 +71,14 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
           </div>
           <AvgCycleTime
             displayType={"card"}
+            displayProps={{className: "tw-p-2"}}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
           />
           <AvgDuration
             displayType={"card"}
+            displayProps={{className: "tw-p-2"}}
             currentMeasurement={current}
             previousMeasurement={previous}
             target={cycleTimeTarget}
