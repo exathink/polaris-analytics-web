@@ -65,7 +65,7 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
       const currentTrend = {...current, samplingFrequency: undefined, measurementWindow: undefined}
 
       return (
-        <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+        <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_80%] tw-gap-1">
           <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>
             Closed
             <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>
