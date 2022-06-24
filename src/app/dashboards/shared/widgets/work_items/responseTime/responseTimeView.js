@@ -57,6 +57,19 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
         </VizRow>
       );
     }
+    case "pullRequestsFlowMetricsSummary": {
+      return (
+        <VizRow>
+        <VizItem w={1 / 2}>
+            <AvgCycleTime displayType={"card"} currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+          </VizItem>
+          <VizItem w={1 / 2}>
+            <AvgDuration displayType={"card"}  currentMeasurement={current} previousMeasurement={previous} target={cycleTimeTarget} />
+          </VizItem>
+          
+        </VizRow>
+      );
+    }
     default: {
       return "Error: A valid value for required prop 'display' was not provided";
     }

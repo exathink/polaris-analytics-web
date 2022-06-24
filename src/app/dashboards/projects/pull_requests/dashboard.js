@@ -6,19 +6,35 @@ import {ProjectDashboard} from "../projectDashboard";
 export const dashboard = () => (
   <ProjectDashboard
     pollInterval={60 * 1000}
-    render={({project, context}) => (
-      <DimensionPullRequestsDetailDashboard
+    render={({project, context}) => {
+      const {
+        leadTimeTarget,
+        cycleTimeTarget,
+        responseTimeConfidenceTarget,
+        leadTimeConfidenceTarget,
+        cycleTimeConfidenceTarget,
+        flowAnalysisPeriod,
+        includeSubTasksFlowMetrics,
+      } = project.settingsWithDefaults;
+      
+      return <DimensionPullRequestsDetailDashboard
         dimension={"project"}
         instanceKey={project.key}
         latestWorkItemEvent={project.latestWorkItemEvent}
         latestCommit={project.latestCommit}
         latestPullRequestEvent={project.latestPullRequestEvent}
         context={context}
-        days={30}
+        days={flowAnalysisPeriod}
         measurementWindow={7}
         samplingFrequency={7}
+        cycleTimeTarget={cycleTimeTarget}
+        leadTimeTarget={leadTimeTarget}
+        cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+        leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+        responseTimeConfidenceTarget={responseTimeConfidenceTarget}
+        includeSubTasks={includeSubTasksFlowMetrics}
       />
-    )}
+    }}
   />
 );
 export default dashboard;

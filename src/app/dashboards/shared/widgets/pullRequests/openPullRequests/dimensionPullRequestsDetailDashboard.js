@@ -7,6 +7,7 @@ import {
   useTrendsControlBarState,
 } from "../../../components/trendingControlBar/trendingControlBar";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
+import { DimensionResponseTimeWidget } from "../../work_items/responseTime/dimensionResponseTimeWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
@@ -21,6 +22,12 @@ export const DimensionPullRequestsDetailDashboard = ({
   latestCommit,
   latestPullRequestEvent,
   latestWorkItemEvent,
+  leadTimeTarget,
+  cycleTimeTarget,
+  leadTimeConfidenceTarget,
+  cycleTimeConfidenceTarget,
+  responseTimeConfidenceTarget,
+  includeSubTasks
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -33,7 +40,7 @@ export const DimensionPullRequestsDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"33%"}
+        h={"20%"}
         title={`Pull Request Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={getTrendsControlBarControls([
@@ -42,7 +49,33 @@ export const DimensionPullRequestsDetailDashboard = ({
           [frequencyRange, setFrequencyRange],
         ])}
       >
-        <DashboardWidget
+      <DashboardWidget
+          w={1 / 2}
+          name="pr-flow-metrics-summary"
+          render={({view}) => (
+            <DimensionResponseTimeWidget
+              dimension={"project"}
+              instanceKey={instanceKey}
+              view={view}
+              display={"pullRequestsFlowMetricsSummary"}
+              context={context}
+              specsOnly={true}
+              days={daysRange}
+              measurementWindow={measurementWindowRange}
+              samplingFrequency={frequencyRange}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              includeSubTasks={includeSubTasks}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />)}
+            />
+      </DashboardRow>
+      <DashboardRow h="33%">
+      <DashboardWidget
           w={1 / 2}
           name="pr-metrics-summary-detailed"
           render={({view}) => (
