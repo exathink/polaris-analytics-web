@@ -60,7 +60,7 @@ export const DimensionPullRequestsWidget = ({
       />
     );
   } else {
-    if (pullRequestsType==="open") {
+    if (pullRequestsType==="open" && (asStatistic || asCard)) {
       return (
         <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} asCard={asCard} />
       );
