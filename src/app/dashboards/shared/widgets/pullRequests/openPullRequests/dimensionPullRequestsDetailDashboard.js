@@ -74,6 +74,24 @@ export const DimensionPullRequestsDetailDashboard = ({
             />
           )}
         />
+        <DashboardWidget
+          w={1/2}
+          name="pr-metrics-review-avg-closed"
+          render={({view}) => {
+            return (
+              <PullRequestsReviewTimeTrendsWidget
+                dimension={"project"}
+                instanceKey={instanceKey}
+                view={view}
+                days={daysRange}
+                display="reviewTimeAvgPRClosed"
+                measurementWindow={measurementWindowRange}
+                samplingFrequency={frequencyRange}
+                latestCommit={latestCommit}
+              />
+            );
+          }}
+         />
       </DashboardRow>
       <DashboardRow h="33%">
         <DashboardWidget
