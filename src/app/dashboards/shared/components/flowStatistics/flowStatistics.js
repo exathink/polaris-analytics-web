@@ -353,14 +353,14 @@ export const AvgLatency = ({title, displayType, displayProps, currentMeasurement
   />
 }
 
-export const PullRequest = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+export const PullRequest = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, metric}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     valueRender={ value => humanizeDuration(value)}
     uom={' '}
-    metric={'pullRequestAvgAge'}
+    metric={metric || 'pullRequestAvgAge'}
     displayName={title || 'Code Review'}
     superScript={'Avg'}
     target={target}
@@ -368,6 +368,23 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
     displayType={displayType}
     displayProps={displayProps}
   />
+}
+
+export const ClosedPullRequests = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+  return (
+    <FlowStatistic
+      title={title || <span>Pull Requests Closed</span>}
+      currentMeasurement={currentMeasurement}
+      valueRender={(value) => value}
+      metric={"totalClosed"}
+      uom={""}
+      good={TrendIndicator.isPositive}
+      deltaThreshold={deltaThreshold}
+      target={target}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
 }
 
 export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
