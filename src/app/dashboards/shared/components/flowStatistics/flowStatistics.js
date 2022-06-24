@@ -387,6 +387,39 @@ export const ClosedPullRequests = ({title, displayType, displayProps, currentMea
   );
 }
 
+export const OpenPullRequests = ({title, displayType, displayProps, currentValue}) => {
+  return (
+    <FlowStatistic
+      title={title || <span>Pull Requests Open</span>}
+      currentValue={currentValue}
+      good={TrendIndicator.isNegative}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
+}
+
+export const OpenPullRequestsAvg = ({title, displayType, displayProps, currentValue}) => {
+  return (
+    <FlowStatistic
+      title={
+        title || (
+          <span>
+            {"Code Review"}
+            <sup> Avg </sup>
+          </span>
+        )
+      }
+      currentValue={currentValue}
+      uom={"Days"}
+      precision={1}
+      good={TrendIndicator.isNegative}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
+}
+
 export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}

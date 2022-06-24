@@ -75,6 +75,23 @@ export const DimensionPullRequestsDetailDashboard = ({
           )}
         />
         <DashboardWidget
+          w={1 / 2}
+          name="pr-open-summary"
+          render={({view}) => {
+            return (
+              <DimensionPullRequestsWidget
+                dimension={"project"}
+                instanceKey={instanceKey}
+                view={view}
+                context={context}
+                latestCommit={latestCommit}
+                asCard={true}
+                activeOnly={true}
+              />
+            );
+          }}
+         />
+        <DashboardWidget
           w={1/2}
           name="pr-metrics-review-avg-closed"
           render={({view}) => {
