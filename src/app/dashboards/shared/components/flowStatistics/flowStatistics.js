@@ -379,7 +379,7 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
 export const ClosedPullRequestCount = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
   return (
     <FlowStatistic
-      title={title || <span>Pull Requests Closed</span>}
+      title={title || <span>Closed Pull Requests</span>}
       currentMeasurement={currentMeasurement}
       valueRender={(value) => value}
       metric={"totalClosed"}
