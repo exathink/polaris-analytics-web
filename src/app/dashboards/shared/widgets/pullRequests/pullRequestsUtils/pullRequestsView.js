@@ -40,7 +40,7 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
 
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
-  const [tabSelection, setTab] = React.useState("histogram");
+  const [tabSelection, setTab] = React.useState("table");
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
@@ -75,12 +75,12 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       title={
         pullRequestsType === "closed"
           ? `Review Time Variability`
-          : `Open Pull Requests by Age`
+          : `Open Pull Requests`
       }
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
-          : ``
+          : `Age Distribution`
       }
       selectedMetric={"pullRequestAvgAge"}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
@@ -103,7 +103,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           <div className="tw-mr-2">
             <ClearFilters
               selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
-              selectedMetric={"Pull Requests Closed"}
+              selectedMetric={"Closed Pull Requests"}
               stateType={pullRequestsType}
               handleClearClick={() => {
                 setBefore?.(undefined);
@@ -126,8 +126,9 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           label={"View"}
           className={"groupCardsBySelector"}
           groupings={[
-            {key: "histogram", display: `Histogram`},
             {key: "table", display: "Pull Requests"},
+            {key: "histogram", display: `Histogram`},
+            ,
           ].map((item) => ({
             key: item.key,
             display: item.display,
