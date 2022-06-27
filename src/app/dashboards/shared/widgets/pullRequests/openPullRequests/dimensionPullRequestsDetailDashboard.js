@@ -165,7 +165,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               before={before}
               setBefore={setBefore}
               closedWithinDays={before ? measurementWindowRange : undefined}
-              display="histogramTable"
+              display="table"
             />
           )}
           showDetail={false}

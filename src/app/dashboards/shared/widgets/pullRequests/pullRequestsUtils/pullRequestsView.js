@@ -40,7 +40,6 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
 
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
   const intl = useIntl();
-  const [tabSelection, setTab] = React.useState("table");
   const [selectedFilter, setFilter] = React.useState(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
@@ -58,12 +57,6 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       }),
     ];
   }, [pullRequests, pullRequestsType, intl]);
-
-  React.useEffect(() => {
-    if (before) {
-      setTab("table");
-    }
-  }, [before]);
 
   function handleClearClick() {
     setFilter(null);
@@ -87,7 +80,6 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       series={seriesAvgAge}
       onPointClick={({category, selectedMetric}) => {
         setFilter(category);
-        setTab("table");
       }}
     />
   );
@@ -107,7 +99,6 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
               stateType={pullRequestsType}
               handleClearClick={() => {
                 setBefore?.(undefined);
-                setTab("histogram");
               }}
             />
           </div>
@@ -122,24 +113,8 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
             />
           </div>
         )}
-        <GroupingSelector
-          label={"View"}
-          className={"groupCardsBySelector"}
-          groupings={[
-            {key: "table", display: "Pull Requests"},
-            {key: "histogram", display: `Histogram`},
-          ].map((item) => ({
-            key: item.key,
-            display: item.display,
-          }))}
-          initialValue={tabSelection}
-          value={tabSelection}
-          onGroupingChanged={setTab}
-          layout="col"
-        />
       </div>
-      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
-      {tabSelection === "table" && (
+      {display === "table" && (
         <div className="tw-h-full">
           <PullRequestsDetailTable
             key={resetComponentStateKey}
