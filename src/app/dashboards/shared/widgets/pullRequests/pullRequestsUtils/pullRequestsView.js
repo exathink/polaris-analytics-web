@@ -128,7 +128,6 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           groupings={[
             {key: "table", display: "Pull Requests"},
             {key: "histogram", display: `Histogram`},
-            ,
           ].map((item) => ({
             key: item.key,
             display: item.display,

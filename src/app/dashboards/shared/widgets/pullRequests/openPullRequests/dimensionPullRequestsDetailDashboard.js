@@ -7,7 +7,6 @@ import {
   useTrendsControlBarState,
 } from "../../../components/trendingControlBar/trendingControlBar";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
-import {DimensionResponseTimeWidget} from "../../work_items/responseTime/dimensionResponseTimeWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
