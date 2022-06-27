@@ -138,10 +138,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
-              activeOnly={before ? undefined : true}
-              before={before}
-              setBefore={setBefore}
-              closedWithinDays={before ? measurementWindowRange : undefined}
+              activeOnly={true}
               display="histogram"
             />
           )}
