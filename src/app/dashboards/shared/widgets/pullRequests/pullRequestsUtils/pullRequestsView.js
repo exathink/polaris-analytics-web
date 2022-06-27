@@ -5,7 +5,6 @@ import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
-import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 
