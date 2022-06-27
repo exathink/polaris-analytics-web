@@ -35,6 +35,7 @@ export const DimensionPullRequestsDetailDashboard = ({
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
   const [before, setBefore] = React.useState();
+  const [selectedFilter, setFilter] = React.useState(null);
 
   return (
     <Dashboard
@@ -139,6 +140,8 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={true}
+              selectedFilter={selectedFilter}
+              setFilter={setFilter}
               display="histogram"
             />
           )}
@@ -147,7 +150,7 @@ export const DimensionPullRequestsDetailDashboard = ({
       </DashboardRow>
       <DashboardRow>
         <DashboardWidget
-          name="pr-pull-req-detailed"
+          name="pr-pull-req-table"
           className="tw-col-span-6 tw-h-full"
           render={({view}) => (
             <DimensionPullRequestsWidget
@@ -163,6 +166,8 @@ export const DimensionPullRequestsDetailDashboard = ({
               setBefore={setBefore}
               closedWithinDays={before ? measurementWindowRange : undefined}
               display="table"
+              selectedFilter={selectedFilter}
+              setFilter={setFilter}
             />
           )}
           showDetail={false}

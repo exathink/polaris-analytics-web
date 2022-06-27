@@ -38,11 +38,19 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
   }
 }
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
+export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore, selectedFilter, setFilter}) {
   const intl = useIntl();
-  const [selectedFilter, setFilter] = React.useState(null);
+
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+
+  // whenever selectedFilter changes, we want to remount table component
+  React.useEffect(() => {
+    if (selectedFilter) {
+      resetComponentState();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
 
   const seriesAvgAge = React.useMemo(() => {
     return [
@@ -59,7 +67,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
   }, [pullRequests, pullRequestsType, intl]);
 
   function handleClearClick() {
-    setFilter(null);
+    setFilter?.(null);
     resetComponentState();
   }
 
@@ -79,7 +87,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
       series={seriesAvgAge}
       onPointClick={({category, selectedMetric}) => {
-        setFilter(category);
+        setFilter?.(category);
       }}
     />
   );
@@ -107,7 +115,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           <div className="tw-mr-6">
             <ClearFilters
               selectedFilter={selectedFilter}
-              selectedMetric={"pullRequestAvgAge"}
+              selectedMetric={pullRequestsType === "open" ? "Open Pull Requests" : "pullRequestAvgAge"}
               stateType={pullRequestsType}
               handleClearClick={handleClearClick}
             />
