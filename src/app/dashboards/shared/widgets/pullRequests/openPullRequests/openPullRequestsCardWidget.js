@@ -13,6 +13,8 @@ export const OpenPullRequestsCardWidget = ({
   latestPullRequestEvent,
   view,
   activeOnly,
+  cardSelection, 
+  onClick
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
@@ -33,7 +35,7 @@ export const OpenPullRequestsCardWidget = ({
   }
 
   if (view === "primary") {
-    return <OpenPullRequestsCardsView pullRequests={pullRequests} view={view} />;
+    return <OpenPullRequestsCardsView pullRequests={pullRequests} view={view} cardSelection={cardSelection} onClick={onClick}/>;
   } else {
     return null;
   }

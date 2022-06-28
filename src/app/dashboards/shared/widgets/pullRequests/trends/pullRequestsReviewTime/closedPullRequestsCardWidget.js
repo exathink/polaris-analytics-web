@@ -5,13 +5,15 @@ import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/s
 import {ClosedPullRequestsCardView} from "./closedPullRequestsCardView";
 
 export const ClosedPullRequestsCardWidget = React.memo(
-  ({dimension, instanceKey, view, days, measurementWindow, samplingFrequency, latestCommit}) => {
+  ({dimension, instanceKey, view, days, measurementWindow, samplingFrequency, latestCommit, cardSelection, onClick}) => {
     const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
       dimension,
       instanceKey,
       days,
       measurementWindow,
       samplingFrequency,
+      cardSelection,
+      onClick,
       referenceString: latestCommit,
     });
 
@@ -23,6 +25,8 @@ export const ClosedPullRequestsCardWidget = React.memo(
       <ClosedPullRequestsCardView
         pullRequestMetricsTrends={pullRequestMetricsTrends}
         measurementWindow={measurementWindow}
+        cardSelection={cardSelection}
+        onClick={onClick}
       />
     ) : null;
   }

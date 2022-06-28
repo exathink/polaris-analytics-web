@@ -37,14 +37,14 @@ const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   </VizRow>
 );
 
-export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
+export const OpenPullRequestsCardsView = ({title, pullRequests, view, cardSelection, onClick}) => (
   <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_80%] tw-gap-1">
     <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>Open Pull Requests</div>
     <OpenPullRequestCount
       title={"Total"}
       currentValue={(pullRequests && pullRequests.length) || 0}
       displayType="card"
-      displayProps={{className: "tw-p-2"}}
+      displayProps={{className: "tw-p-2", onClick, showHighlighted: cardSelection==="open"}}
     />
     <OpenPullRequestsAvg
       title={
@@ -57,7 +57,7 @@ export const OpenPullRequestsCardsView = ({title, pullRequests, view}) => (
       }
       currentValue={average(pullRequests, (pullRequest) => pullRequest.age)}
       displayType="card"
-      displayProps={{className: "tw-p-2"}}
+      displayProps={{className: "tw-p-2", onClick, showHighlighted: cardSelection==="open"}}
     />
 
   </div>
