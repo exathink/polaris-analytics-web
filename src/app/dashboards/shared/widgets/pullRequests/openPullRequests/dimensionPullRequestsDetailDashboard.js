@@ -7,6 +7,7 @@ import {
   useTrendsControlBarState,
 } from "../../../components/trendingControlBar/trendingControlBar";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
+import {OpenPullRequestsCardWidget} from "./openPullRequestsCardWidget";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
@@ -48,7 +49,7 @@ export const DimensionPullRequestsDetailDashboard = ({
         ])}
       >
         <DashboardWidget
-          name="pr-metrics-review-avg-closed"
+          name="pr-closed-summary"
           className="tw-col-span-3"
           render={({view}) => {
             return (
@@ -70,13 +71,13 @@ export const DimensionPullRequestsDetailDashboard = ({
           className="tw-col-span-3"
           render={({view}) => {
             return (
-              <DimensionPullRequestsWidget
+              <OpenPullRequestsCardWidget
                 dimension={"project"}
                 instanceKey={instanceKey}
                 view={view}
-                context={context}
                 latestCommit={latestCommit}
-                asCard={true}
+                latestWorkItemEvent={latestWorkItemEvent}
+                latestPullRequestEvent={latestPullRequestEvent}
                 activeOnly={true}
               />
             );

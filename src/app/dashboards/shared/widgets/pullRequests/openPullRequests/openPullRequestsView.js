@@ -102,8 +102,5 @@ export const OpenPullRequestsView = ({pullRequests, view, context, asStatistic, 
   if (asStatistic) {
     return <OpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
   }
-  if (asCard) {
-    return <OpenPullRequestsCardsView pullRequests={pullRequests} view={view} />;
-  }
   return <PullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
 };

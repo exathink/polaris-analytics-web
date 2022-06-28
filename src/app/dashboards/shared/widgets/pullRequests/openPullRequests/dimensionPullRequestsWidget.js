@@ -67,9 +67,9 @@ export const DimensionPullRequestsWidget = ({
       />
     );
   } else {
-    if (pullRequestsType==="open" && (asStatistic || asCard)) {
+    if (pullRequestsType==="open" && (asStatistic)) {
       return (
-        <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} asCard={asCard} />
+        <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} />
       );
     }
     return (
