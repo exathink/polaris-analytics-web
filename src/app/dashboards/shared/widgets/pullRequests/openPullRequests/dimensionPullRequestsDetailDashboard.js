@@ -8,6 +8,7 @@ import {
 } from "../../../components/trendingControlBar/trendingControlBar";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 import {OpenPullRequestsCardWidget} from "./openPullRequestsCardWidget";
+import {getTodayDate, toMoment} from "../../../../../helpers/utility";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
@@ -31,6 +32,16 @@ export const DimensionPullRequestsDetailDashboard = ({
 
   const [before, setBefore] = React.useState();
   const [selectedFilter, setFilter] = React.useState(null);
+  const [cardSelection, setCardSelection] = React.useState();
+
+  React.useEffect(() => {
+    if (cardSelection === "closed") {
+      setBefore(toMoment(getTodayDate()))
+    }
+    if (cardSelection === "open" || cardSelection===undefined) {
+      setBefore(undefined)
+    }
+  }, [cardSelection]);
 
   return (
     <Dashboard
@@ -61,6 +72,14 @@ export const DimensionPullRequestsDetailDashboard = ({
                 measurementWindow={daysRange}
                 samplingFrequency={daysRange}
                 latestCommit={latestCommit}
+                cardSelection={cardSelection}
+                onClick={() => {
+                  if (cardSelection !== "closed") {
+                    setCardSelection("closed");
+                  } else {
+                    setCardSelection(undefined);
+                  }
+                }}
               />
             );
           }}
@@ -79,14 +98,20 @@ export const DimensionPullRequestsDetailDashboard = ({
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
                 activeOnly={true}
+                cardSelection={cardSelection}
+                onClick={() => {
+                  if (cardSelection !== "open") {
+                    setCardSelection("open");
+                  } else {
+                    setCardSelection(undefined);
+                  }
+                }}
               />
             );
           }}
         />
-
       </DashboardRow>
       <DashboardRow>
-
         <DashboardWidget
           name="pr-metrics-summary-detailed"
           className="tw-col-span-2"
@@ -155,10 +180,10 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
-              activeOnly={before ? undefined : true}
+              activeOnly={cardSelection === "closed" || before ? undefined : true}
               before={before}
               setBefore={setBefore}
-              closedWithinDays={before ? measurementWindowRange : undefined}
+              closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
               display="table"
               selectedFilter={selectedFilter}
               setFilter={setFilter}
