@@ -158,9 +158,12 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
-              activeOnly={true}
               selectedFilter={selectedFilter}
               setFilter={setFilter}
+              activeOnly={cardSelection === "closed" || before ? undefined : true}
+              before={before}
+              setBefore={setBefore}
+              closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
               display="histogram"
             />
           )}
