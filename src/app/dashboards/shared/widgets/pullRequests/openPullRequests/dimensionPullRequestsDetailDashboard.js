@@ -47,7 +47,7 @@ export const DimensionPullRequestsDetailDashboard = ({
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_20%_38%_33%] tw-gap-x-2 tw-gap-y-1"
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_20%_38%_33%] tw-gap-x-2 tw-gap-y-2"
     >
       <DashboardRow
         title={`Pull Request Trends`}
