@@ -57,7 +57,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           [daysRange, setDaysRange],
           [measurementWindowRange, setMeasurementWindowRange],
           [frequencyRange, setFrequencyRange],
-        ])}
+        ], "row")}
       >
         <DashboardWidget
           name="pr-closed-summary"
