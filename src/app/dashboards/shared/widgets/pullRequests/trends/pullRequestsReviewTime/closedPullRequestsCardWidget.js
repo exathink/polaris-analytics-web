@@ -16,11 +16,12 @@ export const ClosedPullRequestsCardWidget = React.memo(
       onClick,
       referenceString: latestCommit,
     });
+    const pullRequestMetricsTrends = React.useMemo(() => {
+      return data?.[dimension]?.["pullRequestMetricsTrends"]?? [];
+    }, [data, dimension]);
 
     if (loading) return <Loading />;
     if (error) return null;
-    const {pullRequestMetricsTrends} = data[dimension];
-
     return view === "primary" ? (
       <ClosedPullRequestsCardView
         pullRequestMetricsTrends={pullRequestMetricsTrends}
