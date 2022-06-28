@@ -7,6 +7,8 @@ import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/p
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
+import fontStyles from "../../../../../framework/styles/fonts.module.css";
+import classNames from "classnames";
 
 // Here we are passing all values in days format for consistency sake
 // 1/48 days => 30mins, 6/24 days => 6 hours
@@ -35,6 +37,10 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
   } else if (closedWithinDays > 1) {
     return `${closedWithinDays} days ending ${intl.formatDate(before)}`;
   }
+}
+
+function getTableTitle(pullRequestsType) {
+  return pullRequestsType==="open" ? "Open Pull Requests": "Closed Pull Requests";
 }
 
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore, selectedFilter, setFilter}) {
@@ -122,7 +128,11 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         )}
       </div>
       {display === "table" && (
-        <div className="tw-h-full">
+        <div className="tw-relative tw-h-full">
+          <div className={classNames("tw-mx-auto tw-text-center", fontStyles["text-lg"])}>
+            {getTableTitle(pullRequestsType)}
+          </div>
+
           <PullRequestsDetailTable
             key={resetComponentStateKey}
             tableData={pullRequests}
