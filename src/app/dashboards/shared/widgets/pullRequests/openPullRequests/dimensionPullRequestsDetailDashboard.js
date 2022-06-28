@@ -1,7 +1,7 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {PullRequestsCompletedTrendsWidget} from "../trends/pullRequestsCompleted";
-import {PullRequestsReviewTimeTrendsWidget} from "../trends/pullRequestsReviewTime";
+import {PullRequestsReviewTimeTrendsWidget, ClosedPullRequestsCardWidget} from "../trends/pullRequestsReviewTime";
 import {
   getTrendsControlBarControls,
   useTrendsControlBarState,
@@ -21,12 +21,6 @@ export const DimensionPullRequestsDetailDashboard = ({
   latestCommit,
   latestPullRequestEvent,
   latestWorkItemEvent,
-  leadTimeTarget,
-  cycleTimeTarget,
-  leadTimeConfidenceTarget,
-  cycleTimeConfidenceTarget,
-  responseTimeConfidenceTarget,
-  includeSubTasks,
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -58,12 +52,11 @@ export const DimensionPullRequestsDetailDashboard = ({
           className="tw-col-span-3"
           render={({view}) => {
             return (
-              <PullRequestsReviewTimeTrendsWidget
+              <ClosedPullRequestsCardWidget
                 dimension={"project"}
                 instanceKey={instanceKey}
                 view={view}
                 days={daysRange}
-                display="reviewTimeAvgPRClosed"
                 measurementWindow={daysRange}
                 samplingFrequency={daysRange}
                 latestCommit={latestCommit}
