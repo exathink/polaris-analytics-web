@@ -39,10 +39,6 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
   }
 }
 
-function getTableTitle(pullRequestsType) {
-  return pullRequestsType==="open" ? "Open Pull Requests": "Closed Pull Requests";
-}
-
 export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore, selectedFilter, setFilter}) {
   const intl = useIntl();
 
@@ -56,6 +52,13 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilter]);
+
+  React.useEffect(() => {
+    if (before) {
+      setFilter(null)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [before]);
 
   const seriesAvgAge = React.useMemo(() => {
     return [
@@ -103,7 +106,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
   // show histogram view
   return (
     <div className="tw-h-full">
-      <div className="tw-flex tw-items-center tw-justify-end">
+      <div className="tw-flex tw-items-center tw-justify-center">
         {before != null && (
           <div className="tw-mr-2">
             <ClearFilters
@@ -129,10 +132,6 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       </div>
       {display === "table" && (
         <div className="tw-relative tw-h-full">
-          <div className={classNames("tw-mx-auto tw-text-center", fontStyles["text-lg"])}>
-            {getTableTitle(pullRequestsType)}
-          </div>
-
           <PullRequestsDetailTable
             key={resetComponentStateKey}
             tableData={pullRequests}
