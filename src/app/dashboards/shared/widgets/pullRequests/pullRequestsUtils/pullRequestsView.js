@@ -7,8 +7,6 @@ import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/p
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
-import fontStyles from "../../../../../framework/styles/fonts.module.css";
-import classNames from "classnames";
 
 // Here we are passing all values in days format for consistency sake
 // 1/48 days => 30mins, 6/24 days => 6 hours
