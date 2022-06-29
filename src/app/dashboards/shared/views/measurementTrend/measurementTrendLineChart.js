@@ -247,6 +247,13 @@ export const MeasurementTrendLineChart = Chart({
         plotOptions: {
           series: {
             animation: false,
+            cursor: "pointer",
+            states: {
+              select: {
+                color: null,
+                opacity: 0.5
+              },
+            },
           }
         },
         annotations: getAnnotations(config, measurements, intl) || [],
