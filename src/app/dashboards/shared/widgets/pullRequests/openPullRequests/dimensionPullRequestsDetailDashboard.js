@@ -53,11 +53,14 @@ export const DimensionPullRequestsDetailDashboard = ({
         title={`Pull Request Trends`}
         subTitle={``}
         className="tw-col-span-6 tw-grid tw-grid-cols-[30%_70%]"
-        controls={getTrendsControlBarControls([
-          [daysRange, setDaysRange],
-          [measurementWindowRange, setMeasurementWindowRange],
-          [frequencyRange, setFrequencyRange],
-        ], "row")}
+        controls={getTrendsControlBarControls(
+          [
+            [daysRange, setDaysRange],
+            [measurementWindowRange, setMeasurementWindowRange],
+            [frequencyRange, setFrequencyRange],
+          ],
+          "row"
+        )}
       >
         <DashboardWidget
           name="pr-closed-summary"
@@ -130,23 +133,6 @@ export const DimensionPullRequestsDetailDashboard = ({
           showDetail={false}
         />
         <DashboardWidget
-          name="pr-metrics-reviewtime-detailed"
-          className="tw-col-span-2"
-          render={({view}) => (
-            <PullRequestsReviewTimeTrendsWidget
-              dimension={dimension}
-              instanceKey={instanceKey}
-              view={view}
-              days={daysRange}
-              measurementWindow={measurementWindowRange}
-              samplingFrequency={frequencyRange}
-              latestCommit={latestCommit}
-              setBefore={setBefore}
-            />
-          )}
-          showDetail={false}
-        />
-        <DashboardWidget
           name="pr-pull-req-detailed"
           className="tw-col-span-2"
           render={({view}) => (
@@ -165,6 +151,23 @@ export const DimensionPullRequestsDetailDashboard = ({
               setBefore={setBefore}
               closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
               display="histogram"
+            />
+          )}
+          showDetail={false}
+        />
+        <DashboardWidget
+          name="pr-metrics-reviewtime-detailed"
+          className="tw-col-span-2"
+          render={({view}) => (
+            <PullRequestsReviewTimeTrendsWidget
+              dimension={dimension}
+              instanceKey={instanceKey}
+              view={view}
+              days={daysRange}
+              measurementWindow={measurementWindowRange}
+              samplingFrequency={frequencyRange}
+              latestCommit={latestCommit}
+              setBefore={setBefore}
             />
           )}
           showDetail={false}
