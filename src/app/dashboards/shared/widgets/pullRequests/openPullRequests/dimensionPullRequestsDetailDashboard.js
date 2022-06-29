@@ -35,9 +35,6 @@ export const DimensionPullRequestsDetailDashboard = ({
   const [cardSelection, setCardSelection] = React.useState();
 
   React.useEffect(() => {
-    if (cardSelection === "closed") {
-      setBefore(toMoment(getTodayDate()))
-    }
     if (cardSelection === "open" || cardSelection===undefined) {
       setBefore(undefined)
     }
@@ -187,9 +184,9 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
-              before={before}
+              before={cardSelection === "closed" && before===undefined ? toMoment(getTodayDate()) : before}
               setBefore={setBefore}
-              closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
+              closedWithinDays={cardSelection === "closed" && before===undefined ? daysRange : before ? measurementWindowRange : undefined}
               display="table"
               selectedFilter={selectedFilter}
               setFilter={setFilter}
