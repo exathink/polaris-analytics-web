@@ -83,7 +83,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     <PullRequestsDetailHistogramChart
       title={
         pullRequestsType === "closed"
-          ? `Review Time Variability`
+          ? `Review Time Details`
           : `Open Pull Requests`
       }
       chartSubTitle={
