@@ -51,7 +51,7 @@ export const DimensionPullRequestsDetailDashboard = ({
     >
       <DashboardRow
         title={`Pull Request Trends`}
-        subTitle={`Last ${daysRange} days`}
+        subTitle={``}
         className="tw-col-span-6 tw-grid tw-grid-cols-[30%_70%]"
         controls={getTrendsControlBarControls([
           [daysRange, setDaysRange],
