@@ -103,9 +103,9 @@ export function formatDate(epoch, format) {
 
 export function getTodayDate(format) {
   if (format == null) {
-    return moment();
+    return moment.utc();
   } else {
-    return moment().format(format);
+    return moment.utc().format(format);
   }
 }
 

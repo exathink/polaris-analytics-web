@@ -22,8 +22,6 @@ import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
-import {getMetricUtils, TrendIndicator, TrendIndicatorDisplayThreshold, TrendIndicatorNew} from "../../../../../../components/misc/statistic/statistic";
-import {TrendCard} from "../../../../components/cards/trendCard";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 

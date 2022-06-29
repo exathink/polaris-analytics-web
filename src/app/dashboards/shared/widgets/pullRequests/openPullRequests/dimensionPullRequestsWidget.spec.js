@@ -128,12 +128,13 @@ describe("projectPullRequestsWidget", () => {
     test("renders pull request chart in primary view without any error", async () => {
       const charViewProps = {
         ...projectPullRequestsPropsFixture,
+        display: "histogram",
         asStatistic: false,
       };
 
       renderWithProviders(<DimensionPullRequestsWidget {...charViewProps} />, emptyMock);
       await screen.findByTestId("loading-spinner");
-      await screen.findByText(/open pull requests by age/i);
+      await screen.findByText(/open pull requests/i);
     });
   });
 
