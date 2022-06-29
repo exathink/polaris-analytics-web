@@ -119,6 +119,16 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
             />
           </div>
         )}
+        {pullRequestsType === "open" && (
+          <div className="tw-mr-6">
+            <ClearFilters
+              selectedFilter={"As of today"}
+              selectedMetric={ "Open Pull Requests"}
+              stateType={pullRequestsType}
+              handleClearClick={handleClearClick}
+            />
+          </div>
+        )}
         {selectedFilter != null && (
           <div className="tw-mr-6">
             <ClearFilters
