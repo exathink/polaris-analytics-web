@@ -6,12 +6,13 @@ import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {PullRequestsDetailHistogramChart} from "../../../charts/workItemCharts/pullRequestsDetailHistogramChart";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
+import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {ResponseTimeMetricsColor} from "../../../config";
 import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 
 // Here we are passing all values in days format for consistency sake
 // 1/48 days => 30mins, 6/24 days => 6 hours
-const COL_WIDTH_BOUNDARIES = [1/48, 6/24, 1, 3, 7];
+const COL_WIDTH_BOUNDARIES = [1 / 48, 6 / 24, 1, 3, 7];
 
 function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   if (closedWithinDays === 1 && pullRequests.length === 1) {
@@ -34,9 +35,19 @@ function getSelectedFilterText({closedWithinDays, intl, before}) {
   }
 }
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore, selectedFilter, setFilter}) {
+export function PullRequestsView({
+  display,
+  pullRequests,
+  closedWithinDays,
+  context,
+  pullRequestsType,
+  before,
+  setBefore,
+  selectedFilter,
+  setFilter,
+}) {
   const intl = useIntl();
-
+  const [tabSelection, setTab] = React.useState("table");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
@@ -45,14 +56,14 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
     if (selectedFilter) {
       resetComponentState();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilter]);
 
   React.useEffect(() => {
     if (before) {
-      setFilter(null)
+      setFilter(null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [before]);
 
   const seriesAvgAge = React.useMemo(() => {
@@ -62,7 +73,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        name: pullRequestsType === 'closed' ? "Time to Review" : "Age",
+        name: pullRequestsType === "closed" ? "Time to Review" : "Age",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
       }),
@@ -76,11 +87,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
-      title={
-        pullRequestsType === "closed"
-          ? `Review Time Details`
-          : `Open Pull Requests`
-      }
+      title={pullRequestsType === "closed" ? `Review Time Details` : `Open Pull Requests`}
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
@@ -91,13 +98,57 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
       series={seriesAvgAge}
       onPointClick={({category, selectedMetric}) => {
         setFilter?.(category);
+        setTab?.("table");
       }}
     />
   );
 
-  if (display==="histogram") {
+  if (display === "histogram") {
     return histogramChart;
   }
+
+  const pullRequestsTableView = (
+    <div className="tw-relative tw-h-full">
+      <PullRequestsDetailTable
+        key={resetComponentStateKey}
+        tableData={pullRequests}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        selectedFilter={selectedFilter}
+        setShowPanel={setShowPanel}
+        setWorkItemKey={setWorkItemKey}
+        prStateType={pullRequestsType}
+      />
+    </div>
+  );
+
+  let histogramTableElement, groupingSelector;
+  if (display === "histogramTable") {
+    groupingSelector = (
+      <GroupingSelector
+        label={"View"}
+        className={"tw-ml-auto"}
+        groupings={[
+          {key: "table", display: "Pull Requests"},
+          {key: "histogram", display: `Histogram`},
+        ].map((item) => ({
+          key: item.key,
+          display: item.display,
+        }))}
+        initialValue={tabSelection}
+        value={tabSelection}
+        onGroupingChanged={setTab}
+        layout="row"
+      />
+    );
+
+    histogramTableElement = (
+      <React.Fragment>
+        <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
+        {tabSelection === "table" && pullRequestsTableView}
+      </React.Fragment>
+    );
+  }
+
   // show histogram view
   return (
     <div className="tw-h-full">
@@ -110,6 +161,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
               stateType={pullRequestsType}
               handleClearClick={() => {
                 setBefore?.(undefined);
+                setTab?.("histogram");
               }}
             />
           </div>
@@ -118,7 +170,7 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
           <div className="tw-mr-6">
             <ClearFilters
               selectedFilter={"As of today"}
-              selectedMetric={ "Open Pull Requests"}
+              selectedMetric={"Open Pull Requests"}
               stateType={pullRequestsType}
               handleClearClick={handleClearClick}
             />
@@ -134,20 +186,10 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
             />
           </div>
         )}
+        {groupingSelector}
       </div>
-      {display === "table" && (
-        <div className="tw-relative tw-h-full">
-          <PullRequestsDetailTable
-            key={resetComponentStateKey}
-            tableData={pullRequests}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            selectedFilter={selectedFilter}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
-            prStateType={pullRequestsType}
-          />
-        </div>
-      )}
+      {histogramTableElement}
+      {display === "table" && pullRequestsTableView}
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
         showPanel={showPanel}

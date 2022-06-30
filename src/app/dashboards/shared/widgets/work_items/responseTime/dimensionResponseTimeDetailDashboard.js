@@ -36,6 +36,7 @@ export function DimensionResponseTimeDetailDashboard({
   const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
+  const [selectedFilter, setFilter] = React.useState(null);
 
   const limitToSpecsOnly = workItemScope === 'specs';
 
@@ -138,6 +139,8 @@ export function DimensionResponseTimeDetailDashboard({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
+                selectedFilter={selectedFilter}
+                setFilter={setFilter}
                 display="histogramTable"
               />
             )}
