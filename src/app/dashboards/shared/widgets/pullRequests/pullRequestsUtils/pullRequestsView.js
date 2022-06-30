@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {useIntl} from "react-intl";
 import {i18nDate} from "../../../../../helpers/utility";
@@ -176,8 +177,9 @@ export function PullRequestsView({
             />
           </div>
         )}
+        {display==="histogramTable" && <div className="dummy tw-flex-1"></div>}
         {selectedFilter != null && (
-          <div className="tw-mr-6">
+          <div className={classNames("tw-mr-6", display==="histogramTable" ? "tw-ml-auto": "")}>
             <ClearFilters
               selectedFilter={selectedFilter}
               selectedMetric={pullRequestsType === "open" ? "Open Pull Requests" : "pullRequestAvgAge"}
