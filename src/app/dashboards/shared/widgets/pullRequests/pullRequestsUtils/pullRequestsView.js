@@ -1,5 +1,6 @@
 import React from "react";
 import {useIntl} from "react-intl";
+import {i18nDate} from "../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
@@ -14,26 +15,22 @@ const COL_WIDTH_BOUNDARIES = [1/48, 6/24, 1, 3, 7];
 
 function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   if (closedWithinDays === 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed on ${intl.formatDate(before)}`;
+    return `${pullRequests.length} pull request closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays === 1 && pullRequests.length !== 1) {
-    return `${pullRequests.length} pull requests closed on ${intl.formatDate(before)}`;
+    return `${pullRequests.length} pull requests closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays > 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${intl.formatDate(
-      before
-    )}`;
+    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${i18nDate(intl, before)}`;
   }
-  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending ${intl.formatDate(
-    before
-  )}`;
+  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending${i18nDate(intl, before)}`;
 }
 
 function getSelectedFilterText({closedWithinDays, intl, before}) {
   if (closedWithinDays === 1) {
-    return `on ${intl.formatDate(before)}`;
+    return `on ${i18nDate(intl, before)}`;
   } else if (closedWithinDays > 1) {
-    return `${closedWithinDays} days ending ${intl.formatDate(before)}`;
+    return `${closedWithinDays} days ending ${i18nDate(intl, before)}`;
   }
 }
 
