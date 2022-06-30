@@ -65,7 +65,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           render={({view}) => {
             return (
               <ClosedPullRequestsCardWidget
-                dimension={"project"}
+                dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
                 days={daysRange}
@@ -91,7 +91,7 @@ export const DimensionPullRequestsDetailDashboard = ({
           render={({view}) => {
             return (
               <OpenPullRequestsCardWidget
-                dimension={"project"}
+                dimension={dimension}
                 instanceKey={instanceKey}
                 view={view}
                 latestCommit={latestCommit}
