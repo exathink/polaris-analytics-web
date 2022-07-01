@@ -15,6 +15,7 @@ export const dashboard = () => (
         cycleTimeConfidenceTarget,
         flowAnalysisPeriod,
         includeSubTasksFlowMetrics,
+        latencyTarget
       } = project.settingsWithDefaults;
 
       return (
@@ -26,8 +27,9 @@ export const dashboard = () => (
           latestPullRequestEvent={project.latestPullRequestEvent}
           context={context}
           days={flowAnalysisPeriod}
-          measurementWindow={30}
-          samplingFrequency={30}
+          measurementWindow={flowAnalysisPeriod}
+          samplingFrequency={flowAnalysisPeriod}
+          latencyTarget={latencyTarget}
           cycleTimeTarget={cycleTimeTarget}
           leadTimeTarget={leadTimeTarget}
           cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}

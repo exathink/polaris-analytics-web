@@ -23,6 +23,7 @@ export const DimensionPullRequestsDetailDashboard = ({
   latestCommit,
   latestPullRequestEvent,
   latestWorkItemEvent,
+  latencyTarget
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -32,7 +33,7 @@ export const DimensionPullRequestsDetailDashboard = ({
 
   const [before, setBefore] = React.useState();
   const [selectedFilter, setFilter] = React.useState(null);
-  const [cardSelection, setCardSelection] = React.useState();
+  const [cardSelection, setCardSelection] = React.useState("open");
 
   React.useEffect(() => {
     if (cardSelection === "open" || cardSelection===undefined) {
@@ -73,6 +74,7 @@ export const DimensionPullRequestsDetailDashboard = ({
                 samplingFrequency={daysRange}
                 latestCommit={latestCommit}
                 cardSelection={cardSelection}
+                latencyTarget={latencyTarget}
                 onClick={() => {
                   if (cardSelection !== "closed") {
                     setCardSelection("closed");
