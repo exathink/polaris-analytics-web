@@ -185,6 +185,7 @@ function WipDashboard({
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
               samplingFrequency={wipAnalysisPeriod}
+              latencyTarget={latencyTarget}
               display="histogram"
             />
           )}

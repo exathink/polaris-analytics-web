@@ -70,6 +70,10 @@ export const dashboard = () => (
                     asStatistic={false}
                     activeOnly={true}
                     display="histogram"
+                    days={30}
+                    measurementWindow={30}
+                    samplingFrequency={30}
+                    latencyTarget={1.4}
                   />
           )}
           showDetail={true}

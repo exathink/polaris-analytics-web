@@ -15,6 +15,7 @@ export const DimensionPullRequestsWidget = ({
   days,
   measurementWindow,
   samplingFrequency,
+  latencyTarget,
   latestWorkItemEvent,
   latestCommit,
   latestPullRequestEvent,
@@ -64,6 +65,7 @@ export const DimensionPullRequestsWidget = ({
         days={days}
         measurementWindow={measurementWindow || Math.min(days,7)}
         samplingFrequency={samplingFrequency || Math.min(days,7)}
+        latencyTarget={latencyTarget}
       />
     );
   } else {

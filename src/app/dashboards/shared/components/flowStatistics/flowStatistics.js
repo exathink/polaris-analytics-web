@@ -381,6 +381,7 @@ export const ClosedPullRequestCount = ({title, displayType, displayProps, curren
     <FlowStatistic
       title={title || <span>Closed Pull Requests</span>}
       currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
       valueRender={(value) => value}
       metric={"totalClosed"}
       uom={""}

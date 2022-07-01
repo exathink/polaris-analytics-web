@@ -1,5 +1,5 @@
 import React from "react";
-import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
+import {i18nDate, i18nNumber, toMoment} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
 import { ResponseTimeMetricsColor } from "../../../../config";
 
@@ -43,7 +43,7 @@ export const PullRequestsReviewTimeTrendsChart = ({
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
           return {
-            header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
+            header: `${measurementWindow} days ending ${i18nDate(intl, toMoment(measurement.measurementDate))}`,
             body: [
               getSelectedMetricDisplay(measurement, seriesKey, intl),
               ["Requests Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
