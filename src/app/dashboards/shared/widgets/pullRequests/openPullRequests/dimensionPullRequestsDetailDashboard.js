@@ -32,7 +32,7 @@ export const DimensionPullRequestsDetailDashboard = ({
 
   const [before, setBefore] = React.useState();
   const [selectedFilter, setFilter] = React.useState(null);
-  const [cardSelection, setCardSelection] = React.useState();
+  const [cardSelection, setCardSelection] = React.useState("open");
 
   React.useEffect(() => {
     if (cardSelection === "open" || cardSelection===undefined) {
