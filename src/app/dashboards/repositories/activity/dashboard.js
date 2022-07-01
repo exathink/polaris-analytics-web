@@ -73,6 +73,7 @@ export const dashboard = () => (
                     days={30}
                     measurementWindow={30}
                     samplingFrequency={30}
+                    latencyTarget={1.4}
                   />
           )}
           showDetail={true}

@@ -23,6 +23,7 @@ export const DimensionPullRequestsDetailDashboard = ({
   latestCommit,
   latestPullRequestEvent,
   latestWorkItemEvent,
+  latencyTarget
 }) => {
   const [
     [daysRange, setDaysRange],
@@ -73,6 +74,7 @@ export const DimensionPullRequestsDetailDashboard = ({
                 samplingFrequency={daysRange}
                 latestCommit={latestCommit}
                 cardSelection={cardSelection}
+                latencyTarget={latencyTarget}
                 onClick={() => {
                   if (cardSelection !== "closed") {
                     setCardSelection("closed");
