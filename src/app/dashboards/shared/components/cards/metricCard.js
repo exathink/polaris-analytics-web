@@ -6,13 +6,13 @@ export function MetricCard({title, subTitle, value, suffix, info, trendIndicator
   return (
     <div
       className={classNames(
-        "tw-grid tw-h-full tw-grid-cols-7 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md",
+        "tw-grid tw-h-full tw-grid-cols-7 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md",
         className
       )}
     >
       <div className="title tw-col-span-4">
         <div className="tw-text-base tw-text-gray-300 tw-tracking-wide">{title}</div>
-        <div className="tw-text-xs tw-tracking-tight tw-leading-3">{subTitle}</div>
+        <div className="tw-text-[1vh] tw-tracking-tight tw-leading-3">{subTitle}</div>
       </div>
       <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
         <div className="trendIcon tw-cursor-pointer tw-rounded-full">
@@ -27,7 +27,7 @@ export function MetricCard({title, subTitle, value, suffix, info, trendIndicator
       </div>
 
       <div className="valueSuffix tw-col-span-4 tw-self-end">
-        <div className="value tw-text-3xl tw-font-medium">
+        <div className="value tw-text-3xl tw-font-medium tw-leading-3">
           {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
           {target && <div className="tw-text-xs tw-text-gray-300">{target}</div>}
         </div>
