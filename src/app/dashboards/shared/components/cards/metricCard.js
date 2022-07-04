@@ -10,9 +10,9 @@ export function MetricCard({title, subTitle, value, suffix, info, trendIndicator
         className
       )}
     >
-      <div className="title tw-col-span-3">
+      <div className="title tw-col-span-4">
         <div className="tw-text-base tw-text-gray-300 tw-tracking-wide">{title}</div>
-        <div>{subTitle}</div>
+        <div className="tw-text-xs tw-tracking-tight tw-leading-3">{subTitle}</div>
       </div>
       <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
         <div className="trendIcon tw-cursor-pointer tw-rounded-full">
@@ -33,7 +33,7 @@ export function MetricCard({title, subTitle, value, suffix, info, trendIndicator
         </div>
       </div>
 
-      <div className="trendIndicator tw-col-span-3">{trendIndicator}</div>
+      <div className="trendIndicator tw-col-span-3 tw-self-end tw-justify-self-end">{trendIndicator}</div>
     </div>
   );
 }
