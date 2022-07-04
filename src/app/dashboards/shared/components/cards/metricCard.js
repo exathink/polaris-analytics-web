@@ -1,38 +1,39 @@
 import classNames from "classnames";
+import {PlusIcon, TrendsIcon} from "../../../../components/misc/customIcons";
 import {InfoCard} from "../../../../components/misc/info";
 
-export function MetricCard({title, value, uom, info, className}) {
-  return (
-    <div className={classNames("tw-h-full tw-flex tw-flex-col tw-justify-between tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md", className)}>
-      <div className="tw-flex tw-items-center tw-justify-between">
-        <div className="tw-textBase">{title}</div>
-        <div className="tw-justify-self-end tw-cursor-pointer">
-          <InfoCard title={title} content={info && info.headline} drawerContent={info && info.drawerContent} />
-        </div>
-      </div>
-      <div className="tw-flex tw-items-baseline">
-        <div className="tw-text-3xl tw-text-opacity-80">{value}</div>
-        <div className="tw-textBase tw-ml-2">{uom}</div>
-      </div>
-    </div>
-  );
-}
-
-
-export function MultipleMetricsCard({metrics, className}) {
+export function MetricCard({title, subTitle, value, suffix, info, trendIndicator, target, className}) {
   return (
     <div
       className={classNames(
-        "tw-flex tw-h-full tw-flex-col tw-justify-between tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md",
+        "tw-grid tw-h-full tw-grid-cols-7 tw-rounded-lg tw-border tw-border-solid tw-border-gray-100 tw-bg-white tw-p-1 tw-shadow-md",
         className
       )}
     >
-        {metrics.map((m, i) => (
-          <div className={classNames("tw-flex tw-flex-row tw-justify-between tw-items-center", i===1 ? "tw-mt-auto": "")} key={m.title}>
-            <div className="tw-textBase">{m.title} </div>
-            <div className="tw-text-xl">{m.value} <span className="tw-text-sm tw-font-normal tw-text-gray-300">{m.uom}</span></div>
-          </div>
-        ))}
+      <div className="title tw-col-span-3">
+        <div className="tw-text-base tw-text-gray-300 tw-tracking-wide">{title}</div>
+        <div>{subTitle}</div>
+      </div>
+      <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
+        <div className="trendIcon tw-cursor-pointer tw-rounded-full">
+          <TrendsIcon />
+        </div>
+        <div className="detailIcon tw-cursor-pointer tw-rounded-full">
+          <PlusIcon />
+        </div>
+        <div className="infoIcon tw-cursor-pointer tw-rounded-full">
+          {info && <InfoCard title={info.title} content={info.content} drawerContent={info.drawerContent} />}
+        </div>
+      </div>
+
+      <div className="valueSuffix tw-col-span-4 tw-self-end">
+        <div className="value tw-text-3xl tw-font-medium">
+          {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
+          {target && <div className="tw-text-xs tw-text-gray-300">{target}</div>}
+        </div>
+      </div>
+
+      <div className="trendIndicator tw-col-span-3">{trendIndicator}</div>
     </div>
   );
 }
