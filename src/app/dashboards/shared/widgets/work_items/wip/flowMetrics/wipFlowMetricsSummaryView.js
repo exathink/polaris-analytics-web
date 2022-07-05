@@ -24,6 +24,7 @@ import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
+import {VolumeTrendsChart} from "../../trends/volume/volumeTrendsChart";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -261,6 +262,77 @@ function MetricsGroupTitle({children}) {
   return <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>{children}</div>;
 }
 
+function ThroughputDetailsDashboard({}) {
+  return (
+    <div className="tw-grid tw-grid-cols-3 tw-gap-2 tw-text-lg">
+      <div className="tw-h-20 tw-border tw-border-solid tw-border-gray-300 tw-p-5">First Card</div>
+      <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Second Card</div>
+      <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Third Card</div>
+      <div className="tw-col-span-3 tw-mt-5 tw-h-[20rem] tw-w-[40rem] tw-border tw-border-solid tw-border-gray-300 tw-p-5">
+        Chart
+      </div>
+    </div>
+  );
+}
+
+function ThroughputChart({flowMetricsTrends, measurementPeriod, measurementWindow, specsOnly}) {
+  return (
+    <div className="tw-h-full tw-w-[20rem] tw-border tw-border-solid tw-border-gray-300">
+              <VolumeTrendsChart
+          flowMetricsTrends={flowMetricsTrends}
+          measurementPeriod={measurementPeriod}
+          measurementWindow={measurementWindow}
+          // chartConfig={chartConfig}
+          // view={view}
+          specsOnly={specsOnly}
+        />
+    </div>
+  );
+}
+
+export function ThroughputCardView({data, dimension, days, measurementWindow, samplingFrequency, specsOnly}) {
+  const {cycleMetricsTrends} = data[dimension];
+  let [currentTrend, previousTrend] = cycleMetricsTrends;
+
+  return (
+    <div>
+      <Throughput
+        title={
+          <span>
+            Throughput <sup>Avg</sup>
+          </span>
+        }
+        displayType={"cardAdvanced"}
+        displayProps={{
+          className: "tw-p-2",
+          info: {title: "title"},
+          detailsView: {
+            title: "Throughput Detail Dashboard",
+            content: <ThroughputDetailsDashboard />,
+            placement: "right",
+          },
+          trendsView: {
+            title: "",
+            content: (
+              <ThroughputChart
+                flowMetricsTrends={cycleMetricsTrends}
+                measurementPeriod={measurementWindow}
+                measurementWindow={measurementWindow}
+                specsOnly={false}
+              />
+            ),
+            placement: "bottom",
+          },
+        }}
+        specsOnly={specsOnly}
+        currentMeasurement={currentTrend}
+        previousMeasurement={previousTrend}
+        measurementWindow={days}
+      />
+    </div>
+  );
+}
+
 export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget, specsOnly, days}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
@@ -279,7 +351,8 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
           {itemsLabel}, Last {days} Days
         </span>
       </MetricsGroupTitle>
-      <Throughput
+      {/* TODO: this is only for testing purpose, will uncomment this */}
+      {/* <Throughput
         title={
           <span>
             Throughput <sup>Avg</sup>
@@ -291,6 +364,15 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         measurementWindow={days}
+      /> */}
+      {/* TODO: this is only for testing purpose, will remove it from here */}
+      <ThroughputCardView
+        data={data}
+        dimension={dimension}
+        days={days}
+        measurementWindow={days}
+        samplingFrequency={days}
+        specsOnly={specsOnly}
       />
       <AvgCycleTime
         displayType={"card"}
