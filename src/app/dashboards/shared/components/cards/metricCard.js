@@ -12,7 +12,7 @@ export function MetricCard({title, subTitle, value, suffix, info, trendIndicator
     >
       <div className="title tw-col-span-4">
         <div className="tw-text-base tw-text-gray-300 tw-tracking-wide">{title}</div>
-        <div className="tw-text-[1vh] tw-tracking-tight tw-leading-3">{subTitle}</div>
+        <div className="tw-text-[0.5rem] tw-tracking-tight tw-leading-3">{subTitle}</div>
       </div>
       <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
         <div className="trendIcon tw-cursor-pointer tw-rounded-full">
