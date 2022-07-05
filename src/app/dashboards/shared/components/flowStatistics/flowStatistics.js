@@ -15,6 +15,7 @@ import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
+import {MetricCard} from "../cards/metricCard";
 
 export const FlowStatistic = ({
   title,
@@ -60,6 +61,30 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           target={targetText}
+        />
+      );
+    }
+    case "cardAdvanced": {
+      const {onClick, showHighlighted, info, size, className, targetText, detailsView, trendsView} = displayProps;
+      return (
+        <MetricCard
+          title={title}
+          value={metricValue}
+          suffix={suffix}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+            />
+          }
+          info={info}
+          className={className}
+          target={targetText}
+          detailsView={detailsView}
+          trendsView={trendsView}
         />
       );
     }

@@ -13,8 +13,8 @@ export function MetricCard({
   info,
   trendIndicator,
   target,
-  detailsDraft,
-  trendsDraft,
+  detailsView,
+  trendsView,
   className,
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
@@ -30,24 +30,24 @@ export function MetricCard({
         <div className="tw-text-[0.5rem] tw-leading-3 tw-tracking-tight">{subTitle}</div>
       </div>
       <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
-        {trendsDraft && (
+        {trendsView && (
           <div className="trendIcon tw-cursor-pointer tw-rounded-full">
             <Popover
-              placement={trendsDraft.placement}
-              title={trendsDraft.title}
-              content={trendsDraft.content}
+              placement={trendsView.placement}
+              title={trendsView.title}
+              content={trendsView.content}
               trigger="click"
             >
               <TrendsIcon style={{color: color}}/>
             </Popover>
           </div>
         )}
-        {detailsDraft && (
+        {detailsView && (
           <div className="detailIcon tw-cursor-pointer tw-rounded-full">
             <Popover
-              placement={detailsDraft.placement}
-              title={detailsDraft.title}
-              content={detailsDraft.content}
+              placement={detailsView.placement}
+              title={detailsView.title}
+              content={detailsView.content}
               trigger="click"
             >
               <PlusCircleFilled style={{fontSize: "2.5vh", color: color}} />
