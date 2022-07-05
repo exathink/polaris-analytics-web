@@ -1,7 +1,9 @@
+import {PlusCircleFilled} from "@ant-design/icons";
 import {Popover} from "antd";
 import classNames from "classnames";
-import {PlusIcon, TrendsIcon} from "../../../../components/misc/customIcons";
+import {TrendsIcon} from "../../../../components/misc/customIcons";
 import {InfoCard} from "../../../../components/misc/info";
+import {Colors} from "../../config";
 
 export function MetricCard({
   title,
@@ -15,6 +17,7 @@ export function MetricCard({
   trendsDraft,
   className,
 }) {
+  const color = Colors.DashboardWidgetIcons.primary;
   return (
     <div
       className={classNames(
@@ -35,7 +38,7 @@ export function MetricCard({
               content={trendsDraft.content}
               trigger="click"
             >
-              <TrendsIcon />
+              <TrendsIcon style={{color: color}}/>
             </Popover>
           </div>
         )}
@@ -47,7 +50,7 @@ export function MetricCard({
               content={detailsDraft.content}
               trigger="click"
             >
-              <PlusIcon />
+              <PlusCircleFilled style={{fontSize: "2.5vh", color: color}} />
             </Popover>
           </div>
         )}
