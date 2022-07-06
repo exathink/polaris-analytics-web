@@ -290,12 +290,12 @@ function ThroughputChart({flowMetricsTrends, measurementPeriod, measurementWindo
   );
 }
 
-export function ThroughputCardView({data, dimension, days, measurementWindow, samplingFrequency, specsOnly}) {
+export function ThroughputCardView({data, dimension, flowAnalysisPeriod, trendAnalysisPeriod, specsOnly}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   return (
-    <div>
+    <div className="tw-w-full tw-h-full">
       <Throughput
         title={
           <span>
@@ -316,8 +316,8 @@ export function ThroughputCardView({data, dimension, days, measurementWindow, sa
             content: (
               <ThroughputChart
                 flowMetricsTrends={cycleMetricsTrends}
-                measurementPeriod={measurementWindow}
-                measurementWindow={measurementWindow}
+                measurementPeriod={trendAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
                 specsOnly={false}
               />
             ),
@@ -327,7 +327,7 @@ export function ThroughputCardView({data, dimension, days, measurementWindow, sa
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
-        measurementWindow={days}
+        measurementWindow={flowAnalysisPeriod}
       />
     </div>
   );
