@@ -7,6 +7,7 @@ import type {Context} from "../../framework/navigation/context/context";
 
 import Wip from "./wip/topic";
 import Flow from "./flow/topic";
+import NewFlow from "./newFlow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
@@ -46,6 +47,10 @@ const context : Context = {
           {
             match: 'flow',
             topic: Flow
+          },
+          {
+            match: 'newflow',
+            topic: NewFlow
           },
           {
             match: 'wip',

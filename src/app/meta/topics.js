@@ -7,6 +7,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analyzer"/>),
     icon: 'ion-ios-infinite-outline'
   },
+  newflow: {
+    name: 'newflow',
+    display: () => (<FormattedMessage id='topics.newflow' defaultMessage="New Flow"/>),
+    icon: 'ion-ios-information-outline'
+  },
   wip: {
     name: 'wip',
     display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
