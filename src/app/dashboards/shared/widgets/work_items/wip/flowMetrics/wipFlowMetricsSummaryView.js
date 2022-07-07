@@ -438,8 +438,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
           {itemsLabel}, Last {days} Days
         </span>
       </MetricsGroupTitle>
-      {/* TODO: this is only for testing purpose, will uncomment this */}
-      {/* <Throughput
+      <Throughput
         title={
           <span>
             Throughput <sup>Avg</sup>
@@ -451,15 +450,6 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         measurementWindow={days}
-      /> */}
-      {/* TODO: this is only for testing purpose, will remove it from here */}
-      <ThroughputCardView
-        data={data}
-        dimension={dimension}
-        days={days}
-        measurementWindow={days}
-        samplingFrequency={days}
-        specsOnly={specsOnly}
       />
       <AvgCycleTime
         displayType={"card"}
