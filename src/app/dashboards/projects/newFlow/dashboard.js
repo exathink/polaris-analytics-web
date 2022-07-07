@@ -21,7 +21,11 @@ function NewFlowDashboard({
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} className="tw-grid tw-gap-2 tw-grid-cols-5 tw-grid-rows-3" gridLayout={true}>
+    <Dashboard
+      dashboard={`${dashboard_id}`}
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_40%_40%] tw-gap-2"
+      gridLayout={true}
+    >
       <DashboardRow>
         <DashboardWidget
           name="first-widget"
