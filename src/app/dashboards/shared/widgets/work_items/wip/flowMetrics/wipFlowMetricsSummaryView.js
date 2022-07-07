@@ -15,6 +15,7 @@ import {
   AvgCycleTime,
   Throughput,
   TotalEffort,
+  Volume,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
@@ -348,6 +349,34 @@ export function ThroughputCardView({
             ),
             placement: "bottom",
           },
+        }}
+        specsOnly={specsOnly}
+        currentMeasurement={currentTrend}
+        previousMeasurement={previousTrend}
+        measurementWindow={flowAnalysisPeriod}
+      />
+    </div>
+  );
+}
+
+export function VolumeCardView({
+  data,
+  dimension,
+  displayType,
+  flowAnalysisPeriod,
+  specsOnly,
+}) {
+  const {cycleMetricsTrends} = data[dimension];
+  let [currentTrend, previousTrend] = cycleMetricsTrends;
+
+  return (
+    <div className="tw-h-full tw-w-full">
+      <Volume
+        displayType={displayType}
+        normalized={false}
+        displayProps={{
+          className: "tw-p-2",
+          info: {title: "title"},
         }}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}

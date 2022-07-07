@@ -1,6 +1,7 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {ThroughputCardWidget} from "./throughputCardWidget";
+import {VolumeCardWidget} from "./volumeCardWidget";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -43,7 +44,19 @@ export const ThroughputDetailDashboard = ({
           w={1}
           name="volume-summary"
           className="tw-p-2"
-          render={({view}) => <div>Volume Card Widget</div>}
+          render={({view}) => (
+            <VolumeCardWidget
+              dimension={dimension}
+              instanceKey={instanceKey}
+              displayType="card"
+              flowAnalysisPeriod={flowAnalysisPeriod}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              targetPercentile={targetPercentile}
+              specsOnly={specsOnly}
+              includeSubTasks={includeSubTasks}
+            />
+          )}
           showDetail={false}
         />
         <DashboardWidget
