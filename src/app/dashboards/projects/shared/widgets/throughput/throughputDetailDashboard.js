@@ -24,7 +24,7 @@ export const ThroughputDetailDashboard = ({
         <DashboardWidget
           w={1}
           name="throughput-summary"
-          className="tw-p-2"
+          className="tw-p-2 tw-h-32 tw-w-[16rem]"
           render={({view}) => (
             <ThroughputCardWidget
               dimension={dimension}
@@ -91,6 +91,7 @@ export const ThroughputDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               flowAnalysisPeriod={flowAnalysisPeriod}
+              trendAnalysisPeriod={trendAnalysisPeriod}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
               includeSubTasks={includeSubTasks}
