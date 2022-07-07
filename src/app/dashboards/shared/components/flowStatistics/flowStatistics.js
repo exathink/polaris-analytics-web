@@ -252,7 +252,7 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold, displayProps}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
@@ -263,6 +263,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
