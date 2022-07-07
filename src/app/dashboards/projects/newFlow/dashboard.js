@@ -28,7 +28,7 @@ function NewFlowDashboard({
   } = settingsWithDefaults;
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} className={"tw-grid tw-gap-2 tw-grid-cols-5 tw-grid-rows-3"} gridLayout={true}>
+    <Dashboard dashboard={`${dashboard_id}`} className="tw-grid tw-gap-2 tw-grid-cols-5 tw-grid-rows-3" gridLayout={true}>
       <DashboardRow>
         <DashboardWidget
           name="first-widget"
@@ -39,6 +39,7 @@ function NewFlowDashboard({
               <ThroughputCardWidget
                 dimension="project"
                 instanceKey={key}
+                displayType="cardAdvanced"
                 trendAnalysisPeriod={trendAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 specsOnly={specsOnly}

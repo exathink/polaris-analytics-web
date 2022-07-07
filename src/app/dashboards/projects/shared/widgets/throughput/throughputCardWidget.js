@@ -8,6 +8,7 @@ import {ThroughputCardView} from "../../../../shared/widgets/work_items/wip/flow
 export const ThroughputCardWidget = ({
   dimension,
   instanceKey,
+  displayType,
   flowAnalysisPeriod,
   trendAnalysisPeriod,
   targetPercentile,
@@ -44,9 +45,15 @@ export const ThroughputCardWidget = ({
     <ThroughputCardView
       data={data}
       dimension={dimension}
+      instanceKey={instanceKey}
+      displayType={displayType}
       flowAnalysisPeriod={flowAnalysisPeriod}
       trendAnalysisPeriod={trendAnalysisPeriod}
       specsOnly={specsOnly}
+      latestCommit={latestCommit}
+      latestWorkItemEvent={latestWorkItemEvent}
+      includeSubTasks={includeSubTasks}
+      targetPercentile={targetPercentile}
     />
   );
 };

@@ -25,6 +25,7 @@ import styles from "./flowMetrics.module.css";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {VolumeTrendsChart} from "../../trends/volume/volumeTrendsChart";
+import {ThroughputDetailDashboard} from "../../../../../projects/shared/widgets/throughput/throughputDetailDashboard";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -262,18 +263,18 @@ function MetricsGroupTitle({children}) {
   return <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>{children}</div>;
 }
 
-function ThroughputDetailsDashboard({}) {
-  return (
-    <div className="tw-grid tw-grid-cols-3 tw-gap-2 tw-text-lg">
-      <div className="tw-h-20 tw-border tw-border-solid tw-border-gray-300 tw-p-5">First Card</div>
-      <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Second Card</div>
-      <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Third Card</div>
-      <div className="tw-col-span-3 tw-mt-5 tw-h-[20rem] tw-w-[40rem] tw-border tw-border-solid tw-border-gray-300 tw-p-5">
-        Chart
-      </div>
-    </div>
-  );
-}
+// function ThroughputDetailsDashboard({}) {
+//   return (
+//     <div className="tw-grid tw-grid-cols-3 tw-gap-2 tw-text-lg">
+//       <div className="tw-h-20 tw-border tw-border-solid tw-border-gray-300 tw-p-5">First Card</div>
+//       <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Second Card</div>
+//       <div className="tw-border tw-border-solid tw-border-gray-300 tw-p-5">Third Card</div>
+//       <div className="tw-col-span-3 tw-mt-5 tw-h-[20rem] tw-w-[40rem] tw-border tw-border-solid tw-border-gray-300 tw-p-5">
+//         Chart
+//       </div>
+//     </div>
+//   );
+// }
 
 function ThroughputChart({flowMetricsTrends, measurementPeriod, measurementWindow, specsOnly}) {
   return (
@@ -290,25 +291,49 @@ function ThroughputChart({flowMetricsTrends, measurementPeriod, measurementWindo
   );
 }
 
-export function ThroughputCardView({data, dimension, flowAnalysisPeriod, trendAnalysisPeriod, specsOnly}) {
+export function ThroughputCardView({
+  data,
+  dimension,
+  displayType,
+  instanceKey,
+  flowAnalysisPeriod,
+  trendAnalysisPeriod,
+  specsOnly,
+  latestCommit,
+  latestWorkItemEvent,
+  targetPercentile,
+  includeSubTasks,
+}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   return (
-    <div className="tw-w-full tw-h-full">
+    <div className="tw-h-full tw-w-full">
       <Throughput
         title={
           <span>
             Throughput <sup>Avg</sup>
           </span>
         }
-        displayType={"cardAdvanced"}
+        displayType={displayType}
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
           detailsView: {
             title: "Throughput Detail Dashboard",
-            content: <ThroughputDetailsDashboard />,
+            content: (
+              <ThroughputDetailDashboard
+                dimension={dimension}
+                instanceKey={instanceKey}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendAnalysisPeriod}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                targetPercentile={targetPercentile}
+                specsOnly={specsOnly}
+                includeSubTasks={includeSubTasks}
+              />
+            ),
             placement: "right",
           },
           trendsView: {
