@@ -325,7 +325,12 @@ export function ThroughputCardView({
           info: {title: "title"},
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
           detailsView: {
-            title: "Throughput Detail Dashboard",
+            title: (
+              <div className="tw-text-lg tw-text-gray-300">
+                Throughput Details{" "}
+                <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
+              </div>
+            ),
             content: (
               <ThroughputDetailDashboard
                 dimension={dimension}
@@ -376,7 +381,7 @@ export function VolumeCardView({
 }) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
-
+  currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod}
   return (
     <div className="tw-h-full tw-w-full">
       <Volume
