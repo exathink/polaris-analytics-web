@@ -28,6 +28,7 @@ import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import {VolumeTrendsChart} from "../../trends/volume/volumeTrendsChart";
 import {ThroughputDetailDashboard} from "../../../../../projects/shared/widgets/throughput/throughputDetailDashboard";
+import {ThroughputTrendsWidget} from "../../../../../projects/shared/widgets/throughput/throughputTrendsWidget";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -278,17 +279,18 @@ function MetricsGroupTitle({children}) {
 //   );
 // }
 
-function ThroughputChart({flowMetricsTrends, measurementPeriod, measurementWindow, specsOnly}) {
+export function ThroughputTrendsView({data, dimension, measurementPeriod, measurementWindow, specsOnly, view}) {
+  const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
+
   return (
-    <div className="tw-h-full tw-w-[20rem] tw-border tw-border-solid tw-border-gray-300">
-              <VolumeTrendsChart
-          flowMetricsTrends={flowMetricsTrends}
-          measurementPeriod={measurementPeriod}
-          measurementWindow={measurementWindow}
-          // chartConfig={chartConfig}
-          // view={view}
-          specsOnly={specsOnly}
-        />
+    <div className="tw-h-full tw-w-full tw-border tw-border-solid tw-border-gray-300">
+      <VolumeTrendsChart
+        flowMetricsTrends={flowMetricsTrends}
+        measurementPeriod={measurementPeriod}
+        measurementWindow={measurementWindow}
+        view={view}
+        specsOnly={specsOnly}
+      />
     </div>
   );
 }
@@ -341,11 +343,15 @@ export function ThroughputCardView({
           trendsView: {
             title: "",
             content: (
-              <ThroughputChart
-                flowMetricsTrends={cycleMetricsTrends}
-                measurementPeriod={trendAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                specsOnly={false}
+              <ThroughputTrendsWidget
+                dimension={dimension}
+                instanceKey={instanceKey}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                targetPercentile={targetPercentile}
+                includeSubTasks={includeSubTasks}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                specsOnly={specsOnly}
               />
             ),
             placement: "bottom",

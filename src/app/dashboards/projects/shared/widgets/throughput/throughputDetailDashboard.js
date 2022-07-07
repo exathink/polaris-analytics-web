@@ -2,6 +2,7 @@ import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {CadenceCardWidget} from "./cadenceCardWidget";
 import {ThroughputCardWidget} from "./throughputCardWidget";
+import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
 import {VolumeCardWidget} from "./volumeCardWidget";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
@@ -85,7 +86,18 @@ export const ThroughputDetailDashboard = ({
           w={1}
           className="tw-col-span-3 tw-p-2"
           name="throughput-volume-summary"
-          render={({view}) => <div>Throughput Daily Volume Chart</div>}
+          render={({view}) => (
+            <ThroughputTrendsWidget
+              dimension={dimension}
+              instanceKey={instanceKey}
+              flowAnalysisPeriod={flowAnalysisPeriod}
+              targetPercentile={targetPercentile}
+              specsOnly={specsOnly}
+              includeSubTasks={includeSubTasks}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
           showDetail={false}
         />
       </DashboardRow>
