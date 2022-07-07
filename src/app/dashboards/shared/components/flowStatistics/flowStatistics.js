@@ -65,10 +65,11 @@ export const FlowStatistic = ({
       );
     }
     case "cardAdvanced": {
-      const {onClick, showHighlighted, info, size, className, targetText, detailsView, trendsView} = displayProps;
+      const {onClick, showHighlighted, info, size, className, targetText, detailsView, trendsView, subTitle} = displayProps;
       return (
         <MetricCard
           title={title}
+          subTitle={subTitle}
           value={metricValue}
           suffix={suffix}
           trendIndicator={
