@@ -257,7 +257,7 @@ export const Cadence = ({title, displayType, currentMeasurement, previousMeasure
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
-    valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
+    valueRender={value => value ? `${value}/${currentMeasurement['measurementWindow']}` : value}
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}

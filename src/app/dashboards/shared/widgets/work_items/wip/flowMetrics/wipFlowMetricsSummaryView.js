@@ -16,6 +16,7 @@ import {
   Throughput,
   TotalEffort,
   Volume,
+  Cadence,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
 import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
@@ -382,6 +383,31 @@ export function VolumeCardView({
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         measurementWindow={flowAnalysisPeriod}
+      />
+    </div>
+  );
+}
+
+export function CadenceCardView({
+  data,
+  dimension,
+  displayType,
+  specsOnly,
+}) {
+  const {cycleMetricsTrends} = data[dimension];
+  let [currentTrend, previousTrend] = cycleMetricsTrends;
+
+  return (
+    <div className="tw-h-full tw-w-full">
+      <Cadence
+        displayType={displayType}
+        displayProps={{
+          className: "tw-p-2",
+          info: {title: "title"},
+        }}
+        specsOnly={specsOnly}
+        currentMeasurement={currentTrend}
+        previousMeasurement={previousTrend}
       />
     </div>
   );

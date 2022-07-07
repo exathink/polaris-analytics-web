@@ -86,6 +86,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
         earliestClosedDate
         latestClosedDate
         targetPercentile
+        cadence
       }
     }
   }

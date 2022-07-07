@@ -1,5 +1,6 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {CadenceCardWidget} from "./cadenceCardWidget";
 import {ThroughputCardWidget} from "./throughputCardWidget";
 import {VolumeCardWidget} from "./volumeCardWidget";
 
@@ -63,7 +64,19 @@ export const ThroughputDetailDashboard = ({
           w={1}
           name="cadence-summary"
           className="tw-p-2"
-          render={({view}) => <div>Cadence Card Widget</div>}
+          render={({view}) => (
+            <CadenceCardWidget
+              dimension={dimension}
+              instanceKey={instanceKey}
+              displayType="card"
+              flowAnalysisPeriod={flowAnalysisPeriod}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              targetPercentile={targetPercentile}
+              specsOnly={specsOnly}
+              includeSubTasks={includeSubTasks}
+            />
+          )}
           showDetail={false}
         />
       </DashboardRow>
