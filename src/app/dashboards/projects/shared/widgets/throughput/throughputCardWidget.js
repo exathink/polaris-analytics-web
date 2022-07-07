@@ -3,7 +3,7 @@ import React from "react";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {useQueryDimensionFlowMetricsTrends} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionFlowMetricsTrends";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {ThroughputCardView} from "../../../../shared/widgets/work_items/wip/flowMetrics/wipFlowMetricsSummaryView";
+import {ThroughputCardView} from "./throughputViews";
 
 export const ThroughputCardWidget = ({
   dimension,
@@ -18,12 +18,11 @@ export const ThroughputCardWidget = ({
   includeSubTasks,
   view,
 }) => {
-
-    // Summary Card Data
-    // Throughput for a single measurement period
-    // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-    // days = measurementWindow = samplingFrequency
-    // days is set to flowAnalysisPeriod by default
+  // Summary Card Data
+  // Throughput for a single measurement period
+  // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
+  // days = measurementWindow = samplingFrequency
+  // days is set to flowAnalysisPeriod by default
 
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,

@@ -3,7 +3,7 @@ import React from "react";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {useQueryDimensionFlowMetricsTrends} from "../../../../shared/widgets/work_items/hooks/useQueryDimensionFlowMetricsTrends";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {CadenceCardView} from "../../../../shared/widgets/work_items/wip/flowMetrics/wipFlowMetricsSummaryView";
+import {CadenceCardView} from "./throughputViews";
 
 export const CadenceCardWidget = ({
   dimension,
@@ -16,7 +16,6 @@ export const CadenceCardWidget = ({
   latestCommit,
   includeSubTasks,
 }) => {
-
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
@@ -33,12 +32,5 @@ export const CadenceCardWidget = ({
     return null;
   }
 
-  return (
-    <CadenceCardView
-      data={data}
-      dimension={dimension}
-      displayType={displayType}
-      specsOnly={specsOnly}
-    />
-  );
+  return <CadenceCardView data={data} dimension={dimension} displayType={displayType} specsOnly={specsOnly} />;
 };

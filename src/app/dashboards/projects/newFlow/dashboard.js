@@ -10,21 +10,14 @@ function NewFlowDashboard({
   project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults},
   context,
 }) {
-  const [workItemScope, setWorkItemScope] = useState("all");
+  const [workItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
 
   const {
-    leadTimeTarget,
-    cycleTimeTarget,
-    latencyTarget,
     responseTimeConfidenceTarget,
-    leadTimeConfidenceTarget,
-    cycleTimeConfidenceTarget,
     flowAnalysisPeriod,
     trendAnalysisPeriod,
-    wipLimit,
     includeSubTasksFlowMetrics,
-    includeSubTasksWipInspector,
   } = settingsWithDefaults;
 
   return (
