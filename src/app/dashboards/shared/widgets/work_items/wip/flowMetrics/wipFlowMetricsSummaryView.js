@@ -323,6 +323,7 @@ export function ThroughputCardView({
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
           detailsView: {
             title: "Throughput Detail Dashboard",
             content: (
