@@ -27,7 +27,7 @@ export function MetricCard({
     >
       <div className="title tw-col-span-4">
         <div className="tw-text-base tw-tracking-wide tw-text-gray-300">{title}</div>
-        <div className="tw-text-[0.5rem] tw-leading-3 tw-tracking-tight">{subTitle}</div>
+        <div className="tw-text-xs tw-tracking-tight">{subTitle}</div>
       </div>
       <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
         {trendsView && (
