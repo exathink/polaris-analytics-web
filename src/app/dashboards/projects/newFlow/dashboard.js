@@ -3,6 +3,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {ThroughputCardWidget} from "../shared/widgets/throughput/throughputCardWidget";
+import {CycleTimeCardWidget} from "../shared/widgets/responseTimeSLA/cycleTimeCardWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -18,19 +19,20 @@ function NewFlowDashboard({
     flowAnalysisPeriod,
     trendAnalysisPeriod,
     includeSubTasksFlowMetrics,
+    cycleTimeTarget,
   } = settingsWithDefaults;
 
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_40%_40%] tw-gap-2"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_40%_40%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <DashboardRow>
         <DashboardWidget
-          name="first-widget"
+          name="throughput-summary-card"
           title=""
-          className="tw-ml-2 tw-mt-2"
+          className=""
           render={({view}) => {
             return (
               <ThroughputCardWidget
@@ -44,6 +46,31 @@ function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 targetPercentile={responseTimeConfidenceTarget}
+                view={view}
+              />
+            );
+          }}
+          showDetail={false}
+        />
+
+        <DashboardWidget
+          name="cycletime-summary"
+          title=""
+          className="tw-col-start-5"
+          render={({view}) => {
+            return (
+              <CycleTimeCardWidget
+                dimension="project"
+                instanceKey={key}
+                displayType="cardAdvanced"
+                trendAnalysisPeriod={trendAnalysisPeriod}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                specsOnly={specsOnly}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                targetPercentile={responseTimeConfidenceTarget}
+                cycleTimeTarget={cycleTimeTarget}
                 view={view}
               />
             );
