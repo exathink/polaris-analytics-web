@@ -122,7 +122,7 @@ function NewFlowDashboard({
                 dimension="project"
                 instanceKey={key}
                 displayBag={{
-                  metric: "total",
+                  metric: "volume",
                   displayType: "cardAdvanced",
                   displayProps: {
                     trendsView: {title: "Total", content: <span>Volume Trends</span>},

@@ -6,9 +6,9 @@ export function DimensionWipMetricsView({data, dimension, displayBag, cycleTimeT
 
   // TODO: Need to calculate this from api response
   const wipLimit = 1.4;
-  
+
   const metricMap = {
-    total: (
+    volume: (
       <Wip
         title={<span>Total</span>}
         currentMeasurement={pipelineCycleMetrics}
