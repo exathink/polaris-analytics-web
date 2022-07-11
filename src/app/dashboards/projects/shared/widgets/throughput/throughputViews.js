@@ -1,4 +1,4 @@
-import {Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
+import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
@@ -96,7 +96,7 @@ export function ThroughputCardView({
   );
 }
 
-export function VolumeCardView({data, dimension, displayType, flowAnalysisPeriod, specsOnly}) {
+export function VolumeCardView({data, dimension, displayType, flowAnalysisPeriod, specsOnly, displayProps={}}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
   currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod};
@@ -108,11 +108,33 @@ export function VolumeCardView({data, dimension, displayType, flowAnalysisPeriod
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          ...displayProps
         }}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         measurementWindow={flowAnalysisPeriod}
+      />
+    </div>
+  );
+}
+
+export function AgeCardView({data, dimension, displayType, flowAnalysisPeriod, displayProps={}, cycleTimeTarget}) {
+  const {cycleMetricsTrends} = data[dimension];
+  let [currentTrend, previousTrend] = cycleMetricsTrends;
+  currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod};
+  return (
+    <div className="tw-h-full tw-w-full">
+      <AvgAge
+        displayType={displayType}
+        displayProps={{
+          className: "tw-p-2",
+          info: {title: "title"},
+          ...displayProps
+        }}
+        currentMeasurement={currentTrend}
+        previousMeasurement={previousTrend}
+        target={cycleTimeTarget}
       />
     </div>
   );

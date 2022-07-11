@@ -1,5 +1,5 @@
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
-import {ThroughputCardView} from "../throughput/throughputViews";
+import {AgeCardView, ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
 
 export function FlowMetricsView({
   data,
@@ -15,7 +15,7 @@ export function FlowMetricsView({
   latestWorkItemEvent,
   includeSubTasks,
 }) {
-  const {displayType, metric} = displayBag;
+  const {displayType, metric, displayProps} = displayBag;
   const metricMap = {
     throughput: (
       <ThroughputCardView
@@ -46,6 +46,27 @@ export function FlowMetricsView({
         includeSubTasks={includeSubTasks}
         targetPercentile={targetPercentile}
         cycleTimeTarget={cycleTimeTarget}
+      />
+    ),
+    volume: (
+      <VolumeCardView
+        data={data}
+        dimension={dimension}
+        displayType={displayType}
+        displayProps={displayProps}
+        flowAnalysisPeriod={flowAnalysisPeriod}
+        specsOnly={specsOnly}
+      />
+    ),
+    age: (
+      <AgeCardView
+        data={data}
+        dimension={dimension}
+        displayType={displayType}
+        displayProps={displayProps}
+        flowAnalysisPeriod={flowAnalysisPeriod}
+        cycleTimeTarget={cycleTimeTarget}
+        specsOnly={specsOnly}
       />
     ),
   };
