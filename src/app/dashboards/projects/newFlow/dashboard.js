@@ -4,6 +4,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
 import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
+import {DimensionWipMetricsWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipMetricsWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -83,7 +84,7 @@ function NewFlowDashboard({
       <DashboardRow>
         <DashboardWidget
           name="pipeline-funnel-summary"
-          className="tw-col-span-3 tw-col-start-2 tw-row-start-1 tw-row-span-2"
+          className="tw-col-span-3 tw-col-start-2 tw-row-span-2 tw-row-start-1"
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -109,26 +110,29 @@ function NewFlowDashboard({
       </DashboardRow>
       <DashboardRow>
         <DashboardWidget
-          name="volume-summary"
+          name="wip-volume"
           title=""
           className="tw-row-start-3"
           render={({view}) => {
             return (
-              <FlowMetricsTrendsWidget
+              <DimensionWipMetricsWidget
                 dimension="project"
                 instanceKey={key}
                 displayBag={{
+                  metric: "total",
                   displayType: "cardAdvanced",
-                  metric: "volume",
-                  displayProps: {trendsView: {title: "Total", content: <span>Volume Trends</span>}},
+                  displayProps: {
+                    trendsView: {title: "Total", content: <span>Volume Trends</span>},
+                    info: {title: "Info", content: "content"},
+                  },
                 }}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
+                leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
+                includeSubTasks={includeSubTasksWipInspector}
               />
             );
           }}
@@ -136,29 +140,30 @@ function NewFlowDashboard({
         />
 
         <DashboardWidget
-          name="age-summary"
+          name="wip-age"
           title=""
           className="tw-col-start-5 tw-row-start-3"
           render={({view}) => {
             return (
-              <FlowMetricsTrendsWidget
+              <DimensionWipMetricsWidget
                 dimension="project"
                 instanceKey={key}
                 displayBag={{
+                  metric: "avgAge",
                   displayType: "cardAdvanced",
-                  metric: "age",
                   displayProps: {
-                    targetText: <span>Target {cycleTimeTarget} Days</span>,
                     trendsView: {title: "Age", content: <span>Trends</span>},
+                    info: {title: "Info", content: "content"},
                   },
                 }}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
+                leadTimeTargetPercentile={leadTimeConfidenceTarget}
+                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                cycleTimeTarget={cycleTimeTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
+                includeSubTasks={includeSubTasksWipInspector}
               />
             );
           }}
