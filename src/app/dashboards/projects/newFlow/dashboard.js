@@ -5,6 +5,7 @@ import {ProjectDashboard} from "../projectDashboard";
 import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
 import {ProjectPipelineFunnelWidget} from "../shared/widgets/funnel";
 import {DimensionWipMetricsWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipMetricsWidget";
+import { DimensionPipelineQuadrantSummaryWidget } from "../../shared/widgets/work_items/wip";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -25,6 +26,8 @@ function NewFlowDashboard({
     cycleTimeConfidenceTarget,
     cycleTimeTarget,
     leadTimeTarget,
+    latencyTarget,
+    wipLimit
   } = settingsWithDefaults;
 
   return (
@@ -138,7 +141,38 @@ function NewFlowDashboard({
           }}
           showDetail={false}
         />
+        <DashboardWidget
+          name="quadrant-summary-pipeline"
+          className="tw-row-start-3 tw-col-start-2 tw-col-span-3"
+          title={"Work In Progress"}
+          subtitle={""}
 
+          render={({view}) => (
+            <DimensionPipelineQuadrantSummaryWidget
+              dimension={'project'}
+              instanceKey={key}
+              display={"commonWipSummary"}
+              days={flowAnalysisPeriod}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              wipLimit={wipLimit}
+              view={view}
+              specsOnly={specsOnly}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              context={context}
+              groupByState={true}
+              includeSubTasks={includeSubTasksWipInspector}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+            />
+          )}
+          showDetail={false}
+          hideTitlesInDetailView={true}
+        />
         <DashboardWidget
           name="wip-age"
           title=""
