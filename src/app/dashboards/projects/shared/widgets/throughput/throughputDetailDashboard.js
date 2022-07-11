@@ -1,9 +1,8 @@
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {FlowMetricsTrendsWidget} from "../flowMetricsTrends/flowMetricsTrendsWidget";
 import {CadenceCardWidget} from "./cadenceCardWidget";
-import {ThroughputCardWidget} from "./throughputCardWidget";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
-import {VolumeCardWidget} from "./volumeCardWidget";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -24,19 +23,18 @@ export const ThroughputDetailDashboard = ({
         <DashboardWidget
           w={1}
           name="throughput-summary"
-          className="tw-p-2 tw-h-32 tw-w-[16rem]"
+          className="tw-h-32 tw-w-[16rem] tw-p-2"
           render={({view}) => (
-            <ThroughputCardWidget
-              dimension={dimension}
+            <FlowMetricsTrendsWidget
+              dimension="project"
               instanceKey={instanceKey}
-              displayType="card"
-              view={view}
+              displayBag={{displayType: "card", metric: "throughput"}}
               flowAnalysisPeriod={flowAnalysisPeriod}
               trendAnalysisPeriod={trendAnalysisPeriod}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasks}
             />
           )}
@@ -47,15 +45,15 @@ export const ThroughputDetailDashboard = ({
           name="volume-summary"
           className="tw-p-2"
           render={({view}) => (
-            <VolumeCardWidget
-              dimension={dimension}
+            <FlowMetricsTrendsWidget
+              dimension="project"
               instanceKey={instanceKey}
-              displayType="card"
+              displayBag={{displayType: "card", metric: "volume"}}
               flowAnalysisPeriod={flowAnalysisPeriod}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
               includeSubTasks={includeSubTasks}
             />
           )}
