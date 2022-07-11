@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {ProjectDashboard} from "../projectDashboard";
-import {ThroughputCardWidget} from "../shared/widgets/throughput/throughputCardWidget";
-import {CycleTimeCardWidget} from "../shared/widgets/responseTimeSLA/cycleTimeCardWidget";
+import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -35,18 +34,17 @@ function NewFlowDashboard({
           className=""
           render={({view}) => {
             return (
-              <ThroughputCardWidget
+              <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                displayType="cardAdvanced"
-                trendAnalysisPeriod={trendAnalysisPeriod}
+                displayBag={{displayType: "cardAdvanced", metric: "throughput"}}
                 flowAnalysisPeriod={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendAnalysisPeriod}
+                targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
-                targetPercentile={responseTimeConfidenceTarget}
-                view={view}
               />
             );
           }}
@@ -59,19 +57,18 @@ function NewFlowDashboard({
           className="tw-col-start-5"
           render={({view}) => {
             return (
-              <CycleTimeCardWidget
+              <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                displayType="cardAdvanced"
-                trendAnalysisPeriod={trendAnalysisPeriod}
+                displayBag={{displayType: "cardAdvanced", metric: "cycleTime"}}
                 flowAnalysisPeriod={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendAnalysisPeriod}
+                targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
-                targetPercentile={responseTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
-                view={view}
               />
             );
           }}
