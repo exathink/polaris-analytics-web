@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {FlowMetricsTrendsWidget} from "../flowMetricsTrends/flowMetricsTrendsWidget";
@@ -16,14 +17,16 @@ export const ThroughputDetailDashboard = ({
   targetPercentile,
   specsOnly,
   includeSubTasks,
+  displayBag={}
 }) => {
+  const {classNameForFirstCard} = displayBag;
   return (
     <Dashboard dashboard={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-gap-2">
       <DashboardRow>
         <DashboardWidget
           w={1}
           name="throughput-summary"
-          className="tw-h-32 tw-w-[16rem] tw-p-2"
+          className={classNames("tw-h-32 tw-p-2", classNameForFirstCard)}
           render={({view}) => (
             <FlowMetricsTrendsWidget
               dimension="project"

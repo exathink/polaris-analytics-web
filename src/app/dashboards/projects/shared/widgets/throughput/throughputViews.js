@@ -66,6 +66,7 @@ export function ThroughputCardView({
                 targetPercentile={targetPercentile}
                 specsOnly={specsOnly}
                 includeSubTasks={includeSubTasks}
+                displayBag={{classNameForFirstCard: "tw-w-[16rem]"}}
               />
             ),
             placement: "right",
