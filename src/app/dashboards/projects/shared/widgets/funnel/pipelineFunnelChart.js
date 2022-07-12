@@ -57,11 +57,13 @@ export const PipelineFunnelChart = Chart({
                 subTitle,
                 grouping,
                 showVolumeOrEffort = "volume",
+                displayBag={},
                 intl
               }) => {
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
+    const {funnelCenter = ["38%", "50%"]} = displayBag;
     return {
       chart: {
         type: "funnel",
@@ -107,7 +109,7 @@ export const PipelineFunnelChart = Chart({
             },
             color: "white"
           }],
-          center: ["38%", "50%"],
+          center: funnelCenter,
           neckWidth: "25%",
           neckHeight: "45%",
           width: "70%"
