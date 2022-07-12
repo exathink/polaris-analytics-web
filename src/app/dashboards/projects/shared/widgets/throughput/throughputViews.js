@@ -23,6 +23,7 @@ export function ThroughputCardView({
   data,
   dimension,
   displayType,
+  displayProps,
   instanceKey,
   flowAnalysisPeriod,
   trendAnalysisPeriod,
@@ -87,6 +88,7 @@ export function ThroughputCardView({
             ),
             placement: "bottom",
           },
+          ...displayProps
         }}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}

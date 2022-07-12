@@ -17,7 +17,7 @@ export function FlowMetricsView({
   includeSubTasks,
   view,
 }) {
-  const {metric, displayType, displayProps} = displayBag;
+  const {metric, displayType, displayProps, iconsShiftLeft} = displayBag;
   const metricMap = {
     throughput:
       view === "detail" ? (
@@ -31,7 +31,7 @@ export function FlowMetricsView({
           targetPercentile={targetPercentile}
           specsOnly={specsOnly}
           includeSubTasks={includeSubTasks}
-          displayBag={{classNameForFirstCard: "tw-w-full"}}
+          displayBag={{classNameForFirstCard: "tw-w-full", className: "tw-w-[98%]"}}
         />
       ) : (
         <ThroughputCardView
@@ -39,6 +39,7 @@ export function FlowMetricsView({
           dimension={dimension}
           instanceKey={instanceKey}
           displayType={displayType}
+          displayProps={{iconsShiftLeft}}
           flowAnalysisPeriod={flowAnalysisPeriod}
           trendAnalysisPeriod={trendAnalysisPeriod}
           specsOnly={specsOnly}

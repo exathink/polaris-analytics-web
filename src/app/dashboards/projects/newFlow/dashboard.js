@@ -40,7 +40,7 @@ function NewFlowDashboard({
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className=""
+          classNameForDetailIcon="tw-absolute tw-top-2 tw-right-2 tw-cursor-pointer tw-opacity-100 tw-z-50"
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
@@ -54,7 +54,7 @@ function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{metric: "throughput", displayType: "cardAdvanced"}}
+                displayBag={{metric: "throughput", displayType: "cardAdvanced", iconsShiftLeft: true}}
               />
             );
           }}
