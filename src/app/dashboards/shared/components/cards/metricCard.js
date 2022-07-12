@@ -16,6 +16,7 @@ export function MetricCard({
   detailsView,
   trendsView,
   className,
+  iconsShiftLeft=false
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
   return (
@@ -29,7 +30,7 @@ export function MetricCard({
         <div className="tw-text-base tw-tracking-wide tw-text-gray-300">{title}</div>
         <div className="tw-text-xs tw-tracking-tight">{subTitle}</div>
       </div>
-      <div className="icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-2">
+      <div className={classNames("icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-1", iconsShiftLeft ? "tw-mr-6": "")}>
         {trendsView && (
           <div className="trendIcon tw-cursor-pointer tw-rounded-full">
             <Popover
