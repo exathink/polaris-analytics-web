@@ -125,6 +125,8 @@ function NewFlowDashboard({
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeTarget={leadTimeTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
@@ -133,6 +135,7 @@ function NewFlowDashboard({
                   metric: "volume",
                   displayType: "cardAdvanced",
                 }}
+                flowAnalysisPeriod={flowAnalysisPeriod}
               />
             );
           }}

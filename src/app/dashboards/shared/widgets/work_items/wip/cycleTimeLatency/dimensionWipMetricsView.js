@@ -1,11 +1,20 @@
+import { useIntl } from "react-intl";
+import { i18nNumber } from "../../../../../../helpers/utility";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
 
-export function DimensionWipMetricsView({data, dimension, displayBag, cycleTimeTarget, specsOnly}) {
+export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, cycleTimeTarget, specsOnly, days}) {
+  const intl = useIntl();
   const {pipelineCycleMetrics} = data[dimension];
   const {displayType, metric, displayProps} = displayBag;
 
-  // TODO: Need to calculate this from api response
-  const wipLimit = 1.4;
+  function getWipLimit() {
+    const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+    const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+    const throughputRate = flowItems / days;
+    return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  }
+  
+  const wipLimit = getWipLimit();
 
   const metricMap = {
     volume: (
