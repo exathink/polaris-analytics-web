@@ -53,11 +53,12 @@ function NewFlowDashboard({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
+                view={view}
                 displayBag={{metric: "throughput", displayType: "cardAdvanced"}}
               />
             );
           }}
-          showDetail={false}
+          showDetail={true}
         />
 
         <DashboardWidget

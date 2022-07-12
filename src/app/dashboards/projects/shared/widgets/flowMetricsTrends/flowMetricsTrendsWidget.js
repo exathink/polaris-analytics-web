@@ -17,6 +17,7 @@ export const FlowMetricsTrendsWidget = ({
   latestCommit,
   latestWorkItemEvent,
   includeSubTasks,
+  view
 }) => {
   // Summary Card Data
   // Throughput for a single measurement period
@@ -54,6 +55,7 @@ export const FlowMetricsTrendsWidget = ({
       latestCommit={latestCommit}
       latestWorkItemEvent={latestWorkItemEvent}
       includeSubTasks={includeSubTasks}
+      view={view}
     />
   );
 };

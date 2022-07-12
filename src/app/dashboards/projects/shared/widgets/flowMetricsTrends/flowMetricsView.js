@@ -1,5 +1,6 @@
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
-import {ThroughputCardView} from "../throughput/throughputViews";
+import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
+import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
 
 export function FlowMetricsView({
   data,
@@ -14,24 +15,39 @@ export function FlowMetricsView({
   latestCommit,
   latestWorkItemEvent,
   includeSubTasks,
+  view,
 }) {
   const {metric, displayType, displayProps} = displayBag;
   const metricMap = {
-    throughput: (
-      <ThroughputCardView
-        data={data}
-        dimension={dimension}
-        instanceKey={instanceKey}
-        displayType={displayType}
-        flowAnalysisPeriod={flowAnalysisPeriod}
-        trendAnalysisPeriod={trendAnalysisPeriod}
-        specsOnly={specsOnly}
-        latestCommit={latestCommit}
-        latestWorkItemEvent={latestWorkItemEvent}
-        includeSubTasks={includeSubTasks}
-        targetPercentile={targetPercentile}
-      />
-    ),
+    throughput:
+      view === "detail" ? (
+        <ThroughputDetailDashboard
+          dimension={dimension}
+          instanceKey={instanceKey}
+          flowAnalysisPeriod={flowAnalysisPeriod}
+          trendAnalysisPeriod={trendAnalysisPeriod}
+          latestCommit={latestCommit}
+          latestWorkItemEvent={latestWorkItemEvent}
+          targetPercentile={targetPercentile}
+          specsOnly={specsOnly}
+          includeSubTasks={includeSubTasks}
+          displayBag={{classNameForFirstCard: "tw-w-full"}}
+        />
+      ) : (
+        <ThroughputCardView
+          data={data}
+          dimension={dimension}
+          instanceKey={instanceKey}
+          displayType={displayType}
+          flowAnalysisPeriod={flowAnalysisPeriod}
+          trendAnalysisPeriod={trendAnalysisPeriod}
+          specsOnly={specsOnly}
+          latestCommit={latestCommit}
+          latestWorkItemEvent={latestWorkItemEvent}
+          includeSubTasks={includeSubTasks}
+          targetPercentile={targetPercentile}
+        />
+      ),
     cycleTime: (
       <CycleTimeCardView
         data={data}
@@ -46,6 +62,16 @@ export function FlowMetricsView({
         includeSubTasks={includeSubTasks}
         targetPercentile={targetPercentile}
         cycleTimeTarget={cycleTimeTarget}
+      />
+    ),
+    volume: (
+      <VolumeCardView
+        data={data}
+        dimension={dimension}
+        displayType={displayType}
+        displayProps={displayProps}
+        flowAnalysisPeriod={flowAnalysisPeriod}
+        specsOnly={specsOnly}
       />
     ),
   };
