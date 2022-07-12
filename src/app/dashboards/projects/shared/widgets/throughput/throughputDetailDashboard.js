@@ -19,9 +19,9 @@ export const ThroughputDetailDashboard = ({
   includeSubTasks,
   displayBag={}
 }) => {
-  const {classNameForFirstCard} = displayBag;
+  const {classNameForFirstCard, className} = displayBag;
   return (
-    <Dashboard dashboard={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-gap-2">
+    <Dashboard dashboard={dashboard_id} gridLayout={true} className={classNames("tw-grid tw-grid-cols-3 tw-gap-2", className)}>
       <DashboardRow>
         <DashboardWidget
           w={1}
