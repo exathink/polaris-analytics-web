@@ -2,7 +2,7 @@ import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { capitalizeFirstLetter, pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
+import {pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
 import {
   Colors,
   WorkItemStateTypeColor,
