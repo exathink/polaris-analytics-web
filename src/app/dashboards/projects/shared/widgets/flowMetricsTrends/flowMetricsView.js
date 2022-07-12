@@ -31,7 +31,7 @@ export function FlowMetricsView({
           targetPercentile={targetPercentile}
           specsOnly={specsOnly}
           includeSubTasks={includeSubTasks}
-          displayBag={{classNameForFirstCard: "tw-w-full", className: "tw-w-[98%]"}}
+          displayBag={{classNameForFirstCard: "tw-w-full", className: "tw-w-[98%] tw-grid-rows-[20%_80%]"}}
         />
       ) : (
         <ThroughputCardView
