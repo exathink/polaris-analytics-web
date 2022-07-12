@@ -33,7 +33,7 @@ function NewFlowDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_59%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_50%_7%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <DashboardRow>
@@ -111,11 +111,11 @@ function NewFlowDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow>
+      <DashboardRow className="tw-row-start-3 tw-justify-center tw-self-end tw-col-span-5" title="Work In Progress">
         <DashboardWidget
           name="wip-volume"
           title=""
-          className="tw-row-start-3"
+          className="tw-row-start-4"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
@@ -143,7 +143,7 @@ function NewFlowDashboard({
         />
         <DashboardWidget
           name="quadrant-summary-pipeline"
-          className="tw-row-start-3 tw-col-start-2 tw-col-span-3"
+          className="tw-row-start-4 tw-col-start-2 tw-col-span-3"
           title={""}
           subtitle={""}
 
@@ -176,7 +176,7 @@ function NewFlowDashboard({
         <DashboardWidget
           name="wip-age"
           title=""
-          className="tw-col-start-5 tw-row-start-3"
+          className="tw-col-start-5 tw-row-start-4"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
