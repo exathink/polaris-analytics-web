@@ -144,7 +144,7 @@ function NewFlowDashboard({
         <DashboardWidget
           name="quadrant-summary-pipeline"
           className="tw-row-start-3 tw-col-start-2 tw-col-span-3"
-          title={"Work In Progress"}
+          title={""}
           subtitle={""}
 
           render={({view}) => (
