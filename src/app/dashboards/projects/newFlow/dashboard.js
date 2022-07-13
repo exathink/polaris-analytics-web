@@ -92,6 +92,7 @@ function NewFlowDashboard({
 
                 trendAnalysisPeriod={trendAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
+                targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
