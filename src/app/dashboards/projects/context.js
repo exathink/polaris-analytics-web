@@ -18,6 +18,7 @@ import {Contexts} from "../../meta/contexts";
 
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
+import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -50,6 +51,7 @@ const context : Context = {
           },
           {
             match: 'newflow',
+            requiredFeatures: [UI_NEW_CARD_DESIGN],
             topic: NewFlow
           },
           {
