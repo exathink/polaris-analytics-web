@@ -9,6 +9,11 @@ export const FlowMetricsTrendsWidget = ({
   dimension,
   instanceKey,
   displayBag,
+
+  days,
+  measurementWindow,
+  samplingFrequency,
+
   flowAnalysisPeriod,
   trendAnalysisPeriod,
   targetPercentile,
@@ -19,18 +24,14 @@ export const FlowMetricsTrendsWidget = ({
   includeSubTasks,
   view
 }) => {
-  // Summary Card Data
-  // Throughput for a single measurement period
-  // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-  // days = measurementWindow = samplingFrequency
-  // days is set to flowAnalysisPeriod by default
+
 
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
-    days: flowAnalysisPeriod,
-    measurementWindow: flowAnalysisPeriod,
-    samplingFrequency: flowAnalysisPeriod,
+    days: days,
+    measurementWindow: measurementWindow,
+    samplingFrequency: samplingFrequency,
     targetPercentile,
     includeSubTasks,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent),

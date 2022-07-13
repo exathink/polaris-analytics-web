@@ -46,8 +46,18 @@ function NewFlowDashboard({
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                flowAnalysisPeriod={flowAnalysisPeriod}
+
+                // Summary Card Data
+                // Throughput for a single measurement period
+                // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
+                // days = measurementWindow = samplingFrequency
+                // days is set to flowAnalysisPeriod by default
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
+
                 trendAnalysisPeriod={trendAnalysisPeriod}
+                flowAnalysisPeriod={flowAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
@@ -70,9 +80,18 @@ function NewFlowDashboard({
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                flowAnalysisPeriod={flowAnalysisPeriod}
+                
+                // Summary Card Data
+                // Throughput for a single measurement period
+                // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
+                // days = measurementWindow = samplingFrequency
+                // days is set to flowAnalysisPeriod by default
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
+
                 trendAnalysisPeriod={trendAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
+                flowAnalysisPeriod={flowAnalysisPeriod}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}

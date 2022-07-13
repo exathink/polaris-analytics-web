@@ -17,11 +17,15 @@ export const ThroughputDetailDashboard = ({
   targetPercentile,
   specsOnly,
   includeSubTasks,
-  displayBag={}
+  displayBag = {},
 }) => {
   const {classNameForFirstCard, className} = displayBag;
   return (
-    <Dashboard dashboard={dashboard_id} gridLayout={true} className={classNames("tw-grid tw-grid-cols-3 tw-gap-2", className)}>
+    <Dashboard
+      dashboard={dashboard_id}
+      gridLayout={true}
+      className={classNames("tw-grid tw-grid-cols-3 tw-gap-2", className)}
+    >
       <DashboardRow>
         <DashboardWidget
           w={1}
@@ -32,6 +36,9 @@ export const ThroughputDetailDashboard = ({
               dimension="project"
               instanceKey={instanceKey}
               displayBag={{displayType: "card", metric: "throughput"}}
+              days={flowAnalysisPeriod}
+              measurementWindow={flowAnalysisPeriod}
+              samplingFrequency={flowAnalysisPeriod}
               flowAnalysisPeriod={flowAnalysisPeriod}
               trendAnalysisPeriod={trendAnalysisPeriod}
               targetPercentile={targetPercentile}
@@ -52,6 +59,9 @@ export const ThroughputDetailDashboard = ({
               dimension="project"
               instanceKey={instanceKey}
               displayBag={{displayType: "card", metric: "volume"}}
+              days={flowAnalysisPeriod}
+              measurementWindow={flowAnalysisPeriod}
+              samplingFrequency={flowAnalysisPeriod}
               flowAnalysisPeriod={flowAnalysisPeriod}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
