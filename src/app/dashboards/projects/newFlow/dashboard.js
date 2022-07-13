@@ -80,12 +80,7 @@ function NewFlowDashboard({
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                
-                // Summary Card Data
-                // Throughput for a single measurement period
-                // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-                // days = measurementWindow = samplingFrequency
-                // days is set to flowAnalysisPeriod by default
+
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
