@@ -9,6 +9,8 @@ import Wip from "./wip/topic";
 import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
+import First from "./first/topic";
+import Second from "./second/topic";
 import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Configure from "./configure/topic";
@@ -45,7 +47,19 @@ const context : Context = {
           },
           {
             match: 'flow',
-            topic: Flow
+            topic: Flow,
+            children: [
+              {
+
+                match: 'first',
+                topic: First
+              },
+              {
+
+                match: 'second',
+                topic: Second
+              }
+            ]
           },
           {
             match: 'wip',

@@ -54,6 +54,8 @@
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
   "topics.pull_requests": "Pull Requests",
+  "topics.first": "First",
+  "topics.second": "Second",
   "topics.repositories": "Code",
   "topics.organizations": "Organizations",
   "topics.commit": "Commit",

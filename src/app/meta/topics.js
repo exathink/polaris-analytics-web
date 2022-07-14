@@ -77,6 +77,16 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.pull_requests' defaultMessage="Pull Requests"/>),
     icon: 'ion-pull-request'
   },
+  first: {
+    name: 'first',
+    display: () => (<FormattedMessage id='topics.first' defaultMessage="First"/>),
+    icon: ''
+  },
+  second: {
+    name: 'second',
+    display: () => (<FormattedMessage id='topics.second' defaultMessage="Second"/>),
+    icon: ''
+  },
   repositories: {
     name: 'repositories',
     display: () => (<FormattedMessage id='topics.repositories' defaultMessage="Repositories"/>),
