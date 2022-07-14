@@ -30,6 +30,19 @@ const messages = {
   ),
 };
 
+const flowChildren = [
+  {
+    match: "first",
+    topic: First,
+    parent: "flow",
+  },
+  {
+    match: "second",
+    topic: Second,
+    parent: "flow",
+  },
+];
+
 const context : Context = {
   ...Contexts.projects,
   hidden: true,
@@ -48,19 +61,9 @@ const context : Context = {
           {
             match: 'flow',
             topic: Flow,
-            children: [
-              {
-
-                match: 'first',
-                topic: First
-              },
-              {
-
-                match: 'second',
-                topic: Second
-              }
-            ]
+            children: flowChildren
           },
+          ...flowChildren,
           {
             match: 'wip',
             topic: Wip
