@@ -116,9 +116,9 @@ class Sidebar extends Component {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
-      openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
+      // openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
       selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
-      onOpenChange: this.onOpenChange,
+      // onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
     return (
@@ -135,7 +135,7 @@ class Sidebar extends Component {
           <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
             <Menu key={`top`} {...menuProps}>
               {currentContext
-                ? activeTopicRoutes.map((route) =>
+                ? activeTopicRoutes.filter(route => route.parent === undefined).map((route) =>
                     route.children === undefined ? (
                       <Menu.Item className="ant-menu-item" key={`${route.match}`}>
                         <Link to={`${currentContext.urlFor(route)}`}>
