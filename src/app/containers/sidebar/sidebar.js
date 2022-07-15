@@ -198,6 +198,7 @@ class Sidebar extends Component {
                         >
                           <Link to={`${currentContext.urlFor(_selectedParent)}/${route.match}`}>
                             <span className="isoMenuHolder" style={submenuColor}>
+                              <i className={route.icon} />
                               <span className="nav-text">{route.display()}</span>
                             </span>
                           </Link>
