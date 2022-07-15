@@ -180,7 +180,7 @@ class Sidebar extends Component {
         <SidebarWrapper>
           {subNavRoutes.length > 0 && (
             <React.Fragment>
-              <div className="tw-mt-[3.5rem] tw-h-[18px] tw-bg-[#2d3446]"></div>
+              <div className="tw-mt-14 tw-h-[18px] tw-bg-[#2d3446]"></div>
               <Sider
                 trigger={null}
                 collapsible={true}
