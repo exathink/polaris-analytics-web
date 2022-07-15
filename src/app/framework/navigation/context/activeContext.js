@@ -61,6 +61,36 @@ export class ActiveContext {
     return `${this.matchInfo.url}/${route.match}`;
   }
 
+  //#region subnav related functions
+
+  subNavRoutesParents(){
+    const topicRoutes = this.routes().filter(route => route.topic);
+    return topicRoutes.filter(route => {
+      return route.topic.routes.some(x => x.subnav)
+    })
+  }
+
+  selectedSubNavParent(){
+    const subNavRoutesParents = this.subNavRoutesParents();
+    return subNavRoutesParents.find(route => route.match === this.match());
+  }
+
+  subNavRoutes(){
+    const _selectedParent = this.selectedSubNavParent();
+    const subNavRoutes = (_selectedParent?.topic?.routes ?? []).filter((route) => route.subnav);
+    return subNavRoutes;
+  }
+
+  selectedSubNavKeys(){
+    const subNavRoutes = this.subNavRoutes();
+    const _selectedParent = this.selectedSubNavParent();
+    const a = this.targetUrl.split("/");
+    const subnavSelectedKeys = _selectedParent && subNavRoutes.length > 0 ? [`${this.urlFor(_selectedParent)}/${a[a.length - 1]}`] : [];
+    return subnavSelectedKeys;
+  }
+
+ //#endregion
+
   equals(other: ActiveContext) {
     return other && this.targetUrl === other.targetUrl && this.context === other.context
   }

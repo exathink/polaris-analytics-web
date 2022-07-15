@@ -103,11 +103,7 @@ class Sidebar extends Component {
       route => route.topic
     )
 
-    const subNavRoutesParent = topicRoutes.filter(route => {
-      return route.topic.routes.some(x => x.subnav)
-    })
-    const _selectedParent = subNavRoutesParent.find(route => route.match === currentContext.selectedRoute.match);
-    const subNavRoutes = (_selectedParent?.topic?.routes ?? []).filter((route) => route.subnav);
+    const subNavRoutes = currentContext.subNavRoutes();
 
     const visibleRoutes = topicRoutes.filter(
       route =>
@@ -119,9 +115,9 @@ class Sidebar extends Component {
       ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
     ];
 
-    const a = currentContext.targetUrl.split("/");
-    const subnavSelectedKeys = _selectedParent && subNavRoutes.length>0 ? [`${currentContext.urlFor(_selectedParent)}/${a[a.length-1]}`]: [];
-
+    const selectedSubNavParent = currentContext.selectedSubNavParent();
+    
+    const subnavSelectedKeys = currentContext.selectedSubNavKeys();
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
@@ -194,9 +190,9 @@ class Sidebar extends Component {
                     ? subNavRoutes.map((route) => (
                         <Menu.Item
                           className="ant-menu-item"
-                          key={`${currentContext.urlFor(_selectedParent)}/${route.match}`}
+                          key={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}
                         >
-                          <Link to={`${currentContext.urlFor(_selectedParent)}/${route.match}`}>
+                          <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
                             <span className="isoMenuHolder" style={submenuColor}>
                               <i className={route.icon} />
                               <span className="nav-text">{route.display()}</span>
