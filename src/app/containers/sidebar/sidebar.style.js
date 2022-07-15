@@ -77,7 +77,7 @@ const SidebarWrapper = styled.div`
         display: flex;
         -ms-flex-align: center;
         align-items: center;
-        padding: 0 24px;
+        ${'' /* padding: 0 24px; */}
         margin: 0;
         
       }
@@ -90,7 +90,7 @@ const SidebarWrapper = styled.div`
           font-size: 19px;
           color: inherit;
           margin: ${props =>
-            props['data-rtl'] === 'rtl' ? '0 0 0 30px' : '0 30px 0 0'};
+            props['data-rtl'] === 'rtl' ? '0 0 0 30px' : '0 10px 0 0'};
           width: 18px;
           ${transition()};
         }

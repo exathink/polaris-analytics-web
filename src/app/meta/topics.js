@@ -80,12 +80,12 @@ export const Topics = {
   first: {
     name: 'first',
     display: () => (<FormattedMessage id='topics.first' defaultMessage="First"/>),
-    icon: ''
+    icon: 'ion-magnet'
   },
   second: {
     name: 'second',
     display: () => (<FormattedMessage id='topics.second' defaultMessage="Second"/>),
-    icon: ''
+    icon: 'ion-ios-gear'
   },
   repositories: {
     name: 'repositories',
