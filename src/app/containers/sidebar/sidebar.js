@@ -104,10 +104,10 @@ class Sidebar extends Component {
     )
 
     const subNavRoutesParent = topicRoutes.filter(route => {
-      return route.topic?.routes?.length > 1 && route.topic.routes.some(x => x.subnav)
+      return route.topic.routes.some(x => x.subnav)
     })
     const _selectedParent = subNavRoutesParent.find(route => route.match === currentContext.selectedRoute.match);
-    const subNavRoutes = (_selectedParent?.topic?.routes ?? []).filter((route) => route.match !== "");
+    const subNavRoutes = (_selectedParent?.topic?.routes ?? []).filter((route) => route.subnav);
 
     const visibleRoutes = topicRoutes.filter(
       route =>
