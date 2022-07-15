@@ -9,8 +9,6 @@ import Wip from "./wip/topic";
 import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
-import First from "./first/topic";
-import Second from "./second/topic";
 import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Configure from "./configure/topic";
@@ -30,19 +28,6 @@ const messages = {
   ),
 };
 
-const flowChildren = [
-  {
-    match: "first",
-    topic: First,
-    parent: "flow",
-  },
-  {
-    match: "second",
-    topic: Second,
-    parent: "flow",
-  },
-];
-
 const context : Context = {
   ...Contexts.projects,
   hidden: true,
@@ -60,10 +45,8 @@ const context : Context = {
           },
           {
             match: 'flow',
-            topic: Flow,
-            children: flowChildren
+            topic: Flow
           },
-          ...flowChildren,
           {
             match: 'wip',
             topic: Wip

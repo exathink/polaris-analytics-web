@@ -163,6 +163,7 @@ const SidebarWrapper = styled.div`
         align-items: center;
         padding: 0 24px;
         
+        background-color: rgba(0, 0, 0, 0.4) !important;
         .anticon {
           color: #fff;
         }

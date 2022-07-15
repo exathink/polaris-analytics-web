@@ -116,9 +116,9 @@ class Sidebar extends Component {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
-      // openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
+      openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
       selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
-      // onOpenChange: this.onOpenChange,
+      onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
     return (
@@ -131,41 +131,30 @@ class Sidebar extends Component {
           className="isomorphicSidebar"
           style={styling}
         >
-          <Logo collapsed={collapsed} />
-          <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
-            <Menu key={`top`} {...menuProps}>
-              {currentContext
-                ? activeTopicRoutes.filter(route => route.parent === undefined).map((route) =>
-                    route.children === undefined ? (
-                      <Menu.Item className="ant-menu-item" key={`${route.match}`}>
+          <Logo collapsed={collapsed}/>
+          <Scrollbars
+            renderView={this.renderView}
+            style={{height: scrollheight - 70}}
+          >
+            <Menu key={`top`} {...menuProps} >
+              {
+                currentContext ?
+                  activeTopicRoutes.map(
+                    route => (
+                      <Menu.Item className='ant-menu-item' key={`${route.match}`}>
                         <Link to={`${currentContext.urlFor(route)}`}>
-                          <span className="isoMenuHolder" style={submenuColor}>
-                            <i className={route.topic.icon} />
-                            <span className="nav-text">{route.topic.display()}</span>
-                          </span>
+                                <span className="isoMenuHolder" style={submenuColor}>
+                                  <i className={route.topic.icon}/>
+                                  <span className="nav-text">
+                                    {route.topic.display()}
+                                  </span>
+                                </span>
                         </Link>
                       </Menu.Item>
-                    ) : (
-                      <Menu.SubMenu
-                        key={`${route.match}`}
-                        title={<span className="nav-text">{route.topic.display()}</span>}
-                        icon={<i className={route.topic.icon} />}
-                      >
-                        {route.children.map((r) => {
-                          return (
-                            <Menu.Item key={r.match} className="ant-menu-item">
-                              <Link to={`${currentContext.urlFor(r)}`}>
-                                <span className="isoMenuHolder" style={submenuColor}>
-                                  <span className="nav-text">{r.topic.display()}</span>
-                                </span>
-                              </Link>
-                            </Menu.Item>
-                          );
-                        })}
-                      </Menu.SubMenu>
                     )
                   )
-                : null}
+                  : null
+              }
             </Menu>
 
                  
