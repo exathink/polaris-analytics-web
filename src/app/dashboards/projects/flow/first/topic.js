@@ -1,9 +1,9 @@
 import React from 'react';
-import {Topics} from "../../../meta/topics";
+import {Topics} from "../../../../meta/topics";
 
 
 const topic =  {
-  ...Topics.second,
+  ...Topics.first,
   routes: [
     {
       match: '',

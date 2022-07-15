@@ -1,5 +1,5 @@
 import React from "react";
-import {ProjectDashboard} from "../projectDashboard";
+import {ProjectDashboard} from "../../projectDashboard";
 
 export const dashboard = () => (
   <ProjectDashboard

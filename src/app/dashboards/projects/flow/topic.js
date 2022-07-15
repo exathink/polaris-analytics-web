@@ -6,13 +6,13 @@ const topic = {
   routes: [
     {
       match: "first",
-      component: React.lazy(() => import('../first/dashboard')),
+      component: React.lazy(() => import('./first/dashboard')),
       subnav: true,
       ...Topics.first,
     },
     {
       match: "second",
-      component: React.lazy(() => import('../second/dashboard')),
+      component: React.lazy(() => import('./second/dashboard')),
       subnav: true,
       ...Topics.second,
     },
