@@ -102,6 +102,13 @@ class Sidebar extends Component {
     const topicRoutes = currentContext.routes().filter(
       route => route.topic
     )
+
+    const subNavRoutesParent = topicRoutes.filter(route => {
+      return route.topic?.routes?.length > 1 && route.topic.routes.some(x => x.subnav)
+    })
+    const _selectedParent = subNavRoutesParent.find(route => route.match === currentContext.selectedRoute.match);
+    const subNavRoutes = (_selectedParent?.topic?.routes ?? []).filter((route) => route.match !== "");
+
     const visibleRoutes = topicRoutes.filter(
       route =>
         (route.allowedRoles == null || viewerContext.hasSystemRoles(route.allowedRoles)) &&
@@ -112,71 +119,95 @@ class Sidebar extends Component {
       ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
     ];
 
+    const a = currentContext.targetUrl.split("/");
+    const subnavSelectedKeys = _selectedParent && subNavRoutes.length>0 ? [`${currentContext.urlFor(_selectedParent)}/${a[a.length-1]}`]: [];
+
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
-      openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
-      selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
-      onOpenChange: this.onOpenChange,
+      // openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
+      selectedKeys: currentContext ? [`${currentContext.match()}`, ...subnavSelectedKeys] : [''],
+      // onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
     return (
-      <SidebarWrapper>
-        <Sider
-          trigger={null}
-          collapsible={true}
-          collapsed={collapsed}
-          width="240"
-          className="isomorphicSidebar"
-          style={styling}
-        >
-          <Logo collapsed={collapsed}/>
-          <Scrollbars
-            renderView={this.renderView}
-            style={{height: scrollheight - 70}}
+      <React.Fragment>
+        <SidebarWrapper>
+          <Sider
+            trigger={null}
+            collapsible={true}
+            collapsed={collapsed}
+            width="200"
+            className="isomorphicSidebar"
+            style={styling}
           >
-            <Menu key={`top`} {...menuProps} >
-              {
-                currentContext ?
-                  activeTopicRoutes.map(
-                    route => (
-                      <Menu.Item className='ant-menu-item' key={`${route.match}`}>
+            <Logo collapsed={collapsed} />
+            <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
+              <Menu key={`top`} {...menuProps}>
+                {currentContext
+                  ? activeTopicRoutes.map((route) => (
+                      <Menu.Item className="ant-menu-item" key={`${route.match}`}>
                         <Link to={`${currentContext.urlFor(route)}`}>
-                                <span className="isoMenuHolder" style={submenuColor}>
-                                  <i className={route.topic.icon}/>
-                                  <span className="nav-text">
-                                    {route.topic.display()}
-                                  </span>
-                                </span>
+                          <span className="isoMenuHolder" style={submenuColor}>
+                            <i className={route.topic.icon} />
+                            <span className="nav-text">{route.topic.display()}</span>
+                          </span>
                         </Link>
                       </Menu.Item>
-                    )
-                  )
-                  : null
-              }
-            </Menu>
-
-                 
-            {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
-              <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
-                {/* Divider */}
-                <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
-                <Menu.Item className="ant-menu-item">
-                  <Link to={Library.url_for}>
-                    <span className="isoMenuHolder" style={submenuColor}>
-                      <i className={Library.icon} />
-                      <span className="tw-text-white">Content Library</span>
-                    </span>
-                  </Link>
-                </Menu.Item>
+                    ))
+                  : null}
               </Menu>
-            )}
-           
-          </Scrollbars>
-        </Sider>
-      </SidebarWrapper>
-    )
+
+              {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
+                <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
+                  {/* Divider */}
+                  <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
+                  <Menu.Item className="ant-menu-item">
+                    <Link to={Library.url_for}>
+                      <span className="isoMenuHolder" style={submenuColor}>
+                        <i className={Library.icon} />
+                        <span className="tw-text-white">Content Library</span>
+                      </span>
+                    </Link>
+                  </Menu.Item>
+                </Menu>
+              )}
+            </Scrollbars>
+          </Sider>
+        </SidebarWrapper>
+
+        <SidebarWrapper>
+          {subNavRoutes.length > 0 && (
+            <Sider
+              trigger={null}
+              collapsible={true}
+              collapsed={collapsed}
+              width="100"
+              className="isomorphicSidebar"
+              style={{...styling, height: "100%", borderLeft: "1px solid rgba(0,0,0,0.4)"}}
+            >
+              <Menu key={`subnav`} {...menuProps}>
+                {currentContext
+                  ? subNavRoutes.map((route) => (
+                      <Menu.Item
+                        className="ant-menu-item"
+                        key={`${currentContext.urlFor(_selectedParent)}/${route.match}`}
+                      >
+                        <Link to={`${currentContext.urlFor(_selectedParent)}/${route.match}`}>
+                          <span className="isoMenuHolder" style={submenuColor}>
+                            <span className="nav-text">{route.display()}</span>
+                          </span>
+                        </Link>
+                      </Menu.Item>
+                    ))
+                  : null}
+              </Menu>
+            </Sider>
+          )}
+        </SidebarWrapper>
+      </React.Fragment>
+    );
   }
 }
 
