@@ -7,14 +7,14 @@ const topic = {
     {
       match: "first",
       component: React.lazy(() => import('../first/dashboard')),
-      ...Topics.first,
       subnav: true,
+      ...Topics.first,
     },
     {
       match: "second",
       component: React.lazy(() => import('../second/dashboard')),
-      ...Topics.second,
       subnav: true,
+      ...Topics.second,
     },
     {
       match: '',
