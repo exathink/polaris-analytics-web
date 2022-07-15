@@ -179,31 +179,34 @@ class Sidebar extends Component {
 
         <SidebarWrapper>
           {subNavRoutes.length > 0 && (
-            <Sider
-              trigger={null}
-              collapsible={true}
-              collapsed={collapsed}
-              width="100"
-              className="isomorphicSidebar"
-              style={{...styling, height: "100%", borderLeft: "1px solid rgba(0,0,0,0.4)"}}
-            >
-              <Menu key={`subnav`} {...menuProps}>
-                {currentContext
-                  ? subNavRoutes.map((route) => (
-                      <Menu.Item
-                        className="ant-menu-item"
-                        key={`${currentContext.urlFor(_selectedParent)}/${route.match}`}
-                      >
-                        <Link to={`${currentContext.urlFor(_selectedParent)}/${route.match}`}>
-                          <span className="isoMenuHolder" style={submenuColor}>
-                            <span className="nav-text">{route.display()}</span>
-                          </span>
-                        </Link>
-                      </Menu.Item>
-                    ))
-                  : null}
-              </Menu>
-            </Sider>
+            <React.Fragment>
+              <div className="tw-mt-[3.5rem] tw-h-[18px] tw-bg-[#2d3446]"></div>
+              <Sider
+                trigger={null}
+                collapsible={true}
+                collapsed={collapsed}
+                width="100"
+                className="isomorphicSidebar"
+                style={{height: "90%", backgroundColor: "rgb(209 213 219 / 1"}}
+              >
+                <Menu key={`subnav`} {...menuProps}>
+                  {currentContext
+                    ? subNavRoutes.map((route) => (
+                        <Menu.Item
+                          className="ant-menu-item"
+                          key={`${currentContext.urlFor(_selectedParent)}/${route.match}`}
+                        >
+                          <Link to={`${currentContext.urlFor(_selectedParent)}/${route.match}`}>
+                            <span className="isoMenuHolder" style={submenuColor}>
+                              <span className="nav-text">{route.display()}</span>
+                            </span>
+                          </Link>
+                        </Menu.Item>
+                      ))
+                    : null}
+                </Menu>
+              </Sider>
+            </React.Fragment>
           )}
         </SidebarWrapper>
       </React.Fragment>
