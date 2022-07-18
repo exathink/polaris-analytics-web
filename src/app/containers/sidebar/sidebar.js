@@ -17,6 +17,7 @@ import {withNavigationContext} from "../../framework/navigation/components/withN
 import {withViewerContext} from "../../framework/viewer/viewerContext";
 import Library from "../../dashboards/library/context"
 import {VIDEO_GUIDANCE} from "../../../config/featureFlags";
+import classNames from 'classnames';
 
 const {Sider} = Layout;
 
@@ -147,7 +148,7 @@ class Sidebar extends Component {
                         <Link to={`${currentContext.urlFor(route)}`}>
                           <span className="isoMenuHolder" style={submenuColor}>
                             <i className={route.topic.icon} />
-                            <span className="nav-text">{route.topic.display()}</span>
+                            <span className={classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.topic.display()}</span>
                           </span>
                         </Link>
                       </Menu.Item>
@@ -183,7 +184,7 @@ class Sidebar extends Component {
                 collapsed={collapsed}
                 width="100"
                 className="isomorphicSidebar"
-                style={{height: "90%", backgroundColor: "rgb(209 213 219 / 1"}}
+                style={{height: "90%", backgroundColor: "rgb(209 213 219 / 1)"}}
               >
                 <Menu key={`subnav`} {...menuProps}>
                   {currentContext
@@ -195,7 +196,7 @@ class Sidebar extends Component {
                           <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
                             <span className="isoMenuHolder" style={submenuColor}>
                               <i className={route.icon} />
-                              <span className="nav-text">{route.display()}</span>
+                              <span className= {classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.display()}</span>
                             </span>
                           </Link>
                         </Menu.Item>
