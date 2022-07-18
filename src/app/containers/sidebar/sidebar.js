@@ -93,7 +93,7 @@ class Sidebar extends Component {
     };
 
     const submenuColor = {
-      color: customizedTheme.textColor
+      color: mode === "inline" ? customizedTheme.textColor : "white",
     };
 
     const currentContext = this.props.context;
