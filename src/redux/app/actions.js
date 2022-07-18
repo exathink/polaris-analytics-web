@@ -18,7 +18,7 @@ const actions = {
   }),
   toggleAll: (width, height) => {
     const view = getView(width);
-    const collapsed = view !== 'DesktopView';
+    const collapsed = true;
     return {
       type: actions.TOGGLE_ALL,
       collapsed,
