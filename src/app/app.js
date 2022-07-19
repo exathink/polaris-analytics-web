@@ -65,7 +65,7 @@ export class App extends Component {
 
                       <div className={"app-content"} id="polaris-app-content">
                         <DashboardControlBar />
-                        <div className="tw-flex tw-h-full">
+                        <div className="tw-flex tw-h-[96%]">
                           <SidebarSubnav url={url} className="tw-h-full" />
                           <React.Suspense fallback={<Spin />}>
                             <AppRouter url={url} {...this.props} />
