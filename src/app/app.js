@@ -19,7 +19,8 @@ import {build_context_url_tree} from "./framework/navigation/context/helpers";
 import {NavigationContext} from "./framework/navigation/context/navigationContext";
 import {DashboardControlBar} from "./containers/controlbar/controlbar";
 import SidebarSubnav from './containers/sidebar/sidebar-subnav';
-
+import { withViewerContext } from './framework/viewer/viewerContext';
+import { UI_NEW_CARD_DESIGN } from '../config/featureFlags';
 
 const {Content, Footer} = Layout;
 const {toggleAll} = appActions;
@@ -28,6 +29,44 @@ export class App extends Component {
   render() {
     const {url} = this.props.match;
     build_context_url_tree(AppContext, url);
+
+    const {viewerContext} = this.props;
+    function getNewLayout() {
+      // viewerContext.isFeatureFlagActive(UI_NEW_CARD_DESIGN)
+        return (
+          <Content
+            className="isomorphicContent tw-h-[calc(100vh-56px)]"
+            style={{
+              padding: "56px 0 0 0",
+              flexShrink: "0",
+              background: "#f1f3f6",
+            }}
+          >
+            <LayoutWrapper id="app-content-area" className="app-content-wrapper tw-h-full">
+              <div className={"app-content tw-h-full"} id="polaris-app-content">
+                <DashboardControlBar />
+                <div className="tw-flex tw-h-[calc(100%-18px)]">
+                  <SidebarSubnav url={url} className="tw-h-full" />
+                  <div className="tw-flex tw-w-full tw-flex-col">
+                    <React.Suspense fallback={<Spin />}>
+                      <AppRouter url={url} {...this.props} />
+                    </React.Suspense>
+                    <Footer
+                      className="tw-mt-auto tw-w-full"
+                      style={{
+                        textAlign: "center",
+                        height: "5vh",
+                      }}
+                    >
+                      {`©Exathink, LLC 2016 - ${new Date().getFullYear()}`}
+                    </Footer>
+                  </div>
+                </div>
+              </div>
+            </LayoutWrapper>
+          </Content>
+        );
+    }
 
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
@@ -92,7 +131,7 @@ export class App extends Component {
   }
 }
 
-export default connect(
+export default withViewerContext(connect(
   null,
   {toggleAll}
-)(App);
+)(App));
