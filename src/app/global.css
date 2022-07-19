@@ -180,3 +180,11 @@ table thead th {
   border-right: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0 !important;
 }
+
+.ant-layout.ant-layout-has-sider.isoContentMainLayout > .ant-layout-content {
+  width: 100%;
+}
+
+.ant-layout.ant-layout-has-sider.isoContentMainLayout {
+  flex-direction: column;
+}

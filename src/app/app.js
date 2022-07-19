@@ -18,6 +18,7 @@ import AppContext from './context';
 import {build_context_url_tree} from "./framework/navigation/context/helpers";
 import {NavigationContext} from "./framework/navigation/context/navigationContext";
 import {DashboardControlBar} from "./containers/controlbar/controlbar";
+import SidebarSubnav from './containers/sidebar/sidebar-subnav';
 
 
 const {Content, Footer} = Layout;
@@ -63,10 +64,13 @@ export class App extends Component {
                     <LayoutWrapper id="app-content-area" className="app-content-wrapper">
 
                       <div className={"app-content"} id="polaris-app-content">
-                        <DashboardControlBar/>
-                        <React.Suspense fallback={<Spin/>}>
-                          <AppRouter url={url} {...this.props} />
-                        </React.Suspense>
+                        <DashboardControlBar />
+                        <div className="tw-flex tw-h-full">
+                          <SidebarSubnav url={url} className="tw-h-full" />
+                          <React.Suspense fallback={<Spin />}>
+                            <AppRouter url={url} {...this.props} />
+                          </React.Suspense>
+                        </div>
                       </div>
                     </LayoutWrapper>
                   </Content>

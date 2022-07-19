@@ -104,8 +104,6 @@ class Sidebar extends Component {
       route => route.topic
     )
 
-    const subNavRoutes = currentContext.subNavRoutes();
-
     const visibleRoutes = topicRoutes.filter(
       route =>
         (route.allowedRoles == null || viewerContext.hasSystemRoles(route.allowedRoles)) &&
@@ -115,21 +113,17 @@ class Sidebar extends Component {
       ...visibleRoutes.filter(route => !route.topic.optional),
       ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
     ];
-
-    const selectedSubNavParent = currentContext.selectedSubNavParent();
     
-    const subnavSelectedKeys = currentContext.selectedSubNavKeys();
     const menuProps = {
       onClick: this.handleClick,
       theme: 'dark',
       mode: mode,
       // openKeys: collapsed ? [] : [...app.openKeys, 'current-context'],
-      selectedKeys: currentContext ? [`${currentContext.match()}`, ...subnavSelectedKeys] : [''],
+      selectedKeys: currentContext ? [`${currentContext.match()}`] : [''],
       // onOpenChange: this.onOpenChange,
       className: "isoDashboardMenu"
     };
     return (
-      <React.Fragment>
         <SidebarWrapper>
           <Sider
             trigger={null}
@@ -173,41 +167,6 @@ class Sidebar extends Component {
             </Scrollbars>
           </Sider>
         </SidebarWrapper>
-
-        <SidebarWrapper>
-          {subNavRoutes.length > 0 && (
-            <React.Fragment>
-              <div className="tw-mt-14 tw-h-[18px] tw-bg-[#2d3446]"></div>
-              <Sider
-                trigger={null}
-                collapsible={true}
-                collapsed={collapsed}
-                width="100"
-                className="isomorphicSidebar"
-                style={{height: "90%", backgroundColor: "rgb(209 213 219 / 1)"}}
-              >
-                <Menu key={`subnav`} {...menuProps}>
-                  {currentContext
-                    ? subNavRoutes.map((route) => (
-                        <Menu.Item
-                          className="ant-menu-item"
-                          key={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}
-                        >
-                          <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
-                            <span className="isoMenuHolder" style={submenuColor}>
-                              <i className={route.icon} />
-                              <span className= {classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.display()}</span>
-                            </span>
-                          </Link>
-                        </Menu.Item>
-                      ))
-                    : null}
-                </Menu>
-              </Sider>
-            </React.Fragment>
-          )}
-        </SidebarWrapper>
-      </React.Fragment>
     );
   }
 }
