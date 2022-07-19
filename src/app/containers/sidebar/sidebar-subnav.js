@@ -12,7 +12,6 @@ import {themeConfig} from "../../../config";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import {withViewerContext} from "../../framework/viewer/viewerContext";
 import classNames from "classnames";
-import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 const {Sider} = Layout;
 
@@ -67,7 +66,7 @@ class SidebarSubnav extends Component {
     };
     return (
       <SidebarWrapper className={this.props.className}>
-        {this.props.viewerContext.isFeatureFlagActive(UI_NEW_CARD_DESIGN) && subNavRoutes.length > 0 && (
+        {subNavRoutes.length > 0 && (
           <Sider
             trigger={null}
             collapsible={true}
