@@ -73,7 +73,7 @@ class SidebarSubnav extends Component {
             collapsed={collapsed}
             width="100"
             className="isomorphicSidebar"
-            style={{height: "100%", backgroundColor: "rgb(209 213 219 / 1)"}}
+            style={{height: "100%", backgroundColor: "white"}}
           >
             <Menu key={`subnav`} {...menuProps}>
               {currentContext
@@ -84,7 +84,7 @@ class SidebarSubnav extends Component {
                     >
                       <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
                         <span className="isoMenuHolder" style={submenuColor}>
-                          <i className={route.icon} />
+                          <i className={classNames(route.icon, mode==="vertical" ?"!tw-text-black": "")} />
                           <span className={classNames("nav-text", mode === "vertical" ? "tw-ml-1" : "")}>
                             {route.display()}
                           </span>
