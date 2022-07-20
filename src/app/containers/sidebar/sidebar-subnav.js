@@ -72,8 +72,8 @@ class SidebarSubnav extends Component {
             collapsible={true}
             collapsed={collapsed}
             width="100"
-            className="isomorphicSidebar"
-            style={{height: "100%", backgroundColor: "#f2f2f8", borderRight: "1px solid white"}}
+            className="isomorphicSidebar tw-shadow-md"
+            style={{height: "100%", backgroundColor: "#f2f2f8", borderRight: "1px solid #2d344610"}}
           >
             <Menu key={`subnav`} {...menuProps}>
               {currentContext
