@@ -7,6 +7,8 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {withAntPagination} from "../../../components/graphql/withAntPagination";
 import {EditUserForm} from "./editUserForm";
 import { useQueryAccountUsers } from "./accountUsersQuery";
+import { useUpdateUser } from "./editUserMutation";
+import { logGraphQlError } from "../../../components/graphql/utils";
 
 const {Column} = Table;
 
@@ -26,6 +28,25 @@ const AccountUsersPaginatedTable = ({
         newData,
       });
 
+      // mutation to update user
+      const [mutate, {loading: mutationLoading, client}] = useUpdateUser({
+        onCompleted: ({updateContributor: {updateStatus}}) => {
+          //  {success, contributorKey, message, exception}
+          if (updateStatus.success) {
+            // dispatch({type: actionTypes.UPDATE_SUCCESS_MESSAGE, payload: "Updated Successfully."});
+            client.resetStore();
+            // dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
+          } else {
+            logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", updateStatus.message);
+            // dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateStatus.message});
+          }
+        },
+        onError: (error) => {
+          logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", error);
+          // dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: error.message});
+        },
+      });
+
       if (error) return null;
       let tableData = [];
       let totalItems = 0;
@@ -33,6 +54,11 @@ const AccountUsersPaginatedTable = ({
         tableData = data.account.users.edges.map((edge) => edge.node);
         totalItems = data.account.users.count;
       }
+
+      function handleSubmit(values) {
+        
+      }
+      
       return (
         <Table
           dataSource={tableData}
