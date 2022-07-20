@@ -192,3 +192,6 @@ table thead th {
 .ant-tooltip .ant-tooltip-inner .isoMenuHolder i {
   color: white !important;
 }
+.ant-tooltip .ant-tooltip-inner .isoMenuHolder span {
+  color: white !important;
+}
