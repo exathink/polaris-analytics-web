@@ -188,3 +188,7 @@ table thead th {
 .ant-layout.ant-layout-has-sider.isoContentMainLayout {
   flex-direction: column;
 }
+
+.ant-tooltip .ant-tooltip-inner .isoMenuHolder i {
+  color: white !important;
+}

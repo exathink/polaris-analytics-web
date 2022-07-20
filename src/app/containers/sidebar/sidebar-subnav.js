@@ -73,7 +73,7 @@ class SidebarSubnav extends Component {
             collapsed={collapsed}
             width="100"
             className="isomorphicSidebar"
-            style={{height: "100%", backgroundColor: "white"}}
+            style={{height: "100%", backgroundColor: "#f2f2f8", borderRight: "1px solid white"}}
           >
             <Menu key={`subnav`} {...menuProps}>
               {currentContext
