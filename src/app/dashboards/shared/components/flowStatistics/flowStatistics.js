@@ -15,6 +15,7 @@ import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
+import {MetricCard} from "../cards/metricCard";
 
 export const FlowStatistic = ({
   title,
@@ -60,6 +61,32 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           target={targetText}
+        />
+      );
+    }
+    case "cardAdvanced": {
+      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft} = displayProps;
+      return (
+        <MetricCard
+          title={title}
+          subTitle={subTitle}
+          value={metricValue}
+          suffix={suffix}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+            />
+          }
+          info={info}
+          className={className}
+          target={targetText}
+          detailsView={detailsView}
+          trendsView={trendsView}
+          iconsShiftLeft={iconsShiftLeft}
         />
       );
     }
@@ -226,17 +253,18 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold, displayProps}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
-    valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
+    valueRender={value => value ? `${value}/${currentMeasurement['measurementWindow']}` : value}
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
