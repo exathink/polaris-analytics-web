@@ -56,9 +56,9 @@ const AccountUsersPaginatedTable = ({
       }
 
       function handleSubmit(values) {
-        
+        console.log({values});
       }
-      
+
       return (
         <Table
           dataSource={tableData}
@@ -84,9 +84,7 @@ const AccountUsersPaginatedTable = ({
               render={(value, record) => {
                 return (
                   <EditUserForm
-                    onSubmit={(values) => {
-                      console.log({values});
-                    }}
+                    onSubmit={handleSubmit}
                     initialValues={{
                       email: record.email,
                       firstName: record.firstName,
