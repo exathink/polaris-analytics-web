@@ -10,7 +10,7 @@ export const Topics = {
   newflow: {
     name: 'newflow',
     display: () => (<FormattedMessage id='topics.newflow' defaultMessage="New Flow"/>),
-    icon: 'ion-ios-information-outline'
+    icon: 'ion-magnet'
   },
   wip: {
     name: 'wip',

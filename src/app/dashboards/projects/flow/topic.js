@@ -5,10 +5,10 @@ const topic = {
   ...Topics.flow,
   routes: [
     {
-      match: "first",
-      component: React.lazy(() => import('./first/dashboard')),
+      match: "newflow",
+      component: React.lazy(() => import('../newFlow/dashboard')),
       subnav: true,
-      ...Topics.first,
+      ...Topics.newflow,
     },
     {
       match: "second",

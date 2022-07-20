@@ -7,7 +7,6 @@ import type {Context} from "../../framework/navigation/context/context";
 
 import Wip from "./wip/topic";
 import Flow from "./flow/topic";
-import NewFlow from "./newFlow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
@@ -18,7 +17,6 @@ import {Contexts} from "../../meta/contexts";
 
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
-import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -48,11 +46,6 @@ const context : Context = {
           {
             match: 'flow',
             topic: Flow
-          },
-          {
-            match: 'newflow',
-            requiredFeatures: [UI_NEW_CARD_DESIGN],
-            topic: NewFlow
           },
           {
             match: 'wip',
