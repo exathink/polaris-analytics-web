@@ -1,16 +1,10 @@
 import {useMutation, gql} from "@apollo/client";
 
 export const UPDATE_USER = gql`
-  mutation update_contributor($userId: String!, $updatedInfo: UpdateUserInfo!) {
-    updateContributor(
-      contributorInfo: {contributorKey: $contributorKey, updatedInfo: $updatedInfo}
-    ) {
-      updateStatus {
-        success
-        contributorKey
-        message
-        exception
-      }
+  mutation update_user() {
+    updateUser(updateUserInput: UpdateUserInput!) {
+      user,
+      updated
     }
   }
 `;
