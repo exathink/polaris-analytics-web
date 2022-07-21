@@ -9,8 +9,17 @@ import {EditUserForm} from "./editUserForm";
 import { useQueryAccountUsers } from "./accountUsersQuery";
 import { useUpdateUser } from "./editUserMutation";
 import { logGraphQlError } from "../../../components/graphql/utils";
+import { openNotification } from "../../../helpers/utility";
 
 const {Column} = Table;
+
+function notify(data) {
+  if (data != null && data.updateUser) {
+    if(data.updateUser.updated) {
+     openNotification('success', `User ${data.updateUser.user.name} was updated`)
+    }
+  }
+}
 
 const AccountUsersPaginatedTable = ({
   view,
@@ -29,15 +38,14 @@ const AccountUsersPaginatedTable = ({
       });
 
       // mutation to update user
-      const [mutate, {loading: mutationLoading, client}] = useUpdateUser({
-        onCompleted: ({updateContributor: {updateStatus}}) => {
+      const [mutate, {loading: mutationLoading}] = useUpdateUser({
+        onCompleted: (data) => {
           //  {success, contributorKey, message, exception}
-          if (updateStatus.success) {
-            // dispatch({type: actionTypes.UPDATE_SUCCESS_MESSAGE, payload: "Updated Successfully."});
-            client.resetStore();
+          if (data.updateUser.updated) {
+            notify(data)
             // dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
           } else {
-            logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", updateStatus.message);
+            logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", " ");
             // dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateStatus.message});
           }
         },
@@ -62,7 +70,6 @@ const AccountUsersPaginatedTable = ({
           accountKey: viewer.accountKey,
           key: values.key,
           accountRole: values.role === true ? "owner" : "member",
-          active: values.active,
           email: values.email,
           firstName: values.firstName,
           lastName: values.lastName,
