@@ -57,18 +57,18 @@ const AccountUsersPaginatedTable = ({
 
       function handleSubmit(values) {
         console.log({values});
-        
+        const orgRoles = values["organizationRoles"].map(o => ({orgKey: o.organizationKey, role: values[o.organizationKey]}))
         const updatedInfo = {
           accountKey: viewer.accountKey,
           key: values.key,
-          accountRole: values.role,
+          accountRole: values.role === true ? "owner" : "member",
           active: values.active,
           email: values.email,
           firstName: values.firstName,
           lastName: values.lastName,
-          organizationRoles: []
+          organizationRoles: orgRoles,
         };
-    
+        
         // call mutation on save button click
         mutate({
           variables: {
@@ -102,7 +102,7 @@ const AccountUsersPaginatedTable = ({
               render={(value, record) => {
                 return (
                   <EditUserForm
-                    onSubmit={(values) => handleSubmit({...values, key: record.key, role: record.role})}
+                    onSubmit={(values) => handleSubmit({...values, key: record.key, organizationRoles: record.organizationRoles})}
                     initialValues={{
                       email: record.email,
                       firstName: record.firstName,
