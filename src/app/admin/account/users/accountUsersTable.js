@@ -57,6 +57,24 @@ const AccountUsersPaginatedTable = ({
 
       function handleSubmit(values) {
         console.log({values});
+        
+        const updatedInfo = {
+          accountKey: viewer.accountKey,
+          key: values.key,
+          accountRole: values.role,
+          active: values.active,
+          email: values.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          organizationRoles: []
+        };
+    
+        // call mutation on save button click
+        mutate({
+          variables: {
+            updateUserInput: updatedInfo
+          },
+        });
       }
 
       return (
@@ -84,7 +102,7 @@ const AccountUsersPaginatedTable = ({
               render={(value, record) => {
                 return (
                   <EditUserForm
-                    onSubmit={handleSubmit}
+                    onSubmit={(values) => handleSubmit({...values, key: record.key, role: record.role})}
                     initialValues={{
                       email: record.email,
                       firstName: record.firstName,
