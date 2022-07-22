@@ -85,7 +85,11 @@ export class ActiveContext {
     const subNavRoutes = this.subNavRoutes();
     const _selectedParent = this.selectedSubNavParent();
     const a = this.targetUrl.split("/");
-    const subnavSelectedKeys = _selectedParent && subNavRoutes.length > 0 ? [`${this.urlFor(_selectedParent)}/${a[a.length - 1]}`] : [];
+    const _index = a.findIndex(x => x === _selectedParent?.match);
+
+    const subPath = _index >=0 && _index < a.length-1 ? a[_index + 1] : "";
+
+    const subnavSelectedKeys = _selectedParent && subNavRoutes.length > 0 ? [`${this.urlFor(_selectedParent)}/${subPath}`] : [];
     return subnavSelectedKeys;
   }
 
