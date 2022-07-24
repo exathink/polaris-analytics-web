@@ -1,22 +1,34 @@
 import React from "react";
 import {ProjectDashboard} from "../../projectDashboard";
+import { DashboardWidget , Dashboard, DashboardRow} from "../../../../framework/viz/dashboard";
+import { DimensionCommitHistoryWidget } from "../../../shared/widgets/accountHierarchy";
 
 export const dashboard = () => (
   <ProjectDashboard
     pollInterval={60 * 1000}
     render={({project, context}) => {
-      // const {
-      //   leadTimeTarget,
-      //   cycleTimeTarget,
-      //   responseTimeConfidenceTarget,
-      //   leadTimeConfidenceTarget,
-      //   cycleTimeConfidenceTarget,
-      //   flowAnalysisPeriod,
-      //   includeSubTasksFlowMetrics,
-      //   latencyTarget,
-      // } = project.settingsWithDefaults;
 
-      return <div className="tw-text-2xl tw-text-gray-300">Second Dashboard</div>;
+      return <Dashboard dashboard={`hshshdghshhs`}>
+          <DashboardRow h='100%'>
+            <DashboardWidget
+              w={1}
+              name="cumulative-commit-count"
+              render={
+                ({view}) =>
+                  <DimensionCommitHistoryWidget
+                    dimension={'project'}
+                    instanceKey={project.key}
+                    context={context}
+                    view={view}
+                    detailViewGroupings={['workItem', 'author', 'repository']}
+                    detailViewCommitsGroupBy={'workItem'}
+                    referenceDate={project.latestCommit}
+                  />
+              }
+              showDetail={true}
+            />
+          </DashboardRow>
+      </Dashboard>
     }}
   />
 );
