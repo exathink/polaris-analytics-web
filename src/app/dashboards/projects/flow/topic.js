@@ -1,24 +1,26 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
+import First from "./first/topic";
+import Second from "./second/topic";
 
 const topic = {
   ...Topics.flow,
   routes: [
     {
-      match: "newflow",
-      component: React.lazy(() => import('../newFlow/dashboard')),
+      match: "first",
       subnav: true,
-      ...Topics.newflow,
+      topic: First,
+      ...First,
     },
     {
       match: "second",
-      component: React.lazy(() => import('./second/dashboard')),
       subnav: true,
-      ...Topics.second,
+      topic: Second,
+      ...Second,
     },
     {
       match: '',
-      component: React.lazy(() => import('./dashboard'))
+      redirect: 'second'
     }
   ]
 };
