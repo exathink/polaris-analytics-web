@@ -1,6 +1,6 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
-import First from "./first/topic";
+import Summary from "./summary/topic";
 import Second from "./second/topic";
 
 const topic = {
@@ -9,8 +9,8 @@ const topic = {
     {
       match: "first",
       subnav: true,
-      topic: First,
-      ...First,
+      topic: Summary,
+      ...Summary,
     },
     {
       match: "second",
