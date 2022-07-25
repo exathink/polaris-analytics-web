@@ -84,9 +84,9 @@ class SidebarSubnav extends Component {
                     >
                       <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
                         <span className="isoMenuHolder" style={submenuColor}>
-                          <i className={classNames(route.icon, "!tw-text-black")} />
+                          <i className={classNames(route.topic.icon, "!tw-text-black")} />
                           <span className={classNames("nav-text !tw-text-black", mode === "vertical" ? "tw-ml-1" : "")}>
-                            {route.display()}
+                            {route.topic.display()}
                           </span>
                         </span>
                       </Link>
