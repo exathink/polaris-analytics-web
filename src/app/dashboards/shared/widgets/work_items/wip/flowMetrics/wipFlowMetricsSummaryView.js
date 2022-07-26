@@ -286,7 +286,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
           </span>
         }
         displayType={"card"}
-        displayProps={{className: "tw-p-2"}}
+        displayProps={{className: "tw-p-2", testId: "throughput"}}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
@@ -294,7 +294,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
       />
       <AvgCycleTime
         displayType={"card"}
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "cycletime"}}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         target={cycleTimeTarget}
