@@ -1,5 +1,9 @@
 export const viewer_info = "viewer_info";
 
+export const ORGANIZATION = {
+    organizationProjects: "organizationProjects"
+}
+
 export const VALUE_STREAM = {
   with_project_instance: "with_project_instance",
 };

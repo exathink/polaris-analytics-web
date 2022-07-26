@@ -7,13 +7,21 @@ export const hasOperationName = (req, operationName) => {
 // Alias query if operationName matches
 export const aliasQuery = (req, operationName) => {
   if (hasOperationName(req, operationName)) {
-    req.alias = `gql${operationName}Query`;
+    req.alias = getQueryFullName(operationName);
   }
 };
 
 // Alias mutation if operationName matches
 export const aliasMutation = (req, operationName) => {
   if (hasOperationName(req, operationName)) {
-    req.alias = `gql${operationName}Mutation`;
+    req.alias = getMutationFullName(operationName);
   }
 };
+
+export const getQueryFullName = (operationName) => {
+  return `gql${operationName}Query`;
+}
+
+export const getMutationFullName = (operationName) => {
+  return `gql${operationName}Mutation`;
+}
