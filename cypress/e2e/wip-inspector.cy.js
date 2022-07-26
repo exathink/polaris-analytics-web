@@ -12,11 +12,9 @@ describe("Wip Inspector", () => {
 
     cy.intercept("POST", "/graphql", (req) => {
       // Alias Wip Inspector Queries
-      aliasQuery(req, WIP_INSPECTOR.getProjectImplementationCost);
-      aliasQuery(req, WIP_INSPECTOR.projectCapacityTrends);
-      aliasQuery(req, WIP_INSPECTOR.projectFlowMetricsTrends);
-      aliasQuery(req, WIP_INSPECTOR.projectFlowMixTrends);
-      aliasQuery(req, WIP_INSPECTOR.projectTraceabilityTrends);
+      aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics);
+      aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics);
+      aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
 
       aliasQuery(req, ORGANIZATION.organizationProjects);
     });
@@ -39,5 +37,10 @@ describe("Wip Inspector", () => {
 
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
+
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`)
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
+
   });
 });

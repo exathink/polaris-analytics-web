@@ -9,9 +9,7 @@ export const VALUE_STREAM = {
 };
 
 export const WIP_INSPECTOR = {
-  projectTraceabilityTrends: "projectTraceabilityTrends",
-  projectFlowMetricsTrends: "projectFlowMetricsTrends",
-  getProjectImplementationCost: "getProjectImplementationCost",
-  projectFlowMixTrends: "projectFlowMixTrends",
-  projectCapacityTrends: "projectCapacityTrends",
+  projectFlowMetrics: "projectFlowMetrics",
+  projectPipelineCycleMetrics: "projectPipelineCycleMetrics",
+  projectPipelineStateDetails: "projectPipelineStateDetails",
 };
