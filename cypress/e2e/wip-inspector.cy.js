@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import {WIP_INSPECTOR, ORGANIZATION} from "../support/queries-constants";
 import {aliasQuery, getQueryFullName} from "../support/utils";
 
@@ -14,7 +16,7 @@ describe("Wip Inspector", () => {
 
     cy.intercept("POST", "/graphql", (req) => {
       // Alias Wip Inspector Queries
-      aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics);
+      aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
       aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics);
       aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
 
@@ -28,14 +30,14 @@ describe("Wip Inspector", () => {
     cy.getBySel("value-streams").click();
     cy.location("pathname").should("include", "/value-streams");
 
-    cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`)
+    cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`);
 
     cy.get("table")
-    .find("tbody>tr")
-    .eq(1)
-    .find("button.ant-btn")
-    .contains(/select/i)
-    .click();
+      .find("tbody>tr")
+      .eq(1)
+      .find("button.ant-btn")
+      .contains(/select/i)
+      .click();
     cy.location("pathname").should("include", "/360-view");
 
     cy.getBySel("wip").click();
@@ -43,26 +45,16 @@ describe("Wip Inspector", () => {
 
     cy.log("Renders Throughput Metric");
 
-    // TODO: need to improve this test, instead of calculating the values here, we need to directly assert them if we have a seed db
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
-      .then(interception => {
-        const {measurementWindow, specsOnly} = interception.request.body.variables;
-        const trends = interception.response.body.data.project.cycleMetricsTrends;
-        const [currentTrend, previousTrend] = trends;
+      .its("response.body.data.project.cycleMetricsTrends")
+      .should("have.length", 2)
 
-        const prop = specsOnly ? "workItemsWithCommits": "WorkItemsInScope"
-        const throughputValue = currentTrend[prop] / measurementWindow;
-
-        const trendPercent = ((currentTrend[prop] - previousTrend[prop])/(1.0 * currentTrend[prop]))*100
-        const absTrendPercent = Math.abs(trendPercent).toFixed(1);
-        cy.getBySel("throughput").should("contain", `Throughput`);
-        cy.getBySel("throughput").should("contain", `${throughputValue}`);
-        cy.getBySel("throughput").should("contain", `Specs/Day`);
-        cy.getBySel("throughput").should("contain", `${absTrendPercent}%`);
-      })
-
-    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`)
-    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
+    cy.getBySel("throughput").should("contain", `Throughput`);
+    cy.getBySel("throughput").should("contain", `0.7`);
+    cy.getBySel("throughput").should("contain", `Specs/Day`);
+    cy.getBySel("throughput").within(() => {
+      cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
+    })
 
   });
 });
