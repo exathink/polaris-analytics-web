@@ -20,7 +20,7 @@ describe("Wip Inspector", () => {
       aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics);
       aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
 
-      aliasQuery(req, ORGANIZATION.organizationProjects);
+      aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
     });
   });
 

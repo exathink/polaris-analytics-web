@@ -1,0 +1,84 @@
+{
+  "data": {
+    "organization": {
+      "id": "T3JnYW5pemF0aW9uOjUyZTBlZmY1LTdiMzItNDE1MC1hMWM0LTBmNTVkOTc0ZWUyYQ==",
+      "projects": {
+        "count": 6,
+        "edges": [
+          {
+            "node": {
+              "id": "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+              "name": "Polaris",
+              "key": "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+              "archived": false,
+              "contributorCount": 1,
+              "cycleMetricsTrends": [
+                {
+                  "avgLeadTime": 4.888668981481482,
+                  "avgCycleTime": 2.9452777777777777,
+                  "totalEffort": 2.33333333333333,
+                  "workItemsWithCommits": 3,
+                  "__typename": "AggregateCycleMetricsImpl"
+                },
+                {
+                  "avgLeadTime": 4.205251906318082,
+                  "avgCycleTime": 2.940932734204793,
+                  "totalEffort": 17.3333333333333,
+                  "workItemsWithCommits": 17,
+                  "__typename": "AggregateCycleMetricsImpl"
+                }
+              ],
+              "repositoryCount": 22,
+              "latestCommit": "2022-06-30T20:56:21",
+              "latestWorkItemEvent": "2022-06-30T22:11:44.560000",
+              "workItemsSources": {
+                "count": 3,
+                "edges": [
+                  {
+                    "node": {"name": "Polaris Platform", "__typename": "WorkItemsSource"},
+                    "__typename": "WorkItemsSourcesEdge"
+                  },
+                  {"node": {"name": "Polaris", "__typename": "WorkItemsSource"}, "__typename": "WorkItemsSourcesEdge"},
+                  {
+                    "node": {"name": "Polaris Platform", "__typename": "WorkItemsSource"},
+                    "__typename": "WorkItemsSourcesEdge"
+                  }
+                ],
+                "__typename": "WorkItemsSourcesConnection"
+              },
+              "__typename": "Project"
+            },
+            "__typename": "ProjectsEdge"
+          },
+          {
+            "node": {
+              "id": "UHJvamVjdDo5OGNkODA0ZC0yZTJhLTQxMjktYmI2Yy02MGMzNmM3YTIzYmU=",
+              "name": "Polaris-dev",
+              "key": "98cd804d-2e2a-4129-bb6c-60c36c7a23be",
+              "archived": false,
+              "contributorCount": 0,
+              "cycleMetricsTrends": [],
+              "repositoryCount": null,
+              "latestCommit": null,
+              "latestWorkItemEvent": null,
+              "workItemsSources": {
+                "count": 1,
+                "edges": [
+                  {
+                    "node": {"name": "Polaris-Dev", "__typename": "WorkItemsSource"},
+                    "__typename": "WorkItemsSourcesEdge"
+                  }
+                ],
+                "__typename": "WorkItemsSourcesConnection"
+              },
+              "__typename": "Project"
+            },
+            "__typename": "ProjectsEdge"
+          }
+        ],
+        "__typename": "ProjectsConnection"
+      },
+      "__typename": "Organization"
+    }
+  }
+}
