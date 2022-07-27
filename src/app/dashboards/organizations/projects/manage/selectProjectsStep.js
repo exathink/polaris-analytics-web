@@ -168,7 +168,7 @@ export const SelectProjectsStep =
                   <div className={'selected-projects'}>
                     <h5 className={classNames(styles["flex-center"], fontStyles["font-normal"], fontStyles["text-base"])}>{getServerUrl(selectedConnector)}</h5>
                     <div className={styles["flex-center"]}>
-                      <h3 className={styles["titleCenter"]} data-test="select-projects-title">Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
+                      <h3 className={styles["titleCenter"]} data-testid="select-projects-title">Select {getConnectorTypeProjectName(connectorType, true).toLowerCase()} to import from connector {selectedConnector.name}</h3>
                     </div>
                     <div className={styles.selectProjectControls}>
                       <h4 className={styles.availableProjects}>{`${workItemsSources.length > 0 ?  workItemsSources.length : 'No'} ${getConnectorTypeProjectName(connectorType, true).toLowerCase()} available`} </h4>
@@ -177,7 +177,7 @@ export const SelectProjectsStep =
                           type={'secondary'}
                           size={'small'}
                           icon={<DownloadIcon />}
-                          data-test="fetch-available-projects"
+                          data-testid="fetch-available-projects"
                           onClick={
                             () => refetchProjects({
                               variables: {

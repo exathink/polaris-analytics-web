@@ -107,7 +107,7 @@ export const ShowImportStateStep = (
                     format={
                       () => `${numImported}/${workItemsSources.length}`
                     }
-                    data-test="progress-circle"
+                    data-testid="progress-circle"
                   />
                 </div>
                 <CompactTable
@@ -137,7 +137,7 @@ export const ShowImportStateStep = (
                         importState !== 'complete' ?
                           <Spin tip={importState}/>
                           :
-                          <CompletedCheckIcon data-test="completed-check-icon"/>
+                          <CompletedCheckIcon data-testid="completed-check-icon"/>
                     }
                   />
                 </CompactTable>
