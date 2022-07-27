@@ -32,7 +32,8 @@ describe("Wip Inspector", () => {
 
     cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`);
 
-    cy.get("table")
+    cy.getBySel("project-table")
+      .find("table")
       .find("tbody>tr")
       .eq(1)
       .find("button.ant-btn")
