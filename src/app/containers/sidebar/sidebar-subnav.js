@@ -54,6 +54,10 @@ class SidebarSubnav extends Component {
 
     const subNavRoutes = currentContext.subNavRoutes();
 
+    if (subNavRoutes.filter(x => Boolean(x.topic)).length < subNavRoutes.length) {
+      throw new Error("all subnav routes must also have topic property")
+    }
+
     const selectedSubNavParent = currentContext.selectedSubNavParent();
 
     const subnavSelectedKeys = currentContext.selectedSubNavKeys();
