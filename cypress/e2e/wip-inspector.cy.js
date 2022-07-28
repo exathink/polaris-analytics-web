@@ -72,13 +72,17 @@ describe("Wip Inspector", () => {
     // .its("response.body.data.project.pipelineCycleMetrics")
 
     cy.getBySel("wip-total").should("contain", `Total`);
-    cy.getBySel("wip-total").should("contain", `2`);
-    cy.getBySel("wip-total").should("contain", `Specs`);
+    cy.getBySel("wip-total").within(() => {
+      cy.getBySel("metricValue").should("have.text", "2");
+      cy.getBySel("uom").should("have.text", "Specs");
+    });
 
     cy.log("WIP Age");
     cy.getBySel("wip-age").should("contain", `Age`);
-    cy.getBySel("wip-age").should("contain", `31.49`);
-    cy.getBySel("wip-age").should("contain", `Days`);
+    cy.getBySel("wip-age").within(() => {
+      cy.getBySel("metricValue").should("have.text", "31.49");
+      cy.getBySel("uom").should("have.text", "Days");
+    });
 
   });
 });
