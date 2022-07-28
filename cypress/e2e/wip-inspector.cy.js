@@ -51,17 +51,19 @@ describe("Wip Inspector", () => {
       .should("have.length", 2);
 
     cy.getBySel("throughput").should("contain", `Throughput`);
-    cy.getBySel("throughput").should("contain", `0.7`);
-    cy.getBySel("throughput").should("contain", `Specs/Day`);
     cy.getBySel("throughput").within(() => {
+      cy.getBySel("metricValue").should("have.text", "0.7");
+      cy.getBySel("uom").should("have.text", "Specs/Day");
+
       cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
     });
 
     cy.log("CycleTime Metric");
     cy.getBySel("cycletime").should("contain", `Cycle Time`);
-    cy.getBySel("cycletime").should("contain", `2.95`);
-    cy.getBySel("cycletime").should("contain", `Days`);
     cy.getBySel("cycletime").within(() => {
+      cy.getBySel("metricValue").should("have.text", "2.95");
+      cy.getBySel("uom").should("have.text", "Days");
+      
       cy.contains(`8.3%`).should("have.css", "color", "rgba(255, 0, 0, 0.7)");
     });
 
