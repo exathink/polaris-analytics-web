@@ -75,6 +75,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-total").within(() => {
       cy.getBySel("metricValue").should("have.text", "2");
       cy.getBySel("uom").should("have.text", "Specs");
+      // TODO: need to update fixture for its dependencies
       cy.getBySel("target").should("have.text", "Limit 5");
     });
 
@@ -83,6 +84,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-age").within(() => {
       cy.getBySel("metricValue").should("have.text", "31.49");
       cy.getBySel("uom").should("have.text", "Days");
+      // TODO: need to update fixture for its dependencies
       cy.getBySel("target").should("have.text", "Target 7 Days");
     });
 
