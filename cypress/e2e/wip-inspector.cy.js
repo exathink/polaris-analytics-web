@@ -75,6 +75,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-total").within(() => {
       cy.getBySel("metricValue").should("have.text", "2");
       cy.getBySel("uom").should("have.text", "Specs");
+      cy.getBySel("target").should("have.text", "Limit 5");
     });
 
     cy.log("WIP Age");
@@ -82,6 +83,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-age").within(() => {
       cy.getBySel("metricValue").should("have.text", "31.49");
       cy.getBySel("uom").should("have.text", "Days");
+      cy.getBySel("target").should("have.text", "Target 7 Days");
     });
 
   });
