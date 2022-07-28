@@ -15,12 +15,12 @@ describe("Wip Inspector", () => {
     Cypress.Cookies.preserveOnce("session");
 
     cy.intercept("POST", "/graphql", (req) => {
+      aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
+
       // Alias Wip Inspector Queries
       aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
       aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
       aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
-
-      aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
     });
   });
 
