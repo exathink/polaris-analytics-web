@@ -44,7 +44,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
 
-    cy.log("Renders Throughput Metric");
+    cy.log("Throughput Metric");
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
@@ -55,6 +55,14 @@ describe("Wip Inspector", () => {
     cy.getBySel("throughput").should("contain", `Specs/Day`);
     cy.getBySel("throughput").within(() => {
       cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
+    })
+
+    cy.log("CycleTime Metric");
+    cy.getBySel("cycletime").should("contain", `Cycle Time`);
+    cy.getBySel("cycletime").should("contain", `2.95`);
+    cy.getBySel("cycletime").should("contain", `Days`);
+    cy.getBySel("cycletime").within(() => {
+      cy.contains(`8.3%`).should("have.css", "color", "rgba(255, 0, 0, 0.7)");
     })
 
   });

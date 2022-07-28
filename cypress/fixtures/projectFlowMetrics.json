@@ -44,7 +44,7 @@
           "q3CycleTime": 3.155601851851852,
           "percentileCycleTime": 8.438449074074073,
           "maxCycleTime": 17.760844907407407,
-          "avgCycleTime": 2.940932734204793,
+          "avgCycleTime": 2.700932734204793,
           "percentileLeadTime": 5.923148148148148,
           "maxLeadTime": 22.3221875,
           "totalEffort": 17.3333333333333,
