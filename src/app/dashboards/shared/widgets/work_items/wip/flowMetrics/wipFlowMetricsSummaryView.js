@@ -347,13 +347,13 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         specsOnly={specsOnly}
         target={wipLimit}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>, testId: "wip-total"}}
       />
       <AvgAge 
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "wip-age"}}
       />
     </div>
   );

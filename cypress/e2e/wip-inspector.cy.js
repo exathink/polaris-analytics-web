@@ -17,7 +17,7 @@ describe("Wip Inspector", () => {
     cy.intercept("POST", "/graphql", (req) => {
       // Alias Wip Inspector Queries
       aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
-      aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics);
+      aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
       aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
 
       aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
@@ -48,14 +48,14 @@ describe("Wip Inspector", () => {
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
-      .should("have.length", 2)
+      .should("have.length", 2);
 
     cy.getBySel("throughput").should("contain", `Throughput`);
     cy.getBySel("throughput").should("contain", `0.7`);
     cy.getBySel("throughput").should("contain", `Specs/Day`);
     cy.getBySel("throughput").within(() => {
       cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
-    })
+    });
 
     cy.log("CycleTime Metric");
     cy.getBySel("cycletime").should("contain", `Cycle Time`);
@@ -63,7 +63,20 @@ describe("Wip Inspector", () => {
     cy.getBySel("cycletime").should("contain", `Days`);
     cy.getBySel("cycletime").within(() => {
       cy.contains(`8.3%`).should("have.css", "color", "rgba(255, 0, 0, 0.7)");
-    })
+    });
+
+    cy.log("WIP Total");
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`);
+    // .its("response.body.data.project.pipelineCycleMetrics")
+
+    cy.getBySel("wip-total").should("contain", `Total`);
+    cy.getBySel("wip-total").should("contain", `2`);
+    cy.getBySel("wip-total").should("contain", `Specs`);
+
+    cy.log("WIP Age");
+    cy.getBySel("wip-age").should("contain", `Age`);
+    cy.getBySel("wip-age").should("contain", `31.49`);
+    cy.getBySel("wip-age").should("contain", `Days`);
 
   });
 });
