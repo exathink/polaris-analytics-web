@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import {WIP_INSPECTOR, ORGANIZATION} from "../support/queries-constants";
+import {WIP_INSPECTOR, ORGANIZATION, VALUE_STREAM} from "../support/queries-constants";
 import {aliasQuery, getQueryFullName} from "../support/utils";
 
 // given the data set in fixtures, we are asserting the wip inspector metrics in the UI
@@ -18,6 +18,7 @@ describe("Wip Inspector", () => {
     cy.intercept("POST", "/graphql", (req) => {
       aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
 
+      aliasQuery(req, VALUE_STREAM.with_project_instance, "with_project_instance.json");
       // Alias Wip Inspector Queries
       aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
       aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
@@ -26,6 +27,7 @@ describe("Wip Inspector", () => {
   });
 
   it("navigate to wip inspector dashboard, and verify all metrics on it", () => {
+    let ctx = {};
     cy.visit("/");
 
     cy.getBySel("value-streams").click();
@@ -44,6 +46,12 @@ describe("Wip Inspector", () => {
       .contains(/select/i)
       .click();
     cy.location("pathname").should("include", "/360-view");
+
+    cy.wait(`@${getQueryFullName(VALUE_STREAM.with_project_instance)}`)
+      .its("response.body.data.project.settings.flowMetricsSettings")
+      .then(settings => {
+        ctx.cycleTimeTarget = settings.cycleTimeTarget;
+      })
 
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
@@ -88,8 +96,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-age").within(() => {
       cy.getBySel("metricValue").should("have.text", "31.49");
       cy.getBySel("uom").should("have.text", "Days");
-      // TODO: need to update fixture for its dependencies
-      cy.getBySel("target").should("have.text", "Target 7 Days");
+      cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
     });
 
     cy.log("Total Effort");
