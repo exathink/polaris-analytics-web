@@ -75,7 +75,7 @@ describe("Wip Inspector", () => {
     cy.getBySel("cycletime").within(() => {
       cy.getBySel("metricValue").should("have.text", "2.95");
       cy.getBySel("uom").should("have.text", "Days");
-      
+      cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
       cy.contains(`8.3%`).should("have.css", "color", "rgba(255, 0, 0, 0.7)");
     });
 
@@ -87,7 +87,6 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip-total").within(() => {
       cy.getBySel("metricValue").should("have.text", "2");
       cy.getBySel("uom").should("have.text", "Specs");
-      // TODO: need to update fixture for its dependencies
       cy.getBySel("target").should("have.text", "Limit 5");
     });
 
