@@ -30,12 +30,15 @@ describe("Wip Inspector", () => {
     cy.getBySel("value-streams").click();
     cy.location("pathname").should("include", "/value-streams");
 
-    cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`);
+    cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`)
+      .its("response.body.data.organization.projects.edges")
+      .should("have.length", 2);
 
     cy.getBySel("project-table")
       .find("table")
-      .find("tbody>tr")
-      .eq(1)
+      .find("tbody>tr.ant-table-row")
+      .should("have.length", 2)
+      .eq(0)
       .find("button.ant-btn")
       .contains(/select/i)
       .click();
