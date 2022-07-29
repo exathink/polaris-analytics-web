@@ -88,5 +88,18 @@ describe("Wip Inspector", () => {
       cy.getBySel("target").should("have.text", "Target 7 Days");
     });
 
+    cy.log("Total Effort");
+    cy.getBySel("total-effort").should("contain", `Total Effort`);
+    cy.getBySel("total-effort").within(() => {
+      cy.getBySel("metricValue").should("have.text", "1.3");
+      cy.getBySel("uom").should("have.text", "FTE Days");
+    });
+
+    cy.log("Commit Latency");
+    cy.getBySel("commit-latency").should("contain", `Commit Latency`);
+    cy.getBySel("commit-latency").within(() => {
+      cy.getBySel("metricValue").should("have.text", "31.01");
+      cy.getBySel("uom").should("have.text", "Days");
+    });
   });
 });

@@ -313,7 +313,7 @@ export function WorkInProgressBaseView({data, dimension}) {
       <TotalEffort 
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "total-effort"}}
       />
       <AvgLatency
         title={
@@ -323,7 +323,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         }
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "commit-latency"}}
        />
     </div>
   );
