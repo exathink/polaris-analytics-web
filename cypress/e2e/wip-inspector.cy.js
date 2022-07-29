@@ -3,6 +3,7 @@
 import {WIP_INSPECTOR, ORGANIZATION} from "../support/queries-constants";
 import {aliasQuery, getQueryFullName} from "../support/utils";
 
+// given the data set in fixtures, we are asserting the wip inspector metrics in the UI
 describe("Wip Inspector", () => {
   beforeEach(() => {
     const [username, password] = [Cypress.env("username"), Cypress.env("password")];
