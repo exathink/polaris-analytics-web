@@ -25,7 +25,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import {aliasQuery, aliasMutation} from "./utils";
+import {aliasQuery, aliasMutation, getQueryFullName} from "./utils";
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
@@ -81,6 +81,26 @@ Cypress.Commands.add("aliasGraphQlRequests", () => {
     aliasMutation(req, "createConnector");
     aliasMutation(req, "refreshConnectorProjects")
   });
+});
+
+
+Cypress.Commands.add("aliasQuery", (operationName, pathToFixture) => {
+  cy.intercept(
+    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": operationName,
+      },
+    },
+    (req) => {
+      if (pathToFixture) {
+        req.reply({
+          fixture: pathToFixture,
+        });
+      }
+    }
+  ).as(getQueryFullName(operationName));
 });
 
 

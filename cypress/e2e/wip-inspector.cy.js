@@ -15,15 +15,13 @@ describe("Wip Inspector", () => {
     // TODO: this is deprecated now, need to replace from cy.session
     Cypress.Cookies.preserveOnce("session");
 
-    cy.intercept("POST", "/graphql", (req) => {
-      aliasQuery(req, ORGANIZATION.organizationProjects, "organizationProjects.json");
+    cy.aliasQuery(ORGANIZATION.organizationProjects, "organizationProjects.json");
+    cy.aliasQuery(VALUE_STREAM.with_project_instance, "with_project_instance.json");
 
-      aliasQuery(req, VALUE_STREAM.with_project_instance, "with_project_instance.json");
-      // Alias Wip Inspector Queries
-      aliasQuery(req, WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
-      aliasQuery(req, WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
-      aliasQuery(req, WIP_INSPECTOR.projectPipelineStateDetails);
-    });
+    // Alias Wip Inspector Queries
+    cy.aliasQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
+    cy.aliasQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
+    cy.aliasQuery(WIP_INSPECTOR.projectPipelineStateDetails);
   });
 
   it("navigate to wip inspector dashboard, and verify all metrics on it", () => {
