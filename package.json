@@ -79,7 +79,8 @@
     "build:fragment-types": "node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8200 ./src/config/graphql/analyticsFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8300 ./src/config/graphql/workTrackingFragmentTypes.json && node ./scripts/fragmentTypes.js http://${POLARIS_SERVICES_HOST}:8100 ./src/config/graphql/vcsFragmentTypes.json",
     "start:local": "POLARIS_SERVICES_HOST=polaris-services.exathink.localdev yarn start",
     "analyze": "source-map-explorer ./build/static/js/main.*",
-    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache"
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+    "cy:run": "yarn cypress run"
   },
   "jest": {
     "resetMocks": false
