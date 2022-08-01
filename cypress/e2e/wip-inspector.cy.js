@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import {WIP_INSPECTOR, ORGANIZATION, VALUE_STREAM} from "../support/queries-constants";
-import {aliasQuery, getQueryFullName} from "../support/utils";
+import {getQueryFullName} from "../support/utils";
 
 // given the data set in fixtures, we are asserting the wip inspector metrics in the UI
 describe("Wip Inspector", () => {
