@@ -5,6 +5,15 @@ import {getQueryFullName} from "../support/utils";
 
 // given the data set in fixtures, we are asserting the wip inspector metrics in the UI
 describe("Wip Inspector", () => {
+  const tooltipHidden = () =>
+  // initially the tooltip is not visible
+  // because element is set to be hidden using attribute style="opacity:0"
+  // we should check its visibility using "have.css" assertion
+  cy.get('.highcharts-tooltip').should("not.exist")
+
+const tooltipVisible = () =>
+  cy.get('.highcharts-tooltip').should('have.css', 'opacity', '1')
+
   beforeEach(() => {
     const [username, password] = [Cypress.env("username"), Cypress.env("password")];
     cy.loginByApi(username, password);
@@ -47,9 +56,9 @@ describe("Wip Inspector", () => {
 
     cy.wait(`@${getQueryFullName(VALUE_STREAM.with_project_instance)}`)
       .its("response.body.data.project.settings.flowMetricsSettings")
-      .then(settings => {
+      .then((settings) => {
         ctx.cycleTimeTarget = settings.cycleTimeTarget;
-      })
+      });
 
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
@@ -109,5 +118,18 @@ describe("Wip Inspector", () => {
       cy.getBySel("metricValue").should("have.text", "31.01");
       cy.getBySel("uom").should("have.text", "Days");
     });
+
+    // add test for chart tooltip
+    tooltipHidden();
+    cy.get("svg.highcharts-root")
+      .first()
+      .find(".highcharts-point")
+      .should("exist")
+      .eq(1)
+      .trigger("mousemove");
+    tooltipVisible();
+
+    // cy.get(".highcharts-tooltip").first().should("contain", "PP-209");
+  })
+ 
   });
-});
