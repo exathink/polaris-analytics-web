@@ -29,7 +29,15 @@ const importProjectFlowConfig = [
 
 describe("Onboarding flows", () => {
   beforeEach(() => {
-    cy.aliasGraphQlRequests();
+    cy.intercept("POST", "/graphql", (req) => {
+      // Queries
+      cy.aliasQuery(req, "getAccountConnectors");
+      cy.aliasQuery(req, "showImportState");
+  
+      // Mutations
+      cy.aliasMutation(req, "createConnector");
+      cy.aliasMutation(req, "refreshConnectorProjects")
+    });
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);

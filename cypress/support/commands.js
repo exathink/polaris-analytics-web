@@ -25,7 +25,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import {aliasQuery, aliasMutation, getQueryFullName} from "./utils";
+import {getQueryFullName, getMutationFullName} from "./utils";
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
@@ -71,16 +71,26 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-Cypress.Commands.add("aliasGraphQlRequests", () => {
-  cy.intercept("POST", "/graphql", (req) => {
-    // Queries
-    aliasQuery(req, "getAccountConnectors");
-    aliasQuery(req, "showImportState");
 
-    // Mutations
-    aliasMutation(req, "createConnector");
-    aliasMutation(req, "refreshConnectorProjects")
-  });
+
+
+Cypress.Commands.add("aliasMutation", (operationName, pathToFixture) => {
+  cy.intercept(
+    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": operationName,
+      },
+    },
+    (req) => {
+      if (pathToFixture) {
+        req.reply({
+          fixture: pathToFixture,
+        });
+      }
+    }
+  ).as(getMutationFullName(operationName));
 });
 
 
@@ -102,8 +112,6 @@ Cypress.Commands.add("aliasQuery", (operationName, pathToFixture) => {
     }
   ).as(getQueryFullName(operationName));
 });
-
-
 /**
  *  Useful Commands for onboarding flow (Connect Project Workflow)
  */
