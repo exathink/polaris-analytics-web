@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import {gql} from "@apollo/client";
+import {ViewerContext} from "../../src/app/framework/viewer/viewerContext";
 import {WIP_INSPECTOR, ORGANIZATION, VALUE_STREAM} from "../support/queries-constants";
 import {getQueryFullName} from "../support/utils";
 
@@ -54,6 +56,18 @@ describe("Wip Inspector", () => {
         ctx.cycleTimeTarget = settings.cycleTimeTarget;
       });
 
+    cy.request({
+      method: "POST",
+      url: `${Cypress.env("apiUrl")}/graphql/`,
+      failOnStatusCode: false, // dont fail so we can make assertions
+      body: {
+        operationName: "viewer_info",
+        variables: {},
+        // TODO: if we use raw query here it works, but not working with imported query
+        query:
+          "query viewer_info {\n  viewer {\n    key\n    ...ViewerInfoFields\n    __typename\n  }\n}\n\nfragment ViewerInfoFields on Viewer {\n  userName\n  company\n  firstName\n  lastName\n  email\n  systemRoles\n  accountRoles {\n    key\n    name\n    scopeKey\n    role\n    __typename\n  }\n  organizationRoles {\n    key\n    name\n    scopeKey\n    role\n    __typename\n  }\n  accountKey\n  account {\n    id\n    key\n    name\n    featureFlags {\n      edges {\n        node {\n          name\n          key\n          enabled\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    organizations(summariesOnly: true) {\n      count\n      __typename\n    }\n    projects(summariesOnly: true) {\n      count\n      __typename\n    }\n    repositories(summariesOnly: true) {\n      count\n      __typename\n    }\n    __typename\n  }\n  featureFlags {\n    edges {\n      node {\n        name\n        key\n        enabled\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n",
+      },
+    });
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
   });
@@ -119,6 +133,5 @@ describe("Wip Inspector", () => {
     tooltipHidden();
     cy.get("svg.highcharts-root").first().find(".highcharts-point").should("exist").eq(1).trigger("mousemove");
     tooltipVisible();
-
   });
 });

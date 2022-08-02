@@ -5,6 +5,7 @@ module.exports = defineConfig({
   viewportWidth: 1280,
   env: {
     authServiceUrl: 'http://polaris-services.exathink.localdev:8000',
+    apiUrl: 'http://polaris-services.exathink.localdev:8200',
     username: 'polaris-dev@exathink.com',
     password: 'polaris',
   },
