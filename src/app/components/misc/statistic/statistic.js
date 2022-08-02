@@ -134,6 +134,7 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
         {suffix}
       </span>
     ),
+    value: metricValue
   };
 }
 

@@ -35,7 +35,7 @@ export const FlowStatistic = ({
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
-  const {metricValue, suffix} = getMetricUtils({target, value, uom, good, valueRender, precision});
+  const {metricValue, suffix, value: _value} = getMetricUtils({target, value, uom, good, valueRender, precision});
 
   switch (displayType) {
     case "card": {
@@ -60,7 +60,7 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           testId={testId}
-          target={targetText}
+          target={_value==="N/A" ? null : targetText}
         />
       );
     }

@@ -63,7 +63,7 @@ describe("Wip Inspector", () => {
     cy.location("pathname").should("include", "/wip");
   });
 
-  it('verify all metrics on wip dashboard, when there is no data', () => {
+  it.only('verify all metrics on wip dashboard, when there is no data', () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
@@ -73,6 +73,13 @@ describe("Wip Inspector", () => {
         res.body.data.project.cycleMetricsTrends = [];
       });
     })
+
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, req => {
+      req.reply((res) => {
+        res.body.data.project.pipelineCycleMetrics = {};
+      });
+    });
+    
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
       .should("have.length", 0);
@@ -80,9 +87,52 @@ describe("Wip Inspector", () => {
     cy.getBySel("throughput").should("contain", `Throughput`);
     cy.getBySel("throughput").within(() => {
       cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.have.text");
+      cy.getBySel("uom").should("not.be.visible");
       cy.getBySel("trend-percent-val").should("not.exist");
     });
+
+    cy.log("CycleTime Metric");
+    cy.getBySel("cycletime").should("contain", `Cycle Time`);
+    cy.getBySel("cycletime").within(() => {
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.be.visible");
+      cy.getBySel("target").should("not.exist");
+
+      cy.getBySel("trend-percent-val").should("not.exist");
+    });
+
+    cy.log("WIP Total");
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`);
+
+    cy.getBySel("wip-total").should("contain", `Total`);
+    cy.getBySel("wip-total").within(() => {
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.be.visible");
+      cy.getBySel("target").should("not.exist");
+    });
+
+    cy.log("WIP Age");
+    cy.getBySel("wip-age").should("contain", `Age`);
+    cy.getBySel("wip-age").within(() => {
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.be.visible");
+      cy.getBySel("target").should("not.exist");
+    });
+
+    cy.log("Total Effort");
+    cy.getBySel("total-effort").should("contain", `Total Effort`);
+    cy.getBySel("total-effort").within(() => {
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.be.visible");
+    });
+
+    cy.log("Commit Latency");
+    cy.getBySel("commit-latency").should("contain", `Commit Latency`);
+    cy.getBySel("commit-latency").within(() => {
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.be.visible");
+    });
+    
   })
 
   it("verify all metrics on wip dashboard", () => {
@@ -112,7 +162,6 @@ describe("Wip Inspector", () => {
 
     cy.log("WIP Total");
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`);
-    // .its("response.body.data.project.pipelineCycleMetrics")
 
     cy.getBySel("wip-total").should("contain", `Total`);
     cy.getBySel("wip-total").within(() => {
