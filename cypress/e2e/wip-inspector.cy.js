@@ -63,7 +63,7 @@ describe("Wip Inspector", () => {
     cy.location("pathname").should("include", "/wip");
   });
 
-  it.only('verify all metrics on wip dashboard, when there is no data', () => {
+  it.only('verify all metrics on wip dashboard, when there is no data for metrics', () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
@@ -79,7 +79,7 @@ describe("Wip Inspector", () => {
         res.body.data.project.pipelineCycleMetrics = {};
       });
     });
-    
+
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
       .should("have.length", 0);
@@ -135,7 +135,7 @@ describe("Wip Inspector", () => {
     
   })
 
-  it("verify all metrics on wip dashboard", () => {
+  it("verify all metrics on wip dashboard, when there is data for metrics", () => {
     cy.log("Throughput Metric");
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
