@@ -151,7 +151,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     metric={metric}
     valueRender={
       value =>  {
-        return currentMeasurement[metric]/measurementWindow
+        return currentMeasurement?.[metric]/measurementWindow
       }
     }
     uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}

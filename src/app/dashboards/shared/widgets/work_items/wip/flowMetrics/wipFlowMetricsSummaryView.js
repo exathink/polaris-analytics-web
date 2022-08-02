@@ -266,7 +266,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   const specKey = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
-  const items = currentTrend[specKey];
+  const items = currentTrend?.[specKey];
   const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
 
   // since we don't want to show compared to text in the card
@@ -334,7 +334,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const {pipelineCycleMetrics} = data[dimension];
 
   const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-  const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const throughputRate = flowItems / days;
   const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
 

@@ -66,16 +66,22 @@ describe("Wip Inspector", () => {
   it('verify all metrics on wip dashboard, when there is no data', () => {
     cy.log("Throughput Metric");
 
+    // this intercept will override the intercept from beforeEach block
+    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, req => {
+      req.reply((res) => {
+        // Modify the response body directly
+        res.body.data.project.cycleMetricsTrends = [];
+      });
+    })
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
-      .should("have.length", 2);
+      .should("have.length", 0);
 
     cy.getBySel("throughput").should("contain", `Throughput`);
     cy.getBySel("throughput").within(() => {
-      cy.getBySel("metricValue").should("have.text", "0.7");
-      cy.getBySel("uom").should("have.text", "Specs/Day");
-
-      cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
+      cy.getBySel("metricValue").should("have.text", "N/A");
+      cy.getBySel("uom").should("not.have.text");
+      cy.getBySel("trend-percent-val").should("not.exist");
     });
   })
 
@@ -91,7 +97,7 @@ describe("Wip Inspector", () => {
       cy.getBySel("metricValue").should("have.text", "0.7");
       cy.getBySel("uom").should("have.text", "Specs/Day");
 
-      cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
+      cy.getBySel("trend-percent-val").should("contain", "15%").and("have.css", "color", "rgba(0, 128, 0, 0.7)");
     });
 
     cy.log("CycleTime Metric");
@@ -100,7 +106,8 @@ describe("Wip Inspector", () => {
       cy.getBySel("metricValue").should("have.text", "2.95");
       cy.getBySel("uom").should("have.text", "Days");
       cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
-      cy.contains(`8.3%`).should("have.css", "color", "rgba(255, 0, 0, 0.7)");
+
+      cy.getBySel("trend-percent-val").should("contain", "8.3%").and("have.css", "color","rgba(255, 0, 0, 0.7)");
     });
 
     cy.log("WIP Total");
