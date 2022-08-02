@@ -71,7 +71,7 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-Cypress.Commands.add("aliasMutation", (operationName, fixture) => {
+Cypress.Commands.add("interceptMutation", (operationName, fixture) => {
   cy.intercept(
     {
       method: "POST",
@@ -94,7 +94,7 @@ Cypress.Commands.add("aliasMutation", (operationName, fixture) => {
   ).as(getMutationFullName(operationName));
 });
 
-Cypress.Commands.add("aliasQuery", (operationName, fixture) => {
+Cypress.Commands.add("interceptQuery", (operationName, fixture) => {
   cy.intercept(
     {
       method: "POST",
