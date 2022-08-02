@@ -5,14 +5,11 @@ import {getQueryFullName} from "../support/utils";
 
 // given the data set in fixtures, we are asserting the wip inspector metrics in the UI
 describe("Wip Inspector", () => {
-  const tooltipHidden = () =>
-  // initially the tooltip is not visible
-  // because element is set to be hidden using attribute style="opacity:0"
-  // we should check its visibility using "have.css" assertion
-  cy.get('.highcharts-tooltip').should("not.exist")
+  const ctx = {};
 
-const tooltipVisible = () =>
-  cy.get('.highcharts-tooltip').should('have.css', 'opacity', '1')
+  const tooltipHidden = () => cy.get(".highcharts-tooltip").should("not.exist");
+
+  const tooltipVisible = () => cy.get(".highcharts-tooltip").should("have.css", "opacity", "1");
 
   beforeEach(() => {
     const [username, password] = [Cypress.env("username"), Cypress.env("password")];
@@ -31,10 +28,7 @@ const tooltipVisible = () =>
     cy.aliasQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
     cy.aliasQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
     cy.aliasQuery(WIP_INSPECTOR.projectPipelineStateDetails);
-  });
 
-  it("navigate to wip inspector dashboard, and verify all metrics on it", () => {
-    let ctx = {};
     cy.visit("/");
 
     cy.getBySel("value-streams").click();
@@ -62,7 +56,9 @@ const tooltipVisible = () =>
 
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
+  });
 
+  it("verify all metrics on wip dashboard", () => {
     cy.log("Throughput Metric");
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
@@ -121,15 +117,8 @@ const tooltipVisible = () =>
 
     // add test for chart tooltip
     tooltipHidden();
-    cy.get("svg.highcharts-root")
-      .first()
-      .find(".highcharts-point")
-      .should("exist")
-      .eq(1)
-      .trigger("mousemove");
+    cy.get("svg.highcharts-root").first().find(".highcharts-point").should("exist").eq(1).trigger("mousemove");
     tooltipVisible();
 
-    // cy.get(".highcharts-tooltip").first().should("contain", "PP-209");
-  })
- 
   });
+});
