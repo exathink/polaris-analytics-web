@@ -1,7 +1,4 @@
 /// <reference types="cypress" />
-
-import {gql} from "@apollo/client";
-import {ViewerContext} from "../../src/app/framework/viewer/viewerContext";
 import {WIP_INSPECTOR, ORGANIZATION, VALUE_STREAM, viewer_info} from "../support/queries-constants";
 import {getQueryFullName} from "../support/utils";
 

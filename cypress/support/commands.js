@@ -71,30 +71,30 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-
-
-
-Cypress.Commands.add("aliasMutation", (operationName, pathToFixture) => {
+Cypress.Commands.add("aliasMutation", (operationName, fixture) => {
   cy.intercept(
     {
       method: "POST",
       url: "/graphql",
       headers: {
-        "x-gql-operation-name": operationName,
+        "x-gql-operation-name": "",
       },
     },
-    (req) => {
-      if (pathToFixture) {
-        req.reply({
-          fixture: pathToFixture,
-        });
-      }
-    }
+    typeof fixture === "string"
+      ? (req) => {
+          if (fixture) {
+            req.reply({
+              fixture: fixture,
+            });
+          }
+        }
+      : typeof fixture === "function"
+      ? fixture
+      : undefined
   ).as(getMutationFullName(operationName));
 });
 
-
-Cypress.Commands.add("aliasQuery", (operationName, pathToFixture) => {
+Cypress.Commands.add("aliasQuery", (operationName, fixture) => {
   cy.intercept(
     {
       method: "POST",
@@ -103,13 +103,17 @@ Cypress.Commands.add("aliasQuery", (operationName, pathToFixture) => {
         "x-gql-operation-name": operationName,
       },
     },
-    (req) => {
-      if (pathToFixture) {
-        req.reply({
-          fixture: pathToFixture,
-        });
+    typeof fixture === "string"
+    ? (req) => {
+        if (fixture) {
+          req.reply({
+            fixture: fixture,
+          });
+        }
       }
-    }
+    : typeof fixture === "function"
+    ? fixture
+    : undefined
   ).as(getQueryFullName(operationName));
 });
 /**
@@ -128,9 +132,9 @@ Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
 
   cy.get("input#name").type(connectorName).should("have.value", connectorName);
 
-  credentialPairs.forEach(pair => {
+  credentialPairs.forEach((pair) => {
     const [domId, value] = pair;
-    cy.get(domId).type(value).should ("have.value", value);
+    cy.get(domId).type(value).should("have.value", value);
   });
 
   cy.contains(/Register/i).click();
@@ -142,12 +146,11 @@ Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
   cy.contains(connectorName).should("be.visible");
 
   cy.get("table")
-  .find("tbody>tr")
-  .first()
-  .find("button.ant-btn")
-  .contains(/select/i)
-  .click();
-  
+    .find("tbody>tr")
+    .first()
+    .find("button.ant-btn")
+    .contains(/select/i)
+    .click();
 });
 
 Cypress.Commands.add("SelectProjects", () => {
@@ -155,7 +158,7 @@ Cypress.Commands.add("SelectProjects", () => {
   cy.getBySel("fetch-available-projects").click();
 
   cy.wait("@gqlrefreshConnectorProjectsMutation");
-  cy.get("input[type=checkbox]").first().check({ force: true });
+  cy.get("input[type=checkbox]").first().check({force: true});
 
   cy.getBySel("workflow-next-button").click();
 });
@@ -172,7 +175,7 @@ Cypress.Commands.add("ImportProjectStatus", () => {
   cy.wait("@gqlshowImportStateQuery");
   cy.wait("@gqlshowImportStateQuery");
   cy.wait("@gqlshowImportStateQuery");
-  
+
   // make sure there is completed check icon
   cy.getBySel("completed-check-icon").should("be.visible");
 
