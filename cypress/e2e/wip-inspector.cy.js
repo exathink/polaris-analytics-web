@@ -27,7 +27,7 @@ describe("Wip Inspector", () => {
     // Alias Wip Inspector Queries
     cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
     cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails);
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, "projectPipelineStateDetails.json");
 
     cy.visit("/");
 
@@ -63,7 +63,7 @@ describe("Wip Inspector", () => {
     cy.location("pathname").should("include", "/wip");
   });
 
-  it.only('verify all metrics on wip dashboard, when there is no data for metrics', () => {
+  it('verify all metrics on wip dashboard, when there is no data for metrics', () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
@@ -191,6 +191,10 @@ describe("Wip Inspector", () => {
       cy.getBySel("metricValue").should("have.text", "31.01");
       cy.getBySel("uom").should("have.text", "Days");
     });
+
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
+       .its("response.body.data.project.workItems.edges")
+       .should("have.length", 2)
 
     // add test for chart tooltip
     tooltipHidden();
