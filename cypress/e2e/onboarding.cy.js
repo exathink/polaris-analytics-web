@@ -31,12 +31,12 @@ describe("Onboarding flows", () => {
   beforeEach(() => {
     cy.intercept("POST", "/graphql", (req) => {
       // Queries
-      cy.aliasQuery(req, "getAccountConnectors");
-      cy.aliasQuery(req, "showImportState");
+      cy.interceptQuery(req, "getAccountConnectors");
+      cy.interceptQuery(req, "showImportState");
   
       // Mutations
-      cy.aliasMutation(req, "createConnector");
-      cy.aliasMutation(req, "refreshConnectorProjects")
+      cy.interceptMutation(req, "createConnector");
+      cy.interceptMutation(req, "refreshConnectorProjects")
     });
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];

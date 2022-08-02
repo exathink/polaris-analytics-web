@@ -20,14 +20,14 @@ describe("Wip Inspector", () => {
     // TODO: this is deprecated now, need to replace from cy.session
     Cypress.Cookies.preserveOnce("session");
 
-    cy.aliasQuery(viewer_info, "viewer_info.json");
-    cy.aliasQuery(ORGANIZATION.organizationProjects, "organizationProjects.json");
-    cy.aliasQuery(VALUE_STREAM.with_project_instance, "with_project_instance.json");
+    cy.interceptQuery(viewer_info, "viewer_info.json");
+    cy.interceptQuery(ORGANIZATION.organizationProjects, "organizationProjects.json");
+    cy.interceptQuery(VALUE_STREAM.with_project_instance, "with_project_instance.json");
 
     // Alias Wip Inspector Queries
-    cy.aliasQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
-    cy.aliasQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
-    cy.aliasQuery(WIP_INSPECTOR.projectPipelineStateDetails);
+    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails);
 
     cy.visit("/");
 
@@ -62,6 +62,22 @@ describe("Wip Inspector", () => {
     cy.getBySel("wip").click();
     cy.location("pathname").should("include", "/wip");
   });
+
+  it('verify all metrics on wip dashboard, when there is no data', () => {
+    cy.log("Throughput Metric");
+
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
+      .its("response.body.data.project.cycleMetricsTrends")
+      .should("have.length", 2);
+
+    cy.getBySel("throughput").should("contain", `Throughput`);
+    cy.getBySel("throughput").within(() => {
+      cy.getBySel("metricValue").should("have.text", "0.7");
+      cy.getBySel("uom").should("have.text", "Specs/Day");
+
+      cy.contains(`15%`).should("have.css", "color", "rgba(0, 128, 0, 0.7)");
+    });
+  })
 
   it("verify all metrics on wip dashboard", () => {
     cy.log("Throughput Metric");
