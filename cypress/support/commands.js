@@ -77,7 +77,7 @@ Cypress.Commands.add("interceptMutation", (operationName, fixture) => {
       method: "POST",
       url: "/graphql",
       headers: {
-        "x-gql-operation-name": "",
+        "x-gql-operation-name": operationName,
       },
     },
     typeof fixture === "string"
