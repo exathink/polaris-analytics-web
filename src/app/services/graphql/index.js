@@ -22,6 +22,7 @@ const logoutLink = onError(({networkError}) => {
   }
 });
 const httpLink = new HttpLink({uri: GRAPHQL_ANALYTICS_URL, credentials: "include", fetchOptions: {redirect: "manual"}});
+const workTrackingHttpLink = new HttpLink({uri: GRAPHQL_WORK_TRACKING_URL, credentials: "include", fetchOptions: {redirect: "manual"}})
 const operationNameLink = new ApolloLink((operation, forward) => {
   operation.setContext(({headers}) => ({
     headers: {
@@ -55,6 +56,7 @@ const workTrackingPossibleTypes = workTrackingFragmentTypes.__schema.types.reduc
   return acc;
 }, {});
 export const work_tracking_service = new ApolloClient({
+  link: from([operationNameLink, workTrackingHttpLink]),
   cache: new InMemoryCache({
     possibleTypes: workTrackingPossibleTypes,
   }),
