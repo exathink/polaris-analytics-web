@@ -10,6 +10,18 @@ describe("Wip Inspector", () => {
 
   const tooltipVisible = () => cy.get(".highcharts-tooltip").should("have.css", "opacity", "1");
 
+  before(() => {
+    cy.fixture(`${VALUE_STREAM.with_project_instance}.json`).then((response) => {
+      const settings = response.data.project.settings.flowMetricsSettings;
+      ctx.cycleTimeTarget = settings.cycleTimeTarget;
+    });
+
+    cy.fixture(`${ORGANIZATION.organizationProjects}.json`).then((response) => {
+      const projectInstanceKey = response.data.organization.projects.edges[0].node.key;
+      ctx.projectInstanceKey = projectInstanceKey;
+    });
+  });
+
   beforeEach(() => {
     const [username, password] = [Cypress.env("username"), Cypress.env("password")];
     cy.loginByApi(username, password);
@@ -20,61 +32,37 @@ describe("Wip Inspector", () => {
     // TODO: this is deprecated now, need to replace from cy.session
     Cypress.Cookies.preserveOnce("session");
 
-    cy.interceptQuery(viewer_info, "viewer_info.json");
-    cy.interceptQuery(ORGANIZATION.organizationProjects, "organizationProjects.json");
-    cy.interceptQuery(VALUE_STREAM.with_project_instance, "with_project_instance.json");
+    cy.interceptQuery(viewer_info, `${viewer_info}.json`);
+    cy.interceptQuery(VALUE_STREAM.with_project_instance, `${VALUE_STREAM.with_project_instance}.json`);
 
     // Alias Wip Inspector Queries
-    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, "projectFlowMetrics.json");
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, "projectPipelineCycleMetrics.json");
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, "projectPipelineStateDetails.json");
+    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, `${WIP_INSPECTOR.projectFlowMetrics}.json`);
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, `${WIP_INSPECTOR.projectPipelineCycleMetrics}.json`);
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, `${WIP_INSPECTOR.projectPipelineStateDetails}.json`);
 
     cy.visit("/");
 
     // if there is only one organization, it will land directly on the organization page
     cy.wait(`@${getQueryFullName(viewer_info)}`)
-    .its("response.body.data.viewer.organizationRoles")
-    .should("have.length", 1);
+      .its("response.body.data.viewer.organizationRoles")
+      .should("have.length", 1);
 
-    cy.getBySel("value-streams").click();
-    cy.location("pathname").should("include", "/value-streams");
-
-    cy.wait(`@${getQueryFullName(ORGANIZATION.organizationProjects)}`)
-      .its("response.body.data.organization.projects.edges")
-      .should("have.length", 2);
-
-    cy.getBySel("project-table")
-      .find("table")
-      .find("tbody>tr.ant-table-row")
-      .should("have.length", 2)
-      .eq(0)
-      .find("button.ant-btn")
-      .contains(/select/i)
-      .click();
-    cy.location("pathname").should("include", "/360-view");
-
-    cy.wait(`@${getQueryFullName(VALUE_STREAM.with_project_instance)}`)
-      .its("response.body.data.project.settings.flowMetricsSettings")
-      .then((settings) => {
-        ctx.cycleTimeTarget = settings.cycleTimeTarget;
-      });
-
-    cy.getBySel("wip").click();
+    cy.visit(`/app/dashboard/value-streams/Polaris/${ctx.projectInstanceKey}/wip`);
     cy.location("pathname").should("include", "/wip");
   });
 
-  it('verify all metrics on wip dashboard, when there is no data for metrics', () => {
+  it("verify all metrics on wip dashboard, when there is no data for metrics", () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
-    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, req => {
+    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, (req) => {
       req.reply((res) => {
         // Modify the response body directly
         res.body.data.project.cycleMetricsTrends = [];
       });
-    })
+    });
 
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, req => {
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, (req) => {
       req.reply((res) => {
         res.body.data.project.pipelineCycleMetrics = {};
       });
@@ -132,8 +120,7 @@ describe("Wip Inspector", () => {
       cy.getBySel("metricValue").should("have.text", "N/A");
       cy.getBySel("uom").should("not.be.visible");
     });
-    
-  })
+  });
 
   it("verify all metrics on wip dashboard, when there is data for metrics", () => {
     cy.log("Throughput Metric");
@@ -157,7 +144,7 @@ describe("Wip Inspector", () => {
       cy.getBySel("uom").should("have.text", "Days");
       cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
 
-      cy.getBySel("trend-percent-val").should("contain", "8.3%").and("have.css", "color","rgba(255, 0, 0, 0.7)");
+      cy.getBySel("trend-percent-val").should("contain", "8.3%").and("have.css", "color", "rgba(255, 0, 0, 0.7)");
     });
 
     cy.log("WIP Total");
@@ -193,8 +180,8 @@ describe("Wip Inspector", () => {
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
-       .its("response.body.data.project.workItems.edges")
-       .should("have.length", 2)
+      .its("response.body.data.project.workItems.edges")
+      .should("have.length", 2);
 
     // add test for chart tooltip
     tooltipHidden();
