@@ -22,7 +22,8 @@ export const ProjectPipelineFunnelWidget = ({
   cycleTimeConfidenceTarget,
   leadTimeTarget,
   cycleTimeTarget,
-  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
+  includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState},
+  displayBag
 }) => {
   const includeSubTasks = {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
   const {loading, error, data} = useQueryProjectPipelineSummary({
@@ -51,6 +52,7 @@ export const ProjectPipelineFunnelWidget = ({
       leadTimeTarget={leadTimeTarget}
       cycleTimeTarget={cycleTimeTarget}
       view={view}
+      displayBag={displayBag}
     />
   ) : (
     <ProjectPipelineFunnelDetailDashboard

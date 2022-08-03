@@ -1,6 +1,5 @@
 import React from "react";
-import { VizItem, VizRow } from "../../../../containers/layout";
-import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
@@ -21,18 +20,14 @@ export const DimensionQuadrantSummaryView = ({
   }, [data, dimension]);
 
   return (
-    <VizRow h={1}>
-      <VizItem w={1}>
-        <div className={`tw-flex tw-h-auto tw-items-center`}>
-          <QuadrantSummaryPanel
-            workItems={workItems}
-            stateTypes={stateTypes}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            className="tw-w-[98%] tw-mx-auto"
-          />
-        </div>
-      </VizItem>
-    </VizRow>
+    <div className={`tw-my-auto tw-flex tw-h-auto tw-items-center`}>
+      <QuadrantSummaryPanel
+        workItems={workItems}
+        stateTypes={stateTypes}
+        cycleTimeTarget={cycleTimeTarget}
+        latencyTarget={latencyTarget}
+        className="tw-mx-auto tw-w-[98%]"
+      />
+    </div>
   );
 };
