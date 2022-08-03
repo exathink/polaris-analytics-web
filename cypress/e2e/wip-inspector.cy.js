@@ -68,6 +68,12 @@ describe("Wip Inspector", () => {
       });
     });
 
+    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
+      req.reply((res) => {
+        res.body.data.project.workItems.edges = []
+      });
+    });
+
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)
       .its("response.body.data.project.cycleMetricsTrends")
       .should("have.length", 0);
@@ -119,6 +125,13 @@ describe("Wip Inspector", () => {
     cy.getBySel("commit-latency").within(() => {
       cy.getBySel("metricValue").should("have.text", "N/A");
       cy.getBySel("uom").should("not.be.visible");
+    });
+
+    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
+    .its("response.body.data.project.workItems.edges")
+    .then(res => {
+      cy.get("svg.highcharts-root").first().should("contain", `${res.length} Specs in Coding`)
+      cy.get("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
     });
   });
 
@@ -181,7 +194,11 @@ describe("Wip Inspector", () => {
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
       .its("response.body.data.project.workItems.edges")
-      .should("have.length", 2);
+      .should("have.length", 2)
+      .then(res => {
+        cy.get("svg.highcharts-root").first().should("contain", `${res.length} Specs in Coding`)
+        cy.get("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
+      });
 
     // add test for chart tooltip
     tooltipHidden();
