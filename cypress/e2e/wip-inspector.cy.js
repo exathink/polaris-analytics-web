@@ -204,5 +204,26 @@ describe("Wip Inspector", () => {
     tooltipHidden();
     cy.getBySel("engineering").find("svg.highcharts-root").find(".highcharts-point").should("exist").eq(1).trigger("mousemove");
     tooltipVisible();
+
+    cy.getBySel("engineering").within(() => {
+      cy.getBySel("analysis-view").should("exist").click()
+      cy.location("pathname").should("include", "/wip/engineering");
+    })
+
+    cy.getBySel("engineering").within(() => {
+      cy.getBySel("analysis-view").should("exist").click()
+      cy.location("pathname").should("include", "/wip");
+    })
+
+    cy.getBySel("delivery").within(() => {
+      cy.getBySel("analysis-view").should("exist").click()
+      cy.location("pathname").should("include", "/wip/delivery");
+    })
+
+    cy.getBySel("delivery").within(() => {
+      cy.getBySel("analysis-view").should("exist").click()
+      cy.location("pathname").should("include", "/wip");
+    })
+
   });
 });

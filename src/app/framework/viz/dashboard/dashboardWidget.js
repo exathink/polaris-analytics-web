@@ -28,7 +28,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
   const color = Colors.DashboardWidgetIcons.primary;
 
   return showDetail ? (
-    <div className={className??uniqueStyles.iconsWrapper}>
+    <div className={className??uniqueStyles.iconsWrapper} data-testid="analysis-view">
       {infoElement}
       <nav>
         {itemSelected ? (
