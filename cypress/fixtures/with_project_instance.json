@@ -1,0 +1,37 @@
+{
+  "data": {
+    "project": {
+      "id": "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+      "name": "Polaris",
+      "key": "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+      "workStreamCount": 3,
+      "mappedWorkStreamCount": 3,
+      "earliestCommit": "2016-05-13T20:08:14",
+      "latestCommit": "2022-06-30T20:56:21",
+      "commitCount": 12035,
+      "latestWorkItemEvent": "2022-06-30T22:11:44.560000",
+      "latestPullRequestEvent": "2022-04-26T14:30:31.856000",
+      "organizationKey": "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+      "settings": {
+        "flowMetricsSettings": {
+          "cycleTimeTarget": 7,
+          "leadTimeTarget": 14,
+          "responseTimeConfidenceTarget": null,
+          "leadTimeConfidenceTarget": 0.8,
+          "cycleTimeConfidenceTarget": 0.9,
+          "includeSubTasks": false,
+          "__typename": "FlowMetricsSettingsImpl"
+        },
+        "analysisPeriods": {
+          "wipAnalysisPeriod": 14,
+          "flowAnalysisPeriod": 30,
+          "trendsAnalysisPeriod": 90,
+          "__typename": "AnalysisPeriodsImpl"
+        },
+        "wipInspectorSettings": {"includeSubTasks": true, "__typename": "WipInspectorSettingsImpl"},
+        "__typename": "ProjectSettingsImpl"
+      },
+      "__typename": "Project"
+    }
+  }
+}

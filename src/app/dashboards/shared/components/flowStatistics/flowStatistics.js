@@ -36,11 +36,11 @@ export const FlowStatistic = ({
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
-  const {metricValue, suffix} = getMetricUtils({target, value, uom, good, valueRender, precision});
+  const {metricValue, suffix, value: _value} = getMetricUtils({target, value, uom, good, valueRender, precision});
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size, className, targetText} = displayProps;
+      const {onClick, showHighlighted, info, size, className, targetText, testId} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -60,7 +60,8 @@ export const FlowStatistic = ({
           size={size}
           info={info}
           className={className}
-          target={targetText}
+          testId={testId}
+          target={_value==="N/A" ? null : targetText}
         />
       );
     }
@@ -177,7 +178,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     metric={metric}
     valueRender={
       value =>  {
-        return currentMeasurement[metric]/measurementWindow
+        return currentMeasurement?.[metric]/measurementWindow
       }
     }
     uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}

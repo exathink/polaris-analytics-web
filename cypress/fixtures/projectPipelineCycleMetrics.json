@@ -1,0 +1,29 @@
+{
+  "data": {
+    "project": {
+      "pipelineCycleMetrics": {
+        "workItemsWithCommits": 2,
+        "workItemsInScope": 2,
+        "percentileLeadTime": 35.5121063187847,
+        "avgLeadTime": 32.0382104854514,
+        "maxLeadTime": 35.5121063187847,
+        "targetPercentile": null,
+        "percentileCycleTime": 35.5113192817477,
+        "avgCycleTime": 31.490646828044,
+        "maxCycleTime": 35.5113192817477,
+        "totalEffort": 1.33333333333333,
+        "avgEffort": 0.666666666666667,
+        "maxEffort": 1.0,
+        "percentileEffort": 1.0,
+        "percentileDuration": 0.00163194444444444,
+        "avgDuration": 0.000815972222222222,
+        "maxDuration": 0.00163194444444444,
+        "avgLatency": 31.0073535988773,
+        "percentileLatency": 34.4923883210995,
+        "maxLatency": 34.4923883210995,
+        "__typename": "AggregateCycleMetricsImpl"
+      },
+      "__typename": "Project"
+    }
+  }
+}

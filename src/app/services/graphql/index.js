@@ -1,6 +1,6 @@
 // GraphQL Client Setup
 import React from "react";
-import {ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache} from "@apollo/client";
+import {ApolloClient, ApolloLink, ApolloProvider, from, HttpLink, InMemoryCache} from "@apollo/client";
 
 import analyticsFragmentTypes from "../../../config/graphql/analyticsFragmentTypes.json";
 import workTrackingFragmentTypes from "../../../config/graphql/workTrackingFragmentTypes.json";
@@ -22,7 +22,17 @@ const logoutLink = onError(({networkError}) => {
   }
 });
 const httpLink = new HttpLink({uri: GRAPHQL_ANALYTICS_URL, credentials: "include", fetchOptions: {redirect: "manual"}});
-
+const workTrackingHttpLink = new HttpLink({uri: GRAPHQL_WORK_TRACKING_URL, credentials: "include", fetchOptions: {redirect: "manual"}})
+const vcsHttpLink = new HttpLink({uri: GRAPHQL_VCS_URL, credentials: "include", fetchOptions: {redirect: "manual"}})
+const operationNameLink = new ApolloLink((operation, forward) => {
+  operation.setContext(({headers}) => ({
+    headers: {
+      'x-gql-operation-name': operation.operationName,
+      ...headers
+    }
+  }));
+  return forward(operation);
+})
 /**
  *  TODO:
     fragmentMatcher is supposed to be replaced by possibleTypes in latest version
@@ -33,7 +43,7 @@ const analyticsPossibleTypes = analyticsFragmentTypes.__schema.types.reduce((acc
   return acc;
 }, {});
 export const analytics_service = new ApolloClient({
-  link: from([logoutLink, httpLink]),
+  link: from([logoutLink, operationNameLink, httpLink]),
   cache: new InMemoryCache({
     possibleTypes: analyticsPossibleTypes,
   }),
@@ -47,6 +57,7 @@ const workTrackingPossibleTypes = workTrackingFragmentTypes.__schema.types.reduc
   return acc;
 }, {});
 export const work_tracking_service = new ApolloClient({
+  link: from([operationNameLink, workTrackingHttpLink]),
   cache: new InMemoryCache({
     possibleTypes: workTrackingPossibleTypes,
   }),
@@ -60,6 +71,7 @@ const vcsPossibleTypes = vcsFragmentTypes.__schema.types.reduce((acc, item) => {
   return acc;
 }, {});
 export const vcs_service = new ApolloClient({
+  link: from([operationNameLink, vcsHttpLink]),
   cache: new InMemoryCache({
     possibleTypes: vcsPossibleTypes,
   }),
