@@ -2,7 +2,7 @@ import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { capitalizeFirstLetter, pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
+import {pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
 import {
   Colors,
   WorkItemStateTypeColor,
@@ -57,11 +57,13 @@ export const PipelineFunnelChart = Chart({
                 subTitle,
                 grouping,
                 showVolumeOrEffort = "volume",
+                displayBag={},
                 intl
               }) => {
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
+    const {funnelCenter = ["38%", "50%"]} = displayBag;
     return {
       chart: {
         type: "funnel",
@@ -107,7 +109,7 @@ export const PipelineFunnelChart = Chart({
             },
             color: "white"
           }],
-          center: ["38%", "50%"],
+          center: funnelCenter,
           neckWidth: "25%",
           neckHeight: "45%",
           width: "70%"

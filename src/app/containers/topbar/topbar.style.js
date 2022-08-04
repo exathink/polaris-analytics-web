@@ -10,7 +10,7 @@ const TopbarWrapper = styled.div`
     background-color: #ffffff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: ${props =>
-      props['data-rtl'] === 'rtl' ? '0 265px 0 31px' : '0 31px 0 265px'};
+      props['data-rtl'] === 'rtl' ? '0 265px 0 31px' : '0 31px 0 225px'};
     
     ${transition()};
 
