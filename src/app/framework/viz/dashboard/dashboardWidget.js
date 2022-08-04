@@ -51,7 +51,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
   return (
-    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)}>
+    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
       {
         title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
