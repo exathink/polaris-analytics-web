@@ -130,8 +130,8 @@ describe("Wip Inspector", () => {
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
     .its("response.body.data.project.workItems.edges")
     .then(res => {
-      cy.get("svg.highcharts-root").first().should("contain", `${res.length} Specs in Coding`)
-      cy.get("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
+      cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Specs in Coding`)
+      cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Delivery`)
     });
   });
 
@@ -196,13 +196,13 @@ describe("Wip Inspector", () => {
       .its("response.body.data.project.workItems.edges")
       .should("have.length", 2)
       .then(res => {
-        cy.get("svg.highcharts-root").first().should("contain", `${res.length} Specs in Coding`)
-        cy.get("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
+        cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Specs in Coding`)
+        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Delivery`)
       });
 
     // add test for chart tooltip
     tooltipHidden();
-    cy.get("svg.highcharts-root").first().find(".highcharts-point").should("exist").eq(1).trigger("mousemove");
+    cy.getBySel("engineering").find("svg.highcharts-root").find(".highcharts-point").should("exist").eq(1).trigger("mousemove");
     tooltipVisible();
   });
 });
