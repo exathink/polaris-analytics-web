@@ -62,6 +62,9 @@ describe("Wip Inspector Detail Dashboard", () => {
     .then(res => {
         cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `0 Specs in Coding`)
         cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
+
+        cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("not.exist");
+        cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("not.exist");
     });
   });
 
@@ -72,6 +75,11 @@ describe("Wip Inspector Detail Dashboard", () => {
     .then(res => {
       cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `2 Specs in Coding`)
       cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `1 Spec in Delivery`)
+
+      // 2 chart points + 1 chart point for series
+      cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("have.length", 3);
+      // 1 chart point + 1 chart point for series
+      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 2)
     });
   });
 });
