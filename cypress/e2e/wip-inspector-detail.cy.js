@@ -79,7 +79,18 @@ describe("Wip Inspector Detail Dashboard", () => {
       // 2 chart points + 1 chart point for series
       cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("have.length", 3);
       // 1 chart point + 1 chart point for series
-      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 2)
+      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 2);
+
+      // assert on table rows
+      cy.getBySel("wip-latency-table").find("tr.ant-table-row").should("have.length", res.length);
     });
+
+    // cy.getBySel("wip-latency-chart-panels").within(() => {
+    //     cy.getBySel("ok").should("contain", "Moving").and("contain", "0 %")
+    //     cy.getBySel("latency").should("contain", "Slowing").and("contain", "0 %")
+    //     cy.getBySel("age").should("contain", "Delayed").and("contain", "0 %")
+    //     cy.getBySel("critical").should("contain", "Stalled").and("contain", "100 %")
+    // })
+
   });
 });
