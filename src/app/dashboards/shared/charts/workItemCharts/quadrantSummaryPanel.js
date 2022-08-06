@@ -63,7 +63,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   const intl = useIntl();
 
   const percentageCount = (val/total)*100;
-  const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : 0;
+  const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : <span className="tw-text-base">N/A</span>;
 
   const averageAge = totalAge/val;
   const averageAgeDisplay = val > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)} days`: '';

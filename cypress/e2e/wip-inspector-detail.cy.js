@@ -49,7 +49,7 @@ describe("Wip Inspector Detail Dashboard", () => {
     cy.location("pathname").should("include", "/wip/engineering");
   });
 
-  it("Delay Analyzer charts, when there is no data", () => {
+  it.only("Delay Analyzer charts, when there is no data", () => {
     cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
       req.reply((res) => {
         res.body.data.project.workItems.edges = []
@@ -66,9 +66,22 @@ describe("Wip Inspector Detail Dashboard", () => {
         cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("not.exist");
         cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("not.exist");
     });
+
+    cy.getBySel("wip-latency-chart-panels").within(() => {
+      cy.getBySel("ok").first().should("contain", "Moving").and("contain", "N/A")
+      cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "N/A")
+      cy.getBySel("age").first().should("contain", "Delayed").and("contain", "N/A")
+      cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "N/A")
+
+      cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "N/A")
+      cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "N/A")
+      cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "N/A")
+      cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "N/A")
+  })
+
   });
 
-  it.only("Delay Analyzer charts, when there is data", () => {
+  it("Delay Analyzer charts, when there is data", () => {
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
     .its("response.body.data.project.workItems.edges")
     .should("have.length", 3)
