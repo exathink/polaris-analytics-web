@@ -68,7 +68,7 @@ describe("Wip Inspector Detail Dashboard", () => {
     });
   });
 
-  it("Delay Analyzer charts, when there is data", () => {
+  it.only("Delay Analyzer charts, when there is data", () => {
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
     .its("response.body.data.project.workItems.edges")
     .should("have.length", 3)
@@ -85,12 +85,17 @@ describe("Wip Inspector Detail Dashboard", () => {
       cy.getBySel("wip-latency-table").find("tr.ant-table-row").should("have.length", res.length);
     });
 
-    // cy.getBySel("wip-latency-chart-panels").within(() => {
-    //     cy.getBySel("ok").should("contain", "Moving").and("contain", "0 %")
-    //     cy.getBySel("latency").should("contain", "Slowing").and("contain", "0 %")
-    //     cy.getBySel("age").should("contain", "Delayed").and("contain", "0 %")
-    //     cy.getBySel("critical").should("contain", "Stalled").and("contain", "100 %")
-    // })
+    cy.getBySel("wip-latency-chart-panels").within(() => {
+        cy.getBySel("ok").first().should("contain", "Moving").and("contain", "0 %")
+        cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "0 %")
+        cy.getBySel("age").first().should("contain", "Delayed").and("contain", "0 %")
+        cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "67 %")
+
+        cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "0 %")
+        cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "0 %")
+        cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "0 %")
+        cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "33 %")
+    })
 
   });
 });
