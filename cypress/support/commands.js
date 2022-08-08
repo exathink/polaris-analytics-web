@@ -26,6 +26,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import {getQueryFullName, getMutationFullName} from "./utils";
+import {ACCOUNT} from "./queries-constants";
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
@@ -139,8 +140,8 @@ Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
 
   cy.contains(/Register/i).click();
 
-  cy.wait("@gqlcreateConnectorMutation");
-  cy.wait("@gqlgetAccountConnectorsQuery");
+  cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
+  cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
 
   cy.getBySel("available-connectors-title").should("be.visible");
   cy.contains(connectorName).should("be.visible");
@@ -172,9 +173,9 @@ Cypress.Commands.add("ImportProjectStatus", () => {
   cy.getBySel("progress-circle").should("be.visible");
 
   // as there are multiple calls for import state check
-  cy.wait("@gqlshowImportStateQuery");
-  cy.wait("@gqlshowImportStateQuery");
-  cy.wait("@gqlshowImportStateQuery");
+  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
+  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
+  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
 
   // make sure there is completed check icon
   cy.getBySel("completed-check-icon").should("be.visible");
