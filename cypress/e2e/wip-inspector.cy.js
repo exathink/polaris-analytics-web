@@ -194,10 +194,10 @@ describe("Wip Inspector", () => {
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
       .its("response.body.data.project.workItems.edges")
-      .should("have.length", 2)
+      .should("have.length", 4)
       .then(res => {
-        cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Specs in Coding`)
-        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Delivery`)
+        cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `2 Specs in Coding`)
+        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `2 Specs in Delivery`)
       });
 
     // add test for chart tooltip
