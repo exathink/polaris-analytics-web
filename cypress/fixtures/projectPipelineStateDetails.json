@@ -144,6 +144,53 @@
               "__typename": "WorkItem"
             },
             "__typename": "WorkItemsEdge"
+          },
+          {
+            "node": {
+              "name": "Random Text4",
+              "key": "6aa5b6fe-f2a2-4806-9203-ff12f1845ggc",
+              "displayId": "PP-254",
+              "workItemType": "story",
+              "epicName": "Cypress",
+              "state": "In Progress",
+              "stateType": "complete",
+              "workItemsSourceKey": "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+              "workItemsSourceName": "Polaris Platform",
+              "teamNodeRefs": [
+                {
+                  "teamName": "Data Team",
+                  "teamKey": "304aff69-ea3b-4a71-9433-0bb0911fc817",
+                  "__typename": "TeamNodeRefImpl"
+                }
+              ],
+              "workItemStateDetails": {
+                "currentStateTransition": {
+                  "eventDate": "2022-06-22T21:12:11.808000",
+                  "__typename": "WorkItemStateTransitionImpl"
+                },
+                "currentDeliveryCycleDurations": [
+                  {
+                    "state": "created",
+                    "stateType": "backlog",
+                    "daysInState": 0.000787037037037037,
+                    "__typename": "WorkItemDaysInState"
+                  },
+                  {"state": "In Progress", "stateType": "wip", "daysInState": null, "__typename": "WorkItemDaysInState"}
+                ],
+                "earliestCommit": "2022-06-23T21:37:06",
+                "latestCommit": "2022-06-23T21:39:27",
+                "commitCount": 4,
+                "effort": 0.333333333333333,
+                "endDate": null,
+                "leadTime": null,
+                "cycleTime": null,
+                "duration": 0.00163194444444444,
+                "latency": null,
+                "__typename": "WorkItemStateDetail"
+              },
+              "__typename": "WorkItem"
+            },
+            "__typename": "WorkItemsEdge"
           }
         ],
         "__typename": "WorkItemsConnection"

@@ -1,12 +1,20 @@
 /// <reference types="cypress" />
+
+import moment from "moment";
 import {WIP_INSPECTOR, ORGANIZATION, VALUE_STREAM, viewer_info} from "../support/queries-constants";
 import {getQueryFullName} from "../support/utils";
+
+export function getNDaysAgo(n) {
+  return moment().subtract(n, "days").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
+
+export function getNHoursAgo(n) {
+  return moment().subtract(n, "hours").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
 
 // given the data set in fixtures, we are asserting the wip inspector metrics in the UI
 describe("Wip Inspector Detail Dashboard", () => {
   const ctx = {};
-  const tooltipHidden = () => cy.get(".highcharts-tooltip").should("not.exist");
-  const tooltipVisible = () => cy.get(".highcharts-tooltip").should("have.css", "opacity", "1");
 
   before(() => {
     cy.fixture(`${VALUE_STREAM.with_project_instance}.json`).then((response) => {
@@ -33,11 +41,6 @@ describe("Wip Inspector Detail Dashboard", () => {
     cy.interceptQuery(viewer_info, `${viewer_info}.json`);
     cy.interceptQuery(VALUE_STREAM.with_project_instance, `${VALUE_STREAM.with_project_instance}.json`);
 
-    // Alias Wip Inspector Queries
-    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, `${WIP_INSPECTOR.projectFlowMetrics}.json`);
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, `${WIP_INSPECTOR.projectPipelineCycleMetrics}.json`);
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, `${WIP_INSPECTOR.projectPipelineStateDetails}.json`);
-
     cy.visit("/");
 
     // if there is only one organization, it will land directly on the organization page
@@ -49,7 +52,7 @@ describe("Wip Inspector Detail Dashboard", () => {
     cy.location("pathname").should("include", "/wip/engineering");
   });
 
-  it.only("Delay Analyzer charts, when there is no data", () => {
+  it("Delay Analyzer charts, when there is no data", () => {
     cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
       req.reply((res) => {
         res.body.data.project.workItems.edges = []
@@ -82,32 +85,52 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   it("Delay Analyzer charts, when there is data", () => {
+    cy.fixture(`${WIP_INSPECTOR.projectPipelineStateDetails}.json`).then((fixture) => {
+      fixture.data.project.workItems.edges[0].node.workItemStateDetails.latestCommit = getNHoursAgo(10);
+      fixture.data.project.workItems.edges[0].node.workItemStateDetails.currentStateTransition.eventDate =
+        getNDaysAgo(4);
+
+      fixture.data.project.workItems.edges[1].node.workItemStateDetails.latestCommit = getNDaysAgo(2);
+      fixture.data.project.workItems.edges[1].node.workItemStateDetails.currentStateTransition.eventDate =
+        getNDaysAgo(3);
+
+      fixture.data.project.workItems.edges[3].node.workItemStateDetails.latestCommit = getNHoursAgo(10);
+      fixture.data.project.workItems.edges[3].node.workItemStateDetails.currentStateTransition.eventDate =
+        getNDaysAgo(8);
+
+      cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
+        req.reply(res => {
+          res.body = fixture
+        });
+      });
+    });
+
+
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
     .its("response.body.data.project.workItems.edges")
-    .should("have.length", 3)
+    .should("have.length", 4)
     .then(res => {
       cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `2 Specs in Coding`)
-      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `1 Spec in Delivery`)
+      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `2 Specs in Delivery`)
 
       // 2 chart points + 1 chart point for series
       cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("have.length", 3);
-      // 1 chart point + 1 chart point for series
-      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 2);
+      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 3);
 
       // assert on table rows
       cy.getBySel("wip-latency-table").find("tr.ant-table-row").should("have.length", res.length);
     });
 
     cy.getBySel("wip-latency-chart-panels").within(() => {
-        cy.getBySel("ok").first().should("contain", "Moving").and("contain", "0 %")
-        cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "0 %")
+        cy.getBySel("ok").first().should("contain", "Moving").and("contain", "25 %")
+        cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "25 %")
         cy.getBySel("age").first().should("contain", "Delayed").and("contain", "0 %")
-        cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "67 %")
+        cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "0 %")
 
         cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "0 %")
         cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "0 %")
-        cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "0 %")
-        cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "33 %")
+        cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "25 %")
+        cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "25 %")
     })
 
   });
