@@ -1,0 +1,40 @@
+{
+  "data": {
+    "connectors": {
+      "count": 7,
+      "edges": [
+        {
+          "node": {
+            "id": "Q29ubmVjdG9yOmZlMjE0ZmFhLWI3ZDktNGEwZS05NzJhLTc0YjM2M2VlZjFkNA==",
+            "name": "Trello Test 01",
+            "key": "fe214faa-b7d9-4a0e-972a-74b363eef1d4",
+            "connectorType": "trello",
+            "baseUrl": "https://api.trello.com",
+            "accountKey": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+            "organizationKey": "4e2d0790-e34c-4461-b12c-6072279fd67f",
+            "state": "enabled",
+            "archived": false,
+            "__typename": "Connector"
+          },
+          "__typename": "ConnectorsEdge"
+        },
+        {
+          "node": {
+            "id": "Q29ubmVjdG9yOmVlYTYxZmU2LWEyY2EtNDE1MS05N2M1LWFlYTkxZmNlYmUyNg==",
+            "name": "Trello Test 02",
+            "key": "eea61fe6-a2ca-4151-97c5-aea91fcebe26",
+            "connectorType": "trello",
+            "baseUrl": "https://api.trello.com",
+            "accountKey": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+            "organizationKey": "4e2d0790-e34c-4461-b12c-6072279fd67f",
+            "state": "enabled",
+            "archived": false,
+            "__typename": "Connector"
+          },
+          "__typename": "ConnectorsEdge"
+        }
+      ],
+      "__typename": "ConnectorsConnection"
+    }
+  }
+}

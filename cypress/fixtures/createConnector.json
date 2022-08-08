@@ -1,0 +1,13 @@
+{
+  "data": {
+    "createConnector": {
+      "connector": {
+        "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjNkYzY2NTUxLTRiZmUtNDczZC1hMTk4LTU0ZDFkNjA2NTIzMg==",
+        "name": "Trello",
+        "key": "3dc66551-4bfe-473d-a198-54d1d6065232",
+        "__typename": "WorkTrackingConnector"
+      },
+      "__typename": "CreateWorkTrackingConnector"
+    }
+  }
+}

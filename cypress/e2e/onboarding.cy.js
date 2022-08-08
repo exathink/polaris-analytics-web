@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
-import {ACCOUNT} from "../support/queries-constants";
+import {ACCOUNT, ORGANIZATION, viewer_info} from "../support/queries-constants";
+import {getQueryFullName} from "../support/utils";
 
 const importProjectFlowConfig = [
   {
@@ -32,12 +33,15 @@ const importProjectFlowConfig = [
 describe("Onboarding flows", () => {
   beforeEach(() => {
     // Queries
-    cy.interceptQuery(ACCOUNT.getAccountConnectors);
-    cy.interceptQuery(ACCOUNT.showImportState);
+    cy.interceptQuery(viewer_info, `${viewer_info}.json`);
+    cy.interceptQuery(ORGANIZATION.with_organization_instance, `${ORGANIZATION.with_organization_instance}.json`);
+
+    cy.interceptQuery(ACCOUNT.getAccountConnectors, `${ACCOUNT.getAccountConnectors}.json`);
+    cy.interceptQuery(ACCOUNT.showImportState, `${ACCOUNT.showImportState}.json`);
 
     // Mutations
-    cy.interceptMutation(ACCOUNT.createConnector);
-    cy.interceptMutation(ACCOUNT.refreshConnectorProjects)
+    cy.interceptMutation(ACCOUNT.createConnector, `${ACCOUNT.createConnector}.json`);
+    cy.interceptMutation(ACCOUNT.refreshConnectorProjects, `${ACCOUNT.refreshConnectorProjects}.json`)
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -50,6 +54,8 @@ describe("Onboarding flows", () => {
   importProjectFlowConfig.forEach((config) => {
     it(`Import project flow for - ${config.provider}`, () => {
       cy.visit("/");
+
+      cy.wait([`@${getQueryFullName(viewer_info)}`, `@${getQueryFullName(ORGANIZATION.with_organization_instance)}`]);
 
       // assume there are no existing connectors setup already
 

@@ -1,0 +1,25 @@
+{
+  "data": {
+    "workTrackingConnector": {
+      "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjNkYzY2NTUxLTRiZmUtNDczZC1hMTk4LTU0ZDFkNjA2NTIzMg==",
+      "workItemsSources": {
+        "edges": [
+          {
+            "node": {
+              "id": "V29ya0l0ZW1zU291cmNlOmNmOGRkMDUxLThiNzYtNGVhZC04OGNkLTcyODhiNjNhYjhmMA==",
+              "name": "Polaris",
+              "key": "cf8dd051-8b76-4ead-88cd-7288b63ab8f0",
+              "initialImportDays": 30,
+              "importState": "ready",
+              "workItemCount": 0,
+              "__typename": "WorkItemsSource"
+            },
+            "__typename": "WorkItemsSourcesEdge"
+          }
+        ],
+        "__typename": "WorkItemsSourcesConnection"
+      },
+      "__typename": "WorkTrackingConnector"
+    }
+  }
+}
