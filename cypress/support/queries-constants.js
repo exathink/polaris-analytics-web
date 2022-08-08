@@ -1,5 +1,12 @@
 export const viewer_info = "viewer_info";
 
+export const ACCOUNT = {
+  getAccountConnectors: "getAccountConnectors",
+  showImportState: "showImportState",
+  createConnector: "createConnector",
+  refreshConnectorProjects: "refreshConnectorProjects"
+}
+
 export const ORGANIZATION = {
     organizationProjects: "organizationProjects"
 }

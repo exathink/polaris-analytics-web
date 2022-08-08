@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import {ACCOUNT} from "../support/queries-constants";
+
 const importProjectFlowConfig = [
   {
     provider: "Trello",
@@ -30,12 +32,12 @@ const importProjectFlowConfig = [
 describe("Onboarding flows", () => {
   beforeEach(() => {
     // Queries
-    cy.interceptQuery("getAccountConnectors");
-    cy.interceptQuery("showImportState");
+    cy.interceptQuery(ACCOUNT.getAccountConnectors);
+    cy.interceptQuery(ACCOUNT.showImportState);
 
     // Mutations
-    cy.interceptMutation("createConnector");
-    cy.interceptMutation("refreshConnectorProjects")
+    cy.interceptMutation(ACCOUNT.createConnector);
+    cy.interceptMutation(ACCOUNT.refreshConnectorProjects)
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
