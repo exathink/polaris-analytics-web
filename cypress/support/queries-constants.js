@@ -8,7 +8,8 @@ export const ACCOUNT = {
 }
 
 export const ORGANIZATION = {
-    organizationProjects: "organizationProjects"
+    organizationProjects: "organizationProjects",
+    with_organization_instance: "with_organization_instance"
 }
 
 export const VALUE_STREAM = {
