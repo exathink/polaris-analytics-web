@@ -165,13 +165,14 @@ Cypress.Commands.add("SelectProjects", () => {
   cy.get("input[type=checkbox]").eq(1).check({force: true});
 
   cy.getBySel("workflow-next-button").click();
-  cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`)
+  cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`);
 });
 
 Cypress.Commands.add("ConfigureImport", () => {
   cy.getBySel("configure-import-title").should("be.visible");
   cy.getBySel("import-project-button").click();
   cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
+  cy.wait(`@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`);
 });
 
 Cypress.Commands.add("ImportProjectStatus", () => {
