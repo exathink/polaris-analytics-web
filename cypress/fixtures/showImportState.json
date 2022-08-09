@@ -10,7 +10,7 @@
               "name": "Polaris",
               "key": "cf8dd051-8b76-4ead-88cd-7288b63ab8f0",
               "initialImportDays": 30,
-              "importState": "ready",
+              "importState": "auto_update",
               "workItemCount": 0,
               "__typename": "WorkItemsSource"
             },

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import {ACCOUNT, ORGANIZATION, viewer_info} from "../support/queries-constants";
+import {ACCOUNT, ORGANIZATION, VALUE_STREAM, viewer_info} from "../support/queries-constants";
 import {getQueryFullName} from "../support/utils";
 
 const importProjectFlowConfig = [
@@ -38,10 +38,13 @@ describe("Onboarding flows", () => {
 
     cy.interceptQuery(ACCOUNT.getAccountConnectors, `${ACCOUNT.getAccountConnectors}.json`);
     cy.interceptQuery(ACCOUNT.showImportState, `${ACCOUNT.showImportState}.json`);
+    cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}.json`);
+    cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, `${ORGANIZATION.getOrganizationProjectCount}.json`);
 
     // Mutations
     cy.interceptMutation(ACCOUNT.createConnector, `${ACCOUNT.createConnector}.json`);
     cy.interceptMutation(ACCOUNT.refreshConnectorProjects, `${ACCOUNT.refreshConnectorProjects}.json`)
+    cy.interceptMutation(VALUE_STREAM.importProjects, `${VALUE_STREAM.importProjects}.json`)
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);

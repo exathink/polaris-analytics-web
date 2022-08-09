@@ -26,7 +26,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import {getQueryFullName, getMutationFullName} from "./utils";
-import {ACCOUNT} from "./queries-constants";
+import {ACCOUNT, ORGANIZATION, VALUE_STREAM} from "./queries-constants";
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
@@ -105,16 +105,16 @@ Cypress.Commands.add("interceptQuery", (operationName, fixture) => {
       },
     },
     typeof fixture === "string"
-    ? (req) => {
-        if (fixture) {
-          req.reply({
-            fixture: fixture,
-          });
+      ? (req) => {
+          if (fixture) {
+            req.reply({
+              fixture: fixture,
+            });
+          }
         }
-      }
-    : typeof fixture === "function"
-    ? fixture
-    : undefined
+      : typeof fixture === "function"
+      ? fixture
+      : undefined
   ).as(getQueryFullName(operationName));
 });
 /**
@@ -158,15 +158,20 @@ Cypress.Commands.add("SelectProjects", () => {
   cy.getBySel("select-projects-title").should("be.visible");
   cy.getBySel("fetch-available-projects").click();
 
-  cy.wait(`@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`);
-  cy.get("input[type=checkbox]").first().check({force: true});
+  cy.wait([
+    `@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`,
+    `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
+  ]);
+  cy.get("input[type=checkbox]").eq(1).check({force: true});
 
   cy.getBySel("workflow-next-button").click();
+  cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`)
 });
 
 Cypress.Commands.add("ConfigureImport", () => {
   cy.getBySel("configure-import-title").should("be.visible");
   cy.getBySel("import-project-button").click();
+  cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
 });
 
 Cypress.Commands.add("ImportProjectStatus", () => {
