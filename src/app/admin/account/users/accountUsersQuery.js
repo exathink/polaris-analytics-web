@@ -6,7 +6,12 @@ export const ACCOUNT_USERS_QUERY = gql`
     account(key: $accountKey) {
       id
       key
-      users(first: $pageSize, after: $endCursor, interfaces: [UserInfo, ScopedRole, UserRoles]) {
+      users(
+        first: $pageSize, after: $endCursor, 
+        interfaces: [UserInfo, ScopedRole, UserRoles], 
+        userRolesArgs: {
+          accountKey: $accountKey
+        }) {
         count
         edges {
           node {
