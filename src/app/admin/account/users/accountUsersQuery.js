@@ -18,9 +18,9 @@ export const ACCOUNT_USERS_QUERY = gql`
             email
             role
             organizationRoles {
-              organizationKey
-              organizationRole
-              organizationName
+              name
+              scopeKey
+              role
             }
           }
         }
