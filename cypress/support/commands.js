@@ -158,7 +158,7 @@ Cypress.Commands.add("SelectProjects", () => {
   cy.getBySel("select-projects-title").should("be.visible");
   cy.getBySel("fetch-available-projects").click();
 
-  cy.wait("@gqlrefreshConnectorProjectsMutation");
+  cy.wait(`@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`);
   cy.get("input[type=checkbox]").first().check({force: true});
 
   cy.getBySel("workflow-next-button").click();
