@@ -67,22 +67,73 @@ describe("Onboarding flows", () => {
       cy.location("pathname").should("include", "/value-streams/new");
 
       // 1st Step
-      cy.SelectProvider({cardId: config.cardId});
+      cy.log("SelectProvider");
+      cy.getBySel("integration-step-title").should("be.visible");
+      cy.getBySel(config.cardId).click();
 
-      // 2nd Step
-      cy.SelectConnector({
-        connectorName: config.connectorName,
-        credentialPairs: config.credentialPairs,
+      // 2nd Step SelectConnector
+      cy.log("SelectConnector");
+      cy.getBySel("create-connector-button").click();
+
+      cy.contains("Next").click();
+    
+      cy.get("input#name").type(config.connectorName).should("have.value", config.connectorName);
+    
+      config.credentialPairs.forEach((pair) => {
+        const [domId, value] = pair;
+        cy.get(domId).type(value).should("have.value", value);
       });
+    
+      cy.contains(/Register/i).click();
+    
+      cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
+      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
+    
+      cy.getBySel("available-connectors-title").should("be.visible");
+      cy.contains(config.connectorName).should("be.visible");
+    
+      cy.get("table")
+        .find("tbody>tr")
+        .first()
+        .find("button.ant-btn")
+        .contains(/select/i)
+        .click();
 
-      // 3rd Step
-      cy.SelectProjects();
+      // 3rd Step SelectProjects
+      cy.log("SelectProjects");
+      cy.getBySel("select-projects-title").should("be.visible");
+      cy.getBySel("fetch-available-projects").click();
+    
+      cy.wait([
+        `@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`,
+        `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
+      ]);
+      cy.get("input[type=checkbox]").eq(1).check({force: true});
+    
+      cy.getBySel("workflow-next-button").click();
+      cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`);
 
-      // 4th Step
-      cy.ConfigureImport();
+      // 4th Step ConfigureImport
+      cy.log("ConfigureImport");
+      cy.getBySel("configure-import-title").should("be.visible");
+      cy.getBySel("import-project-button").click();
+      cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
+      cy.wait(`@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`);
 
-      // 5th Step
-      cy.ImportProjectStatus();
+      // 5th Step ImportProjectStatus
+      cy.log("ImportProjectStatus");
+      cy.getBySel("progress-circle").should("be.visible");
+
+      // as there are multiple calls for import state check
+      cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
+      cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
+      cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
+    
+      // make sure there is completed check icon
+      cy.getBySel("completed-check-icon").should("be.visible");
+    
+      cy.getBySel("workflow-done-button").click();
+      
     });
   });
 });
