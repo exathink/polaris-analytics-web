@@ -82,7 +82,6 @@ describe("Onboarding flows", () => {
 
   importProjectFlowConfig.forEach((config) => {
     it(`Import project flow for - ${config.provider}`, () => {
-
       cy.interceptQuery(ACCOUNT.getAccountConnectors, config.apiFixtures[ACCOUNT.getAccountConnectors]);
       cy.intercept(
         {
@@ -96,7 +95,10 @@ describe("Onboarding flows", () => {
         {fixture: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`]}
       ).as(getQueryFullName(ACCOUNT.getAccountConnectors));
 
-      cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_after`]);
+      cy.interceptQuery(
+        ACCOUNT.getConnectorWorkItemsSources,
+        config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_after`]
+      );
       cy.intercept(
         {
           method: "POST",
@@ -109,7 +111,10 @@ describe("Onboarding flows", () => {
         {fixture: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`]}
       ).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
 
-      cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, config.apiFixtures[`${ORGANIZATION.getOrganizationProjectCount}`]);
+      cy.interceptQuery(
+        ORGANIZATION.getOrganizationProjectCount,
+        config.apiFixtures[`${ORGANIZATION.getOrganizationProjectCount}`]
+      );
 
       cy.intercept(
         {
@@ -152,7 +157,7 @@ describe("Onboarding flows", () => {
       cy.log("SelectProvider");
       cy.getBySel("integration-step-title").should("be.visible");
       cy.getBySel(config.cardId).click();
-      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`)
+      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
 
       // 2nd Step SelectConnector
       cy.log("SelectConnector");
