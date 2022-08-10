@@ -1,0 +1,14 @@
+{
+  "data": {
+    "trackingReceipt": {
+      "id": "VHJhY2tpbmdSZWNlaXB0OjhlNWY0YTQyLTg3MjAtNGY2Yi05OTMzLTAyZWYxNWRiYjQ4YQ==",
+      "name": "RefreshConnectorProjectsMutation",
+      "key": "8e5f4a42-8720-4f6b-9933-02ef15dbb48a",
+      "createdAt": "2022-08-10T12:30:31.148369",
+      "completedAt": null,
+      "currentState": "created",
+      "info": null,
+      "__typename": "TrackingReceipt"
+    }
+  }
+}

@@ -12,6 +12,18 @@ const importProjectFlowConfig = [
       ["input#trelloApiKey", Cypress.env("trelloApiKey")],
       ["input#trelloAccessToken", Cypress.env("trelloAccessToken")],
     ],
+    apiFixtures: {
+      [ACCOUNT.getAccountConnectors]: `trello/${ACCOUNT.getAccountConnectors}.json`,
+      [`${ACCOUNT.getAccountConnectors}_empty`]: `trello/${ACCOUNT.getAccountConnectors}_empty.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_before`]: `trello/${ACCOUNT.getConnectorWorkItemsSources}_before.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_after`]: `trello/${ACCOUNT.getConnectorWorkItemsSources}_after.json`,
+      [`${ORGANIZATION.getOrganizationProjectCount}`]: `trello/${ORGANIZATION.getOrganizationProjectCount}.json`,
+      [`${ACCOUNT.showImportState}_ready`]: `trello/${ACCOUNT.showImportState}_ready.json`,
+      [`${ACCOUNT.showImportState}_autoupdate`]: `trello/${ACCOUNT.showImportState}_autoupdate.json`,
+      [`${ACCOUNT.createConnector}`]: `trello/${ACCOUNT.createConnector}.json`,
+      [`${ACCOUNT.refreshConnectorProjects}`]: `trello/${ACCOUNT.refreshConnectorProjects}.json`,
+      [VALUE_STREAM.importProjects]: `trello/${VALUE_STREAM.importProjects}.json`,
+    },
   },
   {
     provider: "Github",
@@ -21,12 +33,36 @@ const importProjectFlowConfig = [
       ["input#githubOrganization", Cypress.env("githubOrganization")],
       ["input#githubAccessToken", Cypress.env("githubAccessToken")],
     ],
+    apiFixtures: {
+      [ACCOUNT.getAccountConnectors]: `github/${ACCOUNT.getAccountConnectors}.json`,
+      [`${ACCOUNT.getAccountConnectors}_empty`]: `github/${ACCOUNT.getAccountConnectors}_empty.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_before`]: `github/${ACCOUNT.getConnectorWorkItemsSources}_before.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_after`]: `github/${ACCOUNT.getConnectorWorkItemsSources}_after.json`,
+      [`${ORGANIZATION.getOrganizationProjectCount}`]: `github/${ORGANIZATION.getOrganizationProjectCount}.json`,
+      [`${ACCOUNT.showImportState}_ready`]: `github/${ACCOUNT.showImportState}_ready.json`,
+      [`${ACCOUNT.showImportState}_autoupdate`]: `github/${ACCOUNT.showImportState}_autoupdate.json`,
+      [`${ACCOUNT.createConnector}`]: `github/${ACCOUNT.createConnector}.json`,
+      [`${ACCOUNT.refreshConnectorProjects}`]: `github/${ACCOUNT.refreshConnectorProjects}.json`,
+      [VALUE_STREAM.importProjects]: `github/${VALUE_STREAM.importProjects}.json`,
+    },
   },
   {
     provider: "Gitlab",
     cardId: "gitlab-card",
     connectorName: "Gitlab Test",
     credentialPairs: [["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")]],
+    apiFixtures: {
+      [ACCOUNT.getAccountConnectors]: `gitlab/${ACCOUNT.getAccountConnectors}.json`,
+      [`${ACCOUNT.getAccountConnectors}_empty`]: `gitlab/${ACCOUNT.getAccountConnectors}_empty.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_before`]: `gitlab/${ACCOUNT.getConnectorWorkItemsSources}_before.json`,
+      [`${ACCOUNT.getConnectorWorkItemsSources}_after`]: `gitlab/${ACCOUNT.getConnectorWorkItemsSources}_after.json`,
+      [`${ORGANIZATION.getOrganizationProjectCount}`]: `gitlab/${ORGANIZATION.getOrganizationProjectCount}.json`,
+      [`${ACCOUNT.showImportState}_ready`]: `gitlab/${ACCOUNT.showImportState}_ready.json`,
+      [`${ACCOUNT.showImportState}_autoupdate`]: `gitlab/${ACCOUNT.showImportState}_autoupdate.json`,
+      [`${ACCOUNT.createConnector}`]: `gitlab/${ACCOUNT.createConnector}.json`,
+      [`${ACCOUNT.refreshConnectorProjects}`]: `gitlab/${ACCOUNT.refreshConnectorProjects}.json`,
+      [VALUE_STREAM.importProjects]: `gitlab/${VALUE_STREAM.importProjects}.json`,
+    },
   },
 ];
 
@@ -35,61 +71,6 @@ describe("Onboarding flows", () => {
     // Queries
     cy.interceptQuery(viewer_info, `${viewer_info}.json`);
     cy.interceptQuery(ORGANIZATION.with_organization_instance, `${ORGANIZATION.with_organization_instance}.json`);
-
-    cy.interceptQuery(ACCOUNT.getAccountConnectors, `${ACCOUNT.getAccountConnectors}.json`);
-    cy.intercept(
-      {
-        method: "POST",
-        url: "/graphql",
-        headers: {
-          "x-gql-operation-name": ACCOUNT.getAccountConnectors,
-        },
-        times: 1,
-      },
-      {fixture: `${ACCOUNT.getAccountConnectors}_empty.json`}
-    ).as(getQueryFullName(ACCOUNT.getAccountConnectors));
-
-    cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}_02.json`);
-    cy.intercept(
-      {
-        method: "POST",
-        url: "/graphql",
-        headers: {
-          "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
-        },
-        times: 1,
-      },
-      {fixture: `${ACCOUNT.getConnectorWorkItemsSources}.json`}
-    ).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
-
-    cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, `${ORGANIZATION.getOrganizationProjectCount}.json`);
-
-    cy.intercept(
-      {
-        method: "POST",
-        url: "/graphql",
-        headers: {
-          "x-gql-operation-name": ACCOUNT.showImportState,
-        },
-      },
-      {fixture: `${ACCOUNT.showImportState}_02.json`}
-    ).as(getQueryFullName(ACCOUNT.showImportState));
-    cy.intercept(
-      {
-        method: "POST",
-        url: "/graphql",
-        headers: {
-          "x-gql-operation-name": ACCOUNT.showImportState,
-        },
-        times: 1,
-      },
-      {fixture: `${ACCOUNT.showImportState}.json`}
-    ).as(getQueryFullName(ACCOUNT.showImportState));
-
-    // Mutations
-    cy.interceptMutation(ACCOUNT.createConnector, `${ACCOUNT.createConnector}.json`);
-    cy.interceptMutation(ACCOUNT.refreshConnectorProjects, `${ACCOUNT.refreshConnectorProjects}.json`);
-    cy.interceptMutation(VALUE_STREAM.importProjects, `${VALUE_STREAM.importProjects}.json`);
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -101,6 +82,62 @@ describe("Onboarding flows", () => {
 
   importProjectFlowConfig.forEach((config) => {
     it(`Import project flow for - ${config.provider}`, () => {
+
+      cy.interceptQuery(ACCOUNT.getAccountConnectors, config.apiFixtures[ACCOUNT.getAccountConnectors]);
+      cy.intercept(
+        {
+          method: "POST",
+          url: "/graphql",
+          headers: {
+            "x-gql-operation-name": ACCOUNT.getAccountConnectors,
+          },
+          times: 1,
+        },
+        {fixture: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`]}
+      ).as(getQueryFullName(ACCOUNT.getAccountConnectors));
+
+      cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_after`]);
+      cy.intercept(
+        {
+          method: "POST",
+          url: "/graphql",
+          headers: {
+            "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
+          },
+          times: 1,
+        },
+        {fixture: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`]}
+      ).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
+
+      cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, config.apiFixtures[`${ORGANIZATION.getOrganizationProjectCount}`]);
+
+      cy.intercept(
+        {
+          method: "POST",
+          url: "/graphql",
+          headers: {
+            "x-gql-operation-name": ACCOUNT.showImportState,
+          },
+        },
+        {fixture: config.apiFixtures[`${ACCOUNT.showImportState}_autoupdate`]}
+      ).as(getQueryFullName(ACCOUNT.showImportState));
+      cy.intercept(
+        {
+          method: "POST",
+          url: "/graphql",
+          headers: {
+            "x-gql-operation-name": ACCOUNT.showImportState,
+          },
+          times: 1,
+        },
+        {fixture: config.apiFixtures[`${ACCOUNT.showImportState}_ready`]}
+      ).as(getQueryFullName(ACCOUNT.showImportState));
+
+      // Mutations
+      cy.interceptMutation(ACCOUNT.createConnector, config.apiFixtures[`${ACCOUNT.createConnector}`]);
+      cy.interceptMutation(ACCOUNT.refreshConnectorProjects, config.apiFixtures[`${ACCOUNT.refreshConnectorProjects}`]);
+      cy.interceptMutation(VALUE_STREAM.importProjects, config.apiFixtures[`${VALUE_STREAM.importProjects}`]);
+
       cy.visit("/");
 
       cy.wait([`@${getQueryFullName(viewer_info)}`, `@${getQueryFullName(ORGANIZATION.with_organization_instance)}`]);
@@ -115,6 +152,7 @@ describe("Onboarding flows", () => {
       cy.log("SelectProvider");
       cy.getBySel("integration-step-title").should("be.visible");
       cy.getBySel(config.cardId).click();
+      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`)
 
       // 2nd Step SelectConnector
       cy.log("SelectConnector");
