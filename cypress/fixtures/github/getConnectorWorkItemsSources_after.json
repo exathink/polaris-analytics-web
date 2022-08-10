@@ -2,9 +2,9 @@
   "data": {
     "workTrackingConnector": {
       "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjc1OTUwZjc5LWM1ZWMtNDFjOS1hZmMyLTA1OGY2YWMzMjFkMg==",
-      "name": "Gitlab Test 02",
+      "name": "Github Test 02",
       "key": "75950f79-c5ec-41c9-afc2-058f6ac321d2",
-      "connectorType": "gitlab",
+      "connectorType": "github",
       "state": "enabled",
       "workItemsSources": {
         "count": 2,

@@ -6,10 +6,10 @@
         {
           "node": {
             "id": "Q29ubmVjdG9yOjRiMTY3Y2RmLWFjZTItNDdmMS1iM2YxLTgyZDQwM2Q3OTlhZg==",
-            "name": "Gitlab Test",
+            "name": "Github Test",
             "key": "4b167cdf-ace2-47f1-b3f1-82d403d799af",
-            "connectorType": "gitlab",
-            "baseUrl": "https://gitlab.com",
+            "connectorType": "github",
+            "baseUrl": "https://github.com",
             "accountKey": "0771e9cd-7db5-4874-a6c2-f55edc452916",
             "organizationKey": "4e2d0790-e34c-4461-b12c-6072279fd67f",
             "state": "enabled",
