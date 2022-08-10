@@ -46,9 +46,42 @@ describe("Onboarding flows", () => {
       times: 1
     }, {fixture: `${ACCOUNT.getAccountConnectors}_empty.json`}).as(getQueryFullName(ACCOUNT.getAccountConnectors));
 
-    cy.interceptQuery(ACCOUNT.showImportState, `${ACCOUNT.showImportState}.json`);
-    cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}.json`);
+
+
+    cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}_02.json`);
+    cy.intercept(    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
+      },
+      times: 1
+    }, {fixture: `${ACCOUNT.getConnectorWorkItemsSources}.json`}).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
+
     cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, `${ORGANIZATION.getOrganizationProjectCount}.json`);
+
+    cy.intercept(
+      {
+        method: "POST",
+        url: "/graphql",
+        headers: {
+          "x-gql-operation-name": ACCOUNT.showImportState,
+        },
+      },
+      {fixture: `${ACCOUNT.showImportState}_02.json`}
+    ).as(getQueryFullName(ACCOUNT.showImportState));
+    cy.intercept(
+      {
+        method: "POST",
+        url: "/graphql",
+        headers: {
+          "x-gql-operation-name": ACCOUNT.showImportState,
+        },
+        times: 1,
+      },
+      {fixture: `${ACCOUNT.showImportState}.json`}
+    ).as(getQueryFullName(ACCOUNT.showImportState));
+
 
     // Mutations
     cy.interceptMutation(ACCOUNT.createConnector, `${ACCOUNT.createConnector}.json`);

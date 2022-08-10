@@ -10,7 +10,7 @@
               "name": "polaris-integrations",
               "key": "e2b5f4c2-ed00-434b-b3e7-9c960941f564",
               "initialImportDays": 30,
-              "importState": "ready",
+              "importState": "auto_update",
               "workItemCount": 0,
               "__typename": "WorkItemsSource"
             },
