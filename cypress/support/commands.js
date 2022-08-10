@@ -26,7 +26,6 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import {getQueryFullName, getMutationFullName} from "./utils";
-import {ACCOUNT, ORGANIZATION, VALUE_STREAM} from "./queries-constants";
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
@@ -80,7 +79,7 @@ Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) 
       headers: {
         "x-gql-operation-name": operationName,
       },
-      ...(times && {times: times})
+      ...(times && {times: times}),
     },
     {fixture: fixturePath}
   ).as(getMutationFullName(operationName));
@@ -107,7 +106,7 @@ Cypress.Commands.add("interceptQuery", ({operationName, fixturePath, times}) => 
       headers: {
         "x-gql-operation-name": operationName,
       },
-      ...(times && {times: times})
+      ...(times && {times: times}),
     },
     {fixture: fixturePath}
   ).as(getQueryFullName(operationName));
@@ -124,75 +123,4 @@ Cypress.Commands.add("interceptQueryWithCb", ({operationName, fixtureCb}) => {
     },
     fixtureCb
   ).as(getQueryFullName(operationName));
-});
-/**
- *  Useful Commands for onboarding flow (Connect Project Workflow)
- */
-
-Cypress.Commands.add("SelectProvider", ({cardId}) => {
-  cy.getBySel("integration-step-title").should("be.visible");
-  cy.getBySel(cardId).click();
-});
-
-Cypress.Commands.add("SelectConnector", ({connectorName, credentialPairs}) => {
-  cy.getBySel("create-connector-button").click();
-
-  cy.contains("Next").click();
-
-  cy.get("input#name").type(connectorName).should("have.value", connectorName);
-
-  credentialPairs.forEach((pair) => {
-    const [domId, value] = pair;
-    cy.get(domId).type(value).should("have.value", value);
-  });
-
-  cy.contains(/Register/i).click();
-
-  cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
-  cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
-
-  cy.getBySel("available-connectors-title").should("be.visible");
-  cy.contains(connectorName).should("be.visible");
-
-  cy.get("table")
-    .find("tbody>tr")
-    .first()
-    .find("button.ant-btn")
-    .contains(/select/i)
-    .click();
-});
-
-Cypress.Commands.add("SelectProjects", () => {
-  cy.getBySel("select-projects-title").should("be.visible");
-  cy.getBySel("fetch-available-projects").click();
-
-  cy.wait([
-    `@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`,
-    `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
-  ]);
-  cy.get("input[type=checkbox]").eq(1).check({force: true});
-
-  cy.getBySel("workflow-next-button").click();
-  cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`);
-});
-
-Cypress.Commands.add("ConfigureImport", () => {
-  cy.getBySel("configure-import-title").should("be.visible");
-  cy.getBySel("import-project-button").click();
-  cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
-  cy.wait(`@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`);
-});
-
-Cypress.Commands.add("ImportProjectStatus", () => {
-  cy.getBySel("progress-circle").should("be.visible");
-
-  // as there are multiple calls for import state check
-  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
-  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
-  cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
-
-  // make sure there is completed check icon
-  cy.getBySel("completed-check-icon").should("be.visible");
-
-  cy.getBySel("workflow-done-button").click();
 });
