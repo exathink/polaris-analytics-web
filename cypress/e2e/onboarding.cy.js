@@ -37,26 +37,30 @@ describe("Onboarding flows", () => {
     cy.interceptQuery(ORGANIZATION.with_organization_instance, `${ORGANIZATION.with_organization_instance}.json`);
 
     cy.interceptQuery(ACCOUNT.getAccountConnectors, `${ACCOUNT.getAccountConnectors}.json`);
-    cy.intercept(    {
-      method: "POST",
-      url: "/graphql",
-      headers: {
-        "x-gql-operation-name": ACCOUNT.getAccountConnectors,
+    cy.intercept(
+      {
+        method: "POST",
+        url: "/graphql",
+        headers: {
+          "x-gql-operation-name": ACCOUNT.getAccountConnectors,
+        },
+        times: 1,
       },
-      times: 1
-    }, {fixture: `${ACCOUNT.getAccountConnectors}_empty.json`}).as(getQueryFullName(ACCOUNT.getAccountConnectors));
-
-
+      {fixture: `${ACCOUNT.getAccountConnectors}_empty.json`}
+    ).as(getQueryFullName(ACCOUNT.getAccountConnectors));
 
     cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}_02.json`);
-    cy.intercept(    {
-      method: "POST",
-      url: "/graphql",
-      headers: {
-        "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
+    cy.intercept(
+      {
+        method: "POST",
+        url: "/graphql",
+        headers: {
+          "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
+        },
+        times: 1,
       },
-      times: 1
-    }, {fixture: `${ACCOUNT.getConnectorWorkItemsSources}.json`}).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
+      {fixture: `${ACCOUNT.getConnectorWorkItemsSources}.json`}
+    ).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
 
     cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, `${ORGANIZATION.getOrganizationProjectCount}.json`);
 
@@ -82,11 +86,10 @@ describe("Onboarding flows", () => {
       {fixture: `${ACCOUNT.showImportState}.json`}
     ).as(getQueryFullName(ACCOUNT.showImportState));
 
-
     // Mutations
     cy.interceptMutation(ACCOUNT.createConnector, `${ACCOUNT.createConnector}.json`);
-    cy.interceptMutation(ACCOUNT.refreshConnectorProjects, `${ACCOUNT.refreshConnectorProjects}.json`)
-    cy.interceptMutation(VALUE_STREAM.importProjects, `${VALUE_STREAM.importProjects}.json`)
+    cy.interceptMutation(ACCOUNT.refreshConnectorProjects, `${ACCOUNT.refreshConnectorProjects}.json`);
+    cy.interceptMutation(VALUE_STREAM.importProjects, `${VALUE_STREAM.importProjects}.json`);
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -118,22 +121,22 @@ describe("Onboarding flows", () => {
       cy.getBySel("create-connector-button").click();
 
       cy.contains("Next").click();
-    
+
       cy.get("input#name").type(config.connectorName).should("have.value", config.connectorName);
-    
+
       config.credentialPairs.forEach((pair) => {
         const [domId, value] = pair;
         cy.get(domId).type(value).should("have.value", value);
       });
-    
+
       cy.contains(/Register/i).click();
-    
+
       cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
       cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
-    
+
       cy.getBySel("available-connectors-title").should("be.visible");
       cy.contains(config.connectorName).should("be.visible");
-    
+
       cy.get("table")
         .find("tbody>tr")
         .first()
@@ -145,13 +148,13 @@ describe("Onboarding flows", () => {
       cy.log("SelectProjects");
       cy.getBySel("select-projects-title").should("be.visible");
       cy.getBySel("fetch-available-projects").click();
-    
+
       cy.wait([
         `@${getMutationFullName(ACCOUNT.refreshConnectorProjects)}`,
         `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
       ]);
       cy.get("input[type=checkbox]").eq(1).check({force: true});
-    
+
       cy.getBySel("workflow-next-button").click();
       cy.wait(`@${getQueryFullName(ORGANIZATION.getOrganizationProjectCount)}`);
 
@@ -170,12 +173,11 @@ describe("Onboarding flows", () => {
       cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
       cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
       cy.wait(`@${getQueryFullName(ACCOUNT.showImportState)}`);
-    
+
       // make sure there is completed check icon
       cy.getBySel("completed-check-icon").should("be.visible");
-    
-      cy.getBySel("workflow-done-button").click();
 
+      cy.getBySel("workflow-done-button").click();
     });
   });
 });
