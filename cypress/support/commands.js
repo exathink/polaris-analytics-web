@@ -72,7 +72,7 @@ Cypress.Commands.add("loginByApi", (username, password) => {
     });
 });
 
-Cypress.Commands.add("interceptMutation", (operationName, fixture) => {
+Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) => {
   cy.intercept(
     {
       method: "POST",
@@ -80,22 +80,13 @@ Cypress.Commands.add("interceptMutation", (operationName, fixture) => {
       headers: {
         "x-gql-operation-name": operationName,
       },
+      ...(times && {times: times})
     },
-    typeof fixture === "string"
-      ? (req) => {
-          if (fixture) {
-            req.reply({
-              fixture: fixture,
-            });
-          }
-        }
-      : typeof fixture === "function"
-      ? fixture
-      : undefined
+    {fixture: fixturePath}
   ).as(getMutationFullName(operationName));
 });
 
-Cypress.Commands.add("interceptQuery", (operationName, fixture) => {
+Cypress.Commands.add("interceptMutationWithCb", ({operationName, fixtureCb}) => {
   cy.intercept(
     {
       method: "POST",
@@ -104,17 +95,34 @@ Cypress.Commands.add("interceptQuery", (operationName, fixture) => {
         "x-gql-operation-name": operationName,
       },
     },
-    typeof fixture === "string"
-      ? (req) => {
-          if (fixture) {
-            req.reply({
-              fixture: fixture,
-            });
-          }
-        }
-      : typeof fixture === "function"
-      ? fixture
-      : undefined
+    fixtureCb
+  ).as(getMutationFullName(operationName));
+});
+
+Cypress.Commands.add("interceptQuery", ({operationName, fixturePath, times}) => {
+  cy.intercept(
+    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": operationName,
+      },
+      ...(times && {times: times})
+    },
+    {fixture: fixturePath}
+  ).as(getQueryFullName(operationName));
+});
+
+Cypress.Commands.add("interceptQueryWithCb", ({operationName, fixtureCb}) => {
+  cy.intercept(
+    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": operationName,
+      },
+    },
+    fixtureCb
   ).as(getQueryFullName(operationName));
 });
 /**
