@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import {ACCOUNT, ORGANIZATION, VALUE_STREAM, viewer_info} from "../support/queries-constants";
-import {getQueryFullName} from "../support/utils";
+import {getMutationFullName, getQueryFullName} from "../support/utils";
 
 const importProjectFlowConfig = [
   {
@@ -37,6 +37,15 @@ describe("Onboarding flows", () => {
     cy.interceptQuery(ORGANIZATION.with_organization_instance, `${ORGANIZATION.with_organization_instance}.json`);
 
     cy.interceptQuery(ACCOUNT.getAccountConnectors, `${ACCOUNT.getAccountConnectors}.json`);
+    cy.intercept(    {
+      method: "POST",
+      url: "/graphql",
+      headers: {
+        "x-gql-operation-name": ACCOUNT.getAccountConnectors,
+      },
+      times: 1
+    }, {fixture: `${ACCOUNT.getAccountConnectors}_empty.json`}).as(getQueryFullName(ACCOUNT.getAccountConnectors));
+
     cy.interceptQuery(ACCOUNT.showImportState, `${ACCOUNT.showImportState}.json`);
     cy.interceptQuery(ACCOUNT.getConnectorWorkItemsSources, `${ACCOUNT.getConnectorWorkItemsSources}.json`);
     cy.interceptQuery(ORGANIZATION.getOrganizationProjectCount, `${ORGANIZATION.getOrganizationProjectCount}.json`);
@@ -133,7 +142,7 @@ describe("Onboarding flows", () => {
       cy.getBySel("completed-check-icon").should("be.visible");
     
       cy.getBySel("workflow-done-button").click();
-      
+
     });
   });
 });
