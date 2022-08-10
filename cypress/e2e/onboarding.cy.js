@@ -69,8 +69,11 @@ const importProjectFlowConfig = [
 describe("Onboarding flows", () => {
   beforeEach(() => {
     // Queries
-    cy.interceptQuery(viewer_info, `${viewer_info}.json`);
-    cy.interceptQuery(ORGANIZATION.with_organization_instance, `${ORGANIZATION.with_organization_instance}.json`);
+    cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
+    cy.interceptQuery({
+      operationName: ORGANIZATION.with_organization_instance,
+      fixturePath: `${ORGANIZATION.with_organization_instance}.json`,
+    });
 
     const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
     cy.loginByApi(username, password);
@@ -82,66 +85,55 @@ describe("Onboarding flows", () => {
 
   importProjectFlowConfig.forEach((config) => {
     it(`Import project flow for - ${config.provider}`, () => {
-      cy.interceptQuery(ACCOUNT.getAccountConnectors, config.apiFixtures[ACCOUNT.getAccountConnectors]);
-      cy.intercept(
-        {
-          method: "POST",
-          url: "/graphql",
-          headers: {
-            "x-gql-operation-name": ACCOUNT.getAccountConnectors,
-          },
-          times: 1,
-        },
-        {fixture: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`]}
-      ).as(getQueryFullName(ACCOUNT.getAccountConnectors));
+      cy.interceptQuery({
+        operationName: ACCOUNT.getAccountConnectors,
+        fixturePath: config.apiFixtures[ACCOUNT.getAccountConnectors],
+      });
+      cy.interceptQuery({
+        operationName: ACCOUNT.getAccountConnectors,
+        fixturePath: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`],
+        times: 1
+      });
 
-      cy.interceptQuery(
-        ACCOUNT.getConnectorWorkItemsSources,
-        config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_after`]
-      );
-      cy.intercept(
-        {
-          method: "POST",
-          url: "/graphql",
-          headers: {
-            "x-gql-operation-name": ACCOUNT.getConnectorWorkItemsSources,
-          },
-          times: 1,
-        },
-        {fixture: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`]}
-      ).as(getQueryFullName(ACCOUNT.getConnectorWorkItemsSources));
 
-      cy.interceptQuery(
-        ORGANIZATION.getOrganizationProjectCount,
-        config.apiFixtures[`${ORGANIZATION.getOrganizationProjectCount}`]
-      );
+      cy.interceptQuery({
+        operationName: ACCOUNT.getConnectorWorkItemsSources,
+        fixturePath: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_after`],
+      });
+      cy.interceptQuery({
+        operationName: ACCOUNT.getConnectorWorkItemsSources,
+        fixturePath: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`],
+        times: 1
+      });
 
-      cy.intercept(
-        {
-          method: "POST",
-          url: "/graphql",
-          headers: {
-            "x-gql-operation-name": ACCOUNT.showImportState,
-          },
-        },
-        {fixture: config.apiFixtures[`${ACCOUNT.showImportState}_autoupdate`]}
-      ).as(getQueryFullName(ACCOUNT.showImportState));
-      cy.intercept(
-        {
-          method: "POST",
-          url: "/graphql",
-          headers: {
-            "x-gql-operation-name": ACCOUNT.showImportState,
-          },
-          times: 1,
-        },
-        {fixture: config.apiFixtures[`${ACCOUNT.showImportState}_ready`]}
-      ).as(getQueryFullName(ACCOUNT.showImportState));
+      cy.interceptQuery({
+        operationName: ORGANIZATION.getOrganizationProjectCount,
+        fixturePath: config.apiFixtures[`${ORGANIZATION.getOrganizationProjectCount}`],
+      });
+
+      cy.interceptQuery({
+        operationName: ACCOUNT.showImportState,
+        fixturePath: config.apiFixtures[`${ACCOUNT.showImportState}_autoupdate`],
+      });
+      cy.interceptQuery({
+        operationName: ACCOUNT.showImportState,
+        fixturePath: config.apiFixtures[`${ACCOUNT.showImportState}_ready`],
+        times: 1
+      });
 
       // Mutations
-      cy.interceptMutation(ACCOUNT.createConnector, config.apiFixtures[`${ACCOUNT.createConnector}`]);
-      cy.interceptMutation(ACCOUNT.refreshConnectorProjects, config.apiFixtures[`${ACCOUNT.refreshConnectorProjects}`]);
-      cy.interceptMutation(VALUE_STREAM.importProjects, config.apiFixtures[`${VALUE_STREAM.importProjects}`]);
+      cy.interceptMutation({
+        operationName: ACCOUNT.createConnector,
+        fixturePath: config.apiFixtures[`${ACCOUNT.createConnector}`],
+      });
+      cy.interceptMutation({
+        operationName: ACCOUNT.refreshConnectorProjects,
+        fixturePath: config.apiFixtures[`${ACCOUNT.refreshConnectorProjects}`],
+      });
+      cy.interceptMutation({
+        operationName: VALUE_STREAM.importProjects,
+        fixturePath: config.apiFixtures[`${VALUE_STREAM.importProjects}`],
+      });
 
       cy.visit("/");
 
