@@ -180,3 +180,7 @@ table thead th {
   border-right: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0 !important;
 }
+
+.editUserFormCell .ant-form-item-control-input {
+  min-height: 16px;
+}

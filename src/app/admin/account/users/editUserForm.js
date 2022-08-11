@@ -38,7 +38,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
             name={record.scopeKey}
             initialValue={record.role === "owner"}
             valuePropName="checked"
-            className="!tw-mb-0"
+            className="!tw-mb-0 editUserFormCell"
           >
             <Checkbox></Checkbox>
           </Form.Item>
