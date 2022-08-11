@@ -38,8 +38,11 @@ describe("Wip Inspector Detail Dashboard", () => {
     // TODO: this is deprecated now, need to replace from cy.session
     Cypress.Cookies.preserveOnce("session");
 
-    cy.interceptQuery(viewer_info, `${viewer_info}.json`);
-    cy.interceptQuery(VALUE_STREAM.with_project_instance, `${VALUE_STREAM.with_project_instance}.json`);
+    cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
+    cy.interceptQuery({
+      operationName: VALUE_STREAM.with_project_instance,
+      fixturePath: `${VALUE_STREAM.with_project_instance}.json`,
+    });
 
     cy.visit("/");
 
@@ -53,35 +56,37 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   it("Delay Analyzer charts, when there is no data", () => {
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
-      req.reply((res) => {
-        res.body.data.project.workItems.edges = []
-      });
+    cy.interceptQueryWithCb({
+      operationName: WIP_INSPECTOR.projectPipelineStateDetails,
+      fixtureCb: (req) => {
+        req.reply((res) => {
+          res.body.data.project.workItems.edges = [];
+        });
+      },
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
-    .its("response.body.data.project.workItems.edges")
-    .should("have.length", 0)
-    .then(res => {
-        cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `0 Specs in Coding`)
-        cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`)
+      .its("response.body.data.project.workItems.edges")
+      .should("have.length", 0)
+      .then((res) => {
+        cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `0 Specs in Coding`);
+        cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `0 Specs in Delivery`);
 
         cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("not.exist");
         cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("not.exist");
-    });
+      });
 
     cy.getBySel("wip-latency-chart-panels").within(() => {
-      cy.getBySel("ok").first().should("contain", "Moving").and("contain", "N/A")
-      cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "N/A")
-      cy.getBySel("age").first().should("contain", "Delayed").and("contain", "N/A")
-      cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "N/A")
+      cy.getBySel("ok").first().should("contain", "Moving").and("contain", "N/A");
+      cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "N/A");
+      cy.getBySel("age").first().should("contain", "Delayed").and("contain", "N/A");
+      cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "N/A");
 
-      cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "N/A")
-      cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "N/A")
-      cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "N/A")
-      cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "N/A")
-  })
-
+      cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "N/A");
+      cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "N/A");
+      cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "N/A");
+      cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "N/A");
+    });
   });
 
   it("Delay Analyzer charts, when there is data", () => {
@@ -98,40 +103,45 @@ describe("Wip Inspector Detail Dashboard", () => {
       fixture.data.project.workItems.edges[3].node.workItemStateDetails.currentStateTransition.eventDate =
         getNDaysAgo(8);
 
-      cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
-        req.reply(res => {
-          res.body = fixture
+        cy.interceptQueryWithCb({
+          operationName: WIP_INSPECTOR.projectPipelineStateDetails,
+          fixtureCb: (req) => {
+            req.reply((res) => {
+              res.body = fixture;
+            });
+          },
         });
-      });
     });
-
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
-    .its("response.body.data.project.workItems.edges")
-    .should("have.length", 4)
-    .then(res => {
-      cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `2 Specs in Coding`)
-      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `2 Specs in Delivery`)
+      .its("response.body.data.project.workItems.edges")
+      .should("have.length", 4)
+      .then((res) => {
+        cy.getBySel("engineering").find("svg.highcharts-root").first().should("contain", `2 Specs in Coding`);
+        cy.getBySel("engineering").find("svg.highcharts-root").eq(1).should("contain", `2 Specs in Delivery`);
 
-      // 2 chart points + 1 chart point for series
-      cy.getBySel("engineering").find("svg.highcharts-root").first().find(".highcharts-point").should("have.length", 3);
-      cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 3);
+        // 2 chart points + 1 chart point for series
+        cy.getBySel("engineering")
+          .find("svg.highcharts-root")
+          .first()
+          .find(".highcharts-point")
+          .should("have.length", 3);
+        cy.getBySel("engineering").find("svg.highcharts-root").eq(1).find(".highcharts-point").should("have.length", 3);
 
-      // assert on table rows
-      cy.getBySel("wip-latency-table").find("tr.ant-table-row").should("have.length", res.length);
-    });
+        // assert on table rows
+        cy.getBySel("wip-latency-table").find("tr.ant-table-row").should("have.length", res.length);
+      });
 
     cy.getBySel("wip-latency-chart-panels").within(() => {
-        cy.getBySel("ok").first().should("contain", "Moving").and("contain", "25 %")
-        cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "25 %")
-        cy.getBySel("age").first().should("contain", "Delayed").and("contain", "0 %")
-        cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "0 %")
+      cy.getBySel("ok").first().should("contain", "Moving").and("contain", "25 %");
+      cy.getBySel("latency").first().should("contain", "Slowing").and("contain", "25 %");
+      cy.getBySel("age").first().should("contain", "Delayed").and("contain", "0 %");
+      cy.getBySel("critical").first().should("contain", "Stalled").and("contain", "0 %");
 
-        cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "0 %")
-        cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "0 %")
-        cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "25 %")
-        cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "25 %")
-    })
-
+      cy.getBySel("ok").eq(1).should("contain", "Moving").and("contain", "0 %");
+      cy.getBySel("latency").eq(1).should("contain", "Slowing").and("contain", "0 %");
+      cy.getBySel("age").eq(1).should("contain", "Delayed").and("contain", "25 %");
+      cy.getBySel("critical").eq(1).should("contain", "Stalled").and("contain", "25 %");
+    });
   });
 });
