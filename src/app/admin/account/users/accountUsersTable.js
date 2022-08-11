@@ -38,7 +38,7 @@ const AccountUsersPaginatedTable = ({
       });
 
       // mutation to update user
-      const [mutate, {loading: mutationLoading, client}] = useUpdateUser({
+      const [mutate, {client}] = useUpdateUser({
         onCompleted: (data) => {
           if (data.updateUser.updated) {
             notify(data)

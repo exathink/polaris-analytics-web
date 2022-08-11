@@ -40,7 +40,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
             valuePropName="checked"
             className="!tw-mb-0"
           >
-            <Checkbox className="!tw-min-h-[16px]"></Checkbox>
+            <Checkbox></Checkbox>
           </Form.Item>
         );
       },
