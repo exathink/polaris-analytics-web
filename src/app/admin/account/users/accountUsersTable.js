@@ -38,20 +38,17 @@ const AccountUsersPaginatedTable = ({
       });
 
       // mutation to update user
-      const [mutate, {loading: mutationLoading}] = useUpdateUser({
+      const [mutate, {loading: mutationLoading, client}] = useUpdateUser({
         onCompleted: (data) => {
-          //  {success, contributorKey, message, exception}
           if (data.updateUser.updated) {
             notify(data)
-            // dispatch({type: actionTypes.UPDATE_TIMEOUT_EXECUTING, payload: true});
+            client.resetStore();
           } else {
             logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", " ");
-            // dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: updateStatus.message});
           }
         },
         onError: (error) => {
           logGraphQlError("AccountUsersPaginatedTable.useUpdateUser", error);
-          // dispatch({type: actionTypes.UPDATE_ERROR_MESSAGE, payload: error.message});
         },
       });
 
@@ -65,7 +62,10 @@ const AccountUsersPaginatedTable = ({
 
       function handleSubmit(values) {
         console.log({values});
-        const orgRoles = values["organizationRoles"].map(o => ({orgKey: o.organizationKey, role: values[o.organizationKey]}))
+        const orgRoles = values["organizationRoles"].map((o) => ({
+          orgKey: o.scopeKey,
+          role: values[o.scopeKey] === true ? "owner" : "member",
+        }));
         const updatedInfo = {
           accountKey: viewer.accountKey,
           key: values.key,
@@ -81,6 +81,8 @@ const AccountUsersPaginatedTable = ({
           variables: {
             updateUserInput: updatedInfo
           },
+        }).then((_) => {
+          values.onClose();
         });
       }
 

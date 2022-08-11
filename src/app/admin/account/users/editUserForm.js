@@ -14,6 +14,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
   const dataSource = initialValues.organizationRoles.map((org) => {
     return {
       key: org.scopeKey,
+      scopeKey: org.scopeKey,
       name: org.name,
       role: org.role,
     };
@@ -34,7 +35,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
       render: (text, record) => {
         return (
           <Form.Item
-            name={record.name}
+            name={record.scopeKey}
             initialValue={record.role === "owner"}
             valuePropName="checked"
             className="!tw-mb-0"
@@ -52,7 +53,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
         Edit
       </Button>
       <Drawer title={"Edit User"} width={720} onClose={onClose} visible={visible}>
-        <Form key={visible} layout="vertical" hideRequiredMark onFinish={onSubmit} initialValues={initialValues}>
+        <Form key={visible} layout="vertical" hideRequiredMark onFinish={values => onSubmit({...values, onClose})} initialValues={initialValues}>
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
