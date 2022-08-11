@@ -50,6 +50,8 @@ export const DimensionResponseTimeWidget = ({
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={cycleMetricsTrends}
+        specsOnly={limitToSpecsOnly}
+        days={measurementWindow}
       />
     );
   } else {

@@ -181,6 +181,21 @@ table thead th {
   border-bottom: 1px solid #f0f0f0 !important;
 }
 
+.ant-layout.ant-layout-has-sider.isoContentMainLayout > .ant-layout-content {
+  width: 100%;
+}
+
+.ant-layout.ant-layout-has-sider.isoContentMainLayout {
+  flex-direction: column;
+}
+
+.ant-tooltip .ant-tooltip-inner .isoMenuHolder i {
+  color: white !important;
+}
+.ant-tooltip .ant-tooltip-inner .isoMenuHolder span {
+  color: white !important;
+}
+
 .editUserFormCell .ant-form-item-control-input {
   min-height: 16px;
 }

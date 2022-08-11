@@ -17,17 +17,17 @@ export function getTrendIndicatorUtils({firstValue, secondValue, good, intl}) {
   const style = good ? (good(delta) ? "good" : "bad") : "neutral";
   const trendIndicatorIcon =
     delta > 0 ? (
-      <span className={`${style}IndicatorArrow`}>
+      <span className={`${style}IndicatorArrow`} data-testid="trend-uparrow">
         <ArrowUpOutlined size="small" />
       </span>
     ) : (
-      <span className={`${style}IndicatorArrow`}>
+      <span className={`${style}IndicatorArrow`} data-testid="trend-downarrow">
         <ArrowDownOutlined size={"small"} />
       </span>
     );
 
   const absDelta = Math.abs(delta);
-  const trendValue = <span className={`${style}Indicator`}>{i18nNumber(intl, absDelta, 1)}%</span>;
+  const trendValue = <span className={`${style}Indicator`} data-testid="trend-percent-val">{i18nNumber(intl, absDelta, 1)}%</span>;
   return {trendIndicatorIcon, trendValue, delta, absDelta};
 }
 
@@ -62,11 +62,11 @@ export const TrendIndicatorNew = ({
       // show indicator only if absDelta greater than the indicator display threshold
       absDelta > deltaThreshold && (
         <div>
-          <div className="trendIndicatorPadding">
+          <div className="trendIndicatorPadding tw-text-center">
             {trendIndicatorIcon} {trendValue}
           </div>
-          <div>
-            {samplingFrequency && <span className="comparisonWindow">Compared to prior {samplingFrequency} days.</span>}
+          <div className="comparisonWindow tw-text-center">
+            {samplingFrequency && <p className="tw-leading-3 tw-mb-0"><p className="tw-mb-0">Compared to prior</p> <p className="tw-mb-0"> {samplingFrequency} days.</p></p>}
           </div>
         </div>
       )
@@ -134,6 +134,7 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
         {suffix}
       </span>
     ),
+    value: metricValue
   };
 }
 

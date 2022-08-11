@@ -3,9 +3,11 @@ import {VizItem, VizRow} from "../../../containers/layout";
 import {PullRequestAgeChart} from "./pullRequestAgeChart";
 import {navigateToExternalURL} from "../../../navigation/navigate";
 import {TrendIndicator} from "../../../../../components/misc/statistic/statistic";
-import {FlowStatistic} from "../../../components/flowStatistics/flowStatistics";
+import {FlowStatistic, OpenPullRequestCount, OpenPullRequestsAvg} from "../../../components/flowStatistics/flowStatistics";
 import {average} from "../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
+import classNames from "classnames";
+import fontStyles from "../../../../../framework/styles/fonts.module.css";
 
 const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
   <VizRow h={1}>
@@ -33,6 +35,32 @@ const OpenPullRequestsStatsView = ({title, pullRequests, view}) => (
       />
     </VizItem>
   </VizRow>
+);
+
+export const OpenPullRequestsCardsView = ({title, pullRequests, view, cardSelection, onClick}) => (
+  <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_80%] tw-gap-1">
+    <div className={classNames("tw-col-span-2 tw-font-normal", fontStyles["text-lg"])}>Open Pull Requests</div>
+    <OpenPullRequestCount
+      title={"Total"}
+      currentValue={(pullRequests && pullRequests.length) || 0}
+      displayType="card"
+      displayProps={{className: "tw-p-2", onClick, showHighlighted: cardSelection==="open"}}
+    />
+    <OpenPullRequestsAvg
+      title={
+        title || (
+          <span>
+            {"Age"}
+            <sup> Avg </sup>
+          </span>
+        )
+      }
+      currentValue={average(pullRequests, (pullRequest) => pullRequest.age)}
+      displayType="card"
+      displayProps={{className: "tw-p-2", onClick, showHighlighted: cardSelection==="open"}}
+    />
+
+  </div>
 );
 
 const PullRequestChartView = ({pullRequests, view, context}) => {
@@ -70,10 +98,9 @@ const PullRequestChartView = ({pullRequests, view, context}) => {
 };
 
 
-export const OpenPullRequestsView = ({pullRequests, view, context, asStatistic}) => {
+export const OpenPullRequestsView = ({pullRequests, view, context, asStatistic, asCard}) => {
   if (asStatistic) {
     return <OpenPullRequestsStatsView pullRequests={pullRequests} view={view} />;
   }
-
   return <PullRequestChartView pullRequests={pullRequests} view={view} context={context} />;
 };

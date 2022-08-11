@@ -7,6 +7,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analyzer"/>),
     icon: 'ion-ios-infinite-outline'
   },
+  newflow: {
+    name: 'newflow',
+    display: () => (<FormattedMessage id='topics.newflow' defaultMessage="New Flow"/>),
+    icon: 'ion-magnet'
+  },
   wip: {
     name: 'wip',
     display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
@@ -71,6 +76,21 @@ export const Topics = {
     name: 'projects',
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     icon: 'ion-folder'
+  },
+  pull_requests: {
+    name: 'pull_requests',
+    display: () => (<FormattedMessage id='topics.pull_requests' defaultMessage="Pull Requests"/>),
+    icon: 'ion-pull-request'
+  },
+  first: {
+    name: 'first',
+    display: () => (<FormattedMessage id='topics.first' defaultMessage="First"/>),
+    icon: 'ion-magnet'
+  },
+  second: {
+    name: 'second',
+    display: () => (<FormattedMessage id='topics.second' defaultMessage="Second"/>),
+    icon: 'ion-ios-gear'
   },
   repositories: {
     name: 'repositories',

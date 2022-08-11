@@ -10,7 +10,7 @@ import {Tooltip} from "antd";
 import {FullscreenExitOutlined, PieChartFilled} from "@ant-design/icons";
 import {Colors} from "../../../dashboards/shared/config";
 
-const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
+const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) => {
   const infoElement = infoConfig && (
     <InfoCard
       title={infoConfig.title}
@@ -28,7 +28,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig}) => {
   const color = Colors.DashboardWidgetIcons.primary;
 
   return showDetail ? (
-    <div className={uniqueStyles.iconsWrapper}>
+    <div className={className??uniqueStyles.iconsWrapper} data-testid="analysis-view">
       {infoElement}
       <nav>
         {itemSelected ? (
@@ -51,7 +51,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
   return (
-    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)}>
+    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
       {
         title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
@@ -105,6 +105,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
           itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
         )}
         infoConfig={infoConfig}
+        className={rest.classNameForDetailIcon}
       />
       {
         itemSelected && showDetail ? render({view: 'detail', ...rest}) : render({view: 'primary', ...rest})

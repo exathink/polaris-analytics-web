@@ -12,6 +12,7 @@ export const ProjectPipelineFunnelView = ({
   showVolumeOrEffort,
   view,
   context,
+  displayBag
 }) => {
   return (
     <div data-testid="project-pipeline-funnel-view" style={{width: "100%", height: "100%"}}>
@@ -23,6 +24,7 @@ export const ProjectPipelineFunnelView = ({
             cycleTimeTarget={cycleTimeTarget}
             grouping={workItemScope}
             showVolumeOrEffort={showVolumeOrEffort}
+            displayBag={displayBag}
           />
     </div>
   );

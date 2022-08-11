@@ -186,6 +186,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <div
             className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[75%,25%] tw-gap-x-2"
             key={resetComponentStateKey}
+            data-testid="wip-latency-chart-panels"
           >
             <WorkItemsCycleTimeVsLatencyChart
               view={view}
@@ -269,7 +270,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             </div>
           </div>
       </div>
-      <div className={styles.cycleTimeLatencyTable}>
+      <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
           tableData={getWorkItemDurations(tableFilteredWorkItems)
             .filter(

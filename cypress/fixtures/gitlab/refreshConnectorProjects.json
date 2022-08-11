@@ -1,0 +1,9 @@
+{
+  "data": {
+    "refreshConnectorProjects": {
+      "success": true,
+      "trackingReceiptKey": "cb933fa7-2cc9-41f2-812a-e56c54f0517b",
+      "__typename": "RefreshConnectorProjects"
+    }
+  }
+}

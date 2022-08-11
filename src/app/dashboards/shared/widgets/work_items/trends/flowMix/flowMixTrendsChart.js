@@ -228,8 +228,7 @@ export const FlowMixTrendsChart = Chart({
           states: {
             select: {
               color: null,
-              borderWidth: 2,
-              borderColor: Colors.HistogramSelection,
+              opacity: 0.5
             },
           },
           point: {

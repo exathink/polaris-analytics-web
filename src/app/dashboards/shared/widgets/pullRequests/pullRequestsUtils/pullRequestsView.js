@@ -1,5 +1,7 @@
+import classNames from "classnames";
 import React from "react";
 import {useIntl} from "react-intl";
+import {i18nDate} from "../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
@@ -11,39 +13,59 @@ import {PullRequestsDetailTable} from "./pullRequestsDetailTable";
 
 // Here we are passing all values in days format for consistency sake
 // 1/48 days => 30mins, 6/24 days => 6 hours
-const COL_WIDTH_BOUNDARIES = [1/48, 6/24, 1, 3, 7];
+const COL_WIDTH_BOUNDARIES = [1 / 48, 6 / 24, 1, 3, 7];
 
 function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   if (closedWithinDays === 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed on ${intl.formatDate(before)}`;
+    return `${pullRequests.length} pull request closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays === 1 && pullRequests.length !== 1) {
-    return `${pullRequests.length} pull requests closed on ${intl.formatDate(before)}`;
+    return `${pullRequests.length} pull requests closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays > 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${intl.formatDate(
-      before
-    )}`;
+    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${i18nDate(intl, before)}`;
   }
-  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending ${intl.formatDate(
-    before
-  )}`;
+  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending${i18nDate(intl, before)}`;
 }
 
 function getSelectedFilterText({closedWithinDays, intl, before}) {
   if (closedWithinDays === 1) {
-    return `on ${intl.formatDate(before)}`;
+    return `on ${i18nDate(intl, before)}`;
   } else if (closedWithinDays > 1) {
-    return `${closedWithinDays} days ending ${intl.formatDate(before)}`;
+    return `${closedWithinDays} days ending ${i18nDate(intl, before)}`;
   }
 }
 
-export function PullRequestsView({display, pullRequests, closedWithinDays, context, pullRequestsType, before, setBefore}) {
+export function PullRequestsView({
+  display,
+  pullRequests,
+  closedWithinDays,
+  context,
+  pullRequestsType,
+  before,
+  setBefore,
+  selectedFilter,
+  setFilter,
+}) {
   const intl = useIntl();
-  const [tabSelection, setTab] = React.useState("histogram");
-  const [selectedFilter, setFilter] = React.useState(null);
+  const [tabSelection, setTab] = React.useState("table");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+
+  // whenever selectedFilter changes, we want to remount table component
+  React.useEffect(() => {
+    if (selectedFilter) {
+      resetComponentState();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
+
+  React.useEffect(() => {
+    if (before) {
+      setFilter(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [before]);
 
   const seriesAvgAge = React.useMemo(() => {
     return [
@@ -52,106 +74,124 @@ export function PullRequestsView({display, pullRequests, closedWithinDays, conte
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        name: pullRequestsType === 'closed' ? "Time to Review" : "Age",
+        name: pullRequestsType === "closed" ? "Time to Review" : "Age",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
       }),
     ];
   }, [pullRequests, pullRequestsType, intl]);
 
-  React.useEffect(() => {
-    if (before) {
-      setTab("table");
-    }
-  }, [before]);
-
   function handleClearClick() {
-    setFilter(null);
+    setFilter?.(null);
     resetComponentState();
   }
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
-      title={
-        pullRequestsType === "closed"
-          ? `Review Time Variability`
-          : `Open Pull Requests by Age`
-      }
+      title={pullRequestsType === "closed" ? `Review Time Details` : `Open Pull Requests`}
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
-          : ``
+          : `Age Distribution`
       }
       selectedMetric={"pullRequestAvgAge"}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
       series={seriesAvgAge}
       onPointClick={({category, selectedMetric}) => {
-        setFilter(category);
-        setTab("table");
+        setFilter?.(category);
+        setTab?.("table");
       }}
     />
   );
 
-  if (display==="histogram") {
+  if (display === "histogram") {
     return histogramChart;
   }
+
+  const pullRequestsTableView = (
+    <div className="tw-relative tw-h-full">
+      <PullRequestsDetailTable
+        key={resetComponentStateKey}
+        tableData={pullRequests}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        selectedFilter={selectedFilter}
+        setShowPanel={setShowPanel}
+        setWorkItemKey={setWorkItemKey}
+        prStateType={pullRequestsType}
+      />
+    </div>
+  );
+
+  let histogramTableElement, groupingSelector;
+  if (display === "histogramTable") {
+    groupingSelector = (
+      <GroupingSelector
+        label={"View"}
+        className={"tw-ml-auto"}
+        groupings={[
+          {key: "table", display: "Pull Requests"},
+          {key: "histogram", display: `Histogram`},
+        ].map((item) => ({
+          key: item.key,
+          display: item.display,
+        }))}
+        initialValue={tabSelection}
+        value={tabSelection}
+        onGroupingChanged={setTab}
+        layout="row"
+      />
+    );
+
+    histogramTableElement = (
+      <React.Fragment>
+        <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
+        {tabSelection === "table" && pullRequestsTableView}
+      </React.Fragment>
+    );
+  }
+
   // show histogram view
   return (
     <div className="tw-h-full">
-      <div className="tw-flex tw-items-center tw-justify-end">
+      <div className="tw-flex tw-items-center tw-justify-center">
         {before != null && (
           <div className="tw-mr-2">
             <ClearFilters
               selectedFilter={getSelectedFilterText({closedWithinDays, intl, before})}
-              selectedMetric={"Pull Requests Closed"}
+              selectedMetric={"Closed Pull Requests"}
               stateType={pullRequestsType}
               handleClearClick={() => {
                 setBefore?.(undefined);
-                setTab("histogram");
+                setTab?.("histogram");
               }}
             />
           </div>
         )}
-        {selectedFilter != null && (
+        {pullRequestsType === "open" && (
           <div className="tw-mr-6">
             <ClearFilters
-              selectedFilter={selectedFilter}
-              selectedMetric={"pullRequestAvgAge"}
+              selectedFilter={"As of today"}
+              selectedMetric={"Open Pull Requests"}
               stateType={pullRequestsType}
               handleClearClick={handleClearClick}
             />
           </div>
         )}
-        <GroupingSelector
-          label={"View"}
-          className={"groupCardsBySelector"}
-          groupings={[
-            {key: "histogram", display: `Histogram`},
-            {key: "table", display: "Pull Requests"},
-          ].map((item) => ({
-            key: item.key,
-            display: item.display,
-          }))}
-          initialValue={tabSelection}
-          value={tabSelection}
-          onGroupingChanged={setTab}
-          layout="col"
-        />
+        {display==="histogramTable" && <div className="dummy tw-flex-1"></div>}
+        {selectedFilter != null && (
+          <div className={classNames("tw-mr-6", display==="histogramTable" ? "tw-ml-auto": "")}>
+            <ClearFilters
+              selectedFilter={selectedFilter}
+              selectedMetric={pullRequestsType === "open" ? "Open Pull Requests" : "pullRequestAvgAge"}
+              stateType={pullRequestsType}
+              handleClearClick={handleClearClick}
+            />
+          </div>
+        )}
+        {groupingSelector}
       </div>
-      <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>{histogramChart}</div>
-      {tabSelection === "table" && (
-        <div className="tw-h-full">
-          <PullRequestsDetailTable
-            key={resetComponentStateKey}
-            tableData={pullRequests}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            selectedFilter={selectedFilter}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
-            prStateType={pullRequestsType}
-          />
-        </div>
-      )}
+      {histogramTableElement}
+      {display === "table" && pullRequestsTableView}
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
         showPanel={showPanel}

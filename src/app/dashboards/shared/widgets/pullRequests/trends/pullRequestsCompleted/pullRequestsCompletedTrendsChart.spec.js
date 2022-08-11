@@ -83,7 +83,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Pull Requests Closed",
+    text: "Closed Pull Requests",
   },
   legend: {
     title: {

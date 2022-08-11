@@ -15,6 +15,7 @@ export const DimensionPullRequestsWidget = ({
   days,
   measurementWindow,
   samplingFrequency,
+  latencyTarget,
   latestWorkItemEvent,
   latestCommit,
   latestPullRequestEvent,
@@ -24,9 +25,12 @@ export const DimensionPullRequestsWidget = ({
   activeOnly,
   closedWithinDays,
   asStatistic,
+  asCard,
   display,
   before,
-  setBefore
+  setBefore,
+  selectedFilter,
+  setFilter
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
@@ -36,13 +40,18 @@ export const DimensionPullRequestsWidget = ({
     closedWithinDays: closedWithinDays,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
+
+  const pullRequests = React.useMemo(() => {
+    const edges = data?.[dimension]?.["pullRequests"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [data, dimension]);
+
   const pullRequestsType = activeOnly ? "open" : "closed";
   if (loading) return <Loading />;
   if (error) {
     logGraphQlError("useQueryProjectPullRequests", error);
     return null;
   }
-  const pullRequests = data[dimension]["pullRequests"]["edges"].map((edge) => edge.node);
 
   if (view === "detail") {
     return (
@@ -56,10 +65,11 @@ export const DimensionPullRequestsWidget = ({
         days={days}
         measurementWindow={measurementWindow || Math.min(days,7)}
         samplingFrequency={samplingFrequency || Math.min(days,7)}
+        latencyTarget={latencyTarget}
       />
     );
   } else {
-    if (pullRequestsType==="open" && asStatistic) {
+    if (pullRequestsType==="open" && (asStatistic)) {
       return (
         <OpenPullRequestsView pullRequests={pullRequests} view={view} context={context} asStatistic={asStatistic} />
       );
@@ -68,6 +78,8 @@ export const DimensionPullRequestsWidget = ({
       <PullRequestsView
         before={before}
         setBefore={setBefore}
+        selectedFilter={selectedFilter}
+        setFilter={setFilter}
         display={display}
         pullRequests={pullRequests}
         closedWithinDays={closedWithinDays}

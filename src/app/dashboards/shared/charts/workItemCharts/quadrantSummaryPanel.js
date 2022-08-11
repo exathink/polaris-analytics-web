@@ -59,11 +59,11 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
   }, {});
 }
 
-function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass}) {
+function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId}) {
   const intl = useIntl();
 
   const percentageCount = (val/total)*100;
-  const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : 0;
+  const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : <span className="tw-text-base">N/A</span>;
 
   const averageAge = totalAge/val;
   const averageAgeDisplay = val > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)} days`: '';
@@ -112,6 +112,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
         className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-rounded-md tw-p-1", className)}
         style={{backgroundColor: color}}
         onClick={onQuadrantClick}
+        data-testid={testId}
       >
         <div>{name}</div>
         <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>{percentageCountDisplay}</div>
@@ -194,6 +195,7 @@ export function QuadrantSummaryPanel({
     return (
       <QuadrantBox
         key={q.quadKey}
+        testId={q.quadKey}
         {...q}
         fontClass={valueFontClass}
         total={workItems.length}

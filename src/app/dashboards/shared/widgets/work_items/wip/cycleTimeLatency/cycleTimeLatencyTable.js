@@ -87,7 +87,26 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
   );
 }
 
-function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
+// function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
+//   return (text, record, searchText) => {
+//     return (
+//       text && (
+//         <span
+//           onClick={() => {
+//             setPlacement("top");
+//             setShowPanel(true);
+//             setWorkItemKey(record.key);
+//           }}
+//           style={{cursor: "pointer"}}
+//         >
+//           {record.teamNodeRefs.length > 1 ? "multiple" : text}
+//         </span>
+//       )
+//     );
+//   };
+// }
+
+function renderWorkItemsSourceCol({setShowPanel, setWorkItemKey, setPlacement}) {
   return (text, record, searchText) => {
     return (
       text && (
@@ -99,7 +118,7 @@ function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
           }}
           style={{cursor: "pointer"}}
         >
-          {record.teamNodeRefs.length > 1 ? "multiple" : text}
+          {text}
         </span>
       )
     );
@@ -113,28 +132,29 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} FTE Days</>, className: "tw-textXs"})}
   const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})}
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
-  const renderTeamsCol = {render: renderTeamsCall(callBacks)};
+  // const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
   const columns = [
-    // {
-    //   title: "Name",
-    //   dataIndex: "displayId",
-    //   key: "displayId",
-    //   width: "5%",
-    //   filteredValue: appliedFilters.displayId || null,
-    //   sorter: (a, b) => SORTER.string_compare(a.displayId, b.displayId),
-    //   ...nameSearchState,
-    // },
     {
-      title: "Team",
-      dataIndex: "teams",
-      key: "teams",
-      filteredValue: appliedFilters.teams || null,
-      filters: filters.teams.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-      width: "4%",
-      ...renderTeamsCol,
+      title: "WorkStream",
+      dataIndex: "workItemsSourceName",
+      key: "workItemsSourceName",
+      width: "6%",
+      filteredValue: appliedFilters.workItemsSourceName || null,
+      filters: filters.workItemsSources.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
+      render: renderWorkItemsSourceCol(callBacks),
     },
+    // {
+    //   title: "Team",
+    //   dataIndex: "teams",
+    //   key: "teams",
+    //   filteredValue: appliedFilters.teams || null,
+    //   filters: filters.teams.map((b) => ({text: b, value: b})),
+    //   onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
+    //   width: "4%",
+    //   ...renderTeamsCol,
+    // },
     {
       title: "Status",
       dataIndex: "quadrant",
@@ -255,12 +275,13 @@ export const CycleTimeLatencyTable = injectIntl(
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
     const states = [...new Set(tableData.map((x) => x.state))];
+    const workItemsSources = [...new Set(tableData.map((x) => x.workItemsSourceName))];
     const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columns = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, states, quadrants, teams},
+      filters: {workItemTypes, stateTypes, states, quadrants, teams, workItemsSources},
       appliedFilters,
       callBacks,
     });

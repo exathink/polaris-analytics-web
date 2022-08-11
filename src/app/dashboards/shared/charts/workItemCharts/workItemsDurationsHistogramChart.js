@@ -123,8 +123,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
           states: {
             select: {
               color: null,
-              borderWidth: 2,
-              borderColor: "Black",
+              opacity: 0.5
             },
           },
           point: {

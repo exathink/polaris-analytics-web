@@ -9,12 +9,13 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import { fromNow, percentileToText, humanizeDuration } from "../../../../helpers/utility";
+import { fromNow, percentileToText, humanizeDuration, getItemSuffix } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
+import {MetricCard} from "../cards/metricCard";
 
 export const FlowStatistic = ({
   title,
@@ -35,11 +36,11 @@ export const FlowStatistic = ({
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
-  const {metricValue, suffix} = getMetricUtils({target, value, uom, good, valueRender, precision});
+  const {metricValue, suffix, value: _value} = getMetricUtils({target, value, uom, good, valueRender, precision});
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size} = displayProps;
+      const {onClick, showHighlighted, info, size, className, targetText, testId} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -58,6 +59,35 @@ export const FlowStatistic = ({
           }
           size={size}
           info={info}
+          className={className}
+          testId={testId}
+          target={_value==="N/A" ? null : targetText}
+        />
+      );
+    }
+    case "cardAdvanced": {
+      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft} = displayProps;
+      return (
+        <MetricCard
+          title={title}
+          subTitle={subTitle}
+          value={metricValue}
+          suffix={suffix}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+            />
+          }
+          info={info}
+          className={className}
+          target={targetText}
+          detailsView={detailsView}
+          trendsView={trendsView}
+          iconsShiftLeft={iconsShiftLeft}
         />
       );
     }
@@ -148,10 +178,10 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     metric={metric}
     valueRender={
       value =>  {
-        return currentMeasurement[metric]/measurementWindow
+        return currentMeasurement?.[metric]/measurementWindow
       }
     }
-    uom={specsOnly ? 'Specs/day' : 'Cards/day'}
+    uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
     precision={1}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -162,16 +192,18 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
   />
 }
 
-export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+export const Wip = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, displayType, displayProps}) => {
   const value = currentMeasurement[specsOnly ? 'workItemsWithCommits' : 'workItemsInScope'];
   return (
       <FlowStatistic
         title={title || "Wip"}
         currentValue={value}
-        uom={specsOnly ? 'Specs' : 'Cards'}
+        uom={getItemSuffix({specsOnly, itemsCount: value})}
         good={TrendIndicator.isNegative}
         deltaThreshold={deltaThreshold}
         target={target}
+        displayType={displayType}
+        displayProps={displayProps}
       />
   )
 }
@@ -222,21 +254,22 @@ export const LatestCommit = ({latestCommit}) => (
   />
 );
 
-export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold}) => (
+export const Cadence = ({title, displayType, currentMeasurement, previousMeasurement, deltaThreshold, displayProps}) => (
   <FlowStatistic
     title={title || "Cadence"}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'cadence'}
-    valueRender={value => `${value}/${currentMeasurement['measurementWindow']}`}
+    valueRender={value => value ? `${value}/${currentMeasurement['measurementWindow']}` : value}
     uom={'Days'}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
-export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold}) => (
+export const TotalEffort = ({title, currentMeasurement, previousMeasurement, good, target, deltaThreshold, displayType, displayProps}) => (
   <FlowStatistic
     title={title ||  <span>{'Total Effort'}</span>}
     currentMeasurement={currentMeasurement}
@@ -248,6 +281,8 @@ export const TotalEffort = ({title, currentMeasurement, previousMeasurement, goo
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     target={target}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 
@@ -353,14 +388,14 @@ export const AvgLatency = ({title, displayType, displayProps, currentMeasurement
   />
 }
 
-export const PullRequest = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+export const PullRequest = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold, metric}) => {
 
   return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     valueRender={ value => humanizeDuration(value)}
     uom={' '}
-    metric={'pullRequestAvgAge'}
+    metric={metric || 'pullRequestAvgAge'}
     displayName={title || 'Code Review'}
     superScript={'Avg'}
     target={target}
@@ -368,6 +403,57 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
     displayType={displayType}
     displayProps={displayProps}
   />
+}
+
+export const ClosedPullRequestCount = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, showTrendIndicator, good, target, deltaThreshold}) => {
+  return (
+    <FlowStatistic
+      title={title || <span>Closed Pull Requests</span>}
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      valueRender={(value) => value}
+      metric={"totalClosed"}
+      uom={""}
+      good={TrendIndicator.isPositive}
+      deltaThreshold={deltaThreshold}
+      target={target}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
+}
+
+export const OpenPullRequestCount = ({title, displayType, displayProps, currentValue}) => {
+  return (
+    <FlowStatistic
+      title={title || <span>Pull Requests Open</span>}
+      currentValue={currentValue}
+      good={TrendIndicator.isNegative}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
+}
+
+export const OpenPullRequestsAvg = ({title, displayType, displayProps, currentValue}) => {
+  return (
+    <FlowStatistic
+      title={
+        title || (
+          <span>
+            {"Code Review"}
+            <sup> Avg </sup>
+          </span>
+        )
+      }
+      currentValue={currentValue}
+      uom={"Days"}
+      precision={1}
+      good={TrendIndicator.isNegative}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
 }
 
 export const PercentileLatency = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
@@ -439,7 +525,7 @@ export const FlowEfficiency = ({title, displayType, precision, displayProps, cur
   />
 }
 
-export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold}) => (
+export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold, displayType, displayProps}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
@@ -448,6 +534,8 @@ export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaTh
     superScript={'Avg'}
     target={target}
     deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
   />
 );
 

@@ -1,0 +1,13 @@
+{
+  "data": {
+    "workTrackingConnector": {
+      "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjYwNjExNzA5LTBhZTUtNDVhYy04MGExLWRkYzkwZDdlYWM5Ng==",
+      "name": "Trello Test",
+      "key": "60611709-0ae5-45ac-80a1-ddc90d7eac96",
+      "connectorType": "trello",
+      "state": "enabled",
+      "workItemsSources": {"count": 0, "edges": [], "__typename": "WorkItemsSourcesConnection"},
+      "__typename": "WorkTrackingConnector"
+    }
+  }
+}

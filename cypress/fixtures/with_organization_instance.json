@@ -1,0 +1,19 @@
+{
+  "data": {
+    "organization": {
+      "id": "T3JnYW5pemF0aW9uOjRlMmQwNzkwLWUzNGMtNDQ2MS1iMTJjLTYwNzIyNzlmZDY3Zg==",
+      "name": "urjuna-test",
+      "key": "4e2d0790-e34c-4461-b12c-6072279fd67f",
+      "earliestCommit": null,
+      "latestCommit": null,
+      "commitCount": null,
+      "projectCount": 0,
+      "repositoryCount": 0,
+      "workItemsSourceCount": 6,
+      "earliestWorkItemEvent": null,
+      "latestWorkItemEvent": null,
+      "teams": {"count": 0, "__typename": "TeamsConnection"},
+      "__typename": "Organization"
+    }
+  }
+}

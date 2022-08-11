@@ -199,7 +199,7 @@ function withForm(FormFields, options) {
       return drawer ?
         <React.Fragment>
           {!isIconOnly && (
-            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled} data-test="create-connector-button">
+            <Button size={buttonSize} type="primary" onClick={this.show.bind(this)} disabled={disabled} data-testid="create-connector-button">
               {drawerButtonIcon || noPlus || <PlusOutlined />}
               {this.props.title || drawerButtonTitle}
             </Button>
