@@ -32,13 +32,25 @@ describe("Wip Inspector", () => {
     // TODO: this is deprecated now, need to replace from cy.session
     Cypress.Cookies.preserveOnce("session");
 
-    cy.interceptQuery(viewer_info, `${viewer_info}.json`);
-    cy.interceptQuery(VALUE_STREAM.with_project_instance, `${VALUE_STREAM.with_project_instance}.json`);
+    cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
+    cy.interceptQuery({
+      operationName: VALUE_STREAM.with_project_instance,
+      fixturePath: `${VALUE_STREAM.with_project_instance}.json`,
+    });
 
     // Alias Wip Inspector Queries
-    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, `${WIP_INSPECTOR.projectFlowMetrics}.json`);
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, `${WIP_INSPECTOR.projectPipelineCycleMetrics}.json`);
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, `${WIP_INSPECTOR.projectPipelineStateDetails}.json`);
+    cy.interceptQuery({
+      operationName: WIP_INSPECTOR.projectFlowMetrics,
+      fixturePath: `${WIP_INSPECTOR.projectFlowMetrics}.json`,
+    });
+    cy.interceptQuery({
+      operationName: WIP_INSPECTOR.projectPipelineCycleMetrics,
+      fixturePath: `${WIP_INSPECTOR.projectPipelineCycleMetrics}.json`,
+    });
+    cy.interceptQuery({
+      operationName: WIP_INSPECTOR.projectPipelineStateDetails,
+      fixturePath: `${WIP_INSPECTOR.projectPipelineStateDetails}.json`,
+    });
 
     cy.visit("/");
 
@@ -55,23 +67,32 @@ describe("Wip Inspector", () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
-    cy.interceptQuery(WIP_INSPECTOR.projectFlowMetrics, (req) => {
-      req.reply((res) => {
-        // Modify the response body directly
-        res.body.data.project.cycleMetricsTrends = [];
-      });
+    cy.interceptQueryWithCb({
+      operationName: WIP_INSPECTOR.projectFlowMetrics,
+      fixtureCb: (req) => {
+        req.reply((res) => {
+          // Modify the response body directly
+          res.body.data.project.cycleMetricsTrends = [];
+        });
+      },
     });
 
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineCycleMetrics, (req) => {
-      req.reply((res) => {
-        res.body.data.project.pipelineCycleMetrics = {};
-      });
+    cy.interceptQueryWithCb({
+      operationName: WIP_INSPECTOR.projectPipelineCycleMetrics,
+      fixtureCb: (req) => {
+        req.reply((res) => {
+          res.body.data.project.pipelineCycleMetrics = {};
+        });
+      },
     });
 
-    cy.interceptQuery(WIP_INSPECTOR.projectPipelineStateDetails, (req) => {
-      req.reply((res) => {
-        res.body.data.project.workItems.edges = []
-      });
+    cy.interceptQueryWithCb({
+      operationName: WIP_INSPECTOR.projectPipelineStateDetails,
+      fixtureCb: (req) => {
+        req.reply((res) => {
+          res.body.data.project.workItems.edges = [];
+        });
+      },
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)

@@ -92,6 +92,7 @@ export const ShowImportStateStep = (
               importStateSortOrder[a.importState] - importStateSortOrder[b.importState]
           );
 
+          debugger;
           const numImported = workItemsSources.filter(
             source => source.importState === 'complete'
           ).length

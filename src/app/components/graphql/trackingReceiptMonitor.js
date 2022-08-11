@@ -24,7 +24,7 @@ export class TrackingReceiptMonitor extends React.Component {
   }
 
   onTrackingReceiptInfoUpdated(data) {
-    const {completedAt} = data.trackingReceipt
+    const completedAt = data?.trackingReceipt?.completedAt
     if (completedAt != null) {
       this.refetchQueries()
 

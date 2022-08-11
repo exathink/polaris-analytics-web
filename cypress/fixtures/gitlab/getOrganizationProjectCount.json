@@ -1,0 +1,9 @@
+{
+  "data": {
+    "organization": {
+      "id": "T3JnYW5pemF0aW9uOjRlMmQwNzkwLWUzNGMtNDQ2MS1iMTJjLTYwNzIyNzlmZDY3Zg==",
+      "projects": {"count": 5, "__typename": "ProjectsConnection"},
+      "__typename": "Organization"
+    }
+  }
+}
