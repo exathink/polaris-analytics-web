@@ -85,7 +85,7 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
                 <Input placeholder="last name" />
               </Form.Item>
             </Col>
-            {initialValues.role && (
+            {(initialValues.role != null) && (
               <Col span={24}>
                 <Form.Item name={"role"} label={<span className={"tw-text-lg"}> Roles and Access</span>}  valuePropName="checked" style={{marginBottom: "10px"}}>
                   <Checkbox defaultChecked={initialValues.role}>Account Owner</Checkbox>
