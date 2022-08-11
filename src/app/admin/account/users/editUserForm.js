@@ -1,20 +1,50 @@
 import React from "react";
 
 import "@ant-design/compatible/assets/index.css";
-import {Checkbox, Col, Drawer, Form, Input, Row, Select} from "antd";
+import {Checkbox, Col, Drawer, Form, Input, Row} from "antd";
 import Button from "../../../../components/uielements/button";
-const {Option} = Select;
-
-const ALL_ORG_ROLES = [
-  {key: "owner", name: "Owner"},
-  {key: "member", name: "Member"},
-];
+import {StripeTable} from "../../../components/tables/tableUtils";
 
 export const EditUserForm = ({initialValues, onSubmit}) => {
   const [visible, setVisible] = React.useState(false);
   function onClose() {
     setVisible(false);
   }
+
+  const dataSource = initialValues.organizationRoles.map((org) => {
+    return {
+      key: org.scopeKey,
+      name: org.name,
+      role: org.role,
+    };
+  });
+
+  const columns = [
+    {
+      title: "Organization Name",
+      dataIndex: "name",
+      key: "name",
+      width: "30%",
+    },
+    {
+      title: "Is Owner",
+      dataIndex: "role",
+      key: "role",
+      width: "70%",
+      render: (text, record) => {
+        return (
+          <Form.Item
+            name={record.name}
+            initialValue={record.role === "owner"}
+            valuePropName="checked"
+            className="!tw-mb-0"
+          >
+            <Checkbox className="!tw-min-h-[16px]"></Checkbox>
+          </Form.Item>
+        );
+      },
+    },
+  ];
 
   return (
     <div>
@@ -62,28 +92,15 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
               </Col>
             )}
             <Col span={24}>
-              <div className="tw-text-base">
-                Roles Assigned to all organizations belonging to this User
-              </div>
-              {initialValues.organizationRoles.map((org) => {
-                return (
-                  <Form.Item name={org.organizationKey} label={org.organizationName} key={org.organizationKey}>
-                    <Select style={{width: 150}} defaultValue={initialValues[org.organizationKey]}>
-                      {ALL_ORG_ROLES.map((a) => {
-                        return (
-                          <Option key={a.key} value={a.key}>
-                            {a.name}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                );
-              })}
+              <div className="tw-text-base">Roles Assigned to all organizations belonging to this User</div>
+              <StripeTable dataSource={dataSource} columns={columns} pagination={false} size="small" />
             </Col>
           </Row>
 
-          <div className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right" style={{borderTop: '1px solid #e9e9e9'}}>
+          <div
+            className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+            style={{borderTop: "1px solid #e9e9e9"}}
+          >
             <Button onClick={onClose} style={{marginRight: 8}}>
               Cancel
             </Button>
