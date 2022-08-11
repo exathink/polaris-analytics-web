@@ -87,13 +87,13 @@ export const EditUserForm = ({initialValues, onSubmit}) => {
             </Col>
             {initialValues.role && (
               <Col span={24}>
-                <Form.Item name={"role"} label="Roles and Access" valuePropName="checked">
+                <Form.Item name={"role"} label={<span className={"tw-text-lg"}> Roles and Access</span>}  valuePropName="checked" style={{marginBottom: "10px"}}>
                   <Checkbox defaultChecked={initialValues.role}>Account Owner</Checkbox>
                 </Form.Item>
               </Col>
             )}
             <Col span={24}>
-              <div className="tw-text-base">Roles Assigned to all organizations belonging to this User</div>
+              <div className="tw-text-base" style={{marginBottom: "5px"}}>Organizations</div>
               <StripeTable dataSource={dataSource} columns={columns} pagination={false} size="small" />
             </Col>
           </Row>
