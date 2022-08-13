@@ -1,0 +1,13 @@
+{
+  "data": {
+    "createConnector": {
+      "connector": {
+        "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjdkYWQ0MDYyLWM3NDMtNGE4ZS1hMDgwLWE5OWI0NDBiMmM1Yg==",
+        "name": "Github Test",
+        "key": "7dad4062-c743-4a8e-a080-a99b440b2c5b",
+        "__typename": "WorkTrackingConnector"
+      },
+      "__typename": "CreateWorkTrackingConnector"
+    }
+  }
+}

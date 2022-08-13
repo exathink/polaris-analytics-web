@@ -1,0 +1,201 @@
+{
+  "data": {
+    "project": {
+      "id": "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+      "workItems": {
+        "edges": [
+          {
+            "node": {
+              "name": "Pull Requests Dashboard - Misc Bugs",
+              "key": "ec3baa00-08df-4b76-b815-bc2a6657ca68",
+              "displayId": "PP-209",
+              "workItemType": "bug",
+              "epicName": "Misc UX: Q2 2022",
+              "state": "In Progress",
+              "stateType": "wip",
+              "workItemsSourceKey": "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+              "workItemsSourceName": "Polaris Platform",
+              "teamNodeRefs": [
+                {
+                  "teamName": "Data Team",
+                  "teamKey": "304aff69-ea3b-4a71-9433-0bb0911fc817",
+                  "__typename": "TeamNodeRefImpl"
+                }
+              ],
+              "workItemStateDetails": {
+                "currentStateTransition": {
+                  "eventDate": "2022-06-30T22:11:44.560000",
+                  "__typename": "WorkItemStateTransitionImpl"
+                },
+                "currentDeliveryCycleDurations": [
+                  {
+                    "state": "created",
+                    "stateType": "backlog",
+                    "daysInState": 1.0943402777777778,
+                    "__typename": "WorkItemDaysInState"
+                  },
+                  {"state": "In Progress", "stateType": "wip", "daysInState": null, "__typename": "WorkItemDaysInState"}
+                ],
+                "earliestCommit": "2022-06-30T20:56:21",
+                "latestCommit": "2022-06-30T20:56:21",
+                "commitCount": 1,
+                "effort": 1.0,
+                "endDate": null,
+                "leadTime": null,
+                "cycleTime": null,
+                "duration": 0.0,
+                "latency": null,
+                "__typename": "WorkItemStateDetail"
+              },
+              "__typename": "WorkItem"
+            },
+            "__typename": "WorkItemsEdge"
+          },
+          {
+            "node": {
+              "name": "Inline documentation for Flow Statistic Trend Cards",
+              "key": "6aa5b6fe-f2a2-4806-9203-ff12f18454fc",
+              "displayId": "PP-204",
+              "workItemType": "story",
+              "epicName": "Inline Documentation",
+              "state": "In Progress",
+              "stateType": "wip",
+              "workItemsSourceKey": "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+              "workItemsSourceName": "Polaris Platform",
+              "teamNodeRefs": [
+                {
+                  "teamName": "Data Team",
+                  "teamKey": "304aff69-ea3b-4a71-9433-0bb0911fc817",
+                  "__typename": "TeamNodeRefImpl"
+                }
+              ],
+              "workItemStateDetails": {
+                "currentStateTransition": {
+                  "eventDate": "2022-06-22T21:12:11.808000",
+                  "__typename": "WorkItemStateTransitionImpl"
+                },
+                "currentDeliveryCycleDurations": [
+                  {
+                    "state": "created",
+                    "stateType": "backlog",
+                    "daysInState": 0.000787037037037037,
+                    "__typename": "WorkItemDaysInState"
+                  },
+                  {"state": "In Progress", "stateType": "wip", "daysInState": null, "__typename": "WorkItemDaysInState"}
+                ],
+                "earliestCommit": "2022-06-23T21:37:06",
+                "latestCommit": "2022-06-23T21:39:27",
+                "commitCount": 4,
+                "effort": 0.333333333333333,
+                "endDate": null,
+                "leadTime": null,
+                "cycleTime": null,
+                "duration": 0.00163194444444444,
+                "latency": null,
+                "__typename": "WorkItemStateDetail"
+              },
+              "__typename": "WorkItem"
+            },
+            "__typename": "WorkItemsEdge"
+          },
+          {
+            "node": {
+              "name": "Inline documentation for Flow Statistic Trend Cards",
+              "key": "6aa5b6fe-f2a2-4806-9203-ff12f18454fc",
+              "displayId": "PP-211",
+              "workItemType": "story",
+              "epicName": "Inline Documentation",
+              "state": "In Progress",
+              "stateType": "complete",
+              "workItemsSourceKey": "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+              "workItemsSourceName": "Polaris Platform",
+              "teamNodeRefs": [
+                {
+                  "teamName": "Data Team",
+                  "teamKey": "304aff69-ea3b-4a71-9433-0bb0911fc817",
+                  "__typename": "TeamNodeRefImpl"
+                }
+              ],
+              "workItemStateDetails": {
+                "currentStateTransition": {
+                  "eventDate": "2022-06-22T21:12:11.808000",
+                  "__typename": "WorkItemStateTransitionImpl"
+                },
+                "currentDeliveryCycleDurations": [
+                  {
+                    "state": "created",
+                    "stateType": "backlog",
+                    "daysInState": 0.000787037037037037,
+                    "__typename": "WorkItemDaysInState"
+                  },
+                  {"state": "In Progress", "stateType": "wip", "daysInState": null, "__typename": "WorkItemDaysInState"}
+                ],
+                "earliestCommit": "2022-06-23T21:37:06",
+                "latestCommit": "2022-06-23T21:39:27",
+                "commitCount": 4,
+                "effort": 0.333333333333333,
+                "endDate": null,
+                "leadTime": null,
+                "cycleTime": null,
+                "duration": 0.00163194444444444,
+                "latency": null,
+                "__typename": "WorkItemStateDetail"
+              },
+              "__typename": "WorkItem"
+            },
+            "__typename": "WorkItemsEdge"
+          },
+          {
+            "node": {
+              "name": "Random Text4",
+              "key": "6aa5b6fe-f2a2-4806-9203-ff12f1845ggc",
+              "displayId": "PP-254",
+              "workItemType": "story",
+              "epicName": "Cypress",
+              "state": "In Progress",
+              "stateType": "complete",
+              "workItemsSourceKey": "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+              "workItemsSourceName": "Polaris Platform",
+              "teamNodeRefs": [
+                {
+                  "teamName": "Data Team",
+                  "teamKey": "304aff69-ea3b-4a71-9433-0bb0911fc817",
+                  "__typename": "TeamNodeRefImpl"
+                }
+              ],
+              "workItemStateDetails": {
+                "currentStateTransition": {
+                  "eventDate": "2022-06-22T21:12:11.808000",
+                  "__typename": "WorkItemStateTransitionImpl"
+                },
+                "currentDeliveryCycleDurations": [
+                  {
+                    "state": "created",
+                    "stateType": "backlog",
+                    "daysInState": 0.000787037037037037,
+                    "__typename": "WorkItemDaysInState"
+                  },
+                  {"state": "In Progress", "stateType": "wip", "daysInState": null, "__typename": "WorkItemDaysInState"}
+                ],
+                "earliestCommit": "2022-06-23T21:37:06",
+                "latestCommit": "2022-06-23T21:39:27",
+                "commitCount": 4,
+                "effort": 0.333333333333333,
+                "endDate": null,
+                "leadTime": null,
+                "cycleTime": null,
+                "duration": 0.00163194444444444,
+                "latency": null,
+                "__typename": "WorkItemStateDetail"
+              },
+              "__typename": "WorkItem"
+            },
+            "__typename": "WorkItemsEdge"
+          }
+        ],
+        "__typename": "WorkItemsConnection"
+      },
+      "__typename": "Project"
+    }
+  }
+}

@@ -195,3 +195,7 @@ table thead th {
 .ant-tooltip .ant-tooltip-inner .isoMenuHolder span {
   color: white !important;
 }
+
+.editUserFormCell .ant-form-item-control-input {
+  min-height: 16px;
+}

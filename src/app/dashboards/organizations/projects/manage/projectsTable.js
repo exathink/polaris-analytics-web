@@ -299,6 +299,7 @@ export const ProjectsTable = injectIntl(({tableData, loading, intl, specsOnly}) 
       loading={loading}
       height={TABLE_HEIGHTS.FOURTY_FIVE}
       rowKey={(record) => record.key}
+      testId="project-table"
     />
   );
 })

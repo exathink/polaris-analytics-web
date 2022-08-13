@@ -182,7 +182,7 @@ export class ConfigureImportStep extends React.Component {
     const {connectorType} = selectedConnector;
     return (
       <div className={styles.importProject}>
-        <h3 data-test="configure-import-title">{selectedProjects.length} remote {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true).toLowerCase() : getConnectorTypeProjectName(connectorType).toLowerCase()} selected for import</h3>
+        <h3 data-testid="configure-import-title">{selectedProjects.length} remote {selectedProjects.length > 1 ? getConnectorTypeProjectName(connectorType, true).toLowerCase() : getConnectorTypeProjectName(connectorType).toLowerCase()} selected for import</h3>
         {
           <SelectImportMode
             selectedProjects={selectedProjects}
@@ -232,7 +232,7 @@ export class ConfigureImportStep extends React.Component {
             type={"primary"}
             onClick={() => this.doImport(importMode, this.state.selectedProjects)}
             disabled={this.state.importMode === "existing" && this.state.selectedProjectKey === null}
-            data-test="import-project-button"
+            data-testid="import-project-button"
           >
             Import{" "}
             {selectedProjects.length > 1

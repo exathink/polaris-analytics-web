@@ -1,0 +1,51 @@
+{
+  "data": {
+    "workTrackingConnector": {
+      "id": "V29ya1RyYWNraW5nQ29ubmVjdG9yOjc1OTUwZjc5LWM1ZWMtNDFjOS1hZmMyLTA1OGY2YWMzMjFkMg==",
+      "name": "Github Test 02",
+      "key": "75950f79-c5ec-41c9-afc2-058f6ac321d2",
+      "connectorType": "github",
+      "state": "enabled",
+      "workItemsSources": {
+        "count": 3,
+        "edges": [
+          {
+            "node": {
+              "id": "V29ya0l0ZW1zU291cmNlOmUyYjVmNGMyLWVkMDAtNDM0Yi1iM2U3LTljOTYwOTQxZjU2NA==",
+              "name": "polaris-integrations",
+              "key": "e2b5f4c2-ed00-434b-b3e7-9c960941f564",
+              "description": "",
+              "importState": "ready",
+              "__typename": "WorkItemsSource"
+            },
+            "__typename": "WorkItemsSourcesEdge"
+          },
+          {
+            "node": {
+              "id": "V29ya0l0ZW1zU291cmNlOjAyMmYzNTk5LWE5Y2MtNDAxZC1iMDhjLWY5MGJiYzE0ZThiZA==",
+              "name": "polaris-vcs-service",
+              "key": "022f3599-a9cc-401d-b08c-f90bbc14e8bd",
+              "description": "",
+              "importState": "ready",
+              "__typename": "WorkItemsSource"
+            },
+            "__typename": "WorkItemsSourcesEdge"
+          },
+          {
+            "node": {
+              "id": "V29ya0l0ZW1zU291cmNlOjM2MDE5OWM1LTUyNWItNDFmYS1hNzU0LWVkYWRiNGE1OTFmMQ==",
+              "name": "Test",
+              "key": "360199c5-525b-41fa-a754-edadb4a591f1",
+              "description": null,
+              "importState": "ready",
+              "__typename": "WorkItemsSource"
+            },
+            "__typename": "WorkItemsSourcesEdge"
+          }
+        ],
+        "__typename": "WorkItemsSourcesConnection"
+      },
+      "__typename": "WorkTrackingConnector"
+    }
+  }
+}

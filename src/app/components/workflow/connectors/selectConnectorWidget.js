@@ -106,7 +106,7 @@ export const SelectConnectorWidget =
                       <React.Fragment>
                         {
                           connectors.length > 0 &&
-                          <h3 className={styles["available-connectors"]} data-test="available-connectors-title">{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
+                          <h3 className={styles["available-connectors"]} data-testid="available-connectors-title">{`Available ${getConnectorTypeDisplayName(connectorType)} Connectors`}</h3>
                         }
                         <div className={styles["select-connectors-table"]}>
                           <ConnectorsTable

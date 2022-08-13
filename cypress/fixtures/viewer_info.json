@@ -1,0 +1,232 @@
+{
+  "data": {
+    "viewer": {
+      "key": "2ed680d6-d4ac-4446-a779-23cb30081020",
+      "userName": null,
+      "company": null,
+      "firstName": "Krishna",
+      "lastName": "Kumar",
+      "email": "urjuna-test-2@exathink.com",
+      "systemRoles": [],
+      "accountRoles": [
+        {
+          "key": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+          "name": "urjuna-test",
+          "scopeKey": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+          "role": "owner",
+          "__typename": "ScopedRoleField"
+        }
+      ],
+      "organizationRoles": [
+        {
+          "key": "4e2d0790-e34c-4461-b12c-6072279fd67f",
+          "name": "urjuna-test",
+          "scopeKey": "4e2d0790-e34c-4461-b12c-6072279fd67f",
+          "role": "owner",
+          "__typename": "ScopedRoleField"
+        }
+      ],
+      "accountKey": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+      "account": {
+        "id": "QWNjb3VudDowNzcxZTljZC03ZGI1LTQ4NzQtYTZjMi1mNTVlZGM0NTI5MTY=",
+        "key": "0771e9cd-7db5-4874-a6c2-f55edc452916",
+        "name": "urjuna-test",
+        "featureFlags": {
+          "edges": [
+            {
+              "node": {
+                "name": "projects.alignment-trends-widgets",
+                "key": "678bdab9-cd37-4493-956c-2d107e0d4ff9",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "projects.flowboard-2",
+                "key": "72b686e1-a8bd-4cf5-8218-fe9475841019",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "dev.tutorials",
+                "key": "0da2d815-901f-4a5b-8a70-a0f5672e5e0f",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "projects.value_stream_config",
+                "key": "4ba34ca2-a69b-476c-bb02-6f515b7325d4",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "system.video_guidance",
+                "key": "8d0be3d7-b41d-44f0-a6dd-c0fd2199eae5",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "projects.value-dashboard",
+                "key": "853dfca5-8ebb-4e26-87c9-e0e24b7a9031",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "connectors.trello",
+                "key": "be307475-891a-403b-91fb-4f53a75c7ee9",
+                "enabled": true,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "system.teams",
+                "key": "533fc479-df33-4ca0-b3bd-d28fb8c14187",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "connectors.azure-devops",
+                "key": "cb3b4aba-3bf2-441f-afa2-a427bb313e1c",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            },
+            {
+              "node": {
+                "name": "ui.new-card-design",
+                "key": "9172b010-da4f-4b10-a5de-98942e54e38c",
+                "enabled": null,
+                "__typename": "FeatureFlag"
+              },
+              "__typename": "FeatureFlagsEdge"
+            }
+          ],
+          "__typename": "FeatureFlagsConnection"
+        },
+        "organizations": {"count": 1, "__typename": "OrganizationsConnection"},
+        "projects": {"count": 7, "__typename": "ProjectsConnection"},
+        "repositories": {"count": 0, "__typename": "RepositoriesConnection"},
+        "__typename": "Account"
+      },
+      "featureFlags": {
+        "edges": [
+          {
+            "node": {
+              "name": "projects.alignment-trends-widgets",
+              "key": "678bdab9-cd37-4493-956c-2d107e0d4ff9",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "projects.flowboard-2",
+              "key": "72b686e1-a8bd-4cf5-8218-fe9475841019",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "dev.tutorials",
+              "key": "0da2d815-901f-4a5b-8a70-a0f5672e5e0f",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "projects.value_stream_config",
+              "key": "4ba34ca2-a69b-476c-bb02-6f515b7325d4",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "system.video_guidance",
+              "key": "8d0be3d7-b41d-44f0-a6dd-c0fd2199eae5",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "projects.value-dashboard",
+              "key": "853dfca5-8ebb-4e26-87c9-e0e24b7a9031",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "connectors.trello",
+              "key": "be307475-891a-403b-91fb-4f53a75c7ee9",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "system.teams",
+              "key": "533fc479-df33-4ca0-b3bd-d28fb8c14187",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "connectors.azure-devops",
+              "key": "cb3b4aba-3bf2-441f-afa2-a427bb313e1c",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "ui.new-card-design",
+              "key": "9172b010-da4f-4b10-a5de-98942e54e38c",
+              "enabled": null,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
+          }
+        ],
+        "__typename": "FeatureFlagsConnection"
+      },
+      "__typename": "Viewer"
+    }
+  }
+}

@@ -266,7 +266,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   const specKey = specsOnly ? "workItemsWithCommits" : "workItemsInScope";
-  const items = currentTrend[specKey];
+  const items = currentTrend?.[specKey];
   const itemsLabel = getItemSuffix({specsOnly, itemsCount: items});
 
   // since we don't want to show compared to text in the card
@@ -286,7 +286,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
           </span>
         }
         displayType={"card"}
-        displayProps={{className: "tw-p-2"}}
+        displayProps={{className: "tw-p-2", testId: "throughput"}}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
@@ -294,7 +294,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
       />
       <AvgCycleTime
         displayType={"card"}
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "cycletime"}}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         target={cycleTimeTarget}
@@ -313,7 +313,7 @@ export function WorkInProgressBaseView({data, dimension}) {
       <TotalEffort 
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "total-effort"}}
       />
       <AvgLatency
         title={
@@ -323,7 +323,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         }
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "commit-latency"}}
        />
     </div>
   );
@@ -334,7 +334,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const {pipelineCycleMetrics} = data[dimension];
 
   const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-  const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
   const throughputRate = flowItems / days;
   const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
 
@@ -347,13 +347,13 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         specsOnly={specsOnly}
         target={wipLimit}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>, testId: "wip-total"}}
       />
       <AvgAge 
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>}}
+        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "wip-age"}}
       />
     </div>
   );

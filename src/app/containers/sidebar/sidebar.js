@@ -138,7 +138,7 @@ class Sidebar extends Component {
               <Menu key={`top`} {...menuProps}>
                 {currentContext
                   ? activeTopicRoutes.map((route) => (
-                      <Menu.Item className="ant-menu-item" key={`${route.match}`}>
+                      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
                         <Link to={`${currentContext.urlFor(route)}`}>
                           <span className="isoMenuHolder" style={submenuColor}>
                             <i className={route.topic.icon} />
