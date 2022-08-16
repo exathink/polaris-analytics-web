@@ -53,7 +53,8 @@ Cypress.Commands.add("loginByApi", (username, password) => {
   // to fetch the login page, and then parse the HTML contents
   // to find the CSRF token embedded in the page
   cy.session(username, () =>
-    cy.request(`${Cypress.env("authServiceUrl")}/login`)
+    cy
+      .request(`${Cypress.env("authServiceUrl")}/login`)
       .its("body")
       .then((body) => {
         // we can use Cypress.$ to parse the string body
@@ -72,24 +73,24 @@ Cypress.Commands.add("loginByApi", (username, password) => {
 });
 
 Cypress.Commands.add("loginWithoutApi", () => {
+  const session_key = "random_key";
+  const sessionExpiration = new String(Date.now() + 1000 * 60 * 60 * 24 * 5);
+  const session = "session";
+  
   cy.session("session_cookie", () => {
-    cy.setCookie("session_key", "12345", {
+    cy.setCookie("session_key", session_key, {
       path: "/",
       domain: ".exathink.localdev",
       secure: false,
       httpOnly: false,
     });
-    cy.setCookie("session_expiration", "1660634621000", {
+    cy.setCookie("session_expiration", sessionExpiration, {
       path: "/",
       domain: ".exathink.localdev",
       secure: false,
       httpOnly: false,
     });
-    cy.setCookie(
-      "session",
-      ".eJxNkNFqQzEIht8l1z1g1JjYlynRGFYK7TinhY2xd1-gN7sRwf-TT3_SZe5xfKTzc3_FKV2uI52TCYJq1EbBrVemaObAU7RXbWbWZifTNpSorKqFUKDiCPCsAFQqyCBiZupjKpaaKQ8Qr81D5mTLgjidJJur1Qy9MFU2ju5T0yn5sc_L83GL-9sHwRmYsWHrseR4tEmEseTWWvQBnXlxRxzH9XG_xNfnde_P1S4-i4AQC2YA-Be6xfeaNjE3LSYUxUPzmH2SAFWd4mOa16BCwxf4OmJ_vwhjSIMh2-Du2zpUtl6rbkhuBNAyIKTfP7mvYm0.Yvn0fA.l1ccnDmjTYiK9jgAB0adlS0tsFY",
-      {path: "/", domain: ".exathink.localdev", secure: false, httpOnly: true}
-    );
+    cy.setCookie("session", session, {path: "/", domain: ".exathink.localdev", secure: false, httpOnly: true});
   });
 
   // when login is successful, our auth cookie should be present
