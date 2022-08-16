@@ -88,9 +88,8 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.getAccountConnectors,
         fixturePath: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`],
-        times: 1
+        times: 1,
       });
-
 
       cy.interceptQuery({
         operationName: ACCOUNT.getConnectorWorkItemsSources,
@@ -99,7 +98,7 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.getConnectorWorkItemsSources,
         fixturePath: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`],
-        times: 1
+        times: 1,
       });
 
       cy.interceptQuery({
@@ -114,7 +113,7 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.showImportState,
         fixturePath: config.apiFixtures[`${ACCOUNT.showImportState}_ready`],
-        times: 1
+        times: 1,
       });
 
       // Mutations
@@ -162,8 +161,10 @@ describe("Onboarding flows", () => {
 
       cy.contains(/Register/i).click();
 
-      cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
-      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
+      cy.wait([
+        `@${getMutationFullName(ACCOUNT.createConnector)}`,
+        `@${getQueryFullName(ACCOUNT.getAccountConnectors)}`,
+      ]);
 
       cy.getBySel("available-connectors-title").should("be.visible");
       cy.contains(config.connectorName).should("be.visible");
@@ -193,8 +194,10 @@ describe("Onboarding flows", () => {
       cy.log("ConfigureImport");
       cy.getBySel("configure-import-title").should("be.visible");
       cy.getBySel("import-project-button").click();
-      cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
-      cy.wait(`@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`);
+      cy.wait([
+        `@${getMutationFullName(VALUE_STREAM.importProjects)}`,
+        `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
+      ]);
 
       // 5th Step ImportProjectStatus
       cy.log("ImportProjectStatus");
