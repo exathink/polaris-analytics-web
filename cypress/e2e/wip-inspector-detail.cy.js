@@ -29,8 +29,7 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   beforeEach(() => {
-    const [username, password] = [Cypress.env("username"), Cypress.env("password")];
-    cy.loginByApi(username, password);
+    cy.loginWithoutApi();
 
     cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
     cy.interceptQuery({

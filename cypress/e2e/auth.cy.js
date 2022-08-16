@@ -9,9 +9,7 @@ describe("User Login", () => {
       fixturePath: `${ORGANIZATION.with_organization_instance}.json`,
     });
 
-    const [username, password] = [Cypress.env("username"), Cypress.env("password")];
-
-    cy.loginByApi(username, password);
+    cy.loginWithoutApi();
     cy.visit("/");
   });
 });

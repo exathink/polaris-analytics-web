@@ -75,8 +75,7 @@ describe("Onboarding flows", () => {
       fixturePath: `${ORGANIZATION.with_organization_instance}.json`,
     });
 
-    const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
-    cy.loginByApi(username, password);
+    cy.loginWithoutApi();
   });
 
   importProjectFlowConfig.forEach((config) => {
