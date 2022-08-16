@@ -86,19 +86,6 @@ Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) 
   ).as(getMutationFullName(operationName));
 });
 
-Cypress.Commands.add("interceptMutationWithCb", ({operationName, fixtureCb}) => {
-  cy.intercept(
-    {
-      method: "POST",
-      url: "/graphql",
-      headers: {
-        "x-gql-operation-name": operationName,
-      },
-    },
-    fixtureCb
-  ).as(getMutationFullName(operationName));
-});
-
 Cypress.Commands.add("interceptQuery", ({operationName, fixturePath, times}) => {
   cy.intercept(
     {
@@ -113,7 +100,7 @@ Cypress.Commands.add("interceptQuery", ({operationName, fixturePath, times}) => 
   ).as(getQueryFullName(operationName));
 });
 
-Cypress.Commands.add("interceptQueryWithCb", ({operationName, fixtureCb}) => {
+Cypress.Commands.add("interceptQueryWithResponse", ({operationName, body, times}) => {
   cy.intercept(
     {
       method: "POST",
@@ -121,7 +108,8 @@ Cypress.Commands.add("interceptQueryWithCb", ({operationName, fixtureCb}) => {
       headers: {
         "x-gql-operation-name": operationName,
       },
+      ...(times && {times: times}),
     },
-    fixtureCb
+    {body: body}
   ).as(getQueryFullName(operationName));
 });

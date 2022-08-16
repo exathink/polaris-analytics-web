@@ -61,32 +61,21 @@ describe("Wip Inspector", () => {
     cy.log("Throughput Metric");
 
     // this intercept will override the intercept from beforeEach block
-    cy.interceptQueryWithCb({
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectFlowMetrics,
-      fixtureCb: (req) => {
-        req.reply((res) => {
-          // Modify the response body directly
-          res.body.data.project.cycleMetricsTrends = [];
-        });
-      },
+      body: {data: {project: {cycleMetricsTrends: []}}}
     });
 
-    cy.interceptQueryWithCb({
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineCycleMetrics,
-      fixtureCb: (req) => {
-        req.reply((res) => {
-          res.body.data.project.pipelineCycleMetrics = {};
-        });
-      },
+      // res.body.data.project.pipelineCycleMetrics = {};
+      body: {data: {project: {pipelineCycleMetrics: {}}}}
     });
 
-    cy.interceptQueryWithCb({
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineStateDetails,
-      fixtureCb: (req) => {
-        req.reply((res) => {
-          res.body.data.project.workItems.edges = [];
-        });
-      },
+      // res.body.data.project.workItems.edges = [];
+      body: {data: {project: {workItems: {edges: []}}}}
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectFlowMetrics)}`)

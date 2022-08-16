@@ -50,13 +50,9 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   it("Delay Analyzer charts, when there is no data", () => {
-    cy.interceptQueryWithCb({
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineStateDetails,
-      fixtureCb: (req) => {
-        req.reply((res) => {
-          res.body.data.project.workItems.edges = [];
-        });
-      },
+      body: {data: {project: {workItems: {edges: []}}}},
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
@@ -97,13 +93,9 @@ describe("Wip Inspector Detail Dashboard", () => {
       fixture.data.project.workItems.edges[3].node.workItemStateDetails.currentStateTransition.eventDate =
         getNDaysAgo(8);
 
-        cy.interceptQueryWithCb({
+        cy.interceptQueryWithResponse({
           operationName: WIP_INSPECTOR.projectPipelineStateDetails,
-          fixtureCb: (req) => {
-            req.reply((res) => {
-              res.body = fixture;
-            });
-          },
+          body: fixture
         });
     });
 
