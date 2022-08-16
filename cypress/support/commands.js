@@ -56,19 +56,20 @@ Cypress.Commands.add("loginByApi", (username, password) => {
   // to parse out the CSRF token, we can simply use cy.request
   // to fetch the login page, and then parse the HTML contents
   // to find the CSRF token embedded in the page
-  return cy
-    .request(`${Cypress.env("authServiceUrl")}/login`)
-    .its("body")
-    .then((body) => {
-      // we can use Cypress.$ to parse the string body
-      // thus enabling us to query into it easily
-      const $html = Cypress.$(body);
-      const csrf = $html.find("input[name=csrf_token]").val();
-      cy.loginByCSRF(csrf, username, password).then((resp) => {
-        expect(resp.status).to.eq(200);
-        expect(Cypress.$(resp.body).filter("title").text()).to.eq("Polaris");
-      });
-    });
+  cy.session(username, () =>
+    cy.request(`${Cypress.env("authServiceUrl")}/login`)
+      .its("body")
+      .then((body) => {
+        // we can use Cypress.$ to parse the string body
+        // thus enabling us to query into it easily
+        const $html = Cypress.$(body);
+        const csrf = $html.find("input[name=csrf_token]").val();
+        cy.loginByCSRF(csrf, username, password).then((resp) => {
+          expect(resp.status).to.eq(200);
+          expect(Cypress.$(resp.body).filter("title").text()).to.eq("Polaris");
+        });
+      })
+  );
 });
 
 Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) => {
