@@ -69,7 +69,31 @@ Cypress.Commands.add("loginByApi", (username, password) => {
 
   // when login is successful, our auth cookie should be present
   cy.getCookie("session").should("exist");
+});
 
+Cypress.Commands.add("loginWithoutApi", () => {
+  cy.session("session_cookie", () => {
+    cy.setCookie("session_key", "12345", {
+      path: "/",
+      domain: ".exathink.localdev",
+      secure: false,
+      httpOnly: false,
+    });
+    cy.setCookie("session_expiration", "1660634621000", {
+      path: "/",
+      domain: ".exathink.localdev",
+      secure: false,
+      httpOnly: false,
+    });
+    cy.setCookie(
+      "session",
+      ".eJxNkNFqQzEIht8l1z1g1JjYlynRGFYK7TinhY2xd1-gN7sRwf-TT3_SZe5xfKTzc3_FKV2uI52TCYJq1EbBrVemaObAU7RXbWbWZifTNpSorKqFUKDiCPCsAFQqyCBiZupjKpaaKQ8Qr81D5mTLgjidJJur1Qy9MFU2ju5T0yn5sc_L83GL-9sHwRmYsWHrseR4tEmEseTWWvQBnXlxRxzH9XG_xNfnde_P1S4-i4AQC2YA-Be6xfeaNjE3LSYUxUPzmH2SAFWd4mOa16BCwxf4OmJ_vwhjSIMh2-Du2zpUtl6rbkhuBNAyIKTfP7mvYm0.Yvn0fA.l1ccnDmjTYiK9jgAB0adlS0tsFY",
+      {path: "/", domain: ".exathink.localdev", secure: false, httpOnly: true}
+    );
+  });
+
+  // when login is successful, our auth cookie should be present
+  cy.getCookie("session").should("exist");
 });
 
 Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) => {
