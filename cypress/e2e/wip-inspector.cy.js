@@ -26,9 +26,6 @@ describe("Wip Inspector", () => {
     const [username, password] = [Cypress.env("username"), Cypress.env("password")];
     cy.loginByApi(username, password);
 
-    // our auth cookie should be present
-    cy.getCookie("session").should("exist");
-
     cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
     cy.interceptQuery({
       operationName: VALUE_STREAM.with_project_instance,

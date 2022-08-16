@@ -70,6 +70,10 @@ Cypress.Commands.add("loginByApi", (username, password) => {
         });
       })
   );
+
+  // when login is successful, our auth cookie should be present
+  cy.getCookie("session").should("exist");
+
 });
 
 Cypress.Commands.add("interceptMutation", ({operationName, fixturePath, times}) => {
