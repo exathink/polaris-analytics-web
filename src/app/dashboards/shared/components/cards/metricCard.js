@@ -1,7 +1,6 @@
 import {PlusCircleFilled} from "@ant-design/icons";
 import {Popover} from "antd";
 import classNames from "classnames";
-import {InfoCard} from "../../../../components/misc/info";
 import {Colors} from "../../config";
 
 export function MetricCard({
@@ -9,7 +8,6 @@ export function MetricCard({
   subTitle,
   value,
   suffix,
-  info,
   trendIndicator,
   target,
   detailsView,
@@ -38,7 +36,7 @@ export function MetricCard({
       </div>
       <div
         className={classNames(
-          "icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-1",
+          "icons tw-col-start-7 tw-flex tw-justify-end tw-space-x-1",
           iconsShiftLeft ? "tw-mr-6" : ""
         )}
       >
@@ -54,9 +52,6 @@ export function MetricCard({
             </Popover>
           </div>
         )}
-        <div className="infoIcon tw-cursor-pointer tw-rounded-full">
-          {info && <InfoCard title={info.title} content={info.content} drawerContent={info.drawerContent} />}
-        </div>
       </div>
 
       <div className="valueSuffix tw-col-span-4 tw-self-end">

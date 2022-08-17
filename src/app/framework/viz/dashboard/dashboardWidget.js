@@ -28,7 +28,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
   const color = Colors.DashboardWidgetIcons.primary;
 
   return showDetail ? (
-    <div className={className??uniqueStyles.iconsWrapper} data-testid="analysis-view">
+    <div className={classNames(className??uniqueStyles.iconsWrapper, "tw-flex tw-items-center")} data-testid="analysis-view">
       {infoElement}
       <nav>
         {itemSelected ? (
@@ -50,8 +50,10 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
+  const isDetailView = itemSelected && showDetail;
+  const classNamesCombined = !isDetailView && rest.shiftIcons ? "tw-bg-gray-200 tw-p-1 tw-pt-8 tw-rounded-lg": "";
   return (
-    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
+    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className, classNamesCombined)} data-testid={name}>
       {
         title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>

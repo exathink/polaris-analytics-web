@@ -34,14 +34,14 @@ export function NewFlowDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[20%_50%_7%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[22%_50%_6%_22%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <DashboardRow>
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          classNameForDetailIcon="tw-absolute tw-top-2 tw-right-2 tw-cursor-pointer tw-opacity-100 tw-z-50"
+          classNameForDetailIcon="tw-absolute tw-top-1 tw-right-1 tw-cursor-pointer tw-opacity-100 tw-z-50"
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
@@ -65,11 +65,13 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{ metric: "throughput", displayType: "cardAdvanced", iconsShiftLeft: true }}
+                displayBag={{ metric: "throughput", displayType: "cardAdvanced", iconsShiftLeft: false }}
               />
             );
           }}
           showDetail={true}
+          shiftIcons={true}
+          infoConfig={{title: "Throughput", headerContent: () => <span>Test</span>, showDrawer: true, drawerContent: () => <span>Drawer Content</span>}}
         />
 
         <DashboardWidget
