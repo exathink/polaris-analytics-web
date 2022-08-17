@@ -9,8 +9,8 @@ const importProjectFlowConfig = [
     cardId: "trello-card",
     connectorName: "Trello Test",
     credentialPairs: [
-      ["input#trelloApiKey", Cypress.env("trelloApiKey")],
-      ["input#trelloAccessToken", Cypress.env("trelloAccessToken")],
+      ["input#trelloApiKey", "dummy"],
+      ["input#trelloAccessToken", "dummyAccessToken"],
     ],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `trello/${ACCOUNT.getAccountConnectors}.json`,
@@ -30,8 +30,8 @@ const importProjectFlowConfig = [
     cardId: "github-card",
     connectorName: "Github Test",
     credentialPairs: [
-      ["input#githubOrganization", Cypress.env("githubOrganization")],
-      ["input#githubAccessToken", Cypress.env("githubAccessToken")],
+      ["input#githubOrganization", "dummy"],
+      ["input#githubAccessToken", "dummyAccessToken"],
     ],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `github/${ACCOUNT.getAccountConnectors}.json`,
@@ -50,7 +50,7 @@ const importProjectFlowConfig = [
     provider: "Gitlab",
     cardId: "gitlab-card",
     connectorName: "Gitlab Test",
-    credentialPairs: [["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")]],
+    credentialPairs: [["input#gitlabPersonalAccessToken", "dummyAccessToken"]],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `gitlab/${ACCOUNT.getAccountConnectors}.json`,
       [`${ACCOUNT.getAccountConnectors}_empty`]: `gitlab/${ACCOUNT.getAccountConnectors}_empty.json`,
