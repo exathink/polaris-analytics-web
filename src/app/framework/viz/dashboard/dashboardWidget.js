@@ -29,7 +29,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
 
   return showDetail ? (
     <div className={classNames(className??uniqueStyles.iconsWrapper, "tw-flex tw-items-center")} data-testid="analysis-view">
-      {infoElement}
+      {!itemSelected && infoElement}
       <nav>
         {itemSelected ? (
           <Tooltip title={"Close Analysis View"}>
