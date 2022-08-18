@@ -20,7 +20,7 @@ export function NewFlowDashboard({
   const {
     responseTimeConfidenceTarget,
     flowAnalysisPeriod,
-    trendAnalysisPeriod,
+    trendsAnalysisPeriod,
     includeSubTasksFlowMetrics,
     includeSubTasksWipInspector,
     leadTimeConfidenceTarget,
@@ -57,7 +57,7 @@ export function NewFlowDashboard({
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
 
-                trendAnalysisPeriod={trendAnalysisPeriod}
+                trendAnalysisPeriod={trendsAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
@@ -88,7 +88,7 @@ export function NewFlowDashboard({
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
 
-                trendAnalysisPeriod={trendAnalysisPeriod}
+                trendAnalysisPeriod={trendsAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}

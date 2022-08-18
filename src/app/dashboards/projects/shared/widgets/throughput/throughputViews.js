@@ -78,7 +78,9 @@ export function ThroughputCardView({
               <ThroughputTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
-                flowAnalysisPeriod={flowAnalysisPeriod}
+                days={trendAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
                 latestCommit={latestCommit}

@@ -101,8 +101,9 @@ export const ThroughputDetailDashboard = ({
             <ThroughputTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
-              flowAnalysisPeriod={flowAnalysisPeriod}
-              trendAnalysisPeriod={trendAnalysisPeriod}
+              days={trendAnalysisPeriod}
+              measurementWindow={flowAnalysisPeriod}
+              samplingFrequency={flowAnalysisPeriod}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
               includeSubTasks={includeSubTasks}

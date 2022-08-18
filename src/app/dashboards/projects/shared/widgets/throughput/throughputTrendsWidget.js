@@ -8,7 +8,9 @@ import {ThroughputTrendsView} from "./throughputViews";
 export function ThroughputTrendsWidget({
   dimension,
   instanceKey,
-  flowAnalysisPeriod,
+  days,
+  measurementWindow,
+  samplingFrequency,
   targetPercentile,
   includeSubTasks,
   latestCommit,
@@ -20,9 +22,9 @@ export function ThroughputTrendsWidget({
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
-    days: flowAnalysisPeriod,
-    measurementWindow: 1,
-    samplingFrequency: 1,
+    days: days,
+    measurementWindow: measurementWindow,
+    samplingFrequency: samplingFrequency,
     targetPercentile,
     includeSubTasks,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
@@ -39,8 +41,8 @@ export function ThroughputTrendsWidget({
       data={data}
       dimension={dimension}
       targetPercentile={targetPercentile}
-      measurementWindow={1}
-      measurementPeriod={flowAnalysisPeriod}
+      measurementWindow={measurementWindow}
+      measurementPeriod={days}
       view={view}
       specsOnly={specsOnly}
     />
