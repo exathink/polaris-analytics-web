@@ -53,7 +53,7 @@ export function ThroughputCardView({
             title: (
               <div className="tw-text-lg tw-text-gray-300">
                 Throughput Details{" "}
-                <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
+                <span className="tw-text-base tw-italic">All Cards, Last {trendAnalysisPeriod} Days</span>
               </div>
             ),
             content: (

@@ -71,7 +71,7 @@ export function NewFlowDashboard({
           }}
           showDetail={true}
           shiftIcons={true}
-          infoConfig={{title: "Throughput", headerContent: () => <span>Test</span>, showDrawer: true, drawerContent: () => <span>Drawer Content</span>}}
+          infoConfig={{title: "Throughput", headerContent: () => <span></span>, showDrawer: true, drawerContent: () => <span>Drawer Content</span>}}
         />
 
         <DashboardWidget
