@@ -18,7 +18,7 @@ export function MetricCard({
   const color = Colors.DashboardWidgetIcons.primary;
 
   const trendIndicatorElement = (
-    <div className="trendIndicator tw-col-span-3 tw-cursor-pointer tw-self-end tw-justify-self-end">
+    <div className={classNames("trendIndicator tw-col-span-3 tw-self-end tw-justify-self-end", trendsView ? "tw-cursor-pointer": "")}>
       {trendIndicator}
     </div>
   );
