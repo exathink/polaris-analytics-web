@@ -50,10 +50,8 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
 export const DashboardWidget = withRouter(withNavigationContext(
   ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
-  const isDetailView = itemSelected && showDetail;
-  const classNamesCombined = !isDetailView && rest.shiftIcons ? "tw-p-1 tw-pt-8 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200": "";
   return (
-    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className, classNamesCombined)} data-testid={name}>
+    <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
       {
         title || subtitle || controls ?
         <div className={uniqueStyles["dashboard-item-title-container"]}>
