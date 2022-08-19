@@ -7,7 +7,6 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
   return (
-    <div className="tw-h-full tw-w-full tw-border tw-border-solid tw-border-gray-300">
       <VolumeTrendsChart
         flowMetricsTrends={flowMetricsTrends}
         measurementPeriod={measurementPeriod}
@@ -15,7 +14,6 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         view={view}
         specsOnly={specsOnly}
       />
-    </div>
   );
 }
 
