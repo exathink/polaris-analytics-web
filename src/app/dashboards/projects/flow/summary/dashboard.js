@@ -69,7 +69,6 @@ export function NewFlowDashboard({
               />
             );
           }}
-          infoConfig={{title: "Throughput", headerContent: () => <span></span>, showDrawer: true, drawerContent: () => <span>Drawer Content</span>}}
         />
 
         <DashboardWidget
