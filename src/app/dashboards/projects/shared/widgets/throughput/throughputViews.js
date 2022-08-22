@@ -12,7 +12,6 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
-        specsOnly={true}
       />
   );
 }
