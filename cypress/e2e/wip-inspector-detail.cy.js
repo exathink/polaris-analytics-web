@@ -29,14 +29,7 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   beforeEach(() => {
-    const [username, password] = [Cypress.env("username"), Cypress.env("password")];
-    cy.loginByApi(username, password);
-
-    // our auth cookie should be present
-    cy.getCookie("session").should("exist");
-
-    // TODO: this is deprecated now, need to replace from cy.session
-    Cypress.Cookies.preserveOnce("session");
+    cy.loginWithoutApi();
 
     cy.interceptQuery({operationName: viewer_info, fixturePath: `${viewer_info}.json`});
     cy.interceptQuery({
@@ -56,13 +49,9 @@ describe("Wip Inspector Detail Dashboard", () => {
   });
 
   it("Delay Analyzer charts, when there is no data", () => {
-    cy.interceptQueryWithCb({
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineStateDetails,
-      fixtureCb: (req) => {
-        req.reply((res) => {
-          res.body.data.project.workItems.edges = [];
-        });
-      },
+      body: {data: {project: {workItems: {edges: []}}}},
     });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
@@ -103,13 +92,9 @@ describe("Wip Inspector Detail Dashboard", () => {
       fixture.data.project.workItems.edges[3].node.workItemStateDetails.currentStateTransition.eventDate =
         getNDaysAgo(8);
 
-        cy.interceptQueryWithCb({
+        cy.interceptQueryWithResponse({
           operationName: WIP_INSPECTOR.projectPipelineStateDetails,
-          fixtureCb: (req) => {
-            req.reply((res) => {
-              res.body = fixture;
-            });
-          },
+          body: fixture
         });
     });
 
