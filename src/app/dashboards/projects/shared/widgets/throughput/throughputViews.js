@@ -12,7 +12,7 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
-        specsOnly={specsOnly}
+        specsOnly={true}
       />
   );
 }
@@ -76,7 +76,7 @@ export function ThroughputCardView({
               <ThroughputTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
-                days={trendAnalysisPeriod}
+                days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
                 targetPercentile={targetPercentile}
