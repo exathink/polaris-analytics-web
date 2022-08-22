@@ -4,7 +4,7 @@ import {InfoCard} from "../../../../components/misc/info";
 import classNames from "classnames";
 
 export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, size="large", info, showHighlighted = false, onClick, target, className, testId}) {
-  const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: showHighlighted}, styles.trendCardWrapper, className);
+  const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: showHighlighted}, styles.trendCardWrapper, className, onClick ? "tw-cursor-pointer": "");
   const metricValueClasses = classNames(styles[`${size}MetricValue`])
   return (
     <div className={selectedTrendCardClasses} onClick={onClick} data-testid={testId}>
