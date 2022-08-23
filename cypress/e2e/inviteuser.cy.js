@@ -2,7 +2,7 @@
 
 
 import { first, last } from "lodash";
-import {ACCOUNT, ORGANIZATION, USER, VALUE_STREAM, viewer_info} from "../support/queries-constants";
+import {ACCOUNT, USER, viewer_info} from "../support/queries-constants";
 import {getMutationFullName, getQueryFullName} from "../support/utils";
 
 var email = "priya_mukundan@yahoo.com"
@@ -48,10 +48,17 @@ describe("Invite User flow", () => {
 
 
     cy.getBySel("create-connector-button").click();
-    cy.get("input#email").type(email).should("have.value", email);
-    cy.get("input#firstName").type(firstname).should("have.value", firstname);
-    cy.get("input#lastName").type(lastname).should("have.value", lastname);
 
+    cy.get('form').within(($form) => {
+      cy.get("input#email").type(email).should("have.value", email);
+      cy.get("input#firstName").type(firstname).should("have.value", firstname);
+      cy.get("input#lastName").type(lastname).should("have.value", lastname);
+       
+      
+
+    });
+
+    
     cy.contains(/^Invite$/).click();
 
     cy.wait(`@${getMutationFullName(USER.inviteUser)}`);
@@ -73,16 +80,22 @@ describe("Invite User flow", () => {
     cy.wait(`@${getQueryFullName(ACCOUNT.accountUsers)}`);
 
     cy.getBySel("create-connector-button").click();
-    cy.get("input#email").type(email).should("have.value", email);
-    cy.get("input#firstName").type(firstname).should("have.value", firstname);
-    cy.get("input#lastName").type(lastname).should("have.value", lastname);
+
+    cy.get('form').within(($form) => {
+      cy.get("input#email").type(email).should("have.value", email);
+      cy.get("input#firstName").type(firstname).should("have.value", firstname);
+      cy.get("input#lastName").type(lastname).should("have.value", lastname);
+       
+      
+
+    });
 
     cy.contains(/^Invite$/).click();
 
     cy.wait(`@${getMutationFullName(USER.inviteUser)}`);
 
 
-    cy.contains('invited to').should('not.exist');
+    cy.contains('User Elizabeth Bennett was created and invited to').should('not.exist');
 
   });
 
@@ -98,16 +111,21 @@ describe("Invite User flow", () => {
     cy.wait(`@${getQueryFullName(ACCOUNT.accountUsers)}`);
 
     cy.getBySel("create-connector-button").click();
-    cy.get("input#email").type(email).should("have.value", email);
-    cy.get("input#firstName").type(firstname).should("have.value", firstname);
-    cy.get("input#lastName").type(lastname).should("have.value", lastname);
 
+    cy.get('form').within(($form) => {
+      cy.get("input#email").type(email).should("have.value", email);
+      cy.get("input#firstName").type(firstname).should("have.value", firstname);
+      cy.get("input#lastName").type(lastname).should("have.value", lastname);
+       
+      
+
+    });
     cy.contains(/^Invite$/).click();
 
     cy.wait(`@${getMutationFullName(USER.inviteUser)}`);
 
 
-    cy.contains('Existing').should('exist');
+    cy.contains('Existing user Elizabeth').should('exist');
 
   });
 
