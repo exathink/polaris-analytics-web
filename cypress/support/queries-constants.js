@@ -7,6 +7,7 @@ export const ACCOUNT = {
   createConnector: "createConnector",
   refreshConnectorProjects: "refreshConnectorProjects",
   accountUsers: "accountUsers",
+  getContributorAliasesInfo: "getContributorAliasesInfo",
 };
 
 export const ORGANIZATION = {
@@ -29,3 +30,4 @@ export const WIP_INSPECTOR = {
 export const USER = {
   inviteUser : "inviteUser"
 }
+
