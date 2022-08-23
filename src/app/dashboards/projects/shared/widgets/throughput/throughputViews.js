@@ -1,3 +1,4 @@
+import {useBlurClass} from "../../../../../helpers/utility";
 import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
@@ -33,11 +34,13 @@ export function ThroughputCardView({
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
   currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod};
+  const blurClass = useBlurClass();
+
   return (
     <div className="tw-h-full tw-w-full">
       <Throughput
         title={
-          <span>
+          <span className={blurClass}>
             Throughput <sup>Avg</sup>
           </span>
         }
