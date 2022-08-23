@@ -12,7 +12,6 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
-        specsOnly={specsOnly}
       />
   );
 }
@@ -51,7 +50,7 @@ export function ThroughputCardView({
             title: (
               <div className="tw-text-lg tw-text-gray-300">
                 Throughput Details{" "}
-                <span className="tw-text-base tw-italic">All Cards, Last {trendAnalysisPeriod} Days</span>
+                <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
               </div>
             ),
             content: (
@@ -76,7 +75,7 @@ export function ThroughputCardView({
               <ThroughputTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
-                days={trendAnalysisPeriod}
+                days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
                 targetPercentile={targetPercentile}
