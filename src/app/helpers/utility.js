@@ -473,8 +473,8 @@ export const TOOLTIP_COLOR = "#fbfcfd";
 
 // this hook encapsulates the logic to calculate blur class
 // conditionally when the DEMO_MODE flag is active.
-export function useBlurClass() {
+export function useBlurClass(overrideClass = "tw-blur-sm") {
   const context = useViewerContext();
-  const isDemoFeatureFlagActive = context.isFeatureFlagActive(DEMO_MODE)
-  return isDemoFeatureFlagActive ? "tw-blur-sm": "";
+  const isDemoFeatureFlagActive = context.isFeatureFlagActive(DEMO_MODE);
+  return isDemoFeatureFlagActive ? overrideClass : "";
 }
