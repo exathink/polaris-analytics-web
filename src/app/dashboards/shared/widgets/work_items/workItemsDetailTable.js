@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {getNumber} from "../../../../helpers/utility";
+import {getNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -63,15 +63,16 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 }
 
 export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
+  const blurClass = useBlurClass();
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: comboColumnTitleRender(callBacks),
+    customRender: comboColumnTitleRender({...callBacks, blurClass: blurClass}),
   });
 
   const filterState = {
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
       ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      render: comboColumnTitleRender({...callBacks, search: false}),
+      render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
   }
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
   const metricRenderState = {
