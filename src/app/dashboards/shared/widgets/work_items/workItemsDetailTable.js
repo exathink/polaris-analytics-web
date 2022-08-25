@@ -63,7 +63,7 @@ function customTeamsColRender({setShowPanel, setWorkItemKey}) {
 }
 
 export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
-  const blurClass = useBlurClass();
+  const blurClass = useBlurClass("tw-blur-[2px]");
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
     customRender: comboColumnTitleRender({...callBacks, blurClass: blurClass}),
   });
