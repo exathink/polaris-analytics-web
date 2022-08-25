@@ -72,12 +72,12 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
               setShowPanel(true);
               setWorkItemKey(record.workItemKey || record.key);
             }}
-            className={classNames(styles.comboCardCol, rest.blurClass)}
+            className={styles.comboCardCol}
           >
             <div className={styles.workItemType}>
               {workItemTypeImageMap[record.workItemType] ?? record.workItemType}
             </div>
-            <div className={styles.title}>
+            <div className={classNames(styles.title, rest.blurClass)}>
               {searchText ? (
                 <Highlighter
                   highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
@@ -117,11 +117,11 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
 export function ComboCardTitleColumn({record}) {
   const blurClass = useBlurClass();
   return (
-    <div className={classNames(styles.comboCardCol, blurClass)} style={{marginLeft: "16px", columnGap: "1rem"}}>
+    <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
       <div className={styles.workItemType}>
         <img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}} />
       </div>
-      <div className={styles.titleXl}>{truncateString(record.name, 100, "#6b7280")}</div>
+      <div className={classNames(styles.titleXl, blurClass)}>{truncateString(record.name, 100, "#6b7280")}</div>
       <div className={styles.textBase}>
         {record.displayId}{" "}
         {record.epicName && (

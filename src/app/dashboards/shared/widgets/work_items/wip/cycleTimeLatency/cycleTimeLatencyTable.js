@@ -127,7 +127,7 @@ function renderWorkItemsSourceCol({setShowPanel, setWorkItemKey, setPlacement}) 
 }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const blurClass = useBlurClass();
+  const blurClass = useBlurClass("tw-blur-[2px]");
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender({...callBacks, blurClass})});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
