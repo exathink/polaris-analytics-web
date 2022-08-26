@@ -103,7 +103,7 @@ export function NewFlowDashboard({
       <DashboardRow>
         <DashboardWidget
           name="pipeline-funnel-summary"
-          className="tw-col-start-2 tw-col-span-6 tw-row-start-2"
+          className="tw-col-start-3 tw-col-span-4 tw-row-start-2"
           render={({ view }) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
