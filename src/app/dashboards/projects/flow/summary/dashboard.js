@@ -34,14 +34,14 @@ export function NewFlowDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[22%_55%_22%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[22%_55%_23%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <DashboardRow>
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className="tw-row-start-3"
+          className="tw-row-start-3 tw-col-start-2"
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
@@ -74,7 +74,7 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="cycletime-summary"
           title=""
-          className="tw-col-start-5 tw-row-start-3"
+          className="tw-col-start-4 tw-row-start-3"
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
