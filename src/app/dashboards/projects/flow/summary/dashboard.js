@@ -41,7 +41,6 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          classNameForDetailIcon="tw-absolute tw-top-1 tw-right-1 tw-cursor-pointer tw-opacity-100 tw-z-50"
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
