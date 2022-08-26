@@ -1,0 +1,14 @@
+
+{"data": {
+    "updateUser":{
+        "user": 
+            {"id": "VXNlcjpkZTBmODkyNS05ZGIzLTQyMTItODE4ZS04MmYxYzlkNzlhYzE="
+            , "name": "Elizabeth Darcy"
+            , "key": "de0f8925-9db3-4212-818e-82f1c9d79ac1"
+            , "__typename": "User"
+            }
+        , "updated": true
+        ,"__typename": "updateUser"
+        }
+    }
+}
