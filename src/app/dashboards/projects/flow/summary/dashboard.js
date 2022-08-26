@@ -34,14 +34,14 @@ export function NewFlowDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[22%_55%_23%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-8 tw-grid-rows-[22%_55%_23%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <DashboardRow>
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className="tw-row-start-3 tw-col-start-2"
+          className="tw-col-start-3 tw-col-span-2 tw-row-start-3 "
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
@@ -74,7 +74,7 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="cycletime-summary"
           title=""
-          className="tw-col-start-4 tw-row-start-3"
+          className="tw-col-start-5 tw-col-span-2 tw-row-start-3"
           render={({ view }) => {
             return (
               <FlowMetricsTrendsWidget
@@ -103,7 +103,7 @@ export function NewFlowDashboard({
       <DashboardRow>
         <DashboardWidget
           name="pipeline-funnel-summary"
-          className="tw-col-span-3 tw-col-start-2 tw-row-span-1 tw-row-start-2"
+          className="tw-col-start-2 tw-col-span-6 tw-row-start-2"
           render={({ view }) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -132,7 +132,7 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="wip-volume"
           title=""
-          className="tw-row-start-1"
+          className="tw-col-start-1 tw-col-span-2 tw-row-start-1"
           render={({ view }) => {
             return (
               <DimensionWipMetricsWidget
@@ -159,7 +159,7 @@ export function NewFlowDashboard({
         />
         <DashboardWidget
           name="quadrant-summary-pipeline"
-          className="tw-col-span-3 tw-col-start-2 tw-row-start-1"
+          className="tw-col-start-3 tw-col-span-4 tw-row-start-1"
           title={"Work In Progress"}
           subtitle={""}
           render={({ view }) => (
@@ -191,7 +191,7 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="wip-age"
           title=""
-          className="tw-col-start-5 tw-row-start-1"
+          className="tw-col-start-7 tw-col-span-2 tw-row-start-1"
           render={({ view }) => {
             return (
               <DimensionWipMetricsWidget
