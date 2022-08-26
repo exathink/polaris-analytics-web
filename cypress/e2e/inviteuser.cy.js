@@ -44,7 +44,7 @@ describe("Invite User flow", () => {
 
     cy.wait(`@${getMutationFullName(USER.inviteUser)}`);
 
-    cy.contains("invited to").should("exist");
+    cy.contains("User Elizabeth Bennett was created and invited to").should("exist");
   });
 
   it("fails to invite a user", () => {
