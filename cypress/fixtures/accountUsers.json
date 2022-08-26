@@ -1,0 +1,56 @@
+{"data":{
+    "account": 
+        {"__typename": "account",
+            "id": "QWNjb3VudDoyNDM0N2YyOC0wMDIwLTQwMjUtODgwMS1kYmM2MjdmOTQxNWQ=",
+            "key": "24347f28-0020-4025-8801-dbc627f9415d",
+            "users": {
+                "__typename": "users",
+                "count": 2,
+                "edges": [
+                    {
+                        "__typename": "edges",
+                        "node": {
+                            "__typename": "user",
+                            "id": "VXNlcjo1NDI4MWUwZi1jMjU3LTRjOWMtYWFkYi1iYjNhYzA5NTc0YTY=",
+                            "name": "Polaris Dev",
+                            "firstName": "Polaris",
+                            "lastName": "Dev",
+                            "key": "54281e0f-c257-4c9c-aadb-bb3ac09574a6",
+                            "email": "polaris-dev@exathink.com",
+                            "role": "owner",
+                            "organizationRoles": [
+                                {
+                                    "__typename": "ScopedRoleField",
+                                    "name": "Polaris-Dev",
+                                    "scopeKey": "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+                                    "role": "owner"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "__typename": "edges",
+                        "node": {
+                            "__typename": "user",
+                            "id": "VXNlcjozODhhZjIyNS1kZjJiLTRkZjktOWU1My0zNTczNmMxY2VlMTM=",
+                            "name": "Elizabeth Bennett",
+                            "firstName": "Elizabeth",
+                            "lastName": "Bennett",
+                            "key": "388af225-df2b-4df9-9e53-35736c1cee13",
+                            "email": "priya_mukundan@yahoo.com",
+                            "role": "member",
+                            "organizationRoles": [
+                                {
+                                    "__typename": "ScopedRoleField",
+                                    "name": "Polaris-Dev",
+                                    "scopeKey": "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+                                    "role": "owner"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

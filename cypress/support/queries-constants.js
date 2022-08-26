@@ -6,6 +6,8 @@ export const ACCOUNT = {
   showImportState: "showImportState",
   createConnector: "createConnector",
   refreshConnectorProjects: "refreshConnectorProjects",
+  accountUsers: "accountUsers",
+  getContributorAliasesInfo: "getContributorAliasesInfo",
 };
 
 export const ORGANIZATION = {
@@ -24,3 +26,8 @@ export const WIP_INSPECTOR = {
   projectPipelineCycleMetrics: "projectPipelineCycleMetrics",
   projectPipelineStateDetails: "projectPipelineStateDetails",
 };
+
+export const USER = {
+  inviteUser : "inviteUser"
+}
+
