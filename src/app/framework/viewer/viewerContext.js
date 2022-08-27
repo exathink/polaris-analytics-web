@@ -4,7 +4,7 @@ import {analytics_service} from "../../services/graphql";
 import ReactGA from 'react-ga';
 
 
-const {Provider, Consumer} = React.createContext({})
+const ViewerContextRaw = React.createContext({})
 
 class ViewerContextProvider extends React.Component {
 
@@ -131,7 +131,7 @@ class ViewerContextProvider extends React.Component {
   render() {
     return (
       this.state.viewer != null &&
-        <Provider value={{
+        <ViewerContextRaw.Provider value={{
           viewer: this.state.viewer,
           accountKey: this.state.accountKey,
           refresh: this.refresh.bind(this),
@@ -145,7 +145,7 @@ class ViewerContextProvider extends React.Component {
           isFeatureFlagActive: this.isFeatureFlagActive.bind(this)
         }}>
           {this.props.children}
-        </Provider>
+        </ViewerContextRaw.Provider>
     )
   }
 
@@ -153,7 +153,7 @@ class ViewerContextProvider extends React.Component {
 
 export const ViewerContext = {
   Provider: ViewerContextProvider,
-  Consumer: Consumer,
+  Consumer: ViewerContextRaw.Consumer,
 
   fragments: {
     viewerInfoFields: gql`
@@ -229,3 +229,11 @@ export const withViewerContext = (Component, allowedRoles=null) => (
       }
     </ViewerContext.Consumer>
 );
+
+export function useViewerContext(){
+  const context = React.useContext(ViewerContextRaw);
+  if (context === undefined) {
+    throw new Error('useViewerContext must be used within a Provider')
+  }
+  return context
+}

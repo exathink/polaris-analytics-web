@@ -33,6 +33,7 @@ export function ThroughputCardView({
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
   currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod};
+
   return (
     <div className="tw-h-full tw-w-full">
       <Throughput

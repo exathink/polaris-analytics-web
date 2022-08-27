@@ -3,6 +3,8 @@ import moment from "moment";
 import {notification, Tooltip} from "antd";
 import flowright from "lodash.flowright";
 import chunk from "lodash/chunk";
+import {useViewerContext} from "../framework/viewer/viewerContext";
+import {DEMO_MODE} from "../../config/featureFlags";
 
 export function removeItemAtIndex(arr, index) {
   return [...arr.slice(0, index), ...arr.slice(index + 1)];
@@ -468,3 +470,11 @@ export function getItemSuffix({specsOnly, itemsCount}) {
 }
 
 export const TOOLTIP_COLOR = "#fbfcfd";
+
+// this hook encapsulates the logic to calculate blur class
+// conditionally when the DEMO_MODE flag is active.
+export function useBlurClass(overrideClass = "tw-blur-sm") {
+  const context = useViewerContext();
+  const isDemoFeatureFlagActive = context.isFeatureFlagActive(DEMO_MODE);
+  return isDemoFeatureFlagActive ? overrideClass : "";
+}
