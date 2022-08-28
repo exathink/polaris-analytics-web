@@ -1,0 +1,76 @@
+{
+    "data": {
+    "account": {
+        "__typename": "Account",
+        "contributors": {
+            "__typename": "ContributorsConnection",
+            "edges": [
+                {
+                    "__typename": "ContributorsEdge",
+                    "node": {
+                        "__typename": "Contributor",
+                        "id": "Q29udHJpYnV0b3I6NGQ3YmI5MjUtZDhmMy00MTllLTg3YWItNmZkMDg3ZjY3MzRl",
+                        "key": "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                        "name": "Krishna Kumar",
+                        "earliestCommit": "2016-05-13T20:08:14",
+                        "latestCommit": "2022-08-08T00:11:11",
+                        "commitCount": 9482,
+                        "contributorAliasesInfo": [
+                            {
+                                "__typename": "ContributorAliasInfoImpl",
+                                "key": "4ba4f636-b290-4602-be18-47187b9b6b5a",
+                                "name": "krishnaku",
+                                "alias": "kkumar@exathink.com",
+                                "latestCommit": "2022-05-02T23:43:36",
+                                "earliestCommit": "2017-01-09T17:22:34",
+                                "commitCount": 572
+                            },
+                            {
+                                "__typename": "ContributorAliasInfoImpl",
+                                "key": "4d7bb925-d8f3-419e-87ab-6fd087f6734e",
+                                "name": "Krishna Kumar",
+                                "alias": "kkumar@exathink.com",
+                                "latestCommit": "2022-08-08T00:11:11",
+                                "earliestCommit": "2016-05-13T20:08:14",
+                                "commitCount": 8903
+                            },
+                            {
+                                "__typename": "ContributorAliasInfoImpl",
+                                "key": "64814d00-e3e0-45b0-b4a2-f863c490dddd",
+                                "name": "krishna",
+                                "alias": "kkumar@exathink.com",
+                                "latestCommit": "2016-11-26T00:06:32",
+                                "earliestCommit": "2016-11-26T00:06:31",
+                                "commitCount": 7
+                            }
+                        ]
+                    }
+                },
+                {
+                    "__typename": "ContributorsEdge",
+                    "node": {
+                        "__typename": "Contributor",
+                        "id": "Q29udHJpYnV0b3I6MjJhODNmZjAtMDBhMS00NWUxLWJjZmUtNzQ1NDJhNjRjZWIx",
+                        "key": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                        "name": "Aman Mavai",
+                        "earliestCommit": "2020-11-12T06:01:26",
+                        "latestCommit": "2022-08-08T13:03:21",
+                        "commitCount": 1958,
+                        "contributorAliasesInfo": [
+                            {
+                                "__typename": "ContributorAliasInfoImpl",
+                                "key": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+                                "name": "Aman Mavai",
+                                "alias": "aman.mavai@gslab.com",
+                                "latestCommit": "2022-08-08T13:03:21",
+                                "earliestCommit": "2020-11-12T06:01:26",
+                                "commitCount": 1958
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
+}

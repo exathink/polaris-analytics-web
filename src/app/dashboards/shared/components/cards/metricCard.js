@@ -1,8 +1,7 @@
 import {PlusCircleFilled} from "@ant-design/icons";
 import {Popover} from "antd";
 import classNames from "classnames";
-import {TrendsIcon} from "../../../../components/misc/customIcons";
-import {InfoCard} from "../../../../components/misc/info";
+import { InfoCard } from "../../../../components/misc/info";
 import {Colors} from "../../config";
 
 export function MetricCard({
@@ -19,6 +18,13 @@ export function MetricCard({
   iconsShiftLeft=false
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
+
+  const trendIndicatorElement = (
+    <div className={classNames("trendIndicator tw-col-span-3 tw-self-end tw-justify-self-end", trendsView ? "tw-cursor-pointer": "")}>
+      {trendIndicator}
+    </div>
+  );
+
   return (
     <div
       className={classNames(
@@ -30,19 +36,12 @@ export function MetricCard({
         <div className="tw-text-base tw-tracking-wide tw-text-gray-300">{title}</div>
         <div className="tw-text-xs tw-tracking-tight">{subTitle}</div>
       </div>
-      <div className={classNames("icons tw-col-span-3 tw-col-start-5 tw-flex tw-justify-end tw-space-x-1", iconsShiftLeft ? "tw-mr-6": "")}>
-        {trendsView && (
-          <div className="trendIcon tw-cursor-pointer tw-rounded-full">
-            <Popover
-              placement={trendsView.placement}
-              title={trendsView.title}
-              content={trendsView.content}
-              trigger="click"
-            >
-              <TrendsIcon style={{color: color}}/>
-            </Popover>
-          </div>
+      <div
+        className={classNames(
+          "icons tw-col-start-7 tw-flex tw-justify-end tw-space-x-1",
+          iconsShiftLeft ? "tw-mr-6" : ""
         )}
+      >
         {detailsView && (
           <div className="detailIcon tw-cursor-pointer tw-rounded-full">
             <Popover
@@ -67,7 +66,13 @@ export function MetricCard({
         </div>
       </div>
 
-      <div className="trendIndicator tw-col-span-3 tw-self-end tw-justify-self-end">{trendIndicator}</div>
+      {trendsView ? (
+        <Popover placement={trendsView.placement} title={trendsView.title} content={trendsView.content} trigger="click">
+          {trendIndicatorElement}
+        </Popover>
+      ) : (
+        trendIndicatorElement
+      )}
     </div>
   );
 }

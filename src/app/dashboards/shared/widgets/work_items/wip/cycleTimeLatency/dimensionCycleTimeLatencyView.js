@@ -2,7 +2,7 @@ import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
-import {EVENT_TYPES} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, useBlurClass} from "../../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
@@ -19,6 +19,7 @@ export const DimensionCycleTimeLatencyView = ({
   view,
   context,
 }) => {
+  const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 
   const workItems = React.useMemo(() => {
@@ -42,6 +43,7 @@ export const DimensionCycleTimeLatencyView = ({
             latencyTarget={latencyTarget}
             tick={tick}
             tooltipType={tooltipType}
+            blurClass={blurClass}
             onSelectionChange={(workItems, eventType) => {
               if (eventType === EVENT_TYPES.POINT_CLICK) {
                 setWorkItemKey(workItems[0].key);

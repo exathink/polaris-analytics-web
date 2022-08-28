@@ -7,15 +7,12 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
   return (
-    <div className="tw-h-full tw-w-full tw-border tw-border-solid tw-border-gray-300">
       <VolumeTrendsChart
         flowMetricsTrends={flowMetricsTrends}
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
-        specsOnly={specsOnly}
       />
-    </div>
   );
 }
 
@@ -36,6 +33,7 @@ export function ThroughputCardView({
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
   currentTrend = {...currentTrend, measurementWindow: flowAnalysisPeriod};
+
   return (
     <div className="tw-h-full tw-w-full">
       <Throughput
@@ -78,7 +76,9 @@ export function ThroughputCardView({
               <ThroughputTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
-                flowAnalysisPeriod={flowAnalysisPeriod}
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
                 targetPercentile={targetPercentile}
                 includeSubTasks={includeSubTasks}
                 latestCommit={latestCommit}

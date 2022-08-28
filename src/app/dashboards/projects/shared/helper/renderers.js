@@ -1,7 +1,7 @@
 import {Tag} from "antd";
 import React from "react";
 import {Highlighter} from "../../../../components/misc/highlighter";
-import {truncateString} from "../../../../helpers/utility";
+import {truncateString, useBlurClass} from "../../../../helpers/utility";
 import {PullRequestStateTypeColor, WorkItemStateTypeColor} from "../../../shared/config";
 import styles from "./renderers.module.css";
 
@@ -12,6 +12,7 @@ import bug from "../../../../../image/issueType/bug.svg";
 import task from "../../../../../image/issueType/task.svg";
 import subtask from "../../../../../image/issueType/subtask.svg";
 import {QuestionCircleOutlined} from "@ant-design/icons";
+import classNames from "classnames";
 
 const issueTypeImagePaths = {
   epic: epic,
@@ -59,7 +60,7 @@ export function getPullRequestStateTypeIcon(stateType, size = "16px") {
 }
 
 // setPlacement is optional property when we need to specify the position of cardInspector
-export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlacement, search}) {
+export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlacement, search, ...rest}) {
   return (text, record, searchText) =>
     {
       searchText = search===false ? undefined : searchText;
@@ -76,7 +77,7 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
             <div className={styles.workItemType}>
               {workItemTypeImageMap[record.workItemType] ?? record.workItemType}
             </div>
-            <div className={styles.title}>
+            <div className={classNames(styles.title, rest.blurClass)}>
               {searchText ? (
                 <Highlighter
                   highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
@@ -114,12 +115,13 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
 }
 
 export function ComboCardTitleColumn({record}) {
+  const blurClass = useBlurClass();
   return (
     <div className={styles.comboCardCol} style={{marginLeft: "16px", columnGap: "1rem"}}>
       <div className={styles.workItemType}>
         <img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}} />
       </div>
-      <div className={styles.titleXl}>{truncateString(record.name, 100, "#6b7280")}</div>
+      <div className={classNames(styles.titleXl, blurClass)}>{truncateString(record.name, 100, "#6b7280")}</div>
       <div className={styles.textBase}>
         {record.displayId}{" "}
         {record.epicName && (

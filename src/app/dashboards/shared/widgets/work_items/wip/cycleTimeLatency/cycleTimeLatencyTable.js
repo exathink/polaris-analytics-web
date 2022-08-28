@@ -11,6 +11,7 @@ import {
   comboColumnTitleRender,
   customColumnRender
 } from "../../../../../projects/shared/helper/renderers";
+import {useBlurClass} from "../../../../../../helpers/utility";
 
 const QuadrantSort = {
   ok: 0,
@@ -126,7 +127,8 @@ function renderWorkItemsSourceCol({setShowPanel, setWorkItemKey, setPlacement}) 
 }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender(callBacks)});
+  const blurClass = useBlurClass("tw-blur-[2px]");
+  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender({...callBacks, blurClass})});
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
   const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
   const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} FTE Days</>, className: "tw-textXs"})}

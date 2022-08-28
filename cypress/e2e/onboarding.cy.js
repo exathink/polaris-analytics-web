@@ -9,8 +9,8 @@ const importProjectFlowConfig = [
     cardId: "trello-card",
     connectorName: "Trello Test",
     credentialPairs: [
-      ["input#trelloApiKey", Cypress.env("trelloApiKey")],
-      ["input#trelloAccessToken", Cypress.env("trelloAccessToken")],
+      ["input#trelloApiKey", "dummy"],
+      ["input#trelloAccessToken", "dummyAccessToken"],
     ],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `trello/${ACCOUNT.getAccountConnectors}.json`,
@@ -30,8 +30,8 @@ const importProjectFlowConfig = [
     cardId: "github-card",
     connectorName: "Github Test",
     credentialPairs: [
-      ["input#githubOrganization", Cypress.env("githubOrganization")],
-      ["input#githubAccessToken", Cypress.env("githubAccessToken")],
+      ["input#githubOrganization", "dummy"],
+      ["input#githubAccessToken", "dummyAccessToken"],
     ],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `github/${ACCOUNT.getAccountConnectors}.json`,
@@ -50,7 +50,7 @@ const importProjectFlowConfig = [
     provider: "Gitlab",
     cardId: "gitlab-card",
     connectorName: "Gitlab Test",
-    credentialPairs: [["input#gitlabPersonalAccessToken", Cypress.env("gitlabAccessToken")]],
+    credentialPairs: [["input#gitlabPersonalAccessToken", "dummyAccessToken"]],
     apiFixtures: {
       [ACCOUNT.getAccountConnectors]: `gitlab/${ACCOUNT.getAccountConnectors}.json`,
       [`${ACCOUNT.getAccountConnectors}_empty`]: `gitlab/${ACCOUNT.getAccountConnectors}_empty.json`,
@@ -75,12 +75,7 @@ describe("Onboarding flows", () => {
       fixturePath: `${ORGANIZATION.with_organization_instance}.json`,
     });
 
-    const [username, password] = [Cypress.env("testusername"), Cypress.env("testpassword")];
-    cy.loginByApi(username, password);
-
-    // our auth cookie should be present
-    cy.getCookie("session").should("exist");
-    Cypress.Cookies.preserveOnce("session");
+    cy.loginWithoutApi();
   });
 
   importProjectFlowConfig.forEach((config) => {
@@ -92,9 +87,8 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.getAccountConnectors,
         fixturePath: config.apiFixtures[`${ACCOUNT.getAccountConnectors}_empty`],
-        times: 1
+        times: 1,
       });
-
 
       cy.interceptQuery({
         operationName: ACCOUNT.getConnectorWorkItemsSources,
@@ -103,7 +97,7 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.getConnectorWorkItemsSources,
         fixturePath: config.apiFixtures[`${ACCOUNT.getConnectorWorkItemsSources}_before`],
-        times: 1
+        times: 1,
       });
 
       cy.interceptQuery({
@@ -118,7 +112,7 @@ describe("Onboarding flows", () => {
       cy.interceptQuery({
         operationName: ACCOUNT.showImportState,
         fixturePath: config.apiFixtures[`${ACCOUNT.showImportState}_ready`],
-        times: 1
+        times: 1,
       });
 
       // Mutations
@@ -166,8 +160,10 @@ describe("Onboarding flows", () => {
 
       cy.contains(/Register/i).click();
 
-      cy.wait(`@${getMutationFullName(ACCOUNT.createConnector)}`);
-      cy.wait(`@${getQueryFullName(ACCOUNT.getAccountConnectors)}`);
+      cy.wait([
+        `@${getMutationFullName(ACCOUNT.createConnector)}`,
+        `@${getQueryFullName(ACCOUNT.getAccountConnectors)}`,
+      ]);
 
       cy.getBySel("available-connectors-title").should("be.visible");
       cy.contains(config.connectorName).should("be.visible");
@@ -197,8 +193,10 @@ describe("Onboarding flows", () => {
       cy.log("ConfigureImport");
       cy.getBySel("configure-import-title").should("be.visible");
       cy.getBySel("import-project-button").click();
-      cy.wait(`@${getMutationFullName(VALUE_STREAM.importProjects)}`);
-      cy.wait(`@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`);
+      cy.wait([
+        `@${getMutationFullName(VALUE_STREAM.importProjects)}`,
+        `@${getQueryFullName(ACCOUNT.getConnectorWorkItemsSources)}`,
+      ]);
 
       // 5th Step ImportProjectStatus
       cy.log("ImportProjectStatus");

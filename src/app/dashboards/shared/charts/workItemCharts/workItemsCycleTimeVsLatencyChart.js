@@ -134,7 +134,8 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 intl,
                 view,
                 tooltipType,
-                selectedQuadrant
+                selectedQuadrant,
+                blurClass
               }) => {
 
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
@@ -260,9 +261,11 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""]
               ];
 
+          const _displayId = blurClass ? "**********" : displayId;
+          const _name = blurClass ? "**********" : name;
           return tooltipHtml({
-            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${
-              elide(name, 30)
+            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${
+              elide(_name, 30)
             }`,
             body: [
               [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
