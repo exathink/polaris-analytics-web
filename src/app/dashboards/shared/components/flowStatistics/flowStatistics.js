@@ -9,7 +9,7 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import { fromNow, percentileToText, humanizeDuration, getItemSuffix } from "../../../../helpers/utility";
+import { fromNow, percentileToText, humanizeDuration, getItemSuffix, getPeriodString } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
@@ -105,11 +105,11 @@ export const FlowStatistic = ({
               secondValue={comp}
               good={good}
               deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
-              samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+              samplingFrequency={null}
             />
           }
-          prevPeriod={previousMeasurement.measurementDate}
-          currentPeriod={currentMeasurement.measurementDate}
+          prevPeriod={getPeriodString(previousMeasurement.measurementDate, measurementWindow)}
+          currentPeriod={getPeriodString(currentMeasurement.measurementDate, measurementWindow)}
           prevValue={prevMetricValue}
           currentValue={metricValue}
           suffix={suffix}

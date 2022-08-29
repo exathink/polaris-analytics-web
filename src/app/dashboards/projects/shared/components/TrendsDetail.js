@@ -17,12 +17,12 @@ export function TrendsDetail({
       <div className="value tw-text-2xl">{trendIndicator}</div>
       <div className="prevPeriod">
         <div className="prevPeriodTitle tw-text-sm tw-tracking-wide tw-text-gray-300">Prior Period</div>
-        <div className="prevPeriodValue">{prevPeriod}</div>
+        <div className="prevPeriodValue tw-text-xs">{prevPeriod}</div>
       </div>
 
       <div className="currentPeriod">
         <div className="prevPeriodTitle tw-text-sm tw-tracking-wide tw-text-gray-300">Current Period</div>
-        <div className="prevPeriodValue">{currentPeriod}</div>
+        <div className="prevPeriodValue tw-text-xs">{currentPeriod}</div>
       </div>
       <div className="prevVal tw-flex tw-items-baseline tw-space-x-2">
         <div className="value tw-text-3xl tw-font-medium tw-leading-3">{prevValue}</div>
