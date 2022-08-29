@@ -16,6 +16,7 @@ import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
 import {MetricCard} from "../cards/metricCard";
+import {TrendsDetail} from "../../../projects/shared/components/TrendsDetail";
 
 export const FlowStatistic = ({
   title,
@@ -61,7 +62,7 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           testId={testId}
-          target={_value==="N/A" ? null : targetText}
+          target={_value === "N/A" ? null : targetText}
         />
       );
     }
@@ -88,6 +89,30 @@ export const FlowStatistic = ({
           detailsView={detailsView}
           trendsView={trendsView}
           iconsShiftLeft={iconsShiftLeft}
+        />
+      );
+    }
+    case "trendsCompareCard": {
+      const {measurementWindow} = displayProps;
+      const {metricValue: prevMetricValue} = getMetricUtils({target, value: comp, uom, good, valueRender, precision});
+      return (
+        <TrendsDetail
+          title={title}
+          comparedToText={`Compared to prior ${measurementWindow} days`}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+            />
+          }
+          prevPeriod={previousMeasurement.measurementDate}
+          currentPeriod={currentMeasurement.measurementDate}
+          prevValue={prevMetricValue}
+          currentValue={metricValue}
+          suffix={suffix}
         />
       );
     }
@@ -178,11 +203,11 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     metric={metric}
     valueRender={
       value =>  {
-        return currentMeasurement?.[metric]/measurementWindow
+        return value/measurementWindow
       }
     }
     uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
-    precision={1}
+    precision={2}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}

@@ -1,6 +1,5 @@
 import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
-import { TrendsDetail } from "../../components/TrendsDetail";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
 
@@ -8,17 +7,16 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
   if (displayBag?.displayType === "trendsCompareCard") {
-    const [currentTrend, prevTrend] = flowMetricsTrends;
+    const [currentMeasurement, previousMeasurement] = flowMetricsTrends;
+
     return (
-      <TrendsDetail
-        title={"Throughput"}
-        comparedToText={`Compared to prior ${measurementWindow} days`}
-        trendIndicator={"200% down"}
-        prevPeriod={"30/04 to 29/08"}
-        currentPeriod={"25/02 to 29/08"}
-        prevValue={9.3}
-        currentValue={6.4}
-        uom={"Specs/day"}
+      <Throughput 
+        displayType={"trendsCompareCard"}
+        displayProps={{measurementWindow}}
+        currentMeasurement={currentMeasurement}
+        previousMeasurement={previousMeasurement}
+        specsOnly={specsOnly}
+        measurementWindow={measurementWindow}
       />
     );
   }
