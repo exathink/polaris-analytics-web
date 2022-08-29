@@ -11,6 +11,11 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
 
     return (
       <Throughput 
+        title={
+          <span>
+            Throughput <sup>Avg</sup>
+          </span>
+        }
         displayType={"trendsCompareCard"}
         displayProps={{measurementWindow}}
         currentMeasurement={currentMeasurement}
