@@ -9,7 +9,7 @@ export function TrendsDetail({
   suffix,
 }) {
   return (
-    <div className="tw-p-2 tw-grid tw-grid-cols-2 tw-gap-4 tw-rounded-md">
+    <div className="tw-p-2 tw-grid tw-grid-cols-2 tw-gap-8 tw-rounded-md">
       <div className="titleWrapper">
         <div className="title tw-text-base tw-tracking-wide tw-text-gray-300">{title}</div>
         <div className="subTitle tw-text-xs tw-tracking-tight">{comparedToText}</div>
