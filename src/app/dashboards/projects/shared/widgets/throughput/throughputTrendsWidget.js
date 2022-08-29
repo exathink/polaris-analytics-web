@@ -18,6 +18,7 @@ export function ThroughputTrendsWidget({
   view,
   context,
   specsOnly,
+  displayBag
 }) {
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
@@ -45,6 +46,7 @@ export function ThroughputTrendsWidget({
       measurementPeriod={days}
       view={view}
       specsOnly={specsOnly}
+      displayBag={displayBag}
     />
   );
 }

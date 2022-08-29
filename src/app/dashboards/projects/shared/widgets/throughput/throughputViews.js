@@ -1,11 +1,27 @@
 import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
+import { TrendsDetail } from "../../components/TrendsDetail";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
 
-export function ThroughputTrendsView({data, dimension, measurementPeriod, measurementWindow, specsOnly, view}) {
+export function ThroughputTrendsView({data, dimension, measurementPeriod, measurementWindow, specsOnly, view, displayBag}) {
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
+  if (displayBag?.displayType === "trendsCompareCard") {
+    const [currentTrend, prevTrend] = flowMetricsTrends;
+    return (
+      <TrendsDetail
+        title={"Throughput"}
+        comparedToText={`Compared to prior ${measurementWindow} days`}
+        trendIndicator={"200% down"}
+        prevPeriod={"30/04 to 29/08"}
+        currentPeriod={"25/02 to 29/08"}
+        prevValue={9.3}
+        currentValue={6.4}
+        uom={"Specs/day"}
+      />
+    );
+  }
   return (
       <VolumeTrendsChart
         flowMetricsTrends={flowMetricsTrends}
@@ -84,6 +100,7 @@ export function ThroughputCardView({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 specsOnly={specsOnly}
+                displayBag={{displayType: "trendsCompareCard"}}
               />
             ),
             placement: "top",
