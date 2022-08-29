@@ -68,7 +68,7 @@ export function ThroughputCardView({
                 displayBag={{classNameForFirstCard: "tw-w-[16rem]"}}
               />
             ),
-            placement: "right",
+            placement: "top",
           },
           trendsView: {
             title: "",
@@ -86,7 +86,7 @@ export function ThroughputCardView({
                 specsOnly={specsOnly}
               />
             ),
-            placement: "bottom",
+            placement: "top",
           },
           ...displayProps
         }}
