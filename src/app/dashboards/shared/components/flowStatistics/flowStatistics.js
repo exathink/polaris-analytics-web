@@ -41,7 +41,7 @@ export const FlowStatistic = ({
 
   switch (displayType) {
     case "card": {
-      const {onClick, showHighlighted, info, size, className, targetText, testId} = displayProps;
+      const {onClick, showHighlighted, info, size, className, supportingMetric, testId} = displayProps;
       return (
         <TrendCard
           metricTitle={title}
@@ -62,17 +62,16 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           testId={testId}
-          target={_value === "N/A" ? null : targetText}
+          target={_value === "N/A" ? null : supportingMetric}
         />
       );
     }
     case "cardAdvanced": {
-      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft, valSubTitle} = displayProps;
+      const {info, className, detailsView, trendsView, subTitle, iconsShiftLeft, supportingMetric} = displayProps;
       return (
         <MetricCard
           title={title}
           subTitle={subTitle}
-          valSubTitle={valSubTitle}
           value={metricValue}
           suffix={suffix}
           trendIndicator={
@@ -86,7 +85,7 @@ export const FlowStatistic = ({
           }
           info={info}
           className={className}
-          target={targetText}
+          supportingMetric={supportingMetric}
           detailsView={detailsView}
           trendsView={trendsView}
           iconsShiftLeft={iconsShiftLeft}
@@ -195,10 +194,10 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
   />
 }
 
-export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
+export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
-  const valSubTitle = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
+  const supportingMetric = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
   return <FlowStatistic
     title={title || <span>Volume</span>}
     currentMeasurement={currentMeasurement}
@@ -210,8 +209,7 @@ export const VolumeWithThroughput = ({title, displayType, displayProps, currentM
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
-    displayProps={{valSubTitle, ...displayProps}}
-    target={target}
+    displayProps={{supportingMetric, ...displayProps}}
     measurementWindow={measurementWindow}
   />
 }

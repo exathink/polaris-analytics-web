@@ -36,7 +36,7 @@ export function ClosedPullRequestsCardView({
           className: "tw-p-2",
           onClick,
           showHighlighted: cardSelection === "closed",
-          ...(latencyTarget ? {targetText: <span>Target {i18nNumber(intl, latencyTarget, 1)} Days</span>} : {}),
+          ...(latencyTarget ? {supportingMetric: <span>Target {i18nNumber(intl, latencyTarget, 1)} Days</span>} : {}),
         }}
         metric="avgAge"
       />

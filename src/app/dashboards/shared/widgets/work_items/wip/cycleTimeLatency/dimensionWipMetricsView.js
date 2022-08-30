@@ -26,7 +26,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
         displayType={displayType}
         displayProps={{
           className: "tw-p-2",
-          targetText: <span>Limit {wipLimit}</span>,
+          supportingMetric: <span>Limit {wipLimit}</span>,
           trendsView: {title: "Total", content: <span>Volume Trends</span>},
           info: {title: "Info", content: "content"},
           ...displayProps,
@@ -40,7 +40,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
         displayType={displayType}
         displayProps={{
           className: "tw-p-2",
-          targetText: <span>Target {cycleTimeTarget} Days</span>,
+          supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
           trendsView: {title: "Age", content: <span>Trends</span>},
           info: {title: "Info", content: "content"},
           ...displayProps,
