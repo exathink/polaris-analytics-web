@@ -5,11 +5,11 @@ import {ACCOUNT, USER, ORGANIZATION, viewer_info} from "../support/queries-const
 import {getMutationFullName, getQueryFullName} from "../support/utils";
 import {humanizeDuration, daysSinceDate} from "../../src/app/helpers/utility";
 
-const latestCommit_vs_1 = "2022-08-26T14:56:12";
-const latestCommit_vs_2 = "2021-05-24T17:00:29";
+const latestCommit_vs_1 = "2022-08-26";
+const latestCommit_vs_2 = "2021-05-24";
 
-const lastUpdate_vs_1 = "2022-08-26T14:30:11.888000";
-const lastUpdate_vs_2 = "2021-06-14T19:40:39.748000";
+const lastUpdate_vs_1 = "2022-08-26";
+const lastUpdate_vs_2 = "2021-06-14";
 
 describe("Value Streams", () => {
   beforeEach(() => {
