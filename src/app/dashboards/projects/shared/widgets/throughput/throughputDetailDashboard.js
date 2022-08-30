@@ -29,13 +29,13 @@ export const ThroughputDetailDashboard = ({
       <DashboardRow>
         <DashboardWidget
           w={1}
-          name="throughput-summary"
+          name="volume-summary"
           className={classNames("tw-h-32 tw-p-2", classNameForFirstCard)}
           render={({view}) => (
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
-              displayBag={{displayType: "card", metric: "throughput"}}
+              displayBag={{displayType: "card", metric: "volume"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
               samplingFrequency={flowAnalysisPeriod}
@@ -52,17 +52,18 @@ export const ThroughputDetailDashboard = ({
         />
         <DashboardWidget
           w={1}
-          name="volume-summary"
+          name="throughput-summary"
           className="tw-p-2"
           render={({view}) => (
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
-              displayBag={{displayType: "card", metric: "volume"}}
+              displayBag={{displayType: "card", metric: "throughput"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
               samplingFrequency={flowAnalysisPeriod}
               flowAnalysisPeriod={flowAnalysisPeriod}
+              trendAnalysisPeriod={trendAnalysisPeriod}
               targetPercentile={targetPercentile}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
