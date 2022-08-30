@@ -203,7 +203,7 @@ export function humanizeDuration(days) {
 export function getPeriodString(date, period) {
   const priorDate = moment(date).subtract(period, 'days').format("MM/DD/YYYY");
   const currentDate = moment(date).format("MM/DD/YYYY");
-  return `${priorDate} to ${currentDate}`;
+  return `${priorDate} - ${currentDate}`;
 }
 
 export function isToday(serverCommitDate) {
