@@ -51,8 +51,8 @@ export const FlowStatistic = ({
           onClick={onClick}
           trendIndicator={
             <TrendIndicatorNew
-              firstValue={value}
-              secondValue={comp}
+              currentValue={value}
+              previousValue={comp}
               good={good}
               deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
               samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
@@ -76,8 +76,8 @@ export const FlowStatistic = ({
           suffix={suffix}
           trendIndicator={
             <TrendIndicatorNew
-              firstValue={value}
-              secondValue={comp}
+              currentValue={value}
+              previousValue={comp}
               good={good}
               deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
               samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
@@ -101,8 +101,8 @@ export const FlowStatistic = ({
           comparedToText={`Compared to prior ${measurementWindow} days`}
           trendIndicator={
             <TrendIndicatorNew
-              firstValue={value}
-              secondValue={comp}
+              currentValue={value}
+              previousValue={comp}
               good={good}
               deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
               samplingFrequency={null}
@@ -122,8 +122,8 @@ export const FlowStatistic = ({
           title={title}
           trendIndicator={
             <TrendIndicator
-              firstValue={value}
-              secondValue={comp}
+              currentValue={value}
+              previousValue={comp}
               good={good}
               deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
             />
@@ -140,8 +140,8 @@ export const FlowStatistic = ({
           uom={suffix}
           trendIndicator={
             <TrendWithTooltip
-              firstValue={value}
-              secondValue={comp}
+              currentValue={value}
+              previousValue={comp}
               good={good}
               samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
             />
