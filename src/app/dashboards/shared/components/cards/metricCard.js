@@ -15,7 +15,8 @@ export function MetricCard({
   detailsView,
   trendsView,
   className,
-  iconsShiftLeft=false
+  iconsShiftLeft=false,
+  valSubTitle
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
 
@@ -63,6 +64,7 @@ export function MetricCard({
         <div className="value tw-text-3xl tw-font-medium tw-leading-3">
           {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
           {target && <div className="tw-text-xs tw-text-gray-300">{target}</div>}
+          {valSubTitle && <div className="tw-text-2xs tw-text-gray-300">{valSubTitle}</div>}
         </div>
       </div>
 

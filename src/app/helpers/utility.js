@@ -200,6 +200,12 @@ export function humanizeDuration(days) {
   return moment.duration(days, "days").humanize();
 }
 
+export function getPeriodString(date, period) {
+  const priorDate = moment(date).subtract(period, 'days').format("MM/DD/YYYY");
+  const currentDate = moment(date).format("MM/DD/YYYY");
+  return `${priorDate} - ${currentDate}`;
+}
+
 export function isToday(serverCommitDate) {
   return moment.duration(moment.utc().diff(toMoment(serverCommitDate))).asDays() < 1;
 }

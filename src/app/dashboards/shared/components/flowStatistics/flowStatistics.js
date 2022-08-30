@@ -9,13 +9,14 @@ import {
   TrendMetric,
   TrendWithTooltip
 } from "../../../../components/misc/statistic/statistic";
-import { fromNow, percentileToText, humanizeDuration, getItemSuffix } from "../../../../helpers/utility";
+import { fromNow, percentileToText, humanizeDuration, getItemSuffix, getPeriodString } from "../../../../helpers/utility";
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
 import { TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
 import {MetricCard} from "../cards/metricCard";
+import {TrendsDetail} from "../../../projects/shared/components/TrendsDetail";
 
 export const FlowStatistic = ({
   title,
@@ -61,16 +62,17 @@ export const FlowStatistic = ({
           info={info}
           className={className}
           testId={testId}
-          target={_value==="N/A" ? null : targetText}
+          target={_value === "N/A" ? null : targetText}
         />
       );
     }
     case "cardAdvanced": {
-      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft} = displayProps;
+      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft, valSubTitle} = displayProps;
       return (
         <MetricCard
           title={title}
           subTitle={subTitle}
+          valSubTitle={valSubTitle}
           value={metricValue}
           suffix={suffix}
           trendIndicator={
@@ -88,6 +90,30 @@ export const FlowStatistic = ({
           detailsView={detailsView}
           trendsView={trendsView}
           iconsShiftLeft={iconsShiftLeft}
+        />
+      );
+    }
+    case "trendsCompareCard": {
+      const {measurementWindow} = displayProps;
+      const {metricValue: prevMetricValue} = getMetricUtils({target, value: comp, uom, good, valueRender, precision});
+      return (
+        <TrendsDetail
+          title={title}
+          comparedToText={`Compared to prior ${measurementWindow} days`}
+          trendIndicator={
+            <TrendIndicatorNew
+              firstValue={value}
+              secondValue={comp}
+              good={good}
+              deltaThreshold={deltaThreshold || TrendIndicatorDisplayThreshold}
+              samplingFrequency={null}
+            />
+          }
+          prevPeriod={getPeriodString(previousMeasurement.measurementDate, measurementWindow)}
+          currentPeriod={getPeriodString(currentMeasurement.measurementDate, measurementWindow)}
+          prevValue={prevMetricValue}
+          currentValue={metricValue}
+          suffix={suffix}
         />
       );
     }
@@ -169,6 +195,27 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
   />
 }
 
+export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
+  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
+
+  const valSubTitle = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
+  return <FlowStatistic
+    title={title || <span>Volume</span>}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={metric}
+    valueRender={value => value}
+    uom={specsOnly ? 'Specs' : 'Cards'}
+    precision={0}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={{valSubTitle, ...displayProps}}
+    target={target}
+    measurementWindow={measurementWindow}
+  />
+}
+
 export const Throughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
   return <FlowStatistic
@@ -178,11 +225,11 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     metric={metric}
     valueRender={
       value =>  {
-        return currentMeasurement?.[metric]/measurementWindow
+        return value/measurementWindow
       }
     }
     uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
-    precision={1}
+    precision={2}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}

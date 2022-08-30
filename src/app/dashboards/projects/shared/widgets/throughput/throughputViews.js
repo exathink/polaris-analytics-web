@@ -3,9 +3,28 @@ import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/vo
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
 
-export function ThroughputTrendsView({data, dimension, measurementPeriod, measurementWindow, specsOnly, view}) {
+export function ThroughputTrendsView({data, dimension, measurementPeriod, measurementWindow, specsOnly, view, displayBag}) {
   const {cycleMetricsTrends: flowMetricsTrends} = data[dimension];
 
+  if (displayBag?.displayType === "trendsCompareCard") {
+    const [currentMeasurement, previousMeasurement] = flowMetricsTrends;
+
+    return (
+      <Throughput 
+        title={
+          <span>
+            Throughput <sup>Avg</sup>
+          </span>
+        }
+        displayType={"trendsCompareCard"}
+        displayProps={{measurementWindow}}
+        currentMeasurement={currentMeasurement}
+        previousMeasurement={previousMeasurement}
+        specsOnly={specsOnly}
+        measurementWindow={measurementWindow}
+      />
+    );
+  }
   return (
       <VolumeTrendsChart
         flowMetricsTrends={flowMetricsTrends}
@@ -68,7 +87,7 @@ export function ThroughputCardView({
                 displayBag={{classNameForFirstCard: "tw-w-[16rem]"}}
               />
             ),
-            placement: "right",
+            placement: "top",
           },
           trendsView: {
             title: "",
@@ -84,9 +103,10 @@ export function ThroughputCardView({
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 specsOnly={specsOnly}
+                displayBag={{displayType: "trendsCompareCard"}}
               />
             ),
-            placement: "bottom",
+            placement: "top",
           },
           ...displayProps
         }}

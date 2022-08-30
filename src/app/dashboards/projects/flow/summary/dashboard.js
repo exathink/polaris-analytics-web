@@ -176,7 +176,7 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{metric: "throughput", displayType: "cardAdvanced", iconsShiftLeft: false}}
+                displayBag={{metric: "volumeWithThroughput", displayType: "cardAdvanced", iconsShiftLeft: false}}
               />
             );
           }}
