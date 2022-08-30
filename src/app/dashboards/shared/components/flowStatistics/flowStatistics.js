@@ -198,7 +198,7 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
 export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
-  const valSubTitle = <span>Throughput <sup>Avg</sup> {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
+  const valSubTitle = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
   return <FlowStatistic
     title={title || <span>Volume</span>}
     currentMeasurement={currentMeasurement}
