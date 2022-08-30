@@ -194,6 +194,26 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
   />
 }
 
+export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
+  const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
+
+  return <FlowStatistic
+    title={title || <span>Volume</span>}
+    currentMeasurement={currentMeasurement}
+    previousMeasurement={previousMeasurement}
+    metric={metric}
+    valueRender={value => value}
+    uom={specsOnly ? 'Specs' : 'Cards'}
+    precision={0}
+    good={TrendIndicator.isPositive}
+    deltaThreshold={deltaThreshold}
+    displayType={displayType}
+    displayProps={displayProps}
+    target={target}
+    measurementWindow={measurementWindow}
+  />
+}
+
 export const Throughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
   return <FlowStatistic

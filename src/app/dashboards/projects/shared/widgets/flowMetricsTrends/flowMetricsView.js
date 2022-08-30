@@ -1,3 +1,4 @@
+import { VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
@@ -18,6 +19,9 @@ export function FlowMetricsView({
   view,
 }) {
   const {metric, displayType, displayProps, iconsShiftLeft} = displayBag;
+  const {cycleMetricsTrends} = data[dimension];
+  let [currentTrend, previousTrend] = cycleMetricsTrends;
+
   const metricMap = {
     throughput:
       view === "detail" ? (
@@ -49,6 +53,36 @@ export function FlowMetricsView({
           targetPercentile={targetPercentile}
         />
       ),
+    volumeWithThroughput: (
+      <VolumeWithThroughput
+        title={"Volume"}
+        displayType={displayType}
+        displayProps={{
+          info: {title: "title"},
+          subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
+          trendsView: {
+            title: "",
+            content: (
+              <VolumeWithThroughput
+                title={<span>Volume</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: flowAnalysisPeriod}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+                specsOnly={specsOnly}
+                measurementWindow={flowAnalysisPeriod}
+              />
+            ),
+            placement: "top",
+          },
+          ...displayProps,
+        }}
+        currentMeasurement={{...currentTrend, measurementWindow: flowAnalysisPeriod}}
+        previousMeasurement={previousTrend}
+        specsOnly={specsOnly}
+        measurementWindow={flowAnalysisPeriod}
+      />
+    ),
     cycleTime: (
       <CycleTimeCardView
         data={data}
