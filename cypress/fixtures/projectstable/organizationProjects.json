@@ -1,0 +1,121 @@
+{
+  "data": {
+    "organization": {
+        "__typename": "Organization",
+        "id": "T3JnYW5pemF0aW9uOjUyZTBlZmY1LTdiMzItNDE1MC1hMWM0LTBmNTVkOTc0ZWUyYQ==",
+        "projects": {
+            "__typename": "ProjectsConnection",
+            "count": 6,
+            "edges": [
+                {
+                    "__typename": "ProjectsEdge",
+                    "node": {
+                        "__typename": "Project",
+                        "id": "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+                        "name": "Polaris",
+                        "key": "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+                        "archived": false,
+                        "contributorCount": 3,
+                        "cycleMetricsTrends": [
+                            {
+                                "__typename": "AggregateCycleMetricsImpl",
+                                "avgLeadTime": 25.83939351851852,
+                                "avgCycleTime": 11.432873842592592,
+                                "totalEffort": 22.25,
+                                "workItemsWithCommits": 10
+                            },
+                            {
+                                "__typename": "AggregateCycleMetricsImpl",
+                                "avgLeadTime": 5.733110532407407,
+                                "avgCycleTime": 4.015069444444444,
+                                "totalEffort": 5.5,
+                                "workItemsWithCommits": 4
+                            }
+                        ],
+                        "repositoryCount": 22,
+                        "latestCommit": "2022-08-26T14:56:12",
+                        "latestWorkItemEvent": "2022-08-26T14:30:11.888000",
+                        "workItemsSources": {
+                            "__typename": "WorkItemsSourcesConnection",
+                            "count": 3,
+                            "edges": [
+                                {
+                                    "__typename": "WorkItemsSourcesEdge",
+                                    "node": {
+                                        "__typename": "WorkItemsSource",
+                                        "name": "Polaris Platform"
+                                    }
+                                },
+                                {
+                                    "__typename": "WorkItemsSourcesEdge",
+                                    "node": {
+                                        "__typename": "WorkItemsSource",
+                                        "name": "Polaris"
+                                    }
+                                },
+                                {
+                                    "__typename": "WorkItemsSourcesEdge",
+                                    "node": {
+                                        "__typename": "WorkItemsSource",
+                                        "name": "Polaris Platform"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "__typename": "ProjectsEdge",
+                    "node": {
+                        "__typename": "Project",
+                        "id": "UHJvamVjdDo4ZTRkMTg4YS1mNWExLTQyMzAtYTBhMi1lZjlkOGQ5NTVmNmE=",
+                        "name": "Test projects",
+                        "key": "8e4d188a-f5a1-4230-a0a2-ef9d8d955f6a",
+                        "archived": false,
+                        "contributorCount": 0,
+                        "cycleMetricsTrends": [
+                            {
+                                "__typename": "AggregateCycleMetricsImpl",
+                                "avgLeadTime": null,
+                                "avgCycleTime": null,
+                                "totalEffort": null,
+                                "workItemsWithCommits": 0
+                            },
+                            {
+                                "__typename": "AggregateCycleMetricsImpl",
+                                "avgLeadTime": null,
+                                "avgCycleTime": null,
+                                "totalEffort": null,
+                                "workItemsWithCommits": 0
+                            }
+                        ],
+                        "repositoryCount": 1,
+                        "latestCommit": "2021-05-24T17:00:29",
+                        "latestWorkItemEvent": "2021-06-14T19:40:39.748000",
+                        "workItemsSources": {
+                            "__typename": "WorkItemsSourcesConnection",
+                            "count": 2,
+                            "edges": [
+                                {
+                                    "__typename": "WorkItemsSourcesEdge",
+                                    "node": {
+                                        "__typename": "WorkItemsSource",
+                                        "name": "Test Project 5"
+                                    }
+                                },
+                                {
+                                    "__typename": "WorkItemsSourcesEdge",
+                                    "node": {
+                                        "__typename": "WorkItemsSource",
+                                        "name": "Test Project 6"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+  }
+}

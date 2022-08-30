@@ -18,7 +18,7 @@ export const ORGANIZATION = {
 
 export const VALUE_STREAM = {
   with_project_instance: "with_project_instance",
-  importProjects: "importProjects"
+  importProjects: "importProjects",
 };
 
 export const WIP_INSPECTOR = {
@@ -28,6 +28,6 @@ export const WIP_INSPECTOR = {
 };
 
 export const USER = {
-  inviteUser : "inviteUser"
-}
-
+  inviteUser: "inviteUser",
+  update_user: "update_user",
+};
