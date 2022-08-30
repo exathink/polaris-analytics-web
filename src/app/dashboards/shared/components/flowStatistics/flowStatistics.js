@@ -67,11 +67,12 @@ export const FlowStatistic = ({
       );
     }
     case "cardAdvanced": {
-      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft} = displayProps;
+      const {info, className, targetText, detailsView, trendsView, subTitle, iconsShiftLeft, valSubTitle} = displayProps;
       return (
         <MetricCard
           title={title}
           subTitle={subTitle}
+          valSubTitle={valSubTitle}
           value={metricValue}
           suffix={suffix}
           trendIndicator={
@@ -197,6 +198,7 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
 export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
+  const valSubTitle = <span>Throughput <sup>Avg</sup> {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
   return <FlowStatistic
     title={title || <span>Volume</span>}
     currentMeasurement={currentMeasurement}
@@ -208,7 +210,7 @@ export const VolumeWithThroughput = ({title, displayType, displayProps, currentM
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
-    displayProps={displayProps}
+    displayProps={{valSubTitle, ...displayProps}}
     target={target}
     measurementWindow={measurementWindow}
   />
