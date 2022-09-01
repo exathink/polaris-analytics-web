@@ -5,6 +5,9 @@ import {ProjectPipelineFunnelWidget} from "../../shared/widgets/funnel";
 import {DimensionWipMetricsWidget} from "../../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipMetricsWidget";
 import {DimensionPipelineQuadrantSummaryWidget} from "../../../shared/widgets/work_items/wip";
 import {ProjectDashboard} from "../../projectDashboard";
+import {Flex} from "reflexbox";
+import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
+import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -14,6 +17,7 @@ export function NewFlowDashboard({
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
+  const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
   const {
     responseTimeConfidenceTarget,
@@ -35,6 +39,33 @@ export function NewFlowDashboard({
       className="tw-grid tw-grid-cols-8 tw-grid-rows-[5%_20%_52%_23%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
+      <div className="tw-col-start-6 tw-row-start-1">
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
+      <div className="tw-col-span-2 tw-col-start-7 tw-row-start-1">
+        {specsOnly && (
+          <Flex align={"center"}>
+            <GroupingSelector
+              label={"Show"}
+              groupings={[
+                {
+                  key: "volume",
+                  display: "Time to Clear",
+                },
+                {
+                  key: "effort",
+                  display: "Cost",
+                },
+              ]}
+              initialValue={"volume"}
+              value={volumeOrEffort}
+              onGroupingChanged={(selected) => setVolumeOrEffort(selected)}
+            />
+          </Flex>
+        )}
+      </div>
       <DashboardRow>
         <DashboardWidget
           name="wip-volume"
@@ -136,6 +167,7 @@ export function NewFlowDashboard({
               latestCommit={latestCommit}
               days={flowAnalysisPeriod}
               view={view}
+              showVolumeOrEffort={volumeOrEffort}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
