@@ -144,7 +144,7 @@ export function NewFlowDashboard({
                 includeSubTasksInClosedState: includeSubTasksFlowMetrics,
                 includeSubTasksInNonClosedState: includeSubTasksWipInspector,
               }}
-              displayBag={{funnelCenter: ["42%", "50%"]}}
+              displayBag={{funnelCenter: ["42%", "50%"], title: "Flow, All Phases"}}
             />
           )}
           showDetail={true}
