@@ -35,6 +35,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
     ),
     avgAge: (
       <AvgAge
+        title={<span>Work In Progress: Age <sup>Avg</sup></span>}
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType={displayType}
