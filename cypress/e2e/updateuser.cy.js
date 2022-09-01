@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import {first, last} from "lodash";
 import {ACCOUNT, USER, viewer_info} from "../support/queries-constants";
 import {getMutationFullName, getQueryFullName} from "../support/utils";
 
@@ -27,52 +26,38 @@ describe("Edit User flow", () => {
     cy.interceptMutation({operationName: USER.update_user, fixturePath: "updateUser_success.json"});
 
     cy.visit("/app/admin/account");
-    cy.wait(`@${getQueryFullName(viewer_info)}`);
-    cy.wait(`@${getQueryFullName(ACCOUNT.accountUsers)}`);
+    cy.wait([`@${getQueryFullName(viewer_info)}`, `@${getQueryFullName(ACCOUNT.accountUsers)}`]);
 
-    cy.getBySel("users").within(($div) => {
+    cy.getBySel("users").within(() => {
       cy.getBySel("analysis-view").click();
+      cy.location("pathname").should("include", "/users");
     });
 
-    cy.contains("Elizabeth Bennett")
-      .parent("tr")
-      .within(() => {
-        // all searches are automatically rooted to the found tr element
-        cy.contains("Edit").click();
-      });
+    cy.contains("Elizabeth Bennett").parent("tr").find("button").click();
 
-    cy.get("form").within(($form) => {
-      cy.get("input#lastName").clear().type(lastname).should("have.value", lastname);
-    });
+    cy.get("form").get("input#lastName").clear().type(lastname).should("have.value", lastname);
 
     cy.contains(/^Save$/).click();
 
     cy.wait(`@${getMutationFullName(USER.update_user)}`);
 
-    cy.contains("User Elizabeth Darcy was updated").should("be.visible");
+    cy.contains("User Elizabeth Darcy was updated", {matchCase: false}).should("be.visible");
   });
 
   it("fails to update the user", () => {
     cy.interceptMutation({operationName: USER.update_user, fixturePath: "updateUser_failure.json"});
 
     cy.visit("/app/admin/account");
-    cy.wait(`@${getQueryFullName(viewer_info)}`);
-    cy.wait(`@${getQueryFullName(ACCOUNT.accountUsers)}`);
+    cy.wait([`@${getQueryFullName(viewer_info)}`, `@${getQueryFullName(ACCOUNT.accountUsers)}`]);
 
-    cy.getBySel("users").within(($div) => {
+    cy.getBySel("users").within(() => {
       cy.getBySel("analysis-view").click();
+      cy.location("pathname").should("include", "/users");
     });
 
-    cy.contains("Elizabeth Bennett")
-      .parent("tr")
-      .within(() => {
-        // all searches are automatically rooted to the found tr element
-        cy.contains("Edit").click();
-      });
+    cy.contains("Elizabeth Bennett").parent("tr").find("button").click();
 
-    cy.get("form").within(($form) => {
-      cy.get("input#lastName").clear().type(lastname).should("have.value", lastname);
-    });
+    cy.get("form").get("input#lastName").clear().type(lastname).should("have.value", lastname);
 
     cy.contains(/^Save$/).click();
 
