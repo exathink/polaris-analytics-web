@@ -11,7 +11,7 @@ describe("Projects Table", () => {
   before(() => {
     cy.fixture(`projectstable/with_organization_instance.json`).then((response) => {
       const organizationKey = response.data.organization.key;
-      ctx.organizationkey = organizationKey;
+      ctx.organizationKey = organizationKey;
     });
 
     cy.fixture(`projectstable/${ORGANIZATION.organizationProjects}.json`).then((response) => {
@@ -20,7 +20,6 @@ describe("Projects Table", () => {
 
       ctx.latestCommit_vs_1 = lc.toDateString();
       ctx.latestUpdate_vs_1 = lu.toDateString();
-      cy.log(ctx.latestUpdate_vs_1);
 
       lc = new Date(response.data.organization.projects.edges[1].node.latestCommit);
       lu = new Date(response.data.organization.projects.edges[1].node.latestWorkItemEvent);
